@@ -15,6 +15,14 @@ module.exports = {
     './.eslintrc-auto-import.json',
   ],
   rules: {
-    'vue/multi-word-component-names': 'off',
+    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    '@typescript-eslint/ban-ts-comment': [
+      'error',
+      {'ts-ignore': 'allow-with-description'},
+    ],  
+    'no-useless-catch': 'off',
+    'no-undef': 'off',
+    "@typescript-eslint/no-inferrable-types": "off"
   },
 }

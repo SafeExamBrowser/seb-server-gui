@@ -1,36 +1,56 @@
-/**
- * router/index.ts
- *
- * Automatic routes for `./src/pages/*.vue`
- */
+import { createRouter, RouteRecordRaw, createWebHistory } from "vue-router"
+import ContainerLayout from "@/components/layout/ContainerLayout.vue"
+import LoginPage from "@/components/views/LoginPage.vue"
+import RegisterPage from "@/components/views/RegisterPage.vue"
+import StartPage from "@/components/views/StartPage.vue"
+import * as constants from "@/utils/constants";
 
-// Composables
-import { createRouter, createWebHistory } from 'vue-router/auto'
-import { setupLayouts } from 'virtual:generated-layouts'
-import { routes } from 'vue-router/auto-routes'
+const defaultPageTitle: string = " | SEB Screen Proctoring";
+const routes: Array<RouteRecordRaw> = [
+  {
+    path: constants.DEFAULT_ROUTE,
+    name: "LoginPage",
+    component: LoginPage,
+    meta: {requiresAuth: false},
+  },
+  {
+    path: constants.REGISTER_ROUTE,
+    name: "RegisterPage",
+    component: RegisterPage,
+    meta: {requiresAuth: false},
+  },
+  {
+    path: constants.DEFAULT_ROUTE,
+    component: ContainerLayout,
+    meta: {requiresAuth: true},
+    children: [
+      {
+        path: constants.START_PAGE_ROUTE,
+        name: "StartPage",
+        component: StartPage,
+        meta: {
+            title: "Start Page" + defaultPageTitle
+        }
+      },
+
+    ]
+  },
+  
+];
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: setupLayouts(routes),
-})
+  history: createWebHistory(),
+  routes
+});
 
-// Workaround for https://github.com/vitejs/vite/issues/11804
-router.onError((err, to) => {
-  if (err?.message?.includes?.('Failed to fetch dynamically imported module')) {
-    if (!localStorage.getItem('vuetify:dynamic-reload')) {
-      console.log('Reloading page to fix dynamic import error')
-      localStorage.setItem('vuetify:dynamic-reload', 'true')
-      location.assign(to.fullPath)
-    } else {
-      console.error('Dynamic import error, reloading page did not fix it', err)
+router.beforeEach(async (to) => {
+    if(to.meta.requiresAuth){
+        // await userAccountViewService.setPersonalUserAccount();
     }
-  } else {
-    console.error(err)
-  }
-})
 
-router.isReady().then(() => {
-  localStorage.removeItem('vuetify:dynamic-reload')
-})
+    const defaultTitle: string = "SEB Server";
+    //@ts-ignore
+    document.title = to.meta.title || defaultTitle;
+});
 
-export default router
+export default router;

@@ -1,0 +1,53 @@
+{
+    "navigation": {
+        "title": "SEB Screen Proctoring",
+        "currentUser": "sebserver-admin",
+        "signIn": "Anmelden",
+        "signOut": "Abmelden",
+        "accountSettings": "Profil ändern",
+        "loggedInAs": "Angmeldet als"
+    },
+    "changePasswordDialog": {
+        "title": "Passwort ändern",
+        "currentPassword": "Aktuelles Passwort *",
+        "newPassword": "Neues Passwort *",
+        "confirmPassword": "Passwort bestätigen *"
+    },
+    "searchForm": {
+        "examName": "Prüfungsname",
+        "groupName": "Gruppenname",
+        "loginMachineTitle": "Anmelde- / Computername",
+        "loginName": "Anmeldename",
+        "ipAddress": "IP Adresse",
+        "machineName": "Computername",
+        "metadataTitle": "Metadaten",
+        "url": "Url",
+        "applicationWebsite": "Applikation / Webseite",
+        "activityDetails": "Aktivitätsdetails",
+        "period": "Zeit",
+        "last": "Letzte",
+        "between": "Während",
+        "cancel": "Abbrechen",
+        "search": "Suchen"
+    },
+    "searchPage": {
+        "title": "Suchresultate",
+        "collapse": "Einklappen",
+        "expand": "Ausklappen"
+    },
+    "searchSessionTable": {
+        "startTime": "Startzeit",
+        "loginName": "Anmeldename / IP",
+        "machineName": "Computername",
+        "groupName": "Gruppenname",
+        "examName": "Prüfungsname",
+        "slides": "Folien",
+        "video": "Video"
+    },
+    "timePeriod": {
+        "day": "Tage",
+        "week": "Wochen",
+        "month": "Monate",
+        "year": "Jahre"
+    }
+}

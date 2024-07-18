@@ -1,0 +1,59 @@
+{
+    "navigation": {
+        "title": "SEB Screen Proctoring",
+        "currentUser": "sebserver-admin",
+        "signIn": "Sign in",
+        "signOut": "Sign out",
+        "accountSettings": "Account settings",
+        "loggedInAs": "Logged in as"
+    },
+    "changePasswordDialog": {
+        "title": "Change password",
+        "currentPassword": "Current password *",
+        "newPassword": "New password *",
+        "confirmPassword": "Confirm password *"
+    },
+    "searchForm": {
+        "examName": "Exam name",
+        "groupName": "Group name",
+        "loginMachineTitle": "Login- / Machine name",
+        "loginName": "Login name",
+        "ipAddress": "IP Address",
+        "machineName": "Machine name",
+        "metadataTitle": "Metadata",
+        "url": "URL",
+        "applicationWebsite": "Application",
+        "activityDetails": "Activity details",
+        "period": "Period",
+        "last": "Last",
+        "between": "Between",
+        "cancel": "Cancel",
+        "search": "Search"
+    },
+    "searchPage": {
+        "title": "Search results",
+        "collapse": "Collapse",
+        "expand": "Expand"
+    },
+    "searchSessionTable": {
+        "startTime": "Start time",
+        "loginName": "Login name / IP",
+        "machineName": "Machine name",
+        "groupName": "Group name",
+        "examName": "Exam name",
+        "slides": "Slides",
+        "video": "Video"
+    },
+    "timePeriod": {
+        "day": "Days",
+        "week": "Weeks",
+        "month": "Months",
+        "year": "Years"
+    },
+    "$vuetify": {
+        "dataIterator": {
+          "rowsPerPageText": "Items per page:",
+          "pageText": "{0}-{1} of {2}"
+        }
+    }
+}
