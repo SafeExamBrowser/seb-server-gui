@@ -5,7 +5,7 @@ import RegisterPage from "@/components/views/RegisterPage.vue"
 import StartPage from "@/components/views/StartPage.vue"
 import * as constants from "@/utils/constants";
 
-const defaultPageTitle: string = " | SEB Screen Proctoring";
+const defaultPageTitle: string = " | SEB Server";
 const routes: Array<RouteRecordRaw> = [
   {
     path: constants.DEFAULT_ROUTE,

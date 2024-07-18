@@ -11,6 +11,7 @@
                     <AlertMsg
                         v-if="registerError"
                         :alertProps="{
+                            title: '',
                             color: 'error',
                             type: 'alert',
                             textKey: 'register-error'
@@ -20,6 +21,7 @@
                     <AlertMsg
                         v-if="registerSuccess"
                         :alertProps="{
+                            title: '',
                             color: 'success',
                             type: 'alert',
                             textKey: 'register-success'
@@ -30,7 +32,7 @@
                 <v-card-title class="mt-10">
                     Register
                 </v-card-title>
-                <v-card-subtitle>Please fill the form to register for a SEB screen proctoring account.</v-card-subtitle>
+                <v-card-subtitle>Please fill the form to register for a SEB Server account.</v-card-subtitle>
 
                 <v-card-text>
                     <v-form @keyup.enter="register()">
