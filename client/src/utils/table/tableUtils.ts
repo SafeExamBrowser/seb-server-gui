@@ -1,5 +1,4 @@
 import {navigateTo} from "@/router/navigation";
-import {useTableStore} from "@/stores/app";
 
 export function calcDefaultItemsPerPage(itemList: any): number {
     if (itemList == null || itemList.length == 0) {
@@ -86,23 +85,18 @@ export function sortTable(key: number, headerRefs: any){
     }
 }
 
-export function getSessionListIndex(day: string): number{
-    const tableStore = useTableStore();
-    return tableStore.isIpDisplayList.findIndex(i => i.day == day);
-}
+// export function assignPagingOptions(serverTablePaging: ServerTablePaging, pagingParameters: OptionalParSearchSessions): OptionalParSearchSessions{
+//     pagingParameters.pageSize = serverTablePaging.itemsPerPage;
+//     pagingParameters.pageNumber = serverTablePaging.page;
 
-export function assignPagingOptions(serverTablePaging: ServerTablePaging, pagingParameters: OptionalParSearchSessions): OptionalParSearchSessions{
-    pagingParameters.pageSize = serverTablePaging.itemsPerPage;
-    pagingParameters.pageNumber = serverTablePaging.page;
+//     if(serverTablePaging.sortBy.length != 0){
+//         let sortString: string = serverTablePaging.sortBy[0].key;
+//         if(serverTablePaging.sortBy[0].order == "desc"){
+//             sortString = "-" + sortString;
+//         }
 
-    if(serverTablePaging.sortBy.length != 0){
-        let sortString: string = serverTablePaging.sortBy[0].key;
-        if(serverTablePaging.sortBy[0].order == "desc"){
-            sortString = "-" + sortString;
-        }
+//         pagingParameters.sort = sortString;
+//     }
 
-        pagingParameters.sort = sortString;
-    }
-
-    return pagingParameters;
-}
+//     return pagingParameters;
+// }
