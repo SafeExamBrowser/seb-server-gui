@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 import * as ENV from "@/config/envConfig";
-import { useAuthStore, useLoadingStore } from "@/stores/app";
+import { useAuthStore, useLoadingStore } from "@/stores/store";
 import * as apiService from "@/services/api-services/apiService";
 
 let loadingTimeout: NodeJS.Timeout | null = null;

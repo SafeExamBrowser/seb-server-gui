@@ -2,8 +2,8 @@ import axios, { AxiosInstance } from "axios";
 import * as authenticationService from "@/services/api-services/authenticationService";
 import {navigateTo} from "@/router/navigation";
 import * as ENV from "@/config/envConfig";
-import { useLoadingStore, useAuthStore } from "@/stores/app";
-import router from "@/router";
+import { useLoadingStore, useAuthStore } from "@/stores/store";
+import router from "@/router/router";
 
 
 export let api: AxiosInstance;

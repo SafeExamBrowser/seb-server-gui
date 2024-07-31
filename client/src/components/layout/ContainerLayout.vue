@@ -1,20 +1,41 @@
 <template>
-    <v-navigation-drawer v-model="drawer" :permanent="true">
-
-        <v-sheet class="pa-4">
-            <a :href=constants.START_PAGE_ROUTE class="text-decoration-none text-black">
-                <v-img max-height="100" src="/img/seb-logo-no-border.png" alt="Seb Server Homepage"></v-img>
-                <div class="app-title text-h6 text-title">{{ $t("navigation.title") }}</div>
-            </a>
-        </v-sheet>
-
+    <!---------------main navigation drawer----------------->
+    <v-navigation-drawer v-model="drawer" :permanent="true" rail>
         <v-list>
-            <v-list-item v-for="[title, link] in navigationLinks" :key="title" :to="link" link>
-                <v-list-item-title>{{ title }}</v-list-item-title>
-            </v-list-item>
+            <v-list-item prepend-avatar="/img/seb-logo-no-border.png"></v-list-item>
         </v-list>
 
+        <v-list>
+            <v-list-item v-for="{title, route, icon} in mainNavigationLinks" 
+                :key="title" 
+                :to="route" 
+                :prepend-icon="icon"
+                @click="changeNavigation(title, route)"
+                link>
+                <v-tooltip activator="parent">
+                    {{title}}
+                </v-tooltip>
+            </v-list-item>
+        </v-list>
     </v-navigation-drawer>
+    <!------------------------------------------------------>
+
+    <!---------------detailed navigation drawer------------->
+    <v-navigation-drawer v-model="drawer" :permanent="true" rail>
+        <v-list>
+            <v-list-item v-for="{title, route, icon} in detailedNavigationLinks[currentNavigationCategory]" 
+                :key="title" 
+                :to="route" 
+                :prepend-icon="icon"
+                @click="changeTitle(title)"
+                link>
+                <v-tooltip activator="parent">
+                    {{title}}
+                </v-tooltip>
+            </v-list-item>
+        </v-list>
+    </v-navigation-drawer>
+    <!------------------------------------------------------>
 
     <v-app-bar>
         <!--menu icon-->
@@ -22,7 +43,9 @@
         </v-app-bar-nav-icon>
 
         <!--current site title-->
-        <v-app-bar-title>Start Page</v-app-bar-title>
+        <v-app-bar-title>
+            <h1 class="title-inherit-styling">{{ appBarStore.title }}</h1>
+        </v-app-bar-title>
 
         <template v-slot:append>
 
@@ -89,21 +112,47 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, watch } from "vue"
-    import { useAuthStore, useUserAccountStore } from "@/stores/app";
+    import { ref, watch, onBeforeMount } from "vue"
+    import { useAuthStore, useUserAccountStore, useAppBarStore } from "@/stores/store";
     import * as userAccountViewService from "@/services/component-services/userAccountViewService";
     import { useTheme } from "vuetify";
     import { useI18n } from "vue-i18n";
     import * as constants from "@/utils/constants";
+    import router from "@/router/router";
 
-    //navigation
+
+    //--------navigation-------
     const drawer = ref();
-    const navigationLinks = [
-        ["Start Page", constants.START_PAGE_ROUTE],
+    const currentNavigationCategory = ref<string>(constants.START_PAGE_ROUTE);
+
+    //main navigation
+    const mainNavigationLinks: NavigationItem[] = [
+        {title: constants.START_PAGE_TITLE, route: constants.START_PAGE_ROUTE, icon: "mdi-home"},
+        {title: constants.EXAMS_OVERVIEW_TITLE, route: constants.EXAM_ROUTE, icon: "mdi-school"},
     ];
+
+    //start navigation
+    const startNavigationLinks: NavigationItem[] = [
+        {title: constants.START_PAGE_TITLE, route: constants.START_PAGE_ROUTE, icon: "mdi-home"},
+    ];
+
+    //exam navigation
+    const examNavigationLinks: NavigationItem[] = [
+        {title: constants.EXAMS_OVERVIEW_TITLE, route: constants.EXAM_ROUTE, icon: "mdi-text-box-check"},
+        {title: constants.EXAMS_LMS_IMPORT_TITLE, route: constants.EXAM_LMS_IMPORT_ROUTE, icon: "mdi-import"},
+    ];
+
+    //detailed navigation overview
+    const detailedNavigationLinks: DetailedNavigationLinks = {
+        [constants.START_PAGE_ROUTE]: startNavigationLinks,
+        [constants.EXAM_ROUTE]: examNavigationLinks,
+    };
+    //-------------------------
+
 
     //stores
     const authStore = useAuthStore();
+    const appBarStore = useAppBarStore();
     const userAccountStore = useUserAccountStore();
 
     //theme
@@ -124,6 +173,22 @@
     // const gitTag = __GIT_TAG__;
 
     //watchers
+    watch(drawer, () => {
+        let route: string | any = router.currentRoute.value.fullPath;
+        let title: string | any = router.currentRoute.value.meta.title
+
+        if(route != null){
+            route = getMainRoute(route);
+            currentNavigationCategory.value = route;
+        }
+
+        if(title != null){
+            appBarStore.title = getTitle(title);
+        }
+
+        
+    });
+
     watch(languageToggle, () => {
         locale.value = languageToggle.value === 0 ? "en" : "de";
         localStorage.setItem("locale", locale.value);
@@ -138,6 +203,36 @@
     async function userMenuOpened(){
         // await userAccountViewService.setPersonalUserAccount();
     }
+
+    function changeNavigation(title: string, route: string){
+        appBarStore.title = title;
+        currentNavigationCategory.value = route;
+    }
+
+    function changeTitle(title: string){
+        appBarStore.title = title;
+    }
+
+    function getMainRoute(route: string): string{
+        const routeSplitted: string[] = route.split("/");
+
+        if(routeSplitted.length >= 3){
+            return "/" + routeSplitted[1];
+        }
+
+        return route;
+    }
+
+    function getTitle(title: string): string{
+        const titleSplitted: string[] = title.split("|");
+
+        if(titleSplitted.length >= 2){
+            return titleSplitted[0].substring(0, titleSplitted[0].length-1);
+        }
+
+        return title;
+    }
+
 </script>  
 
 <style scoped>

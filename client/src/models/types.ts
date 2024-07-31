@@ -9,3 +9,13 @@ type GridSize = {
     title: string;
     value: number;
 };
+
+type NavigationItem = {
+    title: string, 
+    route: string, 
+    icon: string
+}
+
+type DetailedNavigationLinks = {
+    [key: string]: NavigationItem[];
+};

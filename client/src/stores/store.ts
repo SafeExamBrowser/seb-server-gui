@@ -4,7 +4,15 @@ import * as userAccountViewService from "@/services/component-services/userAccou
 import * as constants from "@/utils/constants";
 import * as authenticationService from "@/services/api-services/authenticationService";
 
+//--------------------app bar-----------------------------//
+export const useAppBarStore = defineStore("appBar", () => {
+    const title = ref<string>("Example Title");
 
+    return {
+        title
+    };
+});
+//-------------------------------------------------//
 
 //----------------------authentication---------------------------//
 export const useAuthStore = defineStore("auth", () => {
@@ -63,20 +71,20 @@ export const useAuthStore = defineStore("auth", () => {
     }
   
     return {redirectRoute, login, loginWithJwt, logout, setAccessToken, getAccessToken, setRefreshToken, getRefreshToken};
-  });
-  //-------------------------------------------------//
+});
+//-------------------------------------------------//
   
   
-  //---------------------account----------------------------//
-  export const useUserAccountStore = defineStore("account", () => {
-    const userAccount = ref<UserAccount | null>();
-    const isEditMode = ref<boolean>();
-    const isAccountSelected = ref<boolean>(false);
-    const selectedAccountId = ref<number>();
-  
-    return {userAccount, isEditMode, isAccountSelected, selectedAccountId};
-  });
-  //-------------------------------------------------//
+//---------------------account----------------------------//
+export const useUserAccountStore = defineStore("account", () => {
+const userAccount = ref<UserAccount | null>();
+const isEditMode = ref<boolean>();
+const isAccountSelected = ref<boolean>(false);
+const selectedAccountId = ref<number>();
+
+return {userAccount, isEditMode, isAccountSelected, selectedAccountId};
+});
+//-------------------------------------------------//
 
 //----------------------loading---------------------------//
 export const useLoadingStore = defineStore("loading", () => {

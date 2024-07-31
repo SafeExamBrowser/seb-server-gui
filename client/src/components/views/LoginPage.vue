@@ -101,7 +101,7 @@
     import { ref, computed } from "vue";
     import * as authenticationService from "@/services/api-services/authenticationService";
     import {navigateTo} from "@/router/navigation";
-    import { useLoadingStore, useAuthStore } from "@/stores/app";
+    import { useLoadingStore, useAuthStore } from "@/stores/store";
     import { useTheme } from "vuetify";
     import * as constants from "@/utils/constants";
 
