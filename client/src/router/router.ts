@@ -2,7 +2,7 @@ import { createRouter, RouteRecordRaw, createWebHistory } from "vue-router"
 import ContainerLayout from "@/components/layout/ContainerLayout.vue"
 import LoginPage from "@/components/views/LoginPage.vue"
 import RegisterPage from "@/components/views/RegisterPage.vue"
-import StartPage from "@/components/views/StartPage.vue"
+import HomePage from "@/components/views/home/HomePage.vue"
 import ExamsHome from "@/components/views/exam/ExamsHome.vue"
 import ExamLmsImport from "@/components/views/exam/ExamLmsImport.vue"
 import * as constants from "@/utils/constants";
@@ -27,11 +27,11 @@ const routes: Array<RouteRecordRaw> = [
     meta: {requiresAuth: true},
     children: [
         {
-            path: constants.START_PAGE_ROUTE,
-            name: "StartPage",
-            component: StartPage,
+            path: constants.HOME_PAGE_ROUTE,
+            name: "HomePage",
+            component: HomePage,
             meta: {
-                title: constants.START_PAGE_TITLE + defaultPageTitle
+                title: constants.HOME_PAGE_TITLE + defaultPageTitle
             }
         },
         //----------exam routes---------
@@ -40,7 +40,7 @@ const routes: Array<RouteRecordRaw> = [
             name: "Exams",
             component: ExamsHome,
             meta: {
-                title: constants.EXAMS_OVERVIEW_TITLE + defaultPageTitle
+                title: constants.EXAMS_TITLE + defaultPageTitle
             },
         },
         {

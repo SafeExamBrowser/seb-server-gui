@@ -11,10 +11,12 @@ declare module 'vue' {
     ContainerLayout: typeof import('./components/layout/ContainerLayout.vue')['default']
     ExamLmsImport: typeof import('./components/views/exam/ExamLmsImport.vue')['default']
     ExamsHome: typeof import('./components/views/exam/ExamsHome.vue')['default']
+    HomePage: typeof import('./components/views/home/HomePage.vue')['default']
     LoginPage: typeof import('./components/views/LoginPage.vue')['default']
+    NavigationOverviewPage: typeof import('./components/views/navigation/NavigationOverviewPage.vue')['default']
     RegisterPage: typeof import('./components/views/RegisterPage.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    StartPage: typeof import('./components/views/StartPage.vue')['default']
+    StartPage: typeof import('./components/views/home/StartPage.vue')['default']
   }
 }

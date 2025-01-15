@@ -1,7 +1,7 @@
 <template>
     <v-row>
         <v-col>
-            start page is working
+            home page is working
         </v-col>
     </v-row>
 </template>

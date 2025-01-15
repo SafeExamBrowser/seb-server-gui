@@ -25,7 +25,7 @@ export const useAuthStore = defineStore("auth", () => {
     //   await userAccountViewService.setPersonalUserAccount();
   
       if(useAuthStore().redirectRoute == ""){
-          navigateTo(constants.START_PAGE_ROUTE);
+          navigateTo(constants.HOME_PAGE_ROUTE);
       }else{
           navigateTo(useAuthStore().redirectRoute);
       }
