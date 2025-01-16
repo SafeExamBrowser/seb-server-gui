@@ -3,9 +3,11 @@ import ContainerLayout from "@/components/layout/ContainerLayout.vue"
 import LoginPage from "@/components/views/LoginPage.vue"
 import RegisterPage from "@/components/views/RegisterPage.vue"
 import HomePage from "@/components/views/home/HomePage.vue"
-import ExamsHome from "@/components/views/exam/ExamsHome.vue"
+import ExamsMain from "@/components/views/exam/ExamsMain.vue"
 import ExamLmsImport from "@/components/views/exam/ExamLmsImport.vue"
 import * as constants from "@/utils/constants";
+import MonitoringMain from "@/components/views/monitoring/MonitoringMain.vue"
+import NavigationOverview from "@/components/views/navigation/NavigationOverview.vue"
 
 const defaultPageTitle: string = " | SEB Server";
 const routes: Array<RouteRecordRaw> = [
@@ -34,11 +36,20 @@ const routes: Array<RouteRecordRaw> = [
                 title: constants.HOME_PAGE_TITLE + defaultPageTitle
             }
         },
+        {
+            path: constants.NAVIGATION_OVERVIEW_ROUTE,
+            name: "NavigationOverview",
+            component: NavigationOverview,
+            meta: {
+                title: constants.NAVIGATION_OVERVIEW_TITLE + defaultPageTitle
+            }
+        },
+
         //----------exam routes---------
         {
             path: constants.EXAM_ROUTE,
             name: "Exams",
-            component: ExamsHome,
+            component: ExamsMain,
             meta: {
                 title: constants.EXAMS_TITLE + defaultPageTitle
             },
@@ -50,7 +61,18 @@ const routes: Array<RouteRecordRaw> = [
             meta: {
                 title: constants.EXAMS_LMS_IMPORT_TITLE + defaultPageTitle
             },
-        }
+        },
+        //------------------------------
+
+        //----------monitoring routes---------
+        {
+            path: constants.MONITORING_ROUTE,
+            name: "Monitoring",
+            component: MonitoringMain,
+            meta: {
+                title: constants.MONITORING_TITLE + defaultPageTitle
+            },
+        },
         //------------------------------
 
 

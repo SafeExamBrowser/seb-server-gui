@@ -6,10 +6,22 @@ import * as authenticationService from "@/services/api-services/authenticationSe
 
 //--------------------app bar-----------------------------//
 export const useAppBarStore = defineStore("appBar", () => {
+    const previousTitle = ref<string>("");
     const title = ref<string>("Example Title");
 
     return {
+        previousTitle,
         title
+    };
+});
+//-------------------------------------------------//
+
+//--------------------navigation-----------------------------//
+export const useNavigationStore = defineStore("navigation", () => {
+    const isNavigationOverviewOpen = ref<boolean>(false);
+
+    return {
+        isNavigationOverviewOpen
     };
 });
 //-------------------------------------------------//

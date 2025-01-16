@@ -1,7 +1,7 @@
 <template>
     <v-row>
         <v-col>
-            home page is working
+            exam page is working
         </v-col>
     </v-row>
 </template>
@@ -14,7 +14,7 @@
     const appBarStore = useAppBarStore();
 
     onBeforeMount(() => {
-        appBarStore.title = constants.HOME_PAGE_TITLE;
+        appBarStore.title = constants.EXAMS_TITLE;
     });
 
 

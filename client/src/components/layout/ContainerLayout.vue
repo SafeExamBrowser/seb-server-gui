@@ -1,8 +1,8 @@
 <template>
 
     <v-app-bar>
-        <!--menu icon-->
-        <template v-slot:prepend>
+        <!--seb logo-->
+        <template v-slot:prepend >
             <v-img :width=50 src="/img/seb-logo-no-border.png"></v-img>
         </template>
 
@@ -52,12 +52,6 @@
                             <v-list-item-title class="mx-auto">{{ $t("navigation.signOut") }}</v-list-item-title>
                         </v-list-item>
 
-                        <!-- <v-divider></v-divider>
-
-                        <v-list-item class="d-flex">
-                            <v-list-item-title>GUI Version: {{ gitTag }}</v-list-item-title>
-                        </v-list-item> -->
-
                     </v-list>
                 </v-menu>
             </div>
@@ -67,51 +61,62 @@
     </v-app-bar>
 
     <!---------------main navigation drawer----------------->
-    <v-navigation-drawer v-model="drawer" :permanent="true" rail>
-        <!-- <v-list>
-        </v-list> -->
-
-
+    <v-navigation-drawer v-model="drawer" :permanent="true" width="70">
         <v-list lines="two">
-            <v-list-item prepend-icon="mdi-menu"></v-list-item>
+            <!--------navigation overview---------->
+            <v-list-item 
+                link
+                elevation="0"
+                :to="getNavigationOverviewRoute()"
+                variant="elevated"
+                class="d-flex flex-column justify-center text-center"
+                :class="[navigationStore.isNavigationOverviewOpen ? 'navigation-overview-background' : '']">
+
+                <template v-if="navigationStore.isNavigationOverviewOpen">
+                    <v-icon icon="mdi-close" color="white"></v-icon>
+                </template>
+
+                <template v-else>
+                    <v-icon icon="mdi-menu" color="#797979"></v-icon>
+                </template>
+
+            </v-list-item>
+
             <v-divider></v-divider>
 
-            <v-list-item v-for="{title, route, icon} in mainNavigationLinks"
-                :key="title" 
-                :to="route" 
-                :prepend-icon="icon"
-                color="#215caf"
-                @click="changeNavigation(title, route)"
-                link>
-                <v-tooltip activator="parent">
-                    {{title}}
-                </v-tooltip>
-            </v-list-item>
-            <v-divider></v-divider>
+            <!--------navigation items---------->
+            <template v-for="{ title, route, icon } in mainNavigationLinks" :key="title">
+                <v-list-item 
+                    link
+                    :to="route"
+                    color="#215caf"
+                    class="d-flex flex-column justify-center text-center">
+
+                    <template v-slot:default="{isActive}">
+                        <v-icon 
+                            :icon="icon" 
+                            :color="isActive ? '' : '#797979'">
+                        </v-icon>
+
+                        <span class="text-caption">{{ title }}</span>
+
+                        <!-- <v-tooltip activator="parent">
+                            {{title}}
+                        </v-tooltip> -->
+
+                    </template>
+                </v-list-item>
+
+                <v-divider></v-divider>
+
+            </template>
 
         </v-list>
     </v-navigation-drawer>
     <!------------------------------------------------------>
 
-    <!---------------detailed navigation drawer------------->
-    <!-- <v-navigation-drawer v-model="drawer" :permanent="true" rail>
-        <v-list>
-            <v-list-item v-for="{title, route, icon} in detailedNavigationLinks[currentNavigationCategory]" 
-                :key="title" 
-                :to="route" 
-                :prepend-icon="icon"
-                @click="changeTitle(title)"
-                link>
-                <v-tooltip activator="parent">
-                    {{title}}
-                </v-tooltip>
-            </v-list-item>
-        </v-list>
-    </v-navigation-drawer> -->
-    <!------------------------------------------------------>
-
     <!--main content view-->
-    <v-main>
+    <v-main :class="[router.currentRoute.value.path == constants.NAVIGATION_OVERVIEW_ROUTE ? 'navigation-overview-background' : '']">
         <v-container fluid class="main-content">
             <router-view></router-view>
         </v-container>
@@ -121,7 +126,7 @@
 
 <script setup lang="ts">
     import { ref, watch, onBeforeMount } from "vue"
-    import { useAuthStore, useUserAccountStore, useAppBarStore } from "@/stores/store";
+    import { useAuthStore, useUserAccountStore, useAppBarStore, useNavigationStore } from "@/stores/store";
     import * as userAccountViewService from "@/services/component-services/userAccountViewService";
     import { useTheme } from "vuetify";
     import { useI18n } from "vue-i18n";
@@ -131,37 +136,19 @@
 
     //--------navigation-------
     const drawer = ref();
-    const currentNavigationCategory = ref<string>(constants.HOME_PAGE_ROUTE);
 
     //main navigation
     const mainNavigationLinks: NavigationItem[] = [
         {title: constants.HOME_PAGE_TITLE, route: constants.HOME_PAGE_ROUTE, icon: "mdi-home"},
-        {title: constants.EXAMS_TITLE, route: constants.EXAM_ROUTE, icon: "mdi-school"},
+        {title: constants.EXAMS_TITLE, route: constants.EXAM_ROUTE, icon: "mdi-file-document"},
+        {title: constants.MONITORING_TITLE, route: constants.MONITORING_ROUTE, icon: "mdi-eye"},
     ];
-
-    //start navigation
-    const startNavigationLinks: NavigationItem[] = [
-        {title: constants.HOME_PAGE_TITLE, route: constants.HOME_PAGE_ROUTE, icon: "mdi-home"},
-    ];
-
-    //exam navigation
-    const examNavigationLinks: NavigationItem[] = [
-        {title: constants.EXAMS_OVERVIEW_TITLE, route: constants.EXAM_ROUTE, icon: "mdi-text-box-check"},
-        {title: constants.EXAMS_LMS_IMPORT_TITLE, route: constants.EXAM_LMS_IMPORT_ROUTE, icon: "mdi-import"},
-    ];
-
-    //detailed navigation overview
-    const detailedNavigationLinks: DetailedNavigationLinks = {
-        [constants.HOME_PAGE_ROUTE]: startNavigationLinks,
-        [constants.EXAM_ROUTE]: examNavigationLinks,
-    };
-    //-------------------------
-
 
     //stores
     const authStore = useAuthStore();
     const appBarStore = useAppBarStore();
     const userAccountStore = useUserAccountStore();
+    const navigationStore = useNavigationStore();
 
     //theme
     const theme = useTheme();
@@ -175,27 +162,7 @@
     const localStorageLocale: string | null = localStorage.getItem("locale");
     locale.value = localStorageLocale ?? "en";
     const languageToggle = ref<number>(locale.value === "en" ? 0 : 1);
-    
-    //git tag
-    //@ts-ignore
-    // const gitTag = __GIT_TAG__;
 
-    //watchers
-    watch(drawer, () => {
-        let route: string | any = router.currentRoute.value.fullPath;
-        let title: string | any = router.currentRoute.value.meta.title
-
-        if(route != null){
-            route = getMainRoute(route);
-            currentNavigationCategory.value = route;
-        }
-
-        if(title != null){
-            appBarStore.title = getTitle(title);
-        }
-
-        
-    });
 
     watch(languageToggle, () => {
         locale.value = languageToggle.value === 0 ? "en" : "de";
@@ -212,56 +179,32 @@
         // await userAccountViewService.setPersonalUserAccount();
     }
 
-    function changeNavigation(title: string, route: string){
-        appBarStore.title = title;
-        currentNavigationCategory.value = route;
-    }
-
-    function changeTitle(title: string){
-        appBarStore.title = title;
-    }
-
-    function getMainRoute(route: string): string{
-        const routeSplitted: string[] = route.split("/");
-
-        if(routeSplitted.length >= 3){
-            return "/" + routeSplitted[1];
+    function getNavigationOverviewRoute(): string{
+        if(navigationStore.isNavigationOverviewOpen && router.options.history.state.back != null){
+            return router.options.history.state.back.toString();
         }
 
-        return route;
-    }
-
-    function getTitle(title: string): string{
-        const titleSplitted: string[] = title.split("|");
-
-        if(titleSplitted.length >= 2){
-            return titleSplitted[0].substring(0, titleSplitted[0].length-1);
+        if(!navigationStore.isNavigationOverviewOpen){
+            return constants.NAVIGATION_OVERVIEW_ROUTE;
         }
 
-        return title;
+        return constants.HOME_PAGE_ROUTE;
     }
 
 </script>  
 
 <style scoped>
-    .app-title{
-        text-align: center;
-    }
-
-    .app-bar-item-margin{
-        margin-right: 10px;
-    }
-
-    .switch-container{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 20px;
-        margin-right: 10px;
-    }
 
     .main-content{
-        background-color: #e4e4e4;
+        /* background-color: #e4e4e4; */
+    }
+
+    .v-list{
+        padding: 0;
+    }
+
+    .navigation-overview-background{
+        background-color: #215caf;
     }
 
 </style>
