@@ -5,9 +5,8 @@ import * as apiService from "../services/api.service";
 
 export async function getQuizzes(req: Request, res: Response){
     try{
-        const quizzes: object = await quizService.getQuizzes(req.headers.authorization, req.query.optionalParamters);
-
-        return res.status(200).json(quizzes);
+        const [quizzes, status] = await quizService.getQuizzes(req.headers.authorization, req.query.optionalParamters);
+        return res.status(status).json(quizzes);
 
     }catch(error){
         apiService.handleGenericApiError(error, res);

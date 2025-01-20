@@ -12,6 +12,7 @@
     import Loading from "vue-loading-overlay";
     import "vue-loading-overlay/dist/css/index.css";
     import { useLoadingStore } from "@/stores/store";
+    import "@vuepic/vue-datepicker/dist/main.css";
 
     const loadingStore = useLoadingStore();
 
@@ -32,6 +33,11 @@
 
     .title-no-line-break{
         display: inline;
+    }
+
+    .title-container{
+        color: #215caf;
+        margin-bottom: 16px;
     }
 
 </style>

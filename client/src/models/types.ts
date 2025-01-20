@@ -19,3 +19,9 @@ type NavigationItem = {
 type DetailedNavigationLinks = {
     [key: string]: NavigationItem[];
 };
+
+type Page = {
+    number_of_pages: number,
+    page_number: number,
+    page_size: number
+}

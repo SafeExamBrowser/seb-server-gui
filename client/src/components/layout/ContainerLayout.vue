@@ -116,7 +116,7 @@
     <!------------------------------------------------------>
 
     <!--main content view-->
-    <v-main :class="[router.currentRoute.value.path == constants.NAVIGATION_OVERVIEW_ROUTE ? 'navigation-overview-background' : '']">
+    <v-main :class="[router.currentRoute.value.path == constants.NAVIGATION_OVERVIEW_ROUTE ? 'navigation-overview-background' : 'generic-background']">
         <v-container fluid class="main-content">
             <router-view></router-view>
         </v-container>
@@ -205,6 +205,10 @@
 
     .navigation-overview-background{
         background-color: #215caf;
+    }
+
+    .generic-background{
+        background-color: #f6f6f6;
     }
 
 </style>

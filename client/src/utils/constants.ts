@@ -9,6 +9,7 @@ export const EXAM_ROUTE: string = "/exam";
 export const EXAM_LMS_IMPORT_ROUTE: string = EXAM_ROUTE + "/lms"
 export const ACCOUNT_VIEW_ROUTE: string = "/account";
 export const MONITORING_ROUTE: string = "/monitoring";
+export const QUIZ_IMPORT_ROUTE: string = "/quiz-import";
 
 
 //titles
@@ -18,6 +19,7 @@ export const NAVIGATION_OVERVIEW_TITLE: string = "Navigation Overview";
 
 export const EXAMS_TITLE: string = "Exams";
 export const EXAMS_OVERVIEW_TITLE: string = "Exams Overview";
-export const EXAMS_LMS_IMPORT_TITLE: string = "LMS Import";
 
 export const MONITORING_TITLE: string = "Monitoring";
+
+export const QUIZ_IMPORT_TITLE: string = "Prepare Exam";

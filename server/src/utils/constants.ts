@@ -1,4 +1,7 @@
-//routes - always the same route for the B4F and to cal SEB-Server
+//routes - always the same route for the B4F and to call SEB-Server
+
+
+//retrieves all quizzes that are ready for import --> quiz turns into exam as soon as its imported
 export const QUIZ_ROUTE = "/quiz";
 
 export const EXAM_ROUTE = "/exam";

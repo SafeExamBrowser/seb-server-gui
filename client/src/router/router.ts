@@ -7,7 +7,8 @@ import ExamsMain from "@/components/views/exam/ExamsMain.vue"
 import ExamLmsImport from "@/components/views/exam/ExamLmsImport.vue"
 import * as constants from "@/utils/constants";
 import MonitoringMain from "@/components/views/monitoring/MonitoringMain.vue"
-import NavigationOverview from "@/components/views/navigation/NavigationOverview.vue"
+import NavigationOverview from "@/components/layout/NavigationOverview.vue"
+import QuizImportWizard from "@/components/views/quiz-import/QuizImportWizard.vue"
 
 const defaultPageTitle: string = " | SEB Server";
 const routes: Array<RouteRecordRaw> = [
@@ -54,13 +55,19 @@ const routes: Array<RouteRecordRaw> = [
                 title: constants.EXAMS_TITLE + defaultPageTitle
             },
         },
+        //------------------------------
+
+        //----------import quiz routes---------
         {
-            path: constants.EXAM_LMS_IMPORT_ROUTE,
-            name: "ExamLmsImport",
-            component: ExamLmsImport,
+            path: constants.QUIZ_IMPORT_ROUTE,
+            name: "QuizImport",
+            component: QuizImportWizard,
             meta: {
-                title: constants.EXAMS_LMS_IMPORT_TITLE + defaultPageTitle
+                title: constants.QUIZ_IMPORT_TITLE + defaultPageTitle
             },
+            beforeEnter(){
+                console.log("test");
+            }
         },
         //------------------------------
 

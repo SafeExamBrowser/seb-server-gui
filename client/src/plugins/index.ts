@@ -1,20 +1,15 @@
-/**
- * plugins/index.ts
- *
- * Automatically included in `./src/main.ts`
- */
-
-// Plugins
-import vuetify from './vuetify'
-import pinia from '../stores'
-import router from '../router/router'
-
-// Types
-import type { App } from 'vue'
+import vuetify from "./vuetify";
+import pinia from "../stores";
+import router from "../router/router";
+import type { App } from "vue";
+import * as apiService from "@/services/api-services/apiService";
 
 export function registerPlugins (app: App) {
   app
     .use(vuetify)
     .use(router)
     .use(pinia)
+
+    apiService.createApi();
+    apiService.createApiInterceptor();
 }
