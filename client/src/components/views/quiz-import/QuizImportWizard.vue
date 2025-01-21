@@ -1,15 +1,11 @@
 <template>
 
     <!------------top info box------------->
-    <component :is="componentList[currentStep-1]"/>
-    
+    <component :is="infoBoxComponents[currentStep-1]"/>
     <!------------------------------------->
 
 
-
-    <!------------------------------------->
-    <!---------quiz import wizard---------->
-    <!------------------------------------->
+    <!---------wizard---------->
     <v-row>
         <v-col>
             <v-stepper 
@@ -19,30 +15,28 @@
                 :items=steps>
 
                 <template v-slot:item.1>
-                    <v-card title="Step One" flat>...</v-card>
+                    <component :is="mainContentComponents[0]"/>
                 </template>
             
                 <template v-slot:item.2>
-                    <v-card title="Step Two" flat>...</v-card>
+                    <component :is="mainContentComponents[1]"/>
                 </template>
             
                 <template v-slot:item.3>
-                    <v-card title="Step Three" flat>...</v-card>
+                    <component :is="mainContentComponents[2]"/>
                 </template>
 
                 <template v-slot:item.4>
-                    <v-card title="Step Four" flat>...</v-card>
+                    <component :is="mainContentComponents[3]"/>
                 </template>
 
                 <template v-slot:item.5>
-                    <v-card title="Step Five" flat>...</v-card>
+                    <component :is="mainContentComponents[4]"/>
                 </template>
                 
             </v-stepper>
         </v-col>
     </v-row>
-    <!------------------------------------->
-    <!------------------------------------->
     <!------------------------------------->
 
 </template>
@@ -50,10 +44,16 @@
 
 <script setup lang="ts">
     import InfoBoxSelect from "@/components/views/quiz-import/info-box-content/InfoBoxSelect.vue"; 
-    import InfoBoxChoose from "@/components/views/quiz-import/info-box-content/InfoBoxChoose.vue"; 
+    import MainContentSelect from "@/components/views/quiz-import/main-content/MainContentSelect.vue"; 
+    import InfoBoxChoose from "@/components/views/quiz-import/info-box-content/InfoBoxChoose.vue";
+    import MainContentChoose from "@/components/views/quiz-import/main-content/MainContentChoose.vue"; 
     import InfoBoxAdd from "@/components/views/quiz-import/info-box-content/InfoBoxAdd.vue"; 
-    import InfoBoxSet from "@/components/views/quiz-import/info-box-content/InfoBoxSet.vue"; 
+    import MainContentAdd from "@/components/views/quiz-import/main-content/MainContentAdd.vue"; 
+    import InfoBoxSet from "@/components/views/quiz-import/info-box-content/InfoBoxSet.vue";
+    import MainContentSet from "@/components/views/quiz-import/main-content/MainContentSet.vue"; 
     import InfoBoxConfig from "@/components/views/quiz-import/info-box-content/InfoBoxConfig.vue"; 
+    import MainContentConfig from "@/components/views/quiz-import/main-content/MainContentConfig.vue"; 
+
 
 
     const currentStep = ref<number>(1);
@@ -66,12 +66,20 @@
         "Configuration Summary"
     ];
 
-    const componentList: Component = [
+    const infoBoxComponents: Component = [
         InfoBoxSelect,
         InfoBoxChoose,
         InfoBoxAdd,
         InfoBoxSet,
         InfoBoxConfig
+    ];
+
+    const mainContentComponents: Component = [
+        MainContentSelect,
+        MainContentChoose,
+        MainContentAdd,
+        MainContentSet,
+        MainContentConfig
     ];
 
 

@@ -25,7 +25,6 @@ export function createApiInterceptor(){
     let loadingEndTimer: NodeJS.Timeout | null = null;
 
     api.interceptors.request.use(async (config) => {
-
         //check if url does not need loading spinner
         const isIgnoredUrl: boolean = isUrlIgnorable(config.url);
         if(loadingStore.skipLoading || isIgnoredUrl){
@@ -116,12 +115,7 @@ export function getPostHeaders(): object{
 
 function getIgnoredUrls(): string[]{
     return [
-        "/screenshot/", 
-        "/screenshot-data/", 
-        "/screenshot-timestamps/", 
-        "/search/timeline", 
-        "/search/sessions",
-        "/useraccount/me"
+        "/quiz", 
     ];
 }
 
@@ -132,9 +126,9 @@ function isUrlIgnorable(url: string | undefined): boolean{
 
     const ignoredUrls: string[] = getIgnoredUrls();
 
-    if(url == "/search/sessions/day"){
-        return false;
-    }
+    // if(url == "/search/sessions/day"){
+    //     return false;
+    // }
 
     return ignoredUrls.some(urlFromList => url.includes(urlFromList))
 }

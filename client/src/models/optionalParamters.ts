@@ -1,6 +1,6 @@
 type OptionalParGeneric = {
-    pageNumber?: number;
-    pageSize?: number;
+    page_number?: number;
+    page_size?: number;
     sort?: string;
     filterCriteria?: string;
 }

@@ -85,18 +85,20 @@ export function sortTable(key: number, headerRefs: any){
     }
 }
 
-// export function assignPagingOptions(serverTablePaging: ServerTablePaging, pagingParameters: OptionalParSearchSessions): OptionalParSearchSessions{
-//     pagingParameters.pageSize = serverTablePaging.itemsPerPage;
-//     pagingParameters.pageNumber = serverTablePaging.page;
+export function assignQuizSelectPagingOptions(serverTablePaging: ServerTablePaging): OptionalParGeneric{
+    const optionalParGeneric: OptionalParGeneric = {};
 
-//     if(serverTablePaging.sortBy.length != 0){
-//         let sortString: string = serverTablePaging.sortBy[0].key;
-//         if(serverTablePaging.sortBy[0].order == "desc"){
-//             sortString = "-" + sortString;
-//         }
+    optionalParGeneric.page_size = serverTablePaging.itemsPerPage;
+    optionalParGeneric.page_number = serverTablePaging.page;
 
-//         pagingParameters.sort = sortString;
-//     }
+    if(serverTablePaging.sortBy.length != 0){
+        let sortString: string = serverTablePaging.sortBy[0].key;
+        if(serverTablePaging.sortBy[0].order == "desc"){
+            sortString = "-" + sortString;
+        }
 
-//     return pagingParameters;
-// }
+        optionalParGeneric.sort = sortString;
+    }
+
+    return optionalParGeneric;
+}

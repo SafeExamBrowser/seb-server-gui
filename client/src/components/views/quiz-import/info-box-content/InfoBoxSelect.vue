@@ -19,6 +19,7 @@
 
                     <v-col cols="4" class="pr-10">
                         <v-text-field
+                            v-model="quizImportStore.searchField"
                             type="text"
                             append-inner-icon="mdi-magnify"
                             density="compact"
@@ -119,6 +120,10 @@
 
 <script setup lang="ts">
     import VueDatePicker from "@vuepic/vue-datepicker";
+    import {useQuizImportStore} from "@/stores/quizImportStore";
+
+    //stores
+    const quizImportStore = useQuizImportStore();
 
 
     //time and date selection
