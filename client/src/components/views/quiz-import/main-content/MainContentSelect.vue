@@ -2,7 +2,7 @@
 
     <v-data-table-server
         item-value="quiz_id" 
-        class="elevation-1"
+        class="elevation-4"
         @update:options="loadItems"
         :loading="isLoading"
         loading-text="Loading... Please wait"
@@ -44,7 +44,7 @@
 
 
 <script setup lang="ts">
-    import * as quizViewService from "@/services/component-services/quizViewService";
+    import * as quizImportWizardViewService from "@/services/component-services/quizImportWizardViewService";
     import * as tableUtils from "@/utils/table/tableUtils";
     import * as timeUtils from "@/utils/timeUtils";
     import TableHeaders from "@/utils/table/TableHeaders.vue";
@@ -96,7 +96,7 @@
 
         console.log(optionalParGeneric)
 
-        const quizzesResponse: Quizzes | null = await quizViewService.getQuizzes(optionalParGeneric);
+        const quizzesResponse: Quizzes | null = await quizImportWizardViewService.getQuizzes(optionalParGeneric);
 
         if(quizzesResponse == null){
             isLoading.value = false;

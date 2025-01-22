@@ -6,3 +6,5 @@ export const QUIZ_ROUTE = "/quiz";
 
 export const EXAM_ROUTE = "/exam";
 export const EXAM_CONFIGURATION_MAP_ROUTE = "/exam-configuration-map";
+
+export const EXAM_TEMPLATE_ROUTE = "/exam-template";
