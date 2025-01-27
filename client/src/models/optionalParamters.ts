@@ -5,3 +5,7 @@ type OptionalParGeneric = {
     sort?: string;
     filterCriteria?: string;
 }
+
+type OptionalParInstitutionId = {
+    institutionId?: number,
+}

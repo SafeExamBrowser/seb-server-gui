@@ -2,8 +2,8 @@
 
     <v-data-table-server
         item-value="quiz_id" 
-        class="elevation-4"
         @update:options="loadItems"
+        :hover="true"
         :loading="isLoading"
         loading-text="Loading... Please wait"
         :search="search"
@@ -23,17 +23,16 @@
             </TableHeaders>
         </template>
 
-        <template v-slot:item.quiz_start_time="{item}">
-            <td>
-                {{ timeUtils.formatIsoDateToFullDate(item.quiz_start_time) }}
-                <!-- {{ item.quiz_start_time }} -->
-            </td>
-        </template>
+        <template v-slot:item="{item}">
+            <tr 
+                class="on-row-hover" 
+                @click="onTableRowClick(item)"
+                :class="[quizImportStore.selectedQuiz?.quiz_id == item.quiz_id ? 'selected-row' : '']">
 
-        <template v-slot:item.quiz_end_time="{item}">
-            <td>
-                test
-            </td>
+                <td>{{ item.quiz_name }}</td>
+                <td>{{ timeUtils.formatIsoDateToFullDate(item.quiz_start_time) }}</td>
+                <td>{{ timeUtils.formatIsoDateToFullDate(item.quiz_end_time) }}</td>
+            </tr>
         </template>
 
     </v-data-table-server>
@@ -77,10 +76,21 @@
     //error handling
     const errorAvailable = ref<boolean>();
 
-    //=======================watchers=======================
+    //=======================events & watchers=======================
     watch(quizImportStoreRef.searchField, () => {
         // console.log(quizImportStoreRef.searchField.value)
     });
+
+    function onTableRowClick(quiz: Quiz){
+        if(quiz.quiz_id == quizImportStore.selectedQuiz?.quiz_id){
+            quizImportStore.selectedQuiz = null;
+            return;
+        }
+
+        quizImportStore.selectedQuiz = quiz;
+    }
+
+
 
     //=======================data fetching===================
     async function loadItems(serverTablePaging: ServerTablePaging){
@@ -93,9 +103,6 @@
         }
 
         const optionalParGeneric: OptionalParGeneric = tableUtils.assignQuizSelectPagingOptions(serverTablePaging);
-
-        console.log(optionalParGeneric)
-
         const quizzesResponse: Quizzes | null = await quizImportWizardViewService.getQuizzes(optionalParGeneric);
 
         if(quizzesResponse == null){
@@ -111,13 +118,19 @@
     }
     //======================================================
 
-
     
-
-
 </script>
 
 <style scoped>
+
+    .on-row-hover:hover{
+        background: #e4e4e4 !important;
+        cursor: pointer;
+    }
+
+    .selected-row {
+        background-color: #e4e4e4 !important;
+    }
 
 
 </style>

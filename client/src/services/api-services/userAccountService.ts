@@ -57,63 +57,6 @@ export async function changePassword(
     }
 }
 
-
-export async function getPersonalUserAccount(): Promise<UserAccount | any> {
-    try {
-        const url: string = userAccountUrl + "/me";
-        const { data, status }: AxiosResponse = await apiService.api.get(url, { headers: apiService.getHeaders() });
-
-        if (status === 200) {
-            return data;
-        }
-
-    } catch (error) {
-        throw error;
-    }
-}
-
-export async function getUserAccountById(accountId: string): Promise<UserAccount | any> {
-    try {
-        const url: string = userAccountUrl + "/" + accountId;
-        const { data, status }: AxiosResponse = await apiService.api.get(url, { headers: apiService.getHeaders() });
-
-        if (status === 200) {
-            return data;
-        }
-
-    } catch (error) {
-        throw error;
-    }
-}
-
-export async function getUserAccounts(optionalParamters?: OptionalParGeneric): Promise<UserAccountResponse[] | any> {
-    try {
-        const url: string = userAccountUrl;
-        const { data, status }: AxiosResponse = await apiService.api.get(url, { headers: apiService.getHeaders(), params: { optionalParamters } });
-
-        if (status === 200) {
-            return data;
-        }
-
-    } catch (error) {
-        throw error;
-    }
-}
-
-export async function activateUserAccount(accountId: string): Promise<UserAccount | any> {
-    try {
-        const url: string = userAccountUrl + "/activate/" + accountId;
-        const { data, status }: AxiosResponse = await apiService.api.post(url, { headers: apiService.getHeaders() });
-
-        if (status === 200) {
-            return data;
-        }
-
-    } catch (error) {
-        throw error;
-    }
-}
-
 export async function deactivateUserAccount(accountId: string): Promise<UserAccount | any> {
     try {
         const url: string = userAccountUrl + "/deactivate/" + accountId;
@@ -126,4 +69,31 @@ export async function deactivateUserAccount(accountId: string): Promise<UserAcco
     } catch (error) {
         throw error;
     }
+}
+
+
+
+export async function getPersonalUserAccount(): Promise<UserAccount | any> {
+    const url: string = userAccountUrl + "/me";
+    return (await apiService.api.get(url, { headers: apiService.getHeaders() })).data;
+}
+
+export async function getUserAccountById(accountId: string): Promise<UserAccount | any> {
+    const url: string = userAccountUrl + "/" + accountId;
+    return (await apiService.api.get(url, { headers: apiService.getHeaders() })).data;
+}
+
+export async function getUserAccounts(optionalParamters?: OptionalParGeneric): Promise<UserAccountResponse[] | any> {
+    const url: string = userAccountUrl;
+    return (await apiService.api.get(url, { headers: apiService.getHeaders(), params: { optionalParamters } })).data;
+}
+
+export async function getUserAccountNames(optionalParamters?: OptionalParInstitutionId): Promise<UserAccountName[] | any> {
+    const url: string = userAccountUrl + "/names";
+    return (await apiService.api.get(url, { headers: apiService.getHeaders(), params: { optionalParamters } })).data;
+}
+
+export async function activateUserAccount(accountId: string): Promise<UserAccount | any> {
+    const url: string = userAccountUrl + "/activate/" + accountId;
+    return (await apiService.api.post(url, { headers: apiService.getHeaders() })).data;
 }

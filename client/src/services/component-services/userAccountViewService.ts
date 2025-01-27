@@ -23,11 +23,9 @@ export async function setPersonalUserAccount(): Promise<UserAccount | null>{
 }
 
 //=============api==================
-export async function getUserAccountById(accountId: string): Promise<UserAccount[] | any>{
+export async function getUserAccountById(accountId: string): Promise<UserAccount[] | null>{
     try{
-        const userAccount = await userAccountService.getUserAccountById(accountId)
-
-        return userAccount;
+        return await userAccountService.getUserAccountById(accountId)
 
     }catch(error){
         console.error(error);
@@ -35,11 +33,9 @@ export async function getUserAccountById(accountId: string): Promise<UserAccount
     }
 }
 
-export async function getUserAccounts(optionalParamters?: OptionalParGeneric): Promise<UserAccountResponse[] | any>{
+export async function getUserAccounts(optionalParamters?: OptionalParGeneric): Promise<UserAccountResponse[] | null>{
     try{
-        const userAccounts = await userAccountService.getUserAccounts(optionalParamters)
-
-        return userAccounts;
+        return await userAccountService.getUserAccounts(optionalParamters)
 
     }catch(error){
         console.error(error);
@@ -47,11 +43,9 @@ export async function getUserAccounts(optionalParamters?: OptionalParGeneric): P
     }
 }
 
-export async function activateUserAccount(accountId: string): Promise<UserAccount | any>{
+export async function getUserAccountNames(optionalParamters?: OptionalParInstitutionId): Promise<UserAccountName[] | null>{
     try{
-        const userAccount = await userAccountService.activateUserAccount(accountId)
-
-        return userAccount;
+        return await userAccountService.getUserAccountNames(optionalParamters)
 
     }catch(error){
         console.error(error);
@@ -59,11 +53,9 @@ export async function activateUserAccount(accountId: string): Promise<UserAccoun
     }
 }
 
-export async function deactivateUserAccount(accountId: string): Promise<UserAccount | any>{
+export async function activateUserAccount(accountId: string): Promise<UserAccount | null>{
     try{
-        const userAccount = await userAccountService.deactivateUserAccount(accountId)
-
-        return userAccount;
+        return await userAccountService.activateUserAccount(accountId)
 
     }catch(error){
         console.error(error);
@@ -71,10 +63,19 @@ export async function deactivateUserAccount(accountId: string): Promise<UserAcco
     }
 }
 
-export async function changePassword(uuid: string, password: string, newPassword: string, confirmNewPassword: string): Promise<UserAccount[] | any>{
+export async function deactivateUserAccount(accountId: string): Promise<UserAccount | null>{
+    try{
+        return await userAccountService.deactivateUserAccount(accountId)
+
+    }catch(error){
+        console.error(error);
+        return null;
+    }
+}
+
+export async function changePassword(uuid: string, password: string, newPassword: string, confirmNewPassword: string): Promise<UserAccount[] | null>{
   try{
-      const userAccount = await userAccountService.changePassword(uuid, password, newPassword, confirmNewPassword)
-      return userAccount;
+        return await userAccountService.changePassword(uuid, password, newPassword, confirmNewPassword)
 
   }catch(error){
       console.error(error);

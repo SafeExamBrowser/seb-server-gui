@@ -1,5 +1,6 @@
 import * as quizService from "@/services/api-services/quizService";
 import * as examTemplateService from "@/services/api-services/examTemplateService";
+import * as examService from "@/services/api-services/examService";
 
 
 //=============api==============
@@ -21,3 +22,11 @@ export async function getExamTemplates(optionalParamters?: OptionalParGeneric): 
     }
 }
 
+export async function createExam(createExamPar: CreateExamPar): Promise<any>{
+    try{
+        return await examService.createExam(createExamPar);        
+    }catch(error){
+        console.error(error);
+        return null;
+    }
+}

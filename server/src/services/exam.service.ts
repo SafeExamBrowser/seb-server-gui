@@ -15,3 +15,10 @@ export async function getExamConfigurationMap(token: string, id: string, options
 
     return data;
 }
+
+export async function createExam(token: string, newExam: {}): Promise<[object, number]>{
+    const url: string =  constants.EXAM_ROUTE;
+    const {data, status} = await apiService.api.post(url, newExam, {headers: apiService.getHeaders(token)});
+    
+    return [data, status];
+}

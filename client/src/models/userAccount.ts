@@ -20,3 +20,9 @@ type UserAccount = {
     terminationTime?: number | null;
     creationDate: string;
 };
+
+type UserAccountName = {
+    modelId: string,
+    entitiyType: string,
+    name: string
+}

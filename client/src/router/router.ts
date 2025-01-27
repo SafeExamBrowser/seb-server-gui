@@ -66,7 +66,7 @@ const routes: Array<RouteRecordRaw> = [
                 title: constants.QUIZ_IMPORT_TITLE + defaultPageTitle
             },
             beforeEnter(){
-                console.log("test");
+                // console.log("test");
             }
         },
         //------------------------------

@@ -8,3 +8,5 @@ export const EXAM_ROUTE = "/exam";
 export const EXAM_CONFIGURATION_MAP_ROUTE = "/exam-configuration-map";
 
 export const EXAM_TEMPLATE_ROUTE = "/exam-template";
+
+export const USER_ACCOUNT_NAMES_ROUTE = "/useraccount/names";
