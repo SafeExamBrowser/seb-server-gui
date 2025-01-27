@@ -120,8 +120,12 @@ function convertUTCToTimeZone(utcDate: number): Date {
     return dateInTimezone;
 }
 
-export function formatIsoDateToFullDate(inputDate: string): string {
+export function formatIsoDateToFullDate(inputDate: string | null | undefined): string {
     //todo check timezone stuff
+
+    if(inputDate == null){
+        return "";
+    }
 
     // Parse the input date string into a Date object
     const date = new Date(inputDate);

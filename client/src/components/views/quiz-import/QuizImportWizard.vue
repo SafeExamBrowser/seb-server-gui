@@ -11,124 +11,43 @@
             <v-stepper 
                 v-model="currentStep"
                 elevation="4"
-                class="rounded-lg"
-                :items=steps
-                hide-actions>
+                class="rounded-lg">
 
-                <!-- <template v-slot:header-item="item">
-                    test
-                
-                </template> -->
+                <v-stepper-header>
+                    <template v-for="(step, index) in steps" :key="step">
+                        <v-stepper-item :value="index+1">
+                            {{ step }}
+                        </v-stepper-item>
+                        <v-divider v-if="index != steps.length-1"></v-divider>
+                    </template>
 
-                
+                    <v-icon 
+                        icon="mdi-chevron-left"
+                        style="font-size: 40px;"
+                        @click="currentStep-=1"
+                        :disabled="currentStep == 1">
+                    </v-icon>
 
-                <template v-slot:item.1>
-                    <component :is="mainContentComponents[0]"/>
+                    <v-icon 
+                        class="mr-6"
+                        icon="mdi-chevron-right"
+                        style="font-size: 40px;"
+                        @click="currentStep+=1"
+                        :disabled="isNextButtonDisabled(currentStep)">
+                    </v-icon>
 
-                    <v-row>
-                        <v-spacer></v-spacer>
+                </v-stepper-header>
 
-                        <v-col class="pa-4" align="right">
-                            <v-btn 
-                                :disabled="!quizImportStore.selectedQuiz"
-                                color="primary" 
-                                @click="currentStep+=1">
-                                Next
-                            </v-btn>
-                        </v-col>
-                    </v-row>
-                </template>
-            
-                <template v-slot:item.2>
-                    <component :is="mainContentComponents[1]"/>
 
-                    <v-row>
-                        <v-col class="pa-4" align="left">
-                            <v-btn 
-                                color="secondary" 
-                                @click="currentStep-=1">
-                                Previous
-                            </v-btn>
-                        </v-col>
+                <v-stepper-window>
+                    <template v-for="(step, index) in steps" :key="step">
 
-                        <v-col class="pa-4" align="right">
-                            <v-btn 
-                                :disabled="!quizImportStore.selectedExamTemplate"
-                                color="primary" 
-                                @click="currentStep+=1">
-                                Next
-                            </v-btn>
-                        </v-col>
-                    </v-row>
-                </template>
-            
-                <template v-slot:item.3>
-                    <component :is="mainContentComponents[2]"/>
+                        <v-stepper-window-item :value="index+1">
+                            <component :is="mainContentComponents[index]"/>
+                        </v-stepper-window-item>
 
-                    <v-row>
-                        <v-col class="pa-4" align="left">
-                            <v-btn 
-                                color="secondary" 
-                                @click="currentStep-=1">
-                                Previous
-                            </v-btn>
-                        </v-col>
-
-                        <v-col class="pa-4" align="right">
-                            <v-btn 
-                                :disabled="quizImportStore.selectedExamSupervisors.length == 0"
-                                color="primary" 
-                                @click="currentStep+=1">
-                                Next
-                            </v-btn>
-                        </v-col>
-                    </v-row>
-                </template>
-
-                <template v-slot:item.4>
-                    <component :is="mainContentComponents[3]"/>
-
-                    <v-row>
-                        <v-col class="pa-4" align="left">
-                            <v-btn 
-                                color="secondary" 
-                                @click="currentStep-=1">
-                                Previous
-                            </v-btn>
-                        </v-col>
-
-                        <v-col class="pa-4" align="right">
-                            <v-btn 
-                                color="primary" 
-                                @click="currentStep+=1">
-                                Next
-                            </v-btn>
-                        </v-col>
-                    </v-row>
-                    
-                </template>
-
-                <template v-slot:item.5>
-                    <component :is="mainContentComponents[4]"/>
-
-                    <v-row>
-                        <v-col class="pa-4" align="left">
-                            <v-btn 
-                                color="secondary" 
-                                @click="currentStep-=1">
-                                Previous
-                            </v-btn>
-                        </v-col>
-
-                        <v-col class="pa-4" align="right">
-                            <v-btn 
-                                color="primary" 
-                                @click="currentStep+=1">
-                                Save
-                            </v-btn>
-                        </v-col>
-                    </v-row>
-                </template>
+                    </template>
+                </v-stepper-window>
 
             </v-stepper>
         </v-col>
@@ -139,15 +58,15 @@
 
 
 <script setup lang="ts">
-    import InfoBoxSelect from "@/components/views/quiz-import/info-box-content/InfoBoxSelect.vue"; 
-    import MainContentSelect from "@/components/views/quiz-import/main-content/MainContentSelect.vue"; 
-    import InfoBoxChoose from "@/components/views/quiz-import/info-box-content/InfoBoxChoose.vue";
-    import MainContentChoose from "@/components/views/quiz-import/main-content/MainContentChoose.vue"; 
-    import InfoBoxAdd from "@/components/views/quiz-import/info-box-content/InfoBoxAdd.vue"; 
+    import InfoBoxExam from "@/components/views/quiz-import/info-box-content/InfoBoxExam.vue"; 
+    import MainContentExam from "@/components/views/quiz-import/main-content/MainContentExam.vue"; 
+    import InfoBoxTemplate from "@/components/views/quiz-import/info-box-content/InfoBoxTemplate.vue";
+    import MainContentTemplate from "@/components/views/quiz-import/main-content/MainContentTemplate.vue"; 
+    import InfoBoxSupervisor from "@/components/views/quiz-import/info-box-content/InfoBoxSupervisor.vue"; 
     import MainContentSupervisor from "@/components/views/quiz-import/main-content/MainContentSupervisor.vue"; 
-    import InfoBoxSet from "@/components/views/quiz-import/info-box-content/InfoBoxSet.vue";
-    import MainContentSet from "@/components/views/quiz-import/main-content/MainContentSet.vue"; 
-    import InfoBoxConfig from "@/components/views/quiz-import/info-box-content/InfoBoxConfig.vue"; 
+    import InfoBoxPassword from "@/components/views/quiz-import/info-box-content/InfoBoxPassword.vue";
+    import MainContentPassword from "@/components/views/quiz-import/main-content/MainContentPassword.vue"; 
+    import InfoBoxSummary from "@/components/views/quiz-import/info-box-content/InfoBoxSummary.vue"; 
     import MainContentSummary from "@/components/views/quiz-import/main-content/MainContentSummary.vue"; 
     import { useQuizImportStore } from "@/stores/quizImportStore";
 
@@ -165,28 +84,45 @@
     ];
 
     const infoBoxComponents: Component = [
-        InfoBoxSelect,
-        InfoBoxChoose,
-        InfoBoxAdd,
-        InfoBoxSet,
-        InfoBoxConfig
+        InfoBoxExam,
+        InfoBoxTemplate,
+        InfoBoxSupervisor,
+        InfoBoxPassword,
+        InfoBoxSummary
     ];
 
     const mainContentComponents: Component = [
-        MainContentSelect,
-        MainContentChoose,
+        MainContentExam,
+        MainContentTemplate,
         MainContentSupervisor,
-        MainContentSet,
+        MainContentPassword,    
         MainContentSummary
     ];
-
 
     watch(currentStep, () => {
         console.log("current step: " + currentStep.value)
     });
 
 
-    
+    function isNextButtonDisabled(step: number): boolean{
+        if(step == 1){
+            return !quizImportStore.selectedQuiz;
+        }
+
+        if(step == 2){
+            return !quizImportStore.selectedExamTemplate;
+        }
+
+        if(step == 3){
+            return quizImportStore.selectedExamSupervisors.length == 0;
+        }
+
+        if(step == 5){
+            return true;
+        }
+
+        return false;
+    }
 
 
 </script>

@@ -4,7 +4,8 @@
         <v-col>
             <v-sheet 
                 elevation="4"
-                class="rounded-lg pl-8 pt-8">
+                class="rounded-lg pl-8 pt-8"
+                height="250">
 
                 <!------------title row------------->
                 <v-row>
