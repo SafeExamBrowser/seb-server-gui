@@ -12,7 +12,7 @@
                     >
 
                     <v-col cols="5">
-                        <div class="text-color text-h3 font-weight-bold">
+                        <div class="text-color text-h4 font-weight-bold">
                             {{quizImportStore.selectedQuiz?.quiz_name}}
                         </div>
                     </v-col>
@@ -32,10 +32,10 @@
                                 </v-col>
                             </v-row>
                             <v-row>
-                                <v-col class="text-color text-h4 font-weight-bold">
+                                <v-col class="text-color text-h5 font-weight-bold">
                                     {{timeUtils.formatIsoDateToFullDate(quizImportStore.selectedQuiz?.quiz_start_time)}}
                                 </v-col>
-                                <v-col class="text-color text-h4 font-weight-bold">
+                                <v-col class="text-color text-h5 font-weight-bold">
                                     <template v-if="quizImportStore.selectedQuiz?.quiz_end_time == null || ''">
                                         -
                                     </template>
