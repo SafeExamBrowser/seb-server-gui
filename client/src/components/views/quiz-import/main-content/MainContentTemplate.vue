@@ -58,6 +58,7 @@
             </v-toolbar>
 
             <v-card-text>
+                <!-- @vue-ignore -->
                 <div v-if="dialogTemplate.description != null && dialogTemplate?.description != ''">
                     {{ dialogTemplate?.description }}
                 </div>

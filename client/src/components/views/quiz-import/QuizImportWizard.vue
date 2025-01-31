@@ -1,6 +1,7 @@
 <template>
 
     <!------------top info box------------->
+    <!-- @vue-ignore -->
     <component :is="infoBoxComponents[currentStep-1]"/>
     <!------------------------------------->
 
@@ -43,6 +44,7 @@
                     <template v-for="(step, index) in steps" :key="step">
 
                         <v-stepper-window-item :value="index+1">
+                            <!-- @vue-ignore -->
                             <component :is="mainContentComponents[index]"/>
                         </v-stepper-window-item>
 
