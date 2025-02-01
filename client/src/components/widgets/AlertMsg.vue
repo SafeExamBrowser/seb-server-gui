@@ -69,6 +69,10 @@
         {
             key: "changePassword-success",
             value: "Your password has been changed successfully."
+        },
+        {
+            key: "exam-duplicate",
+            value: "This exam is already prepared"
         }
     ];
 

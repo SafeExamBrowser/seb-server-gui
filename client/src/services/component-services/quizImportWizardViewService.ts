@@ -22,11 +22,10 @@ export async function getExamTemplates(optionalParamters?: OptionalParGeneric): 
     }
 }
 
-export async function createExam(createExamPar: CreateExamPar): Promise<any>{
+export async function createExam(createExamPar: CreateExamPar): Promise<Exam>{
     try{
         return await examService.createExam(createExamPar);        
     }catch(error){
-        console.error(error);
-        return null;
+        throw error;
     }
 }

@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AlertMsg: typeof import('./components/widgets/AlertMsg.vue')['default']
     ContainerLayout: typeof import('./components/layout/ContainerLayout.vue')['default']
+    ExamDetail: typeof import('./components/views/exam/ExamDetail.vue')['default']
     ExamsMain: typeof import('./components/views/exam/ExamsMain.vue')['default']
     HomePage: typeof import('./components/views/home/HomePage.vue')['default']
     InfoBoxExam: typeof import('./components/views/quiz-import/info-box-content/InfoBoxExam.vue')['default']

@@ -1,32 +1,53 @@
 <template>
 
     <v-row>
+        
+        <!-----------user selection table---------->      
         <v-col cols="7"> 
-            <v-data-table
-                item-value="quiz_id" 
-                :hover="true"
-                :items="userAccountNames"
-                :items-length="userAccountNames.length"
-                :items-per-page="tableUtils.calcDefaultItemsPerPage(userAccountNames)"
-                :items-per-page-options="tableUtils.calcItemsPerPage(userAccountNames)"
-                :headers="tableHeaders"
-            >
 
-                <template v-slot:item="{item}">
-                    <tr 
-                        class="on-row-hover" 
-                        @click="onTableRowClick(item)"
-                        :class="[quizImportStore.selectedExamSupervisors.some(userAccount => userAccount.modelId == item.modelId) ? 'selected-row' : '']">
+            <v-row>
+                <v-col cols="6">
+                    <v-text-field
+                        v-model="search"
+                        label="Search"
+                        prepend-inner-icon="mdi-magnify"
+                        variant="outlined"
+                        density="compact"
+                        hide-details
+                        single-line>
+                    </v-text-field>
+                </v-col>
+            </v-row>
 
-                        <td>{{ item.name }}</td>
-                    </tr>
-                </template>
-            
-            
-            </v-data-table>
+            <v-row>
+                <v-col>
+                    <v-data-table
+                        item-value="quiz_id" 
+                        :hover="true"
+                        :items="userAccountNames"
+                        :items-length="userAccountNames.length"
+                        :items-per-page="tableUtils.calcDefaultItemsPerPage(userAccountNames)"
+                        :items-per-page-options="tableUtils.calcItemsPerPage(userAccountNames)"
+                        :headers="tableHeaders"
+                        :search="search"
+                    >
+                        <template v-slot:item="{item}">
+                            <tr 
+                                class="on-row-hover" 
+                                @click="onTableRowClick(item)"
+                                :class="[quizImportStore.selectedExamSupervisors.some(userAccount => userAccount.modelId == item.modelId) ? 'selected-row' : '']">
 
+                                <td>{{ item.name }}</td>
+                            </tr>
+                        </template>
+                    </v-data-table>
+                </v-col>
+            </v-row>
         </v-col>
+        <!------------------------>
 
+
+        <!-----------user list summary---------->      
         <v-col cols="3">
             <v-row>
                 <v-col>
@@ -44,7 +65,6 @@
                             :value="supervisors.modelId">
                         
                             <v-list-item>
-
                                 <v-list-item-title>{{ supervisors.name }}</v-list-item-title>
 
                                 <template v-slot:append="{ isSelected }">
@@ -59,25 +79,19 @@
 
                                     </v-list-item-action>
                                 </template>
-
                             </v-list-item>
 
                             <v-divider></v-divider>
 
                         </template>
                     </v-list>
-                
                 </v-col>
             </v-row>
 
-
-
         </v-col>
-    
-    
+        <!------------------------>
+
     </v-row>
-
-
 </template>
 
 
@@ -97,6 +111,9 @@
         {title: "Name", key: "name"}
     ]);    
 
+    //local user search / filter
+    const search = ref<string>();
+
 
     //=======================events & watchers=======================
     onBeforeMount(async () => {
@@ -106,9 +123,22 @@
             //todo: add error handling
             return;
         }
-        console.log(userAccountNamesResponse)
         userAccountNames.value = userAccountNamesResponse;
+
+        //add supervisors from template to list
+        if(quizImportStore.selectedExamTemplate?.supporter != null){
+            quizImportStore.selectedExamSupervisors.push(
+            ...userAccountNames.value.filter(user => 
+                quizImportStore.selectedExamTemplate?.supporter.includes(user.modelId))
+            );
+        }
+
+        console.log(quizImportStore.selectedExamSupervisors)
+        console.log(quizImportStore.selectedExamTemplate?.supporter)
+
     });
+
+
 
     //add exam supervisor
     function onTableRowClick(selectedUserAccountName: UserAccountName){

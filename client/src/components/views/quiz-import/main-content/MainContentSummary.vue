@@ -3,6 +3,20 @@
         <v-spacer></v-spacer>
         <v-col cols=6>
 
+            <v-row class="mb-4">
+                <v-col>
+                    <AlertMsg 
+                        v-if="saveError"
+                        :alertProps="{
+                            title: '',
+                            color: 'error',
+                            type: 'snackbar',
+                            textKey: 'exam-duplicate'
+                        }">
+                    </AlertMsg>
+                </v-col>
+            </v-row>
+
             <!--------Title------>
             <v-row class="mb-10">
                 <v-col>
@@ -132,6 +146,9 @@
 <script setup lang="ts">
     import * as quizImportWizardViewService from "@/services/component-services/quizImportWizardViewService";
     import { useQuizImportStore } from "@/stores/quizImportStore";
+    import {navigateTo} from "@/router/navigation";
+    import * as constants from "@/utils/constants";
+
 
 
     //stores
@@ -140,16 +157,20 @@
     //pw field
     const passwordVisible = ref<boolean>(false);
 
+    //error
+    const saveError = ref<boolean>(false);
+
 
     onBeforeMount(async () => {
 
     });
 
     async function createExam(){
+        saveError.value = false;
+
         if(quizImportStore.selectedQuiz == null || quizImportStore.selectedExamTemplate == null){
             return;
         }
-
         
         const createExamParams: CreateExamPar = {
             lmsSetupId: quizImportStore.selectedQuiz.lms_setup_id,
@@ -161,8 +182,19 @@
             supporter: quizImportStore.selectedExamSupervisors.map(userAccountName => userAccountName.modelId)
         }
 
-        console.log(await quizImportWizardViewService.createExam(createExamParams));
+        let exam: Exam;
+        try{
+            exam = await quizImportWizardViewService.createExam(createExamParams);
 
+        }catch(error: any){
+            //todo improve error handling
+            console.log(error.response.data[0].details)
+
+            saveError.value = true;
+            return;
+        }
+
+        navigateTo(constants.EXAM_ROUTE + "/" + exam.id);
     }
 
 

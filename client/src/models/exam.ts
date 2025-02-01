@@ -9,3 +9,36 @@ type CreateExamPar = {
     quitPassword?: string,
     supporter: string[]
 }
+
+type Exam = {
+    id: number;
+    institutionId: number;
+    lmsSetupId: number;
+    externalId: string;
+    lmsAvailable: boolean;
+    quizName: string;
+    quizStartTime: string;
+    quizEndTime: string;
+    type: string;
+    owner: string;
+    supporter: string[];
+    status: string;
+    lmsSebRestriction: boolean;
+    active: boolean;
+    examTemplateId: number;
+    lastModified: number;
+    additionalAttributes: ExamAdditionalAttributes;
+    description: string;
+    startURL: string;
+};
+
+type ExamAdditionalAttributes = {
+    SIGNATURE_KEY_SALT: string;
+    ADDITIONAL_QUIZ_ATTRIBUTES: string;
+    quiz_start_url: string;
+    quiz_description: string;
+    SCREEN_PROCTORING_SETTINGS: string;
+    enableScreenProctoring: string;
+    SIGNATURE_KEY_CHECK_ENABLED: string;
+    NUMERICAL_TRUST_THRESHOLD: string;
+};

@@ -102,7 +102,7 @@
     ];
 
     watch(currentStep, () => {
-        console.log("current step: " + currentStep.value)
+        // console.log("current step: " + currentStep.value)
     });
 
 

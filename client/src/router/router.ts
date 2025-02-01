@@ -9,6 +9,7 @@ import * as constants from "@/utils/constants";
 import MonitoringMain from "@/components/views/monitoring/MonitoringMain.vue"
 import NavigationOverview from "@/components/layout/NavigationOverview.vue"
 import QuizImportWizard from "@/components/views/quiz-import/QuizImportWizard.vue"
+import ExamDetail from "@/components/views/exam/ExamDetail.vue"
 
 const defaultPageTitle: string = " | SEB Server";
 const routes: Array<RouteRecordRaw> = [
@@ -53,6 +54,14 @@ const routes: Array<RouteRecordRaw> = [
             component: ExamsMain,
             meta: {
                 title: constants.EXAMS_TITLE + defaultPageTitle
+            },
+        },
+        {
+            path: constants.EXAM_ROUTE + "/:examId",
+            name: "ExamDetail",
+            component: ExamDetail,
+            meta: {
+                title: constants.EXAMS_DETAIL_TITLE + defaultPageTitle
             },
         },
         //------------------------------

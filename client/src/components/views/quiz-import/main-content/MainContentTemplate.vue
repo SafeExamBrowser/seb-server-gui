@@ -19,7 +19,7 @@
 
                     <v-card 
                         class="rounded-lg"
-                        color="primary"
+                        :color="examTemplate.name == 'System Template' ? 'green' : 'primary'"
                         :ripple="false"
                         :variant="quizImportStore.selectedExamTemplate?.id == examTemplate.id ? 'flat' : 'tonal'"
                         :hover="true"
@@ -100,9 +100,6 @@
         }
 
         examTemplates.value = examTemplatesResponse;
-
-        console.log(await quizImportWizardViewService.getExamTemplates());
-
     });
 
 
