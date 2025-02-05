@@ -35,9 +35,8 @@
         display: inline;
     }
 
-    .title-container{
+    .primary-text-color{
         color: #215caf;
-        margin-bottom: 16px;
     }
 
 </style>

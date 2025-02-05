@@ -147,3 +147,10 @@ export function formatIsoDateToFullDate(inputDate: string | null | undefined): s
     // Combine the formatted components into the desired format
     return `${day}.${month}.${year} ${hours}:${minutes}:${seconds}`;
 }
+
+export function setIsoTimeToZero(inputDate: string): string{
+    const dateAppendix: string = "T00:00:00Z";
+    const inputDateSplitted: string[] = inputDate.split("T");
+
+    return inputDateSplitted[0] + dateAppendix;
+}

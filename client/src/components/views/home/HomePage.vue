@@ -6,7 +6,7 @@
                 elevation="4"
                 class="rounded-lg pa-4">
 
-                <div class="title-container text-h6 font-weight-black">
+                <div class="primary-text-color text-h6 font-weight-black">
                     Prepare Exam
                 </div>
 

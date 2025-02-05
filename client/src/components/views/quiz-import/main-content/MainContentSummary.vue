@@ -11,7 +11,7 @@
                             title: '',
                             color: 'error',
                             type: 'snackbar',
-                            textKey: 'exam-duplicate'
+                            textKey: 'api-error'
                         }">
                     </AlertMsg>
                 </v-col>
@@ -20,7 +20,7 @@
             <!--------Title------>
             <v-row class="mb-10">
                 <v-col>
-                    <div class="text-color text-h6 font-weight-bold">
+                    <div class="primary-text-color text-h6 font-weight-bold">
                         Configuration Summary
                     </div>
                     <v-divider></v-divider>
@@ -31,7 +31,7 @@
             <!--------Template------>
             <v-row>
                 <v-col>
-                    <div class="text-color text-subtitle-1">
+                    <div class="primary-text-color text-subtitle-1">
                         {{ quizImportStore.selectedExamTemplate?.name }}
                     </div>
                     <v-divider></v-divider>
@@ -55,7 +55,7 @@
             <!--------supervisors------>
             <v-row>
                 <v-col>
-                    <div class="text-color text-subtitle-1">
+                    <div class="primary-text-color text-subtitle-1">
                         Examination Supervisors
                     </div>
                     <v-divider></v-divider>
@@ -84,7 +84,7 @@
             <!--------quit password------>
             <v-row>
                 <v-col>
-                    <div class="text-color text-subtitle-1">
+                    <div class="primary-text-color text-subtitle-1">
                         Quit Password
                     </div>
                     <v-divider></v-divider>
@@ -205,9 +205,6 @@
 
 <style scoped>
 
-    .text-color{
-        color: #215caf;
-    }
 
 
 </style>

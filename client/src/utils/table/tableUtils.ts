@@ -85,11 +85,20 @@ export function sortTable(key: number, headerRefs: any){
     }
 }
 
-export function assignQuizSelectPagingOptions(serverTablePaging: ServerTablePaging): OptionalParGeneric{
-    const optionalParGeneric: OptionalParGeneric = {};
+export function assignQuizSelectPagingOptions(serverTablePaging: ServerTablePaging, name: string | null, startTimestamp: string | null): OptionalParGetQuizzes{
+    const optionalParGetQuizzes: OptionalParGetQuizzes = {};
 
-    optionalParGeneric.page_size = serverTablePaging.itemsPerPage;
-    optionalParGeneric.page_number = serverTablePaging.page;
+    optionalParGetQuizzes.page_size = serverTablePaging.itemsPerPage;
+    optionalParGetQuizzes.page_number = serverTablePaging.page;
+
+    if(name != null){
+        optionalParGetQuizzes.name = name;
+    }
+
+    if(startTimestamp != null){
+        optionalParGetQuizzes.start_timestamp = startTimestamp;
+    }
+
 
     if(serverTablePaging.sortBy.length != 0){
         let sortString: string = serverTablePaging.sortBy[0].key;
@@ -97,8 +106,8 @@ export function assignQuizSelectPagingOptions(serverTablePaging: ServerTablePagi
             sortString = "-" + sortString;
         }
 
-        optionalParGeneric.sort = sortString;
+        optionalParGetQuizzes.sort = sortString;
     }
 
-    return optionalParGeneric;
+    return optionalParGetQuizzes;
 }

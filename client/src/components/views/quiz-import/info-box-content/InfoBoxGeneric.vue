@@ -4,7 +4,7 @@
             <v-sheet 
                 elevation="4"
                 class="rounded-lg pl-8 pt-8"
-                height="250">
+                height="300">
 
                 <v-row 
                     class="fill-height"
@@ -12,7 +12,7 @@
                     >
 
                     <v-col cols="5">
-                        <div class="text-color text-h4 font-weight-bold">
+                        <div class="primary-text-color text-h4 font-weight-bold">
                             {{quizImportStore.selectedQuiz?.quiz_name}}
                         </div>
                     </v-col>
@@ -21,21 +21,21 @@
                         <div>
                             <v-row>
                                 <v-col>
-                                    <div class="text-color text-subtitle-1">
+                                    <div class="primary-text-color text-subtitle-1">
                                         Start
                                     </div>
                                 </v-col>
                                 <v-col>
-                                    <div class="text-color text-subtitle-1">
+                                    <div class="primary-text-color text-subtitle-1">
                                         End
                                     </div>
                                 </v-col>
                             </v-row>
                             <v-row>
-                                <v-col class="text-color text-h5 font-weight-bold">
+                                <v-col class="primary-text-color text-h5 font-weight-bold">
                                     {{timeUtils.formatIsoDateToFullDate(quizImportStore.selectedQuiz?.quiz_start_time)}}
                                 </v-col>
-                                <v-col class="text-color text-h5 font-weight-bold">
+                                <v-col class="primary-text-color text-h5 font-weight-bold">
                                     <template v-if="quizImportStore.selectedQuiz?.quiz_end_time == null || ''">
                                         -
                                     </template>
@@ -51,7 +51,7 @@
                     <v-col cols="3">
                         <v-row>
                                 <v-col>
-                                    <div class="text-color text-subtitle-1">
+                                    <div class="primary-text-color text-subtitle-1">
                                         Exam Description
                                     </div>
                                 </v-col>
@@ -86,11 +86,6 @@
 </script>
 
 <style scoped>
-
-
-    .text-color{
-        color: #215caf;
-    }
 
 
 

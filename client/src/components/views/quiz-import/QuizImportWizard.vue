@@ -2,13 +2,19 @@
 
     <!------------top info box------------->
     <!-- @vue-ignore -->
-    <component :is="infoBoxComponents[currentStep-1]"/>
+    <component 
+        v-if="currentStep-1 == 0"
+        :is="infoBoxComponents[0]"
+        @loadExamItemsCaller="loadExamItemsCaller"
+    />
+    <!-- @vue-ignore -->
+    <component v-else :is="infoBoxComponents[currentStep-1]"/>
     <!------------------------------------->
 
 
     <!---------wizard---------->
     <v-row>
-        <v-col cols="">
+        <v-col>
             <v-stepper 
                 v-model="currentStep"
                 elevation="4"
@@ -39,7 +45,6 @@
 
                 </v-stepper-header>
 
-
                 <v-stepper-window>
                     <template v-for="(step, index) in steps" :key="step">
 
@@ -50,8 +55,9 @@
 
                     </template>
                 </v-stepper-window>
-
+                
             </v-stepper>
+
         </v-col>
     </v-row>
     <!------------------------------------->
@@ -124,6 +130,12 @@
         }
 
         return false;
+    }
+
+    //call function in "MainContentExam"
+    function loadExamItemsCaller(){
+        //workaround es the method with "defineExpose" does not work
+        quizImportStore.loadExamItemsCaller = Date.now();
     }
 
 

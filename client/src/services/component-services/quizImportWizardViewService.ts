@@ -4,7 +4,7 @@ import * as examService from "@/services/api-services/examService";
 
 
 //=============api==============
-export async function getQuizzes(optionalParamters?: OptionalParGeneric): Promise<Quizzes | null>{
+export async function getQuizzes(optionalParamters?: OptionalParGetQuizzes): Promise<Quizzes | null>{
     try{
         return await quizService.getQuizzes(optionalParamters);        
     }catch(error){

@@ -1,7 +1,8 @@
 import axios, { AxiosInstance } from "axios";
 import * as ENV from "../config/envConfig";
 import {Request, Response} from "express";
-import {LOG} from '../logging/logger';
+import {LOG} from "../logging/logger";
+import * as querystring from "querystring";
 
 export const api: AxiosInstance = axios.create({
     baseURL: ENV.SEB_SERVER_URL + ENV.SEB_SERVER_PORT + ENV.SEB_SERVER_DEFAULT_URL,
@@ -41,6 +42,10 @@ export function getHeadersWithoutAuth(): object {
         "accept": "application/json",
         "Content-Type": "application/x-www-form-urlencoded"
     };
+}
+
+export function createUrlEncodedBody(body: any): string{
+    return querystring.stringify(body);
 }
 
 export function handleGenericApiError(error: any, res: Response){

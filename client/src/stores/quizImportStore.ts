@@ -3,7 +3,11 @@ import {navigateTo} from "@/router/navigation";
 import * as constants from "@/utils/constants";
 
 export const useQuizImportStore = defineStore("quizImport", () => {
-    const searchField = ref<string>("");
+    //exam table
+    const searchField = ref<string | null>(null);
+    const startDate = ref<Date | null>(null);
+    const currentPagingOptions = ref<ServerTablePaging>();
+    const loadExamItemsCaller = ref<number>();
 
     const selectedQuiz = ref<Quiz | null>();
     const selectedExamTemplate = ref<ExamTemplate | null>(null);
@@ -13,6 +17,9 @@ export const useQuizImportStore = defineStore("quizImport", () => {
 
     return {
         searchField,
+        startDate,
+        currentPagingOptions,
+        loadExamItemsCaller,
         selectedQuiz,
         selectedExamTemplate,
         selectedExamSupervisors,

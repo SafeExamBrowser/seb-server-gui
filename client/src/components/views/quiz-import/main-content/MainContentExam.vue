@@ -6,7 +6,6 @@
         :hover="true"
         :loading="isLoading"
         loading-text="Loading... Please wait"
-        :search="search"
         :items="quizzes?.content"
         :items-length="totalItems"
         :items-per-page="tableUtils.calcDefaultItemsPerPage(totalItems)"
@@ -25,8 +24,8 @@
 
         <template v-slot:item="{item}">
             <tr 
-                class="on-row-hover" 
                 @click="onTableRowClick(item)"
+                class="on-row-hover" 
                 :class="[quizImportStore.selectedQuiz?.quiz_id == item.quiz_id ? 'selected-row' : '']">
 
                 <td>{{ item.quiz_name }}</td>
@@ -61,7 +60,6 @@
     //table - pagination, item size, search
     const isLoading = ref<boolean>(true);
     const totalItems = ref<number>(10);
-    const search = ref<string>();
 
     //table
     const isOnLoad = ref<boolean>(true);
@@ -76,10 +74,25 @@
     //error handling
     const errorAvailable = ref<boolean>();
 
+
     //=======================events & watchers=======================
     watch(quizImportStoreRef.searchField, () => {
         // console.log(quizImportStoreRef.searchField.value)
     });
+
+    //workaround es the method with "defineExpose" does not work
+    watch(quizImportStoreRef.loadExamItemsCaller, () => {
+        if(quizImportStore.currentPagingOptions == null){
+            return;
+        }
+
+        if(quizImportStore.currentPagingOptions.itemsPerPage == 0){
+            quizImportStore.currentPagingOptions.itemsPerPage = 10; 
+        }
+
+        loadItems(quizImportStore.currentPagingOptions);
+    });
+
 
     function onTableRowClick(quiz: Quiz){
         if(quiz.quiz_id == quizImportStore.selectedQuiz?.quiz_id){
@@ -90,10 +103,9 @@
         quizImportStore.selectedQuiz = quiz;
     }
 
-
-
     //=======================data fetching===================
     async function loadItems(serverTablePaging: ServerTablePaging){
+        quizImportStore.currentPagingOptions = serverTablePaging;
         isLoading.value = true;
 
         //current solution to default sort the table
@@ -102,8 +114,19 @@
             serverTablePaging.sortBy = defaultSort;
         }
 
-        const optionalParGeneric: OptionalParGeneric = tableUtils.assignQuizSelectPagingOptions(serverTablePaging);
-        const quizzesResponse: Quizzes | null = await quizImportWizardViewService.getQuizzes(optionalParGeneric);
+        let startDate: string | null = null;
+        if(quizImportStore.startDate != null){
+            startDate = timeUtils.setIsoTimeToZero(quizImportStore.startDate.toISOString());
+        }
+
+        const optionalParGetQuizzes: OptionalParGetQuizzes = tableUtils.assignQuizSelectPagingOptions
+        (
+            serverTablePaging, 
+            quizImportStore.searchField, 
+            startDate
+        );
+
+        const quizzesResponse: Quizzes | null = await quizImportWizardViewService.getQuizzes(optionalParGetQuizzes);
 
         if(quizzesResponse == null){
             isLoading.value = false;
