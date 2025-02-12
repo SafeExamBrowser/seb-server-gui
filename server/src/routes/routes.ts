@@ -12,11 +12,12 @@ router.get(constants.QUIZ_ROUTE, quizController.getQuizzes);
 
 //exams 
 router.get(constants.EXAM_ROUTE + "/:id", examController.getExam);
-router.get(constants.EXAM_ROUTE, examController.getExams);
+router.get(constants.EXAMS_ROUTE, examController.getExams);
 router.post(constants.EXAM_ROUTE, examController.createExam);
 router.get(constants.EXAM_CONFIGURATION_MAP_ROUTE + "/:id", examController.getExamConfigurationMap);
 
 //exam template
+router.get(constants.EXAM_TEMPLATE_ROUTE + "/:id", examTemplateController.getExamTemplate);
 router.get(constants.EXAM_TEMPLATE_ROUTE, examTemplateController.getExamTemplates);
 
 //user accounts

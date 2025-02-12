@@ -56,32 +56,41 @@ export function createApiInterceptor(){
     }, async error => {
         resetLoadingState();
 
+        //authentication error
         const originalRequest = error.config;
-
         if(error.response.status === 401 && !originalRequest._retry){
-
-            try{
-                const response: Token = await authenticationService.refresh();
-                authStore.setAccessToken(response.access_token);
-                authStore.setRefreshToken(response.refresh_token);
-
-                originalRequest._retry = true;
-                originalRequest.headers = getHeaders();
-
-                return api(originalRequest);
-
-            }catch(error){
-                authStore.redirectRoute = router.currentRoute.value.fullPath;
-
-                navigateTo("/");
-
-                throw Promise.reject(error);
-            }
-            
+            await handleAuthenticationError(originalRequest);
         }
 
+        //general error
         throw error;
     });
+    
+
+    async function handleAuthenticationError(originalRequest: any){
+        try{
+            const response: Token = await authenticationService.refresh();
+
+            authStore.setAccessToken(response.access_token);
+            authStore.setRefreshToken(response.refresh_token);
+
+            originalRequest._retry = true;
+            originalRequest.headers = getHeaders();
+
+            return api(originalRequest);
+
+        }catch(error){
+            let redirectRoute: string = "/";
+            if(window.location.pathname != null){
+                redirectRoute = window.location.pathname;
+            }
+
+            authStore.redirectRoute = redirectRoute;
+            navigateTo("/");
+
+            throw Promise.reject(error);
+        }
+    }
 
 
     function resetLoadingState(){
@@ -116,6 +125,7 @@ export function getPostHeaders(): object{
 function getIgnoredUrls(): string[]{
     return [
         "/quiz", 
+        "/exams"
     ];
 }
 

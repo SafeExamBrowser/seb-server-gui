@@ -13,7 +13,7 @@
 
                     <v-col cols="5">
                         <div class="primary-text-color text-h4 font-weight-bold">
-                            {{quizImportStore.selectedQuiz?.quiz_name}}
+                            {{examStore.selectedExam?.quizName}}
                         </div>
                     </v-col>
 
@@ -33,14 +33,14 @@
                             </v-row>
                             <v-row>
                                 <v-col class="primary-text-color text-h5 font-weight-bold">
-                                    {{timeUtils.formatIsoDateToFullDate(quizImportStore.selectedQuiz?.quiz_start_time)}}
+                                    {{timeUtils.formatIsoDateToFullDate(examStore.selectedExam?.quizStartTime)}}
                                 </v-col>
                                 <v-col class="primary-text-color text-h5 font-weight-bold">
-                                    <template v-if="quizImportStore.selectedQuiz?.quiz_end_time == null || ''">
+                                    <template v-if="examStore.selectedExam?.quizEndTime == null || ''">
                                         -
                                     </template>
                                     <template v-else>
-                                        {{timeUtils.formatIsoDateToFullDate(quizImportStore.selectedQuiz?.quiz_end_time)}}
+                                        {{timeUtils.formatIsoDateToFullDate(examStore.selectedExam?.quizEndTime)}}
                                     </template>
 
                                 </v-col>
@@ -58,11 +58,11 @@
                             </v-row>
                             <v-row>
                                 <v-col class="text-h6">
-                                    <template v-if="quizImportStore.selectedQuiz?.quiz_description == null || ''">
+                                    <template v-if="examStore.selectedExam?.description == null || ''">
                                         -
                                     </template>
                                     <template v-else>
-                                        {{quizImportStore.selectedQuiz?.quiz_description}}
+                                        {{examStore.selectedExam?.description}}
                                     </template>
 
                                 </v-col>
@@ -77,16 +77,15 @@
 </template>
 
 <script setup lang="ts">
-    import {useQuizImportStore} from "@/stores/quizImportStore";
+    import { useExamStore } from '@/stores/examStore';
+    import * as constants from "@/utils/constants";
     import * as timeUtils from "@/utils/timeUtils";
 
     //stores
-    const quizImportStore = useQuizImportStore();
+    const examStore = useExamStore();
 
 </script>
 
 <style scoped>
-
-
 
 </style>

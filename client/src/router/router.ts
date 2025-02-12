@@ -3,13 +3,12 @@ import ContainerLayout from "@/components/layout/ContainerLayout.vue"
 import LoginPage from "@/components/views/LoginPage.vue"
 import RegisterPage from "@/components/views/RegisterPage.vue"
 import HomePage from "@/components/views/home/HomePage.vue"
-import ExamsMain from "@/components/views/exam/ExamsMain.vue"
-import ExamLmsImport from "@/components/views/exam/ExamLmsImport.vue"
+import ExamListMain from "@/components/views/exam/ExamListMain.vue"
+import ExamDetailsMain from "@/components/views/exam/ExamDatailsMain.vue"
 import * as constants from "@/utils/constants";
 import MonitoringMain from "@/components/views/monitoring/MonitoringMain.vue"
 import NavigationOverview from "@/components/layout/NavigationOverview.vue"
 import QuizImportWizard from "@/components/views/quiz-import/QuizImportWizard.vue"
-import ExamDetail from "@/components/views/exam/ExamDetail.vue"
 
 const defaultPageTitle: string = " | SEB Server";
 const routes: Array<RouteRecordRaw> = [
@@ -51,7 +50,7 @@ const routes: Array<RouteRecordRaw> = [
         {
             path: constants.EXAM_ROUTE,
             name: "Exams",
-            component: ExamsMain,
+            component: ExamListMain,
             meta: {
                 title: constants.EXAMS_TITLE + defaultPageTitle
             },
@@ -59,7 +58,7 @@ const routes: Array<RouteRecordRaw> = [
         {
             path: constants.EXAM_ROUTE + "/:examId",
             name: "ExamDetail",
-            component: ExamDetail,
+            component: ExamDetailsMain,
             meta: {
                 title: constants.EXAMS_DETAIL_TITLE + defaultPageTitle
             },

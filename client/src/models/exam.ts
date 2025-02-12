@@ -10,6 +10,13 @@ type CreateExamPar = {
     supporter: string[]
 }
 
+type Exams = {
+    number_of_pages: number,
+    page_number: number,
+    page_size: number,
+    content: Exam[]
+}
+
 type Exam = {
     id: number;
     institutionId: number;

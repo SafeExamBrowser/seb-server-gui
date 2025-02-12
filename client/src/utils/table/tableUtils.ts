@@ -111,3 +111,30 @@ export function assignQuizSelectPagingOptions(serverTablePaging: ServerTablePagi
 
     return optionalParGetQuizzes;
 }
+
+export function assignExamSelectPagingOptions(serverTablePaging: ServerTablePaging, name: string | null, startTimestamp: string | null): OptionalParGetExams{
+    const optionalParGetExams: OptionalParGetExams = {};
+
+    optionalParGetExams.page_size = serverTablePaging.itemsPerPage;
+    optionalParGetExams.page_number = serverTablePaging.page;
+
+    if(name != null){
+        optionalParGetExams.quizName = name;
+    }
+
+    if(startTimestamp != null){
+        optionalParGetExams.quizStartTime = startTimestamp;
+    }
+
+
+    if(serverTablePaging.sortBy.length != 0){
+        let sortString: string = serverTablePaging.sortBy[0].key;
+        if(serverTablePaging.sortBy[0].order == "desc"){
+            sortString = "-" + sortString;
+        }
+
+        optionalParGetExams.sort = sortString;
+    }
+
+    return optionalParGetExams;
+}

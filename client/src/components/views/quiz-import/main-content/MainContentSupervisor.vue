@@ -138,8 +138,6 @@
 
     });
 
-
-
     //add exam supervisor
     function onTableRowClick(selectedUserAccountName: UserAccountName){
         const index: number = quizImportStore.selectedExamSupervisors.findIndex(userAccount => userAccount.modelId == selectedUserAccountName.modelId);

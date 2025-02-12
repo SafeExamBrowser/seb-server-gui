@@ -1,0 +1,192 @@
+<template>
+    <v-row>
+        <v-col>
+
+            <v-sheet 
+                elevation="4"
+                class="rounded-lg pa-8">
+
+                <v-data-table-server
+                    item-value="id" 
+                    @update:options="loadItems"
+                    :hover="true"
+                    :loading="isLoading"
+                    loading-text="Loading... Please wait"
+                    :items="exams?.content"
+                    :items-length="totalItems"
+                    :items-per-page="tableUtils.calcDefaultItemsPerPage(totalItems)"
+                    :items-per-page-options="tableUtils.calcItemsPerPage(totalItems)"
+                    :headers="examsTableHeaders">
+
+                    <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort}">
+                        <TableHeaders
+                            :columns="columns"
+                            :is-sorted="isSorted"
+                            :get-sort-icon="getSortIcon"
+                            :toggle-sort="toggleSort"
+                            :header-refs-prop="examsTableHeadersRef">
+                        </TableHeaders>
+                    </template>
+
+                    <template v-slot:item="{item}">
+                        <tr 
+                            @click="onTableRowClick(item)"
+                            class="on-row-hover"
+                            :class="[selectedExam?.id == item.id ? 'selected-row' : '']">
+
+                            <td>{{ item.quizName }}</td>
+                            <td>{{ timeUtils.formatIsoDateToFullDate(item.quizStartTime) }}</td>
+                            <td>{{ timeUtils.formatIsoDateToFullDate(item.quizEndTime) }}</td>
+                            <td align="right">
+                                <v-icon 
+                                    class="mr-6"
+                                    icon="mdi-chevron-right"
+                                    style="font-size: 30px;"
+                                    @click="navigateToExam(item.id.toString())"
+                                    :disabled="item.id != selectedExam?.id">
+                                </v-icon>
+                            </td>
+
+                        </tr>
+                    </template>
+
+                </v-data-table-server>
+                
+            </v-sheet>
+
+        </v-col>
+    </v-row>
+</template>
+
+
+
+<script setup lang="ts">
+    import * as examViewService from "@/services/component-services/examViewService";
+    import * as tableUtils from "@/utils/table/tableUtils";
+    import * as timeUtils from "@/utils/timeUtils";
+    import TableHeaders from "@/utils/table/TableHeaders.vue";
+    import {useExamStore} from "@/stores/examStore";
+    import {storeToRefs} from "pinia";
+    import {navigateTo} from "@/router/navigation";
+    import * as constants from "@/utils/constants";
+
+    //stores
+    const examStore = useExamStore();
+    const examStoreRef = storeToRefs(examStore);
+
+    //items
+    const selectedExam = ref<Exam | null>();
+    const exams = ref<Exams>();
+
+    //table - pagination, item size, search
+    const isLoading = ref<boolean>(true);
+    const totalItems = ref<number>(10);
+
+    //table
+    const isOnLoad = ref<boolean>(true);
+    const defaultSort: {key: string, order: string}[] = [{key: 'quizStartTime', order: 'desc'}];
+    const examsTableHeadersRef = ref<any[]>();
+    const examsTableHeaders = ref([
+        {title: "Name", key: "quizName", width: "55%"},
+        {title: "Start", key: "quizStartTime", width: "20%"},
+        {title: "End", key: "quizEndTime", width: "20%"},
+        {title: "", key: "examLink", width: "5%"},
+    ]);    
+    
+    //error handling
+    const errorAvailable = ref<boolean>();
+
+    defineExpose({
+        loadItems
+    });
+
+
+    //=======================events & watchers=======================
+    watch(examStoreRef.searchField, () => {
+        // console.log(quizImportStoreRef.searchField.value)
+    });
+
+    //workaround es the method with "defineExpose" does not work
+    // watch(examStoreRef.loadExamItemsCaller, () => {
+    //     if(examStore.currentPagingOptions == null){
+    //         return;
+    //     }
+
+    //     if(quizImportStore.currentPagingOptions.itemsPerPage == 0){
+    //         quizImportStore.currentPagingOptions.itemsPerPage = 10; 
+    //     }
+
+    //     loadItems(quizImportStore.currentPagingOptions);
+    // });
+
+
+    function onTableRowClick(exam: Exam){
+        if(exam.id == selectedExam.value?.id){
+            selectedExam.value = null;
+            return;
+        }
+
+        selectedExam.value = exam;
+    }
+
+    //=======================data fetching===================
+    async function loadItems(serverTablePaging: ServerTablePaging){
+        console.log("it got here")
+
+        examStore.currentPagingOptions = serverTablePaging;
+        isLoading.value = true;
+
+        //current solution to default sort the table
+        //sort-by in data-table-server tag breaks the sorting as the headers are in a seperate component
+        if(isOnLoad.value){
+            serverTablePaging.sortBy = defaultSort;
+        }
+
+        let startDate: string | null = null;
+        if(examStore.startDate != null){
+            startDate = timeUtils.setIsoTimeToZero(examStore.startDate.toISOString());
+        }
+
+        const optionalParGetExams: OptionalParGetExams = tableUtils.assignExamSelectPagingOptions
+        (
+            serverTablePaging, 
+            examStore.searchField, 
+            startDate
+        );
+
+        const examsResponse: Exams | null = await examViewService.getExams(optionalParGetExams);
+
+        if(examsResponse == null){
+            isLoading.value = false;
+            return;
+        }
+
+        exams.value = examsResponse;
+        totalItems.value = exams.value.number_of_pages * exams.value.page_size;
+
+        isOnLoad.value = false;
+        isLoading.value = false;
+    }
+    //======================================================
+
+    function navigateToExam(examId: string){
+        navigateTo(constants.EXAM_ROUTE + "/" + examId);
+    }
+
+
+
+</script>
+
+
+<style scoped>
+
+    .on-row-hover:hover{
+        background: #e4e4e4 !important;
+        cursor: pointer;
+    }
+
+    .selected-row {
+        background-color: #e4e4e4 !important;
+    }
+
+</style>
