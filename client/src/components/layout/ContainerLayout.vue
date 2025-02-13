@@ -30,7 +30,7 @@
                             <v-list-item-title>{{ $t('navigation.accountSettings') }}</v-list-item-title>
                         </v-list-item> -->
 
-                        <v-divider></v-divider>
+                        <v-divider class="border-opacity-25" :thickness="2"></v-divider>
 
                         <!-- <v-list-item>
                             <v-btn-toggle v-model="languageToggle" variant="text" mandatory>
@@ -46,7 +46,7 @@
                             </v-btn-toggle>
                         </v-list-item> -->
 
-                        <v-divider></v-divider>
+                        <v-divider class="border-opacity-25" :thickness="2"></v-divider>
 
                         <v-list-item tabindex="0" class="text-decoration-underline text-blue mx-auto" @click="authStore.logout()">
                             <v-list-item-title class="mx-auto">{{ $t("navigation.signOut") }}</v-list-item-title>

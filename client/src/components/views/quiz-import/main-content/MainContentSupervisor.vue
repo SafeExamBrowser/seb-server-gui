@@ -60,19 +60,19 @@
 
                     <v-list select-strategy="leaf">
                         <template 
-                            v-for="supervisors in quizImportStore.selectedExamSupervisors"
-                            :key="supervisors.modelId"
-                            :value="supervisors.modelId">
+                            v-for="supervisor in quizImportStore.selectedExamSupervisors"
+                            :key="supervisor.modelId"
+                            :value="supervisor.modelId">
                         
                             <v-list-item>
-                                <v-list-item-title>{{ supervisors.name }}</v-list-item-title>
+                                <v-list-item-title>{{ supervisor.name }}</v-list-item-title>
 
                                 <template v-slot:append="{ isSelected }">
                                     <v-list-item-action class="flex-column align-end">
                                         <v-spacer></v-spacer>
 
                                         <v-btn 
-                                            @click="removeExamSupervisor(supervisors.modelId)"
+                                            @click="removeExamSupervisor(supervisor.modelId)"
                                             variant="flat"
                                             icon="mdi-checkbox-marked">
                                         </v-btn>
@@ -81,7 +81,7 @@
                                 </template>
                             </v-list-item>
 
-                            <v-divider></v-divider>
+                            <v-divider class="border-opacity-25" :thickness="2"></v-divider>
 
                         </template>
                     </v-list>

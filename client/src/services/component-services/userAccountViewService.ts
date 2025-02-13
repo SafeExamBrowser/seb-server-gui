@@ -23,7 +23,7 @@ export async function setPersonalUserAccount(): Promise<UserAccount | null>{
 }
 
 //=============api==================
-export async function getUserAccountById(accountId: string): Promise<UserAccount[] | null>{
+export async function getUserAccountById(accountId: string): Promise<UserAccount | null>{
     try{
         return await userAccountService.getUserAccountById(accountId)
 

@@ -23,7 +23,7 @@
                     <div class="primary-text-color text-h6 font-weight-bold">
                         Configuration Summary
                     </div>
-                    <v-divider></v-divider>
+                    <v-divider class="border-opacity-25" :thickness="2"></v-divider>
                 </v-col>
             </v-row>
             <!------------------->
@@ -34,7 +34,7 @@
                     <div class="primary-text-color text-subtitle-1">
                         {{ quizImportStore.selectedExamTemplate?.name }}
                     </div>
-                    <v-divider></v-divider>
+                    <v-divider class="border-opacity-25" :thickness="2"></v-divider>
                 </v-col>
             </v-row>
             <v-row class="mb-10">
@@ -58,22 +58,22 @@
                     <div class="primary-text-color text-subtitle-1">
                         Examination Supervisors
                     </div>
-                    <v-divider></v-divider>
+                    <v-divider class="border-opacity-25" :thickness="2"></v-divider>
                 </v-col>
             </v-row>
             <v-row class="mb-10">
                 <v-col>
                     <v-list>
                         <template 
-                            v-for="supervisors in quizImportStore.selectedExamSupervisors"
-                            :key="supervisors.modelId"
-                            :value="supervisors.modelId">
+                            v-for="supervisor in quizImportStore.selectedExamSupervisors"
+                            :key="supervisor.modelId"
+                            :value="supervisor.modelId">
                         
                             <v-list-item>
-                                <v-list-item-title>{{ supervisors.name }}</v-list-item-title>
+                                <v-list-item-title>{{ supervisor.name }}</v-list-item-title>
                             </v-list-item>
 
-                            <v-divider></v-divider>
+                            <v-divider class="border-opacity-25" :thickness="2"></v-divider>
 
                         </template>
                     </v-list>
@@ -87,10 +87,10 @@
                     <div class="primary-text-color text-subtitle-1">
                         Quit Password
                     </div>
-                    <v-divider></v-divider>
+                    <v-divider class="border-opacity-25" :thickness="2"></v-divider>
                 </v-col>
             </v-row>
-            <v-row class="">
+            <v-row>
                 <v-col>
                     <v-text-field
                         :type="passwordVisible ? 'text' : 'password'"

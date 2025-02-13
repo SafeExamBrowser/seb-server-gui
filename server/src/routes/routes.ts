@@ -21,6 +21,7 @@ router.get(constants.EXAM_TEMPLATE_ROUTE + "/:id", examTemplateController.getExa
 router.get(constants.EXAM_TEMPLATE_ROUTE, examTemplateController.getExamTemplates);
 
 //user accounts
+router.get(constants.USER_ACCOUNT_ROUTE + "/:id", userAccountController.getUserAccount);
 router.get(constants.USER_ACCOUNT_NAMES_ROUTE, userAccountController.getUserAccountNames);
 
 

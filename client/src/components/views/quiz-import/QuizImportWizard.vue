@@ -25,7 +25,7 @@
                         <v-stepper-item :value="index+1">
                             {{ step }}
                         </v-stepper-item>
-                        <v-divider v-if="index != steps.length-1"></v-divider>
+                        <v-divider class="border-opacity-25" :thickness="2" v-if="index != steps.length-1"></v-divider>
                     </template>
 
                     <v-icon 

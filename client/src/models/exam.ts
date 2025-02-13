@@ -37,6 +37,7 @@ type Exam = {
     additionalAttributes: ExamAdditionalAttributes;
     description: string;
     startURL: string;
+    quitPassword: string;
 };
 
 type ExamAdditionalAttributes = {
