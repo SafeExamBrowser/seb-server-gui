@@ -1,10 +1,10 @@
 import * as apiService from "@/services/api-services/apiService";
 
-const examUrl: string = "/get-exam";
+const examUrl: string = "/exam";
 const examsUrl: string = "/exams";
 
 export async function getExam(id: string): Promise<Exam | any>{
-    const url: string = examUrl + "/" + id;
+    const url: string = "/get-exam/" + id;
     return (await apiService.api.get(url, {headers: apiService.getHeaders()})).data;
 }
 
