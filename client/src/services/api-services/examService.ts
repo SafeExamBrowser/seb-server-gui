@@ -1,8 +1,7 @@
 import * as apiService from "@/services/api-services/apiService";
 
-const examUrl: string = "/exam";
+const examUrl: string = "/get-exam";
 const examsUrl: string = "/exams";
-const examTemplateUrl: string = "/exam";
 
 export async function getExam(id: string): Promise<Exam | any>{
     const url: string = examUrl + "/" + id;
