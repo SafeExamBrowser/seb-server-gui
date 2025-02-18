@@ -14,6 +14,15 @@ export const useQuizImportStore = defineStore("quizImport", () => {
     const selectedExamSupervisors = ref<UserAccountName[]>([]);
     const selectedQuitPassword = ref<string>();
 
+    function clearValues(){
+        searchField.value = null;
+        startDate.value = null;
+        selectedQuiz.value = null;
+        selectedExamTemplate.value = null;
+        selectedExamSupervisors.value = [];
+        selectedQuitPassword.value = "";
+    }
+
 
     return {
         searchField,
@@ -23,6 +32,7 @@ export const useQuizImportStore = defineStore("quizImport", () => {
         selectedQuiz,
         selectedExamTemplate,
         selectedExamSupervisors,
-        selectedQuitPassword
+        selectedQuitPassword,
+        clearValues
     };
 });

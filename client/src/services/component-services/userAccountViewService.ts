@@ -33,7 +33,7 @@ export async function getUserAccountById(accountId: string): Promise<UserAccount
     }
 }
 
-export async function getUserAccounts(optionalParamters?: OptionalParGeneric): Promise<UserAccountResponse[] | null>{
+export async function getUserAccounts(optionalParamters?: OptionalParGeneric): Promise<UserAccountResponse | null>{
     try{
         return await userAccountService.getUserAccounts(optionalParamters)
 

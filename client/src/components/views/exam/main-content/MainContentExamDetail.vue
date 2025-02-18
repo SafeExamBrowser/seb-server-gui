@@ -83,18 +83,31 @@
 
                         <!-------supervisors------>
                         <v-row class="mt-10">
-                            <v-col>
+                            <v-col> 
                                 <div class="primary-text-color text-h5">
                                     Examination Supervisors
-                                </div>
-                                <v-divider class="border-opacity-25" :thickness="2"></v-divider>
+                                </div> 
+
+                            </v-col>
+
+                            <v-col align="right">
+                                <v-btn
+                                    color="primary"
+                                    density="compact"
+                                    variant="text"
+                                    icon="mdi-pencil-circle-outline"
+                                    @click="openDialog()">
+                                </v-btn>
                             </v-col>
                         </v-row>
+
+                        <v-divider class="border-opacity-25" :thickness="2"></v-divider>
+
                         <v-row class="mb-10">
                             <v-col>
                                 <v-list>
                                     <template 
-                                        v-for="supervisor in supervisors"
+                                        v-for="supervisor in examStore.selectedExamSupervisors"
                                         :key="supervisor.id"
                                         :value="supervisor.id">
                                     
@@ -302,7 +315,7 @@
                                                                     v-if="examConfigOption.actionType == 'delete-button'"
                                                                     icon="mdi-trash-can-outline"
                                                                     style="font-size: 30px;"
-                                                                    @click="">
+                                                                    @click="deleteExam()">
                                                                 </v-icon>
 
                                                             </v-list-item-action>
@@ -335,10 +348,15 @@
                 </v-row>
                 <!----------------------->
             
-            
             </v-sheet>
         </v-col>
     </v-row>
+
+    <!-----------supervisor popup---------->      
+    <v-dialog v-model="supervisorsDialog" max-width="1200">
+        <ExamDetailSupervisorsDialog></ExamDetailSupervisorsDialog>
+    </v-dialog>
+
 </template>
 
 <script setup lang="ts">
@@ -353,12 +371,13 @@
     //exam
     const examId = useRoute().params.examId.toString();
 
-    //supervisors
-    const supervisors = ref<UserAccount[]>([]);
-
     //pw field
     const passwordVisible = ref<boolean>(false);
     const passwordValue = ref<string>("");
+
+    //dialog
+    const supervisorsDialog = ref(false);
+
 
     //more exam configurations
     const examConfigOptions: {name: string, actionType: string, link: string}[] = [
@@ -391,6 +410,7 @@
 
 
     onBeforeMount(async () => {
+        //todo: clear store before reload
         await getExam();
         await getExamTemplate();
         await getExamSupervisors();
@@ -437,8 +457,12 @@
                 return;
             }
 
-            supervisors.value.push(userAccount);
+            examStore.selectedExamSupervisors.push(userAccount);
         }
+    }
+
+    async function deleteExam(){
+        console.log(await examViewService.deleteExam(examId));
     }
 
     function setPasswordValue(){
@@ -447,6 +471,10 @@
         }
 
         passwordValue.value = examStore.selectedExam?.quitPassword;
+    }
+
+    function openDialog(){
+        supervisorsDialog.value = true;
     }
 
 

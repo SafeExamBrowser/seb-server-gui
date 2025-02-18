@@ -40,7 +40,7 @@
             <v-row class="mb-10">
                 <v-col>
                     <!-- @vue-ignore -->
-                    <div v-if="quizImportStore.selectedExamTemplate.description != null && quizImportStore.selectedExamTemplate?.description != ''">
+                    <div v-if="quizImportStore.selectedExamTemplate != null && quizImportStore.selectedExamTemplate.description != null && quizImportStore.selectedExamTemplate?.description != ''">
                             {{ quizImportStore.selectedExamTemplate?.description }}
                     </div>
                     <div v-else>
@@ -195,6 +195,7 @@
         }
 
         navigateTo(constants.EXAM_ROUTE + "/" + exam.id);
+        quizImportStore.clearValues();
     }
 
 

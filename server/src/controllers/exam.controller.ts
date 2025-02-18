@@ -6,17 +6,7 @@ import * as apiService from "../services/api.service";
 export async function getExam(req: Request, res: Response){
     try{
         const [exams, status] = await examService.getExam(req.headers.authorization, req.params.id);
-        return res.status(200).json(exams);
-
-    }catch(error){
-        apiService.handleGenericApiError(error, res);
-    }
-}
-
-export async function getExams(req: Request, res: Response){
-    try{
-        const [exams, status] = await examService.getExams(req.headers.authorization, req.query.optionalParamters);
-        return res.status(200).json(exams);
+        return res.status(status).json(exams);
 
     }catch(error){
         apiService.handleGenericApiError(error, res);
@@ -26,7 +16,7 @@ export async function getExams(req: Request, res: Response){
 export async function getExamConfigurationMap(req: Request, res: Response){
     try{
         const [examConfigurationMap, status] = await examService.getExamConfigurationMap(req.headers.authorization, req.params.id, req.query.optionalParamters);
-        return res.status(200).json(examConfigurationMap);
+        return res.status(status).json(examConfigurationMap);
 
     }catch(error){
         apiService.handleGenericApiError(error, res);
@@ -37,6 +27,26 @@ export async function createExam(req: Request, res: Response){
     try{
         const [newExam, status] = await examService.createExam(req.headers.authorization, req.body);
         return res.status(status).json(newExam);
+
+    }catch(error){
+        apiService.handleGenericApiError(error, res);
+    }
+}
+
+export async function deleteExam(req: Request, res: Response){
+    try{
+        const [exams, status] = await examService.deleteExam(req.headers.authorization, req.params.id);
+        return res.status(status).json(exams);
+
+    }catch(error){
+        apiService.handleGenericApiError(error, res);
+    }
+}
+
+export async function getExams(req: Request, res: Response){
+    try{
+        const [exams, status] = await examService.getExams(req.headers.authorization, req.query.optionalParamters);
+        return res.status(200).json(exams);
 
     }catch(error){
         apiService.handleGenericApiError(error, res);

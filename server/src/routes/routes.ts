@@ -14,6 +14,8 @@ router.get(constants.QUIZ_ROUTE, quizController.getQuizzes);
 router.get(constants.EXAM_GET_ROUTE + "/:id", examController.getExam);
 router.get(constants.EXAMS_ROUTE, examController.getExams);
 router.post(constants.EXAM_ROUTE, examController.createExam);
+router.delete(constants.EXAM_ROUTE + "/:id", examController.deleteExam);
+
 router.get(constants.EXAM_CONFIGURATION_MAP_ROUTE + "/:id", examController.getExamConfigurationMap);
 
 //exam template
