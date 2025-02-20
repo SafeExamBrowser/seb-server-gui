@@ -21,12 +21,14 @@ type OptionalParGetQuizzes = {
 }
 
 type OptionalParGetExams = {
-    institutionId?: number,
+    institutionId?: number;
     page_number?: number;
     page_size?: number;
     sort?: string;
     // filterCriteria?: string;
     quizStartTime?: string;
     quizName?: string;
-    active?: string
+    active?: string;
+    status?: string;
+    type?: string;
 }

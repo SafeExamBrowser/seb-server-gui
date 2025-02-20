@@ -1,3 +1,4 @@
+import { ExamStatusEnum, ExamTypeEnum } from "@/models/examFiltersEnum";
 import { defineStore } from "pinia";
 
 export const useExamStore = defineStore("exam", () => {
@@ -5,6 +6,9 @@ export const useExamStore = defineStore("exam", () => {
     const searchField = ref<string | null>(null);
     const startDate = ref<Date | null>(null);
     const currentPagingOptions = ref<ServerTablePaging>();
+    const activeTypeFilter = ref<ExamTypeEnum | null>(null);
+    const activeStatusFilter = ref<ExamStatusEnum | null>(null);
+
 
     //exam detail page
     const selectedExam = ref<Exam>();
@@ -18,6 +22,8 @@ export const useExamStore = defineStore("exam", () => {
         currentPagingOptions,
         selectedExam,
         selectedExamTemplate,
-        selectedExamSupervisors
+        selectedExamSupervisors,
+        activeTypeFilter,
+        activeStatusFilter
     };
 });

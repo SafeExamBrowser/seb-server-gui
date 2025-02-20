@@ -2,10 +2,7 @@
 
     <v-row>
         <v-col>
-            <v-sheet 
-                elevation="4"
-                class="rounded-lg pa-8"
-                height="300">
+            <v-sheet elevation="4" class="rounded-lg pa-8">
 
                 <!------------title row------------->
                 <v-row>
@@ -19,15 +16,17 @@
 
                 <v-row>
                     <v-spacer></v-spacer>
-                    <v-col>
 
+                    <v-col cols="4">
                         <v-form
                             @keyup.enter="loadExamItemsCaller()"
                             @keyup.esc="clearForm()">
                             <!------------search field------------->
                             <v-row align="center"> 
                                 <v-col class="mb-6">
-                                    Search:
+                                    <div class="primary-text-color text-subtitle-1">
+                                        Search
+                                    </div>
                                 </v-col>
                                 <v-col cols="9" class="mb-6">
                                     <v-text-field
@@ -47,7 +46,9 @@
                             <!------------start date------------->
                             <v-row align="center">
                                 <v-col class="mb-2"> 
-                                    Start:
+                                    <div class="primary-text-color text-subtitle-1">
+                                        Start
+                                    </div>
                                 </v-col>
                                 <v-col cols="9" class="mb-2">
                                     <VueDatePicker 
@@ -86,6 +87,46 @@
                         </v-form>
 
                     </v-col>
+
+                    <v-col cols="4" class="ml-16">
+                        <v-row>
+                            <v-col>
+                                <div class="primary-text-color text-subtitle-1">
+                                    Exam Type
+                                </div>
+                                <v-chip 
+                                    v-for="filter in typeFilters"
+                                    :key="filter.value"
+
+                                    :variant="examStore.activeTypeFilter == filter.value ? 'flat' : 'tonal'"
+                                    size="small" 
+                                    class="mr-2 mt-2"
+                                    @click="filter.eventFunction(filter.value)">
+                                    {{filter.name}}
+                                </v-chip>
+                            </v-col>
+                        </v-row>
+
+                        <v-row>
+                            <v-col>
+                                <div class="primary-text-color text-subtitle-1">
+                                    Exam Status
+                                </div>
+                                <v-chip 
+                                    v-for="filter in statusFilters"
+                                    :key="filter.value"
+
+                                    :variant="examStore.activeStatusFilter == filter.value ? 'flat' : 'tonal'"
+                                    size="small" 
+                                    class="mr-2 mt-2"
+                                    :color="filter.color"
+                                    @click="filter.eventFunction(filter.value)">
+                                    {{filter.name}}
+                                </v-chip>
+                            </v-col>
+                        </v-row>
+                    </v-col>
+
                     <v-spacer></v-spacer>
                 </v-row>
 
@@ -98,6 +139,8 @@
 <script setup lang="ts">
     import VueDatePicker from "@vuepic/vue-datepicker";
     import {useExamStore} from "@/stores/examStore";
+    import { ExamStatusEnum, ExamTypeEnum } from "@/models/examFiltersEnum";
+    import * as generalUtils from "@/utils/generalUtils";
 
     //stores
     const examStore = useExamStore();
@@ -107,6 +150,22 @@
         loadExamItemsCaller: any;
     }>();
 
+    //filters exam type
+    const typeFilters: {name: string, value: ExamTypeEnum, eventFunction: (filter: ExamTypeEnum) => void}[] = [
+        {name: "BYOD", value: ExamTypeEnum.BYOD, eventFunction: setActiveTypeFilter},
+        {name: "Managed Devices", value: ExamTypeEnum.MANAGED, eventFunction: setActiveTypeFilter},
+        {name: "Not Defined", value: ExamTypeEnum.UNDEFINED, eventFunction: setActiveTypeFilter},
+        {name: "VDI (Virtual Desktop Infrastructure)", value: ExamTypeEnum.VDI, eventFunction: setActiveTypeFilter},
+    ];
+
+    //filters exam status
+    const statusFilters: {name: string, value: ExamStatusEnum, color: string, eventFunction: (filter: ExamStatusEnum) => void}[] = [
+        {name: "Running", value: ExamStatusEnum.RUNNING, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.RUNNING), eventFunction: setActiveStatusFilter},
+        {name: "Finished", value: ExamStatusEnum.FINISHED, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.FINISHED), eventFunction: setActiveStatusFilter},
+        {name: "Up Coming", value: ExamStatusEnum.UP_COMING, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.UP_COMING), eventFunction: setActiveStatusFilter},
+        {name: "Test Run", value: ExamStatusEnum.TEST_RUN, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.TEST_RUN), eventFunction: setActiveStatusFilter},
+        {name: "Archived", value: ExamStatusEnum.ARCHIVED, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.ARCHIVED), eventFunction: setActiveStatusFilter}
+    ];
 
     function loadExamItemsCaller(){ 
         emit("loadExamItemsCaller");
@@ -115,6 +174,28 @@
     function clearForm(){
         examStore.searchField = "";
         examStore.startDate = null;
+    }
+
+    function setActiveTypeFilter(filter: ExamTypeEnum){
+        if(examStore.activeTypeFilter == filter){
+            examStore.activeTypeFilter = null;
+            loadExamItemsCaller();
+            return;
+        }
+
+        examStore.activeTypeFilter = filter;
+        loadExamItemsCaller();
+    }
+
+    function setActiveStatusFilter(filter: ExamStatusEnum){
+        if(examStore.activeStatusFilter == filter){
+            examStore.activeStatusFilter = null;
+            loadExamItemsCaller();
+            return;
+        }
+
+        examStore.activeStatusFilter = filter;
+        loadExamItemsCaller();
     }
 
 </script>

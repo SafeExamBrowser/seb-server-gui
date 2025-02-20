@@ -37,6 +37,21 @@
                             <td>{{ item.quizName }}</td>
                             <td>{{ timeUtils.formatIsoDateToFullDate(item.quizStartTime) }}</td>
                             <td>{{ timeUtils.formatIsoDateToFullDate(item.quizEndTime) }}</td>
+                            <td>
+                                <v-chip 
+                                    variant="tonal"
+                                    size="small">
+                                    {{ generalUtils.getTypeFilterName(generalUtils.findEnumValue(ExamTypeEnum, item.type)) }}
+                                </v-chip>
+                            </td>
+                            <td>
+                                <v-chip 
+                                    variant="tonal"
+                                    size="small"
+                                    :color="generalUtils.getExamStatusFilterColor(generalUtils.findEnumValue(ExamStatusEnum, item.status))">
+                                    {{ generalUtils.getExamStatusFilterName(generalUtils.findEnumValue(ExamStatusEnum, item.status)) }}
+                                </v-chip>
+                            </td>
                             <td align="right">
                                 <v-icon 
                                     class="mr-6"
@@ -64,11 +79,13 @@
     import * as examViewService from "@/services/component-services/examViewService";
     import * as tableUtils from "@/utils/table/tableUtils";
     import * as timeUtils from "@/utils/timeUtils";
+    import * as generalUtils from "@/utils/generalUtils";
     import TableHeaders from "@/utils/table/TableHeaders.vue";
     import {useExamStore} from "@/stores/examStore";
     import {storeToRefs} from "pinia";
     import {navigateTo} from "@/router/navigation";
     import * as constants from "@/utils/constants";
+    import { ExamStatusEnum, ExamTypeEnum } from "@/models/examFiltersEnum";
 
     //stores
     const examStore = useExamStore();
@@ -87,9 +104,11 @@
     const defaultSort: {key: string, order: string}[] = [{key: 'quizStartTime', order: 'desc'}];
     const examsTableHeadersRef = ref<any[]>();
     const examsTableHeaders = ref([
-        {title: "Name", key: "quizName", width: "55%"},
-        {title: "Start", key: "quizStartTime", width: "20%"},
-        {title: "End", key: "quizEndTime", width: "20%"},
+        {title: "Name", key: "quizName", width: "40%"},
+        {title: "Start", key: "quizStartTime", width: "17.5%"},
+        {title: "End", key: "quizEndTime", width: "17.5%"},
+        {title: "Type", key: "type", width: "10%"},
+        {title: "Status", key: "status", width: "10%"},
         {title: "", key: "examLink", width: "5%"},
     ]);    
     
@@ -151,7 +170,9 @@
         (
             serverTablePaging, 
             examStore.searchField, 
-            startDate
+            startDate,
+            examStore.activeTypeFilter,
+            examStore.activeStatusFilter
         );
 
         const examsResponse: Exams | null = await examViewService.getExams(optionalParGetExams);

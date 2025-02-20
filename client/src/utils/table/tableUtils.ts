@@ -1,3 +1,4 @@
+import { ExamStatusEnum, ExamTypeEnum } from "@/models/examFiltersEnum";
 import {navigateTo} from "@/router/navigation";
 
 export function calcDefaultItemsPerPage(itemList: any): number {
@@ -112,11 +113,26 @@ export function assignQuizSelectPagingOptions(serverTablePaging: ServerTablePagi
     return optionalParGetQuizzes;
 }
 
-export function assignExamSelectPagingOptions(serverTablePaging: ServerTablePaging, name: string | null, startTimestamp: string | null): OptionalParGetExams{
+export function assignExamSelectPagingOptions
+(
+    serverTablePaging: ServerTablePaging, 
+    name: string | null, startTimestamp: string | null, 
+    activeTypeFilter: ExamTypeEnum | null, 
+    activeStatusFilter: ExamStatusEnum | null): OptionalParGetExams{
+    
     const optionalParGetExams: OptionalParGetExams = {};
 
     optionalParGetExams.page_size = serverTablePaging.itemsPerPage;
     optionalParGetExams.page_number = serverTablePaging.page;
+
+    if(activeTypeFilter != null){
+        optionalParGetExams.type = activeTypeFilter;
+    }
+
+    if(activeStatusFilter != null){
+        optionalParGetExams.status = activeStatusFilter;
+    }
+
 
     if(name != null){
         optionalParGetExams.quizName = name;
