@@ -7,6 +7,7 @@ type UserAccountResponse = {
 
 type UserAccount = {
     id: number;
+    institutionId: number;
     uuid: string;
     name: string;
     surname: string;

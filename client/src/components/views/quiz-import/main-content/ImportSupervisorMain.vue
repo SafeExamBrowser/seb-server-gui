@@ -98,10 +98,12 @@
 <script setup lang="ts">
     import * as userAccountViewService from "@/services/component-services/userAccountViewService";
     import { useQuizImportStore } from "@/stores/quizImportStore";
+    import { useUserAccountStore } from "@/stores/store";
     import * as tableUtils from "@/utils/table/tableUtils";
     
     //stores
     const quizImportStore = useQuizImportStore();
+    const userAccountStore = useUserAccountStore();
 
     //items
     const userAccountNames = ref<UserAccountName[]>([]);
@@ -117,7 +119,9 @@
 
     //=======================events & watchers=======================
     onBeforeMount(async () => {
-        const userAccountNamesResponse: UserAccountName[] | null = await userAccountViewService.getUserAccountNames();
+
+        //todo: check which users should be returned
+        const userAccountNamesResponse: UserAccountName[] | null = await userAccountViewService.getUserAccountNames({institutionId: userAccountStore.userAccount?.institutionId});
 
         if(userAccountNamesResponse == null){
             //todo: add error handling
@@ -132,10 +136,6 @@
                 quizImportStore.selectedExamTemplate?.supporter.includes(user.modelId))
             );
         }
-
-        console.log(quizImportStore.selectedExamSupervisors)
-        console.log(quizImportStore.selectedExamTemplate?.supporter)
-
     });
 
     //add exam supervisor

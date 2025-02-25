@@ -10,7 +10,8 @@
     <v-snackbar 
         v-if="props.alertProps.type == 'snackbar'" 
         v-model="snackbar"
-        :color="props.alertProps.color">
+        :color="props.alertProps.color"
+        :timeout="props.alertProps.timeout ? props.alertProps.timeout : 5000">
 
         {{ messages.find(item => item.key == props.alertProps.textKey)?.value}}
 
@@ -73,6 +74,14 @@
         {
             key: "exam-duplicate",
             value: "This exam is already prepared"
+        },
+        {
+            key: "exam-update-successful",
+            value: "Exam successfully updated"
+        },
+        {
+            key: "exam-update-failed",
+            value: "Exam update failed"
         }
     ];
 

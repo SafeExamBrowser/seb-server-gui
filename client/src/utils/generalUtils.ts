@@ -65,10 +65,10 @@ export function getExamStatusFilterColor(status: ExamStatusEnum | null): string{
         return "orange";
     }
 
-    if(status == ExamStatusEnum.ARCHIVED){
-        return "purple";
+    if(status == ExamStatusEnum.TEST_RUN){
+        return "blue";
     }
 
-    //ExamStatusEnum.TEST_RUN has no color
+    //ExamStatusEnum.ARCHIVED has no color
     return "";
 }

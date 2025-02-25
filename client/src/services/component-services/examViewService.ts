@@ -30,11 +30,19 @@ export async function deleteExam(id: string): Promise<any>{
     }
 }
 
-
 export async function getExams(optionalParGetExams?: OptionalParGetExams): Promise<Exams | null>{
     try{
         return await examService.getExams(optionalParGetExams);    
     }catch(error){
+        console.error(error);
+        return null;
+    }
+}
+
+export async function updateExam(examId: string, exam: Exam): Promise<Exam | null>{
+    try{
+        return await examService.updateExam(examId, exam);        
+    }catch(error: any){
         console.error(error);
         return null;
     }

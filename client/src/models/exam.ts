@@ -10,6 +10,23 @@ type CreateExamPar = {
     supporter: string[]
 }
 
+type UpdateExamPar = {
+    institutionId: number,
+    lmsSetupId?: number,
+    lms_setup_id?: number,
+    externalId: string,
+    quiz_id?: string,
+    examTemplateId?: number,
+    type: string,
+    quitPassword?: string,
+    supporter?: string[]
+    id: number,
+    quizStartTime: string,
+    quizEndTime: string,
+    quizName: string
+    quiz_start_url: string
+}
+
 type Exams = {
     number_of_pages: number,
     page_number: number,

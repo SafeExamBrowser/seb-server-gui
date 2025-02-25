@@ -34,7 +34,7 @@ export const useAuthStore = defineStore("auth", () => {
       setAccessToken(accessTokenString);
       setRefreshToken(refreshTokenString);
   
-    //   await userAccountViewService.setPersonalUserAccount();
+      await userAccountViewService.setPersonalUserAccount();
   
       if(useAuthStore().redirectRoute == ""){
           navigateTo(constants.HOME_PAGE_ROUTE);
@@ -89,12 +89,12 @@ export const useAuthStore = defineStore("auth", () => {
   
 //---------------------account----------------------------//
 export const useUserAccountStore = defineStore("account", () => {
-const userAccount = ref<UserAccount | null>();
-const isEditMode = ref<boolean>();
-const isAccountSelected = ref<boolean>(false);
-const selectedAccountId = ref<number>();
+    const userAccount = ref<UserAccount | null>();
+    const isEditMode = ref<boolean>();
+    const isAccountSelected = ref<boolean>(false);
+    const selectedAccountId = ref<number>();
 
-return {userAccount, isEditMode, isAccountSelected, selectedAccountId};
+    return {userAccount, isEditMode, isAccountSelected, selectedAccountId};
 });
 //-------------------------------------------------//
 

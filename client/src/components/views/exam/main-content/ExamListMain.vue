@@ -57,8 +57,7 @@
                                     class="mr-6"
                                     icon="mdi-chevron-right"
                                     style="font-size: 30px;"
-                                    @click="navigateToExam(item.id.toString())"
-                                    :disabled="item.id != selectedExam?.id">
+                                    @click="navigateToExam(item.id.toString())">
                                 </v-icon>
                             </td>
 
@@ -104,11 +103,11 @@
     const defaultSort: {key: string, order: string}[] = [{key: 'quizStartTime', order: 'desc'}];
     const examsTableHeadersRef = ref<any[]>();
     const examsTableHeaders = ref([
-        {title: "Name", key: "quizName", width: "40%"},
-        {title: "Start", key: "quizStartTime", width: "17.5%"},
-        {title: "End", key: "quizEndTime", width: "17.5%"},
-        {title: "Type", key: "type", width: "10%"},
-        {title: "Status", key: "status", width: "10%"},
+        {title: "Name", key: "quizName", width: "30%"},
+        {title: "Start", key: "quizStartTime", width: "20%"},
+        {title: "End", key: "quizEndTime", width: "20%"},
+        {title: "Exam Type & Status", key: "type", sortable: false, width: "12.5%"},
+        {title: "", key: "status", sortable: false, width: "12.5%"},
         {title: "", key: "examLink", width: "5%"},
     ]);    
     
@@ -125,7 +124,7 @@
         // console.log(quizImportStoreRef.searchField.value)
     });
 
-    //workaround es the method with "defineExpose" does not work
+    //workaround as the method with "defineExpose" does not work
     // watch(examStoreRef.loadExamItemsCaller, () => {
     //     if(examStore.currentPagingOptions == null){
     //         return;
@@ -150,8 +149,6 @@
 
     //=======================data fetching===================
     async function loadItems(serverTablePaging: ServerTablePaging){
-        console.log("it got here")
-
         examStore.currentPagingOptions = serverTablePaging;
         isLoading.value = true;
 

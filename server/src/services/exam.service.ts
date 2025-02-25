@@ -18,8 +18,14 @@ export async function getExam(token: string, id: string): Promise<[object, numbe
 
 export async function createExam(token: string, newExam: {}): Promise<[object, number]>{
     const url: string =  constants.EXAM_ROUTE;
-    //todo: body should be form encoded
     const {data, status} = await apiService.api.post(url, apiService.createUrlEncodedBody(newExam), {headers: apiService.getHeaders(token)});
+    
+    return [data, status];
+}
+
+export async function updateExam(token: string, updatedExam: {}): Promise<[object, number]>{
+    const url: string =  constants.EXAM_ROUTE;
+    const {data, status} = await apiService.api.put(url, updatedExam, {headers: apiService.getPutHeaders(token)});
     
     return [data, status];
 }
@@ -32,7 +38,6 @@ export async function deleteExam(token: string, id: string): Promise<[object, nu
 }
 
 export async function getExams(token: string, options?: {}): Promise<[object, number]>{
-    console.log(options)
     const url: string =  constants.EXAM_ROUTE;
     const {data, status} = await apiService.api.get(url, {headers: apiService.getHeaders(token), params: options});
 

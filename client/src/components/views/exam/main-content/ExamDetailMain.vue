@@ -140,8 +140,7 @@
                                     density="compact"
                                     placeholder="Password"
                                     variant="outlined"
-                                    v-model="passwordValue"
-                                    readonly>
+                                    v-model="quitPassword">
 
                                     <template v-slot:append-inner>
                                         <v-btn
@@ -326,11 +325,6 @@
 
                                                 </template>
                                             </v-list>
-
-
-
-
-
                                         </v-col>
                                     </v-row>
 
@@ -354,8 +348,20 @@
 
     <!-----------supervisor popup---------->      
     <v-dialog v-model="supervisorsDialog" max-width="1200">
-        <ExamDetailSupervisorsDialog></ExamDetailSupervisorsDialog>
+        <ExamDetailSupervisorsDialog @closeDialog="closeDialog"></ExamDetailSupervisorsDialog>
     </v-dialog>
+
+    <!--alert msg-->
+    <AlertMsg 
+        v-if="alertAvailable"
+        :alertProps="{
+            title: '',
+            color: alertColor,
+            type: 'snackbar',
+            textKey: alertKey,
+            timeout: 5000
+        }">
+    </AlertMsg>
 
 </template>
 
@@ -364,19 +370,31 @@
     import * as constants from "@/utils/constants";
     import * as examViewService from "@/services/component-services/examViewService";
     import * as userAccountViewService from "@/services/component-services/userAccountViewService";
+    import { storeToRefs } from 'pinia';
+
+    const isPageInitalized = ref<boolean>(true);
 
     //stores
     const examStore = useExamStore();
+    const examStoreRef = storeToRefs(examStore);
 
     //exam
     const examId = useRoute().params.examId.toString();
 
     //pw field
+    let initalPassword: string | null = null;
     const passwordVisible = ref<boolean>(false);
-    const passwordValue = ref<string>("");
+    const quitPassword = ref<string>("");
+    let quitPasswordTimeout: ReturnType<typeof setTimeout> | null = null;
 
     //dialog
     const supervisorsDialog = ref(false);
+    let initialSupervisorsIds: string[] = []
+
+    //alert
+    const alertAvailable = ref<boolean>();
+    const alertColor = ref<string>("");
+    const alertKey = ref<string>("");
 
 
     //more exam configurations
@@ -414,9 +432,32 @@
         await getExam();
         await getExamTemplate();
         await getExamSupervisors();
-        setPasswordValue();
+        setQuitPassword();
+        isPageInitalized.value = false;
     });
 
+    watch(supervisorsDialog, () => {
+        if(supervisorsDialog.value == false){
+            //update exam if supervisors changed
+            closeDialog();
+        }
+    });
+
+    watch(quitPassword, () => {
+        if(isPageInitalized.value){
+            return;
+        }
+
+        if(quitPasswordTimeout){
+            clearTimeout(quitPasswordTimeout);
+        }
+
+        quitPasswordTimeout = setTimeout(() => {
+            updateQuitPassword();
+        }, 500);
+    });
+
+    //========exam api===========
     async function getExam(){
         const examResponse: Exam | null = await examViewService.getExam(examId);
 
@@ -444,6 +485,36 @@
         examStore.selectedExamTemplate = examTemplateResponse;
     }
 
+
+    async function deleteExam(){
+        console.log(await examViewService.deleteExam(examId));
+    }
+
+    async function updateExam(){
+        alertAvailable.value = false;
+
+        if(examStore.selectedExam == null){
+            //todo
+            return;
+        }
+
+        const updateExamResponse: Exam | null = await examViewService.updateExam(examId, examStore.selectedExam);
+
+        if(updateExamResponse == null){
+            alertAvailable.value = true;
+            alertColor.value = "error";
+            alertKey.value = "exam-update-failed";
+            return;
+        }
+
+        alertAvailable.value = true;
+        alertColor.value = "success";
+        alertKey.value = "exam-update-successful";
+    }
+    //=========================================
+
+
+    //===============supervisors logic====================
     async function getExamSupervisors(){
         if(examStore.selectedExam?.supporter == null || examStore.selectedExam.supporter.length == 0){
             return;
@@ -461,22 +532,71 @@
         }
     }
 
-    async function deleteExam(){
-        console.log(await examViewService.deleteExam(examId));
+    function openDialog(){
+        //add supervisors id to list to determine change
+        fillAlreadySelectedSupervisors();
+        supervisorsDialog.value = true;
     }
 
-    function setPasswordValue(){
+    function closeDialog(){
+        supervisorsDialog.value = false;
+        updateExamSupervisors();
+    }
+
+    function updateExamSupervisors(){
+        if(examStore.selectedExam == null){
+            //todo
+            return;
+        }
+
+        if(didSupervisorsChange()){
+            examStore.selectedExam.supporter = examStore.selectedExamSupervisors.map(supporter => supporter.uuid);
+            updateExam();
+        }
+    }
+
+    function fillAlreadySelectedSupervisors(){
+        initialSupervisorsIds = [];
+        for(let i = 0; i < examStore.selectedExamSupervisors.length; i++){
+            initialSupervisorsIds.push(examStore.selectedExamSupervisors[i].uuid);
+        }
+    }
+
+    function didSupervisorsChange(): boolean{
+        if(initialSupervisorsIds.length != examStore.selectedExamSupervisors.length){
+            return true;
+        }
+
+        const uuidsFromStoreArray = new Set(examStore.selectedExamSupervisors.map(userAccount => userAccount.uuid));
+        return !initialSupervisorsIds.every(uuid => uuidsFromStoreArray.has(uuid));
+    }
+    //=========================================
+
+
+    //===============password logic====================
+    function setQuitPassword(){
         if(examStore.selectedExam?.quitPassword == null || examStore.selectedExam?.quitPassword == ""){
             return;
         }
 
-        passwordValue.value = examStore.selectedExam?.quitPassword;
+        quitPassword.value = examStore.selectedExam?.quitPassword;
+        initalPassword = examStore.selectedExam?.quitPassword;
     }
 
-    function openDialog(){
-        supervisorsDialog.value = true;
-    }
+    async function updateQuitPassword(){
+        console.log("updateQuitPassword called")
 
+        if(examStore.selectedExam == null || initalPassword == quitPassword.value){
+            return;
+        }
+
+        console.log("updateQuitPassword called 2")
+
+
+        examStore.selectedExam.quitPassword = quitPassword.value;
+        updateExam();
+    }
+    //=========================================
 
 </script>
 

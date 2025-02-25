@@ -33,7 +33,7 @@ app.use(routes);
 
 
 app.get("/", (req: Request, res: Response) => {
-  res.sendFile(path + "index.html");
+    res.sendFile(path + "index.html");
 });
 
 app.get("*", (req: Request, res: Response) => {
@@ -48,7 +48,7 @@ function getCorstOptions(): object{
   return {
     origin: `${ENV.DEV_SERVER_URL}:${ENV.DEV_SERVER_PORT}`,
     allowedHeaders: "Content-Type, authorization",
-    methods: "GET, POST, DELETE",
+    methods: "GET, POST, DELETE, PUT",
     credentials: true,
   };
 }

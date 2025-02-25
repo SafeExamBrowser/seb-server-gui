@@ -92,37 +92,41 @@
                         <v-row>
                             <v-col>
                                 <div class="primary-text-color text-subtitle-1">
-                                    Exam Type
+                                    Filter
                                 </div>
-                                <v-chip 
-                                    v-for="filter in typeFilters"
-                                    :key="filter.value"
+                                <div>
+                                    <v-chip 
+                                        v-for="filter in typeFilters"
+                                        :key="filter.value"
 
-                                    :variant="examStore.activeTypeFilter == filter.value ? 'flat' : 'tonal'"
-                                    size="small" 
-                                    class="mr-2 mt-2"
-                                    @click="filter.eventFunction(filter.value)">
-                                    {{filter.name}}
-                                </v-chip>
-                            </v-col>
+                                        :variant="examStore.activeTypeFilter == filter.value ? 'flat' : 'tonal'"
+                                        size="small" 
+                                        class="mr-2 mt-2"
+                                        @click="filter.eventFunction(filter.value)">
+                                        {{filter.name}}
+                                    </v-chip>
+                                </div>
+                            <!-- </v-col>
                         </v-row>
 
                         <v-row>
-                            <v-col>
-                                <div class="primary-text-color text-subtitle-1">
+                            <v-col> -->
+                                <!-- <div class="primary-text-color text-subtitle-1">
                                     Exam Status
-                                </div>
-                                <v-chip 
-                                    v-for="filter in statusFilters"
-                                    :key="filter.value"
+                                </div> -->
+                                <div>
+                                    <v-chip 
+                                        v-for="filter in statusFilters"
+                                        :key="filter.value"
 
-                                    :variant="examStore.activeStatusFilter == filter.value ? 'flat' : 'tonal'"
-                                    size="small" 
-                                    class="mr-2 mt-2"
-                                    :color="filter.color"
-                                    @click="filter.eventFunction(filter.value)">
-                                    {{filter.name}}
-                                </v-chip>
+                                        :variant="examStore.activeStatusFilter == filter.value ? 'flat' : 'tonal'"
+                                        size="small" 
+                                        class="mr-2 mt-2"
+                                        :color="filter.color"
+                                        @click="filter.eventFunction(filter.value)">
+                                        {{filter.name}}
+                                    </v-chip>
+                                </div>
                             </v-col>
                         </v-row>
                     </v-col>
@@ -154,16 +158,16 @@
     const typeFilters: {name: string, value: ExamTypeEnum, eventFunction: (filter: ExamTypeEnum) => void}[] = [
         {name: "BYOD", value: ExamTypeEnum.BYOD, eventFunction: setActiveTypeFilter},
         {name: "Managed Devices", value: ExamTypeEnum.MANAGED, eventFunction: setActiveTypeFilter},
-        {name: "Not Defined", value: ExamTypeEnum.UNDEFINED, eventFunction: setActiveTypeFilter},
         {name: "VDI (Virtual Desktop Infrastructure)", value: ExamTypeEnum.VDI, eventFunction: setActiveTypeFilter},
+        {name: "Not Defined", value: ExamTypeEnum.UNDEFINED, eventFunction: setActiveTypeFilter}
     ];
 
     //filters exam status
     const statusFilters: {name: string, value: ExamStatusEnum, color: string, eventFunction: (filter: ExamStatusEnum) => void}[] = [
-        {name: "Running", value: ExamStatusEnum.RUNNING, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.RUNNING), eventFunction: setActiveStatusFilter},
-        {name: "Finished", value: ExamStatusEnum.FINISHED, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.FINISHED), eventFunction: setActiveStatusFilter},
         {name: "Up Coming", value: ExamStatusEnum.UP_COMING, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.UP_COMING), eventFunction: setActiveStatusFilter},
         {name: "Test Run", value: ExamStatusEnum.TEST_RUN, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.TEST_RUN), eventFunction: setActiveStatusFilter},
+        {name: "Running", value: ExamStatusEnum.RUNNING, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.RUNNING), eventFunction: setActiveStatusFilter},
+        {name: "Finished", value: ExamStatusEnum.FINISHED, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.FINISHED), eventFunction: setActiveStatusFilter},
         {name: "Archived", value: ExamStatusEnum.ARCHIVED, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.ARCHIVED), eventFunction: setActiveStatusFilter}
     ];
 

@@ -43,6 +43,16 @@ export async function deleteExam(req: Request, res: Response){
     }
 }
 
+export async function updateExam(req: Request, res: Response){
+    try{
+        const [updatedExam, status] = await examService.updateExam(req.headers.authorization, req.body);
+        return res.status(status).json(updatedExam);
+
+    }catch(error){
+        apiService.handleGenericApiError(error, res);
+    }
+}
+
 export async function getExams(req: Request, res: Response){
     try{
         const [exams, status] = await examService.getExams(req.headers.authorization, req.query.optionalParamters);

@@ -1,12 +1,12 @@
 <template>
-    <InfoBoxExamList @loadExamItemsCaller="loadExamItemsCaller"></InfoBoxExamList>
-    <MainContentExamList ref="mainContentExamListRef"></MainContentExamList>
+    <ExamListInfo @loadExamItemsCaller="loadExamItemsCaller"></ExamListInfo>
+    <ExamListMain ref="examListMainRef"></ExamListMain>
 </template>
 
 <script setup lang="ts">
     import { useAppBarStore } from '@/stores/store';
     import * as constants from "@/utils/constants";
-    import MainContentExamList from "@/components/views/exam/main-content/MainContentExamList.vue";
+    import ExamListMain from "@/components/views/exam/main-content/ExamListMain.vue";
     import { useExamStore } from '@/stores/examStore';
 
     //stores
@@ -14,15 +14,15 @@
     const examStore = useExamStore();
 
 
-    //ref to MainContentExamList
-    const mainContentExamListRef = ref<InstanceType<typeof MainContentExamList> | null>(null);
+    //ref to ExamListMain
+    const examListMainRef = ref<InstanceType<typeof ExamListMain> | null>(null);
 
     onBeforeMount(async () => {
         appBarStore.title = constants.EXAMS_TITLE;
 
     });
 
-    //call function in "MainContentExamList"
+    //call function in "ExamListMain"
     function loadExamItemsCaller(){
         if(examStore.currentPagingOptions == null){
             return;
@@ -32,7 +32,7 @@
             examStore.currentPagingOptions.itemsPerPage = 10; 
         }
 
-        mainContentExamListRef.value?.loadItems(examStore.currentPagingOptions);
+        examListMainRef.value?.loadItems(examStore.currentPagingOptions);
     }
 
 

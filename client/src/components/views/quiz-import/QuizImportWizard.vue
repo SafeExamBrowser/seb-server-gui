@@ -66,16 +66,16 @@
 
 
 <script setup lang="ts">
-    import InfoBoxExam from "@/components/views/quiz-import/info-box-content/InfoBoxExam.vue"; 
-    import MainContentExam from "@/components/views/quiz-import/main-content/MainContentExam.vue"; 
-    import InfoBoxTemplate from "@/components/views/quiz-import/info-box-content/InfoBoxTemplate.vue";
-    import MainContentTemplate from "@/components/views/quiz-import/main-content/MainContentTemplate.vue"; 
-    import InfoBoxSupervisor from "@/components/views/quiz-import/info-box-content/InfoBoxSupervisor.vue"; 
-    import MainContentSupervisor from "@/components/views/quiz-import/main-content/MainContentSupervisor.vue"; 
-    import InfoBoxPassword from "@/components/views/quiz-import/info-box-content/InfoBoxPassword.vue";
-    import MainContentPassword from "@/components/views/quiz-import/main-content/MainContentPassword.vue"; 
-    import InfoBoxSummary from "@/components/views/quiz-import/info-box-content/InfoBoxSummary.vue"; 
-    import MainContentSummary from "@/components/views/quiz-import/main-content/MainContentSummary.vue"; 
+    import ImportExamInfo from "@/components/views/quiz-import/info-box-content/ImportExamInfo.vue"; 
+    import ImportExamMain from "@/components/views/quiz-import/main-content/ImportExamMain.vue"; 
+    import ImportTemplateInfo from "@/components/views/quiz-import/info-box-content/ImportTemplateInfo.vue";
+    import ImportTemplateMain from "@/components/views/quiz-import/main-content/ImportTemplateMain.vue"; 
+    import ImportSupervisorInfo from "@/components/views/quiz-import/info-box-content/ImportSupervisorInfo.vue"; 
+    import ImportSupervisorMain from "@/components/views/quiz-import/main-content/ImportSupervisorMain.vue"; 
+    import ImportPasswordInfo from "@/components/views/quiz-import/info-box-content/ImportPasswordInfo.vue";
+    import ImportPasswordMain from "@/components/views/quiz-import/main-content/ImportPasswordMain.vue"; 
+    import ImportSummaryInfo from "@/components/views/quiz-import/info-box-content/ImportSummaryInfo.vue"; 
+    import ImportSummaryMain from "@/components/views/quiz-import/main-content/ImportSummaryMain.vue"; 
     import { useQuizImportStore } from "@/stores/quizImportStore";
 
     //stores
@@ -92,19 +92,19 @@
     ];
 
     const infoBoxComponents: Component = [
-        InfoBoxExam,
-        InfoBoxTemplate,
-        InfoBoxSupervisor,
-        InfoBoxPassword,
-        InfoBoxSummary
+        ImportExamInfo,
+        ImportTemplateInfo,
+        ImportSupervisorInfo,
+        ImportPasswordInfo,
+        ImportSummaryInfo
     ];
 
     const mainContentComponents: Component = [
-        MainContentExam,
-        MainContentTemplate,
-        MainContentSupervisor,
-        MainContentPassword,    
-        MainContentSummary
+        ImportExamMain,
+        ImportTemplateMain,
+        ImportSupervisorMain,
+        ImportPasswordMain,    
+        ImportSummaryMain
     ];
 
     watch(currentStep, () => {
@@ -132,7 +132,7 @@
         return false;
     }
 
-    //call function in "MainContentExam"
+    //call function in "ImportExamMain"
     function loadExamItemsCaller(){
         //workaround es the method with "defineExpose" does not work
         quizImportStore.loadExamItemsCaller = Date.now();

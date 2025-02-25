@@ -3,8 +3,8 @@ import ContainerLayout from "@/components/layout/ContainerLayout.vue"
 import LoginPage from "@/components/views/LoginPage.vue"
 import RegisterPage from "@/components/views/RegisterPage.vue"
 import HomePage from "@/components/views/home/HomePage.vue"
-import ExamListMain from "@/components/views/exam/ExamListMain.vue"
-import ExamDetailsMain from "@/components/views/exam/ExamDatailsMain.vue"
+import ExamListContainer from "@/components/views/exam/ExamListContainer.vue"
+import ExamDetailContainer from "@/components/views/exam/ExamDetailContainer.vue"
 import * as constants from "@/utils/constants";
 import MonitoringMain from "@/components/views/monitoring/MonitoringMain.vue"
 import NavigationOverview from "@/components/layout/NavigationOverview.vue"
@@ -50,7 +50,7 @@ const routes: Array<RouteRecordRaw> = [
         {
             path: constants.EXAM_ROUTE,
             name: "Exams",
-            component: ExamListMain,
+            component: ExamListContainer,
             meta: {
                 title: constants.EXAMS_TITLE + defaultPageTitle
             },
@@ -58,7 +58,7 @@ const routes: Array<RouteRecordRaw> = [
         {
             path: constants.EXAM_ROUTE + "/:examId",
             name: "ExamDetail",
-            component: ExamDetailsMain,
+            component: ExamDetailContainer,
             meta: {
                 title: constants.EXAMS_DETAIL_TITLE + defaultPageTitle
             },

@@ -1,6 +1,6 @@
 <template>
-    <InfoBoxExamDetail></InfoBoxExamDetail>
-    <MainContentExamDetail></MainContentExamDetail>
+    <ExamDetailInfo></ExamDetailInfo>
+    <ExamDetailMain></ExamDetailMain>
 </template>
 
 <script setup lang="ts">

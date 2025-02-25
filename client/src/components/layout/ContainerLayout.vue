@@ -22,15 +22,15 @@
                     </template>
 
                     <v-list>
-                        <!-- <v-list-item class="d-flex">
+                        <v-list-item class="d-flex">
                             <v-list-item-title>{{ $t('navigation.loggedInAs') }}: {{ userAccountStore.userAccount?.name }}</v-list-item-title>
-                        </v-list-item> -->
+                        </v-list-item>
 
                         <!-- <v-list-item class="d-flex" :to=constants.ACCOUNT_VIEW_ROUTE>
                             <v-list-item-title>{{ $t('navigation.accountSettings') }}</v-list-item-title>
                         </v-list-item> -->
 
-                        <v-divider class="border-opacity-25" :thickness="2"></v-divider>
+                        <v-divider class="border-opacity-25" :thickness="1"></v-divider>
 
                         <!-- <v-list-item>
                             <v-btn-toggle v-model="languageToggle" variant="text" mandatory>
@@ -46,7 +46,6 @@
                             </v-btn-toggle>
                         </v-list-item> -->
 
-                        <v-divider class="border-opacity-25" :thickness="2"></v-divider>
 
                         <v-list-item tabindex="0" class="text-decoration-underline text-blue mx-auto" @click="authStore.logout()">
                             <v-list-item-title class="mx-auto">{{ $t("navigation.signOut") }}</v-list-item-title>
@@ -176,7 +175,7 @@
 
 
     async function userMenuOpened(){
-        // await userAccountViewService.setPersonalUserAccount();
+        await userAccountViewService.setPersonalUserAccount();
     }
 
     function getNavigationOverviewRoute(): string{

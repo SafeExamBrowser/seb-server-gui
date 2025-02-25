@@ -1,5 +1,13 @@
 <template>
     <v-card>
+
+        <v-toolbar color="transparent">
+            <v-toolbar-title class="text-h6" text="Edit Supervisors"></v-toolbar-title>
+            <template v-slot:append>
+                <v-btn @click="emit('closeDialog')" icon="mdi-close"></v-btn>
+            </template>
+        </v-toolbar>
+
         <v-card-text>
             <v-row>
                 <!-----------user selection table---------->      
@@ -116,6 +124,11 @@
     //local user search / filter
     const search = ref<string>();
 
+    //emits
+    const emit = defineEmits<{
+        closeDialog: any;
+    }>();
+
 
     //=======================events & watchers=======================
     onBeforeMount(async () => {
@@ -126,18 +139,6 @@
             return;
         }
         userAccountNames.value = userAccountNamesResponse;
-
-        // //add supervisors from template to list
-        // if(examStore.selectedExamTemplate?.supporter != null){
-        //     examStore.selectedExamSupervisors.push(
-        //     ...userAccountNames.value.filter(user => 
-        //         quizImportStore.selectedExamTemplate?.supporter.includes(user.modelId))
-        //     );
-        // }
-
-        console.log(examStore.selectedExamSupervisors)
-
-
     });
 
     //add exam supervisor
@@ -164,6 +165,7 @@
         examStore.selectedExamSupervisors.splice(index, 1);
     }
 
+    
 
 </script>
 
