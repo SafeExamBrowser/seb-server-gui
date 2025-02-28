@@ -154,3 +154,12 @@ export function setIsoTimeToZero(inputDate: string): string{
 
     return inputDateSplitted[0] + dateAppendix;
 }
+
+export function getCurrentDateString(): string{
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1; 
+    const day = date.getDate();
+    
+    return `${year}-${month}-${day}`;
+}

@@ -8,8 +8,11 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AlertMsg: typeof import('./components/widgets/AlertMsg.vue')['default']
+    ConnectionConfigDialog: typeof import('./components/views/exam/main-content/ConnectionConfigDialog.vue')['default']
     ContainerLayout: typeof import('./components/layout/ContainerLayout.vue')['default']
     ExamDatailsMain: typeof import('./components/views/exam/ExamDatailsMain.vue')['default']
+    ExamDetailConfigDialog: typeof import('./components/views/exam/main-content/ExamDetailConfigDialog.vue')['default']
+    ExamDetailConnectionConfigDialog: typeof import('./components/views/exam/main-content/ExamDetailConnectionConfigDialog.vue')['default']
     ExamDetailContainer: typeof import('./components/views/exam/ExamDetailContainer.vue')['default']
     ExamDetailInfo: typeof import('./components/views/exam/info-box-content/ExamDetailInfo.vue')['default']
     ExamDetailMain: typeof import('./components/views/exam/main-content/ExamDetailMain.vue')['default']

@@ -1,5 +1,6 @@
-import *  as examService from "@/services/api-services/examService";
-import *  as examTemplateService from "@/services/api-services/examTemplateService";
+import * as examService from "@/services/api-services/examService";
+import * as examTemplateService from "@/services/api-services/examTemplateService";
+import * as configurationService from "@/services/api-services/configurationService";
 
 
 //=============api==============
@@ -42,6 +43,24 @@ export async function getExams(optionalParGetExams?: OptionalParGetExams): Promi
 export async function updateExam(examId: string, exam: Exam): Promise<Exam | null>{
     try{
         return await examService.updateExam(examId, exam);        
+    }catch(error: any){
+        console.error(error);
+        return null;
+    }
+}
+
+export async function getConnectionConfigurations(): Promise<ConnectionConfigurations | null>{
+    try{
+        return await configurationService.getConnectionConfigurations("true");
+    }catch(error: any){
+        console.error(error);
+        return null;
+    }
+}
+
+export async function downloadExamConfig(examId: string, connectionId: string): Promise<any>{
+    try{
+        return await configurationService.downloadExamConfig(examId, connectionId);
     }catch(error: any){
         console.error(error);
         return null;

@@ -13,3 +13,6 @@ export const EXAM_TEMPLATE_ROUTE = "/exam-template";
 
 export const USER_ACCOUNT_ROUTE = "/useraccount";
 export const USER_ACCOUNT_NAMES_ROUTE = "/useraccount/names";
+
+export const CONNECTION_CONFIG_ROUTE = "/client_configuration";
+export const DOWNLOAD_EXAM_CONFIG_ROUTE = "/client_configuration/download";

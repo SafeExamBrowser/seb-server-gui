@@ -4,7 +4,7 @@
         <v-toolbar color="transparent">
             <v-toolbar-title class="text-h6" text="Edit Supervisors"></v-toolbar-title>
             <template v-slot:append>
-                <v-btn @click="emit('closeDialog')" icon="mdi-close"></v-btn>
+                <v-btn @click="emit('closeSupervisorsDialog')" icon="mdi-close"></v-btn>
             </template>
         </v-toolbar>
 
@@ -126,7 +126,7 @@
 
     //emits
     const emit = defineEmits<{
-        closeDialog: any;
+        closeSupervisorsDialog: any;
     }>();
 
 

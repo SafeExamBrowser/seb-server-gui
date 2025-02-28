@@ -96,7 +96,7 @@
                                     density="compact"
                                     variant="text"
                                     icon="mdi-pencil-circle-outline"
-                                    @click="openDialog()">
+                                    @click="openSupervisorsDialog()">
                                 </v-btn>
                             </v-col>
                         </v-row>
@@ -171,7 +171,7 @@
 
                                     <v-row align="center">
                                         <v-col>
-                                            Edit SEB Settings
+                                            Edit Application and Network Settings
                                         </v-col>
                                         <v-col align="right">
                                             <v-btn 
@@ -198,15 +198,16 @@
 
                                     <v-row align="center">
                                         <v-col>
-                                            Export Exam Connection Configuration
+                                            Download Exam Config
                                         </v-col>
                                         <v-col align="right">
                                             <v-btn 
                                                 rounded="sm" 
                                                 color="primary" 
                                                 variant="flat" 
+                                                @click="startExamConfigDownloadProcess()"
                                                 class="">
-                                                Export
+                                                Download
                                             </v-btn>
                                         </v-col>
                                     </v-row>
@@ -226,7 +227,7 @@
 
                                     <v-row align="center">
                                         <v-col>
-                                            Export Exam Connection Configuration
+                                            Monitor Exam
                                         </v-col>
                                         <v-col align="right">
                                             <v-btn 
@@ -348,7 +349,16 @@
 
     <!-----------supervisor popup---------->      
     <v-dialog v-model="supervisorsDialog" max-width="1200">
-        <ExamDetailSupervisorsDialog @closeDialog="closeDialog"></ExamDetailSupervisorsDialog>
+        <ExamDetailSupervisorsDialog @closeSupervisorsDialog="closeSupervisorsDialog"></ExamDetailSupervisorsDialog>
+    </v-dialog>
+
+    <!-----------supervisor popup---------->      
+    <v-dialog v-model="configDialog" v-if="connectionConfigurationsPar" max-width="800">
+        <ExamDetailConfigDialog 
+            :connection-configurations="connectionConfigurationsPar" 
+            @closeConfigDialog="closeConfigDialog"
+            @downloadExamConfig="downloadExamConfig">
+        </ExamDetailConfigDialog>
     </v-dialog>
 
     <!--alert msg-->
@@ -370,9 +380,10 @@
     import * as constants from "@/utils/constants";
     import * as examViewService from "@/services/component-services/examViewService";
     import * as userAccountViewService from "@/services/component-services/userAccountViewService";
-    import { storeToRefs } from 'pinia';
+    import { storeToRefs } from "pinia";
+    import * as timeUtils from "@/utils/timeUtils";
 
-    const isPageInitalized = ref<boolean>(true);
+    const isPageInitalizing = ref<boolean>(true);
 
     //stores
     const examStore = useExamStore();
@@ -387,9 +398,13 @@
     const quitPassword = ref<string>("");
     let quitPasswordTimeout: ReturnType<typeof setTimeout> | null = null;
 
-    //dialog
+    //supervisors dialog
     const supervisorsDialog = ref(false);
     let initialSupervisorsIds: string[] = []
+
+    //exam config dialog
+    const configDialog = ref(false);
+    const connectionConfigurationsPar = ref<ConnectionConfigurations | null>(null);
 
     //alert
     const alertAvailable = ref<boolean>();
@@ -433,18 +448,18 @@
         await getExamTemplate();
         await getExamSupervisors();
         setQuitPassword();
-        isPageInitalized.value = false;
+        isPageInitalizing.value = false;
     });
 
     watch(supervisorsDialog, () => {
         if(supervisorsDialog.value == false){
             //update exam if supervisors changed
-            closeDialog();
+            closeSupervisorsDialog();
         }
     });
 
     watch(quitPassword, () => {
-        if(isPageInitalized.value){
+        if(isPageInitalizing.value){
             return;
         }
 
@@ -532,13 +547,13 @@
         }
     }
 
-    function openDialog(){
+    function openSupervisorsDialog(){
         //add supervisors id to list to determine change
         fillAlreadySelectedSupervisors();
         supervisorsDialog.value = true;
     }
 
-    function closeDialog(){
+    function closeSupervisorsDialog(){
         supervisorsDialog.value = false;
         updateExamSupervisors();
     }
@@ -597,6 +612,77 @@
         updateExam();
     }
     //=========================================
+
+
+    //===============exam config logic====================
+    function openConfigDialog(connectionConfigurations: ConnectionConfigurations){
+        connectionConfigurationsPar.value = connectionConfigurations;
+        configDialog.value = true;
+    }
+
+    function closeConfigDialog(){
+        configDialog.value = false;
+    }
+
+    async function startExamConfigDownloadProcess(){
+        const connectionConfigurations: ConnectionConfigurations | null = await examViewService.getConnectionConfigurations();
+
+        if(connectionConfigurations == null){
+            //todo
+            return;
+        }
+
+        // if(connectionConfigurations.content.length == 1){
+            downloadExamConfig(connectionConfigurations.content[0].id.toString());
+        //     return;
+        // }
+
+        // openConfigDialog(connectionConfigurations);
+    }
+
+    async function downloadExamConfig(connectionId: string){
+        if(configDialog.value){
+            closeConfigDialog();
+        }
+
+        if(examStore.selectedExam == null){
+            //todo
+            return;
+        }
+
+        const blobResponse = await examViewService.downloadExamConfig(examStore.selectedExam.id.toString(), connectionId);
+
+        if(blobResponse == null){
+            //todo
+            return;
+        }
+
+        createDownloadLink(blobResponse);
+    }
+
+    function createDownloadLink(blob: any){
+        // Create a link element
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.setAttribute("download", getExamConfigFileName());
+        document.body.appendChild(link);
+        
+        // Trigger the download
+        link.click();
+        
+        // Clean up
+        document.body.removeChild(link);
+        URL.revokeObjectURL(link.href);
+    }
+
+    function getExamConfigFileName(): string{
+        let examName = examStore.selectedExam?.quizName;
+        examName = examName?.replaceAll(" ", "_");
+
+        return `${examName}_${timeUtils.getCurrentDateString()}.seb`;
+    }
+    //=========================================
+
 
 </script>
 
