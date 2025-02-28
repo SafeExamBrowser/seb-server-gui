@@ -632,12 +632,12 @@
             return;
         }
 
-        // if(connectionConfigurations.content.length == 1){
+        if(connectionConfigurations.content.length == 1){
             downloadExamConfig(connectionConfigurations.content[0].id.toString());
-        //     return;
-        // }
+            return;
+        }
 
-        // openConfigDialog(connectionConfigurations);
+        openConfigDialog(connectionConfigurations);
     }
 
     async function downloadExamConfig(connectionId: string){
