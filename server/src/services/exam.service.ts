@@ -1,5 +1,6 @@
 import * as apiService from "./api.service";
 import * as constants from "../utils/constants";
+import * as ENV from "../config/envConfig";
 
 
 export async function getExamConfigurationMap(token: string, id: string, options?: {}): Promise<[object, number]>{
@@ -43,3 +44,28 @@ export async function getExams(token: string, options?: {}): Promise<[object, nu
 
     return [data, status];
 } 
+
+//todo: check why this method with config object works and the defautl one does not
+export async function archiveExam(token: string, id: string): Promise<[object, number]>{
+    const url: string =  constants.EXAM_ROUTE + "/" + id + "/archive";
+    // const {data, status} = await apiService.api.patch(url, {headers: apiService.getPatchHeaders(token)});
+
+    let config = {
+        method: 'patch',
+        url: ENV.SEB_SERVER_URL + ENV.SEB_SERVER_PORT + ENV.SEB_SERVER_DEFAULT_URL + url,
+        headers: apiService.getPatchHeaders(token)
+      };
+
+    const {data, status} = await apiService.api.request(config)
+
+
+
+    return [data, status];
+} 
+
+// export async function archiveExam(token: string, id: string): Promise<[object, number]>{
+//     const url: string =  constants.EXAM_ROUTE + "/" + id + "/archive";
+//     const {data, status} = await apiService.api.patch(url, {}, {headers: apiService.getPatchHeaders(token)});
+
+//     return [data, status];
+// } 

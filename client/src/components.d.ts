@@ -9,8 +9,10 @@ declare module 'vue' {
   export interface GlobalComponents {
     AlertMsg: typeof import('./components/widgets/AlertMsg.vue')['default']
     ContainerLayout: typeof import('./components/layout/ContainerLayout.vue')['default']
+    ExamDetailArchiveDialog: typeof import('./components/views/exam/main-content/ExamDetailArchiveDialog.vue')['default']
     ExamDetailConfigDialog: typeof import('./components/views/exam/main-content/ExamDetailConfigDialog.vue')['default']
     ExamDetailContainer: typeof import('./components/views/exam/ExamDetailContainer.vue')['default']
+    ExamDetailDeleteDialog: typeof import('./components/views/exam/main-content/ExamDetailDeleteDialog.vue')['default']
     ExamDetailInfo: typeof import('./components/views/exam/info-box-content/ExamDetailInfo.vue')['default']
     ExamDetailMain: typeof import('./components/views/exam/main-content/ExamDetailMain.vue')['default']
     ExamDetailSupervisorsDialog: typeof import('./components/views/exam/main-content/ExamDetailSupervisorsDialog.vue')['default']

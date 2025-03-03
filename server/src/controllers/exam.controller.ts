@@ -62,3 +62,13 @@ export async function getExams(req: Request, res: Response){
         apiService.handleGenericApiError(error, res);
     }
 }
+
+export async function archiveExam(req: Request, res: Response){
+    try{
+        const [exams, status] = await examService.archiveExam(req.headers.authorization, req.params.id);
+        return res.status(200).json(exams);
+
+    }catch(error){
+        apiService.handleGenericApiError(error, res);
+    }
+}

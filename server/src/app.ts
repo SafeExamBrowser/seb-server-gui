@@ -48,7 +48,7 @@ function getCorstOptions(): object{
   return {
     origin: `${ENV.DEV_SERVER_URL}:${ENV.DEV_SERVER_PORT}`,
     allowedHeaders: "Content-Type, authorization",
-    methods: "GET, POST, DELETE, PUT",
+    methods: "GET, POST, DELETE, PUT, PATCH",
     credentials: true,
   };
 }

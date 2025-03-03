@@ -205,8 +205,7 @@
                                                 rounded="sm" 
                                                 color="primary" 
                                                 variant="flat" 
-                                                @click="startExamConfigDownloadProcess()"
-                                                class="">
+                                                @click="startExamConfigDownloadProcess()">
                                                 Download
                                             </v-btn>
                                         </v-col>
@@ -234,11 +233,16 @@
                                                 rounded="sm" 
                                                 color="primary" 
                                                 variant="flat" 
+                                                :disabled="isFunctionalityDisabled(ExamStatusEnum.RUNNING)"
                                                 class="">
                                                 Start
                                             </v-btn>
                                         </v-col>
                                     </v-row>
+
+                                    <v-tooltip activator="parent">
+                                        Monitoring is only activated when exam is running
+                                    </v-tooltip>
 
                                 </v-card>
                             </v-col>
@@ -262,11 +266,16 @@
                                                 rounded="sm" 
                                                 color="primary" 
                                                 variant="flat" 
-                                                class="">
+                                                :disabled="isFunctionalityDisabled(ExamStatusEnum.FINISHED)"
+                                                @click="openArchiveDialog()">
                                                 Start
                                             </v-btn>
                                         </v-col>
                                     </v-row>
+
+                                    <v-tooltip activator="parent">
+                                        Archiving is only activated when exam is finished
+                                    </v-tooltip>
 
                                 </v-card>
                             </v-col>
@@ -288,43 +297,81 @@
                                             </div>
 
                                             <v-list class="mt-4" select-strategy="leaf">
-                                                <template 
-                                                    v-for="(examConfigOption, index) in examConfigOptions"
-                                                    :key="examConfigOption.name"
-                                                    :value="examConfigOption.name">
-                                                
-                                                    <v-list-item>
-                                                        <v-list-item-title>{{ examConfigOption.name }}</v-list-item-title>
 
-                                                        <template v-slot:append="{ isSelected }" >
-                                                            <v-list-item-action class="flex-column align-right">
-                                                                <v-icon 
-                                                                    v-if="examConfigOption.actionType == 'link'"
-                                                                    icon="mdi-chevron-right"
-                                                                    style="font-size: 30px;"
-                                                                    @click="">
-                                                                </v-icon>
-                                                                 
-                                                                <v-switch 
-                                                                    v-if="examConfigOption.actionType == 'switch'"
-                                                                    hide-details
-                                                                    color="primary">
-                                                                </v-switch>
+                                                <!----------App Signature Key--------->
+                                                <v-list-item>
+                                                    <v-list-item-title>App Signature Key</v-list-item-title>
+                                                    <template v-slot:append="{ isSelected }" >
+                                                        <v-list-item-action class="flex-column align-right">
+                                                            <v-icon 
+                                                                icon="mdi-chevron-right"
+                                                                style="font-size: 30px;"
+                                                                @click="">
+                                                            </v-icon>
+                                                        </v-list-item-action>
+                                                    </template>
+                                                </v-list-item>
+                                                <v-divider class="border-opacity-25" :thickness="2"></v-divider>
 
-                                                                <v-icon 
-                                                                    v-if="examConfigOption.actionType == 'delete-button'"
-                                                                    icon="mdi-trash-can-outline"
-                                                                    style="font-size: 30px;"
-                                                                    @click="deleteExam()">
-                                                                </v-icon>
+                                                <!----------SEB Restriction Details--------->
+                                                <v-list-item>
+                                                    <v-list-item-title>SEB Restriction Details</v-list-item-title>
+                                                    <template v-slot:append="{ isSelected }" >
+                                                        <v-list-item-action class="flex-column align-right">
+                                                            <v-icon 
+                                                                icon="mdi-chevron-right"
+                                                                style="font-size: 30px;"
+                                                                @click="">
+                                                            </v-icon>
+                                                        </v-list-item-action>
+                                                    </template>
+                                                </v-list-item>
+                                                <v-divider class="border-opacity-25" :thickness="2"></v-divider>
 
-                                                            </v-list-item-action>
-                                                        </template>
-                                                    </v-list-item>
+                                                <!----------Apply Screen Proctoring--------->
+                                                <v-list-item>
+                                                    <v-list-item-title>Apply Screen Proctoring</v-list-item-title>
+                                                    <template v-slot:append="{ isSelected }" >
+                                                        <v-list-item-action class="flex-column align-right">
+                                                            <v-switch 
+                                                                v-model="isScreenProctoringActive"
+                                                                v-on:update:model-value="applyScreenProctoring()"
+                                                                hide-details
+                                                                color="primary">
+                                                            </v-switch>
+                                                        </v-list-item-action>
+                                                    </template>
+                                                </v-list-item>
+                                                <v-divider class="border-opacity-25" :thickness="2"></v-divider>
 
-                                                    <v-divider v-if="index != examConfigOptions.length-1" class="border-opacity-25" :thickness="2"></v-divider>
+                                                <!----------Release SEB Lock--------->
+                                                <v-list-item>
+                                                    <v-list-item-title>Release SEB Lock</v-list-item-title>
+                                                    <template v-slot:append="{ isSelected }" >
+                                                        <v-list-item-action class="flex-column align-right">
+                                                            <v-switch 
+                                                                hide-details
+                                                                color="primary">
+                                                            </v-switch>
+                                                        </v-list-item-action>
+                                                    </template>
+                                                </v-list-item>
+                                                <v-divider class="border-opacity-25" :thickness="2"></v-divider>
 
-                                                </template>
+                                                <!----------Delete Exam--------->
+                                                <v-list-item>
+                                                    <v-list-item-title>Delete Exam</v-list-item-title>
+                                                    <template v-slot:append="{ isSelected }" >
+                                                        <v-list-item-action class="flex-column align-right">
+                                                            <v-icon 
+                                                                icon="mdi-trash-can-outline"
+                                                                style="font-size: 30px;"
+                                                                @click="deleteExam()">
+                                                            </v-icon>
+                                                        </v-list-item-action>
+                                                    </template>
+                                                </v-list-item>
+
                                             </v-list>
                                         </v-col>
                                     </v-row>
@@ -361,6 +408,14 @@
         </ExamDetailConfigDialog>
     </v-dialog>
 
+    <!-----------archive popup---------->      
+    <v-dialog v-model="archiveDialog" max-width="800">
+        <ExamDetailArchiveDialog 
+            @close-archive-dialog="closeArchiveDialog"
+            @archive-exam="archiveExam">
+        </ExamDetailArchiveDialog>
+    </v-dialog>
+
     <!--alert msg-->
     <AlertMsg 
         v-if="alertAvailable"
@@ -382,6 +437,8 @@
     import * as userAccountViewService from "@/services/component-services/userAccountViewService";
     import { storeToRefs } from "pinia";
     import * as timeUtils from "@/utils/timeUtils";
+    import * as generalUtils from "@/utils/generalUtils";
+    import { ExamStatusEnum } from '@/models/examFiltersEnum';
 
     const isPageInitalizing = ref<boolean>(true);
 
@@ -406,40 +463,16 @@
     const configDialog = ref(false);
     const connectionConfigurationsPar = ref<ConnectionConfigurations | null>(null);
 
+    //archive dialog
+    const archiveDialog = ref(false);
+
     //alert
     const alertAvailable = ref<boolean>();
     const alertColor = ref<string>("");
     const alertKey = ref<string>("");
 
-
-    //more exam configurations
-    const examConfigOptions: {name: string, actionType: string, link: string}[] = [
-        {
-            name: "App Signature Key",
-            actionType: "link",
-            link: ""
-        },
-        {
-            name: "SEB Restriction Details",
-            actionType: "link",
-            link: ""
-        },
-        {
-            name: "Edit Screen Proctoring",
-            actionType: "link",
-            link: ""
-        },
-        {
-            name: "Release SEB Lock",
-            actionType: "switch",
-            link: ""
-        },
-        {
-            name: "Delete Exam",
-            actionType: "delete-button",
-            link: ""
-        }
-    ];
+    //screen proctoring
+    const isScreenProctoringActive = ref<boolean>(false);
 
 
     onBeforeMount(async () => {
@@ -525,6 +558,7 @@
         alertAvailable.value = true;
         alertColor.value = "success";
         alertKey.value = "exam-update-successful";
+        examStore.selectedExam = updateExamResponse;
     }
     //=========================================
 
@@ -682,6 +716,76 @@
         return `${examName}_${timeUtils.getCurrentDateString()}.seb`;
     }
     //=========================================
+
+
+    //===============monitor & archive exam logic====================
+    function isFunctionalityDisabled(allowedExamStatus: ExamStatusEnum): boolean{
+        if(examStore.selectedExam == null){
+            return true;
+        }
+
+        const examStatus: ExamStatusEnum | null = generalUtils.findEnumValue(ExamStatusEnum, examStore.selectedExam?.status);
+        
+        //Running = monitor is allowed
+        //Fished = archived is allowed
+        if(examStatus != allowedExamStatus){
+            return true;
+        }
+
+        return false;
+    }
+
+    function openArchiveDialog(){
+        archiveDialog.value = true;
+    }
+
+    function closeArchiveDialog(){
+        archiveDialog.value = false;
+    }
+
+    async function archiveExam(){
+        closeArchiveDialog();
+
+        if(examStore.selectedExam == null){
+            return;
+        }
+
+        const archiveExamResponse: Exam | null = await examViewService.archiveExam(examStore.selectedExam.id.toString());
+
+        if(archiveExamResponse == null){
+            //todo
+            return;
+        }
+
+        updateExam();
+
+        console.log("archive exam will be pressed")
+
+    }
+
+    //=========================================
+
+
+    //===============screen proctoring logic====================
+    async function applyScreenProctoring(){
+        if(examStore.selectedExam == null){
+            return;
+        }
+
+        const params: ScreenProctoringSettings = examViewService.createDefaultScreenProctoringSettings(examStore.selectedExam.id, examStore.selectedExam.quizName)
+        const saveScreenProcResponse: Exam | null = await examViewService.saveScreenProctoringSettings(examStore.selectedExam.id.toString(), params);
+
+        if(saveScreenProcResponse == null){
+            isScreenProctoringActive.value = false;
+            //todo
+            return;
+        }
+
+
+        console.log(isScreenProctoringActive.value)
+    }
+
+
 
 
 </script>

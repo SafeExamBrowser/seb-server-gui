@@ -23,3 +23,7 @@ export async function updateExam(id: string, exam: Exam): Promise<Exam | any>{
 export async function getExams(optionalParamters?: OptionalParGetExams): Promise<Exams | any>{
     return (await apiService.api.get(examsUrl, {headers: apiService.getHeaders(), params: {optionalParamters}})).data;
 }
+
+export async function archiveExam(id: string): Promise<Exam | any>{
+    return (await apiService.api.patch(examUrl + "/" + id + "/archive", {headers: apiService.getHeaders()})).data;
+}

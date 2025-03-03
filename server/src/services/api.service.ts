@@ -45,6 +45,13 @@ export function getPutHeaders(token: string): object {
     };
 }
 
+export function getPatchHeaders(token: string): object {
+    return {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Authorization": token,
+    };
+}
+
 export function getHeadersWithoutAuth(): object {
     return {
         "accept": "application/json",
