@@ -26,7 +26,7 @@ export async function createExam(token: string, newExam: {}): Promise<[object, n
 
 export async function updateExam(token: string, updatedExam: {}): Promise<[object, number]>{
     const url: string =  constants.EXAM_ROUTE;
-    const {data, status} = await apiService.api.put(url, updatedExam, {headers: apiService.getPutHeaders(token)});
+    const {data, status} = await apiService.api.put(url, updatedExam, {headers: apiService.getApplicationJsonHeaders(token)});
     
     return [data, status];
 }

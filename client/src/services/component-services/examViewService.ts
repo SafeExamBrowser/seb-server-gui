@@ -92,11 +92,11 @@ export async function saveScreenProctoringSettings(id: string, screenProctoringS
 
 export function createDefaultScreenProctoringSettings(examId: number, groupName: string): ScreenProctoringSettings{
     return {
-        examId: examId,
+        id: examId,
         enableScreenProctoring: true,
-        collectingStrategy: "EXAM",
-        collectingGroupName: groupName,
+        spsCollectingStrategy: "EXAM",
+        spsCollectingGroupName: groupName,
         bundled: false,
-        confirmChangeStrategy: false
+        changeStrategyConfirm: false
     };
 }

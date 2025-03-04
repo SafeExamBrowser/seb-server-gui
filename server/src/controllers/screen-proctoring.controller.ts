@@ -5,7 +5,12 @@ import {Request, Response} from "express";
 
 export async function saveScreenProctoringSettings(req: Request, res: Response){
     try{
-        const [exam, status] = await screenProctoringService.saveScreenProctoringSettings(req.headers.authorization, req.params.id, req.body);
+        const [exam, status] = await screenProctoringService.saveScreenProctoringSettings(
+            req.headers.authorization, 
+            req.params.id, 
+            req.body
+        
+        );
         return res.status(status).json(exam);
 
     }catch(error){

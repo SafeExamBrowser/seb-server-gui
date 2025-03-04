@@ -1,15 +1,15 @@
 type ScreenProctoringSettings = {
-    examId?: number;
+    id?: number;
     enableScreenProctoring?: boolean;
     spsServiceURL?: string;
     spsAPIKey?: string;
     spsAPISecret?: string;
     spsAccountId?: string;
     spsAccountPassword?: string; 
-    collectingStrategy?: string;
-    collectingGroupName?: string;
-    collectingGroupSize?: number;
-    sebGroupsSelection?: string;
+    spsCollectingStrategy?: string;
+    spsCollectingGroupName?: string;
+    spsCollectingGroupSize?: number;
+    spsSEBGroupsSelection?: string;
     bundled?: boolean;
-    confirmChangeStrategy?: boolean;
+    changeStrategyConfirm?: boolean;
 };

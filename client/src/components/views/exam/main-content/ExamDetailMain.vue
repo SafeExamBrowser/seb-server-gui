@@ -772,14 +772,25 @@
             return;
         }
 
-        const params: ScreenProctoringSettings = examViewService.createDefaultScreenProctoringSettings(examStore.selectedExam.id, examStore.selectedExam.quizName)
-        const saveScreenProcResponse: Exam | null = await examViewService.saveScreenProctoringSettings(examStore.selectedExam.id.toString(), params);
+        console.log(examStore.selectedExam.id)
+
+        const params: ScreenProctoringSettings = examViewService.createDefaultScreenProctoringSettings(
+            examStore.selectedExam.id, 
+            examStore.selectedExam.quizName
+        );
+
+        const saveScreenProcResponse: Exam | null = await examViewService.saveScreenProctoringSettings(
+            examStore.selectedExam.id.toString(), 
+            params
+        );
 
         if(saveScreenProcResponse == null){
             isScreenProctoringActive.value = false;
             //todo
             return;
         }
+
+        updateExam();
 
 
         console.log(isScreenProctoringActive.value)

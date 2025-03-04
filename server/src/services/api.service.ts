@@ -37,7 +37,7 @@ export function getOctetStreamHeaders(token: string): object {
     };
 }
 
-export function getPutHeaders(token: string): object {
+export function getApplicationJsonHeaders(token: string): object {
     return {
         "accept": "application/json",
         "Authorization": token,
