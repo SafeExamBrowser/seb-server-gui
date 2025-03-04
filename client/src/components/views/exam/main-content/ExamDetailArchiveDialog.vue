@@ -16,7 +16,7 @@
             </v-row>
             <v-row>
                 <v-col class="font-weight-bold">
-                    Are you sure to archive the exam?
+                    Are you sure you want to archive the exam?
                 </v-col>
             </v-row>
 

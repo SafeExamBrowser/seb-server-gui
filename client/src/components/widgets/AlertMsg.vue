@@ -82,6 +82,14 @@
         {
             key: "exam-update-failed",
             value: "Exam update failed"
+        },
+        {
+            key: "activate-screen-proctoring-failed",
+            value: "Activation of screen proctoring failed"
+        },
+        {
+            key: "deactivate-screen-proctoring-failed",
+            value: "Deactivation of screen proctoring failed"
         }
     ];
 

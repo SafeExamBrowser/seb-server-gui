@@ -198,7 +198,7 @@
 
                                     <v-row align="center">
                                         <v-col>
-                                            Download Exam Config
+                                            Download Exam Connection Configuration
                                         </v-col>
                                         <v-col align="right">
                                             <v-btn 
@@ -366,7 +366,7 @@
                                                             <v-icon 
                                                                 icon="mdi-trash-can-outline"
                                                                 style="font-size: 30px;"
-                                                                @click="deleteExam()">
+                                                                @click="openDeleteDialog()">
                                                             </v-icon>
                                                         </v-list-item-action>
                                                     </template>
@@ -399,7 +399,7 @@
         <ExamDetailSupervisorsDialog @closeSupervisorsDialog="closeSupervisorsDialog"></ExamDetailSupervisorsDialog>
     </v-dialog>
 
-    <!-----------supervisor popup---------->      
+    <!-----------connection configuration popup---------->      
     <v-dialog v-model="configDialog" v-if="connectionConfigurationsPar" max-width="800">
         <ExamDetailConfigDialog 
             :connection-configurations="connectionConfigurationsPar" 
@@ -414,6 +414,14 @@
             @close-archive-dialog="closeArchiveDialog"
             @archive-exam="archiveExam">
         </ExamDetailArchiveDialog>
+    </v-dialog>
+
+    <!-----------delete exam popup---------->      
+    <v-dialog v-model="deleteDialog" max-width="800">
+        <ExamDetailDeleteDialog 
+            @close-delete-dialog="closeDeleteDialog"
+            @delete-exam="deleteExam">
+        </ExamDetailDeleteDialog>
     </v-dialog>
 
     <!--alert msg-->
@@ -439,6 +447,7 @@
     import * as timeUtils from "@/utils/timeUtils";
     import * as generalUtils from "@/utils/generalUtils";
     import { ExamStatusEnum } from '@/models/examFiltersEnum';
+    import { navigateTo } from '@/router/navigation';
 
     const isPageInitalizing = ref<boolean>(true);
 
@@ -474,6 +483,9 @@
     //screen proctoring
     const isScreenProctoringActive = ref<boolean>(false);
 
+    //delete exam
+    const deleteDialog = ref<boolean>(false);
+
 
     onBeforeMount(async () => {
         //todo: clear store before reload
@@ -481,6 +493,7 @@
         await getExamTemplate();
         await getExamSupervisors();
         setQuitPassword();
+        setScreenProctoring();
         isPageInitalizing.value = false;
     });
 
@@ -533,11 +546,6 @@
         examStore.selectedExamTemplate = examTemplateResponse;
     }
 
-
-    async function deleteExam(){
-        console.log(await examViewService.deleteExam(examId));
-    }
-
     async function updateExam(){
         alertAvailable.value = false;
 
@@ -549,9 +557,9 @@
         const updateExamResponse: Exam | null = await examViewService.updateExam(examId, examStore.selectedExam);
 
         if(updateExamResponse == null){
-            alertAvailable.value = true;
-            alertColor.value = "error";
-            alertKey.value = "exam-update-failed";
+                alertAvailable.value = true;
+                alertColor.value = "error";
+                alertKey.value = "exam-update-failed";
             return;
         }
 
@@ -767,14 +775,37 @@
 
 
     //===============screen proctoring logic====================
+    function setScreenProctoring(){
+        if(examStore.selectedExam == null){
+            return;
+        } 
+
+        console.log(examStore.selectedExam.additionalAttributes.enableScreenProctoring)
+
+        if(examStore.selectedExam.additionalAttributes.enableScreenProctoring == "true"){
+            isScreenProctoringActive.value = true;
+        }
+    }
+
     async function applyScreenProctoring(){
+        if(isScreenProctoringActive.value){
+            changeScreenProctoringSettings(true, "activate");
+            return;
+        }
+
+        changeScreenProctoringSettings(false, "deactivate");
+    }
+
+    async function changeScreenProctoringSettings(enable: boolean, type: string){  
+
+        console.log("changeScreenProctoringSettings " + enable + " " + type);
+
         if(examStore.selectedExam == null){
             return;
         }
 
-        console.log(examStore.selectedExam.id)
-
         const params: ScreenProctoringSettings = examViewService.createDefaultScreenProctoringSettings(
+            enable,
             examStore.selectedExam.id, 
             examStore.selectedExam.quizName
         );
@@ -785,17 +816,38 @@
         );
 
         if(saveScreenProcResponse == null){
-            isScreenProctoringActive.value = false;
+            isScreenProctoringActive.value = !enable;
+
+            alertAvailable.value = true;
+            alertColor.value = "error";
+            alertKey.value = type + "-screen-proctoring-failed";
+
+            return;
+        }
+
+        // updateExam();
+    }
+
+
+    //===============delete exam logic====================
+    function openDeleteDialog(){
+        deleteDialog.value = true;
+    }
+
+    function closeDeleteDialog(){
+        deleteDialog.value = false;
+    }
+
+    async function deleteExam(){
+        const deleteExamResponse: any | null = await examViewService.deleteExam(examId);
+
+        if(deleteExamResponse == null){
             //todo
             return;
         }
 
-        updateExam();
-
-
-        console.log(isScreenProctoringActive.value)
+        navigateTo(constants.EXAM_ROUTE);
     }
-
 
 
 

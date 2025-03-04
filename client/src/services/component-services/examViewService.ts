@@ -90,10 +90,10 @@ export async function saveScreenProctoringSettings(id: string, screenProctoringS
 
 //=============screen proctoring==============
 
-export function createDefaultScreenProctoringSettings(examId: number, groupName: string): ScreenProctoringSettings{
+export function createDefaultScreenProctoringSettings(enable: boolean, examId: number, groupName: string): ScreenProctoringSettings{
     return {
         id: examId,
-        enableScreenProctoring: true,
+        enableScreenProctoring: enable,
         spsCollectingStrategy: "EXAM",
         spsCollectingGroupName: groupName,
         bundled: false,
