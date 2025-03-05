@@ -33,7 +33,7 @@ RUN npm install
 COPY env.sh /app/env.sh
 RUN chmod +x /app/env.sh
 
-EXPOSE 3000
+EXPOSE 3001
 
 # Start the server
 CMD ["/bin/sh", "-c", "./env.sh && node ./server/dist/app.js"]
