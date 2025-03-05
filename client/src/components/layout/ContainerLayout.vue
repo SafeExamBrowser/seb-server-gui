@@ -3,7 +3,9 @@
     <v-app-bar>
         <!--seb logo-->
         <template v-slot:prepend >
-            <v-img :width=50 src="/img/seb-logo-no-border.png"></v-img>
+            <a :href="getHomePageRoute()" class="text-decoration-none text-black">
+                <v-img :width=50 src="/img/seb-logo-no-border.png"></v-img>
+            </a>
         </template>
 
         <!--current site title-->
@@ -188,6 +190,14 @@
         }
 
         return constants.HOME_PAGE_ROUTE;
+    }
+
+    function getHomePageRoute(){
+        if(import.meta.env.VITE_SUB_PATH == null){
+            return constants.HOME_PAGE_ROUTE;
+        }
+
+        return import.meta.env.VITE_SUB_PATH + constants.HOME_PAGE_ROUTE;
     }
 
 </script>  
