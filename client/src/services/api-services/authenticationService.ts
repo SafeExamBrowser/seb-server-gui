@@ -12,13 +12,6 @@ export async function login(username: string, password: string): Promise<string 
     try {
         const url: string = ENV.SERVER_URL + ENV.SERVER_PORT + "/authorize";
 
-
-        console.log("trying to log in...")
-        console.log("url used: " + url)
-        console.log("credentials used: " + username + " " + password)
-
-
-
         //this is implemented for general api-calls in apiService.ts but has to be done explicitly for login as it does not use said service
         setLoginTimeouts();
 
