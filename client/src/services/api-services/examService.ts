@@ -12,7 +12,7 @@ export async function createExam(createExamPar: CreateExamPar): Promise<any>{
     return (await apiService.api.post(examUrl, createExamPar, {headers: apiService.getPostHeaders()})).data;
 }
 
-export async function deleteExam(id: string): Promise<any>{
+export async function deleteExam(id: string): Promise<any | null>{
     return (await apiService.api.delete(examUrl + "/" + id, {headers: apiService.getHeaders()})).data;
 }
 

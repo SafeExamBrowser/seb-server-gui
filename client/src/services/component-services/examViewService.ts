@@ -23,7 +23,7 @@ export async function getExamTemplate(id: string): Promise<ExamTemplate | null>{
     }
 }
 
-export async function deleteExam(id: string): Promise<any>{
+export async function deleteExam(id: string): Promise<any | null>{
     try{
         return await examService.deleteExam(id);    
     }catch(error){

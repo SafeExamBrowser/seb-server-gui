@@ -4,6 +4,11 @@ WORKDIR /app/client
 COPY client/package*.json ./
 RUN npm install
 COPY client/ .
+
+# Inject environment variables for Vue.js
+ARG VITE_SUB_PATH
+RUN echo "VITE_SUB_PATH=$VITE_SUB_PATH" > .env
+
 RUN npm run build
 
 # Stage 2: Build the Express server
@@ -20,6 +25,7 @@ FROM node:22.2.0-alpine
 WORKDIR /app 
 COPY --from=server-builder /app/server/dist ./server/dist
 COPY --from=client-builder /app/client/dist ./server/dist/views
+COPY --from=client-builder /app/client/.env ./server/dist/views
 COPY server/package*.json ./
 RUN npm install
 
