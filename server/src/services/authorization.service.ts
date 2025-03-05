@@ -3,12 +3,19 @@ import {Buffer} from 'buffer';
 import * as ENV from "../config/envConfig";
 import * as apiService from "../services/api.service";
 import * as utils from "../utils/utils";
+import {LOG} from "../logging/logger";
+
 
 
 const tokenUrl: string = ENV.SEB_SERVER_URL + ENV.SEB_SERVER_PORT + "/oauth/token?grant_type=";
 const jwtUrl: string = ENV.SEB_SERVER_URL + ENV.SEB_SERVER_PORT + "/oauth/jwttoken/verify";
 
 export async function authorizeViaSebServer(username: string, password: string): Promise<object>{
+
+    LOG.info("trying to log in...")
+    LOG.info("url used: " + tokenUrl)
+    LOG.info("credentials used: " + username + " " + password)
+
     const url: string = tokenUrl + "password&username=" + username + "&password=" + password;
     const encodedCredentials: string = utils.createEncodedCredentials(ENV.SEB_SERVER_USERNAME, ENV.SEB_SERVER_PASSWORD);
 
