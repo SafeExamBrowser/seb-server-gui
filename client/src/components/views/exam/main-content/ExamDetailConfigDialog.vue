@@ -63,8 +63,8 @@
     
     //emits
     const emit = defineEmits<{
-        closeConfigDialog: any,
-        downloadExamConfig: any,
+        closeConfigDialog: [],
+        downloadExamConfig: [connectionId: string]
     }>();
 
     //props
@@ -77,8 +77,8 @@
 
     //=======================events & watchers=======================
     function confirmSelection(){
-        if(connectionConfigSelect != null){
-            emit("downloadExamConfig", connectionConfigSelect.value?.toString());
+        if(connectionConfigSelect.value != null){
+            emit("downloadExamConfig", connectionConfigSelect.value.toString());
         }
     }
 

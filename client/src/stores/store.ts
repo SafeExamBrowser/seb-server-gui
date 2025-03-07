@@ -64,6 +64,7 @@ export const useAuthStore = defineStore("auth", () => {
 
         setAccessToken("");
         setRefreshToken("");
+        useUserAccountStore().setUserTimeZone("");
         useUserAccountStore().userAccount = null;
 
         navigateTo(constants.DEFAULT_ROUTE);
@@ -101,7 +102,17 @@ export const useUserAccountStore = defineStore("account", () => {
     const isAccountSelected = ref<boolean>(false);
     const selectedAccountId = ref<number>();
 
-    return { userAccount, isEditMode, isAccountSelected, selectedAccountId };
+    function setUserTimeZone(userTimeZone: string){
+        localStorage.setItem("userTimeZone", userTimeZone);
+    }
+
+    function getUserTimeZone(): string{
+        const userTimeZone: string | null = localStorage.getItem("userTimeZone");
+        if (userTimeZone == null) { return "UTC"; }
+        return userTimeZone;
+    }
+
+    return { userAccount, isEditMode, isAccountSelected, selectedAccountId, setUserTimeZone, getUserTimeZone };
 });
 //-------------------------------------------------//
 

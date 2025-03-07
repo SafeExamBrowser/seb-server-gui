@@ -1,7 +1,224 @@
 import { useUserAccountStore } from "@/stores/store";
 import { toZonedTime } from "date-fns-tz";
+import * as userAccountViewService from "@/services/component-services/userAccountViewService";
+import {DateTime} from "luxon";
 
 
+
+//display dates according to the user's timezone
+export function formatIsoDateToFullDate(dateString: string | null | undefined): string {
+    const userAccountStore = useUserAccountStore();
+    const timeZone: string = userAccountStore.getUserTimeZone();
+
+    if (dateString == null) {
+        return "";
+    }
+
+    // Parse the input date string
+    const date = new Date(dateString);
+    
+    // Check if the date is valid
+    if (isNaN(date.getTime())) {
+        return "";
+    }
+    
+    // Format the date using Intl.DateTimeFormat with the specified timezone
+    const formatter = new Intl.DateTimeFormat('de-DE', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        timeZone: timeZone,
+        hour12: false
+    });
+    
+    // Get formatted parts
+    const parts = formatter.formatToParts(date);
+    
+    // Build the formatted string
+    const formattedParts: Record<string, string> = {};
+    parts.forEach(part => {
+        formattedParts[part.type] = part.value;
+    });
+    
+    // Create the formatted string in the required format: DD.MM.YYYY HH:MM:SS
+    return `${formattedParts.day}.${formattedParts.month}.${formattedParts.year} ${formattedParts.hour}:${formattedParts.minute}:${formattedParts.second}`;
+}
+
+//
+export function setIsoTimeToZero_old(inputDate: Date): string{
+    const userAccountStore = useUserAccountStore();
+
+    console.log(userAccountStore.getUserTimeZone()) 
+    let convertedDate: Date = convertDateWithTimeZone(inputDate);
+
+    // Get the equivalent UTC date components
+    const utcYear = convertedDate.getUTCFullYear();
+    const utcMonth = convertedDate.getUTCMonth() + 1; // Months are zero-based
+    const utcDay = convertedDate.getUTCDate();
+
+    console.log("inputDate: " + inputDate)
+    console.log("convertedDate " + convertedDate)
+    console.log("outputDate " + `${utcYear}-${String(utcMonth).padStart(2, '0')}-${String(utcDay).padStart(2, '0')}T00:00:00Z`)
+
+    // Format as ISO string with T00:00:00Z (always at UTC midnight)
+    return `${utcYear}-${String(utcMonth).padStart(2, '0')}-${String(utcDay).padStart(2, '0')}T00:00:00Z`;
+}
+
+
+//takes a date from the datepicker, puts time to 0 and converts it to UTC
+export function setIsoTimeToZero(inputDate: Date): string {
+    const userAccountStore = useUserAccountStore();
+    const timeZone: string = userAccountStore.getUserTimeZone();
+
+    
+    // Create a date formatter that respects the user's timezone
+    const formatter = new Intl.DateTimeFormat('en-US', {
+      timeZone: timeZone,
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    });
+    
+    // Format the date in user's timezone
+    const formattedDateParts = formatter.formatToParts(inputDate);
+    
+    // Extract year, month, and day from the formatted date
+    const dateMap: Record<string, string> = {};
+    formattedDateParts.forEach(part => {
+      if (part.type !== 'literal') {
+        dateMap[part.type] = part.value;
+      }
+    });
+    
+    // Create a new date at 00:00:00 in the user's timezone
+    // Note: months in JavaScript Date are 0-indexed, so we subtract 1 from the month
+    const userDateAtStartOfDay = new Date(
+      Date.UTC(
+        parseInt(dateMap.year, 10),
+        parseInt(dateMap.month, 10) - 1,
+        parseInt(dateMap.day, 10),
+        0, 0, 0, 0
+      )
+    );
+
+    console.log("inputDate " + inputDate)
+    console.log("timeZone: " + timeZone)
+    console.log("output " + userDateAtStartOfDay.toISOString())
+    
+    // Convert to ISO string (which will represent the time in UTC)
+    return userDateAtStartOfDay.toISOString().replace('.000Z', 'Z');
+  }
+
+
+
+export function getCurrentDateString(): string{
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1; 
+    const day = date.getDate();
+    
+    return `${year}-${month}-${day}`;
+}
+
+
+
+
+
+
+function convertUTCToTimeZone(utcDate: number): Date {
+    const userAccountStore = useUserAccountStore();
+
+    const utcDateObject = new Date(utcDate);
+    const timezone: string | undefined = userAccountStore.userAccount?.timezone;
+    if(timezone == null){
+        return utcDateObject;
+    }
+
+    const dateInTimezone = toZonedTime(utcDateObject, timezone);
+
+    return dateInTimezone;
+}
+
+function convertDateWithTimeZone(date: Date): Date {
+    return toZonedTime(date, useUserAccountStore().getUserTimeZone());
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// //formatIsoDateToFullDate
+// export function formatIsoDateToFullDate(inputDate: string | null | undefined): string {
+//     const userAccountStore = useUserAccountStore();
+//     const timeZone: string = userAccountStore.getUserTimeZone();
+
+//     if (inputDate == null) {
+//         return "";
+//     }
+
+//     // Parse the input date string into a Date object
+//     // const date = new Date(inputDate);
+//     // const date = convertDateWithTimeZone(new Date(inputDate));
+
+//     const date_temp = DateTime.fromISO(inputDate, {zone: timeZone});
+//     const date = new Date(date_temp.toString());
+
+//     if (isNaN(date.getTime())) {
+//         return "";
+//     }
+
+//     // Format the date using Intl.DateTimeFormat with the provided timezone
+//     const formatter = new Intl.DateTimeFormat('de-CH', {
+//         timeZone,
+//         year: 'numeric',
+//         month: '2-digit',
+//         day: '2-digit',
+//         hour: '2-digit',
+//         minute: '2-digit',
+//         second: '2-digit',
+//         hour12: false
+//     });
+
+//     // Format the date and extract components
+//     const formattedParts = formatter.formatToParts(date);
+    
+//     const day = formattedParts.find(part => part.type === 'day')?.value ?? "00";
+//     const month = formattedParts.find(part => part.type === 'month')?.value ?? "00";
+//     const year = formattedParts.find(part => part.type === 'year')?.value ?? "0000";
+//     const hours = formattedParts.find(part => part.type === 'hour')?.value ?? "00";
+//     const minutes = formattedParts.find(part => part.type === 'minute')?.value ?? "00";
+//     const seconds = formattedParts.find(part => part.type === 'second')?.value ?? "00";
+
+//     console.log("inputDate: " + inputDate)
+//     console.log("input: " + date)
+//     console.log("used timezone: " + timeZone)
+//     console.log("output: " + `${day}.${month}.${year} ${hours}:${minutes}:${seconds}`)
+
+//     return `${day}.${month}.${year} ${hours}:${minutes}:${seconds}`;
+// }
+
+
+
+
+
+
+
+
+
+
+//==========not used atm============
 export function formatTimestampToFullDate(timestamp: string | any): string{
     if(timestamp == "0" || timestamp == null){
         return "";
@@ -105,61 +322,4 @@ export function getStartAndEndTimestampOfDay(sqlDate: string): {start: string, e
         end: endTime.toString()
     }
 }
-
-function convertUTCToTimeZone(utcDate: number): Date {
-    const userAccountStore = useUserAccountStore();
-
-    const utcDateObject = new Date(utcDate);
-    const timezone: string | undefined = userAccountStore.userAccount?.timezone;
-    if(timezone == null){
-        return utcDateObject;
-    }
-
-    const dateInTimezone = toZonedTime(utcDateObject, timezone);
-
-    return dateInTimezone;
-}
-
-export function formatIsoDateToFullDate(inputDate: string | null | undefined): string {
-    //todo check timezone stuff
-
-    if(inputDate == null){
-        return "";
-    }
-
-    // Parse the input date string into a Date object
-    const date = new Date(inputDate);
-
-    if (isNaN(date.getTime())) {
-        return "";
-    }
-
-    // Format the date components
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
-    const year = date.getFullYear();
-
-    // Format the time components
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const seconds = String(date.getSeconds()).padStart(2, '0');
-
-    // Combine the formatted components into the desired format
-    return `${day}.${month}.${year} ${hours}:${minutes}:${seconds}`;
-}
-
-export function setIsoTimeToZero(inputDate: string): string{
-    const dateAppendix: string = "T00:00:00Z";
-    const inputDateSplitted: string[] = inputDate.split("T");
-
-    return inputDateSplitted[0] + dateAppendix;
-}
-
-export function getCurrentDateString(): string{
-    const date = new Date();
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1; 
-    const day = date.getDate();
-    
-    return `${year}-${month}-${day}`;
-}
+//========================================================

@@ -52,6 +52,7 @@
                                 <v-col cols="9" class="mb-2">
                                     <VueDatePicker 
                                         v-model="quizImportStore.startDate"  
+                                        auto-position="bottom"
                                         format="dd.MM.yyyy"
                                         :teleport="true"
                                         :enable-time-picker="false">
@@ -68,7 +69,7 @@
                                         color="black" 
                                         variant="outlined"
                                         @click="clearForm()">
-                                        {{ $t('searchForm.cancel') }}
+                                        Cancel
                                     </v-btn>
 
                                     <v-btn 
@@ -77,7 +78,7 @@
                                         variant="flat" 
                                         class="ml-2"
                                         @click="loadExamItemsCaller()">
-                                        {{ $t('searchForm.search') }}
+                                        Search
                                     </v-btn>
 
                                 </v-col>
@@ -114,6 +115,7 @@
     function clearForm(){
         quizImportStore.searchField = "";
         quizImportStore.startDate = null;
+        loadExamItemsCaller();
     }
 
 </script>

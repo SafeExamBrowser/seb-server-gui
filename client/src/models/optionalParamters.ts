@@ -18,6 +18,7 @@ type OptionalParGetQuizzes = {
     filterCriteria?: string;
     name?: string;
     start_timestamp?: string;
+    lms_setup?: string;
 }
 
 type OptionalParGetExams = {

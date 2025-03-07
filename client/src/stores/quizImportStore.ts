@@ -9,10 +9,15 @@ export const useQuizImportStore = defineStore("quizImport", () => {
     const currentPagingOptions = ref<ServerTablePaging>();
     const loadExamItemsCaller = ref<number>();
 
+    //selected values
+    const selectedAssessmentTool = ref<AssessmentTool | null>(null);
     const selectedQuiz = ref<Quiz | null>();
     const selectedExamTemplate = ref<ExamTemplate | null>(null);
     const selectedExamSupervisors = ref<UserAccountName[]>([]);
     const selectedQuitPassword = ref<string>();
+
+    //other values
+    const availableAssessmentTools = ref<AssessmentTools>();
 
     function clearValues(){
         searchField.value = null;
@@ -29,10 +34,12 @@ export const useQuizImportStore = defineStore("quizImport", () => {
         startDate,
         currentPagingOptions,
         loadExamItemsCaller,
+        selectedAssessmentTool,
         selectedQuiz,
         selectedExamTemplate,
         selectedExamSupervisors,
         selectedQuitPassword,
-        clearValues
+        clearValues,
+        availableAssessmentTools
     };
 });

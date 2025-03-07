@@ -1,19 +1,33 @@
 import * as userAccountService from "@/services/api-services/userAccountService";
 import { useUserAccountStore } from "@/stores/store";
 
-export async function setPersonalUserAccount(): Promise<UserAccount | null>{
+export async function setPersonalUserAccount(){
     const userAccountStore = useUserAccountStore();
 
     try{
-        if(userAccountStore.userAccount == null){
-            userAccountStore.userAccount = await userAccountService.getPersonalUserAccount();
-
-            if(userAccountStore.userAccount != null){
-                return userAccountStore.userAccount;
-            }
+        if(userAccountStore.userAccount != null){
+            return;
         }
 
-        return userAccountStore.userAccount!;
+        const personalUserAccountResonse: UserAccount | null = await userAccountService.getPersonalUserAccount();
+        if(personalUserAccountResonse == null){
+            return;
+        }
+
+        userAccountStore.userAccount = personalUserAccountResonse;
+        userAccountStore.setUserTimeZone(userAccountStore.userAccount.timezone);
+
+
+    }catch(error){
+        console.error(error);
+        return null;
+    }
+
+}
+
+export async function getPersonalUserAccount(): Promise<UserAccount | null>{
+    try{
+        return await userAccountService.getPersonalUserAccount();
 
     }catch(error){
         console.error(error);

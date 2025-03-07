@@ -8,7 +8,7 @@ import ExamDetailContainer from "@/components/views/exam/ExamDetailContainer.vue
 import * as constants from "@/utils/constants";
 import MonitoringMain from "@/components/views/monitoring/MonitoringMain.vue"
 import NavigationOverview from "@/components/layout/NavigationOverview.vue"
-import QuizImportWizard from "@/components/views/quiz-import/QuizImportWizard.vue"
+import ImportWizard from "@/components/views/quiz-import/ImportWizard.vue"
 
 const defaultPageTitle: string = " | SEB Server";
 const routes: Array<RouteRecordRaw> = [
@@ -69,7 +69,7 @@ const routes: Array<RouteRecordRaw> = [
         {
             path: constants.QUIZ_IMPORT_ROUTE,
             name: "QuizImport",
-            component: QuizImportWizard,
+            component: ImportWizard,
             meta: {
                 title: constants.QUIZ_IMPORT_TITLE + defaultPageTitle
             },
@@ -102,10 +102,6 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to) => {
-    if(to.meta.requiresAuth){
-        // await userAccountViewService.setPersonalUserAccount();
-    }
-
     const defaultTitle: string = "SEB Server";
     //@ts-ignore
     document.title = to.meta.title || defaultTitle;

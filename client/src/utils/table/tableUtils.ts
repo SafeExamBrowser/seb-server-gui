@@ -86,7 +86,13 @@ export function sortTable(key: number, headerRefs: any){
     }
 }
 
-export function assignQuizSelectPagingOptions(serverTablePaging: ServerTablePaging, name: string | null, startTimestamp: string | null): OptionalParGetQuizzes{
+export function assignQuizSelectPagingOptions(
+    serverTablePaging: ServerTablePaging, 
+    name: string | null, 
+    startTimestamp: string | null,
+    assessmentToolId: string | null
+): OptionalParGetQuizzes{
+    
     const optionalParGetQuizzes: OptionalParGetQuizzes = {};
 
     optionalParGetQuizzes.page_size = serverTablePaging.itemsPerPage;
@@ -98,6 +104,10 @@ export function assignQuizSelectPagingOptions(serverTablePaging: ServerTablePagi
 
     if(startTimestamp != null){
         optionalParGetQuizzes.start_timestamp = startTimestamp;
+    }
+    
+    if(assessmentToolId != null){
+        optionalParGetQuizzes.lms_setup = assessmentToolId;
     }
 
 

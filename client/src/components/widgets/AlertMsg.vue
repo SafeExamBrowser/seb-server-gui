@@ -90,6 +90,10 @@
         {
             key: "deactivate-screen-proctoring-failed",
             value: "Deactivation of screen proctoring failed"
+        },
+        {
+            key: "no-assessment-tool",
+            value: "No assessment tool connected to SEB Server"
         }
     ];
 

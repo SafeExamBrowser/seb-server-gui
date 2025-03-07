@@ -69,7 +69,7 @@
                                         color="black" 
                                         variant="outlined"
                                         @click="clearForm()">
-                                        {{ $t('searchForm.cancel') }}
+                                        Cancel
                                     </v-btn>
 
                                     <v-btn 
@@ -78,7 +78,7 @@
                                         variant="flat" 
                                         class="ml-2"
                                         @click="loadExamItemsCaller()">
-                                        {{ $t('searchForm.search') }}
+                                        Search
                                     </v-btn>
 
                                 </v-col>

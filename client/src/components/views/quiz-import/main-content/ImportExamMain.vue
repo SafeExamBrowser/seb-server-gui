@@ -53,7 +53,6 @@
     const quizImportStore = useQuizImportStore();
     const quizImportStoreRef = storeToRefs(quizImportStore);
 
-
     //items
     const quizzes = ref<Quizzes>();
 
@@ -116,14 +115,20 @@
 
         let startDate: string | null = null;
         if(quizImportStore.startDate != null){
-            startDate = timeUtils.setIsoTimeToZero(quizImportStore.startDate.toISOString());
+            startDate = timeUtils.setIsoTimeToZero(quizImportStore.startDate);
+        }
+
+        let assessmentToolId: string | null = null;
+        if(quizImportStore.selectedAssessmentTool != null){
+            assessmentToolId = quizImportStore.selectedAssessmentTool.id.toString();
         }
 
         const optionalParGetQuizzes: OptionalParGetQuizzes = tableUtils.assignQuizSelectPagingOptions
         (
             serverTablePaging, 
             quizImportStore.searchField, 
-            startDate
+            startDate,
+            assessmentToolId
         );
 
         const quizzesResponse: Quizzes | null = await quizImportWizardViewService.getQuizzes(optionalParGetQuizzes);
@@ -132,6 +137,10 @@
             isLoading.value = false;
             return;
         }
+
+        // const freshArray: Quiz[] = [];
+        // freshArray.push(quizzesResponse.content[0]);
+        // quizzesResponse.content = freshArray;
 
         quizzes.value = quizzesResponse;
         totalItems.value = quizzes.value.number_of_pages * quizzes.value.page_size;

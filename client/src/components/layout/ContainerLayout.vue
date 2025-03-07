@@ -25,7 +25,7 @@
 
                     <v-list>
                         <v-list-item class="d-flex">
-                            <v-list-item-title>{{ $t('navigation.loggedInAs') }}: {{ userAccountStore.userAccount?.name }}</v-list-item-title>
+                            <v-list-item-title>Logged in as: {{ userAccountStore.userAccount?.name }}</v-list-item-title>
                         </v-list-item>
 
                         <!-- <v-list-item class="d-flex" :to=constants.ACCOUNT_VIEW_ROUTE>
@@ -50,7 +50,7 @@
 
 
                         <v-list-item tabindex="0" class="text-decoration-underline text-blue mx-auto" @click="authStore.logout()">
-                            <v-list-item-title class="mx-auto">{{ $t("navigation.signOut") }}</v-list-item-title>
+                            <v-list-item-title class="mx-auto">Sign out</v-list-item-title>
                         </v-list-item>
 
                     </v-list>

@@ -160,7 +160,7 @@
 
         let startDate: string | null = null;
         if(examStore.startDate != null){
-            startDate = timeUtils.setIsoTimeToZero(examStore.startDate.toISOString());
+            startDate = timeUtils.setIsoTimeToZero(examStore.startDate);
         }
 
         const optionalParGetExams: OptionalParGetExams = tableUtils.assignExamSelectPagingOptions
