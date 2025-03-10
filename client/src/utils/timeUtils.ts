@@ -104,6 +104,9 @@ export function setIsoTimeToZero(inputDate: Date): string {
       )
     );
 
+    console.log("input Date in millis: " + inputDate.getMilliseconds());
+    console.log("input Date in utc millis: " + inputDate.getUTCSeconds());
+
     console.log("inputDate " + inputDate)
     console.log("timeZone: " + timeZone)
     console.log("output " + userDateAtStartOfDay.toISOString())

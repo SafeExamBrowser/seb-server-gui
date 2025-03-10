@@ -5,7 +5,7 @@ import * as constants from "@/utils/constants";
 export const useQuizImportStore = defineStore("quizImport", () => {
     //exam table
     const searchField = ref<string | null>(null);
-    const startDate = ref<Date | null>(null);
+    const startTimestamp = ref<number | null>(null);
     const currentPagingOptions = ref<ServerTablePaging>();
     const loadExamItemsCaller = ref<number>();
 
@@ -21,7 +21,7 @@ export const useQuizImportStore = defineStore("quizImport", () => {
 
     function clearValues(){
         searchField.value = null;
-        startDate.value = null;
+        startTimestamp.value = null;
         selectedQuiz.value = null;
         selectedExamTemplate.value = null;
         selectedExamSupervisors.value = [];
@@ -31,7 +31,7 @@ export const useQuizImportStore = defineStore("quizImport", () => {
 
     return {
         searchField,
-        startDate,
+        startTimestamp,
         currentPagingOptions,
         loadExamItemsCaller,
         selectedAssessmentTool,

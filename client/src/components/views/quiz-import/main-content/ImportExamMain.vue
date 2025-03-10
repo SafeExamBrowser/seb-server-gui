@@ -113,9 +113,9 @@
             serverTablePaging.sortBy = defaultSort;
         }
 
-        let startDate: string | null = null;
-        if(quizImportStore.startDate != null){
-            startDate = timeUtils.setIsoTimeToZero(quizImportStore.startDate);
+        let startTimestamp: number | null = null;
+        if(quizImportStore.startTimestamp != null){
+            startTimestamp = quizImportStore.startTimestamp;
         }
 
         let assessmentToolId: string | null = null;
@@ -127,7 +127,7 @@
         (
             serverTablePaging, 
             quizImportStore.searchField, 
-            startDate,
+            startTimestamp,
             assessmentToolId
         );
 

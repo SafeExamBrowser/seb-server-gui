@@ -172,9 +172,6 @@
     async function loadAssessmentToolSelection(){
         const activeAssessmentTools: AssessmentTools | null = await getActiveAssessmentTools();
 
-        console.log("activeAssessmentToolsAmount: ")
-        console.log(activeAssessmentTools)
-
         //if no assessment tools connected --> show error msg
         if(activeAssessmentTools == null || activeAssessmentTools.content.length == 0){
             isNoAssessmentTool.value = true;

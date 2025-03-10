@@ -89,7 +89,7 @@ export function sortTable(key: number, headerRefs: any){
 export function assignQuizSelectPagingOptions(
     serverTablePaging: ServerTablePaging, 
     name: string | null, 
-    startTimestamp: string | null,
+    startTimestamp: number | null,
     assessmentToolId: string | null
 ): OptionalParGetQuizzes{
     

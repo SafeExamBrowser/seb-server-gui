@@ -17,7 +17,7 @@ type OptionalParGetQuizzes = {
     sort?: string;
     filterCriteria?: string;
     name?: string;
-    start_timestamp?: string;
+    start_timestamp?: number;
     lms_setup?: string;
 }
 

@@ -22,12 +22,6 @@
     //stores
     const quizImportStore = useQuizImportStore();
 
-
-    onBeforeMount(() => {
-        console.log(quizImportStore.availableAssessmentTools)   
-    });
-
-
 </script>
 
 <style scoped>
