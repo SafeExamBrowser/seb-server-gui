@@ -1,15 +1,12 @@
 <template>
 
     <v-row>
-        <v-col>
-            Choose Exam Template
-        </v-col>
-    </v-row>
-    
-    <v-row>
         <v-col cols="5">
-            Select an exam template to automatically create the exam,
-            exam configuration and indicators defined by the template.
+            <v-row>
+                <v-col class="text-h6">
+                    Click on the Exam Template you want to use for the exam
+                </v-col>
+            </v-row>
         </v-col>
 
         <v-col cols="7" class="pl-16 pr-16 pb-4">

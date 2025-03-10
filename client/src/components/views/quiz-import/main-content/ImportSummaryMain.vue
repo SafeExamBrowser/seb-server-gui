@@ -32,21 +32,14 @@
             <v-row>
                 <v-col>
                     <div class="primary-text-color text-subtitle-1">
-                        {{ quizImportStore.selectedExamTemplate?.name }}
+                        Exam Template
                     </div>
                     <v-divider class="border-opacity-25" :thickness="2"></v-divider>
                 </v-col>
             </v-row>
             <v-row class="mb-10">
                 <v-col>
-                    <!-- @vue-ignore -->
-                    <div v-if="quizImportStore.selectedExamTemplate != null && quizImportStore.selectedExamTemplate.description != null && quizImportStore.selectedExamTemplate?.description != ''">
-                            {{ quizImportStore.selectedExamTemplate?.description }}
-                    </div>
-                    <div v-else>
-                        <!-- No Description available -->
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tortor mi, tincidunt nec nibh placerat, aliquet luctus nulla. Vestibulum aliquam aliquet augue, eget laoreet purus ultrices sit amet. Donec fermentum congue elit, et egestas enim volutpat a. Vivamus finibus ante non mauris consectetur, lacinia accumsan ante ullamcorper. Ut ultricies augue tortor, ut dignissim ante interdum at. Pellentesque quis mi faucibus, tristique libero vel, auctor nunc. Fusce nec sapien consequat, finibus dui non, fermentum dolor.
-                    </div>
+                    {{ quizImportStore.selectedExamTemplate?.name }}
                 </v-col>
             </v-row>
             <!------------------->

@@ -31,15 +31,29 @@
 
 <script setup lang="ts">
     import { useQuizImportStore } from '@/stores/quizImportStore';
+    import {storeToRefs} from "pinia";
 
 
     //stores
     const quizImportStore = useQuizImportStore();
+    const quizImportStoreRef = storeToRefs(quizImportStore);
+
 
     //pw field
-    const password = ref("");
     const passwordVisible = ref<boolean>(false);
 
+
+    watch(quizImportStoreRef.selectedQuiz, () => {
+
+    });
+
+    onBeforeMount(() => {
+        console.log("import pw beofre mount")
+    });
+
+    function setQuitPwFromMoodle(){
+        // if(quizImportStore.selectedQuiz?.additionalAttributes.q)
+    }
 
 </script>
 

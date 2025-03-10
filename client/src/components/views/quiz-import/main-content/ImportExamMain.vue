@@ -146,10 +146,6 @@
             return;
         }
 
-        // const freshArray: Quiz[] = [];
-        // freshArray.push(quizzesResponse.content[0]);
-        // quizzesResponse.content = freshArray;
-
         quizzes.value = quizzesResponse;
         totalItems.value = quizzes.value.number_of_pages * quizzes.value.page_size;
 

@@ -93,7 +93,7 @@
         },
         {
             key: "no-assessment-tool",
-            value: "No assessment tool connected to SEB Server"
+            value: "No assessment tool connected to SEB Server. Contact your institutional Administrator."
         }
     ];
 

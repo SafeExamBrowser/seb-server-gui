@@ -5,12 +5,11 @@
             <v-sheet 
                 elevation="4"
                 class="rounded-lg pl-8 pt-8 pb-8">
-                <!-- height="300" -->
 
                 <!------------title row------------->
                 <v-row>
                     <v-col>
-                        <div class="primary-text-color text-h4 font-weight-bold">
+                        <div class="primary-text-color text-h5 font-weight-bold">
                             Select Exam
                         </div>
                     </v-col>
@@ -136,7 +135,10 @@
 
     function clearForm(){
         quizImportStore.searchField = "";
+
+        datepicker.value = null;
         quizImportStore.startTimestamp = null;
+        
         loadExamItemsCaller();
     }
 
