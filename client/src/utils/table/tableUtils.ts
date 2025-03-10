@@ -103,7 +103,7 @@ export function assignQuizSelectPagingOptions(
     }
 
     if(startTimestamp != null){
-        optionalParGetQuizzes.start_timestamp = startTimestamp;
+        optionalParGetQuizzes.start_timestamp_millis = startTimestamp;
     }
     
     if(assessmentToolId != null){

@@ -9,17 +9,16 @@
                 type: 'alert',
                 textKey: 'no-assessment-tool'
             }">
-        ></AlertMsg>
+        </AlertMsg>
     </template>
 
     <template v-if="!isNoAssessmentTool">
         <component 
-            v-if="currentStep-1 == 0"
-            :is="infoBoxComponents[0]"
+            v-if="steps[currentStep-1].value == 2"
+            :is="infoBoxComponents[currentStep-1]"
             @loadExamItemsCaller="loadExamItemsCaller"
         />
         <component v-else :is="infoBoxComponents[currentStep-1]"/>
-
 
         <!---------wizard---------->
         <v-row>
@@ -32,7 +31,7 @@
                     <v-stepper-header>
                         <template v-for="(step, index) in steps" :key="step">
                             <v-stepper-item :value="index+1">
-                                {{ step }}
+                                {{ step.name }}
                             </v-stepper-item>
                             <v-divider class="border-opacity-25" :thickness="2" v-if="index != steps.length-1"></v-divider>
                         </template>
@@ -95,12 +94,13 @@
 
     //steps
     const currentStep = ref<number>(1);
-    const steps = ref<string[]>([
-        "Select Exam", 
-        "Choose Template",
-        "Add Examination Supervisor",
-        "Set Quit Password",
-        "Configuration Summary"
+    const steps = ref<{name: string, value: number}[]>([
+        {name: "Select Assessment Tool", value: 1},
+        {name: "Select Exam", value: 2},
+        {name: "Choose Template", value: 3},
+        {name: "Add Examination Supervisor", value: 4},
+        {name: "Set Quit Password", value: 5},
+        {name: "Configuration Summary", value: 6}
     ]);
 
     //error msg
@@ -108,6 +108,7 @@
 
     //stepper components
     const infoBoxComponents = ref<Component[]>([
+        markRaw(ImportAssessmentInfo),
         markRaw(ImportExamInfo),
         markRaw(ImportTemplateInfo),
         markRaw(ImportSupervisorInfo),
@@ -115,6 +116,7 @@
         markRaw(ImportSummaryInfo)
     ]);
     const mainContentComponents = ref<Component[]>([
+        markRaw(ImportAssessmentMain),
         markRaw(ImportExamMain),
         markRaw(ImportTemplateMain),
         markRaw(ImportSupervisorMain),
@@ -122,11 +124,8 @@
         markRaw(ImportSummaryMain)
     ]);
 
-    watch(currentStep, () => {
-        // console.log("current step: " + currentStep.value)
-    });
-
     onBeforeMount(async () => {
+        quizImportStore.clearValues();
         await loadAssessmentToolSelection();
     });
 
@@ -140,7 +139,6 @@
                 return !quizImportStore.selectedAssessmentTool;
             }
         }
-        
 
         if(step == 1 + additionalStep){
             return !quizImportStore.selectedQuiz;
@@ -181,16 +179,16 @@
         quizImportStore.availableAssessmentTools = activeAssessmentTools;
 
         //if more then one assessment tools connected --> show selection
-        if(quizImportStore.availableAssessmentTools.content.length > 1){
-            steps.value.unshift("Select Assessment Tool");
-            infoBoxComponents.value.unshift(markRaw(ImportAssessmentInfo));
-            mainContentComponents.value.unshift(markRaw(ImportAssessmentMain));
+        if(quizImportStore.availableAssessmentTools.content.length == 1){
+            //if only 1 connected --> select assessment tool & remove components from wizard
+            quizImportStore.selectedAssessmentTool = activeAssessmentTools.content[0].id;
+
+            steps.value.shift();
+            infoBoxComponents.value.shift();
+            mainContentComponents.value.shift();
 
             return;
         }
-
-        //if only 1 connected --> select assessment tool
-        quizImportStore.selectedAssessmentTool = activeAssessmentTools.content[0];
     }
 
 

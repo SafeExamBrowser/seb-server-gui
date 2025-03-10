@@ -57,7 +57,15 @@
                                         :teleport="true"
                                         :enable-time-picker="false">
                                     </VueDatePicker> -->
-                                    <v-date-picker v-model="datepicker"></v-date-picker>
+                                    <!-- <v-date-picker v-model="datepicker"></v-date-picker> -->
+                                    <v-date-input 
+                                        v-model="datepicker"
+                                        density="compact"
+                                        variant="outlined"
+                                        placeholder="mm.dd.yyyy"
+                                        prepend-icon=""
+                                        append-inner-icon="mdi-calendar">
+                                    </v-date-input>
                                 </v-col>
                             </v-row>
                             <!----------------------------------->
@@ -102,6 +110,7 @@
     import {useQuizImportStore} from "@/stores/quizImportStore";
     import { useUserAccountStore } from "@/stores/store";
     import { getTimezoneOffset } from 'date-fns-tz'
+    import { VDateInput } from "vuetify/labs/VDateInput";
 
     //stores
     const quizImportStore = useQuizImportStore();
@@ -117,9 +126,10 @@
 
     function loadExamItemsCaller(){
         if(datepicker != null && datepicker.value != null){
-            console.log(datepicker.value.getTime())
             quizImportStore.startTimestamp = datepicker.value.getTime();
         }
+
+        console.log(quizImportStore.startTimestamp)
 
         emit("loadExamItemsCaller");
     }
@@ -130,34 +140,11 @@
         loadExamItemsCaller();
     }
 
-
-
-    watch(datepicker, () => {
-        const userAccountStore = useUserAccountStore();
-
-
-        const date: Date = new Date(datepicker.value);  
-        const timezoneOffset: number = getTimezoneOffset(userAccountStore.getUserTimeZone());
-
-
-        console.log(date);
-        console.log(userAccountStore.getUserTimeZone())
-        console.log("timezone offset by browser: " + date.getTimezoneOffset() * 60000)
-        console.log("timezone offset by user: " + timezoneOffset);
-
-        console.log("utc time of selected date: " + date.getTime());
-
-
-        
-
-
-        const dateForBackend: number = date.getTime() - timezoneOffset;
-
-        console.log("date for backend: " + dateForBackend);
-
-
-
-    });
+    // watch(datepicker, () => {
+    //     const date: Date = new Date(datepicker.value);  
+    //     quizImportStore.startTimestamp = date.getTime();
+    //     console.log("utc time of selected date: " + date.getTime());
+    // });
 
 
 

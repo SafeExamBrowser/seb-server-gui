@@ -10,7 +10,7 @@ export const useQuizImportStore = defineStore("quizImport", () => {
     const loadExamItemsCaller = ref<number>();
 
     //selected values
-    const selectedAssessmentTool = ref<AssessmentTool | null>(null);
+    const selectedAssessmentTool = ref<number | null>(null);
     const selectedQuiz = ref<Quiz | null>();
     const selectedExamTemplate = ref<ExamTemplate | null>(null);
     const selectedExamSupervisors = ref<UserAccountName[]>([]);

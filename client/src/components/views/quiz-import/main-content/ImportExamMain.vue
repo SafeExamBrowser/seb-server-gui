@@ -73,10 +73,17 @@
     //error handling
     const errorAvailable = ref<boolean>();
 
+    defineExpose({
+        loadItems
+    });
 
     //=======================events & watchers=======================
-    watch(quizImportStoreRef.searchField, () => {
-        // console.log(quizImportStoreRef.searchField.value)
+    watch(quizImportStoreRef.selectedAssessmentTool, () => {
+        if(quizImportStore.currentPagingOptions == null){
+            return;
+        }
+
+        loadItems(quizImportStore.currentPagingOptions);
     });
 
     //workaround es the method with "defineExpose" does not work
@@ -119,8 +126,9 @@
         }
 
         let assessmentToolId: string | null = null;
+
         if(quizImportStore.selectedAssessmentTool != null){
-            assessmentToolId = quizImportStore.selectedAssessmentTool.id.toString();
+            assessmentToolId = quizImportStore.selectedAssessmentTool.toString();
         }
 
         const optionalParGetQuizzes: OptionalParGetQuizzes = tableUtils.assignQuizSelectPagingOptions

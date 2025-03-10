@@ -120,24 +120,6 @@
 
 
     //=======================events & watchers=======================
-    watch(examStoreRef.searchField, () => {
-        // console.log(quizImportStoreRef.searchField.value)
-    });
-
-    //workaround as the method with "defineExpose" does not work
-    // watch(examStoreRef.loadExamItemsCaller, () => {
-    //     if(examStore.currentPagingOptions == null){
-    //         return;
-    //     }
-
-    //     if(quizImportStore.currentPagingOptions.itemsPerPage == 0){
-    //         quizImportStore.currentPagingOptions.itemsPerPage = 10; 
-    //     }
-
-    //     loadItems(quizImportStore.currentPagingOptions);
-    // });
-
-
     function onTableRowClick(exam: Exam){
         if(exam.id == selectedExam.value?.id){
             selectedExam.value = null;

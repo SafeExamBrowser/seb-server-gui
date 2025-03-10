@@ -161,10 +161,6 @@
     const saveError = ref<boolean>(false);
 
 
-    onBeforeMount(async () => {
-
-    });
-
     async function createExam(){
         saveError.value = false;
 

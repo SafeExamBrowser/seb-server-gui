@@ -4,10 +4,12 @@
         <v-col cols="4">
             <v-select
                 hide-details
+                placeholder="Select Assessment Tool"
                 density="compact"
                 variant="outlined"  
                 v-model="quizImportStore.selectedAssessmentTool"
                 :items="quizImportStore.availableAssessmentTools?.content"
+                item-value="id"
                 item-title="name">
             </v-select>
         </v-col>
