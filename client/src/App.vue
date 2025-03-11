@@ -22,7 +22,7 @@
 <style>
 
     .text-decoration-underline a:visited {
-        color: #2196F3 !important;
+        color: #0000ee !important;
     }
 
     .title-inherit-styling{
@@ -37,6 +37,10 @@
 
     .primary-text-color{
         color: #215caf;
+    }
+
+    .disabled-text-color{
+        color: #aaaaaa
     }
 
 </style>

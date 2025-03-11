@@ -19,6 +19,7 @@ declare module 'vue' {
     ExamListContainer: typeof import('./components/views/exam/ExamListContainer.vue')['default']
     ExamListInfo: typeof import('./components/views/exam/info-box-content/ExamListInfo.vue')['default']
     ExamListMain: typeof import('./components/views/exam/main-content/ExamListMain.vue')['default']
+    ExamTemplateDialog: typeof import('./components/widgets/ExamTemplateDialog.vue')['default']
     HomePage: typeof import('./components/views/home/HomePage.vue')['default']
     ImportAssessmentInfo: typeof import('./components/views/quiz-import/info-box-content/ImportAssessmentInfo.vue')['default']
     ImportAssessmentMain: typeof import('./components/views/quiz-import/main-content/ImportAssessmentMain.vue')['default']
@@ -40,5 +41,6 @@ declare module 'vue' {
     RegisterPage: typeof import('./components/views/RegisterPage.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    TemplateDescriptionDialog: typeof import('./components/widgets/TemplateDescriptionDialog.vue')['default']
   }
 }

@@ -34,20 +34,20 @@ export function calcItemsPerPage(itemList: any): { value: number, title: string 
         maxLength = itemList.length;
     }
 
-    if (maxLength < 5) {
+    if (maxLength <= 5) {
         return [
             { value: maxLength, title: maxLength.toString() }
         ];
     }
 
-    if (maxLength < 10) {
+    if (maxLength <= 10) {
         return [
             { value: 5, title: '5' },
             { value: maxLength, title: maxLength.toString() }
         ];
     }
 
-    if (maxLength < 15) {
+    if (maxLength <= 15) {
         return [
             { value: 5, title: '5' },
             { value: 10, title: '10' },

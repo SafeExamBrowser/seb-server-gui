@@ -12,7 +12,7 @@
                     >
 
                     <v-col cols="5">
-                        <div class="primary-text-color text-h4 font-weight-bold">
+                        <div class="primary-text-color text-h5 font-weight-bold">
                             Select Assessment Tool
                         </div>
                     </v-col>

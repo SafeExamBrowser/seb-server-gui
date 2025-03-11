@@ -19,7 +19,7 @@ export const NAVIGATION_OVERVIEW_TITLE: string = "Navigation Overview";
 
 export const EXAMS_TITLE: string = "Exams";
 export const EXAMS_OVERVIEW_TITLE: string = "Exams Overview";
-export const EXAMS_DETAIL_TITLE: string = "Exams Detail";
+export const EXAMS_DETAIL_TITLE: string = "Exam Detail";
 
 
 export const MONITORING_TITLE: string = "Monitoring";

@@ -1,7 +1,11 @@
 import { ExamStatusEnum, ExamTypeEnum } from "@/models/examFiltersEnum";
 
 
-export function findEnumValue<T extends Record<string, string | number>>(enumObj: T, value: string): T[keyof T] | null {
+export function findEnumValue<T extends Record<string, string | number>>(enumObj: T, value: string | undefined | null): T[keyof T] | null {
+    if(value == null){
+        return null;
+    }
+
     return Object.values(enumObj).includes(value) ? value as T[keyof T] : null;
 }
 

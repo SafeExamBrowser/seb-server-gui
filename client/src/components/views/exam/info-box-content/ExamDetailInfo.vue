@@ -1,58 +1,64 @@
 <template>
     <v-row>
         <v-col>
-            <v-sheet 
-                elevation="4"
-                class="rounded-lg pa-8"
-                height="300">
-
+            <v-sheet elevation="4" class="rounded-lg pa-8">
                 <v-row class="fill-height" align="center">
+                    <v-col>
 
-                    <!--Title-->
-                    <v-col cols="4">
-                        <div class="primary-text-color text-h4 font-weight-bold">
-                            {{examStore.selectedExam?.quizName}}
-                        </div>
-                    </v-col>
-
-                    <!--info row-->
-                    <v-col cols="8" v-if="examStore.selectedExam != null">
-
-                        <!---------titles--------->
+                        <!------title and headers------->
                         <v-row>
-                            <v-col cols="4">
-                                <div class="primary-text-color text-subtitle-1">
-                                    Start
-                                </div>
+                            <v-col cols="3" class="primary-text-color text-h5 font-weight-bold">
+                                {{examStore.selectedExam?.quizName}}
                             </v-col>
 
-                            <v-col cols="2">
-                                <div class="primary-text-color text-subtitle-1">
-                                    End
-                                </div>
+                            <v-col cols="2" class="text-subtitle-1">
+                                Start
                             </v-col>
 
-                            <v-col cols="2">
-                                <div class="primary-text-color text-subtitle-1">
-                                    Exam Description
-                                </div>
+                            <v-col cols="2" class="text-subtitle-1">
+                                End
                             </v-col>
 
-                            <v-col cols="4">
-                                <div class="primary-text-color text-subtitle-1">
-                                    Exam Type & Status
-                                </div>
+                            <v-col cols="3" class="text-subtitle-1">
+                                Description
+                            </v-col>
+
+                            <v-col cols="2" class="text-subtitle-1">
+                                Exam Type & Status
                             </v-col>
                         </v-row>
-                        <!------------------------->
 
-                        <!---------values--------->
+                        <!------url and values------->
                         <v-row>
-                            <v-col class="primary-text-color text-h6 font-weight-bold" cols="4">
+                            <!------url------->
+                            <v-col cols="3" class="text-h7 text-decoration-underline">
+                                <!-- <div class="mb-4"> -->
+                                    <a :href="examStore.selectedExam?.startURL" target="_blank">
+                                        {{examStore.selectedExam?.startURL}}
+                                    </a>
+                                <!-- </div> -->
+
+                                <!-- <v-chip 
+                                    class="mr-1"
+                                    variant="tonal"
+                                    size="small">
+                                    {{ generalUtils.getTypeFilterName(generalUtils.findEnumValue(ExamTypeEnum, examStore.selectedExam?.type)) }}
+                                </v-chip>
+                                <v-chip 
+                                    variant="tonal"
+                                    size="small"
+                                    :color="generalUtils.getExamStatusFilterColor(generalUtils.findEnumValue(ExamStatusEnum, examStore.selectedExam?.status))">
+                                    {{ generalUtils.getExamStatusFilterName(generalUtils.findEnumValue(ExamStatusEnum, examStore.selectedExam?.status)) }}
+                                </v-chip> -->
+                            </v-col>
+
+                            <!------start time------->
+                            <v-col cols="2" class="primary-text-color text-h6 font-weight-bold">
                                 {{timeUtils.formatIsoDateToFullDate(examStore.selectedExam?.quizStartTime)}}
                             </v-col>
 
-                            <v-col class="primary-text-color text-h6 font-weight-bold" cols="2">
+                            <!------end time------->
+                            <v-col cols="2" class="primary-text-color text-h6 font-weight-bold">
                                 <template v-if="examStore.selectedExam?.quizEndTime == null || ''">
                                     -
                                 </template>
@@ -61,7 +67,8 @@
                                 </template>
                             </v-col>
 
-                            <v-col class="text-h6" cols="2">
+                            <!------description------->
+                            <v-col cols="3" class="primary-text-color">
                                 <template v-if="examStore.selectedExam?.description == null || ''">
                                     -
                                 </template>
@@ -70,28 +77,29 @@
                                 </template>
                             </v-col>
 
-                            <v-col cols="4">
+                            <!------exam type & status------->
+                            <v-col cols="2">
                                 <v-chip 
-                                    class="mr-2"
-                                    variant="tonal">
-                                    {{ generalUtils.getTypeFilterName(generalUtils.findEnumValue(ExamTypeEnum, examStore.selectedExam.type)) }}
+                                    class="mr-1"
+                                    variant="tonal"
+                                    size="small">
+                                    {{ generalUtils.getTypeFilterName(generalUtils.findEnumValue(ExamTypeEnum, examStore.selectedExam?.type)) }}
                                 </v-chip>
                                 <v-chip 
                                     variant="tonal"
-                                    :color="generalUtils.getExamStatusFilterColor(generalUtils.findEnumValue(ExamStatusEnum, examStore.selectedExam.status))">
-                                    {{ generalUtils.getExamStatusFilterName(generalUtils.findEnumValue(ExamStatusEnum, examStore.selectedExam.status)) }}
+                                    size="small"
+                                    :color="generalUtils.getExamStatusFilterColor(generalUtils.findEnumValue(ExamStatusEnum, examStore.selectedExam?.status))">
+                                    {{ generalUtils.getExamStatusFilterName(generalUtils.findEnumValue(ExamStatusEnum, examStore.selectedExam?.status)) }}
                                 </v-chip>
                             </v-col>
-
                         </v-row>
-                        <!------------------------->
 
                     </v-col>
                 </v-row>
-
             </v-sheet>
         </v-col>
     </v-row>
+           
 </template>
 
 <script setup lang="ts">

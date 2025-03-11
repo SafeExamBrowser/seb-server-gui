@@ -5,47 +5,40 @@
                 elevation="4"
                 class="rounded-lg pa-8">
 
-
                 <!----------title--------->
                 <v-row>
-                    <v-spacer></v-spacer>
-                    <v-col cols="10">
-                        <div class="primary-text-color text-h4 font-weight-bold">
-                            Configuration Summary
+                    <v-col>
+                        <div class="primary-text-color text-h5 font-weight-bold">
+                            Exam Details
                         </div>
                         <v-divider class="border-opacity-25" :thickness="2"></v-divider>
                     </v-col>
-                    <v-spacer></v-spacer>
                 </v-row>
-                <!----------------------->
 
                 <!----------infos and actions--------->
-                <v-row>
-                    <v-spacer></v-spacer>
+                <v-row class="mt-10">
 
+                    <v-spacer></v-spacer>
                     <!----------left side--------->
-                    <v-col cols="5" class="pr-16">
+                    <v-col cols="6" xl="4">
 
                         <!----------test run--------->
-                        <v-row class="mt-6">
-                            <v-col cols="8">
+                        <v-row>
+                            <v-col>
                                 <v-sheet 
                                     elevation="4"
                                     class="rounded-lg pa-4">
 
-                                    <v-row>
+                                    <v-row align="center">
                                         <v-col>
                                             Test Exam
                                         </v-col>
-                                    </v-row>
-
-                                    <v-row>
                                         <v-col align="right">
                                             <v-btn 
                                                 rounded="sm" 
-                                                color="error" 
+                                                color="primary" 
                                                 variant="flat" 
-                                                class="mt-8">
+                                                class="">
                                                 Apply Test Run
                                             </v-btn>
                                         </v-col>
@@ -54,40 +47,73 @@
                                 </v-sheet>
                             </v-col>
                         </v-row>
-                        <!----------------------->
+
+                        <!----------monitor exam--------->
+                        <v-row class="mt-6">
+                            <v-col>
+                                <v-card 
+                                    elevation="4"
+                                    class="rounded-lg pa-4">
+
+                                    <v-row align="center">
+                                        <v-col>
+                                            Monitor Exam
+                                        </v-col>
+                                        <v-col align="right">
+                                            <v-btn 
+                                                rounded="sm" 
+                                                color="primary" 
+                                                variant="flat" 
+                                                :disabled="isFunctionalityDisabled(ExamStatusEnum.RUNNING)"
+                                                class="">
+                                                Start
+                                            </v-btn>
+                                        </v-col>
+                                    </v-row>
+
+                                    <v-tooltip activator="parent">
+                                        Monitoring is only activated when exam is running
+                                    </v-tooltip>
+
+                                </v-card>
+                            </v-col>
+                        </v-row>
 
                         <!----------template--------->
                         <v-row class="mt-10">
+                            <v-col class="primary-text-color text-h6"> 
+                                Exam Template
+                            </v-col>
+                            <v-col align="right">
+                                <v-btn
+                                    color="primary"
+                                    density="compact"
+                                    variant="text"
+                                    icon="mdi-information-outline"
+                                    @click="openExamTemplateDialog()">
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                        <v-divider class="border-opacity-25" :thickness="2"></v-divider>
+                        
+                        <v-row class="mt-1">
                             <v-col>
-                                <template v-if="examStore.selectedExamTemplate != null">
-                                    <div class="primary-text-color text-h5">
+                                <div class="text-subtitle-1">
+                                    <template v-if="examStore.selectedExamTemplate != null">
                                         {{ examStore.selectedExamTemplate?.name }}
-                                    </div>
-                                    <v-divider class="border-opacity-25" :thickness="2"></v-divider>
-
-                                    <div v-if="examStore.selectedExamTemplate.description != null && examStore.selectedExamTemplate.description != ''" class="mt-4">
-                                    {{ examStore.selectedExamTemplate.description }}
-                                    </div>
-                                    <div v-else class="mt-4">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tortor mi, tincidunt nec nibh placerat, aliquet luctus nulla. Vestibulum aliquam aliquet augue, eget laoreet purus ultrices sit amet. Donec fermentum congue elit, et egestas enim volutpat a. Vivamus finibus ante non mauris consectetur, lacinia accumsan ante ullamcorper. Ut ultricies augue tortor, ut dignissim ante interdum at. Pellentesque quis mi faucibus, tristique libero vel, auctor nunc. Fusce nec sapien consequat, finibus dui non, fermentum dolor.
-                                    </div>
-                                </template>
-
-                                <template v-else>
-                                    No exam template
-                                    <v-divider class="border-opacity-25" :thickness="2"></v-divider>
-                                </template>
+                                    </template>
+                                    <template v-else>
+                                        -
+                                    </template>
+                                </div>
                             </v-col>
                         </v-row>
                         <!----------------------->
 
                         <!-------supervisors------>
                         <v-row class="mt-10">
-                            <v-col> 
-                                <div class="primary-text-color text-h5">
-                                    Examination Supervisors
-                                </div> 
-
+                            <v-col class="primary-text-color text-h6"> 
+                                Examination Supervisors
                             </v-col>
 
                             <v-col align="right">
@@ -100,7 +126,6 @@
                                 </v-btn>
                             </v-col>
                         </v-row>
-
                         <v-divider class="border-opacity-25" :thickness="2"></v-divider>
 
                         <v-row class="mb-10">
@@ -159,12 +184,14 @@
                     </v-col>
                     <!----------------------->
 
-                    <!----------right side--------->
-                    <v-col cols="5" class="pl-16">
+                    <!-- <v-col cols="1"></v-col> -->
+                    <v-spacer></v-spacer>
 
+                    <!----------right side--------->
+                    <v-col cols="6" xl="4">
                         <!----------edit seb settings--------->
-                        <v-row class="mt-6">
-                            <v-col cols="10">
+                        <v-row>
+                            <v-col>
                                 <v-sheet 
                                     elevation="4"
                                     class="rounded-lg pa-4">
@@ -187,11 +214,10 @@
                                 </v-sheet>
                             </v-col>
                         </v-row>
-                        <!----------------------->
 
                         <!----------exam config--------->
                         <v-row class="mt-6">
-                            <v-col cols="10">
+                            <v-col>
                                 <v-sheet 
                                     elevation="4"
                                     class="rounded-lg pa-4">
@@ -214,77 +240,10 @@
                                 </v-sheet>
                             </v-col>
                         </v-row>
-                        <!----------------------->
 
-                        <!----------monitor exam--------->
+                        <!----------more options--------->
                         <v-row class="mt-6">
-                            <v-col cols="10">
-                                <v-card 
-                                    color="primary"
-                                    variant="outlined"
-                                    class="rounded-lg pa-4">
-
-                                    <v-row align="center">
-                                        <v-col>
-                                            Monitor Exam
-                                        </v-col>
-                                        <v-col align="right">
-                                            <v-btn 
-                                                rounded="sm" 
-                                                color="primary" 
-                                                variant="flat" 
-                                                :disabled="isFunctionalityDisabled(ExamStatusEnum.RUNNING)"
-                                                class="">
-                                                Start
-                                            </v-btn>
-                                        </v-col>
-                                    </v-row>
-
-                                    <v-tooltip activator="parent">
-                                        Monitoring is only activated when exam is running
-                                    </v-tooltip>
-
-                                </v-card>
-                            </v-col>
-                        </v-row>
-                        <!----------------------->
-
-                        <!----------archive exam--------->
-                        <v-row class="mt-6">
-                            <v-col cols="10">
-                                <v-card 
-                                    color="primary"
-                                    variant="outlined"
-                                    class="rounded-lg pa-4">
-
-                                    <v-row align="center">
-                                        <v-col>
-                                            Archive Exam
-                                        </v-col>
-                                        <v-col align="right">
-                                            <v-btn 
-                                                rounded="sm" 
-                                                color="primary" 
-                                                variant="flat" 
-                                                :disabled="isFunctionalityDisabled(ExamStatusEnum.FINISHED)"
-                                                @click="openArchiveDialog()">
-                                                Start
-                                            </v-btn>
-                                        </v-col>
-                                    </v-row>
-
-                                    <v-tooltip activator="parent">
-                                        Archiving is only activated when exam is finished
-                                    </v-tooltip>
-
-                                </v-card>
-                            </v-col>
-                        </v-row>
-                        <!----------------------->
-
-                        <!----------more configs--------->
-                        <v-row class="mt-6">
-                            <v-col cols="10">
+                            <v-col>
                                 <v-card 
                                     color="primary"
                                     variant="outlined"
@@ -293,7 +252,7 @@
                                     <v-row align="center">
                                         <v-col>
                                             <div>
-                                                More Exam Configurations
+                                                More Exam Options
                                             </div>
 
                                             <v-list class="mt-4" select-strategy="leaf">
@@ -344,9 +303,9 @@
                                                 </v-list-item>
                                                 <v-divider class="border-opacity-25" :thickness="2"></v-divider>
 
-                                                <!----------Release SEB Lock--------->
+                                                <!----------Apply SEB Lock--------->
                                                 <v-list-item>
-                                                    <v-list-item-title>Release SEB Lock</v-list-item-title>
+                                                    <v-list-item-title>Apply SEB Lock</v-list-item-title>
                                                     <template v-slot:append="{ isSelected }" >
                                                         <v-list-item-action class="flex-column align-right">
                                                             <v-switch 
@@ -355,6 +314,27 @@
                                                             </v-switch>
                                                         </v-list-item-action>
                                                     </template>
+                                                </v-list-item>
+                                                <v-divider class="border-opacity-25" :thickness="2"></v-divider>
+
+                                                <!----------Archive Exam--------->
+                                                <v-list-item>
+                                                    <v-list-item-title :class="[isFunctionalityDisabled(ExamStatusEnum.FINISHED) ? 'disabled-text-color' : '']">Archive Exam</v-list-item-title>
+                                                    <template v-slot:append="{ isSelected }" >
+                                                        <v-list-item-action class="flex-column align-right">
+                                                            <v-icon 
+                                                                icon="mdi-archive-outline"
+                                                                style="font-size: 30px;"
+                                                                :disabled="isFunctionalityDisabled(ExamStatusEnum.FINISHED)"
+                                                                @click="openArchiveDialog()">
+                                                            </v-icon>
+                                                        </v-list-item-action>
+                                                    </template>
+
+                                                    <v-tooltip v-if="isFunctionalityDisabled(ExamStatusEnum.FINISHED)" activator="parent">
+                                                        Archiving is only activated when exam is finished
+                                                    </v-tooltip>
+
                                                 </v-list-item>
                                                 <v-divider class="border-opacity-25" :thickness="2"></v-divider>
 
@@ -380,15 +360,14 @@
                             </v-col>
                         </v-row>
                         <!----------------------->
-                        
                     
                     </v-col>
-                    <!----------------------->
-
+                    <!----------end right side--------->
                     <v-spacer></v-spacer>
 
+
                 </v-row>
-                <!----------------------->
+                <!--------end info and action row------>
             
             </v-sheet>
         </v-col>
@@ -424,6 +403,14 @@
         </ExamDetailDeleteDialog>
     </v-dialog>
 
+    <!-----------exam template popup---------->      
+    <v-dialog v-model="examTemplateDialog" max-width="600">
+        <ExamTemplateDialog 
+            :exam-template="examStore.selectedExamTemplate"
+            @close-exam-template-dialog="closeExamTemplateDialog()">
+        </ExamTemplateDialog>
+    </v-dialog>
+
     <!--alert msg-->
     <AlertMsg 
         v-if="alertAvailable"
@@ -436,6 +423,7 @@
         }">
     </AlertMsg>
 
+
 </template>
 
 <script setup lang="ts">
@@ -446,8 +434,9 @@
     import { storeToRefs } from "pinia";
     import * as timeUtils from "@/utils/timeUtils";
     import * as generalUtils from "@/utils/generalUtils";
-    import { ExamStatusEnum } from '@/models/examFiltersEnum';
     import { navigateTo } from '@/router/navigation';
+    import { ExamStatusEnum, ExamTypeEnum } from "@/models/examFiltersEnum";
+
 
     const isPageInitalizing = ref<boolean>(true);
 
@@ -465,15 +454,21 @@
     let quitPasswordTimeout: ReturnType<typeof setTimeout> | null = null;
 
     //supervisors dialog
-    const supervisorsDialog = ref(false);
+    const supervisorsDialog = ref<boolean>(false);
     let initialSupervisorsIds: string[] = []
 
     //exam config dialog
-    const configDialog = ref(false);
+    const configDialog = ref<boolean>(false);
     const connectionConfigurationsPar = ref<ConnectionConfigurations | null>(null);
 
     //archive dialog
-    const archiveDialog = ref(false);
+    const archiveDialog = ref<boolean>(false);
+
+    //exam template dialog
+    const examTemplateDialog = ref<boolean>(false);
+
+    //delete exam
+    const deleteDialog = ref<boolean>(false);
 
     //alert
     const alertAvailable = ref<boolean>();
@@ -482,10 +477,7 @@
 
     //screen proctoring
     const isScreenProctoringActive = ref<boolean>(false);
-
-    //delete exam
-    const deleteDialog = ref<boolean>(false);
-
+    
 
     onBeforeMount(async () => {
         //todo: clear store before reload
@@ -528,22 +520,6 @@
         }
 
         examStore.selectedExam = examResponse;
-    }
-
-
-    async function getExamTemplate(){
-        if(examStore.selectedExam?.examTemplateId == null){
-            return;
-        }
-
-        const examTemplateResponse: ExamTemplate | null = await examViewService.getExamTemplate(examStore.selectedExam?.examTemplateId.toString());
-
-        if(examTemplateResponse == null){
-            //todo: add error handling
-            return;
-        }
-
-        examStore.selectedExamTemplate = examTemplateResponse;
     }
 
     async function updateExam(){
@@ -847,6 +823,31 @@
         }
 
         navigateTo(constants.EXAM_ROUTE);
+    }
+
+    //===============exam template logic====================
+    async function getExamTemplate(){
+        if(examStore.selectedExam?.examTemplateId == null){
+            return;
+        }
+
+        const examTemplateResponse: ExamTemplate | null = await examViewService.getExamTemplate(examStore.selectedExam?.examTemplateId.toString());
+
+        if(examTemplateResponse == null){
+            //todo: add error handling
+            return;
+        }
+
+        examStore.selectedExamTemplate = examTemplateResponse;
+    }
+
+
+    function openExamTemplateDialog(){
+        examTemplateDialog.value = true;
+    }
+
+    function closeExamTemplateDialog(){
+        examTemplateDialog.value = false;
     }
 
 

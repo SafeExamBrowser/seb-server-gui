@@ -7,7 +7,7 @@
                 <!------------title row------------->
                 <v-row>
                     <v-col>
-                        <div class="primary-text-color text-h4 font-weight-bold">
+                        <div class="primary-text-color text-h5 font-weight-bold">
                             Select Exam
                         </div>
                     </v-col>
@@ -106,14 +106,6 @@
                                         {{filter.name}}
                                     </v-chip>
                                 </div>
-                            <!-- </v-col>
-                        </v-row>
-
-                        <v-row>
-                            <v-col> -->
-                                <!-- <div class="primary-text-color text-subtitle-1">
-                                    Exam Status
-                                </div> -->
                                 <div>
                                     <v-chip 
                                         v-for="filter in statusFilters"

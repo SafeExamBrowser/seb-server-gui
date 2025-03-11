@@ -26,7 +26,7 @@
                             <v-toolbar-title class="text-h6" :text="examTemplate.name"></v-toolbar-title>
 
                             <template v-slot:append>
-                                <v-btn @click.stop="openDialog(examTemplate)" icon="mdi-information"></v-btn>
+                                <v-btn @click.stop="openExamTemplateDialog(examTemplate)" icon="mdi-information"></v-btn>
                             </template>
                         </v-toolbar>
 
@@ -46,33 +46,17 @@
 
     <!-----------description popup---------->      
     <v-dialog v-model="dialog" max-width="600">
-        <v-card>
-            <v-toolbar color="transparent">
-                <v-toolbar-title class="text-h6" :text="dialogTemplate?.name"></v-toolbar-title>
-                <template v-slot:append>
-                    <v-btn @click="closeDialog()" icon="mdi-close"></v-btn>
-                </template>
-            </v-toolbar>
-
-            <v-card-text>
-                <!-- @vue-ignore -->
-                <div v-if="dialogTemplate.description != null && dialogTemplate?.description != ''">
-                    {{ dialogTemplate?.description }}
-                </div>
-                <div v-else>
-                    <!-- No Description available -->
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tortor mi, tincidunt nec nibh placerat, aliquet luctus nulla. Vestibulum aliquam aliquet augue, eget laoreet purus ultrices sit amet. Donec fermentum congue elit, et egestas enim volutpat a. Vivamus finibus ante non mauris consectetur, lacinia accumsan ante ullamcorper. Ut ultricies augue tortor, ut dignissim ante interdum at. Pellentesque quis mi faucibus, tristique libero vel, auctor nunc. Fusce nec sapien consequat, finibus dui non, fermentum dolor.
-                </div>
-            </v-card-text>
-        </v-card>
+        <ExamTemplateDialog 
+            :exam-template="selectedTemplate"
+            @close-exam-template-dialog="closeExamTemplateDialog()">
+        </ExamTemplateDialog>
     </v-dialog>
-
-
 
 </template>
 
 
 <script setup lang="ts">
+    import ExamTemplateDialog from "@/components/widgets/ExamTemplateDialog.vue";
     import * as quizImportWizardViewService from "@/services/component-services/quizImportWizardViewService";
     import { useQuizImportStore } from "@/stores/quizImportStore";
 
@@ -84,7 +68,7 @@
 
     //dialog - description popup
     const dialog = ref(false);
-    const dialogTemplate = ref<ExamTemplate>();
+    const selectedTemplate = ref<ExamTemplate | null>(null);
 
     //=======================events & watchers=======================
     onBeforeMount(async () => {
@@ -109,12 +93,12 @@
         quizImportStore.selectedExamTemplate = examTemplate;
     }
 
-    function openDialog(examTemplate: ExamTemplate){
-        dialogTemplate.value = examTemplate;
+    function openExamTemplateDialog(examTemplate: ExamTemplate){
+        selectedTemplate.value = examTemplate;
         dialog.value = true;
     }
 
-    function closeDialog(){
+    function closeExamTemplateDialog(){
         dialog.value = false;
     }
 
