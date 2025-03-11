@@ -33,12 +33,12 @@
                                         <v-col>
                                             Test Exam
                                         </v-col>
-                                        <v-col align="right">
+                                        <v-col align="right" cols="4" xl="3">
                                             <v-btn 
+                                                block
                                                 rounded="sm" 
                                                 color="primary" 
-                                                variant="flat" 
-                                                class="">
+                                                variant="flat">
                                                 Apply Test Run
                                             </v-btn>
                                         </v-col>
@@ -59,13 +59,13 @@
                                         <v-col>
                                             Monitor Exam
                                         </v-col>
-                                        <v-col align="right">
+                                        <v-col align="right" cols="4" xl="3">
                                             <v-btn 
+                                                block
                                                 rounded="sm" 
                                                 color="primary" 
                                                 variant="flat" 
-                                                :disabled="isFunctionalityDisabled(ExamStatusEnum.RUNNING)"
-                                                class="">
+                                                :disabled="isFunctionalityDisabled(ExamStatusEnum.RUNNING)">
                                                 Start
                                             </v-btn>
                                         </v-col>
@@ -189,6 +189,33 @@
 
                     <!----------right side--------->
                     <v-col cols="6" xl="4">
+
+                        <!----------add groups--------->
+                        <v-row>
+                            <v-col>
+                                <v-sheet 
+                                    elevation="4"
+                                    class="rounded-lg pa-4">
+
+                                    <v-row align="center">
+                                        <v-col>
+                                            Add Groups
+                                        </v-col>
+                                        <v-col align="right" cols="4" xl="3">
+                                            <v-btn 
+                                                block
+                                                rounded="sm" 
+                                                color="primary" 
+                                                variant="flat">
+                                                Add
+                                            </v-btn>
+                                        </v-col>
+                                    </v-row>
+
+                                </v-sheet>
+                            </v-col>
+                        </v-row>
+
                         <!----------edit seb settings--------->
                         <v-row>
                             <v-col>
@@ -200,13 +227,13 @@
                                         <v-col>
                                             Edit Application and Network Settings
                                         </v-col>
-                                        <v-col align="right">
+                                        <v-col align="right" cols="4" xl="3">
                                             <v-btn 
+                                                block
                                                 rounded="sm" 
                                                 color="primary" 
-                                                variant="flat" 
-                                                class="">
-                                                Start now
+                                                variant="flat">
+                                                Start
                                             </v-btn>
                                         </v-col>
                                     </v-row>
@@ -226,8 +253,9 @@
                                         <v-col>
                                             Download Exam Connection Configuration
                                         </v-col>
-                                        <v-col align="right">
+                                        <v-col align="right" cols="4" xl="3">
                                             <v-btn 
+                                                block
                                                 rounded="sm" 
                                                 color="primary" 
                                                 variant="flat" 
@@ -257,36 +285,6 @@
 
                                             <v-list class="mt-4" select-strategy="leaf">
 
-                                                <!----------App Signature Key--------->
-                                                <v-list-item>
-                                                    <v-list-item-title>App Signature Key</v-list-item-title>
-                                                    <template v-slot:append="{ isSelected }" >
-                                                        <v-list-item-action class="flex-column align-right">
-                                                            <v-icon 
-                                                                icon="mdi-chevron-right"
-                                                                style="font-size: 30px;"
-                                                                @click="">
-                                                            </v-icon>
-                                                        </v-list-item-action>
-                                                    </template>
-                                                </v-list-item>
-                                                <v-divider class="border-opacity-25" :thickness="2"></v-divider>
-
-                                                <!----------SEB Restriction Details--------->
-                                                <v-list-item>
-                                                    <v-list-item-title>SEB Restriction Details</v-list-item-title>
-                                                    <template v-slot:append="{ isSelected }" >
-                                                        <v-list-item-action class="flex-column align-right">
-                                                            <v-icon 
-                                                                icon="mdi-chevron-right"
-                                                                style="font-size: 30px;"
-                                                                @click="">
-                                                            </v-icon>
-                                                        </v-list-item-action>
-                                                    </template>
-                                                </v-list-item>
-                                                <v-divider class="border-opacity-25" :thickness="2"></v-divider>
-
                                                 <!----------Apply Screen Proctoring--------->
                                                 <v-list-item>
                                                     <v-list-item-title>Apply Screen Proctoring</v-list-item-title>
@@ -312,6 +310,21 @@
                                                                 hide-details
                                                                 color="primary">
                                                             </v-switch>
+                                                        </v-list-item-action>
+                                                    </template>
+                                                </v-list-item>
+                                                <v-divider class="border-opacity-25" :thickness="2"></v-divider>
+
+                                                <!----------SEB Keys--------->
+                                                <v-list-item>
+                                                    <v-list-item-title>SEB Keys</v-list-item-title>
+                                                    <template v-slot:append="{ isSelected }" >
+                                                        <v-list-item-action class="flex-column align-right">
+                                                            <v-icon 
+                                                                icon="mdi-key-outline"
+                                                                style="font-size: 30px;"
+                                                                @click="">
+                                                            </v-icon>
                                                         </v-list-item-action>
                                                     </template>
                                                 </v-list-item>
