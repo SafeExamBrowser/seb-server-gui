@@ -17,9 +17,7 @@ export async function setPersonalUserAccount(){
         userAccountStore.userAccount = personalUserAccountResonse;
         userAccountStore.setUserTimeZone(userAccountStore.userAccount.timezone);
 
-
     }catch(error){
-        console.error(error);
         return null;
     }
 
@@ -30,7 +28,6 @@ export async function getPersonalUserAccount(): Promise<UserAccount | null>{
         return await userAccountService.getPersonalUserAccount();
 
     }catch(error){
-        console.error(error);
         return null;
     }
 
@@ -42,7 +39,6 @@ export async function getUserAccountById(accountId: string): Promise<UserAccount
         return await userAccountService.getUserAccountById(accountId)
 
     }catch(error){
-        console.error(error);
         return null;
     }
 }
@@ -52,7 +48,6 @@ export async function getUserAccounts(optionalParamters?: OptionalParGeneric): P
         return await userAccountService.getUserAccounts(optionalParamters)
 
     }catch(error){
-        console.error(error);
         return null;
     }
 }
@@ -62,7 +57,6 @@ export async function getUserAccountNames(optionalParamters?: OptionalParInstitu
         return await userAccountService.getUserAccountNames(optionalParamters)
 
     }catch(error){
-        console.error(error);
         return null;
     }
 }
@@ -72,7 +66,6 @@ export async function activateUserAccount(accountId: string): Promise<UserAccoun
         return await userAccountService.activateUserAccount(accountId)
 
     }catch(error){
-        console.error(error);
         return null;
     }
 }
@@ -82,7 +75,6 @@ export async function deactivateUserAccount(accountId: string): Promise<UserAcco
         return await userAccountService.deactivateUserAccount(accountId)
 
     }catch(error){
-        console.error(error);
         return null;
     }
 }
@@ -92,7 +84,6 @@ export async function changePassword(uuid: string, password: string, newPassword
         return await userAccountService.changePassword(uuid, password, newPassword, confirmNewPassword)
 
   }catch(error){
-      console.error(error);
       return null;
   }
 }

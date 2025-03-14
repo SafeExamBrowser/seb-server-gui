@@ -8,7 +8,6 @@ export async function getQuizzes(optionalParamters?: OptionalParGetQuizzes): Pro
     try{
         return await quizService.getQuizzes(optionalParamters);        
     }catch(error){
-        console.error(error);
         return null;
     }
 }
@@ -17,15 +16,14 @@ export async function getExamTemplates(optionalParamters?: OptionalParGeneric): 
     try{
         return await examTemplateService.getExamTemplates(optionalParamters);        
     }catch(error){
-        console.error(error);
         return null;
     }
 }
 
-export async function createExam(createExamPar: CreateExamPar): Promise<Exam>{
+export async function createExam(createExamPar: CreateExamPar): Promise<Exam | null>{
     try{
         return await examService.createExam(createExamPar);        
     }catch(error){
-        throw error;
+        return null;
     }
 }

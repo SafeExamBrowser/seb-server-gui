@@ -9,7 +9,6 @@ export async function getExam(id: string): Promise<Exam | null>{
     try{
         return await examService.getExam(id);    
     }catch(error){
-        console.error(error);
         return null;
     }
 }
@@ -18,7 +17,6 @@ export async function getExamTemplate(id: string): Promise<ExamTemplate | null>{
     try{
         return await examTemplateService.getExamTemplate(id);    
     }catch(error){
-        console.error(error);
         return null;
     }
 }
@@ -27,7 +25,6 @@ export async function deleteExam(id: string): Promise<any | null>{
     try{
         return await examService.deleteExam(id);    
     }catch(error){
-        console.error(error);
         return null;
     }
 }
@@ -36,7 +33,6 @@ export async function getExams(optionalParGetExams?: OptionalParGetExams): Promi
     try{
         return await examService.getExams(optionalParGetExams);    
     }catch(error){
-        console.error(error);
         return null;
     }
 }
@@ -44,8 +40,7 @@ export async function getExams(optionalParGetExams?: OptionalParGetExams): Promi
 export async function updateExam(examId: string, exam: Exam): Promise<Exam | null>{
     try{
         return await examService.updateExam(examId, exam);        
-    }catch(error: any){
-        console.error(error);
+    }catch(error){
         return null;
     }
 }
@@ -53,8 +48,7 @@ export async function updateExam(examId: string, exam: Exam): Promise<Exam | nul
 export async function getConnectionConfigurations(): Promise<ConnectionConfigurations | null>{
     try{
         return await configurationService.getConnectionConfigurations("true");
-    }catch(error: any){
-        console.error(error);
+    }catch(error){
         return null;
     }
 }
@@ -62,8 +56,7 @@ export async function getConnectionConfigurations(): Promise<ConnectionConfigura
 export async function downloadExamConfig(examId: string, connectionId: string): Promise<any>{
     try{
         return await configurationService.downloadExamConfig(examId, connectionId);
-    }catch(error: any){
-        console.error(error);
+    }catch(error){
         return null;
     }
 }
@@ -72,7 +65,6 @@ export async function archiveExam(id: string): Promise<Exam | null>{
     try{
         return await examService.archiveExam(id);    
     }catch(error){
-        console.error(error);
         return null;
     }
 }
@@ -81,7 +73,6 @@ export async function saveScreenProctoringSettings(id: string, screenProctoringS
     try{
         return await screenProctoringService.saveScreenProctoringSettings(id, screenProctoringSettings);
     }catch(error){
-        console.error(error);
         return null;
     }
 }

@@ -128,7 +128,7 @@
                         </v-row>
                         <v-divider class="border-opacity-25" :thickness="2"></v-divider>
 
-                        <v-row class="mb-10">
+                        <v-row>
                             <v-col>
                                 <v-list>
                                     <template 
@@ -151,7 +151,7 @@
                         <!--------quit password------>
                         <v-row class="mt-10">
                             <v-col>
-                                <div class="primary-text-color text-h5">
+                                <div class="primary-text-color text-h6">
                                     Quit Password
                                 </div>
                                 <v-divider class="border-opacity-25" :thickness="2"></v-divider>
@@ -449,6 +449,7 @@
     import * as generalUtils from "@/utils/generalUtils";
     import { navigateTo } from '@/router/navigation';
     import { ExamStatusEnum, ExamTypeEnum } from "@/models/examFiltersEnum";
+    import * as examService from "@/services/api-services/examService";
 
 
     const isPageInitalizing = ref<boolean>(true);
@@ -528,7 +529,6 @@
         const examResponse: Exam | null = await examViewService.getExam(examId);
 
         if(examResponse == null){
-            //todo: add error handling
             return;
         }
 
@@ -539,22 +539,19 @@
         alertAvailable.value = false;
 
         if(examStore.selectedExam == null){
-            //todo
             return;
         }
 
         const updateExamResponse: Exam | null = await examViewService.updateExam(examId, examStore.selectedExam);
 
         if(updateExamResponse == null){
-                alertAvailable.value = true;
-                alertColor.value = "error";
-                alertKey.value = "exam-update-failed";
             return;
         }
 
         alertAvailable.value = true;
         alertColor.value = "success";
         alertKey.value = "exam-update-successful";
+
         examStore.selectedExam = updateExamResponse;
     }
     //=========================================
@@ -806,11 +803,6 @@
 
         if(saveScreenProcResponse == null){
             isScreenProctoringActive.value = !enable;
-
-            alertAvailable.value = true;
-            alertColor.value = "error";
-            alertKey.value = type + "-screen-proctoring-failed";
-
             return;
         }
 

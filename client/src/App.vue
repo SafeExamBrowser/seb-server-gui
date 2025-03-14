@@ -1,11 +1,15 @@
 <template>
   <v-app>
+
+    <ErrorMsg></ErrorMsg>
+
     <loading
       color="#215CAF"
       :width=100
       :active="loadingStore.isLoading" />
+
     <router-view />
-  </v-app>
+    </v-app>
 </template>
 
 <script setup lang="ts">
@@ -14,8 +18,7 @@
     import { useLoadingStore } from "@/stores/store";
     import "@vuepic/vue-datepicker/dist/main.css";
 
-    const loadingStore = useLoadingStore();
-
+    const loadingStore = useLoadingStore(); 
 
 </script>
 

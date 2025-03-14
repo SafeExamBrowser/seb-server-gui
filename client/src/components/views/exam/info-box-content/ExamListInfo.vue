@@ -51,12 +51,20 @@
                                     </div>
                                 </v-col>
                                 <v-col cols="9" class="mb-2">
-                                    <VueDatePicker 
+                                    <!-- <VueDatePicker 
                                         v-model="examStore.startDate"
                                         format="dd.MM.yyyy"
                                         :teleport="true"
                                         :enable-time-picker="false">
-                                    </VueDatePicker>
+                                    </VueDatePicker> -->
+                                    <v-date-input 
+                                        v-model="datepicker"
+                                        density="compact"
+                                        variant="outlined"
+                                        placeholder="mm.dd.yyyy"
+                                        prepend-icon=""
+                                        append-inner-icon="mdi-calendar">
+                                    </v-date-input>
                                 </v-col>
                             </v-row>
                             <!----------------------------------->
@@ -137,9 +145,14 @@
     import {useExamStore} from "@/stores/examStore";
     import { ExamStatusEnum, ExamTypeEnum } from "@/models/examFiltersEnum";
     import * as generalUtils from "@/utils/generalUtils";
+    import { VDateInput } from "vuetify/labs/VDateInput";
+
 
     //stores
     const examStore = useExamStore();
+
+    //datepicker
+    const datepicker = ref();
 
     //emits - call loadExamItemsCaller in parent
     const emit = defineEmits<{
@@ -164,6 +177,10 @@
     ];
 
     function loadExamItemsCaller(){ 
+        if(datepicker != null && datepicker.value != null){
+            examStore.startDate = datepicker.value.getTime();
+        }
+
         emit("loadExamItemsCaller");
     }
 

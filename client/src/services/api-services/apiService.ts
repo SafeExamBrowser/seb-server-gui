@@ -4,6 +4,7 @@ import {navigateTo} from "@/router/navigation";
 import * as ENV from "@/config/envConfig";
 import { useLoadingStore, useAuthStore } from "@/stores/store";
 import router from "@/router/router";
+import { useErrorStore } from "@/stores/errorStore";
 
 
 export let api: AxiosInstance;
@@ -18,6 +19,7 @@ export function createApi(){
 export function createApiInterceptor(){
     const authStore = useAuthStore();
     const loadingStore = useLoadingStore();
+    const errorStore = useErrorStore();
 
     let loadingTimer: NodeJS.Timeout | null = null;
     let loadingTimout: number = 500;
@@ -39,7 +41,7 @@ export function createApiInterceptor(){
 
         //until when loading spinner should be displayed (timeout)
         let loadingEndTimout: number = 20000;
-        if(config.url == "/search/sessions/day") loadingEndTimout = 60000;
+        // if(config.url == "/search/sessions/day") loadingEndTimout = 60000;
 
         loadingEndTimer = setTimeout(() => {
             resetLoadingState();
@@ -56,14 +58,39 @@ export function createApiInterceptor(){
     }, async error => {
         resetLoadingState();
 
+        console.error(error)
+
         //authentication error
         const originalRequest = error.config;
         if(error.response.status === 401 && !originalRequest._retry){
             await handleAuthenticationError(originalRequest);
+            throw error;
+
+        }else{
+
+            //generic error msg
+            let errorProps: ErrorProps = {
+                color: "error",
+                textKey: "api-error",
+                timeout: 5000
+            }
+
+            if(error.response.data && error.response.data[0].systemMessage){
+                //specific error msg
+                errorProps.textCustom = error.response.data[0].systemMessage;
+
+                //detailed error msg
+                if(error.response.data[0].details){
+                    errorProps.textCustom = error.response.data[0].systemMessage;
+                    errorProps.details = error.response.data[0].details;
+                }
+            }
+
+            errorStore.showError(errorProps);
+
+            throw error;
         }
 
-        //general error
-        throw error;
     });
     
 

@@ -107,8 +107,6 @@
 <script setup lang="ts">
     import VueDatePicker from "@vuepic/vue-datepicker";
     import {useQuizImportStore} from "@/stores/quizImportStore";
-    import { useUserAccountStore } from "@/stores/store";
-    import { getTimezoneOffset } from 'date-fns-tz'
     import { VDateInput } from "vuetify/labs/VDateInput";
 
     //stores
@@ -128,8 +126,6 @@
             quizImportStore.startTimestamp = datepicker.value.getTime();
         }
 
-        console.log(quizImportStore.startTimestamp)
-
         emit("loadExamItemsCaller");
     }
 
@@ -141,14 +137,6 @@
         
         loadExamItemsCaller();
     }
-
-    // watch(datepicker, () => {
-    //     const date: Date = new Date(datepicker.value);  
-    //     quizImportStore.startTimestamp = date.getTime();
-    //     console.log("utc time of selected date: " + date.getTime());
-    // });
-
-
 
 
 </script>

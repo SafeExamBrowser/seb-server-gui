@@ -2,21 +2,6 @@
     <v-row>
         <v-spacer></v-spacer>
         <v-col cols=6>
-
-            <v-row class="mb-4">
-                <v-col>
-                    <AlertMsg 
-                        v-if="saveError"
-                        :alertProps="{
-                            title: '',
-                            color: 'error',
-                            type: 'snackbar',
-                            textKey: 'api-error'
-                        }">
-                    </AlertMsg>
-                </v-col>
-            </v-row>
-
             <!--------Title------>
             <v-row class="mb-10">
                 <v-col>
@@ -26,7 +11,6 @@
                     <v-divider class="border-opacity-25" :thickness="2"></v-divider>
                 </v-col>
             </v-row>
-            <!------------------->
 
             <!--------Template------>
             <v-row>
@@ -42,8 +26,6 @@
                     {{ quizImportStore.selectedExamTemplate?.name }}
                 </v-col>
             </v-row>
-            <!------------------->
-
 
             <!--------supervisors------>
             <v-row>
@@ -72,7 +54,6 @@
                     </v-list>
                 </v-col>
             </v-row>
-            <!------------------->
 
             <!--------quit password------>
             <v-row>
@@ -106,7 +87,6 @@
                     </v-text-field>
                 </v-col>
             </v-row>
-            <!------------------->
 
             <!--------save button------>
             <v-row>
@@ -122,17 +102,10 @@
                     </v-btn>
                 </v-col>
             </v-row>
-            <!------------------->
-
 
         </v-col>
         <v-spacer></v-spacer>
     </v-row>
-    
-
-
-
-
 </template>
 
 
@@ -171,19 +144,19 @@
             supporter: quizImportStore.selectedExamSupervisors.map(userAccountName => userAccountName.modelId)
         }
 
-        let exam: Exam;
-        try{
-            exam = await quizImportWizardViewService.createExam(createExamParams);
+        // const quizzesResponse: Quizzes | null = await quizImportWizardViewService.getQuizzes(optionalParGetQuizzes);
 
-        }catch(error: any){
-            //todo improve error handling
-            console.log(error.response.data[0].details)
+        // if(quizzesResponse == null){
+        //     isLoading.value = false;
+        //     return;
+        // }
 
-            saveError.value = true;
+        const createExamResponse: Exam | null = await quizImportWizardViewService.createExam(createExamParams);
+        if(createExamResponse == null){
             return;
         }
 
-        navigateTo(constants.EXAM_ROUTE + "/" + exam.id);
+        navigateTo(constants.EXAM_ROUTE + "/" + createExamResponse.id);
         quizImportStore.clearValues();
     }
 

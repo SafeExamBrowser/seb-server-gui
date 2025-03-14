@@ -8,7 +8,7 @@ export async function getExam(id: string): Promise<Exam | any>{
     return (await apiService.api.get(url, {headers: apiService.getHeaders()})).data;
 }
 
-export async function createExam(createExamPar: CreateExamPar): Promise<any>{
+export async function createExam(createExamPar: CreateExamPar): Promise<Exam | any>{
     return (await apiService.api.post(examUrl, createExamPar, {headers: apiService.getPostHeaders()})).data;
 }
 
@@ -17,7 +17,7 @@ export async function deleteExam(id: string): Promise<any | null>{
 }
 
 export async function updateExam(id: string, exam: Exam): Promise<Exam | any>{
-    return (await apiService.api.put(examUrl + "/" + id, exam, {headers: apiService.getPostHeaders()})).data;
+    return (await apiService.api.put(examUrl + "/qwer" + id, exam, {headers: apiService.getPostHeaders()})).data;
 }
 
 export async function getExams(optionalParamters?: OptionalParGetExams): Promise<Exams | any>{

@@ -5,7 +5,6 @@ export async function getAssessmentTools(active: string): Promise<AssessmentTool
     try{
         return await assessmentToolService.getAssessmentTools(active);        
     }catch(error){
-        console.error(error);
         return null;
     }
 }
