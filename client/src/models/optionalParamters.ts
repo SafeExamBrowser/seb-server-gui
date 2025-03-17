@@ -32,4 +32,5 @@ type OptionalParGetExams = {
     active?: string;
     status?: string;
     type?: string;
+    start_timestamp_millis?: number;
 }

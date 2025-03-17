@@ -6,6 +6,7 @@ import * as examTemplateController from "../controllers/exam-template.controller
 import * as screenProctoringController from "../controllers/screen-proctoring.controller";
 import * as userAccountController from "../controllers/user-account.controller";
 import * as assessmentToolController from "../controllers/assessment-tool.controller";
+import * as monitoringController from "../controllers/monitoring.controller";
 import * as constants from "../utils/constants";
 
 const router: Router = express.Router();
@@ -41,6 +42,9 @@ router.get(constants.CONNECTION_CONFIG_ROUTE, configurationController.getConnect
 
 //assessment tool
 router.get(constants.ASSESSMENT_TOOL_ROUTE, assessmentToolController.getAssessmentTools);
+
+//monitoring
+router.post(constants.MONITORING_TEST_RUN_ROUTE + "/:id", monitoringController.applyTestRun);
 
 
 export default router;

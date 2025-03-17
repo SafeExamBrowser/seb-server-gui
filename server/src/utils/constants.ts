@@ -20,3 +20,5 @@ export const CONNECTION_CONFIG_ROUTE = "/client_configuration";
 export const DOWNLOAD_EXAM_CONFIG_ROUTE = "/client_configuration/download";
 
 export const ASSESSMENT_TOOL_ROUTE = "/assessment-tools";
+
+export const MONITORING_TEST_RUN_ROUTE = "/monitoring/testrun"

@@ -2,6 +2,10 @@ import * as examService from "@/services/api-services/examService";
 import * as examTemplateService from "@/services/api-services/examTemplateService";
 import * as configurationService from "@/services/api-services/configurationService";
 import * as screenProctoringService from "@/services/api-services/screenProctoringService";
+import * as monitoringService from "@/services/api-services/monitoringService";
+import * as generalUtils from "@/utils/generalUtils";
+import { ExamStatusEnum, ExamTypeEnum } from "@/models/examFiltersEnum";
+import * as timeUtils from "@/utils/timeUtils";
 
 
 //=============api==============
@@ -76,11 +80,18 @@ export async function saveScreenProctoringSettings(id: string, screenProctoringS
         return null;
     }
 }
+
+export async function applyTestRun(id: string): Promise<Exam | null>{
+    try{
+        return await monitoringService.applyTestRun(id);
+    }catch(error){
+        return null;
+    }
+}
 //==============================
 
 
-//=============screen proctoring==============
-
+//======screen proctoring=======
 export function createDefaultScreenProctoringSettings(enable: boolean, examId: number, groupName: string): ScreenProctoringSettings{
     return {
         id: examId,
@@ -90,4 +101,50 @@ export function createDefaultScreenProctoringSettings(enable: boolean, examId: n
         bundled: false,
         changeStrategyConfirm: false
     };
+}
+
+
+//======enable/disable==========
+export function isExamFunctionalityDisabled(allowedExamStatus: ExamStatusEnum, examStatusString: string | undefined): boolean{
+    if(examStatusString == null){
+        return true;
+    }
+
+    const examStatus: ExamStatusEnum | null = generalUtils.findEnumValue(ExamStatusEnum, examStatusString);
+    
+    //Running = monitor is allowed
+    //Fished = archived is allowed
+    //UpComing = test run is allowed
+    if(examStatus != allowedExamStatus){
+        return true;
+    }
+
+    return false;
+}
+
+
+//===============exam config logic====================
+export function createDownloadLink(examName: string | undefined, blob: any){
+    // Create a link element
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute("download", getExamConfigFileName(examName));
+    document.body.appendChild(link);
+    
+    // Trigger the download
+    link.click();
+    
+    // Clean up
+    document.body.removeChild(link);
+    URL.revokeObjectURL(link.href);
+}
+
+function getExamConfigFileName(examName: string | undefined): string{
+    if(examName == null){
+        return "";
+    }
+
+    examName = examName?.replaceAll(" ", "_");
+
+    return `${examName}_${timeUtils.getCurrentDateString()}.seb`;
 }

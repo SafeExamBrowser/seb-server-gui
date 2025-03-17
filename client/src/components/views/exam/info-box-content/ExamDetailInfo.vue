@@ -32,24 +32,9 @@
                         <v-row>
                             <!------url------->
                             <v-col cols="3" class="text-h7 text-decoration-underline">
-                                <!-- <div class="mb-4"> -->
-                                    <a :href="examStore.selectedExam?.startURL" target="_blank">
-                                        {{examStore.selectedExam?.startURL}}
-                                    </a>
-                                <!-- </div> -->
-
-                                <!-- <v-chip 
-                                    class="mr-1"
-                                    variant="tonal"
-                                    size="small">
-                                    {{ generalUtils.getTypeFilterName(generalUtils.findEnumValue(ExamTypeEnum, examStore.selectedExam?.type)) }}
-                                </v-chip>
-                                <v-chip 
-                                    variant="tonal"
-                                    size="small"
-                                    :color="generalUtils.getExamStatusFilterColor(generalUtils.findEnumValue(ExamStatusEnum, examStore.selectedExam?.status))">
-                                    {{ generalUtils.getExamStatusFilterName(generalUtils.findEnumValue(ExamStatusEnum, examStore.selectedExam?.status)) }}
-                                </v-chip> -->
+                                <a :href="examStore.selectedExam?.startURL" target="_blank">
+                                    {{examStore.selectedExam?.startURL}}
+                                </a>
                             </v-col>
 
                             <!------start time------->
@@ -68,12 +53,12 @@
                             </v-col>
 
                             <!------description------->
-                            <v-col cols="3" class="primary-text-color">
+                            <v-col cols="3">
                                 <template v-if="examStore.selectedExam?.description == null || ''">
                                     -
                                 </template>
                                 <template v-else>
-                                    {{examStore.selectedExam?.description}}
+                                    <span v-html="examStore.selectedExam?.description"></span>
                                 </template>
                             </v-col>
 

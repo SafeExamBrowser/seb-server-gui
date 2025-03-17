@@ -49,19 +49,13 @@
                                     Start:
                                 </v-col>
                                 <v-col cols="9" class="mb-2">
-                                    <!-- <VueDatePicker 
-                                        v-model="quizImportStore.startDate"  
-                                        auto-position="bottom"
-                                        format="dd.MM.yyyy"
-                                        :teleport="true"
-                                        :enable-time-picker="false">
-                                    </VueDatePicker> -->
-                                    <!-- <v-date-picker v-model="datepicker"></v-date-picker> -->
-                                    <v-date-input 
+                                    <v-date-input
+                                        single-line
+                                        hide-details
                                         v-model="datepicker"
                                         density="compact"
                                         variant="outlined"
-                                        placeholder="mm.dd.yyyy"
+                                        placeholder="dd.mm.yyyy"
                                         prepend-icon=""
                                         append-inner-icon="mdi-calendar">
                                     </v-date-input>
@@ -105,7 +99,6 @@
 </template>
 
 <script setup lang="ts">
-    import VueDatePicker from "@vuepic/vue-datepicker";
     import {useQuizImportStore} from "@/stores/quizImportStore";
     import { VDateInput } from "vuetify/labs/VDateInput";
 

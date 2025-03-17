@@ -126,7 +126,8 @@ export function assignQuizSelectPagingOptions(
 export function assignExamSelectPagingOptions
 (
     serverTablePaging: ServerTablePaging, 
-    name: string | null, startTimestamp: string | null, 
+    name: string | null, 
+    startTimestamp: number | null,
     activeTypeFilter: ExamTypeEnum | null, 
     activeStatusFilter: ExamStatusEnum | null): OptionalParGetExams{
     
@@ -149,7 +150,7 @@ export function assignExamSelectPagingOptions
     }
 
     if(startTimestamp != null){
-        optionalParGetExams.quizStartTime = startTimestamp;
+        optionalParGetExams.start_timestamp_millis = startTimestamp;
     }
 
 

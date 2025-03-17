@@ -76,7 +76,6 @@
         const examTemplatesResponse: ExamTemplates | null = await quizImportWizardViewService.getExamTemplates();
 
         if(examTemplatesResponse == null){
-            //todo: add error handling
             return;
         }
 

@@ -135,7 +135,6 @@
         const userAccountNamesResponse: UserAccountName[] | null = await userAccountViewService.getUserAccountNames();
 
         if(userAccountNamesResponse == null){
-            //todo: add error handling
             return;
         }
         userAccountNames.value = userAccountNamesResponse;
@@ -153,7 +152,6 @@
         const userAccountFull: UserAccount | null = await userAccountViewService.getUserAccountById(selectedUserAccount.modelId);
 
         if(userAccountFull == null){
-            //todo: add error handling
             return;
         }
 

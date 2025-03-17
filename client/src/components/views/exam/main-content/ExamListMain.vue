@@ -140,16 +140,16 @@
             serverTablePaging.sortBy = defaultSort;
         }
 
-        let startDate: string | null = null;
+        let startTimestamp: number | null = null;
         if(examStore.startDate != null){
-            startDate = timeUtils.setIsoTimeToZero(examStore.startDate);
+            startTimestamp = examStore.startDate;
         }
 
         const optionalParGetExams: OptionalParGetExams = tableUtils.assignExamSelectPagingOptions
         (
             serverTablePaging, 
             examStore.searchField, 
-            startDate,
+            startTimestamp,
             examStore.activeTypeFilter,
             examStore.activeStatusFilter
         );

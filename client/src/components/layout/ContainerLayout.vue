@@ -4,7 +4,7 @@
         <!--seb logo-->
         <template v-slot:prepend >
             <a :href="getHomePageRoute()" class="text-decoration-none text-black">
-                <v-img :width=50 src="/img/seb-logo-no-border.png"></v-img>
+                <v-img :width=50 src="/img/seb-logo-no-border.png" :alt="i18n.t('navigation.screenReader.titleImage')"></v-img>
             </a>
         </template>
 
@@ -20,12 +20,19 @@
                 <v-menu :close-on-content-click="false">
 
                     <template v-slot:activator="{ props }">
-                        <v-btn v-bind="props" color="primary" icon="mdi-account-circle" size="x-large" @click="userMenuOpened()"></v-btn>
+                        <v-btn 
+                            :aria-label="i18n.t('navigation.screenReader.profile')"
+                            v-bind="props" 
+                            color="primary" 
+                            icon="mdi-account-circle" 
+                            size="x-large" 
+                            @click="userMenuOpened()">
+                        </v-btn>
                     </template>
 
                     <v-list>
                         <v-list-item class="d-flex">
-                            <v-list-item-title>Logged in as: {{ userAccountStore.userAccount?.name }}</v-list-item-title>
+                            <v-list-item-title>{{ $t('navigation.loggedInAs') }} {{ userAccountStore.userAccount?.name }}</v-list-item-title>
                         </v-list-item>
 
                         <!-- <v-list-item class="d-flex" :to=constants.ACCOUNT_VIEW_ROUTE>
@@ -34,23 +41,8 @@
 
                         <v-divider class="border-opacity-25" :thickness="1"></v-divider>
 
-                        <!-- <v-list-item>
-                            <v-btn-toggle v-model="languageToggle" variant="text" mandatory>
-                                <v-btn>EN</v-btn>
-                                <v-btn>DE</v-btn>
-                            </v-btn-toggle>
-                        </v-list-item> -->
-
-                        <!-- <v-list-item>
-                            <v-btn-toggle v-model="themeToggle" variant="text" mandatory>
-                                <v-btn icon="mdi-white-balance-sunny"></v-btn>
-                                <v-btn icon="mdi-weather-night"></v-btn>
-                            </v-btn-toggle>
-                        </v-list-item> -->
-
-
                         <v-list-item tabindex="0" class="text-decoration-underline text-blue mx-auto" @click="authStore.logout()">
-                            <v-list-item-title class="mx-auto">Sign out</v-list-item-title>
+                            <v-list-item-title class="mx-auto">{{ $t("navigation.signOut") }}</v-list-item-title>
                         </v-list-item>
 
                     </v-list>
@@ -62,7 +54,7 @@
     </v-app-bar>
 
     <!---------------main navigation drawer----------------->
-    <v-navigation-drawer v-model="drawer" :permanent="true" width="70">
+    <v-navigation-drawer v-model="navigationDrawer" :permanent="true" width="70">
         <v-list lines="two">
             <!--------navigation overview---------->
             <v-list-item 
@@ -101,10 +93,6 @@
 
                         <span class="text-caption">{{ title }}</span>
 
-                        <!-- <v-tooltip activator="parent">
-                            {{title}}
-                        </v-tooltip> -->
-
                     </template>
                 </v-list-item>
 
@@ -135,10 +123,11 @@
     import router from "@/router/router";
 
 
-    //--------navigation-------
-    const drawer = ref();
+    //i18n
+    const i18n = useI18n();
 
     //main navigation
+    const navigationDrawer = ref();
     const mainNavigationLinks: NavigationItem[] = [
         {title: constants.HOME_PAGE_TITLE, route: constants.HOME_PAGE_ROUTE, icon: "mdi-home"},
         {title: constants.EXAMS_TITLE, route: constants.EXAM_ROUTE, icon: "mdi-file-document"},

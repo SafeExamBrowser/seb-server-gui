@@ -1,18 +1,31 @@
 {
     "navigation": {
-        "title": "SEB Server",
-        "currentUser": "sebserver-admin",
+        "title": "SEB Screen Proctoring",
         "signIn": "Sign in",
         "signOut": "Sign out",
         "accountSettings": "Account settings",
-        "loggedInAs": "Logged in as"
+        "loggedInAs": "Logged in as",
+
+        "routeNames": {
+            "runningExams": "Running Exams",
+            "search": "Search",
+            "applications": "Applications"
+        },
+
+        "screenReader": {
+            "titleImage": "SEB Server Homepage",
+            "navigationBar": "Navigation Bar",
+            "profile": "Profile"
+        }
     },
+
     "changePasswordDialog": {
         "title": "Change password",
         "currentPassword": "Current password *",
         "newPassword": "New password *",
         "confirmPassword": "Confirm password *"
     },
+
     "searchForm": {
         "examName": "Exam name",
         "groupName": "Group name",
@@ -30,26 +43,20 @@
         "cancel": "Cancel",
         "search": "Search"
     },
+
     "searchPage": {
         "title": "Search results",
         "collapse": "Collapse",
         "expand": "Expand"
     },
-    "searchSessionTable": {
-        "startTime": "Start time",
-        "loginName": "Login name / IP",
-        "machineName": "Machine name",
-        "groupName": "Group name",
-        "examName": "Exam name",
-        "slides": "Slides",
-        "video": "Video"
-    },
+
     "timePeriod": {
         "day": "Days",
         "week": "Weeks",
         "month": "Months",
         "year": "Years"
     },
+
     "$vuetify": {
         "dataIterator": {
           "rowsPerPageText": "Items per page:",

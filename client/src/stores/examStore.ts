@@ -4,7 +4,7 @@ import { defineStore } from "pinia";
 export const useExamStore = defineStore("exam", () => {
     //exam table
     const searchField = ref<string | null>(null);
-    const startDate = ref<Date | null>(null);
+    const startDate = ref<number | null>(null);
     const currentPagingOptions = ref<ServerTablePaging>();
     const activeTypeFilter = ref<ExamTypeEnum | null>(null);
     const activeStatusFilter = ref<ExamStatusEnum | null>(null);

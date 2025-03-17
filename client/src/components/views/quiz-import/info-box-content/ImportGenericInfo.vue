@@ -49,12 +49,12 @@
                             </v-col>
 
                             <!------description------->
-                            <v-col cols="5" class="primary-text-color">
+                            <v-col cols="5">
                                 <template v-if="quizImportStore.selectedQuiz?.quiz_description == null || ''">
                                     -
                                 </template>
                                 <template v-else>
-                                    {{quizImportStore.selectedQuiz?.quiz_description}}
+                                    <span v-html="quizImportStore.selectedQuiz?.quiz_description"></span>
                                 </template>
                             </v-col>
                         </v-row>

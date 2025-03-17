@@ -35,14 +35,30 @@
                                         </v-col>
                                         <v-col align="right" cols="4" xl="3">
                                             <v-btn 
+                                                v-if="generalUtils.findEnumValue(ExamStatusEnum, examStore.selectedExam?.status) == ExamStatusEnum.TEST_RUN"
                                                 block
                                                 rounded="sm" 
                                                 color="primary" 
-                                                variant="flat">
+                                                variant="flat"
+                                                @click="applyTestRun()">
+                                                Disable Test Run
+                                            </v-btn>
+                                            <v-btn 
+                                                v-else
+                                                block
+                                                rounded="sm" 
+                                                color="primary" 
+                                                variant="flat"
+                                                :disabled="examViewService.isExamFunctionalityDisabled(ExamStatusEnum.UP_COMING, examStore.selectedExam?.status)"
+                                                @click="applyTestRun()">
                                                 Apply Test Run
                                             </v-btn>
                                         </v-col>
                                     </v-row>
+
+                                    <v-tooltip activator="parent">
+                                        Test run is only activated when exam is Up Coming
+                                    </v-tooltip>
 
                                 </v-sheet>
                             </v-col>
@@ -65,7 +81,7 @@
                                                 rounded="sm" 
                                                 color="primary" 
                                                 variant="flat" 
-                                                :disabled="isFunctionalityDisabled(ExamStatusEnum.RUNNING)">
+                                                :disabled="examViewService.isExamFunctionalityDisabled(ExamStatusEnum.RUNNING, examStore.selectedExam?.status)">
                                                 Start
                                             </v-btn>
                                         </v-col>
@@ -217,7 +233,7 @@
                         </v-row>
 
                         <!----------edit seb settings--------->
-                        <v-row>
+                        <v-row class="mt-6">
                             <v-col>
                                 <v-sheet 
                                     elevation="4"
@@ -332,19 +348,19 @@
 
                                                 <!----------Archive Exam--------->
                                                 <v-list-item>
-                                                    <v-list-item-title :class="[isFunctionalityDisabled(ExamStatusEnum.FINISHED) ? 'disabled-text-color' : '']">Archive Exam</v-list-item-title>
+                                                    <v-list-item-title :class="[examViewService.isExamFunctionalityDisabled(ExamStatusEnum.FINISHED, examStore.selectedExam?.status) ? 'disabled-text-color' : '']">Archive Exam</v-list-item-title>
                                                     <template v-slot:append="{ isSelected }" >
                                                         <v-list-item-action class="flex-column align-right">
                                                             <v-icon 
                                                                 icon="mdi-archive-outline"
                                                                 style="font-size: 30px;"
-                                                                :disabled="isFunctionalityDisabled(ExamStatusEnum.FINISHED)"
+                                                                :disabled="examViewService.isExamFunctionalityDisabled(ExamStatusEnum.FINISHED, examStore.selectedExam?.status)"
                                                                 @click="openArchiveDialog()">
                                                             </v-icon>
                                                         </v-list-item-action>
                                                     </template>
 
-                                                    <v-tooltip v-if="isFunctionalityDisabled(ExamStatusEnum.FINISHED)" activator="parent">
+                                                    <v-tooltip v-if="examViewService.isExamFunctionalityDisabled(ExamStatusEnum.FINISHED, examStore.selectedExam?.status)" activator="parent">
                                                         Archiving is only activated when exam is finished
                                                     </v-tooltip>
 
@@ -449,7 +465,6 @@
     import * as generalUtils from "@/utils/generalUtils";
     import { navigateTo } from '@/router/navigation';
     import { ExamStatusEnum, ExamTypeEnum } from "@/models/examFiltersEnum";
-    import * as examService from "@/services/api-services/examService";
 
 
     const isPageInitalizing = ref<boolean>(true);
@@ -567,7 +582,6 @@
             const userAccount: UserAccount | null = await userAccountViewService.getUserAccountById(examStore.selectedExam.supporter[i]);
 
             if(userAccount == null){
-                //todo: add error handling
                 return;
             }
 
@@ -588,7 +602,6 @@
 
     function updateExamSupervisors(){
         if(examStore.selectedExam == null){
-            //todo
             return;
         }
 
@@ -627,14 +640,9 @@
     }
 
     async function updateQuitPassword(){
-        console.log("updateQuitPassword called")
-
         if(examStore.selectedExam == null || initalPassword == quitPassword.value){
             return;
         }
-
-        console.log("updateQuitPassword called 2")
-
 
         examStore.selectedExam.quitPassword = quitPassword.value;
         updateExam();
@@ -656,7 +664,6 @@
         const connectionConfigurations: ConnectionConfigurations | null = await examViewService.getConnectionConfigurations();
 
         if(connectionConfigurations == null){
-            //todo
             return;
         }
 
@@ -674,61 +681,21 @@
         }
 
         if(examStore.selectedExam == null){
-            //todo
             return;
         }
 
         const blobResponse = await examViewService.downloadExamConfig(examStore.selectedExam.id.toString(), connectionId);
 
         if(blobResponse == null){
-            //todo
             return;
         }
 
-        createDownloadLink(blobResponse);
-    }
-
-    function createDownloadLink(blob: any){
-        // Create a link element
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.setAttribute("download", getExamConfigFileName());
-        document.body.appendChild(link);
-        
-        // Trigger the download
-        link.click();
-        
-        // Clean up
-        document.body.removeChild(link);
-        URL.revokeObjectURL(link.href);
-    }
-
-    function getExamConfigFileName(): string{
-        let examName = examStore.selectedExam?.quizName;
-        examName = examName?.replaceAll(" ", "_");
-
-        return `${examName}_${timeUtils.getCurrentDateString()}.seb`;
+        examViewService.createDownloadLink(examStore.selectedExam.quizName, blobResponse);
     }
     //=========================================
 
 
     //===============monitor & archive exam logic====================
-    function isFunctionalityDisabled(allowedExamStatus: ExamStatusEnum): boolean{
-        if(examStore.selectedExam == null){
-            return true;
-        }
-
-        const examStatus: ExamStatusEnum | null = generalUtils.findEnumValue(ExamStatusEnum, examStore.selectedExam?.status);
-        
-        //Running = monitor is allowed
-        //Fished = archived is allowed
-        if(examStatus != allowedExamStatus){
-            return true;
-        }
-
-        return false;
-    }
-
     function openArchiveDialog(){
         archiveDialog.value = true;
     }
@@ -747,14 +714,10 @@
         const archiveExamResponse: Exam | null = await examViewService.archiveExam(examStore.selectedExam.id.toString());
 
         if(archiveExamResponse == null){
-            //todo
             return;
         }
 
         updateExam();
-
-        console.log("archive exam will be pressed")
-
     }
 
     //=========================================
@@ -765,8 +728,6 @@
         if(examStore.selectedExam == null){
             return;
         } 
-
-        console.log(examStore.selectedExam.additionalAttributes.enableScreenProctoring)
 
         if(examStore.selectedExam.additionalAttributes.enableScreenProctoring == "true"){
             isScreenProctoringActive.value = true;
@@ -783,9 +744,6 @@
     }
 
     async function changeScreenProctoringSettings(enable: boolean, type: string){  
-
-        console.log("changeScreenProctoringSettings " + enable + " " + type);
-
         if(examStore.selectedExam == null){
             return;
         }
@@ -823,7 +781,6 @@
         const deleteExamResponse: any | null = await examViewService.deleteExam(examId);
 
         if(deleteExamResponse == null){
-            //todo
             return;
         }
 
@@ -839,7 +796,6 @@
         const examTemplateResponse: ExamTemplate | null = await examViewService.getExamTemplate(examStore.selectedExam?.examTemplateId.toString());
 
         if(examTemplateResponse == null){
-            //todo: add error handling
             return;
         }
 
@@ -855,6 +811,17 @@
         examTemplateDialog.value = false;
     }
 
+    //===============test run logic====================
+    //calling this function again after test run has been applied disables the test run
+    async function applyTestRun(){
+        const applyTestRunResponse: Exam | null = await examViewService.applyTestRun(examId);
+
+        if(applyTestRunResponse == null){
+            return;
+        }
+
+        updateExam();
+    }
 
 
 </script>

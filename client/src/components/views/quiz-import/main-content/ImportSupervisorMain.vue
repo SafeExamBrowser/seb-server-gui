@@ -124,7 +124,6 @@
         const userAccountNamesResponse: UserAccountName[] | null = await userAccountViewService.getUserAccountNames({institutionId: userAccountStore.userAccount?.institutionId});
 
         if(userAccountNamesResponse == null){
-            //todo: add error handling
             return;
         }
         userAccountNames.value = userAccountNamesResponse;

@@ -23,12 +23,10 @@
                             @keyup.esc="clearForm()">
                             <!------------search field------------->
                             <v-row align="center"> 
-                                <v-col class="mb-6">
-                                    <div class="primary-text-color text-subtitle-1">
-                                        Search
-                                    </div>
+                                <v-col>
+                                    Search:
                                 </v-col>
-                                <v-col cols="9" class="mb-6">
+                                <v-col cols="9">
                                     <v-text-field
                                         single-line
                                         hide-details
@@ -45,23 +43,17 @@
 
                             <!------------start date------------->
                             <v-row align="center">
-                                <v-col class="mb-2"> 
-                                    <div class="primary-text-color text-subtitle-1">
-                                        Start
-                                    </div>
+                                <v-col> 
+                                    Start:
                                 </v-col>
-                                <v-col cols="9" class="mb-2">
-                                    <!-- <VueDatePicker 
-                                        v-model="examStore.startDate"
-                                        format="dd.MM.yyyy"
-                                        :teleport="true"
-                                        :enable-time-picker="false">
-                                    </VueDatePicker> -->
+                                <v-col cols="9" >
                                     <v-date-input 
+                                        single-line
+                                        hide-details
                                         v-model="datepicker"
                                         density="compact"
                                         variant="outlined"
-                                        placeholder="mm.dd.yyyy"
+                                        placeholder="DD.MM.YYYY"
                                         prepend-icon=""
                                         append-inner-icon="mdi-calendar">
                                     </v-date-input>
@@ -141,11 +133,11 @@
 </template>
 
 <script setup lang="ts">
-    import VueDatePicker from "@vuepic/vue-datepicker";
     import {useExamStore} from "@/stores/examStore";
     import { ExamStatusEnum, ExamTypeEnum } from "@/models/examFiltersEnum";
     import * as generalUtils from "@/utils/generalUtils";
     import { VDateInput } from "vuetify/labs/VDateInput";
+    import * as timeUtils from "@/utils/timeUtils";
 
 
     //stores
