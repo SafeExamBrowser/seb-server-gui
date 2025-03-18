@@ -61,12 +61,17 @@ export const useQuizImportStore = defineStore("quizImport", () => {
     const availableAssessmentTools = ref<AssessmentTools>();
 
     function clearValues(){
+        console.log("it got here")
+
+        currentStep.value = 1;
         searchField.value = null;
         startTimestamp.value = null;
         selectedQuiz.value = null;
         selectedExamTemplate.value = null;
         selectedExamSupervisors.value = [];
         selectedQuitPassword.value = "";
+
+        console.log(currentStep.value)
     }
 
 

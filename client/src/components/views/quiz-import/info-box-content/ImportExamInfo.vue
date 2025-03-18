@@ -55,7 +55,7 @@
                                         v-model="datepicker"
                                         density="compact"
                                         variant="outlined"
-                                        placeholder="dd.mm.yyyy"
+                                        placeholder="DD.MM.YYYY"
                                         prepend-icon=""
                                         append-inner-icon="mdi-calendar">
                                     </v-date-input>
