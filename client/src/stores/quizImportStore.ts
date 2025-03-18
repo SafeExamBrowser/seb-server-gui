@@ -1,48 +1,18 @@
 import { defineStore } from "pinia";
-import {navigateTo} from "@/router/navigation";
 import * as constants from "@/utils/constants";
-import ImportAssessmentInfo from "@/components/views/quiz-import/info-box-content/ImportAssessmentInfo.vue";
-import ImportAssessmentMain from "@/components/views/quiz-import/main-content/ImportAssessmentMain.vue";
-import ImportExamInfo from "@/components/views/quiz-import/info-box-content/ImportExamInfo.vue"; 
-import ImportExamMain from "@/components/views/quiz-import/main-content/ImportExamMain.vue"; 
-import ImportTemplateInfo from "@/components/views/quiz-import/info-box-content/ImportTemplateInfo.vue";
-import ImportTemplateMain from "@/components/views/quiz-import/main-content/ImportTemplateMain.vue"; 
-import ImportSupervisorInfo from "@/components/views/quiz-import/info-box-content/ImportSupervisorInfo.vue"; 
-import ImportSupervisorMain from "@/components/views/quiz-import/main-content/ImportSupervisorMain.vue"; 
-import ImportPasswordInfo from "@/components/views/quiz-import/info-box-content/ImportPasswordInfo.vue";
-import ImportPasswordMain from "@/components/views/quiz-import/main-content/ImportPasswordMain.vue"; 
-import ImportSummaryInfo from "@/components/views/quiz-import/info-box-content/ImportSummaryInfo.vue"; 
-import ImportSummaryMain from "@/components/views/quiz-import/main-content/ImportSummaryMain.vue"; 
+import ImportGroupInfo from "@/components/views/quiz-import/info-box-content/ImportGroupInfo.vue"; 
+import ImportGroupMain from "@/components/views/quiz-import/main-content/ImportGroupMain.vue"; 
+
 
 export const useQuizImportStore = defineStore("quizImport", () => {
     //steps
     const currentStep = ref<number>(1);
-    const steps = ref<{name: string, value: number}[]>([
-        {name: "Select Assessment Tool", value: 1},
-        {name: "Select Exam", value: 2},
-        {name: "Choose Template", value: 3},
-        {name: "Add Examination Supervisor", value: 4},
-        {name: "Set Quit Password", value: 5},
-        {name: "Configuration Summary", value: 6}
-    ]);
+    const steps = ref<{name: string, value: number}[]>(constants.quizImportSteps);
     
     //stepper components
-    const infoBoxComponents = ref<Component[]>([
-        markRaw(ImportAssessmentInfo),
-        markRaw(ImportExamInfo),
-        markRaw(ImportTemplateInfo),
-        markRaw(ImportSupervisorInfo),
-        markRaw(ImportPasswordInfo),
-        markRaw(ImportSummaryInfo)
-    ]);
-    const mainContentComponents = ref<Component[]>([
-        markRaw(ImportAssessmentMain),
-        markRaw(ImportExamMain),
-        markRaw(ImportTemplateMain),
-        markRaw(ImportSupervisorMain),
-        markRaw(ImportPasswordMain),    
-        markRaw(ImportSummaryMain)
-    ]);
+    const infoBoxComponents = ref<Component[]>(constants.quizImportInfoBoxComponents.map(component => markRaw(component)));
+    const mainContentComponents = ref<Component[]>(constants.quizImportMainContentComponents.map(component => markRaw(component)));
+
 
     //exam table
     const searchField = ref<string | null>(null);
@@ -54,24 +24,52 @@ export const useQuizImportStore = defineStore("quizImport", () => {
     const selectedAssessmentTool = ref<number | null>(null);
     const selectedQuiz = ref<Quiz | null>();
     const selectedExamTemplate = ref<ExamTemplate | null>(null);
+    const selectedClientGroups = ref<ClientGroupTemplate[]>([]);
     const selectedExamSupervisors = ref<UserAccountName[]>([]);
     const selectedQuitPassword = ref<string>();
 
     //other values
     const availableAssessmentTools = ref<AssessmentTools>();
 
-    function clearValues(){
-        console.log("it got here")
 
+    function addGroupSelectionComponents(){
+        if(steps.value.includes(constants.quizImportGroupStep)){
+            return;
+        }
+
+        steps.value.splice(2, 0, constants.quizImportGroupStep);
+        for(let i = 3; i < steps.value.length; i++){
+            steps.value[i].value++;
+        }
+
+        infoBoxComponents.value.splice(2, 0, markRaw(ImportGroupInfo));
+        mainContentComponents.value.splice(2, 0, markRaw(ImportGroupMain));
+    }
+
+    function removeGroupSelectionComponents(){
+        if(!steps.value.includes(constants.quizImportGroupStep)){
+            return;
+        }
+
+        steps.value.splice(2, 1);
+        infoBoxComponents.value.splice(2, 1);
+        mainContentComponents.value.splice(2, 1);
+    }
+
+    function clearValues(){
         currentStep.value = 1;
+
+        steps.value = constants.quizImportSteps.map(step => step);
+        infoBoxComponents.value = constants.quizImportInfoBoxComponents.map(component => markRaw(component));
+        mainContentComponents.value = constants.quizImportMainContentComponents.map(component => markRaw(component))
+
         searchField.value = null;
         startTimestamp.value = null;
         selectedQuiz.value = null;
         selectedExamTemplate.value = null;
+        selectedClientGroups.value = [];
         selectedExamSupervisors.value = [];
         selectedQuitPassword.value = "";
-
-        console.log(currentStep.value)
     }
 
 
@@ -87,9 +85,12 @@ export const useQuizImportStore = defineStore("quizImport", () => {
         selectedAssessmentTool,
         selectedQuiz,
         selectedExamTemplate,
+        selectedClientGroups,
         selectedExamSupervisors,
         selectedQuitPassword,
         clearValues,
-        availableAssessmentTools
+        availableAssessmentTools,
+        addGroupSelectionComponents,
+        removeGroupSelectionComponents
     };
 });

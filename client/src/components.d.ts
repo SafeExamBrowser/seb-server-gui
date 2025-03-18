@@ -27,6 +27,8 @@ declare module 'vue' {
     ImportExamInfo: typeof import('./components/views/quiz-import/info-box-content/ImportExamInfo.vue')['default']
     ImportExamMain: typeof import('./components/views/quiz-import/main-content/ImportExamMain.vue')['default']
     ImportGenericInfo: typeof import('./components/views/quiz-import/info-box-content/ImportGenericInfo.vue')['default']
+    ImportGroupInfo: typeof import('./components/views/quiz-import/info-box-content/ImportGroupInfo.vue')['default']
+    ImportGroupMain: typeof import('./components/views/quiz-import/main-content/ImportGroupMain.vue')['default']
     ImportPasswordInfo: typeof import('./components/views/quiz-import/info-box-content/ImportPasswordInfo.vue')['default']
     ImportPasswordMain: typeof import('./components/views/quiz-import/main-content/ImportPasswordMain.vue')['default']
     ImportSummaryInfo: typeof import('./components/views/quiz-import/info-box-content/ImportSummaryInfo.vue')['default']

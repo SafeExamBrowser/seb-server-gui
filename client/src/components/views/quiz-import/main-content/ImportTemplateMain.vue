@@ -72,7 +72,6 @@
 
     //=======================events & watchers=======================
     onBeforeMount(async () => {
-
         const examTemplatesResponse: ExamTemplates | null = await quizImportWizardViewService.getExamTemplates();
 
         if(examTemplatesResponse == null){
@@ -84,12 +83,26 @@
 
 
     function onTemplateCardClick(examTemplate: ExamTemplate){
+        quizImportStore.selectedClientGroups = [];
         if(examTemplate.id == quizImportStore.selectedExamTemplate?.id){
             quizImportStore.selectedExamTemplate = null;
+            quizImportStore.removeGroupSelectionComponents();
             return;
         }
 
         quizImportStore.selectedExamTemplate = examTemplate;
+
+        if(quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES != null && quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES.length > 1){
+            quizImportStore.addGroupSelectionComponents();
+            return;
+        }
+
+        if(quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES != null && quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES.length == 1){
+            quizImportStore.selectedClientGroups.push(quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES[0]);
+            return;
+        }
+
+        quizImportStore.removeGroupSelectionComponents();
     }
 
     function openExamTemplateDialog(examTemplate: ExamTemplate){

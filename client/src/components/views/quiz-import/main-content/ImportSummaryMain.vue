@@ -27,6 +27,34 @@
                 </v-col>
             </v-row>
 
+            <!--------client groups------>
+            <v-row v-if="quizImportStore.selectedClientGroups.length != 0">
+                <v-col>
+                    <div class="primary-text-color text-subtitle-1">
+                        Client Groups
+                    </div>
+                    <v-divider class="border-opacity-25" :thickness="2"></v-divider>
+                </v-col>
+            </v-row>
+            <v-row v-if="quizImportStore.selectedClientGroups.length != 0" class="mb-10">
+                <v-col>
+                    <v-list>
+                        <template 
+                            v-for="clientGroup in quizImportStore.selectedClientGroups"
+                            :key="clientGroup.id"
+                            :value="clientGroup.id">
+                        
+                            <v-list-item>
+                                <v-list-item-title>{{ clientGroup.name }}</v-list-item-title>
+                            </v-list-item>
+
+                            <v-divider class="border-opacity-25" :thickness="2"></v-divider>
+
+                        </template>
+                    </v-list>
+                </v-col>
+            </v-row>
+
             <!--------supervisors------>
             <v-row>
                 <v-col>
@@ -143,13 +171,6 @@
             quitPassword: quizImportStore.selectedQuitPassword,
             supporter: quizImportStore.selectedExamSupervisors.map(userAccountName => userAccountName.modelId)
         }
-
-        // const quizzesResponse: Quizzes | null = await quizImportWizardViewService.getQuizzes(optionalParGetQuizzes);
-
-        // if(quizzesResponse == null){
-        //     isLoading.value = false;
-        //     return;
-        // }
 
         const createExamResponse: Exam | null = await quizImportWizardViewService.createExam(createExamParams);
         if(createExamResponse == null){
