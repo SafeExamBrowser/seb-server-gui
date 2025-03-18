@@ -14,50 +14,50 @@
 
     <template v-if="!isNoAssessmentTool">
         <component 
-            v-if="steps[currentStep-1].value == 2"
-            :is="infoBoxComponents[currentStep-1]"
+            v-if="quizImportStore.steps[quizImportStore.currentStep-1].value == 2"
+            :is="quizImportStore.infoBoxComponents[quizImportStore.currentStep-1]"
             @loadExamItemsCaller="loadExamItemsCaller"
         />
-        <component v-else :is="infoBoxComponents[currentStep-1]"/>
+        <component v-else :is="quizImportStore.infoBoxComponents[quizImportStore.currentStep-1]"/>
 
         <!---------wizard---------->
         <v-row>
             <v-col>
                 <v-stepper 
-                    v-model="currentStep"
+                    v-model="quizImportStore.currentStep"
                     elevation="4"
                     class="rounded-lg">
 
                     <v-stepper-header>
-                        <template v-for="(step, index) in steps" :key="step">
+                        <template v-for="(step, index) in quizImportStore.steps" :key="step">
                             <v-stepper-item :value="index+1">
                                 {{ step.name }}
                             </v-stepper-item>
-                            <v-divider class="border-opacity-25" :thickness="2" v-if="index != steps.length-1"></v-divider>
+                            <v-divider class="border-opacity-25" :thickness="2" v-if="index != quizImportStore.steps.length-1"></v-divider>
                         </template>
 
                         <v-icon 
                             icon="mdi-chevron-left"
                             style="font-size: 40px;"
-                            @click="currentStep-=1"
-                            :disabled="currentStep == 1">
+                            @click="quizImportStore.currentStep-=1"
+                            :disabled="quizImportStore.currentStep == 1">
                         </v-icon>
 
                         <v-icon 
                             class="mr-6"
                             icon="mdi-chevron-right"
                             style="font-size: 40px;"
-                            @click="currentStep+=1"
-                            :disabled="isNextButtonDisabled(currentStep)">
+                            @click="quizImportStore.currentStep+=1"
+                            :disabled="isNextButtonDisabled(quizImportStore.currentStep)">
                         </v-icon>
 
                     </v-stepper-header>
 
                     <v-stepper-window>
-                        <template v-for="(step, index) in steps" :key="step">
+                        <template v-for="(step, index) in quizImportStore.steps" :key="step">
 
                             <v-stepper-window-item :value="index+1">
-                                <component :is="mainContentComponents[index]"/>
+                                <component :is="quizImportStore.mainContentComponents[index]"/>
                             </v-stepper-window-item>
 
                         </template>
@@ -74,55 +74,14 @@
 
 
 <script setup lang="ts">
-    import ImportAssessmentInfo from "@/components/views/quiz-import/info-box-content/ImportAssessmentInfo.vue";
-    import ImportAssessmentMain from "@/components/views/quiz-import/main-content/ImportAssessmentMain.vue";
-    import ImportExamInfo from "@/components/views/quiz-import/info-box-content/ImportExamInfo.vue"; 
-    import ImportExamMain from "@/components/views/quiz-import/main-content/ImportExamMain.vue"; 
-    import ImportTemplateInfo from "@/components/views/quiz-import/info-box-content/ImportTemplateInfo.vue";
-    import ImportTemplateMain from "@/components/views/quiz-import/main-content/ImportTemplateMain.vue"; 
-    import ImportSupervisorInfo from "@/components/views/quiz-import/info-box-content/ImportSupervisorInfo.vue"; 
-    import ImportSupervisorMain from "@/components/views/quiz-import/main-content/ImportSupervisorMain.vue"; 
-    import ImportPasswordInfo from "@/components/views/quiz-import/info-box-content/ImportPasswordInfo.vue";
-    import ImportPasswordMain from "@/components/views/quiz-import/main-content/ImportPasswordMain.vue"; 
-    import ImportSummaryInfo from "@/components/views/quiz-import/info-box-content/ImportSummaryInfo.vue"; 
-    import ImportSummaryMain from "@/components/views/quiz-import/main-content/ImportSummaryMain.vue"; 
     import * as assessmentToolViewService from "@/services/component-services/assessmentToolViewService";
     import { useQuizImportStore } from "@/stores/quizImportStore";
 
     //stores
     const quizImportStore = useQuizImportStore();
 
-    //steps
-    const currentStep = ref<number>(1);
-    const steps = ref<{name: string, value: number}[]>([
-        {name: "Select Assessment Tool", value: 1},
-        {name: "Select Exam", value: 2},
-        {name: "Choose Template", value: 3},
-        {name: "Add Examination Supervisor", value: 4},
-        {name: "Set Quit Password", value: 5},
-        {name: "Configuration Summary", value: 6}
-    ]);
-
     //error msg
     const isNoAssessmentTool = ref<boolean>(false);
-
-    //stepper components
-    const infoBoxComponents = ref<Component[]>([
-        markRaw(ImportAssessmentInfo),
-        markRaw(ImportExamInfo),
-        markRaw(ImportTemplateInfo),
-        markRaw(ImportSupervisorInfo),
-        markRaw(ImportPasswordInfo),
-        markRaw(ImportSummaryInfo)
-    ]);
-    const mainContentComponents = ref<Component[]>([
-        markRaw(ImportAssessmentMain),
-        markRaw(ImportExamMain),
-        markRaw(ImportTemplateMain),
-        markRaw(ImportSupervisorMain),
-        markRaw(ImportPasswordMain),    
-        markRaw(ImportSummaryMain)
-    ]);
 
     onBeforeMount(async () => {
         quizImportStore.clearValues();
@@ -183,9 +142,9 @@
             //if only 1 connected --> select assessment tool & remove components from wizard
             quizImportStore.selectedAssessmentTool = activeAssessmentTools.content[0].id;
 
-            steps.value.shift();
-            infoBoxComponents.value.shift();
-            mainContentComponents.value.shift();
+            quizImportStore.steps.shift();
+            quizImportStore.infoBoxComponents.shift();
+            quizImportStore.mainContentComponents.shift();
 
             return;
         }

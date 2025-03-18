@@ -35,6 +35,6 @@ export default createVuetify({
         },
     },
     locale: {
-        locale: "de-DE"
+        // locale: "de-DE"
     }
 })

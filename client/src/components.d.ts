@@ -42,6 +42,8 @@ declare module 'vue' {
     RegisterPage: typeof import('./components/views/RegisterPage.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SebSettingsApplications: typeof import('./components/views/settings/SebSettingsApplications.vue')['default']
+    SebSettingsDialog: typeof import('./components/views/settings/SebSettingsDialog.vue')['default']
     TemplateDescriptionDialog: typeof import('./components/widgets/TemplateDescriptionDialog.vue')['default']
   }
 }

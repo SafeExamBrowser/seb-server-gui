@@ -248,7 +248,8 @@
                                                 block
                                                 rounded="sm" 
                                                 color="primary" 
-                                                variant="flat">
+                                                variant="flat"
+                                                @click="openSebSettingsDialog()">
                                                 Start
                                             </v-btn>
                                         </v-col>
@@ -440,6 +441,13 @@
         </ExamTemplateDialog>
     </v-dialog>
 
+    <!-----------exam template popup---------->      
+    <v-dialog v-model="sebSettingsDialog" max-width="800">
+        <SebSettingsDialog 
+            @close-seb-settings-dialog="closeSebSettingsDialog()">
+        </SebSettingsDialog>
+    </v-dialog>
+
     <!--alert msg-->
     <AlertMsg 
         v-if="alertAvailable"
@@ -506,6 +514,9 @@
 
     //screen proctoring
     const isScreenProctoringActive = ref<boolean>(false);
+
+    //seb settings
+    const sebSettingsDialog = ref<boolean>(false);
     
 
     onBeforeMount(async () => {
@@ -822,6 +833,16 @@
 
         updateExam();
     }
+
+    //===============settings logic====================
+    function openSebSettingsDialog(){
+        sebSettingsDialog.value = true;
+    }
+
+    function closeSebSettingsDialog(){
+        sebSettingsDialog.value = false;
+    }
+
 
 
 </script>

@@ -178,7 +178,11 @@
 
     function clearForm(){
         examStore.searchField = "";
+
+        datepicker.value = null;
         examStore.startDate = null;
+        
+        loadExamItemsCaller();
     }
 
     function setActiveTypeFilter(filter: ExamTypeEnum){
