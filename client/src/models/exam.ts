@@ -8,6 +8,7 @@ type CreateExamPar = {
     type?: string;
     quitPassword?: string;
     supporter: string[];
+    clientGroupIds: string[]
 }
 
 type UpdateExamPar = {

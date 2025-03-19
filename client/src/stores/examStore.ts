@@ -11,9 +11,17 @@ export const useExamStore = defineStore("exam", () => {
 
 
     //exam detail page
-    const selectedExam = ref<Exam>();
+    const selectedExam = ref<Exam | null>(null);
     const selectedExamTemplate = ref<ExamTemplate | null>(null);
     const selectedExamSupervisors = ref<UserAccount[]>([]);
+    const selectedClientGroups = ref<ClientGroup[]>([]);
+
+
+    function clearSelectedValues(){
+        selectedExam.value = null;
+        selectedExamTemplate.value = null;
+        selectedExamSupervisors.value = [];
+    }
 
 
     return {
@@ -24,6 +32,8 @@ export const useExamStore = defineStore("exam", () => {
         selectedExamTemplate,
         selectedExamSupervisors,
         activeTypeFilter,
-        activeStatusFilter
+        activeStatusFilter,
+        clearSelectedValues,
+        selectedClientGroups
     };
 });

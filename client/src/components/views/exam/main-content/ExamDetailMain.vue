@@ -164,6 +164,51 @@
                         </v-row>
                         <!------------------->
 
+                        <!-------Groups------>
+                        <v-row class="mt-10">
+                            <v-col class="primary-text-color text-h6"> 
+                                Client Groups
+                            </v-col>
+
+                            <v-col align="right">
+                                <v-btn
+                                    color="primary"
+                                    density="compact"
+                                    variant="text"
+                                    icon="mdi-plus-circle-outline"
+                                    @click="openAddClientGroupDialog()">
+                                </v-btn>
+                                <v-btn
+                                    color="primary"
+                                    density="compact"
+                                    variant="text"
+                                    icon="mdi-pencil-circle-outline"
+                                    @click="openClientGroupDialog()">
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                        <v-divider class="border-opacity-25" :thickness="2"></v-divider>
+
+                        <v-row>
+                            <v-col>
+                                <v-list>
+                                    <template 
+                                        v-for="clientGroup in examStore.selectedClientGroups"
+                                        :key="clientGroup.id"
+                                        :value="clientGroup.id">
+                                    
+                                        <v-list-item>
+                                            <v-list-item-title>{{ clientGroup.name }}</v-list-item-title>
+                                        </v-list-item>
+
+                                        <v-divider class="border-opacity-25" :thickness="2"></v-divider>
+
+                                    </template>
+                                </v-list>
+                            </v-col>
+                        </v-row>
+                        <!------------------->
+
                         <!--------quit password------>
                         <v-row class="mt-10">
                             <v-col>
@@ -206,34 +251,8 @@
                     <!----------right side--------->
                     <v-col cols="6" xl="4">
 
-                        <!----------add groups--------->
-                        <v-row>
-                            <v-col>
-                                <v-sheet 
-                                    elevation="4"
-                                    class="rounded-lg pa-4">
-
-                                    <v-row align="center">
-                                        <v-col>
-                                            Add Groups
-                                        </v-col>
-                                        <v-col align="right" cols="4" xl="3">
-                                            <v-btn 
-                                                block
-                                                rounded="sm" 
-                                                color="primary" 
-                                                variant="flat">
-                                                Add
-                                            </v-btn>
-                                        </v-col>
-                                    </v-row>
-
-                                </v-sheet>
-                            </v-col>
-                        </v-row>
-
                         <!----------edit seb settings--------->
-                        <v-row class="mt-6">
+                        <v-row>
                             <v-col>
                                 <v-sheet 
                                     elevation="4"
@@ -403,12 +422,14 @@
         </v-col>
     </v-row>
 
-    <!-----------supervisor popup---------->      
+    <!-----------supervisor dialog---------->      
     <v-dialog v-model="supervisorsDialog" max-width="1200">
-        <ExamDetailSupervisorsDialog @closeSupervisorsDialog="closeSupervisorsDialog"></ExamDetailSupervisorsDialog>
+        <ExamDetailSupervisorsDialog 
+            @closeSupervisorsDialog="closeSupervisorsDialog">
+        </ExamDetailSupervisorsDialog>
     </v-dialog>
 
-    <!-----------connection configuration popup---------->      
+    <!-----------connection configuration dialog---------->      
     <v-dialog v-model="configDialog" v-if="connectionConfigurationsPar" max-width="800">
         <ExamDetailConfigDialog 
             :connection-configurations="connectionConfigurationsPar" 
@@ -417,7 +438,7 @@
         </ExamDetailConfigDialog>
     </v-dialog>
 
-    <!-----------archive popup---------->      
+    <!-----------archive dialog---------->      
     <v-dialog v-model="archiveDialog" max-width="800">
         <ExamDetailArchiveDialog 
             @close-archive-dialog="closeArchiveDialog"
@@ -425,7 +446,7 @@
         </ExamDetailArchiveDialog>
     </v-dialog>
 
-    <!-----------delete exam popup---------->      
+    <!-----------delete exam dialog---------->      
     <v-dialog v-model="deleteDialog" max-width="800">
         <ExamDetailDeleteDialog 
             @close-delete-dialog="closeDeleteDialog"
@@ -433,7 +454,7 @@
         </ExamDetailDeleteDialog>
     </v-dialog>
 
-    <!-----------exam template popup---------->      
+    <!-----------exam template dialog---------->      
     <v-dialog v-model="examTemplateDialog" max-width="600">
         <ExamTemplateDialog 
             :exam-template="examStore.selectedExamTemplate"
@@ -441,11 +462,25 @@
         </ExamTemplateDialog>
     </v-dialog>
 
-    <!-----------exam template popup---------->      
+    <!-----------seb settings dialog---------->      
     <v-dialog v-model="sebSettingsDialog" max-width="800">
         <SebSettingsDialog 
             @close-seb-settings-dialog="closeSebSettingsDialog()">
         </SebSettingsDialog>
+    </v-dialog>
+
+    <!-----------group dialog---------->      
+    <v-dialog v-model="clientGroupDialog" max-width="1200">
+        <ExamDetailGroupDialog 
+            @closeClientGroupDialog="closeClientGroupDialog">
+        </ExamDetailGroupDialog>
+    </v-dialog>
+
+    <!-----------add groups dialog---------->      
+    <v-dialog v-model="addclientGroupDialog" max-width="1200">
+        <AddClientGroupDialog 
+            @closeAddClientGroupDialog="closeAddClientGroupDialog">
+        </AddClientGroupDialog>
     </v-dialog>
 
     <!--alert msg-->
@@ -468,6 +503,7 @@
     import * as constants from "@/utils/constants";
     import * as examViewService from "@/services/component-services/examViewService";
     import * as userAccountViewService from "@/services/component-services/userAccountViewService";
+    import * as clientGroupViewService from "@/services/component-services/clientGroupViewService";
     import { storeToRefs } from "pinia";
     import * as timeUtils from "@/utils/timeUtils";
     import * as generalUtils from "@/utils/generalUtils";
@@ -517,13 +553,22 @@
 
     //seb settings
     const sebSettingsDialog = ref<boolean>(false);
+
+    //client groups
+    const clientGroupDialog = ref<boolean>(false);
+
+    //add client groups
+    const addclientGroupDialog = ref<boolean>(false);
     
 
     onBeforeMount(async () => {
-        //todo: clear store before reload
+        examStore.clearSelectedValues();
+
         await getExam();
         await getExamTemplate();
         await getExamSupervisors();
+        await getClientGroups();
+
         setQuitPassword();
         setScreenProctoring();
         isPageInitalizing.value = false;
@@ -843,7 +888,36 @@
         sebSettingsDialog.value = false;
     }
 
+    //===============groups logic====================
+    function openClientGroupDialog(){
+        clientGroupDialog.value = true;
+    }
 
+    function closeClientGroupDialog(){
+        clientGroupDialog.value = false;
+    }
+
+    async function getClientGroups(){
+        const clientGroupResponse: ClientGroups | null = await clientGroupViewService.getClientGroups(examId);
+
+        if(clientGroupResponse == null){
+            return;
+        }
+
+        examStore.selectedClientGroups = clientGroupResponse.content;
+
+        console.log(examStore.selectedClientGroups)
+        
+    }
+
+    //===============add groups logic====================
+    function openAddClientGroupDialog(){
+        addclientGroupDialog.value = true;
+    }
+
+    function closeAddClientGroupDialog(){
+        addclientGroupDialog.value = false;
+    }
 
 </script>
 

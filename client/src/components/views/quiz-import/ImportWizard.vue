@@ -78,9 +78,11 @@
     import { useQuizImportStore } from "@/stores/quizImportStore";
     import { storeToRefs } from "pinia";
     import * as constants from "@/utils/constants";
+    import { useAppBarStore } from "@/stores/store";
 
 
     //stores
+    const appBarStore = useAppBarStore();
     const quizImportStore = useQuizImportStore();
     const quizImportStoreRef = storeToRefs(quizImportStore);
 
@@ -89,6 +91,9 @@
     const isNoAssessmentTool = ref<boolean>(false);
 
     onBeforeMount(async () => {
+        appBarStore.title = constants.QUIZ_IMPORT_TITLE;
+
+
         quizImportStore.clearValues();
         await loadAssessmentToolSelection();
     });

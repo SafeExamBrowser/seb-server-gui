@@ -7,13 +7,17 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AddClientGroup: typeof import('./components/views/client-group/AddClientGroup.vue')['default']
+    AddClientGroupDialog: typeof import('./components/views/client-group/AddClientGroupDialog.vue')['default']
     AlertMsg: typeof import('./components/widgets/AlertMsg.vue')['default']
     ContainerLayout: typeof import('./components/layout/ContainerLayout.vue')['default']
+    copy: typeof import('./components/views/exam/main-content/ExamDetailSupervisorsDialog copy.vue')['default']
     ErrorMsg: typeof import('./components/widgets/ErrorMsg.vue')['default']
     ExamDetailArchiveDialog: typeof import('./components/views/exam/main-content/ExamDetailArchiveDialog.vue')['default']
     ExamDetailConfigDialog: typeof import('./components/views/exam/main-content/ExamDetailConfigDialog.vue')['default']
     ExamDetailContainer: typeof import('./components/views/exam/ExamDetailContainer.vue')['default']
     ExamDetailDeleteDialog: typeof import('./components/views/exam/main-content/ExamDetailDeleteDialog.vue')['default']
+    ExamDetailGroupDialog: typeof import('./components/views/exam/main-content/ExamDetailGroupDialog.vue')['default']
     ExamDetailInfo: typeof import('./components/views/exam/info-box-content/ExamDetailInfo.vue')['default']
     ExamDetailMain: typeof import('./components/views/exam/main-content/ExamDetailMain.vue')['default']
     ExamDetailSupervisorsDialog: typeof import('./components/views/exam/main-content/ExamDetailSupervisorsDialog.vue')['default']

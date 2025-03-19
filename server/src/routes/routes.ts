@@ -7,6 +7,7 @@ import * as screenProctoringController from "../controllers/screen-proctoring.co
 import * as userAccountController from "../controllers/user-account.controller";
 import * as assessmentToolController from "../controllers/assessment-tool.controller";
 import * as monitoringController from "../controllers/monitoring.controller";
+import * as clientGroupsController from "../controllers/client-groups.controller";
 import * as constants from "../utils/constants";
 
 const router: Router = express.Router();
@@ -45,6 +46,11 @@ router.get(constants.ASSESSMENT_TOOL_ROUTE, assessmentToolController.getAssessme
 
 //monitoring
 router.post(constants.MONITORING_TEST_RUN_ROUTE + "/:id", monitoringController.applyTestRun);
+
+//client groups
+router.get(constants.CLIENT_GROUP_ROUTE, clientGroupsController.getClientGroups);
+
+
 
 
 export default router;
