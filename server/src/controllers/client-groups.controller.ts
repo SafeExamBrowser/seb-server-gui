@@ -3,6 +3,17 @@ import {LOG} from "../logging/logger";
 import * as clientGroupsService from "../services/client-groups.service";
 import * as apiService from "../services/api.service";
 
+
+export async function createClientGroup(req: Request, res: Response){
+    try{
+        const [clientGroup, status] = await clientGroupsService.createClientGroup(req.headers.authorization, req.body);
+        return res.status(status).json(clientGroup);
+
+    }catch(error){
+        apiService.handleGenericApiError(error, res);
+    }
+}
+
 export async function getClientGroups(req: Request, res: Response){
     try{
         const [clientGroups, status] = await clientGroupsService.getClientGroups(req.headers.authorization, req.query.examId);

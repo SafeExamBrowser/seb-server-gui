@@ -49,6 +49,7 @@ router.post(constants.MONITORING_TEST_RUN_ROUTE + "/:id", monitoringController.a
 
 //client groups
 router.get(constants.CLIENT_GROUP_ROUTE, clientGroupsController.getClientGroups);
+router.post(constants.CLIENT_GROUP_ROUTE, clientGroupsController.createClientGroup);
 
 
 

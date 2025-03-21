@@ -2,13 +2,180 @@
     <v-card>
 
         <v-toolbar color="transparent">
-            <v-toolbar-title class="text-h6" text="Add Client Groups"></v-toolbar-title>
+            <v-toolbar-title class="text-h6" text="Add Client Group"></v-toolbar-title>
             <template v-slot:append>
                 <v-btn @click="emit('closeAddClientGroupDialog')" icon="mdi-close"></v-btn>
             </template>
         </v-toolbar>
 
         <v-card-text>
+            
+            <v-form>
+
+                <!------------Exam Name------------->
+                <v-row align="center">
+                    <v-col>
+                        Exam
+                    </v-col>
+                    <v-col>
+                        {{ examStore.selectedExam?.quizName }}
+                    </v-col>
+                </v-row>
+
+                <!------------Group Name------------->
+                <v-row align="center">
+                    <v-col>
+                        Name
+                    </v-col>
+                    <v-col>
+                        <v-text-field
+                            single-line
+                            hide-details
+                            v-model="groupNameField"
+                            density="compact"
+                            variant="outlined">
+                        </v-text-field>
+                    </v-col>
+                </v-row>
+
+                <!------------Group Type------------->
+                <v-row align="center">
+                    <v-col>
+                        Type
+                    </v-col>
+                    <v-col>
+                        <v-select
+                            hide-details
+                            v-model="clientGroupTypeSelect"
+                            density="compact"
+                            variant="outlined"
+                            :items="clientGroupItems">
+                        </v-select>
+                    </v-col>
+                </v-row>
+
+                <!------------Type Description------------->
+                <v-row align="center">
+                    <v-col>
+                        Type Description
+                    </v-col>
+                    <v-col>
+                        {{ clientGroupDescription }}
+                    </v-col>
+                </v-row>
+
+                <!------------IP_V4_RANGE fields------------->
+                <template v-if="clientGroupTypeSelect == ClientGroupEnum.IP_V4_RANGE">
+                    <v-row>
+                        <v-col>
+                            Start of IP rage
+                        </v-col>
+                        <v-col>
+                            <v-text-field
+                                single-line
+                                hide-details
+                                v-model="startIpField"
+                                density="compact"
+                                variant="outlined">
+                            </v-text-field>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col>
+                            End of IP rage
+                        </v-col>
+                        <v-col>
+                            <v-text-field
+                                single-line
+                                hide-details
+                                v-model="endIpField"
+                                density="compact"
+                                variant="outlined">
+                            </v-text-field>
+                        </v-col>
+                    </v-row>
+                </template>
+        
+
+                <!------------CLIENT_OS fields------------->
+                <template v-if="clientGroupTypeSelect == ClientGroupEnum.CLIENT_OS">
+                    <v-row>
+                        <v-col>
+                            Client OS Type
+                        </v-col>
+                        <v-col>
+                            <v-select
+                                hide-details
+                                v-model="clientOsField"
+                                density="compact"
+                                variant="outlined"
+                                :items="clientOSItems">
+                            </v-select>
+                        </v-col>
+                    </v-row>
+                </template>
+
+
+
+                <!------------NAME_ALPHABETICAL_RANGE fields------------->
+                <template v-if="clientGroupTypeSelect == ClientGroupEnum.NAME_ALPHABETICAL_RANGE">
+                    <v-row>
+                        <v-col>
+                            Start Letter
+                        </v-col>
+                        <v-col>
+                            <v-text-field
+                                single-line
+                                hide-details
+                                v-model="startLetterField"
+                                density="compact"
+                                variant="outlined">
+                            </v-text-field>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col>
+                            End Letter
+                        </v-col>
+                        <v-col>
+                            <v-text-field
+                                single-line
+                                hide-details
+                                v-model="endLetterField"
+                                density="compact"
+                                variant="outlined">
+                            </v-text-field>
+                        </v-col>
+                    </v-row>
+                </template>
+
+                <!------------Buttons------------->
+                <v-row>
+                    <v-col align="right">
+                        <v-btn 
+                            rounded="sm" 
+                            color="black" 
+                            variant="outlined"
+                            @click="clearFields()">
+                            Cancel
+                        </v-btn>
+
+                        <v-btn 
+                            rounded="sm" 
+                            color="primary" 
+                            variant="flat" 
+                            class="ml-2"
+                            :disabled="isCreateButtonDisabled()"
+                            @click="createClientGroup()">
+                            Create
+                        </v-btn>
+
+                    </v-col>
+                </v-row>
+            
+            
+            </v-form>
+
         </v-card-text>
     </v-card>
 </template>
@@ -18,76 +185,144 @@
     import { useExamStore } from '@/stores/examStore';
     import * as tableUtils from "@/utils/table/tableUtils";
     import * as clientGroupViewService from "@/services/component-services/clientGroupViewService";
+    import { ClientGroupEnum, ClientOSEnum } from "@/models/clientGroupEnum";
+    import * as generalUtils from "@/utils/generalUtils";
 
-    
     //stores
     const examStore = useExamStore();
-
-    //items
-    const clientGroups = ref<ClientGroup[]>([]);
 
     //table
     const tableHeaders = ref([
         {title: "Name", key: "name"}
     ]);    
 
-    //local user search / filter
-    const search = ref<string>();
+    //form fields
+    const groupNameField = ref<string>("");
+    const clientGroupTypeSelect = ref<ClientGroupEnum | null>(null);
+
+    const startIpField = ref<string>("");
+    const endIpField = ref<string>("");
+
+    const startLetterField = ref<string>("");
+    const endLetterField = ref<string>("");
+
+    const clientOsField = ref<ClientOSEnum | null>(null);
+
+    //description text
+    const clientGroupDescription = ref<string>(getInitalDescriptionValue());
+
+    //load descriotion according to selection
+    watch(clientGroupTypeSelect, () => {
+        if(clientGroupTypeSelect.value == null){
+            return;
+        }
+
+        clientGroupDescription.value = generalUtils.getClientGroupDescription(clientGroupTypeSelect.value);
+    });
 
     //emits
     const emit = defineEmits<{
         closeAddClientGroupDialog: any;
     }>();
 
+    //client group select items
+    const clientGroupItems = Object.values(ClientGroupEnum)
+    .filter(value => value !== ClientGroupEnum.NONE)
+    .map(value => ({
+        title: generalUtils.getClientGroupName(value), 
+        value: value
+    }));
 
-    //=======================events & watchers=======================
-    onBeforeMount(async () => {
-        const clientGroupResponse: ClientGroups | null = await clientGroupViewService.getClientGroups();
+    //client os select items
+    const clientOSItems = Object.values(ClientOSEnum)
+    .filter(value => value !== ClientOSEnum.NONE)
+    .map(value => ({
+        title: generalUtils.getClientOSName(value), 
+        value: value
+    }));
 
-        if(clientGroupResponse == null){
+
+    async function createClientGroup(){
+        if(examStore.selectedExam == null || clientGroupTypeSelect.value == null){
             return;
         }
 
-        clientGroups.value = clientGroupResponse.content;
-    });
+        const clientGroup: ClientGroup | null = clientGroupViewService.getCreateClientGroupParams(
+            examStore.selectedExam.id,
+            groupNameField.value,
+            clientGroupTypeSelect.value,
+            startIpField.value,
+            endIpField.value,
+            clientOsField.value,
+            startLetterField.value,
+            endLetterField.value
+        );
 
-    //add client group
-    async function onTableRowClick(selectedClientGroup: ClientGroup){
-        const index: number = examStore.selectedClientGroups.findIndex(clientGroup => clientGroup.id == selectedClientGroup.id);
-        
-        if(index != -1){
-            examStore.selectedClientGroups.splice(index, 1);
+        console.log(clientGroup)
+
+        if(clientGroup == null){
             return;
         }
 
-        // const userAccountFull: UserAccount | null = await userAccountViewService.getUserAccountById(selectedClientGroup.id);
+        const createClientGroupResponse: ClientGroup | null = await clientGroupViewService.createClientGroup(clientGroup);
 
-        // if(userAccountFull == null){
-        //     return;
-        // }
+        if(createClientGroupResponse == null){
+            return;
+        }
 
-        examStore.selectedClientGroups.push(selectedClientGroup);
+        emit("closeAddClientGroupDialog", true);
     }
 
-    function removeClientGroup(id: number){
-        const index: number = examStore.selectedClientGroups.findIndex(clientGroup => clientGroup.id == id);
-        examStore.selectedClientGroups.splice(index, 1);
+
+
+    function clearFields(){
+        groupNameField.value = "";
+        clientGroupTypeSelect.value = null;
+
+        startIpField.value = "";
+        endIpField.value = "";
+
+        startLetterField.value = "";
+        endLetterField.value = "";
+
+        clientOsField.value = null;
+
+        clientGroupDescription.value = getInitalDescriptionValue();
     }
+
+    function getInitalDescriptionValue(): string{
+        return "No Client Group type is selected. Please select one.";
+    }
+
+    function isCreateButtonDisabled(): boolean{
+        if(groupNameField.value == "" || clientGroupTypeSelect.value == null){
+            return true;
+        }
+
+        if(clientGroupTypeSelect.value == ClientGroupEnum.CLIENT_OS && clientOsField.value == null){
+            return true;
+        }
+
+        if(clientGroupTypeSelect.value  == ClientGroupEnum.IP_V4_RANGE && (startIpField.value == "" || endIpField.value == "")){
+            return true;
+        }
+
+        if(clientGroupTypeSelect.value  == ClientGroupEnum.NAME_ALPHABETICAL_RANGE && (startLetterField.value == "" || endLetterField.value == "")){
+            return true;
+        }
+
+        return false;
+    }
+
+
+
+
+
+
 
     
 
 </script>
 
 <style scoped>
-
-    .on-row-hover:hover{
-        background: #e4e4e4 !important;
-        cursor: pointer;
-    }
-
-    .selected-row {
-        background-color: #e4e4e4 !important;
-    }
-
-
 </style>

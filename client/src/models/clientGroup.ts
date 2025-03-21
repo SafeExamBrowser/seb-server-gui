@@ -6,15 +6,15 @@ type ClientGroups = {
 }
 
 type ClientGroup = {
-    id: number;
+    id?: number;
     examId: number;
     name: string;
     type: string;
-    color: string;
-    icon: string;
-    ipRangeStart: string;
-    ipRangeEnd: string;
-    clientOS: string;
-    nameRangeStartLetter: string;
-    nameRangeEndLetter: string;
+    color?: string;
+    icon?: string;
+    ipRangeStart?: string;
+    ipRangeEnd?: string;
+    clientOS?: string;
+    nameRangeStartLetter?: string;
+    nameRangeEndLetter?: string;
 };

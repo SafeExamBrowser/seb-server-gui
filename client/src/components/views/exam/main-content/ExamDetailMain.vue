@@ -915,8 +915,14 @@
         addclientGroupDialog.value = true;
     }
 
-    function closeAddClientGroupDialog(){
+    function closeAddClientGroupDialog(isChange?: boolean){
         addclientGroupDialog.value = false;
+
+        console.log("ischange: " + isChange)
+
+        if(isChange){
+            getClientGroups();
+        }
     }
 
 </script>
