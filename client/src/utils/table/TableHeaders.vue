@@ -2,7 +2,9 @@
     <tr>
         <template v-for="(column, index) in props.columns">
 
-            <th :style="{ width: column.width }" :class="[column.key == 'data-table-select' ? 'pl-2' : '']"> 
+            <th 
+                :style="{ width: column.width }" 
+                :class="[column.key == 'data-table-select' ? 'pl-2' : '', column.center ? 'text-center': '']"> 
                 
                 <!------------------------sorting---------------------------------->
                 <span 
@@ -148,3 +150,6 @@
     }
 
 </script>
+
+<style scoped>
+</style>

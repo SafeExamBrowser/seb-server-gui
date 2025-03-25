@@ -393,7 +393,7 @@
                                                     <template v-slot:append="{ isSelected }" >
                                                         <v-list-item-action class="flex-column align-right">
                                                             <v-icon 
-                                                                icon="mdi-trash-can-outline"
+                                                                icon="mdi-delete-outline"
                                                                 style="font-size: 30px;"
                                                                 @click="openDeleteDialog()">
                                                             </v-icon>
@@ -477,7 +477,7 @@
     </v-dialog>
 
     <!-----------add groups dialog---------->      
-    <v-dialog v-model="addclientGroupDialog" max-width="1200">
+    <v-dialog v-model="addclientGroupDialog" max-width="800">
         <AddClientGroupDialog 
             @closeAddClientGroupDialog="closeAddClientGroupDialog">
         </AddClientGroupDialog>

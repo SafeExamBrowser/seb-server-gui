@@ -17,4 +17,5 @@ type ClientGroup = {
     clientOS?: string;
     nameRangeStartLetter?: string;
     nameRangeEndLetter?: string;
+    isScreenProctoringTemp?: boolean
 };
