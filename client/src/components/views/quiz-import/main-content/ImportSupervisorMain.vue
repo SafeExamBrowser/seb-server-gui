@@ -29,8 +29,8 @@
                         :items-per-page="tableUtils.calcDefaultItemsPerPage(userAccountNames)"
                         :items-per-page-options="tableUtils.calcItemsPerPage(userAccountNames)"
                         :headers="tableHeaders"
-                        :search="search"
-                    >
+                        :search="search">
+                        
                         <template v-slot:item="{item}">
                             <tr 
                                 class="on-row-hover" 

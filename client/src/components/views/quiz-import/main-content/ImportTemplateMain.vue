@@ -1,7 +1,8 @@
 <template>
 
     <v-row>
-        <v-col cols="5">
+        <v-spacer></v-spacer>
+        <v-col cols="6" xl="4">
             <v-row>
                 <v-col class="text-h6">
                     Click on the Exam Template you want to use for the exam
@@ -9,7 +10,7 @@
             </v-row>
         </v-col>
 
-        <v-col cols="7" class="pl-16 pr-16 pb-4">
+        <v-col cols="6" xl="4">
 
             <v-row v-for="(row, rowIndex) in examTemplateRows" :key="rowIndex">
                 <v-col cols="4" v-for="(examTemplate, colIndex) in row" :key="`${rowIndex}-${colIndex}`">
@@ -23,7 +24,7 @@
                         @click="onTemplateCardClick(examTemplate)">
 
                         <v-toolbar color="transparent">
-                            <v-toolbar-title class="text-h6" :text="examTemplate.name"></v-toolbar-title>
+                            <v-toolbar-title class="text-subtitle-1" :text="examTemplate.name"></v-toolbar-title>
 
                             <template v-slot:append>
                                 <v-btn @click.stop="openExamTemplateDialog(examTemplate)" icon="mdi-information"></v-btn>
@@ -32,8 +33,8 @@
 
                         <v-card-text></v-card-text>
 
-                        <v-card-actions>
-                        </v-card-actions>
+                        <!-- <v-card-actions>
+                        </v-card-actions> -->
                     </v-card>
 
 
@@ -41,6 +42,7 @@
             </v-row>
 
         </v-col>
+        <v-spacer></v-spacer>
     </v-row>
 
 

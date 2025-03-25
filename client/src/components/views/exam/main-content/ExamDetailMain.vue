@@ -463,7 +463,7 @@
     </v-dialog>
 
     <!-----------seb settings dialog---------->      
-    <v-dialog v-model="sebSettingsDialog" max-width="800">
+    <v-dialog v-model="sebSettingsDialog" max-width="1200">
         <SebSettingsDialog 
             @close-seb-settings-dialog="closeSebSettingsDialog()">
         </SebSettingsDialog>
