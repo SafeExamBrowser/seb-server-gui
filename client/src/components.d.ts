@@ -7,11 +7,9 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    AddClientGroup: typeof import('./components/views/client-group/AddClientGroup.vue')['default']
     AddClientGroupDialog: typeof import('./components/views/client-group/AddClientGroupDialog.vue')['default']
     AlertMsg: typeof import('./components/widgets/AlertMsg.vue')['default']
     ContainerLayout: typeof import('./components/layout/ContainerLayout.vue')['default']
-    copy: typeof import('./components/views/settings/SebSettingsApplications copy.vue')['default']
     ErrorMsg: typeof import('./components/widgets/ErrorMsg.vue')['default']
     ExamDetailArchiveDialog: typeof import('./components/views/exam/main-content/ExamDetailArchiveDialog.vue')['default']
     ExamDetailConfigDialog: typeof import('./components/views/exam/main-content/ExamDetailConfigDialog.vue')['default']
@@ -48,13 +46,10 @@ declare module 'vue' {
     RegisterPage: typeof import('./components/views/RegisterPage.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    SebSettingsApplicati: typeof import('./components/views/settings/SebSettingsApplicati.vue')['default']
     SebSettingsApplications: typeof import('./components/views/settings/SebSettingsApplications.vue')['default']
     SebSettingsDialog: typeof import('./components/views/settings/SebSettingsDialog.vue')['default']
     SebSettingsNetwork: typeof import('./components/views/settings/SebSettingsNetwork.vue')['default']
     SebSettingsPermittedProcess: typeof import('./components/views/settings/SebSettingsPermittedProcess.vue')['default']
-    SebSettingsProhibitedProces: typeof import('./components/views/settings/SebSettingsProhibitedProces.vue')['default']
     SebSettingsProhibitedProcess: typeof import('./components/views/settings/SebSettingsProhibitedProcess.vue')['default']
-    TemplateDescriptionDialog: typeof import('./components/widgets/TemplateDescriptionDialog.vue')['default']
   }
 }

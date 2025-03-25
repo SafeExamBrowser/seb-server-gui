@@ -96,7 +96,7 @@
                                             </v-col>
                                             <v-col cols="1">
                                                 <v-btn 
-                                                    @click="removeClientGroup(clientGroup.id)"
+                                                    @click="removeClientGroup(clientGroup.id!)"
                                                     variant="flat"
                                                     icon="mdi-close">
                                                 </v-btn>
