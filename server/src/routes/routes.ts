@@ -28,6 +28,9 @@ router.get(constants.EXAM_CONFIGURATION_MAP_ROUTE + "/:id", examController.getEx
 
 //screen proctoring
 router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE, screenProctoringController.saveScreenProctoringSettings);
+// router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE + "/apply-groups", screenProctoringController.applyScreenProctoringGroups);
+// router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE + "/activation", screenProctoringController.activateScreenProctoring);
+
 
 //exam template
 router.get(constants.EXAM_TEMPLATE_ROUTE + "/:id", examTemplateController.getExamTemplate);
@@ -48,6 +51,7 @@ router.get(constants.ASSESSMENT_TOOL_ROUTE, assessmentToolController.getAssessme
 router.post(constants.MONITORING_TEST_RUN_ROUTE + "/:id", monitoringController.applyTestRun);
 
 //client groups
+router.get(constants.CLIENT_GROUP_ROUTE + "/:id", clientGroupsController.getClientGroup);
 router.get(constants.CLIENT_GROUP_ROUTE, clientGroupsController.getClientGroups);
 router.post(constants.CLIENT_GROUP_ROUTE, clientGroupsController.createClientGroup);
 

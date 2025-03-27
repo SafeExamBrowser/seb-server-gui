@@ -112,7 +112,7 @@
 
 
     //add exam client groups
-    function onTableRowClick(selectedClientGroup: ClientGroupTemplate){
+    function onTableRowClick(selectedClientGroup: ClientGroup){
         const index: number = quizImportStore.selectedClientGroups.findIndex(clientGroup => clientGroup.id == selectedClientGroup.id);
         
         if(index != -1){

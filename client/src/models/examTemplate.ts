@@ -17,7 +17,7 @@ type ExamTemplate = {
     lmsIntegration: boolean,
     clientConfigurationId: number,
     indicatorTemplates: IndicatorTemplate[]
-    CLIENT_GROUP_TEMPLATES: ClientGroupTemplate[],
+    CLIENT_GROUP_TEMPLATES: ClientGroup[],
     EXAM_ATTRIBUTES: ExamAttribute[],
     complete: boolean
 }
@@ -33,14 +33,6 @@ type IndicatorTemplate = {
 type Threshold = {
     value: string,
     color: string
-}
-
-type ClientGroupTemplate = {
-    id: number,
-    name: string,
-    type: string,
-    clientOS: string,
-    examTemplateId: number
 }
 
 type ExamAttribute = [

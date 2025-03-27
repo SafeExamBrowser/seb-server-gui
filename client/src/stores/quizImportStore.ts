@@ -24,7 +24,7 @@ export const useQuizImportStore = defineStore("quizImport", () => {
     const selectedAssessmentTool = ref<number | null>(null);
     const selectedQuiz = ref<Quiz | null>();
     const selectedExamTemplate = ref<ExamTemplate | null>(null);
-    const selectedClientGroups = ref<ClientGroupTemplate[]>([]);
+    const selectedClientGroups = ref<ClientGroup[]>([]);
     const selectedExamSupervisors = ref<UserAccountName[]>([]);
     const selectedQuitPassword = ref<string>();
 

@@ -3,10 +3,14 @@ import * as apiService from "@/services/api-services/apiService";
 const url: string = "/client-group"
 
 export async function createClientGroup(clientGroup: ClientGroup): Promise<ClientGroup | any>{
-
-    console.log("it got here")
-
     return (await apiService.api.post(url, clientGroup, {headers: apiService.getPostHeaders()})).data;
+}
+
+export async function getClientGroup(id: string): Promise<ClientGroup | any>{
+
+    console.log("clientGroupId: " + id)
+
+    return (await apiService.api.get(url + "/" + id, {headers: apiService.getHeaders()})).data;
 }
 
 export async function getClientGroups(examId?: string): Promise<ClientGroups | any>{

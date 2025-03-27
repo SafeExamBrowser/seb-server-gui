@@ -448,10 +448,14 @@
 
     <!-----------delete exam dialog---------->      
     <v-dialog v-model="deleteDialog" max-width="800">
-        <ExamDetailDeleteDialog 
+        <DeleteConfirmDialog
             @close-delete-dialog="closeDeleteDialog"
-            @delete-exam="deleteExam">
-        </ExamDetailDeleteDialog>
+            @delete-entity="deleteExam"
+            title="Delete Exam"
+            info-text="This deletes the exam and the local import of a course or quiz in SEB Server."
+            question-text="Are you sure you want to delete the exam?"
+        >
+        </DeleteConfirmDialog>
     </v-dialog>
 
     <!-----------exam template dialog---------->      
@@ -471,9 +475,9 @@
 
     <!-----------group dialog---------->      
     <v-dialog v-model="clientGroupDialog" max-width="1200">
-        <ExamDetailGroupDialog 
+        <ClienGroupListDialog 
             @closeClientGroupDialog="closeClientGroupDialog">
-        </ExamDetailGroupDialog>
+        </ClienGroupListDialog>
     </v-dialog>
 
     <!-----------add groups dialog---------->      
@@ -509,6 +513,7 @@
     import * as generalUtils from "@/utils/generalUtils";
     import { navigateTo } from '@/router/navigation';
     import { ExamStatusEnum, ExamTypeEnum } from "@/models/examFiltersEnum";
+    import DeleteConfirmDialog from "@/components/widgets/DeleteConfirmDialog.vue";
 
 
     const isPageInitalizing = ref<boolean>(true);

@@ -4,12 +4,6 @@
         <v-toolbar color="transparent">
             <v-toolbar-title class="text-h6" text="Add Group"></v-toolbar-title>
             <template v-slot:append>
-                <!-- <v-btn
-                    variant="elevated"
-                    color="#5865f2"
-                    size="small">
-                    Load from template
-                </v-btn> -->
                 <v-btn @click="emit('closeAddClientGroupDialog')" icon="mdi-close"></v-btn>
             </template>
         </v-toolbar>
@@ -19,6 +13,21 @@
                 <!------------Create group form------------->
                 <v-col>
                     <v-form>
+
+                        <!------------Alert msg------------->
+                        <v-row v-if="isGroupNameDuplicate">
+                            <v-col>
+                                <AlertMsg
+                                    :alertProps="{
+                                        title: 'Group Name already exists',
+                                        color: 'warning',
+                                        type: 'alert',
+                                        customText: 'Please provide a different name'
+                                    }">
+                                </AlertMsg>
+                            </v-col>
+                        </v-row>
+
                         <!------------Exam Name------------->
                         <v-row align="center">
                             <v-col>
@@ -173,7 +182,7 @@
                                     rounded="sm" 
                                     color="black" 
                                     variant="outlined"
-                                    @click="clearFields()">
+                                    @click="clearFields(true)">
                                     Cancel
                                 </v-btn>
     
@@ -243,6 +252,9 @@
 
     //stores
     const examStore = useExamStore();
+
+    //error handling / validation
+    const isGroupNameDuplicate = ref<boolean>(false);
 
     //table
     const isTableSelection = ref<boolean>(false);
@@ -330,27 +342,44 @@
     }
 
 
-
-    function clearFields(){
-        groupNameField.value = "";
-        clientGroupTypeSelect.value = null;
-
-        startIpField.value = "";
-        endIpField.value = "";
-
-        startLetterField.value = "";
-        endLetterField.value = "";
-
-        clientOsField.value = null;
-
-        clientGroupDescription.value = getInitalDescriptionValue();
+    //========table loading========
+    async function onTableRowClick(clientGroup: ClientGroup){
+        loadClientGroupIntoForm(clientGroup);
     }
 
-    function getInitalDescriptionValue(): string{
-        return "No Client Group type is selected. Please select one.";
+
+    function loadClientGroupIntoForm(clientGroup: ClientGroup){
+        const clientGroupType: ClientGroupEnum | null = generalUtils.findEnumValue(ClientGroupEnum, clientGroup.type);
+
+        if(clientGroupType == null){
+            return;
+        }
+
+        groupNameField.value = clientGroup.name;
+        clientGroupTypeSelect.value = clientGroupType
+
+        if(clientGroupType == ClientGroupEnum.CLIENT_OS){
+            clientOsField.value = generalUtils.findEnumValue(ClientOSEnum, clientGroup.clientOS);
+            return;
+        }
+
+        if(clientGroupType == ClientGroupEnum.IP_V4_RANGE){
+            startIpField.value = clientGroup.ipRangeStart!;
+            endIpField.value = clientGroup.ipRangeEnd!;  
+            return;
+        }
+
+        if(clientGroupType == ClientGroupEnum.NAME_ALPHABETICAL_RANGE){
+            startLetterField.value = clientGroup.nameRangeStartLetter!;
+            endLetterField.value = clientGroup.nameRangeEndLetter!;
+            return;
+        }
     }
 
+    //========form control========
     function isCreateButtonDisabled(): boolean{
+        isGroupNameDuplicate.value = false;
+
         if(groupNameField.value == "" || clientGroupTypeSelect.value == null){
             return true;
         }
@@ -367,19 +396,36 @@
             return true;
         }
 
+        if(examStore.selectedClientGroups.some(clientGroup => clientGroup.name.includes(groupNameField.value))){
+            isGroupNameDuplicate.value = true;
+            return true;
+        }
+
         return false;
     }
 
-    function onTableRowClick(clientGroupTemplate: ClientGroupTemplate){
+
+    function clearFields(clearType: boolean){
+        groupNameField.value = "";
+
+        if(clearType){
+            clientGroupTypeSelect.value = null;
+        }
+
+        startIpField.value = "";
+        endIpField.value = "";
+
+        startLetterField.value = "";
+        endLetterField.value = "";
+
+        clientOsField.value = null;
+
+        clientGroupDescription.value = getInitalDescriptionValue();
     }
 
-
-
-
-
-
-
-    
+    function getInitalDescriptionValue(): string{
+        return "No Client Group type is selected. Please select one.";
+    }
 
 </script>
 

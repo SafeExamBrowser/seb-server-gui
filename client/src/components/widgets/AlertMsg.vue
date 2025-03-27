@@ -2,7 +2,7 @@
     <v-alert 
         v-if="props.alertProps.type == 'alert'"
         :title=props.alertProps.title
-        :text="messages.find(item => item.key == props.alertProps.textKey)?.value"
+        :text="getText()"
         :color=props.alertProps.color 
         :icon=getIcon()>
     </v-alert>
@@ -29,6 +29,21 @@
     const props = defineProps<{
         alertProps: AlertProps
     }>();
+
+
+    function getText(): string{
+        if(props.alertProps.customText != null){
+            return props.alertProps.customText;
+        }
+
+        const message: string | undefined = messages.find(item => item.key == props.alertProps.textKey)?.value;
+
+        if(message != null){
+            return message;
+        }
+
+        return "";
+    }
 
     const messages: {key: string, value: string}[] = [
         {

@@ -1,9 +1,10 @@
 type AlertProps = {
     title: string,
-    textKey: string,
+    textKey?: string,
     color: string,
     type: string,
-    timeout?: number
+    timeout?: number,
+    customText?: string
 }
 
 type ErrorProps = {

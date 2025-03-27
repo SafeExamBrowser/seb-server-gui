@@ -33,6 +33,7 @@
                                     </TableHeaders>
                                 </template>
 
+                                <!-------screen procotoring checkbox------->      
                                 <template v-slot:item.isScreenProctoring="{ item }">
                                     <v-btn 
                                         @click="enableScreenProctoringTemp(item)"
@@ -40,17 +41,22 @@
                                         :icon="item.isScreenProctoringTemp ? 'mdi-checkbox-marked' : 'mdi-checkbox-blank-outline'">
                                     </v-btn>
                                 </template>
+
+                                <!-------edit button------->      
                                 <template v-slot:item.edit="{ item }">
                                     <v-btn 
                                         variant="text" 
-                                        icon="mdi-pencil-outline">
+                                        icon="mdi-pencil-outline"
+                                        @click="openEditDialog(item)">
                                     </v-btn>
                                 </template>
 
+                                <!-------delete button------->      
                                 <template v-slot:item.delete="{ item }">
                                     <v-btn 
                                         variant="text" 
-                                        icon="mdi-delete-outline">
+                                        icon="mdi-delete-outline"
+                                        @click="openDeleteDialog()">
                                     </v-btn>
                                 </template>
                                 
@@ -65,6 +71,28 @@
             </v-row>
         </v-card-text>
     </v-card>
+
+    <!-----------delete dialog---------->      
+    <v-dialog v-model="deleteDialog" max-width="800">
+        <DeleteConfirmDialog
+            @close-delete-dialog="closeDeleteDialog"
+            @delete-entity="deleteClientGroup"
+            title="Delete Client Group"
+            info-text=""
+            question-text="Are you sure you want to delete the client group?"
+        >
+        </DeleteConfirmDialog>
+    </v-dialog>
+
+    <!-----------edit dialog---------->      
+    <v-dialog v-model="editDialog" max-width="800">
+        <EditClientGroupDialog
+            @close-edit-client-group-dialog="closeEditDialog"
+            :client-group="clientGroupToEdit"
+        >
+        </EditClientGroupDialog>
+    </v-dialog>
+
 </template>
 
 
@@ -76,6 +104,11 @@
 
     //stores
     const examStore = useExamStore();
+
+    //dialogs
+    const deleteDialog = ref<boolean>(false);
+    const editDialog = ref<boolean>(false);
+    const clientGroupToEdit = ref<ClientGroup | null>(null);
 
     //items
     const clientGroups = ref<ClientGroup[]>([]);
@@ -100,7 +133,7 @@
 
 
 
-    //=======================events & watchers=======================
+    //=========events & watchers================
     onBeforeMount(async () => {
         if(examStore.selectedExam == null){
             return;
@@ -115,33 +148,34 @@
         clientGroups.value = clientGroupResponse.content;
     });
 
-    //add client group
-    async function onTableRowClick(selectedClientGroup: ClientGroup){
-        const index: number = examStore.selectedClientGroups.findIndex(clientGroup => clientGroup.id == selectedClientGroup.id);
-        
-        if(index != -1){
-            examStore.selectedClientGroups.splice(index, 1);
-            return;
-        }
-
-        // const userAccountFull: UserAccount | null = await userAccountViewService.getUserAccountById(selectedClientGroup.id);
-
-        // if(userAccountFull == null){
-        //     return;
-        // }
-
-        examStore.selectedClientGroups.push(selectedClientGroup);
-    }
-
-    function removeClientGroup(id: number){
-        const index: number = examStore.selectedClientGroups.findIndex(clientGroup => clientGroup.id == id);
-        examStore.selectedClientGroups.splice(index, 1);
-    }
-
-
+    //========screen proctoring========
     function enableScreenProctoringTemp(clientGroup: ClientGroup){
         clientGroup.isScreenProctoringTemp = !clientGroup.isScreenProctoringTemp;
     }
+
+    //========delete dialog========
+    async function deleteClientGroup(){
+
+    }
+
+    function openDeleteDialog(){
+        deleteDialog.value = true;
+    }
+
+    function closeDeleteDialog(){
+        deleteDialog.value = false;
+    }
+
+    //========edit dialog========
+    function openEditDialog(clientGroup: ClientGroup){
+        clientGroupToEdit.value = clientGroup;
+        editDialog.value = true;
+    }
+
+    function closeEditDialog(){
+        editDialog.value = false;
+    }
+
 
     
 

@@ -8,6 +8,11 @@ export async function createClientGroup(token: string, clientGroup: {}): Promise
     return [data, status];
 }
 
+export async function getClientGroup(token: string, id: string): Promise<[object, number]>{
+    const {data, status} = await apiService.api.get(clientGroupUrl + "/" + id, {headers: apiService.getHeaders(token)});
+    return [data, status];
+}
+
 export async function getClientGroups(token: string, examId?: {}): Promise<[object, number]>{
     const {data, status} = await apiService.api.get(clientGroupUrl, {headers: apiService.getHeaders(token), params: {examId: examId}});
     return [data, status];

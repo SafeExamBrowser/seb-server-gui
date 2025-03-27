@@ -7,15 +7,20 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    AddClientGroupDialog: typeof import('./components/views/client-group/AddClientGroupDialog.vue')['default']
+    AddClientGroupDialog: typeof import('./components/views/exam/main-content/client-group/AddClientGroupDialog.vue')['default']
     AlertMsg: typeof import('./components/widgets/AlertMsg.vue')['default']
+    ClienGroupListDialog: typeof import('./components/views/exam/main-content/client-group/ClienGroupListDialog.vue')['default']
+    ClientGroupDialog: typeof import('./components/views/exam/main-content/client-group/ClientGroupDialog.vue')['default']
     ContainerLayout: typeof import('./components/layout/ContainerLayout.vue')['default']
+    copy: typeof import('./components/views/exam/main-content/client-group/AddClientGroupDialog copy.vue')['default']
+    DeleteConfirmDialog: typeof import('./components/widgets/DeleteConfirmDialog.vue')['default']
+    EditClientGroupDialog: typeof import('./components/views/exam/main-content/client-group/EditClientGroupDialog.vue')['default']
     ErrorMsg: typeof import('./components/widgets/ErrorMsg.vue')['default']
     ExamDetailArchiveDialog: typeof import('./components/views/exam/main-content/ExamDetailArchiveDialog.vue')['default']
     ExamDetailConfigDialog: typeof import('./components/views/exam/main-content/ExamDetailConfigDialog.vue')['default']
     ExamDetailContainer: typeof import('./components/views/exam/ExamDetailContainer.vue')['default']
     ExamDetailDeleteDialog: typeof import('./components/views/exam/main-content/ExamDetailDeleteDialog.vue')['default']
-    ExamDetailGroupDialog: typeof import('./components/views/exam/main-content/ExamDetailGroupDialog.vue')['default']
+    ExamDetailGroupDialog: typeof import('./components/views/exam/main-content/client-group/ExamDetailGroupDialog.vue')['default']
     ExamDetailInfo: typeof import('./components/views/exam/info-box-content/ExamDetailInfo.vue')['default']
     ExamDetailMain: typeof import('./components/views/exam/main-content/ExamDetailMain.vue')['default']
     ExamDetailSupervisorsDialog: typeof import('./components/views/exam/main-content/ExamDetailSupervisorsDialog.vue')['default']

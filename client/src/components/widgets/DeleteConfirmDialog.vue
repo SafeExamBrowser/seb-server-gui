@@ -2,7 +2,7 @@
     <v-card>
 
         <v-toolbar color="transparent">
-            <v-toolbar-title class="text-h6" text="Delete Exam"></v-toolbar-title>
+            <v-toolbar-title class="text-h6" :text="title"></v-toolbar-title>
             <template v-slot:append>
                 <v-btn @click="emit('closeDeleteDialog')" icon="mdi-close"></v-btn>
             </template>
@@ -11,12 +11,12 @@
         <v-card-text>
             <v-row>
                 <v-col>
-                    This deletes the exam and the local import of a course or quiz in SEB Server.
+                    {{infoText}}
                 </v-col>
             </v-row>
             <v-row>
                 <v-col class="font-weight-bold">
-                    Are you sure you want to delete the exam?
+                    {{questionText}}
                 </v-col>
             </v-row>
 
@@ -32,11 +32,11 @@
 
                     <v-btn 
                         rounded="sm" 
-                        color="primary" 
+                        color="error" 
                         variant="flat" 
                         class="ml-2"
-                        @click="emit('deleteExam')">
-                        OK
+                        @click="emit('deleteEntity')">
+                        Delete
                     </v-btn>
 
                 </v-col>
@@ -51,8 +51,16 @@
     //emits
     const emit = defineEmits<{
         closeDeleteDialog: any,
-        deleteExam: any,
+        deleteEntity: any,
     }>();
+
+    //props
+    const props = defineProps<{
+        title: string,
+        infoText: string,
+        questionText: string
+    }>();
+
 
 </script>
 

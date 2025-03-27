@@ -10,6 +10,14 @@ export async function createClientGroup(clientGroup: ClientGroup): Promise<Clien
     }
 }
 
+export async function getClientGroup(id: string): Promise<ClientGroup | null>{
+    try{
+        return await clientGroupService.getClientGroup(id);    
+    }catch(error){
+        return null;
+    }
+}
+
 
 export async function getClientGroups(examId?: string): Promise<ClientGroups | null>{
     try{
