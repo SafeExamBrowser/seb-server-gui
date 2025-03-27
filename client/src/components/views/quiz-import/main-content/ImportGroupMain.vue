@@ -72,7 +72,7 @@
                                         <v-spacer></v-spacer>
 
                                         <v-btn 
-                                            @click="removeClientGroup(clientGroup.id)"
+                                            @click="removeClientGroup(clientGroup.id!)"
                                             variant="flat"
                                             icon="mdi-checkbox-marked">
                                         </v-btn>
