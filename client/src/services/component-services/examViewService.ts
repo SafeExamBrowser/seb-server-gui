@@ -88,6 +88,22 @@ export async function applyTestRun(id: string): Promise<Exam | null>{
         return null;
     }
 }
+
+export async function applyScreenProctoringGroups(id: string, spsSEBGroupsSelection: string): Promise<Exam | null>{
+    try{
+        return await screenProctoringService.applyScreenProctoringGroups(id, spsSEBGroupsSelection);
+    }catch(error){
+        return null;
+    }
+}
+
+export async function activateScreenProctoring(id: string, enableScreenProctoring: boolean): Promise<Exam | null>{
+    try{
+        return await screenProctoringService.activateScreenProctoring(id, enableScreenProctoring);
+    }catch(error){
+        return null;
+    }
+}
 //==============================
 
 

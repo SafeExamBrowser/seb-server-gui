@@ -9,66 +9,86 @@
         </v-toolbar>
 
         <v-card-text>
+
+            <!-----------selected client groups summary---------->      
             <v-row>
-    
-                <!-----------selected client groups summary---------->      
                 <v-col>
-                    <v-row>
-                        <v-col>
-                            <!--@vue-ignore-->
-                            <v-data-table 
-                                hide-default-footer
-                                item-value="id" 
-                                class="rounded-lg elevation-4"
-                                :headers="tableHeaders" 
-                                :items="clientGroups">
+                    <!--@vue-ignore-->
+                    <v-data-table 
+                        hide-default-footer
+                        item-value="id" 
+                        class="rounded-lg elevation-4"
+                        :headers="tableHeaders" 
+                        :items="clientGroups">
 
-                                <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort}">
-                                    <TableHeaders
-                                        :columns="columns"
-                                        :is-sorted="isSorted"
-                                        :get-sort-icon="getSortIcon"
-                                        :toggle-sort="toggleSort"
-                                        :header-refs-prop="tableHeadersRef">
-                                    </TableHeaders>
-                                </template>
+                        <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort}">
+                            <TableHeaders
+                                :columns="columns"
+                                :is-sorted="isSorted"
+                                :get-sort-icon="getSortIcon"
+                                :toggle-sort="toggleSort"
+                                :header-refs-prop="tableHeadersRef">
+                            </TableHeaders>
+                        </template>
 
-                                <!-------screen procotoring checkbox------->      
-                                <template v-slot:item.isScreenProctoring="{ item }">
-                                    <v-btn 
-                                        @click="enableScreenProctoringTemp(item)"
-                                        variant="flat"
-                                        :icon="item.isScreenProctoringTemp ? 'mdi-checkbox-marked' : 'mdi-checkbox-blank-outline'">
-                                    </v-btn>
-                                </template>
+                        <template v-slot:item.type="{ item }">
+                            {{ generalUtils.getClientGroupName(generalUtils.findEnumValue(ClientGroupEnum, item.type)) }}
+                        </template>
 
-                                <!-------edit button------->      
-                                <template v-slot:item.edit="{ item }">
-                                    <v-btn 
-                                        variant="text" 
-                                        icon="mdi-pencil-outline"
-                                        @click="openEditDialog(item)">
-                                    </v-btn>
-                                </template>
+                        <!-------screen procotoring checkbox------->      
+                        <template v-slot:item.isSPSGroup="{ item }">
+                            <v-btn 
+                                @click="item.isSPSGroup = !item.isSPSGroup"
+                                variant="flat"
+                                :icon="item.isSPSGroup ? 'mdi-checkbox-marked' : 'mdi-checkbox-blank-outline'">
+                            </v-btn>
+                        </template>
 
-                                <!-------delete button------->      
-                                <template v-slot:item.delete="{ item }">
-                                    <v-btn 
-                                        variant="text" 
-                                        icon="mdi-delete-outline"
-                                        @click="openDeleteDialog()">
-                                    </v-btn>
-                                </template>
-                                
-                            </v-data-table>
-    
-                        </v-col>
-                    </v-row>
-    
+                        <!-------edit button------->      
+                        <template v-slot:item.edit="{ item }">
+                            <v-btn 
+                                variant="text" 
+                                icon="mdi-pencil-outline"
+                                @click="openEditDialog(item)">
+                            </v-btn>
+                        </template>
+
+                        <!-------delete button------->      
+                        <template v-slot:item.delete="{ item }">
+                            <v-btn 
+                                variant="text" 
+                                icon="mdi-delete-outline"
+                                @click="openDeleteDialog()">
+                            </v-btn>
+                        </template>
+                        
+                    </v-data-table>
                 </v-col>
-                <!------------------------>
-    
             </v-row>
+
+            <!------------Buttons------------->
+            <v-row>
+                <v-col align="right">
+                    <v-btn 
+                        rounded="sm" 
+                        color="black" 
+                        variant="outlined"
+                        @click="emit('closeClientGroupDialog')">
+                        Cancel
+                    </v-btn>
+
+                    <v-btn 
+                        rounded="sm" 
+                        color="primary" 
+                        variant="flat" 
+                        class="ml-2"
+                        :disabled="!hasSpDataChanged"
+                        @click="saveScreenProctoringGroups()">
+                        Save
+                    </v-btn>
+                </v-col>
+            </v-row>
+            
         </v-card-text>
     </v-card>
 
@@ -101,6 +121,13 @@
     import * as tableUtils from "@/utils/table/tableUtils";
     import * as clientGroupViewService from "@/services/component-services/clientGroupViewService";
     import TableHeaders from "@/utils/table/TableHeaders.vue";
+    import { ClientGroupEnum, ClientOSEnum } from "@/models/clientGroupEnum";
+    import * as generalUtils from "@/utils/generalUtils";
+    import * as examViewService from "@/services/component-services/examViewService";
+
+
+    //exam
+    const examId = useRoute().params.examId.toString();
 
     //stores
     const examStore = useExamStore();
@@ -111,13 +138,15 @@
     const clientGroupToEdit = ref<ClientGroup | null>(null);
 
     //items
+    const initialClientGroups = ref<ClientGroup[]>([]);
     const clientGroups = ref<ClientGroup[]>([]);
 
     //table
     const tableHeadersRef = ref<any[]>();
     const tableHeaders = ref([
-        {title: "Name", key: "name", width: "70%"},
-        {title: "Screen Proctoring", key: "isScreenProctoring", sortable: false, width: "20%", center: true, align: "center"},
+        {title: "Name", key: "name", width: "50%"},
+        {title: "Type", key: "type", width: "30%"},
+        {title: "Screen Proctoring", key: "isSPSGroup", sortable: false, width: "10%", center: true, align: "center"},
         {title: "Edit", key: "edit", sortable: false, width: "5%", center: true, align: "center"},
         {title: "Delete", key: "delete", sortable: false, width: "5%", center: true, align: "center"}
     ]);    
@@ -135,25 +164,49 @@
 
     //=========events & watchers================
     onBeforeMount(async () => {
-        if(examStore.selectedExam == null){
-            return;
-        }
-
-        const clientGroupResponse: ClientGroups | null = await clientGroupViewService.getClientGroups(examStore.selectedExam.id.toString());
+        const clientGroupResponse: ClientGroups | null = await clientGroupViewService.getClientGroups(examId);
 
         if(clientGroupResponse == null){
             return;
         }
 
         clientGroups.value = clientGroupResponse.content;
+        initialClientGroups.value = JSON.parse(JSON.stringify(clientGroupResponse.content));
     });
 
+
     //========screen proctoring========
-    function enableScreenProctoringTemp(clientGroup: ClientGroup){
-        clientGroup.isScreenProctoringTemp = !clientGroup.isScreenProctoringTemp;
+    async function saveScreenProctoringGroups(){
+        console.log(getChangedGroupIds())
+
+        const examResponse: Exam | null = await examViewService.applyScreenProctoringGroups(examId, generalUtils.createStringIdList(getChangedGroupIds()));
+
+        if(examResponse == null){
+            return;
+        }
+
+        emit("closeClientGroupDialog");
     }
 
-    //========delete dialog========
+
+    const hasSpDataChanged = computed<boolean>(() => {
+        return clientGroups.value.some((item, index) => {
+            return item.isSPSGroup != initialClientGroups.value[index].isSPSGroup;
+        });
+    });
+
+    function getChangedGroupIds(): number[]{
+        let groupIds: number[] = [];
+
+        clientGroups.value.some((item, index) => {
+            if(item.isSPSGroup != initialClientGroups.value[index].isSPSGroup){
+                groupIds.push(item.id);
+            }
+        });
+
+        return groupIds;
+    }
+
     async function deleteClientGroup(){
 
     }

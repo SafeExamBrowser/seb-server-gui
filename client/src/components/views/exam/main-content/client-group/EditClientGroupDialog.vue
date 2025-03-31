@@ -2,7 +2,7 @@
     <v-card>
 
         <v-toolbar color="transparent">
-            <v-toolbar-title class="text-h6" text="Add Group"></v-toolbar-title>
+            <v-toolbar-title class="text-h6" text="Edit Group"></v-toolbar-title>
             <template v-slot:append>
                 <v-btn @click="emit('closeEditClientGroupDialog')" icon="mdi-close"></v-btn>
             </template>
@@ -232,6 +232,13 @@
         clientGroupDescription.value = generalUtils.getClientGroupDescription(clientGroupTypeSelect.value);
     });
 
+    watch(groupNameField, () => {
+        // isGroupNameDuplicate.value = false;
+        // if(examStore.selectedClientGroups.some(clientGroup => clientGroup.name == groupNameField.value)){
+        //     isGroupNameDuplicate.value = true;
+        // }
+    });
+
     //emits
     const emit = defineEmits<{
         closeEditClientGroupDialog: any;
@@ -331,7 +338,7 @@
 
     //========form control========
     function isSaveButtonDisabled(): boolean{
-        isGroupNameDuplicate.value = false;
+        // isGroupNameDuplicate.value = false;
 
         if(groupNameField.value == "" || clientGroupTypeSelect.value == null){
             return true;
@@ -349,31 +356,32 @@
             return true;
         }
 
-        if(examStore.selectedClientGroups.some(clientGroup => clientGroup.name.includes(groupNameField.value))){
-            isGroupNameDuplicate.value = true;
-            return true;
-        }
+        // if(examStore.selectedClientGroups.some(clientGroup => clientGroup.name.includes(groupNameField.value))){
+        //     isGroupNameDuplicate.value = true;
+        //     return true;
+        // }
 
         return false;
     }
 
 
     function clearFields(clearType: boolean){
-        groupNameField.value = "";
+        emit("closeEditClientGroupDialog");
+        // groupNameField.value = "";
 
-        if(clearType){
-            clientGroupTypeSelect.value = null;
-        }
+        // if(clearType){
+        //     clientGroupTypeSelect.value = null;
+        // }
 
-        startIpField.value = "";
-        endIpField.value = "";
+        // startIpField.value = "";
+        // endIpField.value = "";
 
-        startLetterField.value = "";
-        endLetterField.value = "";
+        // startLetterField.value = "";
+        // endLetterField.value = "";
 
-        clientOsField.value = null;
+        // clientOsField.value = null;
 
-        clientGroupDescription.value = getInitalDescriptionValue();
+        // clientGroupDescription.value = getInitalDescriptionValue();
     }
 
     function getInitalDescriptionValue(): string{

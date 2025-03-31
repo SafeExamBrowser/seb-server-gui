@@ -191,7 +191,7 @@
 
                         <v-row>
                             <v-col>
-                                <v-list>
+                                <!-- <v-list>
                                     <template 
                                         v-for="clientGroup in examStore.selectedClientGroups"
                                         :key="clientGroup.id"
@@ -204,7 +204,34 @@
                                         <v-divider class="border-opacity-25" :thickness="2"></v-divider>
 
                                     </template>
-                                </v-list>
+                                </v-list> -->
+
+                                <v-data-table 
+                                    hide-default-footer
+                                    item-value="id" 
+                                    class="rounded-lg elevation-2 mt-4"
+                                    :headers="clientGroupTableHeaders" 
+                                    :items=" examStore.selectedClientGroups">
+
+                                    <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort}">
+                                        <TableHeaders
+                                            :columns="columns"
+                                            :is-sorted="isSorted"
+                                            :get-sort-icon="getSortIcon"
+                                            :toggle-sort="toggleSort"
+                                            :header-refs-prop="clientGroupTableHeadersRef">
+                                        </TableHeaders>
+                                    </template>
+
+                                    <template v-slot:item="{item}">
+                                        <tr>
+                                            <td>{{ item.name }}</td>
+                                            <td>{{ generalUtils.getClientGroupName(generalUtils.findEnumValue(ClientGroupEnum, item.type)) }}</td>
+                                        </tr>
+                                    </template>
+
+                                </v-data-table>
+
                             </v-col>
                         </v-row>
                         <!------------------->
@@ -514,6 +541,9 @@
     import { navigateTo } from '@/router/navigation';
     import { ExamStatusEnum, ExamTypeEnum } from "@/models/examFiltersEnum";
     import DeleteConfirmDialog from "@/components/widgets/DeleteConfirmDialog.vue";
+    import { ClientGroupEnum, ClientOSEnum } from "@/models/clientGroupEnum";
+    import TableHeaders from "@/utils/table/TableHeaders.vue";
+
 
 
     const isPageInitalizing = ref<boolean>(true);
@@ -561,6 +591,11 @@
 
     //client groups
     const clientGroupDialog = ref<boolean>(false);
+    const clientGroupTableHeadersRef = ref<any[]>();
+    const clientGroupTableHeaders = ref([
+        {title: "Name", key: "name"},
+        {title: "Type", key: "type"}
+    ]); 
 
     //add client groups
     const addclientGroupDialog = ref<boolean>(false);
@@ -797,27 +832,21 @@
 
     async function applyScreenProctoring(){
         if(isScreenProctoringActive.value){
-            changeScreenProctoringSettings(true, "activate");
+            changeScreenProctoringSettings(true);
             return;
         }
 
-        changeScreenProctoringSettings(false, "deactivate");
+        changeScreenProctoringSettings(false);
     }
 
-    async function changeScreenProctoringSettings(enable: boolean, type: string){  
+    async function changeScreenProctoringSettings(enable: boolean){  
         if(examStore.selectedExam == null){
             return;
         }
 
-        const params: ScreenProctoringSettings = examViewService.createDefaultScreenProctoringSettings(
-            enable,
-            examStore.selectedExam.id, 
-            examStore.selectedExam.quizName
-        );
-
-        const saveScreenProcResponse: Exam | null = await examViewService.saveScreenProctoringSettings(
+        const saveScreenProcResponse: Exam | null = await examViewService.activateScreenProctoring(
             examStore.selectedExam.id.toString(), 
-            params
+            enable
         );
 
         if(saveScreenProcResponse == null){
@@ -825,7 +854,9 @@
             return;
         }
 
-        // updateExam();
+        examStore.selectedExam = saveScreenProcResponse;
+
+        console.log(examStore.selectedExam)
     }
 
 
@@ -910,9 +941,6 @@
         }
 
         examStore.selectedClientGroups = clientGroupResponse.content;
-
-        console.log(examStore.selectedClientGroups)
-        
     }
 
     //===============add groups logic====================

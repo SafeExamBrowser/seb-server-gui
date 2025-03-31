@@ -191,7 +191,7 @@
                                     color="primary" 
                                     variant="flat" 
                                     class="ml-2"
-                                    :disabled="isCreateButtonDisabled()"
+                                    :disabled="isCreateButtonDisabled"
                                     @click="createClientGroup()">
                                     Create
                                 </v-btn>
@@ -288,6 +288,13 @@
         clientGroupDescription.value = generalUtils.getClientGroupDescription(clientGroupTypeSelect.value);
     });
 
+    watch(groupNameField, () => {
+        isGroupNameDuplicate.value = false;
+        if(examStore.selectedClientGroups.some(clientGroup => clientGroup.name == groupNameField.value)){
+            isGroupNameDuplicate.value = true;
+        }
+    });
+
     //emits
     const emit = defineEmits<{
         closeAddClientGroupDialog: any;
@@ -377,11 +384,17 @@
     }
 
     //========form control========
-    function isCreateButtonDisabled(): boolean{
-        isGroupNameDuplicate.value = false;
-
-        if(groupNameField.value == "" || clientGroupTypeSelect.value == null){
+    const isCreateButtonDisabled = computed<boolean>(() => {
+        if(isGroupNameDuplicate.value){
             return true;
+        }
+
+        if(groupNameField.value == ""){
+            return true;
+        }
+
+        if(clientGroupTypeSelect.value == null){
+            return true; 
         }
 
         if(clientGroupTypeSelect.value == ClientGroupEnum.CLIENT_OS && clientOsField.value == null){
@@ -396,31 +409,27 @@
             return true;
         }
 
-        if(examStore.selectedClientGroups.some(clientGroup => clientGroup.name.includes(groupNameField.value))){
-            isGroupNameDuplicate.value = true;
-            return true;
-        }
-
         return false;
-    }
+    });
 
 
     function clearFields(clearType: boolean){
-        groupNameField.value = "";
+        emit('closeAddClientGroupDialog');
+        // groupNameField.value = "";
 
-        if(clearType){
-            clientGroupTypeSelect.value = null;
-        }
+        // if(clearType){
+        //     clientGroupTypeSelect.value = null;
+        // }
 
-        startIpField.value = "";
-        endIpField.value = "";
+        // startIpField.value = "";
+        // endIpField.value = "";
 
-        startLetterField.value = "";
-        endLetterField.value = "";
+        // startLetterField.value = "";
+        // endLetterField.value = "";
 
-        clientOsField.value = null;
+        // clientOsField.value = null;
 
-        clientGroupDescription.value = getInitalDescriptionValue();
+        // clientGroupDescription.value = getInitalDescriptionValue();
     }
 
     function getInitalDescriptionValue(): string{

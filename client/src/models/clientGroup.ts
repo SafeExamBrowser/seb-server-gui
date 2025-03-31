@@ -6,7 +6,7 @@ type ClientGroups = {
 }
 
 type ClientGroup = {
-    id?: number;
+    id: number;
     examId: number;
     name: string;
     type: string;
@@ -17,5 +17,5 @@ type ClientGroup = {
     clientOS?: string;
     nameRangeStartLetter?: string;
     nameRangeEndLetter?: string;
-    isScreenProctoringTemp?: boolean
+    isSPSGroup?: boolean
 };

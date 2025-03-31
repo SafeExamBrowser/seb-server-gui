@@ -17,19 +17,17 @@ router.get(constants.QUIZ_ROUTE, quizController.getQuizzes);
 
 //exams 
 router.get(constants.EXAMS_ROUTE, examController.getExams);
-
 router.post(constants.EXAM_ROUTE, examController.createExam);
 router.delete(constants.EXAM_ROUTE + "/:id", examController.deleteExam);
 router.put(constants.EXAM_ROUTE + "/:id", examController.updateExam);
 router.patch(constants.EXAM_ARCHIVE_ROUTE, examController.archiveExam)
 router.get(constants.EXAM_GET_ROUTE + "/:id", examController.getExam);
-
 router.get(constants.EXAM_CONFIGURATION_MAP_ROUTE + "/:id", examController.getExamConfigurationMap);
 
 //screen proctoring
 router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE, screenProctoringController.saveScreenProctoringSettings);
-// router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE + "/apply-groups", screenProctoringController.applyScreenProctoringGroups);
-// router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE + "/activation", screenProctoringController.activateScreenProctoring);
+router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE + "/apply-groups", screenProctoringController.applyScreenProctoringGroups);
+router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE + "/activation", screenProctoringController.activateScreenProctoring);
 
 
 //exam template

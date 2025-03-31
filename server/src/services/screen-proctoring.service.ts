@@ -11,3 +11,19 @@ export async function saveScreenProctoringSettings(token: string, id: string, sc
     
     return [data, status];
 }
+
+export async function applyScreenProctoringGroups(token: string, id: string, spsSEBGroupsSelection: {}){
+    const url: string =  "/exam/" + id + "/screen-proctoring/apply-groups";
+    const {data, status} = await apiService.api.post(url, {}, {headers: apiService.getHeaders(token), params: {spsSEBGroupsSelection: spsSEBGroupsSelection}});
+    return [data, status];
+}
+
+export async function activateScreenProctoring(token: string, id: string, enableScreenProctoring: {}){
+    const url: string =  "/exam/" + id + "/screen-proctoring/activation";
+
+    console.log(url)
+    console.log(enableScreenProctoring)
+
+    const {data, status} = await apiService.api.post(url, {}, {headers: apiService.getHeaders(token), params: {enableScreenProctoring: enableScreenProctoring}});
+    return [data, status];
+}

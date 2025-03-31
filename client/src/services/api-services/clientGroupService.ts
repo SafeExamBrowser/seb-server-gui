@@ -7,9 +7,6 @@ export async function createClientGroup(clientGroup: ClientGroup): Promise<Clien
 }
 
 export async function getClientGroup(id: string): Promise<ClientGroup | any>{
-
-    console.log("clientGroupId: " + id)
-
     return (await apiService.api.get(url + "/" + id, {headers: apiService.getHeaders()})).data;
 }
 
