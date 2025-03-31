@@ -200,7 +200,7 @@
 
         clientGroups.value.some((item, index) => {
             if(item.isSPSGroup != initialClientGroups.value[index].isSPSGroup){
-                groupIds.push(item.id);
+                groupIds.push(item.id!);
             }
         });
 
