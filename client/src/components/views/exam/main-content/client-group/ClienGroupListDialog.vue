@@ -58,7 +58,7 @@
                             <v-btn 
                                 variant="text" 
                                 icon="mdi-delete-outline"
-                                @click="openDeleteDialog()">
+                                @click="openDeleteDialog(item.id!)">
                             </v-btn>
                         </template>
                         
@@ -96,10 +96,11 @@
     <v-dialog v-model="deleteDialog" max-width="800">
         <DeleteConfirmDialog
             @close-delete-dialog="closeDeleteDialog"
-            @delete-entity="deleteClientGroup"
+            @delete-function="deleteClientGroup"
             title="Delete Client Group"
             info-text=""
             question-text="Are you sure you want to delete the client group?"
+            :entity-id="clientGroupIdToDelete"
         >
         </DeleteConfirmDialog>
     </v-dialog>
@@ -132,8 +133,11 @@
     //stores
     const examStore = useExamStore();
 
-    //dialogs
+    //delete
     const deleteDialog = ref<boolean>(false);
+    const clientGroupIdToDelete = ref<string | null>(null);
+
+    //edit
     const editDialog = ref<boolean>(false);
     const clientGroupToEdit = ref<ClientGroup | null>(null);
 
@@ -151,19 +155,18 @@
         {title: "Delete", key: "delete", sortable: false, width: "5%", center: true, align: "center"}
     ]);    
 
-
-    //local user search / filter
-    const search = ref<string>();
-
     //emits
     const emit = defineEmits<{
         closeClientGroupDialog: any;
     }>();
 
 
-
     //=========events & watchers================
     onBeforeMount(async () => {
+        await getClientGroups();
+    });
+
+    async function getClientGroups(){
         const clientGroupResponse: ClientGroups | null = await clientGroupViewService.getClientGroups(examId);
 
         if(clientGroupResponse == null){
@@ -171,9 +174,9 @@
         }
 
         clientGroups.value = clientGroupResponse.content;
+        examStore.selectedClientGroups = clientGroupResponse.content;
         initialClientGroups.value = JSON.parse(JSON.stringify(clientGroupResponse.content));
-    });
-
+    }
 
     //========screen proctoring========
     async function saveScreenProctoringGroups(){
@@ -207,11 +210,24 @@
         return groupIds;
     }
 
-    async function deleteClientGroup(){
+    //========delete========
+    async function deleteClientGroup(clientGroupId?: string){
+        if(clientGroupId == null){
+            return;
+        }
 
+        const deleteClientGroupResponse: any | null = await clientGroupViewService.deleteClientGroup(clientGroupId);
+
+        if(deleteClientGroupResponse == null){
+            return;
+        }
+        
+        closeDeleteDialog();
+        getClientGroups();
     }
 
-    function openDeleteDialog(){
+    function openDeleteDialog(clientGroupId: number){
+        clientGroupIdToDelete.value = clientGroupId.toString();
         deleteDialog.value = true;
     }
 
@@ -219,17 +235,19 @@
         deleteDialog.value = false;
     }
 
-    //========edit dialog========
+    //========edit========
     function openEditDialog(clientGroup: ClientGroup){
         clientGroupToEdit.value = clientGroup;
         editDialog.value = true;
     }
 
-    function closeEditDialog(){
+    function closeEditDialog(isChange?: boolean){
         editDialog.value = false;
+
+        if(isChange){
+            getClientGroups();
+        }
     }
-
-
     
 
 </script>
@@ -244,6 +262,5 @@
     .selected-row {
         background-color: #e4e4e4 !important;
     }
-
 
 </style>

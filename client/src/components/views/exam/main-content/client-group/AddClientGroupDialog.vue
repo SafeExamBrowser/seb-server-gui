@@ -167,7 +167,7 @@
     
                         <!------------Buttons------------->
                         <v-row align="center">
-                            <v-col>
+                            <v-col v-if="templateClientGroups.length != 0">
                                 <v-btn
                                     variant="elevated"
                                     color="#5865f2"
@@ -210,8 +210,8 @@
                         hide-default-footer
                         item-value="id" 
                         class="rounded-lg elevation-4"
-                        :headers="tableHeaders" 
-                        :items="examStore.selectedExamTemplate?.CLIENT_GROUP_TEMPLATES">
+                        :headers="templateClientGroupsHeaders" 
+                        :items="templateClientGroups">
 
                         <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort}">
                             <TableHeaders
@@ -219,7 +219,7 @@
                                 :is-sorted="isSorted"
                                 :get-sort-icon="getSortIcon"
                                 :toggle-sort="toggleSort"
-                                :header-refs-prop="tableHeadersRef">
+                                :header-refs-prop="templateClientGroupsHeadersRef">
                             </TableHeaders>
                         </template>
 
@@ -258,8 +258,9 @@
 
     //table
     const isTableSelection = ref<boolean>(false);
-    const tableHeadersRef = ref<any[]>();
-    const tableHeaders = ref([
+    const templateClientGroups = ref<ClientGroup[]>([]);
+    const templateClientGroupsHeadersRef = ref<any[]>();
+    const templateClientGroupsHeaders = ref([
         {title: "Name", key: "name"},
         {title: "Type", key: "type"}
     ]);    
@@ -279,7 +280,7 @@
     //description text
     const clientGroupDescription = ref<string>(getInitalDescriptionValue());
 
-    //load descriotion according to selection
+    //load description according to selection
     watch(clientGroupTypeSelect, () => {
         if(clientGroupTypeSelect.value == null){
             return;
@@ -288,6 +289,7 @@
         clientGroupDescription.value = generalUtils.getClientGroupDescription(clientGroupTypeSelect.value);
     });
 
+    //set group naem duplicate warning dynamically
     watch(groupNameField, () => {
         isGroupNameDuplicate.value = false;
         if(examStore.selectedClientGroups.some(clientGroup => clientGroup.name == groupNameField.value)){
@@ -302,21 +304,26 @@
 
     //client group select items
     const clientGroupItems = Object.values(ClientGroupEnum)
-    .filter(value => value !== ClientGroupEnum.NONE)
-    .map(value => ({
-        title: generalUtils.getClientGroupName(value), 
-        value: value
+        .filter(value => value !== ClientGroupEnum.NONE)
+        .map(value => ({
+            title: generalUtils.getClientGroupName(value),
+            value: value
     }));
 
     //client os select items
     const clientOSItems = Object.values(ClientOSEnum)
-    .filter(value => value !== ClientOSEnum.NONE)
-    .map(value => ({
-        title: generalUtils.getClientOSName(value), 
-        value: value
+        .filter(value => value !== ClientOSEnum.NONE)
+        .map(value => ({
+            title: generalUtils.getClientOSName(value),
+            value: value
     }));
 
+    onBeforeMount(() => {
+        filterClientGroupsTableValues();
+    });
 
+
+    //========create new client group========
     async function createClientGroup(){
         if(examStore.selectedExam == null || clientGroupTypeSelect.value == null){
             return;
@@ -333,14 +340,11 @@
             endLetterField.value
         );
 
-        console.log(clientGroup)
-
         if(clientGroup == null){
             return;
         }
 
         const createClientGroupResponse: ClientGroup | null = await clientGroupViewService.createClientGroup(clientGroup);
-
         if(createClientGroupResponse == null){
             return;
         }
@@ -348,12 +352,21 @@
         emit("closeAddClientGroupDialog", true);
     }
 
-
     //========table loading========
+    function filterClientGroupsTableValues(){
+        if(examStore.selectedExamTemplate == null){
+            return;
+        }
+
+        templateClientGroups.value = examStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES;
+        templateClientGroups.value = templateClientGroups.value.filter(clientGroup => 
+            !examStore.selectedClientGroups.some(item => item.name == clientGroup.name)
+        );
+    }
+
     async function onTableRowClick(clientGroup: ClientGroup){
         loadClientGroupIntoForm(clientGroup);
     }
-
 
     function loadClientGroupIntoForm(clientGroup: ClientGroup){
         const clientGroupType: ClientGroupEnum | null = generalUtils.findEnumValue(ClientGroupEnum, clientGroup.type);

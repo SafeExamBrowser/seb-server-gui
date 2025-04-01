@@ -52,7 +52,8 @@ router.post(constants.MONITORING_TEST_RUN_ROUTE + "/:id", monitoringController.a
 router.get(constants.CLIENT_GROUP_ROUTE + "/:id", clientGroupsController.getClientGroup);
 router.get(constants.CLIENT_GROUP_ROUTE, clientGroupsController.getClientGroups);
 router.post(constants.CLIENT_GROUP_ROUTE, clientGroupsController.createClientGroup);
-
+router.put(constants.CLIENT_GROUP_ROUTE, clientGroupsController.updateClientGroup);
+router.delete(constants.CLIENT_GROUP_ROUTE + "/:id", clientGroupsController.deleteClientGroup);
 
 
 

@@ -8,6 +8,16 @@ export async function createClientGroup(token: string, clientGroup: {}): Promise
     return [data, status];
 }
 
+export async function updateClientGroup(token: string, clientGroup: {}): Promise<[object, number]>{
+    const {data, status} = await apiService.api.put(clientGroupUrl, clientGroup, {headers: apiService.getApplicationJsonHeaders(token)});
+    return [data, status];
+}
+
+export async function deleteClientGroup(token: string, id: string): Promise<[object, number]>{
+    const {data, status} = await apiService.api.delete(clientGroupUrl + "/" + id, {headers: apiService.getHeaders(token)});
+    return [data, status];
+}
+
 export async function getClientGroup(token: string, id: string): Promise<[object, number]>{
     const {data, status} = await apiService.api.get(clientGroupUrl + "/" + id, {headers: apiService.getHeaders(token)});
     return [data, status];

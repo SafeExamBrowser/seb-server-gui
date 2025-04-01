@@ -35,7 +35,7 @@
                         color="error" 
                         variant="flat" 
                         class="ml-2"
-                        @click="emit('deleteEntity')">
+                        @click="callDelete()">
                         Delete
                     </v-btn>
 
@@ -51,7 +51,7 @@
     //emits
     const emit = defineEmits<{
         closeDeleteDialog: any,
-        deleteEntity: any,
+        deleteFunction: any,
     }>();
 
     //props
@@ -59,8 +59,17 @@
         title: string,
         infoText: string,
         questionText: string
+        entityId?: string | null
     }>();
 
+    async function callDelete(){
+        if(props.entityId){
+            emit('deleteFunction', props.entityId);
+            return;
+        }
+
+        emit('deleteFunction');
+    }
 
 </script>
 

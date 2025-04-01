@@ -111,7 +111,6 @@
                                 </v-col>
                             </v-row>
                         </template>
-                
     
                         <!------------CLIENT_OS fields------------->
                         <template v-if="clientGroupTypeSelect == ClientGroupEnum.CLIENT_OS">
@@ -130,8 +129,6 @@
                                 </v-col>
                             </v-row>
                         </template>
-    
-    
     
                         <!------------NAME_ALPHABETICAL_RANGE fields------------->
                         <template v-if="clientGroupTypeSelect == ClientGroupEnum.NAME_ALPHABETICAL_RANGE">
@@ -201,6 +198,7 @@
     import { useExamStore } from '@/stores/examStore';
     import { ClientGroupEnum, ClientOSEnum } from "@/models/clientGroupEnum";
     import * as generalUtils from "@/utils/generalUtils";
+    import * as clientGroupViewService from "@/services/component-services/clientGroupViewService";
 
     //stores
     const examStore = useExamStore();
@@ -230,13 +228,6 @@
         }
 
         clientGroupDescription.value = generalUtils.getClientGroupDescription(clientGroupTypeSelect.value);
-    });
-
-    watch(groupNameField, () => {
-        // isGroupNameDuplicate.value = false;
-        // if(examStore.selectedClientGroups.some(clientGroup => clientGroup.name == groupNameField.value)){
-        //     isGroupNameDuplicate.value = true;
-        // }
     });
 
     //emits
@@ -304,42 +295,37 @@
 
 
     async function updateClientGroup(){
-        // if(examStore.selectedExam == null || clientGroupTypeSelect.value == null){
-        //     return;
-        // }
+        if(examStore.selectedExam == null || clientGroupTypeSelect.value == null){
+            return;
+        }
 
-        // const clientGroup: ClientGroup | null = clientGroupViewService.getCreateClientGroupParams(
-        //     examStore.selectedExam.id,
-        //     groupNameField.value,
-        //     clientGroupTypeSelect.value,
-        //     startIpField.value,
-        //     endIpField.value,
-        //     clientOsField.value,
-        //     startLetterField.value,
-        //     endLetterField.value
-        // );
+        const clientGroup: ClientGroup | null = clientGroupViewService.getCreateClientGroupParams(
+            examStore.selectedExam.id,
+            groupNameField.value,
+            clientGroupTypeSelect.value,
+            startIpField.value,
+            endIpField.value,
+            clientOsField.value,
+            startLetterField.value,
+            endLetterField.value
+        );
 
-        // console.log(clientGroup)
+        if(clientGroup == null){
+            return;
+        }
 
-        // if(clientGroup == null){
-        //     return;
-        // }
+        clientGroup.id = props.clientGroup?.id;
+        const createClientGroupResponse: ClientGroup | null = await clientGroupViewService.updateClientGroup(clientGroup);
 
-        // const createClientGroupResponse: ClientGroup | null = await clientGroupViewService.createClientGroup(clientGroup);
+        if(createClientGroupResponse == null){
+            return;
+        }
 
-        // if(createClientGroupResponse == null){
-        //     return;
-        // }
-
-        // emit("closeEditClientGroupDialog", true);
+        emit("closeEditClientGroupDialog", true);
     }
-
-
 
     //========form control========
     function isSaveButtonDisabled(): boolean{
-        // isGroupNameDuplicate.value = false;
-
         if(groupNameField.value == "" || clientGroupTypeSelect.value == null){
             return true;
         }
@@ -356,32 +342,12 @@
             return true;
         }
 
-        // if(examStore.selectedClientGroups.some(clientGroup => clientGroup.name.includes(groupNameField.value))){
-        //     isGroupNameDuplicate.value = true;
-        //     return true;
-        // }
-
         return false;
     }
 
 
     function clearFields(clearType: boolean){
         emit("closeEditClientGroupDialog");
-        // groupNameField.value = "";
-
-        // if(clearType){
-        //     clientGroupTypeSelect.value = null;
-        // }
-
-        // startIpField.value = "";
-        // endIpField.value = "";
-
-        // startLetterField.value = "";
-        // endLetterField.value = "";
-
-        // clientOsField.value = null;
-
-        // clientGroupDescription.value = getInitalDescriptionValue();
     }
 
     function getInitalDescriptionValue(): string{

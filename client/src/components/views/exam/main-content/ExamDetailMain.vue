@@ -146,7 +146,7 @@
 
                         <v-row>
                             <v-col>
-                                <v-list>
+                                <!-- <v-list>
                                     <template 
                                         v-for="supervisor in examStore.selectedExamSupervisors"
                                         :key="supervisor.id"
@@ -159,7 +159,25 @@
                                         <v-divider class="border-opacity-25" :thickness="2"></v-divider>
 
                                     </template>
-                                </v-list>
+                                </v-list> -->
+
+                                <v-data-table 
+                                    hide-default-footer
+                                    item-value="id" 
+                                    class="rounded-lg elevation-2 mt-4"
+                                    :headers="supervisorsTableHeaders" 
+                                    :items="examStore.selectedExamSupervisors">
+
+                                    <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort}">
+                                        <TableHeaders
+                                            :columns="columns"
+                                            :is-sorted="isSorted"
+                                            :get-sort-icon="getSortIcon"
+                                            :toggle-sort="toggleSort"
+                                            :header-refs-prop="supervisorsTableHeadersRef">
+                                        </TableHeaders>
+                                    </template>
+                                </v-data-table>
                             </v-col>
                         </v-row>
                         <!------------------->
@@ -191,27 +209,12 @@
 
                         <v-row>
                             <v-col>
-                                <!-- <v-list>
-                                    <template 
-                                        v-for="clientGroup in examStore.selectedClientGroups"
-                                        :key="clientGroup.id"
-                                        :value="clientGroup.id">
-                                    
-                                        <v-list-item>
-                                            <v-list-item-title>{{ clientGroup.name }}</v-list-item-title>
-                                        </v-list-item>
-
-                                        <v-divider class="border-opacity-25" :thickness="2"></v-divider>
-
-                                    </template>
-                                </v-list> -->
-
                                 <v-data-table 
                                     hide-default-footer
                                     item-value="id" 
                                     class="rounded-lg elevation-2 mt-4"
                                     :headers="clientGroupTableHeaders" 
-                                    :items=" examStore.selectedClientGroups">
+                                    :items="examStore.selectedClientGroups">
 
                                     <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort}">
                                         <TableHeaders
@@ -231,7 +234,6 @@
                                     </template>
 
                                 </v-data-table>
-
                             </v-col>
                         </v-row>
                         <!------------------->
@@ -477,7 +479,7 @@
     <v-dialog v-model="deleteDialog" max-width="800">
         <DeleteConfirmDialog
             @close-delete-dialog="closeDeleteDialog"
-            @delete-entity="deleteExam"
+            @delete-function="deleteExam"
             title="Delete Exam"
             info-text="This deletes the exam and the local import of a course or quiz in SEB Server."
             question-text="Are you sure you want to delete the exam?"
@@ -545,7 +547,6 @@
     import TableHeaders from "@/utils/table/TableHeaders.vue";
 
 
-
     const isPageInitalizing = ref<boolean>(true);
 
     //stores
@@ -560,6 +561,13 @@
     const passwordVisible = ref<boolean>(false);
     const quitPassword = ref<string>("");
     let quitPasswordTimeout: ReturnType<typeof setTimeout> | null = null;
+
+    //supervisors table
+    const supervisorsTableHeadersRef = ref<any[]>();
+    const supervisorsTableHeaders = ref([
+        {title: "Name", key: "name"},
+        {title: "Role(s)", key: "roles"}
+    ]); 
 
     //supervisors dialog
     const supervisorsDialog = ref<boolean>(false);
@@ -934,6 +942,10 @@
     }
 
     async function getClientGroups(){
+        if(examStore.selectedExam == null){
+            return;
+        }
+
         const clientGroupResponse: ClientGroups | null = await clientGroupViewService.getClientGroups(examId);
 
         if(clientGroupResponse == null){
@@ -950,8 +962,6 @@
 
     function closeAddClientGroupDialog(isChange?: boolean){
         addclientGroupDialog.value = false;
-
-        console.log("ischange: " + isChange)
 
         if(isChange){
             getClientGroups();

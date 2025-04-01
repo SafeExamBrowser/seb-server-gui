@@ -18,6 +18,21 @@ export async function getClientGroup(id: string): Promise<ClientGroup | null>{
     }
 }
 
+export async function updateClientGroup(clientGroup: ClientGroup): Promise<ClientGroup | null>{
+    try{
+        return await clientGroupService.updateClientGroup(clientGroup);    
+    }catch(error){
+        return null;
+    }
+}
+
+export async function deleteClientGroup(id: string): Promise<any | null>{
+    try{
+        return await clientGroupService.deleteClientGroup(id);    
+    }catch(error){
+        return null;
+    }
+}
 
 export async function getClientGroups(examId?: string): Promise<ClientGroups | null>{
     try{
@@ -26,7 +41,6 @@ export async function getClientGroups(examId?: string): Promise<ClientGroups | n
         return null;
     }
 }
-
 
 
 //========create params========
