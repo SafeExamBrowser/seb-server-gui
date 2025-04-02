@@ -74,7 +74,7 @@
                                     variant="tonal"
                                     size="small"
                                     :color="generalUtils.getExamStatusFilterColor(generalUtils.findEnumValue(ExamStatusEnum, examStore.selectedExam?.status))">
-                                    {{ translate(generalUtils.findEnumValue(ExamStatusEnum, examStore.selectedExam?.status), i18n) }}
+                                    {{ translate(generalUtils.findEnumValue(ExamStatusEnum, examStore.selectedExam?.status)) }}
                                 </v-chip>
                             </v-col>
                         </v-row>
