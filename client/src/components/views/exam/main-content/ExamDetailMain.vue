@@ -215,7 +215,7 @@
                                     <template v-slot:item="{item}">
                                         <tr>
                                             <td>{{ item.name }}</td>
-                                            <td>{{ translate(generalUtils.findEnumValue(ClientGroupEnum, item.type), i18n) }}</td>
+                                            <td>{{ translate(generalUtils.findEnumValue(ClientGroupEnum, item.type)) }}</td>
                                         </tr>
                                     </template>
 

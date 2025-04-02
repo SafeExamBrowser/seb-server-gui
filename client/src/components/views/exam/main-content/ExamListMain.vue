@@ -41,7 +41,7 @@
                                 <v-chip 
                                     variant="tonal"
                                     size="small">
-                                    {{ translate(generalUtils.findEnumValue(ExamTypeEnum, item.type), i18n) }}
+                                    {{ translate(generalUtils.findEnumValue(ExamTypeEnum, item.type)) }}
                                 </v-chip>
                             </td>
                             <td>
@@ -49,7 +49,7 @@
                                     variant="tonal"
                                     size="small"
                                     :color="generalUtils.getExamStatusFilterColor(generalUtils.findEnumValue(ExamStatusEnum, item.status))">
-                                    {{ translate(generalUtils.findEnumValue(ExamStatusEnum, item.status), i18n) }}
+                                    {{ translate(generalUtils.findEnumValue(ExamStatusEnum, item.status)) }}
                                 </v-chip>
                             </td>
                             <td align="right">

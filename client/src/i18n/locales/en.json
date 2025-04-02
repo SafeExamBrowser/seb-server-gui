@@ -38,16 +38,16 @@
     },
         
 
-    "clientGroupsEnum": {
+    "clientGroups": {
         "description": {
-            "IP_V4_RANGE": [
+            "ip": [
                 "With IP v4 range groups you can group the SEB client connections within a IP ranges.",
                 "Every SEB client that is connected with a given client IP address that is within the",
                 "defined range (including start and end address) belongs to this group.",
                 "This is mostly useful if you have dedicated managed devices where you know",
                 "the IP ranges for e.g. your computer rooms."
             ],
-            "CLIENT_OS": [
+            "os": [
                 "With SEB Client groups you can group the SEB client connections within the",
                 "operating system they are running on.",
                 "For this grouping type there is a defined SEB OS type for each",
@@ -55,7 +55,7 @@
                 "This is mostly useful if you want to monitor and manage",
                 "the SEB clients by different operating system types to give respective support."
             ],
-            "NAME_ALPHABETICAL_RANGE": [
+            "alphabetical": [
                 "With this group you can define an alphabetical range to collect SEB Clients by user session name.",
                 "The range is defined by an inclusive starting letter and an inclusive end letter.",
                 "There is no additional check if your defined groups covering the whole alphabet",
