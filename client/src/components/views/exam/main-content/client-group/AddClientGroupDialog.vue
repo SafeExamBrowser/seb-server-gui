@@ -229,7 +229,7 @@
                                 class="on-row-hover" >
 
                                 <td>{{ item.name }}</td>
-                                <td>{{ generalUtils.getClientGroupName(generalUtils.findEnumValue(ClientGroupEnum, item.type), i18n) }}</td>
+                                <td>{{ translate(generalUtils.findEnumValue(ClientGroupEnum, item.type), i18n) }}</td>
                             </tr>
                         </template>
 
@@ -250,6 +250,7 @@
     import * as generalUtils from "@/utils/generalUtils";
     import TableHeaders from "@/utils/table/TableHeaders.vue";
     import { useI18n } from "vue-i18n";
+    import {translate} from "@/utils/generalUtils";
 
     //i18n
     const i18n = useI18n();
@@ -310,7 +311,7 @@
     const clientGroupItems = Object.values(ClientGroupEnum)
         .filter(value => value !== ClientGroupEnum.NONE)
         .map(value => ({
-            title: generalUtils.getClientGroupName(value, i18n),
+            title: translate(value, i18n),
             value: value
     }));
 
@@ -318,7 +319,7 @@
     const clientOSItems = Object.values(ClientOSEnum)
         .filter(value => value !== ClientOSEnum.NONE)
         .map(value => ({
-            title: generalUtils.getClientOSName(value, i18n),
+            title: translate(value, i18n),
             value: value
     }));
 

@@ -200,6 +200,8 @@
     import * as generalUtils from "@/utils/generalUtils";
     import * as clientGroupViewService from "@/services/component-services/clientGroupViewService";
     import { useI18n } from "vue-i18n";
+    import {translate} from "@/utils/generalUtils";
+
 
     //i18n
     const i18n = useI18n();
@@ -248,7 +250,7 @@
     const clientGroupItems = Object.values(ClientGroupEnum)
     .filter(value => value !== ClientGroupEnum.NONE)
     .map(value => ({
-        title: generalUtils.getClientGroupName(value, i18n), 
+        title: translate(value, i18n), 
         value: value
     }));
 
@@ -256,7 +258,7 @@
     const clientOSItems = Object.values(ClientOSEnum)
     .filter(value => value !== ClientOSEnum.NONE)
     .map(value => ({
-        title: generalUtils.getClientOSName(value, i18n), 
+        title: translate(value, i18n), 
         value: value
     }));
 

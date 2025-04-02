@@ -157,19 +157,19 @@
 
     //filters exam type
     const typeFilters: {name: string, value: ExamTypeEnum, eventFunction: (filter: ExamTypeEnum) => void}[] = [
-        {name: generalUtils.getTypeFilterName(ExamTypeEnum.BYOD, i18n), value: ExamTypeEnum.BYOD, eventFunction: setActiveTypeFilter},
-        {name: generalUtils.getTypeFilterName(ExamTypeEnum.MANAGED, i18n), value: ExamTypeEnum.MANAGED, eventFunction: setActiveTypeFilter},
-        {name: generalUtils.getTypeFilterName(ExamTypeEnum.VDI, i18n), value: ExamTypeEnum.VDI, eventFunction: setActiveTypeFilter},
-        {name: generalUtils.getTypeFilterName(ExamTypeEnum.UNDEFINED, i18n), value: ExamTypeEnum.UNDEFINED, eventFunction: setActiveTypeFilter}
+        {name: translate(ExamTypeEnum.BYOD, i18n), value: ExamTypeEnum.BYOD, eventFunction: setActiveTypeFilter},
+        {name: translate(ExamTypeEnum.MANAGED, i18n), value: ExamTypeEnum.MANAGED, eventFunction: setActiveTypeFilter},
+        {name: translate(ExamTypeEnum.VDI, i18n), value: ExamTypeEnum.VDI, eventFunction: setActiveTypeFilter},
+        {name: translate(ExamTypeEnum.UNDEFINED, i18n), value: ExamTypeEnum.UNDEFINED, eventFunction: setActiveTypeFilter}
     ];
 
     //filters exam status
     const statusFilters: {name: string, value: ExamStatusEnum, color: string, eventFunction: (filter: ExamStatusEnum) => void}[] = [
-        {name: generalUtils.getExamStatusFilterName(ExamStatusEnum.UP_COMING, i18n), value: ExamStatusEnum.UP_COMING, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.UP_COMING), eventFunction: setActiveStatusFilter},
-        {name: generalUtils.getExamStatusFilterName(ExamStatusEnum.TEST_RUN, i18n), value: ExamStatusEnum.TEST_RUN, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.TEST_RUN), eventFunction: setActiveStatusFilter},
-        {name: generalUtils.getExamStatusFilterName(ExamStatusEnum.RUNNING, i18n), value: ExamStatusEnum.RUNNING, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.RUNNING), eventFunction: setActiveStatusFilter},
-        {name: generalUtils.getExamStatusFilterName(ExamStatusEnum.FINISHED, i18n), value: ExamStatusEnum.FINISHED, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.FINISHED), eventFunction: setActiveStatusFilter},
-        {name: generalUtils.getExamStatusFilterName(ExamStatusEnum.ARCHIVED, i18n), value: ExamStatusEnum.ARCHIVED, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.ARCHIVED), eventFunction: setActiveStatusFilter}
+        {name: translate(ExamStatusEnum.UP_COMING, i18n), value: ExamStatusEnum.UP_COMING, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.UP_COMING), eventFunction: setActiveStatusFilter},
+        {name: translate(ExamStatusEnum.TEST_RUN, i18n), value: ExamStatusEnum.TEST_RUN, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.TEST_RUN), eventFunction: setActiveStatusFilter},
+        {name: translate(ExamStatusEnum.RUNNING, i18n), value: ExamStatusEnum.RUNNING, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.RUNNING), eventFunction: setActiveStatusFilter},
+        {name: translate(ExamStatusEnum.FINISHED, i18n), value: ExamStatusEnum.FINISHED, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.FINISHED), eventFunction: setActiveStatusFilter},
+        {name: translate(ExamStatusEnum.ARCHIVED, i18n), value: ExamStatusEnum.ARCHIVED, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.ARCHIVED), eventFunction: setActiveStatusFilter}
     ];
 
     function loadExamItemsCaller(){ 

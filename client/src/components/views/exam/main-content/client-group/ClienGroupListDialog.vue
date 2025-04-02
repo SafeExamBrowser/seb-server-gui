@@ -32,7 +32,7 @@
                         </template>
 
                         <template v-slot:item.type="{ item }">
-                            {{ generalUtils.getClientGroupName(generalUtils.findEnumValue(ClientGroupEnum, item.type), i18n) }}
+                            {{ translate(generalUtils.findEnumValue(ClientGroupEnum, item.type), i18n) }}
                         </template>
 
                         <!-------screen procotoring checkbox------->      
@@ -126,6 +126,7 @@
     import * as generalUtils from "@/utils/generalUtils";
     import * as examViewService from "@/services/component-services/examViewService";
     import { useI18n } from "vue-i18n";
+    import {translate} from "@/utils/generalUtils";
 
     //i18n
     const i18n = useI18n();

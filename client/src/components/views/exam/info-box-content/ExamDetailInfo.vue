@@ -12,19 +12,19 @@
                             </v-col>
 
                             <v-col cols="2" class="text-subtitle-1">
-                                Start
+                                {{translate("examDetail.info.start")}}
                             </v-col>
 
                             <v-col cols="2" class="text-subtitle-1">
-                                End
+                                {{translate("examDetail.info.end")}}
                             </v-col>
 
                             <v-col cols="3" class="text-subtitle-1">
-                                Description
+                                {{translate("examDetail.info.description")}}
                             </v-col>
 
                             <v-col cols="2" class="text-subtitle-1">
-                                Exam Type & Status
+                                {{translate("examDetail.info.typeStatus")}}
                             </v-col>
                         </v-row>
 
@@ -68,13 +68,13 @@
                                     class="mr-1"
                                     variant="tonal"
                                     size="small">
-                                    {{ generalUtils.getTypeFilterName(generalUtils.findEnumValue(ExamTypeEnum, examStore.selectedExam?.type), i18n) }}
+                                    {{ translate(generalUtils.findEnumValue(ExamTypeEnum, examStore.selectedExam?.type)) }}
                                 </v-chip>
                                 <v-chip 
                                     variant="tonal"
                                     size="small"
                                     :color="generalUtils.getExamStatusFilterColor(generalUtils.findEnumValue(ExamStatusEnum, examStore.selectedExam?.status))">
-                                    {{ generalUtils.getExamStatusFilterName(generalUtils.findEnumValue(ExamStatusEnum, examStore.selectedExam?.status), i18n) }}
+                                    {{ translate(generalUtils.findEnumValue(ExamStatusEnum, examStore.selectedExam?.status), i18n) }}
                                 </v-chip>
                             </v-col>
                         </v-row>
@@ -94,6 +94,7 @@
     import * as generalUtils from "@/utils/generalUtils";
     import { ExamStatusEnum, ExamTypeEnum } from "@/models/examFiltersEnum";
     import { useI18n } from "vue-i18n";
+    import {translate} from "@/utils/generalUtils";
 
     //i18n
     const i18n = useI18n();

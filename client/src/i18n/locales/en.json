@@ -1,4 +1,31 @@
-{
+{   
+    "-------ExamTypeEnum------": "----------",
+    "BYOD": "BYOD",
+    "MANAGED": "Managed Devices",
+    "UNDEFINED": "Not Defined",
+    "VDI": "VDI (Virtual Desktop Infrastructure)",
+
+    "-------ExamStatusEnum------": "----------",
+    "FINISHED": "Finished",
+    "UP_COMING": "Up Coming",
+    "TEST_RUN": "Test Run",
+    "RUNNING": "Running",
+    "ARCHIVED": "Archived",
+
+    "-------ClientGroupEnum------": "----------",
+    "NONE": "none",
+    "IP_V4_RANGE": "IP v4 Range",
+    "CLIENT_OS": "SEB Client OS",
+    "NAME_ALPHABETICAL_RANGE": "Alphabetical User Name Range",
+
+    "-------ClientOSEnum------": "----------",
+    "WINDOWS": "Windows",
+    "MAC_OS": "macOS",
+    "I_OS": "iOS",
+    "IPAD_OS": "iPadOS",
+    "I_OS_OR_IPAD_OS": "iOS/iPadOS",
+
+
     "general": {
         "loadingText": "Loading... Please wait",
         "cancelButton": "Cancel",
@@ -9,39 +36,18 @@
     "screenReader": {
         "logo": "SEB Logo"
     },
+        
 
-    "typeFilters": {
-        "byod": "BYOD",
-        "managed": "Managed Devices",
-        "undefined": "Not Defined",
-        "vdi": "VDI (Virtual Desktop Infrastructure)"
-    },
-
-    "statusFilters": {
-        "running": "Running",
-        "finished": "Finished",
-        "upComing": "Up Coming",
-        "testRun": "Test Run",
-        "archived": "Archived"
-    },
-
-    "clientGroups": {
-        "names": {
-            "none": "none",
-            "ip": "IP v4 Range",
-            "os": "SEB Client OS",
-            "alphabetical": "Alphabetical User Name Range"
-        },
-
+    "clientGroupsEnum": {
         "description": {
-            "ip": [
+            "IP_V4_RANGE": [
                 "With IP v4 range groups you can group the SEB client connections within a IP ranges.",
                 "Every SEB client that is connected with a given client IP address that is within the",
                 "defined range (including start and end address) belongs to this group.",
                 "This is mostly useful if you have dedicated managed devices where you know",
                 "the IP ranges for e.g. your computer rooms."
             ],
-            "os": [
+            "CLIENT_OS": [
                 "With SEB Client groups you can group the SEB client connections within the",
                 "operating system they are running on.",
                 "For this grouping type there is a defined SEB OS type for each",
@@ -49,21 +55,12 @@
                 "This is mostly useful if you want to monitor and manage",
                 "the SEB clients by different operating system types to give respective support."
             ],
-            "alphabetical": [
+            "NAME_ALPHABETICAL_RANGE": [
                 "With this group you can define an alphabetical range to collect SEB Clients by user session name.",
                 "The range is defined by an inclusive starting letter and an inclusive end letter.",
                 "There is no additional check if your defined groups covering the whole alphabet",
                 "Furthermore since the user session name can change during the SEB Connection phase, the group belonging of a SEB Client can change too."
             ]
-        },
-
-        "osNames": {
-            "none": "None",
-            "windows": "Windows",
-            "macOs": "macOS",
-            "iOs": "iOS",
-            "iPadOs": "iPadOS",
-            "iOsIpadOs": "iOS/iPadOS"
         }
     },
 
@@ -167,6 +164,32 @@
             "tableHeaderTypeStatus": "Exam Type & Status"
         }
     },
+
+    "examDetail": {
+        "info": {
+            "start": "Start",
+            "end": "End",
+            "description": "Description",
+            "typeStatus": "Exam Type & Status"
+        },
+        "main": {
+            "testExam": "Test Exam",
+            "testRunDisable": "Disable Test Run",
+            "testRunApply": "Apply Test Run",
+            "testTooltip": "Test run is only activated when exam is Up Coming",
+        
+            "monitorExam": "Monitor Exam",
+            "monitorStart": "Start",
+            "monitorTooltip": "Monitoring is only activated when exam is running",
+        
+            "examTemplate": "Exam Template",
+
+            "examSupervisors": "Examination Supervisors"
+        }
+
+    },
+
+
 
     "titles": {
         "home": "Home",

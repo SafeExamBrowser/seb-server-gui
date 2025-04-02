@@ -9,7 +9,7 @@
                 <v-row>
                     <v-col>
                         <div class="primary-text-color text-h5 font-weight-bold">
-                            Exam Details
+                            {{translate("titles.examDetails")}}
                         </div>
                         <v-divider class="border-opacity-25" :thickness="2"></v-divider>
                     </v-col>
@@ -31,7 +31,7 @@
 
                                     <v-row align="center">
                                         <v-col>
-                                            Test Exam
+                                            {{translate("examDetail.main.testExam")}}
                                         </v-col>
                                         <v-col align="right" cols="4" xl="3">
                                             <v-btn 
@@ -41,7 +41,7 @@
                                                 color="primary" 
                                                 variant="flat"
                                                 @click="applyTestRun()">
-                                                Disable Test Run
+                                                {{translate("examDetail.main.testRunDisable")}}
                                             </v-btn>
                                             <v-btn 
                                                 v-else
@@ -51,13 +51,13 @@
                                                 variant="flat"
                                                 :disabled="examViewService.isExamFunctionalityDisabled(ExamStatusEnum.UP_COMING, examStore.selectedExam?.status)"
                                                 @click="applyTestRun()">
-                                                Apply Test Run
+                                                {{translate("examDetail.main.testRunApply")}}
                                             </v-btn>
                                         </v-col>
                                     </v-row>
 
                                     <v-tooltip activator="parent">
-                                        Test run is only activated when exam is Up Coming
+                                        {{translate("examDetail.main.testTooltip")}}
                                     </v-tooltip>
 
                                 </v-sheet>
@@ -73,7 +73,7 @@
 
                                     <v-row align="center">
                                         <v-col>
-                                            Monitor Exam
+                                            {{translate("examDetail.main.monitorExam")}}
                                         </v-col>
                                         <v-col align="right" cols="4" xl="3">
                                             <v-btn 
@@ -82,13 +82,13 @@
                                                 color="primary" 
                                                 variant="flat" 
                                                 :disabled="examViewService.isExamFunctionalityDisabled(ExamStatusEnum.RUNNING, examStore.selectedExam?.status)">
-                                                Start
+                                                {{translate("examDetail.main.monitorStart")}}
                                             </v-btn>
                                         </v-col>
                                     </v-row>
 
                                     <v-tooltip activator="parent">
-                                        Monitoring is only activated when exam is running
+                                        {{translate("examDetail.main.monitorTooltip")}}
                                     </v-tooltip>
 
                                 </v-card>
@@ -98,7 +98,7 @@
                         <!----------template--------->
                         <v-row class="mt-10">
                             <v-col class="primary-text-color text-h6"> 
-                                Exam Template
+                                {{translate("examDetail.main.examTemplate")}}
                             </v-col>
                             <v-col align="right">
                                 <v-btn
@@ -130,7 +130,7 @@
                         <!-------supervisors------>
                         <v-row class="mt-10">
                             <v-col class="primary-text-color text-h6"> 
-                                Examination Supervisors
+                                {{translate("examDetail.main.examSupervisors")}}
                             </v-col>
 
                             <v-col align="right">
@@ -147,21 +147,6 @@
 
                         <v-row>
                             <v-col>
-                                <!-- <v-list>
-                                    <template 
-                                        v-for="supervisor in examStore.selectedExamSupervisors"
-                                        :key="supervisor.id"
-                                        :value="supervisor.id">
-                                    
-                                        <v-list-item>
-                                            <v-list-item-title>{{ supervisor.username }} ( {{supervisor.surname}} {{ supervisor.name }} )</v-list-item-title>
-                                        </v-list-item>
-
-                                        <v-divider class="border-opacity-25" :thickness="2"></v-divider>
-
-                                    </template>
-                                </v-list> -->
-
                                 <v-data-table 
                                     hide-default-footer
                                     item-value="id" 
@@ -230,7 +215,7 @@
                                     <template v-slot:item="{item}">
                                         <tr>
                                             <td>{{ item.name }}</td>
-                                            <td>{{ generalUtils.getClientGroupName(generalUtils.findEnumValue(ClientGroupEnum, item.type), i18n) }}</td>
+                                            <td>{{ translate(generalUtils.findEnumValue(ClientGroupEnum, item.type), i18n) }}</td>
                                         </tr>
                                     </template>
 
@@ -547,6 +532,7 @@
     import { ClientGroupEnum, ClientOSEnum } from "@/models/clientGroupEnum";
     import TableHeaders from "@/utils/table/TableHeaders.vue";
     import { useI18n } from "vue-i18n";
+    import {translate} from "@/utils/generalUtils";
 
     //i18n
     const i18n = useI18n();
