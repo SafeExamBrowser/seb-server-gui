@@ -11,7 +11,7 @@
                     @update:options="loadItems"
                     :hover="true"
                     :loading="isLoading"
-                    loading-text="Loading... Please wait"
+                    :loading-text="translate('general.loadingText')"
                     :items="exams?.content"
                     :items-length="totalItems"
                     :items-per-page="tableUtils.calcDefaultItemsPerPage(totalItems)"
@@ -41,7 +41,7 @@
                                 <v-chip 
                                     variant="tonal"
                                     size="small">
-                                    {{ generalUtils.getTypeFilterName(generalUtils.findEnumValue(ExamTypeEnum, item.type)) }}
+                                    {{ generalUtils.getTypeFilterName(generalUtils.findEnumValue(ExamTypeEnum, item.type), i18n) }}
                                 </v-chip>
                             </td>
                             <td>
@@ -49,7 +49,7 @@
                                     variant="tonal"
                                     size="small"
                                     :color="generalUtils.getExamStatusFilterColor(generalUtils.findEnumValue(ExamStatusEnum, item.status))">
-                                    {{ generalUtils.getExamStatusFilterName(generalUtils.findEnumValue(ExamStatusEnum, item.status)) }}
+                                    {{ generalUtils.getExamStatusFilterName(generalUtils.findEnumValue(ExamStatusEnum, item.status), i18n) }}
                                 </v-chip>
                             </td>
                             <td align="right">
@@ -60,7 +60,6 @@
                                     @click="navigateToExam(item.id.toString())">
                                 </v-icon>
                             </td>
-
                         </tr>
                     </template>
 
@@ -85,6 +84,11 @@
     import {navigateTo} from "@/router/navigation";
     import * as constants from "@/utils/constants";
     import { ExamStatusEnum, ExamTypeEnum } from "@/models/examFiltersEnum";
+    import { useI18n } from "vue-i18n";
+    import {translate} from "@/utils/generalUtils";
+
+    //i18n
+    const i18n = useI18n();
 
     //stores
     const examStore = useExamStore();
@@ -103,10 +107,10 @@
     const defaultSort: {key: string, order: string}[] = [{key: 'quizStartTime', order: 'desc'}];
     const examsTableHeadersRef = ref<any[]>();
     const examsTableHeaders = ref([
-        {title: "Name", key: "quizName", width: "30%"},
-        {title: "Start", key: "quizStartTime", width: "20%"},
-        {title: "End", key: "quizEndTime", width: "20%"},
-        {title: "Exam Type & Status", key: "type", sortable: false, width: "12.5%"},
+        {title: translate("examList.main.tableHeaderName"), key: "quizName", width: "30%"},
+        {title: translate("examList.main.tableHeaderStart"), key: "quizStartTime", width: "20%"},
+        {title: translate("examList.main.tableHeaderEnd"), key: "quizEndTime", width: "20%"},
+        {title: translate("examList.main.tableHeaderTypeStatus"), key: "type", sortable: false, width: "12.5%"},
         {title: "", key: "status", sortable: false, width: "12.5%"},
         {title: "", key: "examLink", width: "5%"},
     ]);    

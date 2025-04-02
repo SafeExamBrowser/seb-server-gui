@@ -1,5 +1,4 @@
 {
-
     "general": {
         "loadingText": "Loading... Please wait",
         "cancelButton": "Cancel",
@@ -9,6 +8,63 @@
 
     "screenReader": {
         "logo": "SEB Logo"
+    },
+
+    "typeFilters": {
+        "byod": "BYOD",
+        "managed": "Managed Devices",
+        "undefined": "Not Defined",
+        "vdi": "VDI (Virtual Desktop Infrastructure)"
+    },
+
+    "statusFilters": {
+        "running": "Running",
+        "finished": "Finished",
+        "upComing": "Up Coming",
+        "testRun": "Test Run",
+        "archived": "Archived"
+    },
+
+    "clientGroups": {
+        "names": {
+            "none": "none",
+            "ip": "IP v4 Range",
+            "os": "SEB Client OS",
+            "alphabetical": "Alphabetical User Name Range"
+        },
+
+        "description": {
+            "ip": [
+                "With IP v4 range groups you can group the SEB client connections within a IP ranges.",
+                "Every SEB client that is connected with a given client IP address that is within the",
+                "defined range (including start and end address) belongs to this group.",
+                "This is mostly useful if you have dedicated managed devices where you know",
+                "the IP ranges for e.g. your computer rooms."
+            ],
+            "os": [
+                "With SEB Client groups you can group the SEB client connections within the",
+                "operating system they are running on.",
+                "For this grouping type there is a defined SEB OS type for each",
+                "supported OS; Windows, MacOS and iOS.",
+                "This is mostly useful if you want to monitor and manage",
+                "the SEB clients by different operating system types to give respective support."
+            ],
+            "alphabetical": [
+                "With this group you can define an alphabetical range to collect SEB Clients by user session name.",
+                "The range is defined by an inclusive starting letter and an inclusive end letter.",
+                "There is no additional check if your defined groups covering the whole alphabet",
+                "Furthermore since the user session name can change during the SEB Connection phase, the group belonging of a SEB Client can change too."
+            ]
+        },
+
+        "osNames": {
+            "none": "None",
+            "windows": "Windows",
+            "macOs": "macOS",
+            "iOs": "iOS",
+            "iPadOs": "iPadOS",
+            "iOsIpadOs": "iOS/iPadOS"
+        }
     },
 
     "loginPage": {
@@ -93,15 +149,23 @@
             "supervisors": "Examination Supervisors",
             "password": "Quit Password"
         }
+    },
 
+    "examList": {
+        "info": {
+            "selectExam": "Select Exam",
+            "search": "Search:",
+            "searchPlaceholder": "Search Exams",
+            "start": "Start:",
+            "filter": "Filter"
 
-
-
-
-
-
-
-
+        },
+        "main": {
+            "tableHeaderName": "Name",
+            "tableHeaderStart": "Start",
+            "tableHeaderEnd": "End",
+            "tableHeaderTypeStatus": "Exam Type & Status"
+        }
     },
 
     "titles": {

@@ -199,6 +199,10 @@
     import { ClientGroupEnum, ClientOSEnum } from "@/models/clientGroupEnum";
     import * as generalUtils from "@/utils/generalUtils";
     import * as clientGroupViewService from "@/services/component-services/clientGroupViewService";
+    import { useI18n } from "vue-i18n";
+
+    //i18n
+    const i18n = useI18n();
 
     //stores
     const examStore = useExamStore();
@@ -227,7 +231,7 @@
             return;
         }
 
-        clientGroupDescription.value = generalUtils.getClientGroupDescription(clientGroupTypeSelect.value);
+        clientGroupDescription.value = generalUtils.getClientGroupDescription(clientGroupTypeSelect.value, i18n);
     });
 
     //emits
@@ -244,7 +248,7 @@
     const clientGroupItems = Object.values(ClientGroupEnum)
     .filter(value => value !== ClientGroupEnum.NONE)
     .map(value => ({
-        title: generalUtils.getClientGroupName(value), 
+        title: generalUtils.getClientGroupName(value, i18n), 
         value: value
     }));
 
@@ -252,7 +256,7 @@
     const clientOSItems = Object.values(ClientOSEnum)
     .filter(value => value !== ClientOSEnum.NONE)
     .map(value => ({
-        title: generalUtils.getClientOSName(value), 
+        title: generalUtils.getClientOSName(value, i18n), 
         value: value
     }));
 

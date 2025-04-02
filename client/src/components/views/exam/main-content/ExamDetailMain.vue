@@ -106,6 +106,7 @@
                                     density="compact"
                                     variant="text"
                                     icon="mdi-information-outline"
+                                    :disabled="examStore.selectedExamTemplate == null"
                                     @click="openExamTemplateDialog()">
                                 </v-btn>
                             </v-col>
@@ -229,7 +230,7 @@
                                     <template v-slot:item="{item}">
                                         <tr>
                                             <td>{{ item.name }}</td>
-                                            <td>{{ generalUtils.getClientGroupName(generalUtils.findEnumValue(ClientGroupEnum, item.type)) }}</td>
+                                            <td>{{ generalUtils.getClientGroupName(generalUtils.findEnumValue(ClientGroupEnum, item.type), i18n) }}</td>
                                         </tr>
                                     </template>
 
@@ -545,8 +546,12 @@
     import DeleteConfirmDialog from "@/components/widgets/DeleteConfirmDialog.vue";
     import { ClientGroupEnum, ClientOSEnum } from "@/models/clientGroupEnum";
     import TableHeaders from "@/utils/table/TableHeaders.vue";
+    import { useI18n } from "vue-i18n";
 
+    //i18n
+    const i18n = useI18n();
 
+    //general
     const isPageInitalizing = ref<boolean>(true);
 
     //stores

@@ -24,46 +24,46 @@ export function findEnumValue<T extends Record<string, string | number>>(enumObj
 }
 
 
-export function getTypeFilterName(status: ExamTypeEnum | null): string{
+export function getTypeFilterName(status: ExamTypeEnum | null, i18nParam: any | null): string{
     if(status == ExamTypeEnum.BYOD){
-        return "BYOD";
+        return translate("typeFilters.byod", i18nParam);
     }
 
     if(status == ExamTypeEnum.MANAGED){
-        return "Managed Devices";
+        return translate("typeFilters.managed", i18nParam);
     }
 
     if(status == ExamTypeEnum.UNDEFINED){
-        return "Not Defined";
+        return translate("typeFilters.undefined", i18nParam);
     }
 
     if(status == ExamTypeEnum.VDI){
-        return "VDI (Virtual Desktop Infrastructure)";
+        return translate("typeFilters.vdi", i18nParam);
     }
 
     return ""; 
 }
 
 
-export function getExamStatusFilterName(status: ExamStatusEnum | null): string{
+export function getExamStatusFilterName(status: ExamStatusEnum | null, i18nParam: any | null): string{
     if(status == ExamStatusEnum.RUNNING){
-        return "Running";
+        return translate("statusFilters.running", i18nParam);
     }
 
     if(status == ExamStatusEnum.FINISHED){
-        return "Finished";
+        return translate("statusFilters.finished", i18nParam);
     }
 
     if(status == ExamStatusEnum.UP_COMING){
-        return "Up Coming";
+        return translate("statusFilters.upComing", i18nParam);
     }
 
     if(status == ExamStatusEnum.TEST_RUN){
-        return "Test Run";
+        return translate("statusFilters.testRun", i18nParam);
     }
 
     if(status == ExamStatusEnum.ARCHIVED){
-        return "Archived";
+        return translate("statusFilters.archived", i18nParam);
     }
 
     return ""; 
@@ -91,77 +91,65 @@ export function getExamStatusFilterColor(status: ExamStatusEnum | null): string{
     return "";
 }
 
-export function getClientGroupName(clientGroup: ClientGroupEnum | null): string{
+export function getClientGroupName(clientGroup: ClientGroupEnum | null, i18nParam: any | null): string{
     if(clientGroup == ClientGroupEnum.NONE){
-        return "none";
+        return translate("clientGroups.names.none", i18nParam);
     }
 
     if(clientGroup == ClientGroupEnum.IP_V4_RANGE){
-        return "IP v4 Range";
+        return translate("clientGroups.names.ip", i18nParam);
     }
 
     if(clientGroup == ClientGroupEnum.CLIENT_OS){
-        return "SEB Client OS";
+        return translate("clientGroups.names.os", i18nParam);
     }
 
     if(clientGroup == ClientGroupEnum.NAME_ALPHABETICAL_RANGE){
-        return "Alphabetical User Name Range";
+        return translate("clientGroups.names.alphabetical", i18nParam);
     }
 
     return ""; 
 }
 
-export function getClientGroupDescription(clientGroup: ClientGroupEnum | null): string{
+export function getClientGroupDescription(clientGroup: ClientGroupEnum | null, i18nParam: any | null): string{
     if(clientGroup == ClientGroupEnum.IP_V4_RANGE){
-        return `With IP v4 range groups you can group the SEB client connections within a IP ranges.
-                Every SEB client that is connected with a given client IP address that is within the
-                defined range (including start and end address) belongs to this group.
-                This is mostly useful if you have dedicated managed devices where you know
-                the IP ranges for e.g. your computer rooms.`;
+        return translate("clientGroups.description.ip[0]", i18nParam);
     }
 
     if(clientGroup == ClientGroupEnum.CLIENT_OS){
-        return `With SEB Client groups you can group the SEB client connections within the
-                operating system they are running on.
-                For this grouping type there is a defined SEB OS type for each
-                supported OS; Windows, MacOS and iOS.
-                This is mostly useful if you want to monitor and manage
-                the SEB clients by different operating system types to give respective support.`;
+        return translate("clientGroups.description.os[0]", i18nParam);
     }
 
     if(clientGroup == ClientGroupEnum.NAME_ALPHABETICAL_RANGE){
-        return `With this group you can define an alphabetical range to collect SEB Clients by user session name.
-                The range is defined by an inclusive starting letter and an inclusive end letter.
-                There is no additional check if your defined groups covering the whole alphabet
-                Furthermore since the user session name can change during the SEB Connection phase, the group belonging of a SEB Client can change too.`;
+        return translate("clientGroups.description.alphabetical[0]", i18nParam);
     }
 
     return ""; 
 }
 
-export function getClientOSName(clientOS: ClientOSEnum | null): string{
+export function getClientOSName(clientOS: ClientOSEnum | null, i18nParam: any | null): string{
     if(clientOS == ClientOSEnum.NONE){
-        return "none";
+        return translate("clientGroups.osNames.none", i18nParam);
     }
 
     if(clientOS == ClientOSEnum.WINDOWS){
-        return "Windows";
+        return translate("clientGroups.osNames.windows", i18nParam);
     }
 
     if(clientOS == ClientOSEnum.MAC_OS){
-        return "macOS";
+        return translate("clientGroups.osNames.macOs", i18nParam);
     }
 
     if(clientOS == ClientOSEnum.I_OS){
-        return "iOS";
+        return translate("clientGroups.osNames.iOs", i18nParam);
     }
 
     if(clientOS == ClientOSEnum.IPAD_OS){
-        return "iPadOS";
+        return translate("clientGroups.osNames.iPadOs", i18nParam);
     }
 
     if(clientOS == ClientOSEnum.I_OS_OR_IPAD_OS){
-        return "iOS/iPadOS";
+        return translate("clientGroups.osNames.iOsIpadOs", i18nParam);
     }
 
     return ""; 

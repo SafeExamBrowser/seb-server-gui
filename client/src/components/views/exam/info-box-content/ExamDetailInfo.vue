@@ -68,13 +68,13 @@
                                     class="mr-1"
                                     variant="tonal"
                                     size="small">
-                                    {{ generalUtils.getTypeFilterName(generalUtils.findEnumValue(ExamTypeEnum, examStore.selectedExam?.type)) }}
+                                    {{ generalUtils.getTypeFilterName(generalUtils.findEnumValue(ExamTypeEnum, examStore.selectedExam?.type), i18n) }}
                                 </v-chip>
                                 <v-chip 
                                     variant="tonal"
                                     size="small"
                                     :color="generalUtils.getExamStatusFilterColor(generalUtils.findEnumValue(ExamStatusEnum, examStore.selectedExam?.status))">
-                                    {{ generalUtils.getExamStatusFilterName(generalUtils.findEnumValue(ExamStatusEnum, examStore.selectedExam?.status)) }}
+                                    {{ generalUtils.getExamStatusFilterName(generalUtils.findEnumValue(ExamStatusEnum, examStore.selectedExam?.status), i18n) }}
                                 </v-chip>
                             </v-col>
                         </v-row>
@@ -93,6 +93,10 @@
     import * as timeUtils from "@/utils/timeUtils";
     import * as generalUtils from "@/utils/generalUtils";
     import { ExamStatusEnum, ExamTypeEnum } from "@/models/examFiltersEnum";
+    import { useI18n } from "vue-i18n";
+
+    //i18n
+    const i18n = useI18n();
 
     //stores
     const examStore = useExamStore();

@@ -8,7 +8,7 @@
                 <v-row>
                     <v-col>
                         <div class="primary-text-color text-h5 font-weight-bold">
-                            Select Exam
+                            {{translate('examList.info.selectExam')}}
                         </div>
                     </v-col>
                 </v-row>
@@ -24,7 +24,7 @@
                             <!------------search field------------->
                             <v-row align="center"> 
                                 <v-col>
-                                    Search:
+                                    {{translate('examList.info.search')}}
                                 </v-col>
                                 <v-col cols="9">
                                     <v-text-field
@@ -34,7 +34,7 @@
                                         type="text"
                                         append-inner-icon="mdi-magnify"
                                         density="compact"
-                                        placeholder="Search Exams"
+                                        :placeholder="translate('examList.info.searchPlaceholder')"
                                         variant="outlined">
                                     </v-text-field>
                                 </v-col>
@@ -44,7 +44,7 @@
                             <!------------start date------------->
                             <v-row align="center">
                                 <v-col> 
-                                    Start:
+                                    {{translate('examList.info.start')}}
                                 </v-col>
                                 <v-col cols="9" >
                                     <v-date-input 
@@ -69,7 +69,7 @@
                                         color="black" 
                                         variant="outlined"
                                         @click="clearForm()">
-                                        Cancel
+                                        {{translate("general.cancelButton")}}
                                     </v-btn>
 
                                     <v-btn 
@@ -78,7 +78,7 @@
                                         variant="flat" 
                                         class="ml-2"
                                         @click="loadExamItemsCaller()">
-                                        Search
+                                        {{translate("general.searchButton")}}
                                     </v-btn>
 
                                 </v-col>
@@ -92,7 +92,7 @@
                         <v-row>
                             <v-col>
                                 <div class="primary-text-color text-subtitle-1">
-                                    Filter
+                                    {{translate('examList.info.filter')}}
                                 </div>
                                 <div>
                                     <v-chip 
@@ -138,7 +138,11 @@
     import * as generalUtils from "@/utils/generalUtils";
     import { VDateInput } from "vuetify/labs/VDateInput";
     import * as timeUtils from "@/utils/timeUtils";
+    import {translate} from "@/utils/generalUtils";
+    import { useI18n } from "vue-i18n";
 
+    //i18n
+    const i18n = useI18n();
 
     //stores
     const examStore = useExamStore();
@@ -153,19 +157,19 @@
 
     //filters exam type
     const typeFilters: {name: string, value: ExamTypeEnum, eventFunction: (filter: ExamTypeEnum) => void}[] = [
-        {name: "BYOD", value: ExamTypeEnum.BYOD, eventFunction: setActiveTypeFilter},
-        {name: "Managed Devices", value: ExamTypeEnum.MANAGED, eventFunction: setActiveTypeFilter},
-        {name: "VDI (Virtual Desktop Infrastructure)", value: ExamTypeEnum.VDI, eventFunction: setActiveTypeFilter},
-        {name: "Not Defined", value: ExamTypeEnum.UNDEFINED, eventFunction: setActiveTypeFilter}
+        {name: generalUtils.getTypeFilterName(ExamTypeEnum.BYOD, i18n), value: ExamTypeEnum.BYOD, eventFunction: setActiveTypeFilter},
+        {name: generalUtils.getTypeFilterName(ExamTypeEnum.MANAGED, i18n), value: ExamTypeEnum.MANAGED, eventFunction: setActiveTypeFilter},
+        {name: generalUtils.getTypeFilterName(ExamTypeEnum.VDI, i18n), value: ExamTypeEnum.VDI, eventFunction: setActiveTypeFilter},
+        {name: generalUtils.getTypeFilterName(ExamTypeEnum.UNDEFINED, i18n), value: ExamTypeEnum.UNDEFINED, eventFunction: setActiveTypeFilter}
     ];
 
     //filters exam status
     const statusFilters: {name: string, value: ExamStatusEnum, color: string, eventFunction: (filter: ExamStatusEnum) => void}[] = [
-        {name: "Up Coming", value: ExamStatusEnum.UP_COMING, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.UP_COMING), eventFunction: setActiveStatusFilter},
-        {name: "Test Run", value: ExamStatusEnum.TEST_RUN, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.TEST_RUN), eventFunction: setActiveStatusFilter},
-        {name: "Running", value: ExamStatusEnum.RUNNING, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.RUNNING), eventFunction: setActiveStatusFilter},
-        {name: "Finished", value: ExamStatusEnum.FINISHED, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.FINISHED), eventFunction: setActiveStatusFilter},
-        {name: "Archived", value: ExamStatusEnum.ARCHIVED, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.ARCHIVED), eventFunction: setActiveStatusFilter}
+        {name: generalUtils.getExamStatusFilterName(ExamStatusEnum.UP_COMING, i18n), value: ExamStatusEnum.UP_COMING, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.UP_COMING), eventFunction: setActiveStatusFilter},
+        {name: generalUtils.getExamStatusFilterName(ExamStatusEnum.TEST_RUN, i18n), value: ExamStatusEnum.TEST_RUN, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.TEST_RUN), eventFunction: setActiveStatusFilter},
+        {name: generalUtils.getExamStatusFilterName(ExamStatusEnum.RUNNING, i18n), value: ExamStatusEnum.RUNNING, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.RUNNING), eventFunction: setActiveStatusFilter},
+        {name: generalUtils.getExamStatusFilterName(ExamStatusEnum.FINISHED, i18n), value: ExamStatusEnum.FINISHED, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.FINISHED), eventFunction: setActiveStatusFilter},
+        {name: generalUtils.getExamStatusFilterName(ExamStatusEnum.ARCHIVED, i18n), value: ExamStatusEnum.ARCHIVED, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.ARCHIVED), eventFunction: setActiveStatusFilter}
     ];
 
     function loadExamItemsCaller(){ 
