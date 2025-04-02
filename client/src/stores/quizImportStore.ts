@@ -2,12 +2,16 @@ import { defineStore } from "pinia";
 import * as constants from "@/utils/constants";
 import ImportGroupInfo from "@/components/views/quiz-import/info-box-content/ImportGroupInfo.vue"; 
 import ImportGroupMain from "@/components/views/quiz-import/main-content/ImportGroupMain.vue"; 
+import { useI18n } from "vue-i18n";
 
 
 export const useQuizImportStore = defineStore("quizImport", () => {
+    //i18n
+    const i18n = useI18n();
+
     //steps
     const currentStep = ref<number>(1);
-    const steps = ref<{name: string, value: number}[]>(constants.quizImportSteps);
+    const steps = ref<ImportWizardSteps[]>(constants.getQuizImportSteps(i18n));
     
     //stepper components
     const infoBoxComponents = ref<Component[]>(constants.quizImportInfoBoxComponents.map(component => markRaw(component)));
@@ -33,33 +37,45 @@ export const useQuizImportStore = defineStore("quizImport", () => {
 
 
     function addGroupSelectionComponents(){
-        if(steps.value.includes(constants.quizImportGroupStep)){
+        if(steps.value.some(step => step.type == constants.getQuizImportGroupStep(i18n).type)){
             return;
         }
 
-        steps.value.splice(2, 0, constants.quizImportGroupStep);
+        //if there are more than 1 assessmnet tools add +1 to the index
+        let arrayIndex: number = 2;
+        if(availableAssessmentTools.value != null && availableAssessmentTools.value.content.length > 1){
+            arrayIndex += 1;
+        }
+
+        steps.value.splice(arrayIndex, 0, constants.getQuizImportGroupStep(i18n));
         for(let i = 3; i < steps.value.length; i++){
             steps.value[i].value++;
         }
 
-        infoBoxComponents.value.splice(2, 0, markRaw(ImportGroupInfo));
-        mainContentComponents.value.splice(2, 0, markRaw(ImportGroupMain));
+        infoBoxComponents.value.splice(arrayIndex, 0, markRaw(ImportGroupInfo));
+        mainContentComponents.value.splice(arrayIndex, 0, markRaw(ImportGroupMain));
     }
 
     function removeGroupSelectionComponents(){
-        if(!steps.value.includes(constants.quizImportGroupStep)){
+        if(!steps.value.some(step => step.type == constants.getQuizImportGroupStep(i18n).type)){
             return;
         }
 
-        steps.value.splice(2, 1);
-        infoBoxComponents.value.splice(2, 1);
-        mainContentComponents.value.splice(2, 1);
+        //if there are more than 1 assessmnet tools add +1 to the index
+        let arrayIndex: number = 2;
+        if(availableAssessmentTools.value != null && availableAssessmentTools.value.content.length > 1){
+            arrayIndex += 1;
+        }
+
+        steps.value.splice(arrayIndex, 1);
+        infoBoxComponents.value.splice(arrayIndex, 1);
+        mainContentComponents.value.splice(arrayIndex, 1);
     }
 
     function clearValues(){
         currentStep.value = 1;
 
-        steps.value = constants.quizImportSteps.map(step => step);
+        steps.value = constants.getQuizImportSteps(i18n).map(step => step);
         infoBoxComponents.value = constants.quizImportInfoBoxComponents.map(component => markRaw(component));
         mainContentComponents.value = constants.quizImportMainContentComponents.map(component => markRaw(component))
 

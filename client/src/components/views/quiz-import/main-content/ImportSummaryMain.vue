@@ -6,7 +6,7 @@
             <v-row class="mb-10">
                 <v-col>
                     <div class="primary-text-color text-h6 font-weight-bold">
-                        Configuration Summary
+                        {{translate("quizImportWizard.summaryMain.configurationSummary")}}
                     </div>
                     <v-divider class="border-opacity-25" :thickness="2"></v-divider>
                 </v-col>
@@ -16,7 +16,7 @@
             <v-row>
                 <v-col>
                     <div class="primary-text-color text-subtitle-1">
-                        Exam Template
+                        {{translate("quizImportWizard.summaryMain.examTemplate")}}
                     </div>
                     <v-divider class="border-opacity-25" :thickness="2"></v-divider>
                 </v-col>
@@ -31,7 +31,7 @@
             <v-row v-if="quizImportStore.selectedClientGroups.length != 0">
                 <v-col>
                     <div class="primary-text-color text-subtitle-1">
-                        Client Groups
+                        {{translate("quizImportWizard.summaryMain.clientGroups")}}
                     </div>
                     <v-divider class="border-opacity-25" :thickness="2"></v-divider>
                 </v-col>
@@ -59,7 +59,7 @@
             <v-row>
                 <v-col>
                     <div class="primary-text-color text-subtitle-1">
-                        Examination Supervisors
+                        {{translate("quizImportWizard.summaryMain.supervisors")}}
                     </div>
                     <v-divider class="border-opacity-25" :thickness="2"></v-divider>
                 </v-col>
@@ -87,7 +87,7 @@
             <v-row>
                 <v-col>
                     <div class="primary-text-color text-subtitle-1">
-                        Quit Password
+                        {{translate("quizImportWizard.summaryMain.password")}}
                     </div>
                     <v-divider class="border-opacity-25" :thickness="2"></v-divider>
                 </v-col>
@@ -98,7 +98,7 @@
                         :type="passwordVisible ? 'text' : 'password'"
                         prepend-inner-icon="mdi-lock-outline"
                         density="compact"
-                        placeholder="Password"
+                        :placeholder="translate('quizImportWizard.passwordMain.password')"
                         variant="outlined"
                         v-model="quizImportStore.selectedQuitPassword"
                         readonly>
@@ -126,7 +126,7 @@
                         variant="flat" 
                         class="mt-8"
                         @click="createExam()">
-                        Save
+                        {{translate("general.saveButton")}}
                     </v-btn>
                 </v-col>
             </v-row>
@@ -142,8 +142,7 @@
     import { useQuizImportStore } from "@/stores/quizImportStore";
     import {navigateTo} from "@/router/navigation";
     import * as constants from "@/utils/constants";
-
-
+    import {translate} from "@/utils/generalUtils";
 
     //stores
     const quizImportStore = useQuizImportStore();

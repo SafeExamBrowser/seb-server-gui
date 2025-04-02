@@ -12,15 +12,15 @@
                             </v-col>
 
                             <v-col cols="2" class="text-subtitle-1">
-                                Start
+                                {{translate("quizImportWizard.genericInfo.start")}}
                             </v-col>
 
                             <v-col cols="2" class="text-subtitle-1">
-                                End
+                                {{translate("quizImportWizard.genericInfo.end")}}
                             </v-col>
 
                             <v-col cols="3" class="text-subtitle-1">
-                                Description
+                                {{translate("quizImportWizard.genericInfo.description")}}
                             </v-col>
                         </v-row>
 
@@ -70,6 +70,8 @@
 <script setup lang="ts">
     import {useQuizImportStore} from "@/stores/quizImportStore";
     import * as timeUtils from "@/utils/timeUtils";
+    import {translate} from "@/utils/generalUtils";
+
 
     //stores
     const quizImportStore = useQuizImportStore();

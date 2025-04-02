@@ -25,3 +25,9 @@ type Page = {
     page_number: number,
     page_size: number
 }
+
+type ImportWizardSteps = {
+    name: string, 
+    value: number, 
+    type?: string
+}

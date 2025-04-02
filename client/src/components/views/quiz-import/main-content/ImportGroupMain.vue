@@ -1,7 +1,5 @@
 <template>
-
     <v-row>
-        
         <!-----------group selection table---------->      
         <v-col cols="7"> 
 
@@ -9,7 +7,7 @@
                 <v-col cols="6">
                     <v-text-field
                         v-model="search"
-                        label="Search"
+                        :label="translate('quizImportWizard.groupMain.search')"
                         prepend-inner-icon="mdi-magnify"
                         variant="outlined"
                         density="compact"
@@ -51,7 +49,9 @@
         <v-col cols="3">
             <v-row>
                 <v-col>
-                    <div class="text-h6">Selected Client Groups</div>
+                    <div class="text-h6">
+                        {{translate('quizImportWizard.groupMain.selectedGroups')}}
+                    </div>
                 </v-col>
             </v-row>
 
@@ -98,13 +98,15 @@
 <script setup lang="ts">
     import { useQuizImportStore } from "@/stores/quizImportStore";
     import * as tableUtils from "@/utils/table/tableUtils";
+    import {translate} from "@/utils/generalUtils";
+
     
     //stores
     const quizImportStore = useQuizImportStore();
 
     //table
     const tableHeaders = ref([
-        {title: "Name", key: "name"}
+        {title: translate("quizImportWizard.groupMain.tableHeaderName"), key: "name"}
     ]);    
 
     //local client group search / filter

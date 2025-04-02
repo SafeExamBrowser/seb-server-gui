@@ -4,7 +4,7 @@
         <v-col cols="4">
             <v-select
                 hide-details
-                placeholder="Select Assessment Tool"
+                :placeholder="translate('quizImportWizard.assessmentTool.title')"
                 density="compact"
                 variant="outlined"  
                 v-model="quizImportStore.selectedAssessmentTool"
@@ -20,6 +20,7 @@
 
 <script setup lang="ts">
     import { useQuizImportStore } from "@/stores/quizImportStore";
+    import {translate} from "@/utils/generalUtils";
 
     //stores
     const quizImportStore = useQuizImportStore();

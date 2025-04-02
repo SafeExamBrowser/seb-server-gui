@@ -3,8 +3,11 @@
         <v-container class="fill-height d-flex align-center justify-center">
 
             <v-card class="pa-10">
-                <div class="d-flex ml-15 mr-15">
-                    <img src="/img/logo.svg" :class="isDark ? 'invert' : ''" alt="Logo ETH Zürich" />
+                <div class="d-flex ml-15 mr-15 justify-center">
+                    <img class="logo-img" src="/img/seb-logo-no-border.png" :alt="translate('screenReader.logo')" />
+                </div>
+                <div class="d-flex ml-15 mr-15 mt-5 justify-center">
+                    <div class="text-h6">{{translate('loginPage.title')}}</div>
                 </div>
 
                 <div class="mt-10">
@@ -29,20 +32,20 @@
                 </div>
                 
                 <v-card-title class="mt-10">
-                    Sign in
+                    {{translate('loginPage.signIn')}}
                 </v-card-title>
                 <v-card-subtitle>
                     <span class="text-subtitle">
-                        Please fill the form to sign in to your SEB Server Account.
+                        {{translate('loginPage.description')}}
                     </span>
                 </v-card-subtitle>
 
                 <v-card-text>
                     <v-form @keyup.enter="signIn()">
-                        <v-text-field
+                        <v-text-field   
                             prepend-inner-icon="mdi-account-outline"
                             density="compact"
-                            placeholder="Username *"
+                            :placeholder="translate('loginPage.usernamePlaceholder')"
                             variant="outlined"
                             v-model="username">
                         </v-text-field>
@@ -51,7 +54,7 @@
                             :type="passwordVisible ? 'text' : 'password'"
                             prepend-inner-icon="mdi-lock-outline"
                             density="compact"
-                            placeholder="Password *"
+                            :placeholder="translate('loginPage.passwordPlaceholder')"
                             variant="outlined"
                             v-model="password">
 
@@ -71,21 +74,23 @@
                             rounded="sm" 
                             color="primary"
                             @click="signIn()">
-                            Sign in
+                            {{translate('loginPage.signIn')}}
                         </v-btn>
 
                     </v-form>
 
                     <div class="text-center mt-7">
                         <span>
-                            No Account? 
+                            {{translate('loginPage.noAccount')}} 
                         </span>
                         <span 
                             class="text-decoration-underline text-blue"
                             role="button" 
                             tabindex="0" 
                             @keydown="handleTabKeyEvent($event, 'navigate')">
-                            <router-link :to=constants.REGISTER_ROUTE>Register</router-link>
+                            <router-link :to=constants.REGISTER_ROUTE>
+                                {{translate('loginPage.register')}}
+                            </router-link>
                         </span>
                     </div>
 
@@ -104,7 +109,7 @@
     import { useLoadingStore, useAuthStore } from "@/stores/store";
     import { useTheme } from "vuetify";
     import * as constants from "@/utils/constants";
-
+    import {translate} from "@/utils/generalUtils";
 
     const username = ref("");
     const password = ref("");
@@ -148,7 +153,15 @@
 </script>
   
 <style scoped>
+
     .invert{
         filter: invert(1);
     }
+
+    .logo-img {
+        max-width: 150px;
+        width: 100%;
+        height: auto; 
+    }
+
 </style>

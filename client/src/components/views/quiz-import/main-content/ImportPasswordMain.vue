@@ -7,7 +7,7 @@
                 :type="passwordVisible ? 'text' : 'password'"
                 prepend-inner-icon="mdi-lock-outline"
                 density="compact"
-                placeholder="Password"
+                :placeholder="translate('quizImportWizard.passwordMain.password')"
                 variant="outlined"
                 v-model="quizImportStore.selectedQuitPassword">
 
@@ -32,6 +32,7 @@
 <script setup lang="ts">
     import { useQuizImportStore } from '@/stores/quizImportStore';
     import {storeToRefs} from "pinia";
+    import {translate} from "@/utils/generalUtils";
 
 
     //stores

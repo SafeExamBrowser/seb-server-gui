@@ -10,7 +10,7 @@
                 <v-row>
                     <v-col>
                         <div class="primary-text-color text-h5 font-weight-bold">
-                            Select Exam
+                            {{translate("quizImportWizard.examInfo.title")}}
                         </div>
                     </v-col>
                 </v-row>
@@ -26,7 +26,7 @@
                             <!------------search field------------->
                             <v-row align="center"> 
                                 <v-col class="mb-6">
-                                    Search:
+                                    {{translate("quizImportWizard.examInfo.search")}}
                                 </v-col>
                                 <v-col cols="9" class="mb-6">
                                     <v-text-field
@@ -36,7 +36,7 @@
                                         type="text"
                                         append-inner-icon="mdi-magnify"
                                         density="compact"
-                                        placeholder="Search Exams"
+                                        :placeholder="translate('quizImportWizard.examInfo.searchPlaceholder')"
                                         variant="outlined">
                                     </v-text-field>
                                 </v-col>
@@ -46,7 +46,7 @@
                             <!------------start date------------->
                             <v-row align="center">
                                 <v-col class="mb-2"> 
-                                    Start:
+                                    {{translate("quizImportWizard.examInfo.start")}}
                                 </v-col>
                                 <v-col cols="9" class="mb-2">
                                     <v-date-input
@@ -71,7 +71,7 @@
                                         color="black" 
                                         variant="outlined"
                                         @click="clearForm()">
-                                        Cancel
+                                        {{translate("general.cancelButton")}}
                                     </v-btn>
 
                                     <v-btn 
@@ -80,7 +80,7 @@
                                         variant="flat" 
                                         class="ml-2"
                                         @click="loadExamItemsCaller()">
-                                        Search
+                                        {{translate("general.searchButton")}}
                                     </v-btn>
 
                                 </v-col>
@@ -101,6 +101,8 @@
 <script setup lang="ts">
     import {useQuizImportStore} from "@/stores/quizImportStore";
     import { VDateInput } from "vuetify/labs/VDateInput";
+    import {translate} from "@/utils/generalUtils";
+
 
     //stores
     const quizImportStore = useQuizImportStore();

@@ -1,6 +1,19 @@
 import { ClientGroupEnum, ClientOSEnum } from "@/models/clientGroupEnum";
 import { ExamStatusEnum, ExamTypeEnum } from "@/models/examFiltersEnum";
+import { useI18n } from "vue-i18n";
 
+export function translate(key: string | null | undefined, i18nParam?: any | null): string{
+    if(key == null || key == ""){
+        return "";
+    }
+
+    //if called outside of a setup context the i18n instance must be passed manually 
+    if(i18nParam != null){
+        return i18nParam.t(key);
+    }
+
+    return useI18n().t(key);
+}
 
 export function findEnumValue<T extends Record<string, string | number>>(enumObj: T, value: string | undefined | null): T[keyof T] | null {
     if(value == null){

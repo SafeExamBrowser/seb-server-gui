@@ -5,7 +5,7 @@
         <v-col cols="6" xl="4">
             <v-row>
                 <v-col class="text-h6">
-                    Click on the Exam Template you want to use for the exam
+                    {{translate('quizImportWizard.templateMain.description')}}
                 </v-col>
             </v-row>
         </v-col>
@@ -37,7 +37,6 @@
                         </v-card-actions> -->
                     </v-card>
 
-
                 </v-col>
             </v-row>
 
@@ -61,6 +60,7 @@
     import ExamTemplateDialog from "@/components/widgets/ExamTemplateDialog.vue";
     import * as quizImportWizardViewService from "@/services/component-services/quizImportWizardViewService";
     import { useQuizImportStore } from "@/stores/quizImportStore";
+    import {translate} from "@/utils/generalUtils";
 
     //stores
     const quizImportStore = useQuizImportStore();
@@ -117,8 +117,6 @@
     }
 
     //===================================================
-
-
     const examTemplateRows = computed(() => {
         const chunkSize = 3;
         return examTemplates.value?.content.reduce<ExamTemplate[][]>((acc, item, index) => {
@@ -134,12 +132,7 @@
         }, []);
     });
 
-
-
-
 </script>
 
 <style scoped>
-
-
 </style>

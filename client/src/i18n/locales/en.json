@@ -1,4 +1,146 @@
 {
+
+    "general": {
+        "loadingText": "Loading... Please wait",
+        "cancelButton": "Cancel",
+        "searchButton": "Search",
+        "saveButton": "Save"
+    },
+
+    "screenReader": {
+        "logo": "SEB Logo"
+    },
+
+    "loginPage": {
+        "title": "SEB Server",
+        "signIn": "Sign in" ,
+        "description": "Please fill the form to sign in to your SEB Server Account.",
+        "usernamePlaceholder": "Username *",
+        "passwordPlaceholder": "Password *",
+        "noAccount": "No Account? ",
+        "register": "Register"
+    },
+
+    "homePage": {
+        "prepareExam": "Prepare Exam",
+        "startNow": "Start now"
+    },
+
+    "quizImportWizard": {
+
+        "warning": {
+            "title": "No Assessment Tool"
+        },
+
+        "steps": {
+            "selectAssessmentTool": "Select Assessment Tool",
+            "selectExam": "Select Exam",
+            "chooseTemplate": "Choose Template",
+            "selectGroup": "Select Groups",
+            "addSupervisors": "Add Examination Supervisor",
+            "quitPassword": "Set Quit Password",
+            "configurationSummary": "Configuration Summary"
+        },
+
+        "genericInfo": {
+            "start": "Start",
+            "end": "End",
+            "description": "Description"
+        },
+
+        "assessmentTool": {
+            "title": "Select Assessment Tool"
+        },
+
+        "examInfo":{
+            "title": "Select Exam",
+            "search": "Search:",
+            "searchPlaceholder": "Search Exams",
+            "start": "Start:"
+
+        },
+
+        "examMain": {
+            "tableHeaderName": "Name",
+            "tableHeaderStart": "Start",
+            "tableHeaderEnd": "End"
+        },
+
+        "templateMain": {
+            "description": "Click on the Exam Template you want to use for the exam"
+        },
+
+        "groupMain": {
+            "search": "Search",
+            "selectedGroups": "Selected Client Groups",
+            "tableHeaderName": "Name"
+        },
+
+        "supervisorsMain": {
+            "search": "Search",
+            "selectedSupervisors": "Selected Supervisors",
+            "tableHeaderName": "Name"
+        },
+
+        "passwordMain": {
+            "password": "Password"
+        },
+
+        "summaryMain": {
+            "configurationSummary": "Configuration Summary",
+            "examTemplate": "Exam Template",
+            "clientGroups": "Client Groups",
+            "supervisors": "Examination Supervisors",
+            "password": "Quit Password"
+        }
+
+
+
+
+
+
+
+
+
+    },
+
+    "titles": {
+        "home": "Home",
+        "navigationOverview": "Navigation Overview",
+        "exams": "Exams",
+        "examsOverview": "Exams Overview",
+        "examDetails": "Exam Details",
+        "monitoring": "Monitoring",
+        "quizImport": "Prepare Exam"
+    },
+
+
+    "warnings": {
+        "no-data": "No data available",
+        "no-live-data": "No live sessions available",
+        "no-group": "Group doesn't exist or is not active",
+        "api-error": "Something went wrong, please try again",
+        "login-error": "Please provide a correct pair of user name and password.",
+        "register-error": "Please try again.",
+        "timeout-error": "The connection to the remote server timed out. Please try again",
+        "register-success": "Your registration was successful. You can now login",
+        "changePassword-error": "Your password could not be changed. Please provide valid data.",
+        "changePassword-success": "Your password has been changed successfully.",
+        "exam-duplicate": "This exam is already prepared",
+        "exam-update-successful": "Exam successfully updated",
+        "exam-update-failed": "Exam update failed",
+        "activate-screen-proctoring-failed": "Activation of screen proctoring failed",
+        "deactivate-screen-proctoring-failed": "Deactivation of screen proctoring failed",
+        "no-assessment-tool": "No assessment tool connected to SEB Server. Contact your institutional Administrator."
+    },
+
+
+
+
+
+
+
+
     "navigation": {
         "title": "SEB Screen Proctoring",
         "signIn": "Sign in",

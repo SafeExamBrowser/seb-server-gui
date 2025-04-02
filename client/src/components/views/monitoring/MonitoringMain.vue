@@ -9,12 +9,13 @@
 <script setup lang="ts">
     import { useAppBarStore } from '@/stores/store';
     import * as constants from "@/utils/constants";
+    import {translate} from "@/utils/generalUtils";
 
     //stores
     const appBarStore = useAppBarStore();
 
     onBeforeMount(() => {
-        appBarStore.title = constants.MONITORING_TITLE;
+        appBarStore.title = translate("titles.monitoring");
     });
 
 

@@ -8,18 +8,17 @@
     import * as constants from "@/utils/constants";
     import ExamListMain from "@/components/views/exam/main-content/ExamListMain.vue";
     import { useExamStore } from '@/stores/examStore';
+    import {translate} from "@/utils/generalUtils";
 
     //stores
     const appBarStore = useAppBarStore();
     const examStore = useExamStore();
 
-
     //ref to ExamListMain
     const examListMainRef = ref<InstanceType<typeof ExamListMain> | null>(null);
 
     onBeforeMount(async () => {
-        appBarStore.title = constants.EXAMS_TITLE;
-
+        appBarStore.title = translate("titles.exams");
     });
 
     //call function in "ExamListMain"

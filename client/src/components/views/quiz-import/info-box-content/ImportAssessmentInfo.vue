@@ -12,7 +12,7 @@
 
                     <v-col cols="5">
                         <div class="primary-text-color text-h5 font-weight-bold">
-                            Select Assessment Tool
+                            {{translate('quizImportWizard.assessmentTool.title')}}
                         </div>
                     </v-col>
 
@@ -25,6 +25,8 @@
 </template>
 
 <script setup lang="ts">
+    import {translate} from "@/utils/generalUtils";
+
 </script>
 
 <style scoped>

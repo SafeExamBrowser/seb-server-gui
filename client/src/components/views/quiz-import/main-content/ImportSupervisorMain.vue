@@ -9,7 +9,7 @@
                 <v-col cols="6">
                     <v-text-field
                         v-model="search"
-                        label="Search"
+                        :label="translate('quizImportWizard.supervisorsMain.search')"
                         prepend-inner-icon="mdi-magnify"
                         variant="outlined"
                         density="compact"
@@ -51,7 +51,9 @@
         <v-col cols="3">
             <v-row>
                 <v-col>
-                    <div class="text-h6">Selected Supervisors</div>
+                    <div class="text-h6">
+                        {{translate("quizImportWizard.supervisorsMain.selectedSupervisors")}}
+                    </div>
                 </v-col>
             </v-row>
 
@@ -100,6 +102,7 @@
     import { useQuizImportStore } from "@/stores/quizImportStore";
     import { useUserAccountStore } from "@/stores/store";
     import * as tableUtils from "@/utils/table/tableUtils";
+    import {translate} from "@/utils/generalUtils";
     
     //stores
     const quizImportStore = useQuizImportStore();
@@ -110,7 +113,7 @@
 
     //table
     const tableHeaders = ref([
-        {title: "Name", key: "name"}
+        {title: translate("quizImportWizard.supervisorsMain.tableHeaderName"), key: "name"}
     ]);    
 
     //local user search / filter

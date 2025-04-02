@@ -12,7 +12,7 @@
                             class="text-h6"
                             role="button"
                             tabindex="0">
-                            <router-link class="link-color" :to="constants.HOME_PAGE_ROUTE">{{ constants.HOME_PAGE_TITLE }}</router-link>
+                            <router-link class="link-color" :to="constants.HOME_PAGE_ROUTE">{{ translate("titles.home") }}</router-link>
                         </div>
                     </v-col>
 
@@ -21,7 +21,7 @@
                             class="text-h6"
                             role="button"
                             tabindex="0">
-                            <router-link class="link-color" :to="constants.EXAM_ROUTE">{{ constants.EXAMS_OVERVIEW_TITLE }}</router-link>
+                            <router-link class="link-color" :to="constants.EXAM_ROUTE">{{ translate("titles.examsOverview") }}</router-link>
                         </div>
                     </v-col>
 
@@ -30,7 +30,7 @@
                             class="text-h6"
                             role="button"
                             tabindex="0">
-                            <router-link class="link-color" :to="constants.MONITORING_ROUTE">{{ constants.MONITORING_TITLE }}</router-link>
+                            <router-link class="link-color" :to="constants.MONITORING_ROUTE">{{ translate("titles.monitoring") }}</router-link>
                         </div>
                     </v-col>
                 </v-row>
@@ -43,13 +43,14 @@
 <script setup lang="ts">
     import { useAppBarStore, useNavigationStore } from "@/stores/store";
     import * as constants from "@/utils/constants";
+    import {translate} from "@/utils/generalUtils";
 
     //stores
     const appBarStore = useAppBarStore();
     const navigationStore = useNavigationStore();
 
     onBeforeMount(() => {
-        appBarStore.title = constants.NAVIGATION_OVERVIEW_TITLE;
+        appBarStore.title = translate("titles.navigationOverview");
     });
 
     onMounted(() => {

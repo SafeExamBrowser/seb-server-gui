@@ -5,7 +5,7 @@
         @update:options="loadItems"
         :hover="true"
         :loading="isLoading"
-        loading-text="Loading... Please wait"
+        :loading-text="translate('general.loadingText')"
         :items="quizzes?.content"
         :items-length="totalItems"
         :items-per-page="tableUtils.calcDefaultItemsPerPage(totalItems)"
@@ -36,8 +36,6 @@
 
     </v-data-table-server>
 
-
-
 </template>
 
 
@@ -48,6 +46,7 @@
     import TableHeaders from "@/utils/table/TableHeaders.vue";
     import {useQuizImportStore} from "@/stores/quizImportStore";
     import {storeToRefs} from "pinia";
+    import {translate} from "@/utils/generalUtils";
 
     //stores
     const quizImportStore = useQuizImportStore();
@@ -65,14 +64,11 @@
     const defaultSort: {key: string, order: string}[] = [{key: 'quiz_start_time', order: 'desc'}];
     const quizzesTableHeadersRef = ref<any[]>();
     const quizzesTableHeaders = ref([
-        {title: "Name", key: "quiz_name", width: "60%"},
-        {title: "Start", key: "quiz_start_time", width: "20%"},
-        {title: "End", key: "quiz_end_time", width: "20%"},
+        {title: translate("quizImportWizard.examMain.tableHeaderName"), key: "quiz_name", width: "60%"},
+        {title: translate("quizImportWizard.examMain.tableHeaderStart"), key: "quiz_start_time", width: "20%"},
+        {title: translate("quizImportWizard.examMain.tableHeaderEnd"), key: "quiz_end_time", width: "20%"},
     ]);    
     
-    //error handling
-    const errorAvailable = ref<boolean>();
-
     defineExpose({
         loadItems
     });

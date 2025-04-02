@@ -4,7 +4,7 @@
         <!--seb logo-->
         <template v-slot:prepend >
             <a :href="getHomePageRoute()" class="text-decoration-none text-black">
-                <v-img :width=50 src="/img/seb-logo-no-border.png" :alt="i18n.t('navigation.screenReader.titleImage')"></v-img>
+                <v-img :width=50 src="/img/seb-logo-no-border.png" :alt="translate('navigation.screenReader.titleImage')"></v-img>
             </a>
         </template>
 
@@ -21,7 +21,7 @@
 
                     <template v-slot:activator="{ props }">
                         <v-btn 
-                            :aria-label="i18n.t('navigation.screenReader.profile')"
+                            :aria-label="translate('navigation.screenReader.profile')"
                             v-bind="props" 
                             color="primary" 
                             icon="mdi-account-circle" 
@@ -121,17 +121,21 @@
     import { useI18n } from "vue-i18n";
     import * as constants from "@/utils/constants";
     import router from "@/router/router";
-
+    import {translate} from "@/utils/generalUtils";
 
     //i18n
-    const i18n = useI18n();
+    const { locale } = useI18n();
+    const localStorageLocale: string | null = localStorage.getItem("locale");
+    locale.value = localStorageLocale ?? "en";
+    const languageToggle = ref<number>(locale.value === "en" ? 0 : 1);
+
 
     //main navigation
     const navigationDrawer = ref();
     const mainNavigationLinks: NavigationItem[] = [
-        {title: constants.HOME_PAGE_TITLE, route: constants.HOME_PAGE_ROUTE, icon: "mdi-home"},
-        {title: constants.EXAMS_TITLE, route: constants.EXAM_ROUTE, icon: "mdi-file-document"},
-        {title: constants.MONITORING_TITLE, route: constants.MONITORING_ROUTE, icon: "mdi-eye"},
+        {title: translate('titles.home'), route: constants.HOME_PAGE_ROUTE, icon: "mdi-home"},
+        {title: translate('titles.exams'), route: constants.EXAM_ROUTE, icon: "mdi-file-document"},
+        {title: translate('titles.monitoring'), route: constants.MONITORING_ROUTE, icon: "mdi-eye"},
     ];
 
     //stores
@@ -145,13 +149,6 @@
     const localstorageTheme: string | null = localStorage.getItem("theme");
     theme.global.name.value = localstorageTheme ?? theme.global.name.value ?? "light";
     const themeToggle = ref<number>(theme.global.name.value === "dark" ? 1 : 0);
-
-
-    //i18n
-    const { locale } = useI18n();
-    const localStorageLocale: string | null = localStorage.getItem("locale");
-    locale.value = localStorageLocale ?? "en";
-    const languageToggle = ref<number>(locale.value === "en" ? 0 : 1);
 
 
     watch(languageToggle, () => {

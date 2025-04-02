@@ -10,7 +10,7 @@ import ImportPasswordInfo from "@/components/views/quiz-import/info-box-content/
 import ImportPasswordMain from "@/components/views/quiz-import/main-content/ImportPasswordMain.vue"; 
 import ImportSummaryInfo from "@/components/views/quiz-import/info-box-content/ImportSummaryInfo.vue"; 
 import ImportSummaryMain from "@/components/views/quiz-import/main-content/ImportSummaryMain.vue"; 
-
+import {translate} from "@/utils/generalUtils";
 
 //navigation routes
 export const DEFAULT_ROUTE: string = "/";
@@ -26,32 +26,36 @@ export const MONITORING_ROUTE: string = "/monitoring";
 export const QUIZ_IMPORT_ROUTE: string = "/quiz-import";
 
 
-//titles
-export const HOME_PAGE_TITLE: string = "Home";
-
-export const NAVIGATION_OVERVIEW_TITLE: string = "Navigation Overview";
-
-export const EXAMS_TITLE: string = "Exams";
-export const EXAMS_OVERVIEW_TITLE: string = "Exams Overview";
-export const EXAMS_DETAIL_TITLE: string = "Exam Details";
-
-
-export const MONITORING_TITLE: string = "Monitoring";
-
-export const QUIZ_IMPORT_TITLE: string = "Prepare Exam";
-
-
-
 //quiz import wizard steps & components
-export const quizImportGroupStep: {name: string, value: number} = {name: "Select Groups", value: 4};
-export const quizImportSteps: {name: string, value: number}[] = [
-    {name: "Select Assessment Tool", value: 1},
-    {name: "Select Exam", value: 2},
-    {name: "Choose Template", value: 3},
-    {name: "Add Examination Supervisor", value: 4},
-    {name: "Set Quit Password", value: 5},
-    {name: "Configuration Summary", value: 6}
-];
+export function getQuizImportGroupStep(i18nParam?: any | null): ImportWizardSteps{
+    if(i18nParam != null){
+        return {name: translate('quizImportWizard.steps.selectGroup', i18nParam), value: 4, type: "group"};
+    }
+
+    return {name: translate('quizImportWizard.steps.selectGroup'), value: 4, type: "group"};
+}
+
+export function getQuizImportSteps(i18nParam?: any | null): ImportWizardSteps[]{
+    if(i18nParam != null){
+        return [
+            {name: translate('quizImportWizard.steps.selectAssessmentTool', i18nParam), value: 1},
+            {name: translate('quizImportWizard.steps.selectExam', i18nParam), value: 2},
+            {name: translate('quizImportWizard.steps.chooseTemplate', i18nParam), value: 3},
+            {name: translate('quizImportWizard.steps.addSupervisors', i18nParam), value: 4},
+            {name: translate('quizImportWizard.steps.quitPassword', i18nParam), value: 5},
+            {name: translate('quizImportWizard.steps.configurationSummary', i18nParam), value: 6}
+        ];
+    }
+    
+    return [
+        {name: translate('quizImportWizard.steps.selectAssessmentTool'), value: 1},
+        {name: translate('quizImportWizard.steps.selectExam'), value: 2},
+        {name: translate('quizImportWizard.steps.chooseTemplate'), value: 3},
+        {name: translate('quizImportWizard.steps.addSupervisors'), value: 4},
+        {name: translate('quizImportWizard.steps.quitPassword'), value: 5},
+        {name: translate('quizImportWizard.steps.configurationSummary'), value: 6}
+    ];
+}
 
 export const quizImportInfoBoxComponents: Component[] = [
     ImportAssessmentInfo,

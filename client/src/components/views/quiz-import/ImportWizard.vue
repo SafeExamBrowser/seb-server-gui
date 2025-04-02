@@ -4,7 +4,7 @@
     <template v-if="isNoAssessmentTool">
         <AlertMsg
             :alertProps="{
-                title: 'No Assessment Tool',
+                title: translate('quizImportWizard.warning.title'),
                 color: 'warning',
                 type: 'alert',
                 textKey: 'no-assessment-tool'
@@ -79,20 +79,19 @@
     import { storeToRefs } from "pinia";
     import * as constants from "@/utils/constants";
     import { useAppBarStore } from "@/stores/store";
-
+    import * as generalUtils from "@/utils/generalUtils";
+    import {translate} from "@/utils/generalUtils";
 
     //stores
     const appBarStore = useAppBarStore();
     const quizImportStore = useQuizImportStore();
     const quizImportStoreRef = storeToRefs(quizImportStore);
 
-
     //error msg
     const isNoAssessmentTool = ref<boolean>(false);
 
     onBeforeMount(async () => {
-        appBarStore.title = constants.QUIZ_IMPORT_TITLE;
-
+        appBarStore.title = translate('titles.quizImport');
 
         quizImportStore.clearValues();
         await loadAssessmentToolSelection();
@@ -109,7 +108,7 @@
         }
 
         let addStepGroup: number = 0;
-        if(quizImportStore.steps.includes(constants.quizImportGroupStep)){
+        if(quizImportStore.steps.some(step => step.type == constants.getQuizImportGroupStep().type)){
             addStepGroup+=1;
         }
 
@@ -131,7 +130,6 @@
 
         return false;
     }
-
 
     //call function in "ImportExamMain"
     function loadExamItemsCaller(){
