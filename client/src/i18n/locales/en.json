@@ -30,7 +30,9 @@
         "loadingText": "Loading... Please wait",
         "cancelButton": "Cancel",
         "searchButton": "Search",
-        "saveButton": "Save"
+        "saveButton": "Save",
+        "startButton": "Start",
+        "downloadButton": "Download"
     },
 
     "screenReader": {
@@ -184,7 +186,28 @@
         
             "examTemplate": "Exam Template",
 
-            "examSupervisors": "Examination Supervisors"
+            "examSupervisors": "Examination Supervisors",
+
+            "groups": "Groups",
+            "tableHeadersGroupName": "Name",
+            "tableHeadersGroupType": "Type",
+
+            "quitPassword": "Quit Password",
+
+            "editSebSettings": "Edit Application and Network Settings",
+
+            "downloadExamConfig": "Download Exam Connection Configuration",
+
+            "moreExamOptions": "More Exam Options",
+            "applySP": "Apply Screen Proctoring",
+            "applySebLock": "Apply SEB Lock",
+            "sebKeys": "SEB Keys",
+            "archiveExam": "Archiv Exam",
+            "archiveTooltip": "Archiving is only activated when exam is finished",
+            "deleteExam": "Delete Exam"
+
+
+
         }
 
     },

@@ -76,7 +76,7 @@
                                         <v-btn 
                                             @click="removeExamSupervisor(supervisor.modelId)"
                                             variant="flat"
-                                            icon="mdi-checkbox-marked">
+                                            icon="mdi-close">
                                         </v-btn>
 
                                     </v-list-item-action>

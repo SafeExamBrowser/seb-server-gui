@@ -74,7 +74,7 @@
                                         <v-btn 
                                             @click="removeClientGroup(clientGroup.id!)"
                                             variant="flat"
-                                            icon="mdi-checkbox-marked">
+                                            icon="mdi-close">
                                         </v-btn>
 
                                     </v-list-item-action>

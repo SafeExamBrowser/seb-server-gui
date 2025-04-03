@@ -171,7 +171,7 @@
                         <!-------Groups------>
                         <v-row class="mt-10">
                             <v-col class="primary-text-color text-h6"> 
-                                Client Groups
+                                {{translate("examDetail.main.groups")}}
                             </v-col>
 
                             <v-col align="right">
@@ -228,12 +228,12 @@
                         <v-row class="mt-10">
                             <v-col>
                                 <div class="primary-text-color text-h6">
-                                    Quit Password
+                                    {{translate("examDetail.main.quitPassword")}}
                                 </div>
                                 <v-divider class="border-opacity-25" :thickness="2"></v-divider>
                             </v-col>
                         </v-row>
-                        <v-row class="">
+                        <v-row>
                             <v-col>
                                 <v-text-field
                                     :type="passwordVisible ? 'text' : 'password'"
@@ -275,7 +275,7 @@
 
                                     <v-row align="center">
                                         <v-col>
-                                            Edit Application and Network Settings
+                                            {{translate("examDetail.main.editSebSettings")}}
                                         </v-col>
                                         <v-col align="right" cols="4" xl="3">
                                             <v-btn 
@@ -284,7 +284,7 @@
                                                 color="primary" 
                                                 variant="flat"
                                                 @click="openSebSettingsDialog()">
-                                                Start
+                                                {{translate("general.startButton")}}
                                             </v-btn>
                                         </v-col>
                                     </v-row>
@@ -302,7 +302,7 @@
 
                                     <v-row align="center">
                                         <v-col>
-                                            Download Exam Connection Configuration
+                                            {{translate("examDetail.main.downloadExamConfig")}}
                                         </v-col>
                                         <v-col align="right" cols="4" xl="3">
                                             <v-btn 
@@ -311,7 +311,7 @@
                                                 color="primary" 
                                                 variant="flat" 
                                                 @click="startExamConfigDownloadProcess()">
-                                                Download
+                                                {{translate("general.downloadButton")}}
                                             </v-btn>
                                         </v-col>
                                     </v-row>
@@ -331,14 +331,16 @@
                                     <v-row align="center">
                                         <v-col>
                                             <div>
-                                                More Exam Options
+                                                {{translate("examDetail.main.moreExamOptions")}}
                                             </div>
 
                                             <v-list class="mt-4" select-strategy="leaf">
 
                                                 <!----------Apply Screen Proctoring--------->
                                                 <v-list-item>
-                                                    <v-list-item-title>Apply Screen Proctoring</v-list-item-title>
+                                                    <v-list-item-title>
+                                                        {{translate("examDetail.main.applySP")}}
+                                                    </v-list-item-title>
                                                     <template v-slot:append="{ isSelected }" >
                                                         <v-list-item-action class="flex-column align-right">
                                                             <v-switch 
@@ -354,7 +356,9 @@
 
                                                 <!----------Apply SEB Lock--------->
                                                 <v-list-item>
-                                                    <v-list-item-title>Apply SEB Lock</v-list-item-title>
+                                                    <v-list-item-title>
+                                                        {{translate("examDetail.main.applySebLock")}}
+                                                    </v-list-item-title>
                                                     <template v-slot:append="{ isSelected }" >
                                                         <v-list-item-action class="flex-column align-right">
                                                             <v-switch 
@@ -368,7 +372,9 @@
 
                                                 <!----------SEB Keys--------->
                                                 <v-list-item>
-                                                    <v-list-item-title>SEB Keys</v-list-item-title>
+                                                    <v-list-item-title>
+                                                        {{translate("examDetail.main.sebKeys")}}
+                                                    </v-list-item-title>
                                                     <template v-slot:append="{ isSelected }" >
                                                         <v-list-item-action class="flex-column align-right">
                                                             <v-icon 
@@ -383,7 +389,9 @@
 
                                                 <!----------Archive Exam--------->
                                                 <v-list-item>
-                                                    <v-list-item-title :class="[examViewService.isExamFunctionalityDisabled(ExamStatusEnum.FINISHED, examStore.selectedExam?.status) ? 'disabled-text-color' : '']">Archive Exam</v-list-item-title>
+                                                    <v-list-item-title :class="[examViewService.isExamFunctionalityDisabled(ExamStatusEnum.FINISHED, examStore.selectedExam?.status) ? 'disabled-text-color' : '']">
+                                                        {{translate("examDetail.main.archiveExam")}}
+                                                    </v-list-item-title>
                                                     <template v-slot:append="{ isSelected }" >
                                                         <v-list-item-action class="flex-column align-right">
                                                             <v-icon 
@@ -396,7 +404,7 @@
                                                     </template>
 
                                                     <v-tooltip v-if="examViewService.isExamFunctionalityDisabled(ExamStatusEnum.FINISHED, examStore.selectedExam?.status)" activator="parent">
-                                                        Archiving is only activated when exam is finished
+                                                        {{translate("examDetail.main.archiveTooltip")}}
                                                     </v-tooltip>
 
                                                 </v-list-item>
@@ -404,7 +412,9 @@
 
                                                 <!----------Delete Exam--------->
                                                 <v-list-item>
-                                                    <v-list-item-title>Delete Exam</v-list-item-title>
+                                                    <v-list-item-title>
+                                                        {{translate("examDetail.main.deleteExam")}}
+                                                    </v-list-item-title>
                                                     <template v-slot:append="{ isSelected }" >
                                                         <v-list-item-action class="flex-column align-right">
                                                             <v-icon 
@@ -592,8 +602,8 @@
     const clientGroupDialog = ref<boolean>(false);
     const clientGroupTableHeadersRef = ref<any[]>();
     const clientGroupTableHeaders = ref([
-        {title: "Name", key: "name"},
-        {title: "Type", key: "type"}
+        {title: translate("examDetail.main.tableHeadersGroupName"), key: "name"},
+        {title: translate("examDetail.main.tableHeadersGroupType"), key: "type"}
     ]); 
 
     //add client groups
