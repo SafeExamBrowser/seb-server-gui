@@ -205,13 +205,26 @@
             "archiveExam": "Archiv Exam",
             "archiveTooltip": "Archiving is only activated when exam is finished",
             "deleteExam": "Delete Exam"
-
-
-
         }
-
     },
 
+    "monitoringExams": {
+        "info": {
+            "runningExams": "Running Exams",
+            "search": "Search:",
+            "searchPlaceholder": "Search Exams",
+            "start": "Start:",
+            "filter": "Filter"
+
+
+        },
+        "main": {
+            "tableHeaderName": "Name",
+            "tableHeaderStart": "Start",
+            "tableHeaderEnd": "End",
+            "tableHeaderStatus": "Status"
+        }
+    },
 
 
     "titles": {

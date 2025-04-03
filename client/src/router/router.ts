@@ -6,10 +6,10 @@ import HomePage from "@/components/views/home/HomePage.vue"
 import ExamListContainer from "@/components/views/exam/ExamListContainer.vue"
 import ExamDetailContainer from "@/components/views/exam/ExamDetailContainer.vue"
 import * as constants from "@/utils/constants";
-import MonitoringMain from "@/components/views/monitoring/MonitoringMain.vue"
 import NavigationOverview from "@/components/layout/NavigationOverview.vue"
 import ImportWizard from "@/components/views/quiz-import/ImportWizard.vue"
 import i18n from "@/i18n";
+import MonitoringExamsContainer from "@/components/views/monitoring/exams/MonitoringExamsContainer.vue"
 
 const defaultPageTitle: string = " | SEB Server";
 
@@ -47,6 +47,7 @@ const routes: Array<RouteRecordRaw> = [
           titleKey: "titles.navigationOverview"
         }
       },
+
       //----------exam routes---------
       {
         path: constants.EXAM_ROUTE,
@@ -64,7 +65,7 @@ const routes: Array<RouteRecordRaw> = [
           titleKey: "titles.examDetails"
         },
       },
-      //------------------------------
+
       //----------import quiz routes---------
       {
         path: constants.QUIZ_IMPORT_ROUTE,
@@ -74,17 +75,16 @@ const routes: Array<RouteRecordRaw> = [
           titleKey: "titles.quizImport"
         }
       },
-      //------------------------------
+
       //----------monitoring routes---------
       {
         path: constants.MONITORING_ROUTE,
         name: "Monitoring",
-        component: MonitoringMain,
+        component: MonitoringExamsContainer,
         meta: {
           titleKey: "titles.monitoring"
         },
       },
-      //------------------------------
     ]
   },
 ];

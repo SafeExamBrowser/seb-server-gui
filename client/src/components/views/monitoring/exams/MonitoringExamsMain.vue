@@ -44,20 +44,12 @@
                                     {{ translate(generalUtils.findEnumValue(ExamTypeEnum, item.type)) }}
                                 </v-chip>
                             </td>
-                            <td>
-                                <v-chip 
-                                    variant="tonal"
-                                    size="small"
-                                    :color="generalUtils.getExamStatusFilterColor(generalUtils.findEnumValue(ExamStatusEnum, item.status))">
-                                    {{ translate(generalUtils.findEnumValue(ExamStatusEnum, item.status)) }}
-                                </v-chip>
-                            </td>
                             <td align="right">
                                 <v-icon 
                                     class="mr-6"
                                     icon="mdi-chevron-right"
-                                    style="font-size: 30px;"
-                                    @click="navigateToExam(item.id.toString())">
+                                    style="font-size: 30px;">
+                                    <!-- @click="navigateToExam(item.id.toString())"> -->
                                 </v-icon>
                             </td>
                         </tr>
@@ -79,18 +71,14 @@
     import * as timeUtils from "@/utils/timeUtils";
     import * as generalUtils from "@/utils/generalUtils";
     import TableHeaders from "@/utils/table/TableHeaders.vue";
-    import {useExamStore} from "@/stores/examStore";
     import {navigateTo} from "@/router/navigation";
     import * as constants from "@/utils/constants";
     import { ExamStatusEnum, ExamTypeEnum } from "@/models/examFiltersEnum";
-    import { useI18n } from "vue-i18n";
     import {translate} from "@/utils/generalUtils";
-
-    //i18n
-    const i18n = useI18n();
+    import { useMonitoringStore } from "@/stores/monitoringStore";
 
     //stores
-    const examStore = useExamStore();
+    const monitoringStore = useMonitoringStore();
 
     //items
     const selectedExam = ref<Exam | null>();
@@ -105,18 +93,16 @@
     const defaultSort: {key: string, order: string}[] = [{key: 'quizStartTime', order: 'desc'}];
     const examsTableHeadersRef = ref<any[]>();
     const examsTableHeaders = ref([
-        {title: translate("examList.main.tableHeaderName"), key: "quizName", width: "30%"},
-        {title: translate("examList.main.tableHeaderStart"), key: "quizStartTime", width: "20%"},
-        {title: translate("examList.main.tableHeaderEnd"), key: "quizEndTime", width: "20%"},
-        {title: translate("examList.main.tableHeaderTypeStatus"), key: "type", sortable: false, width: "12.5%"},
-        {title: "", key: "status", sortable: false, width: "12.5%"},
+        {title: translate("monitoringExams.main.tableHeaderName"), key: "quizName", width: "30%"},
+        {title: translate("monitoringExams.main.tableHeaderStart"), key: "quizStartTime", width: "20%"},
+        {title: translate("monitoringExams.main.tableHeaderEnd"), key: "quizEndTime", width: "20%"},
+        {title: translate("monitoringExams.main.tableHeaderStatus"), key: "status", sortable: false, width: "12.5%"},
         {title: "", key: "examLink", width: "5%"},
     ]);    
     
     defineExpose({
         loadItems
     });
-
 
     //=======================events & watchers=======================
     function onTableRowClick(exam: Exam){
@@ -130,7 +116,7 @@
 
     //=======================data fetching===================
     async function loadItems(serverTablePaging: ServerTablePaging){
-        examStore.currentPagingOptions = serverTablePaging;
+        monitoringStore.currentPagingOptions = serverTablePaging;
         isLoading.value = true;
 
         //current solution to default sort the table
@@ -140,17 +126,17 @@
         }
 
         let startTimestamp: number | null = null;
-        if(examStore.startDate != null){
-            startTimestamp = examStore.startDate;
+        if(monitoringStore.startDate != null){
+            startTimestamp = monitoringStore.startDate;
         }
 
         const optionalParGetExams: OptionalParGetExams = tableUtils.assignExamSelectPagingOptions
         (
             serverTablePaging, 
-            examStore.searchField, 
+            monitoringStore.searchField, 
             startTimestamp,
-            examStore.activeTypeFilter,
-            examStore.activeStatusFilter
+            monitoringStore.activeTypeFilter,
+            ExamStatusEnum.RUNNING
         );
 
         const examsResponse: Exams | null = await examViewService.getExams(optionalParGetExams);
