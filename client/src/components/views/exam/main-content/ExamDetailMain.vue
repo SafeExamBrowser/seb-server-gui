@@ -450,7 +450,9 @@
     <!-----------supervisor dialog---------->      
     <v-dialog v-model="supervisorsDialog" max-width="1200">
         <ExamDetailSupervisorsDialog 
-            @closeSupervisorsDialog="closeSupervisorsDialog">
+            :initalSupervisors="examStore.selectedExamSupervisors"
+            @closeSupervisorsDialog="closeSupervisorsDialog"
+            @updateExamSupervisors="updateExamSupervisors">
         </ExamDetailSupervisorsDialog>
     </v-dialog>
 
@@ -623,13 +625,6 @@
         isPageInitalizing.value = false;
     });
 
-    watch(supervisorsDialog, () => {
-        if(supervisorsDialog.value == false){
-            //update exam if supervisors changed
-            closeSupervisorsDialog();
-        }
-    });
-
     watch(quitPassword, () => {
         if(isPageInitalizing.value){
             return;
@@ -655,7 +650,7 @@
         examStore.selectedExam = examResponse;
     }
 
-    async function updateExam(){
+    async function updateExam(isSupervisorsManualUpdate?: boolean){
         alertAvailable.value = false;
 
         if(examStore.selectedExam == null){
@@ -666,6 +661,10 @@
 
         if(updateExamResponse == null){
             return;
+        }
+
+        if(isSupervisorsManualUpdate){
+            getExamSupervisors();
         }
 
         alertAvailable.value = true;
@@ -679,10 +678,19 @@
 
     //===============supervisors logic====================
     async function getExamSupervisors(){
-        if(examStore.selectedExam?.supporter == null || examStore.selectedExam.supporter.length == 0){
+        if(examStore.selectedExam?.supporter == null){
             return;
         }
 
+        console.log("this is the data in the exam supervisors function")
+        console.log(examStore.selectedExam.supporter)
+
+        if(examStore.selectedExam.supporter.length == 0){
+            examStore.selectedExamSupervisors = [];
+            return;
+        }
+
+        examStore.selectedExamSupervisors = [];
         for(let i = 0; i < examStore.selectedExam.supporter.length; i++){
             const userAccount: UserAccount | null = await userAccountViewService.getUserAccountById(examStore.selectedExam.supporter[i]);
 
@@ -702,18 +710,19 @@
 
     function closeSupervisorsDialog(){
         supervisorsDialog.value = false;
-        updateExamSupervisors();
     }
 
-    function updateExamSupervisors(){
+    async function updateExamSupervisors(selectedExamSupervisors: UserAccount[]){
         if(examStore.selectedExam == null){
             return;
         }
 
-        if(didSupervisorsChange()){
-            examStore.selectedExam.supporter = examStore.selectedExamSupervisors.map(supporter => supporter.uuid);
-            updateExam();
-        }
+        console.log("this is data that i get:")
+        console.log(selectedExamSupervisors)
+
+        examStore.selectedExam.supporter = selectedExamSupervisors.map(supervisor => supervisor.uuid);
+        await updateExam(true);
+        closeSupervisorsDialog();
     }
 
     function fillAlreadySelectedSupervisors(){
@@ -721,15 +730,6 @@
         for(let i = 0; i < examStore.selectedExamSupervisors.length; i++){
             initialSupervisorsIds.push(examStore.selectedExamSupervisors[i].uuid);
         }
-    }
-
-    function didSupervisorsChange(): boolean{
-        if(initialSupervisorsIds.length != examStore.selectedExamSupervisors.length){
-            return true;
-        }
-
-        const uuidsFromStoreArray = new Set(examStore.selectedExamSupervisors.map(userAccount => userAccount.uuid));
-        return !initialSupervisorsIds.every(uuid => uuidsFromStoreArray.has(uuid));
     }
     //=========================================
 
