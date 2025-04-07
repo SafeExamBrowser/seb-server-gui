@@ -685,6 +685,30 @@ import { LMSFeatureEnum } from '@/models/assessmentToolEnums';
         examStore.selectedExam = updateExamResponse;
     }
 
+
+    //==============seb lock logic=================
+    async function getAssessmentTool() {
+        const lmsId: number | undefined = examStore.selectedExam?.lmsSetupId;
+
+        if(lmsId == null){
+            return;
+        }
+
+        const assessmentToolResponse: AssessmentTool | null = await assessmentToolViewService.getAssessmentTool(lmsId);
+        if(assessmentToolResponse == null){
+            return;
+        }
+
+        examStore.relatedAssessmentTool = assessmentToolResponse;
+    }
+
+    function hasSEBRestrictionFeature(): boolean {
+        if (examStore.relatedAssessmentTool) {
+            return generalUtils.hasLMSFeature(examStore.relatedAssessmentTool.lmsType, LMSFeatureEnum.SEB_RESTRICTION);
+        }
+        return false;
+    }
+
     function initSEBLock(){
         if(examStore.selectedExam == null){
             return;
@@ -723,36 +747,7 @@ import { LMSFeatureEnum } from '@/models/assessmentToolEnums';
 
         console.log(examStore.selectedExam)
     }
-
-    //=========================================
-
-    //===============assessment tool api=================
-
-    async function getAssessmentTool() {
-        const lmsId = examStore.selectedExam?.lmsSetupId
-        if (lmsId) {
-            const assessmentToolResponse: AssessmentTool | null = await assessmentToolViewService.getAssessmentTool(lmsId);
-            if(assessmentToolResponse == null){
-                return;
-            }
-
-            console.log(generalUtils.hasLMSFeature(assessmentToolResponse.lmsType, LMSFeatureEnum.SEB_RESTRICTION));
-            
-
-            examStore.relatedAssessmentTool = assessmentToolResponse;
-        }
-    }
-
-    function hasSEBRestrictionFeature(): boolean {
-        if (examStore.relatedAssessmentTool) {
-            return generalUtils.hasLMSFeature(examStore.relatedAssessmentTool.lmsType, LMSFeatureEnum.SEB_RESTRICTION);
-        }
-        return false;
-    }
-
-
-    //===================================================
-
+    
 
     //===============supervisors logic====================
     async function getExamSupervisors(){
@@ -809,8 +804,6 @@ import { LMSFeatureEnum } from '@/models/assessmentToolEnums';
             initialSupervisorsIds.push(examStore.selectedExamSupervisors[i].uuid);
         }
     }
-    //=========================================
-
 
     //===============password logic====================
     function setQuitPassword(){
@@ -830,8 +823,6 @@ import { LMSFeatureEnum } from '@/models/assessmentToolEnums';
         examStore.selectedExam.quitPassword = quitPassword.value;
         updateExam();
     }
-    //=========================================
-
 
     //===============exam config logic====================
     function openConfigDialog(connectionConfigurations: ConnectionConfigurations){
@@ -875,8 +866,6 @@ import { LMSFeatureEnum } from '@/models/assessmentToolEnums';
 
         examViewService.createDownloadLink(examStore.selectedExam.quizName, blobResponse);
     }
-    //=========================================
-
 
     //===============monitor & archive exam logic====================
     function openArchiveDialog(){
@@ -902,9 +891,6 @@ import { LMSFeatureEnum } from '@/models/assessmentToolEnums';
 
         updateExam();
     }
-
-    //=========================================
-
 
     //===============screen proctoring logic====================
     function setScreenProctoring(){
@@ -966,6 +952,7 @@ import { LMSFeatureEnum } from '@/models/assessmentToolEnums';
         navigateTo(constants.EXAM_ROUTE);
     }
 
+
     //===============exam template logic====================
     async function getExamTemplate(){
         if(examStore.selectedExam?.examTemplateId == null){
@@ -990,6 +977,7 @@ import { LMSFeatureEnum } from '@/models/assessmentToolEnums';
         examTemplateDialog.value = false;
     }
 
+
     //===============test run logic====================
     //calling this function again after test run has been applied disables the test run
     async function applyTestRun(){
@@ -1002,6 +990,7 @@ import { LMSFeatureEnum } from '@/models/assessmentToolEnums';
         updateExam();
     }
 
+
     //===============settings logic====================
     function openSebSettingsDialog(){
         sebSettingsDialog.value = true;
@@ -1010,6 +999,7 @@ import { LMSFeatureEnum } from '@/models/assessmentToolEnums';
     function closeSebSettingsDialog(){
         sebSettingsDialog.value = false;
     }
+
 
     //===============groups logic====================
     function openClientGroupDialog(){
@@ -1033,6 +1023,7 @@ import { LMSFeatureEnum } from '@/models/assessmentToolEnums';
 
         examStore.selectedClientGroups = clientGroupResponse.content;
     }
+
 
     //===============add groups logic====================
     function openAddClientGroupDialog(){

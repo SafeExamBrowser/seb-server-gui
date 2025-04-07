@@ -77,17 +77,15 @@ export function createStringIdList(ids: number[]): string{
 }
 
 export function hasLMSFeature(lmsTypeString: string, feature: LMSFeatureEnum): boolean {
-    let type = findEnumValue(LMSTypeEnum, lmsTypeString);
-    if (type) {
-        let features = LMSTypeFeatureMappig.get(type);
-        if (features) {
-            for(let i = 0; i < features.length; i++) {
-                if (features[i] == feature) {
-                    return true;
-                }
-            } 
-        }
+    let type: LMSTypeEnum | null = findEnumValue(LMSTypeEnum, lmsTypeString);
+    if(type == null){
+        return false;
     }
-    
-    return false;
+
+    let features: LMSFeatureEnum[] | undefined = LMSTypeFeatureMappig.get(type);
+    if(features == null){
+        return false;
+    }
+
+    return features.includes(feature);
 }
