@@ -5,8 +5,7 @@
 
 <script setup lang="ts">
     import { useAppBarStore } from '@/stores/store';
-    import * as constants from "@/utils/constants";
-    import ExamListMain from "@/components/views/exam/main-content/ExamListMain.vue";
+    import ExamListMain from "@/components/views/exam/list/ExamListMain.vue";
     import { useExamStore } from '@/stores/examStore';
     import {translate} from "@/utils/generalUtils";
 
