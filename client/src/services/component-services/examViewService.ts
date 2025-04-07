@@ -106,6 +106,17 @@ export async function activateScreenProctoring(id: string, enableScreenProctorin
 }
 //==============================
 
+//======SEB lock================
+
+export async function applySEBLock(id: string, enableSEBLock: boolean): Promise<Exam | null>{
+    try{
+        return await examService.applySEBLock(id, enableSEBLock);
+    }catch(error){
+        return null;
+    }
+}
+
+//==============================
 
 //======screen proctoring=======
 export function createDefaultScreenProctoringSettings(enable: boolean, examId: number, groupName: string): ScreenProctoringSettings{

@@ -15,11 +15,13 @@ export const useExamStore = defineStore("exam", () => {
     const selectedExamTemplate = ref<ExamTemplate | null>(null);
     const selectedExamSupervisors = ref<UserAccount[]>([]);
     const selectedClientGroups = ref<ClientGroup[]>([]);
+    const relatedAssessmentTool = ref<AssessmentTool | null>(null);
 
 
     function clearSelectedValues(){
         selectedExam.value = null;
         selectedExamTemplate.value = null;
+        relatedAssessmentTool.value = null;
         selectedExamSupervisors.value = [];
     }
 
@@ -30,6 +32,7 @@ export const useExamStore = defineStore("exam", () => {
         currentPagingOptions,
         selectedExam,
         selectedExamTemplate,
+        relatedAssessmentTool,
         selectedExamSupervisors,
         activeTypeFilter,
         activeStatusFilter,

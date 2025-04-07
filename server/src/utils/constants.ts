@@ -23,7 +23,9 @@ export const CONNECTION_CONFIG_ROUTE = "/client_configuration";
 export const DOWNLOAD_EXAM_CONFIG_ROUTE = "/client_configuration/download";
 
 //lms
+export const LMS_SETUP_ENDPOINT = "/lms-setup";
 export const ASSESSMENT_TOOL_ROUTE = "/assessment-tools";
+export const ASSESSMENT_TOOL_GET_ROUTE = "/get-assessment-tool";
 
 //monitoring
 export const MONITORING_TEST_RUN_ROUTE = "/monitoring/testrun";

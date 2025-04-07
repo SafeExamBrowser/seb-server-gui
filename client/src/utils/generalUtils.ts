@@ -1,5 +1,6 @@
 import { ClientGroupEnum, ClientOSEnum } from "@/models/clientGroupEnum";
 import { ExamStatusEnum, ExamTypeEnum } from "@/models/examFiltersEnum";
+import { LMSFeatureEnum, LMSTypeEnum, LMSTypeFeatureMappig } from "@/models/assessmentToolEnums";
 import { useI18n } from "vue-i18n";
 
 export function translate(key: string | null | undefined, i18nParam?: any | null): string{
@@ -73,4 +74,20 @@ export function createStringIdList(ids: number[]): string{
     stringIdList = stringIdList.substring(0, stringIdList.length-1);
 
     return stringIdList
+}
+
+export function hasLMSFeature(lmsTypeString: string, feature: LMSFeatureEnum): boolean {
+    let type = findEnumValue(LMSTypeEnum, lmsTypeString);
+    if (type) {
+        let features = LMSTypeFeatureMappig.get(type);
+        if (features) {
+            for(let i = 0; i < features.length; i++) {
+                if (features[i] == feature) {
+                    return true;
+                }
+            } 
+        }
+    }
+    
+    return false;
 }

@@ -24,6 +24,10 @@ router.patch(constants.EXAM_ARCHIVE_ROUTE, examController.archiveExam)
 router.get(constants.EXAM_GET_ROUTE + "/:id", examController.getExam);
 router.get(constants.EXAM_CONFIGURATION_MAP_ROUTE + "/:id", examController.getExamConfigurationMap);
 
+// SEB lock
+router.put(constants.EXAM_ROUTE + "/:id" + "/apply-seb-restriction", examController.putSEBLock)
+router.delete(constants.EXAM_ROUTE + "/:id" + "/apply-seb-restriction", examController.deleteSEBLock)
+
 //screen proctoring
 router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE, screenProctoringController.saveScreenProctoringSettings);
 router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE + "/apply-groups", screenProctoringController.applyScreenProctoringGroups);
@@ -43,6 +47,7 @@ router.get(constants.DOWNLOAD_EXAM_CONFIG_ROUTE + "/:id", configurationControlle
 router.get(constants.CONNECTION_CONFIG_ROUTE, configurationController.getConnectionConfigurations);
 
 //assessment tool
+router.get(constants.ASSESSMENT_TOOL_GET_ROUTE + "/:id", assessmentToolController.getAssessmentTool);
 router.get(constants.ASSESSMENT_TOOL_ROUTE, assessmentToolController.getAssessmentTools);
 
 //monitoring
