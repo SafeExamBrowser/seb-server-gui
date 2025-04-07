@@ -72,3 +72,23 @@ export async function archiveExam(req: Request, res: Response){
         apiService.handleGenericApiError(error, res);
     }
 }
+
+export async function putSEBLock(req: Request, res: Response){
+    try{
+        const [exams, status] = await examService.putSEBLock(req.headers.authorization, req.params.id);
+        return res.status(status).json(exams);
+
+    }catch(error){
+        apiService.handleGenericApiError(error, res);
+    }
+}
+
+export async function deleteSEBLock(req: Request, res: Response){
+    try{
+        const [exams, status] = await examService.deleteSEBLock(req.headers.authorization, req.params.id);
+        return res.status(status).json(exams);
+
+    }catch(error){
+        apiService.handleGenericApiError(error, res);
+    }
+}

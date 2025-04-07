@@ -356,13 +356,16 @@
 
                                                 <!----------Apply SEB Lock--------->
                                                 <v-list-item>
-                                                    <v-list-item-title>
+                                                    <v-list-item-title :class="[hasSEBRestrictionFeature() ? '' : 'disabled-text-color']">
                                                         {{translate("examDetail.main.applySebLock")}}
                                                     </v-list-item-title>
                                                     <template v-slot:append="{ isSelected }" >
                                                         <v-list-item-action class="flex-column align-right">
                                                             <v-switch 
+                                                                v-model="isSEBLockActive"
+                                                                v-on:update:model-value="applySEBLock()"
                                                                 hide-details
+                                                                :disabled="!hasSEBRestrictionFeature()"
                                                                 color="primary">
                                                             </v-switch>
                                                         </v-list-item-action>
@@ -372,7 +375,7 @@
 
                                                 <!----------SEB Keys--------->
                                                 <v-list-item>
-                                                    <v-list-item-title>
+                                                    <v-list-item-title :class="[hasSEBRestrictionFeature() ? '' : 'disabled-text-color']">
                                                         {{translate("examDetail.main.sebKeys")}}
                                                     </v-list-item-title>
                                                     <template v-slot:append="{ isSelected }" >
@@ -380,6 +383,7 @@
                                                             <v-icon 
                                                                 icon="mdi-key-outline"
                                                                 style="font-size: 30px;"
+                                                                :disabled="!hasSEBRestrictionFeature()"
                                                                 @click="">
                                                             </v-icon>
                                                         </v-list-item-action>
@@ -533,6 +537,7 @@
     import { useExamStore } from '@/stores/examStore';
     import * as constants from "@/utils/constants";
     import * as examViewService from "@/services/component-services/examViewService";
+    import * as assessmentToolViewService from "@/services/component-services/assessmentToolViewService";
     import * as userAccountViewService from "@/services/component-services/userAccountViewService";
     import * as clientGroupViewService from "@/services/component-services/clientGroupViewService";
     import { storeToRefs } from "pinia";
@@ -545,6 +550,7 @@
     import TableHeaders from "@/utils/table/TableHeaders.vue";
     import { useI18n } from "vue-i18n";
     import {translate} from "@/utils/generalUtils";
+import { LMSFeatureEnum } from '@/models/assessmentToolEnums';
 
     //i18n
     const i18n = useI18n();
@@ -594,6 +600,9 @@
     const alertColor = ref<string>("");
     const alertKey = ref<string>("");
 
+    // SEB lock
+    const isSEBLockActive = ref<boolean>(false);
+
     //screen proctoring
     const isScreenProctoringActive = ref<boolean>(false);
 
@@ -617,10 +626,12 @@
 
         await getExam();
         await getExamTemplate();
+        await getAssessmentTool();
         await getExamSupervisors();
         await getClientGroups();
 
         setQuitPassword();
+        initSEBLock();
         setScreenProctoring();
         isPageInitalizing.value = false;
     });
@@ -673,8 +684,70 @@
 
         examStore.selectedExam = updateExamResponse;
     }
-    //=========================================
 
+
+    //==============seb lock logic=================
+    async function getAssessmentTool() {
+        const lmsId: number | undefined = examStore.selectedExam?.lmsSetupId;
+
+        if(lmsId == null){
+            return;
+        }
+
+        const assessmentToolResponse: AssessmentTool | null = await assessmentToolViewService.getAssessmentTool(lmsId);
+        if(assessmentToolResponse == null){
+            return;
+        }
+
+        examStore.relatedAssessmentTool = assessmentToolResponse;
+    }
+
+    function hasSEBRestrictionFeature(): boolean {
+        if (examStore.relatedAssessmentTool) {
+            return generalUtils.hasLMSFeature(examStore.relatedAssessmentTool.lmsType, LMSFeatureEnum.SEB_RESTRICTION);
+        }
+        return false;
+    }
+
+    function initSEBLock(){
+        if(examStore.selectedExam == null){
+            return;
+        } 
+
+        if(examStore.selectedExam.lmsSebRestriction){
+            isSEBLockActive.value = true;
+        }
+    }
+
+    async function applySEBLock(){
+        if(isSEBLockActive.value){
+            changeSEBLock(true);
+            return;
+        }
+
+        changeSEBLock(false);
+    }
+
+    async function changeSEBLock(enable: boolean){  
+        if(examStore.selectedExam == null){
+            return;
+        }
+
+        const applySEBLockResponse: Exam | null = await examViewService.applySEBLock(
+            examStore.selectedExam.id.toString(), 
+            enable
+        );
+
+        if(applySEBLockResponse == null){
+            isSEBLockActive.value = !enable;
+            return;
+        }
+
+        examStore.selectedExam = applySEBLockResponse;
+
+        console.log(examStore.selectedExam)
+    }
+    
 
     //===============supervisors logic====================
     async function getExamSupervisors(){
@@ -731,8 +804,6 @@
             initialSupervisorsIds.push(examStore.selectedExamSupervisors[i].uuid);
         }
     }
-    //=========================================
-
 
     //===============password logic====================
     function setQuitPassword(){
@@ -752,8 +823,6 @@
         examStore.selectedExam.quitPassword = quitPassword.value;
         updateExam();
     }
-    //=========================================
-
 
     //===============exam config logic====================
     function openConfigDialog(connectionConfigurations: ConnectionConfigurations){
@@ -797,8 +866,6 @@
 
         examViewService.createDownloadLink(examStore.selectedExam.quizName, blobResponse);
     }
-    //=========================================
-
 
     //===============monitor & archive exam logic====================
     function openArchiveDialog(){
@@ -824,9 +891,6 @@
 
         updateExam();
     }
-
-    //=========================================
-
 
     //===============screen proctoring logic====================
     function setScreenProctoring(){
@@ -888,6 +952,7 @@
         navigateTo(constants.EXAM_ROUTE);
     }
 
+
     //===============exam template logic====================
     async function getExamTemplate(){
         if(examStore.selectedExam?.examTemplateId == null){
@@ -912,6 +977,7 @@
         examTemplateDialog.value = false;
     }
 
+
     //===============test run logic====================
     //calling this function again after test run has been applied disables the test run
     async function applyTestRun(){
@@ -924,6 +990,7 @@
         updateExam();
     }
 
+
     //===============settings logic====================
     function openSebSettingsDialog(){
         sebSettingsDialog.value = true;
@@ -932,6 +999,7 @@
     function closeSebSettingsDialog(){
         sebSettingsDialog.value = false;
     }
+
 
     //===============groups logic====================
     function openClientGroupDialog(){
@@ -955,6 +1023,7 @@
 
         examStore.selectedClientGroups = clientGroupResponse.content;
     }
+
 
     //===============add groups logic====================
     function openAddClientGroupDialog(){

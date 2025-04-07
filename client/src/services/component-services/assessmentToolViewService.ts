@@ -8,3 +8,11 @@ export async function getAssessmentTools(active: string): Promise<AssessmentTool
         return null;
     }
 }
+
+export async function getAssessmentTool(id: number): Promise<AssessmentTool | null>{
+    try{
+        return await assessmentToolService.getAssessmentTool(id);        
+    }catch(error){
+        return null;
+    }
+}

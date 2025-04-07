@@ -27,3 +27,15 @@ export async function getExams(optionalParamters?: OptionalParGetExams): Promise
 export async function archiveExam(id: string): Promise<Exam | any>{
     return (await apiService.api.patch(examUrl + "/" + id + "/archive", {headers: apiService.getHeaders()})).data;
 }
+
+//no logic in this file
+export async function applySEBLock(id: string, enableSEBLock: boolean): Promise<Exam | null>{
+    if (enableSEBLock) {
+        const url: string =  "/exam/" + id + "/apply-seb-restriction";
+        return (await apiService.api.put(url, {}, {headers: apiService.getHeaders()})).data;
+    } else {
+        const url: string =  "/exam/" + id + "/apply-seb-restriction";
+        return (await apiService.api.delete(url, {headers: apiService.getHeaders()})).data;
+    }
+    
+}
