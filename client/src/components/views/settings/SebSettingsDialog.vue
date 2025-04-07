@@ -44,11 +44,6 @@
 
     const currentTab = ref<number>(1);
 
-    watch(currentTab, () => {
-        console.log(currentTab.value)
-    });
-
-
     const tabs: {title: string, value: number, component: Component}[] = [
         {
             title: "Applications",

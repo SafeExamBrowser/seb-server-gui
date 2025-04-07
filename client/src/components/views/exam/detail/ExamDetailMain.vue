@@ -275,7 +275,7 @@
 
                                     <v-row align="center">
                                         <v-col>
-                                            {{translate("examDetail.main.editSebSettings")}}
+                                            {{translate("examDetail.main.appNetworkSettings")}}
                                         </v-col>
                                         <v-col align="right" cols="4" xl="3">
                                             <v-btn 
@@ -284,7 +284,7 @@
                                                 color="primary" 
                                                 variant="flat"
                                                 @click="openSebSettingsDialog()">
-                                                {{translate("general.startButton")}}
+                                                {{translate("general.editButton")}}
                                             </v-btn>
                                         </v-col>
                                     </v-row>

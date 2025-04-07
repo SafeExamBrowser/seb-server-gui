@@ -19,10 +19,17 @@ export const JWT_LOGIN_ROUTE: string = "/jwt";
 
 export const HOME_PAGE_ROUTE: string = "/home";
 export const NAVIGATION_OVERVIEW_ROUTE: string = "/navigation-overview";
+
 export const EXAM_ROUTE: string = "/exam";
+export const EXAM_DETAILS_ROUTE: string = EXAM_ROUTE;
+
 export const EXAM_LMS_IMPORT_ROUTE: string = EXAM_ROUTE + "/lms"
 export const ACCOUNT_VIEW_ROUTE: string = "/account";
+
 export const MONITORING_ROUTE: string = "/monitoring";
+export const MONITORING_OVERVIEW_ROUTE: string = MONITORING_ROUTE + "/overview";
+export const MONITORING_CLIENTS_ROUTE: string = MONITORING_ROUTE + "/clients";
+
 export const QUIZ_IMPORT_ROUTE: string = "/quiz-import";
 
 

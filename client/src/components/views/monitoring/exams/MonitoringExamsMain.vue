@@ -48,8 +48,8 @@
                                 <v-icon 
                                     class="mr-6"
                                     icon="mdi-chevron-right"
-                                    style="font-size: 30px;">
-                                    <!-- @click="navigateToExam(item.id.toString())"> -->
+                                    style="font-size: 30px;"
+                                    @click="navigateTo(constants.MONITORING_OVERVIEW_ROUTE + '/' + item.id.toString())">
                                 </v-icon>
                             </td>
                         </tr>
@@ -152,13 +152,6 @@
         isOnLoad.value = false;
         isLoading.value = false;
     }
-    //======================================================
-
-    function navigateToExam(examId: string){
-        navigateTo(constants.EXAM_ROUTE + "/" + examId);
-    }
-
-
 
 </script>
 

@@ -57,7 +57,7 @@
                                     class="mr-6"
                                     icon="mdi-chevron-right"
                                     style="font-size: 30px;"
-                                    @click="navigateToExam(item.id.toString())">
+                                    @click="navigateTo(constants.EXAM_DETAILS_ROUTE + '/' + item.id.toString())">
                                 </v-icon>
                             </td>
                         </tr>
@@ -70,8 +70,6 @@
         </v-col>
     </v-row>
 </template>
-
-
 
 <script setup lang="ts">
     import * as examViewService from "@/services/component-services/examViewService";
@@ -108,8 +106,8 @@
         {title: translate("examList.main.tableHeaderName"), key: "quizName", width: "30%"},
         {title: translate("examList.main.tableHeaderStart"), key: "quizStartTime", width: "20%"},
         {title: translate("examList.main.tableHeaderEnd"), key: "quizEndTime", width: "20%"},
-        {title: translate("examList.main.tableHeaderTypeStatus"), key: "type", sortable: false, width: "12.5%"},
-        {title: "", key: "status", sortable: false, width: "12.5%"},
+        {title: translate("examList.main.tableHeaderType"), key: "type", sortable: false, width: "12.5%"},
+        {title: translate("examList.main.tableHeaderStatus"), key: "status", sortable: false, width: "12.5%"},
         {title: "", key: "examLink", width: "5%"},
     ]);    
     
@@ -118,7 +116,7 @@
     });
 
 
-    //=======================events & watchers=======================
+    //=======================events & watchers===============
     function onTableRowClick(exam: Exam){
         if(exam.id == selectedExam.value?.id){
             selectedExam.value = null;
@@ -166,13 +164,6 @@
         isOnLoad.value = false;
         isLoading.value = false;
     }
-    //======================================================
-
-    function navigateToExam(examId: string){
-        navigateTo(constants.EXAM_ROUTE + "/" + examId);
-    }
-
-
 
 </script>
 

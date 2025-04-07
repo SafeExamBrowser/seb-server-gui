@@ -32,7 +32,8 @@
         "searchButton": "Search",
         "saveButton": "Save",
         "startButton": "Start",
-        "downloadButton": "Download"
+        "downloadButton": "Download",
+        "editButton": "Edit"
     },
 
     "screenReader": {
@@ -127,7 +128,7 @@
 
         "groupMain": {
             "search": "Search",
-            "selectedGroups": "Selected Client Groups",
+            "selectedGroups": "Selected Groups",
             "tableHeaderName": "Name"
         },
 
@@ -144,7 +145,7 @@
         "summaryMain": {
             "configurationSummary": "Configuration Summary",
             "examTemplate": "Exam Template",
-            "clientGroups": "Client Groups",
+            "clientGroups": "Groups",
             "supervisors": "Examination Supervisors",
             "password": "Quit Password"
         }
@@ -163,7 +164,8 @@
             "tableHeaderName": "Name",
             "tableHeaderStart": "Start",
             "tableHeaderEnd": "End",
-            "tableHeaderTypeStatus": "Exam Type & Status"
+            "tableHeaderType": "Exam Type",
+            "tableHeaderStatus": "Status"
         }
     },
 
@@ -194,7 +196,7 @@
 
             "quitPassword": "Quit Password",
 
-            "editSebSettings": "Edit Application and Network Settings",
+            "appNetworkSettings": "Application and Network Settings",
 
             "downloadExamConfig": "Download Exam Connection Configuration",
 
