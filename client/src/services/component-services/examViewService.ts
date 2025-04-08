@@ -132,17 +132,17 @@ export function createDefaultScreenProctoringSettings(enable: boolean, examId: n
 
 
 //======enable/disable==========
-export function isExamFunctionalityDisabled(allowedExamStatus: ExamStatusEnum, examStatusString: string | undefined): boolean{
+export function isExamFunctionalityDisabled(allowedExamStatus: ExamStatusEnum[], examStatusString: string | undefined): boolean{
     if(examStatusString == null){
         return true;
     }
 
     const examStatus: ExamStatusEnum | null = generalUtils.findEnumValue(ExamStatusEnum, examStatusString);
+    if (examStatus == null) {
+        return true;
+    }
     
-    //Running = monitor is allowed
-    //Fished = archived is allowed
-    //UpComing = test run is allowed
-    if(examStatus != allowedExamStatus){
+    if(!allowedExamStatus.includes(examStatus)){
         return true;
     }
 
