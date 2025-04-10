@@ -56,3 +56,17 @@ export async function getOverview(token: string, id: string): Promise<[object, n
     
     return [data, 200];
 }
+
+
+export async function getFullPage(token: string, id: string): Promise<[object, number]>{
+    const url: string = constants.MONITORING_ROUTE + "/" + id + "/fullpage";
+    const {data, status} = await apiService.api.get(url, {headers: apiService.getHeaders(token)});
+    
+    return [data, status];
+}
+
+export async function getStaticClientData(token: string, id: string, modelIds: {}): Promise<[object, number]>{
+    const url: string = constants.MONITORING_ROUTE + "/" + id + "/static-client-data";
+    const {data, status} = await apiService.api.post(url, apiService.createUrlEncodedBody(modelIds), {headers: apiService.getHeaders(token)});
+    return [data, status];
+}

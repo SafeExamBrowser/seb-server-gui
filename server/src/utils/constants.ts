@@ -28,8 +28,10 @@ export const ASSESSMENT_TOOL_ROUTE = "/assessment-tools";
 export const ASSESSMENT_TOOL_GET_ROUTE = "/get-assessment-tool";
 
 //monitoring
-export const MONITORING_TEST_RUN_ROUTE = "/monitoring/testrun";
-export const MONITORING_OVERVIEW_ROUTE = "/monitoring/get-overview";
+export const MONITORING_ROUTE = "/monitoring";
+export const MONITORING_TEST_RUN_ROUTE = MONITORING_ROUTE + "/testrun";
+export const MONITORING_OVERVIEW_ROUTE = MONITORING_ROUTE + "/get-overview";
+
 
 //client group
 export const CLIENT_GROUP_ROUTE = "/client-group";

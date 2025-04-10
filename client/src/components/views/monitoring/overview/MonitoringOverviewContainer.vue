@@ -1,9 +1,9 @@
 <template>
 
     <AlertMsg
-        v-if="isWarning()"
+        v-if="monitoringStore.isMonitoringDisabled()"
         :alertProps="{
-            title: getWarningText(),
+            title: monitoringStore.getMonitoringDisabledWarningText(),
             color: 'warning',
             type: 'alert',
             customText: ''
@@ -160,23 +160,6 @@
 
 
 
-    //--------warning-------
-    function isWarning(): boolean{
-        return monitoringStore.selectedExam == null || 
-        generalUtils.findEnumValue(ExamStatusEnum, monitoringStore.selectedExam.status) != ExamStatusEnum.RUNNING;
-    }
-
-    function getWarningText(): string{
-        if(monitoringStore.selectedExam == null){
-            return translate("monitoringOverview.warning.notExist");
-        } 
-
-        if(generalUtils.findEnumValue(ExamStatusEnum, monitoringStore.selectedExam.status) != ExamStatusEnum.RUNNING){
-            return translate("monitoringOverview.warning.notRunning");
-        }
-
-        return "";
-    }
 
 
 </script>

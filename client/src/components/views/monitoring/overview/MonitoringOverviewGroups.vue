@@ -46,7 +46,7 @@
 
     <v-row>
         <v-col>
-            <v-btn>
+            <v-btn @click="navigateTo(constants.MONITORING_CLIENTS_ROUTE + '/' + examId)">
                 Show all
             </v-btn>
         </v-col>
@@ -61,7 +61,8 @@
     import * as clientGroupViewService from "@/services/component-services/clientGroupViewService";
     import {translate} from "@/utils/generalUtils";
     import { ClientGroupEnum } from "@/models/clientGroupEnum";
-
+    import {navigateTo} from "@/router/navigation";
+    import * as constants from "@/utils/constants";
 
 
 
@@ -70,6 +71,10 @@
 
     //client groups
     const clientGroups = ref<{clientGroup: ClientGroup; amount: number;}[]>([]);
+
+    //exam
+    const examId = useRoute().params.examId.toString();
+
 
 
 

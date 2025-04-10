@@ -51,7 +51,9 @@ router.get(constants.ASSESSMENT_TOOL_ROUTE, assessmentToolController.getAssessme
 
 //monitoring
 router.post(constants.MONITORING_TEST_RUN_ROUTE + "/:id", monitoringController.applyTestRun);
-router.get(constants.MONITORING_OVERVIEW_ROUTE + "/:id", monitoringController.getOverview)
+router.get(constants.MONITORING_OVERVIEW_ROUTE + "/:id", monitoringController.getOverview);
+router.get(constants.MONITORING_ROUTE + "/:id/fullpage", monitoringController.getFullPage);
+router.post(constants.MONITORING_ROUTE + "/:id/static-client-data", monitoringController.getStaticClientData);
 
 
 //client groups
