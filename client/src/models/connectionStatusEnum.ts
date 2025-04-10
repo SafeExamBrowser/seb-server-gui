@@ -1,0 +1,7 @@
+export enum ConnectionStatusEnum {
+    UNDEFINED = "UNDEFINED",
+    CONNECTION_REQUESTED = "CONNECTION_REQUESTED",
+    READY = "READY",
+    ACTIVE = "ACTIVE",
+    DISABLED = "DISABLED"
+}

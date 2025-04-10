@@ -46,9 +46,6 @@ export const useAuthStore = defineStore("auth", () => {
                 route = route.replace(subPath, "");
             }
 
-            console.log(useAuthStore().redirectRoute)
-            console.log("it wants to navigate to here: " + route)
-
             navigateTo(route);
         }
     }

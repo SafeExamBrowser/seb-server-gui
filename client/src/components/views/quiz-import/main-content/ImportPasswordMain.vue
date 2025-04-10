@@ -48,10 +48,6 @@
 
     });
 
-    onBeforeMount(() => {
-        console.log("import pw beofre mount")
-    });
-
     function setQuitPwFromMoodle(){
         // if(quizImportStore.selectedQuiz?.additionalAttributes.q)
     }

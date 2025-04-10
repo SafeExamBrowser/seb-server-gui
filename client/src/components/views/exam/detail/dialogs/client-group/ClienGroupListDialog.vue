@@ -184,8 +184,6 @@
 
     //========screen proctoring========
     async function saveScreenProctoringGroups(){
-        console.log(getChangedGroupIds())
-
         const examResponse: Exam | null = await examViewService.applyScreenProctoringGroups(examId, generalUtils.createStringIdList(getChangedGroupIds()));
 
         if(examResponse == null){

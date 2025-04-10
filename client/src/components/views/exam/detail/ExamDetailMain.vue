@@ -556,7 +556,7 @@
     import TableHeaders from "@/utils/table/TableHeaders.vue";
     import { useI18n } from "vue-i18n";
     import {translate} from "@/utils/generalUtils";
-import { LMSFeatureEnum } from '@/models/assessmentToolEnums';
+    import { LMSFeatureEnum } from '@/models/assessmentToolEnums';
 
     //i18n
     const i18n = useI18n();
@@ -750,8 +750,6 @@ import { LMSFeatureEnum } from '@/models/assessmentToolEnums';
         }
 
         examStore.selectedExam = applySEBLockResponse;
-
-        console.log(examStore.selectedExam)
     }
     
 
@@ -760,9 +758,6 @@ import { LMSFeatureEnum } from '@/models/assessmentToolEnums';
         if(examStore.selectedExam?.supporter == null){
             return;
         }
-
-        console.log("this is the data in the exam supervisors function")
-        console.log(examStore.selectedExam.supporter)
 
         if(examStore.selectedExam.supporter.length == 0){
             examStore.selectedExamSupervisors = [];
@@ -795,9 +790,6 @@ import { LMSFeatureEnum } from '@/models/assessmentToolEnums';
         if(examStore.selectedExam == null){
             return;
         }
-
-        console.log("this is data that i get:")
-        console.log(selectedExamSupervisors)
 
         examStore.selectedExam.supporter = selectedExamSupervisors.map(supervisor => supervisor.uuid);
         await updateExam(true);
@@ -934,8 +926,6 @@ import { LMSFeatureEnum } from '@/models/assessmentToolEnums';
         }
 
         examStore.selectedExam = saveScreenProcResponse;
-
-        console.log(examStore.selectedExam)
     }
 
 

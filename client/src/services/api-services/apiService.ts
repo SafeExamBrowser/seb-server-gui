@@ -108,13 +108,8 @@ export function createApiInterceptor(){
 
         }catch(error){
 
-            console.log("it got to this point")
-
             let redirectRoute: string = "/";
             if(window.location.pathname != null){
-
-                console.log(window.location.pathname)
-                
                 redirectRoute = window.location.pathname;
             }
 
