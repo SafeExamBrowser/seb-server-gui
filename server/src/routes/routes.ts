@@ -4,6 +4,7 @@ import * as examController from "../controllers/exam.controller";
 import * as configurationController from "../controllers/configuration.controller";
 import * as examTemplateController from "../controllers/exam-template.controller";
 import * as screenProctoringController from "../controllers/screen-proctoring.controller";
+import * as indicatorController from "../controllers/indicator.controller";
 import * as userAccountController from "../controllers/user-account.controller";
 import * as assessmentToolController from "../controllers/assessment-tool.controller";
 import * as monitoringController from "../controllers/monitoring.controller";
@@ -55,13 +56,15 @@ router.get(constants.MONITORING_OVERVIEW_ROUTE + "/:id", monitoringController.ge
 router.get(constants.MONITORING_ROUTE + "/:id/fullpage", monitoringController.getFullPage);
 router.post(constants.MONITORING_ROUTE + "/:id/static-client-data", monitoringController.getStaticClientData);
 
-
 //client groups
 router.get(constants.CLIENT_GROUP_ROUTE + "/:id", clientGroupsController.getClientGroup);
 router.get(constants.CLIENT_GROUP_ROUTE, clientGroupsController.getClientGroups);
 router.post(constants.CLIENT_GROUP_ROUTE, clientGroupsController.createClientGroup);
 router.put(constants.CLIENT_GROUP_ROUTE, clientGroupsController.updateClientGroup);
 router.delete(constants.CLIENT_GROUP_ROUTE + "/:id", clientGroupsController.deleteClientGroup);
+
+//indicator
+router.get(constants.INDICATOR_ROUTE, indicatorController.getIndicators);
 
 
 

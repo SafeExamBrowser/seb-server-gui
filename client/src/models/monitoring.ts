@@ -71,5 +71,5 @@ type StaticClientConnectionData = {
     examUserSessionId: string;
     ask: string;
     seb_info: string;
-    cg: Set<number>;
+    cg: number[];
 }

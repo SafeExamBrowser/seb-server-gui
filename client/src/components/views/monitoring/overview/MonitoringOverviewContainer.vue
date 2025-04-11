@@ -1,9 +1,9 @@
 <template>
 
     <AlertMsg
-        v-if="monitoringStore.isMonitoringDisabled()"
+        v-if="monitoringViewService.isMonitoringDisabled()"
         :alertProps="{
-            title: monitoringStore.getMonitoringDisabledWarningText(),
+            title: monitoringViewService.getMonitoringDisabledWarningText(),
             color: 'warning',
             type: 'alert',
             customText: ''
@@ -75,7 +75,7 @@
     onBeforeMount(async () => {
         appBarStore.title = translate("titles.monitoring");
 
-        await getExam();
+        await monitoringViewService.getExamAndStore(examId);
         await getOverviewData();
 
         startIntervalRefresh()
@@ -85,16 +85,6 @@
         stopIntervalRefresh();
     });
 
-
-    async function getExam(){
-        const examResponse: Exam | null = await examViewService.getExam(examId);
-
-        if(examResponse == null){
-            return;
-        }
-
-        monitoringStore.selectedExam = examResponse;
-    }
 
     async function getOverviewData(){
         const overviewResponse: MonitoringOverview | null = await monitoringViewService.getOverview(examId);

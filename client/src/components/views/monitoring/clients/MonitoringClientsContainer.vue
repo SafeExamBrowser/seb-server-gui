@@ -1,22 +1,8 @@
 <template>
-    <AlertMsg
-        v-if="monitoringStore.isMonitoringDisabled()"
-        :alertProps="{
-            title: monitoringStore.getMonitoringDisabledWarningText(),
-            color: 'warning',
-            type: 'alert',
-            customText: ''
-        }">
-    </AlertMsg>
-
-    <v-row v-else>
-        <v-col>
-            test
-        </v-col>
-    
-    </v-row>
-
-
+    <template v-if="isDataLoaded">
+        <MonitoringClientsInfo></MonitoringClientsInfo>
+        <MonitoringClientsMain></MonitoringClientsMain>
+    </template>
 </template>
 
 <script setup lang="ts">
@@ -26,6 +12,10 @@
     import * as monitoringViewService from "@/services/component-services/monitoringViewService";
     import * as generalUtils from "@/utils/generalUtils";
     import * as examViewService from "@/services/component-services/examViewService";
+    import * as indicatorViewService from "@/services/component-services/indicatorViewService";
+    import * as clientGroupViewService from "@/services/component-services/clientGroupViewService";
+    import MonitoringClientsMain from "@/components/views/monitoring/clients/MonitoringClientsMain.vue";
+
 
 
     //exam
@@ -35,38 +25,46 @@
     const monitoringStore = useMonitoringStore();
     const appBarStore = useAppBarStore();
 
+    //data load
+    const isDataLoaded = ref<boolean>(false);
+
 
 
     onBeforeMount(async () => {
         appBarStore.title = translate("titles.monitoring");
 
         if(monitoringStore.selectedExam == null){
-            await getExam();
+            await monitoringViewService.getExamAndStore(examId);
         }
 
-        console.log(await monitoringViewService.getFullPage(examId));
+        await getIndicators();
+        await getClientGroups();
 
-
-        console.log(generalUtils.createStringIdList([1504,1455,1456]))
-
-        console.log(await monitoringViewService.getStaticClientData(
-            examId, 
-            generalUtils.createStringIdList([1504,1455,1456])));
-
-
+        isDataLoaded.value = true;
     });
 
 
-    async function getExam(){
-        const examResponse: Exam | null = await examViewService.getExam(examId);
 
-        if(examResponse == null){
+
+    async function getIndicators(){
+        const indicatorsResponse: Indicators | null = await indicatorViewService.getIndicators(examId);
+
+        if(indicatorsResponse == null){
             return;
         }
 
-        monitoringStore.selectedExam = examResponse;
+        monitoringStore.indicators = indicatorsResponse;
     }
 
+    async function getClientGroups(){
+        const clientGroupsResponse: ClientGroups | null = await clientGroupViewService.getClientGroups(examId);
+        if(clientGroupsResponse == null){
+            return;
+        }
+
+        monitoringStore.clientGroups = clientGroupsResponse;
+    }
+ 
 
 
 

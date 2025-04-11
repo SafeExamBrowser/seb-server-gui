@@ -17,25 +17,11 @@ export const useMonitoringStore = defineStore("monitoring", () => {
     const selectedExam = ref<Exam | null>(null);
     const monitoringOverviewData = ref<MonitoringOverview | null>(null); 
 
+    //monitoring clients
+    const indicators = ref<Indicators | null>(null);
+    const clientGroups = ref<ClientGroups | null>(null);
 
 
-    function isMonitoringDisabled(): boolean{
-        return selectedExam.value == null || 
-        generalUtils.findEnumValue(ExamStatusEnum, selectedExam.value.status) != ExamStatusEnum.RUNNING;
-    }
-
-    function getMonitoringDisabledWarningText(): string{
-        if(selectedExam.value == null){
-            return translate("monitoringOverview.warning.notExist");
-        } 
-
-        if(generalUtils.findEnumValue(ExamStatusEnum, selectedExam.value.status) != ExamStatusEnum.RUNNING){
-            return translate("monitoringOverview.warning.notRunning");
-        }
-
-        return "";
-    }
-    
 
     return {
         searchField,
@@ -44,7 +30,7 @@ export const useMonitoringStore = defineStore("monitoring", () => {
         activeTypeFilter,
         selectedExam,
         monitoringOverviewData,
-        isMonitoringDisabled,
-        getMonitoringDisabledWarningText
+        indicators,
+        clientGroups
     };
 });

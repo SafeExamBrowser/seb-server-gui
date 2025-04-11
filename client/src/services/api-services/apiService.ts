@@ -153,7 +153,8 @@ export function getPostHeaders(): object{
 function getIgnoredUrls(): string[]{
     return [
         "/quiz", 
-        "/exams"
+        "/exams",
+        ""
     ];
 }
 
@@ -161,12 +162,16 @@ function isUrlIgnorable(url: string | undefined): boolean{
     if(url == null){
         return false;
     } 
-
+    
     const ignoredUrls: string[] = getIgnoredUrls();
 
     // if(url == "/search/sessions/day"){
     //     return false;
     // }
+
+    if(url.endsWith("/fullpage")){
+        return true;
+    }
 
     return ignoredUrls.some(urlFromList => url.includes(urlFromList))
 }

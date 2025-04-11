@@ -31,8 +31,9 @@ type IndicatorTemplate = {
 }
 
 type Threshold = {
-    value: string,
-    color: string
+    value: number,
+    color: string,
+    icon: string
 }
 
 type ExamAttribute = [

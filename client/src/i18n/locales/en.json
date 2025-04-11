@@ -254,6 +254,18 @@
         }
     },
 
+    "monitoringClients": {
+
+
+        "main": {
+            "tableHeaderNameSession": "User Name or Session",
+            "tableHeaderClientGroups": "Client Group(s)",
+            "tableHeaderConnectionInfo": "Connection Info",
+            "tableHeaderStatus": "Status",
+            "tableHeaderPing": "Ping"
+        }
+    },
+
 
 
 

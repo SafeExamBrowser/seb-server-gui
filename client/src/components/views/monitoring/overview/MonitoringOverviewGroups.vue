@@ -123,9 +123,6 @@
 
 
     async function getGroup(groupId: string): Promise<ClientGroup | null>{
-
-        console.log("api get")
-
         return await clientGroupViewService.getClientGroup(groupId);
     }
 
