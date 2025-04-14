@@ -5,15 +5,15 @@
                 elevation="4"
                 class="rounded-lg pa-8">
 
-                total items: {{ monitoringData.length }}
+                total items: {{ monitoringDataTable.length }}
 
                 <v-data-table
                     hide-default-footer
                     item-value="id" 
                     :hover="true"
-                    :items="monitoringData"
-                    :items-length="monitoringData.length"
-                    :items-per-page="monitoringData.length"
+                    :items="monitoringDataTable"
+                    :items-length="monitoringDataTable.length"
+                    :items-per-page="monitoringDataTable.length"
                     :headers="clientsTableHeaders">
 
                     <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort}">
@@ -58,7 +58,10 @@
     const fullPageData = ref<MonitoringFullPageData>();
     const staticClientDataList = ref<MonitoringStaticClientData>();
 
-    const monitoringData = ref<MonitoringRow[]>([]);
+    // const monitoringData = ref<MonitoringRow[]>([]);
+    const monitoringDataTable = ref<MonitoringRow[]>([]);
+    const monitoringData = ref<Map<number, MonitoringRow>>(new Map());
+
 
     //table - pagination, item size, search
     const isLoading = ref<boolean>(true);
@@ -84,12 +87,19 @@
 
     //=========events & watchers================
     onMounted(async () => {
-        await initalize();
+        await initalize();  
     });
 
     onBeforeUnmount(() => {
         stopIntervalRefresh();
     });
+
+    function updateTableData(){
+        monitoringDataTable.value = Array.from(monitoringData.value, ([key, value]) => ({
+            key,
+            ...value
+        }));
+    }
 
 
     async function initalize(){
@@ -107,6 +117,8 @@
 
         startIntervalRefresh();
 
+        
+
         // console.log(fullPageData.value)
         // console.log(staticClientDataList.value)
     }
@@ -115,7 +127,7 @@
         // console.log(fullPageData.value)
 
         //check if sessions got added / removed
-        if(fullPageData.value?.monitoringConnectionData.cons.length != monitoringData.value.length){
+        if(fullPageData.value?.monitoringConnectionData.cons.length != monitoringData.value.entries.length){
             await addNewClients();
         }
 
@@ -129,35 +141,47 @@
         }
 
         const fullPageDataConnections: MonitoringClientConnection[] = fullPageData.value.monitoringConnectionData.cons;
-        // const staticDataConnections: StaticClientConnectionData[] = staticClientDataList.value.staticClientConnectionData;
+        const idsToUpdateMap = new Map<number, number>();
 
-        for(let i = 0; i < monitoringData.value.length; i++){
-            if(monitoringData.value[i].id == fullPageDataConnections[i].id){
+        for(let i = 0; i < fullPageDataConnections.length; i++){
 
-                if(fullPageDataConnections[i].st != monitoringData.value[i].status){
+            const monitoringRowData: MonitoringRow | undefined = monitoringData.value.get(fullPageDataConnections[i].id);
 
-                    const newStaticClientDataObject: MonitoringStaticClientData | null = await getStaticClientData([monitoringData.value[i].id]);
-                    if(newStaticClientDataObject != null){
-
-                        const newStaticClientData = newStaticClientDataObject.staticClientConnectionData.find(staticClientData => staticClientData.id == monitoringData.value[i].id)
-                        if(newStaticClientData != null){
-
-                            console.log("it got here full update")
-
-                            monitoringData.value[i] = createMonitoringRowData(fullPageDataConnections[i], newStaticClientData);
-                        }
-
-                    }
+            if(monitoringRowData != null){
+                if(fullPageDataConnections[i].st != monitoringRowData.status){
+                    idsToUpdateMap.set(monitoringRowData.id, i);
 
                 }else{
                     //update indicator only
                     //todo: change ping to generic array
-                    updateIndicator(monitoringData.value[i].ping, fullPageDataConnections[i].iv);
+                    updateIndicator(monitoringRowData.ping, fullPageDataConnections[i].iv);
                 }
-
             }
-
         }
+
+        await addFreshData(idsToUpdateMap);
+        updateTableData();
+    }
+
+    async function addFreshData(ids: Map<number, number>){
+        const newStaticClients: MonitoringStaticClientData | null = await getStaticClientData(Array.from(ids.keys()));
+        if(newStaticClients == null){
+            return;
+        }
+
+        newStaticClients?.staticClientConnectionData.forEach((staticData) => {
+            const fullPageItemIndex: number | undefined = ids.get(staticData.id);
+
+            if(fullPageItemIndex != null && fullPageData.value != null){
+                monitoringData.value.set(
+                    staticData.id,
+                    createMonitoringRowData(
+                        fullPageData.value.monitoringConnectionData.cons[fullPageItemIndex], 
+                        staticData
+                    )
+                );
+            }
+        });
     }
 
     async function addNewClients(){
@@ -167,33 +191,15 @@
 
         const fullPageDataConnections: MonitoringClientConnection[] = fullPageData.value.monitoringConnectionData.cons;
 
-        console.log("start monitoringData.value: " + monitoringData.value.length)
-        console.log("end length dynamic data: " + fullPageDataConnections.length)
-
-        const monitoringDataLocal: MonitoringRow[] = [];
-
-        for(let i = monitoringData.value.length; i < fullPageDataConnections.length; i++){
-
-            const newStaticClientDataObject: MonitoringStaticClientData | null = await getStaticClientData([fullPageDataConnections[i].id]);
-            if(newStaticClientDataObject != null){
-                
-                const newStaticClientData = newStaticClientDataObject.staticClientConnectionData.find(staticClientData => staticClientData.id == fullPageDataConnections[i].id)
-                if(newStaticClientData != null){
-
-                    console.log("it got here length update")
-
-                    monitoringDataLocal.push(
-                        createMonitoringRowData(
-                            fullPageDataConnections[i], 
-                            newStaticClientData
-                        )
-                    );
-                }
+        const newIdsMap = new Map<number, number>();
+        fullPageDataConnections.forEach((connection, index) => {
+            if (!monitoringData.value.has(connection.id)) {
+                newIdsMap.set(connection.id, index);
             }
-        }
+        });
 
-        monitoringData.value = monitoringData.value.concat(monitoringDataLocal);
-
+        await addFreshData(newIdsMap);
+        updateTableData();
     }
 
     function removeClients(){
@@ -246,7 +252,6 @@
         const staticDataConnections: StaticClientConnectionData[] = staticClientDataList.value.staticClientConnectionData;
 
         for(let i = 0; i < fullPageDataConnections.length; i++){
-        // for(let i = 0; i < 1; i++){
 
             let staticClientData: StaticClientConnectionData | null = null;
 
@@ -266,10 +271,12 @@
 
             if(staticClientData != null){
                 const monitoringRow: MonitoringRow = createMonitoringRowData(fullPageDataConnections[i], staticClientData);
-                monitoringData.value.push(monitoringRow);
+                monitoringData.value.set(monitoringRow.id, monitoringRow);
             }
             
         }
+
+        updateTableData();
     }
 
     function createMonitoringRowData(fullPageDataConnection: MonitoringClientConnection, staticClientData: StaticClientConnectionData): MonitoringRow{
