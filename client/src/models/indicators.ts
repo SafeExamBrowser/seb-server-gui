@@ -6,7 +6,7 @@ type Indicators = {
 }
 
 type Indicator = {
-    id?: number;
+    id: number;
     examId: number;
     name: string;
     type: string;
