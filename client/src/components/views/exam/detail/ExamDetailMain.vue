@@ -556,7 +556,7 @@
     import TableHeaders from "@/utils/table/TableHeaders.vue";
     import { useI18n } from "vue-i18n";
     import {translate} from "@/utils/generalUtils";
-import { LMSFeatureEnum } from '@/models/assessmentToolEnums';
+    import { LMSFeatureEnum } from '@/models/assessmentToolEnums';
 
     //i18n
     const i18n = useI18n();

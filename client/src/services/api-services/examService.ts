@@ -30,12 +30,10 @@ export async function archiveExam(id: string): Promise<Exam | any>{
 
 //no logic in this file
 export async function applySEBLock(id: string, enableSEBLock: boolean): Promise<Exam | null>{
+    const url: string =  "/exam/" + id + "/apply-seb-restriction";
     if (enableSEBLock) {
-        const url: string =  "/exam/" + id + "/apply-seb-restriction";
         return (await apiService.api.put(url, {}, {headers: apiService.getHeaders()})).data;
     } else {
-        const url: string =  "/exam/" + id + "/apply-seb-restriction";
         return (await apiService.api.delete(url, {headers: apiService.getHeaders()})).data;
     }
-    
 }

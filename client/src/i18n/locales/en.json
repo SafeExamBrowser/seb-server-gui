@@ -33,7 +33,10 @@
         "saveButton": "Save",
         "startButton": "Start",
         "downloadButton": "Download",
-        "editButton": "Edit"
+        "editButton": "Edit",
+        "deleteButton": "Delete",
+        "true": "Yes",
+        "false": "No"
     },
 
     "screenReader": {
@@ -207,6 +210,76 @@
             "archiveExam": "Archiv Exam",
             "archiveTooltip": "Archiving is only activated when exam is finished",
             "deleteExam": "Delete Exam"
+        },
+        "sebSettings": {
+            "applicationView": {
+                "allowSwitchToApplications": "Allow switching to third party application (Mac)",
+                "allowFlashFullscreen": "Allow Flash to switch to fullscreen mode (Mac)",
+                "permittedProcesses": {
+                    "settingName": "Permitted Processes",
+                    "active": "Active",
+                    "active_tooltip": "This permitted process item is active",
+                    "os": "OS",
+                    "os_tooltip": "Indicates on which operating system the permitted process runs",
+                    "os_0": "macOS",
+                    "os_1": "Win",
+                    "title": "Title",
+                    "title_tooltip": "Application title which is displayed in the application chooser.\n Background processes don't have a title, because they can't be selected by users.",
+                    "description": "Description",
+                    "description_tooltip": "Optional, should explain what kind of process this is,\n because this might not be obvious only from the executable's name.",
+                    "executable": "Executable",
+                    "executable_tooltip": "File name of the executable, which should not contain any parts of a file system path,\n only the filename of the exe file (like calc.exe).",
+                    "originalName": "Original Name",
+                    "signature": "Signature",
+                    "allowedExecutables": "Window handling process",
+                    "path": "Path",
+                    "arguments": "Arguments",
+                    "arguments.active": "Active",
+                    "arguments.argument": "Argument",
+                    "arguments.addAction": "Add new argument",
+                    "arguments.removeAction": "Remove this argument",
+                    "identifier": "Identifier",
+                    "identifier_tooltip": "(Sub) string in the title of the main window of a tricky third party application (Java, Acrobat etc.).\n Mac OS X: Bundle identifier of the process in reverse domain notation.",
+                    "iconInTaskbar": "Icon in taskbar",
+                    "iconInTaskbar_tooltip": "Show icon of permitted application in task bar\n (not possible when 'run in background' is enabled).",
+                    "autostart": "Autostart",
+                    "autostart_tooltip": "Start the process automatically together with SEB",
+                    "runInBackground": "Allow running in background",
+                    "runInBackground_tooltip": "Allow the permitted process to already be running when SEB starts.\n Such a process can't have an icon in the task bar.",
+                    "allowUserToChooseApp": "Allow user to select location of application",
+                    "strongKill": "Force quit (risk of data loss)",
+                    "strongKill_tooltip": "Terminate process in a not-nice way, which may cause data loss if the application had unsaved data",
+                    "allowOpenAndSavePanel": "Allow open/save panel",
+                    "allowShareSheet": "Allow share sheet",
+                    "allowManualStart": "Allow manual start",
+                    "allowNetworkAccess": "Allow network access",
+                    "teamIdentifier": "Team Identifier",
+                    "allowOpenAndSavePanel_tooltip": "When using AAC Assessment Mode, SEB blocks the macOS Open File and Save As panel. Users cannot browse the file system and open files manually in most permitted apps with AAC Multi App Mode.",
+                    "allowShareSheet_tooltip": "When using AAC Assessment Mode, SEB blocks the macOS share sheet. Users cannot share documents in permitted apps with AAC Multi App Mode.",
+                    "allowManualStart_tooltip": "Allow user to start the additional application with its Dock icon. Otherwise the app can be started by downloading and opening its documents",
+                    "allowNetworkAccess_tooltip": "Allow the permitted app in AAC Multi App Mode to access the network/internet",
+                    "teamIdentifier_tooltip": "Team identifier of the app's code signature"
+                },
+                "prohibitedProcesses": {
+                    "settingName": "Prohibited Processes",
+                    "active": "Active",
+                    "active_tooltip": "Indicates if this prohibited process item is active",
+                    "os": "OS",
+                    "os_0": "macOS",
+                    "os_1": "Win",
+                    "description": "Description",
+                    "description_tooltip": "Optional, to explain what kind of process this is,\n because this might not be obvious only from the executable's name.",
+                    "executable": "Executable",
+                    "executable_tooltip": "File name of the executable, which should not contain any parts of a file system path,\n only the filename of the exe file (like calc.exe).",
+                    "originalName": "Original Name",
+                    "originalName_tooltip": "Original file name (optional)",
+                    "identifier": "Identifier",
+                    "identifier_tooltip": "Title of the main window of a Java third party application.\n Mac OS X: Bundle identifier of the process in reverse domain notation.",
+                    "strongKill": "Force quit (risk of data loss)",
+                    "strongKill_tooltip": "Terminate process in a not-nice way,\n which may cause data loss if the application had unsaved data"
+
+                }
+            }
         }
     },
 

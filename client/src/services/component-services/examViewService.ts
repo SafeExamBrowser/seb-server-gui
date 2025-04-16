@@ -1,5 +1,6 @@
 import * as examService from "@/services/api-services/examService";
 import * as examTemplateService from "@/services/api-services/examTemplateService";
+import * as examSEBSettingService from "@/services/api-services/examSEBSettingService";
 import * as configurationService from "@/services/api-services/configurationService";
 import * as screenProctoringService from "@/services/api-services/screenProctoringService";
 import * as monitoringService from "@/services/api-services/monitoringService";
@@ -150,7 +151,7 @@ export function isExamFunctionalityDisabled(allowedExamStatus: ExamStatusEnum[],
 }
 
 
-//===============exam config logic====================
+//===============exam connection config logic====================
 export function createDownloadLink(examName: string | undefined, blob: any){
     // Create a link element
     const link = document.createElement("a");
@@ -174,4 +175,22 @@ function getExamConfigFileName(examName: string | undefined): string{
     examName = examName?.replaceAll(" ", "_");
 
     return `${examName}_${timeUtils.getCurrentDateString()}.seb`;
+}
+
+
+//======SEB Settings=======
+export async function getApplicationViewSettings(examId: string): Promise<SEBSettingsView | null>{
+    try{
+        return await examSEBSettingService.getApplicationView(examId);
+    }catch(error){
+        return null;
+    }
+}
+
+export async function updateSEBSettingValue(examId: string, valueId: String, value: string): Promise<SEBSettingsValue | any>{
+    try{
+        return await examSEBSettingService.updateSEBSettingValue(examId, valueId, value);
+    }catch(error){
+        return null;
+    }
 }

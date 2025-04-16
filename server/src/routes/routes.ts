@@ -8,6 +8,7 @@ import * as userAccountController from "../controllers/user-account.controller";
 import * as assessmentToolController from "../controllers/assessment-tool.controller";
 import * as monitoringController from "../controllers/monitoring.controller";
 import * as clientGroupsController from "../controllers/client-groups.controller";
+import * as examSEBSettingsController from "../controllers/exam-sebsettings.controller";
 import * as constants from "../utils/constants";
 
 const router: Router = express.Router();
@@ -25,8 +26,15 @@ router.get(constants.EXAM_GET_ROUTE + "/:id", examController.getExam);
 router.get(constants.EXAM_CONFIGURATION_MAP_ROUTE + "/:id", examController.getExamConfigurationMap);
 
 // SEB lock
-router.put(constants.EXAM_ROUTE + "/:id" + "/apply-seb-restriction", examController.putSEBLock)
-router.delete(constants.EXAM_ROUTE + "/:id" + "/apply-seb-restriction", examController.deleteSEBLock)
+router.put(constants.EXAM_ROUTE + "/:id" + "/apply-seb-restriction", examController.putSEBLock);
+router.delete(constants.EXAM_ROUTE + "/:id" + "/apply-seb-restriction", examController.deleteSEBLock);
+
+// SEB Settings
+router.get(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id" + "/APPLICATION", examSEBSettingsController.getApplicationView);
+router.get(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id" + "/NETWORK", examSEBSettingsController.getNetworkView);
+router.post(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id" + "/table", examSEBSettingsController.addTableRow);
+router.delete(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id" + "/table/:settingName/row/:listIndex", examSEBSettingsController.deleteTableRow);
+router.post(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id", examSEBSettingsController.updateSEBSetting);
 
 //screen proctoring
 router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE, screenProctoringController.saveScreenProctoringSettings);

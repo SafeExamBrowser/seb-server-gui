@@ -32,3 +32,7 @@ export const MONITORING_TEST_RUN_ROUTE = "/monitoring/testrun";
 
 //client group
 export const CLIENT_GROUP_ROUTE = "/client-group";
+
+// exam seb settings
+export const EXAM_SEB_SETTINGS_ENDPOINT = EXAM_ROUTE + "/seb-settings";
+export const EXAM_SEB_SETTINGS_ROUTE = EXAM_ROUTE + "/seb-settings";
