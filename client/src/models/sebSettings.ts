@@ -37,10 +37,49 @@ type PermittedProcesessRow = {
     title: string
 };
 
-type ProhibitedProcesess = {
+type PermittedProcesessArgument = {
+    active: boolean,
+    argument: string,
+};
+
+type PermittedProcesess = {
+    index: number,
+    active: boolean, 
+    os: string, 
+    executable: string, 
+    title: string
+    originalName: string,
+    signature: string,
+    path: string,
+    iconInTaskbar: boolean,
+    arguments: PermittedProcesessArgument[],
+    allowOpenAndSavePanel: boolean,
+    autostart: boolean,
+    allowShareSheet: boolean,
+    runInBackground: boolean,
+    allowManualStart: boolean,
+    allowUserToChooseApp: boolean,
+    allowNetworkAccess: boolean,
+    strongKill: boolean,
+    teamIdentifier: string
+};
+
+type ProhibitedProcesessRow = {
     index: number,
     active: string, 
     os: string, 
     executable: string, 
     description: string
+};
+
+type ProhibitedProcesess = {
+    index: number,
+    active: boolean, 
+    os: string, 
+    executable: string,
+    originalName: string,
+    description: string
+    identifier: string,
+    strongKill: boolean,
+    ignoreInAAC: boolean
 };

@@ -34,7 +34,7 @@ router.delete(constants.EXAM_ROUTE + "/:id" + "/apply-seb-restriction", examCont
 router.get(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id" + "/APPLICATION", examSEBSettingsController.getApplicationView);
 router.get(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id" + "/NETWORK", examSEBSettingsController.getNetworkView);
 router.post(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id" + "/table", examSEBSettingsController.addTableRow);
-router.delete(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id" + "/table/:settingName/row/:listIndex", examSEBSettingsController.deleteTableRow);
+router.delete(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id" + "/table/:name/row/:listIndex", examSEBSettingsController.deleteTableRow);
 router.post(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id", examSEBSettingsController.updateSEBSetting);
 
 //screen proctoring

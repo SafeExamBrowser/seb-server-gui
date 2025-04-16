@@ -25,7 +25,7 @@ export async function getNetworkView(req: Request, res: Response){
 
 export async function addTableRow(req: Request, res: Response){
     try{
-        const [exams, status] = await examSEBSettingsService.addTableRow(req.headers.authorization, req.params.id, req.params.settingName);
+        const [exams, status] = await examSEBSettingsService.addTableRow(req.headers.authorization, req.params.id, req.body.settingName);
         return res.status(status).json(exams);
 
     }catch(error){
@@ -45,7 +45,7 @@ export async function deleteTableRow(req: Request, res: Response){
 
 export async function updateSEBSetting(req: Request, res: Response){
     try{
-        const [exams, status] = await examSEBSettingsService.updateSEBSettingsValue(req.headers.authorization, req.params.id, req.params.valueId, req.params.vlaue);
+        const [exams, status] = await examSEBSettingsService.updateSEBSettingsValue(req.headers.authorization, req.params.id, req.body.valueId, req.body.value);
         return res.status(status).json(exams);
 
     }catch(error){

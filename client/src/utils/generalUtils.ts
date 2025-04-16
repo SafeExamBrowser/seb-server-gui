@@ -16,6 +16,10 @@ export function translate(key: string | null | undefined, i18nParam?: any | null
     return useI18n().t(key);
 }
 
+export function translateWithBR(key: string | null | undefined, i18nParam?: any | null): string{
+    return translate(key, i18nParam).replace(/\n/g, '<br />');
+}
+
 export function findEnumValue<T extends Record<string, string | number>>(enumObj: T, value: string | undefined | null): T[keyof T] | null {
     if(value == null){
         return null;

@@ -17,7 +17,7 @@ export async function addTableRow(id: string, settingName: string): Promise<SEBS
     return (await apiService.api.post(url, { settingName: settingName }, {headers: apiService.getHeaders()})).data;
 }
 
-export async function deleteTableRow(id: string, settingName: string, rowIndex: number): Promise<SEBSettingsTableRowValues | any>{
+export async function deleteTableRow(id: string, settingName: string, rowIndex: number): Promise<SEBSettingsTableRowValues[] | any>{
     const url: string = urlPrefix + id + "/table/" + settingName + "/row/" + rowIndex;
     return (await apiService.api.delete(url, {headers: apiService.getHeaders()})).data;
 }

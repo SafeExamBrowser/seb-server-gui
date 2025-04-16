@@ -235,6 +235,7 @@
                 "allowFlashFullscreen": "Allow Flash to switch to fullscreen mode (Mac)",
                 "permittedProcesses": {
                     "settingName": "Permitted Processes",
+                    "editDialogTitle": "Permitted Process",
                     "active": "Active",
                     "active_tooltip": "This permitted process item is active",
                     "os": "OS",
@@ -280,11 +281,13 @@
                 },
                 "prohibitedProcesses": {
                     "settingName": "Prohibited Processes",
+                    "editDialogTitle": "Prohibited Process",
                     "active": "Active",
                     "active_tooltip": "Indicates if this prohibited process item is active",
                     "os": "OS",
                     "os_0": "macOS",
                     "os_1": "Win",
+                    "os_tooltip": "",
                     "description": "Description",
                     "description_tooltip": "Optional, to explain what kind of process this is,\n because this might not be obvious only from the executable's name.",
                     "executable": "Executable",
@@ -294,8 +297,9 @@
                     "identifier": "Identifier",
                     "identifier_tooltip": "Title of the main window of a Java third party application.\n Mac OS X: Bundle identifier of the process in reverse domain notation.",
                     "strongKill": "Force quit (risk of data loss)",
-                    "strongKill_tooltip": "Terminate process in a not-nice way,\n which may cause data loss if the application had unsaved data"
-
+                    "strongKill_tooltip": "Terminate process in a not-nice way,\nwhich may cause data loss if the application had unsaved data",
+                    "ignoreAAC": "Ignore in AAC",
+                    "ignoreAAC_tooltip": "When using the AAC kiosk mode\n(which prevents network and screen access for other processes),\nignore this prohibited process"
                 }
             }
         }

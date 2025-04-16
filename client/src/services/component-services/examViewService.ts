@@ -187,9 +187,17 @@ export async function getApplicationViewSettings(examId: string): Promise<SEBSet
     }
 }
 
-export async function updateSEBSettingValue(examId: string, valueId: String, value: string): Promise<SEBSettingsValue | any>{
+export async function updateSEBSettingValue(examId: string, valueId: String, value: string): Promise<SEBSettingsValue | null>{
     try{
         return await examSEBSettingService.updateSEBSettingValue(examId, valueId, value);
+    }catch(error){
+        return null;
+    }
+}
+
+export async function deleteSEBSettingTableRow(examId: string, settingName: string, rowIndex: number): Promise<SEBSettingsTableRowValues[] | null>{
+    try{
+        return await examSEBSettingService.deleteTableRow(examId, settingName, rowIndex);
     }catch(error){
         return null;
     }
