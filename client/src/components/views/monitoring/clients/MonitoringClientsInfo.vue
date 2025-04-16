@@ -68,27 +68,26 @@
 
                     </v-col>
 
-                    <!-- <v-col cols="4" class="ml-16">
+                    <v-col cols="4" class="ml-16">
                         <v-row>
                             <v-col>
                                 <div class="primary-text-color text-subtitle-1">
-                                    {{translate('monitoringExams.info.filter')}}
+                                    Groups
                                 </div>
                                 <div>
                                     <v-chip 
-                                        v-for="filter in typeFilters"
-                                        :key="filter.value"
-
-                                        :variant="monitoringStore.activeTypeFilter == filter.value ? 'flat' : 'tonal'"
+                                        v-for="clientGroup in monitoringStore.clientGroups?.content"
+                                        :key="clientGroup.id"
+                                        :variant="monitoringStore.clientGroupFilters.includes(clientGroup.id!) ? 'flat' : 'tonal'"
                                         size="small" 
                                         class="mr-2 mt-2"
-                                        @click="filter.eventFunction(filter.value)">
-                                        {{filter.name}}
+                                        @click="monitoringStore.cultivateClientGroupFilter(clientGroup.id!)">
+                                        {{clientGroup.name}}
                                     </v-chip>
                                 </div>
                             </v-col>
                         </v-row>
-                    </v-col> -->
+                    </v-col>
                     <v-spacer></v-spacer>
 
                     <v-col class="d-flex flex-column">
@@ -140,6 +139,8 @@
     import * as timeUtils from "@/utils/timeUtils";
     import {translate} from "@/utils/generalUtils";
     import { useI18n } from "vue-i18n";
+    import {ConnectionStatusEnum} from "@/models/connectionStatusEnum";
+
 
     //i18n
     const i18n = useI18n();

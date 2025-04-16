@@ -58,10 +58,18 @@ export async function getOverview(token: string, id: string): Promise<[object, n
 }
 
 
-export async function getFullPage(token: string, id: string): Promise<[object, number]>{
+export async function getFullPage(token: string, id: string, optionalHeaders: {}): Promise<[object, number]> {
     const url: string = constants.MONITORING_ROUTE + "/" + id + "/fullpage";
-    const {data, status} = await apiService.api.get(url, {headers: apiService.getHeaders(token)});
-    
+    const { data, status } = await apiService.api.get(
+        url,
+        {
+            headers: {
+                ...apiService.getHeaders(token),
+                ...optionalHeaders,
+            }
+        }
+    );
+
     return [data, status];
 }
 

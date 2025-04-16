@@ -16,9 +16,9 @@ export async function getOverview(examId: string): Promise<MonitoringOverview | 
     }
 }
 
-export async function getFullPage(examId: string): Promise<MonitoringFullPageData | null>{
+export async function getFullPage(examId: string, optionalHeaders: {}): Promise<MonitoringFullPageData | null>{
     try{
-        return await monitoringService.getFullPage(examId);
+        return await monitoringService.getFullPage(examId, optionalHeaders);
     }catch(error){
         return null;
     }
@@ -42,6 +42,15 @@ export async function getExamAndStore(examId: string){
     }
 
     useMonitoringStore().selectedExam = examResponse;
+}
+
+
+export function getFullPageHeaders(hiddenStates: number[], hiddenClientGroups: number[], hiddenIssues: number[]): object{
+    return {
+        "hidden-states": generalUtils.createStringIdList(hiddenStates),
+        "hidden-client-group": generalUtils.createStringIdList(hiddenClientGroups),
+        "hidden-issues": generalUtils.createStringIdList(hiddenIssues)
+    }
 }
 
 

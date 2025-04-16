@@ -26,13 +26,46 @@
                         </TableHeaders>
                     </template>
 
-
-                </v-data-table>
-
+                    <template v-slot:item="{item}">
+                        <tr>
+                            <td>{{ item.nameOrSession }}</td>
+                            
+                            <td>
+                                <template v-for="(clientGroup, index) in item.clientGroups" :key="clientGroup.id">
+                                    <div>
+                                        <v-chip 
+                                            :class="[index == 0 ? 'mt-2' : '']"
+                                            class="mb-2"
+                                            variant="tonal"
+                                            size="small"
+                                            @click="openClientGroupDialog(clientGroup)">
+                                            {{ clientGroup.name }}
+                                        </v-chip>
+                                    </div>
+                                </template>
+                            </td>
+                            
+                            <td>{{ item.connectionInfo }}</td>
+                            <td>{{ item.status }}</td>
+                            <td v-for="indicator in monitoringStore.indicators?.content" :key="indicator.id">
+                                {{ item.indicators?.get(indicator.id)?.indicatorValue }}
+                            </td>
+                        </tr>
+                    </template>
                 
+                </v-data-table>
             </v-sheet>
         </v-col>
     </v-row>
+
+    <!-----------group dialog---------->      
+    <v-dialog v-model="clientGroupDialog" max-width="800">
+        <ClientGroupInfoDialog 
+            :client-group="clientGroupToView"
+            @closeClientGroupDialog="closeClientGroupDialog">
+        </ClientGroupInfoDialog>
+    </v-dialog>
+
 </template>
 
 <script setup lang="ts">
@@ -46,22 +79,23 @@
     import TableHeaders from "@/utils/table/TableHeaders.vue";
     import { IndicatorEnum, IndicatorObject } from "@/models/indicatorEnum";
     import { MonitoringRow } from "@/models/monitoringClients";
+    import * as tableUtils from "@/utils/table/tableUtils";
+    import { storeToRefs } from "pinia";
+
 
     //exam
     const examId = useRoute().params.examId.toString();
 
     //stores
     const monitoringStore = useMonitoringStore();
+    const monitoringStoreRef = storeToRefs(monitoringStore);
     const appBarStore = useAppBarStore();
 
     //items
     const fullPageData = ref<MonitoringFullPageData>();
     const staticClientDataList = ref<MonitoringStaticClientData>();
-
-    // const monitoringData = ref<MonitoringRow[]>([]);
     const monitoringDataTable = ref<MonitoringRow[]>([]);
     const monitoringData = ref<Map<number, MonitoringRow>>(new Map());
-
 
     //table - pagination, item size, search
     const isLoading = ref<boolean>(true);
@@ -71,18 +105,22 @@
     let intervalRefresh: any | null = null;
     const REFRESH_INTERVAL: number = 1 * 2000;
 
+    //dialogs
+    const clientGroupDialog = ref<boolean>(false);
+    const clientGroupToView = ref<ClientGroup | null>(null);
+
 
     //table
     const isOnLoad = ref<boolean>(true);
     const defaultSort: {key: string, order: string}[] = [{key: 'quizStartTime', order: 'desc'}];
     const clientsTableHeadersRef = ref<any[]>();
     const clientsTableHeaders = ref([
-        {title: translate("monitoringClients.main.tableHeaderNameSession"), key: "nameOrSession", width: "30%"},
-        {title: translate("monitoringClients.main.tableHeaderClientGroups"), key: "clientGroups", width: "20%"},
-        {title: translate("monitoringClients.main.tableHeaderConnectionInfo"), key: "connectionInfo", width: "20%"},
-        {title: translate("monitoringClients.main.tableHeaderStatus"), key: "status", width: "12.5%"},
-        {title: translate("monitoringClients.main.tableHeaderPing"), key: "ping.indicatorValue", width: "12.5%"},
+        {title: translate("monitoringClients.main.tableHeaderNameSession"), key: "nameOrSession", width: "30%", sortable: true},
+        {title: translate("monitoringClients.main.tableHeaderClientGroups"), key: "clientGroups", width: "20%", sortable: true},
+        {title: translate("monitoringClients.main.tableHeaderConnectionInfo"), key: "connectionInfo", width: "20%", sortable: true},
+        {title: translate("monitoringClients.main.tableHeaderStatus"), key: "status", sortable: true}
     ]);  
+
 
 
     //=========events & watchers================
@@ -112,12 +150,12 @@
 
         initalizeTableData();
 
+        addIndicatorHeaders();
+
         const end = performance.now();
-        console.log(`Execution time: ${(end - start)/1000} ms`);
+        // console.log(`Execution time: ${(end - start)/1000} ms`);
 
         startIntervalRefresh();
-
-        
 
         // console.log(fullPageData.value)
         // console.log(staticClientDataList.value)
@@ -127,12 +165,60 @@
         // console.log(fullPageData.value)
 
         //check if sessions got added / removed
-        if(fullPageData.value?.monitoringConnectionData.cons.length != monitoringData.value.entries.length){
+        if(fullPageData.value?.monitoringConnectionData.cons.length! > monitoringData.value.size){
             await addNewClients();
+        }
+
+        // console.log("dynamic length: " + fullPageData.value?.monitoringConnectionData.cons.length)
+        // console.log("actual length: " + monitoringData.value.size)
+
+
+        if(fullPageData.value?.monitoringConnectionData.cons.length! < monitoringData.value.size){
+            removeClients();
         }
 
         await updateFullPageData();
     });
+
+    watch([monitoringStoreRef.hiddenClientGroups], () => {
+        console.log("it got here")
+        getAndSetFullPageData();
+    });
+
+
+
+    //==============data fetching================
+    async function getAndSetFullPageData(){
+        const fullPageResponse: MonitoringFullPageData | null = await monitoringViewService.getFullPage(
+            examId, 
+            monitoringViewService.getFullPageHeaders(
+                [],
+                monitoringStoreRef.hiddenClientGroups.value,
+                []
+            )
+        );
+
+        if(fullPageResponse == null){
+            return;
+        }
+
+        fullPageData.value = fullPageResponse;
+    }
+
+    async function getAndSetStaticClientData(modelIds: number[]){
+        const staticClientDataResponse: MonitoringStaticClientData | null = await monitoringViewService.getStaticClientData(examId, generalUtils.createStringIdList(modelIds));
+        if(staticClientDataResponse == null){
+            return;
+        }
+
+        staticClientDataList.value = staticClientDataResponse;
+    }
+
+    async function getStaticClientData(modelIds: number[]): Promise<MonitoringStaticClientData | null>{
+        return await monitoringViewService.getStaticClientData(examId, generalUtils.createStringIdList(modelIds));
+    }
+
+
 
     //==============data update=================
     async function updateFullPageData(){
@@ -140,26 +226,26 @@
             return;
         }
 
-        const fullPageDataConnections: MonitoringClientConnection[] = fullPageData.value.monitoringConnectionData.cons;
         const idsToUpdateMap = new Map<number, number>();
 
-        for(let i = 0; i < fullPageDataConnections.length; i++){
+        fullPageData.value.monitoringConnectionData.cons.forEach((dynamicData, index) => {
 
-            const monitoringRowData: MonitoringRow | undefined = monitoringData.value.get(fullPageDataConnections[i].id);
+            const monitoringRowData: MonitoringRow | undefined = monitoringData.value.get(dynamicData.id);
 
             if(monitoringRowData != null){
-                if(fullPageDataConnections[i].st != monitoringRowData.status){
-                    idsToUpdateMap.set(monitoringRowData.id, i);
+                if(dynamicData.st != monitoringRowData.status){
+                    idsToUpdateMap.set(monitoringRowData.id, index);
 
                 }else{
-                    //update indicator only
-                    //todo: change ping to generic array
-                    updateIndicator(monitoringRowData.ping, fullPageDataConnections[i].iv);
+                    updateIndicator(monitoringRowData.indicators, dynamicData.iv);
                 }
             }
+        });
+
+        if(idsToUpdateMap.size != 0){
+            await addFreshData(idsToUpdateMap);
         }
 
-        await addFreshData(idsToUpdateMap);
         updateTableData();
     }
 
@@ -203,42 +289,65 @@
     }
 
     function removeClients(){
+        if(fullPageData.value == null || staticClientDataList.value == null){
+            return;
+        }
 
+        console.log("it got here")
+
+        const dynamicDataSet: Set<number> = new Set(fullPageData.value.monitoringConnectionData.cons.map(connection => connection.id));
+        const dynamicDataKeysToDelete: number[] = [];
+
+        console.log(dynamicDataSet)
+
+        for (const [key, value] of dynamicDataSet.entries()) {
+            if (dynamicDataSet.has(key)) {
+                dynamicDataKeysToDelete.push(key);
+            }
+        }
+
+        for (const key of monitoringData.value.keys()) {
+            if (!dynamicDataSet.has(key)) {
+                monitoringData.value.delete(key);
+            }
+        }
+
+
+        // dynamicDataKeysToDelete.forEach(key => {
+        //     monitoringData.value.delete(key);
+        // });
+        
+        updateTableData();
     }
 
-    //currently only ping
-    function updateIndicator(pingObject: IndicatorObject | undefined, indicatorSet: Record<string, string>){
-        if(pingObject != null && pingObject.indicatorType == IndicatorEnum.LAST_PING){
-            pingObject.indicatorValue = parseInt(indicatorSet[pingObject.indicatorObject.id]);
+
+
+
+    function updateIndicator(indicatorMap: Map<number, IndicatorObject> | undefined, indicatorValues: Record<string, string>){
+        if(indicatorMap == null){
+            return;
         }
+
+
+        indicatorMap.forEach((indicatorObject, key) => {
+
+            indicatorObject.indicatorValue = parseInt(indicatorValues[key.toString()]);
+
+        });
+
+
+
+
+
+        // indicatorMap.indicatorValue = parseInt(indicatorValues[indicatorMap.indicatorObject.id]);
+
     }
     
 
 
 
 
-    //==============data fetching================
-    async function getAndSetFullPageData(){
-        const fullPageResponse: MonitoringFullPageData | null = await monitoringViewService.getFullPage(examId)
-        if(fullPageResponse == null){
-            return;
-        }
-
-        fullPageData.value = fullPageResponse;
-    }
-
-    async function getAndSetStaticClientData(modelIds: number[]){
-        const staticClientDataResponse: MonitoringStaticClientData | null = await monitoringViewService.getStaticClientData(examId, generalUtils.createStringIdList(modelIds));
-        if(staticClientDataResponse == null){
-            return;
-        }
-
-        staticClientDataList.value = staticClientDataResponse;
-    }
-
-    async function getStaticClientData(modelIds: number[]): Promise<MonitoringStaticClientData | null>{
-        return await monitoringViewService.getStaticClientData(examId, generalUtils.createStringIdList(modelIds));
-    }
+    
 
 
 
@@ -248,42 +357,25 @@
             return;
         }
 
-        const fullPageDataConnections: MonitoringClientConnection[] = fullPageData.value.monitoringConnectionData.cons;
-        const staticDataConnections: StaticClientConnectionData[] = staticClientDataList.value.staticClientConnectionData;
+        const staticDataMap: Map<number, StaticClientConnectionData> = new Map(
+            staticClientDataList.value.staticClientConnectionData.map(data => [data.id, data])
+        );
 
-        for(let i = 0; i < fullPageDataConnections.length; i++){
+        fullPageData.value.monitoringConnectionData.cons.forEach((dynamicData, index) => {
 
-            let staticClientData: StaticClientConnectionData | null = null;
-
-            //check first if static data has the same index
-            if(fullPageDataConnections[i].id == staticDataConnections[i].id){
-                console.log("by index")
-                staticClientData = staticDataConnections[i];
-
-            //get static data by id   
-            }else{
-                console.log("by id")
-                const staticClientDataLocal: StaticClientConnectionData | undefined = staticDataConnections.find(staticClientData => staticClientData.id == fullPageDataConnections[i].id);
-                if(staticClientDataLocal != null){
-                    staticClientData = staticClientDataLocal;
-                }
-            }
+            const staticClientData: StaticClientConnectionData | undefined = staticDataMap.get(dynamicData.id);
 
             if(staticClientData != null){
-                const monitoringRow: MonitoringRow = createMonitoringRowData(fullPageDataConnections[i], staticClientData);
+                const monitoringRow: MonitoringRow = createMonitoringRowData(dynamicData, staticClientData);
                 monitoringData.value.set(monitoringRow.id, monitoringRow);
             }
             
-        }
+        });
 
         updateTableData();
     }
 
     function createMonitoringRowData(fullPageDataConnection: MonitoringClientConnection, staticClientData: StaticClientConnectionData): MonitoringRow{
-
-        const indicatorsFullList: IndicatorObject[] = extractIndicators(fullPageDataConnection.iv);
-        const pingObject = indicatorsFullList.find(indicatorObject => indicatorObject.indicatorType = IndicatorEnum.LAST_PING);
-
         return {
             id: fullPageDataConnection.id,
             connectionToken: staticClientData.conectionToken,
@@ -291,49 +383,35 @@
             clientGroups: extractClientGroupNames(staticClientData.cg),
             connectionInfo: staticClientData.seb_info,
             status: fullPageDataConnection.st,
-            ping: pingObject,
+            indicators: extractIndicators(fullPageDataConnection.iv),
         }
     }
 
-    function extractClientGroupNames(clientGroupIds: number[]): string{
-        let clientGroupNames: string = "";
+    function extractClientGroupNames(clientGroupIds: number[]): ClientGroup[]{
+        // let clientGroupNames: string = "";
+
+        const clientGroups: ClientGroup[] = [];
 
         for(let i = 0; i < clientGroupIds.length; i++){
-            const clientGroupName: string | undefined = monitoringStore.clientGroups?.content.find(clientGroup => clientGroup.id == clientGroupIds[i])?.name;
+            const clientGroup: ClientGroup | undefined = monitoringStore.clientGroups?.content.find(clientGroup => clientGroup.id == clientGroupIds[i]);
 
-            if(clientGroupName != null){
-                clientGroupNames += clientGroupName + " ";
+            if(clientGroup != null){
+
+                clientGroups.push(clientGroup);
+
+                // clientGroupNames += clientGroupName + " ";
             }
         }
 
-        if(clientGroupNames == ""){
-            return "";
-        }
+        // if(clientGroupNames == ""){
+        //     return "";
+        // }
 
-        return clientGroupNames.substring(0, clientGroupNames.length-1);
+        // return clientGroupNames.substring(0, clientGroupNames.length-1);
+        return clientGroups;
     }
 
-    function extractIndicators(indicatorValues: Record<string, string>): IndicatorObject[]{
-        const indicatorsFullList: IndicatorObject[] = [];
-
-        for (const [key, value] of Object.entries(indicatorValues)) {
-
-            const indicator: Indicator | undefined = monitoringStore.indicators?.content.find(indicator => indicator.id == parseInt(key));
-
-            if(indicator != null){
-                const indicatorFullObject: IndicatorObject = {
-                    indicatorType: generalUtils.findEnumValue(IndicatorEnum, indicator.type),
-                    indicatorValue: parseInt(value),
-                    indicatorObject: indicator
-                }
-
-                indicatorsFullList.push(indicatorFullObject);
-            }
-        }
-
-        return indicatorsFullList;
-    }
-
+    
     function getAllConnectionIds(): number[]{
         if(fullPageData.value == null){
             return [];
@@ -343,6 +421,42 @@
             (cons: { id: number}) => cons.id
         );
     }
+
+    //=================indicators===================
+    function extractIndicators(indicatorValues: Record<string, string>): Map<number, IndicatorObject>{
+        const indicatorsMap: Map<number, IndicatorObject> = new Map();
+
+        for (const [key, value] of Object.entries(indicatorValues)) {
+
+            const indicator: Indicator | undefined = monitoringStore.indicators?.content.find(indicator => indicator.id == parseInt(key));
+
+            if(indicator != null){
+                const indicatorFullObject: IndicatorObject = {
+                    indicatorType: generalUtils.findEnumValue(IndicatorEnum, indicator.type),
+                    indicatorValue: parseInt(value),
+                    indicatorObject: indicator,
+                }
+
+                indicatorsMap.set(indicator.id, indicatorFullObject);
+            }
+        }
+
+        return indicatorsMap;
+    }
+
+    function addIndicatorHeaders(){
+
+        monitoringStore.indicators?.content.forEach((indicator) => {
+            clientsTableHeaders.value.push(
+                {
+                    title: indicator.name, 
+                    key: indicator.id.toString(),
+                    sortable: false
+                }
+            );
+        });
+    }
+
 
     //=================interval===================
     async function startIntervalRefresh(){
@@ -360,8 +474,15 @@
     }
 
 
+    //========client group dialog========
+    function openClientGroupDialog(clientGroup: ClientGroup){
+        clientGroupToView.value = clientGroup;
+        clientGroupDialog.value = true;
+    }
 
-
+    function closeClientGroupDialog(){
+        clientGroupDialog.value = false;
+    }
 
 
 
@@ -369,5 +490,8 @@
 </script>
 
 <style scoped>
+    .default-color {
+        color: #2196F3;
+    }
 
 </style>
