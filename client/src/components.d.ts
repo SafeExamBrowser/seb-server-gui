@@ -43,6 +43,8 @@ declare module 'vue' {
     ImportWizard: typeof import('./components/views/quiz-import/ImportWizard.vue')['default']
     LoginPage: typeof import('./components/views/LoginPage.vue')['default']
     MonitoringClientsContainer: typeof import('./components/views/monitoring/clients/MonitoringClientsContainer.vue')['default']
+    MonitoringClientsInfo: typeof import('./components/views/monitoring/clients/MonitoringClientsInfo.vue')['default']
+    MonitoringClientsMain: typeof import('./components/views/monitoring/clients/MonitoringClientsMain.vue')['default']
     MonitoringExamsContainer: typeof import('./components/views/monitoring/exams/MonitoringExamsContainer.vue')['default']
     MonitoringExamsInfo: typeof import('./components/views/monitoring/exams/MonitoringExamsInfo.vue')['default']
     MonitoringExamsMain: typeof import('./components/views/monitoring/exams/MonitoringExamsMain.vue')['default']

@@ -108,13 +108,8 @@ export function createApiInterceptor(){
 
         }catch(error){
 
-            console.log("it got to this point")
-
             let redirectRoute: string = "/";
             if(window.location.pathname != null){
-
-                console.log(window.location.pathname)
-                
                 redirectRoute = window.location.pathname;
             }
 
@@ -158,7 +153,8 @@ export function getPostHeaders(): object{
 function getIgnoredUrls(): string[]{
     return [
         "/quiz", 
-        "/exams"
+        "/exams",
+        ""
     ];
 }
 
@@ -166,12 +162,16 @@ function isUrlIgnorable(url: string | undefined): boolean{
     if(url == null){
         return false;
     } 
-
+    
     const ignoredUrls: string[] = getIgnoredUrls();
 
     // if(url == "/search/sessions/day"){
     //     return false;
     // }
+
+    if(url.endsWith("/fullpage")){
+        return true;
+    }
 
     return ignoredUrls.some(urlFromList => url.includes(urlFromList))
 }

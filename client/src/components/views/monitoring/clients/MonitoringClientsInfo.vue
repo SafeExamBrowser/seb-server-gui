@@ -1,6 +1,6 @@
 <template>
 
-    <v-row>
+    <v-row v-if="isInfoExpanded">
         <v-col>
             <v-sheet elevation="4" class="rounded-lg pl-4 pt-3 pr-4">
 
@@ -8,7 +8,7 @@
                 <v-row>
                     <v-col>
                         <div class="primary-text-color text-h5 font-weight-bold">
-                            {{translate('monitoringExams.info.runningExams')}}
+                            Client List
                         </div>
                     </v-col>
                 </v-row>
@@ -41,26 +41,6 @@
                             </v-row>
                             <!----------------------------------->
 
-                            <!------------start date------------->
-                            <v-row align="center">
-                                <v-col> 
-                                    {{translate('monitoringExams.info.start')}}
-                                </v-col>
-                                <v-col cols="9" >
-                                    <v-date-input 
-                                        single-line
-                                        hide-details
-                                        v-model="datepicker"
-                                        density="compact"
-                                        variant="outlined"
-                                        placeholder="DD.MM.YYYY"
-                                        prepend-icon=""
-                                        append-inner-icon="mdi-calendar">
-                                    </v-date-input>
-                                </v-col>
-                            </v-row>
-                            <!----------------------------------->
-
                             <!------------Buttons------------->
                             <v-row>
                                 <v-col align="right">
@@ -88,7 +68,7 @@
 
                     </v-col>
 
-                    <v-col cols="4" class="ml-16">
+                    <!-- <v-col cols="4" class="ml-16">
                         <v-row>
                             <v-col>
                                 <div class="primary-text-color text-subtitle-1">
@@ -108,11 +88,44 @@
                                 </div>
                             </v-col>
                         </v-row>
-                    </v-col>
-
+                    </v-col> -->
                     <v-spacer></v-spacer>
+
+                    <v-col class="d-flex flex-column">
+                        <div class="d-flex justify-end mt-auto">
+                            <v-icon 
+                                variant="flat" 
+                                icon="mdi-chevron-up"
+                                @click="isInfoExpanded = !isInfoExpanded">
+                            </v-icon>
+                        </div>
+                    </v-col>
+                    <!-- <v-spacer></v-spacer> -->
                 </v-row>
 
+            </v-sheet>
+        </v-col>
+    </v-row>
+
+    <v-row v-else>
+        <v-col>
+            <v-sheet elevation="4" class="rounded-lg pl-4 pt-3 pr-4">
+                <v-row>
+                    <v-col>
+                        <div class="primary-text-color text-h5 font-weight-bold">
+                            Client List
+                        </div>
+                    </v-col>
+                    <v-col class="d-flex flex-column">
+                        <div class="d-flex justify-end mt-auto">
+                            <v-icon 
+                                variant="flat" 
+                                icon="mdi-chevron-down"
+                                @click="isInfoExpanded = !isInfoExpanded">
+                            </v-icon>
+                        </div>
+                    </v-col>
+                </v-row>
             </v-sheet>
         </v-col>
     </v-row>
@@ -130,6 +143,9 @@
 
     //i18n
     const i18n = useI18n();
+
+    //info panel (whole component)
+    const isInfoExpanded = ref<boolean>(true);
 
     //stores
     const monitoringStore = useMonitoringStore();
@@ -168,14 +184,14 @@
     }
 
     function setActiveTypeFilter(filter: ExamTypeEnum){
-        if(monitoringStore.activeTypeFilter == filter){
-            monitoringStore.activeTypeFilter = null;
-            loadmonitoringListItemsCaller();
-            return;
-        }
+        // if(monitoringStore.activeTypeFilter == filter){
+        //     monitoringStore.activeTypeFilter = null;
+        //     loadmonitoringListItemsCaller();
+        //     return;
+        // }
 
-        monitoringStore.activeTypeFilter = filter;
-        loadmonitoringListItemsCaller();
+        // monitoringStore.activeTypeFilter = filter;
+        // loadmonitoringListItemsCaller();
     }
 
 

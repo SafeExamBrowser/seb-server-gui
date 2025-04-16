@@ -2,7 +2,7 @@
 
     <v-row>
         <v-col>
-            <v-sheet elevation="4" class="rounded-lg pa-8">
+            <v-sheet elevation="4" class="rounded-lg pl-4 pt-3 pr-4">
 
                 <!------------title row------------->
                 <v-row>

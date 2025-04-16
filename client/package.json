@@ -2,7 +2,7 @@
   "name": "client",
   "version": "0.0.0",
   "scripts": {
-    "dev": "env.sh && vite",
+    "dev": "./env.sh && vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
     "lint": "eslint . --fix --ignore-path .gitignore"

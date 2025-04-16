@@ -750,8 +750,6 @@
         }
 
         examStore.selectedExam = applySEBLockResponse;
-
-        console.log(examStore.selectedExam)
     }
     
 
@@ -760,9 +758,6 @@
         if(examStore.selectedExam?.supporter == null){
             return;
         }
-
-        console.log("this is the data in the exam supervisors function")
-        console.log(examStore.selectedExam.supporter)
 
         if(examStore.selectedExam.supporter.length == 0){
             examStore.selectedExamSupervisors = [];
@@ -795,9 +790,6 @@
         if(examStore.selectedExam == null){
             return;
         }
-
-        console.log("this is data that i get:")
-        console.log(selectedExamSupervisors)
 
         examStore.selectedExam.supporter = selectedExamSupervisors.map(supervisor => supervisor.uuid);
         await updateExam(true);
@@ -934,8 +926,6 @@
         }
 
         examStore.selectedExam = saveScreenProcResponse;
-
-        console.log(examStore.selectedExam)
     }
 
 

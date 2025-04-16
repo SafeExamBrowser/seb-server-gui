@@ -25,6 +25,24 @@
     "IPAD_OS": "iPadOS",
     "I_OS_OR_IPAD_OS": "iOS/iPadOS",
 
+    "-------ConnectionStatusEnum------": "----------",
+    "CONNECTION_REQUESTED": "Connection Requested",
+    "READY": "Ready",
+    "ACTIVE": "Active",
+    "DISABLED": "Disabled",
+
+    "-------IndicatorTypeEnum todo: create------": "----------",
+    "LAST_PING": "Last ping",
+    "ERROR_COUNT": "Error count",
+    "WARN_COUNT": "Warn count",
+    "INFO_COUNT": "Info count",
+    "BATTERY_STATUS": "Battery status",
+    "WLAN_STATUS": "Wlan status",
+
+    "-------NotificationTypeEnum todo: create------": "----------",
+    "LOCK_SCREEN": "Lock screen",
+    "RAISE_HAND": "Raise hand",
+
 
     "general": {
         "loadingText": "Loading... Please wait",
@@ -300,6 +318,32 @@
             "tableHeaderStatus": "Status"
         }
     },
+
+
+    "monitoringOverview": {
+        "warning": {
+            "notExist": "Exam does not exist",
+            "notRunning": "Exam is not Running"
+        }
+    },
+
+    "monitoringClients": {
+
+
+        "main": {
+            "tableHeaderNameSession": "User Name or Session",
+            "tableHeaderClientGroups": "Client Group(s)",
+            "tableHeaderConnectionInfo": "Connection Info",
+            "tableHeaderStatus": "Status",
+            "tableHeaderPing": "Ping"
+        }
+    },
+
+
+
+
+
+
 
 
     "titles": {
