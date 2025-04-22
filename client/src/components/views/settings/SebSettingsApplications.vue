@@ -151,6 +151,7 @@
     import * as examViewService from "@/services/component-services/examViewService";
     import { useI18n } from "vue-i18n";
     import {translate} from "@/utils/generalUtils";
+import { RefSymbol } from '@vue/reactivity';
 
     const i18n = useI18n();
     const examStore = useExamStore();
@@ -441,20 +442,62 @@
         }
     }
 
-    function closeEditProhibitedProcessDialog(apply?: boolean){ 
-        console.info("************* apply: " + apply);
+    async function closeEditProhibitedProcessDialog(apply?: boolean){ 
+        
         editProhibitedProcesesDialog.value = false;
         
         if (!apply) {
             return;
         }
 
-        if (selectedProhibitedProceses.value?.index == -1) {
-            // TODO create new entry
-        } else {
-            // TODO update entry
+        if (!selectedProhibitedProceses.value) {
+            return;
         }
+
+        let index: number = -1;
+        let rowValues: Map<string, SEBSettingsValue> | null = null;
+        
+        if (selectedProhibitedProceses.value.index == -1) {
+            // TODO create new table row, add row to this table
+        } else {
+            index = selectedProhibitedProceses.value.index;
+            const prohibitedProcessesVals = tableValues.get("prohibitedProcesses");
+            if (prohibitedProcessesVals == null) {
+                return;
+            };
+            
+            rowValues = new Map<string, SEBSettingsValue>(Object.entries(prohibitedProcessesVals[selectedProhibitedProceses.value.index].rowValues)); 
+        }
+
+        if (rowValues == null) {
+            return;
+        }
+
+        
+
+        // TODO update values
+        
+        let val = rowValues.get("prohibitedProcesses.active");
+        
+        if (!val) {
+            return;
+        }
+        
+        let new_val = selectedProhibitedProceses.value.active ? "true" : "false";
+        await examViewService.updateSEBSettingValue(examId, val.id.toString(), new_val );
+        console.info("************* apply: " + new_val);
+        permittedProcesessTable.value[0].active = "drfswrghwrghwrghw";
+
+        // for (let i = 0; i < permittedProcesessTable.value.length; i++) {
+        //     if (permittedProcesessTable.value[i].index == index) {
+        //         console.info("************* apply: " + val.id);
+        //         permittedProcesessTable.value[i].active = new_val;
+        //         console.info("************* new val: " + permittedProcesessTable.value[i].active);
+        //     }
+        // }
     }
+
+
 
 
     // ********* get / save functions *********************

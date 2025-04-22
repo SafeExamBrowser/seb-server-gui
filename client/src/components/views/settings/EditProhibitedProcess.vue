@@ -134,7 +134,7 @@
                                     variant="flat" 
                                     class="ml-2"
                                     :disabled="isSaveButtonDisabled()"
-                                    @click="applyValues()">
+                                    @click="emit('closeEditProhibitedProcess', true)">
                                     {{translate("general.saveButton")}}
                                 </v-btn>
                             </v-col>
@@ -179,9 +179,6 @@
         return false;
     }
 
-    function applyValues() {
-        console.info("os: " + props.prohibitedProcess!.os);
-    }
 </script>
 
 <style scoped>
