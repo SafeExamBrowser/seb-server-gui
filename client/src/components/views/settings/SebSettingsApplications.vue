@@ -3,13 +3,13 @@
         <v-col>
             <v-checkbox-btn 
                 v-model="allowSwitchToApplications"
-                @click="sendSingleValue('allowSwitchToApplications', allowSwitchToApplications ? 'false' : 'true')"
+                @click="saveSingleValue('allowSwitchToApplications', allowSwitchToApplications ? 'false' : 'true')"
                 :label="translate('examDetail.sebSettings.applicationView.allowSwitchToApplications')"></v-checkbox-btn> 
         </v-col>
         <v-col>
             <v-checkbox-btn 
                 v-model="allowFlashFullscreen"
-                @click="sendSingleValue('allowFlashFullscreen', allowFlashFullscreen ? 'false' : 'true')"
+                @click="saveSingleValue('allowFlashFullscreen', allowFlashFullscreen ? 'false' : 'true')"
                 :label="translate('examDetail.sebSettings.applicationView.allowFlashFullscreen')"></v-checkbox-btn>
         </v-col>
     </v-row>
@@ -110,6 +110,16 @@
                     </TableHeaders>
                 </template>
 
+                <!-------active hook------->
+                <template v-slot:item.active="{ item }">
+                    {{ translate("general." + item.active, i18n) }}
+                </template>
+
+                <!-------OS hook------->
+                <template v-slot:item.os="{ item }">
+                    {{ translate("examDetail.sebSettings.applicationView.permittedProcesses.os_" + item.os, i18n) }}
+                </template>
+
                 <!-------edit button------->      
                 <template v-slot:item.edit="{ item }">
                     <v-btn 
@@ -151,7 +161,6 @@
     import * as examViewService from "@/services/component-services/examViewService";
     import { useI18n } from "vue-i18n";
     import {translate} from "@/utils/generalUtils";
-import { RefSymbol } from '@vue/reactivity';
 
     const i18n = useI18n();
     const examStore = useExamStore();
@@ -180,7 +189,7 @@ import { RefSymbol } from '@vue/reactivity';
     const editProhibitedProcesesDialog = ref<boolean>(false);
     const selectedProhibitedProceses = ref<ProhibitedProcesess | null>(null);
     const prohibitedProcesessHeadersRef = ref<any[]>();
-    const prohibitedProcesessTable = ref<ProhibitedProcesessRow[]>([]);
+    const prohibitedProcesessTable = ref<ProhibitedProcesess[]>([]);
     const prohibitedProcesessHeaders = ref([
         {title: translate("examDetail.sebSettings.applicationView.prohibitedProcesses.active"), key: "active", sortable: true, width: "10%"},
         {title: translate("examDetail.sebSettings.applicationView.prohibitedProcesses.os"), key: "os", sortable: true, width: "10%"},
@@ -243,14 +252,7 @@ import { RefSymbol } from '@vue/reactivity';
         
         for(let i = 0; i < prohibitedProcessesVals.length; i++){
             const rowVals = new Map<string, SEBSettingsValue>(Object.entries(prohibitedProcessesVals[i].rowValues));
-            const act = translate("general." + rowVals.get("prohibitedProcesses.active")?.value!, i18n);
-            const osName = translate("examDetail.sebSettings.applicationView.prohibitedProcesses.os_" + rowVals.get("prohibitedProcesses.os")?.value!, i18n);
-            prohibitedProcesessTable.value.splice(prohibitedProcessesVals[i].listIndex, 0, { 
-                index: prohibitedProcessesVals[i].listIndex,
-                active: act, 
-                os : osName,
-                executable: rowVals.get("prohibitedProcesses.executable")?.value!, 
-                description: rowVals.get("prohibitedProcesses.description")?.value! });
+            insertProhibitedProcess(prohibitedProcessesVals[i].listIndex, rowVals);
         }
     })
 
@@ -376,6 +378,20 @@ import { RefSymbol } from '@vue/reactivity';
     }
 
     // ********* prohibited processes functions *********************
+    function insertProhibitedProcess(index: number, rowVals: Map<string, SEBSettingsValue>){
+        prohibitedProcesessTable.value.splice(index, 0, { 
+                index: index,
+                active: rowVals.get("prohibitedProcesses.active")?.value! == "true", 
+                os : rowVals.get("prohibitedProcesses.os")?.value!,
+                executable: rowVals.get("prohibitedProcesses.executable")?.value!, 
+                description: rowVals.get("prohibitedProcesses.description")?.value!,
+                originalName: rowVals.get("prohibitedProcesses.originalName")?.value!, 
+                identifier: rowVals.get("prohibitedProcesses.identifier")?.value!,
+                strongKill: rowVals.get("prohibitedProcesses.strongKill")?.value! == "true",
+                ignoreInAAC: rowVals.get("prohibitedProcesses.ignoreInAAC")?.value! == "true"
+        });
+    }
+
     function newProhibitedProcess() {
         // create empty selectedProhibitedProceses and open edit dialog
         selectedProhibitedProceses.value = {
@@ -402,44 +418,14 @@ import { RefSymbol } from '@vue/reactivity';
         prohibitedProcesessTable.value.splice(0);
         resp.forEach( (item) => {
             const rowVals = new Map<string, SEBSettingsValue>(Object.entries(item.rowValues));
-            const act = translate("general." + rowVals.get("prohibitedProcesses.active")?.value!, i18n);
-            const osName = translate("examDetail.sebSettings.applicationView.prohibitedProcesses.os_" + rowVals.get("prohibitedProcesses.os")?.value!, i18n);
-            prohibitedProcesessTable.value.splice(item.listIndex, 0, { 
-                index: item.listIndex,
-                active: act, 
-                os : osName,
-                executable: rowVals.get("prohibitedProcesses.executable")?.value!, 
-                description: rowVals.get("prohibitedProcesses.description")?.value! });
+            insertProhibitedProcess(item.listIndex, rowVals);
         });
     }
 
 
     function prohibitedProcessesOpenEditDialog(index: number){
-        const prohibitedProcessesVals = tableValues.get("prohibitedProcesses");
-        if (prohibitedProcessesVals == null) {
-            return;
-        };
-        
-        for(let i = 0; i < prohibitedProcessesVals.length; i++){
-            if (prohibitedProcessesVals[i].listIndex != index) {
-                continue;
-            }
-
-            const rowVals = new Map<string, SEBSettingsValue>(Object.entries(prohibitedProcessesVals[i].rowValues));
-            selectedProhibitedProceses.value = {
-                index: index,
-                active: rowVals.get("prohibitedProcesses.active")?.value! == "true", 
-                os : rowVals.get("prohibitedProcesses.os")?.value!,
-                executable: rowVals.get("prohibitedProcesses.executable")?.value!, 
-                originalName: rowVals.get("prohibitedProcesses.originalName")?.value!, 
-                description: rowVals.get("prohibitedProcesses.description")?.value!,
-                identifier: rowVals.get("prohibitedProcesses.identifier")?.value!,
-                strongKill: rowVals.get("prohibitedProcesses.strongKill")?.value! == "true",
-                ignoreInAAC: rowVals.get("prohibitedProcesses.ignoreInAAC")?.value! == "true"
-            };
-            editProhibitedProcesesDialog.value = true;
-            break;
-        }
+        selectedProhibitedProceses.value =  Object.assign({},  prohibitedProcesessTable.value[index] );
+        editProhibitedProcesesDialog.value = true;
     }
 
     async function closeEditProhibitedProcessDialog(apply?: boolean){ 
@@ -450,51 +436,32 @@ import { RefSymbol } from '@vue/reactivity';
             return;
         }
 
-        if (!selectedProhibitedProceses.value) {
+        if (selectedProhibitedProceses.value == null) {
             return;
         }
 
         let index: number = -1;
-        let rowValues: Map<string, SEBSettingsValue> | null = null;
+        let rowToUpdate: ProhibitedProcesess | undefined;
         
         if (selectedProhibitedProceses.value.index == -1) {
             // TODO create new table row, add row to this table
         } else {
-            index = selectedProhibitedProceses.value.index;
-            const prohibitedProcessesVals = tableValues.get("prohibitedProcesses");
-            if (prohibitedProcessesVals == null) {
-                return;
-            };
-            
-            rowValues = new Map<string, SEBSettingsValue>(Object.entries(prohibitedProcessesVals[selectedProhibitedProceses.value.index].rowValues)); 
+            rowToUpdate = prohibitedProcesessTable.value.find( pp => pp.index == selectedProhibitedProceses.value?.index)
         }
 
-        if (rowValues == null) {
+        if (!rowToUpdate) {
             return;
         }
 
-        
-
-        // TODO update values
-        
-        let val = rowValues.get("prohibitedProcesses.active");
-        
-        if (!val) {
-            return;
-        }
-        
-        let new_val = selectedProhibitedProceses.value.active ? "true" : "false";
-        await examViewService.updateSEBSettingValue(examId, val.id.toString(), new_val );
-        console.info("************* apply: " + new_val);
-        permittedProcesessTable.value[0].active = "drfswrghwrghwrghw";
-
-        // for (let i = 0; i < permittedProcesessTable.value.length; i++) {
-        //     if (permittedProcesessTable.value[i].index == index) {
-        //         console.info("************* apply: " + val.id);
-        //         permittedProcesessTable.value[i].active = new_val;
-        //         console.info("************* new val: " + permittedProcesessTable.value[i].active);
-        //     }
-        // }
+        saveProhibitedProcessRow();
+        rowToUpdate.active = selectedProhibitedProceses.value.active;
+        rowToUpdate.os = selectedProhibitedProceses.value.os;
+        rowToUpdate.executable = selectedProhibitedProceses.value.executable;
+        rowToUpdate.description = selectedProhibitedProceses.value.description;
+        rowToUpdate.originalName = selectedProhibitedProceses.value.originalName;
+        rowToUpdate.identifier = selectedProhibitedProceses.value.identifier;
+        rowToUpdate.strongKill = selectedProhibitedProceses.value.strongKill;
+        rowToUpdate.ignoreInAAC = selectedProhibitedProceses.value.ignoreInAAC;
     }
 
 
@@ -515,7 +482,7 @@ import { RefSymbol } from '@vue/reactivity';
         examStore.applicationSettings = viewResponse;
     }
 
-    async function sendSingleValue(attrName: string, value: string) {
+    async function saveSingleValue(attrName: string, value: string) {
         const val = singleValues.get(attrName);
         if (val == null) {
             return;
@@ -524,6 +491,42 @@ import { RefSymbol } from '@vue/reactivity';
         await examViewService.updateSEBSettingValue(examId, val.id.toString(), value );
     }
 
+    async function saveProhibitedProcessRow() {
+        if (selectedProhibitedProceses.value == null) {
+            return;
+        }
+
+        const prohibitedProcessesVals = tableValues.get("prohibitedProcesses");
+        if (prohibitedProcessesVals == null) {
+            return;
+        };
+
+        const rolwVals = new Map<string, SEBSettingsValue>(Object.entries(prohibitedProcessesVals[selectedProhibitedProceses.value.index].rowValues));
+        if (rolwVals.has("prohibitedProcesses.active")) {
+            await examViewService.updateSEBSettingValue(examId, rolwVals.get("prohibitedProcesses.active")!.id.toString(), selectedProhibitedProceses.value.active ? "true" : "false" );
+        }
+        if (rolwVals.has("prohibitedProcesses.os")) {
+            await examViewService.updateSEBSettingValue(examId, rolwVals.get("prohibitedProcesses.os")!.id.toString(), selectedProhibitedProceses.value.os);
+        }
+        if (rolwVals.has("prohibitedProcesses.executable")) {
+            await examViewService.updateSEBSettingValue(examId, rolwVals.get("prohibitedProcesses.executable")!.id.toString(), selectedProhibitedProceses.value.executable);
+        }
+        if (rolwVals.has("prohibitedProcesses.description")) {
+            await examViewService.updateSEBSettingValue(examId, rolwVals.get("prohibitedProcesses.description")!.id.toString(), selectedProhibitedProceses.value.description);
+        }
+        if (rolwVals.has("prohibitedProcesses.originalName")) {
+            await examViewService.updateSEBSettingValue(examId, rolwVals.get("prohibitedProcesses.originalName")!.id.toString(), selectedProhibitedProceses.value.originalName);
+        }
+        if (rolwVals.has("prohibitedProcesses.identifier")) {
+            await examViewService.updateSEBSettingValue(examId, rolwVals.get("prohibitedProcesses.identifier")!.id.toString(), selectedProhibitedProceses.value.identifier);
+        }
+        if (rolwVals.has("prohibitedProcesses.strongKill")) {
+            await examViewService.updateSEBSettingValue(examId, rolwVals.get("prohibitedProcesses.strongKill")!.id.toString(), selectedProhibitedProceses.value.strongKill ? "true" : "false");
+        }
+        if (rolwVals.has("prohibitedProcesses.ignoreInAAC")) {
+            await examViewService.updateSEBSettingValue(examId, rolwVals.get("prohibitedProcesses.ignoreInAAC")!.id.toString(), selectedProhibitedProceses.value.ignoreInAAC ? "true" : "false");
+        }
+    }
 
 
 </script>

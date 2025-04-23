@@ -74,7 +74,7 @@ type ProhibitedProcesessRow = {
 
 type ProhibitedProcesess = {
     index: number,
-    active: boolean, 
+    active: boolean,
     os: string, 
     executable: string,
     originalName: string,
