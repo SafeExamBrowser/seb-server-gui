@@ -6,53 +6,53 @@
         </v-col>
     </v-row>
 
-
-    <v-row v-for="clientGroupItem in clientGroups">
+    <v-row v-for="clientGroupItem in overViewClientGroups">
         <v-col>
             <v-sheet class="rounded-lg pa-4" elevation="4">
-                <v-row>
-                    <v-col cols="4">
-                        {{ clientGroupItem.clientGroup.name }}
-                    </v-col>
-                    <v-col cols="4">
-                        {{ translate(clientGroupItem.clientGroup.type) }}
-                    </v-col>
-                    <v-col cols="2">
-                        {{ clientGroupItem.amount }}
+                <v-row align="center">
+                    <!--------name-------->
+                    <v-col cols="3" class="font-weight-medium primary-text-color text-h6">
+                        {{ clientGroupItem.name }}
                     </v-col>
 
-                    <v-col cols="1" v-if="clientGroupItem.clientGroup.isSPSGroup">
-                        <v-icon icon="mdi-video">
-                        </v-icon>
+                    <!--------group type-------->
+                    <v-col cols="5">
+                        <div class="font-weight-medium">
+                            {{ translate(clientGroupItem.type) }}
+                        </div>
+                        <div v-if="clientGroupItem.typeValue != ''" class="mt-4">
+                            {{ translate(clientGroupItem.typeValue) }}
+                        </div>
                     </v-col>
 
+                    <!--------client amount-------->
+                    <v-col cols="2" class="text-h6 primary-text-color">
+                        {{ clientGroupItem.clientAmount }}
+                    </v-col>
+
+                    <!--------sp button-------->
                     <v-col cols="1">
-                        <v-icon icon="mdi-chevron-right">
+                        <v-icon v-if="clientGroupItem.screenProctoring" icon="mdi-video">
                         </v-icon>
                     </v-col>
-                </v-row>
 
-                <v-row>
-                    <v-col cols="4">
-                    </v-col>
-                    <v-col cols="4">
-                        {{ getGroupDetails(clientGroupItem.clientGroup) }}
+                    <!--------monitoring button-------->
+                    <v-col cols="1">
+                        <v-icon v-if="clientGroupItem.type != ClientGroupEnum.SP_FALLBACK_GROUP" icon="mdi-chevron-right">
+                        </v-icon>
                     </v-col>
                 </v-row>
             </v-sheet>
         </v-col>
     </v-row>
 
-
     <v-row>
-        <v-col>
-            <v-btn @click="navigateTo(constants.MONITORING_CLIENTS_ROUTE + '/' + examId)">
+        <v-col align="right">
+            <v-btn color="primary" @click="showAllClients()">
                 Show all
             </v-btn>
         </v-col>
     </v-row>
-
-
 
 </template>
 
@@ -64,89 +64,37 @@
     import {navigateTo} from "@/router/navigation";
     import * as constants from "@/utils/constants";
 
-
-
     //stores
     const monitoringStore = useMonitoringStore();
-
-    //client groups
-    const clientGroups = ref<{clientGroup: ClientGroup; amount: number;}[]>([]);
 
     //exam
     const examId = useRoute().params.examId.toString();
 
+    
+    const overViewClientGroups: ComputedRef<OverviewClientGroup[] | undefined> = computed(() => {
 
+        // console.log("got called")
 
-
-    watch(() => monitoringStore.monitoringOverviewData?.clientGroups, async () => {
-
-        console.log("it got here client groups")
-
-        console.log(monitoringStore.monitoringOverviewData?.clientGroups)
-
-        const clientGroupIds: {id: number; clientAmount: number}[] = [];
-        if(monitoringStore.monitoringOverviewData?.clientGroups != null){
-            clientGroupIds.push(...monitoringStore.monitoringOverviewData.clientGroups);
-        }
-
-
-        for(let i = 0; i < clientGroupIds.length; i++){
-
-            //check if the client groups array already contains the client group
-            if(!clientGroups.value.some(clientGroupObject => clientGroupObject.clientGroup.id == clientGroupIds[i].id)){
-                
-                const clientGroupApi: ClientGroup | null = await getGroup(clientGroupIds[i].id.toString());
-                
-                if(clientGroupApi == null){
-                    return;
-                }
-                
-                clientGroups.value.push({
-                    clientGroup: clientGroupApi,
-                    amount: clientGroupIds[i].clientAmount
-                });
-
-            }else{
-
-                const index: number = clientGroups.value.findIndex(clientGroupObject => clientGroupObject.clientGroup.id == clientGroupIds[i].id);
-                clientGroups.value[index].amount = clientGroupIds[i].clientAmount;
+        return monitoringStore.monitoringOverviewData?.clientGroups.filter(item => {
+            if(item.type != ClientGroupEnum.SP_FALLBACK_GROUP){
+                return true;
             }
 
+            if(item.clientAmount == 0){
+                return false;
+            }
 
-        }
-
-
-
-
-    },{deep: true});
-
-
-
-    async function getGroup(groupId: string): Promise<ClientGroup | null>{
-        return await clientGroupViewService.getClientGroup(groupId);
-    }
-
-
-    function getGroupDetails(clientGroup: ClientGroup): string{
-        if(clientGroup.type == ClientGroupEnum.CLIENT_OS){
-            return translate(clientGroup.clientOS);
-        }
-
-        if(clientGroup.type == ClientGroupEnum.IP_V4_RANGE){
-            return clientGroup.ipRangeStart + " - " + clientGroup.ipRangeEnd;
-        }
-
-        if(clientGroup.type == ClientGroupEnum.NAME_ALPHABETICAL_RANGE){
-            return clientGroup.nameRangeStartLetter + " - " + clientGroup.nameRangeEndLetter;
-        }
-
-        return "";
-    }
-
-
+            return true;
+        })
+    });
     
 
-
+    function showAllClients(){
+        navigateTo(
+            constants.MONITORING_CLIENTS_ROUTE + '/' + examId
+            // {"hidden-client-group": generalUtils.createStringIdList(clientGroupsToHide)}
+        );
+    }
 
 </script>
 

@@ -187,24 +187,12 @@
 
     const clientOsField = ref<ClientOSEnum | null>(generalUtils.findEnumValue(ClientOSEnum, props.clientGroup?.clientOS));
 
-    //description text
-    const clientGroupDescription = ref<string>(getInitalDescriptionValue());
-
-    //load descriotion according to selection
-    watch(clientGroupTypeSelect, () => {
-        if(clientGroupTypeSelect.value == null){
-            return;
-        }
-
-        clientGroupDescription.value = generalUtils.getClientGroupDescription(clientGroupTypeSelect.value, i18n);
-    });
+    const clientGroupDescription = ref<string>(generalUtils.getClientGroupDescription(clientGroupTypeSelect.value, i18n));
 
     //emits
     const emit = defineEmits<{
         closeClientGroupDialog: any;
     }>();
-
-    
 
     //client group select items
     const clientGroupItems = Object.values(ClientGroupEnum)
@@ -221,11 +209,6 @@
         title: translate(value, i18n), 
         value: value
     }));
-
-    function getInitalDescriptionValue(): string{
-        return "No Client Group type is selected. Please select one.";
-    }
-
 
 </script>
 

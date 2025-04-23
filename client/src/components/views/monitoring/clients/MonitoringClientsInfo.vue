@@ -8,7 +8,7 @@
                 <v-row>
                     <v-col>
                         <div class="primary-text-color text-h5 font-weight-bold">
-                            Client List
+                            {{monitoringStore.selectedExam?.quizName}}
                         </div>
                     </v-col>
                 </v-row>
@@ -74,6 +74,7 @@
                                 <div class="primary-text-color text-subtitle-1">
                                     Groups
                                 </div>
+
                                 <div>
                                     <v-chip 
                                         v-for="clientGroup in monitoringStore.clientGroups?.content"
@@ -81,7 +82,7 @@
                                         :variant="monitoringStore.clientGroupFilters.includes(clientGroup.id!) ? 'flat' : 'tonal'"
                                         size="small" 
                                         class="mr-2 mt-2"
-                                        @click="monitoringStore.cultivateClientGroupFilter(clientGroup.id!)">
+                                        @click="monitoringStore.applyClientGroupFilters(clientGroup.id!)">
                                         {{clientGroup.name}}
                                     </v-chip>
                                 </div>
@@ -133,14 +134,11 @@
 
 <script setup lang="ts">
     import {useMonitoringStore} from "@/stores/monitoringStore";
-    import { ExamStatusEnum, ExamTypeEnum } from "@/models/examFiltersEnum";
-    import * as generalUtils from "@/utils/generalUtils";
-    import { VDateInput } from "vuetify/labs/VDateInput";
-    import * as timeUtils from "@/utils/timeUtils";
     import {translate} from "@/utils/generalUtils";
     import { useI18n } from "vue-i18n";
-    import {ConnectionStatusEnum} from "@/models/connectionStatusEnum";
-
+    import { storeToRefs } from "pinia";
+    import * as generalUtils from "@/utils/generalUtils";
+    import { MonitoringFilterEnum } from "@/models/monitoringFilterEnum";
 
     //i18n
     const i18n = useI18n();
@@ -148,8 +146,13 @@
     //info panel (whole component)
     const isInfoExpanded = ref<boolean>(true);
 
+    //router
+    const route = useRoute();
+
     //stores
     const monitoringStore = useMonitoringStore();
+    const monitoringStoreRef = storeToRefs(monitoringStore);
+
 
     //datepicker
     const datepicker = ref();
@@ -159,13 +162,27 @@
         loadmonitoringListItemsCaller: any;
     }>();
 
-    //filters exam type
-    const typeFilters: {name: string, value: ExamTypeEnum, eventFunction: (filter: ExamTypeEnum) => void}[] = [
-        {name: translate(ExamTypeEnum.BYOD), value: ExamTypeEnum.BYOD, eventFunction: setActiveTypeFilter},
-        {name: translate(ExamTypeEnum.MANAGED), value: ExamTypeEnum.MANAGED, eventFunction: setActiveTypeFilter},
-        {name: translate(ExamTypeEnum.VDI), value: ExamTypeEnum.VDI, eventFunction: setActiveTypeFilter},
-        {name: translate(ExamTypeEnum.UNDEFINED), value: ExamTypeEnum.UNDEFINED, eventFunction: setActiveTypeFilter}
-    ];
+    onBeforeMount(() => {
+        // initGroupFilters();
+    });
+
+    function initGroupFilters(){
+        const preSelectedFilters: number[] = generalUtils.createNumberIdList(route.query[MonitoringFilterEnum.HIDDEN_CLIENT_GROUPS]?.toString());
+
+        for(let i = 0; i < preSelectedFilters.length; i++){
+            monitoringStore.applyClientGroupFilters(preSelectedFilters[i]);
+        }
+
+        // monitoringStore.clientGroupFilters.push(...preSelectedFilters);
+    }
+
+
+    function getFilterStyle(filterType: MonitoringFilterEnum, id: number){
+        return generalUtils.createNumberIdList(route.query[filterType]?.toString())
+        .includes(id) ? "flat" : "tonal";
+    }
+
+
 
     function loadmonitoringListItemsCaller(){ 
         if(datepicker != null && datepicker.value != null){
@@ -182,17 +199,6 @@
         monitoringStore.startDate = null;
         
         loadmonitoringListItemsCaller();
-    }
-
-    function setActiveTypeFilter(filter: ExamTypeEnum){
-        // if(monitoringStore.activeTypeFilter == filter){
-        //     monitoringStore.activeTypeFilter = null;
-        //     loadmonitoringListItemsCaller();
-        //     return;
-        // }
-
-        // monitoringStore.activeTypeFilter = filter;
-        // loadmonitoringListItemsCaller();
     }
 
 

@@ -14,44 +14,58 @@ export async function getOverview(token: string, id: string): Promise<[object, n
 
     const data = {
         "clientStates": {
-            "total": 250,
-            "ACTIVE": 100,
+            "total": 200,
             "READY": 50,
-            "DISABLED": 50,
-            "CONNECTION_REQUESTED": 50
+            "CLOSED": 50,
+            "ACTIVE": 100
             //ConnectionStatus enum
         },
-
         "clientGroups": [
+            //type is enum ClientGroupType --> add new type "SP_FALLBACK_GROUP"
             {
                 "id": 16,
-                "clientAmount": 50
+                "name": "group1",
+                "clientAmount": 50,
+                "screenProctoring": true,
+                "type": "CLIENT_OS",
+                "typeValue": "WINDOWS"
             },
             {
                 "id": 17,
-                "clientAmount": 20
+                "name": "group2",
+                "clientAmount": 20,
+                "screenProctoring": true,
+                "type": "IP_V4_RANGE",
+                "typeValue": "127.0.0.1 - 127.0.0.2"
             },
             {
                 "id": 18,
-                "clientAmount": 150
+                "name": "group3",
+                "clientAmount": 150,
+                "screenProctoring": false,
+                "type": "NAME_ALPHABETICAL_RANGE",
+                "typeValue": "A - Z"
+            },
+            
+            {
+                "id": 32,
+                "name": "SP Group",
+                "clientAmount": 0,
+                "screenProctoring": true,
+                "type": "SP_FALLBACK_GROUP",
+                "typeValue": ""
             },
         ],
-
         "indicators": {
-            "total": 200,
-            "LAST_PING": 50,
-            "ERROR_COUNT": 50,
-            "WARN_COUNT": 50,
-            "INFO_COUNT": 50
+            "BATTERY_STATUS": 50,
+            "WLAN_STATUS": 50,
             //IndicatorType enum
         },
-
         "notifications": {
             "LOCK_SCREEN": 1,
             "RAISE_HAND": 3
             // NotificationType enum
         }
-
     };
     
     return [data, 200];

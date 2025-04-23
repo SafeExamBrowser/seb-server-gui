@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { ExamStatusEnum, ExamTypeEnum } from "@/models/examFiltersEnum";
 import {translate} from "@/utils/generalUtils";
 import * as generalUtils from "@/utils/generalUtils";
+import * as navigation from "@/router/navigation";
 
 
 export const useMonitoringStore = defineStore("monitoring", () => {
@@ -26,45 +27,49 @@ export const useMonitoringStore = defineStore("monitoring", () => {
 
 
     const hiddenStates = ref<number[]>([]);
-    const hiddenClientGroups = ref<number[]>([]);
+    // const hiddenClientGroups = ref<number[]>([]);
     const hiddenIssues = ref<number[]>([]);
 
 
-    function cultivateClientGroupFilter(clientGroupId: number){
-        console.log("selected client group:" + clientGroupId)
-
-
+    function applyClientGroupFilters(clientGroupId: number){
         if(clientGroupFilters.value.includes(clientGroupId)){
         
             const index: number = clientGroupFilters.value.findIndex(id => id == clientGroupId);
             if(index != -1){
                 clientGroupFilters.value.splice(index, 1);
-                applyClientGroupFilter();
+                activateClientGroupFilters();
             }
 
             return;
         }
 
         clientGroupFilters.value.push(clientGroupId);
-        applyClientGroupFilter();
+        activateClientGroupFilters();
     }
 
 
     //par is list of the client groups that should be shown
-    function applyClientGroupFilter(){
+    function activateClientGroupFilters(){
         if(clientGroups.value == null){
             return;
         }
 
-        const allClientGroupIds: number[] = clientGroups.value.content.map(group => group.id!);
-        hiddenClientGroups.value = allClientGroupIds.filter(id => !clientGroupFilters.value.includes(id));
+        console.log("selected clientGroupFilters")
+        console.log(clientGroupFilters.value)
 
-        if(clientGroupFilters.value.length == 0){
-            hiddenClientGroups.value = [];
+        const allClientGroupIds: number[] = clientGroups.value.content.map(group => group.id!);
+        const clientGroupsToHide: number[] = allClientGroupIds.filter(id => !clientGroupFilters.value.includes(id));
+
+        console.log(clientGroupsToHide)
+
+        if(clientGroupsToHide.length == 0){
+            navigation.addQueryParam({});
+            // hiddenClientGroups.value = [];
+            return; 
         }
 
-        console.log("client filter:" + clientGroupFilters.value)
-        console.log("hidden client groups: " + hiddenClientGroups.value)
+        navigation.addQueryParam({"hidden-client-group": generalUtils.createStringIdList(clientGroupsToHide)});
+        // hiddenClientGroups.value = clientGroupsToHide;
     }
 
 
@@ -79,8 +84,6 @@ export const useMonitoringStore = defineStore("monitoring", () => {
         indicators,
         clientGroups,
         clientGroupFilters,
-        cultivateClientGroupFilter,
-        applyClientGroupFilter,
-        hiddenClientGroups
+        applyClientGroupFilters,
     };
 });

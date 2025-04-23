@@ -10,23 +10,47 @@
     <!------doughnut chart------->
     <v-row>
         <v-col>
-            <Doughnut
-                v-if="chartData != null"
-                :options="chartOptions"
-                :data="chartData"
-            />
+            <section class="chart-container">
+                <Doughnut
+                    v-if="chartData != null"
+                    :options="chartOptions"
+                    :data="chartData"
+                />
+                <div class="chart-label text-h5 font-weight-bold">
+                    Total: {{ monitoringStore.monitoringOverviewData?.clientStates.total }}
+                </div>
+            </section>
         </v-col>
     </v-row>
 
     <!------labels------->
-    <v-row v-for="(label, index) in labels">
-        <v-col>
-            <v-btn
-                append-icon="mdi-chevron-right"
-                :color="getConnectionStatusColor(label)">
-                {{ data[index] }} {{translate(label)}}
+    <v-row class="mt-2">
+
+        <v-col cols="6">
+            <template v-for="(label, index) in labels" :key="index">
+                <v-btn 
+                    v-if="label != ConnectionStatusEnum.MISSING"
+    
+                    block
+                    class="rounded-lg mb-3" 
+                    elevation="4" 
+                    :color="getConnectionStatusColor(label)">
+                    {{ data[index] }} {{translate(label)}}
+                </v-btn>
+            </template>
+        </v-col>
+
+        <v-col v-if="labels.includes(ConnectionStatusEnum.MISSING)">
+            <v-btn 
+                block
+                class="rounded-lg mb-3" 
+                elevation="4" 
+                :color="getConnectionStatusColor(labels[labels.length-1])">
+
+                {{ data[data.length-1] }} {{translate(labels[labels.length-1])}}
             </v-btn>
         </v-col>
+
     </v-row>
 
 </template>
@@ -61,6 +85,15 @@
         ]
     }>();
 
+    const clientStatesListSortOrder: any = {
+        [ConnectionStatusEnum.CONNECTION_REQUESTED]: 0,
+        [ConnectionStatusEnum.READY]: 1,
+        [ConnectionStatusEnum.ACTIVE]: 2,
+        [ConnectionStatusEnum.CLOSED]: 3,
+        [ConnectionStatusEnum.DISABLED]: 4,
+        [ConnectionStatusEnum.MISSING]: 5
+    };
+
     //chart data
     const labels = ref<(ConnectionStatusEnum | null)[]>([]);
     const data = ref<number[]>([])
@@ -71,7 +104,6 @@
 
         // console.log("it got here client states")
 
-
         if(monitoringStore.monitoringOverviewData == null){
             return;
         }
@@ -79,17 +111,23 @@
         labels.value = []
         data.value = []
         colors.value = []
-        
 
-        Object.entries(monitoringStore.monitoringOverviewData.clientStates)
-            .filter(([key]) => key !== "total")
-            .forEach(([connectionStatusString, amount]) => {
+        const clientStatesList: {clientStates: ConnectionStatusEnum, clientAmount: number}[] = Object.entries(monitoringStore.monitoringOverviewData.clientStates)
+            .filter(([key]) => key != "total")
+            .map(([key, value]) => ({
+                clientStates: generalUtils.findEnumValue(ConnectionStatusEnum, key)!,
+                clientAmount: value
+            }))
+            .sort((a, b) => {
+                return clientStatesListSortOrder[a.clientStates] - clientStatesListSortOrder[b.clientStates];
+            });
 
-                const connectionStatus: ConnectionStatusEnum | null = generalUtils.findEnumValue(ConnectionStatusEnum, connectionStatusString);
+        console.log(clientStatesList);
 
-                labels.value.push(connectionStatus);
-                data.value.push(amount);
-                colors.value.push(getConnectionStatusColor(connectionStatus));
+        clientStatesList.forEach((item) => {
+                labels.value.push(item.clientStates);
+                data.value.push(item.clientAmount);
+                colors.value.push(getConnectionStatusColor(item.clientStates));
             }
         );
 
@@ -104,34 +142,41 @@
 
     },{deep: true});
 
+    function getConnectionStatusColor(connectionStatus: ConnectionStatusEnum | null): string {
+        if (connectionStatus == null) return "#000000";
 
-    function getConnectionStatusColor(connectionStatus: ConnectionStatusEnum | null): string{
-        if(connectionStatus == null){
-            return "#000000";
+        switch (connectionStatus) {
+            case ConnectionStatusEnum.CONNECTION_REQUESTED:
+                return "#FFA726";
+            case ConnectionStatusEnum.READY:
+                return "#26C6DA";
+            case ConnectionStatusEnum.ACTIVE:
+                return "#66BB6A";
+            case ConnectionStatusEnum.CLOSED:
+                return "#7E57C2";
+            case ConnectionStatusEnum.DISABLED:
+                return "#9E9E9E";
+            case ConnectionStatusEnum.MISSING:
+                return "#EF5350";
+            default:
+                return "#000000";
         }
-
-        if(connectionStatus == ConnectionStatusEnum.ACTIVE){
-            return "#13e844";
-        }
-
-        if(connectionStatus == ConnectionStatusEnum.CONNECTION_REQUESTED){
-            return "#e8a010";
-        }
-
-        if(connectionStatus == ConnectionStatusEnum.READY){
-            return "#134fe8";
-        }
-
-        if(connectionStatus == ConnectionStatusEnum.DISABLED){
-            return "#e81010";
-        }
-
-        return "#000000";
     }
 
 
 </script>
 
 <style scoped>
+
+    .chart-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .chart-label {
+        position: absolute;
+    }
 
 </style>

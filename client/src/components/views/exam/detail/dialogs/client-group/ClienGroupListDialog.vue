@@ -246,9 +246,13 @@
     function closeEditDialog(isChange?: boolean){
         editDialog.value = false;
 
-        if(isChange){
-            getClientGroups();
-        }
+        console.log("it got here")
+
+        clientGroups.value[0].name = "updateWorked";
+
+        // if(isChange){
+        //     getClientGroups();
+        // }
     }
     
 

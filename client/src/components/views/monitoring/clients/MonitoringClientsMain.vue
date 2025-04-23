@@ -86,6 +86,9 @@
     //exam
     const examId = useRoute().params.examId.toString();
 
+    //router
+    const route = useRoute();
+
     //stores
     const monitoringStore = useMonitoringStore();
     const monitoringStoreRef = storeToRefs(monitoringStore);
@@ -132,6 +135,10 @@
         stopIntervalRefresh();
     });
 
+    onUpdated(() => {
+        console.log("dom got updated")
+    })
+
     function updateTableData(){
         monitoringDataTable.value = Array.from(monitoringData.value, ([key, value]) => ({
             key,
@@ -164,9 +171,15 @@
     watch(fullPageData, async () => {
         // console.log(fullPageData.value)
 
+        const start = performance.now();
+
+
         //check if sessions got added / removed
         if(fullPageData.value?.monitoringConnectionData.cons.length! > monitoringData.value.size){
-            await addNewClients();
+            // console.log("it got here add")
+            // await addNewClients();
+            addNewClients();
+
         }
 
         // console.log("dynamic length: " + fullPageData.value?.monitoringConnectionData.cons.length)
@@ -174,28 +187,34 @@
 
 
         if(fullPageData.value?.monitoringConnectionData.cons.length! < monitoringData.value.size){
+            // console.log("it got here remove")
+
             removeClients();
         }
 
         await updateFullPageData();
+
+        const end = performance.now();
+        // console.log(`Execution time: ${(end - start)/1000} ms`);
+
+
     });
 
-    watch([monitoringStoreRef.hiddenClientGroups], () => {
-        console.log("it got here")
+    watch(() => route.query, () => {
         getAndSetFullPageData();
-    });
-
+      },{ deep: true }
+    );
 
 
     //==============data fetching================
     async function getAndSetFullPageData(){
         const fullPageResponse: MonitoringFullPageData | null = await monitoringViewService.getFullPage(
             examId, 
-            monitoringViewService.getFullPageHeaders(
-                [],
-                monitoringStoreRef.hiddenClientGroups.value,
-                []
-            )
+            {
+                "hidden-states": route.query["hidden-states"] || [],
+                "hidden-client-group": route.query["hidden-client-group"] || [],
+                "hidden-issues": route.query["hidden-issues"] || []
+            }
         );
 
         if(fullPageResponse == null){
@@ -243,7 +262,9 @@
         });
 
         if(idsToUpdateMap.size != 0){
-            await addFreshData(idsToUpdateMap);
+            // await addFreshData(idsToUpdateMap);
+            addFreshData(idsToUpdateMap);
+
         }
 
         updateTableData();
@@ -284,7 +305,9 @@
             }
         });
 
-        await addFreshData(newIdsMap);
+        // await addFreshData(newIdsMap);
+        addFreshData(newIdsMap);
+
         updateTableData();
     }
 
@@ -293,30 +316,21 @@
             return;
         }
 
-        console.log("it got here")
+        // console.log("it got here")
 
         const dynamicDataSet: Set<number> = new Set(fullPageData.value.monitoringConnectionData.cons.map(connection => connection.id));
-        const dynamicDataKeysToDelete: number[] = [];
 
-        console.log(dynamicDataSet)
+        // console.log("all keys: " + dynamicDataSet)
+        // console.log("all keys length: " + dynamicDataSet.size)
 
-        for (const [key, value] of dynamicDataSet.entries()) {
-            if (dynamicDataSet.has(key)) {
-                dynamicDataKeysToDelete.push(key);
-            }
-        }
 
+        //check current data contains fresh data
         for (const key of monitoringData.value.keys()) {
             if (!dynamicDataSet.has(key)) {
                 monitoringData.value.delete(key);
             }
         }
 
-
-        // dynamicDataKeysToDelete.forEach(key => {
-        //     monitoringData.value.delete(key);
-        // });
-        
         updateTableData();
     }
 

@@ -76,6 +76,15 @@ export function createStringIdList(ids: number[]): string{
     return stringIdList
 }
 
+export function createNumberIdList(ids: string | null | undefined): number[]{
+    //checks if string is null or if it includes comma or numbers
+    if(ids == null || !(/^[0-9,]*$/.test(ids))){
+        return [];
+    }
+
+    return ids.split(",").map(id => parseInt(id));
+}
+
 export function hasLMSFeature(lmsTypeString: string, feature: LMSFeatureEnum): boolean {
     let type: LMSTypeEnum | null = findEnumValue(LMSTypeEnum, lmsTypeString);
     if(type == null){
