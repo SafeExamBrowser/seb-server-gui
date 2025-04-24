@@ -28,27 +28,38 @@
 
         <v-col cols="6">
             <template v-for="(label, index) in labels" :key="index">
-                <v-btn 
+                <v-card
                     v-if="label != ConnectionStatusEnum.MISSING"
-    
-                    block
-                    class="rounded-lg mb-3" 
-                    elevation="4" 
-                    :color="getConnectionStatusColor(label)">
-                    {{ data[index] }} {{translate(label)}}
-                </v-btn>
+
+                    class="rounded-lg mb-3 pa-2" 
+                    variant="flat"
+                    :hover="true"
+                    :ripple="false"
+                    :color="getConnectionStatusColor(label)"
+                    @click="">
+                    
+                    <v-row>
+                        <v-col align="left"><span>{{ data[index] }} {{translate(label)}}</span></v-col>
+                        <v-col align="right"><v-icon>mdi-chevron-right</v-icon></v-col>
+                    </v-row>
+                </v-card>
             </template>
         </v-col>
 
         <v-col v-if="labels.includes(ConnectionStatusEnum.MISSING)">
-            <v-btn 
-                block
-                class="rounded-lg mb-3" 
-                elevation="4" 
-                :color="getConnectionStatusColor(labels[labels.length-1])">
+            <v-card
+                class="rounded-lg mb-3 pa-2" 
+                variant="flat"
+                :hover="true"
+                :ripple="false"
+                :color="getConnectionStatusColor(labels[labels.length-1])"
+                @click="">
 
-                {{ data[data.length-1] }} {{translate(labels[labels.length-1])}}
-            </v-btn>
+                <v-row>
+                    <v-col align="left"><span>{{ data[data.length-1] }} {{translate(labels[labels.length-1])}}</span></v-col>
+                    <v-col align="right"><v-icon>mdi-chevron-right</v-icon></v-col>
+                </v-row>
+            </v-card>
         </v-col>
 
     </v-row>
