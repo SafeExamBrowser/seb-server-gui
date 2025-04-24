@@ -23,41 +23,53 @@
         </v-col>
     </v-row>
 
-    <!------labels------->
+    <!------state buttons------->
     <v-row class="mt-2">
 
+        <!------all states (no missing)------->
         <v-col cols="6">
-            <template v-for="(label, index) in labels" :key="index">
+            <template v-for="(state, index) in clientStates" :key="index">
                 <v-card
-                    v-if="label != ConnectionStatusEnum.MISSING"
+                    v-if="state != ConnectionStatusEnum.MISSING"
 
                     class="rounded-lg mb-3 pa-2" 
                     variant="flat"
                     :hover="true"
                     :ripple="false"
-                    :color="getConnectionStatusColor(label)"
-                    @click="">
+                    :color="getConnectionStatusColor(state)"
+                    @click="monitoringViewService.goToMonitoring(
+                                    MonitoringHeaderEnum.SHOW_STATES, 
+                                    state!, 
+                                    examId)">
                     
                     <v-row>
-                        <v-col align="left"><span>{{ data[index] }} {{translate(label)}}</span></v-col>
-                        <v-col align="right"><v-icon>mdi-chevron-right</v-icon></v-col>
+                        <v-col align="left">{{ clientData[index] }} {{translate(state)}}</v-col>
+                        <v-col align="right">
+                            <v-icon :icon="getConnectionStatusIcon(state)"></v-icon>
+                        </v-col>
                     </v-row>
                 </v-card>
             </template>
         </v-col>
 
-        <v-col v-if="labels.includes(ConnectionStatusEnum.MISSING)">
+        <!------missing state------->
+        <v-col v-if="clientStates.includes(ConnectionStatusEnum.MISSING)">
             <v-card
                 class="rounded-lg mb-3 pa-2" 
                 variant="flat"
                 :hover="true"
                 :ripple="false"
-                :color="getConnectionStatusColor(labels[labels.length-1])"
-                @click="">
+                :color="getConnectionStatusColor(clientStates[clientStates.length-1])"
+                @click="monitoringViewService.goToMonitoring(
+                                    MonitoringHeaderEnum.SHOW_STATES, 
+                                    ConnectionStatusEnum.MISSING, 
+                                    examId)">
 
                 <v-row>
-                    <v-col align="left"><span>{{ data[data.length-1] }} {{translate(labels[labels.length-1])}}</span></v-col>
-                    <v-col align="right"><v-icon>mdi-chevron-right</v-icon></v-col>
+                    <v-col align="left">{{ clientData[clientData.length-1] }} {{translate(clientStates[clientStates.length-1])}}</v-col>
+                    <v-col align="right">
+                        <v-icon :icon="getConnectionStatusIcon(ConnectionStatusEnum.MISSING)"></v-icon>
+                    </v-col>
                 </v-row>
             </v-card>
         </v-col>
@@ -74,10 +86,16 @@
     import {translate} from "@/utils/generalUtils";
     import * as generalUtils from "@/utils/generalUtils";
     import {ConnectionStatusEnum} from "@/models/connectionStatusEnum";
+    import * as monitoringViewService from "@/services/component-services/monitoringViewService";
+    import { MonitoringHeaderEnum } from "@/models/monitoringEnums";
+
 
     //stores
     const monitoringStore = useMonitoringStore();
     const monitoringStoreRef = storeToRefs(monitoringStore);
+
+    //exam
+    const examId = useRoute().params.examId.toString();
 
     //chart
     ChartJS.register(ArcElement, Tooltip, Legend)
@@ -106,9 +124,9 @@
     };
 
     //chart data
-    const labels = ref<(ConnectionStatusEnum | null)[]>([]);
-    const data = ref<number[]>([])
-    const colors = ref<string[]>([])
+    const clientStates = ref<(ConnectionStatusEnum | null)[]>([]);
+    const clientData = ref<number[]>([])
+    const clientColors = ref<string[]>([])
 
 
     watch(() => monitoringStore.monitoringOverviewData?.clientStates, () => {
@@ -119,9 +137,9 @@
             return;
         }
 
-        labels.value = []
-        data.value = []
-        colors.value = []
+        clientStates.value = []
+        clientData.value = []
+        clientColors.value = []
 
         const clientStatesList: {clientStates: ConnectionStatusEnum, clientAmount: number}[] = Object.entries(monitoringStore.monitoringOverviewData.clientStates)
             .filter(([key]) => key != "total")
@@ -136,17 +154,17 @@
         console.log(clientStatesList);
 
         clientStatesList.forEach((item) => {
-                labels.value.push(item.clientStates);
-                data.value.push(item.clientAmount);
-                colors.value.push(getConnectionStatusColor(item.clientStates));
+                clientStates.value.push(item.clientStates);
+                clientData.value.push(item.clientAmount);
+                clientColors.value.push(getConnectionStatusColor(item.clientStates));
             }
         );
 
         chartData.value = {
             datasets: [
                 {
-                    backgroundColor: colors.value,
-                    data: data.value
+                    backgroundColor: clientColors.value,
+                    data: clientData.value
                 }
             ]
         }
@@ -171,6 +189,27 @@
                 return "#EF5350";
             default:
                 return "#000000";
+        }
+    }
+
+    function getConnectionStatusIcon(connectionStatus: ConnectionStatusEnum | null): string {
+        if (connectionStatus == null) return "mdi-chevron-right";
+
+        switch (connectionStatus) {
+            case ConnectionStatusEnum.CONNECTION_REQUESTED:
+                return "mdi-signal-distance-variant";
+            case ConnectionStatusEnum.READY:
+                return "mdi-check";
+            case ConnectionStatusEnum.ACTIVE:
+                return "mdi-check-underline";
+            case ConnectionStatusEnum.CLOSED:
+                return "mdi-close";
+            case ConnectionStatusEnum.DISABLED:
+                return "mdi-send-lock";
+            case ConnectionStatusEnum.MISSING:
+                return "mdi-signal-off";
+            default:
+                return "mdi-chevron-right";
         }
     }
 

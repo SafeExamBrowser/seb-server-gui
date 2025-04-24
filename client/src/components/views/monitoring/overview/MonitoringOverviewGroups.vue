@@ -32,13 +32,18 @@
 
                     <!--------sp button-------->
                     <v-col cols="1">
-                        <v-icon v-if="clientGroupItem.screenProctoring" icon="mdi-video">
+                        <v-icon v-if="clientGroupItem.spsGroupUUID != null && clientGroupItem.spsGroupUUID != ''" icon="mdi-video">
                         </v-icon>
                     </v-col>
 
                     <!--------monitoring button-------->
                     <v-col cols="1">
-                        <v-icon v-if="clientGroupItem.type != ClientGroupEnum.SP_FALLBACK_GROUP" icon="mdi-chevron-right">
+                        <v-icon 
+                            icon="mdi-chevron-right" 
+                            @click="monitoringViewService.goToMonitoring(
+                                MonitoringHeaderEnum.SHOW_CLIENT_GROUPS, 
+                                generalUtils.createStringIdList([clientGroupItem.id]), 
+                                examId)">
                         </v-icon>
                     </v-col>
                 </v-row>
@@ -48,7 +53,12 @@
 
     <v-row>
         <v-col align="right">
-            <v-btn color="primary" @click="showAllClients()">
+            <v-btn 
+                color="primary" 
+                @click="monitoringViewService.goToMonitoring(
+                    MonitoringHeaderEnum.SHOW_ALL, 
+                    true, 
+                    examId)">
                 Show all
             </v-btn>
         </v-col>
@@ -58,11 +68,11 @@
 
 <script setup lang="ts">
     import { useMonitoringStore } from "@/stores/monitoringStore";
-    import * as clientGroupViewService from "@/services/component-services/clientGroupViewService";
+    import * as monitoringViewService from "@/services/component-services/monitoringViewService";
     import {translate} from "@/utils/generalUtils";
     import { ClientGroupEnum } from "@/models/clientGroupEnum";
-    import {navigateTo} from "@/router/navigation";
-    import * as constants from "@/utils/constants";
+    import { MonitoringHeaderEnum } from "@/models/monitoringEnums";
+    import * as generalUtils from "@/utils/generalUtils";
 
     //stores
     const monitoringStore = useMonitoringStore();
@@ -88,14 +98,6 @@
         })
     });
     
-
-    function showAllClients(){
-        navigateTo(
-            constants.MONITORING_CLIENTS_ROUTE + '/' + examId
-            // {"hidden-client-group": generalUtils.createStringIdList(clientGroupsToHide)}
-        );
-    }
-
 </script>
 
 <style scoped>

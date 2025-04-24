@@ -34,7 +34,7 @@
     "MISSING": "Missing",
     "CLOSED": "Closed",
 
-    "-------IndicatorTypeEnum todo: create------": "----------",
+    "-------IndicatorTypeEnum------": "----------",
     "LAST_PING": "Last ping",
     "ERROR_COUNT": "Error count",
     "WARN_COUNT": "Warn count",
@@ -42,7 +42,7 @@
     "BATTERY_STATUS": "Battery status",
     "WLAN_STATUS": "Wlan status",
 
-    "-------NotificationTypeEnum todo: create------": "----------",
+    "-------NotificationTypeEnum------": "----------",
     "LOCK_SCREEN": "Lock screen",
     "RAISE_HAND": "Raise hand",
 

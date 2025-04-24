@@ -1,4 +1,4 @@
-import { IndicatorObject } from "@/models/indicatorEnum";
+import { IndicatorObject } from "@/models/monitoringEnums";
 
 export type MonitoringRow = {
     id: number;

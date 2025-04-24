@@ -38,8 +38,8 @@
             </v-sheet>
         </v-col>
 
-        <!--------notifications-------->
-        <v-col cols="3">
+        <!--------notifications & indicators-------->
+        <v-col cols="3" v-if="monitoringStore.monitoringOverviewData?.notifications || monitoringStore.monitoringOverviewData?.indicators">
             <v-sheet class="rounded-lg pa-4" elevation="4">
                 <MonitoringOverviewNotifications></MonitoringOverviewNotifications>
             </v-sheet>
@@ -123,6 +123,13 @@
             monitoringStore.monitoringOverviewData!.clientGroups[2].clientAmount = randomNumber3; 
             monitoringStore.monitoringOverviewData!.clientGroups[3].clientAmount = randomNumber4; 
 
+            monitoringStore.monitoringOverviewData!.notifications.LOCK_SCREEN = randomNumber1; 
+            monitoringStore.monitoringOverviewData!.notifications.RAISE_HAND = randomNumber2; 
+
+            monitoringStore.monitoringOverviewData!.indicators.BATTERY_STATUS = randomNumber3; 
+            monitoringStore.monitoringOverviewData!.indicators.WLAN_STATUS = randomNumber4; 
+
+            
 
 
             // if(randomNumber1 > 700){

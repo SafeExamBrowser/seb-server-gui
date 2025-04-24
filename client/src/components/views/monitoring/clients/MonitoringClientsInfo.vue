@@ -138,7 +138,7 @@
     import { useI18n } from "vue-i18n";
     import { storeToRefs } from "pinia";
     import * as generalUtils from "@/utils/generalUtils";
-    import { MonitoringFilterEnum } from "@/models/monitoringFilterEnum";
+    import { MonitoringHeaderEnum } from "@/models/monitoringEnums";
 
     //i18n
     const i18n = useI18n();
@@ -166,21 +166,21 @@
         // initGroupFilters();
     });
 
-    function initGroupFilters(){
-        const preSelectedFilters: number[] = generalUtils.createNumberIdList(route.query[MonitoringFilterEnum.HIDDEN_CLIENT_GROUPS]?.toString());
+    // function initGroupFilters(){
+    //     const preSelectedFilters: number[] = generalUtils.createNumberIdList(route.query[MonitoringFilterEnum.HIDDEN_CLIENT_GROUPS]?.toString());
 
-        for(let i = 0; i < preSelectedFilters.length; i++){
-            monitoringStore.applyClientGroupFilters(preSelectedFilters[i]);
-        }
+    //     for(let i = 0; i < preSelectedFilters.length; i++){
+    //         monitoringStore.applyClientGroupFilters(preSelectedFilters[i]);
+    //     }
 
-        // monitoringStore.clientGroupFilters.push(...preSelectedFilters);
-    }
+    //     // monitoringStore.clientGroupFilters.push(...preSelectedFilters);
+    // }
 
 
-    function getFilterStyle(filterType: MonitoringFilterEnum, id: number){
-        return generalUtils.createNumberIdList(route.query[filterType]?.toString())
-        .includes(id) ? "flat" : "tonal";
-    }
+    // function getFilterStyle(filterType: MonitoringFilterEnum, id: number){
+    //     return generalUtils.createNumberIdList(route.query[filterType]?.toString())
+    //     .includes(id) ? "flat" : "tonal";
+    // }
 
 
 

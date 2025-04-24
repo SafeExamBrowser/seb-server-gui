@@ -26,7 +26,7 @@ export async function getOverview(token: string, id: string): Promise<[object, n
                 "id": 16,
                 "name": "group1",
                 "clientAmount": 50,
-                "screenProctoring": true,
+                "spsGroupUUID": "7292542f-fcc6-4e79-980f-93525a5dd0d5",
                 "type": "CLIENT_OS",
                 "typeValue": "WINDOWS"
             },
@@ -34,7 +34,7 @@ export async function getOverview(token: string, id: string): Promise<[object, n
                 "id": 17,
                 "name": "group2",
                 "clientAmount": 20,
-                "screenProctoring": true,
+                "spsGroupUUID": "7292542f-fcc6-4e79-980f-93525a5dd0d5",
                 "type": "IP_V4_RANGE",
                 "typeValue": "127.0.0.1 - 127.0.0.2"
             },
@@ -42,7 +42,6 @@ export async function getOverview(token: string, id: string): Promise<[object, n
                 "id": 18,
                 "name": "group3",
                 "clientAmount": 150,
-                "screenProctoring": false,
                 "type": "NAME_ALPHABETICAL_RANGE",
                 "typeValue": "A - Z"
             },
@@ -51,7 +50,7 @@ export async function getOverview(token: string, id: string): Promise<[object, n
                 "id": 32,
                 "name": "SP Group",
                 "clientAmount": 0,
-                "screenProctoring": true,
+                "spsGroupUUID": "7292542f-fcc6-4e79-980f-93525a5dd0d5",
                 "type": "SP_FALLBACK_GROUP",
                 "typeValue": ""
             },

@@ -77,7 +77,7 @@
     import * as examViewService from "@/services/component-services/examViewService";
     import * as indicatorViewService from "@/services/component-services/indicatorViewService";
     import TableHeaders from "@/utils/table/TableHeaders.vue";
-    import { IndicatorEnum, IndicatorObject } from "@/models/indicatorEnum";
+    import { IndicatorEnum, IndicatorObject } from "@/models/monitoringEnums";
     import { MonitoringRow } from "@/models/monitoringClients";
     import * as tableUtils from "@/utils/table/tableUtils";
     import { storeToRefs } from "pinia";

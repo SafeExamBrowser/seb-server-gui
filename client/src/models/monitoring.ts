@@ -24,9 +24,9 @@ type MonitoringOverview = {
 
 type OverviewClientGroup = {
     id: number;
-    clientAmount: number;
     name: string;
-    screenProctoring: boolean;
+    clientAmount: number;
+    spsGroupUUID: string;
     type: string;
     typeValue: string;
 }

@@ -5,6 +5,10 @@ import { ExamStatusEnum } from "@/models/examFiltersEnum";
 import {translate} from "@/utils/generalUtils";
 import * as examViewService from "@/services/component-services/examViewService";
 import * as examService from "@/services/api-services/examService";
+import { MonitoringHeaderEnum } from "@/models/monitoringEnums";
+import {navigateTo} from "@/router/navigation";
+import * as constants from "@/utils/constants";
+
 
 
 //================api===============
@@ -71,4 +75,12 @@ export function getMonitoringDisabledWarningText(): string{
     }
 
     return "";
+}
+
+
+export function goToMonitoring(header: MonitoringHeaderEnum, value: string | boolean, examId: string){
+    navigateTo(
+        constants.MONITORING_CLIENTS_ROUTE + '/' + examId,
+        {[header]: value}
+    );
 }

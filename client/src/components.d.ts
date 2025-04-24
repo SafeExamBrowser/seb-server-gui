@@ -10,7 +10,6 @@ declare module 'vue' {
     AddClientGroupDialog: typeof import('./components/views/exam/detail/dialogs/client-group/AddClientGroupDialog.vue')['default']
     AlertMsg: typeof import('./components/widgets/AlertMsg.vue')['default']
     ClienGroupListDialog: typeof import('./components/views/exam/detail/dialogs/client-group/ClienGroupListDialog.vue')['default']
-    ClientGroupDialog: typeof import('./components/views/monitoring/dialogs/ClientGroupDialog.vue')['default']
     ClientGroupInfoDialog: typeof import('./components/views/monitoring/dialogs/ClientGroupInfoDialog.vue')['default']
     ContainerLayout: typeof import('./components/layout/ContainerLayout.vue')['default']
     DeleteConfirmDialog: typeof import('./components/widgets/DeleteConfirmDialog.vue')['default']
