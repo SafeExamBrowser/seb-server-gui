@@ -10,8 +10,8 @@ export async function getOverview(examId: string): Promise<MonitoringOverview | 
     return (await apiService.api.get(monitoringUrl + "/get-overview/" + examId, {headers: apiService.getHeaders()})).data;
 }
 
-export async function getFullPage(examId: string, optionalHeaders: {}): Promise<MonitoringFullPageData | any>{
-    const url: string = monitoringUrl + "/" + examId + "/fullpage";
+export async function getConnections(examId: string, optionalHeaders: {}): Promise<MonitoringConnections | any>{
+    const url: string = monitoringUrl + "/connections/" + examId;
     return (await apiService.api.get(url, {headers: apiService.getHeaders(), params: {optionalHeaders}})).data;
 }
 

@@ -154,9 +154,14 @@
         console.log(clientStatesList);
 
         clientStatesList.forEach((item) => {
-                clientStates.value.push(item.clientStates);
-                clientData.value.push(item.clientAmount);
-                clientColors.value.push(getConnectionStatusColor(item.clientStates));
+
+                console.log(item.clientAmount)
+
+                if(item.clientAmount != 0){
+                    clientStates.value.push(item.clientStates);
+                    clientData.value.push(item.clientAmount);
+                    clientColors.value.push(getConnectionStatusColor(item.clientStates));
+                }
             }
         );
 

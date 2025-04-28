@@ -29,6 +29,7 @@ export const ASSESSMENT_TOOL_GET_ROUTE = "/get-assessment-tool";
 
 //monitoring
 export const MONITORING_ROUTE = "/monitoring";
+export const MONITORING_CONNECTIONS_ROUTE = MONITORING_ROUTE + "/connections";
 export const MONITORING_TEST_RUN_ROUTE = MONITORING_ROUTE + "/testrun";
 export const MONITORING_OVERVIEW_ROUTE = MONITORING_ROUTE + "/get-overview";
 

@@ -77,7 +77,7 @@
     import * as examViewService from "@/services/component-services/examViewService";
     import * as indicatorViewService from "@/services/component-services/indicatorViewService";
     import TableHeaders from "@/utils/table/TableHeaders.vue";
-    import { IndicatorEnum, IndicatorObject } from "@/models/monitoringEnums";
+    import { IndicatorEnum, IndicatorObject, MonitoringHeaderEnum } from "@/models/monitoringEnums";
     import { MonitoringRow } from "@/models/monitoringClients";
     import * as tableUtils from "@/utils/table/tableUtils";
     import { storeToRefs } from "pinia";
@@ -95,7 +95,7 @@
     const appBarStore = useAppBarStore();
 
     //items
-    const fullPageData = ref<MonitoringFullPageData>();
+    const connections = ref<MonitoringConnections>();
     const staticClientDataList = ref<MonitoringStaticClientData>();
     const monitoringDataTable = ref<MonitoringRow[]>([]);
     const monitoringData = ref<Map<number, MonitoringRow>>(new Map());
@@ -112,10 +112,7 @@
     const clientGroupDialog = ref<boolean>(false);
     const clientGroupToView = ref<ClientGroup | null>(null);
 
-
     //table
-    const isOnLoad = ref<boolean>(true);
-    const defaultSort: {key: string, order: string}[] = [{key: 'quizStartTime', order: 'desc'}];
     const clientsTableHeadersRef = ref<any[]>();
     const clientsTableHeaders = ref([
         {title: translate("monitoringClients.main.tableHeaderNameSession"), key: "nameOrSession", width: "30%", sortable: true},
@@ -123,7 +120,6 @@
         {title: translate("monitoringClients.main.tableHeaderConnectionInfo"), key: "connectionInfo", width: "20%", sortable: true},
         {title: translate("monitoringClients.main.tableHeaderStatus"), key: "status", sortable: true}
     ]);  
-
 
 
     //=========events & watchers================
@@ -148,72 +144,51 @@
 
 
     async function initalize(){
+        // const start = performance.now();
 
-        const start = performance.now();
-
-        await getAndSetFullPageData();
+        await getAndSetConnections();
         await getAndSetStaticClientData(getAllConnectionIds());
 
-
         initalizeTableData();
-
         addIndicatorHeaders();
 
-        const end = performance.now();
+        // const end = performance.now();
         // console.log(`Execution time: ${(end - start)/1000} ms`);
 
         startIntervalRefresh();
-
-        // console.log(fullPageData.value)
-        // console.log(staticClientDataList.value)
     }
 
-    watch(fullPageData, async () => {
-        // console.log(fullPageData.value)
-
-        const start = performance.now();
-
+    watch(connections, async () => {
 
         //check if sessions got added / removed
-        if(fullPageData.value?.monitoringConnectionData.cons.length! > monitoringData.value.size){
-            // console.log("it got here add")
+        if(connections.value?.monitoringConnectionData.cons.length! > monitoringData.value.size){
             // await addNewClients();
             addNewClients();
-
         }
 
-        // console.log("dynamic length: " + fullPageData.value?.monitoringConnectionData.cons.length)
-        // console.log("actual length: " + monitoringData.value.size)
-
-
-        if(fullPageData.value?.monitoringConnectionData.cons.length! < monitoringData.value.size){
-            // console.log("it got here remove")
-
+        if(connections.value?.monitoringConnectionData.cons.length! < monitoringData.value.size){
             removeClients();
         }
 
-        await updateFullPageData();
-
-        const end = performance.now();
-        // console.log(`Execution time: ${(end - start)/1000} ms`);
-
-
+        await updateConnections();
     });
 
-    watch(() => route.query, () => {
-        getAndSetFullPageData();
-      },{ deep: true }
-    );
+    // watch(() => route.query, () => {
+    //     getAndSetFullPageData();
+    //   },{ deep: true }
+    // );
 
 
     //==============data fetching================
-    async function getAndSetFullPageData(){
-        const fullPageResponse: MonitoringFullPageData | null = await monitoringViewService.getFullPage(
+    async function getAndSetConnections(){
+        const fullPageResponse: MonitoringConnections | null = await monitoringViewService.getConnections(
             examId, 
-            {
-                "hidden-states": route.query["hidden-states"] || [],
-                "hidden-client-group": route.query["hidden-client-group"] || [],
-                "hidden-issues": route.query["hidden-issues"] || []
+            {   
+                [MonitoringHeaderEnum.SHOW_ALL]: route.query[MonitoringHeaderEnum.SHOW_ALL] || [],
+                [MonitoringHeaderEnum.SHOW_CLIENT_GROUPS]: route.query[MonitoringHeaderEnum.SHOW_CLIENT_GROUPS] || [],
+                [MonitoringHeaderEnum.SHOW_STATES]: route.query[MonitoringHeaderEnum.SHOW_STATES] || [],
+                [MonitoringHeaderEnum.SHOW_NOTIFCATION]: route.query[MonitoringHeaderEnum.SHOW_NOTIFCATION] || [],
+                [MonitoringHeaderEnum.SHOW_INDICATORS]: route.query[MonitoringHeaderEnum.SHOW_INDICATORS] || [],
             }
         );
 
@@ -221,7 +196,7 @@
             return;
         }
 
-        fullPageData.value = fullPageResponse;
+        connections.value = fullPageResponse;
     }
 
     async function getAndSetStaticClientData(modelIds: number[]){
@@ -240,14 +215,14 @@
 
 
     //==============data update=================
-    async function updateFullPageData(){
-        if(fullPageData.value == null || staticClientDataList.value == null){
+    async function updateConnections(){
+        if(connections.value == null || staticClientDataList.value == null){
             return;
         }
 
         const idsToUpdateMap = new Map<number, number>();
 
-        fullPageData.value.monitoringConnectionData.cons.forEach((dynamicData, index) => {
+        connections.value.monitoringConnectionData.cons.forEach((dynamicData, index) => {
 
             const monitoringRowData: MonitoringRow | undefined = monitoringData.value.get(dynamicData.id);
 
@@ -279,11 +254,11 @@
         newStaticClients?.staticClientConnectionData.forEach((staticData) => {
             const fullPageItemIndex: number | undefined = ids.get(staticData.id);
 
-            if(fullPageItemIndex != null && fullPageData.value != null){
+            if(fullPageItemIndex != null && connections.value != null){
                 monitoringData.value.set(
                     staticData.id,
                     createMonitoringRowData(
-                        fullPageData.value.monitoringConnectionData.cons[fullPageItemIndex], 
+                        connections.value.monitoringConnectionData.cons[fullPageItemIndex], 
                         staticData
                     )
                 );
@@ -292,11 +267,11 @@
     }
 
     async function addNewClients(){
-        if(fullPageData.value == null || staticClientDataList.value == null){
+        if(connections.value == null || staticClientDataList.value == null){
             return;
         }
 
-        const fullPageDataConnections: MonitoringClientConnection[] = fullPageData.value.monitoringConnectionData.cons;
+        const fullPageDataConnections: MonitoringClientConnection[] = connections.value.monitoringConnectionData.cons;
 
         const newIdsMap = new Map<number, number>();
         fullPageDataConnections.forEach((connection, index) => {
@@ -312,17 +287,11 @@
     }
 
     function removeClients(){
-        if(fullPageData.value == null || staticClientDataList.value == null){
+        if(connections.value == null || staticClientDataList.value == null){
             return;
         }
 
-        // console.log("it got here")
-
-        const dynamicDataSet: Set<number> = new Set(fullPageData.value.monitoringConnectionData.cons.map(connection => connection.id));
-
-        // console.log("all keys: " + dynamicDataSet)
-        // console.log("all keys length: " + dynamicDataSet.size)
-
+        const dynamicDataSet: Set<number> = new Set(connections.value.monitoringConnectionData.cons.map(connection => connection.id));
 
         //check current data contains fresh data
         for (const key of monitoringData.value.keys()) {
@@ -335,39 +304,9 @@
     }
 
 
-
-
-    function updateIndicator(indicatorMap: Map<number, IndicatorObject> | undefined, indicatorValues: Record<string, string>){
-        if(indicatorMap == null){
-            return;
-        }
-
-
-        indicatorMap.forEach((indicatorObject, key) => {
-
-            indicatorObject.indicatorValue = parseInt(indicatorValues[key.toString()]);
-
-        });
-
-
-
-
-
-        // indicatorMap.indicatorValue = parseInt(indicatorValues[indicatorMap.indicatorObject.id]);
-
-    }
-    
-
-
-
-
-    
-
-
-
     //=================data preparing===================
     function initalizeTableData(){
-        if(fullPageData.value == null || staticClientDataList.value == null){
+        if(connections.value == null || staticClientDataList.value == null){
             return;
         }
 
@@ -375,7 +314,7 @@
             staticClientDataList.value.staticClientConnectionData.map(data => [data.id, data])
         );
 
-        fullPageData.value.monitoringConnectionData.cons.forEach((dynamicData, index) => {
+        connections.value.monitoringConnectionData.cons.forEach((dynamicData, index) => {
 
             const staticClientData: StaticClientConnectionData | undefined = staticDataMap.get(dynamicData.id);
 
@@ -402,36 +341,26 @@
     }
 
     function extractClientGroupNames(clientGroupIds: number[]): ClientGroup[]{
-        // let clientGroupNames: string = "";
-
         const clientGroups: ClientGroup[] = [];
 
         for(let i = 0; i < clientGroupIds.length; i++){
             const clientGroup: ClientGroup | undefined = monitoringStore.clientGroups?.content.find(clientGroup => clientGroup.id == clientGroupIds[i]);
 
             if(clientGroup != null){
-
                 clientGroups.push(clientGroup);
-
-                // clientGroupNames += clientGroupName + " ";
             }
         }
 
-        // if(clientGroupNames == ""){
-        //     return "";
-        // }
-
-        // return clientGroupNames.substring(0, clientGroupNames.length-1);
         return clientGroups;
     }
 
     
     function getAllConnectionIds(): number[]{
-        if(fullPageData.value == null){
+        if(connections.value == null){
             return [];
         }
 
-        return fullPageData.value.monitoringConnectionData.cons.map(
+        return connections.value.monitoringConnectionData.cons.map(
             (cons: { id: number}) => cons.id
         );
     }
@@ -459,7 +388,6 @@
     }
 
     function addIndicatorHeaders(){
-
         monitoringStore.indicators?.content.forEach((indicator) => {
             clientsTableHeaders.value.push(
                 {
@@ -471,12 +399,23 @@
         });
     }
 
+    function updateIndicator(indicatorMap: Map<number, IndicatorObject> | undefined, indicatorValues: Record<string, string>){
+        if(indicatorMap == null){
+            return;
+        }
+
+        indicatorMap.forEach((indicatorObject, key) => {
+            indicatorObject.indicatorValue = parseInt(indicatorValues[key.toString()]);
+
+        });
+    }
 
     //=================interval===================
     async function startIntervalRefresh(){
         intervalRefresh = setInterval(async () => {
 
-            await getAndSetFullPageData();
+            //todo: check when request is finished
+            await getAndSetConnections();
 
         }, REFRESH_INTERVAL);
     }

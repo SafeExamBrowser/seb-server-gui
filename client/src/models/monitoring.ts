@@ -12,11 +12,13 @@ type MonitoringOverview = {
     clientGroups: OverviewClientGroup[];
 
     indicators: {
+        total: number;
         BATTERY_STATUS?: number;
         WLAN_STATUS?: number;
     };
 
     notifications: {
+        total: number;
         LOCK_SCREEN?: number;
         RAISE_HAND?: number;
     };
@@ -32,7 +34,7 @@ type OverviewClientGroup = {
 }
 
 
-type MonitoringFullPageData = {
+type MonitoringConnections = {
     examId: number;
     monitoringConnectionData: MonitoringConnectionData;
     screenProctoringData: ScreenProctoringData[];

@@ -30,7 +30,7 @@
     "CONNECTION_REQUESTED": "Connecting",
     "READY": "Ready",
     "ACTIVE": "Active",
-    "DISABLED": "Disabled",
+    "DISABLED": "Canceled",
     "MISSING": "Missing",
     "CLOSED": "Closed",
 

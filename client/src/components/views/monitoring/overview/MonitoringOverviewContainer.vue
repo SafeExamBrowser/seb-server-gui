@@ -78,7 +78,7 @@
         await monitoringViewService.getExamAndStore(examId);
         await getOverviewData();
 
-        startIntervalRefresh()
+        // startIntervalRefresh()
     });
 
     onBeforeUnmount(() => {
@@ -121,7 +121,7 @@
             monitoringStore.monitoringOverviewData!.clientGroups[0].clientAmount = randomNumber1; 
             monitoringStore.monitoringOverviewData!.clientGroups[1].clientAmount = randomNumber2; 
             monitoringStore.monitoringOverviewData!.clientGroups[2].clientAmount = randomNumber3; 
-            monitoringStore.monitoringOverviewData!.clientGroups[3].clientAmount = randomNumber4; 
+            // monitoringStore.monitoringOverviewData!.clientGroups[3].clientAmount = randomNumber4; 
 
             monitoringStore.monitoringOverviewData!.notifications.LOCK_SCREEN = randomNumber1; 
             monitoringStore.monitoringOverviewData!.notifications.RAISE_HAND = randomNumber2; 

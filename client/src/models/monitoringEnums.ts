@@ -1,8 +1,4 @@
 export enum MonitoringHeaderEnum {
-    HIDDEN_CLIENT_GROUPS = "hidden-client-group",
-    HIDDEN_STATES = "hidden-states",
-    HIDDEN_ISSUES = "hidden-issues",
-
     SHOW_ALL = "show-all",        
     SHOW_STATES = "show-states",        
     SHOW_CLIENT_GROUPS = "show-client-groups",

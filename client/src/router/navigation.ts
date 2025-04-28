@@ -8,10 +8,9 @@ export function navigateTo(navPath: string, query?: {}){
 }
 
 export function addQueryParam(query: {}){
-    router.replace({
+    router.push({
         query: query
     });
-
 }
 
 export function openUrlInNewTab(url: string){

@@ -22,9 +22,9 @@ export async function getOverview(req: Request, res: Response){
     }
 }
 
-export async function getFullPage(req: Request, res: Response){
+export async function getConnections(req: Request, res: Response){
     try{    
-        const [fullPage, status] = await monitoringService.getFullPage(req.headers.authorization, req.params.id, req.query.optionalHeaders);
+        const [fullPage, status] = await monitoringService.getConnections(req.headers.authorization, req.params.id, req.query.optionalHeaders);
         return res.status(status).json(fullPage);
     
     }catch(error){
