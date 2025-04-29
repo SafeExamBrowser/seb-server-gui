@@ -106,7 +106,7 @@
 
     //interval
     let intervalRefresh: any | null = null;
-    const REFRESH_INTERVAL: number = 1 * 2000;
+    const REFRESH_INTERVAL: number = 1 * 1000;
 
     //dialogs
     const clientGroupDialog = ref<boolean>(false);
