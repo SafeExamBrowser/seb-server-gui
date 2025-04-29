@@ -34,6 +34,8 @@
                         <template v-slot:item="{item}">
                             <tr 
                                 class="on-row-hover" 
+                                tabindex="0"
+                                @keyup.enter="onTableRowClick(item)"
                                 @click="onTableRowClick(item)"
                                 :class="[quizImportStore.selectedExamSupervisors.some(userAccount => userAccount.modelId == item.modelId) ? 'selected-row' : '']">
 

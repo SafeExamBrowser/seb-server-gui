@@ -34,6 +34,7 @@
                                         type="text"
                                         append-inner-icon="mdi-magnify"
                                         density="compact"
+                                        :aria-label="translate('quizImportWizard.examInfo.searchPlaceholder')"
                                         :placeholder="translate('quizImportWizard.examInfo.searchPlaceholder')"
                                         variant="outlined">
                                     </v-text-field>
@@ -53,6 +54,7 @@
                                         v-model="datepicker"
                                         density="compact"
                                         variant="outlined"
+                                        :aria-label="translate('quizImportWizard.examInfo.searchPlaceholder')"
                                         placeholder="DD.MM.YYYY"
                                         prepend-icon=""
                                         append-inner-icon="mdi-calendar">
@@ -68,7 +70,8 @@
                                         rounded="sm" 
                                         color="black" 
                                         variant="outlined"
-                                        @click="clearForm()">
+                                        @click="clearForm()"
+                                        :aria-label="translate('general.cancelButton')">
                                         {{translate("general.cancelButton")}}
                                     </v-btn>
 
@@ -77,7 +80,8 @@
                                         color="primary" 
                                         variant="flat" 
                                         class="ml-2"
-                                        @click="loadExamItemsCaller()">
+                                        @click="loadExamItemsCaller()"
+                                        :aria-label="translate('general.searchButton')">
                                         {{translate("general.searchButton")}}
                                     </v-btn>
 

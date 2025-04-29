@@ -116,7 +116,9 @@
             "selectGroup": "Select Groups",
             "addSupervisors": "Add Examination Supervisor",
             "quitPassword": "Set Quit Password",
-            "configurationSummary": "Configuration Summary"
+            "configurationSummary": "Configuration Summary",
+            "previousStep": "Previous Step",
+            "nextStep": "Next Step"
         },
 
         "genericInfo": {

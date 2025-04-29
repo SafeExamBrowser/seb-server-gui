@@ -20,7 +20,9 @@
                         :color="examTemplate.name == 'System Template' ? 'green' : 'primary'"
                         :ripple="false"
                         :variant="quizImportStore.selectedExamTemplate?.id == examTemplate.id ? 'flat' : 'tonal'"
+                        tabindex="0"
                         :hover="true"
+                        @keyup.enter="onTemplateCardClick(examTemplate)"
                         @click="onTemplateCardClick(examTemplate)">
 
                         <v-toolbar color="transparent">
