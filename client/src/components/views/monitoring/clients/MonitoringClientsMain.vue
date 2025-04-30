@@ -412,13 +412,28 @@
 
     //=================interval===================
     async function startIntervalRefresh(){
-        intervalRefresh = setInterval(async () => {
+            console.log("before call")
+            const start = performance.now();
 
-            //todo: check when request is finished
             await getAndSetConnections();
 
-        }, REFRESH_INTERVAL);
+            console.log("after call")
+            const end = performance.now();
+            console.log(`Execution time: ${(end - start)/1000} ms`);
+
+            intervalRefresh = setTimeout(startIntervalRefresh, REFRESH_INTERVAL);
     }
+
+    // async function startIntervalRefresh(){
+    //     intervalRefresh = setInterval(async () => {
+
+    //         //todo: check when request is finished
+    //         await getAndSetConnections();
+
+    //     }, REFRESH_INTERVAL);
+    // }
+
+
 
     function stopIntervalRefresh(){
         if (intervalRefresh) {
