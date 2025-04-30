@@ -1,5 +1,5 @@
 import express, {Router} from 'express';
-import * as authorizationController from '../controllers/authorization.controller';
+import * as authorizationController from '../controllers/seb-server/authorization.controller';
 import * as validation from '../middleware/validation';
 
 const router: Router = express.Router();

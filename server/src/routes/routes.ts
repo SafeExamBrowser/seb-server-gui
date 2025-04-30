@@ -1,15 +1,24 @@
 import express, {Router} from "express";
-import * as quizController from "../controllers/quiz.controller";
-import * as examController from "../controllers/exam.controller";
-import * as configurationController from "../controllers/configuration.controller";
-import * as examTemplateController from "../controllers/exam-template.controller";
-import * as screenProctoringController from "../controllers/screen-proctoring.controller";
-import * as indicatorController from "../controllers/indicator.controller";
-import * as userAccountController from "../controllers/user-account.controller";
-import * as assessmentToolController from "../controllers/assessment-tool.controller";
-import * as monitoringController from "../controllers/monitoring.controller";
-import * as clientGroupsController from "../controllers/client-groups.controller";
+import * as quizController from "../controllers/seb-server/quiz.controller";
+import * as examController from "../controllers/seb-server/exam.controller";
+import * as configurationController from "../controllers/seb-server/configuration.controller";
+import * as examTemplateController from "../controllers/seb-server/exam-template.controller";
+import * as screenProctoringController from "../controllers/seb-server/screen-proctoring.controller";
+import * as indicatorController from "../controllers/seb-server/indicator.controller";
+import * as userAccountController from "../controllers/seb-server/user-account.controller";
+import * as assessmentToolController from "../controllers/seb-server/assessment-tool.controller";
+import * as monitoringController from "../controllers/seb-server/monitoring.controller";
+import * as clientGroupsController from "../controllers/seb-server/client-groups.controller";
 import * as constants from "../utils/constants";
+
+//screen-proctoring
+import * as groupController from "../controllers/screen-proctoring/sp-group.controller";
+import * as screenshotDataController from "../controllers/screen-proctoring/sp-screenshot-data.controller";
+import * as searchController from "../controllers/screen-proctoring/sp-search.controller";
+import * as spUserAccountController from "../controllers/screen-proctoring/sp-user-account.controller";
+import * as settingsController from "../controllers/screen-proctoring/sp-settings.controller";
+import * as applicationSearchController from "../controllers/screen-proctoring/sp-application-search.controller";
+import * as spAuthorizationAdditional from "../middleware/spAuthorizationAdditional";
 
 const router: Router = express.Router();
 
@@ -65,6 +74,39 @@ router.delete(constants.CLIENT_GROUP_ROUTE + "/:id", clientGroupsController.dele
 
 //indicator
 router.get(constants.INDICATOR_ROUTE, indicatorController.getIndicators);
+
+
+
+//screen-proctoring
+router.get("/sp-settings", settingsController.getSettings)
+
+router.get("/sp-group", groupController.getGroups);
+router.get("/sp-group/:uuid", groupController.getGroupByUuid);
+
+router.get("/sp-screenshot-data/:sessionId", screenshotDataController.getScreenshotDataBySessionId);
+router.get("/sp-screenshot-data/:sessionId/:timestamp", screenshotDataController.getScreenshotDataByTimestamp);
+router.get("/sp-screenshot-timestamps/:sessionId/:timestamp/:direction", screenshotDataController.getScreenshotTimestamps);
+
+router.get("/sp-search/sessions/day", searchController.searchSessionsDay);
+router.get("/sp-search/sessions", searchController.searchSessions);
+router.get("/sp-search/screenshots", searchController.searchScreenshots);
+router.get("/sp-search/timeline/:sessionId", searchController.searchTimeline);
+router.delete("/sp-search/sessions/delete", searchController.deleteSessions)
+
+router.get("/sp-search/applications/exams", applicationSearchController.getExamsStarted);
+router.get("/sp-search/applications/groupIds/:examId", applicationSearchController.getGroupIdsForExam);
+router.get("/sp-search/applications/metadata/app", applicationSearchController.getDistinctMetadataAppForExam);
+router.get("/sp-search/applications/metadata/window", applicationSearchController.getDistinctMetadataWindowForExam);
+router.get("/sp-search/applications/users", applicationSearchController.getUserListForApplicationSearch);
+router.get("/sp-search/applications/timestamps", applicationSearchController.getTimestampListForApplicationSearch);
+
+router.get("/sp-useraccount/me", spUserAccountController.getPersonalUserAccount);
+router.get("/sp-useraccount/:accountId", spUserAccountController.getUserAccountById);
+router.get("/sp-useraccount", spUserAccountController.getUserAccounts);
+router.post("/sp-useraccount/register", spAuthorizationAdditional.isUserAccountOperationAllowed, spUserAccountController.registerUserAccount);
+router.post("/sp-useraccount/changePassword", spAuthorizationAdditional.isUserAccountOperationAllowed, spUserAccountController.changePassword);
+router.post("/sp-useraccount/activate/:accountId", spAuthorizationAdditional.isUserAccountOperationAllowed, spUserAccountController.activateUserAccount);
+router.post("/sp-useraccount/deactivate/:accountId", spAuthorizationAdditional.isUserAccountOperationAllowed, spUserAccountController.deactivateUserAccount);
 
 
 
