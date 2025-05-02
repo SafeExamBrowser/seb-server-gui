@@ -2,16 +2,30 @@ import { createRouter, RouteRecordRaw, createWebHistory } from "vue-router";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 import LoginPage from "@/components/views/LoginPage.vue";
 import RegisterPage from "@/components/views/RegisterPage.vue";
-import HomePage from "@/components/views/home/HomePage.vue";
-import ExamListContainer from "@/components/views/exam/list/ExamListContainer.vue";
-import ExamDetailContainer from "@/components/views/exam/detail/ExamDetailContainer.vue";
+import HomePage from "@/components/views/seb-server/home/HomePage.vue";
+import ExamListContainer from "@/components/views/seb-server/exam/list/ExamListContainer.vue";
+import ExamDetailContainer from "@/components/views/seb-server/exam/detail/ExamDetailContainer.vue";
 import * as constants from "@/utils/constants";
 import NavigationOverview from "@/components/layout/NavigationOverview.vue";
-import ImportWizard from "@/components/views/quiz-import/ImportWizard.vue";
+import ImportWizard from "@/components/views/seb-server/quiz-import/ImportWizard.vue";
 import i18n from "@/i18n";
-import MonitoringExamsContainer from "@/components/views/monitoring/exams/MonitoringExamsContainer.vue";
-import MonitoringClientsContainer from "@/components/views/monitoring/clients/MonitoringClientsContainer.vue";
-import MonitoringOverviewContainer from "@/components/views/monitoring/overview/MonitoringOverviewContainer.vue";
+import MonitoringExamsContainer from "@/components/views/seb-server/monitoring/exams/MonitoringExamsContainer.vue";
+import MonitoringClientsContainer from "@/components/views/seb-server/monitoring/clients/MonitoringClientsContainer.vue";
+import MonitoringOverviewContainer from "@/components/views/seb-server/monitoring/overview/MonitoringOverviewContainer.vue";
+import * as authenticationService from "@/services/authenticationService";
+
+//----------screen-proctoring ---------
+import * as spConstants from "@/utils/sp-constants";
+import GalleryViewPage from "@/components/views/screen-proctoring/gallery/GalleryViewPage.vue";
+import ApplicationsSearchViewPage from "@/components/views/screen-proctoring/applications-search/ApplicationsSearchViewPage.vue";
+import ProctoringViewPage from "@/components/views/screen-proctoring/proctoring/ProctoringViewPage.vue";
+import ProctoringApplicationSearchPage from "@/components/views/screen-proctoring/proctoring/ProctoringApplicationSearchPage.vue";
+import ExamsOverviewPage from "@/components/views/screen-proctoring/exams-overview/ExamsOverviewPage.vue";
+import SearchPage from "@/components/views/screen-proctoring/search/SearchPage.vue";
+import { useAuthStore } from "@/stores/store";
+
+
+
 
 const defaultPageTitle: string = " | SEB Server";
 
@@ -28,6 +42,29 @@ const routes: Array<RouteRecordRaw> = [
         component: RegisterPage,
         meta: { requiresAuth: false },
     },
+    {
+        path: spConstants.JWT_LOGIN_ROUTE,
+        meta: {requiresAuth: false},
+        beforeEnter: async (to, from) => {
+          const authStore = useAuthStore();
+    
+          if(to.query.token != null){
+            try{
+              const tokenObject: JwtTokenResponse = await authenticationService.verifyJwt(to.query.token.toString());
+              authStore.loginWithJwt(tokenObject.login.access_token, tokenObject.login.refresh_token, tokenObject.redirect);
+    
+              return;
+    
+            }catch(error){
+              return true;
+            }
+          }
+    
+          //true means redirecting to Login Page
+          return true;
+        },
+        component: LoginPage
+    },    
     {
         path: constants.DEFAULT_ROUTE,
         component: ContainerLayout,
@@ -104,8 +141,70 @@ const routes: Array<RouteRecordRaw> = [
                 },
             },
 
+
+
         ]
     },
+
+
+    //----------screen-proctoring routes---------
+    {
+        path: spConstants.DEFAULT_ROUTE,
+        component: ContainerLayout,
+        meta: {requiresAuth: true},
+        children: [
+          {
+            path: spConstants.RUNNING_EXAMS_ROUTE,
+            name: "ExamsOverview",
+            component: ExamsOverviewPage,
+            meta: {
+                title: "Running Exams" + defaultPageTitle
+            }
+          },
+          {
+            path: spConstants.SEARCH_ROUTE,
+            name: "Search",
+            component: SearchPage,
+            meta: {
+                title: "Search" + defaultPageTitle
+            }
+          },
+          {
+            path: spConstants.APPLICATIONS_ROUTE,
+            name: "Applications",
+            component: ApplicationsSearchViewPage,
+            meta: {
+                title: "Applications" + defaultPageTitle
+            }
+          },
+          {
+            path: spConstants.GALLERY_VIEW_ROUTE + "/:uuid",
+            name: "GalleryViewPage",
+            component: GalleryViewPage,
+            meta: {
+                title: "Gallery View" + defaultPageTitle
+            }
+          },
+          {
+            path: spConstants.PROCTORING_VIEW_ROUTE + "/:sessionId",
+            name: "ProctoringViewPage",
+            component: ProctoringViewPage,
+            meta: {
+                title: "Proctoring" + defaultPageTitle
+            }
+          },
+          {
+            path: spConstants.PROCTORING_APPLICATION_SEARCH_ROUTE + "/:sessionId",
+            name: "ProctoringApplicationSearchPage",
+            component: ProctoringApplicationSearchPage,
+            meta: {
+                title: "Proctoring" + defaultPageTitle
+            }
+          },
+         
+    
+        ]
+      },
 ];
 
 const router = createRouter({

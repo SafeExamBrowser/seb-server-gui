@@ -1,6 +1,6 @@
-import { ClientGroupEnum, ClientOSEnum } from "@/models/clientGroupEnum";
-import { ExamStatusEnum, ExamTypeEnum } from "@/models/examFiltersEnum";
-import { LMSFeatureEnum, LMSTypeEnum, LMSTypeFeatureMappig } from "@/models/assessmentToolEnums";
+import { ClientGroupEnum, ClientOSEnum } from "@/models/seb-server/clientGroupEnum";
+import { ExamStatusEnum, ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
+import { LMSFeatureEnum, LMSTypeEnum, LMSTypeFeatureMappig } from "@/models/seb-server/assessmentToolEnums";
 import { useI18n } from "vue-i18n";
 
 export function translate(key: string | null | undefined, i18nParam?: any | null): string{

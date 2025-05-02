@@ -1,21 +1,20 @@
-import ImportAssessmentInfo from "@/components/views/quiz-import/info-box-content/ImportAssessmentInfo.vue";
-import ImportAssessmentMain from "@/components/views/quiz-import/main-content/ImportAssessmentMain.vue";
-import ImportExamInfo from "@/components/views/quiz-import/info-box-content/ImportExamInfo.vue"; 
-import ImportExamMain from "@/components/views/quiz-import/main-content/ImportExamMain.vue"; 
-import ImportTemplateInfo from "@/components/views/quiz-import/info-box-content/ImportTemplateInfo.vue";
-import ImportTemplateMain from "@/components/views/quiz-import/main-content/ImportTemplateMain.vue"; 
-import ImportSupervisorInfo from "@/components/views/quiz-import/info-box-content/ImportSupervisorInfo.vue"; 
-import ImportSupervisorMain from "@/components/views/quiz-import/main-content/ImportSupervisorMain.vue"; 
-import ImportPasswordInfo from "@/components/views/quiz-import/info-box-content/ImportPasswordInfo.vue";
-import ImportPasswordMain from "@/components/views/quiz-import/main-content/ImportPasswordMain.vue"; 
-import ImportSummaryInfo from "@/components/views/quiz-import/info-box-content/ImportSummaryInfo.vue"; 
-import ImportSummaryMain from "@/components/views/quiz-import/main-content/ImportSummaryMain.vue"; 
+import ImportAssessmentInfo from "@/components/views/seb-server/quiz-import/info-box-content/ImportAssessmentInfo.vue";
+import ImportAssessmentMain from "@/components/views/seb-server/quiz-import/main-content/ImportAssessmentMain.vue";
+import ImportExamInfo from "@/components/views/seb-server/quiz-import/info-box-content/ImportExamInfo.vue"; 
+import ImportExamMain from "@/components/views/seb-server/quiz-import/main-content/ImportExamMain.vue"; 
+import ImportTemplateInfo from "@/components/views/seb-server/quiz-import/info-box-content/ImportTemplateInfo.vue";
+import ImportTemplateMain from "@/components/views/seb-server/quiz-import/main-content/ImportTemplateMain.vue"; 
+import ImportSupervisorInfo from "@/components/views/seb-server/quiz-import/info-box-content/ImportSupervisorInfo.vue"; 
+import ImportSupervisorMain from "@/components/views/seb-server/quiz-import/main-content/ImportSupervisorMain.vue"; 
+import ImportPasswordInfo from "@/components/views/seb-server/quiz-import/info-box-content/ImportPasswordInfo.vue";
+import ImportPasswordMain from "@/components/views/seb-server/quiz-import/main-content/ImportPasswordMain.vue"; 
+import ImportSummaryInfo from "@/components/views/seb-server/quiz-import/info-box-content/ImportSummaryInfo.vue"; 
+import ImportSummaryMain from "@/components/views/seb-server/quiz-import/main-content/ImportSummaryMain.vue"; 
 import {translate} from "@/utils/generalUtils";
 
 //navigation routes
 export const DEFAULT_ROUTE: string = "/";
 export const REGISTER_ROUTE: string = "/register";
-export const JWT_LOGIN_ROUTE: string = "/jwt";
 
 export const HOME_PAGE_ROUTE: string = "/home";
 export const NAVIGATION_OVERVIEW_ROUTE: string = "/navigation-overview";

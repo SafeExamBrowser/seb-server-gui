@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
     import { ref } from "vue";  
-    import { useErrorStore } from "@/stores/errorStore";
+    import { useErrorStore } from "@/stores/seb-server/errorStore";
     import { storeToRefs } from "pinia";
 
     //store

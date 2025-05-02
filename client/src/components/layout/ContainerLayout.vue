@@ -116,12 +116,14 @@
 <script setup lang="ts">
     import { ref, watch, onBeforeMount } from "vue"
     import { useAuthStore, useUserAccountStore, useAppBarStore, useNavigationStore } from "@/stores/store";
-    import * as userAccountViewService from "@/services/component-services/userAccountViewService";
+    import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
     import { useTheme } from "vuetify";
     import { useI18n } from "vue-i18n";
     import * as constants from "@/utils/constants";
     import router from "@/router/router";
     import {translate} from "@/utils/generalUtils";
+    import * as spConstants from "@/utils/sp-constants";
+
 
     //i18n
     const { locale } = useI18n();
@@ -136,6 +138,7 @@
         {title: translate('titles.home'), route: constants.HOME_PAGE_ROUTE, icon: "mdi-home"},
         {title: translate('titles.exams'), route: constants.EXAM_ROUTE, icon: "mdi-file-document"},
         {title: translate('titles.monitoring'), route: constants.MONITORING_ROUTE, icon: "mdi-eye"},
+        {title: 'Screen Proctoring', route: spConstants.RUNNING_EXAMS_ROUTE, icon: "mdi-video"},
     ];
 
     //stores

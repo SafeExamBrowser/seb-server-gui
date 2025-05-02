@@ -82,7 +82,7 @@
 <script setup lang="ts">
     import { ref, onBeforeMount, onBeforeUnmount } from "vue";
     import * as tableUtils from "@/utils/table/tableUtils";
-    // import { useAppBarStore, useTableStore } from "@/store/store";
+    // import { useAppBarStore, useTableStore } from "@/stores/store";
 
     //stores
     // const appBarStore = useAppBarStore();

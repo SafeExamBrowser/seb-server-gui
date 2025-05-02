@@ -1,5 +1,6 @@
-import { ExamStatusEnum, ExamTypeEnum } from "@/models/examFiltersEnum";
+import { ExamStatusEnum, ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
 import {navigateTo} from "@/router/navigation";
+import { useTableStore } from "@/stores/store";
 
 export function calcDefaultItemsPerPage(itemList: any): number {
     if (itemList == null || itemList.length == 0) {
@@ -164,4 +165,25 @@ export function assignExamSelectPagingOptions
     }
 
     return optionalParGetExams;
+}
+
+export function getSessionListIndex(day: string): number{
+    const tableStore = useTableStore();
+    return tableStore.isIpDisplayList.findIndex(i => i.day == day);
+}
+
+export function assignPagingOptions(serverTablePaging: ServerTablePaging, pagingParameters: OptionalParSearchSessions): OptionalParSearchSessions{
+    pagingParameters.pageSize = serverTablePaging.itemsPerPage;
+    pagingParameters.pageNumber = serverTablePaging.page;
+
+    if(serverTablePaging.sortBy.length != 0){
+        let sortString: string = serverTablePaging.sortBy[0].key;
+        if(serverTablePaging.sortBy[0].order == "desc"){
+            sortString = "-" + sortString;
+        }
+
+        pagingParameters.sort = sortString;
+    }
+
+    return pagingParameters;
 }

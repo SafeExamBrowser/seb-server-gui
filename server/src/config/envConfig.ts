@@ -14,7 +14,7 @@ export const SEB_SERVER_PASSWORD = process.env.SEB_SERVER_PASSWORD;
 
 //screen-procotring
 export const PROCTOR_SERVER_URL = process.env.PROCTOR_SERVER_URL;
-export const PROCTOR_SERVER_PORT = getServerPort();
+export const PROCTOR_SERVER_PORT = getProctorServerPort();
 export const PROCTOR_DEFAULT_URL = process.env.PROCTOR_DEFAULT_URL;
 
 export const PROCTOR_SERVER_USERNAME = process.env.PROCTOR_SERVER_USERNAME;
@@ -29,4 +29,11 @@ function getServerPort(){
         return "";
     }
     return ":" + process.env.SEB_SERVER_PORT;
+};
+
+function getProctorServerPort(){
+    if(!process.env.PROCTOR_SERVER_PORT){
+        return "";
+    }
+    return ":" + process.env.PROCTOR_SERVER_PORT;
 };

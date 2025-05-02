@@ -78,35 +78,35 @@ router.get(constants.INDICATOR_ROUTE, indicatorController.getIndicators);
 
 
 //screen-proctoring
-router.get("/sp-settings", settingsController.getSettings)
+router.get("/sp/settings", settingsController.getSettings)
 
-router.get("/sp-group", groupController.getGroups);
-router.get("/sp-group/:uuid", groupController.getGroupByUuid);
+router.get("/sp/group", groupController.getGroups);
+router.get("/sp/group/:uuid", groupController.getGroupByUuid);
 
-router.get("/sp-screenshot-data/:sessionId", screenshotDataController.getScreenshotDataBySessionId);
-router.get("/sp-screenshot-data/:sessionId/:timestamp", screenshotDataController.getScreenshotDataByTimestamp);
-router.get("/sp-screenshot-timestamps/:sessionId/:timestamp/:direction", screenshotDataController.getScreenshotTimestamps);
+router.get("/sp/screenshot-data/:sessionId", screenshotDataController.getScreenshotDataBySessionId);
+router.get("/sp/screenshot-data/:sessionId/:timestamp", screenshotDataController.getScreenshotDataByTimestamp);
+router.get("/sp/screenshot-timestamps/:sessionId/:timestamp/:direction", screenshotDataController.getScreenshotTimestamps);
 
-router.get("/sp-search/sessions/day", searchController.searchSessionsDay);
-router.get("/sp-search/sessions", searchController.searchSessions);
-router.get("/sp-search/screenshots", searchController.searchScreenshots);
-router.get("/sp-search/timeline/:sessionId", searchController.searchTimeline);
-router.delete("/sp-search/sessions/delete", searchController.deleteSessions)
+router.get("/sp/search/sessions/day", searchController.searchSessionsDay);
+router.get("/sp/search/sessions", searchController.searchSessions);
+router.get("/sp/search/screenshots", searchController.searchScreenshots);
+router.get("/sp/search/timeline/:sessionId", searchController.searchTimeline);
+router.delete("/sp/search/sessions/delete", searchController.deleteSessions)
 
-router.get("/sp-search/applications/exams", applicationSearchController.getExamsStarted);
-router.get("/sp-search/applications/groupIds/:examId", applicationSearchController.getGroupIdsForExam);
-router.get("/sp-search/applications/metadata/app", applicationSearchController.getDistinctMetadataAppForExam);
-router.get("/sp-search/applications/metadata/window", applicationSearchController.getDistinctMetadataWindowForExam);
-router.get("/sp-search/applications/users", applicationSearchController.getUserListForApplicationSearch);
-router.get("/sp-search/applications/timestamps", applicationSearchController.getTimestampListForApplicationSearch);
+router.get("/sp/search/applications/exams", applicationSearchController.getExamsStarted);
+router.get("/sp/search/applications/groupIds/:examId", applicationSearchController.getGroupIdsForExam);
+router.get("/sp/search/applications/metadata/app", applicationSearchController.getDistinctMetadataAppForExam);
+router.get("/sp/search/applications/metadata/window", applicationSearchController.getDistinctMetadataWindowForExam);
+router.get("/sp/search/applications/users", applicationSearchController.getUserListForApplicationSearch);
+router.get("/sp/search/applications/timestamps", applicationSearchController.getTimestampListForApplicationSearch);
 
-router.get("/sp-useraccount/me", spUserAccountController.getPersonalUserAccount);
-router.get("/sp-useraccount/:accountId", spUserAccountController.getUserAccountById);
-router.get("/sp-useraccount", spUserAccountController.getUserAccounts);
-router.post("/sp-useraccount/register", spAuthorizationAdditional.isUserAccountOperationAllowed, spUserAccountController.registerUserAccount);
-router.post("/sp-useraccount/changePassword", spAuthorizationAdditional.isUserAccountOperationAllowed, spUserAccountController.changePassword);
-router.post("/sp-useraccount/activate/:accountId", spAuthorizationAdditional.isUserAccountOperationAllowed, spUserAccountController.activateUserAccount);
-router.post("/sp-useraccount/deactivate/:accountId", spAuthorizationAdditional.isUserAccountOperationAllowed, spUserAccountController.deactivateUserAccount);
+// router.get("/sp/useraccount/me", spUserAccountController.getPersonalUserAccount);
+// router.get("/sp/useraccount/:accountId", spUserAccountController.getUserAccountById);
+// router.get("/sp/useraccount", spUserAccountController.getUserAccounts);
+// router.post("/sp/useraccount/register", spAuthorizationAdditional.isUserAccountOperationAllowed, spUserAccountController.registerUserAccount);
+// router.post("/sp/useraccount/changePassword", spAuthorizationAdditional.isUserAccountOperationAllowed, spUserAccountController.changePassword);
+// router.post("/sp/useraccount/activate/:accountId", spAuthorizationAdditional.isUserAccountOperationAllowed, spUserAccountController.activateUserAccount);
+// router.post("/sp/useraccount/deactivate/:accountId", spAuthorizationAdditional.isUserAccountOperationAllowed, spUserAccountController.deactivateUserAccount);
 
 
 

@@ -104,7 +104,7 @@
   
 <script setup lang="ts">
     import { ref, computed } from "vue";
-    import * as authenticationService from "@/services/api-services/authenticationService";
+    import * as authenticationService from "@/services/authenticationService";
     import {navigateTo} from "@/router/navigation";
     import { useLoadingStore, useAuthStore } from "@/stores/store";
     import { useTheme } from "vuetify";
