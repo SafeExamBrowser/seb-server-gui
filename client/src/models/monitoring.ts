@@ -5,19 +5,14 @@ type MonitoringOverview = {
         READY?: number;
         ACTIVE?: number;
         DISABLED?: number;
+        MISSING?: number;
+        CLOSED?: number;
     };
 
-    clientGroups: {
-        id: number;
-        clientAmount: number
-    }[];
+    clientGroups: OverviewClientGroup[];
 
     indicators: {
         total: number;
-        LAST_PING?: number;
-        ERROR_COUNT?: number;
-        WARN_COUNT?: number;
-        INFO_COUNT?: number;
         BATTERY_STATUS?: number;
         WLAN_STATUS?: number;
     };
@@ -29,9 +24,17 @@ type MonitoringOverview = {
     };
 };
 
+type OverviewClientGroup = {
+    id: number;
+    name: string;
+    clientAmount: number;
+    spsGroupUUID: string;
+    type: string;
+    typeValue: string;
+}
 
 
-type MonitoringFullPageData = {
+type MonitoringConnections = {
     examId: number;
     monitoringConnectionData: MonitoringConnectionData;
     screenProctoringData: ScreenProctoringData[];

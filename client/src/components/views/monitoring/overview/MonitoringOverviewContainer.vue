@@ -32,14 +32,14 @@
         </v-col>
 
         <!--------groups-------->
-        <v-col cols="4">
+        <v-col cols="5">
             <v-sheet class="rounded-lg pa-4" elevation="4">
                 <MonitoringOverviewGroups></MonitoringOverviewGroups>
             </v-sheet>
         </v-col>
 
-        <!--------notifications-------->
-        <v-col cols="4">
+        <!--------notifications & indicators-------->
+        <v-col cols="3" v-if="monitoringStore.monitoringOverviewData?.notifications || monitoringStore.monitoringOverviewData?.indicators">
             <v-sheet class="rounded-lg pa-4" elevation="4">
                 <MonitoringOverviewNotifications></MonitoringOverviewNotifications>
             </v-sheet>
@@ -68,7 +68,7 @@
 
     //interval
     let intervalRefresh: any | null = null;
-    const REFRESH_INTERVAL: number = 1 * 3000;
+    const REFRESH_INTERVAL: number = 1 * 5000;
 
 
 
@@ -100,25 +100,36 @@
 
     async function startIntervalRefresh(){
         intervalRefresh = setInterval(async () => {
-            // getOverviewData()
+            getOverviewData()
 
-            const randomNumber1: number = Math.floor(Math.random() * 1000) + 1;
-            const randomNumber2: number = Math.floor(Math.random() * 1000) + 1;
-            const randomNumber3: number = Math.floor(Math.random() * 1000) + 1;
-            const randomNumber4: number = Math.floor(Math.random() * 1000) + 1;
+            // const randomNumber1: number = Math.floor(Math.random() * 1000) + 1;
+            // const randomNumber2: number = Math.floor(Math.random() * 1000) + 1;
+            // const randomNumber3: number = Math.floor(Math.random() * 1000) + 1;
+            // const randomNumber4: number = Math.floor(Math.random() * 1000) + 1;
+            // const randomNumber5: number = Math.floor(Math.random() * 1000) + 1;
+            // const randomNumber6: number = Math.floor(Math.random() * 1000) + 1;
+            
 
+            // monitoringStore.monitoringOverviewData!.clientStates.DISABLED = randomNumber1; 
+            // monitoringStore.monitoringOverviewData!.clientStates.READY = randomNumber2; 
+            // monitoringStore.monitoringOverviewData!.clientStates.ACTIVE = randomNumber3; 
+            // monitoringStore.monitoringOverviewData!.clientStates.CONNECTION_REQUESTED = randomNumber4; 
+            // monitoringStore.monitoringOverviewData!.clientStates.MISSING = randomNumber5; 
+            // monitoringStore.monitoringOverviewData!.clientStates.CLOSED = randomNumber6; 
 
-            // console.log(randomNumber1)
+            
+            // monitoringStore.monitoringOverviewData!.clientGroups[0].clientAmount = randomNumber1; 
+            // monitoringStore.monitoringOverviewData!.clientGroups[1].clientAmount = randomNumber2; 
+            // monitoringStore.monitoringOverviewData!.clientGroups[2].clientAmount = randomNumber3; 
+            // // monitoringStore.monitoringOverviewData!.clientGroups[3].clientAmount = randomNumber4; 
 
+            // monitoringStore.monitoringOverviewData!.notifications.LOCK_SCREEN = randomNumber1; 
+            // monitoringStore.monitoringOverviewData!.notifications.RAISE_HAND = randomNumber2; 
 
-            monitoringStore.monitoringOverviewData!.clientStates.ACTIVE = randomNumber1; 
-            monitoringStore.monitoringOverviewData!.clientStates.CONNECTION_REQUESTED = randomNumber2; 
-            monitoringStore.monitoringOverviewData!.clientStates.DISABLED = randomNumber3; 
-            monitoringStore.monitoringOverviewData!.clientStates.READY = randomNumber3; 
+            // monitoringStore.monitoringOverviewData!.indicators.BATTERY_STATUS = randomNumber3; 
+            // monitoringStore.monitoringOverviewData!.indicators.WLAN_STATUS = randomNumber4; 
 
-            monitoringStore.monitoringOverviewData!.clientGroups[0].clientAmount = randomNumber1; 
-            monitoringStore.monitoringOverviewData!.clientGroups[1].clientAmount = randomNumber2; 
-            monitoringStore.monitoringOverviewData!.clientGroups[2].clientAmount = randomNumber3; 
+            
 
 
             // if(randomNumber1 > 700){

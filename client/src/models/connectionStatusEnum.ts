@@ -3,5 +3,7 @@ export enum ConnectionStatusEnum {
     CONNECTION_REQUESTED = "CONNECTION_REQUESTED",
     READY = "READY",
     ACTIVE = "ACTIVE",
-    DISABLED = "DISABLED"
+    DISABLED = "DISABLED",
+    MISSING = "MISSING",
+    CLOSED = "CLOSED"
 }

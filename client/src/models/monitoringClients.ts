@@ -1,11 +1,14 @@
-import { IndicatorObject } from "@/models/indicatorEnum";
+import { IndicatorObject } from "@/models/monitoringEnums";
 
 export type MonitoringRow = {
     id: number;
     connectionToken: string;
     nameOrSession: string;
-    clientGroups: string;
+    clientGroups: ClientGroup[];
     connectionInfo: string;
     status: string;
-    ping: IndicatorObject | undefined;
+
+    indicators?: Map<number, IndicatorObject>
+
+    // indicators?: (IndicatorObject | undefined)[];
 }

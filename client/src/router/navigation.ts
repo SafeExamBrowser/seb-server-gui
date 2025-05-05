@@ -1,8 +1,15 @@
 import router from "@/router/router";
 
-export function navigateTo(navPath: string){
+export function navigateTo(navPath: string, query?: {}){
     router.push({
-        path: navPath
+        path: navPath,
+        query: query
+    });
+}
+
+export function addQueryParam(query: {}){
+    router.push({
+        query: query
     });
 }
 

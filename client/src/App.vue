@@ -42,6 +42,10 @@
         color: #215caf;
     }
 
+    .secondary-text-color{
+        color: #f5a623;
+    }
+
     .disabled-text-color{
         color: #aaaaaa
     }

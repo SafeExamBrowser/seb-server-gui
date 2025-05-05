@@ -26,13 +26,46 @@
                         </TableHeaders>
                     </template>
 
-
-                </v-data-table>
-
+                    <template v-slot:item="{item}">
+                        <tr>
+                            <td>{{ item.nameOrSession }}</td>
+                            
+                            <td>
+                                <template v-for="(clientGroup, index) in item.clientGroups" :key="clientGroup.id">
+                                    <div>
+                                        <v-chip 
+                                            :class="[index == 0 ? 'mt-2' : '']"
+                                            class="mb-2"
+                                            variant="tonal"
+                                            size="small"
+                                            @click="openClientGroupDialog(clientGroup)">
+                                            {{ clientGroup.name }}
+                                        </v-chip>
+                                    </div>
+                                </template>
+                            </td>
+                            
+                            <td>{{ item.connectionInfo }}</td>
+                            <td>{{ item.status }}</td>
+                            <td v-for="indicator in monitoringStore.indicators?.content" :key="indicator.id">
+                                {{ item.indicators?.get(indicator.id)?.indicatorValue }}
+                            </td>
+                        </tr>
+                    </template>
                 
+                </v-data-table>
             </v-sheet>
         </v-col>
     </v-row>
+
+    <!-----------group dialog---------->      
+    <v-dialog v-model="clientGroupDialog" max-width="800">
+        <ClientGroupInfoDialog 
+            :client-group="clientGroupToView"
+            @closeClientGroupDialog="closeClientGroupDialog">
+        </ClientGroupInfoDialog>
+    </v-dialog>
+
 </template>
 
 <script setup lang="ts">
@@ -44,24 +77,28 @@
     import * as examViewService from "@/services/component-services/examViewService";
     import * as indicatorViewService from "@/services/component-services/indicatorViewService";
     import TableHeaders from "@/utils/table/TableHeaders.vue";
-    import { IndicatorEnum, IndicatorObject } from "@/models/indicatorEnum";
+    import { IndicatorEnum, IndicatorObject, MonitoringHeaderEnum } from "@/models/monitoringEnums";
     import { MonitoringRow } from "@/models/monitoringClients";
+    import * as tableUtils from "@/utils/table/tableUtils";
+    import { storeToRefs } from "pinia";
+
 
     //exam
     const examId = useRoute().params.examId.toString();
 
+    //router
+    const route = useRoute();
+
     //stores
     const monitoringStore = useMonitoringStore();
+    const monitoringStoreRef = storeToRefs(monitoringStore);
     const appBarStore = useAppBarStore();
 
     //items
-    const fullPageData = ref<MonitoringFullPageData>();
+    const connections = ref<MonitoringConnections>();
     const staticClientDataList = ref<MonitoringStaticClientData>();
-
-    // const monitoringData = ref<MonitoringRow[]>([]);
     const monitoringDataTable = ref<MonitoringRow[]>([]);
     const monitoringData = ref<Map<number, MonitoringRow>>(new Map());
-
 
     //table - pagination, item size, search
     const isLoading = ref<boolean>(true);
@@ -69,19 +106,19 @@
 
     //interval
     let intervalRefresh: any | null = null;
-    const REFRESH_INTERVAL: number = 1 * 2000;
+    const REFRESH_INTERVAL: number = 1 * 1000;
 
+    //dialogs
+    const clientGroupDialog = ref<boolean>(false);
+    const clientGroupToView = ref<ClientGroup | null>(null);
 
     //table
-    const isOnLoad = ref<boolean>(true);
-    const defaultSort: {key: string, order: string}[] = [{key: 'quizStartTime', order: 'desc'}];
     const clientsTableHeadersRef = ref<any[]>();
     const clientsTableHeaders = ref([
-        {title: translate("monitoringClients.main.tableHeaderNameSession"), key: "nameOrSession", width: "30%"},
-        {title: translate("monitoringClients.main.tableHeaderClientGroups"), key: "clientGroups", width: "20%"},
-        {title: translate("monitoringClients.main.tableHeaderConnectionInfo"), key: "connectionInfo", width: "20%"},
-        {title: translate("monitoringClients.main.tableHeaderStatus"), key: "status", width: "12.5%"},
-        {title: translate("monitoringClients.main.tableHeaderPing"), key: "ping.indicatorValue", width: "12.5%"},
+        {title: translate("monitoringClients.main.tableHeaderNameSession"), key: "nameOrSession", width: "30%", sortable: true},
+        {title: translate("monitoringClients.main.tableHeaderClientGroups"), key: "clientGroups", width: "20%", sortable: true},
+        {title: translate("monitoringClients.main.tableHeaderConnectionInfo"), key: "connectionInfo", width: "20%", sortable: true},
+        {title: translate("monitoringClients.main.tableHeaderStatus"), key: "status", sortable: true}
     ]);  
 
 
@@ -94,6 +131,10 @@
         stopIntervalRefresh();
     });
 
+    onUpdated(() => {
+        console.log("dom got updated")
+    })
+
     function updateTableData(){
         monitoringDataTable.value = Array.from(monitoringData.value, ([key, value]) => ({
             key,
@@ -103,128 +144,59 @@
 
 
     async function initalize(){
+        // const start = performance.now();
 
-        const start = performance.now();
-
-        await getAndSetFullPageData();
+        await getAndSetConnections();
         await getAndSetStaticClientData(getAllConnectionIds());
 
-
         initalizeTableData();
+        addIndicatorHeaders();
 
-        const end = performance.now();
-        console.log(`Execution time: ${(end - start)/1000} ms`);
+        // const end = performance.now();
+        // console.log(`Execution time: ${(end - start)/1000} ms`);
 
         startIntervalRefresh();
-
-        
-
-        // console.log(fullPageData.value)
-        // console.log(staticClientDataList.value)
     }
 
-    watch(fullPageData, async () => {
-        // console.log(fullPageData.value)
+    watch(connections, async () => {
 
         //check if sessions got added / removed
-        if(fullPageData.value?.monitoringConnectionData.cons.length != monitoringData.value.entries.length){
-            await addNewClients();
+        if(connections.value?.monitoringConnectionData.cons.length! > monitoringData.value.size){
+            // await addNewClients();
+            addNewClients();
         }
 
-        await updateFullPageData();
+        if(connections.value?.monitoringConnectionData.cons.length! < monitoringData.value.size){
+            removeClients();
+        }
+
+        await updateConnections();
     });
 
-    //==============data update=================
-    async function updateFullPageData(){
-        if(fullPageData.value == null || staticClientDataList.value == null){
-            return;
-        }
-
-        const fullPageDataConnections: MonitoringClientConnection[] = fullPageData.value.monitoringConnectionData.cons;
-        const idsToUpdateMap = new Map<number, number>();
-
-        for(let i = 0; i < fullPageDataConnections.length; i++){
-
-            const monitoringRowData: MonitoringRow | undefined = monitoringData.value.get(fullPageDataConnections[i].id);
-
-            if(monitoringRowData != null){
-                if(fullPageDataConnections[i].st != monitoringRowData.status){
-                    idsToUpdateMap.set(monitoringRowData.id, i);
-
-                }else{
-                    //update indicator only
-                    //todo: change ping to generic array
-                    updateIndicator(monitoringRowData.ping, fullPageDataConnections[i].iv);
-                }
-            }
-        }
-
-        await addFreshData(idsToUpdateMap);
-        updateTableData();
-    }
-
-    async function addFreshData(ids: Map<number, number>){
-        const newStaticClients: MonitoringStaticClientData | null = await getStaticClientData(Array.from(ids.keys()));
-        if(newStaticClients == null){
-            return;
-        }
-
-        newStaticClients?.staticClientConnectionData.forEach((staticData) => {
-            const fullPageItemIndex: number | undefined = ids.get(staticData.id);
-
-            if(fullPageItemIndex != null && fullPageData.value != null){
-                monitoringData.value.set(
-                    staticData.id,
-                    createMonitoringRowData(
-                        fullPageData.value.monitoringConnectionData.cons[fullPageItemIndex], 
-                        staticData
-                    )
-                );
-            }
-        });
-    }
-
-    async function addNewClients(){
-        if(fullPageData.value == null || staticClientDataList.value == null){
-            return;
-        }
-
-        const fullPageDataConnections: MonitoringClientConnection[] = fullPageData.value.monitoringConnectionData.cons;
-
-        const newIdsMap = new Map<number, number>();
-        fullPageDataConnections.forEach((connection, index) => {
-            if (!monitoringData.value.has(connection.id)) {
-                newIdsMap.set(connection.id, index);
-            }
-        });
-
-        await addFreshData(newIdsMap);
-        updateTableData();
-    }
-
-    function removeClients(){
-
-    }
-
-    //currently only ping
-    function updateIndicator(pingObject: IndicatorObject | undefined, indicatorSet: Record<string, string>){
-        if(pingObject != null && pingObject.indicatorType == IndicatorEnum.LAST_PING){
-            pingObject.indicatorValue = parseInt(indicatorSet[pingObject.indicatorObject.id]);
-        }
-    }
-    
-
-
+    // watch(() => route.query, () => {
+    //     getAndSetFullPageData();
+    //   },{ deep: true }
+    // );
 
 
     //==============data fetching================
-    async function getAndSetFullPageData(){
-        const fullPageResponse: MonitoringFullPageData | null = await monitoringViewService.getFullPage(examId)
+    async function getAndSetConnections(){
+        const fullPageResponse: MonitoringConnections | null = await monitoringViewService.getConnections(
+            examId, 
+            {   
+                [MonitoringHeaderEnum.SHOW_ALL]: route.query[MonitoringHeaderEnum.SHOW_ALL] || [],
+                [MonitoringHeaderEnum.SHOW_CLIENT_GROUPS]: route.query[MonitoringHeaderEnum.SHOW_CLIENT_GROUPS] || [],
+                [MonitoringHeaderEnum.SHOW_STATES]: route.query[MonitoringHeaderEnum.SHOW_STATES] || [],
+                [MonitoringHeaderEnum.SHOW_NOTIFCATION]: route.query[MonitoringHeaderEnum.SHOW_NOTIFCATION] || [],
+                [MonitoringHeaderEnum.SHOW_INDICATORS]: route.query[MonitoringHeaderEnum.SHOW_INDICATORS] || [],
+            }
+        );
+
         if(fullPageResponse == null){
             return;
         }
 
-        fullPageData.value = fullPageResponse;
+        connections.value = fullPageResponse;
     }
 
     async function getAndSetStaticClientData(modelIds: number[]){
@@ -242,48 +214,121 @@
 
 
 
-    //=================data preparing===================
-    function initalizeTableData(){
-        if(fullPageData.value == null || staticClientDataList.value == null){
+    //==============data update=================
+    async function updateConnections(){
+        if(connections.value == null || staticClientDataList.value == null){
             return;
         }
 
-        const fullPageDataConnections: MonitoringClientConnection[] = fullPageData.value.monitoringConnectionData.cons;
-        const staticDataConnections: StaticClientConnectionData[] = staticClientDataList.value.staticClientConnectionData;
+        const idsToUpdateMap = new Map<number, number>();
 
-        for(let i = 0; i < fullPageDataConnections.length; i++){
+        connections.value.monitoringConnectionData.cons.forEach((dynamicData, index) => {
 
-            let staticClientData: StaticClientConnectionData | null = null;
+            const monitoringRowData: MonitoringRow | undefined = monitoringData.value.get(dynamicData.id);
 
-            //check first if static data has the same index
-            if(fullPageDataConnections[i].id == staticDataConnections[i].id){
-                console.log("by index")
-                staticClientData = staticDataConnections[i];
+            if(monitoringRowData != null){
+                if(dynamicData.st != monitoringRowData.status){
+                    idsToUpdateMap.set(monitoringRowData.id, index);
 
-            //get static data by id   
-            }else{
-                console.log("by id")
-                const staticClientDataLocal: StaticClientConnectionData | undefined = staticDataConnections.find(staticClientData => staticClientData.id == fullPageDataConnections[i].id);
-                if(staticClientDataLocal != null){
-                    staticClientData = staticClientDataLocal;
+                }else{
+                    updateIndicator(monitoringRowData.indicators, dynamicData.iv);
                 }
             }
+        });
 
-            if(staticClientData != null){
-                const monitoringRow: MonitoringRow = createMonitoringRowData(fullPageDataConnections[i], staticClientData);
-                monitoringData.value.set(monitoringRow.id, monitoringRow);
-            }
-            
+        if(idsToUpdateMap.size != 0){
+            // await addFreshData(idsToUpdateMap);
+            addFreshData(idsToUpdateMap);
+
         }
 
         updateTableData();
     }
 
+    async function addFreshData(ids: Map<number, number>){
+        const newStaticClients: MonitoringStaticClientData | null = await getStaticClientData(Array.from(ids.keys()));
+        if(newStaticClients == null){
+            return;
+        }
+
+        newStaticClients?.staticClientConnectionData.forEach((staticData) => {
+            const fullPageItemIndex: number | undefined = ids.get(staticData.id);
+
+            if(fullPageItemIndex != null && connections.value != null){
+                monitoringData.value.set(
+                    staticData.id,
+                    createMonitoringRowData(
+                        connections.value.monitoringConnectionData.cons[fullPageItemIndex], 
+                        staticData
+                    )
+                );
+            }
+        });
+    }
+
+    async function addNewClients(){
+        if(connections.value == null || staticClientDataList.value == null){
+            return;
+        }
+
+        const fullPageDataConnections: MonitoringClientConnection[] = connections.value.monitoringConnectionData.cons;
+
+        const newIdsMap = new Map<number, number>();
+        fullPageDataConnections.forEach((connection, index) => {
+            if (!monitoringData.value.has(connection.id)) {
+                newIdsMap.set(connection.id, index);
+            }
+        });
+
+        // await addFreshData(newIdsMap);
+        addFreshData(newIdsMap);
+
+        updateTableData();
+    }
+
+    function removeClients(){
+        if(connections.value == null || staticClientDataList.value == null){
+            return;
+        }
+
+        const dynamicDataSet: Set<number> = new Set(connections.value.monitoringConnectionData.cons.map(connection => connection.id));
+
+        //check current data contains fresh data
+        for (const key of monitoringData.value.keys()) {
+            if (!dynamicDataSet.has(key)) {
+                monitoringData.value.delete(key);
+            }
+        }
+
+        updateTableData();
+    }
+
+
+    //=================data preparing===================
+    function initalizeTableData(){
+        if(connections.value == null || staticClientDataList.value == null){
+            return;
+        }
+
+        const staticDataMap: Map<number, StaticClientConnectionData> = new Map(
+            staticClientDataList.value.staticClientConnectionData.map(data => [data.id, data])
+        );
+
+        connections.value.monitoringConnectionData.cons.forEach((dynamicData, index) => {
+
+            const staticClientData: StaticClientConnectionData | undefined = staticDataMap.get(dynamicData.id);
+
+            if(staticClientData != null){
+                const monitoringRow: MonitoringRow = createMonitoringRowData(dynamicData, staticClientData);
+                monitoringData.value.set(monitoringRow.id, monitoringRow);
+            }
+            
+        });
+
+        updateTableData();
+    }
+
     function createMonitoringRowData(fullPageDataConnection: MonitoringClientConnection, staticClientData: StaticClientConnectionData): MonitoringRow{
-
-        const indicatorsFullList: IndicatorObject[] = extractIndicators(fullPageDataConnection.iv);
-        const pingObject = indicatorsFullList.find(indicatorObject => indicatorObject.indicatorType = IndicatorEnum.LAST_PING);
-
         return {
             id: fullPageDataConnection.id,
             connectionToken: staticClientData.conectionToken,
@@ -291,30 +336,38 @@
             clientGroups: extractClientGroupNames(staticClientData.cg),
             connectionInfo: staticClientData.seb_info,
             status: fullPageDataConnection.st,
-            ping: pingObject,
+            indicators: extractIndicators(fullPageDataConnection.iv),
         }
     }
 
-    function extractClientGroupNames(clientGroupIds: number[]): string{
-        let clientGroupNames: string = "";
+    function extractClientGroupNames(clientGroupIds: number[]): ClientGroup[]{
+        const clientGroups: ClientGroup[] = [];
 
         for(let i = 0; i < clientGroupIds.length; i++){
-            const clientGroupName: string | undefined = monitoringStore.clientGroups?.content.find(clientGroup => clientGroup.id == clientGroupIds[i])?.name;
+            const clientGroup: ClientGroup | undefined = monitoringStore.clientGroups?.content.find(clientGroup => clientGroup.id == clientGroupIds[i]);
 
-            if(clientGroupName != null){
-                clientGroupNames += clientGroupName + " ";
+            if(clientGroup != null){
+                clientGroups.push(clientGroup);
             }
         }
 
-        if(clientGroupNames == ""){
-            return "";
-        }
-
-        return clientGroupNames.substring(0, clientGroupNames.length-1);
+        return clientGroups;
     }
 
-    function extractIndicators(indicatorValues: Record<string, string>): IndicatorObject[]{
-        const indicatorsFullList: IndicatorObject[] = [];
+    
+    function getAllConnectionIds(): number[]{
+        if(connections.value == null){
+            return [];
+        }
+
+        return connections.value.monitoringConnectionData.cons.map(
+            (cons: { id: number}) => cons.id
+        );
+    }
+
+    //=================indicators===================
+    function extractIndicators(indicatorValues: Record<string, string>): Map<number, IndicatorObject>{
+        const indicatorsMap: Map<number, IndicatorObject> = new Map();
 
         for (const [key, value] of Object.entries(indicatorValues)) {
 
@@ -324,34 +377,63 @@
                 const indicatorFullObject: IndicatorObject = {
                     indicatorType: generalUtils.findEnumValue(IndicatorEnum, indicator.type),
                     indicatorValue: parseInt(value),
-                    indicatorObject: indicator
+                    indicatorObject: indicator,
                 }
 
-                indicatorsFullList.push(indicatorFullObject);
+                indicatorsMap.set(indicator.id, indicatorFullObject);
             }
         }
 
-        return indicatorsFullList;
+        return indicatorsMap;
     }
 
-    function getAllConnectionIds(): number[]{
-        if(fullPageData.value == null){
-            return [];
+    function addIndicatorHeaders(){
+        monitoringStore.indicators?.content.forEach((indicator) => {
+            clientsTableHeaders.value.push(
+                {
+                    title: indicator.name, 
+                    key: indicator.id.toString(),
+                    sortable: false
+                }
+            );
+        });
+    }
+
+    function updateIndicator(indicatorMap: Map<number, IndicatorObject> | undefined, indicatorValues: Record<string, string>){
+        if(indicatorMap == null){
+            return;
         }
 
-        return fullPageData.value.monitoringConnectionData.cons.map(
-            (cons: { id: number}) => cons.id
-        );
+        indicatorMap.forEach((indicatorObject, key) => {
+            indicatorObject.indicatorValue = parseInt(indicatorValues[key.toString()]);
+
+        });
     }
 
     //=================interval===================
     async function startIntervalRefresh(){
-        intervalRefresh = setInterval(async () => {
+            console.log("before call")
+            const start = performance.now();
 
-            await getAndSetFullPageData();
+            await getAndSetConnections();
 
-        }, REFRESH_INTERVAL);
+            console.log("after call")
+            const end = performance.now();
+            console.log(`Execution time: ${(end - start)/1000} ms`);
+
+            intervalRefresh = setTimeout(startIntervalRefresh, REFRESH_INTERVAL);
     }
+
+    // async function startIntervalRefresh(){
+    //     intervalRefresh = setInterval(async () => {
+
+    //         //todo: check when request is finished
+    //         await getAndSetConnections();
+
+    //     }, REFRESH_INTERVAL);
+    // }
+
+
 
     function stopIntervalRefresh(){
         if (intervalRefresh) {
@@ -360,8 +442,15 @@
     }
 
 
+    //========client group dialog========
+    function openClientGroupDialog(clientGroup: ClientGroup){
+        clientGroupToView.value = clientGroup;
+        clientGroupDialog.value = true;
+    }
 
-
+    function closeClientGroupDialog(){
+        clientGroupDialog.value = false;
+    }
 
 
 
@@ -369,5 +458,8 @@
 </script>
 
 <style scoped>
+    .default-color {
+        color: #2196F3;
+    }
 
 </style>
