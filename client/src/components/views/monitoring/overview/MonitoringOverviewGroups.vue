@@ -17,7 +17,7 @@
 
                     <!--------group type-------->
                     <v-col cols="5">
-                        <div class="font-weight-medium">
+                        <div v-if="clientGroupItem.type != ClientGroupEnum.SP_FALLBACK_GROUP" class="font-weight-medium">
                             {{ translate(clientGroupItem.type) }}
                         </div>
                         <div v-if="clientGroupItem.typeValue != ''" class="mt-4">
@@ -79,23 +79,16 @@
 
     //exam
     const examId = useRoute().params.examId.toString();
-
     
-    const overViewClientGroups: ComputedRef<OverviewClientGroup[] | undefined> = computed(() => {
+    const overViewClientGroups: ComputedRef<OverviewClientGroup[] | null> = computed(() => {
+        if(monitoringStore.monitoringOverviewData?.clientGroups == null){
+            return null;
+        }
 
-        // console.log("got called")
+        const normalItems = monitoringStore.monitoringOverviewData?.clientGroups.filter(item => item.type != ClientGroupEnum.SP_FALLBACK_GROUP);
+        const fallBackGroups = monitoringStore.monitoringOverviewData?.clientGroups.filter(item => item.type == ClientGroupEnum.SP_FALLBACK_GROUP);
 
-        return monitoringStore.monitoringOverviewData?.clientGroups.filter(item => {
-            if(item.type != ClientGroupEnum.SP_FALLBACK_GROUP){
-                return true;
-            }
-
-            if(item.clientAmount == 0){
-                return false;
-            }
-
-            return true;
-        })
+        return [...normalItems, ...fallBackGroups];
     });
     
 </script>

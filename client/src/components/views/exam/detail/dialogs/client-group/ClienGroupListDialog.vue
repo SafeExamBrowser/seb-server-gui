@@ -38,10 +38,14 @@
                         <!-------screen procotoring checkbox------->      
                         <template v-slot:item.isSPSGroup="{ item }">
                             <v-btn 
-                                @click="item.isSPSGroup = !item.isSPSGroup"
-                                variant="flat"
-                                :icon="item.isSPSGroup ? 'mdi-checkbox-marked' : 'mdi-checkbox-blank-outline'">
+                                variant="text"
+                                :disabled="!generalUtils.stringToBoolean(examStore.selectedExam!.additionalAttributes.enableScreenProctoring)"
+                                :icon="item.isSPSGroup ? 'mdi-checkbox-marked' : 'mdi-checkbox-blank-outline'"
+                                @click="item.isSPSGroup = !item.isSPSGroup">
                             </v-btn>
+                            <v-tooltip v-if="!generalUtils.stringToBoolean(examStore.selectedExam!.additionalAttributes.enableScreenProctoring)" activator="parent">
+                                Screen Proctoring can only be selected if Screen Proctoring is enabled on the exam itself
+                            </v-tooltip>
                         </template>
 
                         <!-------edit button------->      
@@ -178,19 +182,19 @@
         }
 
         clientGroups.value = clientGroupResponse.content;
-        examStore.selectedClientGroups = clientGroupResponse.content;
+        examStore.selectedClientGroups = JSON.parse(JSON.stringify(clientGroupResponse.content));
         initialClientGroups.value = JSON.parse(JSON.stringify(clientGroupResponse.content));
     }
 
     //========screen proctoring========
     async function saveScreenProctoringGroups(){
-        const examResponse: Exam | null = await examViewService.applyScreenProctoringGroups(examId, generalUtils.createStringIdList(getChangedGroupIds()));
+        const examResponse: Exam | null = await examViewService.applyScreenProctoringGroups(examId, generalUtils.createStringIdList(getGroupsWithSelectedSp()));
 
         if(examResponse == null){
             return;
         }
 
-        emit("closeClientGroupDialog");
+        emit("closeClientGroupDialog", true);
     }
 
 
@@ -200,11 +204,11 @@
         });
     });
 
-    function getChangedGroupIds(): number[]{
+    function getGroupsWithSelectedSp(): number[]{
         let groupIds: number[] = [];
 
         clientGroups.value.some((item, index) => {
-            if(item.isSPSGroup != initialClientGroups.value[index].isSPSGroup){
+            if(item.isSPSGroup){
                 groupIds.push(item.id!);
             }
         });
@@ -246,13 +250,9 @@
     function closeEditDialog(isChange?: boolean){
         editDialog.value = false;
 
-        console.log("it got here")
-
-        clientGroups.value[0].name = "updateWorked";
-
-        // if(isChange){
-        //     getClientGroups();
-        // }
+        if(isChange){
+            getClientGroups();
+        }
     }
     
 
