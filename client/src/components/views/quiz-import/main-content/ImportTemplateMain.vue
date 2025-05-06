@@ -20,6 +20,7 @@
                         :color="examTemplate.name == 'System Template' ? 'green' : 'primary'"
                         :ripple="false"
                         :variant="quizImportStore.selectedExamTemplate?.id == examTemplate.id ? 'flat' : 'tonal'"
+                        :aria-label="translate('quizImportWizard.templateMain.templateSelect')"
                         tabindex="0"
                         :hover="true"
                         @keyup.enter="onTemplateCardClick(examTemplate)"
@@ -29,7 +30,11 @@
                             <v-toolbar-title class="text-subtitle-1" :text="examTemplate.name"></v-toolbar-title>
 
                             <template v-slot:append>
-                                <v-btn @click.stop="openExamTemplateDialog(examTemplate)" icon="mdi-information"></v-btn>
+                                <v-btn 
+                                    :aria-label="translate('quizImportWizard.templateMain.templateInfo')"
+                                    @click.stop="openExamTemplateDialog(examTemplate)" 
+                                    icon="mdi-information">
+                                </v-btn>
                             </template>
                         </v-toolbar>
 

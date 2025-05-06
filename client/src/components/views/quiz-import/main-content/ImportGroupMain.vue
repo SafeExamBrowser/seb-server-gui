@@ -7,6 +7,7 @@
                 <v-col cols="6">
                     <v-text-field
                         v-model="search"
+                        :aria-label="translate('quizImportWizard.groupMain.search')"
                         :label="translate('quizImportWizard.groupMain.search')"
                         prepend-inner-icon="mdi-magnify"
                         variant="outlined"
@@ -27,8 +28,18 @@
                         :items-per-page="tableUtils.calcDefaultItemsPerPage(quizImportStore.selectedExamTemplate?.CLIENT_GROUP_TEMPLATES)"
                         :items-per-page-options="tableUtils.calcItemsPerPage(quizImportStore.selectedExamTemplate?.CLIENT_GROUP_TEMPLATES)"
                         :headers="tableHeaders"
-                        :search="search"
-                    >
+                        :search="search">
+
+                        <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort}">
+                            <TableHeaders
+                                :columns="columns"
+                                :is-sorted="isSorted"
+                                :get-sort-icon="getSortIcon"
+                                :toggle-sort="toggleSort"
+                                :header-refs-prop="tableHeadersRef">
+                            </TableHeaders>
+                        </template>
+                        
                         <template v-slot:item="{item}">
                             <tr 
                                 class="on-row-hover" 
@@ -101,12 +112,14 @@
     import { useQuizImportStore } from "@/stores/quizImportStore";
     import * as tableUtils from "@/utils/table/tableUtils";
     import {translate} from "@/utils/generalUtils";
+    import TableHeaders from "@/utils/table/TableHeaders.vue";
 
     
     //stores
     const quizImportStore = useQuizImportStore();
 
     //table
+    const tableHeadersRef = ref<any[]>();
     const tableHeaders = ref([
         {title: translate("quizImportWizard.groupMain.tableHeaderName"), key: "name"}
     ]);    

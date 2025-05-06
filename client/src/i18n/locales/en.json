@@ -146,7 +146,9 @@
         },
 
         "templateMain": {
-            "description": "Click on the Exam Template you want to use for the exam"
+            "description": "Click on the Exam Template you want to use for the exam",
+            "templateInfo": "Open template info",
+            "templateSelect": "Select template"
         },
 
         "groupMain": {
