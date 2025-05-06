@@ -32,6 +32,8 @@
                         <template v-slot:item="{item}">
                             <tr 
                                 class="on-row-hover" 
+                                tabindex="0"
+                                @keyup.enter="onTableRowClick(item)"
                                 @click="onTableRowClick(item)"
                                 :class="[quizImportStore.selectedClientGroups.some(clientGroup => clientGroup.id == item.id) ? 'selected-row' : '']">
 
