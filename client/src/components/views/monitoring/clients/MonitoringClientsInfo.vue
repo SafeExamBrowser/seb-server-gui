@@ -302,8 +302,6 @@
 
 
     function isFilterSelected(filterType: MonitoringHeaderEnum, filterValue: string): boolean{
-        console.log(filterType + " " + filterValue)
-
         if(route.query[filterType]?.includes(filterValue)){
             return true;
         }
