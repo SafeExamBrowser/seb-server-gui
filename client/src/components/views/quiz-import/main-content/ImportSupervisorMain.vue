@@ -30,10 +30,22 @@
                         :items-per-page-options="tableUtils.calcItemsPerPage(userAccountNames)"
                         :headers="tableHeaders"
                         :search="search">
+
+                        <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort}">
+                            <TableHeaders
+                                :columns="columns"
+                                :is-sorted="isSorted"
+                                :get-sort-icon="getSortIcon"
+                                :toggle-sort="toggleSort"
+                                :header-refs-prop="tableHeadersRef">
+                            </TableHeaders>
+                        </template>
                         
                         <template v-slot:item="{item}">
                             <tr 
                                 class="on-row-hover" 
+                                tabindex="0"
+                                @keyup.enter="onTableRowClick(item)"
                                 @click="onTableRowClick(item)"
                                 :class="[quizImportStore.selectedExamSupervisors.some(userAccount => userAccount.modelId == item.modelId) ? 'selected-row' : '']">
 
@@ -103,6 +115,7 @@
     import { useUserAccountStore } from "@/stores/store";
     import * as tableUtils from "@/utils/table/tableUtils";
     import {translate} from "@/utils/generalUtils";
+    import TableHeaders from "@/utils/table/TableHeaders.vue";
     
     //stores
     const quizImportStore = useQuizImportStore();
@@ -112,6 +125,7 @@
     const userAccountNames = ref<UserAccountName[]>([]);
 
     //table
+    const tableHeadersRef = ref<any[]>();
     const tableHeaders = ref([
         {title: translate("quizImportWizard.supervisorsMain.tableHeaderName"), key: "name"}
     ]);    
