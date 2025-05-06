@@ -195,6 +195,14 @@ export async function updateSEBSettingValue(examId: string, valueId: String, val
     }
 }
 
+export async function newSEBSettingTableRow(examId: string, settingName: string): Promise<SEBSettingsTableRowValues | null> {
+    try{
+        return await examSEBSettingService.addTableRow(examId, settingName);
+    }catch(error){
+        return null;
+    }
+}
+
 export async function deleteSEBSettingTableRow(examId: string, settingName: string, rowIndex: number): Promise<SEBSettingsTableRowValues[] | null>{
     try{
         return await examSEBSettingService.deleteTableRow(examId, settingName, rowIndex);

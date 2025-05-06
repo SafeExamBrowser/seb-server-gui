@@ -29,14 +29,6 @@ type SEBSettingsView = {
     tableValues: Map<string, SEBSettingsTableRowValues[]>
 };
 
-type PermittedProcesessRow = {
-    index: number,
-    active: string, 
-    os: string, 
-    executable: string, 
-    title: string
-};
-
 type PermittedProcesessArgument = {
     active: boolean,
     argument: string,
@@ -62,14 +54,6 @@ type PermittedProcesess = {
     allowNetworkAccess: boolean,
     strongKill: boolean,
     teamIdentifier: string
-};
-
-type ProhibitedProcesessRow = {
-    index: number,
-    active: string, 
-    os: string, 
-    executable: string, 
-    description: string
 };
 
 type ProhibitedProcesess = {

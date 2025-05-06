@@ -57,14 +57,11 @@ declare module 'vue' {
     MonitoringOverviewInfos: typeof import('./components/views/monitoring/overview/MonitoringOverviewInfos.vue')['default']
     MonitoringOverviewNotifications: typeof import('./components/views/monitoring/overview/MonitoringOverviewNotifications.vue')['default']
     NavigationOverview: typeof import('./components/layout/NavigationOverview.vue')['default']
-    ProhibitedProcess: typeof import('./components/views/settings/ProhibitedProcess.vue')['default']
     RegisterPage: typeof import('./components/views/RegisterPage.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SebSettingsApplications: typeof import('./components/views/settings/SebSettingsApplications.vue')['default']
     SebSettingsDialog: typeof import('./components/views/settings/SebSettingsDialog.vue')['default']
     SebSettingsNetwork: typeof import('./components/views/settings/SebSettingsNetwork.vue')['default']
-    SebSettingsPermittedProcess: typeof import('./components/views/settings/SebSettingsPermittedProcess.vue')['default']
-    SebSettingsProhibitedProcess: typeof import('./components/views/settings/SebSettingsProhibitedProcess.vue')['default']
   }
 }
