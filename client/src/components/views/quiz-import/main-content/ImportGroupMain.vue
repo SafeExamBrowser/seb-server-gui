@@ -1,7 +1,8 @@
 <template>
     <v-row>
         <!-----------group selection table---------->      
-        <v-col cols="7"> 
+        <v-spacer></v-spacer>
+        <v-col cols="7" xl="5"> 
 
             <v-row>
                 <v-col cols="6">
@@ -20,6 +21,7 @@
 
             <v-row>
                 <v-col>
+                    <!--@vue-ignore-->
                     <v-data-table
                         item-value="quiz_id" 
                         :hover="true"
@@ -49,6 +51,9 @@
                                 :class="[quizImportStore.selectedClientGroups.some(clientGroup => clientGroup.id == item.id) ? 'selected-row' : '']">
 
                                 <td>{{ item.name }}</td>
+                                <td align="center">
+                                    <v-icon :icon="quizImportStore.availableSpClientGroupIds.includes(item.id!) ? 'mdi-check' : ''"></v-icon>
+                                </td>
                             </tr>
                         </template>
                     </v-data-table>
@@ -59,7 +64,7 @@
 
 
         <!-----------client group list summary---------->      
-        <v-col cols="3">
+        <v-col cols="4" xl="2">
             <v-row>
                 <v-col>
                     <div class="text-h6">
@@ -102,6 +107,7 @@
             </v-row>
 
         </v-col>
+        <v-spacer></v-spacer>
         <!------------------------>
 
     </v-row>
@@ -121,7 +127,8 @@
     //table
     const tableHeadersRef = ref<any[]>();
     const tableHeaders = ref([
-        {title: translate("quizImportWizard.groupMain.tableHeaderName"), key: "name"}
+        {title: translate("quizImportWizard.groupMain.tableHeaderName"), key: "name"},
+        {title: translate("quizImportWizard.groupMain.tableHeaderScreenProctoring"), key: "sp", center: true, align: "center"}
     ]);    
 
     //local client group search / filter

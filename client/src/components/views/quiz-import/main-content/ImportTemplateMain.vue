@@ -68,6 +68,7 @@
     import * as quizImportWizardViewService from "@/services/component-services/quizImportWizardViewService";
     import { useQuizImportStore } from "@/stores/quizImportStore";
     import {translate} from "@/utils/generalUtils";
+    import * as generalUtils from "@/utils/generalUtils";
 
     //stores
     const quizImportStore = useQuizImportStore();
@@ -91,7 +92,7 @@
     });
 
 
-    function onTemplateCardClick(examTemplate: ExamTemplate){
+    async function onTemplateCardClick(examTemplate: ExamTemplate){
         quizImportStore.selectedClientGroups = [];
         if(examTemplate.id == quizImportStore.selectedExamTemplate?.id){
             quizImportStore.selectedExamTemplate = null;
@@ -103,6 +104,11 @@
 
         if(quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES != null && quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES.length > 1){
             quizImportStore.addGroupSelectionComponents();
+
+            if(quizImportStore.selectedExamTemplate.EXAM_ATTRIBUTES.enableScreenProctoring){
+                await getExamTemplateSpGroups();
+            }
+
             return;
         }
 
@@ -138,6 +144,16 @@
             return acc;
         }, []);
     });
+
+    async function getExamTemplateSpGroups(){
+        const examTemplateSp: ScreenProctoringSettings | null = await quizImportWizardViewService.getExamTemplateSp(quizImportStore.selectedExamTemplate!.id.toString());
+    
+        if(examTemplateSp == null){
+            return;
+        }
+
+        quizImportStore.availableSpClientGroupIds = generalUtils.createNumberIdList(examTemplateSp.spsSEBGroupsSelection);
+    }
 
 </script>
 

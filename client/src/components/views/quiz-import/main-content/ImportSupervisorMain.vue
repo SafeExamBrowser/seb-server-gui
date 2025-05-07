@@ -3,7 +3,8 @@
     <v-row>
         
         <!-----------user selection table---------->      
-        <v-col cols="7"> 
+        <v-spacer></v-spacer>
+        <v-col cols="7" xl="5"> 
 
             <v-row>
                 <v-col cols="6">
@@ -60,7 +61,7 @@
 
 
         <!-----------user list summary---------->      
-        <v-col cols="3">
+        <v-col cols="4" xl="2">
             <v-row>
                 <v-col>
                     <div class="text-h6">
@@ -103,6 +104,7 @@
             </v-row>
 
         </v-col>
+        <v-spacer></v-spacer>
         <!------------------------>
 
     </v-row>

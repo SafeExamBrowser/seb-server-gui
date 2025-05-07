@@ -13,6 +13,7 @@ export const EXAM_SCREEN_PROCTORING_ROUTE = "/exam/:id/screen-proctoring"
 
 //exam template
 export const EXAM_TEMPLATE_ROUTE = "/exam-template";
+export const EXAM_TEMPLATE_SCREEN_PROCTORING_ROUTE = "/exam-template/:id/screen-proctoring";
 
 //user account
 export const USER_ACCOUNT_ROUTE = "/useraccount";

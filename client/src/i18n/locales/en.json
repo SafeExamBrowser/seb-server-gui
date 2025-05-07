@@ -154,7 +154,8 @@
         "groupMain": {
             "search": "Search",
             "selectedGroups": "Selected Groups",
-            "tableHeaderName": "Name"
+            "tableHeaderName": "Name",
+            "tableHeaderScreenProctoring": "Screen Proctoring"
         },
 
         "supervisorsMain": {

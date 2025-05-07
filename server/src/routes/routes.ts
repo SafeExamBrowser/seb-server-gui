@@ -37,6 +37,7 @@ router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE + "/activation", screenProcto
 //exam template
 router.get(constants.EXAM_TEMPLATE_ROUTE + "/:id", examTemplateController.getExamTemplate);
 router.get(constants.EXAM_TEMPLATE_ROUTE, examTemplateController.getExamTemplates);
+router.get(constants.EXAM_TEMPLATE_SCREEN_PROCTORING_ROUTE, examTemplateController.getExamTemplateSp);
 
 //user accounts
 router.get(constants.USER_ACCOUNT_ROUTE + "/:id", userAccountController.getUserAccount);
