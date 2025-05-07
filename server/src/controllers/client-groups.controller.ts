@@ -46,7 +46,7 @@ export async function getClientGroup(req: Request, res: Response){
 
 export async function getClientGroups(req: Request, res: Response){
     try{
-        const [clientGroups, status] = await clientGroupsService.getClientGroups(req.headers.authorization, req.query.examId);
+        const [clientGroups, status] = await clientGroupsService.getClientGroups(req.headers.authorization, req.query.id);
         return res.status(status).json(clientGroups);
 
     }catch(error){
