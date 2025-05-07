@@ -16,18 +16,12 @@ export const useExamStore = defineStore("exam", () => {
     const selectedExamSupervisors = ref<UserAccount[]>([]);
     const selectedClientGroups = ref<ClientGroup[]>([]);
     const relatedAssessmentTool = ref<AssessmentTool | null>(null);
-    const applicationSettings = ref<SEBSettingsView | null>(null);
-    const networkSettings = ref<SEBSettingsView | null>(null);
-
 
     function clearSelectedValues(){
         selectedExam.value = null;
         selectedExamTemplate.value = null;
         relatedAssessmentTool.value = null;
         selectedExamSupervisors.value = [];
-        applicationSettings.value = null;
-        networkSettings.value = null;
-
     }   
 
 
@@ -42,8 +36,6 @@ export const useExamStore = defineStore("exam", () => {
         activeTypeFilter,
         activeStatusFilter,
         clearSelectedValues,
-        selectedClientGroups,
-        applicationSettings,
-        networkSettings
+        selectedClientGroups
     };
 });

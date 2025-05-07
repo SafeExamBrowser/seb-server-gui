@@ -29,22 +29,37 @@ type SEBSettingsView = {
     tableValues: Map<string, SEBSettingsTableRowValues[]>
 };
 
-type PermittedProcesessArgument = {
+type ApplicationView = {
+    configurationNodeId: number,
+    configurationId: number,
+    allowSwitchToApplications: {
+        id: number,
+        value: string
+    }
+    allowFlashFullscreen: {
+        id: number,
+        value: string
+    }
+    prohibitedProcesses: ProhibitedProcess[],
+    permittedProcesses: PermittedProcess[]
+}
+
+type PermittedProcessArgument = {
     active: boolean,
     argument: string,
 };
 
-type PermittedProcesess = {
+type PermittedProcess = {
     index: number,
-    active: boolean, 
-    os: string, 
+    active: boolean,
+    os: string,
     executable: string, 
-    title: string
+    title: string,
     originalName: string,
     signature: string,
     path: string,
     iconInTaskbar: boolean,
-    arguments: PermittedProcesessArgument[],
+    arguments: PermittedProcessArgument[],
     allowOpenAndSavePanel: boolean,
     autostart: boolean,
     allowShareSheet: boolean,
@@ -54,16 +69,46 @@ type PermittedProcesess = {
     allowNetworkAccess: boolean,
     strongKill: boolean,
     teamIdentifier: string
+    ids: {
+        active: number,
+        os: number,
+        executable: number, 
+        title: number,
+        originalName: number,
+        signature: number,
+        path: number,
+        iconInTaskbar: number,
+        arguments: number,
+        allowOpenAndSavePanel: number,
+        autostart: number,
+        allowShareSheet: number,
+        runInBackground: number,
+        allowManualStart: number,
+        allowUserToChooseApp: number,
+        allowNetworkAccess: number,
+        strongKill: number,
+        teamIdentifier: number
+    }
 };
 
-type ProhibitedProcesess = {
+type ProhibitedProcess = {
     index: number,
     active: boolean,
-    os: string, 
+    os: string,
     executable: string,
     originalName: string,
     description: string
     identifier: string,
     strongKill: boolean,
     ignoreInAAC: boolean
+    ids: {
+        active: number,
+        os: number,
+        executable: number,
+        originalName: number,
+        description: number
+        identifier: number,
+        strongKill: number,
+        ignoreInAAC: number
+    }
 };

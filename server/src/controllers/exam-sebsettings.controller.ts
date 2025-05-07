@@ -25,7 +25,7 @@ export async function getNetworkView(req: Request, res: Response){
 
 export async function addTableRow(req: Request, res: Response){
     try{
-        const [exams, status] = await examSEBSettingsService.addTableRow(req.headers.authorization, req.params.id, req.body.settingName);
+        const [exams, status] = await examSEBSettingsService.addTableRow(req.headers.authorization, req.params.id, req.params);
         return res.status(status).json(exams);
 
     }catch(error){

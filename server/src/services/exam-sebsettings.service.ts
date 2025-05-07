@@ -13,9 +13,9 @@ export async function getNetworkView(token: string, examId: string): Promise<[ob
     return [data, status];
 }
 
-export async function addTableRow(token: string, examId: string, settingName: string) {
+export async function addTableRow(token: string, examId: string, params: {}) {
     const url: string =  constants.EXAM_SEB_SETTINGS_ENDPOINT + "/" + examId + "/table/row";
-    const {data, status} = await apiService.api.post(url, apiService.createUrlEncodedBody({ name: settingName }), {headers: apiService.getHeaders(token)});
+    const {data, status} = await apiService.api.post(url, apiService.createUrlEncodedBody(params), {headers: apiService.getHeaders(token)});
     return [data, status];
 }
 

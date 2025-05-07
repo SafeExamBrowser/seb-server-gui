@@ -13,7 +13,7 @@ export async function getNetworkView(id: string): Promise<SEBSettingsView | any>
 }
 
 export async function addTableRow(id: string, settingName: string): Promise<SEBSettingsTableRowValues | any>{
-    const url: string = urlPrefix + id + "/";
+    const url: string = urlPrefix + id + "/table/" + settingName + "/row";
     return (await apiService.api.post(url, { settingName: settingName }, {headers: apiService.getHeaders()})).data;
 }
 

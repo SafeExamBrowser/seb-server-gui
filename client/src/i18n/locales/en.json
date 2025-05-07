@@ -237,7 +237,7 @@
             "applicationView": {
                 "allowSwitchToApplications": "Allow switching to third party application (Mac)",
                 "allowFlashFullscreen": "Allow Flash to switch to fullscreen mode (Mac)",
-                "permittedProcesses": {
+                "permittedProcess": {
                     "settingName": "Permitted Processes",
                     "editDialogTitle": "Permitted Process",
                     "active": "Active",
@@ -257,10 +257,10 @@
                     "allowedExecutables": "Window handling process",
                     "path": "Path",
                     "arguments": "Arguments",
-                    "arguments.active": "Active",
-                    "arguments.argument": "Argument",
-                    "arguments.addAction": "Add new argument",
-                    "arguments.removeAction": "Remove this argument",
+                    "arguments_active": "Active",
+                    "arguments_argument": "Argument",
+                    "arguments_addAction": "Add new argument",
+                    "arguments:removeAction": "Remove this argument",
                     "identifier": "Identifier",
                     "identifier_tooltip": "(Sub) string in the title of the main window of a tricky third party application (Java, Acrobat etc.).\n Mac OS X: Bundle identifier of the process in reverse domain notation.",
                     "iconInTaskbar": "Icon in taskbar",
@@ -283,7 +283,7 @@
                     "allowNetworkAccess_tooltip": "Allow the permitted app in AAC Multi App Mode to access the network/internet",
                     "teamIdentifier_tooltip": "Team identifier of the app's code signature"
                 },
-                "prohibitedProcesses": {
+                "prohibitedProcess": {
                     "settingName": "Prohibited Processes",
                     "editDialogTitle": "Prohibited Process",
                     "active": "Active",

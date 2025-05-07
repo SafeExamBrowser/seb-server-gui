@@ -2,14 +2,14 @@
     <v-row>
         <v-col>
             <v-checkbox-btn 
-                v-model="allowSwitchToApplications"
-                @click="saveSingleValue('allowSwitchToApplications', allowSwitchToApplications ? 'false' : 'true')"
+                v-model="allowSwitchToApplicationsVal"
+                @click="saveSingleValue(allowSwitchToApplications.id, allowSwitchToApplicationsVal ? 'false' : 'true')"
                 :label="translate('examDetail.sebSettings.applicationView.allowSwitchToApplications')"></v-checkbox-btn> 
         </v-col>
         <v-col>
             <v-checkbox-btn 
-                v-model="allowFlashFullscreen"
-                @click="saveSingleValue('allowFlashFullscreen', allowFlashFullscreen ? 'false' : 'true')"
+                v-model="allowFlashFullscreenVal"
+                @click="saveSingleValue(allowFlashFullscreen.id, allowFlashFullscreenVal ? 'false' : 'true')"
                 :label="translate('examDetail.sebSettings.applicationView.allowFlashFullscreen')"></v-checkbox-btn>
         </v-col>
     </v-row>
@@ -17,7 +17,7 @@
     <v-row>
         <v-col class="text-subtitle-1">
             <v-row class="mt-10">
-                <v-col>{{translate("examDetail.sebSettings.applicationView.permittedProcesses.settingName")}}</v-col>
+                <v-col>{{translate("examDetail.sebSettings.applicationView.permittedProcess.settingName")}}</v-col>
                 <v-col  align="right">
                     <v-btn
                         color="primary"
@@ -38,10 +38,10 @@
                 item-value="id" 
                 class="rounded-lg elevation-4"
                 density="compact"
-                :items-per-page="tableUtils.calcDefaultItemsPerPage(permittedProcesessTable)" 
-                :items-per-page-options="tableUtils.calcItemsPerPage(permittedProcesessTable)"
-                :headers="permittedProcesessHeaders" 
-                :items="permittedProcesessTable">
+                :items-per-page="tableUtils.calcDefaultItemsPerPage(permittedProcessTable)" 
+                :items-per-page-options="tableUtils.calcItemsPerPage(permittedProcessTable)"
+                :headers="permittedProcessHeaders" 
+                :items="permittedProcessTable">
 
                 <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort}">
                     <TableHeaders
@@ -49,7 +49,7 @@
                         :is-sorted="isSorted"
                         :get-sort-icon="getSortIcon"
                         :toggle-sort="toggleSort"
-                        :header-refs-prop="permittedProcesessHeadersRef">
+                        :header-refs-prop="permittedProcessHeadersRef">
                     </TableHeaders>
                 </template>
 
@@ -60,7 +60,7 @@
 
                 <!-------OS hook------->
                 <template v-slot:item.os="{ item }">
-                    {{ translate("examDetail.sebSettings.applicationView.prohibitedProcesses.os_" + item.os, i18n) }}
+                    {{ translate("examDetail.sebSettings.applicationView.prohibitedProcess.os_" + item.os, i18n) }}
                 </template>
 
                  <!-------edit button------->      
@@ -68,7 +68,7 @@
                     <v-btn 
                         variant="text" 
                         icon="mdi-pencil-outline"
-                        @click="permittedProcessesOpenEditDialog(item.index)">
+                        @click="permittedProcessOpenEditDialog(item.index)">
                     </v-btn>
                 </template>
 
@@ -84,10 +84,19 @@
         </v-col>
     </v-row>
 
+    <!-----------edit permitted process dialog---------->      
+    <v-dialog v-model="editPermittedProcessDialog" max-width="800">
+        <EditPermittedProcess
+            @close-edit-permitted-process="closeEditPermittedProcessDialog"
+            :permitted-process="selectedPermittedProcess"
+            :read-only="readOnly">
+        </EditPermittedProcess>
+    </v-dialog>
+
     <v-row class="text-subtitle-1">
         <v-col class="text-subtitle-1">
             <v-row class="mt-10">
-                <v-col>{{translate("examDetail.sebSettings.applicationView.prohibitedProcesses.settingName")}}</v-col>
+                <v-col>{{translate("examDetail.sebSettings.applicationView.prohibitedProcess.settingName")}}</v-col>
                 <v-col  align="right">
                     <v-btn
                         color="primary"
@@ -107,8 +116,8 @@
                 item-value="id" 
                 class="rounded-lg elevation-4"
                 density="compact"
-                :headers="prohibitedProcesessHeaders"   
-                :items="prohibitedProcesessTable">
+                :headers="prohibitedProcessHeaders"   
+                :items="prohibitedProcessTable">
 
                 <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort}">
                     <TableHeaders
@@ -116,7 +125,7 @@
                         :is-sorted="isSorted"
                         :get-sort-icon="getSortIcon"
                         :toggle-sort="toggleSort"
-                        :header-refs-prop="prohibitedProcesessHeadersRef">
+                        :header-refs-prop="prohibitedProcessHeadersRef">
                     </TableHeaders>
                 </template>
 
@@ -127,7 +136,7 @@
 
                 <!-------OS hook------->
                 <template v-slot:item.os="{ item }">
-                    {{ translate("examDetail.sebSettings.applicationView.permittedProcesses.os_" + item.os, i18n) }}
+                    {{ translate("examDetail.sebSettings.applicationView.permittedProcess.os_" + item.os, i18n) }}
                 </template>
 
                 <!-------edit button------->      
@@ -135,7 +144,7 @@
                     <v-btn 
                         variant="text" 
                         icon="mdi-pencil-outline"
-                        @click="prohibitedProcessesOpenEditDialog(item.index)">
+                        @click="prohibitedProcessOpenEditDialog(item.index)">
                     </v-btn>
                 </template>
 
@@ -152,11 +161,11 @@
     </v-row>
 
     <!-----------edit prohibited process dialog---------->      
-    <v-dialog v-model="editProhibitedProcesesDialog" max-width="800">
+    <v-dialog v-model="editProhibitedProcessDialog" max-width="800">
         <EditProhibitedProcess
             @close-edit-prohibited-process="closeEditProhibitedProcessDialog"
-            :prohibited-process="selectedProhibitedProceses"
-        >
+            :prohibited-process="selectedProhibitedProcess"
+            :read-only="readOnly">
         </EditProhibitedProcess>
     </v-dialog>
 
@@ -164,9 +173,7 @@
 
 <script setup lang="ts">
     import { useExamStore } from '@/stores/examStore';
-    import { storeToRefs } from "pinia";
     import * as tableUtils from "@/utils/table/tableUtils";
-    import * as generalUtils from "@/utils/generalUtils";
     import TableHeaders from "@/utils/table/TableHeaders.vue";
     import * as examViewService from "@/services/component-services/examViewService";
     import { useI18n } from "vue-i18n";
@@ -176,94 +183,93 @@
     const examStore = useExamStore();
 
     // single attributes
-    const allowSwitchToApplications = ref<boolean>();
-    const allowFlashFullscreen = ref<boolean>();
+    const allowSwitchToApplicationsVal = ref<boolean>(false);
+    const allowFlashFullscreenVal = ref<boolean>(false);
 
     // permittted processes 
-    const editPermittedProcesesDialog = ref<boolean>(false);
-    const selectedPermittedProceses = ref<PermittedProcesess | null>(null);
-    const permittedProcesessHeadersRef = ref<any[]>();
-    const permittedProcesessTable = ref<PermittedProcesess[]>([]);
-    const permittedProcesessHeaders = ref([
-        {title: translate("examDetail.sebSettings.applicationView.permittedProcesses.active"), key: "active", sortable: true, width: "10%"},
-        {title: translate("examDetail.sebSettings.applicationView.permittedProcesses.os"), key: "os", sortable: true, width: "10%"},
-        {title: translate("examDetail.sebSettings.applicationView.permittedProcesses.executable"), key: "executable", sortable: true, width: "30%"},
-        {title: translate("examDetail.sebSettings.applicationView.permittedProcesses.title"), key: "title", sortable: true, width: "50%"},
+    const editPermittedProcessDialog = ref<boolean>(false);
+    const selectedPermittedProcess = ref<PermittedProcess | null>(null);
+    const permittedProcessHeadersRef = ref<any[]>();
+    const permittedProcessTable = ref<PermittedProcess[]>([]);
+    const permittedProcessHeaders = ref([
+        {title: translate("examDetail.sebSettings.applicationView.permittedProcess.active"), key: "active", sortable: true, width: "10%"},
+        {title: translate("examDetail.sebSettings.applicationView.permittedProcess.os"), key: "os", sortable: true, width: "10%"},
+        {title: translate("examDetail.sebSettings.applicationView.permittedProcess.executable"), key: "executable", sortable: true, width: "30%"},
+        {title: translate("examDetail.sebSettings.applicationView.permittedProcess.title"), key: "title", sortable: true, width: "50%"},
         {title: translate("general.editButton"), key: "edit", sortable: false, width: "5%", center: true},
         {title: translate("general.deleteButton"), key: "delete", sortable: false, width: "5%", center: true}
     ]);
     
-
-
     // prohibited processes
-    const editProhibitedProcesesDialog = ref<boolean>(false);
-    const selectedProhibitedProceses = ref<ProhibitedProcesess | null>(null);
-    const prohibitedProcesessHeadersRef = ref<any[]>();
-    const prohibitedProcesessTable = ref<ProhibitedProcesess[]>([]);
-    const prohibitedProcesessHeaders = ref([
-        {title: translate("examDetail.sebSettings.applicationView.prohibitedProcesses.active"), key: "active", sortable: true, width: "10%"},
-        {title: translate("examDetail.sebSettings.applicationView.prohibitedProcesses.os"), key: "os", sortable: true, width: "10%"},
-        {title: translate("examDetail.sebSettings.applicationView.prohibitedProcesses.executable"), key: "executable", sortable: true, width: "30%"},
-        {title: translate("examDetail.sebSettings.applicationView.prohibitedProcesses.description"), key: "description", sortable: true, width: "50%"},
+    const editProhibitedProcessDialog = ref<boolean>(false);
+    const selectedProhibitedProcess = ref<ProhibitedProcess | null>(null);
+    const prohibitedProcessHeadersRef = ref<any[]>();
+    const prohibitedProcessTable = ref<ProhibitedProcess[]>([]);
+    const prohibitedProcessHeaders = ref([
+        {title: translate("examDetail.sebSettings.applicationView.prohibitedProcess.active"), key: "active", sortable: true, width: "10%"},
+        {title: translate("examDetail.sebSettings.applicationView.prohibitedProcess.os"), key: "os", sortable: true, width: "10%"},
+        {title: translate("examDetail.sebSettings.applicationView.prohibitedProcess.executable"), key: "executable", sortable: true, width: "30%"},
+        {title: translate("examDetail.sebSettings.applicationView.prohibitedProcess.description"), key: "description", sortable: true, width: "50%"},
         {title: translate("general.editButton"), key: "edit", sortable: false, width: "5%", center: true},
         {title: translate("general.deleteButton"), key: "delete", sortable: false, width: "5%", center: true}
     ]);
     
-    // other vars
+    let readOnly: boolean = false;
     let examId: string;
-    let settingsView: SEBSettingsView;
-    let tableValues: Map<string, SEBSettingsTableRowValues[]>;
-    let singleValues: Map<String, SEBSettingsValue>;
+    let allowSwitchToApplications: SEBSettingsValue;
+    let allowFlashFullscreen: SEBSettingsValue;
 
     onBeforeMount(async () => {
+        // TODO apply readonly according to user privileges
+        readOnly = false;
 
-        await getApplicationViewSettings();
-
-        console.info(examStore.applicationSettings);
-
-        if (examStore.applicationSettings == null) {
+        if(examStore.selectedExam == null){
             return;
         }
-        if (examStore.selectedExam == null) {
+
+        const applicationSettings: SEBSettingsView | null = await examViewService.getApplicationViewSettings(examStore.selectedExam.id.toString())
+        if(applicationSettings == null){
             return;
         }
 
         examId = examStore.selectedExam.id.toString();
-        settingsView = examStore.applicationSettings;
-        tableValues = new Map<string, SEBSettingsTableRowValues[]>(Object.entries(settingsView.tableValues));
-        singleValues = new Map<String, SEBSettingsValue>(Object.entries(settingsView.singleValues));
-
-        allowSwitchToApplications.value = singleValues.get("allowSwitchToApplications")?.value == "true";
-        allowFlashFullscreen.value = singleValues.get("allowFlashFullscreen")?.value == "true";
+        const settingsView: SEBSettingsView = applicationSettings;
+        const tableValues: Map<string, SEBSettingsTableRowValues[]> = new Map<string, SEBSettingsTableRowValues[]>(Object.entries(settingsView.tableValues));
+        const singleValues: Map<String, SEBSettingsValue> = new Map<String, SEBSettingsValue>(Object.entries(settingsView.singleValues));
+        allowSwitchToApplications = singleValues.get("allowSwitchToApplications")!;
+        allowFlashFullscreen = singleValues.get("allowFlashFullscreen")!;
+        allowSwitchToApplicationsVal.value = allowSwitchToApplications.value == "true";
+        allowFlashFullscreenVal.value = allowFlashFullscreen.value == "true";
 
         // Permitted Processes
-        const permittedProcessesVals = tableValues.get("permittedProcesses");
-        if (permittedProcessesVals == null) {
+        const permittedProcesses = tableValues.get("permittedProcesses");
+        if (permittedProcesses == null) {
             return;
         }
-        
-        for(let i = 0; i < permittedProcessesVals.length; i++){
-            const rowVals = new Map<string, SEBSettingsValue>(Object.entries(permittedProcessesVals[i].rowValues));
-            insertPermittedProcess(permittedProcessesVals[i].listIndex, rowVals);
-        }
 
+        updatePermittedProcessTable(permittedProcesses);
+        
         // Prohibited Processes
-        const prohibitedProcessesVals = tableValues.get("prohibitedProcesses");
-        if (prohibitedProcessesVals == null) {
+        const prohibitedProcesses = tableValues.get("prohibitedProcesses");
+        if (prohibitedProcesses== null) {
             return;
         };
         
-        for(let i = 0; i < prohibitedProcessesVals.length; i++){
-            const rowVals = new Map<string, SEBSettingsValue>(Object.entries(prohibitedProcessesVals[i].rowValues));
-            insertProhibitedProcess(prohibitedProcessesVals[i].listIndex, rowVals);
-        }
+        updateProhibitedProcessTable(prohibitedProcesses)
     })
 
     
     // ********* permitted processes functions *********************
-    
+    function updatePermittedProcessTable(permittedProcesses: SEBSettingsTableRowValues[]) {
+        permittedProcessTable.value.splice(0);
+        permittedProcesses.forEach( (item) => {
+            const rowVals = new Map<string, SEBSettingsValue>(Object.entries(item.rowValues));
+            insertPermittedProcess(item.listIndex, rowVals);
+        });
+    }
+
     function insertPermittedProcess(index: number, rowVals: Map<string, SEBSettingsValue>) {
-        permittedProcesessTable.value.splice(index, 0, { 
+        permittedProcessTable.value.splice(index, 0, { 
             index: index,
             active: rowVals.get("permittedProcesses.active")?.value! == "true", 
             os : rowVals.get("permittedProcesses.os")?.value!,
@@ -273,7 +279,7 @@
             signature: rowVals.get("permittedProcesses.signature")?.value!,
             path: rowVals.get("permittedProcesses.path")?.value!,
             iconInTaskbar: rowVals.get("permittedProcesses.iconInTaskbar")?.value! == "true",
-            arguments: getPermittedProcessArguments(rowVals.get("permittedProcesses.iconInTaskbar")?.value!),
+            arguments: getPermittedProcessArguments(rowVals.get("permittedProcesses.arguments")?.value!),
             allowOpenAndSavePanel: rowVals.get("permittedProcesses.allowOpenAndSavePanel")?.value! == "true",
             autostart: rowVals.get("permittedProcesses.autostart")?.value! == "true",
             allowShareSheet: rowVals.get("permittedProcesses.allowShareSheet")?.value! == "true",
@@ -282,34 +288,37 @@
             allowUserToChooseApp: rowVals.get("permittedProcesses.allowUserToChooseApp")?.value! == "true",
             allowNetworkAccess: rowVals.get("permittedProcesses.allowNetworkAccess")?.value! == "true",
             strongKill: rowVals.get("permittedProcesses.strongKill")?.value! == "true",
-            teamIdentifier: rowVals.get("permittedProcesses.teamIdentifier")?.value!
+            teamIdentifier: rowVals.get("permittedProcesses.teamIdentifier")?.value!,
+            ids: {
+                active: rowVals.get("permittedProcesses.active")!.id, 
+                os : rowVals.get("permittedProcesses.os")!.id,
+                executable: rowVals.get("permittedProcesses.executable")!.id, 
+                originalName: rowVals.get("permittedProcesses.originalName")!.id, 
+                title: rowVals.get("permittedProcesses.title")!.id,
+                signature: rowVals.get("permittedProcesses.signature")!.id,
+                path: rowVals.get("permittedProcesses.path")!.id,
+                iconInTaskbar: rowVals.get("permittedProcesses.iconInTaskbar")!.id,
+                arguments: rowVals.get("permittedProcesses.arguments")!.id,
+                allowOpenAndSavePanel: rowVals.get("permittedProcesses.allowOpenAndSavePanel")!.id,
+                autostart: rowVals.get("permittedProcesses.autostart")!.id,
+                allowShareSheet: rowVals.get("permittedProcesses.allowShareSheet")!.id,
+                runInBackground: rowVals.get("permittedProcesses.runInBackground")!.id,
+                allowManualStart: rowVals.get("permittedProcesses.allowManualStart")!.id,
+                allowUserToChooseApp: rowVals.get("permittedProcesses.allowUserToChooseApp")!.id,
+                allowNetworkAccess: rowVals.get("permittedProcesses.allowNetworkAccess")!.id,
+                strongKill: rowVals.get("permittedProcesses.strongKill")!.id,
+                teamIdentifier: rowVals.get("permittedProcesses.teamIdentifier")!.id,
+            }
         });
     }
     
     function newPermittedProcess() {
         // create empty selectedPermittedProceses and open edit dialog
-        selectedPermittedProceses.value = {
-            index: -1,
-            active: true, 
-            os : "1",
-            executable: "", 
-            originalName: "", 
-            title: "",
-            signature: "",
-            path: "",
-            iconInTaskbar: true,
-            arguments: [],
-            allowOpenAndSavePanel: false,
-            autostart: false,
-            allowShareSheet: false,
-            runInBackground: false,
-            allowManualStart: false,
-            allowUserToChooseApp: false,
-            allowNetworkAccess: true,
-            strongKill: false,
-            teamIdentifier: ""
+        selectedPermittedProcess.value = {
+            index: -1, active: true, os : "1", executable: "",  originalName: "",   title: "", signature: "", path: "", iconInTaskbar: true,arguments: [],allowOpenAndSavePanel: false, autostart: false,allowShareSheet: false, runInBackground: false, allowManualStart: false,allowUserToChooseApp: false, allowNetworkAccess: true,strongKill: false, teamIdentifier: "",
+            ids: { active: -1,   os: -1,  executable: -1,   originalName: -1,   title: -1,  signature: -1,  path: -1, iconInTaskbar: -1, arguments: -1,allowOpenAndSavePanel: -1,autostart: -1,allowShareSheet: -1, runInBackground: -1,allowManualStart: -1,allowUserToChooseApp: -1,allowNetworkAccess: -1,strongKill: -1,teamIdentifier: -1}
         };
-        editPermittedProcesesDialog.value = true;
+        editPermittedProcessDialog.value = true;
     }
 
     async function permittedProcessDelete(index: number){
@@ -318,56 +327,127 @@
             return;
         }
 
-        // when backend deleted the row, get the whole list again with new indices
-        permittedProcesessTable.value.splice(0);
-        resp.forEach( (item) => {
-            const rowVals = new Map<string, SEBSettingsValue>(Object.entries(item.rowValues));
-            insertPermittedProcess(item.listIndex, rowVals);
-        });
+        updatePermittedProcessTable(resp);
     }
 
-    function permittedProcessesOpenEditDialog(index: number){
-        selectedPermittedProceses.value =  Object.assign({},  permittedProcesessTable.value[index] );
-        editPermittedProcesesDialog.value = true;
+    function permittedProcessOpenEditDialog(index: number){
+        selectedPermittedProcess.value =  Object.assign({},  permittedProcessTable.value[index] );
+        editPermittedProcessDialog.value = true;
     }
 
-    function closeEditPermittedProcessDialog(apply?: boolean){ 
-        console.info("************* apply: " + apply);
-        editPermittedProcesesDialog.value = false;
+    async function closeEditPermittedProcessDialog(apply?: boolean){ 
+        editPermittedProcessDialog.value = false;
         
-        if (!apply) {
+        if (!apply || selectedPermittedProcess.value == null) {
             return;
         }
 
-        if (selectedPermittedProceses.value?.index == -1) {
-            // TODO create new entry
-        } else {
-            // TODO  update entry
-        }
+        if (selectedPermittedProcess.value?.index == -1) {
+            const resp: SEBSettingsTableRowValues | null = await examViewService.newSEBSettingTableRow(examId, "permittedProcesses");
+            if (resp == null) {
+                return;
+            }
+
+            const rowVals = new Map<string, SEBSettingsValue>(Object.entries(resp.rowValues));
+                
+            insertPermittedProcess(resp.listIndex, rowVals);
+            selectedPermittedProcess.value.index = resp.listIndex;
+            selectedPermittedProcess.value.ids = permittedProcessTable.value[resp.listIndex].ids;
+        } 
+
+        await examViewService.updateSEBSettingValue(
+            examId, 
+            selectedPermittedProcess.value.ids.active.toString(), 
+            selectedPermittedProcess.value.active ? "true" : "false");
+        await examViewService.updateSEBSettingValue(
+            examId, 
+            selectedPermittedProcess.value.ids.os.toString(), 
+            selectedPermittedProcess.value.os);
+        await examViewService.updateSEBSettingValue(
+            examId, 
+            selectedPermittedProcess.value.ids.executable.toString(), 
+            selectedPermittedProcess.value.executable);
+        await examViewService.updateSEBSettingValue(
+            examId, 
+            selectedPermittedProcess.value.ids.title.toString(), 
+            selectedPermittedProcess.value.title);
+        await examViewService.updateSEBSettingValue(
+            examId, 
+            selectedPermittedProcess.value.ids.originalName.toString(), 
+            selectedPermittedProcess.value.originalName);
+        await examViewService.updateSEBSettingValue(
+            examId, 
+            selectedPermittedProcess.value.ids.signature.toString(), 
+            selectedPermittedProcess.value.signature);
+        await examViewService.updateSEBSettingValue(
+            examId, 
+            selectedPermittedProcess.value.ids.path.toString(), 
+            selectedPermittedProcess.value.path);
+        await examViewService.updateSEBSettingValue(
+            examId, 
+            selectedPermittedProcess.value.ids.iconInTaskbar.toString(), 
+            selectedPermittedProcess.value.iconInTaskbar? "true" : "false");
+        await examViewService.updateSEBSettingValue(
+            examId, 
+            selectedPermittedProcess.value.ids.arguments.toString(), 
+            argumentsToString(selectedPermittedProcess.value.arguments));
+        await examViewService.updateSEBSettingValue(
+            examId, 
+            selectedPermittedProcess.value.ids.allowOpenAndSavePanel.toString(), 
+            selectedPermittedProcess.value.allowOpenAndSavePanel? "true" : "false");
+        await examViewService.updateSEBSettingValue(
+            examId, 
+            selectedPermittedProcess.value.ids.autostart.toString(), 
+            selectedPermittedProcess.value.autostart? "true" : "false");
+        await examViewService.updateSEBSettingValue(
+            examId, 
+            selectedPermittedProcess.value.ids.allowShareSheet.toString(), 
+            selectedPermittedProcess.value.allowShareSheet? "true" : "false");
+        await examViewService.updateSEBSettingValue(
+            examId, 
+            selectedPermittedProcess.value.ids.runInBackground.toString(), 
+            selectedPermittedProcess.value.runInBackground? "true" : "false");
+        await examViewService.updateSEBSettingValue(
+            examId, 
+            selectedPermittedProcess.value.ids.allowManualStart.toString(), 
+            selectedPermittedProcess.value.allowManualStart? "true" : "false");
+        await examViewService.updateSEBSettingValue(
+            examId, 
+            selectedPermittedProcess.value.ids.allowUserToChooseApp.toString(), 
+            selectedPermittedProcess.value.allowUserToChooseApp? "true" : "false");
+        await examViewService.updateSEBSettingValue(
+            examId, 
+            selectedPermittedProcess.value.ids.allowUserToChooseApp.toString(), 
+            selectedPermittedProcess.value.allowUserToChooseApp? "true" : "false");
+        await examViewService.updateSEBSettingValue(
+            examId, 
+            selectedPermittedProcess.value.ids.allowNetworkAccess.toString(), 
+            selectedPermittedProcess.value.allowNetworkAccess? "true" : "false");
+        await examViewService.updateSEBSettingValue(
+            examId, 
+            selectedPermittedProcess.value.ids.strongKill.toString(), 
+            selectedPermittedProcess.value.strongKill? "true" : "false");
+        await examViewService.updateSEBSettingValue(
+            examId, 
+            selectedPermittedProcess.value.ids.teamIdentifier.toString(), 
+            selectedPermittedProcess.value.teamIdentifier);
+
+        permittedProcessTable.value[selectedPermittedProcess.value.index] = selectedPermittedProcess.value;
     }
 
-    function getPermittedProcessArguments(args: string | null): PermittedProcesessArgument[] | [] {
-        // args = active=true|argument=arg1,active=true|argument=arg2,...
-        let result: PermittedProcesessArgument[] = [];
-        if (args == null) {
-            return result;
-        }
-
-        const list = args.split(",");
-        list.forEach( (line) => {
-            const vals = line.split("|");
-            result.push({
-                active: vals[0] == "true",
-                argument: vals[1]
-            });
-        });
-
-        return result;
-    }
+    
 
     // ********* prohibited processes functions *********************
+    function updateProhibitedProcessTable(prohibitedProcesses: SEBSettingsTableRowValues[]) {
+        prohibitedProcessTable.value.splice(0);
+        prohibitedProcesses.forEach( (item) => {
+            const rowVals = new Map<string, SEBSettingsValue>(Object.entries(item.rowValues));
+            insertProhibitedProcess(item.listIndex, rowVals);
+        });
+    }
+
     function insertProhibitedProcess(index: number, rowVals: Map<string, SEBSettingsValue>){
-        prohibitedProcesessTable.value.splice(index, 0, { 
+        prohibitedProcessTable.value.splice(index, 0, { 
                 index: index,
                 active: rowVals.get("prohibitedProcesses.active")?.value! == "true", 
                 os : rowVals.get("prohibitedProcesses.os")?.value!,
@@ -376,13 +456,23 @@
                 originalName: rowVals.get("prohibitedProcesses.originalName")?.value!, 
                 identifier: rowVals.get("prohibitedProcesses.identifier")?.value!,
                 strongKill: rowVals.get("prohibitedProcesses.strongKill")?.value! == "true",
-                ignoreInAAC: rowVals.get("prohibitedProcesses.ignoreInAAC")?.value! == "true"
+                ignoreInAAC: rowVals.get("prohibitedProcesses.ignoreInAAC")?.value! == "true",
+                ids: {
+                    active: rowVals.get("prohibitedProcesses.active")!.id, 
+                    os : rowVals.get("prohibitedProcesses.os")!.id,
+                    executable: rowVals.get("prohibitedProcesses.executable")!.id, 
+                    description: rowVals.get("prohibitedProcesses.description")!.id,
+                    originalName: rowVals.get("prohibitedProcesses.originalName")!.id, 
+                    identifier: rowVals.get("prohibitedProcesses.identifier")!.id,
+                    strongKill: rowVals.get("prohibitedProcesses.strongKill")!.id,
+                    ignoreInAAC: rowVals.get("prohibitedProcesses.ignoreInAAC")!.id,
+                }
         });
     }
 
     function newProhibitedProcess() {
         // create empty selectedProhibitedProceses and open edit dialog
-        selectedProhibitedProceses.value = {
+        selectedProhibitedProcess.value = {
             index: -1,
             active: true, 
             os : "1",
@@ -391,9 +481,10 @@
             description: "",
             identifier: "",
             strongKill: false,
-            ignoreInAAC: true
+            ignoreInAAC: true,
+            ids: { active: -1,  os: -1,executable: -1, originalName: -1, description: -1, identifier: -1,strongKill: -1,ignoreInAAC: -1}
         };
-        editProhibitedProcesesDialog.value = true;
+        editProhibitedProcessDialog.value = true;
     }
 
     async function prohibitedProcessDelete(index: number){
@@ -402,106 +493,112 @@
             return;
         }
 
-        // when backend deleted the row, get the whole list again with new indices
-        prohibitedProcesessTable.value.splice(0);
-        resp.forEach( (item) => {
-            const rowVals = new Map<string, SEBSettingsValue>(Object.entries(item.rowValues));
-            insertProhibitedProcess(item.listIndex, rowVals);
-        });
+        updateProhibitedProcessTable(resp);
     }
 
-
-    function prohibitedProcessesOpenEditDialog(index: number){
-        selectedProhibitedProceses.value = Object.assign({},  prohibitedProcesessTable.value[index] );
-        editProhibitedProcesesDialog.value = true;
+    function prohibitedProcessOpenEditDialog(index: number){
+        selectedProhibitedProcess.value = Object.assign({},  prohibitedProcessTable.value[index]);
+        editProhibitedProcessDialog.value = true;
     }
 
     async function closeEditProhibitedProcessDialog(apply?: boolean){ 
-        editProhibitedProcesesDialog.value = false;
+        editProhibitedProcessDialog.value = false;
         
-        if (!apply || selectedProhibitedProceses.value == null) {
+        if (!apply || selectedProhibitedProcess.value == null) {
             return;
         }
 
         // If this is a new row, create new with default values on backend first
-        if (selectedProhibitedProceses.value.index == -1) {
+        if (selectedProhibitedProcess.value.index == -1) {
             const resp: SEBSettingsTableRowValues | null = await examViewService.newSEBSettingTableRow(examId, "prohibitedProcesses");
             if (resp == null) {
                 return;
             }
 
             const rowVals = new Map<string, SEBSettingsValue>(Object.entries(resp.rowValues));
+                
             insertProhibitedProcess(resp.listIndex, rowVals);
-            selectedProhibitedProceses.value = Object.assign({},  prohibitedProcesessTable.value[resp.listIndex] );
+            selectedProhibitedProcess.value.index = resp.listIndex;
+            selectedProhibitedProcess.value.ids = prohibitedProcessTable.value[resp.listIndex].ids;
         }
 
-        let rowToUpdate: ProhibitedProcesess | undefined = prohibitedProcesessTable.value.find( pp => pp.index == selectedProhibitedProceses.value?.index);
-        if (!rowToUpdate) {
-            return;
-        }
+        await examViewService.updateSEBSettingValue(
+            examId, 
+            selectedProhibitedProcess.value.ids.active.toString(), 
+            selectedProhibitedProcess.value.active ? "true" : "false");
 
-        const prohibitedProcessesVals = tableValues.get("prohibitedProcesses");
-        if (prohibitedProcessesVals == null) {
-            return;
-        };
+        await examViewService.updateSEBSettingValue(
+            examId, 
+            selectedProhibitedProcess.value.ids.os.toString(), 
+            selectedProhibitedProcess.value.os);
 
-        const rolwVals = new Map<string, SEBSettingsValue>(Object.entries(prohibitedProcessesVals[selectedProhibitedProceses.value.index].rowValues));
-        if (rolwVals.has("prohibitedProcesses.active")) {
-            await examViewService.updateSEBSettingValue(examId, rolwVals.get("prohibitedProcesses.active")!.id.toString(), selectedProhibitedProceses.value.active ? "true" : "false" );
-            rowToUpdate.active = selectedProhibitedProceses.value.active;
-        }
-        if (rolwVals.has("prohibitedProcesses.os")) {
-            await examViewService.updateSEBSettingValue(examId, rolwVals.get("prohibitedProcesses.os")!.id.toString(), selectedProhibitedProceses.value.os);
-            rowToUpdate.os = selectedProhibitedProceses.value.os;
-        }
-        if (rolwVals.has("prohibitedProcesses.executable")) {
-            await examViewService.updateSEBSettingValue(examId, rolwVals.get("prohibitedProcesses.executable")!.id.toString(), selectedProhibitedProceses.value.executable);
-            rowToUpdate.executable = selectedProhibitedProceses.value.executable;
-        }
-        if (rolwVals.has("prohibitedProcesses.description")) {
-            await examViewService.updateSEBSettingValue(examId, rolwVals.get("prohibitedProcesses.description")!.id.toString(), selectedProhibitedProceses.value.description);
-            rowToUpdate.description = selectedProhibitedProceses.value.description;
-        }
-        if (rolwVals.has("prohibitedProcesses.originalName")) {
-            await examViewService.updateSEBSettingValue(examId, rolwVals.get("prohibitedProcesses.originalName")!.id.toString(), selectedProhibitedProceses.value.originalName);
-            rowToUpdate.originalName = selectedProhibitedProceses.value.originalName;
-        }
-        if (rolwVals.has("prohibitedProcesses.identifier")) {
-            await examViewService.updateSEBSettingValue(examId, rolwVals.get("prohibitedProcesses.identifier")!.id.toString(), selectedProhibitedProceses.value.identifier);
-            rowToUpdate.identifier = selectedProhibitedProceses.value.identifier;
-        }
-        if (rolwVals.has("prohibitedProcesses.strongKill")) {
-            await examViewService.updateSEBSettingValue(examId, rolwVals.get("prohibitedProcesses.strongKill")!.id.toString(), selectedProhibitedProceses.value.strongKill ? "true" : "false");
-            rowToUpdate.strongKill = selectedProhibitedProceses.value.strongKill;
-        }
-        if (rolwVals.has("prohibitedProcesses.ignoreInAAC")) {
-            await examViewService.updateSEBSettingValue(examId, rolwVals.get("prohibitedProcesses.ignoreInAAC")!.id.toString(), selectedProhibitedProceses.value.ignoreInAAC ? "true" : "false");
-            rowToUpdate.ignoreInAAC = selectedProhibitedProceses.value.ignoreInAAC;
-        }
+        await examViewService.updateSEBSettingValue(
+            examId, 
+            selectedProhibitedProcess.value.ids.executable.toString(), 
+            selectedProhibitedProcess.value.executable);
+
+        await examViewService.updateSEBSettingValue(
+            examId, 
+            selectedProhibitedProcess.value.ids.description.toString(), 
+            selectedProhibitedProcess.value.description);
+
+        await examViewService.updateSEBSettingValue(
+            examId, 
+            selectedProhibitedProcess.value.ids.originalName.toString(), 
+            selectedProhibitedProcess.value.originalName);
+
+        await examViewService.updateSEBSettingValue(
+            examId, 
+            selectedProhibitedProcess.value.ids.identifier.toString(), 
+            selectedProhibitedProcess.value.identifier);
+
+        await examViewService.updateSEBSettingValue(
+            examId, 
+            selectedProhibitedProcess.value.ids.strongKill.toString(), 
+            selectedProhibitedProcess.value.strongKill ? "true" : "false");
+
+        await examViewService.updateSEBSettingValue(
+            examId, 
+            selectedProhibitedProcess.value.ids.ignoreInAAC.toString(), 
+            selectedProhibitedProcess.value.ignoreInAAC ? "true" : "false");
+
+        prohibitedProcessTable.value[selectedProhibitedProcess.value.index] = selectedProhibitedProcess.value;
+
     }
 
-    // ********* get / save functions *********************
-    async function getApplicationViewSettings() {
-        if(examStore.selectedExam == null){
-            return;
-        }
-
-        const viewResponse: SEBSettingsView | null = await examViewService.getApplicationViewSettings(examStore.selectedExam.id.toString())
-
-        if(viewResponse == null){
-            return;
-        }
-
-        examStore.applicationSettings = viewResponse;
+    async function saveSingleValue(valId: number, value: string) {
+        await examViewService.updateSEBSettingValue(examId, valId.toString(), value );
     }
 
-    async function saveSingleValue(attrName: string, value: string) {
-        const val = singleValues.get(attrName);
-        if (val == null) {
-            return;
+    function argumentsToString(args: PermittedProcessArgument[]): string {
+        let result: string = "";
+        args.forEach( (item) => {
+            if (result.length == 0) {
+                result = result + "active=" + item.active + "|argument=" + item.argument;
+            } else {
+                result = result + ",active=" + item.active + "|argument=" + item.argument;
+            }
+        });
+        return result;
+    }
+
+    function getPermittedProcessArguments(args: string | null): PermittedProcessArgument[] | [] {
+        // args = active=true|argument=arg1,active=true|argument=arg2,...
+        let result: PermittedProcessArgument[] = [];
+        if (args == null) {
+            return result;
         }
 
-        await examViewService.updateSEBSettingValue(examId, val.id.toString(), value );
+        const list = args.split(",");
+        list.forEach( (line) => {
+            const vals = line.split("|");
+            result.push({
+                active: vals[0].split("=")[1] == "true",
+                argument: vals[1].split("=")[1]
+            });
+        });
+
+        return result;
     }
 
 
