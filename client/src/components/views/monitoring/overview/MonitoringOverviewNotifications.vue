@@ -93,7 +93,7 @@
             case NotificationEnum.LOCK_SCREEN:
                 return "#FFB300";
             case NotificationEnum.RAISE_HAND:
-                return "#42A5F5";
+                return "#f5f242";
             default:
                 return "#000000";
         }

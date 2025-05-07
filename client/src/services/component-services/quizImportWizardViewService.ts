@@ -27,3 +27,11 @@ export async function createExam(createExamPar: CreateExamPar): Promise<Exam | n
         return null;
     }
 }
+
+export async function getExamTemplateSp(id: string): Promise<ScreenProctoringSettings | null>{
+    try{
+        return await examTemplateService.getExamTemplateSp(id);    
+    }catch(error){
+        return null;
+    }
+}

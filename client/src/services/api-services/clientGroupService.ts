@@ -18,6 +18,6 @@ export async function getClientGroup(id: string): Promise<ClientGroup | any>{
     return (await apiService.api.get(url + "/" + id, {headers: apiService.getHeaders()})).data;
 }
 
-export async function getClientGroups(examId?: string): Promise<ClientGroups | any>{
-    return (await apiService.api.get(url, {headers: apiService.getHeaders(), params: {examId}})).data;
+export async function getClientGroups(id?: string): Promise<ClientGroups | any>{
+    return (await apiService.api.get(url, {headers: apiService.getHeaders(), params: {id}})).data;
 }

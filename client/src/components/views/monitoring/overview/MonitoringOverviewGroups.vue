@@ -12,7 +12,12 @@
                 <v-row align="center">
                     <!--------name-------->
                     <v-col cols="3" class="font-weight-medium primary-text-color text-h6">
-                        {{ clientGroupItem.name }}
+                        <template v-if="clientGroupItem.type == ClientGroupEnum.SP_FALLBACK_GROUP && isSPGroupAvailable">
+                            Remaining Clients
+                        </template>
+                        <template v-else>
+                            {{ clientGroupItem.name }}
+                        </template>
                     </v-col>
 
                     <!--------group type-------->
@@ -51,7 +56,53 @@
         </v-col>
     </v-row>
 
-    <v-row>
+    <!--------special card if no sp group is available-------->
+    <v-row v-if="!isSPGroupAvailable">
+        <v-col>
+            <v-sheet class="rounded-lg pa-4" elevation="4">
+                <v-row align="center">
+                    <!--------name-------->
+                    <v-col cols="3" class="font-weight-medium primary-text-color text-h6">
+                        All Clients
+                    </v-col>
+
+                    <!--------group type placeholder-------->
+                    <v-col cols="5">
+                    </v-col>
+
+                    <!--------client amount-------->
+                    <v-col cols="2" class="text-h6 primary-text-color">
+                        <template v-if="overViewClientGroups != null">
+                            {{ overViewClientGroups[overViewClientGroups.length-1].clientAmount }}
+                        </template>
+                        <template v-else>
+                            0
+                        </template>
+                    </v-col>
+
+                    <!--------sp button-------->
+                    <v-col cols="1">
+                        <v-icon icon="mdi-video">
+                        </v-icon>
+                    </v-col>
+
+                    <!--------monitoring button-------->
+                    <v-col cols="1">
+                        <v-icon 
+                            icon="mdi-chevron-right" 
+                            @click="monitoringViewService.goToMonitoring(
+                                MonitoringHeaderEnum.SHOW_ALL, 
+                                true, 
+                                examId)">
+                        </v-icon>
+                    </v-col>
+                </v-row>
+            </v-sheet>
+        </v-col>
+    </v-row>
+
+    <!--------show all button-------->
+    <v-row v-if="isSPGroupAvailable">
         <v-col align="right">
             <v-btn 
                 color="primary" 
@@ -85,10 +136,30 @@
             return null;
         }
 
-        const normalItems = monitoringStore.monitoringOverviewData?.clientGroups.filter(item => item.type != ClientGroupEnum.SP_FALLBACK_GROUP);
-        const fallBackGroups = monitoringStore.monitoringOverviewData?.clientGroups.filter(item => item.type == ClientGroupEnum.SP_FALLBACK_GROUP);
+        const normalGroups = monitoringStore.monitoringOverviewData?.clientGroups.filter(item => item.type != ClientGroupEnum.SP_FALLBACK_GROUP);
 
-        return [...normalItems, ...fallBackGroups];
+        if(isSPGroupAvailable.value){
+            const fallBackGroup = monitoringStore.monitoringOverviewData?.clientGroups.filter(item => item.type == ClientGroupEnum.SP_FALLBACK_GROUP);
+            return [...normalGroups, ...fallBackGroup];
+        }
+
+        return normalGroups;
+    });
+
+    const isSPGroupAvailable: ComputedRef<boolean> = computed(() => {
+        const normalGroups = monitoringStore.monitoringOverviewData?.clientGroups.filter(item => item.type != ClientGroupEnum.SP_FALLBACK_GROUP);
+
+        if(normalGroups == null){
+            return false;
+        }
+
+        for(let i = 0; i < normalGroups.length; i++){
+            if(normalGroups[i].spsGroupUUID != null && normalGroups[i].spsGroupUUID != ''){
+                return true;
+            }
+        }
+
+        return false;
     });
     
 </script>

@@ -9,3 +9,7 @@ export async function getExamTemplate(id: string): Promise<ExamTemplate | any>{
 export async function getExamTemplates(optionalParamters?: OptionalParGeneric): Promise<ExamTemplates | any>{
     return (await apiService.api.get(url, {headers: apiService.getHeaders(), params: {optionalParamters}})).data;
 }
+
+export async function getExamTemplateSp(id: string): Promise<ScreenProctoringSettings | any>{
+    return (await apiService.api.get(url + "/" + id + "/screen-proctoring", {headers: apiService.getHeaders()})).data;
+}

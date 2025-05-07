@@ -119,7 +119,9 @@
             "selectGroup": "Select Groups",
             "addSupervisors": "Add Examination Supervisor",
             "quitPassword": "Set Quit Password",
-            "configurationSummary": "Configuration Summary"
+            "configurationSummary": "Configuration Summary",
+            "previousStep": "Previous Step",
+            "nextStep": "Next Step"
         },
 
         "genericInfo": {
@@ -147,13 +149,16 @@
         },
 
         "templateMain": {
-            "description": "Click on the Exam Template you want to use for the exam"
+            "description": "Click on the Exam Template you want to use for the exam",
+            "templateInfo": "Open template info",
+            "templateSelect": "Select template"
         },
 
         "groupMain": {
             "search": "Search",
             "selectedGroups": "Selected Groups",
-            "tableHeaderName": "Name"
+            "tableHeaderName": "Name",
+            "tableHeaderScreenProctoring": "Screen Proctoring"
         },
 
         "supervisorsMain": {

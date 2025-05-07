@@ -3,7 +3,7 @@
         <v-col>
             <v-sheet 
                 elevation="4"
-                class="rounded-lg pa-8">
+                class="rounded-lg pl-4 pt-3 pr-4">
 
                 <v-row 
                     class="fill-height"

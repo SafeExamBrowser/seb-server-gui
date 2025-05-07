@@ -33,6 +33,7 @@ export const useQuizImportStore = defineStore("quizImport", () => {
     const selectedQuitPassword = ref<string>();
 
     //other values
+    const availableSpClientGroupIds = ref<number[]>([]);
     const availableAssessmentTools = ref<AssessmentTools>();
 
 
@@ -101,6 +102,7 @@ export const useQuizImportStore = defineStore("quizImport", () => {
         selectedAssessmentTool,
         selectedQuiz,
         selectedExamTemplate,
+        availableSpClientGroupIds,
         selectedClientGroups,
         selectedExamSupervisors,
         selectedQuitPassword,

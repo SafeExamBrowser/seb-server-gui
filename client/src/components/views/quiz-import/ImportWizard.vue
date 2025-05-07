@@ -39,6 +39,8 @@
                         <v-icon 
                             icon="mdi-chevron-left"
                             style="font-size: 40px;"
+                            :aria-label="translate('quizImportWizard.steps.previousStep')"
+                            @keyup.enter="quizImportStore.currentStep-=1"
                             @click="quizImportStore.currentStep-=1"
                             :disabled="quizImportStore.currentStep == 1">
                         </v-icon>
@@ -47,6 +49,8 @@
                             class="mr-6"
                             icon="mdi-chevron-right"
                             style="font-size: 40px;"
+                            :aria-label="translate('quizImportWizard.steps.nextStep')"
+                            @keyup.enter="quizImportStore.currentStep+=1"
                             @click="quizImportStore.currentStep+=1"
                             :disabled="isNextButtonDisabled(quizImportStore.currentStep)">
                         </v-icon>
@@ -81,6 +85,10 @@
     import { useAppBarStore } from "@/stores/store";
     import * as generalUtils from "@/utils/generalUtils";
     import {translate} from "@/utils/generalUtils";
+    import { useI18n } from "vue-i18n";
+
+    //i18n
+    const i18n = useI18n();
 
     //stores
     const appBarStore = useAppBarStore();
@@ -95,7 +103,14 @@
 
         quizImportStore.clearValues();
         await loadAssessmentToolSelection();
+        setTabTitle();
     });
+
+    //modify title in tab display current step
+    watch(quizImportStoreRef.currentStep, () => {
+        setTabTitle(); 
+    });
+
 
     function isNextButtonDisabled(step: number): boolean{
         let addStepAssessment: number = 0;
@@ -171,6 +186,13 @@
         }
 
         return assessmentToolsResponse;
+    }
+
+    function setTabTitle(){
+        document.title = 
+            quizImportStore.currentStep + " - " + 
+            quizImportStore.steps[quizImportStore.currentStep-1].name + " | " + 
+            translate("titles.quizImport", i18n);
     }
 
 

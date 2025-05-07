@@ -299,6 +299,7 @@
     //client group select items
     const clientGroupItems = Object.values(ClientGroupEnum)
         .filter(value => value !== ClientGroupEnum.NONE)
+        .filter(value => value !== ClientGroupEnum.SP_FALLBACK_GROUP)
         .map(value => ({
             title: translate(value, i18n),
             value: value

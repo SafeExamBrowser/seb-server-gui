@@ -150,13 +150,7 @@
     //pw field
     const passwordVisible = ref<boolean>(false);
 
-    //error
-    const saveError = ref<boolean>(false);
-
-
     async function createExam(){
-        saveError.value = false;
-
         if(quizImportStore.selectedQuiz == null || quizImportStore.selectedExamTemplate == null){
             return;
         }

@@ -80,7 +80,7 @@
 
 <script setup lang="ts">
     import { Doughnut } from "vue-chartjs";
-    import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+    import { Chart as ChartJS, ArcElement, Tooltip, Legend, plugins } from "chart.js";
     import { useMonitoringStore } from "@/stores/monitoringStore";
     import {storeToRefs} from "pinia";
     import {translate} from "@/utils/generalUtils";
@@ -88,7 +88,10 @@
     import {ConnectionStatusEnum} from "@/models/connectionStatusEnum";
     import * as monitoringViewService from "@/services/component-services/monitoringViewService";
     import { MonitoringHeaderEnum } from "@/models/monitoringEnums";
+    import { useI18n } from "vue-i18n";
 
+    //i18n
+    const i18n = useI18n();
 
     //stores
     const monitoringStore = useMonitoringStore();
@@ -102,10 +105,16 @@
 
     const chartOptions = ref({
         responsive: true,
-        maintainAspectRatio: false
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false
+            }
+        }
     });
 
     const chartData = ref<{
+        labels: string[],
         datasets: [
             {
                 backgroundColor: string[],
@@ -125,21 +134,20 @@
 
     //chart data
     const clientStates = ref<(ConnectionStatusEnum | null)[]>([]);
-    const clientData = ref<number[]>([])
-    const clientColors = ref<string[]>([])
+    const clientLabels = ref<string[]>([]);
+    const clientData = ref<number[]>([]);
+    const clientColors = ref<string[]>([]);
 
 
     watch(() => monitoringStore.monitoringOverviewData?.clientStates, () => {
-
-        // console.log("it got here client states")
-
         if(monitoringStore.monitoringOverviewData == null){
             return;
         }
 
-        clientStates.value = []
-        clientData.value = []
-        clientColors.value = []
+        clientStates.value = [];
+        clientLabels.value = [];
+        clientData.value = [];
+        clientColors.value = [];
 
         const clientStatesList: {clientStates: ConnectionStatusEnum, clientAmount: number}[] = Object.entries(monitoringStore.monitoringOverviewData.clientStates)
             .filter(([key]) => key != "total")
@@ -151,13 +159,9 @@
                 return clientStatesListSortOrder[a.clientStates] - clientStatesListSortOrder[b.clientStates];
             });
 
-        console.log(clientStatesList);
-
         clientStatesList.forEach((item) => {
-
-                console.log(item.clientAmount)
-
                 if(item.clientAmount != 0){
+                    clientLabels.value.push(translate(item.clientStates, i18n));
                     clientStates.value.push(item.clientStates);
                     clientData.value.push(item.clientAmount);
                     clientColors.value.push(getConnectionStatusColor(item.clientStates));
@@ -166,10 +170,11 @@
         );
 
         chartData.value = {
+            labels: clientLabels.value,
             datasets: [
                 {
                     backgroundColor: clientColors.value,
-                    data: clientData.value
+                    data: clientData.value,
                 }
             ]
         }
@@ -181,13 +186,13 @@
 
         switch (connectionStatus) {
             case ConnectionStatusEnum.CONNECTION_REQUESTED:
-                return "#FFA726";
+                return "#7db5f5";
             case ConnectionStatusEnum.READY:
-                return "#26C6DA";
+                return "#1f70cc";
             case ConnectionStatusEnum.ACTIVE:
                 return "#66BB6A";
             case ConnectionStatusEnum.CLOSED:
-                return "#7E57C2";
+                return "#d4f7ff";
             case ConnectionStatusEnum.DISABLED:
                 return "#9E9E9E";
             case ConnectionStatusEnum.MISSING:

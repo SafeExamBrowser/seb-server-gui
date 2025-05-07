@@ -34,9 +34,9 @@ export async function deleteClientGroup(id: string): Promise<any | null>{
     }
 }
 
-export async function getClientGroups(examId?: string): Promise<ClientGroups | null>{
+export async function getClientGroups(id?: string): Promise<ClientGroups | null>{
     try{
-        return await clientGroupService.getClientGroups(examId);    
+        return await clientGroupService.getClientGroups(id);    
     }catch(error){
         return null;
     }

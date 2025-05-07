@@ -16,9 +16,9 @@ type ExamTemplate = {
     institutionalDefault: boolean,
     lmsIntegration: boolean,
     clientConfigurationId: number,
-    indicatorTemplates: IndicatorTemplate[]
+    indicatorTemplates: IndicatorTemplate[],
     CLIENT_GROUP_TEMPLATES: ClientGroup[],
-    EXAM_ATTRIBUTES: ExamAttribute[],
+    EXAM_ATTRIBUTES: ExamAttribute,
     complete: boolean
 }
 
@@ -36,8 +36,8 @@ type Threshold = {
     icon: string
 }
 
-type ExamAttribute = [
+type ExamAttribute = { 
     enableScreenProctoring: string,
     SCREEN_PROCTORING_SETTINGS: string,
     quitPassword: string
-]
+}
