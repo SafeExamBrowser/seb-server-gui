@@ -585,7 +585,7 @@
     function getPermittedProcessArguments(args: string | null): PermittedProcessArgument[] | [] {
         // args = active=true|argument=arg1,active=true|argument=arg2,...
         let result: PermittedProcessArgument[] = [];
-        if (args == null) {
+        if (args == null || args.length == 0) {
             return result;
         }
 
