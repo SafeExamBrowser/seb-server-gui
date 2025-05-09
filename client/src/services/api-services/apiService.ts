@@ -152,7 +152,9 @@ export function getPostHeaders(): object{
 function getIgnoredUrls(): string[]{
     return [
         "/quiz", 
-        "/exams"
+        "/exams",
+        "/monitoring"
+
     ];
 }
 

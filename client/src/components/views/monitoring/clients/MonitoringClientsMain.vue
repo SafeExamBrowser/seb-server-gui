@@ -9,6 +9,9 @@
 
                 <v-data-table
                     hide-default-footer
+                    show-select
+                    select-strategy="all"
+                    v-model="monitoringStore.selectedMonitoringIds"
                     item-value="id" 
                     :hover="true"
                     :items="monitoringDataTable"
@@ -16,8 +19,11 @@
                     :items-per-page="monitoringDataTable.length"
                     :headers="clientsTableHeaders">
 
-                    <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort}">
+                    <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort, selectAll, allSelected, someSelected}">
                         <TableHeaders
+                            :selectAll="selectAll"
+                            :allSelected="allSelected"
+                            :someSelected="someSelected"
                             :columns="columns"
                             :is-sorted="isSorted"
                             :get-sort-icon="getSortIcon"
@@ -26,8 +32,15 @@
                         </TableHeaders>
                     </template>
 
-                    <template v-slot:item="{item}">
+                    <template v-slot:item="{item, isSelected, toggleSelect, internalItem}">
                         <tr>
+                            <td>
+                                <v-checkbox-btn 
+                                    :model-value="isSelected(internalItem)"
+                                    @update:model-value="toggleSelect(internalItem)">
+                                </v-checkbox-btn>
+                            </td>
+
                             <td>{{ item.nameOrSession }}</td>
                             
                             <td>
@@ -50,9 +63,18 @@
                             <td v-for="indicator in monitoringStore.indicators?.content" :key="indicator.id">
                                 {{ item.indicators?.get(indicator.id)?.indicatorValue }}
                             </td>
+
+                            <td align="right">
+                                <v-icon 
+                                    class="mr-6"
+                                    icon="mdi-chevron-right"
+                                    style="font-size: 30px;"
+                                    @click="">
+                                </v-icon>
+                            </td>
                         </tr>
                     </template>
-                
+
                 </v-data-table>
             </v-sheet>
         </v-col>
@@ -100,10 +122,6 @@
     const monitoringDataTable = ref<MonitoringRow[]>([]);
     const monitoringData = ref<Map<number, MonitoringRow>>(new Map());
 
-    //table - pagination, item size, search
-    const isLoading = ref<boolean>(true);
-    const totalItems = ref<number>(10);
-
     //interval
     let intervalRefresh: any | null = null;
     const REFRESH_INTERVAL: number = 1 * 1000;
@@ -118,8 +136,13 @@
         {title: translate("monitoringClients.main.tableHeaderNameSession"), key: "nameOrSession", width: "30%", sortable: true},
         {title: translate("monitoringClients.main.tableHeaderClientGroups"), key: "clientGroups", width: "20%", sortable: true},
         {title: translate("monitoringClients.main.tableHeaderConnectionInfo"), key: "connectionInfo", width: "20%", sortable: true},
-        {title: translate("monitoringClients.main.tableHeaderStatus"), key: "status", sortable: true}
+        {title: translate("monitoringClients.main.tableHeaderStatus"), key: "status", sortable: true},
+        {title: "", key: "link", width: "5%"}
     ]);  
+
+    watch(monitoringStoreRef.selectedMonitoringIds, () => {
+        console.log(monitoringStore.selectedMonitoringIds)
+    });
 
 
     //=========events & watchers================
@@ -389,7 +412,9 @@
 
     function addIndicatorHeaders(){
         monitoringStore.indicators?.content.forEach((indicator) => {
-            clientsTableHeaders.value.push(
+            clientsTableHeaders.value.splice(
+                clientsTableHeaders.value.length-1,
+                0,
                 {
                     title: indicator.name, 
                     key: indicator.id.toString(),
@@ -412,14 +437,14 @@
 
     //=================interval===================
     async function startIntervalRefresh(){
-            console.log("before call")
+            // console.log("before call")
             const start = performance.now();
 
             await getAndSetConnections();
 
-            console.log("after call")
+            // console.log("after call")
             const end = performance.now();
-            console.log(`Execution time: ${(end - start)/1000} ms`);
+            // console.log(`Execution time: ${(end - start)/1000} ms`);
 
             intervalRefresh = setTimeout(startIntervalRefresh, REFRESH_INTERVAL);
     }

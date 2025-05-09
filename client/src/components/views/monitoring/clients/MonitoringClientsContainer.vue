@@ -16,8 +16,6 @@
     import * as clientGroupViewService from "@/services/component-services/clientGroupViewService";
     import MonitoringClientsMain from "@/components/views/monitoring/clients/MonitoringClientsMain.vue";
 
-
-
     //exam
     const examId = useRoute().params.examId.toString();
 
@@ -28,6 +26,9 @@
     //data load
     const isDataLoaded = ref<boolean>(false);
 
+    //interval
+    let intervalRefresh: any | null = null;
+    const REFRESH_INTERVAL: number = 1 * 10000;
 
 
     onBeforeMount(async () => {
@@ -39,12 +40,27 @@
 
         await getIndicators();
         await getClientGroups();
+        await getOverviewData();
+
+        startIntervalRefresh()
 
         isDataLoaded.value = true;
     });
 
+    onBeforeUnmount(() => {
+        stopIntervalRefresh();
+        monitoringStore.clearValues();
+    });
 
+    async function getOverviewData(){
+        const overviewResponse: MonitoringOverview | null = await monitoringViewService.getOverview(examId);
 
+        if(overviewResponse == null){
+            return;
+        }
+
+        monitoringStore.monitoringOverviewData = overviewResponse;
+    }
 
     async function getIndicators(){
         const indicatorsResponse: Indicators | null = await indicatorViewService.getIndicators(examId);
@@ -63,6 +79,19 @@
         }
 
         monitoringStore.clientGroups = clientGroupsResponse;
+    }
+
+    async function startIntervalRefresh(){
+        intervalRefresh = setInterval(async () => {
+            getOverviewData()
+
+        }, REFRESH_INTERVAL);
+    }
+
+    function stopIntervalRefresh(){
+        if (intervalRefresh) {
+            clearInterval(intervalRefresh);
+        }
     }
  
 

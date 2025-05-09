@@ -4,7 +4,7 @@
 
             <th 
                 :style="{ width: column.width }" 
-                :class="[column.key == 'data-table-select' ? 'pl-2' : '', column.center ? 'text-center': '']"> 
+                :class="[column.key == 'data-table-select' ? 'pl-4' : '', column.center ? 'text-center': '']"> 
                 
                 <!------------------------sorting---------------------------------->
                 <span 
@@ -51,7 +51,7 @@
                 <!----------------------------------------------------------------->
 
                 <!------------------------selection - delete----------------------->
-                <template v-if="column.key == 'data-table-expand' && tableKey == 'session'">
+                <!-- <template v-if="column.key == 'data-table-expand' && tableKey == 'monitoring'">
                     <v-btn 
                         class="pr-4"
                         icon="mdi-delete" 
@@ -59,7 +59,7 @@
                         :disabled="!someSelected"
                         @click="emit('openDeleteSessionsDialog')">
                     </v-btn>
-                </template>
+                </template> -->
                 <!----------------------------------------------------------------->
 
 

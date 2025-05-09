@@ -16,11 +16,15 @@ export const useMonitoringStore = defineStore("monitoring", () => {
     const monitoringOverviewData = ref<MonitoringOverview | null>(null); 
 
     //monitoring clients
+    const selectedMonitoringIds = ref<number[]>();
     const indicators = ref<Indicators | null>(null);
     const clientGroups = ref<ClientGroups | null>(null);
 
-    //monitoring filters
-    const clientGroupFilters = ref<number[]>([]);
+    function clearValues(){
+        selectedMonitoringIds.value = [];
+        indicators.value = null;
+        clientGroups.value = null;
+    }
 
     return {
         searchField,
@@ -31,6 +35,7 @@ export const useMonitoringStore = defineStore("monitoring", () => {
         monitoringOverviewData,
         indicators,
         clientGroups,
-        clientGroupFilters
+        selectedMonitoringIds,
+        clearValues
     };
 });
