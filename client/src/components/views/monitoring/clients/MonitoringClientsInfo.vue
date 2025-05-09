@@ -11,11 +11,13 @@
                         </div>
                     </v-col>
 
-                    <v-col cols="5">
+                    <v-spacer></v-spacer>
+                    <v-col cols="4">
                         <div class="primary-text-color text-h6 font-weight-bold">
                             Filters
                         </div>
                     </v-col>
+                    <v-spacer></v-spacer>
 
                     <v-col cols="3">
                         <div class="primary-text-color text-h6 font-weight-bold">
@@ -92,10 +94,11 @@
                     </v-col>
 
                     <!------------filters------------->
-                    <v-col cols="5">
+                    <v-spacer></v-spacer>
+                    <v-col cols="4">
                         <v-card 
-                            variant="outlined"
-                            class="rounded-lg pa-4">
+                            variant="flat"
+                            class="rounded-lg">
 
                             <v-row>
 
@@ -185,12 +188,13 @@
 
                         </v-card>
                     </v-col>
+                    <v-spacer></v-spacer>
 
                     <!------------action buttons------------->
                     <v-col cols="3">
                         <v-card
-                            variant="outlined"
-                            class="rounded-lg pa-4"
+                            variant="flat"
+                            class="rounded-lg"
                             height="100%">
 
                             <div>

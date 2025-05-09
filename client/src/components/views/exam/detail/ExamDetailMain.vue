@@ -81,13 +81,14 @@
                                                 rounded="sm" 
                                                 color="primary" 
                                                 variant="flat" 
-                                                :disabled="examViewService.isExamFunctionalityDisabled([ExamStatusEnum.RUNNING, ExamStatusEnum.TEST_RUN], examStore.selectedExam?.status)">
+                                                :disabled="examViewService.isExamFunctionalityDisabled([ExamStatusEnum.RUNNING, ExamStatusEnum.TEST_RUN], examStore.selectedExam?.status)"
+                                                @click="navigateTo(constants.MONITORING_OVERVIEW_ROUTE + '/' + examId)">
                                                 {{translate("examDetail.main.monitorStart")}}
                                             </v-btn>
                                         </v-col>
                                     </v-row>
 
-                                    <v-tooltip activator="parent">
+                                    <v-tooltip v-if="examViewService.isExamFunctionalityDisabled([ExamStatusEnum.RUNNING, ExamStatusEnum.TEST_RUN], examStore.selectedExam?.status)" activator="parent">
                                         {{translate("examDetail.main.monitorTooltip")}}
                                     </v-tooltip>
 

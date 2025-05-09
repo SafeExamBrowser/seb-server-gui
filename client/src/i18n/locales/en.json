@@ -212,7 +212,7 @@
             "testTooltip": "Test run is only activated when exam is Up Coming",
         
             "monitorExam": "Monitor Exam",
-            "monitorStart": "Start",
+            "monitorStart": "Monitor",
             "monitorTooltip": "Monitoring is only activated when exam is running",
         
             "examTemplate": "Exam Template",
@@ -228,7 +228,7 @@
 
             "appNetworkSettings": "Application and Network Settings",
 
-            "downloadExamConfig": "Download Exam Connection Configuration",
+            "downloadExamConfig": "Exam Connection Configuration",
 
             "moreExamOptions": "More Exam Options",
             "applySP": "Apply Screen Proctoring",
