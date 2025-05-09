@@ -18,6 +18,7 @@ type OptionalParGetQuizzes = {
     filterCriteria?: string;
     name?: string;
     start_timestamp_millis?: number;
+    start_timestamp?: string;
     lms_setup?: string;
 }
 
