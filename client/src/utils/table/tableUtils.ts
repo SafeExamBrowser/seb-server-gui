@@ -102,12 +102,9 @@ export function assignQuizSelectPagingOptions(
         optionalParGetQuizzes.name = name;
     }
 
-    // if(startTimestamp != null){
-    //     // optionalParGetQuizzes.start_timestamp_millis = startTimestamp;
-    //     optionalParGetQuizzes.start_timestamp = "2023-05-08T22:00:00Z";
-    // }
-    optionalParGetQuizzes.start_timestamp = "2023-05-08T22:00:00Z";
-
+    if(startTimestamp != null){
+        optionalParGetQuizzes.start_timestamp_millis = startTimestamp;
+    }
     
     if(assessmentToolId != null){
         optionalParGetQuizzes.lms_setup = assessmentToolId;
