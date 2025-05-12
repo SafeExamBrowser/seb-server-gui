@@ -49,6 +49,7 @@
                                 </v-col>
                                 <v-col cols="9" class="mb-2">
                                     <v-date-input
+                                        disabled
                                         single-line
                                         hide-details
                                         v-model="datepicker"
