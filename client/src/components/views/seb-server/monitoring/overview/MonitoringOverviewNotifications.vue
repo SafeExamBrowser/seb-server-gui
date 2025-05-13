@@ -11,6 +11,7 @@
             <v-col>
                 <template v-for="(value, key) in monitoringStore.monitoringOverviewData?.notifications" :key="key">
                     <v-card
+                        v-if="key != 'total'"
                         class="rounded-lg mb-3 pa-2" 
                         variant="flat"
                         :hover="true"
@@ -46,6 +47,7 @@
             <v-col>
                 <template v-for="(value, key) in monitoringStore.monitoringOverviewData?.indicators" :key="key">
                     <v-card
+                        v-if="key != 'total'"
                         class="rounded-lg mb-3 pa-2" 
                         variant="flat"
                         :hover="true"
@@ -93,7 +95,7 @@
             case NotificationEnum.LOCK_SCREEN:
                 return "#FFB300";
             case NotificationEnum.RAISE_HAND:
-                return "#42A5F5";
+                return "#f5f242";
             default:
                 return "#000000";
         }

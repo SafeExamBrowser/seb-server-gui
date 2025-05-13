@@ -100,7 +100,8 @@
 
     async function startIntervalRefresh(){
         intervalRefresh = setInterval(async () => {
-            getOverviewData()
+
+            getOverviewData();
 
             // const randomNumber1: number = Math.floor(Math.random() * 1000) + 1;
             // const randomNumber2: number = Math.floor(Math.random() * 1000) + 1;

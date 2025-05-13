@@ -13,6 +13,7 @@ export const EXAM_SCREEN_PROCTORING_ROUTE = "/exam/:id/screen-proctoring"
 
 //exam template
 export const EXAM_TEMPLATE_ROUTE = "/exam-template";
+export const EXAM_TEMPLATE_SCREEN_PROCTORING_ROUTE = "/exam-template/:id/screen-proctoring";
 
 //user account
 export const USER_ACCOUNT_ROUTE = "/useraccount";
@@ -32,9 +33,15 @@ export const MONITORING_ROUTE = "/monitoring";
 export const MONITORING_CONNECTIONS_ROUTE = MONITORING_ROUTE + "/connections";
 export const MONITORING_TEST_RUN_ROUTE = MONITORING_ROUTE + "/testrun";
 export const MONITORING_OVERVIEW_ROUTE = MONITORING_ROUTE + "/get-overview";
+export const MONITORING_INSTRUCTION_ROUTE = MONITORING_ROUTE + "/:id/instruction";
 
 //client group
 export const CLIENT_GROUP_ROUTE = "/client-group";
 
+// exam seb settings
+export const EXAM_SEB_SETTINGS_ENDPOINT = EXAM_ROUTE + "/seb-settings";
+export const EXAM_SEB_SETTINGS_ROUTE = EXAM_ROUTE + "/seb-settings";
+
 //indicator
 export const INDICATOR_ROUTE = "/indicator";
+

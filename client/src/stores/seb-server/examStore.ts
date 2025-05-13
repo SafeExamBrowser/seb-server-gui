@@ -17,13 +17,12 @@ export const useExamStore = defineStore("exam", () => {
     const selectedClientGroups = ref<ClientGroup[]>([]);
     const relatedAssessmentTool = ref<AssessmentTool | null>(null);
 
-
     function clearSelectedValues(){
         selectedExam.value = null;
         selectedExamTemplate.value = null;
         relatedAssessmentTool.value = null;
         selectedExamSupervisors.value = [];
-    }
+    }   
 
 
     return {

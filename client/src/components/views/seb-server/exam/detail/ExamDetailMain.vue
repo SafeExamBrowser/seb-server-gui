@@ -81,13 +81,14 @@
                                                 rounded="sm" 
                                                 color="primary" 
                                                 variant="flat" 
-                                                :disabled="examViewService.isExamFunctionalityDisabled([ExamStatusEnum.RUNNING, ExamStatusEnum.TEST_RUN], examStore.selectedExam?.status)">
+                                                :disabled="examViewService.isExamFunctionalityDisabled([ExamStatusEnum.RUNNING, ExamStatusEnum.TEST_RUN], examStore.selectedExam?.status)"
+                                                @click="navigateTo(constants.MONITORING_OVERVIEW_ROUTE + '/' + examId)">
                                                 {{translate("examDetail.main.monitorStart")}}
                                             </v-btn>
                                         </v-col>
                                     </v-row>
 
-                                    <v-tooltip activator="parent">
+                                    <v-tooltip v-if="examViewService.isExamFunctionalityDisabled([ExamStatusEnum.RUNNING, ExamStatusEnum.TEST_RUN], examStore.selectedExam?.status)" activator="parent">
                                         {{translate("examDetail.main.monitorTooltip")}}
                                     </v-tooltip>
 
@@ -197,6 +198,7 @@
 
                         <v-row>
                             <v-col>
+                                <!--@vue-ignore-->
                                 <v-data-table 
                                     hide-default-footer
                                     item-value="id" 
@@ -214,11 +216,12 @@
                                         </TableHeaders>
                                     </template>
 
-                                    <template v-slot:item="{item}">
-                                        <tr>
-                                            <td>{{ item.name }}</td>
-                                            <td>{{ translate(generalUtils.findEnumValue(ClientGroupEnum, item.type)) }}</td>
-                                        </tr>
+                                    <template v-slot:item.type="{ item }">
+                                        {{ translate(generalUtils.findEnumValue(ClientGroupEnum, item.type)) }}
+                                    </template>
+
+                                    <template v-slot:item.sp="{ item }">
+                                        <v-icon :icon="item.isSPSGroup ? 'mdi-check' : ''"></v-icon>
                                     </template>
 
                                 </v-data-table>
@@ -619,8 +622,9 @@
     const clientGroupDialog = ref<boolean>(false);
     const clientGroupTableHeadersRef = ref<any[]>();
     const clientGroupTableHeaders = ref([
-        {title: translate("examDetail.main.tableHeadersGroupName"), key: "name"},
-        {title: translate("examDetail.main.tableHeadersGroupType"), key: "type"}
+        {title: translate("examDetail.main.tableHeadersGroupName"), key: "name", width: "45%"},
+        {title: translate("examDetail.main.tableHeadersGroupType"), key: "type", width: "45%"},
+        {title: translate("examDetail.main.tableHeadersScreenProctoring"), key: "sp", width: "10%", center: true, align: "center"}
     ]); 
 
     //add client groups
@@ -1002,8 +1006,12 @@
         clientGroupDialog.value = true;
     }
 
-    function closeClientGroupDialog(){
+    function closeClientGroupDialog(isChange?: boolean){
         clientGroupDialog.value = false;
+
+        if(isChange){
+            getClientGroups();
+        }
     }
 
     async function getClientGroups(){

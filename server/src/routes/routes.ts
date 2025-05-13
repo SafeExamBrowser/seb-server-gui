@@ -35,8 +35,15 @@ router.get(constants.EXAM_GET_ROUTE + "/:id", examController.getExam);
 router.get(constants.EXAM_CONFIGURATION_MAP_ROUTE + "/:id", examController.getExamConfigurationMap);
 
 // SEB lock
-router.put(constants.EXAM_ROUTE + "/:id" + "/apply-seb-restriction", examController.putSEBLock)
-router.delete(constants.EXAM_ROUTE + "/:id" + "/apply-seb-restriction", examController.deleteSEBLock)
+router.put(constants.EXAM_ROUTE + "/:id" + "/apply-seb-restriction", examController.putSEBLock);
+router.delete(constants.EXAM_ROUTE + "/:id" + "/apply-seb-restriction", examController.deleteSEBLock);
+
+// SEB Settings
+router.get(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id" + "/APPLICATION", examSEBSettingsController.getApplicationView);
+router.get(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id" + "/NETWORK", examSEBSettingsController.getNetworkView);
+router.post(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id" + "/table/:name/row", examSEBSettingsController.addTableRow);
+router.delete(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id" + "/table/:name/row/:listIndex", examSEBSettingsController.deleteTableRow);
+router.post(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id", examSEBSettingsController.updateSEBSetting);
 
 //screen proctoring
 router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE, screenProctoringController.saveScreenProctoringSettings);
@@ -46,6 +53,7 @@ router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE + "/activation", screenProcto
 //exam template
 router.get(constants.EXAM_TEMPLATE_ROUTE + "/:id", examTemplateController.getExamTemplate);
 router.get(constants.EXAM_TEMPLATE_ROUTE, examTemplateController.getExamTemplates);
+router.get(constants.EXAM_TEMPLATE_SCREEN_PROCTORING_ROUTE, examTemplateController.getExamTemplateSp);
 
 //user accounts
 router.get(constants.USER_ACCOUNT_ROUTE + "/:id", userAccountController.getUserAccount);
@@ -64,6 +72,7 @@ router.post(constants.MONITORING_TEST_RUN_ROUTE + "/:id", monitoringController.a
 router.get(constants.MONITORING_OVERVIEW_ROUTE + "/:id", monitoringController.getOverview);
 router.get(constants.MONITORING_CONNECTIONS_ROUTE + "/:id", monitoringController.getConnections);
 router.post(constants.MONITORING_ROUTE + "/:id/static-client-data", monitoringController.getStaticClientData);
+router.post(constants.MONITORING_INSTRUCTION_ROUTE, monitoringController.registerInstruction);
 
 //client groups
 router.get(constants.CLIENT_GROUP_ROUTE + "/:id", clientGroupsController.getClientGroup);

@@ -20,6 +20,7 @@
                         :color="examTemplate.name == 'System Template' ? 'green' : 'primary'"
                         :ripple="false"
                         :variant="quizImportStore.selectedExamTemplate?.id == examTemplate.id ? 'flat' : 'tonal'"
+                        :aria-label="translate('quizImportWizard.templateMain.templateSelect')"
                         tabindex="0"
                         :hover="true"
                         @keyup.enter="onTemplateCardClick(examTemplate)"
@@ -29,7 +30,11 @@
                             <v-toolbar-title class="text-subtitle-1" :text="examTemplate.name"></v-toolbar-title>
 
                             <template v-slot:append>
-                                <v-btn @click.stop="openExamTemplateDialog(examTemplate)" icon="mdi-information"></v-btn>
+                                <v-btn 
+                                    :aria-label="translate('quizImportWizard.templateMain.templateInfo')"
+                                    @click.stop="openExamTemplateDialog(examTemplate)" 
+                                    icon="mdi-information">
+                                </v-btn>
                             </template>
                         </v-toolbar>
 
@@ -63,6 +68,7 @@
     import * as quizImportWizardViewService from "@/services/seb-server/component-services/quizImportWizardViewService";
     import { useQuizImportStore } from "@/stores/seb-server/quizImportStore";
     import {translate} from "@/utils/generalUtils";
+    import * as generalUtils from "@/utils/generalUtils";
 
     //stores
     const quizImportStore = useQuizImportStore();
@@ -86,7 +92,7 @@
     });
 
 
-    function onTemplateCardClick(examTemplate: ExamTemplate){
+    async function onTemplateCardClick(examTemplate: ExamTemplate){
         quizImportStore.selectedClientGroups = [];
         if(examTemplate.id == quizImportStore.selectedExamTemplate?.id){
             quizImportStore.selectedExamTemplate = null;
@@ -98,6 +104,11 @@
 
         if(quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES != null && quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES.length > 1){
             quizImportStore.addGroupSelectionComponents();
+
+            if(quizImportStore.selectedExamTemplate.EXAM_ATTRIBUTES.enableScreenProctoring){
+                await getExamTemplateSpGroups();
+            }
+
             return;
         }
 
@@ -133,6 +144,16 @@
             return acc;
         }, []);
     });
+
+    async function getExamTemplateSpGroups(){
+        const examTemplateSp: ScreenProctoringSettings | null = await quizImportWizardViewService.getExamTemplateSp(quizImportStore.selectedExamTemplate!.id.toString());
+    
+        if(examTemplateSp == null){
+            return;
+        }
+
+        quizImportStore.availableSpClientGroupIds = generalUtils.createNumberIdList(examTemplateSp.spsSEBGroupsSelection);
+    }
 
 </script>
 

@@ -70,8 +70,17 @@ export async function getOverview(token: string, id: string): Promise<[object, n
     return [data, status];
 }
 
+function sleep(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+  
+
 
 export async function getConnections(token: string, id: string, optionalHeaders: {}): Promise<[object, number]> {
+    
+
+    // await sleep(3000);
+
     const url: string = constants.MONITORING_CONNECTIONS_ROUTE + "/" + id;
     const { data, status } = await apiService.api.get(
         url,
@@ -90,4 +99,13 @@ export async function getStaticClientData(token: string, id: string, modelIds: {
     const url: string = constants.MONITORING_ROUTE + "/" + id + "/static-client-data";
     const {data, status} = await apiService.api.post(url, apiService.createUrlEncodedBody(modelIds), {headers: apiService.getHeaders(token)});
     return [data, status];
+}
+
+export async function registerInstruction(token: string, id: string, clientInstruction: {}): Promise<[number]>{
+
+    console.log(clientInstruction)
+
+    const url: string = constants.MONITORING_ROUTE + "/" + id + "/instruction";
+    const {status} = await apiService.api.post(url, clientInstruction, {headers: apiService.getApplicationJsonHeaders(token)});
+    return [status];
 }

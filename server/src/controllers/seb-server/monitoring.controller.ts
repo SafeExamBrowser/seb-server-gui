@@ -41,3 +41,13 @@ export async function getStaticClientData(req: Request, res: Response){
         apiService.handleGenericApiError(error, res);
     }
 }
+
+export async function registerInstruction(req: Request, res: Response){
+    try{
+        const [status] = await monitoringService.registerInstruction(req.headers.authorization, req.params.id, req.body);
+        return res.status(status);
+
+    }catch(error){
+        apiService.handleGenericApiError(error, res);
+    }
+}

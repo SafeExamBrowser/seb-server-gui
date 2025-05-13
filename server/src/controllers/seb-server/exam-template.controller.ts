@@ -23,3 +23,13 @@ export async function getExamTemplates(req: Request, res: Response){
         apiService.handleGenericApiError(error, res);
     }
 }
+
+export async function getExamTemplateSp(req: Request, res: Response){
+    try{
+        const [examTemplateSp, status] = await examTemplateService.getExamTemplateSp(req.headers.authorization, req.params.id);
+        return res.status(status).json(examTemplateSp);
+
+    }catch(error){
+        apiService.handleGenericApiError(error, res);
+    }
+}

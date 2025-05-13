@@ -49,8 +49,19 @@ export async function getExamAndStore(examId: string){
 }
 
 
+export async function registerInstruction(examId: string, clientInstruction: ClientInstruction){
+    try{
+        return await monitoringService.registerInstruction(examId, clientInstruction);
+    }catch(error){
+        return null;
+    }
+}
+
 //================url query handling===============
 export function applyFilter(query: LocationQuery, filterType: MonitoringHeaderEnum, filterValue: string){
+    //removes all selected clients (checkbox in table)
+    removeAllSelectedClients();
+
     //remove show all filter if exisits
     if(query[MonitoringHeaderEnum.SHOW_ALL]){
         delete query[MonitoringHeaderEnum.SHOW_ALL];
@@ -71,6 +82,15 @@ export function applyFilter(query: LocationQuery, filterType: MonitoringHeaderEn
     navigation.addQueryParam({
         ...query,
         [filterType]: filterValue
+    });
+}
+
+export function applyShowAllFilter(){
+    //removes all selected clients (checkbox in table)
+    removeAllSelectedClients();
+    
+    navigation.addQueryParam({
+       [MonitoringHeaderEnum.SHOW_ALL]: true
     });
 }
 
@@ -105,13 +125,12 @@ function removeQueryParam(query: LocationQuery, filterType: MonitoringHeaderEnum
     });
 }
 
-export function applyShowAllFilter(){
-    navigation.addQueryParam({
-       [MonitoringHeaderEnum.SHOW_ALL]: true
-    });
+//========table selection========
+function removeAllSelectedClients(){
+    if(useMonitoringStore().selectedMonitoringIds.length > 0){
+        useMonitoringStore().selectedMonitoringIds = [];
+    }
 }
-
-
 
 
 //================display / text logic===============

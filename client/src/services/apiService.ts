@@ -41,7 +41,6 @@ export function createApiInterceptor(){
 
         //until when loading spinner should be displayed (timeout)
         let loadingEndTimout: number = 20000;
-        // if(config.url == "/search/sessions/day") loadingEndTimout = 60000;
 
         loadingEndTimer = setTimeout(() => {
             resetLoadingState();
@@ -183,7 +182,8 @@ function getIgnoredUrls(): string[]{
         "/sp/screenshot-timestamps/", 
         "/sp/search/timeline", 
         "/sp/search/sessions",
-        ""
+        "/monitoring"
+
     ];
 }
 

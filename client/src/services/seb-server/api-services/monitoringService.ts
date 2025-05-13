@@ -19,3 +19,8 @@ export async function getStaticClientData(examId: string, modelIds: string): Pro
     const url: string = monitoringUrl + "/" + examId + "/static-client-data";
     return (await apiService.api.post(url, {modelIds}, {headers: apiService.getPostHeaders("accessToken")})).data;
 }
+
+export async function registerInstruction(examId: string, clientInstruction: ClientInstruction): Promise<any>{
+    const url: string = monitoringUrl + "/" + examId + "/instruction";
+    return (await apiService.api.post(url, clientInstruction, {headers: apiService.getPostHeaders("accessToken")})).status;
+}

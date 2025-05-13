@@ -16,6 +16,10 @@ export function translate(key: string | null | undefined, i18nParam?: any | null
     return useI18n().t(key);
 }
 
+export function translateWithBR(key: string | null | undefined, i18nParam?: any | null): string{
+    return translate(key, i18nParam).replace(/\n/g, '<br />');
+}
+
 export function findEnumValue<T extends Record<string, string | number>>(enumObj: T, value: string | undefined | null): T[keyof T] | null {
     if(value == null){
         return null;
@@ -61,7 +65,7 @@ export function getClientGroupDescription(clientGroup: ClientGroupEnum | null, i
     return ""; 
 }
 
-export function createStringIdList(ids: number[]): string{
+export function createStringIdList(ids: number[] | string[]): string{
     let stringIdList = "";
     if(ids.length == 0){
         return stringIdList;
@@ -97,4 +101,16 @@ export function hasLMSFeature(lmsTypeString: string, feature: LMSFeatureEnum): b
     }
 
     return features.includes(feature);
+}
+
+export function stringToBoolean(booleanValue: string): boolean{
+    if(booleanValue == "true"){
+        return true;
+    }
+
+    if(booleanValue == "false"){
+        return false;
+    }
+
+    return false;
 }

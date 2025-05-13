@@ -5,10 +5,20 @@
                 elevation="4"
                 class="rounded-lg pa-8">
 
-                total items: {{ monitoringDataTable.length }}
+                <div class="mb-2">
+                    Displayed clients: {{ monitoringDataTable.length }}
+                </div>
+                <div 
+                    v-if="monitoringStore.selectedMonitoringIds.length != 0"
+                    class="mb-2">
+                    Selected clients: {{ monitoringStore.selectedMonitoringIds.length }}
+                </div>
 
                 <v-data-table
                     hide-default-footer
+                    show-select
+                    select-strategy="all"
+                    v-model="monitoringStore.selectedMonitoringIds"
                     item-value="id" 
                     :hover="true"
                     :items="monitoringDataTable"
@@ -16,8 +26,11 @@
                     :items-per-page="monitoringDataTable.length"
                     :headers="clientsTableHeaders">
 
-                    <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort}">
+                    <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort, selectAll, allSelected, someSelected}">
                         <TableHeaders
+                            :selectAll="selectAll"
+                            :allSelected="allSelected"
+                            :someSelected="someSelected"
                             :columns="columns"
                             :is-sorted="isSorted"
                             :get-sort-icon="getSortIcon"
@@ -26,8 +39,15 @@
                         </TableHeaders>
                     </template>
 
-                    <template v-slot:item="{item}">
+                    <template v-slot:item="{item, isSelected, toggleSelect, internalItem}">
                         <tr>
+                            <td>
+                                <v-checkbox-btn 
+                                    :model-value="isSelected(internalItem)"
+                                    @update:model-value="toggleSelect(internalItem)">
+                                </v-checkbox-btn>
+                            </td>
+
                             <td>{{ item.nameOrSession }}</td>
                             
                             <td>
@@ -46,13 +66,22 @@
                             </td>
                             
                             <td>{{ item.connectionInfo }}</td>
-                            <td>{{ item.status }}</td>
+                            <td>{{ translate(item.status) }}</td>
                             <td v-for="indicator in monitoringStore.indicators?.content" :key="indicator.id">
                                 {{ item.indicators?.get(indicator.id)?.indicatorValue }}
                             </td>
+
+                            <td align="right">
+                                <v-icon 
+                                    class="mr-6"
+                                    icon="mdi-chevron-right"
+                                    style="font-size: 30px;"
+                                    @click="">
+                                </v-icon>
+                            </td>
                         </tr>
                     </template>
-                
+
                 </v-data-table>
             </v-sheet>
         </v-col>
@@ -82,7 +111,6 @@
     import * as tableUtils from "@/utils/table/tableUtils";
     import { storeToRefs } from "pinia";
 
-
     //exam
     const examId = useRoute().params.examId.toString();
 
@@ -98,11 +126,7 @@
     const connections = ref<MonitoringConnections>();
     const staticClientDataList = ref<MonitoringStaticClientData>();
     const monitoringDataTable = ref<MonitoringRow[]>([]);
-    const monitoringData = ref<Map<number, MonitoringRow>>(new Map());
-
-    //table - pagination, item size, search
-    const isLoading = ref<boolean>(true);
-    const totalItems = ref<number>(10);
+    // const monitoringData = ref<Map<number, MonitoringRow>>(new Map());
 
     //interval
     let intervalRefresh: any | null = null;
@@ -118,8 +142,13 @@
         {title: translate("monitoringClients.main.tableHeaderNameSession"), key: "nameOrSession", width: "30%", sortable: true},
         {title: translate("monitoringClients.main.tableHeaderClientGroups"), key: "clientGroups", width: "20%", sortable: true},
         {title: translate("monitoringClients.main.tableHeaderConnectionInfo"), key: "connectionInfo", width: "20%", sortable: true},
-        {title: translate("monitoringClients.main.tableHeaderStatus"), key: "status", sortable: true}
+        {title: translate("monitoringClients.main.tableHeaderStatus"), key: "status", sortable: true},
+        {title: "", key: "link", width: "5%"}
     ]);  
+
+    watch(monitoringStoreRef.selectedMonitoringIds, () => {
+        // console.log(monitoringStore.selectedMonitoringIds)
+    });
 
 
     //=========events & watchers================
@@ -132,11 +161,11 @@
     });
 
     onUpdated(() => {
-        console.log("dom got updated")
+        // console.log("dom got updated")
     })
 
     function updateTableData(){
-        monitoringDataTable.value = Array.from(monitoringData.value, ([key, value]) => ({
+        monitoringDataTable.value = Array.from(monitoringStore.monitoringData, ([key, value]) => ({
             key,
             ...value
         }));
@@ -161,12 +190,12 @@
     watch(connections, async () => {
 
         //check if sessions got added / removed
-        if(connections.value?.monitoringConnectionData.cons.length! > monitoringData.value.size){
+        if(connections.value?.monitoringConnectionData.cons.length! > monitoringStore.monitoringData.size){
             // await addNewClients();
             addNewClients();
         }
 
-        if(connections.value?.monitoringConnectionData.cons.length! < monitoringData.value.size){
+        if(connections.value?.monitoringConnectionData.cons.length! < monitoringStore.monitoringData.size){
             removeClients();
         }
 
@@ -181,10 +210,17 @@
 
     //==============data fetching================
     async function getAndSetConnections(){
+        //add show all filter if no filter is selected
+        if(Object.keys(route.query).length == 0 || route.query[MonitoringHeaderEnum.SHOW_ALL]){
+            monitoringStore.isNoFilterSelected = true;
+        }else{
+            monitoringStore.isNoFilterSelected = false;
+        }
+
         const fullPageResponse: MonitoringConnections | null = await monitoringViewService.getConnections(
             examId, 
             {   
-                [MonitoringHeaderEnum.SHOW_ALL]: route.query[MonitoringHeaderEnum.SHOW_ALL] || [],
+                [MonitoringHeaderEnum.SHOW_ALL]: monitoringStore.isNoFilterSelected,
                 [MonitoringHeaderEnum.SHOW_CLIENT_GROUPS]: route.query[MonitoringHeaderEnum.SHOW_CLIENT_GROUPS] || [],
                 [MonitoringHeaderEnum.SHOW_STATES]: route.query[MonitoringHeaderEnum.SHOW_STATES] || [],
                 [MonitoringHeaderEnum.SHOW_NOTIFCATION]: route.query[MonitoringHeaderEnum.SHOW_NOTIFCATION] || [],
@@ -224,7 +260,7 @@
 
         connections.value.monitoringConnectionData.cons.forEach((dynamicData, index) => {
 
-            const monitoringRowData: MonitoringRow | undefined = monitoringData.value.get(dynamicData.id);
+            const monitoringRowData: MonitoringRow | undefined = monitoringStore.monitoringData.get(dynamicData.id);
 
             if(monitoringRowData != null){
                 if(dynamicData.st != monitoringRowData.status){
@@ -255,7 +291,7 @@
             const fullPageItemIndex: number | undefined = ids.get(staticData.id);
 
             if(fullPageItemIndex != null && connections.value != null){
-                monitoringData.value.set(
+                monitoringStore.monitoringData.set(
                     staticData.id,
                     createMonitoringRowData(
                         connections.value.monitoringConnectionData.cons[fullPageItemIndex], 
@@ -275,7 +311,7 @@
 
         const newIdsMap = new Map<number, number>();
         fullPageDataConnections.forEach((connection, index) => {
-            if (!monitoringData.value.has(connection.id)) {
+            if (!monitoringStore.monitoringData.has(connection.id)) {
                 newIdsMap.set(connection.id, index);
             }
         });
@@ -294,9 +330,9 @@
         const dynamicDataSet: Set<number> = new Set(connections.value.monitoringConnectionData.cons.map(connection => connection.id));
 
         //check current data contains fresh data
-        for (const key of monitoringData.value.keys()) {
+        for (const key of monitoringStore.monitoringData.keys()) {
             if (!dynamicDataSet.has(key)) {
-                monitoringData.value.delete(key);
+                monitoringStore.monitoringData.delete(key);
             }
         }
 
@@ -320,7 +356,7 @@
 
             if(staticClientData != null){
                 const monitoringRow: MonitoringRow = createMonitoringRowData(dynamicData, staticClientData);
-                monitoringData.value.set(monitoringRow.id, monitoringRow);
+                monitoringStore.monitoringData.set(monitoringRow.id, monitoringRow);
             }
             
         });
@@ -389,7 +425,9 @@
 
     function addIndicatorHeaders(){
         monitoringStore.indicators?.content.forEach((indicator) => {
-            clientsTableHeaders.value.push(
+            clientsTableHeaders.value.splice(
+                clientsTableHeaders.value.length-1,
+                0,
                 {
                     title: indicator.name, 
                     key: indicator.id.toString(),
@@ -412,13 +450,28 @@
 
     //=================interval===================
     async function startIntervalRefresh(){
-        intervalRefresh = setInterval(async () => {
+        // console.log("before call")
+        const start = performance.now();
 
-            //todo: check when request is finished
-            await getAndSetConnections();
+        await getAndSetConnections();
 
-        }, REFRESH_INTERVAL);
+        // console.log("after call")
+        const end = performance.now();
+        // console.log(`Execution time: ${(end - start)/1000} ms`);
+
+        intervalRefresh = setTimeout(startIntervalRefresh, REFRESH_INTERVAL);
     }
+
+    // async function startIntervalRefresh(){
+    //     intervalRefresh = setInterval(async () => {
+
+    //         //todo: check when request is finished
+    //         await getAndSetConnections();
+
+    //     }, REFRESH_INTERVAL);
+    // }
+
+
 
     function stopIntervalRefresh(){
         if (intervalRefresh) {
@@ -436,9 +489,6 @@
     function closeClientGroupDialog(){
         clientGroupDialog.value = false;
     }
-
-
-
 
 </script>
 
