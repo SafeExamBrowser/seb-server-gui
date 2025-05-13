@@ -5,24 +5,27 @@
                 
                 <!------------title row------------->
                 <v-row> 
-                    <v-col cols="4">
-                        <div class="primary-text-color text-h5 font-weight-bold">
-                            {{monitoringStore.selectedExam?.quizName}}
-                        </div>
+                    <v-col cols="4" class="primary-text-color text-h5 font-weight-bold">
+                        {{monitoringStore.selectedExam?.quizName}}
                     </v-col>
 
                     <v-spacer></v-spacer>
                     <v-col cols="4">
-                        <div class="primary-text-color text-h6 font-weight-bold">
-                            Filters
-                        </div>
+                        <span class="primary-text-color text-h6 font-weight-bold">Filters</span>
+                        <v-chip 
+                            v-if="!monitoringStore.isNoFilterSelected"
+                            class="ml-4"
+                            size="small" 
+                            variant="tonal"
+                            append-icon="mdi-close"
+                            @click="monitoringViewService.applyShowAllFilter()">
+                            Clear All
+                        </v-chip>
                     </v-col>
                     <v-spacer></v-spacer>
 
-                    <v-col cols="3">
-                        <div class="primary-text-color text-h6 font-weight-bold">
-                            Actions
-                        </div>
+                    <v-col cols="3" class="primary-text-color text-h6 font-weight-bold">
+                        Actions
                     </v-col>
                 
                 </v-row>
@@ -77,7 +80,7 @@
                                         {{translate("general.searchButton")}}
                                     </v-btn>
 
-                                    <v-btn 
+                                    <!-- <v-btn 
                                         rounded="sm" 
                                         color="secondary" 
                                         variant="flat" 
@@ -85,7 +88,7 @@
                                         class="ml-2"
                                         @click="monitoringViewService.applyShowAllFilter()">
                                         Show All
-                                    </v-btn>
+                                    </v-btn> -->
 
                                 </v-col>
                             </v-row>
@@ -184,6 +187,20 @@
                                         </v-chip>
                                     </template>
                                 </v-col>
+
+                                <!-- <v-col v-if="!monitoringStore.isNoFilterSelected">
+                                    <div v-show="false" class="primary-text-color text-subtitle-1">
+                                        placeholder
+                                    </div>
+                                    <v-chip 
+                                        class="mt-2"
+                                        size="small" 
+                                        variant="tonal"
+                                        append-icon="mdi-close"
+                                        @click="monitoringViewService.applyShowAllFilter()">
+                                        Clear All
+                                    </v-chip>
+                                </v-col> -->
                             </v-row>
 
                         </v-card>
@@ -204,7 +221,7 @@
                                     color="primary" 
                                     variant="flat"
                                     size="small"
-                                    @click="clearForm()">
+                                    @click="">
                                     Quit selected clients
                                 </v-btn>
                             </div>
@@ -216,7 +233,7 @@
                                     color="primary" 
                                     variant="flat"
                                     size="small"
-                                    @click="clearForm()">
+                                    @click="registerInstruction()">
                                     Lock selected clients
                                 </v-btn>
                             </div>
@@ -291,9 +308,8 @@
     import { LocationQuery } from "vue-router";
     import {navigateTo} from "@/router/navigation";
     import * as constants from "@/utils/constants";
+    import { InstructionEnum } from "@/models/instructionEnum";
     
-
-
     //i18n
     const i18n = useI18n();
 
@@ -336,6 +352,7 @@
         loadmonitoringListItemsCaller();
     }
 
+    //=================filters===================
     function getCurrentRouteQueries(): LocationQuery{
         return route.query;
     }
@@ -346,6 +363,31 @@
         }
 
         return false;
+    }
+
+
+    //=================client instructions===================
+    async function registerInstruction(){
+
+
+
+
+
+        const clientInstruction: ClientInstruction = {
+            examId: parseInt(examId),
+            connectionToken: generalUtils.createStringIdList([
+                "7ebfc95f-517b-4500-8e9c-5f099d447469", 
+                "bf5d46c8-68f0-46a2-b62f-de4f352a15f5", 
+                "da4f6c87-6c90-4fba-b09f-3c0ee706f184"
+            ]),
+            type: InstructionEnum.SEB_QUIT,
+            attributes: {
+                "message": "test 1234"
+            }
+        }
+
+        console.log(await monitoringViewService.registerInstruction(examId, clientInstruction));
+
     }
 
 

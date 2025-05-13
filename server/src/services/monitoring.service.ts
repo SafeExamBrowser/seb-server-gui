@@ -100,3 +100,12 @@ export async function getStaticClientData(token: string, id: string, modelIds: {
     const {data, status} = await apiService.api.post(url, apiService.createUrlEncodedBody(modelIds), {headers: apiService.getHeaders(token)});
     return [data, status];
 }
+
+export async function registerInstruction(token: string, id: string, clientInstruction: {}): Promise<[number]>{
+
+    console.log(clientInstruction)
+
+    const url: string = constants.MONITORING_ROUTE + "/" + id + "/instruction";
+    const {status} = await apiService.api.post(url, clientInstruction, {headers: apiService.getApplicationJsonHeaders(token)});
+    return [status];
+}

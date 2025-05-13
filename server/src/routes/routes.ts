@@ -64,6 +64,7 @@ router.post(constants.MONITORING_TEST_RUN_ROUTE + "/:id", monitoringController.a
 router.get(constants.MONITORING_OVERVIEW_ROUTE + "/:id", monitoringController.getOverview);
 router.get(constants.MONITORING_CONNECTIONS_ROUTE + "/:id", monitoringController.getConnections);
 router.post(constants.MONITORING_ROUTE + "/:id/static-client-data", monitoringController.getStaticClientData);
+router.post(constants.MONITORING_INSTRUCTION_ROUTE, monitoringController.registerInstruction);
 
 //client groups
 router.get(constants.CLIENT_GROUP_ROUTE + "/:id", clientGroupsController.getClientGroup);

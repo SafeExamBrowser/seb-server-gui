@@ -10,8 +10,6 @@
     import { useAppBarStore } from "@/stores/store";
     import {translate} from "@/utils/generalUtils";
     import * as monitoringViewService from "@/services/component-services/monitoringViewService";
-    import * as generalUtils from "@/utils/generalUtils";
-    import * as examViewService from "@/services/component-services/examViewService";
     import * as indicatorViewService from "@/services/component-services/indicatorViewService";
     import * as clientGroupViewService from "@/services/component-services/clientGroupViewService";
     import MonitoringClientsMain from "@/components/views/monitoring/clients/MonitoringClientsMain.vue";
@@ -59,7 +57,15 @@
             return;
         }
 
+        // const randomNumber1: number = Math.floor(Math.random() * 1000) + 1;
+        // const randomNumber2: number = Math.floor(Math.random() * 1000) + 1;
+        // overviewResponse.notifications.total = 1212; 
+        // overviewResponse.notifications.LOCK_SCREEN = randomNumber1; 
+        // overviewResponse.notifications.RAISE_HAND = randomNumber2; 
+
         monitoringStore.monitoringOverviewData = overviewResponse;
+
+        // console.log(monitoringStore.monitoringOverviewData)
     }
 
     async function getIndicators(){

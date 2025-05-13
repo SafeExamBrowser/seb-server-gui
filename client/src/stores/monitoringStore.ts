@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import { ExamStatusEnum, ExamTypeEnum } from "@/models/examFiltersEnum";
-;
-
+import { MonitoringRow } from "@/models/monitoringClients";
 
 export const useMonitoringStore = defineStore("monitoring", () => {
 
@@ -16,14 +15,18 @@ export const useMonitoringStore = defineStore("monitoring", () => {
     const monitoringOverviewData = ref<MonitoringOverview | null>(null); 
 
     //monitoring clients
-    const selectedMonitoringIds = ref<number[]>();
+    const isNoFilterSelected = ref<boolean>(false);
+    const selectedMonitoringIds = ref<number[]>([]);
     const indicators = ref<Indicators | null>(null);
     const clientGroups = ref<ClientGroups | null>(null);
+    const monitoringData = ref<Map<number, MonitoringRow>>(new Map());
+
 
     function clearValues(){
         selectedMonitoringIds.value = [];
         indicators.value = null;
         clientGroups.value = null;
+        monitoringData.value = new Map();
     }
 
     return {
@@ -36,6 +39,8 @@ export const useMonitoringStore = defineStore("monitoring", () => {
         indicators,
         clientGroups,
         selectedMonitoringIds,
-        clearValues
+        clearValues,
+        isNoFilterSelected,
+        monitoringData
     };
 });

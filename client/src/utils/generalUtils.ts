@@ -65,7 +65,7 @@ export function getClientGroupDescription(clientGroup: ClientGroupEnum | null, i
     return ""; 
 }
 
-export function createStringIdList(ids: number[]): string{
+export function createStringIdList(ids: number[] | string[]): string{
     let stringIdList = "";
     if(ids.length == 0){
         return stringIdList;

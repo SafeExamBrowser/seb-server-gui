@@ -11,6 +11,7 @@
             <v-col>
                 <template v-for="(value, key) in monitoringStore.monitoringOverviewData?.notifications" :key="key">
                     <v-card
+                        v-if="key != 'total'"
                         class="rounded-lg mb-3 pa-2" 
                         variant="flat"
                         :hover="true"
@@ -46,6 +47,7 @@
             <v-col>
                 <template v-for="(value, key) in monitoringStore.monitoringOverviewData?.indicators" :key="key">
                     <v-card
+                        v-if="key != 'total'"
                         class="rounded-lg mb-3 pa-2" 
                         variant="flat"
                         :hover="true"

@@ -105,7 +105,6 @@ export async function activateScreenProctoring(id: string, enableScreenProctorin
         return null;
     }
 }
-//==============================
 
 //======SEB lock================
 
@@ -116,8 +115,6 @@ export async function applySEBLock(id: string, enableSEBLock: boolean): Promise<
         return null;
     }
 }
-
-//==============================
 
 //======screen proctoring=======
 export function createDefaultScreenProctoringSettings(enable: boolean, examId: number, groupName: string): ScreenProctoringSettings{
