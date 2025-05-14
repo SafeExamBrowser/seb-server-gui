@@ -8,6 +8,7 @@ export const SERVER_PORT = process.env.SERVER_PORT || "";
 export const DEV_SERVER_URL = process.env.DEV_SERVER_URL;
 export const DEV_SERVER_PORT = process.env.DEV_SERVER_PORT;
 
+// TODO rename this into SEB_WEBSERVICE_CLIENT_NAME and SEB_WEBSERVICE_CLIENT_SECRET
 export const SEB_SERVER_USERNAME = process.env.SEB_SERVER_USERNAME;
 export const SEB_SERVER_PASSWORD = process.env.SEB_SERVER_PASSWORD;
 

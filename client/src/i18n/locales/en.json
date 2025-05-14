@@ -227,6 +227,7 @@
             "quitPassword": "Quit Password",
 
             "appNetworkSettings": "Application and Network Settings",
+            "noSEBSettings": "This Exam has no SEB settings attached yet.\nPlease attach an Exam Configuration with SEB settings first.",
 
             "downloadExamConfig": "Download Exam Connection Configuration",
 
@@ -310,6 +311,23 @@
                     "ignoreAAC": "Ignore in AAC",
                     "ignoreAAC_tooltip": "When using the AAC kiosk mode\n(which prevents network and screen access for other processes),\nignore this prohibited process"
                 }
+            
+            },
+            "networkView": {
+                "filterGroupTitle": "URL Filter",
+                "URLFilterEnable": "Activate URL Filtering",
+                "URLFilterEnableContentFilter": "Filter also embedded content",
+                "URLFilterRules": {
+                    "settingName": "Filter",
+                    "editDialogTitle": "URL Filter Rule",
+                    "active": "Active",
+                    "regex": "Regex",
+                    "expression": "Expression",
+                    "action": "Action",
+                    "action_0": "Block",
+                    "action_1": "Allow"
+                },
+                "proxies": "Proxies"
             }
         }
     },

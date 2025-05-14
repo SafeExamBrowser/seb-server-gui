@@ -1,3 +1,13 @@
+type ExamConfigMapping = {
+    id: number,
+    examId: number,
+    examName: string,
+    examDescription: string,
+    configurationNodeId: number,
+    configName: string,
+    configStatus: string
+};
+
 type SEBSettingsValue = {
     id: number,
     value: string,
@@ -112,3 +122,17 @@ type ProhibitedProcess = {
         ignoreInAAC: number
     }
 };
+
+type URLFilterRule = {
+    index: number,
+    active: boolean,
+    regex: boolean,
+    expression: string,
+    action: string,
+    ids: {
+        active: number,
+        regex: number,
+        expression: number,
+        action: number,
+    }
+}

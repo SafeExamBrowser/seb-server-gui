@@ -33,11 +33,6 @@
     import SebSettingsApplications from "@/components/views/settings/SebSettingsApplications.vue";
     import SebSettingsNetwork from "@/components/views/settings/SebSettingsNetwork.vue";
 
-
-    // const props = defineProps<{
-    //     examTemplate: ExamTemplate | null
-    // }>();
-
     const emit = defineEmits<{
         closeSebSettingsDialog: any,
     }>();

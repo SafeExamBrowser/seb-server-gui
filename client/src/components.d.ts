@@ -16,6 +16,8 @@ declare module 'vue' {
     EditClientGroupDialog: typeof import('./components/views/exam/detail/dialogs/client-group/EditClientGroupDialog.vue')['default']
     EditPermittedProcess: typeof import('./components/views/settings/EditPermittedProcess.vue')['default']
     EditProhibitedProcess: typeof import('./components/views/settings/EditProhibitedProcess.vue')['default']
+    EditURLFilter: typeof import('./components/views/settings/EditURLFilter.vue')['default']
+    EditURLFilterRule: typeof import('./components/views/settings/EditURLFilterRule.vue')['default']
     ErrorMsg: typeof import('./components/widgets/ErrorMsg.vue')['default']
     ExamDetailArchiveDialog: typeof import('./components/views/exam/detail/dialogs/ExamDetailArchiveDialog.vue')['default']
     ExamDetailConfigDialog: typeof import('./components/views/exam/detail/dialogs/ExamDetailConfigDialog.vue')['default']

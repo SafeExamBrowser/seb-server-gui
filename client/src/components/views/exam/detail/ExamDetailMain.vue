@@ -282,16 +282,21 @@
                                         <v-col>
                                             {{translate("examDetail.main.appNetworkSettings")}}
                                         </v-col>
+                                        
                                         <v-col align="right" cols="4" xl="3">
+                     
                                             <v-btn 
                                                 block
                                                 rounded="sm" 
                                                 color="primary" 
                                                 variant="flat"
-                                                :disabled="examViewService.isExamFunctionalityDisabled([ExamStatusEnum.UP_COMING, ExamStatusEnum.RUNNING, ExamStatusEnum.TEST_RUN], examStore.selectedExam?.status)"
+                                                :disabled="!hasSEBSettings || !editableSEBSettings"
                                                 @click="openSebSettingsDialog()">
                                                 {{translate("general.editButton")}}
                                             </v-btn>
+                                            <v-tooltip v-if="!hasSEBSettings" activator="parent">
+                                                <p v-html="generalUtils.translateWithBR('examDetail.main.noSEBSettings')" />
+                                            </v-tooltip>
                                         </v-col>
                                     </v-row>
 
@@ -615,7 +620,10 @@
     const isScreenProctoringActive = ref<boolean>(false);
 
     //seb settings
+    const hasSEBSettings = ref<boolean>(false);
+    const editableSEBSettings = ref<boolean>(false);
     const sebSettingsDialog = ref<boolean>(false);
+    
 
     //client groups
     const clientGroupDialog = ref<boolean>(false);
@@ -629,7 +637,6 @@
     //add client groups
     const addclientGroupDialog = ref<boolean>(false);
     
-
     onBeforeMount(async () => {
         examStore.clearSelectedValues();
 
@@ -638,6 +645,7 @@
         await getAssessmentTool();
         await getExamSupervisors();
         await getClientGroups();
+        await getSEBSettings();
 
         setQuitPassword();
         initSEBLock();
@@ -991,6 +999,16 @@
 
 
     //===============settings logic====================
+    async function getSEBSettings() {
+        const configs: ExamConfigMapping[] | null = await examViewService.getExamConfigMapping(examId);
+        if (configs == null) {
+            hasSEBSettings.value = false;
+        } else {
+            hasSEBSettings.value = configs.length > 0;
+        }
+        editableSEBSettings.value = !examViewService.isExamFunctionalityDisabled([ExamStatusEnum.UP_COMING, ExamStatusEnum.RUNNING, ExamStatusEnum.TEST_RUN], examStore.selectedExam?.status);
+    }
+
     function openSebSettingsDialog(){
         sebSettingsDialog.value = true;
     }
