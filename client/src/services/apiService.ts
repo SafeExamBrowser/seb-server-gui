@@ -2,9 +2,11 @@ import axios, { AxiosInstance } from "axios";
 import * as authenticationService from "@/services/authenticationService";
 import {navigateTo} from "@/router/navigation";
 import * as ENV from "@/config/envConfig";
-import { useLoadingStore, useAuthStore } from "@/stores/store";
-import router from "@/router/router";
+import { useLoadingStore } from "@/stores/store";
 import { useErrorStore } from "@/stores/seb-server/errorStore";
+import { useAuthStore } from "@/stores/authentication/authenticationStore";
+import * as generalUtils from "@/utils/generalUtils";
+import { StorageItemEnum } from "@/models/StorageItemEnum";
 
 
 export let api: AxiosInstance;
@@ -12,7 +14,7 @@ export let api: AxiosInstance;
 export function createApi(){
     api = axios.create({
         baseURL: ENV.SERVER_URL + ENV.SERVER_PORT,
-        headers: getHeaders("accessToken")
+        headers: getHeaders(StorageItemEnum.ACCESS_TOKEN)
     });
 }
 
@@ -51,6 +53,7 @@ export function createApiInterceptor(){
 
 
     api.interceptors.response.use(async response => {
+        //reset loading spinner and return response
         resetLoadingState();
         return response;
 
@@ -59,11 +62,13 @@ export function createApiInterceptor(){
 
         console.error(error)
 
-        //authentication error
+        //check if error is authentication error
         const originalRequest = error.config;
         if(error.response.status === 401 && !originalRequest._retry){
-            await handleAuthenticationError(originalRequest);
-            throw error;
+            //try to refresh token
+            //ok --> refresh token, retries api call and returns data
+            //not ok --> redirected to login page
+            return await handleAuthenticationError(originalRequest);
 
         }else{
 
@@ -95,13 +100,29 @@ export function createApiInterceptor(){
 
     async function handleAuthenticationError(originalRequest: any){
         try{
-            const response: Token = await authenticationService.refresh();
+            //refreh tokens for seb server
+            const response: Token = await authenticationService.refresh(false);
+            authStore.setStorageItem(StorageItemEnum.ACCESS_TOKEN, response.access_token);
+            authStore.setStorageItem(StorageItemEnum.REFRESH_TOKEN, response.refresh_token);
 
-            authStore.setAccessToken("accessToken", response.access_token);
-            authStore.setRefreshToken("refreshToken", response.refresh_token);
-
+            //refreh tokens for sp-service
+            if(generalUtils.stringToBoolean(authStore.getStorageItem(StorageItemEnum.IS_SP_AVAILABLE))){
+                const spResponse: Token = await authenticationService.refresh(true);
+                authStore.setStorageItem(StorageItemEnum.SP_ACCESS_TOKEN, spResponse.access_token);
+                authStore.setStorageItem(StorageItemEnum.SP_REFRESH_TOKEN, spResponse.refresh_token);
+            }
+            
             originalRequest._retry = true;
-            originalRequest.headers = getHeaders("accessToken");
+            originalRequest.headers = getHeaders(StorageItemEnum.ACCESS_TOKEN);
+
+            //set sp access token if url requested sp resource
+            const originalUrl: string | null = originalRequest.url;
+            if(originalUrl && originalUrl.startsWith("/sp/")){
+
+                console.log("it got to here")
+
+                originalRequest.headers = getHeaders(StorageItemEnum.SP_ACCESS_TOKEN);
+            }
 
             return api(originalRequest);
 
@@ -134,7 +155,7 @@ export function getHeaders(type: string): object{
 
     return {
       "accept": "application/json",
-      "Authorization": "Bearer " + authStore.getAccessToken(type),
+      "Authorization": "Bearer " + authStore.getStorageItem(type),
       "Content-Type": "application/x-www-form-urlencoded"
     };
 }
@@ -144,7 +165,7 @@ export function getPostHeaders(type: string): object{
 
     return {
       "accept": "application/json",
-      "Authorization": "Bearer " + authStore.getAccessToken(type),
+      "Authorization": "Bearer " + authStore.getStorageItem(type),
       "Content-Type": "application/json"
     };
 }

@@ -73,7 +73,6 @@
 
                             <td align="right">
                                 <v-icon 
-                                    class="mr-6"
                                     icon="mdi-chevron-right"
                                     style="font-size: 30px;"
                                     @click="">

@@ -172,10 +172,10 @@
 </template>
 
 <script setup lang="ts">
-    import { useExamStore } from '@/stores/examStore';
+    import { useExamStore } from '@/stores/seb-server/examStore';
     import * as tableUtils from "@/utils/table/tableUtils";
     import TableHeaders from "@/utils/table/TableHeaders.vue";
-    import * as examViewService from "@/services/component-services/examViewService";
+    import * as examViewService from "@/services/seb-server/component-services/examViewService";
     import { useI18n } from "vue-i18n";
     import {translate} from "@/utils/generalUtils";
 

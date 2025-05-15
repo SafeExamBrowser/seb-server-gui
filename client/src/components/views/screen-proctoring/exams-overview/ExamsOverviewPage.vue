@@ -1,20 +1,7 @@
 <template>
 
     <v-row>
-        <v-col v-if="noRunningExams">
-            <v-sheet 
-                elevation="4"
-                class="rounded-lg pa-4"
-                title="No running exams available">
-                <v-row>
-                    <v-col align="left" class="text-h6">
-                        No running exams available
-                    </v-col>
-                </v-row>
-            </v-sheet>
-        </v-col>
-
-        <v-col v-else>
+        <v-col>
             <v-data-table
                 item-value="item.name"
                 class="rounded-lg elevation-4"
@@ -75,8 +62,8 @@
                         <div 
                             role="button"
                             tabindex="0"
-                            @keydown="tableUtils.handleTabKeyEvent($event, 'navigate', internalItem.index, {path: getGalleryViewLink(internalItem.index)})">
-                            <router-link class="default-color" :to="getGalleryViewLink(internalItem.index)">{{item.name}}</router-link>
+                            @keydown="tableUtils.handleTabKeyEvent($event, 'navigate', internalItem.index, {path: linkService.getGalleryViewLink(item.uuid)})">
+                            <router-link class="default-color" :to="linkService.getGalleryViewLink(item.uuid)">{{item.name}}</router-link>
                         </div>
                     </td>
                 </template>
@@ -94,16 +81,15 @@
     import * as tableUtils from "@/utils/table/tableUtils";
     import TableHeaders from "@/utils/table/TableHeaders.vue";
     import { storeToRefs } from "pinia";
+    import * as linkService from "@/services/screen-proctoring/component-services/linkService";
     import * as spConstants from "@/utils/sp-constants";
     import * as authenticationService from "@/services/authenticationService";
-    import {useAuthStore } from "@/stores/store";
 
 
     //stores
     const appBarStore = useAppBarStore();
     const appBarStoreRef = storeToRefs(appBarStore);
     const tableStore = useTableStore();
-    const authStore = useAuthStore();
 
     //table
     const groups = ref<Group[]>();
@@ -114,7 +100,6 @@
         {title: "Exam End-Time", key: "exam.endTime", width: "25%"},
         {title: "Group", key: "name", width: "25%"}
     ]);
-    const noRunningExams = ref<boolean>(false);
 
     //error handling
     const errorAvailable = ref<boolean>();
@@ -122,13 +107,6 @@
 
     onBeforeMount(async () => {
         appBarStore.title = "Running Exams";
-
-
-        const tokenObject: Token = await authenticationService.loginSP("super-admin", "admin");
-        authStore.loginSP(tokenObject.access_token, tokenObject.refresh_token);
-
-
-
         await getGroups();
     });
 
@@ -161,13 +139,13 @@
         groups.value = groupsResponse.content;
     }
 
-    function getGalleryViewLink(index: number) {
-        if(groups.value != null){
-            return spConstants.GALLERY_VIEW_ROUTE + "/" + groups.value[index].uuid;
-        }
+    // function getGalleryViewLink(index: number) {
+    //     if(groups.value != null){
+    //         return spConstants.GALLERY_VIEW_ROUTE + "/" + groups.value[index].uuid;
+    //     }
 
-        return "";
-    }
+    //     return "";
+    // }
 
     function getExamNameColor(group: Group): string{
         if(group.terminationTime != null){

@@ -103,7 +103,10 @@
 
     "homePage": {
         "prepareExam": "Prepare Exam",
-        "startNow": "Start now"
+        "startNow": "Start now",
+
+        "screenProctoring": "Screen Proctoring",
+        "open": "Open"
     },
 
     "quizImportWizard": {
@@ -366,7 +369,12 @@
         "examsOverview": "Exams Overview",
         "examDetails": "Exam Details",
         "monitoring": "Monitoring",
-        "quizImport": "Prepare Exam"
+        "quizImport": "Prepare Exam",
+
+
+        "screenProctoring": "Screen Proctoring",
+        "spSearch": "Search",
+        "spApplications": "Applications"
     },
 
 

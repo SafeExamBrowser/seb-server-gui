@@ -15,7 +15,7 @@ type UserAccount = {
     email: string;
     language: string;
     timezone: string;
-    roles: string[];
+    userRoles: string[];
     creationTime: number;
     lastUpdateTime: number;
     terminationTime?: number | null;

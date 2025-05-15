@@ -106,10 +106,13 @@
     import { ref, computed } from "vue";
     import * as authenticationService from "@/services/authenticationService";
     import {navigateTo} from "@/router/navigation";
-    import { useLoadingStore, useAuthStore } from "@/stores/store";
+    import { useLoadingStore } from "@/stores/store";
     import { useTheme } from "vuetify";
     import * as constants from "@/utils/constants";
     import {translate} from "@/utils/generalUtils";
+    import { useAuthStore } from "@/stores/authentication/authenticationStore";
+    import { StorageItemEnum } from "@/models/StorageItemEnum";
+
 
     const username = ref("");
     const password = ref("");
@@ -130,17 +133,30 @@
     async function signIn(){
         loginError.value = false;
         loadingStore.isTimeout = false;
-
+  
         try{
-            const tokenObject: Token = await authenticationService.login(username.value, password.value);
-            authStore.login(tokenObject.access_token, tokenObject.refresh_token);
+            // if seb server fails --> shows error msg
+            const tokenObject = await authenticationService.login(username.value, password.value, false);
+            
+            try{
+                //if sp failes --> only logs error
+                const spTokenObject = await authenticationService.login(username.value, password.value, true);
+                authStore.loginSP(spTokenObject.access_token, spTokenObject.refresh_token);
 
-        }catch(error){
+            }catch (error){
+                console.error("SP login failed:", error);
+                authStore.setStorageItem(StorageItemEnum.IS_SP_AVAILABLE, "false");
+
+            }finally{
+                authStore.login(tokenObject.access_token, tokenObject.refresh_token);
+            }
+
+        } catch (error) {
             loginError.value = true;
+            
         }
     }
 
-    //todo: extract this function into a global file
     function handleTabKeyEvent(event: any, action: string){
         if (event.key == 'Enter' || event.key == ' ') {
 

@@ -149,7 +149,8 @@
     import SearchScreenshotsTable from "./SearchScreenshotsTable.vue";
     import * as searchViewService from "@/services/screen-proctoring/component-services/searchViewService";
     import TableHeaders from "@/utils/table/TableHeaders.vue";
-    import { useTableStore, useUserAccountStore } from "@/stores/store";
+    import { useTableStore } from "@/stores/store";
+    import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
 
     //store
     const tableStore = useTableStore();
@@ -194,7 +195,7 @@
 
     //===========================data fetching=======================
     async function loadItems(serverTablePaging: ServerTablePaging){
-        isUserAdmin.value = userAccountStore.userAccount?.roles.includes('ADMIN');
+        isUserAdmin.value = userAccountStore.userAccount?.userRoles.includes("SEB_SERVER_ADMIN");
         isLoading.value = true;
         //current solution to default sort the table
         //sort-by in data-table-server tag breaks the sorting as the headers are in a seperate component
@@ -238,8 +239,6 @@
 
         addTableItemToRefs(timelineSearchResponse, toggleExpand, item);
     }
-    //===============================================================
-
 
     //===========================session deletion=======================
     function openDeleteSessionsDialog(){
@@ -276,8 +275,6 @@
     function closeDialog(){
         dialog.value = false;
     }
-    //===============================================================
-
 
     //===========================table=======================
     function addTableItemToRefs(timelineSearchResponse: SearchTimeline, toggleExpand: Function, item: any){
@@ -299,9 +296,6 @@
 
         return false;
     }
-    //===============================================================
-
-
 </script>
 
 <style scoped>

@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
-import {LOG} from "../logging/logger";
-import * as examSEBSettingsService from "../services/exam-sebsettings.service";
-import * as apiService from "../services/api.service";
+import {LOG} from "../../logging/logger";
+import * as examSEBSettingsService from "../../services/seb-server/exam-sebsettings.service";
+import * as apiService from "../../services/seb-server/api.service";
 
 export async function getApplicationView(req: Request, res: Response){
     try{

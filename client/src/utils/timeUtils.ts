@@ -1,7 +1,7 @@
-import { useUserAccountStore } from "@/stores/store";
 import { toZonedTime } from "date-fns-tz";
 import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
 import {DateTime} from "luxon";
+import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
 
 
 //display dates according to the user's timezone

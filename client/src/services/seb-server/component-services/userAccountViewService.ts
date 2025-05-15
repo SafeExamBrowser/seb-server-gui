@@ -1,5 +1,5 @@
 import * as userAccountService from "@/services/seb-server/api-services/userAccountService";
-import { useUserAccountStore } from "@/stores/store";
+import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
 
 export async function setPersonalUserAccount(){
     const userAccountStore = useUserAccountStore();
@@ -89,16 +89,16 @@ export async function changePassword(uuid: string, password: string, newPassword
 }
 //==============================
 
-export function disableEnableActionItem(action: string): boolean{
-    const userAccountStore = useUserAccountStore();
+// export function disableEnableActionItem(action: string): boolean{
+//     const userAccountStore = useUserAccountStore();
 
-    if(!userAccountStore.userAccount?.roles.includes('ADMIN')){
-        return false;
-    }
+//     if(!userAccountStore.userAccount?.userRoles.includes('ADMIN')){
+//         return false;
+//     }
 
-    if(action == "add"){
-        return false;
-    }
+//     if(action == "add"){
+//         return false;
+//     }
 
-    return !userAccountStore.isAccountSelected;
-}
+//     return !userAccountStore.isAccountSelected;
+// }

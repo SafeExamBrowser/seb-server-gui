@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import { ExamStatusEnum, ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
-
-
+import { MonitoringRow } from "@/models/seb-server/monitoringClients";
 
 export const useMonitoringStore = defineStore("monitoring", () => {
 

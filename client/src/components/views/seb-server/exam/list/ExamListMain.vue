@@ -153,6 +153,9 @@
 
         const examsResponse: Exams | null = await examViewService.getExams(optionalParGetExams);
 
+        console.log("examsResponse:")
+        console.log(examsResponse)
+
         if(examsResponse == null){
             isLoading.value = false;
             return;

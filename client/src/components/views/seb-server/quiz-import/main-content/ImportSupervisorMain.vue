@@ -114,10 +114,10 @@
 <script setup lang="ts">
     import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
     import { useQuizImportStore } from "@/stores/seb-server/quizImportStore";
-    import { useUserAccountStore } from "@/stores/store";
     import * as tableUtils from "@/utils/table/tableUtils";
     import {translate} from "@/utils/generalUtils";
     import TableHeaders from "@/utils/table/TableHeaders.vue";
+    import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
     
     //stores
     const quizImportStore = useQuizImportStore();

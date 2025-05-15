@@ -6,8 +6,6 @@ export async function getGroups(optionalParamters?: OptionalParGroups): Promise<
     try{
         return await groupService.getGroups(optionalParamters); 
     }catch(error){
-        console.error("it got here view service")
-        console.error(error);
         return null;
     }
 }

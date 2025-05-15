@@ -37,8 +37,7 @@
 
                     <!--------sp button-------->
                     <v-col cols="1">
-                        <v-icon v-if="clientGroupItem.spsGroupUUID != null && clientGroupItem.spsGroupUUID != ''" icon="mdi-video">
-                        </v-icon>
+                        <v-btn @click="navigation.openUrlInNewTab(linkService.getGalleryViewLink(clientGroupItem.spsGroupUUID))" variant="text" icon="mdi-video"></v-btn>
                     </v-col>
 
                     <!--------monitoring button-------->
@@ -124,6 +123,9 @@
     import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
     import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums";
     import * as generalUtils from "@/utils/generalUtils";
+    import * as linkService from "@/services/screen-proctoring/component-services/linkService";
+    import * as navigation from "@/router/navigation";
+
 
     //stores
     const monitoringStore = useMonitoringStore();

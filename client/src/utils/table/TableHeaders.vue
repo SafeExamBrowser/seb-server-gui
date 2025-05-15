@@ -25,7 +25,6 @@
                 <template v-if="props.isSorted(column)">
                     <v-icon :icon="props.getSortIcon(column)"></v-icon>
                 </template>
-                <!----------------------------------------------------------------->
 
                 <!------------------------selection-------------------------------->
                 <template v-if="column.key == 'data-table-select' && props.selectAll != null" class="ma-0 pa-0">
@@ -35,23 +34,9 @@
                         @click="props.selectAll(props.allSelected ? false : true)">
                     </v-checkbox-btn>
                 </template>
-                <!----------------------------------------------------------------->
-  
-                <!------------------------show name / ip--------------------------->
-                <!--todo: checking should not be done via title-->
-                <!-- <template v-if="column.title == 'Login Name / IP'">
-                    <v-btn 
-                        :aria-label="tableStore.isIpDisplayList[tableUtils.getSessionListIndex(props.day!)].isIp ? 'show login name' : 'show IP'"
-                        :icon="tableStore.isIpDisplayList[tableUtils.getSessionListIndex(props.day!)].isIp ? 'mdi-toggle-switch-outline' : 'mdi-toggle-switch-off-outline'" 
-                        rounded="sm" 
-                        variant="flat" 
-                        @click="toggleNameIpSwitch()">
-                    </v-btn>
-                </template> -->
-                <!----------------------------------------------------------------->
 
-                <!------------------------selection - delete----------------------->
-                <!-- <template v-if="column.key == 'data-table-expand' && tableKey == 'monitoring'">
+                <!------------------------sp: session search: delete----------------------->
+                <template v-if="column.key == 'data-table-expand' && tableKey == 'session'">
                     <v-btn 
                         class="pr-4"
                         icon="mdi-delete" 
@@ -59,9 +44,19 @@
                         :disabled="!someSelected"
                         @click="emit('openDeleteSessionsDialog')">
                     </v-btn>
-                </template> -->
+                </template>
+  
+                <!------------------------sp: session search: show name / ip--------------------------->
+                <template v-if="column.key == 'clientName' && tableKey == 'session'">
+                    <v-btn 
+                        :aria-label="tableStore.isIpDisplayList[tableUtils.getSessionListIndex(props.day!)].isIp ? 'show login name' : 'show IP'"
+                        :icon="tableStore.isIpDisplayList[tableUtils.getSessionListIndex(props.day!)].isIp ? 'mdi-toggle-switch-outline' : 'mdi-toggle-switch-off-outline'" 
+                        rounded="sm" 
+                        variant="flat" 
+                        @click="toggleNameIpSwitch()">
+                    </v-btn>
+                </template>
                 <!----------------------------------------------------------------->
-
 
                 <!-- <template v-if="column.title == 'Exam Start-Time'">
                     <v-btn 
@@ -82,11 +77,11 @@
 <script setup lang="ts">
     import { ref, onBeforeMount, onBeforeUnmount } from "vue";
     import * as tableUtils from "@/utils/table/tableUtils";
-    // import { useAppBarStore, useTableStore } from "@/stores/store";
+    import { useAppBarStore, useTableStore } from "@/stores/store";
 
     //stores
     // const appBarStore = useAppBarStore();
-    // const tableStore = useTableStore();
+    const tableStore = useTableStore();
 
     //header reactivity
     const headerRefs = ref<any[] | null>();
@@ -121,14 +116,14 @@
     });
 
     function toggleNameIpSwitch(){
-        // const index: number = tableUtils.getSessionListIndex(props.day!);
+        const index: number = tableUtils.getSessionListIndex(props.day!);
 
-        // if(tableStore.isIpDisplayList[index].isIp){
-        //     tableStore.isIpDisplayList[index].isIp = false;
-        //     return;
-        // }
+        if(tableStore.isIpDisplayList[index].isIp){
+            tableStore.isIpDisplayList[index].isIp = false;
+            return;
+        }
 
-        // tableStore.isIpDisplayList[index].isIp = true;
+        tableStore.isIpDisplayList[index].isIp = true;
     }
 
     function getHeaderDescription(column: any, isSorted: any): any{

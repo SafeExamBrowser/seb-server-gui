@@ -17,6 +17,17 @@
                     </v-col>
                 </v-row>
             </template>
+
+            <AlertMsg 
+                v-else 
+                :alertProps="{
+                    title: '',
+                    textKey: alertMsgKey,
+                    color: 'warning',
+                    type: 'alert',
+                }">
+            </AlertMsg>
+
         </v-window-item>
     </v-window>
 </template>

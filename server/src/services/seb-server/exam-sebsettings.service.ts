@@ -1,5 +1,5 @@
 import * as apiService from "./api.service";
-import * as constants from "../utils/constants";
+import * as constants from "../../utils/constants";
 
 export async function getApplicationView(token: string, examId: string): Promise<[object, number]>{
     const url: string =  constants.EXAM_SEB_SETTINGS_ENDPOINT + "/" + examId;

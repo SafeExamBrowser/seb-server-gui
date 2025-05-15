@@ -308,7 +308,7 @@
     import { LocationQuery } from "vue-router";
     import {navigateTo} from "@/router/navigation";
     import * as constants from "@/utils/constants";
-    import { InstructionEnum } from "@/models/instructionEnum";
+    import { InstructionEnum } from "@/models/seb-server/instructionEnum";
     
     //i18n
     const i18n = useI18n();

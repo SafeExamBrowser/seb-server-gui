@@ -199,7 +199,7 @@
     import * as proctoringViewService from "@/services/screen-proctoring/component-services/proctoringViewService";
     import * as timeUtils from "@/utils/timeUtils";
     import * as groupingUtils from "@/utils/groupingUtils";
-    import { useAppBarStore, useAuthStore } from "@/stores/store";
+    import { useAppBarStore } from "@/stores/store";
     import * as searchViewService from "@/services/screen-proctoring/component-services/searchViewService";
     import { useFullscreen } from "@vueuse/core";
     import * as linkService from "@/services/screen-proctoring/component-services/linkService";

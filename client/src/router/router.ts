@@ -13,6 +13,8 @@ import MonitoringExamsContainer from "@/components/views/seb-server/monitoring/e
 import MonitoringClientsContainer from "@/components/views/seb-server/monitoring/clients/MonitoringClientsContainer.vue";
 import MonitoringOverviewContainer from "@/components/views/seb-server/monitoring/overview/MonitoringOverviewContainer.vue";
 import * as authenticationService from "@/services/authenticationService";
+import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
+
 
 //----------screen-proctoring ---------
 import * as spConstants from "@/utils/sp-constants";
@@ -22,8 +24,7 @@ import ProctoringViewPage from "@/components/views/screen-proctoring/proctoring/
 import ProctoringApplicationSearchPage from "@/components/views/screen-proctoring/proctoring/ProctoringApplicationSearchPage.vue";
 import ExamsOverviewPage from "@/components/views/screen-proctoring/exams-overview/ExamsOverviewPage.vue";
 import SearchPage from "@/components/views/screen-proctoring/search/SearchPage.vue";
-import { useAuthStore } from "@/stores/store";
-
+import { useAuthStore } from "@/stores/authentication/authenticationStore";
 
 
 
@@ -213,6 +214,10 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to) => {
+    if(to.meta.requiresAuth){
+        await userAccountViewService.setPersonalUserAccount();
+    }
+
     const defaultTitle: string = "SEB Server";
 
     //get title key from route meta

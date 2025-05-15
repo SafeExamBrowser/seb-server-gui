@@ -10,6 +10,7 @@ import * as assessmentToolController from "../controllers/seb-server/assessment-
 import * as monitoringController from "../controllers/seb-server/monitoring.controller";
 import * as clientGroupsController from "../controllers/seb-server/client-groups.controller";
 import * as constants from "../utils/constants";
+import * as examSEBSettingsController from "../controllers/seb-server/exam-sebsettings.controller";
 
 //screen-proctoring
 import * as groupController from "../controllers/screen-proctoring/sp-group.controller";

@@ -58,112 +58,112 @@ export const useNavigationStore = defineStore("navigation", () => {
 
 
 //----------------------authentication---------------------------//
-export const useAuthStore = defineStore("auth", () => {
-    const redirectRoute: string = "";
+// export const useAuthStore = defineStore("auth", () => {
+//     const redirectRoute: string = "";
 
-    async function login(accessTokenString: string, refreshTokenString: string) {
-        setAccessToken("accessToken", accessTokenString);
-        setRefreshToken("refreshToken", refreshTokenString);
+//     async function login(accessTokenString: string, refreshTokenString: string) {
+//         setAccessToken(StorageItemEnum.ACCESS_TOKEN, accessTokenString);
+//         setRefreshToken("refreshToken", refreshTokenString);
 
-        await userAccountViewService.setPersonalUserAccount();
+//         await userAccountViewService.setPersonalUserAccount();
 
-        if (useAuthStore().redirectRoute == "") {
-            navigateTo(constants.HOME_PAGE_ROUTE);
-        } else {
-            let route: string = useAuthStore().redirectRoute;
-            let subPath: string | null = import.meta.env.VITE_SUB_PATH;
+//         if (useAuthStore().redirectRoute == "") {
+//             navigateTo(constants.HOME_PAGE_ROUTE);
+//         } else {
+//             let route: string = useAuthStore().redirectRoute;
+//             let subPath: string | null = import.meta.env.VITE_SUB_PATH;
 
-            if (subPath != null && route.includes(subPath)) {
-                route = route.replace(subPath, "");
-            }
+//             if (subPath != null && route.includes(subPath)) {
+//                 route = route.replace(subPath, "");
+//             }
 
-            navigateTo(route);
-        }
-    }
+//             navigateTo(route);
+//         }
+//     }
 
-    async function loginSP(accessTokenString: string, refreshTokenString: string) {
-        setAccessToken("spAccessToken", accessTokenString);
-        setRefreshToken("spRefreshToken", refreshTokenString);
+//     async function loginSP(accessTokenString: string, refreshTokenString: string) {
+//         setAccessToken(StorageItemEnum.SP_ACCESS_TOKEN, accessTokenString);
+//         setRefreshToken("spRefreshToken", refreshTokenString);
 
-        // await userAccountViewService.setPersonalUserAccount();
+//         // await userAccountViewService.setPersonalUserAccount();
 
-        // if (useAuthStore().redirectRoute == "") {
-        //     navigateTo(constants.HOME_PAGE_ROUTE);
-        // } else {
-        //     let route: string = useAuthStore().redirectRoute;
-        //     let subPath: string | null = import.meta.env.VITE_SUB_PATH;
+//         // if (useAuthStore().redirectRoute == "") {
+//         //     navigateTo(constants.HOME_PAGE_ROUTE);
+//         // } else {
+//         //     let route: string = useAuthStore().redirectRoute;
+//         //     let subPath: string | null = import.meta.env.VITE_SUB_PATH;
 
-        //     if (subPath != null && route.includes(subPath)) {
-        //         route = route.replace(subPath, "");
-        //     }
+//         //     if (subPath != null && route.includes(subPath)) {
+//         //         route = route.replace(subPath, "");
+//         //     }
 
-        //     navigateTo(route);
-        // }
-    }
+//         //     navigateTo(route);
+//         // }
+//     }
 
-    async function loginWithJwt(accessTokenString: string, refreshTokenString: string, redirect: string) {
-        setAccessToken("spAccessToken", accessTokenString);
-        setRefreshToken("spRefreshToken", refreshTokenString);
+//     async function loginWithJwt(accessTokenString: string, refreshTokenString: string, redirect: string) {
+//         setAccessToken(StorageItemEnum.SP_ACCESS_TOKEN, accessTokenString);
+//         setRefreshToken("spRefreshToken", refreshTokenString);
 
-        navigateTo(redirect);
+//         navigateTo(redirect);
 
-        await userAccountViewService.setPersonalUserAccount();
-    }
+//         await userAccountViewService.setPersonalUserAccount();
+//     }
 
-    async function logout() {
-        //   await authenticationService.logLogout();
+//     async function logout() {
+//         //   await authenticationService.logLogout();
 
-        setAccessToken("accessToken", "");
-        setRefreshToken("refreshToken", "");
-        useUserAccountStore().setUserTimeZone("");
-        useUserAccountStore().userAccount = null;
+//         setAccessToken(StorageItemEnum.ACCESS_TOKEN, "");
+//         setRefreshToken("refreshToken", "");
+//         useUserAccountStore().setUserTimeZone("");
+//         useUserAccountStore().userAccount = null;
 
-        navigateTo(constants.DEFAULT_ROUTE);
-    }
+//         navigateTo(constants.DEFAULT_ROUTE);
+//     }
 
-    function setAccessToken(type: string, accessTokenString: string) {
-        localStorage.setItem(type, accessTokenString);
-    }
+//     function setAccessToken(type: string, accessTokenString: string) {
+//         localStorage.setItem(type, accessTokenString);
+//     }
 
-    function getAccessToken(type: string,): string {
-        const accessToken: string | null = localStorage.getItem(type);
-        if (accessToken == null) { return type; }
-        return accessToken;
-    }
+//     function getStorageItem(type: string,): string {
+//         const accessToken: string | null = localStorage.getItem(type);
+//         if (accessToken == null) { return type; }
+//         return accessToken;
+//     }
 
-    function setRefreshToken(type: string, refreshTokenString: string) {
-        localStorage.setItem(type, refreshTokenString);
-    }
+//     function setRefreshToken(type: string, refreshTokenString: string) {
+//         localStorage.setItem(type, refreshTokenString);
+//     }
 
-    function getRefreshToken(type: string): string {
-        const refreshToken: string | null = localStorage.getItem(type);
-        if (refreshToken == null) { return type; }
-        return refreshToken;
-    }
+//     function getStorageItem(type: string): string {
+//         const refreshToken: string | null = localStorage.getItem(type);
+//         if (refreshToken == null) { return type; }
+//         return refreshToken;
+//     }
 
-    return { redirectRoute, login, loginSP, loginWithJwt, logout, setAccessToken, getAccessToken, setRefreshToken, getRefreshToken };
-});
+//     return { redirectRoute, login, loginSP, loginWithJwt, logout, setAccessToken, getStorageItem, setRefreshToken, getStorageItem };
+// });
 
 
 //---------------------account----------------------------//
-export const useUserAccountStore = defineStore("account", () => {
-    const userAccount = ref<UserAccount | null>();
-    const isEditMode = ref<boolean>();
-    const isAccountSelected = ref<boolean>(false);
-    const selectedAccountId = ref<number>();
+// export const useUserAccountStore = defineStore("account", () => {
+//     const userAccount = ref<UserAccount | null>();
+//     const isEditMode = ref<boolean>();
+//     const isAccountSelected = ref<boolean>(false);
+//     const selectedAccountId = ref<number>();
 
-    function setUserTimeZone(userTimeZone: string){
-        localStorage.setItem("userTimeZone", userTimeZone);
-    }
+//     function setUserTimeZone(userTimeZone: string){
+//         localStorage.setItem("userTimeZone", userTimeZone);
+//     }
 
-    function getUserTimeZone(): string{
-        const userTimeZone: string | null = localStorage.getItem("userTimeZone");
-        if (userTimeZone == null) { return "UTC"; }
-        return userTimeZone;
-    }
+//     function getUserTimeZone(): string{
+//         const userTimeZone: string | null = localStorage.getItem("userTimeZone");
+//         if (userTimeZone == null) { return "UTC"; }
+//         return userTimeZone;
+//     }
 
-    return { userAccount, isEditMode, isAccountSelected, selectedAccountId, setUserTimeZone, getUserTimeZone };
-});
+//     return { userAccount, isEditMode, isAccountSelected, selectedAccountId, setUserTimeZone, getUserTimeZone };
+// });
 
 
 //----------------------loading---------------------------//
