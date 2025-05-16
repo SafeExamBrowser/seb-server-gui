@@ -38,3 +38,10 @@ export enum SettingsType {
     INLINE_TABLE = "INLINE_TABLE",
     COMPOSITE_TABLE = "COMPOSITE_TABLE"
 }
+
+export enum ExamConfigStatus {
+    CONSTRUCTION = "CONSTRUCTION",
+    READY_TO_USE = "READY_TO_USE",
+    IN_USE = "IN_USE",
+    ARCHIVE = "ARCHIVE"
+}

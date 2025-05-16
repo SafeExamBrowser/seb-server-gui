@@ -40,6 +40,7 @@ router.put(constants.EXAM_ROUTE + "/:id" + "/apply-seb-restriction", examControl
 router.delete(constants.EXAM_ROUTE + "/:id" + "/apply-seb-restriction", examController.deleteSEBLock);
 
 // SEB Settings
+router.get(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id" + "/examConfigMapping", examSEBSettingsController.getExamConfigMapping);
 router.get(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id" + "/APPLICATION", examSEBSettingsController.getApplicationView);
 router.get(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id" + "/NETWORK", examSEBSettingsController.getNetworkView);
 router.post(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id" + "/table/:name/row", examSEBSettingsController.addTableRow);

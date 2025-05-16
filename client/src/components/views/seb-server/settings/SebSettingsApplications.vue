@@ -16,7 +16,7 @@
 
     <v-row>
         <v-col class="text-subtitle-1">
-            <v-row class="mt-10">
+            <v-row >
                 <v-col>{{translate("examDetail.sebSettings.applicationView.permittedProcess.settingName")}}</v-col>
                 <v-col  align="right">
                     <v-btn
@@ -30,8 +30,8 @@
             </v-row>
             <v-divider class="border-opacity-25" :thickness="2"></v-divider>
         </v-col>
-        
     </v-row>
+
     <v-row>
         <v-col>
             <v-data-table 
@@ -95,7 +95,7 @@
 
     <v-row class="text-subtitle-1">
         <v-col class="text-subtitle-1">
-            <v-row class="mt-10">
+            <v-row>
                 <v-col>{{translate("examDetail.sebSettings.applicationView.prohibitedProcess.settingName")}}</v-col>
                 <v-col  align="right">
                     <v-btn

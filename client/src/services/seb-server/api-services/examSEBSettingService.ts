@@ -4,6 +4,11 @@ import { StorageItemEnum } from "@/models/StorageItemEnum";
 
 const urlPrefix: string = "/exam/seb-settings/";
 
+export async function getExamConfigMapping(examId: string): Promise<ExamConfigMapping[] | any> {
+    const url: string = urlPrefix + examId + "/examConfigMapping";
+    return (await apiService.api.get(url, {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
+}
+
 export async function getApplicationView(id: string): Promise<SEBSettingsView | any>{
     const url: string = urlPrefix + id + "/APPLICATION";
     return (await apiService.api.get(url, {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
@@ -28,4 +33,5 @@ export async function updateSEBSettingValue(id: string, valueId: String, value: 
     const url: string = urlPrefix + id + "/";
     return (await apiService.api.post(url, { valueId: valueId, value: value }, {headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
 }
+
 

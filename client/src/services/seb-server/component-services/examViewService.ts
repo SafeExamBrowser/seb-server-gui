@@ -176,9 +176,25 @@ function getExamConfigFileName(examName: string | undefined): string{
 
 
 //======SEB Settings=======
+export async function getExamConfigMapping(examId: string): Promise<ExamConfigMapping[] | null> {
+    try{
+        return await examSEBSettingService.getExamConfigMapping(examId);
+    }catch(error){
+        return null;
+    }
+}
+
 export async function getApplicationViewSettings(examId: string): Promise<SEBSettingsView | null>{
     try{
         return await examSEBSettingService.getApplicationView(examId);
+    }catch(error){
+        return null;
+    }
+}
+
+export async function getNetworkViewSettings(examId: string): Promise<SEBSettingsView | null>{
+    try{
+        return await examSEBSettingService.getNetworkView(examId);
     }catch(error){
         return null;
     }
@@ -207,3 +223,5 @@ export async function deleteSEBSettingTableRow(examId: string, settingName: stri
         return null;
     }
 }
+
+

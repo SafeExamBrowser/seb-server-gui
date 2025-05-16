@@ -21,6 +21,7 @@ declare module 'vue' {
     EditClientGroupDialog: typeof import('./components/views/seb-server/exam/detail/dialogs/client-group/EditClientGroupDialog.vue')['default']
     EditPermittedProcess: typeof import('./components/views/seb-server/settings/EditPermittedProcess.vue')['default']
     EditProhibitedProcess: typeof import('./components/views/seb-server/settings/EditProhibitedProcess.vue')['default']
+    EditURLFilterRule: typeof import('./components/views/seb-server/settings/EditURLFilterRule.vue')['default']
     ErrorMsg: typeof import('./components/widgets/ErrorMsg.vue')['default']
     ExamDetailArchiveDialog: typeof import('./components/views/seb-server/exam/detail/dialogs/ExamDetailArchiveDialog.vue')['default']
     ExamDetailConfigDialog: typeof import('./components/views/seb-server/exam/detail/dialogs/ExamDetailConfigDialog.vue')['default']

@@ -3,6 +3,16 @@ import {LOG} from "../../logging/logger";
 import * as examSEBSettingsService from "../../services/seb-server/exam-sebsettings.service";
 import * as apiService from "../../services/seb-server/api.service";
 
+export async function getExamConfigMapping(req: Request, res: Response){
+    try{
+        const [configMapping, status] = await examSEBSettingsService.getExamConfigMapping(req.headers.authorization, req.params.id);
+        return res.status(status).json(configMapping);
+
+    }catch(error){
+        apiService.handleGenericApiError(error, res);
+    }
+}
+
 export async function getApplicationView(req: Request, res: Response){
     try{
         const [exams, status] = await examSEBSettingsService.getApplicationView(req.headers.authorization, req.params.id);
