@@ -71,7 +71,7 @@
                                     :value="supervisor.uuid">
                                 
                                     <v-list-item>
-                                        <v-list-item-title>{{ supervisor.name }}</v-list-item-title>
+                                        <v-list-item-title>{{ getFullUserName(supervisor) }}</v-list-item-title>
     
                                         <template v-slot:append="{ isSelected }">
                                             <v-list-item-action class="flex-column align-end">
@@ -208,6 +208,10 @@
     function removeExamSupervisor(supervisorId: string){
         const index: number = selectedExamSupervisors.value.findIndex(userAccount => userAccount.uuid == supervisorId);
         selectedExamSupervisors.value.splice(index, 1);
+    }
+
+    function getFullUserName(user: UserAccount): string {
+        return user.username + " (" + user.name + " " + user.surname + ")";
     }
 
 </script>

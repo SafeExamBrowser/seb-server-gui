@@ -221,6 +221,8 @@
             "examTemplate": "Exam Template",
 
             "examSupervisors": "Examination Supervisors",
+            "supervisorName": "Name",
+            "supervisorRoles": "Role(s)",
 
             "groups": "Groups",
             "tableHeadersGroupName": "Name",
