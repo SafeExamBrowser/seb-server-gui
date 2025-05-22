@@ -139,8 +139,8 @@
     //=======================events & watchers=======================
     onBeforeMount(async () => {
 
-        //todo: check which users should be returned
-        const userAccountNamesResponse: UserAccountName[] | null = await userAccountViewService.getUserAccountNames({institutionId: userAccountStore.userAccount?.institutionId});
+
+        const userAccountNamesResponse: UserAccountName[] | null = await userAccountViewService.getSupervisorNames({institutionId: userAccountStore.userAccount?.institutionId});
 
         if(userAccountNamesResponse == null){
             return;
