@@ -163,6 +163,7 @@
         }
 
         quizImportStore.availableAssessmentTools = activeAssessmentTools;
+        quizImportStore.forceNewSearch = true;
 
         //if more then one assessment tools connected --> show selection
         if(quizImportStore.availableAssessmentTools.content.length == 1){

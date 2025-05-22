@@ -49,6 +49,7 @@
     import {useQuizImportStore} from "@/stores/seb-server/quizImportStore";
     import {storeToRefs} from "pinia";
     import {translate} from "@/utils/generalUtils";
+    import {wait} from "@/utils/generalUtils";
 
     //stores
     const quizImportStore = useQuizImportStore();
@@ -58,7 +59,7 @@
     const quizzes = ref<Quizzes>();
 
     //table - pagination, item size, search
-    const isLoading = ref<boolean>(true);
+    const isLoading = ref<boolean>(false);
     const totalItems = ref<number>(10);
 
     //table
@@ -81,6 +82,8 @@
             return;
         }
 
+        console.log("********* selectedAssessmentTool" );
+
         loadItems(quizImportStore.currentPagingOptions);
     });
 
@@ -93,6 +96,8 @@
         if(quizImportStore.currentPagingOptions.itemsPerPage == 0){
             quizImportStore.currentPagingOptions.itemsPerPage = 10; 
         }
+
+        console.log("********* loadExamItemsCaller" );
 
         loadItems(quizImportStore.currentPagingOptions);
     });
@@ -107,10 +112,24 @@
         quizImportStore.selectedQuiz = quiz;
     }
 
+    let fetching = false;
+
     //=======================data fetching===================
     async function loadItems(serverTablePaging: ServerTablePaging){
+        // if it is already loading skip call
+        if (fetching) {
+            return;
+        }
+        fetching = true;
+
+        // clear the table first
+        if (quizzes.value) {
+            quizzes.value.content = [];
+        }
+        
         quizImportStore.currentPagingOptions = serverTablePaging;
         isLoading.value = true;
+        
 
         //current solution to default sort the table
         //sort-by in data-table-server tag breaks the sorting as the headers are in a seperate component
@@ -134,21 +153,47 @@
             serverTablePaging, 
             quizImportStore.searchField, 
             startTimestamp,
-            assessmentToolId
+            assessmentToolId,
+            quizImportStore.forceNewSearch,
         );
 
-        const quizzesResponse: Quizzes | null = await quizImportWizardViewService.getQuizzes(optionalParGetQuizzes);
+        // reset forceNewSearch once we have applied it
+        quizImportStore.forceNewSearch = false;
+
+        let quizzesResponse: Quizzes | null = await quizImportWizardViewService.getQuizzes(optionalParGetQuizzes);
 
         if(quizzesResponse == null){
-            isLoading.value = false;
+            finishFatching();
             return;
         }
 
+        // check if fetch is complete, if not ping until fetch is finished or breaker_count
+        let allQuizzes = quizzesResponse.complete;
         quizzes.value = quizzesResponse;
         totalItems.value = quizzes.value.number_of_pages * quizzes.value.page_size;
+        optionalParGetQuizzes.force_new_search = false;
+        let breaker_count = 0;
 
+        while (!allQuizzes && breaker_count < 30) {
+            await wait(3000);
+            quizzesResponse = await quizImportWizardViewService.getQuizzes(optionalParGetQuizzes);
+            if(quizzesResponse == null){ 
+                finishFatching();
+                return;
+            }
+            quizzes.value = quizzesResponse;
+            totalItems.value = quizzes.value.number_of_pages * quizzes.value.page_size;
+            allQuizzes = quizzesResponse.complete;
+            breaker_count++;
+        }
+
+        finishFatching();
+    }
+
+    function finishFatching() {
         isOnLoad.value = false;
         isLoading.value = false;
+        fetching = false;
     }
     //======================================================
 

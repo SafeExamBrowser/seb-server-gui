@@ -17,6 +17,8 @@ export const useExamStore = defineStore("exam", () => {
     const selectedClientGroups = ref<ClientGroup[]>([]);
     const relatedAssessmentTool = ref<AssessmentTool | null>(null);
 
+    const importMessages = ref<APIMessage[]>([]);
+
     function clearSelectedValues(){
         selectedExam.value = null;
         selectedExamTemplate.value = null;
@@ -36,6 +38,7 @@ export const useExamStore = defineStore("exam", () => {
         activeTypeFilter,
         activeStatusFilter,
         clearSelectedValues,
-        selectedClientGroups
+        selectedClientGroups,
+        importMessages
     };
 });

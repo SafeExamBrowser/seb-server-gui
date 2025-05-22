@@ -20,6 +20,7 @@ type OptionalParGetQuizzes = {
     start_timestamp_millis?: number;
     start_timestamp?: string;
     lms_setup?: string;
+    force_new_search: boolean,
 }
 
 type OptionalParGetExams = {

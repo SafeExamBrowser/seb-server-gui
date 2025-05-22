@@ -91,10 +91,11 @@ export function assignQuizSelectPagingOptions(
     serverTablePaging: ServerTablePaging, 
     name: string | null, 
     startTimestamp: number | null,
-    assessmentToolId: string | null
+    assessmentToolId: string | null,
+    forceNewSearch: boolean,
 ): OptionalParGetQuizzes{
     
-    const optionalParGetQuizzes: OptionalParGetQuizzes = {};
+    const optionalParGetQuizzes: OptionalParGetQuizzes = { force_new_search: forceNewSearch };
 
     optionalParGetQuizzes.page_size = serverTablePaging.itemsPerPage;
     optionalParGetQuizzes.page_number = serverTablePaging.page;

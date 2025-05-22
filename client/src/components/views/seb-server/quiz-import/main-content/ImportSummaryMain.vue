@@ -140,6 +140,7 @@
 <script setup lang="ts">
     import * as quizImportWizardViewService from "@/services/seb-server/component-services/quizImportWizardViewService";
     import { useQuizImportStore } from "@/stores/seb-server/quizImportStore";
+    import { useExamStore } from '@/stores/seb-server/examStore';
     import {navigateTo} from "@/router/navigation";
     import * as constants from "@/utils/constants";
     import {translate} from "@/utils/generalUtils";
@@ -171,8 +172,19 @@
             return;
         }
 
-        navigateTo(constants.EXAM_ROUTE + "/" + createExamResponse.id);
-        quizImportStore.clearValues();
+        if (createExamResponse.id == undefined) {
+            console.log(createExamResponse);
+            const msg: unknown = createExamResponse;
+            const message: APIMessage[] = msg as APIMessage[];
+            
+            navigateTo(constants.EXAM_ROUTE + "/" + message[0].details);
+            quizImportStore.clearValues();
+            const examStore = useExamStore();
+            examStore.importMessages = message;
+        } else {
+            navigateTo(constants.EXAM_ROUTE + "/" + createExamResponse.id);
+            quizImportStore.clearValues();
+        }
     }
 
 

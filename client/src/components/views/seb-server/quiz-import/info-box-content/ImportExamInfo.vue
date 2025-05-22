@@ -123,6 +123,7 @@
             quizImportStore.startTimestamp = datepicker.value.getTime();
         }
 
+        quizImportStore.forceNewSearch = true;
         emit("loadExamItemsCaller");
     }
 

@@ -35,6 +35,7 @@ export const useQuizImportStore = defineStore("quizImport", () => {
     //other values
     const availableSpClientGroupIds = ref<number[]>([]);
     const availableAssessmentTools = ref<AssessmentTools>();
+    const forceNewSearch = ref<boolean>(false);
 
 
     function addGroupSelectionComponents(){
@@ -109,6 +110,7 @@ export const useQuizImportStore = defineStore("quizImport", () => {
         clearValues,
         availableAssessmentTools,
         addGroupSelectionComponents,
-        removeGroupSelectionComponents
+        removeGroupSelectionComponents,
+        forceNewSearch
     };
 });

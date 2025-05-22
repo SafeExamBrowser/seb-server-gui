@@ -15,5 +15,6 @@ type Quizzes = {
     number_of_pages: number,
     page_number: number,
     page_size: number,
-    content: Quiz[]
+    content: Quiz[],
+    complete: boolean,
 }

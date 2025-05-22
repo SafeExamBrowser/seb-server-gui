@@ -114,3 +114,7 @@ export function stringToBoolean(booleanValue: string): boolean{
 
     return false;
 }
+
+export function wait(ms: number) {
+    return new Promise( resolve => setTimeout(resolve, ms) );
+}
