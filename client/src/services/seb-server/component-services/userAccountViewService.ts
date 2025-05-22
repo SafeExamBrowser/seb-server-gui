@@ -61,6 +61,15 @@ export async function getUserAccountNames(optionalParamters?: OptionalParInstitu
     }
 }
 
+export async function getSupervisorNames(optionalParamters?: OptionalParInstitutionId): Promise<UserAccountName[] | null>{
+    try{
+        return await userAccountService.getSupervisorNames(optionalParamters)
+
+    }catch(error){
+        return null;
+    }
+}
+
 export async function activateUserAccount(accountId: string): Promise<UserAccount | null>{
     try{
         return await userAccountService.activateUserAccount(accountId)

@@ -60,6 +60,7 @@ router.get(constants.EXAM_TEMPLATE_SCREEN_PROCTORING_ROUTE, examTemplateControll
 //user accounts
 router.get(constants.USER_ACCOUNT_ROUTE + "/:id", userAccountController.getUserAccount);
 router.get(constants.USER_ACCOUNT_NAMES_ROUTE, userAccountController.getUserAccountNames);
+router.get(constants.SUPERVISOR_ACCOUNT_NAMES_ROUTE, userAccountController.getSupervisorAccountNames);
 
 //connection configurations
 router.get(constants.DOWNLOAD_EXAM_CONFIG_ROUTE + "/:id", configurationController.downloadExamConfig);

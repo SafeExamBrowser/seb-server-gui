@@ -15,3 +15,11 @@ export async function getUserAccountNames(token: string, options?: {}): Promise<
 
     return [data, status];
 }
+
+export async function getSupervisorAccountNames(token: string, options?: {}): Promise<[object, number]>{
+    const url: string =  constants.SUPERVISOR_ACCOUNT_NAMES_ROUTE;
+    const {data, status} = await apiService.api.get(url, {headers: apiService.getHeaders(token), params: options});
+
+    return [data, status];
+}
+

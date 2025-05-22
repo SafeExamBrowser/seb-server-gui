@@ -18,6 +18,7 @@ export const EXAM_TEMPLATE_SCREEN_PROCTORING_ROUTE = "/exam-template/:id/screen-
 //user account
 export const USER_ACCOUNT_ROUTE = "/useraccount";
 export const USER_ACCOUNT_NAMES_ROUTE = "/useraccount/names";
+export const SUPERVISOR_ACCOUNT_NAMES_ROUTE = "/useraccount/supervisors";
 
 //client config
 export const CONNECTION_CONFIG_ROUTE = "/client_configuration";

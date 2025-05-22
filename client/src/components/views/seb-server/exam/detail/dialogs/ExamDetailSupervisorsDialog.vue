@@ -169,7 +169,7 @@
     }
 
     async function getAvailableUserAccounts(){
-        const userAccountNamesResponse: UserAccountName[] | null = await userAccountViewService.getUserAccountNames();
+        const userAccountNamesResponse: UserAccountName[] | null = await userAccountViewService.getSupervisorNames();
 
         if(userAccountNamesResponse == null){
             return;

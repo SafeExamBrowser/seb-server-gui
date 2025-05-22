@@ -94,6 +94,11 @@ export async function getUserAccountNames(optionalParamters?: OptionalParInstitu
     return (await apiService.api.get(url, { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN), params: { optionalParamters } })).data;
 }
 
+export async function getSupervisorNames(optionalParamters?: OptionalParInstitutionId): Promise<UserAccountName[] | any> {
+    const url: string = userAccountUrl + "/supervisors";
+    return (await apiService.api.get(url, { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN), params: { optionalParamters } })).data;
+}
+
 export async function activateUserAccount(accountId: string): Promise<UserAccount | any> {
     const url: string = userAccountUrl + "/activate/" + accountId;
     return (await apiService.api.post(url, { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN) })).data;
