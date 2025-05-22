@@ -165,10 +165,6 @@
                                         </TableHeaders>
                                     </template>
 
-                                    <template v-slot:item.name="{ item }">
-                                        {{ getFullUserName(item) }}
-                                    </template>
-
                                 </v-data-table>
                             </v-col>
                         </v-row>
@@ -593,8 +589,9 @@
     //supervisors table
     const supervisorsTableHeadersRef = ref<any[]>();
     const supervisorsTableHeaders = ref([
+        {title: translate("examDetail.main.supervisorUsername"), key: "username"},
         {title: translate("examDetail.main.supervisorName"), key: "name"},
-    //    {title: translate("examDetail.main.supervisorRoles"), key: "roles"}
+        {title: translate("examDetail.main.supervisorSurname"), key: "surname"}
     ]); 
 
     //supervisors dialog
@@ -818,10 +815,6 @@
         for(let i = 0; i < examStore.selectedExamSupervisors.length; i++){
             initialSupervisorsIds.push(examStore.selectedExamSupervisors[i].uuid);
         }
-    }
-
-    function getFullUserName(user: UserAccount): string {
-        return user.username + " (" + user.name + " " + user.surname + ")";
     }
 
     //===============password logic====================
