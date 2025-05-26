@@ -84,30 +84,23 @@
         <v-list-item
           link
           :to="route"
-          color="#FF0000"
-          class="d-flex flex-column justify-center text-center"
-          :class="{'active-nav-item': router.currentRoute.value.path === route}"
-        >
-          <template v-slot:default="{ isActive }">
-            <div class="nav-item-content">
-              <div class="active-bar" v-if="router.currentRoute.value.path === route"></div>
-              <v-icon
-                :icon="icon"
-                class="nav-icon"
-                :class="{ 'shifted': router.currentRoute.value.path === route }"
-                :color="router.currentRoute.value.path === route ? '#215caf' : '#797979'"
-              ></v-icon>
-              <span
-                class="text-caption nav-title"
-                :class="{ 'shifted': router.currentRoute.value.path === route }"
-              >{{ title }}</span>
-            </div>
+          color="#215caf"
+          class="d-flex flex-column justify-center text-center">
+
+          <template v-slot:default="{isActive}">
+            <v-icon
+              :icon="icon"
+              :color="isActive ? '' : '#797979'">
+            </v-icon>
+
+            <span class="text-caption">{{ title }}</span>
+
           </template>
         </v-list-item>
 
         <v-divider></v-divider>
-      </template>
 
+      </template>
 
     </v-list>
   </v-navigation-drawer>
@@ -181,6 +174,7 @@
     localStorage.setItem("theme", theme.global.name.value);
   });
 
+  //1. here
   async function userMenuOpened(){
     await userAccountViewService.setPersonalUserAccount();
   }
@@ -225,28 +219,4 @@
     background-color: #f6f6f6;
   }
 
-  .nav-item-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    color: green
-  }
-
-  .active-bar {
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 4px;
-    background-color: #215caf;
-    border-radius: 2px;
-  }
-
-  .shifted {
-    margin-left: 4px;
-  }
-
-
 </style>
-
