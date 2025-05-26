@@ -55,7 +55,9 @@
                                         density="compact"
                                         variant="outlined"
                                         :aria-label="translate('quizImportWizard.examInfo.searchPlaceholder')"
-                                        placeholder="MM/DD/YYYY"
+                                        placeholder="dd.MM.yyyy"
+                                        display-date-format="dd.MM.yyyy"
+                                        input-format="dd.MM.yyyy"
                                         prepend-icon=""
                                         append-inner-icon="mdi-calendar">
                                     </v-date-input>
