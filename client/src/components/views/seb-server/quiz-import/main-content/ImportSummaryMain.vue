@@ -144,6 +144,8 @@
     import {navigateTo} from "@/router/navigation";
     import * as constants from "@/utils/constants";
     import {translate} from "@/utils/generalUtils";
+    import * as generalUtils from "@/utils/generalUtils";
+
 
     //stores
     const quizImportStore = useQuizImportStore();
@@ -155,6 +157,11 @@
         if(quizImportStore.selectedQuiz == null || quizImportStore.selectedExamTemplate == null){
             return;
         }
+
+        const testArr: string[] = quizImportStore.selectedClientGroups.map(clientGroup => clientGroup.id!.toString());
+
+        console.log(quizImportStore.selectedClientGroups)
+        console.log(testArr)
         
         const createExamParams: CreateExamPar = {
             lmsSetupId: quizImportStore.selectedQuiz.lms_setup_id,
@@ -164,7 +171,7 @@
             examTemplateId: quizImportStore.selectedExamTemplate.id,
             quitPassword: quizImportStore.selectedQuitPassword,
             supporter: quizImportStore.selectedExamSupervisors.map(userAccountName => userAccountName.modelId),
-            clientGroupIds: quizImportStore.selectedClientGroups.map(clientGroup => clientGroup.id!.toString())
+            clientGroupIds: generalUtils.createStringIdList(quizImportStore.selectedClientGroups.map(clientGroup => clientGroup.id!))
         }
 
         const createExamResponse: Exam | null = await quizImportWizardViewService.createExam(createExamParams);
