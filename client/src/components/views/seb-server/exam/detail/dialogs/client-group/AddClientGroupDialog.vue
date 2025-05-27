@@ -19,7 +19,8 @@
                         <v-expansion-panels>
                             <v-expansion-panel title="Create from template">
                                 <v-expansion-panel-text>
-                                    
+
+                                    <!--@vue-ignore-->
                                     <v-data-table 
                                         hide-default-footer
                                         item-value="id" 
@@ -44,6 +45,9 @@
 
                                                 <td>{{ item.name }}</td>
                                                 <td>{{ translate(generalUtils.findEnumValue(ClientGroupEnum, item.type), i18n) }}</td>
+                                                <td align="center">
+                                                    <v-icon :icon="examStore.templateGroupsWithSp.includes(item.id!) ? 'mdi-check' : ''"></v-icon>
+                                                </td>
                                             </tr>
                                         </template>
                                     </v-data-table>
@@ -256,7 +260,8 @@
     const templateClientGroupsHeadersRef = ref<any[]>();
     const templateClientGroupsHeaders = ref([
         {title: "Name", key: "name"},
-        {title: "Type", key: "type"}
+        {title: "Type", key: "type"},
+        {title: "Screen Proctoring", key: "sp", center: true, align: "center"}
     ]);    
 
     //form fields

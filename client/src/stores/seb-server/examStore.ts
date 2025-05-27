@@ -13,6 +13,7 @@ export const useExamStore = defineStore("exam", () => {
     //exam detail page
     const selectedExam = ref<Exam | null>(null);
     const selectedExamTemplate = ref<ExamTemplate | null>(null);
+    const templateGroupsWithSp = ref<number[]>([]);
     const selectedExamSupervisors = ref<UserAccount[]>([]);
     const selectedClientGroups = ref<ClientGroup[]>([]);
     const relatedAssessmentTool = ref<AssessmentTool | null>(null);
@@ -33,6 +34,7 @@ export const useExamStore = defineStore("exam", () => {
         currentPagingOptions,
         selectedExam,
         selectedExamTemplate,
+        templateGroupsWithSp,
         relatedAssessmentTool,
         selectedExamSupervisors,
         activeTypeFilter,

@@ -114,6 +114,14 @@ export async function activateScreenProctoring(id: string, enableScreenProctorin
     }
 }
 
+export async function getExamTemplateSp(id: string): Promise<ScreenProctoringSettings | null>{
+    try{
+        return await examTemplateService.getExamTemplateSp(id);    
+    }catch(error){
+        return null;
+    }
+}
+
 //======SEB lock================
 
 export async function applySEBLock(id: string, enableSEBLock: boolean): Promise<Exam | null>{
