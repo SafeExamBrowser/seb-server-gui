@@ -1,33 +1,33 @@
 {
-  "name": "server",
-  "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
-  "scripts": {
-    "build": "npx tsc",
-    "start": "node dist/app.js",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/app.js\""
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "axios": "^1.9.0",
-    "body-parser": "^2.2.0",
-    "cors": "^2.8.5",
-    "dotenv": "^16.5.0",
-    "express": "^5.1.0",
-    "express-validator": "^7.2.1",
-    "morgan": "^1.10.0",
-    "winston": "^3.17.0"
-  },
-  "devDependencies": {
-    "@types/cors": "^2.8.18",
-    "@types/dotenv": "^8.2.3",
-    "@types/express": "^5.0.2",
-    "@types/morgan": "^1.9.9",
-    "@types/node": "^22.15.21",
-    "concurrently": "^9.1.2",
-    "nodemon": "^3.1.10",
-    "typescript": "^5.8.3"
+    "name": "server",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.js",
+    "scripts": {
+      "build": "npx tsc",
+      "start": "node dist/app.js",
+      "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/app.js\""
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "axios": "^1.6.8",
+      "body-parser": "^1.20.2",
+      "cors": "^2.8.5",
+      "dotenv": "^16.4.5",
+      "express": "^4.19.2",
+      "express-validator": "^7.0.1",
+      "morgan": "^1.10.0",
+      "winston": "^3.13.0"
+    },
+    "devDependencies": {
+      "@types/cors": "^2.8.17",
+      "@types/dotenv": "^8.2.0",
+      "@types/express": "^4.17.21",
+      "@types/morgan": "^1.9.9",
+      "@types/node": "^20.12.12",
+      "concurrently": "^8.2.2",
+      "nodemon": "^3.1.0",
+      "typescript": "^5.4.5"
+    }
   }
-}
