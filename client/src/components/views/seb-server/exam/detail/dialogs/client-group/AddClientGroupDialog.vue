@@ -114,27 +114,24 @@
                     </v-col>
                 </v-row>
 
-              <!------------Screen Proctoring Toggle------------->
+                <!------------Screen Proctoring Toggle------------->
+                <v-row align="center">
+                    <v-col>
+                        Screen Proctoring
+                    </v-col>
+                    <v-col class="">
+                        <v-checkbox
+                            single-line
+                            hide-details
+                            color="primary"
+                            v-model="screenProctoringToggle"
+                            density="compact"
+                            variant="outlined">
+                        </v-checkbox>
+                    </v-col>
+                </v-row>
 
-
-              <v-row align="center">
-                <v-col>
-                  Screen Proctoring
-                </v-col>
-                <v-col class="">
-                  <v-checkbox
-                    single-line
-                    hide-details
-                    color="primary"
-                    v-model="screenProctoringToggle"
-                    density="compact"
-                    variant="outlined">
-                  </v-checkbox>
-                </v-col>
-              </v-row>
-
-
-              <!------------Type Description------------->
+                <!------------Type Description------------->
                 <v-row align="center">
                     <v-col>
                         Type Description
@@ -143,8 +140,6 @@
                         {{ clientGroupDescription }}
                     </v-col>
                 </v-row>
-
-
 
                 <!------------IP_V4_RANGE fields------------->
                 <template v-if="clientGroupTypeSelect == ClientGroupEnum.IP_V4_RANGE">
