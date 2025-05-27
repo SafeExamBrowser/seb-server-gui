@@ -66,6 +66,7 @@
 <script setup lang="ts">
     import ExamTemplateDialog from "@/components/widgets/ExamTemplateDialog.vue";
     import * as quizImportWizardViewService from "@/services/seb-server/component-services/quizImportWizardViewService";
+    import * as examViewService from "@/services/seb-server/component-services/examViewService";
     import { useQuizImportStore } from "@/stores/seb-server/quizImportStore";
     import {translate} from "@/utils/generalUtils";
     import * as generalUtils from "@/utils/generalUtils";
@@ -146,7 +147,7 @@
     });
 
     async function getExamTemplateSpGroups(){
-        const examTemplateSp: ScreenProctoringSettings | null = await quizImportWizardViewService.getExamTemplateSp(quizImportStore.selectedExamTemplate!.id.toString());
+        const examTemplateSp: ScreenProctoringSettings | null = await examViewService.getExamTemplateSp(quizImportStore.selectedExamTemplate!.id.toString());
     
         if(examTemplateSp == null){
             return;

@@ -645,6 +645,7 @@
 
         await getExam();
         await getExamTemplate();
+        await getTemplateGroupsWithSp();
         await getAssessmentTool();
         await getExamSupervisors();
         await getClientGroups();
@@ -976,6 +977,16 @@
         }
 
         examStore.selectedExamTemplate = examTemplateResponse;
+    }
+
+    async function getTemplateGroupsWithSp(){
+        const examTemplateSp: ScreenProctoringSettings | null = await examViewService.getExamTemplateSp(examStore.selectedExamTemplate!.id.toString());
+    
+        if(examTemplateSp == null){
+            return;
+        }
+
+        examStore.templateGroupsWithSp = generalUtils.createNumberIdList(examTemplateSp.spsSEBGroupsSelection);
     }
 
 
