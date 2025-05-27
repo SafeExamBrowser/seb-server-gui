@@ -651,7 +651,6 @@
         await getSEBSettings();
 
         setQuitPassword();
-        initSEBLock();
         setScreenProctoring();
         isPageInitalizing.value = false;
     });
@@ -679,6 +678,7 @@
         }
 
         examStore.selectedExam = examResponse;
+        isSEBLockActive.value = await examViewService.hasSEBLock(examId);
     }
 
     async function updateExam(isSupervisorsManualUpdate?: boolean){
@@ -727,16 +727,6 @@
             return generalUtils.hasLMSFeature(examStore.relatedAssessmentTool.lmsType, LMSFeatureEnum.SEB_RESTRICTION);
         }
         return false;
-    }
-
-    function initSEBLock(){
-        if(examStore.selectedExam == null){
-            return;
-        } 
-
-        if(examStore.selectedExam.lmsSebRestriction){
-            isSEBLockActive.value = true;
-        }
     }
 
     async function applySEBLock(){

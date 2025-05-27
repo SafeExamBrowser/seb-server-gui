@@ -18,6 +18,14 @@ export async function getExam(id: string): Promise<Exam | null>{
     }
 }
 
+export async function hasSEBLock(id: string): Promise<boolean>{
+    try{
+        return await examService.checkSEBLock(id);    
+    }catch(error){
+        return false;
+    }
+}
+
 export async function getExamTemplate(id: string): Promise<ExamTemplate | null>{
     try{
         return await examTemplateService.getExamTemplate(id);    

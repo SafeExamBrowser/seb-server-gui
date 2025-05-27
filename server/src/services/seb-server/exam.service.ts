@@ -76,6 +76,12 @@ export async function putSEBLock(token: string, id: string){
     return [data, status];
 }
 
+export async function checkSEBLock(token: string, id: string){
+    const url: string =  "/exam/" + id + "/check-seb-restriction";
+    const {data, status} = await apiService.api.get(url, {headers: apiService.getHeaders(token)});
+    return [data, status];
+}
+
 export async function deleteSEBLock(token: string, id: string){
     const url: string =  "/exam/" + id + "/seb-restriction";
     const {data, status} = await apiService.api.delete(url, {headers: apiService.getHeaders(token)});
