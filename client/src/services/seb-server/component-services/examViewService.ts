@@ -5,14 +5,14 @@ import * as screenProctoringService from "@/services/seb-server/api-services/scr
 import * as monitoringService from "@/services/seb-server/api-services/monitoringService";
 import * as examSEBSettingService from "@/services/seb-server/api-services/examSEBSettingService";
 import * as generalUtils from "@/utils/generalUtils";
-import { ExamStatusEnum, ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
+import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum";
 import * as timeUtils from "@/utils/timeUtils";
 
 
 //=============api==============
 export async function getExam(id: string): Promise<Exam | null>{
     try{
-        return await examService.getExam(id);    
+        return await examService.getExam(id);
     }catch(error){
         return null;
     }
@@ -20,7 +20,7 @@ export async function getExam(id: string): Promise<Exam | null>{
 
 export async function getExamTemplate(id: string): Promise<ExamTemplate | null>{
     try{
-        return await examTemplateService.getExamTemplate(id);    
+        return await examTemplateService.getExamTemplate(id);
     }catch(error){
         return null;
     }
@@ -28,7 +28,7 @@ export async function getExamTemplate(id: string): Promise<ExamTemplate | null>{
 
 export async function deleteExam(id: string): Promise<any | null>{
     try{
-        return await examService.deleteExam(id);    
+        return await examService.deleteExam(id);
     }catch(error){
         return null;
     }
@@ -36,7 +36,7 @@ export async function deleteExam(id: string): Promise<any | null>{
 
 export async function getExams(optionalParGetExams?: OptionalParGetExams): Promise<Exams | null>{
     try{
-        return await examService.getExams(optionalParGetExams);    
+        return await examService.getExams(optionalParGetExams);
     }catch(error){
         return null;
     }
@@ -44,7 +44,7 @@ export async function getExams(optionalParGetExams?: OptionalParGetExams): Promi
 
 export async function updateExam(examId: string, exam: Exam): Promise<Exam | null>{
     try{
-        return await examService.updateExam(examId, exam);        
+        return await examService.updateExam(examId, exam);
     }catch(error){
         return null;
     }
@@ -68,7 +68,7 @@ export async function downloadExamConfig(examId: string, connectionId: string): 
 
 export async function archiveExam(id: string): Promise<Exam | null>{
     try{
-        return await examService.archiveExam(id);    
+        return await examService.archiveExam(id);
     }catch(error){
         return null;
     }
@@ -108,7 +108,7 @@ export async function activateScreenProctoring(id: string, enableScreenProctorin
 
 export async function getExamTemplateSp(id: string): Promise<ScreenProctoringSettings | null>{
     try{
-        return await examTemplateService.getExamTemplateSp(id);    
+        return await examTemplateService.getExamTemplateSp(id);
     }catch(error){
         return null;
     }
@@ -147,7 +147,7 @@ export function isExamFunctionalityDisabled(allowedExamStatus: ExamStatusEnum[],
     if (examStatus == null) {
         return true;
     }
-    
+
     if(!allowedExamStatus.includes(examStatus)){
         return true;
     }
@@ -163,10 +163,10 @@ export function createDownloadLink(examName: string | undefined, blob: any){
     link.href = URL.createObjectURL(blob);
     link.setAttribute("download", getExamConfigFileName(examName));
     document.body.appendChild(link);
-    
+
     // Trigger the download
     link.click();
-    
+
     // Clean up
     document.body.removeChild(link);
     URL.revokeObjectURL(link.href);

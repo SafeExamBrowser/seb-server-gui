@@ -21,11 +21,11 @@
                                 <v-expansion-panel-text>
 
                                     <!--@vue-ignore-->
-                                    <v-data-table 
+                                    <v-data-table
                                         hide-default-footer
-                                        item-value="id" 
+                                        item-value="id"
                                         class="rounded-lg elevation-4"
-                                        :headers="templateClientGroupsHeaders" 
+                                        :headers="templateClientGroupsHeaders"
                                         :items="templateClientGroups">
 
                                         <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort}">
@@ -39,7 +39,7 @@
                                         </template>
 
                                         <template v-slot:item="{item}">
-                                            <tr 
+                                            <tr
                                                 @click="onTableRowClick(item)"
                                                 class="on-row-hover" >
 
@@ -114,7 +114,27 @@
                     </v-col>
                 </v-row>
 
-                <!------------Type Description------------->
+              <!------------Screen Proctoring Toggle------------->
+
+
+              <v-row align="center">
+                <v-col>
+                  Screen Proctoring
+                </v-col>
+                <v-col class="">
+                  <v-checkbox
+                    single-line
+                    hide-details
+                    color="primary"
+                    v-model="screenProctoringToggle"
+                    density="compact"
+                    variant="outlined">
+                  </v-checkbox>
+                </v-col>
+              </v-row>
+
+
+              <!------------Type Description------------->
                 <v-row align="center">
                     <v-col>
                         Type Description
@@ -123,6 +143,8 @@
                         {{ clientGroupDescription }}
                     </v-col>
                 </v-row>
+
+
 
                 <!------------IP_V4_RANGE fields------------->
                 <template v-if="clientGroupTypeSelect == ClientGroupEnum.IP_V4_RANGE">
@@ -155,7 +177,7 @@
                         </v-col>
                     </v-row>
                 </template>
-        
+
                 <!------------CLIENT_OS fields------------->
                 <template v-if="clientGroupTypeSelect == ClientGroupEnum.CLIENT_OS">
                     <v-row>
@@ -209,18 +231,18 @@
                 <!------------Buttons------------->
                 <v-row align="center">
                     <v-col align="right">
-                        <v-btn 
-                            rounded="sm" 
-                            color="black" 
+                        <v-btn
+                            rounded="sm"
+                            color="black"
                             variant="outlined"
                             @click="clearFields(true)">
                             Cancel
                         </v-btn>
 
-                        <v-btn 
-                            rounded="sm" 
-                            color="primary" 
-                            variant="flat" 
+                        <v-btn
+                            rounded="sm"
+                            color="primary"
+                            variant="flat"
                             class="ml-2"
                             :disabled="isCreateButtonDisabled"
                             @click="createClientGroup()">
@@ -244,6 +266,7 @@
     import TableHeaders from "@/utils/table/TableHeaders.vue";
     import { useI18n } from "vue-i18n";
     import {translate} from "@/utils/generalUtils";
+    import * as examViewService from "@/services/seb-server/component-services/examViewService";
 
     //i18n
     const i18n = useI18n();
@@ -262,11 +285,13 @@
         {title: "Name", key: "name"},
         {title: "Type", key: "type"},
         {title: "Screen Proctoring", key: "sp", center: true, align: "center"}
-    ]);    
+    ]);
 
     //form fields
     const groupNameField = ref<string>("");
     const clientGroupTypeSelect = ref<ClientGroupEnum | null>(null);
+    const screenProctoringToggle = ref<boolean>(false);
+
 
     const startIpField = ref<string>("");
     const endIpField = ref<string>("");
@@ -288,7 +313,7 @@
         clientGroupDescription.value = generalUtils.getClientGroupDescription(clientGroupTypeSelect.value, i18n);
     });
 
-    //set group naem duplicate warning dynamically
+    //set group name duplicate warning dynamically
     watch(groupNameField, () => {
         isGroupNameDuplicate.value = false;
         if(examStore.selectedClientGroups.some(clientGroup => clientGroup.name == groupNameField.value)){
@@ -324,45 +349,60 @@
 
 
     //========create new client group========
-    async function createClientGroup(){
-        if(examStore.selectedExam == null || clientGroupTypeSelect.value == null){
-            return;
-        }
+    async function createClientGroup() {
+      if (examStore.selectedExam == null || clientGroupTypeSelect.value == null) {
+        return;
+      }
 
-        const clientGroup: ClientGroup | null = clientGroupViewService.getCreateClientGroupParams(
-            examStore.selectedExam.id,
-            groupNameField.value,
-            clientGroupTypeSelect.value,
-            startIpField.value,
-            endIpField.value,
-            clientOsField.value,
-            startLetterField.value,
-            endLetterField.value
+      const clientGroup: ClientGroup | null = clientGroupViewService.getCreateClientGroupParams(
+        examStore.selectedExam.id,
+        groupNameField.value,
+        clientGroupTypeSelect.value,
+        startIpField.value,
+        endIpField.value,
+        clientOsField.value,
+        startLetterField.value,
+        endLetterField.value
+      );
+
+      if (clientGroup == null) {
+        return;
+      }
+
+      const createClientGroupResponse: ClientGroup | null = await clientGroupViewService.createClientGroup(clientGroup);
+
+      if (createClientGroupResponse == null) {
+        return;
+      }
+
+      if (screenProctoringToggle.value && createClientGroupResponse.id != null) {
+        const existingSpGroupIds = examStore.selectedClientGroups
+          .filter(group => group.isSPSGroup)
+          .map(group => group.id!)
+
+        const updatedSpGroupIds = [...new Set([...existingSpGroupIds, createClientGroupResponse.id])]
+
+        await examViewService.applyScreenProctoringGroups(
+          examStore.selectedExam.id.toString(),
+          generalUtils.createStringIdList(updatedSpGroupIds)
         );
+      }
 
-        if(clientGroup == null){
-            return;
-        }
-
-        const createClientGroupResponse: ClientGroup | null = await clientGroupViewService.createClientGroup(clientGroup);
-        if(createClientGroupResponse == null){
-            return;
-        }
-
-        emit("closeAddClientGroupDialog", true);
+      emit("closeAddClientGroupDialog", true);
     }
+
 
     //========table loading========
     function filterClientGroupsTableValues(){
         if(examStore.selectedExamTemplate == null){
             return;
         }
-
         templateClientGroups.value = examStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES;
-        templateClientGroups.value = templateClientGroups.value.filter(clientGroup => 
+        templateClientGroups.value = templateClientGroups.value.filter(clientGroup =>
             !examStore.selectedClientGroups.some(item => item.name == clientGroup.name)
         );
     }
+
 
     async function onTableRowClick(clientGroup: ClientGroup){
         loadClientGroupIntoForm(clientGroup);
@@ -377,15 +417,17 @@
 
         groupNameField.value = clientGroup.name;
         clientGroupTypeSelect.value = clientGroupType
+        screenProctoringToggle.value = examStore.templateGroupsWithSp.includes(clientGroup.id ?? -1);
 
-        if(clientGroupType == ClientGroupEnum.CLIENT_OS){
+
+      if(clientGroupType == ClientGroupEnum.CLIENT_OS){
             clientOsField.value = generalUtils.findEnumValue(ClientOSEnum, clientGroup.clientOS);
             return;
         }
 
         if(clientGroupType == ClientGroupEnum.IP_V4_RANGE){
             startIpField.value = clientGroup.ipRangeStart!;
-            endIpField.value = clientGroup.ipRangeEnd!;  
+            endIpField.value = clientGroup.ipRangeEnd!;
             return;
         }
 
@@ -407,7 +449,7 @@
         }
 
         if(clientGroupTypeSelect.value == null){
-            return true; 
+            return true;
         }
 
         if(clientGroupTypeSelect.value == ClientGroupEnum.CLIENT_OS && clientOsField.value == null){
