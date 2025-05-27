@@ -4,7 +4,7 @@ import * as clientGroupService from "@/services/seb-server/api-services/clientGr
 //=============api==============
 export async function createClientGroup(clientGroup: ClientGroup): Promise<ClientGroup | null>{
     try{
-        return await clientGroupService.createClientGroup(clientGroup);    
+        return await clientGroupService.createClientGroup(clientGroup);
     }catch(error){
         return null;
     }
@@ -12,7 +12,7 @@ export async function createClientGroup(clientGroup: ClientGroup): Promise<Clien
 
 export async function getClientGroup(id: string): Promise<ClientGroup | null>{
     try{
-        return await clientGroupService.getClientGroup(id);    
+        return await clientGroupService.getClientGroup(id);
     }catch(error){
         return null;
     }
@@ -20,7 +20,7 @@ export async function getClientGroup(id: string): Promise<ClientGroup | null>{
 
 export async function updateClientGroup(clientGroup: ClientGroup): Promise<ClientGroup | null>{
     try{
-        return await clientGroupService.updateClientGroup(clientGroup);    
+        return await clientGroupService.updateClientGroup(clientGroup);
     }catch(error){
         return null;
     }
@@ -28,7 +28,7 @@ export async function updateClientGroup(clientGroup: ClientGroup): Promise<Clien
 
 export async function deleteClientGroup(id: string): Promise<any | null>{
     try{
-        return await clientGroupService.deleteClientGroup(id);    
+        return await clientGroupService.deleteClientGroup(id);
     }catch(error){
         return null;
     }
@@ -36,7 +36,7 @@ export async function deleteClientGroup(id: string): Promise<any | null>{
 
 export async function getClientGroups(id?: string): Promise<ClientGroups | null>{
     try{
-        return await clientGroupService.getClientGroups(id);    
+        return await clientGroupService.getClientGroups(id);
     }catch(error){
         return null;
     }
@@ -48,7 +48,6 @@ export function getCreateClientGroupParams(
     examId: number,
     name: string,
     type: ClientGroupEnum,
-
     ipRangeStart?: string,
     ipRangeEnd?: string,
     clientOS?: ClientOSEnum | null,
