@@ -567,7 +567,7 @@
     import {translate} from "@/utils/generalUtils";
     import { LMSFeatureEnum } from '@/models/seb-server/assessmentToolEnums';
     import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
-import { UserRoleEnum } from '@/models/userRoleEnum';
+    import { UserRoleEnum } from '@/models/userRoleEnum';
 
 
     //i18n
