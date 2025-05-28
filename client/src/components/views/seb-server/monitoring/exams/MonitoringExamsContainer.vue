@@ -1,5 +1,5 @@
 <template>
-    <MonitoringExamsInfo @loadmonitoringListItemsCaller="loadmonitoringListItemsCaller"></MonitoringExamsInfo>
+    <MonitoringExamsInfo @loadMonitoringListItemsCaller="loadMonitoringListItemsCaller"></MonitoringExamsInfo>
     <MonitoringExamsMain ref="monitoringExamsMainRef"></MonitoringExamsMain>
 </template>
 
@@ -22,7 +22,7 @@
     });
 
     //call function in "ExamListMain"
-    function loadmonitoringListItemsCaller(){
+    function loadMonitoringListItemsCaller(){
         if(monitoringStore.currentPagingOptions == null){
             return;
         }

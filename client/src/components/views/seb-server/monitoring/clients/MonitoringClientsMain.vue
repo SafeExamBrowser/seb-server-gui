@@ -235,7 +235,7 @@
     }
 
     async function getAndSetStaticClientData(modelIds: number[]){
-        const staticClientDataResponse: MonitoringStaticClientData | null = await monitoringViewService.getStaticClientData(examId, generalUtils.createStringIdList(modelIds));
+        const staticClientDataResponse: MonitoringStaticClientData | null = await monitoringViewService.getStaticClientData(examId, generalUtils.createStringCommaList(modelIds));
         if(staticClientDataResponse == null){
             return;
         }
@@ -244,7 +244,7 @@
     }
 
     async function getStaticClientData(modelIds: number[]): Promise<MonitoringStaticClientData | null>{
-        return await monitoringViewService.getStaticClientData(examId, generalUtils.createStringIdList(modelIds));
+        return await monitoringViewService.getStaticClientData(examId, generalUtils.createStringCommaList(modelIds));
     }
 
 

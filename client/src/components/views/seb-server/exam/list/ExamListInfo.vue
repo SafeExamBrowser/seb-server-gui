@@ -12,8 +12,8 @@
                         </div>
                     </v-col>
                 </v-row>
-                <!----------------------------------->
 
+                <!------------form------------->
                 <v-row>
                     <v-spacer></v-spacer>
 
@@ -39,7 +39,6 @@
                                     </v-text-field>
                                 </v-col>
                             </v-row>
-                            <!----------------------------------->
 
                             <!------------start date------------->
                             <v-row align="center">
@@ -61,7 +60,6 @@
                                     </v-date-input>
                                 </v-col>
                             </v-row>
-                            <!----------------------------------->
 
                             <!------------Buttons------------->
                             <v-row>
@@ -85,44 +83,43 @@
 
                                 </v-col>
                             </v-row>
-                            <!----------------------------------->
                         </v-form>
-
                     </v-col>
 
+                    <!------------filters------------->
                     <v-col cols="4" class="ml-16">
-                        <v-row>
-                            <v-col>
-                                <div class="primary-text-color text-subtitle-1">
-                                    {{translate('examList.info.filter')}}
-                                </div>
-                                <div>
-                                    <v-chip
-                                        v-for="filter in typeFilters"
-                                        :key="filter.value"
+                        <div class="primary-text-color text-subtitle-1">
+                            {{translate('examList.info.filter')}}
+                        </div>
 
-                                        :variant="examStore.activeTypeFilter == filter.value ? 'flat' : 'tonal'"
-                                        size="small"
-                                        class="mr-2 mt-2"
-                                        @click="filter.eventFunction(filter.value)">
-                                        {{filter.name}}
-                                    </v-chip>
-                                </div>
-                                <div>
-                                    <v-chip
-                                        v-for="filter in statusFilters"
-                                        :key="filter.value"
+                        <!------------type------------->
+                        <div>
+                            <v-chip
+                                v-for="filter in typeFilters"
+                                :key="filter.value"
 
-                                        :variant="examStore.activeStatusFilter == filter.value ? 'flat' : 'tonal'"
-                                        size="small"
-                                        class="mr-2 mt-2"
-                                        :color="filter.color"
-                                        @click="filter.eventFunction(filter.value)">
-                                        {{filter.name}}
-                                    </v-chip>
-                                </div>
-                            </v-col>
-                        </v-row>
+                                :variant="examStore.activeTypeFilter == filter.value ? 'flat' : 'tonal'"
+                                size="small"
+                                class="mr-2 mt-2"
+                                @click="filter.eventFunction(filter.value)">
+                                {{filter.name}}
+                            </v-chip>
+                        </div>
+
+                        <!------------status------------->
+                        <div>
+                            <v-chip
+                                v-for="filter in statusFilters"
+                                :key="filter.value"
+
+                                :variant="examStore.activeStatusFilter == filter.value ? 'flat' : 'tonal'"
+                                size="small"
+                                class="mr-2 mt-2"
+                                :color="filter.color"
+                                @click="filter.eventFunction(filter.value)">
+                                {{filter.name}}
+                            </v-chip>
+                        </div>
                     </v-col>
 
                     <v-spacer></v-spacer>

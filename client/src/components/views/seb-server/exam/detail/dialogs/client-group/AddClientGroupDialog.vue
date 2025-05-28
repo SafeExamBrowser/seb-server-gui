@@ -396,7 +396,7 @@
 
         await examViewService.applyScreenProctoringGroups(
           examStore.selectedExam.id.toString(),
-          generalUtils.createStringIdList(updatedSpGroupIds)
+          generalUtils.createStringCommaList(updatedSpGroupIds)
         );
       }
 

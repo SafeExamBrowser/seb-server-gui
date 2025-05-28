@@ -135,8 +135,14 @@ function removeAllSelectedClients(){
 
 //================display / text logic===============
 export function isMonitoringDisabled(): boolean{    
-    return useMonitoringStore().selectedExam == null || 
-    generalUtils.findEnumValue(ExamStatusEnum, useMonitoringStore().selectedExam?.status) != ExamStatusEnum.RUNNING;
+    const selectedExam: Exam | null = useMonitoringStore().selectedExam;
+  
+    if(selectedExam == null) return true;
+  
+    const examStatus: ExamStatusEnum | null = generalUtils.findEnumValue(ExamStatusEnum, selectedExam.status);
+    const allowedExamStatuses: (ExamStatusEnum | null)[] = [ExamStatusEnum.RUNNING, ExamStatusEnum.TEST_RUN];
+  
+    return !allowedExamStatuses.includes(examStatus);
 }
 
 export function getMonitoringDisabledWarningText(): string{

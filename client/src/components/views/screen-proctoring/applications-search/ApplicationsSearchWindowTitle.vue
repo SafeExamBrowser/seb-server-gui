@@ -132,7 +132,7 @@
     onBeforeMount(async () => {
         const metadataWindowsLocal: DistinctMetadataWindowForExamRecord | null = 
             await applicationsSearchViewService.getDistinctMetadataWindowForExam(
-                generalUtils.createStringIdList(props.groupIds), 
+                generalUtils.createStringCommaList(props.groupIds), 
                 props.metadataApp
             );
 

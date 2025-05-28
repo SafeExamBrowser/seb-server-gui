@@ -186,9 +186,9 @@
 
         switch (connectionStatus) {
             case ConnectionStatusEnum.CONNECTION_REQUESTED:
-                return "#7db5f5";
+                return "#d7fad9";
             case ConnectionStatusEnum.READY:
-                return "#1f70cc";
+                return "#abf7af";
             case ConnectionStatusEnum.ACTIVE:
                 return "#66BB6A";
             case ConnectionStatusEnum.CLOSED:

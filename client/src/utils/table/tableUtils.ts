@@ -130,8 +130,8 @@ export function assignExamSelectPagingOptions
     serverTablePaging: ServerTablePaging, 
     name: string | null, 
     startTimestamp: number | null,
-    activeTypeFilter: ExamTypeEnum | null, 
-    activeStatusFilter: ExamStatusEnum | null): OptionalParGetExams{
+    activeTypeFilter: ExamTypeEnum | null | string, 
+    activeStatusFilter: ExamStatusEnum | null | string): OptionalParGetExams{
     
     const optionalParGetExams: OptionalParGetExams = {};
 

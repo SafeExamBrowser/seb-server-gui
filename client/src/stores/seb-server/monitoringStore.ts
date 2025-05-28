@@ -9,6 +9,7 @@ export const useMonitoringStore = defineStore("monitoring", () => {
     const startDate = ref<number | null>(null);
     const currentPagingOptions = ref<ServerTablePaging>();
     const activeTypeFilter = ref<ExamTypeEnum | null>(null);
+    const activeStatusFilter = ref<ExamStatusEnum | null>(null);
 
     //monitoring overview
     const selectedExam = ref<Exam | null>(null);
@@ -34,6 +35,7 @@ export const useMonitoringStore = defineStore("monitoring", () => {
         startDate,
         currentPagingOptions,
         activeTypeFilter,
+        activeStatusFilter,
         selectedExam,
         monitoringOverviewData,
         indicators,

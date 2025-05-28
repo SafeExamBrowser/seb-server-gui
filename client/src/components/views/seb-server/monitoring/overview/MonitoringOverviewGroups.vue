@@ -46,7 +46,7 @@
                             icon="mdi-chevron-right" 
                             @click="monitoringViewService.goToMonitoring(
                                 MonitoringHeaderEnum.SHOW_CLIENT_GROUPS, 
-                                generalUtils.createStringIdList([clientGroupItem.id]), 
+                                generalUtils.createStringCommaList([clientGroupItem.id]), 
                                 examId)">
                         </v-icon>
                     </v-col>
@@ -71,7 +71,7 @@
 
                     <!--------client amount-------->
                     <v-col cols="2" class="text-h6 primary-text-color">
-                        <template v-if="overViewClientGroups != null">
+                        <template v-if="overViewClientGroups != null && overViewClientGroups.length != 0">
                             {{ overViewClientGroups[overViewClientGroups.length-1].clientAmount }}
                         </template>
                         <template v-else>
