@@ -22,7 +22,7 @@
                             @keyup.enter="loadExamItemsCaller()"
                             @keyup.esc="clearForm()">
                             <!------------search field------------->
-                            <v-row align="center"> 
+                            <v-row align="center">
                                 <v-col>
                                     {{translate('examList.info.search')}}
                                 </v-col>
@@ -43,11 +43,11 @@
 
                             <!------------start date------------->
                             <v-row align="center">
-                                <v-col> 
+                                <v-col>
                                     {{translate('examList.info.start')}}
                                 </v-col>
                                 <v-col cols="9" >
-                                    <v-date-input 
+                                    <v-date-input
                                         single-line
                                         hide-details
                                         v-model="datepicker"
@@ -66,18 +66,18 @@
                             <!------------Buttons------------->
                             <v-row>
                                 <v-col align="right">
-                                    <v-btn 
-                                        rounded="sm" 
-                                        color="black" 
+                                    <v-btn
+                                        rounded="sm"
+                                        color="black"
                                         variant="outlined"
                                         @click="clearForm()">
                                         {{translate("general.cancelButton")}}
                                     </v-btn>
 
-                                    <v-btn 
-                                        rounded="sm" 
-                                        color="primary" 
-                                        variant="flat" 
+                                    <v-btn
+                                        rounded="sm"
+                                        color="primary"
+                                        variant="flat"
                                         class="ml-2"
                                         @click="loadExamItemsCaller()">
                                         {{translate("general.searchButton")}}
@@ -97,24 +97,24 @@
                                     {{translate('examList.info.filter')}}
                                 </div>
                                 <div>
-                                    <v-chip 
+                                    <v-chip
                                         v-for="filter in typeFilters"
                                         :key="filter.value"
 
                                         :variant="examStore.activeTypeFilter == filter.value ? 'flat' : 'tonal'"
-                                        size="small" 
+                                        size="small"
                                         class="mr-2 mt-2"
                                         @click="filter.eventFunction(filter.value)">
                                         {{filter.name}}
                                     </v-chip>
                                 </div>
                                 <div>
-                                    <v-chip 
+                                    <v-chip
                                         v-for="filter in statusFilters"
                                         :key="filter.value"
 
                                         :variant="examStore.activeStatusFilter == filter.value ? 'flat' : 'tonal'"
-                                        size="small" 
+                                        size="small"
                                         class="mr-2 mt-2"
                                         :color="filter.color"
                                         @click="filter.eventFunction(filter.value)">
@@ -174,7 +174,7 @@
         {name: translate(ExamStatusEnum.ARCHIVED), value: ExamStatusEnum.ARCHIVED, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.ARCHIVED), eventFunction: setActiveStatusFilter}
     ];
 
-    function loadExamItemsCaller(){ 
+    function loadExamItemsCaller(){
         if(datepicker != null && datepicker.value != null){
             examStore.startDate = datepicker.value.getTime();
         }
@@ -187,7 +187,7 @@
 
         datepicker.value = null;
         examStore.startDate = null;
-        
+
         loadExamItemsCaller();
     }
 
