@@ -151,6 +151,7 @@
     import TableHeaders from "@/utils/table/TableHeaders.vue";
     import { useTableStore } from "@/stores/store";
     import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
+    import { UserRoleEnum } from "@/models/userRoleEnum";
 
     //store
     const tableStore = useTableStore();
@@ -195,7 +196,7 @@
 
     //===========================data fetching=======================
     async function loadItems(serverTablePaging: ServerTablePaging){
-        isUserAdmin.value = userAccountStore.userAccount?.userRoles.includes("SEB_SERVER_ADMIN");
+        isUserAdmin.value = userAccountStore.userAccount?.userRoles.includes(UserRoleEnum.SEB_SERVER_ADMIN);
         isLoading.value = true;
         //current solution to default sort the table
         //sort-by in data-table-server tag breaks the sorting as the headers are in a seperate component

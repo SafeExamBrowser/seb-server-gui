@@ -407,7 +407,7 @@
                                                 <v-divider class="border-opacity-25" :thickness="2"></v-divider>
 
                                                 <!----------Archive Exam--------->
-                                                <v-list-item>
+                                                <v-list-item v-if="userAccountStore.userAccount?.userRoles.includes(UserRoleEnum.INSTITUTIONAL_ADMIN)">
                                                     <v-list-item-title :class="[examViewService.isExamFunctionalityDisabled([ExamStatusEnum.FINISHED], examStore.selectedExam?.status) ? 'disabled-text-color' : '']">
                                                         {{translate("examDetail.main.archiveExam")}}
                                                     </v-list-item-title>
@@ -427,7 +427,7 @@
                                                     </v-tooltip>
 
                                                 </v-list-item>
-                                                <v-divider class="border-opacity-25" :thickness="2"></v-divider>
+                                                <v-divider v-if="userAccountStore.userAccount?.userRoles.includes(UserRoleEnum.INSTITUTIONAL_ADMIN)" class="border-opacity-25" :thickness="2"></v-divider>
 
                                                 <!----------Delete Exam--------->
                                                 <v-list-item>
@@ -566,6 +566,9 @@
     import { useI18n } from "vue-i18n";
     import {translate} from "@/utils/generalUtils";
     import { LMSFeatureEnum } from '@/models/seb-server/assessmentToolEnums';
+    import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
+import { UserRoleEnum } from '@/models/userRoleEnum';
+
 
     //i18n
     const i18n = useI18n();
@@ -576,6 +579,7 @@
     //stores
     const examStore = useExamStore();
     const examStoreRef = storeToRefs(examStore);
+    const userAccountStore = useUserAccountStore();
 
     //exam
     const examId = useRoute().params.examId.toString();
@@ -970,6 +974,10 @@
     }
 
     async function getTemplateGroupsWithSp(){
+        if(examStore.selectedExamTemplate == null){
+            return;
+        }
+
         const examTemplateSp: ScreenProctoringSettings | null = await examViewService.getExamTemplateSp(examStore.selectedExamTemplate!.id.toString());
     
         if(examTemplateSp == null){
