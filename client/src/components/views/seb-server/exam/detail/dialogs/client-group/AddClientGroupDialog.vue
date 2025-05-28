@@ -114,24 +114,37 @@
                     </v-col>
                 </v-row>
 
-                <!------------Screen Proctoring Toggle------------->
+              <!------------Screen Proctoring Toggle------------->
                 <v-row align="center">
+                    <v-col>Screen Proctoring</v-col>
                     <v-col>
-                        Screen Proctoring
-                    </v-col>
-                    <v-col class="">
-                        <v-checkbox
-                            single-line
-                            hide-details
-                            color="primary"
-                            v-model="screenProctoringToggle"
-                            density="compact"
-                            variant="outlined">
-                        </v-checkbox>
+                        <v-tooltip
+                          v-if="!isScreenProctoringEnabled"
+                          location="right"
+                        >
+                            <template #activator="{ props }">
+                                <span v-bind="props" class="d-inline-block">
+                                    <v-btn
+                                        variant="text"
+                                        :icon="screenProctoringToggle ? 'mdi-checkbox-marked' : 'mdi-checkbox-blank-outline'"
+                                        class="v-btn--disabled"
+                                        @click.prevent
+                                    />
+                                </span>
+                            </template>
+                            <span>Screen Proctoring can only be selected if it is enabled on the exam itself.</span>
+                        </v-tooltip>
+
+                      <v-btn
+                        v-else
+                        variant="text"
+                        :icon="screenProctoringToggle ? 'mdi-checkbox-marked' : 'mdi-checkbox-blank-outline'"
+                        @click="screenProctoringToggle = !screenProctoringToggle"
+                      />
                     </v-col>
                 </v-row>
 
-                <!------------Type Description------------->
+              <!------------Type Description------------->
                 <v-row align="center">
                     <v-col>
                         Type Description
@@ -296,6 +309,10 @@
 
     const clientOsField = ref<ClientOSEnum | null>(null);
 
+    const isScreenProctoringEnabled = computed(() =>
+      generalUtils.stringToBoolean(examStore.selectedExam?.additionalAttributes.enableScreenProctoring ?? '')
+    );
+
     //description text
     const clientGroupDescription = ref<string>(getInitalDescriptionValue());
 
@@ -431,6 +448,14 @@
             endLetterField.value = clientGroup.nameRangeEndLetter!;
             return;
         }
+    }
+
+    //========check if screen proctoring enabled for exam========
+    function toggleScreenProctoring() {
+      const isEnabled = generalUtils.stringToBoolean(examStore.selectedExam?.additionalAttributes.enableScreenProctoring ?? '');
+      if (isEnabled) {
+        screenProctoringToggle.value = !screenProctoringToggle.value;
+      }
     }
 
     //========form control========
