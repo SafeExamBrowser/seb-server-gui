@@ -24,6 +24,18 @@ export async function getUserAccountNames(req: Request, res: Response){
     }
 }
 
+
+export async function createUserAccount(req: Request, res: Response) {
+    try {
+        console.log("📥 Incoming user registration request body:", req.body);
+        const [userAccount, status] = await userAccountService.createUserAccount(req.body);
+        return res.status(status).json(userAccount);
+    } catch (error) {
+        apiService.handleGenericApiError(error, res);
+    }
+}
+
+
 export async function getSupervisorAccountNames(req: Request, res: Response){
     try{
         const [userAccountNames, status] = await userAccountService.getSupervisorAccountNames(req.headers.authorization, req.query.optionalParamters);

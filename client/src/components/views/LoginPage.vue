@@ -153,7 +153,6 @@
 
         } catch (error) {
             loginError.value = true;
-
         }
     }
 

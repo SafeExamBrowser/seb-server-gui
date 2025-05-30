@@ -22,6 +22,8 @@ export const INSTITUTION_ROUTE = "/institution";
 //user account
 export const USER_ACCOUNT_ROUTE = "/useraccount";
 export const USER_ACCOUNT_NAMES_ROUTE = "/useraccount/names";
+export const USER_ACCOUNT_REGISTRATION_SERVER_ROUTE = "/register";
+export const USER_ACCOUNT_REGISTRATION_ROUTE = "/useraccount/register";
 export const SUPERVISOR_ACCOUNT_NAMES_ROUTE = "/useraccount/supervisors";
 
 //client config
