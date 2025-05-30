@@ -12,14 +12,14 @@
                         </div>
                     </v-col>
                 </v-row>
-                <!----------------------------------->
 
+                <!------------form------------->
                 <v-row>
                     <v-spacer></v-spacer>
 
                     <v-col cols="4">
                         <v-form
-                            @keyup.enter="loadmonitoringListItemsCaller()"
+                            @keyup.enter="loadMonitoringListItemsCaller()"
                             @keyup.esc="clearForm()">
                             <!------------search field------------->
                             <v-row align="center"> 
@@ -39,7 +39,6 @@
                                     </v-text-field>
                                 </v-col>
                             </v-row>
-                            <!----------------------------------->
 
                             <!------------start date------------->
                             <v-row align="center">
@@ -61,7 +60,6 @@
                                     </v-date-input>
                                 </v-col>
                             </v-row>
-                            <!----------------------------------->
 
                             <!------------Buttons------------->
                             <v-row>
@@ -79,37 +77,49 @@
                                         color="primary" 
                                         variant="flat" 
                                         class="ml-2"
-                                        @click="loadmonitoringListItemsCaller()">
+                                        @click="loadMonitoringListItemsCaller()">
                                         {{translate("general.searchButton")}}
                                     </v-btn>
 
                                 </v-col>
                             </v-row>
-                            <!----------------------------------->
                         </v-form>
-
                     </v-col>
 
+                    <!------------filters------------->
                     <v-col cols="4" class="ml-16">
-                        <v-row>
-                            <v-col>
-                                <div class="primary-text-color text-subtitle-1">
-                                    {{translate('monitoringExams.info.filter')}}
-                                </div>
-                                <div>
-                                    <v-chip 
-                                        v-for="filter in typeFilters"
-                                        :key="filter.value"
+                        <div class="primary-text-color text-subtitle-1">
+                            {{translate('monitoringExams.info.filter')}}
+                        </div>
 
-                                        :variant="monitoringStore.activeTypeFilter == filter.value ? 'flat' : 'tonal'"
-                                        size="small" 
-                                        class="mr-2 mt-2"
-                                        @click="filter.eventFunction(filter.value)">
-                                        {{filter.name}}
-                                    </v-chip>
-                                </div>
-                            </v-col>
-                        </v-row>
+                        <!------------type------------->
+                        <div>
+                            <v-chip 
+                                v-for="filter in typeFilters"
+                                :key="filter.value"
+
+                                :variant="monitoringStore.activeTypeFilter == filter.value ? 'flat' : 'tonal'"
+                                size="small" 
+                                class="mr-2 mt-2"
+                                @click="filter.eventFunction(filter.value)">
+                                {{filter.name}}
+                            </v-chip>
+                        </div>
+
+                        <!------------status------------->
+                        <div>
+                            <v-chip
+                                v-for="filter in statusFilters"
+                                :key="filter.value"
+
+                                :variant="monitoringStore.activeStatusFilter == filter.value ? 'flat' : 'tonal'"
+                                size="small"
+                                class="mr-2 mt-2"
+                                :color="filter.color"
+                                @click="filter.eventFunction(filter.value)">
+                                {{filter.name}}
+                            </v-chip>
+                        </div>
                     </v-col>
 
                     <v-spacer></v-spacer>
@@ -139,9 +149,9 @@
     //datepicker
     const datepicker = ref();
 
-    //emits - call loadmonitoringListItemsCaller in parent
+    //emits - call loadMonitoringListItemsCaller in parent
     const emit = defineEmits<{
-        loadmonitoringListItemsCaller: any;
+        loadMonitoringListItemsCaller: any;
     }>();
 
     //filters exam type
@@ -152,12 +162,18 @@
         {name: translate(ExamTypeEnum.UNDEFINED), value: ExamTypeEnum.UNDEFINED, eventFunction: setActiveTypeFilter}
     ];
 
-    function loadmonitoringListItemsCaller(){ 
+    //filters exam status
+    const statusFilters: {name: string, value: ExamStatusEnum, color: string, eventFunction: (filter: ExamStatusEnum) => void}[] = [
+        {name: translate(ExamStatusEnum.RUNNING), value: ExamStatusEnum.RUNNING, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.RUNNING), eventFunction: setActiveStatusFilter},
+        {name: translate(ExamStatusEnum.TEST_RUN), value: ExamStatusEnum.TEST_RUN, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.TEST_RUN), eventFunction: setActiveStatusFilter}
+    ];
+
+    function loadMonitoringListItemsCaller(){ 
         if(datepicker != null && datepicker.value != null){
             monitoringStore.startDate = datepicker.value.getTime();
         }
 
-        emit("loadmonitoringListItemsCaller");
+        emit("loadMonitoringListItemsCaller");
     }
 
     function clearForm(){
@@ -166,18 +182,29 @@
         datepicker.value = null;
         monitoringStore.startDate = null;
         
-        loadmonitoringListItemsCaller();
+        loadMonitoringListItemsCaller();
     }
 
     function setActiveTypeFilter(filter: ExamTypeEnum){
         if(monitoringStore.activeTypeFilter == filter){
             monitoringStore.activeTypeFilter = null;
-            loadmonitoringListItemsCaller();
+            loadMonitoringListItemsCaller();
             return;
         }
 
         monitoringStore.activeTypeFilter = filter;
-        loadmonitoringListItemsCaller();
+        loadMonitoringListItemsCaller();
+    }
+
+    function setActiveStatusFilter(filter: ExamStatusEnum){
+        if(monitoringStore.activeStatusFilter == filter){
+            monitoringStore.activeStatusFilter = null;
+            loadMonitoringListItemsCaller();
+            return;
+        }
+
+        monitoringStore.activeStatusFilter = filter;
+        loadMonitoringListItemsCaller();
     }
 
 

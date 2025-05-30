@@ -50,7 +50,7 @@
     onBeforeMount(async () => {
         const userListLocal: UserListForApplicationSearchRecord[] | null = 
             await applicationsSearchViewService.getUserListForApplicationSearch(
-                generalUtils.createStringIdList(props.groupIds), 
+                generalUtils.createStringCommaList(props.groupIds), 
                 props.metadataApp, 
                 props.metadataWindow
             );

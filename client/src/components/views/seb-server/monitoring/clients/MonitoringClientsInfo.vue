@@ -36,7 +36,7 @@
                     <!------------search------------->
                     <v-col cols="4">
                         <v-form
-                            @keyup.enter="loadmonitoringListItemsCaller()"
+                            @keyup.enter="loadMonitoringListItemsCaller()"
                             @keyup.esc="clearForm()">
 
                             <!------------field------------->
@@ -76,7 +76,7 @@
                                         variant="flat" 
                                         size="small"
                                         class="ml-2"
-                                        @click="loadmonitoringListItemsCaller()">
+                                        @click="loadMonitoringListItemsCaller()">
                                         {{translate("general.searchButton")}}
                                     </v-btn>
 
@@ -329,18 +329,18 @@
     //datepicker
     const datepicker = ref();
 
-    //emits - call loadmonitoringListItemsCaller in parent
+    //emits - call loadMonitoringListItemsCaller in parent
     const emit = defineEmits<{
-        loadmonitoringListItemsCaller: any;
+        loadMonitoringListItemsCaller: any;
     }>();
 
 
-    function loadmonitoringListItemsCaller(){ 
+    function loadMonitoringListItemsCaller(){ 
         if(datepicker != null && datepicker.value != null){
             monitoringStore.startDate = datepicker.value.getTime();
         }
 
-        emit("loadmonitoringListItemsCaller");
+        emit("loadMonitoringListItemsCaller");
     }
 
     function clearForm(){
@@ -349,7 +349,7 @@
         datepicker.value = null;
         monitoringStore.startDate = null;
         
-        loadmonitoringListItemsCaller();
+        loadMonitoringListItemsCaller();
     }
 
     //=================filters===================
@@ -375,7 +375,7 @@
 
         const clientInstruction: ClientInstruction = {
             examId: parseInt(examId),
-            connectionToken: generalUtils.createStringIdList([
+            connectionToken: generalUtils.createStringCommaList([
                 "7ebfc95f-517b-4500-8e9c-5f099d447469", 
                 "bf5d46c8-68f0-46a2-b62f-de4f352a15f5", 
                 "da4f6c87-6c90-4fba-b09f-3c0ee706f184"

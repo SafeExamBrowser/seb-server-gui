@@ -188,7 +188,7 @@
 
     //========screen proctoring========
     async function saveScreenProctoringGroups(){
-        const examResponse: Exam | null = await examViewService.applyScreenProctoringGroups(examId, generalUtils.createStringIdList(getGroupsWithSelectedSp()));
+        const examResponse: Exam | null = await examViewService.applyScreenProctoringGroups(examId, generalUtils.createStringCommaList(getGroupsWithSelectedSp()));
 
         if(examResponse == null){
             return;

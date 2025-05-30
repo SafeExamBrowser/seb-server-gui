@@ -343,7 +343,7 @@
             "runningExams": "Running Exams",
             "search": "Search:",
             "searchPlaceholder": "Search Exams",
-            "start": "Start:",
+            "start": "Exam Start:",
             "filter": "Filter"
 
 
@@ -352,6 +352,7 @@
             "tableHeaderName": "Name",
             "tableHeaderStart": "Start",
             "tableHeaderEnd": "End",
+            "tableHeaderType": "Exam Type",
             "tableHeaderStatus": "Status"
         }
     },

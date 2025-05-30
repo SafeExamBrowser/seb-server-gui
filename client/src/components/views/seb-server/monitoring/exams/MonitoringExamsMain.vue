@@ -44,6 +44,14 @@
                                     {{ translate(generalUtils.findEnumValue(ExamTypeEnum, item.type)) }}
                                 </v-chip>
                             </td>
+                            <td>
+                                <v-chip 
+                                    variant="tonal"
+                                    size="small"
+                                    :color="generalUtils.getExamStatusFilterColor(generalUtils.findEnumValue(ExamStatusEnum, item.status))">
+                                    {{ translate(generalUtils.findEnumValue(ExamStatusEnum, item.status)) }}
+                                </v-chip>
+                            </td>
                             <td align="right">
                                 <v-icon 
                                     class="mr-6"
@@ -96,6 +104,7 @@
         {title: translate("monitoringExams.main.tableHeaderName"), key: "quizName", width: "30%"},
         {title: translate("monitoringExams.main.tableHeaderStart"), key: "quizStartTime", width: "20%"},
         {title: translate("monitoringExams.main.tableHeaderEnd"), key: "quizEndTime", width: "20%"},
+        {title: translate("monitoringExams.main.tableHeaderType"), key: "type", sortable: false, width: "12.5%"},
         {title: translate("monitoringExams.main.tableHeaderStatus"), key: "status", sortable: false, width: "12.5%"},
         {title: "", key: "examLink", width: "5%"},
     ]);    
@@ -120,7 +129,7 @@
         isLoading.value = true;
 
         //current solution to default sort the table
-        //sort-by in data-table-server tag breaks the sorting as the headers are in a seperate component
+        //sort-by in data-table-server txag breaks the sorting as the headers are in a seperate component
         if(isOnLoad.value){
             serverTablePaging.sortBy = defaultSort;
         }
@@ -130,13 +139,20 @@
             startTimestamp = monitoringStore.startDate;
         }
 
+        let activeStatusFilter: ExamStatusEnum | string | null = null;
+        if(monitoringStore.activeStatusFilter == null){
+            activeStatusFilter = generalUtils.createStringCommaList([ExamStatusEnum.RUNNING, ExamStatusEnum.TEST_RUN])
+        }else{
+            activeStatusFilter = monitoringStore.activeStatusFilter;
+        }
+
         const optionalParGetExams: OptionalParGetExams = tableUtils.assignExamSelectPagingOptions
         (
             serverTablePaging, 
             monitoringStore.searchField, 
             startTimestamp,
             monitoringStore.activeTypeFilter,
-            ExamStatusEnum.RUNNING
+            activeStatusFilter
         );
 
         const examsResponse: Exams | null = await examViewService.getExams(optionalParGetExams);

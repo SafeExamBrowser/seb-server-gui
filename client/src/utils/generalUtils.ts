@@ -65,14 +65,14 @@ export function getClientGroupDescription(clientGroup: ClientGroupEnum | null, i
     return ""; 
 }
 
-export function createStringIdList(ids: number[] | string[]): string{
+export function createStringCommaList(values: number[] | string[]): string{
     let stringIdList = "";
-    if(ids.length == 0){
+    if(values.length == 0){
         return stringIdList;
     }
 
-    for(let i = 0; i < ids.length; i++){
-        stringIdList += ids[i] + ","
+    for(let i = 0; i < values.length; i++){
+        stringIdList += values[i] + ","
     }
 
     stringIdList = stringIdList.substring(0, stringIdList.length-1);

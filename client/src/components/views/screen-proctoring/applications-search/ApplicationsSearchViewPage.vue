@@ -246,7 +246,7 @@
             if(groupIds == null) continue;
 
             //fetch metadataAppList for the selected exams
-            const metadataAppList: string[] | null = await applicationsSearchViewService.getDistinctMetadataAppForExam(generalUtils.createStringIdList(groupIds));
+            const metadataAppList: string[] | null = await applicationsSearchViewService.getDistinctMetadataAppForExam(generalUtils.createStringCommaList(groupIds));
             if(metadataAppList == null) continue;
 
             examObjects.value.push({

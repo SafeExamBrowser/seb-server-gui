@@ -10,7 +10,7 @@
             <v-chip 
                 variant="flat"
                 class=""
-                color="green">
+                :color="generalUtils.getExamStatusFilterColor(generalUtils.findEnumValue(ExamStatusEnum, monitoringStore.selectedExam?.status))">
                 {{translate(generalUtils.findEnumValue(ExamStatusEnum, monitoringStore.selectedExam?.status))}}
             </v-chip>
         </v-col>

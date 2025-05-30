@@ -93,9 +93,9 @@
 
         switch (notification) {
             case NotificationEnum.LOCK_SCREEN:
-                return "#FFB300";
+                return "#f0f0f0";
             case NotificationEnum.RAISE_HAND:
-                return "#f5f242";
+                return "#f0f0f0";
             default:
                 return "#000000";
         }
@@ -119,9 +119,9 @@
 
         switch (indicator) {
             case IndicatorEnum.BATTERY_STATUS:
-                return "#26C6DA";
+                return "#f0f0f0";
             case IndicatorEnum.WLAN_STATUS:
-                return "#66BB6A";
+                return "#f0f0f0";
             default:
                 return "#000000";
         }

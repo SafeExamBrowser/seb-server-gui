@@ -171,7 +171,7 @@
             examTemplateId: quizImportStore.selectedExamTemplate.id,
             quitPassword: quizImportStore.selectedQuitPassword,
             supporter: quizImportStore.selectedExamSupervisors.map(userAccountName => userAccountName.modelId),
-            clientGroupIds: generalUtils.createStringIdList(quizImportStore.selectedClientGroups.map(clientGroup => clientGroup.id!))
+            clientGroupIds: generalUtils.createStringCommaList(quizImportStore.selectedClientGroups.map(clientGroup => clientGroup.id!))
         }
 
         const createExamResponse: Exam | null = await quizImportWizardViewService.createExam(createExamParams);
