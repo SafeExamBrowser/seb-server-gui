@@ -38,7 +38,19 @@
 
                 <v-card-text>
                     <v-form @keyup.enter="register()">
-
+                        <!--Institution-->
+                        <v-select
+                            required
+                            prepend-inner-icon="mdi-domain"
+                            density="compact"
+                            label="Institution *"
+                            variant="outlined"
+                            v-model="selectedInstitution"
+                            :items="institutions"
+                            item-title="name"
+                            item-value="id"
+                            :disabled="institutionSelectDisabled"
+                        />
                         <!--name-->
                         <v-text-field
                             required
@@ -164,8 +176,10 @@
     // import * as userAccountService from "@/services/api-services/userAccountService";
     import {navigateTo} from "@/router/navigation";
     import * as constants from "@/utils/constants";
+    import { getInstitutions } from "@/services/seb-server/component-services/registerAccountViewService";
 
     //form fields
+    const selectedInstitution = ref<string>("")
     const name = ref<string>("");
     const surname = ref<string>("");
     const username = ref<string>("");
@@ -181,6 +195,22 @@
     //password icon logic
     const passwordVisible = ref<boolean>(false);
     const confirmPasswordVisible = ref<boolean>(false);
+
+    const institutions = ref<Institution[]>([]);
+    const institutionSelectDisabled = ref(false);
+
+    //fetch Institution
+    onMounted(async () => {
+        const result = await getInstitutions();
+        if (result && result.length > 0) {
+            institutions.value = result;
+
+            if (result.length === 1) {
+                selectedInstitution.value = result[0].id;
+                institutionSelectDisabled.value = true;
+            }
+        }
+    });
 
 
     async function register(){
@@ -217,7 +247,7 @@
     .logo-img {
         max-width: 150px;
         width: 100%;
-        height: auto; 
+        height: auto;
     }
 
 </style>
