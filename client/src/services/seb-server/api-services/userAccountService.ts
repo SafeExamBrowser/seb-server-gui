@@ -5,7 +5,8 @@ import { StorageItemEnum } from "@/models/StorageItemEnum";
 
 const userAccountUrl: string = "/useraccount";
 
-export async function register(
+export async function registerUserAccount(
+    institutionId: string,
     name: string,
     surname: string,
     username: string,
@@ -19,6 +20,7 @@ export async function register(
         const url: string = ENV.SERVER_URL + ENV.SERVER_PORT + userAccountUrl + "/register";
 
         const { data, status }: AxiosResponse = await axios.post(url, {
+            institutionId,
             name,
             surname,
             username,
