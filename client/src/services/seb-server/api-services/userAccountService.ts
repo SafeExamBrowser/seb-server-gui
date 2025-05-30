@@ -5,30 +5,14 @@ import { StorageItemEnum } from "@/models/StorageItemEnum";
 
 const userAccountUrl: string = "/useraccount";
 
-export async function registerUserAccount(
-    institutionId: string,
-    name: string,
-    surname: string,
-    username: string,
-    newPassword: string,
-    confirmNewPassword: string,
-    email?: string,
-    timezone?: string,
-): Promise<UserAccount | any> {
-
+export async function registerUserAccount(payload: Record<string, string>): Promise<UserAccount | any> {
     try {
         const url: string = ENV.SERVER_URL + ENV.SERVER_PORT + userAccountUrl + "/register";
 
-        const { data, status }: AxiosResponse = await axios.post(url, {
-            institutionId,
-            name,
-            surname,
-            username,
-            newPassword,
-            confirmNewPassword,
-            email,
-            timezone
-        });
+        const { data, status }: AxiosResponse = await axios.post(
+            url,
+            payload
+        );
 
         if (status === 200) {
             return data;
@@ -38,6 +22,7 @@ export async function registerUserAccount(
         throw error;
     }
 }
+
 
 export async function changePassword(
     uuid: string,
