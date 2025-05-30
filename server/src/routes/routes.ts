@@ -20,6 +20,7 @@ import * as spUserAccountController from "../controllers/screen-proctoring/sp-us
 import * as settingsController from "../controllers/screen-proctoring/sp-settings.controller";
 import * as applicationSearchController from "../controllers/screen-proctoring/sp-application-search.controller";
 import * as spAuthorizationAdditional from "../middleware/spAuthorizationAdditional";
+import * as institutionsController from "../controllers/seb-server/institution.controller";
 
 const router: Router = express.Router();
 
@@ -58,6 +59,9 @@ router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE + "/activation", screenProcto
 router.get(constants.EXAM_TEMPLATE_ROUTE + "/:id", examTemplateController.getExamTemplate);
 router.get(constants.EXAM_TEMPLATE_ROUTE, examTemplateController.getExamTemplates);
 router.get(constants.EXAM_TEMPLATE_SCREEN_PROCTORING_ROUTE, examTemplateController.getExamTemplateSp);
+
+//institutions
+router.get(constants.INSTITUTION_ROUTE, institutionsController.getInstitutions);
 
 //user accounts
 router.get(constants.USER_ACCOUNT_ROUTE + "/:id", userAccountController.getUserAccount);
