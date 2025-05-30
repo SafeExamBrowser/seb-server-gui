@@ -15,44 +15,41 @@
         </v-app-bar-title>
 
         <template v-slot:append>
-
             <!--profile icon menu-->
-            <div class="profile-icon-container" aria-label="Profile">
+            <div class="profile-icon-container d-flex align-center" aria-label="Profile">
+                <!-- Username next to button -->
+                <span class="mr-1">{{ userAccountStore.userAccount?.name }}</span>
+                <span>{{ userAccountStore.userAccount?.surname }}</span>
                 <v-menu :close-on-content-click="false">
-
                     <template v-slot:activator="{ props }">
-                        <v-btn :aria-label="translate('navigation.screenReader.profile')" v-bind="props" color="primary"
-                            icon="mdi-account-circle" size="x-large" @click="userMenuOpened()">
+                        <v-btn
+                            :aria-label="translate('navigation.screenReader.profile')"
+                            v-bind="props"
+                            color="primary"
+                            icon="mdi-account-circle"
+                            size="x-large"
+                            @click="userMenuOpened()"
+                        >
                         </v-btn>
                     </template>
-
                     <v-list>
                         <v-list-item class="d-flex">
-                            <v-list-item-title>{{ $t('navigation.loggedInAs') }} {{ userAccountStore.userAccount?.name
-                                }}</v-list-item-title>
-                            <v-list-item-title>{{ $t('navigation.loggedInAs') }} {{
-                                userAccountStore.userAccount?.institutionId
-                                }}</v-list-item-title>
-
+                            <v-list-item-title>
+                                {{ $t('navigation.loggedInAs') }} {{ userAccountStore.userAccount?.username }}
+                            </v-list-item-title>
                         </v-list-item>
-
-                        <!-- <v-list-item class="d-flex" :to=constants.ACCOUNT_VIEW_ROUTE>
-                <v-list-item-title>{{ $t('navigation.accountSettings') }}</v-list-item-title>
-            </v-list-item> -->
-
                         <v-divider class="border-opacity-25" :thickness="1"></v-divider>
-
-                        <v-list-item tabindex="0" class="text-decoration-underline text-blue mx-auto"
-                            @click="authStore.logout()">
+                        <v-list-item
+                            tabindex="0"
+                            class="text-decoration-underline text-blue mx-auto"
+                            @click="authStore.logout()"
+                        >
                             <v-list-item-title class="mx-auto">{{ $t("navigation.signOut") }}</v-list-item-title>
                         </v-list-item>
-
                     </v-list>
                 </v-menu>
             </div>
-
         </template>
-
     </v-app-bar>
 
     <!---------------main navigation drawer----------------->
@@ -106,34 +103,30 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, watch, onBeforeMount } from "vue"
-    import { useAppBarStore, useNavigationStore } from "@/stores/store";
-    import { useAuthStore, useUserAccountStore } from "@/stores/authentication/authenticationStore";
+    import {ref, watch, onBeforeMount} from "vue"
+    import {useAppBarStore, useNavigationStore} from "@/stores/store";
+    import {useAuthStore, useUserAccountStore} from "@/stores/authentication/authenticationStore";
     import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
-    import { useTheme } from "vuetify";
-    import { useI18n } from "vue-i18n";
+    import {useTheme} from "vuetify";
+    import {useI18n} from "vue-i18n";
     import * as constants from "@/utils/constants";
     import router from "@/router/router";
-    import { translate } from "@/utils/generalUtils";
-    import * as spConstants from "@/utils/sp-constants";
-    import * as generalUtils from "@/utils/generalUtils";
-    import { StorageItemEnum } from "@/models/StorageItemEnum";
-    import { UserRoleEnum } from "@/models/userRoleEnum";
+    import {translate} from "@/utils/generalUtils";
+    import {UserRoleEnum} from "@/models/userRoleEnum";
 
 
     //i18n
-    const { locale } = useI18n();
+    const {locale} = useI18n();
     const localStorageLocale: string | null = localStorage.getItem("locale");
     locale.value = localStorageLocale ?? "en";
     const languageToggle = ref<number>(locale.value === "en" ? 0 : 1);
 
-
     //main navigation
     const navigationDrawer = ref();
     const mainNavigationLinks: NavigationItem[] = [
-        { title: translate('titles.home'), route: constants.HOME_PAGE_ROUTE, icon: "mdi-home" },
-        { title: translate('titles.exams'), route: constants.EXAM_ROUTE, icon: "mdi-file-document" },
-        { title: translate('titles.monitoring'), route: constants.MONITORING_ROUTE, icon: "mdi-eye" },
+        {title: translate('titles.home'), route: constants.HOME_PAGE_ROUTE, icon: "mdi-home"},
+        {title: translate('titles.exams'), route: constants.EXAM_ROUTE, icon: "mdi-file-document"},
+        {title: translate('titles.monitoring'), route: constants.MONITORING_ROUTE, icon: "mdi-eye"},
         // {title: 'Screen Proctoring', route: spConstants.RUNNING_EXAMS_ROUTE, icon: "mdi-video"},
     ];
 
@@ -178,7 +171,6 @@
         if (!navigationStore.isNavigationOverviewOpen) {
             return constants.NAVIGATION_OVERVIEW_ROUTE;
         }
-
         return constants.HOME_PAGE_ROUTE;
     }
 
@@ -186,10 +178,8 @@
         if (import.meta.env.VITE_SUB_PATH == null) {
             return constants.HOME_PAGE_ROUTE;
         }
-
         return import.meta.env.VITE_SUB_PATH + constants.HOME_PAGE_ROUTE;
     }
-
 </script>
 
 <style scoped>

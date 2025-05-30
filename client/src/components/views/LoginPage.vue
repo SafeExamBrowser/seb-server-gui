@@ -11,7 +11,7 @@
                 </div>
 
                 <div class="mt-10">
-                    <AlertMsg 
+                    <AlertMsg
                         v-if="loginError"
                         :alertProps="{
                             title: '',
@@ -20,7 +20,7 @@
                             textKey: 'login-error'
                         }">
                     </AlertMsg>
-                    <AlertMsg 
+                    <AlertMsg
                         v-if="loadingStore.isTimeout"
                         :alertProps="{
                             title: '',
@@ -30,7 +30,7 @@
                         }">
                     </AlertMsg>
                 </div>
-                
+
                 <v-card-title class="mt-10">
                     {{translate('loginPage.signIn')}}
                 </v-card-title>
@@ -42,7 +42,7 @@
 
                 <v-card-text>
                     <v-form @keyup.enter="signIn()">
-                        <v-text-field   
+                        <v-text-field
                             prepend-inner-icon="mdi-account-outline"
                             density="compact"
                             :placeholder="translate('loginPage.usernamePlaceholder')"
@@ -71,7 +71,7 @@
 
                         <v-btn
                             block
-                            rounded="sm" 
+                            rounded="sm"
                             color="primary"
                             @click="signIn()">
                             {{translate('loginPage.signIn')}}
@@ -81,12 +81,12 @@
 
                     <div class="text-center mt-7">
                         <span>
-                            {{translate('loginPage.noAccount')}} 
+                            {{translate('loginPage.noAccount')}}
                         </span>
-                        <span 
+                        <span
                             class="text-decoration-underline text-blue"
-                            role="button" 
-                            tabindex="0" 
+                            role="button"
+                            tabindex="0"
                             @keydown="handleTabKeyEvent($event, 'navigate')">
                             <router-link :to=constants.REGISTER_ROUTE>
                                 {{translate('loginPage.register')}}
@@ -101,7 +101,7 @@
         </v-container>
     </v-main>
 </template>
-  
+
 <script setup lang="ts">
     import { ref, computed } from "vue";
     import * as authenticationService from "@/services/authenticationService";
@@ -133,11 +133,11 @@
     async function signIn(){
         loginError.value = false;
         loadingStore.isTimeout = false;
-  
+
         try{
             // if seb server fails --> shows error msg
             const tokenObject = await authenticationService.login(username.value, password.value, false);
-            
+
             try{
                 //if sp failes --> only logs error
                 const spTokenObject = await authenticationService.login(username.value, password.value, true);
@@ -153,7 +153,7 @@
 
         } catch (error) {
             loginError.value = true;
-            
+
         }
     }
 
@@ -167,7 +167,7 @@
     }
 
 </script>
-  
+
 <style scoped>
 
     .invert{
@@ -177,7 +177,7 @@
     .logo-img {
         max-width: 150px;
         width: 100%;
-        height: auto; 
+        height: auto;
     }
 
 </style>
