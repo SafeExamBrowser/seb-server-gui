@@ -9,24 +9,33 @@ export async function registerUserAccount(
     username: string,
     newPassword: string,
     confirmNewPassword: string,
+    timezone: string,
     email?: string,
-    timezone?: string
 ): Promise<UserAccount | null> {
     try {
-        return await userAccountService.registerUserAccount(
+        const language = navigator.language?.split('-')[0] || 'gr';
+
+        const payload: Record<string, string> = {
             institutionId,
             name,
             surname,
             username,
             newPassword,
             confirmNewPassword,
-            email,
-            timezone
-        );
+            timezone,
+            language
+        };
+
+        if (email) {
+            payload.email = email;
+        }
+
+        return await userAccountService.registerUserAccount(payload);
     } catch (error) {
         return null;
     }
 }
+
 
 
 export async function getInstitutions(): Promise<Institution[] | null>{
