@@ -37,8 +37,8 @@
                 <v-card-subtitle>Please fill the form to register for a SEB Server account.</v-card-subtitle>
 
                 <v-card-text>
-                    <v-form @keyup.enter="register()">
-                        <!--Institution-->
+                    <v-form ref="formRef" @keyup.enter="register()">
+                        <!-- Institution -->
                         <v-select
                             required
                             prepend-inner-icon="mdi-domain"
@@ -49,95 +49,110 @@
                             :items="institutions"
                             item-title="name"
                             item-value="id"
+                            :rules="[requiredRule]"
                             :disabled="institutionSelectDisabled"
                         />
-                        <!--name-->
+
+                        <!-- Name -->
                         <v-text-field
                             required
                             prepend-inner-icon="mdi-account-outline"
                             density="compact"
-                            placeholder="Name *"
+                            label="Name *"
                             variant="outlined"
-                            v-model="name">
-                        </v-text-field>
+                            v-model="name"
+                            :rules="[requiredRule]"
+                        />
 
-                        <!--surname-->
+                        <!-- Surname -->
                         <v-text-field
                             required
                             prepend-inner-icon="mdi-account-outline"
                             density="compact"
-                            placeholder="Surname *"
+                            label="Surname *"
                             variant="outlined"
-                            v-model="surname">
-                        </v-text-field>
+                            v-model="surname"
+                            :rules="[requiredRule]"
+                        />
 
-                        <!--username-->
+                        <!-- Username -->
                         <v-text-field
                             required
                             prepend-inner-icon="mdi-account-outline"
                             density="compact"
-                            placeholder="Username *"
+                            label="Username *"
                             variant="outlined"
-                            v-model="username">
-                        </v-text-field>
+                            v-model="username"
+                            :rules="[requiredRule]"
+                        />
 
-                        <!--email-->
+                        <!-- Email -->
                         <v-text-field
                             prepend-inner-icon="mdi-email-outline"
                             density="compact"
-                            placeholder="Email"
+                            label="Email"
                             variant="outlined"
-                            v-model="email">
-                        </v-text-field>
+                            v-model="email"
+                        />
 
-                        <!--timezone-->
-                        <v-text-field
+                        <!-- Timezone -->
+                        <v-select
+                            required
                             prepend-inner-icon="mdi-map-clock-outline"
                             density="compact"
-                            placeholder="Time zone"
+                            label="Time zone *"
                             variant="outlined"
-                            v-model="timezone">
-                        </v-text-field>
+                            v-model="timezone"
+                            :items="timezoneOptions"
+                            :rules="[requiredRule]"
+                            :return-object="false"
+                        />
 
-                        <!--password-->
+                        <!-- Password -->
                         <v-text-field
                             required
                             :type="passwordVisible ? 'text' : 'password'"
                             prepend-inner-icon="mdi-lock-outline"
                             density="compact"
-                            placeholder="Password *"
+                            label="Password *"
                             variant="outlined"
-                            v-model="password">
-
+                            v-model="password"
+                            :rules="[requiredRule, passwordRule]"
+                            validate-on="blur"
+                        >
                             <template v-slot:append-inner>
                                 <v-btn
                                     density="compact"
                                     variant="text"
                                     :icon="passwordVisible ? 'mdi-eye-off' : 'mdi-eye'"
-                                    @click="passwordVisible = !passwordVisible">
-                                </v-btn>
+                                    @click="passwordVisible = !passwordVisible"
+                                />
                             </template>
                         </v-text-field>
 
-                        <!--confirm password-->
+                        <!-- Confirm Password -->
                         <v-text-field
                             required
                             :type="confirmPasswordVisible ? 'text' : 'password'"
                             prepend-inner-icon="mdi-lock-outline"
                             density="compact"
-                            placeholder="Confirm password *"
+                            label="Confirm password *"
                             variant="outlined"
-                            v-model="confirmPassword">
-
+                            v-model="confirmPassword"
+                            :rules="[requiredRule, confirmPasswordRule]"
+                            validate-on="blur"
+                            class="mb-2"
+                        >
                             <template v-slot:append-inner>
                                 <v-btn
                                     density="compact"
                                     variant="text"
                                     :icon="confirmPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
-                                    @click="confirmPasswordVisible = !confirmPasswordVisible">
-                                </v-btn>
+                                    @click="confirmPasswordVisible = !confirmPasswordVisible"
+                                />
                             </template>
                         </v-text-field>
+
 
                         <!--register button-->
                         <v-btn
@@ -177,6 +192,7 @@
     import {navigateTo} from "@/router/navigation";
     import * as constants from "@/utils/constants";
     import { getInstitutions } from "@/services/seb-server/component-services/registerAccountViewService";
+    import moment from "moment-timezone";
 
     //form fields
     const selectedInstitution = ref<string>("")
@@ -184,7 +200,7 @@
     const surname = ref<string>("");
     const username = ref<string>("");
     const email = ref<string>();
-    const timezone = ref<string>();
+    const timezone = ref<string>("");
     const password = ref<string>("");
     const confirmPassword = ref<string>("");
 
@@ -196,8 +212,22 @@
     const passwordVisible = ref<boolean>(false);
     const confirmPasswordVisible = ref<boolean>(false);
 
+    //institution setters
     const institutions = ref<Institution[]>([]);
     const institutionSelectDisabled = ref(false);
+
+    //validation rules
+    const requiredRule = (v: string) => !!v || 'This field is required';
+    const passwordRule = (v: string) =>
+        (v && v.length >= 8) || 'Password must be at least 8 characters';
+    const formRef = ref();
+    const confirmPasswordRule = (v: string) =>
+        v === password.value || 'Passwords must match';
+
+
+    //timezones
+    const timezoneOptions = moment.tz.names();
+
 
     //fetch Institution
     onMounted(async () => {
@@ -212,22 +242,26 @@
         }
     });
 
-
-    async function register(){
+    //register
+    async function register() {
         registerError.value = false;
         registerSuccess.value = false;
 
-        try{
-            // const userAccount: object = await userAccountService.register(name.value, surname.value, username.value, password.value, confirmPassword.value, email.value, timezone.value);
-            registerSuccess.value = true;
-
-        }catch(error){
-            //todo: add better error handling
-            console.error(error)
-            registerError.value = true;
+        const { valid } = await formRef.value.validate();
+        if (!valid) {
+            console.warn("Form is invalid — not submitting.");
+            return;
         }
 
+        try {
+            // Submit logic here
+            registerSuccess.value = true;
+        } catch (error) {
+            console.error(error);
+            registerError.value = true;
+        }
     }
+
 
     //todo: extract this function into a global file
     function handleTabKeyEvent(event: any, action: string){
@@ -238,7 +272,6 @@
             }
         }
     }
-
 </script>
 
 
