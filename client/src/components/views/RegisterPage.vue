@@ -292,6 +292,7 @@
             }
         } catch (error) {
             console.error(error);
+            //todo error handle
             registerError.value = true;
         }
     };
