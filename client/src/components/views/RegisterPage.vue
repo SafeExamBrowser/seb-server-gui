@@ -188,11 +188,11 @@
 
 <script setup lang="ts">
     import { ref } from "vue";
-    // import * as userAccountService from "@/services/api-services/userAccountService";
     import {navigateTo} from "@/router/navigation";
     import * as constants from "@/utils/constants";
-    import { getInstitutions } from "@/services/seb-server/component-services/registerAccountViewService";
+    import { getInstitutions , registerUserAccount } from "@/services/seb-server/component-services/registerAccountViewService";
     import moment from "moment-timezone";
+
 
     //form fields
     const selectedInstitution = ref<string>("")
@@ -254,8 +254,22 @@
         }
 
         try {
-            // Submit logic here
-            registerSuccess.value = true;
+            const result = await registerUserAccount(
+                selectedInstitution.value,
+                name.value,
+                surname.value,
+                username.value,
+                password.value,
+                confirmPassword.value,
+                email.value,
+                timezone.value
+            );
+
+            if (result) {
+                registerSuccess.value = true;
+            } else {
+                registerError.value = true;
+            }
         } catch (error) {
             console.error(error);
             registerError.value = true;
