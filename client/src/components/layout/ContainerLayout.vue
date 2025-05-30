@@ -140,6 +140,42 @@
                         <div class="custom-white-divider my-0"></div>
 
                         <v-list-item class="pt-0 pb-1 px-4">
+                            <v-list-item-title class="text-white text-body-2">
+                                Profile Settings
+
+                    <!--profile menu-->
+                    <v-list class="profile-list-popup bg-primary text-white px-4 py-3">
+
+                        <div class="d-flex justify-space-between align-center w-100 ">
+                            <span class="text-caption font-weight-light text-grey-lighten-2">
+                                {{ $t('navigation.loggedInAs') }}
+                            </span>
+
+                            <v-btn
+                                @click="authStore.logout()"
+                                variant="text"
+                                class="logout-wrap text-caption font-weight-light d-flex align-center"
+                            >
+                                <span class="text-grey-lighten-2 mr-1">Log out</span>
+                                <v-icon class="logout-icon">mdi-logout</v-icon>
+                            </v-btn>
+
+                        </div>
+
+
+                        <div class="text-h6 font-weight-bold leading-tight mt-0" style="line-height: 1.2;">
+                            {{ userAccountStore.userAccount?.name }}<br />
+                            {{ userAccountStore.userAccount?.surname }}
+                        </div>
+
+
+                        <div class="text-caption font-weight-light text-grey-lighten-2 mt-12 mb-0">
+                            Personal
+                        </div>
+
+                        <div class="custom-white-divider my-0"></div>
+
+                        <v-list-item class="pt-0 pb-1 px-4">
                             <router-link class="link-color text-decoration-none nav-link text-white text-body-2" :to="constants.PROFILE_ROUTE">{{ translate("titles.profileSettings") }}</router-link>
                         </v-list-item>
 
@@ -155,8 +191,6 @@
                                 Documentation
                             </v-list-item-title>
                         </v-list-item>
-
-
                     </v-list>
                 </v-menu>
             </div>
