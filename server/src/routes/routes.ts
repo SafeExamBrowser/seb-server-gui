@@ -63,9 +63,11 @@ router.get(constants.EXAM_TEMPLATE_SCREEN_PROCTORING_ROUTE, examTemplateControll
 
 //institutions
 router.get(constants.INSTITUTION_ROUTE, institutionsController.getInstitutions);
+router.get(constants.INSTITUTION_ROUTE, institutionsController.getInstitutions);
 
 //user accounts
 router.get(constants.USER_ACCOUNT_ROUTE + "/:id", userAccountController.getUserAccount);
+router.get(constants.USER_ACCOUNT_ROUTE, userAccountController.getUserAccounts);
 router.get(constants.USER_ACCOUNT_NAMES_ROUTE, userAccountController.getUserAccountNames);
 router.get(constants.SUPERVISOR_ACCOUNT_NAMES_ROUTE, userAccountController.getSupervisorAccountNames);
 router.post(constants.USER_ACCOUNT_REGISTRATION_ROUTE, userAccountController.createUserAccount);
