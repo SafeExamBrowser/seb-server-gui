@@ -303,7 +303,7 @@
         <InstructionConfirmDialog
             @close-instruction-confirm-dialog="closeInstructionConfirmDialog"
             :instruction-type="selectedInstructionType"
-            :connectionTokens="getConnectionTokens()">
+            :connectionTokens="selectedConnectionTokens">
         </InstructionConfirmDialog>
     </v-dialog>
 
@@ -321,6 +321,7 @@
     import {navigateTo} from "@/router/navigation";
     import * as constants from "@/utils/constants";
     import { InstructionEnum } from "@/models/seb-server/instructionEnum";
+    import { useErrorStore } from "@/stores/seb-server/errorStore";
     
     //i18n
     const i18n = useI18n();
@@ -334,6 +335,7 @@
     //stores
     const monitoringStore = useMonitoringStore();
     const monitoringStoreRef = storeToRefs(monitoringStore);
+    const errorStore = useErrorStore();
 
     //exam
     const examId = useRoute().params.examId.toString();
@@ -344,6 +346,7 @@
     //instruction confirm dialog
     const instructionConfirmDialog = ref<boolean>(false);
     const selectedInstructionType = ref<InstructionEnum | null>(null);
+    const selectedConnectionTokens = ref<string>("");
 
     //emits - call loadMonitoringListItemsCaller in parent
     const emit = defineEmits<{
@@ -383,7 +386,23 @@
 
     //===============instruction confirm dialog====================
     function openInstructionConfirmDialog(instructionType: InstructionEnum){
+        const connectionTokens: string | null = getConnectionTokens();
+        if(connectionTokens == null){
+            const errorProps: ErrorProps = {
+                color: "error",
+                textKey: "no-data",
+                timeout: 5000
+            }
+
+            errorStore.showError(errorProps);
+            return;
+        }
+
+        console.log(connectionTokens)
+
         selectedInstructionType.value = instructionType;
+        selectedConnectionTokens.value = connectionTokens;
+
         instructionConfirmDialog.value = true;
     }
 
@@ -391,9 +410,9 @@
         instructionConfirmDialog.value = false;
     }
 
-    function getConnectionTokens(): string{
+    function getConnectionTokens(): string | null{
         if(monitoringStore.staticClientDataList == null){
-            return "";
+            return null;
         }
 
         //create map from static data
@@ -411,6 +430,10 @@
             }
 
         });
+
+        if(connectionTokens.length == 0){
+            return null;
+        }
 
         //create string and return string comma list
         return generalUtils.createStringCommaList(connectionTokens);

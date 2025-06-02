@@ -132,6 +132,8 @@
             return;
         }
 
+        console.log("props.connectionTokens: " + props.connectionTokens)
+
         //create object
         const clientInstruction: ClientInstruction = {
             examId: parseInt(examId),
@@ -144,9 +146,10 @@
             clientInstruction.attributes = {
                 "message": lockScreenText.value
             };
+
+            console.log("message: " + lockScreenText.value)
         }
 
-        console.log("message " +  lockScreenText.value)
 
         //send inctruction
         const registerInstructionResponse: any | null = await monitoringViewService.registerInstruction(examId, clientInstruction);

@@ -49,7 +49,7 @@ export async function getExamAndStore(examId: string){
 }
 
 
-export async function registerInstruction(examId: string, clientInstruction: ClientInstruction){
+export async function registerInstruction(examId: string, clientInstruction: ClientInstruction): Promise<any | null>{
     try{
         return await monitoringService.registerInstruction(examId, clientInstruction);
     }catch(error){
