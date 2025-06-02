@@ -70,7 +70,7 @@ type MonitoringStaticClientData = {
 
 type StaticClientConnectionData = {
     id: number;
-    conectionToken: string;
+    connectionToken: string;
     examUserSessionId: string;
     ask: string;
     seb_info: string;

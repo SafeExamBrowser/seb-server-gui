@@ -54,6 +54,7 @@ declare module 'vue' {
     ImportTemplateInfo: typeof import('./components/views/seb-server/quiz-import/info-box-content/ImportTemplateInfo.vue')['default']
     ImportTemplateMain: typeof import('./components/views/seb-server/quiz-import/main-content/ImportTemplateMain.vue')['default']
     ImportWizard: typeof import('./components/views/seb-server/quiz-import/ImportWizard.vue')['default']
+    InstructionConfirmDialog: typeof import('./components/views/seb-server/monitoring/dialogs/InstructionConfirmDialog.vue')['default']
     LoginPage: typeof import('./components/views/LoginPage.vue')['default']
     MonitoringClientDetailContainer: typeof import('./components/views/seb-server/monitoring/client-detail/MonitoringClientDetailContainer.vue')['default']
     MonitoringClientDetailInfo: typeof import('./components/views/seb-server/monitoring/client-detail/MonitoringClientDetailInfo.vue')['default']

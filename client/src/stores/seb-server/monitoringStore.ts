@@ -21,6 +21,7 @@ export const useMonitoringStore = defineStore("monitoring", () => {
     const indicators = ref<Indicators | null>(null);
     const clientGroups = ref<ClientGroups | null>(null);
     const monitoringData = ref<Map<number, MonitoringRow>>(new Map());
+    const staticClientDataList = ref<MonitoringStaticClientData | null>(null);
 
 
     function clearValues(){
@@ -28,6 +29,7 @@ export const useMonitoringStore = defineStore("monitoring", () => {
         indicators.value = null;
         clientGroups.value = null;
         monitoringData.value = new Map();
+        staticClientDataList.value = null;
     }
 
     return {
@@ -43,6 +45,7 @@ export const useMonitoringStore = defineStore("monitoring", () => {
         selectedMonitoringIds,
         clearValues,
         isNoFilterSelected,
-        monitoringData
+        monitoringData,
+        staticClientDataList
     };
 });

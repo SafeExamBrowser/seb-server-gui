@@ -216,27 +216,30 @@
 
                             <div>
                                 <v-btn 
+                                    :disabled="monitoringStore.selectedMonitoringIds.length == 0"
                                     class="mt-2"
                                     rounded="sm" 
-                                    color="primary" 
-                                    variant="flat"
-                                    size="small"
-                                    @click="">
-                                    Quit selected clients
+                                    color="black" 
+                                    variant="outlined"
+                                    prepend-icon="mdi-monitor-lock"
+                                    @click="openInstructionConfirmDialog(InstructionEnum.SEB_FORCE_LOCK_SCREEN)">
+                                    Lock selected clients
                                 </v-btn>
                             </div>
 
                             <div>
                                 <v-btn 
+                                    :disabled="monitoringStore.selectedMonitoringIds.length == 0"
                                     class="mt-2"
                                     rounded="sm" 
-                                    color="primary" 
-                                    variant="flat"
-                                    size="small"
-                                    @click="registerInstruction()">
-                                    Lock selected clients
+                                    color="black" 
+                                    variant="outlined"
+                                    prepend-icon="mdi-backspace-outline"
+                                    @click="openInstructionConfirmDialog(InstructionEnum.SEB_QUIT)">
+                                    Quit selected clients
                                 </v-btn>
                             </div>
+                            
                         </v-card>
                     </v-col>
 
@@ -295,6 +298,15 @@
         </v-col>
     </v-row>
 
+    <!-----------instruction confirm dialog---------->      
+    <v-dialog v-model="instructionConfirmDialog" max-width="600">
+        <InstructionConfirmDialog
+            @close-instruction-confirm-dialog="closeInstructionConfirmDialog"
+            :instruction-type="selectedInstructionType"
+            :connectionTokens="getConnectionTokens()">
+        </InstructionConfirmDialog>
+    </v-dialog>
+
 </template>
 
 <script setup lang="ts">
@@ -328,6 +340,10 @@
 
     //datepicker
     const datepicker = ref();
+
+    //instruction confirm dialog
+    const instructionConfirmDialog = ref<boolean>(false);
+    const selectedInstructionType = ref<InstructionEnum | null>(null);
 
     //emits - call loadMonitoringListItemsCaller in parent
     const emit = defineEmits<{
@@ -365,31 +381,40 @@
         return false;
     }
 
-
-    //=================client instructions===================
-    async function registerInstruction(){
-
-
-
-
-
-        const clientInstruction: ClientInstruction = {
-            examId: parseInt(examId),
-            connectionToken: generalUtils.createStringCommaList([
-                "7ebfc95f-517b-4500-8e9c-5f099d447469", 
-                "bf5d46c8-68f0-46a2-b62f-de4f352a15f5", 
-                "da4f6c87-6c90-4fba-b09f-3c0ee706f184"
-            ]),
-            type: InstructionEnum.SEB_QUIT,
-            attributes: {
-                "message": "test 1234"
-            }
-        }
-
-        console.log(await monitoringViewService.registerInstruction(examId, clientInstruction));
-
+    //===============instruction confirm dialog====================
+    function openInstructionConfirmDialog(instructionType: InstructionEnum){
+        selectedInstructionType.value = instructionType;
+        instructionConfirmDialog.value = true;
     }
 
+    function closeInstructionConfirmDialog(){
+        instructionConfirmDialog.value = false;
+    }
+
+    function getConnectionTokens(): string{
+        if(monitoringStore.staticClientDataList == null){
+            return "";
+        }
+
+        //create map from static data
+        const idTokenMap: Map<number, string> = new Map(
+            monitoringStore.staticClientDataList.staticClientConnectionData.map(data => [data.id, data.connectionToken])
+        );
+
+        //get token and add it to list
+        const connectionTokens: string[] = [];
+        monitoringStore.selectedMonitoringIds.forEach((id, index) => {
+            const connectionToken: string | undefined = idTokenMap.get(id);
+
+            if(connectionToken != null){
+                connectionTokens.push(connectionToken);
+            }
+
+        });
+
+        //create string and return string comma list
+        return generalUtils.createStringCommaList(connectionTokens);
+    }
 
 
 </script>

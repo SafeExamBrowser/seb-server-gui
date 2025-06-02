@@ -77,7 +77,7 @@
 
         await monitoringViewService.getExamAndStore(examId);
         await getOverviewData();
-        // setRandomData();
+        setRandomData();
 
         startIntervalRefresh()
     });
@@ -102,8 +102,8 @@
     async function startIntervalRefresh(){
         intervalRefresh = setInterval(async () => {
 
-            getOverviewData();
-            // setRandomData();
+            // getOverviewData();
+            setRandomData();
 
         }, REFRESH_INTERVAL);
     }

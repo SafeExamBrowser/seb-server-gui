@@ -123,8 +123,8 @@
 
     //items
     const connections = ref<MonitoringConnections>();
-    const staticClientDataList = ref<MonitoringStaticClientData>();
     const monitoringDataTable = ref<MonitoringRow[]>([]);
+    // const staticClientDataList = ref<MonitoringStaticClientData>();
     // const monitoringData = ref<Map<number, MonitoringRow>>(new Map());
 
     //interval
@@ -240,7 +240,7 @@
             return;
         }
 
-        staticClientDataList.value = staticClientDataResponse;
+        monitoringStore.staticClientDataList = staticClientDataResponse;
     }
 
     async function getStaticClientData(modelIds: number[]): Promise<MonitoringStaticClientData | null>{
@@ -251,7 +251,7 @@
 
     //==============data update=================
     async function updateConnections(){
-        if(connections.value == null || staticClientDataList.value == null){
+        if(connections.value == null || monitoringStore.staticClientDataList == null){
             return;
         }
 
@@ -302,7 +302,7 @@
     }
 
     async function addNewClients(){
-        if(connections.value == null || staticClientDataList.value == null){
+        if(connections.value == null || monitoringStore.staticClientDataList == null){
             return;
         }
 
@@ -322,7 +322,7 @@
     }
 
     function removeClients(){
-        if(connections.value == null || staticClientDataList.value == null){
+        if(connections.value == null || monitoringStore.staticClientDataList == null){
             return;
         }
 
@@ -341,12 +341,12 @@
 
     //=================data preparing===================
     function initalizeTableData(){
-        if(connections.value == null || staticClientDataList.value == null){
+        if(connections.value == null || monitoringStore.staticClientDataList == null){
             return;
         }
 
         const staticDataMap: Map<number, StaticClientConnectionData> = new Map(
-            staticClientDataList.value.staticClientConnectionData.map(data => [data.id, data])
+            monitoringStore.staticClientDataList.staticClientConnectionData.map(data => [data.id, data])
         );
 
         connections.value.monitoringConnectionData.cons.forEach((dynamicData, index) => {
@@ -366,7 +366,7 @@
     function createMonitoringRowData(fullPageDataConnection: MonitoringClientConnection, staticClientData: StaticClientConnectionData): MonitoringRow{
         return {
             id: fullPageDataConnection.id,
-            connectionToken: staticClientData.conectionToken,
+            connectionToken: staticClientData.connectionToken,
             nameOrSession: staticClientData.examUserSessionId,
             clientGroups: extractClientGroupNames(staticClientData.cg),
             connectionInfo: staticClientData.seb_info,
