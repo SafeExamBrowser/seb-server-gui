@@ -11,7 +11,7 @@
 
         <!--current site title-->
         <v-app-bar-title>
-            <h1 class="title-inherit-styling">{{appBarStore.title}}</h1>
+            <h1 class="title-inherit-styling">{{ appBarStore.title }}</h1>
         </v-app-bar-title>
 
         <template v-slot:append>
@@ -88,7 +88,6 @@
                                 height: 3rem;
                                 min-width: 3rem;
                                 padding: 0;">
-
                                 <span style="font-weight: 500; font-size: 1.1rem;">
                                     {{
                                         (userAccountStore.userAccount?.name?.[0] || '') +
@@ -155,8 +154,14 @@
                                 Documentation
                             </v-list-item-title>
                         </v-list-item>
-
-
+                        <v-divider class="border-opacity-25" :thickness="1"></v-divider>
+                        <v-list-item
+                            tabindex="0"
+                            class="text-decoration-underline text-blue mx-auto"
+                            @click="authStore.logout()"
+                        >
+                            <v-list-item-title class="mx-auto">{{ $t("navigation.signOut") }}</v-list-item-title>
+                        </v-list-item>
                     </v-list>
                 </v-menu>
             </div>
@@ -215,8 +220,6 @@
         </v-container>
     </v-main>
 
-
-
 </template>
 
 <script setup lang="ts">
@@ -235,6 +238,7 @@
     //i18n
     const {locale} = useI18n();
     const localStorageLocale: string | null = localStorage.getItem("locale");
+    locale.value = localStorageLocale ?? "en";
     const languageToggle = ref<number>(locale.value === "en" ? 0 : 1);
     const layoutStore = useLayoutStore();
     const isNavOverviewRoute = computed(() => {
@@ -366,6 +370,69 @@
     .blue-background {
         background-color: #215caf;
     }
+
+    .fade-in-arrow {
+        opacity: 0;
+        transition: opacity 0.2s ease;
+        margin-left: auto;
+    }
+
+    .fade-in-visible {
+        opacity: 1;
+    }
+
+    .roles-list-popup {
+        margin-top: 0.6rem !important;
+        border-radius: 0 !important;
+    }
+
+    .profile-list-popup {
+        margin-top: 0.47rem !important;
+        border-radius: 0 !important;
+        width: 20vw;
+        min-width: 16rem;
+        max-width: 90vw;
+        left: 1vw !important;
+        right: 0 !important;
+    }
+
+    .leading-tight {
+        line-height: 1.2;
+    }
+
+    .logout-btn {
+        padding: 0;
+        min-width: unset;
+        margin-right: 0.25rem;
+        text-transform: none;
+        color: #b0bec5;
+    }
+
+    .logout-icon {
+        font-size: 1.3rem;
+        font-weight: 300;
+        line-height: 1;
+        vertical-align: middle;
+        color: #b0bec5;
+    }
+
+    @media (min-width: 960px) {
+        .logout-icon {
+            font-size: 1.5rem;
+        }
+    }
+
+    .custom-white-divider {
+        height: 1px;
+        width: 100%;
+        background-color: white;
+        opacity: 1;
+    }
+
+    .bg-is-institutional-admin {
+        background-color: #A30774 !important; /* Vuetify default red */
+    }
+
 
     .fade-in-arrow {
         opacity: 0;
