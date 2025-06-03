@@ -1,5 +1,6 @@
 import { ExamStatusEnum, ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
 import { defineStore } from "pinia";
+import {UserAccount} from "@/models/userAccount";
 
 export const useExamStore = defineStore("exam", () => {
     //exam table

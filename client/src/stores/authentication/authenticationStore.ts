@@ -5,6 +5,7 @@ import * as userAccountViewService from "@/services/seb-server/component-service
 import * as constants from "@/utils/constants";
 import * as authenticationService from "@/services/authenticationService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
+import {UserAccount} from "@/models/userAccount";
 
 
 //----------------------authentication---------------------------//
