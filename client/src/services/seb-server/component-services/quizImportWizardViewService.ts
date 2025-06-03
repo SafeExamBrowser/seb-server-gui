@@ -4,17 +4,17 @@ import * as examService from "@/services/seb-server/api-services/examService";
 
 
 //=============api==============
-export async function getQuizzes(optionalParamters?: OptionalParGetQuizzes): Promise<Quizzes | null>{
+export async function getQuizzes(optionalParameters?: OptionalParGetQuizzes): Promise<Quizzes | null>{
     try{
-        return await quizService.getQuizzes(optionalParamters);        
+        return await quizService.getQuizzes(optionalParameters);        
     }catch(error){
         return null;
     }
 }
 
-export async function getExamTemplates(optionalParamters?: OptionalParGeneric): Promise<ExamTemplates | null>{
+export async function getExamTemplates(optionalParameters?: OptionalParGeneric): Promise<ExamTemplates | null>{
     try{
-        return await examTemplateService.getExamTemplates(optionalParamters);        
+        return await examTemplateService.getExamTemplates(optionalParameters);        
     }catch(error){
         return null;
     }

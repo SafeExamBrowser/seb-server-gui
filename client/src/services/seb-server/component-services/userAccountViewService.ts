@@ -1,6 +1,5 @@
 import * as userAccountService from "@/services/seb-server/api-services/userAccountService";
 import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
-import {OptionalParGetUserAccounts, UserAccount, UserAccountName, UserAccountResponse} from "@/models/userAccount";
 
 export async function setPersonalUserAccount(){
     const userAccountStore = useUserAccountStore();
@@ -53,18 +52,18 @@ export async function getUserAccounts(optionalParameters?: OptionalParGetUserAcc
     }
 }
 
-export async function getUserAccountNames(optionalParamters?: OptionalParInstitutionId): Promise<UserAccountName[] | null>{
+export async function getUserAccountNames(optionalParameters?: OptionalParInstitutionId): Promise<UserAccountName[] | null>{
     try{
-        return await userAccountService.getUserAccountNames(optionalParamters)
+        return await userAccountService.getUserAccountNames(optionalParameters)
 
     }catch(error){
         return null;
     }
 }
 
-export async function getSupervisorNames(optionalParamters?: OptionalParInstitutionId): Promise<UserAccountName[] | null>{
+export async function getSupervisorNames(optionalParameters?: OptionalParInstitutionId): Promise<UserAccountName[] | null>{
     try{
-        return await userAccountService.getSupervisorNames(optionalParamters)
+        return await userAccountService.getSupervisorNames(optionalParameters)
 
     }catch(error){
         return null;

@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import type { UserAccount } from '@/models/userAccount';
 // (You can add more fields as you need them for the detail page, e.g. roles, messages, etc.)
 
 export const useUserAccountStore = defineStore('userAccount', () => {

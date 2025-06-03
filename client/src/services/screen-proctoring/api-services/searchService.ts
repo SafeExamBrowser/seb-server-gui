@@ -2,24 +2,24 @@ import { AxiosResponse } from 'axios'
 import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
 
-export async function searchSessionsDay(optionalParamters?: OptionalParSearchSessions): Promise<string[] | any> {
+export async function searchSessionsDay(optionalParameters?: OptionalParSearchSessions): Promise<string[] | any> {
     const url: string = "/sp/search/sessions/day";
-    return (await apiService.api.get(url, {headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN), params: {optionalParamters}})).data;
+    return (await apiService.api.get(url, {headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN), params: {optionalParameters}})).data;
 }
 
-export async function searchSessions(optionalParamters?: OptionalParSearchSessions): Promise<SearchSessions | any> {
+export async function searchSessions(optionalParameters?: OptionalParSearchSessions): Promise<SearchSessions | any> {
     const url: string = "/sp/search/sessions";
-    return (await apiService.api.get(url, {headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN), params: {optionalParamters}})).data;
+    return (await apiService.api.get(url, {headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN), params: {optionalParameters}})).data;
 }
 
-export async function searchScreenshots(optionalParamters?: OptionalParSearchScreenshots): Promise<SearchScreenshots | any> {
+export async function searchScreenshots(optionalParameters?: OptionalParSearchScreenshots): Promise<SearchScreenshots | any> {
     const url: string = "/sp/search/screenshots"
-    return (await apiService.api.get(url, {headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN), params: {optionalParamters}})).data;
+    return (await apiService.api.get(url, {headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN), params: {optionalParameters}})).data;
 }
 
-export async function searchTimeline(sessionId: string, optionalParamters?: OptionalParSearchTimeline): Promise<SearchTimeline | any> {
+export async function searchTimeline(sessionId: string, optionalParameters?: OptionalParSearchTimeline): Promise<SearchTimeline | any> {
     const url: string = "/sp/search/timeline/" + sessionId;
-    return (await apiService.api.get(url, {headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN), params: {optionalParamters}})).data;
+    return (await apiService.api.get(url, {headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN), params: {optionalParameters}})).data;
 }
 
 export async function deleteSessions(sessionUuids: string[]): Promise<object | any> {

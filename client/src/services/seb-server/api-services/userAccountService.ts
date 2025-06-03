@@ -2,7 +2,6 @@ import axios, { AxiosResponse } from "axios";
 import * as ENV from "@/config/envConfig";
 import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
-import {UserAccount, UserAccountName, UserAccountResponse} from "@/models/userAccount";
 
 const userAccountUrl: string = "/useraccount";
 
@@ -72,19 +71,19 @@ export async function getUserAccountById(accountId: string): Promise<UserAccount
     return (await apiService.api.get(url, { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN) })).data;
 }
 
-export async function getUserAccounts(optionalParameters?: OptionalParGeneric): Promise<UserAccountResponse | any> {
+export async function getUserAccounts(optionalParameters?: OptionalParGetUserAccounts): Promise<UserAccountResponse | any> {
     const url: string = userAccountUrl;
     return (await apiService.api.get(url, { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN), params: { optionalParameters } })).data;
 }
 
-export async function getUserAccountNames(optionalParamters?: OptionalParInstitutionId): Promise<UserAccountName[] | any> {
+export async function getUserAccountNames(optionalParameters?: OptionalParInstitutionId): Promise<UserAccountName[] | any> {
     const url: string = userAccountUrl + "/names";
-    return (await apiService.api.get(url, { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN), params: { optionalParamters } })).data;
+    return (await apiService.api.get(url, { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN), params: { optionalParameters } })).data;
 }
 
-export async function getSupervisorNames(optionalParamters?: OptionalParInstitutionId): Promise<UserAccountName[] | any> {
+export async function getSupervisorNames(optionalParameters?: OptionalParInstitutionId): Promise<UserAccountName[] | any> {
     const url: string = userAccountUrl + "/supervisors";
-    return (await apiService.api.get(url, { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN), params: { optionalParamters } })).data;
+    return (await apiService.api.get(url, { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN), params: { optionalParameters } })).data;
 }
 
 export async function activateUserAccount(accountId: string): Promise<UserAccount | any> {
