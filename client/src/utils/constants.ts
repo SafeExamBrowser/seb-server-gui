@@ -28,6 +28,7 @@ export const ACCOUNT_VIEW_ROUTE: string = "/account";
 export const MONITORING_ROUTE: string = "/monitoring";
 export const MONITORING_OVERVIEW_ROUTE: string = MONITORING_ROUTE + "/overview";
 export const MONITORING_CLIENTS_ROUTE: string = MONITORING_ROUTE + "/clients";
+export const MONITORING_DETAILS_ROUTE: string = MONITORING_ROUTE + "/:examId" + "/details"
 
 export const QUIZ_IMPORT_ROUTE: string = "/quiz-import";
 

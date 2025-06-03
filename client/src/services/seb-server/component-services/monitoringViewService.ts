@@ -164,3 +164,7 @@ export function goToMonitoring(header: MonitoringHeaderEnum, value: string | boo
         {[header]: value}
     );
 }
+
+export function goToMonitoringDetails(examId: string, connectionToken: string){
+    navigateTo(constants.MONITORING_ROUTE + '/' + examId + "/details/" + connectionToken);
+}

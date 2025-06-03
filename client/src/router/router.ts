@@ -14,6 +14,7 @@ import MonitoringClientsContainer from "@/components/views/seb-server/monitoring
 import MonitoringOverviewContainer from "@/components/views/seb-server/monitoring/overview/MonitoringOverviewContainer.vue";
 import * as authenticationService from "@/services/authenticationService";
 import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
+import MonitoringDetailsContainer from "@/components/views/seb-server/monitoring/client-detail/MonitoringDetailsContainer.vue";
 
 
 //----------screen-proctoring ---------
@@ -137,6 +138,14 @@ const routes: Array<RouteRecordRaw> = [
                 path: constants.MONITORING_CLIENTS_ROUTE + "/:examId",
                 name: "MonitoringClients",
                 component: MonitoringClientsContainer,
+                meta: {
+                    titleKey: "titles.monitoring"
+                },
+            },
+            {
+                path: constants.MONITORING_DETAILS_ROUTE + "/:connectionToken",
+                name: "MonitoringDetails",
+                component: MonitoringDetailsContainer,
                 meta: {
                     titleKey: "titles.monitoring"
                 },
