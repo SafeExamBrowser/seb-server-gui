@@ -4,7 +4,7 @@ import * as applicationSearchService from "../../services/screen-proctoring/sp-a
 
 export async function getExamsStarted(req: Request, res: Response){
     try{
-        const [exams, status] = await applicationSearchService.getExamsStarted(req.headers.authorization, req.query.optionalParamters);
+        const [exams, status] = await applicationSearchService.getExamsStarted(req.headers.authorization, req.query.optionalParameters);
         return res.status(status).json(exams);
 
     }catch(error){

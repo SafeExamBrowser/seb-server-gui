@@ -6,36 +6,36 @@ import * as spConstants from "@/utils/sp-constants";
 import { useRoute } from "vue-router";
 
 //=============api==============
-export async function searchSessionsDay(optionalParamters?: OptionalParSearchSessions): Promise<string[] | null>{
+export async function searchSessionsDay(optionalParameters?: OptionalParSearchSessions): Promise<string[] | null>{
     try{
-        return await searchService.searchSessionsDay(optionalParamters);        
+        return await searchService.searchSessionsDay(optionalParameters);        
     }catch(error){
         console.error(error);
         return null;
     }
 }
 
-export async function searchSessions(optionalParamters?: OptionalParSearchSessions): Promise<SearchSessions | null>{
+export async function searchSessions(optionalParameters?: OptionalParSearchSessions): Promise<SearchSessions | null>{
     try{
-        return await searchService.searchSessions(optionalParamters);        
+        return await searchService.searchSessions(optionalParameters);        
     }catch(error){
         console.error(error);
         return null;
     }
 }
 
-export async function searchScreenshots(optionalParamters?: OptionalParSearchScreenshots): Promise<SearchScreenshots | null>{
+export async function searchScreenshots(optionalParameters?: OptionalParSearchScreenshots): Promise<SearchScreenshots | null>{
     try{
-        return await searchService.searchScreenshots(optionalParamters);        
+        return await searchService.searchScreenshots(optionalParameters);        
     }catch(error){
         console.error(error);
         return null;
     }
 }
 
-export async function searchTimeline(sessionId: string, optionalParamters?: OptionalParSearchTimeline): Promise<SearchTimeline | null>{
+export async function searchTimeline(sessionId: string, optionalParameters?: OptionalParSearchTimeline): Promise<SearchTimeline | null>{
     try{
-        return await searchService.searchTimeline(sessionId, optionalParamters);        
+        return await searchService.searchTimeline(sessionId, optionalParameters);        
     }catch(error){
         console.error(error);
         return null;

@@ -10,7 +10,7 @@
                     :loading-text="translate('general.loadingText')"
                     :items="userAccounts?.content"
                     :items-length="totalItems"
-                    :items-per-page="userAccounts?.page_size || 10"
+                    :items-per-page="tableUtils.calcDefaultItemsPerPage(totalItems)"
                     :items-per-page-options="tableUtils.calcItemsPerPage(totalItems)"
                     :headers="userAccountsTableHeaders"
                 >
@@ -67,7 +67,6 @@
 
     import * as userAccountViewService from '@/services/seb-server/component-services/userAccountViewService';
     import { useUserAccountStore } from '@/stores/seb-server/userAccountStore';
-    import type { UserAccount, UserAccountResponse } from '@/models/userAccount';
     import {USER_ACCOUNT_DETAIL_ROUTE} from "@/utils/constants";
     import {assignUserAccountSelectPagingOptions} from "@/utils/table/tableUtils";
 
@@ -167,50 +166,35 @@
         userAccountStore.selectedUserAccount = account;
     }
 
-    //
-    // —— Fetching / paging logic exactly parallels ExamListMain.vue but calls getUserAccounts
-    //
     async function loadItems(serverTablePaging: ServerTablePaging) {
-        console.log('Total items calculated:', totalItems.value);
-
-        // 1) Save the paging options into Pinia so other components (e.g. detail) can read them
         userAccountStore.currentPagingOptions = serverTablePaging;
         isLoading.value = true;
 
-        // 2) On first load, force default sort
-        if (!serverTablePaging.sortBy || serverTablePaging.sortBy.length === 0) {
+        //current solution to default sort the table
+        //sort-by in data-table-server tag breaks the sorting as the headers are in a seperate component
+        if(isOnLoad.value){
             serverTablePaging.sortBy = defaultSort;
         }
 
-
-        // 3) If you kept startDate in store for creationDate‐filtering:
-        let startTimestamp: number | null = null;
-        if (userAccountStore.startDate != null) {
-            startTimestamp = userAccountStore.startDate;
-        }
-
-        // 4) Build “optionalParams” exactly as your exam table did.
-        //    You might have a generic helper like tableUtils.assignGenericPagingOptions(...)
-        //    that takes (serverTablePaging, searchField, startTimestamp).
-        //    If not, just do the same pattern you used in assignExamSelectPagingOptions,
-        //    but remove type/status filters. For now let’s assume you have:
-        //      tableUtils.assignGenericPagingOptions(paging, search, date)
         const optionalParams = tableUtils.assignUserAccountSelectPagingOptions(
             serverTablePaging,
             userAccountStore.searchField,
-            startTimestamp
         );
 
-        // 5) Call your service
+        console.log("optionalParams")
+        console.log(optionalParams)
+
         const response: UserAccountResponse | null = await userAccountViewService.getUserAccounts(optionalParams);
         if (response == null) {
             isLoading.value = false;
             return;
         }
 
-        // 6) Copy the response into local state, and update totalItems
+        console.log("userAccounts.value")
+        console.log(userAccounts.value)
+
         userAccounts.value = response;
-        totalItems.value = response.page_size * response.number_of_pages;
+        totalItems.value = userAccounts.value.page_size * userAccounts.value.number_of_pages;
 
         isOnLoad.value = false;
         isLoading.value = false;

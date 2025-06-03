@@ -5,9 +5,9 @@ import {openUrlInNewTab} from "@/router/navigation";
 import * as spConstants from "@/utils/sp-constants";
 
 //=============api==============
-export async function getExamsStarted(optionalParamters?: OptionalParGetExamsStarted): Promise<SPExam[] | null>{
+export async function getExamsStarted(optionalParameters?: OptionalParGetExamsStarted): Promise<SPExam[] | null>{
     try{
-        return await applicationService.getExamsStarted(optionalParamters);        
+        return await applicationService.getExamsStarted(optionalParameters);        
     }catch(error){
         console.error(error);
         return null;

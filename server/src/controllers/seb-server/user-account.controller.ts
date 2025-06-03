@@ -16,7 +16,7 @@ export async function getUserAccount(req: Request, res: Response){
 
 export async function getUserAccountNames(req: Request, res: Response){
     try{
-        const [userAccountNames, status] = await userAccountService.getUserAccountNames(req.headers.authorization, req.query.optionalParamters);
+        const [userAccountNames, status] = await userAccountService.getUserAccountNames(req.headers.authorization, req.query.optionalParameters);
         return res.status(status).json(userAccountNames);
 
     }catch(error){
@@ -37,7 +37,7 @@ export async function createUserAccount(req: Request, res: Response) {
 export async function getUserAccounts(req: Request, res: Response) {
     try {
 
-        const [userAccount, status] = await userAccountService.getUserAccounts(req.headers.authorization, req.query.optionalParamters);
+        const [userAccount, status] = await userAccountService.getUserAccounts(req.headers.authorization, req.query.optionalParameters);
 
         console.log(req.body);
         return res.status(status).json(userAccount);
@@ -49,7 +49,7 @@ export async function getUserAccounts(req: Request, res: Response) {
 
 export async function getSupervisorAccountNames(req: Request, res: Response){
     try{
-        const [userAccountNames, status] = await userAccountService.getSupervisorAccountNames(req.headers.authorization, req.query.optionalParamters);
+        const [userAccountNames, status] = await userAccountService.getSupervisorAccountNames(req.headers.authorization, req.query.optionalParameters);
         return res.status(status).json(userAccountNames);
 
     }catch(error){

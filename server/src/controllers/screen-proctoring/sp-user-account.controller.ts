@@ -46,7 +46,7 @@ export async function changePassword(req: Request, res: Response){
 
 export async function getUserAccounts(req: Request, res: Response){
     try{
-        const [userAccounts, status] = await userAccountService.getUserAccounts(req.headers.authorization, req.query.optionalParamters)
+        const [userAccounts, status] = await userAccountService.getUserAccounts(req.headers.authorization, req.query.optionalParameters)
         return res.status(status).json(userAccounts);
 
     }catch(error){

@@ -15,7 +15,7 @@ export async function getExam(req: Request, res: Response){
 
 export async function getExamConfigurationMap(req: Request, res: Response){
     try{
-        const [examConfigurationMap, status] = await examService.getExamConfigurationMap(req.headers.authorization, req.params.id, req.query.optionalParamters);
+        const [examConfigurationMap, status] = await examService.getExamConfigurationMap(req.headers.authorization, req.params.id, req.query.optionalParameters);
         return res.status(status).json(examConfigurationMap);
 
     }catch(error){
@@ -55,7 +55,7 @@ export async function updateExam(req: Request, res: Response){
 
 export async function getExams(req: Request, res: Response){
     try{
-        const [exams, status] = await examService.getExams(req.headers.authorization, req.query.optionalParamters);
+        const [exams, status] = await examService.getExams(req.headers.authorization, req.query.optionalParameters);
         return res.status(status).json(exams);
 
     }catch(error){
