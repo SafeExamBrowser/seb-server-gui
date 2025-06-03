@@ -3,6 +3,7 @@ import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 import LoginPage from "@/components/views/LoginPage.vue";
 import RegisterPage from "@/components/views/RegisterPage.vue";
 import HomePage from "@/components/views/seb-server/home/HomePage.vue";
+import UserAccountsPage from "@/components/views/seb-server/accounts/UserAcccounts.vue";
 import ExamListContainer from "@/components/views/seb-server/exam/list/ExamListContainer.vue";
 import ExamDetailContainer from "@/components/views/seb-server/exam/detail/ExamDetailContainer.vue";
 import * as constants from "@/utils/constants";
@@ -16,6 +17,7 @@ import * as authenticationService from "@/services/authenticationService";
 import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
 import MonitoringDetailsContainer from "@/components/views/seb-server/monitoring/client-detail/MonitoringDetailsContainer.vue";
 
+import ProfilePage from "@/components/views/seb-server/settings/ProfileSettings.vue";
 
 //----------screen-proctoring ---------
 import * as spConstants from "@/utils/sp-constants";
@@ -49,24 +51,24 @@ const routes: Array<RouteRecordRaw> = [
         meta: {requiresAuth: false},
         beforeEnter: async (to, from) => {
           const authStore = useAuthStore();
-    
+
           if(to.query.token != null){
             try{
               const tokenObject: JwtTokenResponse = await authenticationService.verifyJwt(to.query.token.toString());
               authStore.loginWithJwt(tokenObject.login.access_token, tokenObject.login.refresh_token, tokenObject.redirect);
-    
+
               return;
-    
+
             }catch(error){
               return true;
             }
           }
-    
+
           //true means redirecting to Login Page
           return true;
         },
         component: LoginPage
-    },    
+    },
     {
         path: constants.DEFAULT_ROUTE,
         component: ContainerLayout,
@@ -150,8 +152,24 @@ const routes: Array<RouteRecordRaw> = [
                     titleKey: "titles.monitoring"
                 },
             },
+            //----------user accounts routes---------
+            {
+                path: constants.PROFILE_ROUTE,
+                name: "ProfileRoute",
+                component: ProfilePage,
+                meta: {
+                    titleKey: "titles.userAccounts"
+                },
+            },
 
-
+            {
+                path: constants.USER_ACCOUNTS_ROUTE,
+                name: "UserAccounts",
+                component: UserAccountsPage,
+                meta: {
+                    titleKey: "titles.userAccounts"
+                },
+            },
 
         ]
     },
@@ -211,8 +229,6 @@ const routes: Array<RouteRecordRaw> = [
                 title: "Proctoring" + defaultPageTitle
             }
           },
-         
-    
         ]
       },
 ];

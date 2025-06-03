@@ -16,6 +16,8 @@ export async function getExamTemplate(req: Request, res: Response){
 
 export async function getExamTemplates(req: Request, res: Response){
     try{
+        console.log(req.body);
+
         const [examTemplates, status] = await examTemplateService.getExamTemplates(req.headers.authorization, req.query.optionalParamters);
         return res.status(status).json(examTemplates);
 
