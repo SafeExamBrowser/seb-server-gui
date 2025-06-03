@@ -96,7 +96,7 @@
 
     //table - pagination, item size, search
     const isLoading = ref<boolean>(true);
-    const totalItems = ref<number>(10);
+    const totalItems = ref<number>(15);
 
     //table
     const isOnLoad = ref<boolean>(true);
@@ -152,10 +152,6 @@
         );
 
         const examsResponse: Exams | null = await examViewService.getExams(optionalParGetExams);
-
-        console.log("examsResponse:")
-        console.log(examsResponse)
-
         if(examsResponse == null){
             isLoading.value = false;
             return;

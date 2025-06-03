@@ -170,7 +170,7 @@
 
     //table - pagination, item size
     const isLoading = ref<boolean>(true);
-    const totalItems = ref<number>(10);
+    const totalItems = ref<number>(15);
 
     //table
     const selectedSessionUuids = ref<string[]>();
