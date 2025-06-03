@@ -98,7 +98,9 @@
         "usernamePlaceholder": "Username *",
         "passwordPlaceholder": "Password *",
         "noAccount": "No Account? ",
-        "register": "Register"
+        "register": "Register",
+        "profile": "Profile",
+        "settings": "Settings"
     },
 
     "homePage": {
@@ -199,6 +201,16 @@
             "tableHeaderType": "Exam Type",
             "tableHeaderStatus": "Status"
         }
+    },
+    "userAccountList": {
+      "main": {
+        "tableHeaderName": "Name",
+        "tableHeaderSurname": "Last Name",
+        "tableHeaderUsername": "Username",
+        "tableHeaderEmail": "Email",
+        "tableHeaderRoles": "Roles",
+        "tableHeaderStatus": "Status"
+      }
     },
 
     "examDetail": {
@@ -377,13 +389,6 @@
         }
     },
 
-
-
-
-
-
-
-
     "titles": {
         "home": "Home",
         "navigationOverview": "Navigation Overview",
@@ -394,12 +399,13 @@
         "quizImport": "Prepare Exam",
         "preparation": "Preparation",
         "recentExams": "Last Edited Exams",
-
+        "settings": "Settings",
+        "userAccounts": "User Accounts",
+        "profileSettings": "Profile Settings",
         "screenProctoring": "Screen Proctoring",
         "spSearch": "Search",
         "spApplications": "Applications"
     },
-
 
     "warnings": {
         "no-data": "No data available",
@@ -421,12 +427,6 @@
     },
 
 
-
-
-
-
-
-
     "navigation": {
         "title": "SEB Screen Proctoring",
         "signIn": "Sign in",
@@ -439,7 +439,10 @@
             "finishedExams": "Finished Exams",
             "SEBClientLogs": "SEB Client Logs",
             "search": "Search",
-            "applications": "Applications"
+            "assessmentToolConnections": "Assessment Tool Connections",
+            "connectionConfiguration": "Connection Configuration",
+            "certificates": "Certificates",
+            "userAccounts": "User Accounts"
         },
 
         "screenReader": {

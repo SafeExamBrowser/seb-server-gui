@@ -36,7 +36,10 @@ export async function createUserAccount(req: Request, res: Response) {
 
 export async function getUserAccounts(req: Request, res: Response) {
     try {
-        const [userAccount, status] = await userAccountService.getUserAccounts(req.body);
+
+        const [userAccount, status] = await userAccountService.getUserAccounts(req.headers.authorization, req.query.optionalParamters);
+
+        console.log(req.body);
         return res.status(status).json(userAccount);
     } catch (error) {
         apiService.handleGenericApiError(error, res);

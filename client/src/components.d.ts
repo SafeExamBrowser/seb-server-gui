@@ -73,6 +73,7 @@ declare module 'vue' {
     NavigationOverview: typeof import('./components/layout/NavigationOverview.vue')['default']
     ProctoringApplicationSearchPage: typeof import('./components/views/screen-proctoring/proctoring/ProctoringApplicationSearchPage.vue')['default']
     ProctoringViewPage: typeof import('./components/views/screen-proctoring/proctoring/ProctoringViewPage.vue')['default']
+    ProfileSettings: typeof import('./components/views/seb-server/settings/ProfileSettings.vue')['default']
     RegisterPage: typeof import('./components/views/RegisterPage.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
@@ -85,5 +86,7 @@ declare module 'vue' {
     SebSettingsNetwork: typeof import('./components/views/seb-server/settings/SebSettingsNetwork.vue')['default']
     SebSettingsPermittedProcess: typeof import('./components/views/seb-server/settings/SebSettingsPermittedProcess.vue')['default']
     SebSettingsProhibitedProcess: typeof import('./components/views/seb-server/settings/SebSettingsProhibitedProcess.vue')['default']
+    UserAcccounts: typeof import('./components/views/seb-server/accounts/UserAcccounts.vue')['default']
+    UserAccountDetailAndEdit: typeof import('./components/views/seb-server/accounts/UserAccountDetailAndEdit.vue')['default']
   }
 }

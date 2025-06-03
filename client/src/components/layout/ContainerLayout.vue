@@ -11,7 +11,7 @@
 
         <!--current site title-->
         <v-app-bar-title>
-            <h1 class="title-inherit-styling">{{ appBarStore.title }}</h1>
+            <h1 class="title-inherit-styling">{{appBarStore.title}}</h1>
         </v-app-bar-title>
 
         <template v-slot:append>
@@ -140,9 +140,7 @@
                         <div class="custom-white-divider my-0"></div>
 
                         <v-list-item class="pt-0 pb-1 px-4">
-                            <v-list-item-title class="text-white text-body-2">
-                                Profile Settings
-                            </v-list-item-title>
+                            <router-link class="link-color text-decoration-none nav-link text-white text-body-2" :to="constants.PROFILE_ROUTE">{{ translate("titles.profileSettings") }}</router-link>
                         </v-list-item>
 
 
@@ -167,7 +165,7 @@
 
     <!---------------main navigation drawer----------------->
     <v-navigation-drawer v-model="navigationDrawer" :permanent="true" width="70" class="mt-0">
-        <v-list lines="two">
+        <v-list lines="two" class="pt-0">
             <v-list-item v-if="canAccessNavigationOverview" link elevation="0" :to="getNavigationOverviewRoute()"
                 variant="elevated" class="d-flex flex-column justify-center text-center"
                 :class="[navigationStore.isNavigationOverviewOpen ? 'navigation-overview-background' : '']">
@@ -206,17 +204,24 @@
 
     <!--main content view-->
     <v-main
-        :class="[router.currentRoute.value.path == constants.NAVIGATION_OVERVIEW_ROUTE ? 'navigation-overview-background' : 'generic-background']">
+        :class="[
+      isNavOverviewRoute || layoutStore.isBlueBackground
+        ? 'blue-background'
+        : 'generic-background'
+    ]"
+    >
         <v-container fluid class="main-content">
-            <router-view></router-view>
+            <router-view />
         </v-container>
     </v-main>
+
+
 
 </template>
 
 <script setup lang="ts">
     import {ref, watch, onBeforeMount} from "vue"
-    import {useAppBarStore, useNavigationStore} from "@/stores/store";
+    import {useAppBarStore, useLayoutStore, useNavigationStore} from "@/stores/store";
     import {useAuthStore, useUserAccountStore} from "@/stores/authentication/authenticationStore";
     import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
     import {useTheme} from "vuetify";
@@ -230,8 +235,13 @@
     //i18n
     const {locale} = useI18n();
     const localStorageLocale: string | null = localStorage.getItem("locale");
-    locale.value = localStorageLocale ?? "en";
     const languageToggle = ref<number>(locale.value === "en" ? 0 : 1);
+    const layoutStore = useLayoutStore();
+    const isNavOverviewRoute = computed(() => {
+        return router.currentRoute.value.path === constants.NAVIGATION_OVERVIEW_ROUTE;
+    });
+
+    locale.value = localStorageLocale ?? "en";
 
     //main navigation
     const navigationDrawer = ref();
@@ -351,6 +361,10 @@
 
     .generic-background {
         background-color: #f6f6f6;
+    }
+
+    .blue-background {
+        background-color: #215caf;
     }
 
     .fade-in-arrow {

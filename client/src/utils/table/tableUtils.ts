@@ -1,6 +1,8 @@
 import { ExamStatusEnum, ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
 import {navigateTo} from "@/router/navigation";
 import { useTableStore } from "@/stores/store";
+import type { OptionalParGetUserAccounts } from "@/models/userAccount";
+
 
 export function calcDefaultItemsPerPage(itemList: any): number {
     if (itemList == null || itemList.length == 0) {
@@ -88,13 +90,13 @@ export function sortTable(key: number, headerRefs: any){
 }
 
 export function assignQuizSelectPagingOptions(
-    serverTablePaging: ServerTablePaging, 
-    name: string | null, 
+    serverTablePaging: ServerTablePaging,
+    name: string | null,
     startTimestamp: number | null,
     assessmentToolId: string | null,
     forceNewSearch: boolean,
 ): OptionalParGetQuizzes{
-    
+
     const optionalParGetQuizzes: OptionalParGetQuizzes = { force_new_search: forceNewSearch };
 
     optionalParGetQuizzes.page_size = serverTablePaging.itemsPerPage;
@@ -107,7 +109,7 @@ export function assignQuizSelectPagingOptions(
     if(startTimestamp != null){
         optionalParGetQuizzes.start_timestamp_millis = startTimestamp;
     }
-    
+
     if(assessmentToolId != null){
         optionalParGetQuizzes.lms_setup = assessmentToolId;
     }
@@ -127,12 +129,12 @@ export function assignQuizSelectPagingOptions(
 
 export function assignExamSelectPagingOptions
 (
-    serverTablePaging: ServerTablePaging, 
-    name: string | null, 
+    serverTablePaging: ServerTablePaging,
+    name: string | null,
     startTimestamp: number | null,
-    activeTypeFilter: ExamTypeEnum | null | string, 
+    activeTypeFilter: ExamTypeEnum | null | string,
     activeStatusFilter: ExamStatusEnum | null | string): OptionalParGetExams{
-    
+
     const optionalParGetExams: OptionalParGetExams = {};
 
     optionalParGetExams.page_size = serverTablePaging.itemsPerPage;
@@ -187,4 +189,34 @@ export function assignPagingOptions(serverTablePaging: ServerTablePaging, paging
     }
 
     return pagingParameters;
+}
+
+
+export function assignUserAccountSelectPagingOptions(
+    serverTablePaging: ServerTablePaging,
+    name: string | null,
+    startTimestamp: number | null
+): OptionalParGetUserAccounts {
+    const opt: OptionalParGetUserAccounts = {};
+
+    opt.page_size = serverTablePaging.itemsPerPage;
+    opt.page_number = serverTablePaging.page;
+
+    if (name != null) {
+        opt.name = name;
+    }
+
+    if (startTimestamp != null) {
+        opt.start_timestamp_millis = startTimestamp;
+    }
+
+    if (serverTablePaging.sortBy.length !== 0) {
+        let sortString = serverTablePaging.sortBy[0].key;
+        if (serverTablePaging.sortBy[0].order === "desc") {
+            sortString = "-" + sortString;
+        }
+        opt.sort = sortString;
+    }
+
+    return opt;
 }
