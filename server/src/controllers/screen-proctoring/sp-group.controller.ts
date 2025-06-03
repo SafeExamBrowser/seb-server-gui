@@ -5,7 +5,7 @@ import * as apiService from "../../services/screen-proctoring/sp-api.service";
 
 export async function getGroups(req: Request, res: Response){
     try{
-        const [groups, status] = await groupService.getGroups(req.headers.authorization, req.query.optionalParamters);
+        const [groups, status] = await groupService.getGroups(req.headers.authorization, req.query.optionalParameters);
         return res.status(status).json(groups);
 
     }catch(error){
@@ -17,7 +17,7 @@ export async function getGroups(req: Request, res: Response){
 
 export async function getGroupByUuid(req: Request, res: Response){
     try{
-        const [group, status] = await groupService.getGroupByUuid(req.headers.authorization, req.params.uuid, req.query.optionalParamters);
+        const [group, status] = await groupService.getGroupByUuid(req.headers.authorization, req.params.uuid, req.query.optionalParameters);
         return res.status(status).json(group);
 
     }catch(error){
