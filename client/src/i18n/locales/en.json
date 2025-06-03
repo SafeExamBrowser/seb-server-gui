@@ -98,7 +98,9 @@
         "usernamePlaceholder": "Username *",
         "passwordPlaceholder": "Password *",
         "noAccount": "No Account? ",
-        "register": "Register"
+        "register": "Register",
+        "profile": "Profile",
+        "settings": "Settings"
     },
 
     "homePage": {
@@ -199,6 +201,16 @@
             "tableHeaderType": "Exam Type",
             "tableHeaderStatus": "Status"
         }
+    },
+    "userAccountList": {
+      "main": {
+        "tableHeaderName": "Name",
+        "tableHeaderSurname": "Last Name",
+        "tableHeaderUsername": "Username",
+        "tableHeaderEmail": "Email",
+        "tableHeaderRoles": "Roles",
+        "tableHeaderStatus": "Status"
+      }
     },
 
     "examDetail": {
@@ -376,21 +388,14 @@
     },
 
     "monitoringDetails": {
-        "info": {
-            "userNameOrSession": "User Name or Session",
-            "clientGroups": "Client Group(s)",
-            "connectionInfo": "Connection Info",
-            "status": "Status",
-            "actions": "Actions"
-        }
+      "info": {
+        "userNameOrSession": "User Name or Session",
+        "clientGroups": "Client Group(s)",
+        "connectionInfo": "Connection Info",
+        "status": "Status",
+        "actions": "Actions"
+      }
     },
-
-
-
-
-
-
-
 
     "titles": {
         "home": "Home",
@@ -402,7 +407,9 @@
         "quizImport": "Prepare Exam",
         "preparation": "Preparation",
         "recentExams": "Last Edited Exams",
-
+        "settings": "Settings",
+        "userAccounts": "User Accounts",
+        "profileSettings": "Profile Settings",
         "screenProctoring": "Screen Proctoring",
         "spSearch": "Search",
         "spApplications": "Applications"
@@ -429,12 +436,6 @@
     },
 
 
-
-
-
-
-
-
     "navigation": {
         "title": "SEB Screen Proctoring",
         "signIn": "Sign in",
@@ -447,7 +448,10 @@
             "finishedExams": "Finished Exams",
             "SEBClientLogs": "SEB Client Logs",
             "search": "Search",
-            "applications": "Applications"
+            "assessmentToolConnections": "Assessment Tool Connections",
+            "connectionConfiguration": "Connection Configuration",
+            "certificates": "Certificates",
+            "userAccounts": "User Accounts"
         },
 
         "screenReader": {

@@ -1,5 +1,6 @@
 import * as userAccountService from "@/services/seb-server/api-services/userAccountService";
 import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
+import {OptionalParGetUserAccounts, UserAccount, UserAccountName, UserAccountResponse} from "@/models/userAccount";
 
 export async function setPersonalUserAccount(){
     const userAccountStore = useUserAccountStore();
@@ -43,9 +44,9 @@ export async function getUserAccountById(accountId: string): Promise<UserAccount
     }
 }
 
-export async function getUserAccounts(optionalParamters?: OptionalParGeneric): Promise<UserAccountResponse | null>{
+export async function getUserAccounts(optionalParameters?: OptionalParGetUserAccounts): Promise<UserAccountResponse | null>{
     try{
-        return await userAccountService.getUserAccounts(optionalParamters)
+        return await userAccountService.getUserAccounts(optionalParameters)
 
     }catch(error){
         return null;
@@ -99,9 +100,9 @@ export async function changePassword(uuid: string, password: string, newPassword
 //==============================
 
 // export function disableEnableActionItem(action: string): boolean{
-//     const userAccountStore = useUserAccountStore();
+//     const userAccountStore.ts = useUserAccountStore();
 
-//     if(!userAccountStore.userAccount?.userRoles.includes('ADMIN')){
+//     if(!userAccountStore.ts.userAccount?.userRoles.includes('ADMIN')){
 //         return false;
 //     }
 
@@ -109,5 +110,5 @@ export async function changePassword(uuid: string, password: string, newPassword
 //         return false;
 //     }
 
-//     return !userAccountStore.isAccountSelected;
+//     return !userAccountStore.ts.isAccountSelected;
 // }

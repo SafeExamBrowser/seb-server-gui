@@ -1,11 +1,11 @@
-type UserAccountResponse = {
+export type UserAccountResponse = {
     numberOfPages: number;
     pageNumber: number;
     pageSize: number;
     content: UserAccount[];
 }
 
-type UserAccount = {
+export type UserAccount = {
     id: number;
     institutionId: number;
     uuid: string;
@@ -17,13 +17,23 @@ type UserAccount = {
     timezone: string;
     userRoles: string[];
     creationTime: number;
+    active: boolean;
     lastUpdateTime: number;
     terminationTime?: number | null;
     creationDate: string;
 };
 
-type UserAccountName = {
+export type UserAccountName = {
     modelId: string,
     entitiyType: string,
     name: string
+}
+
+
+export interface OptionalParGetUserAccounts {
+    page_size?: number;
+    page_number?: number;
+    name?: string;
+    start_timestamp_millis?: number;
+    sort?: string;
 }
