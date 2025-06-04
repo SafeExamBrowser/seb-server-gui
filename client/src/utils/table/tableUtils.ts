@@ -193,19 +193,26 @@ export function assignPagingOptions(serverTablePaging: ServerTablePaging, paging
 
 export function assignUserAccountSelectPagingOptions(
     serverTablePaging: ServerTablePaging,
-    name: string | null,
+    username: string | null,
+    roles?: string[],
+    status?: string | null
 ): OptionalParGetUserAccounts {
-
-    console.log("serverTablePaging")
-    console.log(serverTablePaging)
 
     const opt: OptionalParGetUserAccounts = {};
 
     opt.page_size = serverTablePaging.itemsPerPage;
     opt.page_number = serverTablePaging.page;
 
-    if (name != null) {
-        opt.name = name;
+    if (username != null && username.trim() !== '') {
+        opt.username = username;
+    }
+
+    if (roles && roles.length > 0) {
+        opt.roles = roles;
+    }
+
+    if (status) {
+        opt.status = status;
     }
 
     if (serverTablePaging.sortBy.length !== 0) {
