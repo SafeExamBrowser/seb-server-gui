@@ -437,12 +437,12 @@
     }
 
     .roles-list-popup {
-        margin-top: 0.6rem !important;
+        margin-top: 0.62rem !important;
         border-radius: 0 !important;
     }
 
     .profile-list-popup {
-        margin-top: 0.47rem !important;
+        margin-top: 0.50rem !important;
         border-radius: 0 !important;
         width: 20vw;
         min-width: 16rem;
