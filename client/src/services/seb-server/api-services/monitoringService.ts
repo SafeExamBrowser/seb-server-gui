@@ -16,6 +16,11 @@ export async function getConnections(examId: string, optionalHeaders: {}): Promi
     return (await apiService.api.get(url, {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN), params: {optionalHeaders}})).data;
 }
 
+export async function getSingleConnection(examId: string, connectionToken: string): Promise<SingleConnection | any>{
+    const url: string = "/get-monitoring/" + examId + "/" + connectionToken;
+    return (await apiService.api.get(url, {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
+}
+
 export async function getStaticClientData(examId: string, modelIds: string): Promise<MonitoringStaticClientData | any>{
     const url: string = monitoringUrl + "/" + examId + "/static-client-data";
     return (await apiService.api.post(url, {modelIds}, {headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;

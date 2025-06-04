@@ -39,7 +39,7 @@
         }
 
         await getIndicators();
-        await getClientGroups();
+        await monitoringViewService.getClientGroups(examId);
         await getOverviewData();
 
         startIntervalRefresh()
@@ -78,15 +78,6 @@
         }
 
         monitoringStore.indicators = indicatorsResponse;
-    }
-
-    async function getClientGroups(){
-        const clientGroupsResponse: ClientGroups | null = await clientGroupViewService.getClientGroups(examId);
-        if(clientGroupsResponse == null){
-            return;
-        }
-
-        monitoringStore.clientGroups = clientGroupsResponse;
     }
 
     async function startIntervalRefresh(){

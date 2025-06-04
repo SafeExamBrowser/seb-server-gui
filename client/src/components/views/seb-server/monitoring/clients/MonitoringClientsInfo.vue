@@ -209,38 +209,31 @@
 
                     <!------------action buttons------------->
                     <v-col cols="3">
-                        <v-card
-                            variant="flat"
-                            class="rounded-lg"
-                            height="100%">
+                        <div>
+                            <v-btn 
+                                :disabled="monitoringStore.selectedMonitoringIds.length == 0"
+                                class="mt-2"
+                                rounded="sm" 
+                                color="black" 
+                                variant="outlined"
+                                prepend-icon="mdi-monitor-lock"
+                                @click="openInstructionConfirmDialog(InstructionEnum.SEB_FORCE_LOCK_SCREEN)">
+                                Lock selected clients
+                            </v-btn>
+                        </div>
 
-                            <div>
-                                <v-btn 
-                                    :disabled="monitoringStore.selectedMonitoringIds.length == 0"
-                                    class="mt-2"
-                                    rounded="sm" 
-                                    color="black" 
-                                    variant="outlined"
-                                    prepend-icon="mdi-monitor-lock"
-                                    @click="openInstructionConfirmDialog(InstructionEnum.SEB_FORCE_LOCK_SCREEN)">
-                                    Lock selected clients
-                                </v-btn>
-                            </div>
-
-                            <div>
-                                <v-btn 
-                                    :disabled="monitoringStore.selectedMonitoringIds.length == 0"
-                                    class="mt-2"
-                                    rounded="sm" 
-                                    color="black" 
-                                    variant="outlined"
-                                    prepend-icon="mdi-backspace-outline"
-                                    @click="openInstructionConfirmDialog(InstructionEnum.SEB_QUIT)">
-                                    Quit selected clients
-                                </v-btn>
-                            </div>
-                            
-                        </v-card>
+                        <div>
+                            <v-btn 
+                                :disabled="monitoringStore.selectedMonitoringIds.length == 0"
+                                class="mt-2"
+                                rounded="sm" 
+                                color="black" 
+                                variant="outlined"
+                                prepend-icon="mdi-backspace-outline"
+                                @click="openInstructionConfirmDialog(InstructionEnum.SEB_QUIT)">
+                                Quit selected clients
+                            </v-btn>
+                        </div>
                     </v-col>
 
                 </v-row>

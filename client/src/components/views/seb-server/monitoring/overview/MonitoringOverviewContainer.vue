@@ -112,7 +112,7 @@
     function setRandomData(){
         // getOverviewData();
 
-        console.log(monitoringStore.monitoringOverviewData)
+        // console.log(monitoringStore.monitoringOverviewData)
 
         const randomNumber1: number = Math.floor(Math.random() * 1000) + 1;
         const randomNumber2: number = Math.floor(Math.random() * 1000) + 1;

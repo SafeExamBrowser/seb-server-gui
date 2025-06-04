@@ -32,6 +32,16 @@ export async function getConnections(req: Request, res: Response){
     }
 }
 
+export async function getSingleConnection(req: Request, res: Response){
+    try{    
+        const [connection, status] = await monitoringService.getSingleConnection(req.headers.authorization, req.params.id, req.params.connectionToken);
+        return res.status(status).json(connection);
+    
+    }catch(error){
+        apiService.handleGenericApiError(error, res);
+    }
+}
+
 export async function getStaticClientData(req: Request, res: Response){
     try{    
         const [staticClientData, status] = await monitoringService.getStaticClientData(req.headers.authorization, req.params.id, req.body);

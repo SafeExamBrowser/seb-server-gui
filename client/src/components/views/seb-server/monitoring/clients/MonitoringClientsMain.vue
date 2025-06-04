@@ -368,28 +368,13 @@
             id: fullPageDataConnection.id,
             connectionToken: staticClientData.connectionToken,
             nameOrSession: staticClientData.examUserSessionId,
-            clientGroups: extractClientGroupNames(staticClientData.cg),
+            clientGroups: monitoringViewService.extractClientGroupNames(staticClientData.cg),
             connectionInfo: staticClientData.seb_info,
             status: fullPageDataConnection.st,
             indicators: extractIndicators(fullPageDataConnection.iv),
         }
     }
 
-    function extractClientGroupNames(clientGroupIds: number[]): ClientGroup[]{
-        const clientGroups: ClientGroup[] = [];
-
-        for(let i = 0; i < clientGroupIds.length; i++){
-            const clientGroup: ClientGroup | undefined = monitoringStore.clientGroups?.content.find(clientGroup => clientGroup.id == clientGroupIds[i]);
-
-            if(clientGroup != null){
-                clientGroups.push(clientGroup);
-            }
-        }
-
-        return clientGroups;
-    }
-
-    
     function getAllConnectionIds(): number[]{
         if(connections.value == null){
             return [];

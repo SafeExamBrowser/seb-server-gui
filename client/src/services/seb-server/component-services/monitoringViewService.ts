@@ -9,8 +9,8 @@ import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums";
 import {navigateTo} from "@/router/navigation";
 import * as constants from "@/utils/constants";
 import * as navigation from "@/router/navigation";
-import { LocationQuery } from "vue-router"
-
+import { LocationQuery } from "vue-router";
+import * as clientGroupViewService from "@/services/seb-server/component-services/clientGroupViewService";
 
 
 //================api===============
@@ -25,6 +25,14 @@ export async function getOverview(examId: string): Promise<MonitoringOverview | 
 export async function getConnections(examId: string, optionalHeaders: {}): Promise<MonitoringConnections | null>{
     try{
         return await monitoringService.getConnections(examId, optionalHeaders);
+    }catch(error){
+        return null;
+    }
+}
+
+export async function getSingleConnection(examId: string, connectionToken: string): Promise<SingleConnection | null>{
+    try{
+        return await monitoringService.getSingleConnection(examId, connectionToken);
     }catch(error){
         return null;
     }
@@ -167,4 +175,28 @@ export function goToMonitoring(header: MonitoringHeaderEnum, value: string | boo
 
 export function goToMonitoringDetails(examId: string, connectionToken: string){
     navigateTo(constants.MONITORING_ROUTE + '/' + examId + "/details/" + connectionToken);
+}
+
+
+//================data prep functions===============
+export async function getClientGroups(examId: string){
+    const clientGroupsResponse: ClientGroups | null = await clientGroupViewService.getClientGroups(examId);
+    if(clientGroupsResponse == null){
+        return;
+    }
+
+    useMonitoringStore().clientGroups = clientGroupsResponse;
+}
+
+export function extractClientGroupNames(clientGroupIds: number[]): ClientGroup[]{
+    const clientGroups: ClientGroup[] = [];
+    for(let i = 0; i < clientGroupIds.length; i++){
+        const clientGroup: ClientGroup | undefined = useMonitoringStore().clientGroups?.content.find(clientGroup => clientGroup.id == clientGroupIds[i]);
+
+        if(clientGroup != null){
+            clientGroups.push(clientGroup);
+        }
+    }
+
+    return clientGroups;
 }

@@ -366,14 +366,22 @@
     },
 
     "monitoringClients": {
-
-
         "main": {
             "tableHeaderNameSession": "User Name or Session",
             "tableHeaderClientGroups": "Group(s)",
             "tableHeaderConnectionInfo": "Connection Info",
             "tableHeaderStatus": "Status",
             "tableHeaderPing": "Ping"
+        }
+    },
+
+    "monitoringDetails": {
+        "info": {
+            "userNameOrSession": "User Name or Session",
+            "clientGroups": "Client Group(s)",
+            "connectionInfo": "Connection Info",
+            "status": "Status",
+            "actions": "Actions"
         }
     },
 

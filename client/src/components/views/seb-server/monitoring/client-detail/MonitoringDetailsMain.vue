@@ -1,6 +1,5 @@
 <template>
 
-        test
     
 </template>
 

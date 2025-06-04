@@ -60,9 +60,6 @@ type ScreenProctoringData = {
     size: number;
 };
 
-
-
-
 type MonitoringStaticClientData = {
     staticClientConnectionData: StaticClientConnectionData[];
     duplications: Set<number>;
@@ -75,4 +72,24 @@ type StaticClientConnectionData = {
     ask: string;
     seb_info: string;
     cg: number[];
+}
+
+type SingleConnection = {
+    miss: boolean;
+    pnot: boolean;
+    isVal: {
+        id: number;
+        val: number;        
+    }[];
+    cg: number[];
+    cdat: {
+        clientAddress: string;
+        connectionToken: string;
+        examId: number;
+        examUserSessionId: string;
+        id: number;
+        institutionId: number;
+        seb_info: string;
+        status: string;
+    }
 }
