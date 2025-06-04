@@ -154,14 +154,6 @@
                                 Documentation
                             </v-list-item-title>
                         </v-list-item>
-                        <v-divider class="border-opacity-25" :thickness="1"></v-divider>
-                        <v-list-item
-                            tabindex="0"
-                            class="text-decoration-underline text-blue mx-auto"
-                            @click="authStore.logout()"
-                        >
-                            <v-list-item-title class="mx-auto">{{ $t("navigation.signOut") }}</v-list-item-title>
-                        </v-list-item>
                     </v-list>
                 </v-menu>
             </div>
@@ -445,12 +437,12 @@
     }
 
     .roles-list-popup {
-        margin-top: 0.6rem !important;
+        margin-top: 0.62rem !important;
         border-radius: 0 !important;
     }
 
     .profile-list-popup {
-        margin-top: 0.47rem !important;
+        margin-top: 0.50rem !important;
         border-radius: 0 !important;
         width: 20vw;
         min-width: 16rem;
