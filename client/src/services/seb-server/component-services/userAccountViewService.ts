@@ -52,6 +52,16 @@ export async function getUserAccounts(optionalParameters?: OptionalParGetUserAcc
     }
 }
 
+
+export async function createUserAccount(createUserAccountReqPar: createUserPar): Promise<SingleUserAccountResponse | null>{
+    try{
+        return await userAccountService.createUserAccount(createUserAccountReqPar)
+
+    }catch(error){
+        return null;
+    }
+}
+
 export async function getUserAccountNames(optionalParameters?: OptionalParInstitutionId): Promise<UserAccountName[] | null>{
     try{
         return await userAccountService.getUserAccountNames(optionalParameters)
