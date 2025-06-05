@@ -404,6 +404,7 @@
         "profileSettings": "Profile Settings",
         "screenProctoring": "Screen Proctoring",
         "spSearch": "Search",
+        "createUserAccount": "Create User Account",
         "spApplications": "Applications"
     },
 
@@ -442,7 +443,9 @@
             "assessmentToolConnections": "Assessment Tool Connections",
             "connectionConfiguration": "Connection Configuration",
             "certificates": "Certificates",
-            "userAccounts": "User Accounts"
+            "userAccounts": "User Accounts",
+            "createUserAccount": "New User Account"
+
         },
 
         "screenReader": {

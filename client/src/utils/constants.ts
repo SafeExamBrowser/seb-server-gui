@@ -19,6 +19,8 @@ export const REGISTER_ROUTE: string = "/register";
 export const HOME_PAGE_ROUTE: string = "/home";
 export const NAVIGATION_OVERVIEW_ROUTE: string = "/navigation-overview";
 export const USER_ACCOUNTS_ROUTE: string = "/user-accounts";
+export const CREATE_USER_ACCOUNTS_ROUTE: string = "/user-accounts/create";
+
 export const USER_ACCOUNT_DETAIL_ROUTE: string = "/user-account/" + id;
 
 export const PROFILE_ROUTE: string = "/profile";

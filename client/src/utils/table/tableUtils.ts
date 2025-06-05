@@ -190,14 +190,11 @@ export function assignPagingOptions(serverTablePaging: ServerTablePaging, paging
     return pagingParameters;
 }
 
-
 export function assignUserAccountSelectPagingOptions(
     serverTablePaging: ServerTablePaging,
     username: string | null,
-    roles?: string[],
     status?: string | null
 ): OptionalParGetUserAccounts {
-
     const opt: OptionalParGetUserAccounts = {};
 
     opt.page_size = serverTablePaging.itemsPerPage;
@@ -207,12 +204,12 @@ export function assignUserAccountSelectPagingOptions(
         opt.username = username;
     }
 
-    if (roles && roles.length > 0) {
-        opt.roles = roles;
-    }
 
-    if (status) {
-        opt.status = status;
+    //set filter atcive true or false
+    if (status === 'Active') {
+        (opt as any).active = true;
+    } else if (status === 'Inactive') {
+        (opt as any).active = false;
     }
 
     if (serverTablePaging.sortBy.length !== 0) {
@@ -225,3 +222,4 @@ export function assignUserAccountSelectPagingOptions(
 
     return opt;
 }
+

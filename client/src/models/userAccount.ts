@@ -33,7 +33,6 @@ type OptionalParGetUserAccounts = {
     page_size?: number;
     page_number?: number;
     username?: string;
-    roles?: string[];
     status?: string | null
     sort?: string;
 }

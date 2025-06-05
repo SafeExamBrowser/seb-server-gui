@@ -37,13 +37,15 @@
         </v-col>
 
 
-        <v-col elevation="4" cols="9" class="bg-white rounded-lg">
+        <v-col elevation="4" cols="9" class="bg-white rounded-lg mb-3">
             <v-row class="d-flex align-center justify-space-between px-6 pt-6">
                 <div class="text-primary text-h5 font-weight-bold">
                     {{ translate("navigation.routeNames.userAccounts") }}
                 </div>
 
-                <div class="d-flex align-center cursor-pointer add-user-container">
+                <div class="d-flex align-center cursor-pointer add-user-container"
+                     @click="navigateTo(constants.CREATE_USER_ACCOUNTS_ROUTE)"
+                >
                     <span class="text-primary font-weight-medium mr-2">Add User Account</span>
 
                     <div class="add-user-icon d-flex align-center justify-center">
@@ -181,7 +183,7 @@
                                     :color="item.active ? 'green' : 'red'"
                                     dark
                                     small
-                                    class="text-white font-weight-medium"
+                                    class="text-white font-weight-medium status-chip"
                                 >
                                     {{ item.active ? 'Active' : 'Inactive' }}
                                 </v-chip>
@@ -239,8 +241,6 @@
     import { UserRoleEnum } from '@/models/userRoleEnum';
     import * as userAccountViewService from '@/services/seb-server/component-services/userAccountViewService';
     import { useUserAccountStore } from '@/stores/seb-server/userAccountStore';
-    import {USER_ACCOUNT_DETAIL_ROUTE} from "@/utils/constants";
-    import {assignUserAccountSelectPagingOptions} from "@/utils/table/tableUtils";
 
 
     const appBarStore = useAppBarStore();
@@ -275,10 +275,6 @@
             selectedRoles.value = selectedRoles.value.filter(r => r !== role);
         } else {
             selectedRoles.value.push(role);
-        }
-
-        if (userAccountStore.currentPagingOptions) {
-            loadItems(userAccountStore.currentPagingOptions);
         }
     }
 
@@ -321,7 +317,7 @@
         {
             title: translate('userAccountList.main.tableHeaderRoles'),
             key: 'userRoles',
-            width: '35%',
+            width: '31%',
             sortable: false
 
         },
@@ -353,7 +349,6 @@
 
     async function loadItems(serverTablePaging: ServerTablePaging) {
 
-        console.log("hello");
 
         userAccountStore.currentPagingOptions = serverTablePaging;
         isLoading.value = true;
@@ -365,12 +360,9 @@
         const optionalParams = tableUtils.assignUserAccountSelectPagingOptions(
             serverTablePaging,
             userAccountStore.searchField,
-            selectedRoles.value,
             selectedStatus.value,
         );
 
-        console.log("optionalParams")
-        console.log(optionalParams)
 
         const response: UserAccountResponse | null = await userAccountViewService.getUserAccounts(optionalParams);
         if (response == null) {
@@ -378,15 +370,34 @@
             return;
         }
 
-        console.log("userAccounts.value")
-        console.log(userAccounts.value)
+        let filteredContent = response.content;
 
-        userAccounts.value = response;
+        if (selectedRoles.value.length > 0) {
+            filteredContent = filteredContent.filter((user: UserAccount) =>
+                selectedRoles.value.every(role => user.userRoles.includes(role))
+            );
+        }
+
+        userAccounts.value = {
+            ...response,
+            content: filteredContent,
+        };
         totalItems.value = userAccounts.value.page_size * userAccounts.value.number_of_pages;
 
         isOnLoad.value = false;
         isLoading.value = false;
     }
+
+    watch(
+        [selectedRoles, selectedStatus],
+        () => {
+            if (userAccountStore.currentPagingOptions) {
+                loadItems(userAccountStore.currentPagingOptions);
+            }
+        },
+        { deep: true }
+    );
+
 
 
     function openDeleteDialog(user: UserAccount) {
@@ -409,6 +420,13 @@
         background: #e4e4e4 !important;
         cursor: pointer;
     }
+
+    .status-chip{
+        min-width: 4.7rem;
+        max-width: 6.5rem;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;    }
 
     .role-wrapper {
         display: flex;
@@ -584,4 +602,6 @@
         color: #215caf;
         background-color: rgba(33, 92, 175, 0.1);
     }
+
+
 </style>
