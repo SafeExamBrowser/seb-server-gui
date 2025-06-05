@@ -154,14 +154,6 @@
                                 Documentation
                             </v-list-item-title>
                         </v-list-item>
-                        <v-divider class="border-opacity-25" :thickness="1"></v-divider>
-                        <v-list-item
-                            tabindex="0"
-                            class="text-decoration-underline text-blue mx-auto"
-                            @click="authStore.logout()"
-                        >
-                            <v-list-item-title class="mx-auto">{{ $t("navigation.signOut") }}</v-list-item-title>
-                        </v-list-item>
                     </v-list>
                 </v-menu>
             </div>
