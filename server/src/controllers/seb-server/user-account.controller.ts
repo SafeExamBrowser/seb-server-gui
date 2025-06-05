@@ -25,9 +25,19 @@ export async function getUserAccountNames(req: Request, res: Response){
 }
 
 
+export async function registerUserAccount(req: Request, res: Response) {
+    try {
+        const [userAccount, status] = await userAccountService.registerUserAccount(req.body);
+        return res.status(status).json(userAccount);
+    } catch (error) {
+        apiService.handleGenericApiError(error, res);
+    }
+}
+
+
 export async function createUserAccount(req: Request, res: Response) {
     try {
-        const [userAccount, status] = await userAccountService.createUserAccount(req.body);
+        const [userAccount, status] = await userAccountService.createUserAccount(req.headers.authorization, req.body);
         return res.status(status).json(userAccount);
     } catch (error) {
         apiService.handleGenericApiError(error, res);

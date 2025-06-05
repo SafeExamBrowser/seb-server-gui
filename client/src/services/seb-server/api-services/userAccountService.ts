@@ -1,7 +1,7 @@
-import axios, { AxiosResponse } from "axios";
+import axios, {AxiosResponse} from "axios";
 import * as ENV from "@/config/envConfig";
 import * as apiService from "@/services/apiService";
-import { StorageItemEnum } from "@/models/StorageItemEnum";
+import {StorageItemEnum} from "@/models/StorageItemEnum";
 
 const userAccountUrl: string = "/useraccount";
 
@@ -59,8 +59,6 @@ export async function deactivateUserAccount(accountId: string): Promise<UserAcco
     }
 }
 
-
-
 export async function getPersonalUserAccount(): Promise<UserAccount | any> {
     const url: string = userAccountUrl + "/me";
     return (await apiService.api.get(url, { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN) })).data;
@@ -72,10 +70,18 @@ export async function getUserAccountById(accountId: string): Promise<UserAccount
 }
 
 export async function getUserAccounts(optionalParameters?: OptionalParGetUserAccounts): Promise<UserAccountResponse | any> {
-    const url: string = userAccountUrl;
-    return (await apiService.api.get(url, { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN), params: { optionalParameters } })).data;
+    return (await apiService.api.get(userAccountUrl, { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN), params: { optionalParameters } })).data;
 }
 
+export async function createUserAccount(userAccount: createUserPar): Promise<SingleUserAccountResponse | any> {
+    return (await apiService.api.post(userAccountUrl, userAccount, {headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
+}
+
+
+// adjust endpoint to patch or maybe differnt path?
+export async function editUserAccount(userAccount : UserAccount): Promise<UserAccountResponse | any> {
+    return (await apiService.api.post(userAccountUrl, userAccount, {headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
+}
 export async function getUserAccountNames(optionalParameters?: OptionalParInstitutionId): Promise<UserAccountName[] | any> {
     const url: string = userAccountUrl + "/names";
     return (await apiService.api.get(url, { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN), params: { optionalParameters } })).data;
