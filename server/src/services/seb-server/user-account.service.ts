@@ -25,7 +25,7 @@ export async function getUserAccountNames(token: string, options?: {}): Promise<
 }
 
 
-export async function createUserAccount(options: Record<string, any>): Promise<[object, number]> {
+export async function registerUserAccount(options: Record<string, any>): Promise<[object, number]> {
     const { data, status } = await apiService.api.post(
         constants.USER_ACCOUNT_REGISTRATION_SERVER_ROUTE,
         qs.stringify(options),
@@ -39,6 +39,12 @@ export async function createUserAccount(options: Record<string, any>): Promise<[
     return [data, status];
 }
 
+
+export async function createUserAccount(token: string, newUserAccount: {}): Promise<[object, number]>{
+    const url: string =  constants.USER_ACCOUNT_ROUTE;
+    const {data, status} = await apiService.api.post(url, apiService.createUrlEncodedBody(newUserAccount), {headers: apiService.getHeaders(token)});
+    return [data, status];
+}
 export async function getSupervisorAccountNames(token: string, options?: {}): Promise<[object, number]>{
     const url: string =  constants.SUPERVISOR_ACCOUNT_NAMES_ROUTE;
     const {data, status} = await apiService.api.get(url, {headers: apiService.getHeaders(token), params: options});

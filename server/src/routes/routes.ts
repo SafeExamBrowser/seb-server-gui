@@ -70,7 +70,16 @@ router.get(constants.USER_ACCOUNT_ROUTE + "/:id", userAccountController.getUserA
 router.get(constants.USER_ACCOUNT_ROUTE, userAccountController.getUserAccounts);
 router.get(constants.USER_ACCOUNT_NAMES_ROUTE, userAccountController.getUserAccountNames);
 router.get(constants.SUPERVISOR_ACCOUNT_NAMES_ROUTE, userAccountController.getSupervisorAccountNames);
-router.post(constants.USER_ACCOUNT_REGISTRATION_ROUTE, userAccountController.createUserAccount);
+router.post(constants.USER_ACCOUNT_REGISTRATION_ROUTE, userAccountController.registerUserAccount);
+router.post(constants.USER_ACCOUNT_ROUTE, userAccountController.createUserAccount);
+// router.delete(constants.USER_ACCOUNT_ROUTE, userAccountController.deleteUserAccount);
+// router.put(constants.USER_ACCOUNT_ROUTE, userAccountController.toggleUserAccountActiveStatus);
+// router.patch(constants.USER_ACCOUNT_ROUTE, userAccountController.editUserAccount);
+
+
+
+
+
 
 //connection configurations
 router.get(constants.DOWNLOAD_EXAM_CONFIG_ROUTE + "/:id", configurationController.downloadExamConfig);

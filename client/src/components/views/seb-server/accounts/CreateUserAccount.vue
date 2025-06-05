@@ -48,7 +48,6 @@
 
             <v-sheet  class="rounded-lg mt-10">
                 <v-col cols="12" md="12" class="pa-0 mb-4 h-100">
-                <!-- add new account logic-->
 
                     <v-card-text>
                         <v-form ref="formRef" @keyup.enter="register()">
@@ -178,11 +177,38 @@
                                     </v-text-field>
                                 </v-col>
 
+                                <v-col cols="12" class="mt-4">
+                                    <div class="text-subtitle-1 font-weight-medium mb-2">
+                                        {{ translate("navigation.routeNames.selectRoles") || "Select Roles *" }}
+                                    </div>
+                                    <v-row dense>
+                                        <v-col
+                                            v-for="role in availableRoles"
+                                            :key="role"
+                                            cols="12"
+                                            md="6"
+                                            lg="4"
+                                            class="py-1"
+                                        >
+                                            <v-checkbox
+                                                v-model="selectedRoles"
+                                                :label="role"
+                                                :value="role"
+                                                density="compact"
+                                                hide-details
+                                                class="custom-checkbox"
+                                            />
+                                        </v-col>
+                                    </v-row>
+                                    <div v-if="rolesTouched && selectedRoles.length === 0" class="text-error text-caption mt-1">
+                                        {{ rolesRule([]) }}
+                                    </div>
+                                </v-col>
+
+
                             </v-row>
                         </v-form>
                     </v-card-text>
-
-                    <!-- new logic -->
 
                 </v-col>
 
@@ -224,22 +250,28 @@
     import { useI18n } from 'vue-i18n';
     import moment from "moment-timezone";
     import {
-        getInstitutions,
-        registerUserAccount
+        getInstitutions
     } from "@/services/seb-server/component-services/registerAccountViewService";
+    import {
+        createUserAccount
+    } from "@/services/seb-server/component-services/userAccountViewService";
     import {navigateTo} from "@/router/navigation";
+    import { UserRoleEnum } from '@/models/userRoleEnum';
+    import * as generalUtils from "@/utils/generalUtils";
+    import * as quizImportWizardViewService from "@/services/seb-server/component-services/quizImportWizardViewService";
+    import {useExamStore} from "@/stores/seb-server/examStore";
 
 
     const appBarStore = useAppBarStore();
     const layoutStore = useLayoutStore();
     const i18n = useI18n();
     const isLoading = ref<boolean>(true);
-
+    const availableRoles = Object.values(UserRoleEnum);
 
 
     //fields
 
-    const selectedInstitution = ref<string>("")
+    const selectedInstitution = ref<number | null>(null);
     const name = ref<string>("");
     const surname = ref<string>("");
     const username = ref<string>("");
@@ -256,7 +288,7 @@
 
     const institutions = ref<Institution[]>([]);
     const institutionSelectDisabled = ref(false);
-
+    const selectedRoles = ref<string[]>([]);
     const timezoneOptions = moment.tz.names();
 
     //validation rules
@@ -268,6 +300,11 @@
         v === password.value || 'Passwords must match';
     const emailRule = (v: string) =>
         !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || 'Invalid email format';
+    const rolesRule = (v: string[]) =>
+        v.length > 0 || 'At least one role must be selected';
+    const rolesTouched = ref(false);
+
+
 
     onMounted(async () => {
         const result = await getInstitutions();
@@ -275,49 +312,55 @@
             institutions.value = result;
 
             if (result.length === 1) {
-                selectedInstitution.value = result[0].id;
+                selectedInstitution.value = Number(result[0].id);
                 institutionSelectDisabled.value = true;
             }
         }
     });
 
+    watch(selectedRoles, () => {
+        rolesTouched.value = true;
+    });
+
 
 
     const register = async () => {
+        if (!rolesTouched.value) rolesTouched.value = true;
+
+        if (selectedRoles.value.length === 0) {
+            console.warn("No roles selected — not submitting.");
+            return;
+        }
+
         registerError.value = false;
         registerSuccess.value = false;
-        //useraccount
         const {valid} = await formRef.value.validate();
         if (!valid) {
             console.warn("Form is invalid — not submitting.");
             return;
         }
 
-        try {
-            const result = await registerUserAccount(
-                selectedInstitution.value,
-                name.value,
-                surname.value,
-                username.value,
-                password.value,
-                confirmPassword.value,
-                timezone.value,
-                email.value,
-            );
-
-            if (result) {
-                registerSuccess.value = true;
-
-                setTimeout(() => {
-                    navigateTo(constants.DEFAULT_ROUTE);
-                }, 2500);
-            } else {
-                registerError.value = true;
-            }
-        } catch (error) {
-            console.error(error);
-            registerError.value = true;
+        const createUserAcccountParams: createUserPar = {
+            institutionId: selectedInstitution.value!,
+            name : name.value,
+            surname : surname.value,
+            username : username.value,
+            newPassword : password.value,
+            confirmNewPassword : confirmPassword.value,
+            timezone : timezone.value,
+            language : "en",
+            email: email.value || "",
+            userRoles : selectedRoles.value
         }
+
+        const createdUserAccountResponse: SingleUserAccountResponse | null = await createUserAccount(createUserAcccountParams);
+        if(createdUserAccountResponse == null){
+            return;
+        } else {
+            navigateTo(constants.USER_ACCOUNTS_ROUTE);
+        }
+
+
     };
 
 
