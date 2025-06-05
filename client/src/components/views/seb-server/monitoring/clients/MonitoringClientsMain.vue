@@ -75,7 +75,7 @@
                                 <v-icon 
                                     icon="mdi-chevron-right"
                                     style="font-size: 30px;"
-                                    @click="monitoringViewService.goToMonitoringDetails(examId, item.connectionToken)">
+                                    @click="monitoringViewService.goToMonitoringDetails(examId, item.connectionToken, route.query)">
                                 </v-icon>
                             </td>
                         </tr>

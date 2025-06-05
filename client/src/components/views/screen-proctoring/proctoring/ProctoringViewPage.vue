@@ -260,7 +260,8 @@
     const appBarStore = useAppBarStore();
 
     //router params
-    const sessionId: string = useRoute().params.sessionId.toString();
+    let sessionId: string = "";
+    const sessionIdRouteParam: string = useRoute().params.sessionId?.toString();
     const searchTimestampOnLoad = ref<boolean>(false);
     const searchTimestamp: string | undefined = useRoute().query.searchTimestamp?.toString();
 
@@ -271,6 +272,11 @@
     //metadata
     const isMetadataInfo = ref<boolean>(true);
     const totalAmountOfScreenshots = ref<number>();
+
+    //props
+    const props  = defineProps<{
+        sessionIdProp?: string
+    }>();
 
 
     //=============lifecycle and watchers==================
@@ -360,6 +366,7 @@
     });
 
     async function initialize(){
+        setSessionId();
         await assignScreenshotData();
         if(currentScreenshot.value == null){ 
             showError.value = true; 
@@ -376,6 +383,20 @@
         setSliderMin(currentScreenshot.value.timestamp);
         firstScreenshotTime.value = currentScreenshot.value.timestamp;
         throttledSetImageLink(Date.now().toString());
+    }
+
+    function setSessionId(){
+        //rendered by component
+        if(sessionIdRouteParam == null && props.sessionIdProp != null){
+            console.log("rendered by component")
+
+            sessionId = props.sessionIdProp;
+            return;
+        }
+
+        console.log("rendered by route")
+        //rendered by route
+        sessionId = sessionIdRouteParam;
     }
     //==============================
 

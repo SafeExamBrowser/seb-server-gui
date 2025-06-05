@@ -24,13 +24,15 @@
     //data load
     const isDataLoaded = ref<boolean>(false);
 
+    //interval
+    let intervalRefresh: any | null = null;
+    const REFRESH_INTERVAL: number = 1 * 5000;
+
     //data
 
 
     onBeforeMount(async () => {
         appBarStore.title = translate("titles.monitoring");
-
-        console.log("examId: " + examId)
 
         await getSingleConnection();
         await monitoringViewService.getExamAndStore(examId);
@@ -38,31 +40,53 @@
         storeClientGroups();
 
 
-        console.log(monitoringStore.selectedSingleConns);
+        // console.log(monitoringStore.selectedSingleConn);
+        // console.log(monitoringStore.clientGroupsSingle)
 
-
-        console.log(monitoringStore.clientGroupsSingle)
+        startIntervalRefresh();
 
         isDataLoaded.value = true;
     });
 
+    onBeforeUnmount(() => {
+        stopIntervalRefresh();
+    });
 
+
+    //==============data fetching================
     async function getSingleConnection(){
         const singleConnectionResponse: SingleConnection | null = await monitoringViewService.getSingleConnection(examId, connectionToken);
         if(singleConnectionResponse == null){
             return;
         }
 
-        monitoringStore.selectedSingleConns = singleConnectionResponse;
+        monitoringStore.selectedSingleConn = singleConnectionResponse;
     }
 
 
+    //=================data preparing===================
     async function storeClientGroups(){
-        if(monitoringStore.selectedSingleConns == null){
+        if(monitoringStore.selectedSingleConn == null){
             return;
         }
 
-        monitoringStore.clientGroupsSingle = monitoringViewService.extractClientGroupNames(monitoringStore.selectedSingleConns.cg);
+        monitoringStore.clientGroupsSingle = monitoringViewService.extractClientGroupNames(monitoringStore.selectedSingleConn.cg);
+    }
+
+
+    //=================interval===================
+    async function startIntervalRefresh(){
+        intervalRefresh = setInterval(async () => {
+
+            await getSingleConnection();
+
+        }, REFRESH_INTERVAL);
+    }
+
+    function stopIntervalRefresh(){
+        if (intervalRefresh) {
+            clearInterval(intervalRefresh);
+        }
     }
 
 

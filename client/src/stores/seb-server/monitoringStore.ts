@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { ExamStatusEnum, ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
 import { MonitoringRow } from "@/models/seb-server/monitoringClients";
+import { LocationQuery } from "vue-router";
 
 export const useMonitoringStore = defineStore("monitoring", () => {
 
@@ -22,9 +23,10 @@ export const useMonitoringStore = defineStore("monitoring", () => {
     const clientGroups = ref<ClientGroups | null>(null);
     const monitoringData = ref<Map<number, MonitoringRow>>(new Map());
     const staticClientDataList = ref<MonitoringStaticClientData | null>(null);
+    const currentMonitoringQuery = ref<{}>();
 
     //monitoring detail
-    const selectedSingleConns = ref<SingleConnection | null>(null);
+    const selectedSingleConn = ref<SingleConnection | null>(null);
     const clientGroupsSingle = ref<ClientGroup[]>([]);
 
 
@@ -52,7 +54,8 @@ export const useMonitoringStore = defineStore("monitoring", () => {
         isNoFilterSelected,
         monitoringData,
         staticClientDataList,
-        selectedSingleConns,
-        clientGroupsSingle
+        selectedSingleConn,
+        clientGroupsSingle,
+        currentMonitoringQuery
     };
 });

@@ -173,7 +173,8 @@ export function goToMonitoring(header: MonitoringHeaderEnum, value: string | boo
     );
 }
 
-export function goToMonitoringDetails(examId: string, connectionToken: string){
+export function goToMonitoringDetails(examId: string, connectionToken: string, query: {}){
+    useMonitoringStore().currentMonitoringQuery = query; 
     navigateTo(constants.MONITORING_ROUTE + '/' + examId + "/details/" + connectionToken);
 }
 
