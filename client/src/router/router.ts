@@ -28,6 +28,8 @@ import ProctoringApplicationSearchPage from "@/components/views/screen-proctorin
 import ExamsOverviewPage from "@/components/views/screen-proctoring/exams-overview/ExamsOverviewPage.vue";
 import SearchPage from "@/components/views/screen-proctoring/search/SearchPage.vue";
 import { useAuthStore } from "@/stores/authentication/authenticationStore";
+import {CREATE_USER_ACCOUNTS_ROUTE} from "@/utils/constants";
+import CreateUserAccount from "@/components/views/seb-server/accounts/CreateUserAccount.vue";
 
 
 
@@ -168,6 +170,15 @@ const routes: Array<RouteRecordRaw> = [
                 component: UserAccountsPage,
                 meta: {
                     titleKey: "titles.userAccounts"
+                },
+            },
+
+            {
+                path: constants.CREATE_USER_ACCOUNTS_ROUTE,
+                name: "CreateUserAccount",
+                component: CreateUserAccount,
+                meta: {
+                    titleKey: "titles.createUserAccount"
                 },
             },
 
