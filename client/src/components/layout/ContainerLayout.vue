@@ -424,4 +424,134 @@
         background-color: #A30774 !important; /* Vuetify default red */
     }
 
+
+    .blue-background {
+        background-color: #215caf;
+    }
+
+    .fade-in-arrow {
+        opacity: 0;
+        transition: opacity 0.2s ease;
+        margin-left: auto;
+    }
+
+    .fade-in-visible {
+        opacity: 1;
+    }
+
+    .roles-list-popup {
+        margin-top: 0.6rem !important;
+        border-radius: 0 !important;
+    }
+
+    .profile-list-popup {
+        margin-top: 0.47rem !important;
+        border-radius: 0 !important;
+        width: 20vw;
+        min-width: 16rem;
+        max-width: 90vw;
+        left: 1vw !important;
+        right: 0 !important;
+    }
+
+    .leading-tight {
+        line-height: 1.2;
+    }
+
+    .logout-btn {
+        padding: 0;
+        min-width: unset;
+        margin-right: 0.25rem;
+        text-transform: none;
+        color: #b0bec5;
+    }
+
+    .logout-icon {
+        font-size: 1.3rem;
+        font-weight: 300;
+        line-height: 1;
+        vertical-align: middle;
+        color: #b0bec5;
+    }
+
+    @media (min-width: 960px) {
+        .logout-icon {
+            font-size: 1.5rem;
+        }
+    }
+
+    .custom-white-divider {
+        height: 1px;
+        width: 100%;
+        background-color: white;
+        opacity: 1;
+    }
+
+    .bg-is-institutional-admin {
+        background-color: #A30774 !important; /* Vuetify default red */
+    }
+
+
+    .fade-in-arrow {
+        opacity: 0;
+        transition: opacity 0.2s ease;
+        margin-left: auto;
+    }
+
+    .fade-in-visible {
+        opacity: 1;
+    }
+
+    .roles-list-popup {
+        margin-top: 0.62rem !important;
+        border-radius: 0 !important;
+    }
+
+    .profile-list-popup {
+        margin-top: 0.50rem !important;
+        border-radius: 0 !important;
+        width: 20vw;
+        min-width: 16rem;
+        max-width: 90vw;
+        left: 1vw !important;
+        right: 0 !important;
+    }
+
+    .leading-tight {
+        line-height: 1.2;
+    }
+
+    .logout-btn {
+        padding: 0;
+        min-width: unset;
+        margin-right: 0.25rem;
+        text-transform: none;
+        color: #b0bec5;
+    }
+
+    .logout-icon {
+        font-size: 1.3rem;
+        font-weight: 300;
+        line-height: 1;
+        vertical-align: middle;
+        color: #b0bec5;
+    }
+
+    @media (min-width: 960px) {
+        .logout-icon {
+            font-size: 1.5rem;
+        }
+    }
+
+    .custom-white-divider {
+        height: 1px;
+        width: 100%;
+        background-color: white;
+        opacity: 1;
+    }
+
+    .bg-is-institutional-admin {
+        background-color: #A30774 !important; /* Vuetify default red */
+    }
+
 </style>
