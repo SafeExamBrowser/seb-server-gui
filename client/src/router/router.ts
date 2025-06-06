@@ -58,7 +58,6 @@ const routes: Array<RouteRecordRaw> = [
             try{
               const tokenObject: JwtTokenResponse = await authenticationService.verifyJwt(to.query.token.toString());
               authStore.loginWithJwt(tokenObject.login.access_token, tokenObject.login.refresh_token, tokenObject.redirect);
-
               return;
 
             }catch(error){
