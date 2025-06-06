@@ -40,6 +40,13 @@ export async function registerUserAccount(options: Record<string, any>): Promise
 }
 
 
+export async function deleteUserAccount(token: string, id: string): Promise<[object, number]>{
+    const url: string =  constants.USER_ACCOUNT_ROUTE + "/" + id;
+    const {data, status} = await apiService.api.delete(url, {headers: apiService.getHeaders(token)});
+
+    return [data, status];
+}
+
 export async function createUserAccount(token: string, newUserAccount: {}): Promise<[object, number]>{
     const url: string =  constants.USER_ACCOUNT_ROUTE;
     const {data, status} = await apiService.api.post(url, apiService.createUrlEncodedBody(newUserAccount), {headers: apiService.getHeaders(token)});

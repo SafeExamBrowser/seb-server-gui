@@ -432,7 +432,8 @@
         "exam-update-failed": "Exam update failed",
         "activate-screen-proctoring-failed": "Activation of screen proctoring failed",
         "deactivate-screen-proctoring-failed": "Deactivation of screen proctoring failed",
-        "no-assessment-tool": "No assessment tool connected to SEB Server. Contact your institutional Administrator."
+        "no-assessment-tool": "No assessment tool connected to SEB Server. Contact your institutional Administrator.",
+        "deletion-success": "Deleted User: \"{username}\"."
     },
 
 

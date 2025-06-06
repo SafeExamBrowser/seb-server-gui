@@ -45,18 +45,9 @@ export async function changePassword(
     }
 }
 
-export async function deactivateUserAccount(accountId: string): Promise<UserAccount | any> {
-    try {
-        const url: string = userAccountUrl + "/deactivate/" + accountId;
-        const { data, status }: AxiosResponse = await apiService.api.post(url, { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN) });
+export async function deleteUserAccount(accountId: string): Promise<any | any> {
+    return (await apiService.api.delete(userAccountUrl + "/" + accountId, {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
 
-        if (status === 200) {
-            return data;
-        }
-
-    } catch (error) {
-        throw error;
-    }
 }
 
 export async function getPersonalUserAccount(): Promise<UserAccount | any> {

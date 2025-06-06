@@ -1,6 +1,5 @@
 import * as userAccountService from "@/services/seb-server/api-services/userAccountService";
 import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
-import {OptionalParGetUserAccounts, UserAccount, UserAccountName, UserAccountResponse} from "@/models/userAccount";
 
 export async function setPersonalUserAccount(){
     const userAccountStore = useUserAccountStore();
@@ -90,10 +89,9 @@ export async function activateUserAccount(accountId: string): Promise<UserAccoun
     }
 }
 
-export async function deactivateUserAccount(accountId: string): Promise<UserAccount | null>{
+export async function deleteUserAccount(accountId: string): Promise<any | null>{
     try{
-        return await userAccountService.deactivateUserAccount(accountId)
-
+        return await userAccountService.deleteUserAccount(accountId)
     }catch(error){
         return null;
     }

@@ -2,8 +2,8 @@
     <div class="text-white text-h5 font-weight-black ml-10 mt-5 ">
         {{ translate("titles.settings") }}
     </div>
-    <v-row class="mt-10 w-98">
-        <v-col cols="3" class="pt-0">
+    <v-row class="mt-10 w-98 h-100">
+        <v-col cols="3" class="pt-0 h-100">
             <v-sheet  class="rounded-lg ml-6 w-100 h-100 bg-primary">
                 <v-col class="pt-0">
                     <v-divider class="section-divider" />
@@ -30,11 +30,22 @@
                         <router-link class="link-color nav-link" :to="constants.USER_ACCOUNTS_ROUTE">{{ translate("navigation.routeNames.userAccounts") }}</router-link>
                     </v-list-item>
 
-                    <v-divider class="section-divider" />
+                    <v-divider class="section-divider mb-10" />
                 </v-col>
-
+                <div class="success-message-div">
+                    <AlertMsg
+                        v-if="deleteSuccess"
+                        :alertProps="{
+                            title: '',
+                            color: 'success',
+                            type: 'alert',
+                            customText: i18n.t('warnings.deletion-success', { username: deletedUsername})
+                        }"
+                    />
+                </div>
             </v-sheet>
         </v-col>
+
 
 
         <v-col elevation="4" cols="9" class="bg-white rounded-lg mb-3">
@@ -210,7 +221,7 @@
                         </v-card-title>
                         <v-card-text>
                             Are you sure you want to delete
-                            <strong>{{ userToDelete?.name }} {{ userToDelete?.surname }}</strong>'s account ({{ userToDelete?.username }})?
+                            <strong>{{ userToDelete?.name }} {{ userToDelete?.surname }}</strong>'s account (<strong>{{ userToDelete?.username }}</strong>)?
                         </v-card-text>
 
                         <v-card-actions class="justify-end">
@@ -249,6 +260,8 @@
     const deleteDialog = ref(false);
     const userToDelete = ref<UserAccount | null>(null);
     const isLoading = ref<boolean>(true);
+    const deleteSuccess = ref(false);
+    const deletedUsername = ref('');
 
     //search string
     const searchQuery = ref('');
@@ -271,6 +284,7 @@
         { title: '', key: 'userAccountLink', width: '5%' },
     ]);
 
+
     const options = ref({
         page: 1,
         itemsPerPage: 5,
@@ -280,7 +294,6 @@
     // Filters + Sorting
     const filteredUsers = computed(() => {
         if (!userAccounts.value?.content) return [];
-
         let result = [...userAccounts.value.content];
 
         // Role filter
@@ -319,8 +332,6 @@
                     : valB.localeCompare(valA);
             });
         }
-
-
         return result;
     });
 
@@ -364,20 +375,32 @@
         }
     }
 
-    // Delete dialog
+    // Delete dialog and logic
     function openDeleteDialog(user: UserAccount) {
         userToDelete.value = user;
         deleteDialog.value = true;
     }
-
-    function confirmDelete() {
+    async function confirmDelete() {
         if (userToDelete.value) {
-            console.log(`Deleted user with id: ${userToDelete.value.uuid}`);
-            // TODO: call backend deletion
+            try {
+                const response = await userAccountViewService.deleteUserAccount(userToDelete.value.uuid);
+                if (response !== null) {
+                    deletedUsername.value = userToDelete.value.username;
+                    deleteSuccess.value = true;
+                    setTimeout(() => {
+                        deleteSuccess.value = false;
+                    }, 2500);
+                    await loadItems(options.value);
+                }
+            } catch (error) {
+                console.error("Error deleting user:", error);
+            }
         }
+
         deleteDialog.value = false;
         userToDelete.value = null;
     }
+
 
     // Lifecycle
     onMounted(() => {
@@ -474,6 +497,11 @@
         background-color: white !important;
         height: 1px !important;
         opacity: 1 !important;
+        width: 85% !important;
+    }
+
+    .success-message-div {
+        margin-top: 25.5rem;
         width: 85% !important;
     }
     .w-98 {
@@ -580,6 +608,5 @@
         color: #215caf;
         background-color: rgba(33, 92, 175, 0.1);
     }
-
 
 </style>

@@ -2,6 +2,7 @@ import {Request, Response} from "express";
 import {LOG} from "../../logging/logger";
 import * as userAccountService from "../../services/seb-server/user-account.service";
 import * as apiService from "../../services/seb-server/api.service";
+import * as examService from "../../services/seb-server/exam.service";
 
 
 export async function getUserAccount(req: Request, res: Response){
@@ -24,6 +25,15 @@ export async function getUserAccountNames(req: Request, res: Response){
     }
 }
 
+export async function deleteUserAccount(req: Request, res: Response){
+    try{
+        const [userAccount, status] = await userAccountService.deleteUserAccount(req.headers.authorization, req.params.id);
+        return res.status(status).json(userAccount);
+
+    }catch(error){
+        apiService.handleGenericApiError(error, res);
+    }
+}
 
 export async function registerUserAccount(req: Request, res: Response) {
     try {
