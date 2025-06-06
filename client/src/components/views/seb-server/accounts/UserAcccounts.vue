@@ -579,11 +579,6 @@
         margin:0.1em;
     }
 
-    .filter-chip-selected {
-        background-color: #1976d2;
-        color: white;
-    }
-
     .icon-cell {
         vertical-align: middle !important;
         padding-top: 0 !important;

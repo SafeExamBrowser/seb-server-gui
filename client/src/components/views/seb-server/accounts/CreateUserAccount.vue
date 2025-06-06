@@ -2,8 +2,8 @@
     <div class="text-white text-h5 font-weight-black ml-10 mt-5 ">
         {{ translate("titles.settings") }}
     </div>
-    <v-row class="mt-10 w-98">
-        <v-col cols="3" class="pt-0">
+    <v-row class="mt-10 w-98 h-100">
+        <v-col cols="3" class="pt-0 h-100">
             <v-sheet  class="rounded-lg ml-6 w-100 h-100 bg-primary">
                 <v-col class="pt-0">
                     <v-divider class="section-divider" />
@@ -30,9 +30,19 @@
                         <router-link class="link-color nav-link" :to="constants.USER_ACCOUNTS_ROUTE">{{ translate("navigation.routeNames.userAccounts") }}</router-link>
                     </v-list-item>
 
-                    <v-divider class="section-divider" />
+                    <v-divider class="section-divider mb-10" />
                 </v-col>
-
+                <div class="success-message-div">
+                    <AlertMsg
+                        v-if="createdSuccess"
+                        :alertProps="{
+                            title: '',
+                            color: 'success',
+                            type: 'alert',
+                            customText: i18n.t('warnings.creation-success', { username: createdUserName})
+                        }"
+                    />
+                </div>
             </v-sheet>
         </v-col>
 
@@ -185,7 +195,7 @@
                                     </v-text-field>
                                 </v-col>
 
-                                <v-col cols="12" class="mt-4">
+                                <v-col cols="12" class="mt-2">
                                     <div class="text-subtitle-1 font-weight-medium mb-2">
                                         {{ translate("userAccount.createUserAccountPage.labels.selectRolesLabel")}}
                                     </div>
@@ -261,14 +271,11 @@
     import { createUserAccount } from "@/services/seb-server/component-services/userAccountViewService";
     import { navigateTo } from "@/router/navigation";
     import { UserRoleEnum } from '@/models/userRoleEnum';
+    import {useI18n} from "vue-i18n";
 
     const appBarStore = useAppBarStore();
     const layoutStore = useLayoutStore();
-
-    const availableRoles = Object.values(UserRoleEnum).map(role => ({
-        label: translate(`userAccount.createUserAccountPage.userRoles.${role}`),
-        value: role
-    }));
+    const i18n = useI18n();
 
     //fields
     const selectedInstitution = ref<number | null>(null);
@@ -279,30 +286,28 @@
     const timezone = ref<string>("");
     const password = ref<string>("");
     const confirmPassword = ref<string>("");
+    const createdUserName = ref('');
+    const formRef = ref();
+
     const rolesTouched = ref(false);
-
-
+    const createdSuccess= ref(false);
     const passwordVisible = ref<boolean>(false);
     const confirmPasswordVisible = ref<boolean>(false);
     const confirmPasswordFieldRef = ref();
     const confirmPasswordTouched = ref(false);
-
+    const institutionSelectDisabled = ref(false);
 
     const institutions = ref<Institution[]>([]);
-    const institutionSelectDisabled = ref(false);
     const selectedRoles = ref<string[]>([]);
     const timezoneOptions = moment.tz.names();
-    const formRef = ref();
 
 
     //validation rules
-
     const requiredMessage = translate('userAccount.createUserAccountPage.validation.required');
     const passwordTooShortMessage = translate('userAccount.createUserAccountPage.validation.passwordTooShort');
     const passwordsDontMatchMessage = translate('userAccount.createUserAccountPage.validation.passwordsDontMatch');
     const invalidEmailMessage = translate('userAccount.createUserAccountPage.validation.invalidEmail');
     const invalidRoleSelectionMessage = translate('userAccount.createUserAccountPage.validation.invalidRoleSelection');
-
 
     const requiredRule = (v: string) => !!v || requiredMessage;
     const passwordRule = (v: string) => (v && v.length >= 8) || passwordTooShortMessage;
@@ -310,6 +315,11 @@
     const emailRule = (v: string) => !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || invalidEmailMessage;
     const rolesRule = (v: string[]) => v.length > 0 || invalidRoleSelectionMessage;
 
+    //load available roles
+    const availableRoles = Object.values(UserRoleEnum).map(role => ({
+        label: translate(`userAccount.createUserAccountPage.userRoles.${role}`),
+        value: role
+    }));
 
     onMounted(async () => {
         const result = await getInstitutions();
@@ -366,10 +376,15 @@
         if (createdUserAccountResponse == null) {
             return;
         } else {
-            navigateTo(constants.USER_ACCOUNTS_ROUTE);
+            createdUserName.value = createdUserAccountResponse.name;
+            createdSuccess.value = true;
+            setTimeout(() => {
+                createdSuccess.value = false;
+                navigateTo(constants.USER_ACCOUNTS_ROUTE);
+            }, 1500);
+
         }
     };
-
 
     onBeforeUnmount(() => {
         layoutStore.setBlueBackground(false);
@@ -441,5 +456,10 @@
         background-color: #DCDCDC !important;
         height: 1px;
         width: 100%;
+    }
+
+    .success-message-div {
+        margin-top: 25.5rem;
+        width: 85% !important;
     }
 </style>

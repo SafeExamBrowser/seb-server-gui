@@ -5,7 +5,19 @@ type UserAccountResponse = {
     content: UserAccount[];
 }
 type SingleUserAccountResponse = {
-    content: UserAccount;
+    uuid: string;
+    institutionId: number;
+    creationDate: string;
+    name: string;
+    surname: string;
+    username: string;
+    email: string;
+    active: boolean;
+    directLogin: boolean;
+    localAccount: boolean;
+    language: string;
+    timezone: string;
+    userRoles: string[];
 }
 
 type UserAccount = {
