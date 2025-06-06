@@ -410,8 +410,8 @@
         display: flex;
         flex-wrap: wrap;
         gap: 0.25em;
-        min-height: 4.5em;
-        max-height: 4.5em;
+        min-height: 4em;
+        max-height: 4em;
         overflow: hidden;
         align-items: center;
     }
