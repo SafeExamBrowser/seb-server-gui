@@ -275,13 +275,13 @@
     // Table header config
     const userAccountsTableHeadersRef = ref<any[]>();
     const userAccountsTableHeaders = ref([
-        { title: translate('userAccountList.main.tableHeaderName'), key: 'name', width: '10%', sortable: true },
-        { title: translate('userAccountList.main.tableHeaderSurname'), key: 'surname', width: '10%', sortable: true },
-        { title: translate('userAccountList.main.tableHeaderUsername'), key: 'username', width: '10%', sortable: true },
-        { title: translate('userAccountList.main.tableHeaderEmail'), key: 'email', width: '10%', sortable: true },
-        { title: translate('userAccountList.main.tableHeaderRoles'), key: 'userRoles', width: '31%', sortable: false },
-        { title: translate('userAccountList.main.tableHeaderStatus'), key: 'status', width: '2%', sortable: false },
-        { title: '', key: 'userAccountLink', width: '5%' },
+        { title: translate('userAccount.userAccountTableHeaders.main.tableHeaderName'), key: 'name', width: '10%', sortable: true },
+        { title: translate('userAccount.userAccountTableHeaders.main.tableHeaderSurname'), key: 'surname', width: '12%', sortable: true },
+        { title: translate('userAccount.userAccountTableHeaders.main.tableHeaderUsername'), key: 'username', width: '12%', sortable: true },
+        { title: translate('userAccount.userAccountTableHeaders.main.tableHeaderEmail'), key: 'email', width: '10%', sortable: true },
+        { title: translate('userAccount.userAccountTableHeaders.main.tableHeaderRoles'), key: 'userRoles', width: '31%', sortable: false },
+        { title: translate('userAccount.userAccountTableHeaders.main.tableHeaderStatus'), key: 'status', width: '2%', sortable: false },
+        { title: '', key: 'userAccountLink', width: '1%' },
     ]);
 
 

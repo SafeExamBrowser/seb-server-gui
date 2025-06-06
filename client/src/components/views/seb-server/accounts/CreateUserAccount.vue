@@ -40,24 +40,30 @@
         <v-col elevation="4" cols="9" class="bg-white rounded-lg">
             <v-row class="d-flex align-center justify-space-between px-6 pt-6">
                 <div class="text-primary text-h5 font-weight-bold">
-                    {{ translate("navigation.routeNames.createUserAccount") }}
+                    {{ translate("userAccount.createUserAccountPage.title") }}
                 </div>
             </v-row>
 
-            <v-divider class="custom-divider mx-6 my-4 mt-7" />
 
-            <v-sheet  class="rounded-lg mt-10">
+            <v-divider class="custom-divider mx-6 my-4 mt-7" />
+            <v-row class="px-8 mt-2">
+                <div class="text-body-2 text-grey-darken-1">
+                    {{ translate("userAccount.createUserAccountPage.info.accountCreationInfo") }}
+                </div>
+            </v-row>
+            <v-sheet  class="rounded-lg mt-4">
                 <v-col cols="12" md="12" class="pa-0 mb-4 h-100">
 
                     <v-card-text>
                         <v-form ref="formRef" @keyup.enter="register()">
+
                             <v-row dense>
                                 <v-col cols="12" md="6" class="mt-2">
                                     <v-select
                                         required
                                         prepend-inner-icon="mdi-domain"
                                         density="compact"
-                                        label="Institution *"
+                                        :label="translate('userAccount.createUserAccountPage.labels.institutionLabel')"
                                         variant="outlined"
                                         v-model="selectedInstitution"
                                         :items="institutions"
@@ -73,7 +79,7 @@
                                         required
                                         prepend-inner-icon="mdi-account-outline"
                                         density="compact"
-                                        label="Username *"
+                                        :label="translate('userAccount.createUserAccountPage.labels.usernameLabel')"
                                         variant="outlined"
                                         v-model="username"
                                         :rules="[requiredRule]"
@@ -85,7 +91,7 @@
                                         required
                                         prepend-inner-icon="mdi-account-outline"
                                         density="compact"
-                                        label="Name *"
+                                        :label="translate('userAccount.createUserAccountPage.labels.nameLabel')"
                                         variant="outlined"
                                         v-model="name"
                                         :rules="[requiredRule]"
@@ -97,7 +103,7 @@
                                         required
                                         prepend-inner-icon="mdi-account-outline"
                                         density="compact"
-                                        label="Surname *"
+                                        :label="translate('userAccount.createUserAccountPage.labels.surnameLabel')"
                                         variant="outlined"
                                         v-model="surname"
                                         :rules="[requiredRule]"
@@ -108,7 +114,7 @@
                                     <v-text-field
                                         prepend-inner-icon="mdi-email-outline"
                                         density="compact"
-                                        label="Email"
+                                        :label="translate('userAccount.createUserAccountPage.labels.emailLabel')"
                                         variant="outlined"
                                         v-model="email"
                                         :rules="[emailRule]"
@@ -121,7 +127,7 @@
                                         required
                                         prepend-inner-icon="mdi-map-clock-outline"
                                         density="compact"
-                                        label="Time zone *"
+                                        :label="translate('userAccount.createUserAccountPage.labels.timeZoneLabel')"
                                         variant="outlined"
                                         v-model="timezone"
                                         :items="timezoneOptions"
@@ -136,7 +142,7 @@
                                         :type="passwordVisible ? 'text' : 'password'"
                                         prepend-inner-icon="mdi-lock-outline"
                                         density="compact"
-                                        label="Password *"
+                                        :label="translate('userAccount.createUserAccountPage.labels.passwordLabel')"
                                         variant="outlined"
                                         v-model="password"
                                         :rules="[requiredRule, passwordRule]"
@@ -155,15 +161,17 @@
 
                                 <v-col cols="12" md="6" class="mt-2">
                                     <v-text-field
+                                        ref="confirmPasswordFieldRef"
                                         required
                                         :type="confirmPasswordVisible ? 'text' : 'password'"
                                         prepend-inner-icon="mdi-lock-outline"
                                         density="compact"
-                                        label="Confirm password *"
+                                        :label="translate('userAccount.createUserAccountPage.labels.confirmPasswordLabel')"
                                         variant="outlined"
                                         v-model="confirmPassword"
                                         :rules="[requiredRule, confirmPasswordRule]"
                                         validate-on="blur"
+                                        @blur="confirmPasswordTouched = true"
                                         class="mb-2"
                                     >
                                         <template v-slot:append-inner>
@@ -179,12 +187,15 @@
 
                                 <v-col cols="12" class="mt-4">
                                     <div class="text-subtitle-1 font-weight-medium mb-2">
-                                        {{ translate("navigation.routeNames.selectRoles") || "Select Roles *" }}
+                                        {{ translate("userAccount.createUserAccountPage.labels.selectRolesLabel")}}
+                                    </div>
+                                    <div class="text-body-2 text-grey-darken-1 mb-5">
+                                        {{ translate("userAccount.createUserAccountPage.info.rolesSelectionInfo") }}
                                     </div>
                                     <v-row dense>
                                         <v-col
                                             v-for="role in availableRoles"
-                                            :key="role"
+                                            :key="role.value"
                                             cols="12"
                                             md="6"
                                             lg="4"
@@ -192,8 +203,8 @@
                                         >
                                             <v-checkbox
                                                 v-model="selectedRoles"
-                                                :label="role"
-                                                :value="role"
+                                                :label="role.label"
+                                                :value="role.value"
                                                 density="compact"
                                                 hide-details
                                                 class="custom-checkbox"
@@ -204,8 +215,6 @@
                                         {{ rolesRule([]) }}
                                     </div>
                                 </v-col>
-
-
                             </v-row>
                         </v-form>
                     </v-card-text>
@@ -233,7 +242,7 @@
                             class="ml-2"
                             @click="register()"
                         >
-                            {{ translate("general.saveButton") }}
+                            {{ translate("userAccount.createUserAccountPage.buttons.createNewUser") }}
                         </v-btn>
                     </div>
                 </v-col>
@@ -247,30 +256,21 @@
     import { useAppBarStore, useLayoutStore } from '@/stores/store';
     import { translate } from '@/utils/generalUtils';
     import * as constants from '@/utils/constants';
-    import { useI18n } from 'vue-i18n';
     import moment from "moment-timezone";
-    import {
-        getInstitutions
-    } from "@/services/seb-server/component-services/registerAccountViewService";
-    import {
-        createUserAccount
-    } from "@/services/seb-server/component-services/userAccountViewService";
-    import {navigateTo} from "@/router/navigation";
+    import { getInstitutions } from "@/services/seb-server/component-services/registerAccountViewService";
+    import { createUserAccount } from "@/services/seb-server/component-services/userAccountViewService";
+    import { navigateTo } from "@/router/navigation";
     import { UserRoleEnum } from '@/models/userRoleEnum';
-    import * as generalUtils from "@/utils/generalUtils";
-    import * as quizImportWizardViewService from "@/services/seb-server/component-services/quizImportWizardViewService";
-    import {useExamStore} from "@/stores/seb-server/examStore";
-
 
     const appBarStore = useAppBarStore();
     const layoutStore = useLayoutStore();
-    const i18n = useI18n();
-    const isLoading = ref<boolean>(true);
-    const availableRoles = Object.values(UserRoleEnum);
 
+    const availableRoles = Object.values(UserRoleEnum).map(role => ({
+        label: translate(`userAccount.createUserAccountPage.userRoles.${role}`),
+        value: role
+    }));
 
     //fields
-
     const selectedInstitution = ref<number | null>(null);
     const name = ref<string>("");
     const surname = ref<string>("");
@@ -279,31 +279,36 @@
     const timezone = ref<string>("");
     const password = ref<string>("");
     const confirmPassword = ref<string>("");
+    const rolesTouched = ref(false);
 
-    const registerError = ref(false);
-    const registerSuccess = ref(false);
 
     const passwordVisible = ref<boolean>(false);
     const confirmPasswordVisible = ref<boolean>(false);
+    const confirmPasswordFieldRef = ref();
+    const confirmPasswordTouched = ref(false);
+
 
     const institutions = ref<Institution[]>([]);
     const institutionSelectDisabled = ref(false);
     const selectedRoles = ref<string[]>([]);
     const timezoneOptions = moment.tz.names();
+    const formRef = ref();
+
 
     //validation rules
-    const requiredRule = (v: string) => !!v || 'This field is required';
-    const passwordRule = (v: string) =>
-        (v && v.length >= 8) || 'Password must be at least 8 characters';
-    const formRef = ref();
-    const confirmPasswordRule = (v: string) =>
-        v === password.value || 'Passwords must match';
-    const emailRule = (v: string) =>
-        !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || 'Invalid email format';
-    const rolesRule = (v: string[]) =>
-        v.length > 0 || 'At least one role must be selected';
-    const rolesTouched = ref(false);
 
+    const requiredMessage = translate('userAccount.createUserAccountPage.validation.required');
+    const passwordTooShortMessage = translate('userAccount.createUserAccountPage.validation.passwordTooShort');
+    const passwordsDontMatchMessage = translate('userAccount.createUserAccountPage.validation.passwordsDontMatch');
+    const invalidEmailMessage = translate('userAccount.createUserAccountPage.validation.invalidEmail');
+    const invalidRoleSelectionMessage = translate('userAccount.createUserAccountPage.validation.invalidRoleSelection');
+
+
+    const requiredRule = (v: string) => !!v || requiredMessage;
+    const passwordRule = (v: string) => (v && v.length >= 8) || passwordTooShortMessage;
+    const confirmPasswordRule = (v: string) => v === password.value || passwordsDontMatchMessage;
+    const emailRule = (v: string) => !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || invalidEmailMessage;
+    const rolesRule = (v: string[]) => v.length > 0 || invalidRoleSelectionMessage;
 
 
     onMounted(async () => {
@@ -321,48 +326,49 @@
     watch(selectedRoles, () => {
         rolesTouched.value = true;
     });
-
-
+    watch(password, () => {
+        if (confirmPasswordTouched.value) {
+            confirmPasswordFieldRef.value?.validate?.();
+        }
+    });
 
     const register = async () => {
-        if (!rolesTouched.value) rolesTouched.value = true;
+        rolesTouched.value = true;
 
-        if (selectedRoles.value.length === 0) {
-            console.warn("No roles selected — not submitting.");
+        // Always validate the form
+        const { valid } = await formRef.value.validate();
+
+        // Manually check roles
+        const rolesValid = selectedRoles.value.length > 0;
+
+        // If anything is invalid, stop
+        if (!valid || !rolesValid) {
             return;
         }
 
-        registerError.value = false;
-        registerSuccess.value = false;
-        const {valid} = await formRef.value.validate();
-        if (!valid) {
-            console.warn("Form is invalid — not submitting.");
-            return;
-        }
-
+        // Prepare the request
         const createUserAcccountParams: createUserPar = {
             institutionId: selectedInstitution.value!,
-            name : name.value,
-            surname : surname.value,
-            username : username.value,
-            newPassword : password.value,
-            confirmNewPassword : confirmPassword.value,
-            timezone : timezone.value,
-            language : "en",
+            name: name.value,
+            surname: surname.value,
+            username: username.value,
+            newPassword: password.value,
+            confirmNewPassword: confirmPassword.value,
+            timezone: timezone.value,
+            language: "en",
             email: email.value || "",
-            userRoles : selectedRoles.value
-        }
+            userRoles: selectedRoles.value
+        };
 
+        // Call the service
         const createdUserAccountResponse: SingleUserAccountResponse | null = await createUserAccount(createUserAcccountParams);
-        if(createdUserAccountResponse == null){
+
+        if (createdUserAccountResponse == null) {
             return;
         } else {
             navigateTo(constants.USER_ACCOUNTS_ROUTE);
         }
-
-
     };
-
 
 
     onBeforeUnmount(() => {
@@ -392,6 +398,7 @@
         padding-left: 8px;
         width: 85% !important;
     }
+
     .nav-hover:hover {
         background: linear-gradient(
             to right,
@@ -413,29 +420,26 @@
             rgba(33, 92, 175, 0) 100%
         );
     }
+
     .link-color {
         color: white;
         text-decoration: none;
     }
+
     .section-divider {
         background-color: white !important;
         height: 1px !important;
         opacity: 1 !important;
         width: 85% !important;
     }
+
     .w-98 {
         width: 98% !important;
     }
-
 
     .custom-divider {
         background-color: #DCDCDC !important;
         height: 1px;
         width: 100%;
     }
-
-
-
-
-
 </style>

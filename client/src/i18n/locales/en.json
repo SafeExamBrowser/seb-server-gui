@@ -202,17 +202,53 @@
             "tableHeaderStatus": "Status"
         }
     },
-    "userAccountList": {
-      "main": {
-        "tableHeaderName": "Name",
-        "tableHeaderSurname": "Last Name",
-        "tableHeaderUsername": "Username",
-        "tableHeaderEmail": "Email",
-        "tableHeaderRoles": "Roles",
-        "tableHeaderStatus": "Status"
+    "userAccount": {
+      "userAccountTableHeaders": {
+        "main": {
+          "tableHeaderName": "Name",
+          "tableHeaderSurname": "Last Name",
+          "tableHeaderUsername": "Username",
+          "tableHeaderEmail": "Email",
+          "tableHeaderRoles": "Roles",
+          "tableHeaderStatus": "Status"
+        }
+      },
+      "createUserAccountPage": {
+        "title": "New User Account",
+        "labels": {
+          "institutionLabel": "Institution *",
+          "usernameLabel": "Username *",
+          "nameLabel": "Name *",
+          "surnameLabel": "Surname*",
+          "emailLabel": "Email",
+          "timeZoneLabel": "Time Zone *",
+          "passwordLabel": "Password *",
+          "confirmPasswordLabel": "Confirm Password *",
+          "selectRolesLabel": "Roles *"
+        },
+        "info" : {
+          "rolesSelectionInfo": "Please select at least one Role",
+          "accountCreationInfo": "Fill out the required * fields to create a new User Account"
+        },
+        "buttons": {
+          "createNewUser" : "Create"
+        },
+        "validation": {
+          "required": "This field is required",
+          "passwordTooShort": "Password must be at least 8 characters",
+          "passwordsDontMatch": "Passwords must match",
+          "invalidEmail": "Invalid email format",
+          "invalidRoleSelection": "Please select at least one Role"
+        },
+        "userRoles": {
+          "SEB_SERVER_ADMIN": "Server Admin",
+          "INSTITUTIONAL_ADMIN": "Institution Admin",
+          "EXAM_ADMIN": "Exam Admin",
+          "EXAM_SUPPORTER": "Exam Supporter",
+          "TEACHER": "Teacher"
+        }
       }
     },
-
     "examDetail": {
         "info": {
             "start": "Start",
