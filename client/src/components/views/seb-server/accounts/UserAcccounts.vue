@@ -135,17 +135,13 @@
 
 
             <v-sheet  class="rounded-lg mt-10">
-                <v-data-table-server
-                    item-value="id"
-                    @update:options="loadItems"
-                    :hover="true"
-                    :loading="isLoading"
-                    :loading-text="translate('general.loadingText')"
-                    :items="userAccounts?.content"
-                    :items-length="totalItems"
-                    :items-per-page="tableUtils.calcDefaultItemsPerPage(totalItems)"
-                    :items-per-page-options="tableUtils.calcItemsPerPage(totalItems)"
+                <v-data-table
+                    v-model:options="options"
+                    :items="filteredUsers"
+                    :items-per-page="options.itemsPerPage"
+                    :items-per-page-options="[5, 10, 15]"
                     :headers="userAccountsTableHeaders"
+                    :loading="isLoading"
                 >
                     <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort }">
                         <TableHeaders
@@ -193,7 +189,7 @@
                                     <v-icon
                                         icon="mdi-pencil"
                                         class="action-icon mr-2"
-                                        @click.stop="navigateTo(constants.USER_ACCOUNT_DETAIL_ROUTE + '/' + item.id)"
+                                        @click.stop="navigateTo(constants.USER_ACCOUNT_DETAIL_ROUTE + '/' + item.uuid)"
                                     ></v-icon>
 
                                     <v-icon
@@ -206,7 +202,7 @@
 
                         </tr>
                     </template>
-                </v-data-table-server>
+                </v-data-table>
                 <v-dialog v-model="deleteDialog" max-width="500">
                     <v-card>
                         <v-card-title class="text-h6 font-weight-bold">
@@ -229,47 +225,157 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, onMounted, onBeforeUnmount } from 'vue';
+    import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
     import { useAppBarStore, useLayoutStore } from '@/stores/store';
+    import { useUserAccountStore } from '@/stores/seb-server/userAccountStore';
+    import { useI18n } from 'vue-i18n';
     import { translate } from '@/utils/generalUtils';
     import * as tableUtils from '@/utils/table/tableUtils';
-    import * as timeUtils from '@/utils/timeUtils';
     import TableHeaders from '@/utils/table/TableHeaders.vue';
+    import * as userAccountViewService from '@/services/seb-server/component-services/userAccountViewService';
+    import { UserRoleEnum } from '@/models/userRoleEnum';
     import { navigateTo } from '@/router/navigation';
     import * as constants from '@/utils/constants';
-    import { useI18n } from 'vue-i18n';
-    import { UserRoleEnum } from '@/models/userRoleEnum';
-    import * as userAccountViewService from '@/services/seb-server/component-services/userAccountViewService';
-    import { useUserAccountStore } from '@/stores/seb-server/userAccountStore';
-
 
     const appBarStore = useAppBarStore();
     const layoutStore = useLayoutStore();
+    const userAccountStore = useUserAccountStore();
     const i18n = useI18n();
 
-
-
-    //search and filter
+    // UI State
     const selectedRoles = ref<string[]>([]);
     const selectedStatus = ref<string | null>(null);
-
-    const availableRoles = Object.values(UserRoleEnum);
-
+    const selectedUserAccount = ref<UserAccount | null>(null);
     const deleteDialog = ref(false);
     const userToDelete = ref<UserAccount | null>(null);
+    const isLoading = ref<boolean>(true);
+
+    //search string
+    const searchQuery = ref('');
 
 
+    // Role filter list
+    const availableRoles = Object.values(UserRoleEnum);
+
+    // API response
+    const userAccounts = ref<UserAccountResponse>();
+
+    // Table header config
+    const userAccountsTableHeadersRef = ref<any[]>();
+    const userAccountsTableHeaders = ref([
+        { title: translate('userAccountList.main.tableHeaderName'), key: 'name', width: '10%', sortable: true },
+        { title: translate('userAccountList.main.tableHeaderSurname'), key: 'surname', width: '10%', sortable: true },
+        { title: translate('userAccountList.main.tableHeaderUsername'), key: 'username', width: '10%', sortable: true },
+        { title: translate('userAccountList.main.tableHeaderEmail'), key: 'email', width: '10%', sortable: true },
+        { title: translate('userAccountList.main.tableHeaderRoles'), key: 'userRoles', width: '31%', sortable: false },
+        { title: translate('userAccountList.main.tableHeaderStatus'), key: 'status', width: '2%', sortable: false },
+        { title: '', key: 'userAccountLink', width: '5%' },
+    ]);
+
+    const options = ref({
+        page: 1,
+        itemsPerPage: 5,
+        sortBy: [{ key: 'name', order: 'asc' }],
+    });
+
+    // Filters + Sorting
+    const filteredUsers = computed(() => {
+        if (!userAccounts.value?.content) return [];
+
+        let result = [...userAccounts.value.content];
+
+        // Role filter
+        if (selectedRoles.value.length > 0) {
+            result = result.filter(user =>
+                selectedRoles.value.every(role => user.userRoles.includes(role))
+            );
+        }
+
+        // Status filter
+        if (selectedStatus.value) {
+            const isActive = selectedStatus.value === 'Active';
+            result = result.filter(user => user.active === isActive);
+        }
+
+        // Search filter
+        const searchTerm = searchQuery.value;
+        if (searchQuery) {
+            result = result.filter(user =>
+                [user.name, user.surname, user.username, user.email]
+                    .some(field => field?.toLowerCase().includes(searchTerm))
+            );
+        }
+
+        //sort
+        type SortableKey = keyof Pick<UserAccount, 'name' | 'surname' | 'username' | 'email'>;
+
+        const sort = options.value.sortBy?.[0];
+        if (sort && ['name', 'surname', 'username', 'email'].includes(sort.key)) {
+            const sortKey = sort.key as SortableKey;
+            result.sort((a, b) => {
+                const valA = a[sortKey]?.toString().toLowerCase();
+                const valB = b[sortKey]?.toString().toLowerCase();
+                return sort.order === 'asc'
+                    ? valA.localeCompare(valB)
+                    : valB.localeCompare(valA);
+            });
+        }
+
+
+        return result;
+    });
+
+    const paddedUsers = computed(() => {
+        const perPage = options.value.itemsPerPage;
+        const page = options.value.page;
+
+        const start = (page - 1) * perPage;
+        const pageItems = filteredUsers.value.slice(start, start + perPage);
+
+        const emptyRows = Array.from(
+            { length: perPage - pageItems.length },
+            (_, i) => ({
+                id: `placeholder-${i}`,
+                isPlaceholder: true
+            })
+        );
+
+        return [...pageItems, ...emptyRows];
+    });
+
+
+    // Load users with full pagination from backend
+    async function loadItems(serverTablePaging: ServerTablePaging) {
+        const fetchAllPaging = { ...serverTablePaging, itemsPerPage: 500, page: 1 };
+        userAccountStore.currentPagingOptions = serverTablePaging;
+        isLoading.value = true;
+
+        const optionalParams = tableUtils.assignUserAccountSelectPagingOptions(fetchAllPaging);
+        const response = await userAccountViewService.getUserAccounts(optionalParams);
+
+        if (!response) {
+            isLoading.value = false;
+            return;
+        }
+
+        userAccounts.value = response;
+        isLoading.value = false;
+    }
+
+    // Search + clear search
     function onSearch() {
-        if (!userAccountStore.currentPagingOptions) return;
-        loadItems(userAccountStore.currentPagingOptions);
+        searchQuery.value = userAccountStore.searchField?.trim().toLowerCase() ?? '';
+        options.value.page = 1;
     }
-
     function onClearSearch() {
-        if (!userAccountStore.currentPagingOptions) return;
         userAccountStore.searchField = '';
-        loadItems(userAccountStore.currentPagingOptions);
+        searchQuery.value = '';
+        selectedRoles.value = [];
+        selectedStatus.value = null;
+        options.value.page = 1;
     }
 
+    // Role toggle
     function toggleRole(role: string) {
         if (selectedRoles.value.includes(role)) {
             selectedRoles.value = selectedRoles.value.filter(r => r !== role);
@@ -278,128 +384,7 @@
         }
     }
 
-    const userAccountStore = useUserAccountStore();
-    const selectedUserAccount = ref<UserAccount | null>(null);
-    const userAccounts = ref<UserAccountResponse>();
-
-    const isLoading = ref<boolean>(true);
-    const totalItems = ref<number>(15);
-
-
-    const isOnLoad = ref<boolean>(true);
-    const defaultSort: { key: string; order: string }[] = [{ key: 'name', order: 'asc' }];
-    const userAccountsTableHeadersRef = ref<any[]>();
-    const userAccountsTableHeaders = ref([
-        {
-            title: translate('userAccountList.main.tableHeaderName'),
-            key: 'name',
-            width: '10%',
-            sortable: true
-        },
-        {
-            title: translate('userAccountList.main.tableHeaderSurname'),
-            key: 'surname',
-            width: '10%',
-            sortable: true
-        },
-        {
-            title: translate('userAccountList.main.tableHeaderUsername'),
-            key: 'username',
-            width: '10%',
-            sortable: true
-        },
-        {
-            title: translate('userAccountList.main.tableHeaderEmail'),
-            key: 'email',
-            width: '10%',
-            sortable: true
-        },
-        {
-            title: translate('userAccountList.main.tableHeaderRoles'),
-            key: 'userRoles',
-            width: '31%',
-            sortable: false
-
-        },
-        {
-            title: translate('userAccountList.main.tableHeaderStatus'),
-            key: 'status',
-            width: '2%',
-            sortable: false
-        },
-        {
-            title: '',
-            key: 'userAccountLink',
-            width: '5%',
-        },
-    ]);
-
-    defineExpose({
-        loadItems,
-    });
-
-    //set background color to grey on leave of page
-    onBeforeUnmount(() => {
-        layoutStore.setBlueBackground(false);
-    });
-    onMounted(() => {
-        appBarStore.title = translate('titles.userAccounts');
-        layoutStore.setBlueBackground(true);
-    });
-
-    async function loadItems(serverTablePaging: ServerTablePaging) {
-
-
-        userAccountStore.currentPagingOptions = serverTablePaging;
-        isLoading.value = true;
-
-        if(isOnLoad.value){
-            serverTablePaging.sortBy = defaultSort;
-        }
-
-        const optionalParams = tableUtils.assignUserAccountSelectPagingOptions(
-            serverTablePaging,
-            userAccountStore.searchField,
-            selectedStatus.value,
-        );
-
-
-        const response: UserAccountResponse | null = await userAccountViewService.getUserAccounts(optionalParams);
-        if (response == null) {
-            isLoading.value = false;
-            return;
-        }
-
-        let filteredContent = response.content;
-
-        if (selectedRoles.value.length > 0) {
-            filteredContent = filteredContent.filter((user: UserAccount) =>
-                selectedRoles.value.every(role => user.userRoles.includes(role))
-            );
-        }
-
-        userAccounts.value = {
-            ...response,
-            content: filteredContent,
-        };
-        totalItems.value = userAccounts.value.page_size * userAccounts.value.number_of_pages;
-
-        isOnLoad.value = false;
-        isLoading.value = false;
-    }
-
-    watch(
-        [selectedRoles, selectedStatus],
-        () => {
-            if (userAccountStore.currentPagingOptions) {
-                loadItems(userAccountStore.currentPagingOptions);
-            }
-        },
-        { deep: true }
-    );
-
-
-
+    // Delete dialog
     function openDeleteDialog(user: UserAccount) {
         userToDelete.value = user;
         deleteDialog.value = true;
@@ -408,11 +393,24 @@
     function confirmDelete() {
         if (userToDelete.value) {
             console.log(`Deleted user with id: ${userToDelete.value.uuid}`);
+            // TODO: call backend deletion
         }
         deleteDialog.value = false;
         userToDelete.value = null;
     }
 
+    // Lifecycle
+    onMounted(() => {
+        appBarStore.title = translate('titles.userAccounts');
+        layoutStore.setBlueBackground(true);
+        loadItems(options.value);
+    });
+
+    onBeforeUnmount(() => {
+        layoutStore.setBlueBackground(false);
+    });
+
+    defineExpose({ loadItems });
 </script>
 
 <style scoped>

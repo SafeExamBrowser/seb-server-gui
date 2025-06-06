@@ -192,25 +192,11 @@ export function assignPagingOptions(serverTablePaging: ServerTablePaging, paging
 
 export function assignUserAccountSelectPagingOptions(
     serverTablePaging: ServerTablePaging,
-    username: string | null,
-    status?: string | null
 ): OptionalParGetUserAccounts {
     const opt: OptionalParGetUserAccounts = {};
 
     opt.page_size = serverTablePaging.itemsPerPage;
     opt.page_number = serverTablePaging.page;
-
-    if (username != null && username.trim() !== '') {
-        opt.username = username;
-    }
-
-
-    //set filter atcive true or false
-    if (status === 'Active') {
-        (opt as any).active = true;
-    } else if (status === 'Inactive') {
-        (opt as any).active = false;
-    }
 
     if (serverTablePaging.sortBy.length !== 0) {
         let sortString = serverTablePaging.sortBy[0].key;

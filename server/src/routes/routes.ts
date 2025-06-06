@@ -77,10 +77,6 @@ router.post(constants.USER_ACCOUNT_ROUTE, userAccountController.createUserAccoun
 // router.patch(constants.USER_ACCOUNT_ROUTE, userAccountController.editUserAccount);
 
 
-
-
-
-
 //connection configurations
 router.get(constants.DOWNLOAD_EXAM_CONFIG_ROUTE + "/:id", configurationController.downloadExamConfig);
 router.get(constants.CONNECTION_CONFIG_ROUTE, configurationController.getConnectionConfigurations);
