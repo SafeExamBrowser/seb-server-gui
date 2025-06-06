@@ -64,7 +64,7 @@
 
                     <v-text-field
                         v-model="userAccountStore.searchField"
-                        placeholder="Search by Username"
+                        placeholder="Search for Users"
                         variant="outlined"
                         density="comfortable"
                         type="text"
@@ -253,7 +253,6 @@
     //search string
     const searchQuery = ref('');
 
-
     // Role filter list
     const availableRoles = Object.values(UserRoleEnum);
 
@@ -324,25 +323,6 @@
 
         return result;
     });
-
-    const paddedUsers = computed(() => {
-        const perPage = options.value.itemsPerPage;
-        const page = options.value.page;
-
-        const start = (page - 1) * perPage;
-        const pageItems = filteredUsers.value.slice(start, start + perPage);
-
-        const emptyRows = Array.from(
-            { length: perPage - pageItems.length },
-            (_, i) => ({
-                id: `placeholder-${i}`,
-                isPlaceholder: true
-            })
-        );
-
-        return [...pageItems, ...emptyRows];
-    });
-
 
     // Load users with full pagination from backend
     async function loadItems(serverTablePaging: ServerTablePaging) {
