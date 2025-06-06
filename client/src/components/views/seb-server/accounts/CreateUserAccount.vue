@@ -317,7 +317,7 @@
 
     //load available roles
     const availableRoles = Object.values(UserRoleEnum).map(role => ({
-        label: translate(`userAccount.createUserAccountPage.userRoles.${role}`),
+        label: translate(`general.userRoles.${role}`),
         value: role
     }));
 

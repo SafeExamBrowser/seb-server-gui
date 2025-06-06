@@ -1,6 +1,6 @@
 <template>
     <div class="text-white text-h5 font-weight-black ml-10 mt-5 ">
-        {{ translate("titles.settings") }}
+        {{ translate("titles.settings")}}
     </div>
     <v-row class="mt-10 w-98 h-100">
         <v-col cols="3" class="pt-0 h-100">
@@ -45,9 +45,6 @@
                 </div>
             </v-sheet>
         </v-col>
-
-
-
         <v-col elevation="4" cols="9" class="bg-white rounded-lg mb-3">
             <v-row class="d-flex align-center justify-space-between px-6 pt-6">
                 <div class="text-primary text-h5 font-weight-bold">
@@ -57,25 +54,22 @@
                 <div class="d-flex align-center cursor-pointer add-user-container"
                      @click="navigateTo(constants.CREATE_USER_ACCOUNTS_ROUTE)"
                 >
-                    <span class="text-primary font-weight-medium mr-2">Add User Account</span>
+                    <span class="text-primary font-weight-medium mr-2">{{translate("userAccount.userAccountPage.addUserContext")}}</span>
 
                     <div class="add-user-icon d-flex align-center justify-center">
                         <v-icon size="28">mdi-plus</v-icon>
                     </div>
                 </div>
             </v-row>
-
             <v-divider class="custom-divider mx-6 my-4 mt-7" />
-
             <!-- Search and filters row -->
             <v-row class="px-6 pt-4 d-flex flex-wrap align-start">
                 <!-- Search field -->
                 <v-col cols="12" md="5" class="pa-0 mb-4">
-                    <div class="text-caption text-grey-darken-1 mt-1 mb-1">Search</div>
-
+                    <div class="text-caption text-grey-darken-1 mt-1 mb-1">{{translate("userAccount.userAccountPage.filters.searchTitle")}}</div>
                     <v-text-field
                         v-model="userAccountStore.searchField"
-                        placeholder="Search for Users"
+                        :placeholder= "translate('userAccount.userAccountPage.filters.searchField')"
                         variant="outlined"
                         density="comfortable"
                         type="text"
@@ -87,37 +81,34 @@
                         </template>
                     </v-text-field>
                 </v-col>
-
                 <!-- Role Filters -->
                 <v-col cols="12" md="4" class="pa-0 mb-2">
-                    <div class="text-caption text-grey-darken-1 mb-1">Role</div>
+                    <div class="text-caption text-grey-darken-1 mb-1">{{ translate("userAccount.userAccountPage.filters.roleFilter") }}</div>
                     <div class="d-flex flex-wrap gap-2">
                       <span
                           v-for="role in availableRoles"
-                          :key="role"
-                          :class="['filter-chip', selectedRoles.includes(role) && 'filter-chip-selected']"
-                          @click="toggleRole(role)"
+                          :key="role.value"
+                          :class="['filter-chip', selectedRoles.includes(role.value) && 'filter-chip-selected']"
+                          @click="toggleRole(role.value)"
                       >
-                        {{ role }}
+                        {{ role.label }}
                       </span>
                     </div>
                 </v-col>
-
                 <!-- Status Filters -->
                 <v-col cols="12" md="2" class="pa-0 mb-2 ml-10">
-                    <div class="text-caption text-grey-darken-1 mb-1">Status</div>
+                    <div class="text-caption text-grey-darken-1 mb-1">{{translate("userAccount.userAccountPage.filters.statusFilter") }}</div>
                     <div class="d-flex flex-wrap gap-2">
                         <span
-                            v-for="status in ['Active', 'Inactive']"
-                            :key="status"
-                            :class="['filter-chip', selectedStatus === status && 'filter-chip-selected']"
-                            @click="selectedStatus = selectedStatus === status ? null : status"
-                        >{{ status }}
+                            v-for="status in statuses"
+                            :key="status.value"
+                            :class="['filter-chip', selectedStatus === status.value && 'filter-chip-selected']"
+                            @click="selectedStatus = selectedStatus === status.value ? null : status.value"
+                        >{{ status.label }}
                       </span>
                     </div>
                 </v-col>
             </v-row>
-
 
             <v-row class="px-6 pt-0">
                 <v-col cols="12" md="5" class="pa-0 mb-4">
@@ -149,6 +140,8 @@
                 <v-data-table
                     v-model:options="options"
                     :items="filteredUsers"
+                    :no-data-text="translate('general.noData')"
+                    :loading-text="translate('general.loading')"
                     :items-per-page="options.itemsPerPage"
                     :items-per-page-options="[5, 10, 15]"
                     :headers="userAccountsTableHeaders"
@@ -179,11 +172,10 @@
                                         :key="role"
                                         class="role-box-small"
                                     >
-                                      {{ role }}
+                                      {{ roleLabelMap[role] || role }}
                                     </span>
                                 </div>
                             </td>
-
 
                             <td>
                                 <v-chip
@@ -192,7 +184,7 @@
                                     small
                                     class="text-white font-weight-medium status-chip"
                                 >
-                                    {{ item.active ? 'Active' : 'Inactive' }}
+                                    {{ item.active ? translate('userAccount.userAccountPage.filters.activeSelector') : translate('userAccount.userAccountPage.filters.inactiveSelector') }}
                                 </v-chip>
                             </td>
                             <td class="icon-cell">
@@ -217,16 +209,16 @@
                 <v-dialog v-model="deleteDialog" max-width="500">
                     <v-card>
                         <v-card-title class="text-h6 font-weight-bold">
-                            Confirm Deletion
+                            {{translate("userAccount.userAccountPage.deleteUserAccountContext.title") }}
                         </v-card-title>
                         <v-card-text>
-                            Are you sure you want to delete
-                            <strong>{{ userToDelete?.name }} {{ userToDelete?.surname }}</strong>'s account (<strong>{{ userToDelete?.username }}</strong>)?
+                            {{translate("userAccount.userAccountPage.deleteUserAccountContext.informationPart1") }}
+                            <strong>{{ userToDelete?.name }} {{ userToDelete?.surname }}</strong>{{translate("userAccount.userAccountPage.deleteUserAccountContext.informationPart2") }}<strong>{{ userToDelete?.username }}</strong>{{translate("userAccount.userAccountPage.deleteUserAccountContext.informationPart3") }}
                         </v-card-text>
 
                         <v-card-actions class="justify-end">
-                            <v-btn text @click="deleteDialog = false">Cancel</v-btn>
-                            <v-btn color="red" text @click="confirmDelete">Delete</v-btn>
+                            <v-btn text @click="deleteDialog = false">{{ translate("global.cancelButton")}}</v-btn>
+                            <v-btn color="red" text @click="confirmDelete">{{ translate("global.deleteButton")}}</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
@@ -262,12 +254,23 @@
     const isLoading = ref<boolean>(true);
     const deleteSuccess = ref(false);
     const deletedUsername = ref('');
+    const statuses = [
+        { value: 'Active', label: translate('userAccount.userAccountPage.filters.activeSelector') },
+        { value: 'Inactive', label: translate('userAccount.userAccountPage.filters.inactiveSelector') }
+    ];
+
 
     //search string
     const searchQuery = ref('');
 
     // Role filter list
-    const availableRoles = Object.values(UserRoleEnum);
+    const availableRoles = Object.values(UserRoleEnum).map(role => ({
+        label: translate(`general.userRoles.${role}`),
+        value: role
+    }));
+    const roleLabelMap: Record<string, string> = Object.fromEntries(
+        availableRoles.map(role => [role.value, role.label])
+    );
 
     // API response
     const userAccounts = ref<UserAccountResponse>();
@@ -275,15 +278,14 @@
     // Table header config
     const userAccountsTableHeadersRef = ref<any[]>();
     const userAccountsTableHeaders = ref([
-        { title: translate('userAccount.userAccountTableHeaders.main.tableHeaderName'), key: 'name', width: '10%', sortable: true },
-        { title: translate('userAccount.userAccountTableHeaders.main.tableHeaderSurname'), key: 'surname', width: '12%', sortable: true },
-        { title: translate('userAccount.userAccountTableHeaders.main.tableHeaderUsername'), key: 'username', width: '12%', sortable: true },
-        { title: translate('userAccount.userAccountTableHeaders.main.tableHeaderEmail'), key: 'email', width: '10%', sortable: true },
-        { title: translate('userAccount.userAccountTableHeaders.main.tableHeaderRoles'), key: 'userRoles', width: '31%', sortable: false },
-        { title: translate('userAccount.userAccountTableHeaders.main.tableHeaderStatus'), key: 'status', width: '2%', sortable: false },
+        { title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderName'), key: 'name', width: '10%', sortable: true },
+        { title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderSurname'), key: 'surname', width: '12%', sortable: true },
+        { title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderUsername'), key: 'username', width: '12%', sortable: true },
+        { title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderEmail'), key: 'email', width: '10%', sortable: true },
+        { title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderRoles'), key: 'userRoles', width: '31%', sortable: false },
+        { title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderStatus'), key: 'status', width: '2%', sortable: false },
         { title: '', key: 'userAccountLink', width: '1%' },
     ]);
-
 
     const options = ref({
         page: 1,
@@ -401,7 +403,6 @@
         userToDelete.value = null;
     }
 
-
     // Lifecycle
     onMounted(() => {
         appBarStore.title = translate('titles.userAccounts');
@@ -489,10 +490,12 @@
             rgba(33, 92, 175, 0) 100%
         );
     }
+
     .link-color {
         color: white;
         text-decoration: none;
     }
+
     .section-divider {
         background-color: white !important;
         height: 1px !important;
@@ -562,7 +565,6 @@
         color: #215caf !important;
     }
 
-
     /* Filter chip styles */
     .filter-chip {
         padding: 0.25rem 0.7rem;
@@ -579,6 +581,10 @@
         margin:0.1em;
     }
 
+    .filter-chip-selected {
+        background-color: #215caf;
+        color: white;
+    }
     .icon-cell {
         vertical-align: middle !important;
         padding-top: 0 !important;
@@ -603,5 +609,4 @@
         color: #215caf;
         background-color: rgba(33, 92, 175, 0.1);
     }
-
 </style>
