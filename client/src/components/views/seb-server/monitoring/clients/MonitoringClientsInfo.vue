@@ -168,11 +168,11 @@
                                 </v-col>
     
                                 <!------------indicators filters------------->
-                                <v-col v-if="monitoringStore.monitoringOverviewData?.indicators.total != 0">
+                                <v-col v-if="monitoringStore.monitoringOverviewData != null && Object.keys(monitoringStore.monitoringOverviewData?.indicators).length != 0">
                                     <div class="primary-text-color text-subtitle-1">
                                         Indicators
                                     </div>
-    
+<!--     
                                     <template v-for="(value, key) in monitoringStore.monitoringOverviewData?.indicators" :key="key">
                                         <v-chip 
                                             v-if="key != 'total' && value != 0"
@@ -185,7 +185,7 @@
                                                 key)">
                                             {{translate(key)}}
                                         </v-chip>
-                                    </template>
+                                    </template> -->
                                 </v-col>
 
                                 <!-- <v-col v-if="!monitoringStore.isNoFilterSelected">

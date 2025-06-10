@@ -12,9 +12,16 @@ type MonitoringOverview = {
     clientGroups: OverviewClientGroup[];
 
     indicators: {
-        total: number;
-        BATTERY_STATUS?: number;
-        WLAN_STATUS?: number;
+        BATTERY_STATUS?: {
+            color?: string;
+            incident: number;
+            warning: number;
+        };
+        WLAN_STATUS?: {
+            color?: string;
+            incident: number;
+            warning: number;
+        };
     };
 
     notifications: {
@@ -28,7 +35,7 @@ type OverviewClientGroup = {
     id: number;
     name: string;
     clientAmount: number;
-    spsGroupUUID: string;
+    spsGroupUUID?: string;
     type: string;
     typeValue: string;
 }
