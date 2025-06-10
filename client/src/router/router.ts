@@ -16,8 +16,7 @@ import MonitoringOverviewContainer from "@/components/views/seb-server/monitorin
 import * as authenticationService from "@/services/authenticationService";
 import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
 import MonitoringDetailsContainer from "@/components/views/seb-server/monitoring/client-detail/MonitoringDetailsContainer.vue";
-
-import ProfilePage from "@/components/views/seb-server/settings/ProfileSettings.vue";
+import UserAccountDetailAndEdit from "@/components/views/seb-server/accounts/UserAccountDetailAndEdit.vue";
 
 //----------screen-proctoring ---------
 import * as spConstants from "@/utils/sp-constants";
@@ -155,9 +154,9 @@ const routes: Array<RouteRecordRaw> = [
             },
             //----------user accounts routes---------
             {
-                path: constants.PROFILE_ROUTE,
+                path: constants.USER_ACCOUNTS_ROUTE + "/:userId",
                 name: "ProfileRoute",
-                component: ProfilePage,
+                component: UserAccountDetailAndEdit,
                 meta: {
                     titleKey: "titles.userAccounts"
                 },

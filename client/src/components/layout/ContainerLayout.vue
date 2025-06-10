@@ -139,7 +139,7 @@
                         <div class="custom-white-divider my-0"></div>
 
                         <v-list-item class="pt-0 pb-1 px-4">
-                            <router-link class="link-color text-decoration-none nav-link text-white text-body-2" :to="constants.PROFILE_ROUTE">{{ translate("titles.profileSettings") }}</router-link>
+                            <router-link class="link-color text-decoration-none nav-link text-white text-body-2" :to="`${constants.USER_ACCOUNTS_ROUTE}/${userAccountStore.userAccount?.uuid}`">{{ translate("titles.profileSettings") }}</router-link>
                         </v-list-item>
 
 
@@ -225,6 +225,7 @@
     import router from "@/router/router";
     import {translate} from "@/utils/generalUtils";
     import {UserRoleEnum} from "@/models/userRoleEnum";
+    import {USER_ACCOUNTS_ROUTE} from "@/utils/constants";
 
 
     //i18n
@@ -286,7 +287,8 @@
         "EXAM_ADMIN",
         "EXAM_SUPPORTER",
         "SEB_SERVER_ADMIN",
-        "INSTITUTIONAL_ADMIN"
+        "INSTITUTIONAL_ADMIN",
+        "TEACHER"
     ];
 
     const highestPriorityRole = computed(() => {
@@ -300,11 +302,12 @@
             case 'EXAM_SUPPORTER': return 'Exam Supporter';
             case 'SEB_SERVER_ADMIN': return 'SEB Server Admin';
             case 'INSTITUTIONAL_ADMIN': return 'Institutional Admin';
+            case 'TEACHER': return 'Teacher';
+
             default: return role;
         }
     }
 
-    //1. here
     async function userMenuOpened() {
         await userAccountViewService.setPersonalUserAccount();
     }

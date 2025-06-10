@@ -1,5 +1,6 @@
 import * as userAccountService from "@/services/seb-server/api-services/userAccountService";
 import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
+import * as institutionService from "@/services/seb-server/api-services/institutionService";
 
 export async function setPersonalUserAccount(){
     const userAccountStore = useUserAccountStore();
@@ -56,6 +57,14 @@ export async function getUserAccounts(optionalParameters?: OptionalParGetUserAcc
 export async function createUserAccount(createUserAccountReqPar: createUserPar): Promise<SingleUserAccountResponse | null>{
     try{
         return await userAccountService.createUserAccount(createUserAccountReqPar)
+
+    }catch(error){
+        return null;
+    }
+}
+export async function getInstitutions(): Promise<Institution[] | null>{
+    try{
+        return await institutionService.getInstitutions()
 
     }catch(error){
         return null;

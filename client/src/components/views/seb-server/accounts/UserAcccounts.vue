@@ -30,7 +30,7 @@
                         <router-link class="link-color nav-link" :to="constants.USER_ACCOUNTS_ROUTE">{{ translate("navigation.routeNames.userAccounts") }}</router-link>
                     </v-list-item>
 
-                    <v-divider class="section-divider mb-10" />
+                    <v-divider class="section-divider mb-3" />
                 </v-col>
                 <div class="success-message-div">
                     <AlertMsg
@@ -75,37 +75,49 @@
                         type="text"
                         class="search-input"
                         hide-details
+                        @keydown.enter="onSearch"
+                        @keydown.esc="onClearSearch"
                     >
                         <template #append-inner>
                             <v-icon class="search-icon" @click="onSearch">mdi-magnify</v-icon>
                         </template>
                     </v-text-field>
                 </v-col>
-                <!-- Role Filters -->
-                <v-col cols="12" md="4" class="pa-0 mb-2">
-                    <div class="text-caption text-grey-darken-1 mb-1">{{ translate("userAccount.userAccountPage.filters.roleFilter") }}</div>
-                    <div class="d-flex flex-wrap gap-2">
-                      <span
-                          v-for="role in availableRoles"
-                          :key="role.value"
-                          :class="['filter-chip', selectedRoles.includes(role.value) && 'filter-chip-selected']"
-                          @click="toggleRole(role.value)"
-                      >
-                        {{ role.label }}
-                      </span>
-                    </div>
-                </v-col>
                 <!-- Status Filters -->
                 <v-col cols="12" md="2" class="pa-0 mb-2 ml-10">
                     <div class="text-caption text-grey-darken-1 mb-1">{{translate("userAccount.userAccountPage.filters.statusFilter") }}</div>
                     <div class="d-flex flex-wrap gap-2">
-                        <span
+                        <v-chip
                             v-for="status in statuses"
                             :key="status.value"
+                            size="small"
+                            class="mr-2 mt-2"
                             :class="['filter-chip', selectedStatus === status.value && 'filter-chip-selected']"
                             @click="selectedStatus = selectedStatus === status.value ? null : status.value"
                         >{{ status.label }}
-                      </span>
+                      </v-chip>
+                    </div>
+                </v-col>
+                <v-col
+                    v-if="showInstitutionColumn && institutions.length > 0"
+                    cols="12"
+                    md="4"
+                    class="pa-0 mb-2 ml-10"
+                >
+                    <div class="text-caption text-grey-darken-1 mb-1">
+                        {{ translate("userAccount.userAccountPage.filters.institutionFilter") }}
+                    </div>
+                    <div class="d-flex flex-wrap gap-2">
+                        <v-chip
+                            v-for="institution in institutions"
+                            :key="institution.modelId"
+                            size="small"
+                            class="mr-2 mt-2"
+                            :class="['filter-chip', selectedInstitutionId === institution.modelId && 'filter-chip-selected']"
+                            @click="selectedInstitutionId = selectedInstitutionId === institution.modelId ? null : institution.modelId"
+                        >
+                            {{ institution.name }}
+                        </v-chip>
                     </div>
                 </v-col>
             </v-row>
@@ -161,21 +173,13 @@
                         <tr
                             :class="[selectedUserAccount?.id === item.id ? 'selected-row' : '']"
                         >
-                            <td class="text-primary">{{ item.name }}</td>
+                            <td v-if="showInstitutionColumn" class="text-primary">
+                                {{ item.institutionName || item.institutionId }}
+                            </td>
                             <td class="text-primary">{{ item.surname }}</td>
+                            <td class="text-primary">{{ item.name }}</td>
                             <td class="text-primary">{{ item.username }}</td>
                             <td class="text-primary">{{ item.email }}</td>
-                            <td>
-                                <div class="role-wrapper">
-                                    <span
-                                        v-for="role in item.userRoles"
-                                        :key="role"
-                                        class="role-box-small"
-                                    >
-                                      {{ roleLabelMap[role] || role }}
-                                    </span>
-                                </div>
-                            </td>
 
                             <td>
                                 <v-chip
@@ -192,7 +196,7 @@
                                     <v-icon
                                         icon="mdi-pencil"
                                         class="action-icon mr-2"
-                                        @click.stop="navigateTo(constants.USER_ACCOUNT_DETAIL_ROUTE + '/' + item.uuid)"
+                                        @click.stop="navigateTo(`${constants.USER_ACCOUNTS_ROUTE}/${item.uuid}`)"
                                     ></v-icon>
 
                                     <v-icon
@@ -217,8 +221,8 @@
                         </v-card-text>
 
                         <v-card-actions class="justify-end">
-                            <v-btn text @click="deleteDialog = false">{{ translate("global.cancelButton")}}</v-btn>
-                            <v-btn color="red" text @click="confirmDelete">{{ translate("global.deleteButton")}}</v-btn>
+                            <v-btn text @click="deleteDialog = false">{{ translate("general.cancelButton")}}</v-btn>
+                            <v-btn color="red" text @click="confirmDelete">{{ translate("general.deleteButton")}}</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
@@ -236,19 +240,22 @@
     import * as tableUtils from '@/utils/table/tableUtils';
     import TableHeaders from '@/utils/table/TableHeaders.vue';
     import * as userAccountViewService from '@/services/seb-server/component-services/userAccountViewService';
-    import { UserRoleEnum } from '@/models/userRoleEnum';
     import { navigateTo } from '@/router/navigation';
     import * as constants from '@/utils/constants';
+    import {useUserAccountStore as useAuthenticatedUserAccountStore} from "@/stores/authentication/authenticationStore";
+    import {UserRoleEnum} from "@/models/userRoleEnum";
+    import {getInstitutions} from "@/services/seb-server/component-services/registerAccountViewService";
 
+    const authenticeatedUserAccountStore = useAuthenticatedUserAccountStore();
     const appBarStore = useAppBarStore();
     const layoutStore = useLayoutStore();
     const userAccountStore = useUserAccountStore();
     const i18n = useI18n();
 
     // UI State
-    const selectedRoles = ref<string[]>([]);
     const selectedStatus = ref<string | null>(null);
     const selectedUserAccount = ref<UserAccount | null>(null);
+    const selectedInstitutionId = ref<string | null>(null);
     const deleteDialog = ref(false);
     const userToDelete = ref<UserAccount | null>(null);
     const isLoading = ref<boolean>(true);
@@ -258,34 +265,44 @@
         { value: 'Active', label: translate('userAccount.userAccountPage.filters.activeSelector') },
         { value: 'Inactive', label: translate('userAccount.userAccountPage.filters.inactiveSelector') }
     ];
+    const institutions = ref<Institution[]>([]);
+    const showInstitutionColumn = computed(() => {
+        const roles = authenticeatedUserAccountStore.userAccount?.userRoles ?? [];
+        return roles.includes(UserRoleEnum.SEB_SERVER_ADMIN);
+    });
 
 
     //search string
     const searchQuery = ref('');
-
-    // Role filter list
-    const availableRoles = Object.values(UserRoleEnum).map(role => ({
-        label: translate(`general.userRoles.${role}`),
-        value: role
-    }));
-    const roleLabelMap: Record<string, string> = Object.fromEntries(
-        availableRoles.map(role => [role.value, role.label])
-    );
-
     // API response
     const userAccounts = ref<UserAccountResponse>();
 
     // Table header config
     const userAccountsTableHeadersRef = ref<any[]>();
-    const userAccountsTableHeaders = ref([
-        { title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderName'), key: 'name', width: '10%', sortable: true },
-        { title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderSurname'), key: 'surname', width: '12%', sortable: true },
-        { title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderUsername'), key: 'username', width: '12%', sortable: true },
-        { title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderEmail'), key: 'email', width: '10%', sortable: true },
-        { title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderRoles'), key: 'userRoles', width: '31%', sortable: false },
-        { title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderStatus'), key: 'status', width: '2%', sortable: false },
-        { title: '', key: 'userAccountLink', width: '1%' },
-    ]);
+    const userAccountsTableHeaders = computed(() => {
+        const headers = [];
+
+        if (showInstitutionColumn.value) {
+            headers.push({
+                title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderInstitution'),
+                key: 'institutionName',
+                width: '12%',
+                sortable: true
+            });
+        }
+
+        headers.push(
+            { title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderSurname'), key: 'surname', width: '12%', sortable: true },
+            { title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderName'), key: 'name', width: '10%', sortable: true },
+            { title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderUsername'), key: 'username', width: '12%', sortable: true },
+            { title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderEmail'), key: 'email', width: '10%', sortable: true },
+            { title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderStatus'), key: 'status', width: '2%', sortable: false },
+            { title: '', key: 'userAccountLink', width: '1%' }
+        );
+
+        return headers;
+    });
+
 
     const options = ref({
         page: 1,
@@ -296,14 +313,8 @@
     // Filters + Sorting
     const filteredUsers = computed(() => {
         if (!userAccounts.value?.content) return [];
-        let result = [...userAccounts.value.content];
+        let result: (UserAccount & { institutionName?: string })[] = [...userAccounts.value.content];
 
-        // Role filter
-        if (selectedRoles.value.length > 0) {
-            result = result.filter(user =>
-                selectedRoles.value.every(role => user.userRoles.includes(role))
-            );
-        }
 
         // Status filter
         if (selectedStatus.value) {
@@ -319,16 +330,26 @@
                     .some(field => field?.toLowerCase().includes(searchTerm))
             );
         }
+        if (selectedInstitutionId.value) {
+            result = result.filter(
+                user => String(user.institutionId) === selectedInstitutionId.value
+            );
+        }
+
+        result = result.map(user => ({
+            ...user,
+            institutionName: institutionIdToNameMap.value.get(String(user.institutionId)) || '',
+        }));
 
         //sort
-        type SortableKey = keyof Pick<UserAccount, 'name' | 'surname' | 'username' | 'email'>;
+        type SortableKey = keyof Pick<UserAccount & { institutionName?: string }, 'name' | 'surname' | 'username' | 'email' | 'institutionName'>;
 
         const sort = options.value.sortBy?.[0];
-        if (sort && ['name', 'surname', 'username', 'email'].includes(sort.key)) {
+        if (sort && ['name', 'surname', 'username', 'email', 'institutionName'].includes(sort.key)) {
             const sortKey = sort.key as SortableKey;
             result.sort((a, b) => {
-                const valA = a[sortKey]?.toString().toLowerCase();
-                const valB = b[sortKey]?.toString().toLowerCase();
+                const valA = a[sortKey]?.toString().toLowerCase() || '';
+                const valB = b[sortKey]?.toString().toLowerCase() || '';
                 return sort.order === 'asc'
                     ? valA.localeCompare(valB)
                     : valB.localeCompare(valA);
@@ -363,19 +384,12 @@
     function onClearSearch() {
         userAccountStore.searchField = '';
         searchQuery.value = '';
-        selectedRoles.value = [];
         selectedStatus.value = null;
+        selectedInstitutionId.value = null;
         options.value.page = 1;
     }
 
     // Role toggle
-    function toggleRole(role: string) {
-        if (selectedRoles.value.includes(role)) {
-            selectedRoles.value = selectedRoles.value.filter(r => r !== role);
-        } else {
-            selectedRoles.value.push(role);
-        }
-    }
 
     // Delete dialog and logic
     function openDeleteDialog(user: UserAccount) {
@@ -384,31 +398,41 @@
     }
     async function confirmDelete() {
         if (userToDelete.value) {
-            try {
-                const response = await userAccountViewService.deleteUserAccount(userToDelete.value.uuid);
-                if (response !== null) {
-                    deletedUsername.value = userToDelete.value.username;
-                    deleteSuccess.value = true;
-                    setTimeout(() => {
-                        deleteSuccess.value = false;
-                    }, 2500);
-                    await loadItems(options.value);
-                }
-            } catch (error) {
-                console.error("Error deleting user:", error);
-            }
-        }
 
+            const response = await userAccountViewService.deleteUserAccount(userToDelete.value.uuid);
+            if (response !== null) {
+                deletedUsername.value = userToDelete.value.username;
+                deleteSuccess.value = true;
+                setTimeout(() => {
+                    deleteSuccess.value = false;
+                }, 2500);
+                await loadItems(options.value);
+                }
+        }
         deleteDialog.value = false;
         userToDelete.value = null;
     }
 
-    // Lifecycle
-    onMounted(() => {
+    onMounted(async () => {
         appBarStore.title = translate('titles.userAccounts');
         layoutStore.setBlueBackground(true);
-        loadItems(options.value);
+        if (showInstitutionColumn.value) {
+            const result = await getInstitutions();
+            if (result && result.length > 0) {
+                institutions.value = result;
+            }
+        }
+        await loadItems(options.value);
     });
+
+    const institutionIdToNameMap = computed(() => {
+        const map = new Map<string, string>();
+        institutions.value.forEach(inst => {
+            map.set(inst.modelId, inst.name);
+        });
+        return map;
+    });
+
 
     onBeforeUnmount(() => {
         layoutStore.setBlueBackground(false);
@@ -569,7 +593,6 @@
     .filter-chip {
         padding: 0.25rem 0.7rem;
         background-color: #f0f0f0;
-        border-radius: 0.3em;
         font-size: 0.75rem;
         font-weight: 500;
         color: #757575;
@@ -597,7 +620,6 @@
         cursor: pointer;
         transition: color 0.2s ease, background-color 0.2s ease;
         padding: 0.5rem;
-        border-radius: 50%;
         display: inline-flex;
         align-items: center;
         justify-content: center;

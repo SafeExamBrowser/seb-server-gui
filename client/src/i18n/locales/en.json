@@ -61,10 +61,10 @@
         "true": "Yes",
         "false": "No",
         "userRoles": {
-            "SEB_SERVER_ADMIN": "Server Admin",
-            "INSTITUTIONAL_ADMIN": "Institution Admin",
-            "EXAM_ADMIN": "Exam Admin",
-            "EXAM_SUPPORTER": "Exam Supporter",
+            "SEB_SERVER_ADMIN": "Server Administrator",
+            "INSTITUTIONAL_ADMIN": "Institutional Administrator",
+            "EXAM_ADMIN": "Exam Administrator",
+            "EXAM_SUPPORTER": "Examination Supervisor",
             "TEACHER": "Teacher"
       }
 
@@ -215,6 +215,7 @@
     "userAccount": {
         "userAccountPage": {
             "userAccountTableHeaders": {
+                "tableHeaderInstitution": "Institution",
                 "tableHeaderName": "Name",
                 "tableHeaderSurname": "Last Name",
                 "tableHeaderUsername": "Username",
@@ -233,10 +234,10 @@
           "filters": {
               "searchTitle": "Search",
               "searchField": "Search for Users",
-              "roleFilter": "Role",
               "statusFilter": "Status",
               "activeSelector": "Active",
-              "inactiveSelector": "Inactive"
+              "inactiveSelector": "Inactive",
+              "institutionFilter": "Institution"
           }
       },
       "createUserAccountPage": {
@@ -245,7 +246,7 @@
               "institutionLabel": "Institution *",
               "usernameLabel": "Username *",
               "nameLabel": "Name *",
-              "surnameLabel": "Surname*",
+              "surnameLabel": "Last Name*",
               "emailLabel": "Email",
               "timeZoneLabel": "Time Zone *",
               "passwordLabel": "Password *",
@@ -266,7 +267,10 @@
               "invalidEmail": "Invalid email format",
               "invalidRoleSelection": "Please select at least one Role"
             }
-        }
+        },
+      "userAccountDetailAndViewPage": {
+        "title": "Edit User Account"
+      }
     },
     "examDetail": {
         "info": {
