@@ -1,7 +1,6 @@
 import * as apiService from "./api.service";
 import * as constants from "../../utils/constants";
 import qs from "qs";
-import {USER_ACCOUNT_ROUTE} from "../../utils/constants";
 
 
 export async function getUserAccount(token: string, id: string): Promise<[object, number]>{
@@ -17,9 +16,40 @@ export async function getUserAccounts(token: string, options?: {}): Promise<[obj
     return [data, status];
 }
 
+
+export async function activateAccount(token: string, id: string, body: Record<string, any> = {}): Promise<[object, number]> {
+    const url: string = constants.USER_ACCOUNT_ROUTE + "/" + id + constants.ACTIVATION_ROUTE;
+    const { data, status } = await apiService.api.post(
+        url,
+        qs.stringify(body),
+        {
+            headers: {
+                ...apiService.getHeaders(token),
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }
+    );
+
+    return [data, status];
+}
+export async function deactivateAccount(token: string, id: string, body: Record<string, any> = {}): Promise<[object, number]> {
+    const url: string = constants.USER_ACCOUNT_ROUTE + "/" + id + constants.DEACTIVATION_ROUTE;
+    const { data, status } = await apiService.api.post(
+        url,
+        qs.stringify(body),
+        {
+            headers: {
+                ...apiService.getHeaders(token),
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }
+    );
+
+    return [data, status];
+}
+
 export async function getUserAccountNames(token: string, options?: {}): Promise<[object, number]>{
-    const url: string =  constants.USER_ACCOUNT_NAMES_ROUTE;
-    const {data, status} = await apiService.api.get(url, {headers: apiService.getHeaders(token), params: options});
+    const {data, status} = await apiService.api.get(constants.USER_ACCOUNT_NAMES_ROUTE, {headers: apiService.getHeaders(token), params: options});
 
     return [data, status];
 }

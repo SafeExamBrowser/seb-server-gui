@@ -71,7 +71,10 @@ router.get(constants.USER_ACCOUNT_ROUTE, userAccountController.getUserAccounts);
 router.get(constants.USER_ACCOUNT_NAMES_ROUTE, userAccountController.getUserAccountNames);
 router.get(constants.SUPERVISOR_ACCOUNT_NAMES_ROUTE, userAccountController.getSupervisorAccountNames);
 router.post(constants.USER_ACCOUNT_REGISTRATION_ROUTE, userAccountController.registerUserAccount);
+router.post(constants.USER_ACCOUNT_ROUTE + "/:modelId" + constants.ACTIVATION_ROUTE, userAccountController.activateAccount);
+router.post(constants.USER_ACCOUNT_ROUTE + "/:modelId" + constants.DEACTIVATION_ROUTE, userAccountController.deactivateAccount);
 router.post(constants.USER_ACCOUNT_ROUTE, userAccountController.createUserAccount);
+
 
 router.delete(constants.USER_ACCOUNT_ROUTE + "/:id", userAccountController.deleteUserAccount);
 // router.put(constants.USER_ACCOUNT_ROUTE, userAccountController.toggleUserAccountActiveStatus);

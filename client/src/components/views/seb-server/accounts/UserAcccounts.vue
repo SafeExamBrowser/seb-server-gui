@@ -181,15 +181,20 @@
                             <td class="text-primary">{{ item.username }}</td>
                             <td class="text-primary">{{ item.email }}</td>
 
+
                             <td>
-                                <v-chip
-                                    :color="item.active ? 'green' : 'red'"
-                                    dark
-                                    small
-                                    class="text-white font-weight-medium status-chip"
-                                >
-                                    {{ item.active ? translate('userAccount.userAccountPage.filters.activeSelector') : translate('userAccount.userAccountPage.filters.inactiveSelector') }}
-                                </v-chip>
+                                <td>
+                                    <v-chip
+                                        :color="item.active ? 'green' : 'red'"
+                                        dark
+                                        small
+                                        class="text-white font-weight-medium status-chip cursor-pointer"
+                                        @click.stop="openStatusDialog(item)"
+                                    >
+                                        {{ item.active ? translate('userAccount.userAccountPage.filters.activeSelector') : translate('userAccount.userAccountPage.filters.inactiveSelector') }}
+                                    </v-chip>
+                                </td>
+
                             </td>
                             <td class="icon-cell">
                                 <div class="d-flex align-center justify-end h-100">
@@ -226,6 +231,30 @@
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
+                <v-dialog v-model="statusDialog" max-width="500">
+                    <v-card>
+                        <v-card-title class="text-h6 font-weight-bold">
+                            {{ statusDialogTitle }}
+                        </v-card-title>
+                        <v-card-text>
+                            {{ statusDialogMessage }}
+                        </v-card-text>
+                        <v-card-actions class="justify-end">
+                            <v-btn text @click="statusDialog = false">
+                                {{ translate("general.cancelButton") }}
+                            </v-btn>
+                            <v-btn
+                                :color="statusDialogUser?.active ? 'red' : 'green'"
+                                text
+                                @click="confirmStatusChange"
+                            >
+                                {{ statusDialogButtonLabel }}
+                            </v-btn>
+                        </v-card-actions>
+
+                    </v-card>
+                </v-dialog>
+
             </v-sheet>
         </v-col>
     </v-row>
@@ -270,6 +299,12 @@
         const roles = authenticeatedUserAccountStore.userAccount?.userRoles ?? [];
         return roles.includes(UserRoleEnum.SEB_SERVER_ADMIN);
     });
+    const statusDialog = ref(false);
+    const statusDialogUser = ref<UserAccount | null>(null);
+
+
+
+
 
 
     //search string
@@ -358,6 +393,54 @@
         return result;
     });
 
+    //update status
+    async function onStatusChange(user: UserAccount, newStatus: string) {
+        try {
+            if (newStatus === 'Active' && !user.active) {
+                await userAccountViewService.activateUserAccount(user.uuid);
+            } else if (newStatus === 'Inactive' && user.active) {
+                await userAccountViewService.deactivateUserAccount(user.uuid);
+            }
+            await loadItems(options.value); // refresh table
+        } catch (e) {
+            console.error("Failed to change user status:", e);
+        }
+    }
+
+    const statusDialogTitle = computed(() => {
+        if (!statusDialogUser.value) return '';
+        return i18n.t(
+            statusDialogUser.value.active
+                ? 'userAccount.userAccountPage.changeUserAccountStatusContext.deactivateTitle'
+                : 'userAccount.userAccountPage.changeUserAccountStatusContext.activateTitle',
+            { username: statusDialogUser.value.username }
+        );
+    });
+
+    const statusDialogMessage = computed(() => {
+        if (!statusDialogUser.value) return '';
+        return i18n.t(
+            statusDialogUser.value.active
+                ? 'userAccount.userAccountPage.changeUserAccountStatusContext.deactivateMessage'
+                : 'userAccount.userAccountPage.changeUserAccountStatusContext.activateMessage',
+            {
+                name: statusDialogUser.value.name,
+                surname: statusDialogUser.value.surname,
+                username: statusDialogUser.value.username,
+            }
+        );
+    });
+
+    const statusDialogButtonLabel = computed(() => {
+        if (!statusDialogUser.value) return '';
+        return translate(
+            statusDialogUser.value.active
+                ? 'userAccount.userAccountPage.changeUserAccountStatusContext.buttons.deactivate'
+                : 'userAccount.userAccountPage.changeUserAccountStatusContext.buttons.activate'
+        );
+    });
+
+
     // Load users with full pagination from backend
     async function loadItems(serverTablePaging: ServerTablePaging) {
         const fetchAllPaging = { ...serverTablePaging, itemsPerPage: 500, page: 1 };
@@ -391,7 +474,7 @@
 
     // Role toggle
 
-    // Delete dialog and logic
+    //dialogs and logic
     function openDeleteDialog(user: UserAccount) {
         userToDelete.value = user;
         deleteDialog.value = true;
@@ -412,6 +495,23 @@
         deleteDialog.value = false;
         userToDelete.value = null;
     }
+    function openStatusDialog(user: UserAccount) {
+        statusDialogUser.value = user;
+        statusDialog.value = true;
+    }
+
+
+    async function confirmStatusChange() {
+        if (!statusDialogUser.value) return;
+
+        const newStatus = statusDialogUser.value.active ? 'Inactive' : 'Active';
+        await onStatusChange(statusDialogUser.value, newStatus);
+
+        statusDialog.value = false;
+        statusDialogUser.value = null;
+    }
+
+
 
     onMounted(async () => {
         appBarStore.title = translate('titles.userAccounts');
@@ -626,7 +726,19 @@
         width: 2.25rem;
         height: 2.25rem;
     }
+    .status-select {
+        max-width: 120px;
+        font-size: 0.875rem;
+    }
 
+    .status-select-chip ::v-deep(.v-select__slot) {
+        padding: 0 !important;
+    }
+    .status-select-chip ::v-deep(.v-field__control) {
+        background: none !important;
+        box-shadow: none !important;
+        border-bottom: none !important;
+    }
     .action-icon:hover {
         color: #215caf;
         background-color: rgba(33, 92, 175, 0.1);

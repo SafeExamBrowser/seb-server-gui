@@ -25,6 +25,9 @@ export const USER_ACCOUNT_NAMES_ROUTE = "/useraccount/names";
 export const USER_ACCOUNT_REGISTRATION_SERVER_ROUTE = "/register";
 export const USER_ACCOUNT_REGISTRATION_ROUTE = "/useraccount/register";
 export const SUPERVISOR_ACCOUNT_NAMES_ROUTE = "/useraccount/supervisors";
+export const DEACTIVATION_ROUTE = "/inactive";
+export const ACTIVATION_ROUTE = "/active";
+
 
 //client config
 export const CONNECTION_CONFIG_ROUTE = "/client_configuration";

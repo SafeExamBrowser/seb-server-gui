@@ -214,21 +214,30 @@
     },
     "userAccount": {
         "userAccountPage": {
-            "userAccountTableHeaders": {
-                "tableHeaderInstitution": "Institution",
-                "tableHeaderName": "Name",
-                "tableHeaderSurname": "Last Name",
-                "tableHeaderUsername": "Username",
-                "tableHeaderEmail": "Email",
-                "tableHeaderRoles": "Roles",
-                "tableHeaderStatus": "Status"
-              },
+          "userAccountTableHeaders": {
+            "tableHeaderInstitution": "Institution",
+            "tableHeaderName": "Name",
+            "tableHeaderSurname": "Last Name",
+            "tableHeaderUsername": "Username",
+            "tableHeaderEmail": "Email",
+            "tableHeaderRoles": "Roles",
+            "tableHeaderStatus": "Status"
+          },
           "deleteUserAccountContext": {
-              "title": "Confirm Deletion",
-              "informationPart1": "Are you sure you want to delete",
-              "informationPart2": "'s account (",
-              "informationPart3": ")?"
-
+            "title": "Confirm Deletion",
+            "informationPart1": "Are you sure you want to delete",
+            "informationPart2": "'s account (",
+            "informationPart3": ")?"
+          },
+          "changeUserAccountStatusContext": {
+            "activateTitle": "Activate {username}?",
+            "deactivateTitle": "Deactivate {username}?",
+            "activateMessage": "Are you sure you want to activate {name} {surname}'s account ({username})?",
+            "deactivateMessage": "Are you sure you want to deactivate {name} {surname}'s account ({username})?",
+            "buttons": {
+              "activate": "Activate",
+              "deactivate": "Deactivate"
+            }
           },
           "addUserContext": "Add User Account",
           "filters": {

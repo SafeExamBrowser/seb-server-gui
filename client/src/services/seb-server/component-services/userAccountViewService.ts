@@ -98,6 +98,16 @@ export async function activateUserAccount(accountId: string): Promise<UserAccoun
     }
 }
 
+export async function deactivateUserAccount(accountId: string): Promise<UserAccount | null>{
+    try{
+        return await userAccountService.deactivateUserAccount(accountId)
+
+    }catch(error){
+        return null;
+    }
+}
+
+
 export async function deleteUserAccount(accountId: string): Promise<any | null>{
     try{
         return await userAccountService.deleteUserAccount(accountId)

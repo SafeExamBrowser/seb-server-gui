@@ -52,9 +52,9 @@ export async function deleteUserAccount(accountId: string): Promise<any | any> {
 
 export async function getPersonalUserAccount(): Promise<UserAccount | any> {
     const url: string = userAccountUrl + "/me";
+    console.log(StorageItemEnum.ACCESS_TOKEN);
     return (await apiService.api.get(url, { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN) })).data;
 }
-
 export async function getUserAccountById(accountId: string): Promise<UserAccount | any> {
     const url: string = userAccountUrl + "/" + accountId;
     return (await apiService.api.get(url, { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN) })).data;
@@ -84,6 +84,14 @@ export async function getSupervisorNames(optionalParameters?: OptionalParInstitu
 }
 
 export async function activateUserAccount(accountId: string): Promise<UserAccount | any> {
-    const url: string = userAccountUrl + "/activate/" + accountId;
+    const url: string = userAccountUrl + "/" + accountId + "/active";
     return (await apiService.api.post(url, { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN) })).data;
 }
+export async function deactivateUserAccount(accountId: string): Promise<UserAccount | any> {
+    const url: string = userAccountUrl + "/" + accountId + "/inactive"
+    const token = localStorage.getItem(StorageItemEnum.ACCESS_TOKEN);
+    console.log("Access Token:", token);
+
+    return (await apiService.api.post(url, { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN) })).data;
+}
+
