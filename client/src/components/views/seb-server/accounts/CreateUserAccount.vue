@@ -272,13 +272,15 @@
     import { navigateTo } from "@/router/navigation";
     import { UserRoleEnum } from '@/models/userRoleEnum';
     import {useI18n} from "vue-i18n";
+    import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/authenticationStore";
+
 
     const appBarStore = useAppBarStore();
     const layoutStore = useLayoutStore();
     const i18n = useI18n();
 
     //fields
-    const selectedInstitution = ref<number | null>(null);
+    const selectedInstitution = ref<string | null>(null);
     const name = ref<string>("");
     const surname = ref<string>("");
     const username = ref<string>("");
@@ -300,6 +302,7 @@
     const institutions = ref<Institution[]>([]);
     const selectedRoles = ref<string[]>([]);
     const timezoneOptions = moment.tz.names();
+    const authenticatedUserAccountStore = useAuthenticatedUserAccountStore();
 
 
     //validation rules
@@ -322,13 +325,27 @@
     }));
 
     onMounted(async () => {
-        const result = await getInstitutions();
-        if (result && result.length > 0) {
-            institutions.value = result;
+        appBarStore.title = translate('titles.createUserAccount');
+        layoutStore.setBlueBackground(true);
 
-            if (result.length === 1) {
-                selectedInstitution.value = Number(result[0].id);
+        const user = authenticatedUserAccountStore.userAccount;
+        const roles = user?.userRoles ?? [];
+
+        const result = await getInstitutions();
+        institutions.value = result ?? [];
+
+        if (roles.includes(UserRoleEnum.SEB_SERVER_ADMIN)) {
+            institutionSelectDisabled.value = false;
+        } else if (roles.includes(UserRoleEnum.INSTITUTIONAL_ADMIN)) {
+            const userInstitutionId = String(user?.institutionId);
+            const matchedInstitution = institutions.value.find(inst => inst.modelId === userInstitutionId);
+
+            if (matchedInstitution) {
+                selectedInstitution.value = matchedInstitution.modelId;
                 institutionSelectDisabled.value = true;
+                institutions.value = [matchedInstitution];
+            } else {
+                console.warn("User's institution not found in fetched institutions.");
             }
         }
     });
