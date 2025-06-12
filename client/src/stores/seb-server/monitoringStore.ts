@@ -28,6 +28,7 @@ export const useMonitoringStore = defineStore("monitoring", () => {
     //monitoring detail
     const selectedSingleConn = ref<SingleConnection | null>(null);
     const clientGroupsSingle = ref<ClientGroup[]>([]);
+    const pendingNotifications = ref<ClientNotification[]>([]);
 
 
 
@@ -56,6 +57,7 @@ export const useMonitoringStore = defineStore("monitoring", () => {
         staticClientDataList,
         selectedSingleConn,
         clientGroupsSingle,
-        currentMonitoringQuery
+        currentMonitoringQuery,
+        pendingNotifications
     };
 });

@@ -61,3 +61,13 @@ export async function registerInstruction(req: Request, res: Response){
         apiService.handleGenericApiError(error, res);
     }
 }
+
+export async function getPendingNotifications(req: Request, res: Response){
+    try{
+        const [notifications, status] = await monitoringService.getPendingNotifications(req.headers.authorization, req.params.id, req.params.connectionToken);
+        return res.status(status).json(notifications);
+
+    }catch(error){
+        apiService.handleGenericApiError(error, res);
+    }
+}

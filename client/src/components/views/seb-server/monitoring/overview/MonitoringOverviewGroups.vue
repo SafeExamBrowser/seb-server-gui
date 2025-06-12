@@ -39,16 +39,6 @@
                             {{ clientGroupItem.clientAmount }}
                         </v-col>
     
-                        <!--------sp button-------->
-                        <!-- <v-col cols="1">
-                            <v-btn 
-                                v-if="clientGroupItem.spsGroupUUID"
-                                variant="text" 
-                                icon="mdi-video"
-                                @click="navigation.openUrlInNewTab(linkService.getGalleryViewLink(clientGroupItem.spsGroupUUID))">
-                            </v-btn>
-                        </v-col> -->
-    
                         <!--------monitoring button-------->
                         <v-col cols="1">
                             <v-icon 
@@ -78,8 +68,8 @@
     </template>
     <!---------------------------->
 
-    <!--------special card if no sp group is available-------->
-    <v-row v-if="spFallbackGroup" no-gutters>
+    <!--------special card if no sp group is available but screen proctoring is activated on the exam-------->
+    <v-row v-if="!isSPGroupAvailable && monitoringStore.selectedExam?.additionalAttributes.enableScreenProctoring == 'true' && generalUtils.stringToBoolean(authStore.getStorageItem(StorageItemEnum.IS_SP_AVAILABLE))" class="mt-4" no-gutters>
         <v-col>
             <v-sheet class="rounded-lg pa-4" elevation="4">
                 <v-row align="center">
@@ -94,7 +84,12 @@
 
                     <!--------client amount-------->
                     <v-col cols="1" class="text-h6 primary-text-color">
-                        {{ spFallbackGroup.clientAmount }}
+                        <template v-if="monitoringStore.monitoringOverviewData != null && monitoringStore.monitoringOverviewData.clientGroups.length != 0">
+                            {{ monitoringStore.monitoringOverviewData.clientGroups[monitoringStore.monitoringOverviewData.clientGroups.length-1].clientAmount }}
+                        </template>
+                        <template v-else>
+                            0
+                        </template>
                     </v-col>
 
                     <!--------monitoring button-------->
@@ -111,21 +106,27 @@
             </v-sheet>
         </v-col>
 
-        <!--------sp button-------->
-        <v-col cols="1" class="ml-4">
+          <!--------sp button-------->
+          <v-col v-if="monitoringStore.monitoringOverviewData != null && monitoringStore.monitoringOverviewData.clientGroups.length != 0" cols="1" class="ml-4">
             <v-sheet class="rounded-lg d-flex align-center justify-center fill-height" elevation="4">
                 <v-btn 
                     variant="text" 
                     icon="mdi-video"
-                    @click="navigation.openUrlInNewTab(linkService.getGalleryViewLink(spFallbackGroup.spsGroupUUID!))">
+                    @click="
+                    navigation.openUrlInNewTab(
+                        linkService.getGalleryViewLink(
+                            monitoringStore.monitoringOverviewData.clientGroups[
+                                monitoringStore.monitoringOverviewData.clientGroups.length-1
+                            ].spsGroupUUID!))"
+                >
                 </v-btn>
             </v-sheet>
         </v-col>
     </v-row>
     <!---------------------------->
 
-    <!--------show all button if sp is activated-------->
-    <v-row v-if="isSPGroupAvailable || monitoringStore.monitoringOverviewData?.clientGroups.length == 0">
+    <!--------show all button-------->
+    <v-row v-if="isSPGroupAvailable">
         <v-col align="right">
             <v-btn 
                 color="primary" 
@@ -149,19 +150,15 @@
     import * as generalUtils from "@/utils/generalUtils";
     import * as linkService from "@/services/screen-proctoring/component-services/linkService";
     import * as navigation from "@/router/navigation";
-    import { StorageItemEnum } from "@/models/StorageItemEnum";
     import { useAuthStore } from "@/stores/authentication/authenticationStore";
+    import { StorageItemEnum } from "@/models/StorageItemEnum";
 
     //stores
     const monitoringStore = useMonitoringStore();
-    const authStore = useAuthStore();
+    const authStore = useAuthStore()
 
     //exam
     const examId = useRoute().params.examId.toString();
-
-    //data
-    const spFallbackGroup = ref<OverviewClientGroup | null>(null);
-
     
     const overViewClientGroups: ComputedRef<OverviewClientGroup[] | null> = computed(() => {
         if(monitoringStore.monitoringOverviewData?.clientGroups == null){
@@ -179,31 +176,20 @@
     });
 
     const isSPGroupAvailable: ComputedRef<boolean> = computed(() => {
-        if(!generalUtils.stringToBoolean(authStore.getStorageItem(StorageItemEnum.IS_SP_AVAILABLE))){
-            setSpFallbackGroup();
-            return false; 
-        }
-
         const normalGroups = monitoringStore.monitoringOverviewData?.clientGroups.filter(item => item.type != ClientGroupEnum.SP_FALLBACK_GROUP);
+
         if(normalGroups == null){
-            setSpFallbackGroup();
             return false;
         }
 
         for(let i = 0; i < normalGroups.length; i++){
             if(normalGroups[i].spsGroupUUID != null && normalGroups[i].spsGroupUUID != ''){
-                spFallbackGroup.value = null;
                 return true;
             }
         }
 
-        setSpFallbackGroup();
         return false;
     });
-
-    function setSpFallbackGroup(){
-        spFallbackGroup.value = monitoringStore.monitoringOverviewData?.clientGroups.find(item => item.type == ClientGroupEnum.SP_FALLBACK_GROUP) || null;
-    }
     
 </script>
 

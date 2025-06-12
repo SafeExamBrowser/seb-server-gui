@@ -100,3 +100,28 @@ type SingleConnection = {
         status: string;
     }
 }
+
+type ClientNotification = {
+    id: number;
+    clientConnectionId: number;
+    type: string;
+    timestamp: number;
+    serverTime: number;
+    numericValue: number;
+    text: string;
+    notificationType: string;
+}
+
+
+
+// {
+//     "id": 10551,
+//     "clientConnectionId": 267,
+//     "type": "NOTIFICATION",
+//     "timestamp": 0,
+//     "serverTime": 1749641309209,
+//     "numericValue": 0,
+//     "text": " Auto Generated Lock Screen Notification ",
+//     "notificationType": "LOCK_SCREEN",
+//     "value": 0
+//   }

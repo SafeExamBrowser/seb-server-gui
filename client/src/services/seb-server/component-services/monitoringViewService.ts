@@ -65,6 +65,14 @@ export async function registerInstruction(examId: string, clientInstruction: Cli
     }
 }
 
+export async function getPendingNotifcations(examId: string, connectionToken: string): Promise<ClientNotification[] | null>{
+    try{
+        return await monitoringService.getPendingNotifcations(examId, connectionToken);
+    }catch(error){
+        return null;
+    }
+}
+
 //================url query handling===============
 export function applyFilter(query: LocationQuery, filterType: MonitoringHeaderEnum, filterValue: string){
     //removes all selected clients (checkbox in table)

@@ -36,6 +36,8 @@ export const MONITORING_CONNECTIONS_ROUTE = MONITORING_ROUTE + "/connections";
 export const MONITORING_TEST_RUN_ROUTE = MONITORING_ROUTE + "/testrun";
 export const MONITORING_OVERVIEW_ROUTE = MONITORING_ROUTE + "/get-overview";
 export const MONITORING_INSTRUCTION_ROUTE = MONITORING_ROUTE + "/:id/instruction";
+export const MONITORING_NOTIFICATIONS_ROUTE = MONITORING_ROUTE + "/:id/notification";
+
 
 //client group
 export const CLIENT_GROUP_ROUTE = "/client-group";

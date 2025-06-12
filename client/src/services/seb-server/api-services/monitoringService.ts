@@ -30,3 +30,8 @@ export async function registerInstruction(examId: string, clientInstruction: Cli
     const url: string = monitoringUrl + "/" + examId + "/instruction";
     return (await apiService.api.post(url, clientInstruction, {headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN)})).status;
 }
+
+export async function getPendingNotifcations(examId: string, connectionToken: string): Promise<ClientNotification[] | any>{
+    const url: string = monitoringUrl + "/" + examId + "/notification/" + connectionToken;
+    return (await apiService.api.get(url, {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
+}
