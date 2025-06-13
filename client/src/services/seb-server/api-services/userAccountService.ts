@@ -64,14 +64,14 @@ export async function getUserAccounts(optionalParameters?: OptionalParGetUserAcc
     return (await apiService.api.get(userAccountUrl, { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN), params: { optionalParameters } })).data;
 }
 
-export async function createUserAccount(userAccount: createUserPar): Promise<SingleUserAccountResponse | any> {
+export async function createUserAccount(userAccount: CreateUserPar): Promise<SingleUserAccountResponse | any> {
     return (await apiService.api.post(userAccountUrl, userAccount, {headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
 }
 
 
 // adjust endpoint to patch or maybe differnt path?
-export async function editUserAccount(userAccount : UserAccount): Promise<UserAccountResponse | any> {
-    return (await apiService.api.post(userAccountUrl, userAccount, {headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
+export async function editUserAccount(userAccount : EditUserAccountParameters): Promise<UserAccountResponse | any> {
+    return (await apiService.api.put(userAccountUrl, userAccount, {headers: apiService.getPutHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
 }
 export async function getUserAccountNames(optionalParameters?: OptionalParInstitutionId): Promise<UserAccountName[] | any> {
     const url: string = userAccountUrl + "/names";

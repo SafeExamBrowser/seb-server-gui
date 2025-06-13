@@ -54,9 +54,18 @@ export async function getUserAccounts(optionalParameters?: OptionalParGetUserAcc
 }
 
 
-export async function createUserAccount(createUserAccountReqPar: createUserPar): Promise<SingleUserAccountResponse | null>{
+export async function createUserAccount(createUserAccountReqPar: CreateUserPar): Promise<SingleUserAccountResponse | null>{
     try{
         return await userAccountService.createUserAccount(createUserAccountReqPar)
+
+    }catch(error){
+        return null;
+    }
+}
+
+export async function editUserAccount(userAccountPar: EditUserAccountParameters): Promise<SingleUserAccountResponse | null>{
+    try{
+        return await userAccountService.editUserAccount(userAccountPar)
 
     }catch(error){
         return null;

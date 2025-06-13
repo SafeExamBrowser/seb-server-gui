@@ -74,6 +74,8 @@ router.post(constants.USER_ACCOUNT_REGISTRATION_ROUTE, userAccountController.reg
 router.post(constants.USER_ACCOUNT_ROUTE + "/:modelId" + constants.ACTIVATION_ROUTE, userAccountController.activateAccount);
 router.post(constants.USER_ACCOUNT_ROUTE + "/:modelId" + constants.DEACTIVATION_ROUTE, userAccountController.deactivateAccount);
 router.post(constants.USER_ACCOUNT_ROUTE, userAccountController.createUserAccount);
+router.put(constants.USER_ACCOUNT_ROUTE, userAccountController.editUserAccount);
+
 
 
 router.delete(constants.USER_ACCOUNT_ROUTE + "/:id", userAccountController.deleteUserAccount);

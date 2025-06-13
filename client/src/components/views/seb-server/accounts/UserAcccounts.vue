@@ -275,7 +275,7 @@
     import {UserRoleEnum} from "@/models/userRoleEnum";
     import {getInstitutions} from "@/services/seb-server/component-services/registerAccountViewService";
 
-    const authenticeatedUserAccountStore = useAuthenticatedUserAccountStore();
+    const authenticatedUserAccountStore = useAuthenticatedUserAccountStore();
     const appBarStore = useAppBarStore();
     const layoutStore = useLayoutStore();
     const userAccountStore = useUserAccountStore();
@@ -296,7 +296,7 @@
     ];
     const institutions = ref<Institution[]>([]);
     const showInstitutionColumn = computed(() => {
-        const roles = authenticeatedUserAccountStore.userAccount?.userRoles ?? [];
+        const roles = authenticatedUserAccountStore.userAccount?.userRoles ?? [];
         return roles.includes(UserRoleEnum.SEB_SERVER_ADMIN);
     });
     const statusDialog = ref(false);

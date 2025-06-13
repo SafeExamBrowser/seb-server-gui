@@ -20,6 +20,20 @@ type SingleUserAccountResponse = {
     userRoles: string[];
 }
 
+type EditUserAccountParameters= {
+    uuid: string;
+    institutionId: number;
+    creationDate: string;
+    name: string;
+    surname: string;
+    username: string;
+    email: string;
+    active: boolean;
+    language: string;
+    timezone: string;
+    userRoles: string[];
+};
+
 type UserAccount = {
     id: number;
     institutionId: number;
@@ -43,8 +57,8 @@ type UserAccountName = {
     entitiyType: string,
     name: string
 }
-type createUserPar = {
-    institutionId: number;
+type CreateUserPar = {
+    institutionId: string;
     name: string;
     surname: string;
     username: string;

@@ -72,6 +72,16 @@ export async function createUserAccount(req: Request, res: Response) {
     }
 }
 
+export async function editUserAccount(req: Request, res: Response) {
+    try {
+        const [userAccount, status] = await userAccountService.editUserAccount(req.headers.authorization, req.body);
+        return res.status(status).json(userAccount);
+    } catch (error) {
+        apiService.handleGenericApiError(error, res);
+    }
+}
+
+
 export async function getUserAccounts(req: Request, res: Response) {
     try {
 

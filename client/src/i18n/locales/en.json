@@ -277,9 +277,34 @@
               "invalidRoleSelection": "Please select at least one Role"
             }
         },
-      "userAccountDetailAndViewPage": {
-        "title": "Edit User Account"
-      }
+      "userAccountDetailAndEditPage": {
+          "title": "Edit User Account",
+          "labels": {
+              "institutionLabel": "Institution *",
+              "usernameLabel": "Username *",
+              "nameLabel": "Name *",
+              "surnameLabel": "Last Name*",
+              "emailLabel": "Email",
+              "timeZoneLabel": "Time Zone *",
+              "passwordLabel": "Password *",
+              "confirmPasswordLabel": "Confirm Password *",
+              "selectRolesLabel": "Roles *"
+            },
+          "info" : {
+              "rolesSelectionInfo": "Please select at least one Role",
+              "accountCreationInfo": "Fill out the required * fields to create a new User Account"
+          },
+          "buttons": {
+              "createNewUser" : "Create"
+          },
+          "validation": {
+              "required": "This field is required",
+              "passwordTooShort": "Password must be at least 8 characters",
+              "passwordsDontMatch": "Passwords must match",
+              "invalidEmail": "Invalid email format",
+              "invalidRoleSelection": "Please select at least one Role"
+            }
+        }
     },
     "examDetail": {
         "info": {

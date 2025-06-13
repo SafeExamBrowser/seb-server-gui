@@ -318,11 +318,28 @@
     const emailRule = (v: string) => !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || invalidEmailMessage;
     const rolesRule = (v: string[]) => v.length > 0 || invalidRoleSelectionMessage;
 
-    //load available roles
-    const availableRoles = Object.values(UserRoleEnum).map(role => ({
+
+    const allRoles = Object.values(UserRoleEnum).map(role => ({
         label: translate(`general.userRoles.${role}`),
         value: role
     }));
+
+    function getAvailableRolesForUser(userRoles: string[]): typeof allRoles {
+        const hasSebServerAdmin = userRoles.includes(UserRoleEnum.SEB_SERVER_ADMIN);
+        const hasInstitutionalAdmin = userRoles.includes(UserRoleEnum.INSTITUTIONAL_ADMIN);
+        if (hasSebServerAdmin) {
+            return allRoles;
+        }
+        if (hasInstitutionalAdmin) {
+            return allRoles.filter(role =>
+                [UserRoleEnum.INSTITUTIONAL_ADMIN, UserRoleEnum.EXAM_ADMIN, UserRoleEnum.EXAM_SUPPORTER].includes(role.value)
+            );
+        }
+        return [];
+    }
+
+    //load available roles
+    const availableRoles = ref<{ label: string; value: string }[]>([]);
 
     onMounted(async () => {
         appBarStore.title = translate('titles.createUserAccount');
@@ -333,6 +350,8 @@
 
         const result = await getInstitutions();
         institutions.value = result ?? [];
+
+        availableRoles.value = getAvailableRolesForUser(roles);
 
         if (roles.includes(UserRoleEnum.SEB_SERVER_ADMIN)) {
             institutionSelectDisabled.value = false;
@@ -374,7 +393,7 @@
         }
 
         // Prepare the request
-        const createUserAcccountParams: createUserPar = {
+        const createUserAcccountParams: CreateUserPar = {
             institutionId: selectedInstitution.value!,
             name: name.value,
             surname: surname.value,
