@@ -7,41 +7,47 @@
             <v-sheet class="rounded-lg ml-6 w-100 h-100 bg-primary">
 
                 <v-col class="pt-0">
-                    <v-divider class="section-divider" />
+                    <v-divider class="section-divider"/>
 
                     <v-list-item class="px-0 nav-hover">
-                        <span class="link-color nav-link">{{ translate("navigation.routeNames.assessmentToolConnections") }}</span>
+                        <span class="link-color nav-link">{{
+                                translate("navigation.routeNames.assessmentToolConnections")
+                            }}</span>
                     </v-list-item>
 
-                    <v-divider class="section-divider" />
+                    <v-divider class="section-divider"/>
 
                     <v-list-item class="px-0 nav-hover">
-                        <span class="link-color nav-link">{{ translate("navigation.routeNames.connectionConfiguration") }}</span>
+                        <span class="link-color nav-link">{{
+                                translate("navigation.routeNames.connectionConfiguration")
+                            }}</span>
                     </v-list-item>
 
-                    <v-divider class="section-divider" />
+                    <v-divider class="section-divider"/>
 
                     <v-list-item class="px-0 nav-hover">
                         <span class="link-color nav-link">{{ translate("navigation.routeNames.certificates") }}</span>
                     </v-list-item>
 
-                    <v-divider class="section-divider" />
+                    <v-divider class="section-divider"/>
 
                     <v-list-item class="px-0 nav-hover">
-                        <router-link class="link-color nav-link" :to="constants.USER_ACCOUNTS_ROUTE">{{ translate("navigation.routeNames.userAccounts") }}</router-link>
+                        <router-link class="link-color nav-link" :to="constants.USER_ACCOUNTS_ROUTE">
+                            {{ translate("navigation.routeNames.userAccounts") }}
+                        </router-link>
                     </v-list-item>
 
-                    <v-divider class="section-divider mb-3" />
+                    <v-divider class="section-divider mb-3"/>
                 </v-col>
 
                 <div class="success-message-div">
                     <AlertMsg
-                        v-if="createdSuccess"
+                        v-if="editedSuccess"
                         :alertProps="{
                             title: '',
                             color: 'success',
                             type: 'alert',
-                            customText: i18n.t('warnings.creation-success', { username: createdUserName})
+                            customText: i18n.t('userAccount.userAccountDetailAndEditPage.warnings.edit-success', { username: editedUserName})
                         }"
                     />
                 </div>
@@ -69,8 +75,14 @@
                     <v-card-text>
                         <v-form ref="formRef" @keyup.enter="saveChanges()">
                             <v-row dense>
+
+                            </v-row>
+
+                            <v-row dense>
+
+
                                 <v-col>
-                                    <v-col cols="12" md="6" class="mt-2">
+                                    <v-col cols="12" md="12" class="custom-padding-textbox" >
                                         <v-select
                                             required
                                             prepend-inner-icon="mdi-domain"
@@ -85,17 +97,115 @@
                                             :disabled="institutionSelectDisabled"
                                         />
                                     </v-col>
+                                    <!-- name -->
+                                    <v-col cols="12" md="12" class="custom-padding-textbox" >
+                                        <v-text-field
+                                            required
+                                            prepend-inner-icon="mdi-account-outline"
+                                            density="compact"
+                                            :label="translate('userAccount.createUserAccountPage.labels.nameLabel')"
+                                            variant="outlined"
+                                            v-model="name"
+                                            :rules="[requiredRule]"
+                                        />
+                                    </v-col>
+                                    <!--  last name-->
+                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                        <v-text-field
+                                            required
+                                            prepend-inner-icon="mdi-account-outline"
+                                            density="compact"
+                                            :label="translate('userAccount.createUserAccountPage.labels.surnameLabel')"
+                                            variant="outlined"
+                                            v-model="surname"
+                                            :rules="[requiredRule]"
+                                        />
+                                    </v-col>
+
+                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                        <v-text-field
+                                            required
+                                            prepend-inner-icon="mdi-account-outline"
+                                            density="compact"
+                                            :label="translate('userAccount.createUserAccountPage.labels.usernameLabel')"
+                                            variant="outlined"
+                                            v-model="username"
+                                            :rules="[requiredRule]"
+                                        />
+                                    </v-col>
+
+                                    <!--  email-->
+                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                        <v-text-field
+                                            prepend-inner-icon="mdi-email-outline"
+                                            density="compact"
+                                            :label="translate('userAccount.createUserAccountPage.labels.emailLabel')"
+                                            variant="outlined"
+                                            v-model="email"
+                                            :rules="[emailRule]"
+                                            validate-on="blur"
+                                        />
+                                    </v-col>
+
+
+                                    <!--  time zone-->
+                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                        <v-select
+                                            required
+                                            prepend-inner-icon="mdi-map-clock-outline"
+                                            density="compact"
+                                            :label="translate('userAccount.createUserAccountPage.labels.timeZoneLabel')"
+                                            variant="outlined"
+                                            v-model="timezone"
+                                            :items="timezoneOptions"
+                                            :rules="[requiredRule]"
+                                            :return-object="false"
+                                        />
+                                    </v-col>
+
+                                    <!--  time zone-->
+                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                        <v-select
+                                            required
+                                            prepend-inner-icon="mdi-map-clock-outline"
+                                            density="compact"
+                                            :label="translate('userAccount.createUserAccountPage.labels.timeZoneLabel')"
+                                            variant="outlined"
+                                            v-model="timezone"
+                                            :items="timezoneOptions"
+                                            :rules="[requiredRule]"
+                                            :return-object="false"
+                                        />
+                                    </v-col>
+
                                 </v-col>
-                            </v-row>
-
-                            <v-row dense>
-
-                                <!-- first col-->
+                                <!-- second col-->
                                 <v-col>
 
+
+                                    <v-col cols="12" class="d-flex justify-center mb-6">
+                                        <div
+                                            class="rounded-circle d-flex align-center justify-center"
+                                            style="
+                                            background-color: transparent;
+                                            border: 0.5rem solid #215CAF;
+                                            width: 13rem;
+                                            height: 13rem;
+                                            min-width: 13rem;
+                                            font-weight: 600;
+                                            font-size: 4rem;
+                                            color: #215CAF;
+                                            "
+                                        >
+                                            {{
+                                                (name?.[0] || '') +
+                                                (surname?.[0] || '')
+                                            }}
+                                        </div>
+                                    </v-col>
                                     <!--  roles-->
-                                    <v-col cols="12" class="mt-2">
-                                        <div class="text-subtitle-1 font-weight-medium mb-2">
+                                    <v-col cols="12" class=" ml-16">
+                                        <div class="text-subtitle-1 font-weight-medium">
                                             {{ translate("userAccount.createUserAccountPage.labels.selectRolesLabel") }}
                                         </div>
                                         <div class="text-body-2 text-grey-darken-1 mb-5">
@@ -127,77 +237,7 @@
                                             {{ rolesRule([]) }}
                                         </div>
                                     </v-col>
-
                                 </v-col>
-                                <v-col>
-
-                                    <!-- name -->
-                                    <v-col cols="12" md="12" class="mt-2">
-                                        <v-text-field
-                                            required
-                                            prepend-inner-icon="mdi-account-outline"
-                                            density="compact"
-                                            :label="translate('userAccount.createUserAccountPage.labels.nameLabel')"
-                                            variant="outlined"
-                                            v-model="name"
-                                            :rules="[requiredRule]"
-                                        />
-                                    </v-col>
-                                    <!--  last name-->
-                                    <v-col cols="12" md="12" class="mt-2">
-                                        <v-text-field
-                                            required
-                                            prepend-inner-icon="mdi-account-outline"
-                                            density="compact"
-                                            :label="translate('userAccount.createUserAccountPage.labels.surnameLabel')"
-                                            variant="outlined"
-                                            v-model="surname"
-                                            :rules="[requiredRule]"
-                                        />
-                                    </v-col>
-
-                                    <v-col cols="12" md="12" class="mt-2">
-                                        <v-text-field
-                                            required
-                                            prepend-inner-icon="mdi-account-outline"
-                                            density="compact"
-                                            :label="translate('userAccount.createUserAccountPage.labels.usernameLabel')"
-                                            variant="outlined"
-                                            v-model="username"
-                                            :rules="[requiredRule]"
-                                        />
-                                    </v-col>
-
-                                    <!--  email-->
-                                    <v-col cols="12" md="12" class="mt-2">
-                                        <v-text-field
-                                            prepend-inner-icon="mdi-email-outline"
-                                            density="compact"
-                                            :label="translate('userAccount.createUserAccountPage.labels.emailLabel')"
-                                            variant="outlined"
-                                            v-model="email"
-                                            :rules="[emailRule]"
-                                            validate-on="blur"
-                                        />
-                                    </v-col>
-
-
-                                    <!--  time zone-->
-                                    <v-col cols="12" md="12" class="mt-2">
-                                        <v-select
-                                            required
-                                            prepend-inner-icon="mdi-map-clock-outline"
-                                            density="compact"
-                                            :label="translate('userAccount.createUserAccountPage.labels.timeZoneLabel')"
-                                            variant="outlined"
-                                            v-model="timezone"
-                                            :items="timezoneOptions"
-                                            :rules="[requiredRule]"
-                                            :return-object="false"
-                                        />
-                                    </v-col>
-                                </v-col>
-
                             </v-row>
 
                         </v-form>
@@ -224,9 +264,10 @@
                             color="primary"
                             variant="flat"
                             class="ml-2"
+                            :disabled="!hasChanges"
                             @click="saveChanges()"
                         >
-                            {{ translate("userAccount.createUserAccountPage.buttons.createNewUser") }}
+                            {{ translate("userAccount.userAccountDetailAndEditPage.buttons.saveChanges") }}
                         </v-btn>
                     </div>
                 </v-col>
@@ -265,12 +306,14 @@
     const timezone = ref<string>("");
     const password = ref<string>("");
     const confirmPassword = ref<string>("");
-    const createdUserName = ref('');
+    const editedUserName = ref('');
     const formRef = ref();
     const route = useRoute();
+    const initialUserData = ref<EditUserAccountParameters | null>(null);
+
 
     const rolesTouched = ref(false);
-    const createdSuccess = ref(false);
+    const editedSuccess = ref(false);
     const confirmPasswordFieldRef = ref();
     const confirmPasswordTouched = ref(false);
     const institutionSelectDisabled = ref(false);
@@ -298,15 +341,23 @@
     }));
 
     onMounted(async () => {
+        await loadUser()
+    });
+
+
+    const loadUser = async () => {
         appBarStore.title = translate('titles.createUserAccount');
         layoutStore.setBlueBackground(true);
 
-        const result = await getInstitutions();
-        if (result && result.length > 0) {
+        const result = await getInstitutions()
+        if (!result) {
+            return;
+        }
+        if (result?.length > 0) {
             institutions.value = result;
 
             if (result.length === 1) {
-                selectedInstitution.value = (result[0].modelId);
+                selectedInstitution.value = result[0].modelId;
                 institutionSelectDisabled.value = true;
             }
         }
@@ -314,9 +365,8 @@
         const userId = route.params.userId as string;
         user.value = await getUserAccountById(userId);
 
-        if (!user.value) {
-            return;
-        }
+        if (!user.value) return;
+
         const authenticatedUser = authenticatedUserAccountStore.userAccount;
         const authenticatedUserRoles = authenticatedUser?.userRoles ?? [];
 
@@ -336,19 +386,35 @@
 
         if (user.value) {
             if (authenticatedUserRoles.includes(UserRoleEnum.SEB_SERVER_ADMIN)) {
-                const userInstitutionId =  (user.value.institutionId.toString());
+                const userInstitutionId = user.value.institutionId.toString();
                 const match = institutions.value.find(inst => inst.modelId === userInstitutionId);
                 if (match) {
                     selectedInstitution.value = match.modelId;
-                }            }
+                }
+            }
             name.value = user.value.name;
             surname.value = user.value.surname;
             username.value = user.value.username;
             email.value = user.value.email;
             timezone.value = user.value.timezone;
             selectedRoles.value = [...user.value.userRoles];
+
+            initialUserData.value = {
+                uuid: user.value.uuid,
+                institutionId: Number(selectedInstitution.value),
+                creationDate: user.value.creationDate,
+                name: name.value,
+                surname: surname.value,
+                username: username.value,
+                email: email.value || "",
+                active: user.value.active,
+                language: "en",
+                timezone: timezone.value,
+                userRoles: [...selectedRoles.value]
+            };
         }
-    });
+    };
+
 
 
     function getAvailableRolesForUser(userRoles: string[]): typeof allRoles {
@@ -377,6 +443,20 @@
         }
     });
 
+
+    const hasChanges = computed(() => {
+        if (!initialUserData.value) return false;
+
+        return (
+            name.value !== initialUserData.value.name ||
+            surname.value !== initialUserData.value.surname ||
+            username.value !== initialUserData.value.username ||
+            email.value !== initialUserData.value.email ||
+            timezone.value !== initialUserData.value.timezone ||
+            Number(selectedInstitution.value) !== initialUserData.value.institutionId ||
+            JSON.stringify(selectedRoles.value.sort()) !== JSON.stringify([...initialUserData.value.userRoles].sort())
+        );
+    });
     const saveChanges = async () => {
         rolesTouched.value = true;
 
@@ -409,18 +489,20 @@
         };
 
         // Call the service
-        const createdUserAccountResponse: SingleUserAccountResponse | null = await editUserAccount(editedUserAccountParams);
-
-        if (createdUserAccountResponse == null) {
+        const editedUserAccountResponse: SingleUserAccountResponse | null = await editUserAccount(editedUserAccountParams);
+        if (editedUserAccountResponse == null) {
             return;
         } else {
-            createdUserName.value = createdUserAccountResponse.name;
-            createdSuccess.value = true;
+            editedUserName.value = editedUserAccountResponse.name;
+            editedSuccess.value = true;
+            initialUserData.value = {
+                ...editedUserAccountParams,
+            };
             setTimeout(() => {
-                createdSuccess.value = false;
-                navigateTo(constants.USER_ACCOUNTS_ROUTE);
-            }, 1500);
+                editedSuccess.value = false;
 
+            }, 1500);
+            await loadUser();
         }
     };
 
@@ -543,6 +625,11 @@
         background: transparent;
         padding-left: 8px;
         width: 85% !important;
+    }
+
+    .custom-padding-textbox{
+        padding-top: 8px !important;
+        padding-bottom: 8px !important;
     }
 
 </style>
