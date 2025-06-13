@@ -66,7 +66,7 @@
             <v-divider class="custom-divider mx-6 my-4 mt-7"/>
             <v-row class="px-8 mt-2">
                 <div class="text-body-2 text-grey-darken-1">
-                    {{ translate("userAccount.createUserAccountPage.info.accountCreationInfo") }}
+                    {{ translate("userAccount.userAccountDetailAndEditPage.info.accountEditInfo") }}
                 </div>
             </v-row>
             <v-sheet class="rounded-lg mt-4">
@@ -87,7 +87,7 @@
                                             required
                                             prepend-inner-icon="mdi-domain"
                                             density="compact"
-                                            :label="translate('userAccount.createUserAccountPage.labels.institutionLabel')"
+                                            :label="translate('userAccount.userAccountDetailAndEditPage.labels.institutionLabel')"
                                             variant="outlined"
                                             v-model="selectedInstitution"
                                             :items="institutions"
@@ -103,7 +103,7 @@
                                             required
                                             prepend-inner-icon="mdi-account-outline"
                                             density="compact"
-                                            :label="translate('userAccount.createUserAccountPage.labels.nameLabel')"
+                                            :label="translate('userAccount.userAccountDetailAndEditPage.labels.nameLabel')"
                                             variant="outlined"
                                             v-model="name"
                                             :rules="[requiredRule]"
@@ -115,7 +115,7 @@
                                             required
                                             prepend-inner-icon="mdi-account-outline"
                                             density="compact"
-                                            :label="translate('userAccount.createUserAccountPage.labels.surnameLabel')"
+                                            :label="translate('userAccount.userAccountDetailAndEditPage.labels.surnameLabel')"
                                             variant="outlined"
                                             v-model="surname"
                                             :rules="[requiredRule]"
@@ -127,7 +127,7 @@
                                             required
                                             prepend-inner-icon="mdi-account-outline"
                                             density="compact"
-                                            :label="translate('userAccount.createUserAccountPage.labels.usernameLabel')"
+                                            :label="translate('userAccount.userAccountDetailAndEditPage.labels.usernameLabel')"
                                             variant="outlined"
                                             v-model="username"
                                             :rules="[requiredRule]"
@@ -139,7 +139,7 @@
                                         <v-text-field
                                             prepend-inner-icon="mdi-email-outline"
                                             density="compact"
-                                            :label="translate('userAccount.createUserAccountPage.labels.emailLabel')"
+                                            :label="translate('userAccount.userAccountDetailAndEditPage.labels.emailLabel')"
                                             variant="outlined"
                                             v-model="email"
                                             :rules="[emailRule]"
@@ -154,7 +154,7 @@
                                             required
                                             prepend-inner-icon="mdi-map-clock-outline"
                                             density="compact"
-                                            :label="translate('userAccount.createUserAccountPage.labels.timeZoneLabel')"
+                                            :label="translate('userAccount.userAccountDetailAndEditPage.labels.timeZoneLabel')"
                                             variant="outlined"
                                             v-model="timezone"
                                             :items="timezoneOptions"
@@ -163,26 +163,25 @@
                                         />
                                     </v-col>
 
-                                    <!--  time zone-->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
-                                        <v-select
-                                            required
-                                            prepend-inner-icon="mdi-map-clock-outline"
-                                            density="compact"
-                                            :label="translate('userAccount.createUserAccountPage.labels.timeZoneLabel')"
+                                        <v-text-field
+                                            :label="translate('userAccount.userAccountDetailAndEditPage.labels.passwordLabel')"
+                                            type="password"
                                             variant="outlined"
-                                            v-model="timezone"
-                                            :items="timezoneOptions"
-                                            :rules="[requiredRule]"
-                                            :return-object="false"
+                                            density="compact"
+                                            model-value="'************'"
+                                            prepend-inner-icon="mdi-lock-outline"
+                                            append-inner-icon="mdi-pencil"
+                                            @click:append-inner="changePasswordDialog = true"
+                                            readonly
                                         />
+
                                     </v-col>
+
 
                                 </v-col>
                                 <!-- second col-->
                                 <v-col>
-
-
                                     <v-col cols="12" class="d-flex justify-center mb-6">
                                         <div
                                             class="rounded-circle d-flex align-center justify-center"
@@ -206,10 +205,10 @@
                                     <!--  roles-->
                                     <v-col cols="12" class=" ml-16">
                                         <div class="text-subtitle-1 font-weight-medium">
-                                            {{ translate("userAccount.createUserAccountPage.labels.selectRolesLabel") }}
+                                            {{ translate("userAccount.userAccountDetailAndEditPage.labels.selectRolesLabel") }}
                                         </div>
                                         <div class="text-body-2 text-grey-darken-1 mb-5">
-                                            {{ translate("userAccount.createUserAccountPage.info.rolesSelectionInfo") }}
+                                            {{ translate("userAccount.userAccountDetailAndEditPage.info.rolesSelectionInfo") }}
                                         </div>
                                         <v-row dense>
                                             <v-col
@@ -256,7 +255,7 @@
                             variant="outlined"
                             @click="navigateTo(constants.USER_ACCOUNTS_ROUTE)"
                         >
-                            {{ translate("general.cancelButton") }}
+                            {{ translate("general.backButton") }}
                         </v-btn>
 
                         <v-btn
@@ -274,6 +273,77 @@
             </v-row>
         </v-col>
     </v-row>
+
+    <v-dialog v-model="changePasswordDialog" max-width="600">
+        <v-card class="pa-4">
+            <v-card-title class="text-h6 font-weight-bold mb-2 mt-2">
+                {{ translate("userAccount.userAccountDetailAndEditPage.changePasswordTitle") }}
+            </v-card-title>
+
+            <v-divider class="mb-4"/>
+
+            <v-card-text class="pt-0">
+                <v-form ref="changePasswordForm">
+                    <v-col cols="12" class="custom-padding-textbox">
+                        <v-text-field
+                            v-model="currentAdminPassword"
+                            type="password"
+                            :label="translate('userAccount.userAccountDetailAndEditPage.labels.adminPassword')"
+                            :rules="[requiredRule]"
+                            prepend-inner-icon="mdi-lock-outline"
+                            variant="outlined"
+                            @blur="adminPwTouched = true"
+                            validate-on="blur"
+                            density="compact"
+                        />
+                    </v-col>
+                    <v-col cols="12" class="custom-padding-textbox">
+                        <v-text-field
+                            v-model="newUserPassword"
+                            type="password"
+                            :label="translate('userAccount.userAccountDetailAndEditPage.labels.newPassword')"
+                            :rules="[requiredRule, newPasswordRule]"
+                            prepend-inner-icon="mdi-lock-outline"
+                            variant="outlined"
+                            density="compact"
+                            @blur="newPwTouched = true"
+                            validate-on="blur"
+                        />
+                    </v-col>
+                    <v-col cols="12" class="custom-padding-textbox">
+                        <v-text-field
+                            v-model="confirmNewUserPassword"
+                            type="password"
+                            :label="translate('userAccount.userAccountDetailAndEditPage.labels.confirmNewPassword')"
+                            :rules="[requiredRule, v => v === newUserPassword || passwordsDontMatchMessage]"
+                            prepend-inner-icon="mdi-lock-outline"
+                            variant="outlined"
+                            density="compact"
+                            @blur="confirmPwTouched = true"
+                            validate-on="blur"
+                        />
+                    </v-col>
+                </v-form>
+            </v-card-text>
+
+            <v-card-actions class="justify-end mt-2">
+                <v-btn variant="text" @click="changePasswordDialog = false">
+                    {{ translate("general.cancelButton") }}
+                </v-btn>
+                <v-btn
+                    color="primary"
+                    variant="flat"
+                    :disabled="!isPasswordFormValid"
+                    @click="changePassword"
+                >
+                    {{ translate("general.saveButton") }}
+                </v-btn>
+
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
+
+
 </template>
 
 <script setup lang="ts">
@@ -305,11 +375,20 @@
     const email = ref<string>();
     const timezone = ref<string>("");
     const password = ref<string>("");
-    const confirmPassword = ref<string>("");
     const editedUserName = ref('');
     const formRef = ref();
     const route = useRoute();
     const initialUserData = ref<EditUserAccountParameters | null>(null);
+    const changePasswordDialog = ref(false);
+    const currentAdminPassword = ref('');
+    const newUserPassword = ref('');
+    const confirmNewUserPassword = ref('');
+    const changePasswordForm = ref();
+    const adminPwTouched = ref(false);
+    const newPwTouched = ref(false);
+    const confirmPwTouched = ref(false);
+
+
 
 
     const rolesTouched = ref(false);
@@ -325,13 +404,19 @@
 
 
     //validation rules
-    const requiredMessage = translate('userAccount.createUserAccountPage.validation.required');
-    const invalidEmailMessage = translate('userAccount.createUserAccountPage.validation.invalidEmail');
-    const invalidRoleSelectionMessage = translate('userAccount.createUserAccountPage.validation.invalidRoleSelection');
+    const requiredMessage = translate('userAccount.userAccountDetailAndEditPage.validation.required');
+    const invalidEmailMessage = translate('userAccount.userAccountDetailAndEditPage.validation.invalidEmail');
+    const invalidRoleSelectionMessage = translate('userAccount.userAccountDetailAndEditPage.validation.invalidRoleSelection');
+    const passwordTooShortMessage = translate('userAccount.userAccountDetailAndEditPage.validation.passwordTooShort');
+    const passwordsDontMatchMessage = translate('userAccount.createUserAccountPage.validation.passwordsDontMatch');
 
     const requiredRule = (v: string) => !!v || requiredMessage;
 
     const emailRule = (v: string) => !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || invalidEmailMessage;
+
+    const newPasswordRule = (v: string) => (v && v.length >= 8) || passwordTooShortMessage;
+    const confirmNewPasswordRule = (v: string) => v === password.value || passwordsDontMatchMessage;
+
     const rolesRule = (v: string[]) => v.length > 0 || invalidRoleSelectionMessage;
 
     //load available roles
@@ -457,6 +542,19 @@
             JSON.stringify(selectedRoles.value.sort()) !== JSON.stringify([...initialUserData.value.userRoles].sort())
         );
     });
+
+    const isPasswordFormValid = computed(() => {
+        return (
+            adminPwTouched.value &&
+            newPwTouched.value &&
+            confirmPwTouched.value &&
+            !!currentAdminPassword.value &&
+            newPasswordRule(newUserPassword.value) === true &&
+            newUserPassword.value === confirmNewUserPassword.value
+        );
+    });
+
+
     const saveChanges = async () => {
         rolesTouched.value = true;
 
@@ -504,6 +602,21 @@
             }, 1500);
             await loadUser();
         }
+    };
+
+
+    const changePassword = async () => {
+        const { valid } = await changePasswordForm.value.validate();
+        if (!valid) return;
+
+
+        // close the dialog after success
+        changePasswordDialog.value = false;
+
+        // reset fields
+        currentAdminPassword.value = '';
+        newUserPassword.value = '';
+        confirmNewUserPassword.value = '';
     };
 
     onBeforeUnmount(() => {
