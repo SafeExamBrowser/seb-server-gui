@@ -296,7 +296,7 @@
               "confirmNewPassword": "Repeat Password"
           },
           "info" : {
-              "rolesSelectionInfo": "Please select at least one Role",
+              "rolesSelectionInfo": "Must have at least one Role",
               "accountEditInfo": "Change the values of the fields to edit the user",
               "changePasswordInfo": "Change \"{username}\"'s password"
 
@@ -313,6 +313,10 @@
               "passwordsDontMatch": "Passwords must match",
               "invalidEmail": "Invalid email format",
               "invalidRoleSelection": "Please select at least one Role"
+            },
+            "status":{
+                "active" : "Active",
+                "inactive" : "Inactive"
             }
         }
     },

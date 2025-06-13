@@ -57,9 +57,27 @@
 
         <v-col elevation="4" cols="9" class="bg-white rounded-lg">
             <v-row class="d-flex align-center justify-space-between px-6 pt-6">
-                <div class="text-primary text-h5 font-weight-bold">
-                    {{ translate("userAccount.userAccountDetailAndEditPage.title") }}
-                </div>
+                <v-row class="d-flex align-center justify-space-between px-6 pt-0">
+                    <div class="text-primary text-h5 font-weight-bold">
+                        {{ translate("userAccount.userAccountDetailAndEditPage.title") }}
+                    </div>
+
+                    <v-chip
+                        class="ma-2 text-subtitle-1 px-5 py-2 font-weight-bold"
+                        :color="user?.active ? 'success' : 'error'"
+                        text-color="white"
+                        size="large"
+                        label
+                        @click="toggleStatusLocally(user)"
+                        style="cursor: pointer;"
+                    >
+                        {{ user?.active
+                        ? translate('userAccount.userAccountDetailAndEditPage.status.active')
+                        : translate('userAccount.userAccountDetailAndEditPage.status.inactive') }}
+                    </v-chip>
+
+                </v-row>
+
             </v-row>
 
 
@@ -353,13 +371,14 @@
     import * as constants from '@/utils/constants';
     import moment from "moment-timezone";
     import {getInstitutions} from "@/services/seb-server/component-services/registerAccountViewService";
-    import {editUserAccount} from "@/services/seb-server/component-services/userAccountViewService";
     import {navigateTo} from "@/router/navigation";
     import {UserRoleEnum} from '@/models/userRoleEnum';
     import {useI18n} from "vue-i18n";
     import {useRoute} from 'vue-router';
     import {getUserAccountById} from "@/services/seb-server/component-services/userAccountViewService";
     import {useUserAccountStore as useAuthenticatedUserAccountStore} from "@/stores/authentication/authenticationStore";
+    import * as userAccountViewService from '@/services/seb-server/component-services/userAccountViewService';
+    import {editUserAccount} from "@/services/seb-server/api-services/userAccountService";
 
     const user = ref<UserAccount | null>(null);
 
@@ -387,9 +406,7 @@
     const adminPwTouched = ref(false);
     const newPwTouched = ref(false);
     const confirmPwTouched = ref(false);
-
-
-
+    const initialActiveStatus = ref<boolean | null>(null);
 
     const rolesTouched = ref(false);
     const editedSuccess = ref(false);
@@ -426,12 +443,12 @@
     }));
 
     onMounted(async () => {
+        appBarStore.title = translate('userAccount.userAccountDetailAndEditPage.title');
         await loadUser()
     });
 
 
     const loadUser = async () => {
-        appBarStore.title = translate('titles.createUserAccount');
         layoutStore.setBlueBackground(true);
 
         const result = await getInstitutions()
@@ -482,8 +499,10 @@
             username.value = user.value.username;
             email.value = user.value.email;
             timezone.value = user.value.timezone;
+            initialActiveStatus.value = user.value.active;
             selectedRoles.value = [...user.value.userRoles];
 
+            initialActiveStatus.value = user.value?.active ?? null;
             initialUserData.value = {
                 uuid: user.value.uuid,
                 institutionId: Number(selectedInstitution.value),
@@ -514,7 +533,7 @@
             );
         }
         return [];
-    }
+    }h()
 
 
     const availableRoles = ref<{ label: string; value: string }[]>([]);
@@ -529,7 +548,7 @@
     });
 
 
-    const hasChanges = computed(() => {
+    const fieldChanges = computed(() => {
         if (!initialUserData.value) return false;
 
         return (
@@ -543,6 +562,10 @@
         );
     });
 
+    const hasChanges = computed(() => fieldChanges.value || statusChanged.value);
+
+    const statusChanged = computed(() => user.value?.active !== initialActiveStatus.value);
+
     const isPasswordFormValid = computed(() => {
         return (
             adminPwTouched.value &&
@@ -555,24 +578,45 @@
     });
 
 
+
     const saveChanges = async () => {
         rolesTouched.value = true;
 
-        // Always validate the form
-        const {valid} = await formRef.value.validate();
-
-        // Manually check roles
+        const { valid } = await formRef.value.validate();
         const rolesValid = selectedRoles.value.length > 0;
 
-        // If anything is invalid, stop
-        if (!valid || !rolesValid) {
-            return;
+        if (!valid || !rolesValid || !user.value) return;
+
+        // 1. Save status first
+        if (statusChanged.value) {
+            await persistStatusChange(user.value);
         }
-        if (!user.value) {
-            return;
+
+        // 2. Then update the user info (with updated .active)
+        if (fieldChanges.value) {
+            const editedUserAccountParams: EditUserAccountParameters = {
+                uuid: user.value.uuid,
+                institutionId: Number(selectedInstitution.value),
+                creationDate: user.value.creationDate,
+                name: name.value,
+                surname: surname.value,
+                username: username.value,
+                email: email.value || "",
+                active: user.value.active, // now accurate
+                language: "en",
+                timezone: timezone.value,
+                userRoles: selectedRoles.value
+            };
+
+            await editUserAccount(editedUserAccountParams);
         }
-        // Prepare the request
-        const editedUserAccountParams: EditUserAccountParameters = {
+
+        editedUserName.value = user.value.name;
+        editedSuccess.value = true;
+        setTimeout(() => (editedSuccess.value = false), 1500);
+
+        initialActiveStatus.value = user.value.active;
+        initialUserData.value = {
             uuid: user.value.uuid,
             institutionId: Number(selectedInstitution.value),
             creationDate: user.value.creationDate,
@@ -583,24 +627,27 @@
             active: user.value.active,
             language: "en",
             timezone: timezone.value,
-            userRoles: selectedRoles.value
+            userRoles: [...selectedRoles.value]
         };
+    };
 
-        // Call the service
-        const editedUserAccountResponse: SingleUserAccountResponse | null = await editUserAccount(editedUserAccountParams);
-        if (editedUserAccountResponse == null) {
-            return;
-        } else {
-            editedUserName.value = editedUserAccountResponse.name;
-            editedSuccess.value = true;
-            initialUserData.value = {
-                ...editedUserAccountParams,
-            };
-            setTimeout(() => {
-                editedSuccess.value = false;
 
-            }, 1500);
-            await loadUser();
+    const toggleStatusLocally = (user: UserAccount | null) => {
+        if (!user) return;
+        user.active = !user.active;
+    };
+
+
+    const persistStatusChange = async (user: UserAccount | null) => {
+        if (!user) return;
+        try {
+            if (user.active) {
+                await userAccountViewService.activateUserAccount(user.uuid);
+            } else {
+                await userAccountViewService.deactivateUserAccount(user.uuid);
+            }
+        } catch (e) {
+            console.error("Failed to update user status:", e);
         }
     };
 
@@ -744,5 +791,7 @@
         padding-top: 8px !important;
         padding-bottom: 8px !important;
     }
+
+
 
 </style>
