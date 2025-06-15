@@ -119,3 +119,15 @@ export async function getPendingNotifications(token: string, id: string, connect
     const {data, status} = await apiService.api.get(url, {headers: apiService.getHeaders(token)});
     return [data, status];
 }
+
+export async function confirmNotification(token: string, id: string, notificationId: string, connectionToken: string): Promise<[number]> {
+    const url: string = constants.MONITORING_ROUTE + "/" + id + "/notification/" + notificationId + "/" + connectionToken;
+    const {status} = await apiService.api.post(url, {headers: apiService.getHeaders(token)});
+    return [status];
+}
+
+export async function disableConnections(token: string, id: string, connectionToken: {}): Promise<[number]> {
+    const url: string = constants.MONITORING_ROUTE + "/" + id + "/disable-connection";
+    const {status} = await apiService.api.post(url, apiService.createUrlEncodedBody(connectionToken), {headers: apiService.getHeaders(token)});
+    return [status];
+}

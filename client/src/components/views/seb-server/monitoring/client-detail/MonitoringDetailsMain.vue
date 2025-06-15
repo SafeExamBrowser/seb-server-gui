@@ -32,7 +32,7 @@
                                                     rounded="sm" 
                                                     color="primary" 
                                                     variant="flat" 
-                                                    @click="resolveRaiseHand()">
+                                                    @click="confirmNotification(raiseHandNotification.id.toString())">
                                                     Resolve Raise Hand
                                                 </v-btn>
                                             </v-col>
@@ -74,7 +74,7 @@
                                                         rounded="sm" 
                                                         color="primary" 
                                                         variant="flat" 
-                                                        @click="resolveLockScreen()">
+                                                        @click="confirmNotification(message.id.toString())">
                                                         Resolve Message
                                                     </v-btn>
                                                 </v-col>
@@ -177,34 +177,9 @@
     });
 
 
-    async function resolveRaiseHand(){
-        resolveRaiseHandSent.value = true;
-
-        const clientInstruction: ClientInstruction = {
-            examId: parseInt(examId),
-            connectionToken,
-            type: InstructionEnum.NOTIFICATION_CONFIRM,
-        }
-
-        //send inctruction
-        // monitoringViewService.registerInstruction(examId, clientInstruction);
+    async function confirmNotification(notificationId: string){
+        monitoringViewService.confirmNotification(examId, notificationId, connectionToken);
     }
-
-    async function resolveLockScreen(){
-        resolveLockScreenSent.value = true;
-
-        //create object
-        const clientInstruction: ClientInstruction = {
-            examId: parseInt(examId),
-            connectionToken,
-            type: InstructionEnum.NOTIFICATION_CONFIRM,
-        }
-
-        //send inctruction
-        // monitoringViewService.registerInstruction(examId, clientInstruction);
-    }
-
-
 
 
 

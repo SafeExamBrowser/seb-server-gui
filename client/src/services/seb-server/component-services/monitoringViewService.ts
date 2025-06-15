@@ -73,6 +73,22 @@ export async function getPendingNotifcations(examId: string, connectionToken: st
     }
 }
 
+export async function confirmNotification(examId: string, notificationId: string, connectionToken: string): Promise<any | null>{
+    try{
+        return await monitoringService.confirmNotification(examId, notificationId, connectionToken);
+    }catch(error){
+        return null;
+    }
+}
+
+export async function disableConnections(examId: string, connectionToken: string): Promise<any | null>{
+    try{
+        return await monitoringService.disableConnections(examId, connectionToken);
+    }catch(error){
+        return null;
+    }
+}
+
 //================url query handling===============
 export function applyFilter(query: LocationQuery, filterType: MonitoringHeaderEnum, filterValue: string){
     //removes all selected clients (checkbox in table)

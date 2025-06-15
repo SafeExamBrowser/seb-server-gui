@@ -28,6 +28,8 @@
 
                     <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort, selectAll, allSelected, someSelected}">
                         <TableHeaders
+                            @add-indicator-headers="addIndicatorHeaders"
+                            @remove-indicator-headers="removeIndicatorHeaders"
                             :selectAll="selectAll"
                             :allSelected="allSelected"
                             :someSelected="someSelected"
@@ -35,12 +37,15 @@
                             :is-sorted="isSorted"
                             :get-sort-icon="getSortIcon"
                             :toggle-sort="toggleSort"
-                            :header-refs-prop="clientsTableHeadersRef">
+                            :header-refs-prop="clientsTableHeadersRef"
+                            table-key="monitoringClients">
                         </TableHeaders>
                     </template>
 
                     <template v-slot:item="{item, isSelected, toggleSelect, internalItem}">
                         <tr>
+
+                            <!------selection checkbox------->
                             <td>
                                 <v-checkbox-btn 
                                     :model-value="isSelected(internalItem)"
@@ -48,8 +53,10 @@
                                 </v-checkbox-btn>
                             </td>
 
+                            <!------client name------->
                             <td>{{ item.nameOrSession }}</td>
                             
+                            <!------client groups------->
                             <td>
                                 <template v-for="(clientGroup, index) in item.clientGroups" :key="clientGroup.id">
                                     <div>
@@ -64,13 +71,32 @@
                                     </div>
                                 </template>
                             </td>
-                            
+
+                            <!------connection info------->
                             <td>{{ item.connectionInfo }}</td>
+
+                            <!------status------->
                             <td>{{ translate(item.status) }}</td>
-                            <td v-for="indicator in monitoringStore.indicators?.content" :key="indicator.id">
+
+                            <!-- <td v-for="indicator in monitoringStore.indicators?.content" :key="indicator.id">
                                 {{ item.indicators?.get(indicator.id)?.indicatorValue }}
+                            </td> -->
+
+                            <!------battery indicator------->
+                            <td v-if="(tableStore.isIndicatorsExpanded || isSingleBatteryIndicator) && batteryIndicatorId != null">
+                                <v-chip :color="getIndicatorColor(item.indicators?.get(batteryIndicatorId))">
+                                    {{ item.indicators?.get(batteryIndicatorId)?.indicatorValue }}
+                                </v-chip>
                             </td>
 
+                            <!------wlan indicator------->
+                            <td v-if="(tableStore.isIndicatorsExpanded || isSingleWlanIndicator) && wlanIndicatorId != null">
+                                <v-chip :color="getIndicatorColor(item.indicators?.get(wlanIndicatorId))">
+                                    {{ item.indicators?.get(wlanIndicatorId)?.indicatorValue }}
+                                </v-chip>
+                            </td>
+
+                            <!------navigation button------->
                             <td align="right">
                                 <v-icon 
                                     icon="mdi-chevron-right"
@@ -98,7 +124,7 @@
 
 <script setup lang="ts">
     import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
-    import { useAppBarStore } from "@/stores/store";
+    import { useAppBarStore, useTableStore } from "@/stores/store";
     import {translate} from "@/utils/generalUtils";
     import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
     import * as generalUtils from "@/utils/generalUtils";
@@ -109,6 +135,7 @@
     import { MonitoringRow } from "@/models/seb-server/monitoringClients";
     import * as tableUtils from "@/utils/table/tableUtils";
     import { storeToRefs } from "pinia";
+import { table } from "console";
 
     //exam
     const examId = useRoute().params.examId.toString();
@@ -120,12 +147,21 @@
     const monitoringStore = useMonitoringStore();
     const monitoringStoreRef = storeToRefs(monitoringStore);
     const appBarStore = useAppBarStore();
+    const tableStore = useTableStore();
 
     //items
     const connections = ref<MonitoringConnections>();
     const monitoringDataTable = ref<MonitoringRow[]>([]);
     // const staticClientDataList = ref<MonitoringStaticClientData>();
     // const monitoringData = ref<Map<number, MonitoringRow>>(new Map());
+
+    //indicators
+    const batteryIndicatorId = ref<number | null>(null);
+    const isSingleBatteryIndicator = ref<boolean>(false);
+
+    const wlanIndicatorId = ref<number | null>(null);
+    const isSingleWlanIndicator = ref<boolean>(false);
+
 
     //interval
     let intervalRefresh: any | null = null;
@@ -141,7 +177,7 @@
         {title: translate("monitoringClients.main.tableHeaderNameSession"), key: "nameOrSession", width: "30%", sortable: true},
         {title: translate("monitoringClients.main.tableHeaderClientGroups"), key: "clientGroups", width: "20%", sortable: true},
         {title: translate("monitoringClients.main.tableHeaderConnectionInfo"), key: "connectionInfo", width: "20%", sortable: true},
-        {title: translate("monitoringClients.main.tableHeaderStatus"), key: "status", sortable: true},
+        {title: translate("monitoringClients.main.tableHeaderStatus"), key: "status", width: "10%", sortable: true},
         {title: "", key: "link", width: "5%"}
     ]);  
 
@@ -157,6 +193,10 @@
 
     onBeforeUnmount(() => {
         stopIntervalRefresh();
+    });
+
+    onUnmounted(() => {
+        tableStore.isIndicatorsExpanded = false;
     });
 
     onUpdated(() => {
@@ -178,7 +218,7 @@
         await getAndSetStaticClientData(getAllConnectionIds());
 
         initalizeTableData();
-        addIndicatorHeaders();
+        // addIndicatorHeaders();
 
         // const end = performance.now();
         // console.log(`Execution time: ${(end - start)/1000} ms`);
@@ -226,6 +266,15 @@
                 [MonitoringHeaderEnum.SHOW_INDICATORS]: route.query[MonitoringHeaderEnum.SHOW_INDICATORS] || [],
             }
         );
+
+        //check if indicator row has to be shown
+        const indicatorString: string | null = route.query[MonitoringHeaderEnum.SHOW_INDICATORS] ? route.query[MonitoringHeaderEnum.SHOW_INDICATORS].toString() : null;
+        if(indicatorString != null){
+            addIndicatorHeaderAutomatically(indicatorString);
+        }else{
+            removeIndicatorHeaderAutomatically();
+        }
+        
 
         if(fullPageResponse == null){
             return;
@@ -400,26 +449,130 @@
                     indicatorObject: indicator,
                 }
 
+                if(indicatorFullObject.indicatorType == IndicatorEnum.BATTERY_STATUS){
+                    batteryIndicatorId.value = indicator.id;
+                }
+
+                if(indicatorFullObject.indicatorType == IndicatorEnum.WLAN_STATUS){
+                    wlanIndicatorId.value = indicator.id;
+                }
+
                 indicatorsMap.set(indicator.id, indicatorFullObject);
             }
         }
+
+        // console.log([...indicatorsMap.entries()])
 
         return indicatorsMap;
     }
 
     function addIndicatorHeaders(){
-        monitoringStore.indicators?.content.forEach((indicator) => {
-            clientsTableHeaders.value.splice(
-                clientsTableHeaders.value.length-1,
-                0,
-                {
-                    title: indicator.name, 
-                    key: indicator.id.toString(),
-                    sortable: false
-                }
-            );
-        });
+        tableStore.isIndicatorsExpanded = true;
+
+        clientsTableHeaders.value.splice(4, 0, {title: "Battery status", key: "", width: "8%"});
+        clientsTableHeaders.value.splice(5, 0, {title: "Wlan status", key: "", width: "8%"});
     }
+
+    function removeIndicatorHeaders(){
+        tableStore.isIndicatorsExpanded = false;
+
+        clientsTableHeaders.value.splice(4, 2);
+    }
+
+    function addIndicatorHeaderAutomatically(indicatorString: string | null){
+        console.log("---------------" + indicatorString)
+        if(indicatorString?.includes(",") && !tableStore.isIndicatorsExpanded){
+            clientsTableHeaders.value.splice(4, 1);
+
+            isSingleBatteryIndicator.value = true;
+            isSingleWlanIndicator.value = true;
+
+            addIndicatorHeaders();
+            return;
+        }
+
+
+        const indicator: IndicatorEnum | null = generalUtils.findEnumValue(IndicatorEnum, indicatorString)
+        if(indicator == null){
+            return;
+        }
+
+        if(indicator == IndicatorEnum.BATTERY_STATUS && !isSingleBatteryIndicator.value){
+            addBatteryHeader();
+        }
+
+        if(indicator == IndicatorEnum.WLAN_STATUS && !isSingleWlanIndicator.value){
+            addWlanHeader();
+        }
+
+    }
+
+    function removeIndicatorHeaderAutomatically(){
+        // if(isSingleBatteryIndicator.value && isSingleWlanIndicator.value){
+        //     clientsTableHeaders.value.splice(4, 2);
+        // }
+
+        console.log("isSingleBatteryIndicator: " + isSingleBatteryIndicator.value)
+        console.log("isSingleWlanIndicator: " + isSingleWlanIndicator.value)
+
+        if(isSingleBatteryIndicator.value){
+            removeBatteryHeader();
+        }
+
+        if(isSingleWlanIndicator.value){
+            removeWlanHeader();
+        }
+    }
+
+    function addBatteryHeader(){
+        if(tableStore.isIndicatorsExpanded){
+            removeIndicatorHeaders();
+        }
+
+        tableStore.isIndicatorExpandButtonDisabled = true;
+        isSingleBatteryIndicator.value = true;
+
+        clientsTableHeaders.value.splice(4, 0, {title: "Battery status", key: "", width: "8%"});
+    }
+
+    function removeBatteryHeader(){
+        tableStore.isIndicatorExpandButtonDisabled = false;
+        isSingleBatteryIndicator.value = false;
+
+        clientsTableHeaders.value.splice(4, 1);
+    }
+
+    function addWlanHeader(){
+        if(tableStore.isIndicatorsExpanded){
+            removeIndicatorHeaders();
+        }
+
+        tableStore.isIndicatorExpandButtonDisabled = true;
+        isSingleWlanIndicator.value = true;
+
+        clientsTableHeaders.value.splice(4, 0, {title: "Wlan status", key: "", width: "8%"});
+    }
+
+    function removeWlanHeader(){
+        tableStore.isIndicatorExpandButtonDisabled = false;
+        isSingleWlanIndicator.value = false;
+
+        clientsTableHeaders.value.splice(4, 1);
+    }
+
+    // function addIndicatorHeaders_old(){
+    //     monitoringStore.indicators?.content.forEach((indicator) => {
+    //         clientsTableHeaders.value.splice(
+    //             clientsTableHeaders.value.length-1,
+    //             0,
+    //             {
+    //                 title: indicator.name, 
+    //                 key: indicator.id.toString(),
+    //                 sortable: false
+    //             }
+    //         );
+    //     });
+    // }
 
     function updateIndicator(indicatorMap: Map<number, IndicatorObject> | undefined, indicatorValues: Record<string, string>){
         if(indicatorMap == null){
@@ -430,6 +583,23 @@
             indicatorObject.indicatorValue = parseInt(indicatorValues[key.toString()]);
 
         });
+    }
+
+
+    function getIndicatorColor(indicatorObj: IndicatorObject | undefined): string{
+        if(indicatorObj == null || indicatorObj.indicatorObject.thresholds == null){
+            return "";
+        }
+
+        let color: string = "";
+        for(let i = 0; i < indicatorObj.indicatorObject.thresholds.length; i++){
+
+            if(indicatorObj.indicatorValue <= indicatorObj.indicatorObject.thresholds[i].value){
+                color = indicatorObj.indicatorObject.thresholds[i].color;
+            }
+        }
+
+        return "#" + color;
     }
 
     //=================interval===================
@@ -479,6 +649,10 @@
 <style scoped>
     .default-color {
         color: #2196F3;
+    }
+
+    .test-bg{
+        background-color: red;
     }
 
 </style>

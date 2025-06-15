@@ -35,3 +35,13 @@ export async function getPendingNotifcations(examId: string, connectionToken: st
     const url: string = monitoringUrl + "/" + examId + "/notification/" + connectionToken;
     return (await apiService.api.get(url, {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
 }
+
+export async function confirmNotification(examId: string, notificationId: string, connectionToken: string): Promise<any>{
+    const url: string = monitoringUrl + "/" + examId + "/notification/" + notificationId + "/" + connectionToken;
+    return (await apiService.api.post(url, {headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN)})).status;
+}
+
+export async function disableConnections(examId: string, connectionToken: string): Promise<any>{
+    const url: string = monitoringUrl + "/" + examId + "/disable-connection";
+    return (await apiService.api.post(url, {connectionToken}, {headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN)})).status;
+}

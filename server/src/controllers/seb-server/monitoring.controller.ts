@@ -71,3 +71,25 @@ export async function getPendingNotifications(req: Request, res: Response){
         apiService.handleGenericApiError(error, res);
     }
 }
+
+export async function confirmNotification(req: Request, res: Response){
+    try{
+        const [status] = await monitoringService.confirmNotification(
+            req.headers.authorization, req.params.id, req.params.notificationId, req.params.connectionToken);
+
+            return res.status(status);
+
+    }catch(error){
+        apiService.handleGenericApiError(error, res);
+    }
+}
+
+export async function disableConnections(req: Request, res: Response){
+    try{
+        const [status] = await monitoringService.disableConnections(req.headers.authorization, req.params.id, req.body);
+        return res.status(status);
+
+    }catch(error){
+        apiService.handleGenericApiError(error, res);
+    }
+}

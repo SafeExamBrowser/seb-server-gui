@@ -126,7 +126,7 @@
     <!---------------------------->
 
     <!--------show all button-------->
-    <v-row v-if="isSPGroupAvailable">
+    <v-row v-if="isSPGroupAvailable || monitoringStore.monitoringOverviewData?.clientGroups.length == 0">
         <v-col align="right">
             <v-btn 
                 color="primary" 

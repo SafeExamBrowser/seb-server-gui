@@ -111,7 +111,7 @@
     });
 
     onUnmounted(() => {
-        tableStore.isExamExpand = false;
+        // tableStore.isExamExpand = false;
     });
 
     watch(appBarStoreRef.examOverviewShowPastExams, async () => {
