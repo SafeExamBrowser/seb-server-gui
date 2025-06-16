@@ -28,20 +28,14 @@
     let intervalRefresh: any | null = null;
     const REFRESH_INTERVAL: number = 1 * 5000;
 
-    //data
-
-
     onBeforeMount(async () => {
         appBarStore.title = translate("titles.monitoring");
 
         await getSingleConnection();
         await monitoringViewService.getExamAndStore(examId);
         await monitoringViewService.getClientGroups(examId);
+        await getPendingNotifications();
         storeClientGroups();
-
-
-        // console.log(monitoringStore.selectedSingleConn);
-        // console.log(monitoringStore.clientGroupsSingle)
 
         startIntervalRefresh();
 
@@ -63,6 +57,15 @@
         monitoringStore.selectedSingleConn = singleConnectionResponse;
     }
 
+    async function getPendingNotifications(){
+        const notificationsResponse: ClientNotification[] | null = await monitoringViewService.getPendingNotifcations(examId, connectionToken);
+        if(notificationsResponse == null){
+            return;
+        }
+
+        monitoringStore.pendingNotifications = notificationsResponse;
+    }
+
 
     //=================data preparing===================
     async function storeClientGroups(){
@@ -77,9 +80,8 @@
     //=================interval===================
     async function startIntervalRefresh(){
         intervalRefresh = setInterval(async () => {
-
-            await getSingleConnection();
-
+            getSingleConnection();
+            getPendingNotifications();
         }, REFRESH_INTERVAL);
     }
 

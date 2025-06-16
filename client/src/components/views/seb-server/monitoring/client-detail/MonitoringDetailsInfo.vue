@@ -131,7 +131,7 @@
     import {navigateTo} from "@/router/navigation";
     import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
     import * as constants from "@/utils/constants";
-import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums";
+    import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums";
 
 
     //i18n

@@ -168,14 +168,15 @@
                                 </v-col>
     
                                 <!------------indicators filters------------->
-                                <v-col v-if="monitoringStore.monitoringOverviewData?.indicators.total != 0">
+                                <v-col v-if="monitoringStore.monitoringOverviewData != null && Object.keys(monitoringStore.monitoringOverviewData?.indicators).length != 0">
                                     <div class="primary-text-color text-subtitle-1">
                                         Indicators
                                     </div>
     
                                     <template v-for="(value, key) in monitoringStore.monitoringOverviewData?.indicators" :key="key">
+                                        <!-- v-if="key != 'total' && value != 0" -->
+
                                         <v-chip 
-                                            v-if="key != 'total' && value != 0"
                                             size="small" 
                                             class="mr-2 mt-2"
                                             :variant="isFilterSelected(MonitoringHeaderEnum.SHOW_INDICATORS, key) ? 'flat' : 'tonal'"
@@ -217,7 +218,7 @@
                                 color="black" 
                                 variant="outlined"
                                 prepend-icon="mdi-monitor-lock"
-                                @click="openInstructionConfirmDialog(InstructionEnum.SEB_FORCE_LOCK_SCREEN)">
+                                @click="openInstructionConfirmDialog(InstructionEnum.SEB_FORCE_LOCK_SCREEN, false)">
                                 Lock selected clients
                             </v-btn>
                         </div>
@@ -230,8 +231,21 @@
                                 color="black" 
                                 variant="outlined"
                                 prepend-icon="mdi-backspace-outline"
-                                @click="openInstructionConfirmDialog(InstructionEnum.SEB_QUIT)">
+                                @click="openInstructionConfirmDialog(InstructionEnum.SEB_QUIT, false)">
                                 Quit selected clients
+                            </v-btn>
+                        </div>
+
+                        <div>
+                            <v-btn 
+                                :disabled="monitoringStore.selectedMonitoringIds.length == 0"
+                                class="mt-2"
+                                rounded="sm" 
+                                color="black" 
+                                variant="outlined"
+                                prepend-icon="mdi-cancel"
+                                @click="openInstructionConfirmDialog(null, true)">
+                                Mark selected clients as canceled
                             </v-btn>
                         </div>
                     </v-col>
@@ -296,7 +310,8 @@
         <InstructionConfirmDialog
             @close-instruction-confirm-dialog="closeInstructionConfirmDialog"
             :instruction-type="selectedInstructionType"
-            :connectionTokens="selectedConnectionTokens">
+            :connectionTokens="selectedConnectionTokens"
+            :is-cancel-instruction="isSelectedInstructionCancel">
         </InstructionConfirmDialog>
     </v-dialog>
 
@@ -339,6 +354,7 @@
     //instruction confirm dialog
     const instructionConfirmDialog = ref<boolean>(false);
     const selectedInstructionType = ref<InstructionEnum | null>(null);
+    const isSelectedInstructionCancel = ref<boolean>(false);
     const selectedConnectionTokens = ref<string>("");
 
     //emits - call loadMonitoringListItemsCaller in parent
@@ -378,7 +394,7 @@
     }
 
     //===============instruction confirm dialog====================
-    function openInstructionConfirmDialog(instructionType: InstructionEnum){
+    function openInstructionConfirmDialog(instructionType: InstructionEnum | null, isCancelInstruction: boolean){
         const connectionTokens: string | null = getConnectionTokens();
         if(connectionTokens == null){
             const errorProps: ErrorProps = {
@@ -395,6 +411,7 @@
 
         selectedInstructionType.value = instructionType;
         selectedConnectionTokens.value = connectionTokens;
+        isSelectedInstructionCancel.value = isCancelInstruction;
 
         instructionConfirmDialog.value = true;
     }

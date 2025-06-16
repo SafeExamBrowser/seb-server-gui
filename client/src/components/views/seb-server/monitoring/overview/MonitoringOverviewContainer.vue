@@ -138,8 +138,8 @@
         monitoringStore.monitoringOverviewData!.notifications.LOCK_SCREEN = randomNumber1; 
         monitoringStore.monitoringOverviewData!.notifications.RAISE_HAND = randomNumber2; 
 
-        monitoringStore.monitoringOverviewData!.indicators.BATTERY_STATUS = randomNumber3; 
-        monitoringStore.monitoringOverviewData!.indicators.WLAN_STATUS = randomNumber4; 
+        // monitoringStore.monitoringOverviewData!.indicators.BATTERY_STATUS = randomNumber3; 
+        // monitoringStore.monitoringOverviewData!.indicators.WLAN_STATUS = randomNumber4; 
 
 
 

@@ -48,7 +48,7 @@
                         color="error" 
                         variant="flat" 
                         class="ml-2"
-                        @click="registerInstruction()">
+                        @click="isCancelInstruction ? cancelClients() : registerInstruction()">
                         {{getButtonText()}}
                     </v-btn>
 
@@ -74,6 +74,7 @@
     //props
     const props = defineProps<{
         instructionType: InstructionEnum | null,
+        isCancelInstruction?: boolean,
         connectionTokens: string
     }>();
 
@@ -90,6 +91,10 @@
             return "Quit SEB Clients";
         }
 
+        if(props.isCancelInstruction){
+            return "Mark Clients as canceled";
+        }
+
         return "";
     }
 
@@ -100,6 +105,10 @@
 
         if(props.instructionType == InstructionEnum.SEB_QUIT){
             return "This actions quits all selected SEB clients";
+        }
+
+        if(props.isCancelInstruction){
+            return "This actions marks all selected SEB clients as canceled";
         }
 
         return "";
@@ -120,6 +129,10 @@
 
         if(props.instructionType == InstructionEnum.SEB_QUIT){
             return "Quit";
+        }
+
+        if(props.isCancelInstruction){
+            return "Cancel"
         }
         
         return "";
@@ -152,6 +165,19 @@
         emit("closeInstructionConfirmDialog");
     }
 
+    async function cancelClients(){
+
+        console.log("it got here")
+
+        if(!props.isCancelInstruction){
+            return;
+        }
+
+        //send disable (calcel) inctruction
+        monitoringViewService.disableConnections(examId, props.connectionTokens)
+
+        emit("closeInstructionConfirmDialog");
+    }
 
 </script>
 

@@ -118,3 +118,8 @@ export function stringToBoolean(booleanValue: string): boolean{
 export function wait(ms: number) {
     return new Promise( resolve => setTimeout(resolve, ms) );
 }
+
+export function parseIfNumber(value: string): string | number {
+    const num = Number(value);
+    return !isNaN(num) ? num : value;
+  }

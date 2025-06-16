@@ -192,10 +192,12 @@ export const useLoadingStore = defineStore("loading", () => {
 
 //----------------------sp exams overview---------------------------//
 export const useTableStore = defineStore("table", () => {
-    const isExamExpand = ref<boolean>(false);
+    const isIndicatorsExpanded = ref<boolean>(false);
+    const isIndicatorExpandButtonDisabled = ref<boolean>(false);
+
     const isIpDisplayList = ref<{day: string, isIp: boolean}[]>([]);
 
-    return {isExamExpand, isIpDisplayList};
+    return {isIndicatorsExpanded, isIpDisplayList, isIndicatorExpandButtonDisabled};
 });
 
 

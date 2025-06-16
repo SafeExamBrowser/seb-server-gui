@@ -28,6 +28,8 @@
 
                     <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort, selectAll, allSelected, someSelected}">
                         <TableHeaders
+                            @add-indicator-headers="addIndicatorHeaders"
+                            @remove-indicator-headers="removeIndicatorHeaders"
                             :selectAll="selectAll"
                             :allSelected="allSelected"
                             :someSelected="someSelected"
@@ -35,12 +37,15 @@
                             :is-sorted="isSorted"
                             :get-sort-icon="getSortIcon"
                             :toggle-sort="toggleSort"
-                            :header-refs-prop="clientsTableHeadersRef">
+                            :header-refs-prop="clientsTableHeadersRef"
+                            table-key="monitoringClients">
                         </TableHeaders>
                     </template>
 
                     <template v-slot:item="{item, isSelected, toggleSelect, internalItem}">
                         <tr>
+
+                            <!------selection checkbox------->
                             <td>
                                 <v-checkbox-btn 
                                     :model-value="isSelected(internalItem)"
@@ -48,8 +53,10 @@
                                 </v-checkbox-btn>
                             </td>
 
+                            <!------client name------->
                             <td>{{ item.nameOrSession }}</td>
                             
+                            <!------client groups------->
                             <td>
                                 <template v-for="(clientGroup, index) in item.clientGroups" :key="clientGroup.id">
                                     <div>
@@ -64,13 +71,28 @@
                                     </div>
                                 </template>
                             </td>
-                            
+
+                            <!------connection info------->
                             <td>{{ item.connectionInfo }}</td>
+
+                            <!------status------->
                             <td>{{ translate(item.status) }}</td>
-                            <td v-for="indicator in monitoringStore.indicators?.content" :key="indicator.id">
-                                {{ item.indicators?.get(indicator.id)?.indicatorValue }}
+
+                            <!------battery indicator------->
+                            <td v-if="(tableStore.isIndicatorsExpanded || isBatteryIndicator) && batteryIndicatorId != null">
+                                <v-chip :color="getIndicatorColor(item.indicators?.get(batteryIndicatorId))">
+                                    {{ item.indicators?.get(batteryIndicatorId)?.indicatorValue }}
+                                </v-chip>
                             </td>
 
+                            <!------wlan indicator------->
+                            <td v-if="(tableStore.isIndicatorsExpanded || isWlanIndicator) && wlanIndicatorId != null">
+                                <v-chip :color="getIndicatorColor(item.indicators?.get(wlanIndicatorId))">
+                                    {{ item.indicators?.get(wlanIndicatorId)?.indicatorValue }}
+                                </v-chip>
+                            </td>
+
+                            <!------navigation button------->
                             <td align="right">
                                 <v-icon 
                                     icon="mdi-chevron-right"
@@ -98,7 +120,7 @@
 
 <script setup lang="ts">
     import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
-    import { useAppBarStore } from "@/stores/store";
+    import { useAppBarStore, useTableStore } from "@/stores/store";
     import {translate} from "@/utils/generalUtils";
     import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
     import * as generalUtils from "@/utils/generalUtils";
@@ -120,6 +142,7 @@
     const monitoringStore = useMonitoringStore();
     const monitoringStoreRef = storeToRefs(monitoringStore);
     const appBarStore = useAppBarStore();
+    const tableStore = useTableStore();
 
     //items
     const connections = ref<MonitoringConnections>();
@@ -127,9 +150,17 @@
     // const staticClientDataList = ref<MonitoringStaticClientData>();
     // const monitoringData = ref<Map<number, MonitoringRow>>(new Map());
 
+    //indicators
+    const batteryIndicatorId = ref<number | null>(null);
+    const isBatteryIndicator = ref<boolean>(false);
+
+    const wlanIndicatorId = ref<number | null>(null);
+    const isWlanIndicator = ref<boolean>(false);
+
+
     //interval
     let intervalRefresh: any | null = null;
-    const REFRESH_INTERVAL: number = 1 * 1000;
+    const REFRESH_INTERVAL: number = 1 * 2000;
 
     //dialogs
     const clientGroupDialog = ref<boolean>(false);
@@ -141,7 +172,7 @@
         {title: translate("monitoringClients.main.tableHeaderNameSession"), key: "nameOrSession", width: "30%", sortable: true},
         {title: translate("monitoringClients.main.tableHeaderClientGroups"), key: "clientGroups", width: "20%", sortable: true},
         {title: translate("monitoringClients.main.tableHeaderConnectionInfo"), key: "connectionInfo", width: "20%", sortable: true},
-        {title: translate("monitoringClients.main.tableHeaderStatus"), key: "status", sortable: true},
+        {title: translate("monitoringClients.main.tableHeaderStatus"), key: "status", width: "10%", sortable: true},
         {title: "", key: "link", width: "5%"}
     ]);  
 
@@ -157,6 +188,10 @@
 
     onBeforeUnmount(() => {
         stopIntervalRefresh();
+    });
+
+    onUnmounted(() => {
+        tableStore.isIndicatorsExpanded = false;
     });
 
     onUpdated(() => {
@@ -178,7 +213,7 @@
         await getAndSetStaticClientData(getAllConnectionIds());
 
         initalizeTableData();
-        addIndicatorHeaders();
+        // addIndicatorHeaders();
 
         // const end = performance.now();
         // console.log(`Execution time: ${(end - start)/1000} ms`);
@@ -230,6 +265,9 @@
         if(fullPageResponse == null){
             return;
         }
+
+        //add / remove indicators
+        modifyIndicatorHeaders(route.query[MonitoringHeaderEnum.SHOW_INDICATORS]);
 
         connections.value = fullPageResponse;
     }
@@ -396,8 +434,18 @@
             if(indicator != null){
                 const indicatorFullObject: IndicatorObject = {
                     indicatorType: generalUtils.findEnumValue(IndicatorEnum, indicator.type),
-                    indicatorValue: parseInt(value),
+                    indicatorValue: generalUtils.parseIfNumber(value),
                     indicatorObject: indicator,
+                }
+
+                console.log("value: " + value)
+
+                if(indicatorFullObject.indicatorType == IndicatorEnum.BATTERY_STATUS){
+                    batteryIndicatorId.value = indicator.id;
+                }
+
+                if(indicatorFullObject.indicatorType == IndicatorEnum.WLAN_STATUS){
+                    wlanIndicatorId.value = indicator.id;
                 }
 
                 indicatorsMap.set(indicator.id, indicatorFullObject);
@@ -408,17 +456,80 @@
     }
 
     function addIndicatorHeaders(){
-        monitoringStore.indicators?.content.forEach((indicator) => {
-            clientsTableHeaders.value.splice(
-                clientsTableHeaders.value.length-1,
-                0,
-                {
-                    title: indicator.name, 
-                    key: indicator.id.toString(),
-                    sortable: false
-                }
-            );
-        });
+        tableStore.isIndicatorsExpanded = true;
+
+        clientsTableHeaders.value.splice(4, 0, {title: "Battery status", key: "", width: "8%", sortable: false});
+        clientsTableHeaders.value.splice(5, 0, {title: "Wlan status", key: "", width: "8%", sortable: false});
+    }
+
+    function removeIndicatorHeaders(){
+        tableStore.isIndicatorsExpanded = false;
+
+        clientsTableHeaders.value.splice(4, 2);
+    }
+
+    function modifyIndicatorHeaders(indicatorString: any | null){
+        if(indicatorString == null){
+            indicatorString = "";
+        }
+
+        //at least 1 filter is selected
+        if(indicatorString != ""){
+            if(tableStore.isIndicatorsExpanded){
+                removeIndicatorHeaders();
+            }
+            tableStore.isIndicatorExpandButtonDisabled = true;
+            tableStore.isIndicatorsExpanded = false;
+        }else{
+            tableStore.isIndicatorExpandButtonDisabled = false;
+        }
+
+        //remove battery indicator
+        if(!indicatorString.includes(IndicatorEnum.BATTERY_STATUS.toString()) && isBatteryIndicator.value){
+            console.log("remove battery")
+            removeBatteryHeader(4);
+        }
+
+        //add battery indicator
+        if(indicatorString.includes(IndicatorEnum.BATTERY_STATUS.toString()) && !tableStore.isIndicatorsExpanded && !isBatteryIndicator.value){
+            console.log("add battery")
+            addBatteryHeader(4);
+        }
+
+        //remove wlan indicator
+        if(!indicatorString.includes(IndicatorEnum.WLAN_STATUS.toString()) && isWlanIndicator.value){
+            console.log("remove wlan")
+            const index: number = isBatteryIndicator.value ? 5 : 4;
+            removeWlanHeader(index);
+        }
+
+        //add wlan indicator
+        if(indicatorString.includes(IndicatorEnum.WLAN_STATUS.toString()) && !tableStore.isIndicatorsExpanded && !isWlanIndicator.value){
+            console.log("add wlan")
+
+            const index: number = isBatteryIndicator.value ? 5 : 4;
+            addWlanHeader(index);
+        }
+    }
+
+    function addBatteryHeader(index: number){
+        isBatteryIndicator.value = true;
+        clientsTableHeaders.value.splice(index, 0, {title: "Battery status", key: "", width: "8%", sortable: false});
+    }
+
+    function removeBatteryHeader(index: number){
+        isBatteryIndicator.value = false;
+        clientsTableHeaders.value.splice(index, 1);
+    }
+
+    function addWlanHeader(index: number){
+        isWlanIndicator.value = true;
+        clientsTableHeaders.value.splice(index, 0, {title: "Wlan status", key: "", width: "8%", sortable: false});
+    }
+
+    function removeWlanHeader(index: number){
+        isWlanIndicator.value = false;
+        clientsTableHeaders.value.splice(index, 1);
     }
 
     function updateIndicator(indicatorMap: Map<number, IndicatorObject> | undefined, indicatorValues: Record<string, string>){
@@ -427,9 +538,25 @@
         }
 
         indicatorMap.forEach((indicatorObject, key) => {
-            indicatorObject.indicatorValue = parseInt(indicatorValues[key.toString()]);
-
+            indicatorObject.indicatorValue = generalUtils.parseIfNumber(indicatorValues[key.toString()])
         });
+    }
+
+
+    function getIndicatorColor(indicatorObj: IndicatorObject | undefined): string{
+        if(indicatorObj == null || indicatorObj.indicatorObject.thresholds == null){
+            return "";
+        }
+
+        let color: string = "";
+        for(let i = 0; i < indicatorObj.indicatorObject.thresholds.length; i++){
+
+            if(typeof indicatorObj.indicatorValue == "number" && indicatorObj.indicatorValue <= indicatorObj.indicatorObject.thresholds[i].value){
+                color = indicatorObj.indicatorObject.thresholds[i].color;
+            }
+        }
+
+        return "#" + color;
     }
 
     //=================interval===================
@@ -445,16 +572,6 @@
 
         intervalRefresh = setTimeout(startIntervalRefresh, REFRESH_INTERVAL);
     }
-
-    // async function startIntervalRefresh(){
-    //     intervalRefresh = setInterval(async () => {
-
-    //         //todo: check when request is finished
-    //         await getAndSetConnections();
-
-    //     }, REFRESH_INTERVAL);
-    // }
-
 
 
     function stopIntervalRefresh(){
@@ -479,6 +596,10 @@
 <style scoped>
     .default-color {
         color: #2196F3;
+    }
+
+    .test-bg{
+        background-color: red;
     }
 
 </style>

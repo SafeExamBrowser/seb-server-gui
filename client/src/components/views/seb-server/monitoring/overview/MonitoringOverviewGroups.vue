@@ -1,88 +1,95 @@
 <template>
     <!------title------->
-    <v-row>
+    <v-row class="mb-3">
         <v-col class="primary-text-color text-h5 font-weight-bold">
             Groups
         </v-col>
     </v-row>
 
-    <v-row v-for="clientGroupItem in overViewClientGroups">
+    <!--------group cards-------->
+    <template v-for="(clientGroupItem, index) in overViewClientGroups">
+        <!--@vue-ignore-->
+        <v-row no-gutters :class="[index != overViewClientGroups.length-1 ? 'mb-4' : '']">
+            <v-col>
+                <v-sheet class="rounded-lg pa-4" elevation="4">
+                    <v-row align="center">
+
+                        <!--------name-------->
+                        <v-col cols="4" class="font-weight-medium primary-text-color text-h6">
+                            <template v-if="clientGroupItem.type == ClientGroupEnum.SP_FALLBACK_GROUP && isSPGroupAvailable">
+                                Remaining Clients
+                            </template>
+                            <template v-else>
+                                {{ clientGroupItem.name }}
+                            </template>
+                        </v-col>
+    
+                        <!--------group type-------->
+                        <v-col cols="6">
+                            <div v-if="clientGroupItem.type != ClientGroupEnum.SP_FALLBACK_GROUP" class="font-weight-medium">
+                                {{ translate(clientGroupItem.type) }}
+                            </div>
+                            <div class="mt-4">
+                                {{ translate(clientGroupItem.typeValue) }}
+                            </div>
+                        </v-col>
+    
+                        <!--------client amount-------->
+                        <v-col cols="1" class="text-h6 primary-text-color">
+                            {{ clientGroupItem.clientAmount }}
+                        </v-col>
+    
+                        <!--------monitoring button-------->
+                        <v-col cols="1">
+                            <v-icon 
+                                icon="mdi-chevron-right" 
+                                @click="monitoringViewService.goToMonitoring(
+                                    MonitoringHeaderEnum.SHOW_CLIENT_GROUPS, 
+                                    generalUtils.createStringCommaList([clientGroupItem.id]), 
+                                    examId)">
+                            </v-icon>
+                        </v-col>
+                    </v-row>
+                </v-sheet>
+            </v-col>
+    
+            <!--------sp button-------->
+            <v-col v-if="clientGroupItem.spsGroupUUID" cols="1" class="ml-4">
+                <v-sheet class="rounded-lg d-flex align-center justify-center fill-height" elevation="4">
+                    <v-btn 
+                        variant="text" 
+                        icon="mdi-video"
+                        @click="navigation.openUrlInNewTab(linkService.getGalleryViewLink(clientGroupItem.spsGroupUUID))">
+                    </v-btn>
+                </v-sheet>
+            </v-col>
+
+        </v-row>
+    </template>
+    <!---------------------------->
+
+    <!--------special card if no sp group is available but screen proctoring is activated on the exam-------->
+    <v-row v-if="!isSPGroupAvailable && monitoringStore.selectedExam?.additionalAttributes.enableScreenProctoring == 'true' && generalUtils.stringToBoolean(authStore.getStorageItem(StorageItemEnum.IS_SP_AVAILABLE))" class="mt-4" no-gutters>
         <v-col>
             <v-sheet class="rounded-lg pa-4" elevation="4">
                 <v-row align="center">
                     <!--------name-------->
-                    <v-col cols="3" class="font-weight-medium primary-text-color text-h6">
-                        <template v-if="clientGroupItem.type == ClientGroupEnum.SP_FALLBACK_GROUP && isSPGroupAvailable">
-                            Remaining Clients
-                        </template>
-                        <template v-else>
-                            {{ clientGroupItem.name }}
-                        </template>
-                    </v-col>
-
-                    <!--------group type-------->
-                    <v-col cols="5">
-                        <div v-if="clientGroupItem.type != ClientGroupEnum.SP_FALLBACK_GROUP" class="font-weight-medium">
-                            {{ translate(clientGroupItem.type) }}
-                        </div>
-                        <div v-if="clientGroupItem.typeValue != ''" class="mt-4">
-                            {{ translate(clientGroupItem.typeValue) }}
-                        </div>
-                    </v-col>
-
-                    <!--------client amount-------->
-                    <v-col cols="2" class="text-h6 primary-text-color">
-                        {{ clientGroupItem.clientAmount }}
-                    </v-col>
-
-                    <!--------sp button-------->
-                    <v-col cols="1">
-                        <v-btn @click="navigation.openUrlInNewTab(linkService.getGalleryViewLink(clientGroupItem.spsGroupUUID))" variant="text" icon="mdi-video"></v-btn>
-                    </v-col>
-
-                    <!--------monitoring button-------->
-                    <v-col cols="1">
-                        <v-icon 
-                            icon="mdi-chevron-right" 
-                            @click="monitoringViewService.goToMonitoring(
-                                MonitoringHeaderEnum.SHOW_CLIENT_GROUPS, 
-                                generalUtils.createStringCommaList([clientGroupItem.id]), 
-                                examId)">
-                        </v-icon>
-                    </v-col>
-                </v-row>
-            </v-sheet>
-        </v-col>
-    </v-row>
-
-    <!--------special card if no sp group is available-------->
-    <v-row v-if="!isSPGroupAvailable">
-        <v-col>
-            <v-sheet class="rounded-lg pa-4" elevation="4">
-                <v-row align="center">
-                    <!--------name-------->
-                    <v-col cols="3" class="font-weight-medium primary-text-color text-h6">
+                    <v-col cols="4" class="font-weight-medium primary-text-color text-h6">
                         All Clients
                     </v-col>
 
                     <!--------group type placeholder-------->
-                    <v-col cols="5">
+                    <v-col cols="6">
                     </v-col>
 
                     <!--------client amount-------->
-                    <v-col cols="2" class="text-h6 primary-text-color">
-                        <template v-if="overViewClientGroups != null && overViewClientGroups.length != 0">
-                            {{ overViewClientGroups[overViewClientGroups.length-1].clientAmount }}
+                    <v-col cols="1" class="text-h6 primary-text-color">
+                        <template v-if="monitoringStore.monitoringOverviewData != null && monitoringStore.monitoringOverviewData.clientGroups.length != 0">
+                            {{ monitoringStore.monitoringOverviewData.clientGroups[monitoringStore.monitoringOverviewData.clientGroups.length-1].clientAmount }}
                         </template>
                         <template v-else>
                             0
                         </template>
-                    </v-col>
-
-                    <!--------sp button-------->
-                    <v-col cols="1">
-                        <v-icon icon="mdi-video">
-                        </v-icon>
                     </v-col>
 
                     <!--------monitoring button-------->
@@ -98,10 +105,28 @@
                 </v-row>
             </v-sheet>
         </v-col>
+
+          <!--------sp button-------->
+          <v-col v-if="monitoringStore.monitoringOverviewData != null && monitoringStore.monitoringOverviewData.clientGroups.length != 0" cols="1" class="ml-4">
+            <v-sheet class="rounded-lg d-flex align-center justify-center fill-height" elevation="4">
+                <v-btn 
+                    variant="text" 
+                    icon="mdi-video"
+                    @click="
+                    navigation.openUrlInNewTab(
+                        linkService.getGalleryViewLink(
+                            monitoringStore.monitoringOverviewData.clientGroups[
+                                monitoringStore.monitoringOverviewData.clientGroups.length-1
+                            ].spsGroupUUID!))"
+                >
+                </v-btn>
+            </v-sheet>
+        </v-col>
     </v-row>
+    <!---------------------------->
 
     <!--------show all button-------->
-    <v-row v-if="isSPGroupAvailable">
+    <v-row v-if="isSPGroupAvailable || monitoringStore.monitoringOverviewData?.clientGroups.length == 0">
         <v-col align="right">
             <v-btn 
                 color="primary" 
@@ -125,10 +150,12 @@
     import * as generalUtils from "@/utils/generalUtils";
     import * as linkService from "@/services/screen-proctoring/component-services/linkService";
     import * as navigation from "@/router/navigation";
-
+    import { useAuthStore } from "@/stores/authentication/authenticationStore";
+    import { StorageItemEnum } from "@/models/StorageItemEnum";
 
     //stores
     const monitoringStore = useMonitoringStore();
+    const authStore = useAuthStore()
 
     //exam
     const examId = useRoute().params.examId.toString();

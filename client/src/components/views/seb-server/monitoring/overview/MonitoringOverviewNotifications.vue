@@ -45,27 +45,62 @@
     
         <v-row>
             <v-col>
-                <template v-for="(value, key) in monitoringStore.monitoringOverviewData?.indicators" :key="key">
-                    <v-card
-                        v-if="key != 'total'"
-                        class="rounded-lg mb-3 pa-2" 
-                        variant="flat"
-                        :hover="true"
-                        :ripple="false"
-                        :color="getIndicatorColor(generalUtils.findEnumValue(IndicatorEnum, key))"
-                        @click="monitoringViewService.goToMonitoring(
-                                    MonitoringHeaderEnum.SHOW_INDICATORS, 
-                                    generalUtils.findEnumValue(IndicatorEnum, key)!, 
-                                    examId)">
-                        
-                        <v-row>
-                            <v-col align="left">{{ value }} {{ translate(key) }}</v-col>
-                            <v-col align="right">
-                                <v-icon :icon="getIndicatorIcon(generalUtils.findEnumValue(IndicatorEnum, key))"></v-icon>
-                            </v-col>
-                        </v-row>
-                    </v-card>
-                </template>
+
+                <!------batter status------>
+                <v-card
+                    class="rounded-lg mb-3 pa-2" 
+                    variant="flat"
+                    :hover="true"
+                    :ripple="false"
+                    :color="getIndicatorColor(monitoringStore.monitoringOverviewData.indicators.BATTERY_STATUS?.color)"   
+                    @click="monitoringViewService.goToMonitoring(
+                                MonitoringHeaderEnum.SHOW_INDICATORS, 
+                                IndicatorEnum.BATTERY_STATUS, 
+                                examId)">
+                    
+                    <v-row>
+                        <v-col align="left">
+                            {{ getIndicatorText(
+                                    monitoringStore.monitoringOverviewData.indicators.BATTERY_STATUS?.incident,
+                                    monitoringStore.monitoringOverviewData.indicators.BATTERY_STATUS?.warning,
+                                    IndicatorEnum.BATTERY_STATUS
+                                ) 
+                            }}
+                        </v-col>
+                        <v-col align="right">
+                            <v-icon icon="mdi-battery-alert-variant-outline"></v-icon>
+                        </v-col>
+                    </v-row>
+                </v-card>
+
+                <!------wlan status------>
+                <v-card
+                    class="rounded-lg mb-3 pa-2" 
+                    variant="flat"
+                    :hover="true"
+                    :ripple="false"
+                    :color="getIndicatorColor(monitoringStore.monitoringOverviewData.indicators.WLAN_STATUS?.color)"   
+                    @click="monitoringViewService.goToMonitoring(
+                                MonitoringHeaderEnum.SHOW_INDICATORS, 
+                                IndicatorEnum.WLAN_STATUS, 
+                                examId)">
+                    
+                    <v-row>
+                        <v-col align="left">
+                            {{ getIndicatorText(
+                                    monitoringStore.monitoringOverviewData.indicators.WLAN_STATUS?.incident,
+                                    monitoringStore.monitoringOverviewData.indicators.WLAN_STATUS?.warning,
+                                    IndicatorEnum.WLAN_STATUS
+                                ) 
+                            }}
+                        </v-col>
+                        <v-col align="right">
+                            <v-icon icon="mdi-wifi-alert"></v-icon>
+                        </v-col>
+                    </v-row>
+                </v-card>
+
+
             </v-col>
         </v-row>
     </template>
@@ -114,31 +149,41 @@
         }
     }
 
-    function getIndicatorColor(indicator: IndicatorEnum | null): string {
-        if (indicator == null) return "#000000";
-
-        switch (indicator) {
-            case IndicatorEnum.BATTERY_STATUS:
-                return "#f0f0f0";
-            case IndicatorEnum.WLAN_STATUS:
-                return "#f0f0f0";
-            default:
-                return "#000000";
+    function getIndicatorColor(color: string | undefined): string {
+        if(color == null){
+            return "#f0f0f0";
         }
+
+        return "#" + color;
     }
 
-    function getIndicatorIcon(indicator: IndicatorEnum | null): string {
-        if (indicator == null) return "mdi-chevron-right";
+    function getIndicatorText(incident: number | undefined, warning: number | undefined, indicatorType: IndicatorEnum): string{
+        const indicatorTypeTranslated: string = translate(indicatorType);
 
-        switch (indicator) {
-            case IndicatorEnum.BATTERY_STATUS:
-                return "mdi-battery-alert-variant-outline";
-            case IndicatorEnum.WLAN_STATUS:
-                return "mdi-wifi-alert";
-            default:
-                return "mdi-chevron-right";
+        let text: string = "";
+        if(incident != 0 && incident != null){
+            text = incident.toString();
         }
+
+        if(warning != 0 && warning != null){
+            text = warning.toString();
+        }
+
+        if(incident != 0 && warning != 0){
+            text = incident + " | " + warning;
+        }
+
+        if(incident == 0 && warning == 0){
+            text = "0";
+        }
+
+        if(incident == null || warning == null){
+            text = "0";
+        }
+
+        return text + " " + indicatorTypeTranslated;
     }
+
 
 
 </script>

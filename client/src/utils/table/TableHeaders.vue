@@ -58,16 +58,16 @@
                 </template>
                 <!----------------------------------------------------------------->
 
-                <!-- <template v-if="column.title == 'Exam Start-Time'">
+                <template v-if="tableKey == 'monitoringClients' && column.key == 'status' && !tableStore.isIndicatorExpandButtonDisabled">
                     <v-btn 
-                        :aria-label="tableStore.isExamExpand ? 'hide exam details' : 'show exam details'"
-                        :icon="tableStore.isExamExpand ? 'mdi-arrow-expand-left' : 'mdi-arrow-expand-right'" 
+                        :aria-label="tableStore.isIndicatorsExpanded ? 'hide exam details' : 'show exam details'"
+                        :icon="tableStore.isIndicatorsExpanded ? 'mdi-arrow-expand-left' : 'mdi-arrow-expand-right'" 
                         rounded="sm" 
                         variant="flat" 
                         size="small"
-                        @click="tableStore.isExamExpand ? emit('removeAddtionalExamHeaders') : emit('addAddtionalExamHeaders')">
+                        @click="tableStore.isIndicatorsExpanded ? emit('removeIndicatorHeaders') : emit('addIndicatorHeaders')">
                     </v-btn>
-                </template> -->
+                </template>
             </th>
         </template>
 
@@ -102,8 +102,8 @@
 
     //custom: start page
     const emit = defineEmits<{
-        addAddtionalExamHeaders: any;
-        removeAddtionalExamHeaders: any;
+        addIndicatorHeaders: any;
+        removeIndicatorHeaders: any;
         openDeleteSessionsDialog: any;
     }>();
 

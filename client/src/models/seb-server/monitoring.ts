@@ -12,9 +12,16 @@ type MonitoringOverview = {
     clientGroups: OverviewClientGroup[];
 
     indicators: {
-        total: number;
-        BATTERY_STATUS?: number;
-        WLAN_STATUS?: number;
+        BATTERY_STATUS?: {
+            color?: string;
+            incident: number;
+            warning: number;
+        };
+        WLAN_STATUS?: {
+            color?: string;
+            incident: number;
+            warning: number;
+        };
     };
 
     notifications: {
@@ -28,7 +35,7 @@ type OverviewClientGroup = {
     id: number;
     name: string;
     clientAmount: number;
-    spsGroupUUID: string;
+    spsGroupUUID?: string;
     type: string;
     typeValue: string;
 }
@@ -93,3 +100,28 @@ type SingleConnection = {
         status: string;
     }
 }
+
+type ClientNotification = {
+    id: number;
+    clientConnectionId: number;
+    type: string;
+    timestamp: number;
+    serverTime: number;
+    numericValue: number;
+    text: string;
+    notificationType: string;
+}
+
+
+
+// {
+//     "id": 10551,
+//     "clientConnectionId": 267,
+//     "type": "NOTIFICATION",
+//     "timestamp": 0,
+//     "serverTime": 1749641309209,
+//     "numericValue": 0,
+//     "text": " Auto Generated Lock Screen Notification ",
+//     "notificationType": "LOCK_SCREEN",
+//     "value": 0
+//   }
