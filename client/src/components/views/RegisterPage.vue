@@ -252,7 +252,7 @@
             institutions.value = result;
 
             if (result.length === 1) {
-                selectedInstitution.value = result[0].id;
+                selectedInstitution.value = result[0].modelId;
                 institutionSelectDisabled.value = true;
             }
         }

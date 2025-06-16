@@ -87,6 +87,5 @@ declare module 'vue' {
     SebSettingsProhibitedProcess: typeof import('./components/views/seb-server/settings/SebSettingsProhibitedProcess.vue')['default']
     UserAcccounts: typeof import('./components/views/seb-server/accounts/UserAcccounts.vue')['default']
     UserAccountDetailAndEdit: typeof import('./components/views/seb-server/accounts/UserAccountDetailAndEdit.vue')['default']
-    UserDetails: typeof import('./components/views/seb-server/accounts/UserDetails.vue')['default']
   }
 }
