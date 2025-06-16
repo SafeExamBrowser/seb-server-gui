@@ -22,6 +22,6 @@ export enum NotificationEnum {
 
 export type IndicatorObject = {
     indicatorType: IndicatorEnum | null; 
-    indicatorValue: number; 
+    indicatorValue: number | string; 
     indicatorObject: Indicator;
 }

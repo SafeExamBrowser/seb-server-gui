@@ -78,19 +78,15 @@
                             <!------status------->
                             <td>{{ translate(item.status) }}</td>
 
-                            <!-- <td v-for="indicator in monitoringStore.indicators?.content" :key="indicator.id">
-                                {{ item.indicators?.get(indicator.id)?.indicatorValue }}
-                            </td> -->
-
                             <!------battery indicator------->
-                            <td v-if="(tableStore.isIndicatorsExpanded || isSingleBatteryIndicator) && batteryIndicatorId != null">
+                            <td v-if="(tableStore.isIndicatorsExpanded || isBatteryIndicator) && batteryIndicatorId != null">
                                 <v-chip :color="getIndicatorColor(item.indicators?.get(batteryIndicatorId))">
                                     {{ item.indicators?.get(batteryIndicatorId)?.indicatorValue }}
                                 </v-chip>
                             </td>
 
                             <!------wlan indicator------->
-                            <td v-if="(tableStore.isIndicatorsExpanded || isSingleWlanIndicator) && wlanIndicatorId != null">
+                            <td v-if="(tableStore.isIndicatorsExpanded || isWlanIndicator) && wlanIndicatorId != null">
                                 <v-chip :color="getIndicatorColor(item.indicators?.get(wlanIndicatorId))">
                                     {{ item.indicators?.get(wlanIndicatorId)?.indicatorValue }}
                                 </v-chip>
@@ -135,7 +131,6 @@
     import { MonitoringRow } from "@/models/seb-server/monitoringClients";
     import * as tableUtils from "@/utils/table/tableUtils";
     import { storeToRefs } from "pinia";
-import { table } from "console";
 
     //exam
     const examId = useRoute().params.examId.toString();
@@ -157,10 +152,10 @@ import { table } from "console";
 
     //indicators
     const batteryIndicatorId = ref<number | null>(null);
-    const isSingleBatteryIndicator = ref<boolean>(false);
+    const isBatteryIndicator = ref<boolean>(false);
 
     const wlanIndicatorId = ref<number | null>(null);
-    const isSingleWlanIndicator = ref<boolean>(false);
+    const isWlanIndicator = ref<boolean>(false);
 
 
     //interval
@@ -267,18 +262,12 @@ import { table } from "console";
             }
         );
 
-        //check if indicator row has to be shown
-        const indicatorString: string | null = route.query[MonitoringHeaderEnum.SHOW_INDICATORS] ? route.query[MonitoringHeaderEnum.SHOW_INDICATORS].toString() : null;
-        if(indicatorString != null){
-            addIndicatorHeaderAutomatically(indicatorString);
-        }else{
-            removeIndicatorHeaderAutomatically();
-        }
-        
-
         if(fullPageResponse == null){
             return;
         }
+
+        //add / remove indicators
+        modifyIndicatorHeaders(route.query[MonitoringHeaderEnum.SHOW_INDICATORS]);
 
         connections.value = fullPageResponse;
     }
@@ -445,9 +434,11 @@ import { table } from "console";
             if(indicator != null){
                 const indicatorFullObject: IndicatorObject = {
                     indicatorType: generalUtils.findEnumValue(IndicatorEnum, indicator.type),
-                    indicatorValue: parseInt(value),
+                    indicatorValue: generalUtils.parseIfNumber(value),
                     indicatorObject: indicator,
                 }
+
+                console.log("value: " + value)
 
                 if(indicatorFullObject.indicatorType == IndicatorEnum.BATTERY_STATUS){
                     batteryIndicatorId.value = indicator.id;
@@ -460,8 +451,6 @@ import { table } from "console";
                 indicatorsMap.set(indicator.id, indicatorFullObject);
             }
         }
-
-        // console.log([...indicatorsMap.entries()])
 
         return indicatorsMap;
     }
@@ -479,100 +468,69 @@ import { table } from "console";
         clientsTableHeaders.value.splice(4, 2);
     }
 
-    function addIndicatorHeaderAutomatically(indicatorString: string | null){
-        console.log("---------------" + indicatorString)
-        if(indicatorString?.includes(",") && !tableStore.isIndicatorsExpanded){
-            clientsTableHeaders.value.splice(4, 1);
-
-            isSingleBatteryIndicator.value = true;
-            isSingleWlanIndicator.value = true;
-
-            addIndicatorHeaders();
-            return;
+    function modifyIndicatorHeaders(indicatorString: any | null){
+        if(indicatorString == null){
+            indicatorString = "";
         }
 
-
-        const indicator: IndicatorEnum | null = generalUtils.findEnumValue(IndicatorEnum, indicatorString)
-        if(indicator == null){
-            return;
+        //at least 1 filter is selected
+        if(indicatorString != ""){
+            if(tableStore.isIndicatorsExpanded){
+                removeIndicatorHeaders();
+            }
+            tableStore.isIndicatorExpandButtonDisabled = true;
+            tableStore.isIndicatorsExpanded = false;
+        }else{
+            tableStore.isIndicatorExpandButtonDisabled = false;
         }
 
-        if(indicator == IndicatorEnum.BATTERY_STATUS && !isSingleBatteryIndicator.value){
-            addBatteryHeader();
+        //remove battery indicator
+        if(!indicatorString.includes(IndicatorEnum.BATTERY_STATUS.toString()) && isBatteryIndicator.value){
+            console.log("remove battery")
+            removeBatteryHeader(4);
         }
 
-        if(indicator == IndicatorEnum.WLAN_STATUS && !isSingleWlanIndicator.value){
-            addWlanHeader();
+        //add battery indicator
+        if(indicatorString.includes(IndicatorEnum.BATTERY_STATUS.toString()) && !tableStore.isIndicatorsExpanded && !isBatteryIndicator.value){
+            console.log("add battery")
+            addBatteryHeader(4);
         }
 
+        //remove wlan indicator
+        if(!indicatorString.includes(IndicatorEnum.WLAN_STATUS.toString()) && isWlanIndicator.value){
+            console.log("remove wlan")
+            const index: number = isBatteryIndicator.value ? 5 : 4;
+            removeWlanHeader(index);
+        }
+
+        //add wlan indicator
+        if(indicatorString.includes(IndicatorEnum.WLAN_STATUS.toString()) && !tableStore.isIndicatorsExpanded && !isWlanIndicator.value){
+            console.log("add wlan")
+
+            const index: number = isBatteryIndicator.value ? 5 : 4;
+            addWlanHeader(index);
+        }
     }
 
-    function removeIndicatorHeaderAutomatically(){
-        // if(isSingleBatteryIndicator.value && isSingleWlanIndicator.value){
-        //     clientsTableHeaders.value.splice(4, 2);
-        // }
-
-        console.log("isSingleBatteryIndicator: " + isSingleBatteryIndicator.value)
-        console.log("isSingleWlanIndicator: " + isSingleWlanIndicator.value)
-
-        if(isSingleBatteryIndicator.value){
-            removeBatteryHeader();
-        }
-
-        if(isSingleWlanIndicator.value){
-            removeWlanHeader();
-        }
+    function addBatteryHeader(index: number){
+        isBatteryIndicator.value = true;
+        clientsTableHeaders.value.splice(index, 0, {title: "Battery status", key: "", width: "8%"});
     }
 
-    function addBatteryHeader(){
-        if(tableStore.isIndicatorsExpanded){
-            removeIndicatorHeaders();
-        }
-
-        tableStore.isIndicatorExpandButtonDisabled = true;
-        isSingleBatteryIndicator.value = true;
-
-        clientsTableHeaders.value.splice(4, 0, {title: "Battery status", key: "", width: "8%"});
+    function removeBatteryHeader(index: number){
+        isBatteryIndicator.value = false;
+        clientsTableHeaders.value.splice(index, 1);
     }
 
-    function removeBatteryHeader(){
-        tableStore.isIndicatorExpandButtonDisabled = false;
-        isSingleBatteryIndicator.value = false;
-
-        clientsTableHeaders.value.splice(4, 1);
+    function addWlanHeader(index: number){
+        isWlanIndicator.value = true;
+        clientsTableHeaders.value.splice(index, 0, {title: "Wlan status", key: "", width: "8%"});
     }
 
-    function addWlanHeader(){
-        if(tableStore.isIndicatorsExpanded){
-            removeIndicatorHeaders();
-        }
-
-        tableStore.isIndicatorExpandButtonDisabled = true;
-        isSingleWlanIndicator.value = true;
-
-        clientsTableHeaders.value.splice(4, 0, {title: "Wlan status", key: "", width: "8%"});
+    function removeWlanHeader(index: number){
+        isWlanIndicator.value = false;
+        clientsTableHeaders.value.splice(index, 1);
     }
-
-    function removeWlanHeader(){
-        tableStore.isIndicatorExpandButtonDisabled = false;
-        isSingleWlanIndicator.value = false;
-
-        clientsTableHeaders.value.splice(4, 1);
-    }
-
-    // function addIndicatorHeaders_old(){
-    //     monitoringStore.indicators?.content.forEach((indicator) => {
-    //         clientsTableHeaders.value.splice(
-    //             clientsTableHeaders.value.length-1,
-    //             0,
-    //             {
-    //                 title: indicator.name, 
-    //                 key: indicator.id.toString(),
-    //                 sortable: false
-    //             }
-    //         );
-    //     });
-    // }
 
     function updateIndicator(indicatorMap: Map<number, IndicatorObject> | undefined, indicatorValues: Record<string, string>){
         if(indicatorMap == null){
@@ -580,8 +538,7 @@ import { table } from "console";
         }
 
         indicatorMap.forEach((indicatorObject, key) => {
-            indicatorObject.indicatorValue = parseInt(indicatorValues[key.toString()]);
-
+            indicatorObject.indicatorValue = generalUtils.parseIfNumber(indicatorValues[key.toString()])
         });
     }
 
@@ -594,7 +551,7 @@ import { table } from "console";
         let color: string = "";
         for(let i = 0; i < indicatorObj.indicatorObject.thresholds.length; i++){
 
-            if(indicatorObj.indicatorValue <= indicatorObj.indicatorObject.thresholds[i].value){
+            if(typeof indicatorObj.indicatorValue == "number" && indicatorObj.indicatorValue <= indicatorObj.indicatorObject.thresholds[i].value){
                 color = indicatorObj.indicatorObject.thresholds[i].color;
             }
         }
@@ -615,16 +572,6 @@ import { table } from "console";
 
         intervalRefresh = setTimeout(startIntervalRefresh, REFRESH_INTERVAL);
     }
-
-    // async function startIntervalRefresh(){
-    //     intervalRefresh = setInterval(async () => {
-
-    //         //todo: check when request is finished
-    //         await getAndSetConnections();
-
-    //     }, REFRESH_INTERVAL);
-    // }
-
 
 
     function stopIntervalRefresh(){
