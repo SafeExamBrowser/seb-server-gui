@@ -3,10 +3,10 @@
         {{ translate("titles.settings") }}
     </div>
     <v-row class="mt-10 w-98 h-100">
-        <v-col cols="3" class="pt-0 h-100">
-            <v-sheet class="rounded-lg ml-6 w-100 h-100 bg-primary">
-
-                <v-col class="pt-0">
+        <v-col cols="3" class="pt-0 pb-0 h-100 d-flex flex-column">
+            <v-sheet class="rounded-lg ml-6 pb-0 h-100 w-100 bg-primary d-flex flex-column flex-grow-1">
+                <!-- settings navigation-->
+                <v-col class="pt-0 pb h-100">
                     <v-divider class="section-divider"/>
 
                     <v-list-item class="px-0 nav-hover">
@@ -37,10 +37,11 @@
                         </router-link>
                     </v-list-item>
 
-                    <v-divider class="section-divider mb-3"/>
+                    <v-divider class="section-divider mb-16"/>
                 </v-col>
 
-                <div class="success-message-div">
+                <!--success message-->
+                <div class="success-message-div pt-4 bottom-0">
                     <AlertMsg
                         v-if="editedSuccess"
                         :alertProps="{
@@ -54,14 +55,13 @@
             </v-sheet>
         </v-col>
 
-
+        <!-- main div-->
         <v-col elevation="4" cols="9" class="bg-white rounded-lg">
             <v-row class="d-flex align-center justify-space-between px-6 pt-6">
                 <v-row class="d-flex align-center justify-space-between px-6 pt-0">
                     <div class="text-primary text-h5 font-weight-bold">
                         {{ translate("userAccount.userAccountDetailAndEditPage.title") }}
                     </div>
-
                     <v-chip
                         class="ma-2 text-subtitle-1 px-5 py-2 font-weight-bold"
                         :color="user?.active ? 'success' : 'error'"
@@ -71,36 +71,32 @@
                         @click="toggleStatusLocally(user)"
                         style="cursor: pointer;"
                     >
-                        {{ user?.active
-                        ? translate('userAccount.userAccountDetailAndEditPage.status.active')
-                        : translate('userAccount.userAccountDetailAndEditPage.status.inactive') }}
+                        {{
+                            user?.active
+                                ? translate('userAccount.userAccountDetailAndEditPage.status.active')
+                                : translate('userAccount.userAccountDetailAndEditPage.status.inactive')
+                        }}
                     </v-chip>
-
                 </v-row>
-
             </v-row>
-
-
             <v-divider class="custom-divider mx-6 my-4 mt-7"/>
             <v-row class="px-8 mt-2">
                 <div class="text-body-2 text-grey-darken-1">
                     {{ translate("userAccount.userAccountDetailAndEditPage.info.accountEditInfo") }}
                 </div>
             </v-row>
+            <!-- form-->
             <v-sheet class="rounded-lg mt-4">
                 <v-col cols="12" md="12" class="pa-0 mb-4 h-100">
-
                     <v-card-text>
                         <v-form ref="formRef" @keyup.enter="saveChanges()">
                             <v-row dense>
-
                             </v-row>
-
                             <v-row dense>
-
-
                                 <v-col>
-                                    <v-col cols="12" md="12" class="custom-padding-textbox" >
+                                    <!-- institution-->
+
+                                    <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-select
                                             required
                                             prepend-inner-icon="mdi-domain"
@@ -116,7 +112,7 @@
                                         />
                                     </v-col>
                                     <!-- name -->
-                                    <v-col cols="12" md="12" class="custom-padding-textbox" >
+                                    <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
                                             required
                                             prepend-inner-icon="mdi-account-outline"
@@ -139,6 +135,7 @@
                                             :rules="[requiredRule]"
                                         />
                                     </v-col>
+                                    <!-- username-->
 
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
@@ -180,7 +177,7 @@
                                             :return-object="false"
                                         />
                                     </v-col>
-
+                                    <!--  password reset-->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
                                             :label="translate('userAccount.userAccountDetailAndEditPage.labels.passwordLabel')"
@@ -195,10 +192,8 @@
                                         />
 
                                     </v-col>
-
-
                                 </v-col>
-                                <!-- second col-->
+                                <!-- user circle and roles-->
                                 <v-col>
                                     <v-col cols="12" class="d-flex justify-center mb-6">
                                         <div
@@ -223,10 +218,14 @@
                                     <!--  roles-->
                                     <v-col cols="12" class=" ml-16">
                                         <div class="text-subtitle-1 font-weight-medium">
-                                            {{ translate("userAccount.userAccountDetailAndEditPage.labels.selectRolesLabel") }}
+                                            {{
+                                                translate("userAccount.userAccountDetailAndEditPage.labels.selectRolesLabel")
+                                            }}
                                         </div>
                                         <div class="text-body-2 text-grey-darken-1 mb-5">
-                                            {{ translate("userAccount.userAccountDetailAndEditPage.info.rolesSelectionInfo") }}
+                                            {{
+                                                translate("userAccount.userAccountDetailAndEditPage.info.rolesSelectionInfo")
+                                            }}
                                         </div>
                                         <v-row dense>
                                             <v-col
@@ -248,7 +247,6 @@
                                                 </div>
                                             </v-col>
                                         </v-row>
-
                                         <div v-if="rolesTouched && selectedRoles.length === 0"
                                              class="text-error text-caption mt-1">
                                             {{ rolesRule([]) }}
@@ -256,14 +254,12 @@
                                     </v-col>
                                 </v-col>
                             </v-row>
-
                         </v-form>
                     </v-card-text>
-
                 </v-col>
-
             </v-sheet>
 
+            <!--  buttons-->
             <v-row class="px-6 pt-0">
                 <v-col cols="12" md="12" class="pa-0 mb-4">
                     <div class="d-flex justify-end">
@@ -352,11 +348,10 @@
                     color="primary"
                     variant="flat"
                     :disabled="!isPasswordFormValid"
-                    @click="changePassword"
+                    @click="changeUserPassword"
                 >
                     {{ translate("general.saveButton") }}
                 </v-btn>
-
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -375,16 +370,22 @@
     import {UserRoleEnum} from '@/models/userRoleEnum';
     import {useI18n} from "vue-i18n";
     import {useRoute} from 'vue-router';
-    import {getUserAccountById} from "@/services/seb-server/component-services/userAccountViewService";
-    import {useUserAccountStore as useAuthenticatedUserAccountStore} from "@/stores/authentication/authenticationStore";
+    import {editUserAccount, getUserAccountById} from "@/services/seb-server/component-services/userAccountViewService";
+    import {
+        useAuthStore,
+        useUserAccountStore as useAuthenticatedUserAccountStore
+    } from "@/stores/authentication/authenticationStore";
     import * as userAccountViewService from '@/services/seb-server/component-services/userAccountViewService';
-    import {editUserAccount} from "@/services/seb-server/api-services/userAccountService";
 
     const user = ref<UserAccount | null>(null);
+    const institutions = ref<Institution[]>([]);
 
     const appBarStore = useAppBarStore();
     const layoutStore = useLayoutStore();
     const i18n = useI18n();
+    const authenticatedUserAccountStore = useAuthenticatedUserAccountStore();
+    const authStore = useAuthStore();
+    const timezoneOptions = moment.tz.names();
 
     //fields
     const selectedInstitution = ref<string | undefined>(undefined);
@@ -395,13 +396,12 @@
     const timezone = ref<string>("");
     const password = ref<string>("");
     const editedUserName = ref('');
-    const formRef = ref();
-    const route = useRoute();
+    const currentAdminPassword = ref<string>('');
+    const newUserPassword = ref<string>('');
+    const confirmNewUserPassword = ref<string>('');
+
     const initialUserData = ref<EditUserAccountParameters | null>(null);
     const changePasswordDialog = ref(false);
-    const currentAdminPassword = ref('');
-    const newUserPassword = ref('');
-    const confirmNewUserPassword = ref('');
     const changePasswordForm = ref();
     const adminPwTouched = ref(false);
     const newPwTouched = ref(false);
@@ -414,11 +414,9 @@
     const confirmPasswordTouched = ref(false);
     const institutionSelectDisabled = ref(false);
 
-    const institutions = ref<Institution[]>([]);
     const selectedRoles = ref<string[]>([]);
-    const timezoneOptions = moment.tz.names();
-    const authenticatedUserAccountStore = useAuthenticatedUserAccountStore();
-
+    const formRef = ref();
+    const route = useRoute();
 
     //validation rules
     const requiredMessage = translate('userAccount.userAccountDetailAndEditPage.validation.required');
@@ -426,27 +424,26 @@
     const invalidRoleSelectionMessage = translate('userAccount.userAccountDetailAndEditPage.validation.invalidRoleSelection');
     const passwordTooShortMessage = translate('userAccount.userAccountDetailAndEditPage.validation.passwordTooShort');
     const passwordsDontMatchMessage = translate('userAccount.createUserAccountPage.validation.passwordsDontMatch');
-
     const requiredRule = (v: string) => !!v || requiredMessage;
-
     const emailRule = (v: string) => !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || invalidEmailMessage;
-
     const newPasswordRule = (v: string) => (v && v.length >= 8) || passwordTooShortMessage;
-    const confirmNewPasswordRule = (v: string) => v === password.value || passwordsDontMatchMessage;
-
     const rolesRule = (v: string[]) => v.length > 0 || invalidRoleSelectionMessage;
 
     //load available roles
+    const availableRoles = ref<{ label: string; value: string }[]>([]);
     const allRoles = Object.values(UserRoleEnum).map(role => ({
         label: translate(`general.userRoles.${role}`),
         value: role
     }));
 
+    onBeforeUnmount(() => {
+        layoutStore.setBlueBackground(false);
+    });
+
     onMounted(async () => {
         appBarStore.title = translate('userAccount.userAccountDetailAndEditPage.title');
         await loadUser()
     });
-
 
     const loadUser = async () => {
         layoutStore.setBlueBackground(true);
@@ -519,8 +516,6 @@
         }
     };
 
-
-
     function getAvailableRolesForUser(userRoles: string[]): typeof allRoles {
         const hasSebServerAdmin = userRoles.includes(UserRoleEnum.SEB_SERVER_ADMIN);
         const hasInstitutionalAdmin = userRoles.includes(UserRoleEnum.INSTITUTIONAL_ADMIN);
@@ -533,10 +528,7 @@
             );
         }
         return [];
-    }h()
-
-
-    const availableRoles = ref<{ label: string; value: string }[]>([]);
+    }
 
     watch(selectedRoles, () => {
         rolesTouched.value = true;
@@ -546,7 +538,6 @@
             confirmPasswordFieldRef.value?.validate?.();
         }
     });
-
 
     const fieldChanges = computed(() => {
         if (!initialUserData.value) return false;
@@ -561,9 +552,7 @@
             JSON.stringify(selectedRoles.value.sort()) !== JSON.stringify([...initialUserData.value.userRoles].sort())
         );
     });
-
     const hasChanges = computed(() => fieldChanges.value || statusChanged.value);
-
     const statusChanged = computed(() => user.value?.active !== initialActiveStatus.value);
 
     const isPasswordFormValid = computed(() => {
@@ -577,12 +566,10 @@
         );
     });
 
-
-
     const saveChanges = async () => {
         rolesTouched.value = true;
 
-        const { valid } = await formRef.value.validate();
+        const {valid} = await formRef.value.validate();
         const rolesValid = selectedRoles.value.length > 0;
 
         if (!valid || !rolesValid || !user.value) return;
@@ -631,44 +618,43 @@
         };
     };
 
-
     const toggleStatusLocally = (user: UserAccount | null) => {
         if (!user) return;
         user.active = !user.active;
     };
 
-
     const persistStatusChange = async (user: UserAccount | null) => {
         if (!user) return;
-        try {
-            if (user.active) {
-                await userAccountViewService.activateUserAccount(user.uuid);
-            } else {
-                await userAccountViewService.deactivateUserAccount(user.uuid);
-            }
-        } catch (e) {
-            console.error("Failed to update user status:", e);
+        if (user.active) {
+            await userAccountViewService.activateUserAccount(user.uuid);
+        } else {
+            await userAccountViewService.deactivateUserAccount(user.uuid);
         }
+
     };
 
+    const changeUserPassword = async () => {
 
-    const changePassword = async () => {
-        const { valid } = await changePasswordForm.value.validate();
-        if (!valid) return;
+        const {valid} = await changePasswordForm.value.validate();
+        console.log('validating...', valid);
 
-
-        // close the dialog after success
+        if (!valid || !user.value?.uuid) {
+            console.log('quit...',);
+            return
+        } else {
+            console.log('deploying...',);
+            await userAccountViewService.changePassword(user.value?.uuid, currentAdminPassword.value, newUserPassword.value, confirmNewUserPassword.value)
+            console.log('deployed...',);
+            if (user.value?.uuid === authenticatedUserAccountStore.userAccount?.uuid) {
+                await authStore.logout();
+            }
+        }
         changePasswordDialog.value = false;
-
-        // reset fields
         currentAdminPassword.value = '';
         newUserPassword.value = '';
         confirmNewUserPassword.value = '';
     };
 
-    onBeforeUnmount(() => {
-        layoutStore.setBlueBackground(false);
-    });
 
 </script>
 
@@ -688,7 +674,7 @@
     }
 
     .success-message-div {
-        margin-top: 25.5rem;
+        margin-top: 26.5rem;
         width: 85% !important;
     }
 
@@ -764,10 +750,6 @@
         width: 98% !important;
     }
 
-    .w-90 {
-        width: 90% !important;
-    }
-
     .custom-divider {
         background-color: #DCDCDC !important;
         height: 1px;
@@ -787,11 +769,10 @@
         width: 85% !important;
     }
 
-    .custom-padding-textbox{
+    .custom-padding-textbox {
         padding-top: 8px !important;
         padding-bottom: 8px !important;
     }
-
 
 
 </style>

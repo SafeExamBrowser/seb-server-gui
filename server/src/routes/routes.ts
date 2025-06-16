@@ -75,13 +75,8 @@ router.post(constants.USER_ACCOUNT_ROUTE + "/:modelId" + constants.ACTIVATION_RO
 router.post(constants.USER_ACCOUNT_ROUTE + "/:modelId" + constants.DEACTIVATION_ROUTE, userAccountController.deactivateAccount);
 router.post(constants.USER_ACCOUNT_ROUTE, userAccountController.createUserAccount);
 router.put(constants.USER_ACCOUNT_ROUTE, userAccountController.editUserAccount);
-
-
-
+router.put(constants.USER_ACCOUNT_ROUTE + constants.CHANGE_PASSWORD_ROUTE, userAccountController.changePassword);
 router.delete(constants.USER_ACCOUNT_ROUTE + "/:id", userAccountController.deleteUserAccount);
-// router.put(constants.USER_ACCOUNT_ROUTE, userAccountController.toggleUserAccountActiveStatus);
-// router.patch(constants.USER_ACCOUNT_ROUTE, userAccountController.editUserAccount);
-
 
 //connection configurations
 router.get(constants.DOWNLOAD_EXAM_CONFIG_ROUTE + "/:id", configurationController.downloadExamConfig);

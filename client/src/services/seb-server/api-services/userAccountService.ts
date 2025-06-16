@@ -32,9 +32,9 @@ export async function changePassword(
 ): Promise<UserAccount | any> {
     try {
 
-        const url: string = userAccountUrl + "/changePassword";
+        const url: string = userAccountUrl + "/password";
 
-        const { data, status }: AxiosResponse = await apiService.api.post(url, { uuid, password, newPassword, confirmNewPassword }, { headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN) });
+        const { data, status }: AxiosResponse = await apiService.api.put(url, { uuid, password, newPassword, confirmNewPassword }, { headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN) });
 
         if (status === 200) {
             return data;

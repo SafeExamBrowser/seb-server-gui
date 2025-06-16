@@ -28,6 +28,8 @@ export const SUPERVISOR_ACCOUNT_NAMES_ROUTE = "/useraccount/supervisors";
 export const DEACTIVATION_ROUTE = "/inactive";
 export const ACTIVATION_ROUTE = "/active";
 
+export const CHANGE_PASSWORD_ROUTE = "/password";
+
 
 //client config
 export const CONNECTION_CONFIG_ROUTE = "/client_configuration";

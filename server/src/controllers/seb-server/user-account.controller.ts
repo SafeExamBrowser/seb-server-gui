@@ -82,6 +82,16 @@ export async function editUserAccount(req: Request, res: Response) {
 }
 
 
+export async function changePassword(req: Request, res: Response) {
+    try {
+        const [editPasswordParams, status] = await userAccountService.changePassword(req.headers.authorization, req.body);
+        return res.status(status).json(editPasswordParams);
+    } catch (error) {
+        apiService.handleGenericApiError(error, res);
+    }
+}
+
+
 export async function getUserAccounts(req: Request, res: Response) {
     try {
 

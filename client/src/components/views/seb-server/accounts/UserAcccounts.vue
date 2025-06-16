@@ -1,36 +1,42 @@
 <template>
     <div class="text-white text-h5 font-weight-black ml-10 mt-5 ">
-        {{ translate("titles.settings")}}
+        {{ translate("titles.settings") }}
     </div>
     <v-row class="mt-10 w-98 h-100">
         <v-col cols="3" class="pt-0 h-100">
-            <v-sheet  class="rounded-lg ml-6 w-100 h-100 bg-primary">
+            <v-sheet class="rounded-lg ml-6 w-100 h-100 bg-primary">
                 <v-col class="pt-0">
-                    <v-divider class="section-divider" />
+                    <v-divider class="section-divider"/>
 
                     <v-list-item class="px-0 nav-hover">
-                        <span class="link-color nav-link">{{ translate("navigation.routeNames.assessmentToolConnections") }}</span>
+                        <span class="link-color nav-link">{{
+                                translate("navigation.routeNames.assessmentToolConnections")
+                            }}</span>
                     </v-list-item>
 
-                    <v-divider class="section-divider" />
+                    <v-divider class="section-divider"/>
 
                     <v-list-item class="px-0 nav-hover">
-                        <span class="link-color nav-link">{{ translate("navigation.routeNames.connectionConfiguration") }}</span>
+                        <span class="link-color nav-link">{{
+                                translate("navigation.routeNames.connectionConfiguration")
+                            }}</span>
                     </v-list-item>
 
-                    <v-divider class="section-divider" />
+                    <v-divider class="section-divider"/>
 
                     <v-list-item class="px-0 nav-hover">
                         <span class="link-color nav-link">{{ translate("navigation.routeNames.certificates") }}</span>
                     </v-list-item>
 
-                    <v-divider class="section-divider" />
+                    <v-divider class="section-divider"/>
 
                     <v-list-item class="px-0 nav-hover">
-                        <router-link class="link-color nav-link" :to="constants.USER_ACCOUNTS_ROUTE">{{ translate("navigation.routeNames.userAccounts") }}</router-link>
+                        <router-link class="link-color nav-link" :to="constants.USER_ACCOUNTS_ROUTE">
+                            {{ translate("navigation.routeNames.userAccounts") }}
+                        </router-link>
                     </v-list-item>
 
-                    <v-divider class="section-divider mb-3" />
+                    <v-divider class="section-divider mb-3"/>
                 </v-col>
                 <div class="success-message-div">
                     <AlertMsg
@@ -54,22 +60,27 @@
                 <div class="d-flex align-center cursor-pointer add-user-container"
                      @click="navigateTo(constants.CREATE_USER_ACCOUNTS_ROUTE)"
                 >
-                    <span class="text-primary font-weight-medium mr-2">{{translate("userAccount.userAccountPage.addUserContext")}}</span>
+                    <span
+                        class="text-primary font-weight-medium mr-2">{{
+                            translate("userAccount.userAccountPage.addUserContext")
+                        }}</span>
 
                     <div class="add-user-icon d-flex align-center justify-center">
                         <v-icon size="28">mdi-plus</v-icon>
                     </div>
                 </div>
             </v-row>
-            <v-divider class="custom-divider mx-6 my-4 mt-7" />
+            <v-divider class="custom-divider mx-6 my-4 mt-7"/>
             <!-- Search and filters row -->
             <v-row class="px-6 pt-4 d-flex flex-wrap align-start">
                 <!-- Search field -->
                 <v-col cols="12" md="5" class="pa-0 mb-4">
-                    <div class="text-caption text-grey-darken-1 mt-1 mb-1">{{translate("userAccount.userAccountPage.filters.searchTitle")}}</div>
+                    <div class="text-caption text-grey-darken-1 mt-1 mb-1">
+                        {{ translate("userAccount.userAccountPage.filters.searchTitle") }}
+                    </div>
                     <v-text-field
                         v-model="userAccountStore.searchField"
-                        :placeholder= "translate('userAccount.userAccountPage.filters.searchField')"
+                        :placeholder="translate('userAccount.userAccountPage.filters.searchField')"
                         variant="outlined"
                         density="comfortable"
                         type="text"
@@ -85,7 +96,9 @@
                 </v-col>
                 <!-- Status Filters -->
                 <v-col cols="12" md="2" class="pa-0 mb-2 ml-10">
-                    <div class="text-caption text-grey-darken-1 mb-1">{{translate("userAccount.userAccountPage.filters.statusFilter") }}</div>
+                    <div class="text-caption text-grey-darken-1 mb-1">
+                        {{ translate("userAccount.userAccountPage.filters.statusFilter") }}
+                    </div>
                     <div class="d-flex flex-wrap gap-2">
                         <v-chip
                             v-for="status in statuses"
@@ -95,7 +108,7 @@
                             :class="['filter-chip', selectedStatus === status.value && 'filter-chip-selected']"
                             @click="selectedStatus = selectedStatus === status.value ? null : status.value"
                         >{{ status.label }}
-                      </v-chip>
+                        </v-chip>
                     </div>
                 </v-col>
                 <v-col
@@ -124,7 +137,7 @@
 
             <v-row class="px-6 pt-0">
                 <v-col cols="12" md="5" class="pa-0 mb-4">
-                    <div class="d-flex justify-end w-90" >
+                    <div class="d-flex justify-end w-90">
                         <v-btn
                             rounded="sm"
                             color="black"
@@ -148,7 +161,7 @@
             </v-row>
 
 
-            <v-sheet  class="rounded-lg mt-10">
+            <v-sheet class="rounded-lg mt-10">
                 <v-data-table
                     v-model:options="options"
                     :items="filteredUsers"
@@ -183,17 +196,17 @@
 
 
                             <td>
-                                <td>
-                                    <v-chip
-                                        :color="item.active ? 'green' : 'red'"
-                                        dark
-                                        small
-                                        class="text-white font-weight-medium status-chip cursor-pointer"
-                                        @click.stop="openStatusDialog(item)"
-                                    >
-                                        {{ item.active ? translate('userAccount.userAccountPage.filters.activeSelector') : translate('userAccount.userAccountPage.filters.inactiveSelector') }}
-                                    </v-chip>
-                                </td>
+                                <v-chip
+                                    :color="item.active ? 'green' : 'red'"
+                                    dark
+                                    small
+                                    class="text-white font-weight-medium status-chip cursor-pointer"
+                                    @click.stop="openStatusDialog(item)"
+                                >
+                                    {{
+                                        item.active ? translate('userAccount.userAccountPage.filters.activeSelector') : translate('userAccount.userAccountPage.filters.inactiveSelector')
+                                    }}
+                                </v-chip>
 
                             </td>
                             <td class="icon-cell">
@@ -218,16 +231,25 @@
                 <v-dialog v-model="deleteDialog" max-width="500">
                     <v-card>
                         <v-card-title class="text-h6 font-weight-bold">
-                            {{translate("userAccount.userAccountPage.deleteUserAccountContext.title") }}
+                            {{ translate("userAccount.userAccountPage.deleteUserAccountContext.title") }}
                         </v-card-title>
                         <v-card-text>
-                            {{translate("userAccount.userAccountPage.deleteUserAccountContext.informationPart1") }}
-                            <strong>{{ userToDelete?.name }} {{ userToDelete?.surname }}</strong>{{translate("userAccount.userAccountPage.deleteUserAccountContext.informationPart2") }}<strong>{{ userToDelete?.username }}</strong>{{translate("userAccount.userAccountPage.deleteUserAccountContext.informationPart3") }}
+                            {{ translate("userAccount.userAccountPage.deleteUserAccountContext.informationPart1") }}
+                            <strong>{{ userToDelete?.name }} {{
+                                    userToDelete?.surname
+                                }}</strong>{{
+                                translate("userAccount.userAccountPage.deleteUserAccountContext.informationPart2")
+                            }}<strong>{{
+                                userToDelete?.username
+                            }}</strong>{{
+                                translate("userAccount.userAccountPage.deleteUserAccountContext.informationPart3")
+                            }}
                         </v-card-text>
 
                         <v-card-actions class="justify-end">
-                            <v-btn text @click="deleteDialog = false">{{ translate("general.cancelButton")}}</v-btn>
-                            <v-btn color="red" text @click="confirmDelete">{{ translate("general.deleteButton")}}</v-btn>
+                            <v-btn text @click="deleteDialog = false">{{ translate("general.cancelButton") }}</v-btn>
+                            <v-btn color="red" text @click="confirmDelete">{{ translate("general.deleteButton") }}
+                            </v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
@@ -261,15 +283,15 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
-    import { useAppBarStore, useLayoutStore } from '@/stores/store';
-    import { useUserAccountStore } from '@/stores/seb-server/userAccountStore';
-    import { useI18n } from 'vue-i18n';
-    import { translate } from '@/utils/generalUtils';
+    import {ref, computed, onMounted, onBeforeUnmount} from 'vue';
+    import {useAppBarStore, useLayoutStore} from '@/stores/store';
+    import {useUserAccountStore} from '@/stores/seb-server/userAccountStore';
+    import {useI18n} from 'vue-i18n';
+    import {translate} from '@/utils/generalUtils';
     import * as tableUtils from '@/utils/table/tableUtils';
     import TableHeaders from '@/utils/table/TableHeaders.vue';
     import * as userAccountViewService from '@/services/seb-server/component-services/userAccountViewService';
-    import { navigateTo } from '@/router/navigation';
+    import {navigateTo} from '@/router/navigation';
     import * as constants from '@/utils/constants';
     import {useUserAccountStore as useAuthenticatedUserAccountStore} from "@/stores/authentication/authenticationStore";
     import {UserRoleEnum} from "@/models/userRoleEnum";
@@ -291,8 +313,8 @@
     const deleteSuccess = ref(false);
     const deletedUsername = ref('');
     const statuses = [
-        { value: 'Active', label: translate('userAccount.userAccountPage.filters.activeSelector') },
-        { value: 'Inactive', label: translate('userAccount.userAccountPage.filters.inactiveSelector') }
+        {value: 'Active', label: translate('userAccount.userAccountPage.filters.activeSelector')},
+        {value: 'Inactive', label: translate('userAccount.userAccountPage.filters.inactiveSelector')}
     ];
     const institutions = ref<Institution[]>([]);
     const showInstitutionColumn = computed(() => {
@@ -303,17 +325,42 @@
     const statusDialogUser = ref<UserAccount | null>(null);
 
 
-
-
-
-
     //search string
     const searchQuery = ref('');
     // API response
     const userAccounts = ref<UserAccountResponse>();
 
+
+    onMounted(async () => {
+        appBarStore.title = translate('titles.userAccounts');
+        layoutStore.setBlueBackground(true);
+        if (showInstitutionColumn.value) {
+            const result = await getInstitutions();
+            if (result && result.length > 0) {
+                institutions.value = result;
+            }
+        }
+        await loadItems(options.value);
+    });
+
+    const institutionIdToNameMap = computed(() => {
+        const map = new Map<string, string>();
+        institutions.value.forEach(inst => {
+            map.set(inst.modelId, inst.name);
+        });
+        return map;
+    });
+
+    onBeforeUnmount(() => {
+        layoutStore.setBlueBackground(false);
+    });
+
+    defineExpose({loadItems});
+
+
     // Table header config
     const userAccountsTableHeadersRef = ref<any[]>();
+
     const userAccountsTableHeaders = computed(() => {
         const headers = [];
 
@@ -327,22 +374,46 @@
         }
 
         headers.push(
-            { title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderSurname'), key: 'surname', width: '12%', sortable: true },
-            { title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderName'), key: 'name', width: '10%', sortable: true },
-            { title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderUsername'), key: 'username', width: '12%', sortable: true },
-            { title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderEmail'), key: 'email', width: '10%', sortable: true },
-            { title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderStatus'), key: 'status', width: '2%', sortable: false },
-            { title: '', key: 'userAccountLink', width: '1%' }
+            {
+                title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderSurname'),
+                key: 'surname',
+                width: '12%',
+                sortable: true
+            },
+            {
+                title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderName'),
+                key: 'name',
+                width: '10%',
+                sortable: true
+            },
+            {
+                title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderUsername'),
+                key: 'username',
+                width: '12%',
+                sortable: true
+            },
+            {
+                title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderEmail'),
+                key: 'email',
+                width: '10%',
+                sortable: true
+            },
+            {
+                title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderStatus'),
+                key: 'status',
+                width: '2%',
+                sortable: false
+            },
+            {title: '', key: 'userAccountLink', width: '1%'}
         );
 
         return headers;
     });
 
-
     const options = ref({
         page: 1,
         itemsPerPage: 5,
-        sortBy: [{ key: 'name', order: 'asc' }],
+        sortBy: [{key: 'name', order: 'asc'}],
     });
 
     // Filters + Sorting
@@ -377,7 +448,9 @@
         }));
 
         //sort
-        type SortableKey = keyof Pick<UserAccount & { institutionName?: string }, 'name' | 'surname' | 'username' | 'email' | 'institutionName'>;
+        type SortableKey = keyof Pick<UserAccount & {
+            institutionName?: string
+        }, 'name' | 'surname' | 'username' | 'email' | 'institutionName'>;
 
         const sort = options.value.sortBy?.[0];
         if (sort && ['name', 'surname', 'username', 'email', 'institutionName'].includes(sort.key)) {
@@ -395,16 +468,13 @@
 
     //update status
     async function onStatusChange(user: UserAccount, newStatus: string) {
-        try {
-            if (newStatus === 'Active' && !user.active) {
-                await userAccountViewService.activateUserAccount(user.uuid);
-            } else if (newStatus === 'Inactive' && user.active) {
-                await userAccountViewService.deactivateUserAccount(user.uuid);
-            }
-            await loadItems(options.value); // refresh table
-        } catch (e) {
-            console.error("Failed to change user status:", e);
+        if (newStatus === 'Active' && !user.active) {
+            await userAccountViewService.activateUserAccount(user.uuid);
+        } else if (newStatus === 'Inactive' && user.active) {
+            await userAccountViewService.deactivateUserAccount(user.uuid);
         }
+        await loadItems(options.value); // refresh table
+
     }
 
     const statusDialogTitle = computed(() => {
@@ -413,7 +483,7 @@
             statusDialogUser.value.active
                 ? 'userAccount.userAccountPage.changeUserAccountStatusContext.deactivateTitle'
                 : 'userAccount.userAccountPage.changeUserAccountStatusContext.activateTitle',
-            { username: statusDialogUser.value.username }
+            {username: statusDialogUser.value.username}
         );
     });
 
@@ -443,7 +513,7 @@
 
     // Load users with full pagination from backend
     async function loadItems(serverTablePaging: ServerTablePaging) {
-        const fetchAllPaging = { ...serverTablePaging, itemsPerPage: 500, page: 1 };
+        const fetchAllPaging = {...serverTablePaging, itemsPerPage: 500, page: 1};
         userAccountStore.currentPagingOptions = serverTablePaging;
         isLoading.value = true;
 
@@ -472,13 +542,13 @@
         options.value.page = 1;
     }
 
-    // Role toggle
-
     //dialogs and logic
+    //delete
     function openDeleteDialog(user: UserAccount) {
         userToDelete.value = user;
         deleteDialog.value = true;
     }
+
     async function confirmDelete() {
         if (userToDelete.value) {
 
@@ -490,17 +560,17 @@
                     deleteSuccess.value = false;
                 }, 2500);
                 await loadItems(options.value);
-                }
+            }
         }
         deleteDialog.value = false;
         userToDelete.value = null;
     }
+
+    //status
     function openStatusDialog(user: UserAccount) {
         statusDialogUser.value = user;
         statusDialog.value = true;
     }
-
-
     async function confirmStatusChange() {
         if (!statusDialogUser.value) return;
 
@@ -511,71 +581,17 @@
         statusDialogUser.value = null;
     }
 
-
-
-    onMounted(async () => {
-        appBarStore.title = translate('titles.userAccounts');
-        layoutStore.setBlueBackground(true);
-        if (showInstitutionColumn.value) {
-            const result = await getInstitutions();
-            if (result && result.length > 0) {
-                institutions.value = result;
-            }
-        }
-        await loadItems(options.value);
-    });
-
-    const institutionIdToNameMap = computed(() => {
-        const map = new Map<string, string>();
-        institutions.value.forEach(inst => {
-            map.set(inst.modelId, inst.name);
-        });
-        return map;
-    });
-
-
-    onBeforeUnmount(() => {
-        layoutStore.setBlueBackground(false);
-    });
-
-    defineExpose({ loadItems });
 </script>
 
 <style scoped>
-    .on-row-hover:hover {
-        background: #e4e4e4 !important;
-        cursor: pointer;
-    }
 
-    .status-chip{
+    .status-chip {
         min-width: 4.7rem;
         max-width: 6.5rem;
         display: inline-flex;
         justify-content: center;
-        align-items: center;    }
-
-    .role-wrapper {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.25em;
-        min-height: 4em;
-        max-height: 4em;
-        overflow: hidden;
         align-items: center;
     }
-
-    .role-box-small {
-        padding: 0.2em 0.6em;
-        background-color: #f0f0f0;
-        border-radius: 0.3em;
-        font-size: 0.85em;
-        font-weight: 400;
-        white-space: nowrap;
-        color: #757575;
-        display: inline-block;
-        text-transform: uppercase;
-    }
-
 
     .nav-hover:hover .nav-link {
         color: #215caf;
@@ -593,6 +609,7 @@
         padding-left: 8px;
         width: 85% !important;
     }
+
     .nav-hover:hover {
         background: linear-gradient(
             to right,
@@ -631,6 +648,7 @@
         margin-top: 25.5rem;
         width: 85% !important;
     }
+
     .w-98 {
         width: 98% !important;
     }
@@ -657,7 +675,6 @@
         height: 2.25rem;
         color: #1976d2;
     }
-
 
     .search-input {
         width: 100%;
@@ -701,13 +718,14 @@
         user-select: none;
         white-space: nowrap;
         transition: all 0.2s ease-in-out;
-        margin:0.1em;
+        margin: 0.1em;
     }
 
     .filter-chip-selected {
         background-color: #215caf;
         color: white;
     }
+
     .icon-cell {
         vertical-align: middle !important;
         padding-top: 0 !important;
@@ -726,19 +744,17 @@
         width: 2.25rem;
         height: 2.25rem;
     }
-    .status-select {
-        max-width: 120px;
-        font-size: 0.875rem;
-    }
 
     .status-select-chip ::v-deep(.v-select__slot) {
         padding: 0 !important;
     }
+
     .status-select-chip ::v-deep(.v-field__control) {
         background: none !important;
         box-shadow: none !important;
         border-bottom: none !important;
     }
+
     .action-icon:hover {
         color: #215caf;
         background-color: rgba(33, 92, 175, 0.1);
