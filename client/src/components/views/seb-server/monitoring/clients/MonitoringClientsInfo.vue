@@ -243,7 +243,7 @@
                                 rounded="sm" 
                                 color="black" 
                                 variant="outlined"
-                                prepend-icon="mdi-backspace-outline"
+                                prepend-icon="mdi-cancel"
                                 @click="openInstructionConfirmDialog(null, true)">
                                 Mark selected clients as canceled
                             </v-btn>

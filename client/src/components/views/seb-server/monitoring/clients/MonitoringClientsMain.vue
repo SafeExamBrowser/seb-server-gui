@@ -458,8 +458,8 @@
     function addIndicatorHeaders(){
         tableStore.isIndicatorsExpanded = true;
 
-        clientsTableHeaders.value.splice(4, 0, {title: "Battery status", key: "", width: "8%"});
-        clientsTableHeaders.value.splice(5, 0, {title: "Wlan status", key: "", width: "8%"});
+        clientsTableHeaders.value.splice(4, 0, {title: "Battery status", key: "", width: "8%", sortable: false});
+        clientsTableHeaders.value.splice(5, 0, {title: "Wlan status", key: "", width: "8%", sortable: false});
     }
 
     function removeIndicatorHeaders(){
@@ -514,7 +514,7 @@
 
     function addBatteryHeader(index: number){
         isBatteryIndicator.value = true;
-        clientsTableHeaders.value.splice(index, 0, {title: "Battery status", key: "", width: "8%"});
+        clientsTableHeaders.value.splice(index, 0, {title: "Battery status", key: "", width: "8%", sortable: false});
     }
 
     function removeBatteryHeader(index: number){
@@ -524,7 +524,7 @@
 
     function addWlanHeader(index: number){
         isWlanIndicator.value = true;
-        clientsTableHeaders.value.splice(index, 0, {title: "Wlan status", key: "", width: "8%"});
+        clientsTableHeaders.value.splice(index, 0, {title: "Wlan status", key: "", width: "8%", sortable: false});
     }
 
     function removeWlanHeader(index: number){
