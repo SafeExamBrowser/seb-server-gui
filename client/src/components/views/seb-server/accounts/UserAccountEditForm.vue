@@ -43,7 +43,7 @@
                 <!--success message-->
                 <div class="success-message-div pt-4 bottom-0">
                     <AlertMsg
-                        v-if="editedSuccess"
+                        v-if="editedSuccess || passwordEditedSuccess"
                         :alertProps="{
                             title: '',
                             color: 'success',
@@ -419,6 +419,7 @@
 
     const rolesTouched = ref(false);
     const editedSuccess = ref(false);
+    const passwordEditedSuccess = ref(false);
     const confirmPasswordFieldRef = ref();
     const confirmPasswordTouched = ref(false);
     const institutionSelectDisabled = ref(false);
@@ -645,15 +646,12 @@
     const changeUserPassword = async () => {
 
         const {valid} = await changePasswordForm.value.validate();
-        console.log('validating...', valid);
-
         if (!valid || !user.value?.uuid) {
-            console.log('quit...',);
             return
         } else {
-            console.log('deploying...',);
             await userAccountViewService.changePassword(user.value?.uuid, currentAdminPassword.value, newUserPassword.value, confirmNewUserPassword.value)
-            console.log('deployed...',);
+            passwordEditedSuccess.value = true;
+            setTimeout(() => (passwordEditedSuccess.value = false), 1500);
             if (user.value?.uuid === authenticatedUserAccountStore.userAccount?.uuid) {
                 await authStore.logout();
             }
