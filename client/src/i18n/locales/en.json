@@ -279,7 +279,6 @@
             }
         },
       "userAccountDetailAndEditPage": {
-          "title": "Edit User Account",
           "changePasswordTitle": "Change User Password",
           "labels": {
               "institutionLabel": "Institution *",
@@ -520,7 +519,8 @@
         "screenProctoring": "Screen Proctoring",
         "spSearch": "Search",
         "createUserAccount": "Create User Account",
-        "spApplications": "Applications"
+        "spApplications": "Applications",
+        "editUserAccount": "Edit User Account"
     },
 
     "warnings": {

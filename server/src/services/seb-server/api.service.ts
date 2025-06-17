@@ -60,7 +60,6 @@ export function getPatchHeaders(token: string): object {
 
 export function getHeadersWithoutAuth(): object {
     return {
-        "accept": "application/json",
         "Content-Type": "application/x-www-form-urlencoded"
     };
 }

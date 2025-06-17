@@ -3,7 +3,7 @@ import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 import LoginPage from "@/components/views/LoginPage.vue";
 import RegisterPage from "@/components/views/RegisterPage.vue";
 import HomePage from "@/components/views/seb-server/home/HomePage.vue";
-import UserAccountsPage from "@/components/views/seb-server/accounts/UserAcccounts.vue";
+import UserAccounts from "@/components/views/seb-server/accounts/UserAccounts.vue";
 import ExamListContainer from "@/components/views/seb-server/exam/list/ExamListContainer.vue";
 import ExamDetailContainer from "@/components/views/seb-server/exam/detail/ExamDetailContainer.vue";
 import * as constants from "@/utils/constants";
@@ -16,7 +16,10 @@ import MonitoringOverviewContainer from "@/components/views/seb-server/monitorin
 import * as authenticationService from "@/services/authenticationService";
 import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
 import MonitoringDetailsContainer from "@/components/views/seb-server/monitoring/client-detail/MonitoringDetailsContainer.vue";
-import UserAccountDetailAndEdit from "@/components/views/seb-server/accounts/UserAccountDetailAndEdit.vue";
+import UserAccountEditForm from "@/components/views/seb-server/accounts/UserAccountEditForm.vue";
+import CreateUserAccount from "@/components/views/seb-server/accounts/CreateUserAccount.vue";
+import ProfilePage from "@/components/views/seb-server/accounts/ProfilePage.vue";
+import EditUserAccount from "@/components/views/seb-server/accounts/EditUserAccount.vue";
 
 //----------screen-proctoring ---------
 import * as spConstants from "@/utils/sp-constants";
@@ -26,9 +29,9 @@ import ProctoringViewPage from "@/components/views/screen-proctoring/proctoring/
 import ProctoringApplicationSearchPage from "@/components/views/screen-proctoring/proctoring/ProctoringApplicationSearchPage.vue";
 import ExamsOverviewPage from "@/components/views/screen-proctoring/exams-overview/ExamsOverviewPage.vue";
 import SearchPage from "@/components/views/screen-proctoring/search/SearchPage.vue";
+
 import { useAuthStore } from "@/stores/authentication/authenticationStore";
-import {CREATE_USER_ACCOUNTS_ROUTE} from "@/utils/constants";
-import CreateUserAccount from "@/components/views/seb-server/accounts/CreateUserAccount.vue";
+
 
 
 
@@ -156,16 +159,36 @@ const routes: Array<RouteRecordRaw> = [
             {
                 path: constants.USER_ACCOUNTS_ROUTE + "/:userId",
                 name: "ProfileRoute",
-                component: UserAccountDetailAndEdit,
+                component: UserAccountEditForm,
                 meta: {
                     titleKey: "titles.userAccounts"
                 },
             },
 
             {
+                path: constants.PROFILE_ROUTE,
+                name: "ProfileRoute",
+                component: ProfilePage,
+                meta: {
+                    titleKey: "titles.userAccounts"
+                },
+            },
+
+            {
+                path: constants.EDIT_USER_ACCOUNT + "/:userUuid",
+                name: "EditUserAccount",
+                component: EditUserAccount,
+                meta: {
+                    titleKey: "titles.EditUserAccount"
+                },
+            },
+
+
+
+            {
                 path: constants.USER_ACCOUNTS_ROUTE,
                 name: "UserAccounts",
-                component: UserAccountsPage,
+                component: UserAccounts,
                 meta: {
                     titleKey: "titles.userAccounts"
                 },

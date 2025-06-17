@@ -214,7 +214,7 @@
                                     <v-icon
                                         icon="mdi-pencil"
                                         class="action-icon mr-2"
-                                        @click.stop="navigateTo(`${constants.USER_ACCOUNTS_ROUTE}/${item.uuid}`)"
+                                        @click.stop="navigateTo(`${constants.EDIT_USER_ACCOUNT}/${item.uuid}`)"
                                     ></v-icon>
 
                                     <v-icon

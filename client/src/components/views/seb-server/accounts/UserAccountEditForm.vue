@@ -60,7 +60,7 @@
             <v-row class="d-flex align-center justify-space-between px-6 pt-6">
                 <v-row class="d-flex align-center justify-space-between px-6 pt-0">
                     <div class="text-primary text-h5 font-weight-bold">
-                        {{ translate("userAccount.userAccountDetailAndEditPage.title") }}
+                        {{props.title}}
                     </div>
                     <v-chip
                         class="ma-2 text-subtitle-1 px-5 py-2 font-weight-bold"
@@ -179,19 +179,21 @@
                                     </v-col>
                                     <!--  password reset-->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
-                                        <v-text-field
-                                            :label="translate('userAccount.userAccountDetailAndEditPage.labels.passwordLabel')"
-                                            type="password"
-                                            variant="outlined"
-                                            density="compact"
-                                            model-value="'************'"
-                                            prepend-inner-icon="mdi-lock-outline"
-                                            append-inner-icon="mdi-pencil"
-                                            @click:append-inner="changePasswordDialog = true"
-                                            readonly
-                                        />
-
+                                        <div @click="changePasswordDialog = true" class="clickable-password-field">
+                                            <v-text-field
+                                                :label="translate('userAccount.userAccountDetailAndEditPage.labels.passwordLabel')"
+                                                type="password"
+                                                variant="outlined"
+                                                density="compact"
+                                                model-value="'************'"
+                                                prepend-inner-icon="mdi-lock-outline"
+                                                append-inner-icon="mdi-pencil"
+                                                readonly
+                                                class="no-pointer-events"
+                                            />
+                                        </div>
                                     </v-col>
+
                                 </v-col>
                                 <!-- user circle and roles-->
                                 <v-col>
@@ -377,6 +379,13 @@
     } from "@/stores/authentication/authenticationStore";
     import * as userAccountViewService from '@/services/seb-server/component-services/userAccountViewService';
 
+
+    const props = defineProps<{
+        title: string;
+        userUuid: string;
+    }>();
+
+
     const user = ref<UserAccount | null>(null);
     const institutions = ref<Institution[]>([]);
 
@@ -418,6 +427,7 @@
     const formRef = ref();
     const route = useRoute();
 
+
     //validation rules
     const requiredMessage = translate('userAccount.userAccountDetailAndEditPage.validation.required');
     const invalidEmailMessage = translate('userAccount.userAccountDetailAndEditPage.validation.invalidEmail');
@@ -441,7 +451,7 @@
     });
 
     onMounted(async () => {
-        appBarStore.title = translate('userAccount.userAccountDetailAndEditPage.title');
+        appBarStore.title = props.title;
         await loadUser()
     });
 
@@ -460,9 +470,8 @@
                 institutionSelectDisabled.value = true;
             }
         }
-
-        const userId = route.params.userId as string;
-        user.value = await getUserAccountById(userId);
+        //i want to use the user id here
+        user.value = await getUserAccountById(props.userUuid);
 
         if (!user.value) return;
 
@@ -774,5 +783,12 @@
         padding-bottom: 8px !important;
     }
 
+    .clickable-password-field {
+        cursor: pointer;
+    }
+
+    .no-pointer-events {
+        pointer-events: none;
+    }
 
 </style>

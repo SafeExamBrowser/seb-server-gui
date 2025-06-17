@@ -139,7 +139,7 @@
                         <div class="custom-white-divider my-0"></div>
 
                         <v-list-item class="pt-0 pb-1 px-4">
-                            <router-link class="link-color text-decoration-none nav-link text-white text-body-2" :to="`${constants.USER_ACCOUNTS_ROUTE}/${userAccountStore.userAccount?.uuid}`">{{ translate("titles.profileSettings") }}</router-link>
+                            <router-link class="link-color text-decoration-none nav-link text-white text-body-2" :to="`${constants.PROFILE_ROUTE}`">{{ translate("titles.profileSettings") }}</router-link>
                         </v-list-item>
 
 

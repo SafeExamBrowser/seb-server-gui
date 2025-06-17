@@ -19,12 +19,11 @@ export const REGISTER_ROUTE: string = "/register";
 export const HOME_PAGE_ROUTE: string = "/home";
 export const NAVIGATION_OVERVIEW_ROUTE: string = "/navigation-overview";
 export const USER_ACCOUNTS_ROUTE: string = "/user-accounts";
-export const CREATE_USER_ACCOUNTS_ROUTE: string = "/user-accounts/create";
 
-export const USER_ACCOUNT_DETAIL_ROUTE: string = "/user-account/" + id;
+export const EDIT_USER_ACCOUNT: string = USER_ACCOUNTS_ROUTE + "/edit-account";
+export const PROFILE_ROUTE = "/profile-settings";
 
-export const PROFILE_ROUTE: string = "/profile";
-
+export const CREATE_USER_ACCOUNTS_ROUTE: string = USER_ACCOUNTS_ROUTE + "/create";
 export const EXAM_ROUTE: string = "/exam";
 export const EXAM_DETAILS_ROUTE: string = EXAM_ROUTE;
 

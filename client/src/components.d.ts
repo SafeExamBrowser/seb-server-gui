@@ -23,6 +23,7 @@ declare module 'vue' {
     EditPermittedProcess: typeof import('./components/views/seb-server/settings/EditPermittedProcess.vue')['default']
     EditProhibitedProcess: typeof import('./components/views/seb-server/settings/EditProhibitedProcess.vue')['default']
     EditURLFilterRule: typeof import('./components/views/seb-server/settings/EditURLFilterRule.vue')['default']
+    EditUserAccount: typeof import('./components/views/seb-server/accounts/EditUserAccount.vue')['default']
     ErrorMsg: typeof import('./components/widgets/ErrorMsg.vue')['default']
     ExamDetailArchiveDialog: typeof import('./components/views/seb-server/exam/detail/dialogs/ExamDetailArchiveDialog.vue')['default']
     ExamDetailConfigDialog: typeof import('./components/views/seb-server/exam/detail/dialogs/ExamDetailConfigDialog.vue')['default']
@@ -73,6 +74,7 @@ declare module 'vue' {
     NavigationOverview: typeof import('./components/layout/NavigationOverview.vue')['default']
     ProctoringApplicationSearchPage: typeof import('./components/views/screen-proctoring/proctoring/ProctoringApplicationSearchPage.vue')['default']
     ProctoringViewPage: typeof import('./components/views/screen-proctoring/proctoring/ProctoringViewPage.vue')['default']
+    ProfilePage: typeof import('./components/views/seb-server/accounts/ProfilePage.vue')['default']
     RegisterPage: typeof import('./components/views/RegisterPage.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
@@ -87,5 +89,7 @@ declare module 'vue' {
     SebSettingsProhibitedProcess: typeof import('./components/views/seb-server/settings/SebSettingsProhibitedProcess.vue')['default']
     UserAcccounts: typeof import('./components/views/seb-server/accounts/UserAcccounts.vue')['default']
     UserAccountDetailAndEdit: typeof import('./components/views/seb-server/accounts/UserAccountDetailAndEdit.vue')['default']
+    UserAccountEditForm: typeof import('./components/views/seb-server/accounts/UserAccountEditForm.vue')['default']
+    UserAccounts: typeof import('./components/views/seb-server/accounts/UserAccounts.vue')['default']
   }
 }

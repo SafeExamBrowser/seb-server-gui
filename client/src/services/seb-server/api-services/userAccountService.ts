@@ -6,10 +6,9 @@ import {StorageItemEnum} from "@/models/StorageItemEnum";
 const userAccountUrl: string = "/useraccount";
 
 export async function registerUserAccount(payload: Record<string, string>): Promise<UserAccount | any> {
-    try {
         const url: string = ENV.SERVER_URL + ENV.SERVER_PORT + userAccountUrl + "/register";
 
-        const { data, status }: AxiosResponse = await axios.post(
+        const {data, status}: AxiosResponse = await axios.post(
             url,
             payload
         );
@@ -17,10 +16,6 @@ export async function registerUserAccount(payload: Record<string, string>): Prom
         if (status === 200) {
             return data;
         }
-
-    } catch (error) {
-        throw error;
-    }
 }
 
 
@@ -30,19 +25,18 @@ export async function changePassword(
     newPassword: string,
     confirmNewPassword: string,
 ): Promise<UserAccount | any> {
-    try {
 
-        const url: string = userAccountUrl + "/password";
 
-        const { data, status }: AxiosResponse = await apiService.api.put(url, { uuid, password, newPassword, confirmNewPassword }, { headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN) });
+    const url: string = userAccountUrl + "/password";
 
-        if (status === 200) {
-            return data;
-        }
+    const {data, status}: AxiosResponse = await apiService.api.put(url, {
+        uuid,
+        password,
+        newPassword,
+        confirmNewPassword
+    }, {headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN)});
 
-    } catch (error) {
-        throw error;
-    }
+        return data;
 }
 
 export async function deleteUserAccount(accountId: string): Promise<any | any> {
@@ -52,16 +46,19 @@ export async function deleteUserAccount(accountId: string): Promise<any | any> {
 
 export async function getPersonalUserAccount(): Promise<UserAccount | any> {
     const url: string = userAccountUrl + "/me";
-    console.log(StorageItemEnum.ACCESS_TOKEN);
-    return (await apiService.api.get(url, { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN) })).data;
+    return (await apiService.api.get(url, {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
 }
+
 export async function getUserAccountById(accountId: string): Promise<UserAccount | any> {
     const url: string = userAccountUrl + "/" + accountId;
-    return (await apiService.api.get(url, { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN) })).data;
+    return (await apiService.api.get(url, {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
 }
 
 export async function getUserAccounts(optionalParameters?: OptionalParGetUserAccounts): Promise<UserAccountResponse | any> {
-    return (await apiService.api.get(userAccountUrl, { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN), params: { optionalParameters } })).data;
+    return (await apiService.api.get(userAccountUrl, {
+        headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+        params: {optionalParameters}
+    })).data;
 }
 
 export async function createUserAccount(userAccount: CreateUserPar): Promise<SingleUserAccountResponse | any> {
@@ -70,28 +67,34 @@ export async function createUserAccount(userAccount: CreateUserPar): Promise<Sin
 
 
 // adjust endpoint to patch or maybe differnt path?
-export async function editUserAccount(userAccount : EditUserAccountParameters): Promise<UserAccountResponse | any> {
+export async function editUserAccount(userAccount: EditUserAccountParameters): Promise<UserAccountResponse | any> {
     return (await apiService.api.put(userAccountUrl, userAccount, {headers: apiService.getPutHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
 }
+
 export async function getUserAccountNames(optionalParameters?: OptionalParInstitutionId): Promise<UserAccountName[] | any> {
     const url: string = userAccountUrl + "/names";
-    return (await apiService.api.get(url, { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN), params: { optionalParameters } })).data;
+    return (await apiService.api.get(url, {
+        headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+        params: {optionalParameters}
+    })).data;
 }
 
 export async function getSupervisorNames(optionalParameters?: OptionalParInstitutionId): Promise<UserAccountName[] | any> {
     const url: string = userAccountUrl + "/supervisors";
-    return (await apiService.api.get(url, { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN), params: { optionalParameters } })).data;
+    return (await apiService.api.get(url, {
+        headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+        params: {optionalParameters}
+    })).data;
 }
 
 export async function activateUserAccount(accountId: string): Promise<UserAccount | any> {
     const url: string = userAccountUrl + "/" + accountId + "/active";
-    return (await apiService.api.post(url, { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN) })).data;
+    return (await apiService.api.post(url, {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
 }
+
 export async function deactivateUserAccount(accountId: string): Promise<UserAccount | any> {
     const url: string = userAccountUrl + "/" + accountId + "/inactive"
     const token = localStorage.getItem(StorageItemEnum.ACCESS_TOKEN);
-    console.log("Access Token:", token);
-
-    return (await apiService.api.post(url, { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN) })).data;
+    return (await apiService.api.post(url, {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
 }
 
