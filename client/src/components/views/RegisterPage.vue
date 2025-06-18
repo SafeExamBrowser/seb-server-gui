@@ -34,9 +34,9 @@
                         </div>
 
                         <v-card-title class="mt-10">
-                            Register
+                            {{translate('titles.register')}}
                         </v-card-title>
-                        <v-card-subtitle>Please fill the form to register for a SEB Server account.</v-card-subtitle>
+                        <v-card-subtitle>{{translate('userAccount.registerPage.info.accountRegistrationInfo')}}</v-card-subtitle>
 
                         <v-card-text>
                             <v-form ref="formRef" @keyup.enter="register()">
@@ -171,7 +171,7 @@
                                             block
                                             rounded="sm"
                                             color="primary"
-                                            @click="register()">
+                                            @click="register">
                                             Register
                                         </v-btn>
                                     </v-col>
@@ -201,10 +201,8 @@
     import {ref} from "vue";
     import {navigateTo} from "@/router/navigation";
     import * as constants from "@/utils/constants";
-    import {
-        getInstitutions,
-        registerUserAccount
-    } from "@/services/seb-server/component-services/registerAccountViewService";
+    import * as registerAccountViewService from '@/services/seb-server/component-services/registerAccountViewService';
+
     import moment from "moment-timezone";
     import {translate} from '@/utils/generalUtils';
     import { useI18n } from "vue-i18n";
@@ -224,6 +222,8 @@
     //error handling
     const registerError = ref(false);
     const registerSuccess = ref(false);
+    const i18n = useI18n();
+
 
     //password icon logic
     const passwordVisible = ref<boolean>(false);
@@ -231,24 +231,15 @@
 
     //institution setters
     const institutions = ref<Institution[]>([]);
-    const institutionSelectDisabled = ref(false);
+    const institutionSelectDisabled = ref<boolean>(false);
 
-    //validation rules
-    const requiredRule = (v: string) => !!v || translate('userAccount.general.validation.required', useI18n());
-    const passwordRule = (v: string) =>
-        (v && v.length >= 8) || translate('userAccount.general.validation.passwordTooShort', useI18n());
-    const formRef = ref();
-    const confirmPasswordRule = (v: string) =>
-        v === password.value || translate('userAccount.general.validation.passwordsDontMatch', useI18n());
-    const emailRule = (v: string) =>
-        !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || translate('userAccount.general.validation.invalidEmail', useI18n());
 
     //load timezones
     const timezoneOptions = moment.tz.names();
 
     //fetch Institutions
     onMounted(async () => {
-        const result = await getInstitutions();
+        const result : Institution[] | null = await registerAccountViewService.getInstitutions();
         if (result && result.length > 0) {
             institutions.value = result;
 
@@ -259,19 +250,29 @@
         }
     });
 
+    //validation rules
+    const requiredRule = (v: string) => !!v || translate('userAccount.general.validation.required', i18n);
+    const passwordRule = (v: string) =>
+        (v && v.length >= 8) || translate('userAccount.general.validation.passwordTooShort', i18n);
+    const formRef = ref();
+    const confirmPasswordRule = (v: string) =>
+        v === password.value || translate('userAccount.general.validation.passwordsDontMatch', i18n);
+    const emailRule = (v: string) =>
+        !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || translate('userAccount.general.validation.invalidEmail', i18n);
+
+
     //register
-    const register = async () => {
+    async function register() {
         registerError.value = false;
         registerSuccess.value = false;
 
         const {valid} = await formRef.value.validate();
         if (!valid) {
-            console.warn("Form is invalid — not submitting.");
             return;
         }
 
         try {
-            const result = await registerUserAccount(
+            const result = await registerAccountViewService.registerUserAccount(
                 selectedInstitution.value,
                 name.value,
                 surname.value,
@@ -302,7 +303,6 @@
     //todo: extract this function into a global file
     function handleTabKeyEvent(event: any, action: string) {
         if (event.key == 'Enter' || event.key == ' ') {
-
             if (action == "navigate") {
                 navigateTo(constants.DEFAULT_ROUTE);
             }
@@ -319,13 +319,11 @@
         margin-bottom: 1rem;
     }
 
-
     .v-card-text {
         padding-top: 3rem;
     }
     .v-messages {
         min-height: 20px; /* Reserve space for validation messages */
     }
-
 
 </style>

@@ -123,6 +123,7 @@
                                             :rules="[requiredRule]"
                                         />
                                     </v-col>
+
                                     <!--  last name-->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
@@ -135,8 +136,8 @@
                                             :rules="[requiredRule]"
                                         />
                                     </v-col>
-                                    <!-- username-->
 
+                                    <!-- username-->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
                                             required
@@ -162,7 +163,6 @@
                                         />
                                     </v-col>
 
-
                                     <!--  time zone-->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-select
@@ -177,6 +177,7 @@
                                             :return-object="false"
                                         />
                                     </v-col>
+
                                     <!--  password reset-->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <div @click="changePasswordDialog = true" class="clickable-password-field">
@@ -193,8 +194,8 @@
                                             />
                                         </div>
                                     </v-col>
-
                                 </v-col>
+
                                 <!-- user circle and roles-->
                                 <v-col>
                                     <v-col cols="12" class="d-flex justify-center mb-6">
@@ -217,6 +218,7 @@
                                             }}
                                         </div>
                                     </v-col>
+
                                     <!--  roles-->
                                     <v-col cols="12" class=" ml-16">
                                         <div class="text-subtitle-1 font-weight-medium">
@@ -248,6 +250,7 @@
                                                 />
                                             </v-col>
                                         </v-row>
+                                        <!--  roles rule error text-->
                                         <div v-if="rolesTouched && selectedRoles.length === 0"
                                              class="text-error text-caption mt-1">
                                             {{ rolesRule([]) }}
@@ -289,16 +292,17 @@
         </v-col>
     </v-row>
 
+    <!-- change password dialogs-->
     <v-dialog v-model="changePasswordDialog" max-width="600">
         <v-card class="pa-4">
             <v-card-title class="text-h6 font-weight-bold mb-2 mt-2">
                 {{ translate("userAccount.userAccountDetailAndEditPage.changePasswordTitle") }}
             </v-card-title>
-
             <v-divider class="mb-4"/>
-
             <v-card-text class="pt-0">
                 <v-form ref="changePasswordForm">
+
+                    <!--  change password dialog fields-->
                     <v-col cols="12" class="custom-padding-textbox">
                         <v-text-field
                             v-model="currentAdminPassword"
@@ -341,6 +345,7 @@
                 </v-form>
             </v-card-text>
 
+            <!--  change password dialog buttons-->
             <v-card-actions class="justify-end mt-2">
                 <v-btn variant="text" @click="changePasswordDialog = false">
                     {{ translate("general.cancelButton") }}
@@ -361,16 +366,15 @@
 </template>
 
 <script setup lang="ts">
-    import {ref, onMounted, onBeforeUnmount} from 'vue';
-    import {useAppBarStore, useLayoutStore} from '@/stores/store';
-    import {translate} from '@/utils/generalUtils';
-    import * as constants from '@/utils/constants';
+    import {ref, onMounted, onBeforeUnmount} from "vue";
+    import {useAppBarStore, useLayoutStore} from "@/stores/store";
+    import {translate} from "@/utils/generalUtils";
+    import * as constants from "@/utils/constants";
     import moment from "moment-timezone";
     import {getInstitutions} from "@/services/seb-server/component-services/registerAccountViewService";
     import {navigateTo} from "@/router/navigation";
     import {UserRoleEnum} from '@/models/userRoleEnum';
     import {useI18n} from "vue-i18n";
-    import {useRoute} from 'vue-router';
     import {editUserAccount, getUserAccountById} from "@/services/seb-server/component-services/userAccountViewService";
     import {
         useAuthStore,
@@ -403,10 +407,10 @@
     const email = ref<string>();
     const timezone = ref<string>("");
     const password = ref<string>("");
-    const editedUserName = ref('');
-    const currentAdminPassword = ref<string>('');
-    const newUserPassword = ref<string>('');
-    const confirmNewUserPassword = ref<string>('');
+    const editedUserName = ref("");
+    const currentAdminPassword = ref<string>("");
+    const newUserPassword = ref<string>("");
+    const confirmNewUserPassword = ref<string>("");
 
     const initialUserData = ref<EditUserAccountParameters | null>(null);
     const changePasswordDialog = ref(false);
@@ -425,15 +429,19 @@
 
     const selectedRoles = ref<string[]>([]);
     const formRef = ref();
-    const route = useRoute();
+
+    interface UserRoleOption {
+        label: string;
+        value: UserRoleEnum;
+    }
 
 
     //validation rules
-    const requiredMessage = translate('userAccount.general.validation.required');
-    const invalidEmailMessage = translate('userAccount.general.validation.invalidEmail');
-    const invalidRoleSelectionMessage = translate('userAccount.general.validation.invalidRoleSelection');
-    const passwordTooShortMessage = translate('userAccount.general.validation.passwordTooShort');
-    const passwordsDontMatchMessage = translate('userAccount.general.validation.passwordsDontMatch');
+    const requiredMessage = translate("userAccount.general.validation.required");
+    const invalidEmailMessage = translate("userAccount.general.validation.invalidEmail");
+    const invalidRoleSelectionMessage = translate("userAccount.general.validation.invalidRoleSelection");
+    const passwordTooShortMessage = translate("userAccount.general.validation.passwordTooShort");
+    const passwordsDontMatchMessage = translate("userAccount.general.validation.passwordsDontMatch");
     const requiredRule = (v: string) => !!v || requiredMessage;
     const emailRule = (v: string) => !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || invalidEmailMessage;
     const newPasswordRule = (v: string) => (v && v.length >= 8) || passwordTooShortMessage;
@@ -441,103 +449,23 @@
 
     //load available roles
     const availableRoles = ref<{ label: string; value: string }[]>([]);
-    const allRoles = Object.values(UserRoleEnum).map(role => ({
+    const allRoles: UserRoleOption[] = Object.values(UserRoleEnum).map((role) => ({
         label: translate(`general.userRoles.${role}`),
         value: role
     }));
+
+
+
 
     onBeforeUnmount(() => {
         layoutStore.setBlueBackground(false);
     });
 
     onMounted(async () => {
+        layoutStore.setBlueBackground(true);
         appBarStore.title = props.title;
         await loadUser()
     });
-
-    const loadUser = async () => {
-        layoutStore.setBlueBackground(true);
-
-        const result = await getInstitutions()
-        if (!result) {
-            return;
-        }
-        if (result?.length > 0) {
-            institutions.value = result;
-
-            if (result.length === 1) {
-                selectedInstitution.value = result[0].modelId;
-                institutionSelectDisabled.value = true;
-            }
-        }
-        //i want to use the user id here
-        user.value = await getUserAccountById(props.userUuid);
-
-        if (!user.value) return;
-
-        const authenticatedUser = authenticatedUserAccountStore.userAccount;
-        const authenticatedUserRoles = authenticatedUser?.userRoles ?? [];
-
-        availableRoles.value = getAvailableRolesForUser(authenticatedUserRoles);
-
-        if (authenticatedUserRoles.includes(UserRoleEnum.SEB_SERVER_ADMIN)) {
-            institutionSelectDisabled.value = false;
-        } else if (authenticatedUserRoles.includes(UserRoleEnum.INSTITUTIONAL_ADMIN)) {
-            const userInstitutionId = String(authenticatedUser?.institutionId);
-            const matchedInstitution = institutions.value.find(inst => inst.modelId.toString() === userInstitutionId);
-            if (matchedInstitution) {
-                selectedInstitution.value = matchedInstitution.modelId;
-                institutionSelectDisabled.value = true;
-                institutions.value = [matchedInstitution];
-            }
-        }
-
-        if (user.value) {
-            if (authenticatedUserRoles.includes(UserRoleEnum.SEB_SERVER_ADMIN)) {
-                const userInstitutionId = user.value.institutionId.toString();
-                const match = institutions.value.find(inst => inst.modelId === userInstitutionId);
-                if (match) {
-                    selectedInstitution.value = match.modelId;
-                }
-            }
-            name.value = user.value.name;
-            surname.value = user.value.surname;
-            username.value = user.value.username;
-            email.value = user.value.email;
-            timezone.value = user.value.timezone;
-            initialActiveStatus.value = user.value.active;
-            selectedRoles.value = [...user.value.userRoles];
-
-            initialActiveStatus.value = user.value?.active ?? null;
-            initialUserData.value = {
-                uuid: user.value.uuid,
-                institutionId: Number(selectedInstitution.value),
-                creationDate: user.value.creationDate,
-                name: name.value,
-                surname: surname.value,
-                username: username.value,
-                email: email.value || "",
-                active: user.value.active,
-                language: "en",
-                timezone: timezone.value,
-                userRoles: [...selectedRoles.value]
-            };
-        }
-    };
-
-    function getAvailableRolesForUser(userRoles: string[]): typeof allRoles {
-        const hasSebServerAdmin = userRoles.includes(UserRoleEnum.SEB_SERVER_ADMIN);
-        const hasInstitutionalAdmin = userRoles.includes(UserRoleEnum.INSTITUTIONAL_ADMIN);
-        if (hasSebServerAdmin) {
-            return allRoles;
-        }
-        if (hasInstitutionalAdmin) {
-            return allRoles.filter(role =>
-                [UserRoleEnum.INSTITUTIONAL_ADMIN, UserRoleEnum.EXAM_ADMIN, UserRoleEnum.EXAM_SUPPORTER].includes(role.value)
-            );
-        }
-        return [];
-    }
 
     watch(selectedRoles, () => {
         rolesTouched.value = true;
@@ -547,6 +475,110 @@
             confirmPasswordFieldRef.value?.validate?.();
         }
     });
+
+    const loadUser = async () => {
+        const institutionsResult = await getInstitutions();
+        if (!institutionsResult || institutionsResult.length === 0) return;
+
+        setupInstitutionList(institutionsResult);
+        const fetchedUser = await getUserAccountById(props.userUuid);
+        if (!fetchedUser) return;
+
+        user.value = fetchedUser;
+
+        const authenticatedUser = authenticatedUserAccountStore.userAccount;
+        if (!authenticatedUser) return;
+
+        const authenticatedUserRoles = authenticatedUser?.userRoles as UserRoleEnum[] ?? [];
+        setupAvailableRoles(authenticatedUserRoles);
+        configureInstitutionField(authenticatedUserRoles, authenticatedUser);
+
+        patchUserInstitutionIfSebAdmin(fetchedUser, authenticatedUserRoles);
+        populateUserFields(fetchedUser);
+    };
+
+
+
+
+    function setupInstitutionList(result: Institution[]) {
+        institutions.value = result;
+
+        if (result.length === 1) {
+            selectedInstitution.value = result[0].modelId;
+            institutionSelectDisabled.value = true;
+        }
+    }
+
+    function setupAvailableRoles(userRoles: UserRoleEnum[]) {
+        availableRoles.value = getAvailableRolesForUser(userRoles);
+    }
+
+    function configureInstitutionField(userRoles: UserRoleEnum[], authenticatedUser: UserAccount | null) {
+        if (userRoles.includes(UserRoleEnum.SEB_SERVER_ADMIN)) {
+            institutionSelectDisabled.value = false;
+            return;
+        }
+
+        if (userRoles.includes(UserRoleEnum.INSTITUTIONAL_ADMIN)) {
+            const userInstitutionId = String(authenticatedUser?.institutionId);
+            const matchedInstitution = institutions.value.find(inst => inst.modelId.toString() === userInstitutionId);
+            if (matchedInstitution) {
+                selectedInstitution.value = matchedInstitution.modelId;
+                institutions.value = [matchedInstitution];
+                institutionSelectDisabled.value = true;
+            }
+        }
+    }
+
+    function patchUserInstitutionIfSebAdmin(user: UserAccount, roles: UserRoleEnum[]) {
+        if (!roles.includes(UserRoleEnum.SEB_SERVER_ADMIN)) return;
+
+        const userInstitutionId = user.institutionId.toString();
+        const match = institutions.value.find(inst => inst.modelId === userInstitutionId);
+        if (match) {
+            selectedInstitution.value = match.modelId;
+        }
+    }
+
+    function populateUserFields(user: UserAccount) {
+        name.value = user.name;
+        surname.value = user.surname;
+        username.value = user.username;
+        email.value = user.email;
+        timezone.value = user.timezone;
+        selectedRoles.value = [...user.userRoles];
+        initialActiveStatus.value = user.active ?? null;
+
+        initialUserData.value = {
+            uuid: user.uuid,
+            institutionId: Number(selectedInstitution.value),
+            creationDate: user.creationDate,
+            name: name.value,
+            surname: surname.value,
+            username: username.value,
+            email: email.value || "",
+            active: user.active,
+            language: "en",
+            timezone: timezone.value,
+            userRoles: [...selectedRoles.value]
+        };
+    }
+
+    function getAvailableRolesForUser(userRoles: UserRoleEnum[]): UserRoleOption[] {
+        const hasSebServerAdmin = userRoles.includes(UserRoleEnum.SEB_SERVER_ADMIN);
+        const hasInstitutionalAdmin = userRoles.includes(UserRoleEnum.INSTITUTIONAL_ADMIN);
+
+        if (hasSebServerAdmin) return allRoles;
+
+        if (hasInstitutionalAdmin) {
+            return allRoles.filter(role =>
+                [UserRoleEnum.INSTITUTIONAL_ADMIN, UserRoleEnum.EXAM_ADMIN, UserRoleEnum.EXAM_SUPPORTER].includes(role.value)
+            );
+        }
+
+        return [];
+    }
+
 
     const fieldChanges = computed(() => {
         if (!initialUserData.value) return false;

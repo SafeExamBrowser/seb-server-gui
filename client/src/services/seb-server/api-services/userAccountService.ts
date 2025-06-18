@@ -94,7 +94,6 @@ export async function activateUserAccount(accountId: string): Promise<UserAccoun
 
 export async function deactivateUserAccount(accountId: string): Promise<UserAccount | any> {
     const url: string = userAccountUrl + "/" + accountId + "/inactive"
-    const token = localStorage.getItem(StorageItemEnum.ACCESS_TOKEN);
     return (await apiService.api.post(url, {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
 }
 

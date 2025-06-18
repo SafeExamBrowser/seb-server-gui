@@ -5,6 +5,8 @@
     <v-row class="mt-10 w-98 h-100">
         <v-col cols="3" class="pt-0 h-100">
             <v-sheet class="rounded-lg ml-6 w-100 h-100 bg-primary">
+
+                <!-- Left side navigation List for Settings -->
                 <v-col class="pt-0">
                     <v-divider class="section-divider"/>
 
@@ -38,6 +40,8 @@
 
                     <v-divider class="section-divider mb-3"/>
                 </v-col>
+
+                <!-- Alert success message -->
                 <div class="success-message-div">
                     <AlertMsg
                         v-if="deleteSuccess"
@@ -51,7 +55,11 @@
                 </div>
             </v-sheet>
         </v-col>
+
+        <!-- Main Component -->
         <v-col elevation="4" cols="9" class="bg-white rounded-lg mb-3">
+
+            <!-- Title and Add User Button -->
             <v-row class="d-flex align-center justify-space-between px-6 pt-6">
                 <div class="text-primary text-h5 font-weight-bold">
                     {{ translate("navigation.routeNames.userAccounts") }}
@@ -70,7 +78,9 @@
                     </div>
                 </div>
             </v-row>
+
             <v-divider class="custom-divider mx-6 my-4 mt-7"/>
+
             <!-- Search and filters row -->
             <v-row class="px-6 pt-4 d-flex flex-wrap align-start">
                 <!-- Search field -->
@@ -135,6 +145,7 @@
                 </v-col>
             </v-row>
 
+            <!-- Search buttons -->
             <v-row class="px-6 pt-0">
                 <v-col cols="12" md="5" class="pa-0 mb-4">
                     <div class="d-flex justify-end w-90">
@@ -160,7 +171,7 @@
                 </v-col>
             </v-row>
 
-
+            <!-- Data Table Definition-->
             <v-sheet class="rounded-lg mt-10">
                 <v-data-table
                     v-model:options="options"
@@ -186,6 +197,7 @@
                         <tr
                             :class="[selectedUserAccount?.id === item.id ? 'selected-row' : '']"
                         >
+                            <!-- Column Definition -->
                             <td v-if="showInstitutionColumn" class="text-primary">
                                 {{ item.institutionName || item.institutionId }}
                             </td>
@@ -193,7 +205,6 @@
                             <td class="text-primary">{{ item.name }}</td>
                             <td class="text-primary">{{ item.username }}</td>
                             <td class="text-primary">{{ item.email }}</td>
-
 
                             <td>
                                 <v-chip
@@ -204,7 +215,7 @@
                                     @click.stop="openStatusDialog(item)"
                                 >
                                     {{
-                                        item.active ? translate('userAccount.userAccountPage.filters.activeSelector') : translate('userAccount.userAccountPage.filters.inactiveSelector')
+                                        item.active ? translate("userAccount.userAccountPage.filters.activeSelector") : translate("userAccount.userAccountPage.filters.inactiveSelector")
                                     }}
                                 </v-chip>
 
@@ -228,6 +239,8 @@
                         </tr>
                     </template>
                 </v-data-table>
+
+                <!-- Delete User Account Dialog -->
                 <v-dialog v-model="deleteDialog" max-width="500">
                     <v-card>
                         <v-card-title class="text-h6 font-weight-bold">
@@ -245,7 +258,6 @@
                                 translate("userAccount.userAccountPage.deleteUserAccountContext.informationPart3")
                             }}
                         </v-card-text>
-
                         <v-card-actions class="justify-end">
                             <v-btn text @click="deleteDialog = false">{{ translate("general.cancelButton") }}</v-btn>
                             <v-btn color="red" text @click="confirmDelete">{{ translate("general.deleteButton") }}
@@ -253,6 +265,8 @@
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
+
+                <!-- Change Status Dialog -->
                 <v-dialog v-model="statusDialog" max-width="500">
                     <v-card>
                         <v-card-title class="text-h6 font-weight-bold">
@@ -273,7 +287,6 @@
                                 {{ statusDialogButtonLabel }}
                             </v-btn>
                         </v-card-actions>
-
                     </v-card>
                 </v-dialog>
 
@@ -283,16 +296,16 @@
 </template>
 
 <script setup lang="ts">
-    import {ref, computed, onMounted, onBeforeUnmount} from 'vue';
-    import {useAppBarStore, useLayoutStore} from '@/stores/store';
-    import {useUserAccountStore} from '@/stores/seb-server/userAccountStore';
-    import {useI18n} from 'vue-i18n';
-    import {translate} from '@/utils/generalUtils';
-    import * as tableUtils from '@/utils/table/tableUtils';
-    import TableHeaders from '@/utils/table/TableHeaders.vue';
-    import * as userAccountViewService from '@/services/seb-server/component-services/userAccountViewService';
-    import {navigateTo} from '@/router/navigation';
-    import * as constants from '@/utils/constants';
+    import {ref, computed, onMounted, onBeforeUnmount} from "vue";
+    import {useAppBarStore, useLayoutStore} from "@/stores/store";
+    import {useUserAccountStore} from "@/stores/seb-server/userAccountStore";
+    import {useI18n} from "vue-i18n";
+    import {translate} from "@/utils/generalUtils";
+    import * as tableUtils from "@/utils/table/tableUtils";
+    import TableHeaders from "@/utils/table/TableHeaders.vue";
+    import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
+    import {navigateTo} from "@/router/navigation";
+    import * as constants from "@/utils/constants";
     import {useUserAccountStore as useAuthenticatedUserAccountStore} from "@/stores/authentication/authenticationStore";
     import {UserRoleEnum} from "@/models/userRoleEnum";
     import {getInstitutions} from "@/services/seb-server/component-services/registerAccountViewService";
@@ -311,10 +324,10 @@
     const userToDelete = ref<UserAccount | null>(null);
     const isLoading = ref<boolean>(true);
     const deleteSuccess = ref(false);
-    const deletedUsername = ref('');
+    const deletedUsername = ref("");
     const statuses = [
-        {value: 'Active', label: translate('userAccount.userAccountPage.filters.activeSelector')},
-        {value: 'Inactive', label: translate('userAccount.userAccountPage.filters.inactiveSelector')}
+        {value: "Active", label: translate("userAccount.userAccountPage.filters.activeSelector")},
+        {value: "Inactive", label: translate("userAccount.userAccountPage.filters.inactiveSelector")}
     ];
     const institutions = ref<Institution[]>([]);
     const showInstitutionColumn = computed(() => {
@@ -326,13 +339,13 @@
 
 
     //search string
-    const searchQuery = ref('');
+    const searchQuery = ref("");
     // API response
     const userAccounts = ref<UserAccountResponse>();
 
 
     onMounted(async () => {
-        appBarStore.title = translate('titles.userAccounts');
+        appBarStore.title = translate("titles.userAccounts");
         layoutStore.setBlueBackground(true);
         if (showInstitutionColumn.value) {
             const result = await getInstitutions();
@@ -366,54 +379,55 @@
 
         if (showInstitutionColumn.value) {
             headers.push({
-                title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderInstitution'),
-                key: 'institutionName',
-                width: '12%',
+                title: translate("userAccount.userAccountPage.userAccountTableHeaders.tableHeaderInstitution"),
+                key: "institutionName",
+                width: "12%",
                 sortable: true
             });
         }
 
         headers.push(
             {
-                title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderSurname'),
-                key: 'surname',
-                width: '12%',
+                title: translate("userAccount.userAccountPage.userAccountTableHeaders.tableHeaderSurname"),
+                key: "surname",
+                width: "12%",
                 sortable: true
             },
             {
-                title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderName'),
-                key: 'name',
-                width: '10%',
+                title: translate("userAccount.userAccountPage.userAccountTableHeaders.tableHeaderName"),
+                key: "name",
+                width: "10%",
                 sortable: true
             },
             {
-                title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderUsername'),
-                key: 'username',
-                width: '12%',
+                title: translate("userAccount.userAccountPage.userAccountTableHeaders.tableHeaderUsername"),
+                key: "username",
+                width: "12%",
                 sortable: true
             },
             {
-                title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderEmail'),
-                key: 'email',
-                width: '10%',
+                title: translate("userAccount.userAccountPage.userAccountTableHeaders.tableHeaderEmail"),
+                key: "email",
+                width: "10%",
                 sortable: true
             },
             {
-                title: translate('userAccount.userAccountPage.userAccountTableHeaders.tableHeaderStatus'),
-                key: 'status',
-                width: '2%',
+                title: translate("userAccount.userAccountPage.userAccountTableHeaders.tableHeaderStatus"),
+                key: "status",
+                width: "2%",
                 sortable: false
             },
-            {title: '', key: 'userAccountLink', width: '1%'}
+            { title: "", key: "userAccountLink", width: "1%" }
         );
 
         return headers;
     });
 
+
     const options = ref({
         page: 1,
         itemsPerPage: 5,
-        sortBy: [{key: 'name', order: 'asc'}],
+        sortBy: [{key: "name", order: "asc"}],
     });
 
     // Filters + Sorting
@@ -424,7 +438,7 @@
 
         // Status filter
         if (selectedStatus.value) {
-            const isActive = selectedStatus.value === 'Active';
+            const isActive = selectedStatus.value === "Active";
             result = result.filter(user => user.active === isActive);
         }
 
@@ -444,21 +458,21 @@
 
         result = result.map(user => ({
             ...user,
-            institutionName: institutionIdToNameMap.value.get(String(user.institutionId)) || '',
+            institutionName: institutionIdToNameMap.value.get(String(user.institutionId)) || "",
         }));
 
         //sort
         type SortableKey = keyof Pick<UserAccount & {
             institutionName?: string
-        }, 'name' | 'surname' | 'username' | 'email' | 'institutionName'>;
+        }, "name" | "surname" | "username" | "email" | "institutionName">;
 
         const sort = options.value.sortBy?.[0];
-        if (sort && ['name', 'surname', 'username', 'email', 'institutionName'].includes(sort.key)) {
+        if (sort && ["name", "surname", "username", "email", "institutionName"].includes(sort.key)) {
             const sortKey = sort.key as SortableKey;
             result.sort((a, b) => {
-                const valA = a[sortKey]?.toString().toLowerCase() || '';
-                const valB = b[sortKey]?.toString().toLowerCase() || '';
-                return sort.order === 'asc'
+                const valA = a[sortKey]?.toString().toLowerCase() || "";
+                const valB = b[sortKey]?.toString().toLowerCase() || "";
+                return sort.order === "asc"
                     ? valA.localeCompare(valB)
                     : valB.localeCompare(valA);
             });
@@ -468,9 +482,9 @@
 
     //update status
     async function onStatusChange(user: UserAccount, newStatus: string) {
-        if (newStatus === 'Active' && !user.active) {
+        if (newStatus === "Active" && !user.active) {
             await userAccountViewService.activateUserAccount(user.uuid);
-        } else if (newStatus === 'Inactive' && user.active) {
+        } else if (newStatus === "Inactive" && user.active) {
             await userAccountViewService.deactivateUserAccount(user.uuid);
         }
         await loadItems(options.value); // refresh table
@@ -478,21 +492,21 @@
     }
 
     const statusDialogTitle = computed(() => {
-        if (!statusDialogUser.value) return '';
+        if (!statusDialogUser.value) return "";
         return i18n.t(
             statusDialogUser.value.active
-                ? 'userAccount.userAccountPage.changeUserAccountStatusContext.deactivateTitle'
-                : 'userAccount.userAccountPage.changeUserAccountStatusContext.activateTitle',
+                ? "userAccount.userAccountPage.changeUserAccountStatusContext.deactivateTitle"
+                : "userAccount.userAccountPage.changeUserAccountStatusContext.activateTitle",
             {username: statusDialogUser.value.username}
         );
     });
 
     const statusDialogMessage = computed(() => {
-        if (!statusDialogUser.value) return '';
+        if (!statusDialogUser.value) return "";
         return i18n.t(
             statusDialogUser.value.active
-                ? 'userAccount.userAccountPage.changeUserAccountStatusContext.deactivateMessage'
-                : 'userAccount.userAccountPage.changeUserAccountStatusContext.activateMessage',
+                ? "userAccount.userAccountPage.changeUserAccountStatusContext.deactivateMessage"
+                : "userAccount.userAccountPage.changeUserAccountStatusContext.activateMessage",
             {
                 name: statusDialogUser.value.name,
                 surname: statusDialogUser.value.surname,
@@ -502,11 +516,11 @@
     });
 
     const statusDialogButtonLabel = computed(() => {
-        if (!statusDialogUser.value) return '';
+        if (!statusDialogUser.value) return "";
         return translate(
             statusDialogUser.value.active
-                ? 'userAccount.userAccountPage.changeUserAccountStatusContext.buttons.deactivate'
-                : 'userAccount.userAccountPage.changeUserAccountStatusContext.buttons.activate'
+                ? "userAccount.userAccountPage.changeUserAccountStatusContext.buttons.deactivate"
+                : "userAccount.userAccountPage.changeUserAccountStatusContext.buttons.activate"
         );
     });
 
@@ -531,12 +545,12 @@
 
     // Search + clear search
     function onSearch() {
-        searchQuery.value = userAccountStore.searchField?.trim().toLowerCase() ?? '';
+        searchQuery.value = userAccountStore.searchField?.trim().toLowerCase() ?? "";
         options.value.page = 1;
     }
     function onClearSearch() {
-        userAccountStore.searchField = '';
-        searchQuery.value = '';
+        userAccountStore.searchField = "";
+        searchQuery.value = "";
         selectedStatus.value = null;
         selectedInstitutionId.value = null;
         options.value.page = 1;
@@ -574,7 +588,7 @@
     async function confirmStatusChange() {
         if (!statusDialogUser.value) return;
 
-        const newStatus = statusDialogUser.value.active ? 'Inactive' : 'Active';
+        const newStatus = statusDialogUser.value.active ? "Inactive" : "Active";
         await onStatusChange(statusDialogUser.value, newStatus);
 
         statusDialog.value = false;

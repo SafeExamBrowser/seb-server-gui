@@ -215,7 +215,7 @@
 </template>
 
 <script setup lang="ts">
-    import {ref, watch, onBeforeMount} from "vue"
+    import {ref, watch} from "vue"
     import {useAppBarStore, useLayoutStore, useNavigationStore} from "@/stores/store";
     import {useAuthStore, useUserAccountStore} from "@/stores/authentication/authenticationStore";
     import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
@@ -225,7 +225,6 @@
     import router from "@/router/router";
     import {translate} from "@/utils/generalUtils";
     import {UserRoleEnum} from "@/models/userRoleEnum";
-    import {USER_ACCOUNTS_ROUTE} from "@/utils/constants";
 
 
     //i18n
@@ -242,11 +241,12 @@
     //main navigation
     const navigationDrawer = ref();
     const mainNavigationLinks: NavigationItem[] = [
-        {title: translate('titles.home'), route: constants.HOME_PAGE_ROUTE, icon: "mdi-home"},
-        {title: translate('titles.exams'), route: constants.EXAM_ROUTE, icon: "mdi-file-document"},
-        {title: translate('titles.monitoring'), route: constants.MONITORING_ROUTE, icon: "mdi-eye"},
-        // {title: 'Screen Proctoring', route: spConstants.RUNNING_EXAMS_ROUTE, icon: "mdi-video"},
+        {title: translate("titles.home"), route: constants.HOME_PAGE_ROUTE, icon: "mdi-home"},
+        {title: translate("titles.exams"), route: constants.EXAM_ROUTE, icon: "mdi-file-document"},
+        {title: translate("titles.monitoring"), route: constants.MONITORING_ROUTE, icon: "mdi-eye"},
+        // {title: "Screen Proctoring", route: spConstants.RUNNING_EXAMS_ROUTE, icon: "mdi-video"},
     ];
+
 
     //stores
     const authStore = useAuthStore();
@@ -258,10 +258,7 @@
 
     const userAccount = computed(() => userAccountStore.userAccount);
     const userRoles = computed(() => userAccount.value?.userRoles || []);
-    const hasMultipleRoles = computed(() => userRoles.value.length > 1);
-    const userRoleDisplay = computed(() =>
-        userRoles.value.length === 1 ? userRoles.value[0] : 'Roles:'
-    );
+
     //theme
     const theme = useTheme();
     const localstorageTheme: string | null = localStorage.getItem("theme");
@@ -283,26 +280,13 @@
         localStorage.setItem("theme", theme.global.name.value);
     });
 
-    const ROLE_PRIORITY = [
-        "EXAM_ADMIN",
-        "EXAM_SUPPORTER",
-        "SEB_SERVER_ADMIN",
-        "INSTITUTIONAL_ADMIN",
-        "TEACHER"
-    ];
-
-    const highestPriorityRole = computed(() => {
-        const roles = userAccountStore.userAccount?.userRoles ?? [];
-        return ROLE_PRIORITY.find(role => roles.includes(role)) ?? '';
-    });
-
     function translateRole(role: string): string {
         switch (role) {
-            case 'EXAM_ADMIN': return 'Exam Admin';
-            case 'EXAM_SUPPORTER': return 'Exam Supporter';
-            case 'SEB_SERVER_ADMIN': return 'SEB Server Admin';
-            case 'INSTITUTIONAL_ADMIN': return 'Institutional Admin';
-            case 'TEACHER': return 'Teacher';
+            case "EXAM_ADMIN": return "Exam Admin";
+            case "EXAM_SUPPORTER": return "Exam Supporter";
+            case "SEB_SERVER_ADMIN": return "SEB Server Admin";
+            case "INSTITUTIONAL_ADMIN": return "Institutional Admin";
+            case "TEACHER": return "Teacher";
 
             default: return role;
         }

@@ -164,27 +164,22 @@ const routes: Array<RouteRecordRaw> = [
                     titleKey: "titles.userAccounts"
                 },
             },
-
             {
                 path: constants.PROFILE_ROUTE,
                 name: "ProfileRoute",
                 component: ProfilePage,
                 meta: {
-                    titleKey: "titles.userAccounts"
+                    titleKey: "titles.profile"
                 },
             },
-
             {
                 path: constants.EDIT_USER_ACCOUNT + "/:userUuid",
                 name: "EditUserAccount",
                 component: EditUserAccount,
                 meta: {
-                    titleKey: "titles.EditUserAccount"
+                    titleKey: "titles.editUserAccount"
                 },
             },
-
-
-
             {
                 path: constants.USER_ACCOUNTS_ROUTE,
                 name: "UserAccounts",
@@ -193,7 +188,6 @@ const routes: Array<RouteRecordRaw> = [
                     titleKey: "titles.userAccounts"
                 },
             },
-
             {
                 path: constants.CREATE_USER_ACCOUNTS_ROUTE,
                 name: "CreateUserAccount",
@@ -202,7 +196,6 @@ const routes: Array<RouteRecordRaw> = [
                     titleKey: "titles.createUserAccount"
                 },
             },
-
         ]
     },
 

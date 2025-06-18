@@ -4,7 +4,7 @@
     import {translate} from "@/utils/generalUtils";
 
     const route = useRoute();
-    const userId = route.params.userUuid as string;
+    const userId : string = route.params.userUuid as string;
 
     console.log(userId)
 </script>

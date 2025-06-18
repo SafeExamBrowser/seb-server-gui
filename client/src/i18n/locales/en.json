@@ -237,7 +237,7 @@
             },
             "info" : {
                 "alreadyHaveAccount": "Already have an account?",
-                "accountCreationInfo": "Fill out the required * fields to create a new User Account"
+                "accountRegistrationInfo": "Please fill the form to register for a SEB Server account."
             },
             "buttons" : {
                 "login": "Login",
@@ -527,13 +527,16 @@
         "preparation": "Preparation",
         "recentExams": "Last Edited Exams",
         "settings": "Settings",
+        "register": "Register",
         "userAccounts": "User Accounts",
         "profileSettings": "Profile Settings",
         "screenProctoring": "Screen Proctoring",
         "spSearch": "Search",
         "createUserAccount": "Create User Account",
         "spApplications": "Applications",
-        "editUserAccount": "Edit User Account"
+        "editUserAccount": "Edit User Account",
+        "profile": "Profile Settings"
+
     },
 
     "warnings": {

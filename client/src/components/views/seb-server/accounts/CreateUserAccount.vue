@@ -3,6 +3,8 @@
         {{ translate("titles.settings") }}
     </div>
     <v-row class="mt-10 w-98 h-100">
+
+        <!-- settings navigation-->
         <v-col cols="3" class="pt-0 h-100">
             <v-sheet  class="rounded-lg ml-6 w-100 h-100 bg-primary">
                 <v-col class="pt-0">
@@ -32,6 +34,8 @@
 
                     <v-divider class="section-divider mb-10" />
                 </v-col>
+
+                <!-- Success Message for creation -->
                 <div class="success-message-div">
                     <AlertMsg
                         v-if="createdSuccess"
@@ -62,11 +66,13 @@
             </v-row>
             <v-sheet  class="rounded-lg mt-4">
                 <v-col cols="12" md="12" class="pa-0 mb-4 h-100">
-
                     <v-card-text>
-                        <v-form ref="formRef" @keyup.enter="register()">
 
+                        <!-- New User Account Form-->
+                        <v-form ref="formRef" @keyup.enter="submit()">
                             <v-row dense>
+
+                                <!-- Institution-->
                                 <v-col cols="12" md="6" class="mt-2">
                                     <v-select
                                         required
@@ -83,6 +89,7 @@
                                     />
                                 </v-col>
 
+                                <!-- Username-->
                                 <v-col cols="12" md="6" class="mt-2">
                                     <v-text-field
                                         required
@@ -95,6 +102,7 @@
                                     />
                                 </v-col>
 
+                                <!-- Name-->
                                 <v-col cols="12" md="6" class="mt-2">
                                     <v-text-field
                                         required
@@ -107,6 +115,7 @@
                                     />
                                 </v-col>
 
+                                <!-- Surname-->
                                 <v-col cols="12" md="6" class="mt-2">
                                     <v-text-field
                                         required
@@ -119,6 +128,7 @@
                                     />
                                 </v-col>
 
+                                <!-- Email-->
                                 <v-col cols="12" md="6" class="mt-2">
                                     <v-text-field
                                         prepend-inner-icon="mdi-email-outline"
@@ -131,6 +141,7 @@
                                     />
                                 </v-col>
 
+                                <!-- Timezone-->
                                 <v-col cols="12" md="6" class="mt-2">
                                     <v-select
                                         required
@@ -145,6 +156,7 @@
                                     />
                                 </v-col>
 
+                                <!-- Password-->
                                 <v-col cols="12" md="6" class="mt-2">
                                     <v-text-field
                                         required
@@ -168,6 +180,7 @@
                                     </v-text-field>
                                 </v-col>
 
+                                <!-- Confirm Password-->
                                 <v-col cols="12" md="6" class="mt-2">
                                     <v-text-field
                                         ref="confirmPasswordFieldRef"
@@ -194,6 +207,7 @@
                                     </v-text-field>
                                 </v-col>
 
+                                <!-- Role Selection-->
                                 <v-col cols="12" class="mt-2">
                                     <div class="text-subtitle-1 font-weight-medium mb-2">
                                         {{ translate("userAccount.createUserAccountPage.labels.selectRolesLabel")}}
@@ -231,7 +245,7 @@
                 </v-col>
 
             </v-sheet>
-
+            <!-- Buttons-->
             <v-row class="px-6 pt-0">
                 <v-col cols="12" md="12" class="pa-0 mb-4">
                     <div class="d-flex justify-end" >
@@ -249,7 +263,7 @@
                             color="primary"
                             variant="flat"
                             class="ml-2"
-                            @click="register()"
+                            @click="submit()"
                         >
                             {{ translate("userAccount.createUserAccountPage.buttons.createNewUser") }}
                         </v-btn>
@@ -287,7 +301,7 @@
     const timezone = ref<string>("");
     const password = ref<string>("");
     const confirmPassword = ref<string>("");
-    const createdUserName = ref('');
+    const createdUserName = ref("");
     const formRef = ref();
 
     const rolesTouched = ref(false);
@@ -305,11 +319,11 @@
 
 
     //validation rules
-    const requiredMessage = translate('userAccount.general.validation.required');
-    const passwordTooShortMessage = translate('userAccount.general.validation.passwordTooShort');
-    const passwordsDontMatchMessage = translate('userAccount.general.validation.passwordsDontMatch');
-    const invalidEmailMessage = translate('userAccount.general.validation.invalidEmail');
-    const invalidRoleSelectionMessage = translate('userAccount.general.validation.invalidRoleSelection');
+    const requiredMessage = translate("userAccount.general.validation.required");
+    const passwordTooShortMessage = translate("userAccount.general.validation.passwordTooShort");
+    const passwordsDontMatchMessage = translate("userAccount.general.validation.passwordsDontMatch");
+    const invalidEmailMessage = translate("userAccount.general.validation.invalidEmail");
+    const invalidRoleSelectionMessage = translate("userAccount.general.validation.invalidRoleSelection");
 
     const requiredRule = (v: string) => !!v || requiredMessage;
     const passwordRule = (v: string) => (v && v.length >= 8) || passwordTooShortMessage;
@@ -317,6 +331,7 @@
     const emailRule = (v: string) => !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || invalidEmailMessage;
     const rolesRule = (v: string[]) => v.length > 0 || invalidRoleSelectionMessage;
 
+    const availableRoles = ref<{ label: string; value: string }[]>([]);
 
     const allRoles = Object.values(UserRoleEnum).map(role => ({
         label: translate(`general.userRoles.${role}`),
@@ -337,17 +352,14 @@
         return [];
     }
 
-    //load available roles
-    const availableRoles = ref<{ label: string; value: string }[]>([]);
-
     onMounted(async () => {
-        appBarStore.title = translate('titles.createUserAccount');
+        appBarStore.title = translate("titles.createUserAccount");
         layoutStore.setBlueBackground(true);
 
         const user = authenticatedUserAccountStore.userAccount;
         const roles = user?.userRoles ?? [];
 
-        const result = await getInstitutions();
+        const result : Institution[] | null = await getInstitutions();
         institutions.value = result ?? [];
 
         availableRoles.value = getAvailableRolesForUser(roles);
@@ -377,7 +389,7 @@
         }
     });
 
-    const register = async () => {
+    async function submit(){
         rolesTouched.value = true;
 
         // Always validate the form
@@ -425,7 +437,7 @@
         layoutStore.setBlueBackground(false);
     });
     onMounted(() => {
-        appBarStore.title = translate('titles.createUserAccount');
+        appBarStore.title = translate("titles.createUserAccount");
         layoutStore.setBlueBackground(true);
     });
 
