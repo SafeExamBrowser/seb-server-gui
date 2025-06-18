@@ -4,11 +4,11 @@ import * as ENV from "../../config/envConfig";
 import * as apiService from "../../services/seb-server/api.service";
 import * as utils from "../..//utils/utils";
 
+const tokenUrlWithoutGrantType: string = ENV.SEB_SERVER_URL + ENV.SEB_SERVER_PORT + "/oauth/token";
 const tokenUrl: string = ENV.SEB_SERVER_URL + ENV.SEB_SERVER_PORT + "/oauth/token?grant_type=";
 const jwtUrl: string = ENV.SEB_SERVER_URL + ENV.SEB_SERVER_PORT + "/oauth/jwttoken/verify";
 
 export async function authorizeViaSebServer(username: string, password: string): Promise<object> {
-    const url: string = ENV.SEB_SERVER_URL + ENV.SEB_SERVER_PORT + "/oauth/token";
     const encodedCredentials: string = utils.createEncodedCredentials(
         ENV.SEB_SERVER_USERNAME,
         ENV.SEB_SERVER_PASSWORD
@@ -19,7 +19,7 @@ export async function authorizeViaSebServer(username: string, password: string):
     body.append("username", username);
     body.append("password", password);
 
-    const { data, status } = await axios.post(url, body.toString(), {
+    const { data, status } = await axios.post(tokenUrlWithoutGrantType, body.toString(), {
         headers: {
             ...apiService.getAuthorizationHeadersBasic(encodedCredentials),
         }
