@@ -67,15 +67,11 @@
             "EXAM_ADMIN": "Exam Administrator",
             "EXAM_SUPPORTER": "Examination Supervisor",
             "TEACHER": "Teacher"
-      }
-
+        }
     },
-
     "screenReader": {
         "logo": "SEB Logo"
     },
-        
-
     "clientGroups": {
         "description": {
             "ip": [
@@ -214,6 +210,41 @@
         }
     },
     "userAccount": {
+        "general": {
+            "validation": {
+              "required": "This field is required",
+              "passwordTooShort": "Password must be at least 8 characters",
+              "passwordsDontMatch": "Passwords must match",
+              "invalidEmail": "Invalid email format",
+              "invalidRoleSelection": "Please select at least one Role"
+            },
+            "status":{
+                "active" : "Active",
+                "inactive" : "Inactive"
+            }
+        },
+        "registerPage": {
+            "labels": {
+                "institutionLabel": "Institution *",
+                "usernameLabel": "Username *",
+                "nameLabel": "Name *",
+                "surnameLabel": "Last Name*",
+                "emailLabel": "Email",
+                "timeZoneLabel": "Time Zone *",
+                "passwordLabel": "Password *",
+                "confirmPasswordLabel": "Confirm Password *",
+                "selectRolesLabel": "Roles *"
+            },
+            "info" : {
+                "alreadyHaveAccount": "Already have an account?",
+                "accountCreationInfo": "Fill out the required * fields to create a new User Account"
+            },
+            "buttons" : {
+                "login": "Login",
+                "register": "Register"
+            }
+        },
+
         "userAccountPage": {
           "userAccountTableHeaders": {
             "tableHeaderInstitution": "Institution",
@@ -269,13 +300,6 @@
           },
           "buttons": {
               "createNewUser" : "Create"
-            },
-          "validation": {
-              "required": "This field is required",
-              "passwordTooShort": "Password must be at least 8 characters",
-              "passwordsDontMatch": "Passwords must match",
-              "invalidEmail": "Invalid email format",
-              "invalidRoleSelection": "Please select at least one Role"
             }
         },
       "userAccountDetailAndEditPage": {
@@ -305,17 +329,6 @@
           },
           "warnings": {
               "edit-success": "Edited User: \"{username}\"."
-          },
-          "validation": {
-              "required": "This field is required",
-              "passwordTooShort": "Password must be at least 8 characters",
-              "passwordsDontMatch": "Passwords must match",
-              "invalidEmail": "Invalid email format",
-              "invalidRoleSelection": "Please select at least one Role"
-            },
-            "status":{
-                "active" : "Active",
-                "inactive" : "Inactive"
             }
         }
     },

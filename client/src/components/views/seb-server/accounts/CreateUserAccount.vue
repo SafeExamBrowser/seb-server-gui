@@ -305,11 +305,11 @@
 
 
     //validation rules
-    const requiredMessage = translate('userAccount.createUserAccountPage.validation.required');
-    const passwordTooShortMessage = translate('userAccount.createUserAccountPage.validation.passwordTooShort');
-    const passwordsDontMatchMessage = translate('userAccount.createUserAccountPage.validation.passwordsDontMatch');
-    const invalidEmailMessage = translate('userAccount.createUserAccountPage.validation.invalidEmail');
-    const invalidRoleSelectionMessage = translate('userAccount.createUserAccountPage.validation.invalidRoleSelection');
+    const requiredMessage = translate('userAccount.general.validation.required');
+    const passwordTooShortMessage = translate('userAccount.general.validation.passwordTooShort');
+    const passwordsDontMatchMessage = translate('userAccount.general.validation.passwordsDontMatch');
+    const invalidEmailMessage = translate('userAccount.general.validation.invalidEmail');
+    const invalidRoleSelectionMessage = translate('userAccount.general.validation.invalidRoleSelection');
 
     const requiredRule = (v: string) => !!v || requiredMessage;
     const passwordRule = (v: string) => (v && v.length >= 8) || passwordTooShortMessage;

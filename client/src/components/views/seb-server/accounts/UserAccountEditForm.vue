@@ -73,8 +73,8 @@
                     >
                         {{
                             user?.active
-                                ? translate('userAccount.userAccountDetailAndEditPage.status.active')
-                                : translate('userAccount.userAccountDetailAndEditPage.status.inactive')
+                                ? translate('userAccount.general.status.active')
+                                : translate('userAccount.general.status.inactive')
                         }}
                     </v-chip>
                 </v-row>
@@ -238,15 +238,14 @@
                                                 lg="7"
                                                 class="py-1"
                                             >
-                                                <div class="custom-role-checkbox">
-                                                    <input
-                                                        type="checkbox"
-                                                        :id="role.value"
-                                                        :value="role.value"
-                                                        v-model="selectedRoles"
-                                                    />
-                                                    <label :for="role.value">{{ role.label }}</label>
-                                                </div>
+                                                <v-checkbox
+                                                    v-model="selectedRoles"
+                                                    :label="role.label"
+                                                    :value="role.value"
+                                                    density="compact"
+                                                    hide-details
+                                                    class="custom-role-checkbox"
+                                                />
                                             </v-col>
                                         </v-row>
                                         <div v-if="rolesTouched && selectedRoles.length === 0"
@@ -430,11 +429,11 @@
 
 
     //validation rules
-    const requiredMessage = translate('userAccount.userAccountDetailAndEditPage.validation.required');
-    const invalidEmailMessage = translate('userAccount.userAccountDetailAndEditPage.validation.invalidEmail');
-    const invalidRoleSelectionMessage = translate('userAccount.userAccountDetailAndEditPage.validation.invalidRoleSelection');
-    const passwordTooShortMessage = translate('userAccount.userAccountDetailAndEditPage.validation.passwordTooShort');
-    const passwordsDontMatchMessage = translate('userAccount.createUserAccountPage.validation.passwordsDontMatch');
+    const requiredMessage = translate('userAccount.general.validation.required');
+    const invalidEmailMessage = translate('userAccount.general.validation.invalidEmail');
+    const invalidRoleSelectionMessage = translate('userAccount.general.validation.invalidRoleSelection');
+    const passwordTooShortMessage = translate('userAccount.general.validation.passwordTooShort');
+    const passwordsDontMatchMessage = translate('userAccount.general.validation.passwordsDontMatch');
     const requiredRule = (v: string) => !!v || requiredMessage;
     const emailRule = (v: string) => !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || invalidEmailMessage;
     const newPasswordRule = (v: string) => (v && v.length >= 8) || passwordTooShortMessage;
@@ -688,8 +687,7 @@
     .custom-role-checkbox {
         display: flex;
         align-items: center;
-        gap: 0.6rem;
-        margin-bottom: 8px;
+        gap: 0.0rem;
     }
 
     .custom-role-checkbox input[type="checkbox"] {

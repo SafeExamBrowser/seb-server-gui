@@ -46,7 +46,7 @@
                                             required
                                             prepend-inner-icon="mdi-domain"
                                             density="compact"
-                                            label="Institution *"
+                                            :label="translate('userAccount.registerPage.labels.institutionLabel')"
                                             variant="outlined"
                                             v-model="selectedInstitution"
                                             :items="institutions"
@@ -62,7 +62,7 @@
                                             required
                                             prepend-inner-icon="mdi-account-outline"
                                             density="compact"
-                                            label="Username *"
+                                            :label="translate('userAccount.registerPage.labels.usernameLabel')"
                                             variant="outlined"
                                             v-model="username"
                                             :rules="[requiredRule]"
@@ -74,7 +74,7 @@
                                             required
                                             prepend-inner-icon="mdi-account-outline"
                                             density="compact"
-                                            label="Name *"
+                                            :label="translate('userAccount.registerPage.labels.nameLabel')"
                                             variant="outlined"
                                             v-model="name"
                                             :rules="[requiredRule]"
@@ -86,7 +86,7 @@
                                             required
                                             prepend-inner-icon="mdi-account-outline"
                                             density="compact"
-                                            label="Surname *"
+                                            :label="translate('userAccount.registerPage.labels.surnameLabel')"
                                             variant="outlined"
                                             v-model="surname"
                                             :rules="[requiredRule]"
@@ -97,7 +97,7 @@
                                         <v-text-field
                                             prepend-inner-icon="mdi-email-outline"
                                             density="compact"
-                                            label="Email"
+                                            :label="translate('userAccount.registerPage.labels.emailLabel')"
                                             variant="outlined"
                                             v-model="email"
                                             :rules="[emailRule]"
@@ -110,7 +110,7 @@
                                             required
                                             prepend-inner-icon="mdi-map-clock-outline"
                                             density="compact"
-                                            label="Time zone *"
+                                            :label="translate('userAccount.registerPage.labels.timeZoneLabel')"
                                             variant="outlined"
                                             v-model="timezone"
                                             :items="timezoneOptions"
@@ -125,7 +125,7 @@
                                             :type="passwordVisible ? 'text' : 'password'"
                                             prepend-inner-icon="mdi-lock-outline"
                                             density="compact"
-                                            label="Password *"
+                                            :label="translate('userAccount.registerPage.labels.passwordLabel')"
                                             variant="outlined"
                                             v-model="password"
                                             :rules="[requiredRule, passwordRule]"
@@ -148,7 +148,7 @@
                                             :type="confirmPasswordVisible ? 'text' : 'password'"
                                             prepend-inner-icon="mdi-lock-outline"
                                             density="compact"
-                                            label="Confirm password *"
+                                            :label="translate('userAccount.registerPage.labels.confirmPasswordLabel')"
                                             variant="outlined"
                                             v-model="confirmPassword"
                                             :rules="[requiredRule, confirmPasswordRule]"
@@ -177,21 +177,19 @@
                                     </v-col>
                                 </v-row>
 
-                                <div class="text-center mt-7">
-                                    <span>Already have an account?</span>
-                                    <span
-                                        class="text-decoration-underline"
-                                        role="button"
-                                        tabindex="0"
-                                        @keydown="handleTabKeyEvent($event, 'navigate')"
-                                    >
-                        <router-link :to="constants.DEFAULT_ROUTE">Login</router-link>
-                      </span>
-                                </div>
+<!--                                <div class="text-center mt-7">-->
+<!--                                    <span>{{translate('userAccount.registerPage.info.alreadyHaveAccount')}}</span>-->
+<!--                                    <span-->
+<!--                                        class="text-decoration-underline"-->
+<!--                                        role="button"-->
+<!--                                        tabindex="0"-->
+<!--                                        @keydown="handleTabKeyEvent($event, 'navigate')"-->
+<!--                                    >-->
+<!--                                        <router-link :to="constants.DEFAULT_ROUTE">{{translate('userAccount.registerPage.buttons.login')}}</router-link>-->
+<!--                                    </span>-->
+<!--                                </div>-->
                             </v-form>
                         </v-card-text>
-
-
                     </v-card>
                 </v-col>
             </v-row>
@@ -208,6 +206,9 @@
         registerUserAccount
     } from "@/services/seb-server/component-services/registerAccountViewService";
     import moment from "moment-timezone";
+    import {translate} from '@/utils/generalUtils';
+    import { useI18n } from "vue-i18n";
+
 
 
     //form fields
@@ -233,14 +234,14 @@
     const institutionSelectDisabled = ref(false);
 
     //validation rules
-    const requiredRule = (v: string) => !!v || 'This field is required';
+    const requiredRule = (v: string) => !!v || translate('userAccount.general.validation.required', useI18n());
     const passwordRule = (v: string) =>
-        (v && v.length >= 8) || 'Password must be at least 8 characters';
+        (v && v.length >= 8) || translate('userAccount.general.validation.passwordTooShort', useI18n());
     const formRef = ref();
     const confirmPasswordRule = (v: string) =>
-        v === password.value || 'Passwords must match';
+        v === password.value || translate('userAccount.general.validation.passwordsDontMatch', useI18n());
     const emailRule = (v: string) =>
-        !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || 'Invalid email format';
+        !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || translate('userAccount.general.validation.invalidEmail', useI18n());
 
     //load timezones
     const timezoneOptions = moment.tz.names();
