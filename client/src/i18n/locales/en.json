@@ -249,62 +249,65 @@
         },
 
         "userAccountPage": {
-          "userAccountTableHeaders": {
-            "tableHeaderInstitution": "Institution",
-            "tableHeaderName": "Name",
-            "tableHeaderSurname": "Last Name",
-            "tableHeaderUsername": "Username",
-            "tableHeaderEmail": "Email",
-            "tableHeaderRoles": "Roles",
-            "tableHeaderStatus": "Status"
-          },
-          "deleteUserAccountContext": {
-            "title": "Confirm Deletion",
-            "informationPart1": "Are you sure you want to delete",
-            "informationPart2": "'s account (",
-            "informationPart3": ")?"
-          },
-          "changeUserAccountStatusContext": {
-            "activateTitle": "Activate {username}?",
-            "deactivateTitle": "Deactivate {username}?",
-            "activateMessage": "Are you sure you want to activate {name} {surname}'s account ({username})?",
-            "deactivateMessage": "Are you sure you want to deactivate {name} {surname}'s account ({username})?",
-            "buttons": {
-              "activate": "Activate",
-              "deactivate": "Deactivate"
-            }
-          },
-          "addUserContext": "Add User Account",
-          "filters": {
-              "searchTitle": "Search",
-              "searchField": "Search for Users",
-              "statusFilter": "Status",
-              "activeSelector": "Active",
-              "inactiveSelector": "Inactive",
-              "institutionFilter": "Institution"
-          }
-      },
-      "createUserAccountPage": {
-          "title": "New User Account",
-          "labels": {
-              "institutionLabel": "Institution *",
-              "usernameLabel": "Username *",
-              "nameLabel": "Name *",
-              "surnameLabel": "Last Name*",
-              "emailLabel": "Email",
-              "timeZoneLabel": "Time Zone *",
-              "passwordLabel": "Password *",
-              "confirmPasswordLabel": "Confirm Password *",
-              "selectRolesLabel": "Roles *"
+            "userAccountTableHeaders": {
+                "tableHeaderInstitution": "Institution",
+                "tableHeaderName": "Name",
+                "tableHeaderSurname": "Last Name",
+                "tableHeaderUsername": "Username",
+                "tableHeaderEmail": "Email",
+                "tableHeaderRoles": "Roles",
+                "tableHeaderStatus": "Status"
             },
-          "info" : {
-              "rolesSelectionInfo": "Please select at least one Role",
-              "accountCreationInfo": "Fill out the required * fields to create a new User Account"
-          },
-          "buttons": {
-              "createNewUser" : "Create"
+            "deleteUserAccountContext": {
+                "title": "Confirm Deletion",
+                "informationPart1": "Are you sure you want to delete",
+                "informationPart2": "'s account (",
+                "informationPart3": ")?"
+            },
+            "changeUserAccountStatusContext": {
+                "activateTitle": "Activate {username}?",
+                "deactivateTitle": "Deactivate {username}?",
+                "activateMessage": "Are you sure you want to activate {name} {surname}'s account ({username})?",
+                "deactivateMessage": "Are you sure you want to deactivate {name} {surname}'s account ({username})?",
+                "buttons": {
+                    "activate": "Activate",
+                    "deactivate": "Deactivate"
+                }
+            },
+            "addUserContext": "Add User Account",
+            "filters": {
+                "searchTitle": "Search",
+                "searchField": "Search for Users",
+                "statusFilter": "Status",
+                "activeSelector": "Active",
+                "inactiveSelector": "Inactive",
+                "institutionFilter": "Institution"
+            },
+            "info": {
+                "noPermissionEditUser": "You don't have the permissions to edit this user"
             }
         },
+        "createUserAccountPage": {
+            "title": "New User Account",
+            "labels": {
+                "institutionLabel": "Institution *",
+                "usernameLabel": "Username *",
+                "nameLabel": "Name *",
+                "surnameLabel": "Last Name*",
+                "emailLabel": "Email",
+                "timeZoneLabel": "Time Zone *",
+                "passwordLabel": "Password *",
+                "confirmPasswordLabel": "Confirm Password *",
+                "selectRolesLabel": "Roles *"
+              },
+            "info" : {
+                "rolesSelectionInfo": "Please select at least one Role",
+                "accountCreationInfo": "Fill out the required * fields to create a new User Account"
+            },
+            "buttons": {
+                "createNewUser" : "Create"
+              }
+          },
       "userAccountDetailAndEditPage": {
           "changePasswordTitle": "Change User Password",
           "labels": {

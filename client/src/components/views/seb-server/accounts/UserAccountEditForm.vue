@@ -277,11 +277,9 @@
                                                 <div class="custom-alert">
                                                     <div class="alert-icon-circle">i</div>
                                                     <span class="alert-text">
-    {{ i18n.t('userAccount.userAccountDetailAndEditPage.warnings.no-edit-rights', { username: editedUserName }) }}
-  </span>
+                                                        {{ i18n.t('userAccount.userAccountDetailAndEditPage.warnings.no-edit-rights', { username: editedUserName }) }}
+                                                      </span>
                                                 </div>
-
-
                                             </div>
                                         </template>
 
@@ -505,7 +503,7 @@
         }
     });
 
-    const loadUser = async () => {
+    async function loadUser() {
         const institutionsResult = await getInstitutions();
         if (!institutionsResult || institutionsResult.length === 0) return;
 
@@ -653,8 +651,8 @@
             newUserPassword.value === confirmNewUserPassword.value
         );
     });
-
-    const saveChanges = async () => {
+//todo
+    async function saveChanges() {
         rolesTouched.value = true;
 
         const {valid} = await formRef.value.validate();
@@ -662,12 +660,10 @@
 
         if (!valid || !rolesValid || !user.value) return;
 
-        // 1. Save status first
         if (statusChanged.value) {
             await persistStatusChange(user.value);
         }
 
-        // 2. Then update the user info (with updated .active)
         if (fieldChanges.value) {
             const editedUserAccountParams: EditUserAccountParameters = {
                 uuid: user.value.uuid,
@@ -677,7 +673,7 @@
                 surname: surname.value,
                 username: username.value,
                 email: email.value || "",
-                active: user.value.active, // now accurate
+                active: user.value.active,
                 language: "en",
                 timezone: timezone.value,
                 userRoles: selectedRoles.value
@@ -721,8 +717,7 @@
 
     };
 
-    const changeUserPassword = async () => {
-
+    async function changeUserPassword(){
         const {valid} = await changePasswordForm.value.validate();
         if (!valid || !user.value?.uuid) {
             return

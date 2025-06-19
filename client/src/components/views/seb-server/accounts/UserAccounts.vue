@@ -207,19 +207,39 @@
                             <td class="text-primary">{{ item.email }}</td>
 
                             <td>
+                                <v-tooltip v-if="!hasEditingRights(item.userRoles as UserRoleEnum[])" location="top">
+                                    <template #activator="{ props }">
+                                        <v-chip
+                                            v-bind="props"
+                                            :color="item.active ? 'green' : 'red'"
+                                            dark
+                                            small
+                                            class="text-white font-weight-medium status-chip cursor-default opacity-50"
+                                        >
+                                            {{
+                                                item.active
+                                                    ? translate("userAccount.userAccountPage.filters.activeSelector")
+                                                    : translate("userAccount.userAccountPage.filters.inactiveSelector")
+                                            }}
+                                        </v-chip>
+                                    </template>
+                                    <span>{{ translate("userAccount.userAccountPage.info.noPermissionEditUser") }}</span>
+                                </v-tooltip>
+
                                 <v-chip
+                                    v-else
                                     :color="item.active ? 'green' : 'red'"
                                     dark
                                     small
-                                    class="text-white font-weight-medium status-chip"
-                                    :class="!hasEditingRights(item.userRoles as UserRoleEnum[]) ? 'cursor-default opacity-50' : 'cursor-pointer'"
-                                    @click.stop="hasEditingRights(item.userRoles as UserRoleEnum[]) && openStatusDialog(item)"
+                                    class="text-white font-weight-medium status-chip cursor-pointer"
+                                    @click.stop="openStatusDialog(item)"
                                 >
                                     {{
-                                        item.active ? translate("userAccount.userAccountPage.filters.activeSelector") : translate("userAccount.userAccountPage.filters.inactiveSelector")
+                                        item.active
+                                            ? translate("userAccount.userAccountPage.filters.activeSelector")
+                                            : translate("userAccount.userAccountPage.filters.inactiveSelector")
                                     }}
                                 </v-chip>
-
                             </td>
                             <td class="icon-cell">
                                 <div class="d-flex align-center justify-end h-100">
@@ -231,12 +251,26 @@
                                     ></v-icon>
 
 
+                                    <v-tooltip
+                                        v-if="!hasEditingRights(item.userRoles as UserRoleEnum[])"
+                                        location="top"
+                                    >
+                                        <template #activator="{ props }">
+                                            <v-icon
+                                                icon="mdi-delete"
+                                                class="action-icon cursor-default opacity-50"
+                                                v-bind="props"
+                                            />
+                                        </template>
+                                        <span>{{ translate("userAccount.userAccountPage.info.noPermissionEditUser") }}</span>
+                                    </v-tooltip>
+
                                     <v-icon
+                                        v-else
                                         icon="mdi-delete"
                                         class="action-icon"
-                                        :class="!hasEditingRights(item.userRoles as UserRoleEnum[]) && 'cursor-default opacity-50'"
-                                        @click.stop="hasEditingRights(item.userRoles as UserRoleEnum[]) && openDeleteDialog(item)"
-                                    ></v-icon>
+                                        @click.stop="openDeleteDialog(item)"
+                                    />
 
                                 </div>
                             </td>
@@ -743,7 +777,6 @@
         font-size: 0.75rem;
         font-weight: 500;
         color: #757575;
-        text-transform: uppercase;
         cursor: pointer;
         user-select: none;
         white-space: nowrap;
