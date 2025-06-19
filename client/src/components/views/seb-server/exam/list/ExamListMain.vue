@@ -151,11 +151,18 @@
             examStore.activeStatusFilter
         );
 
+        console.log("optionalParGetExams")
+        console.log(optionalParGetExams)
+
+
         const examsResponse: Exams | null = await examViewService.getExams(optionalParGetExams);
         if(examsResponse == null){
             isLoading.value = false;
             return;
         }
+
+        console.log("examsResponse:")
+        console.log(examsResponse)
 
         exams.value = examsResponse;
         totalItems.value = exams.value.number_of_pages * exams.value.page_size;

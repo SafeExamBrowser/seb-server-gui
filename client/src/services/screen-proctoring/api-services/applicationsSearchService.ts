@@ -3,9 +3,9 @@ import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
 
 
-export async function getExamsStarted(optionalParamters?: OptionalParGetExamsStarted): Promise<SPExam[] | any> {
+export async function getExamsStarted(optionalParameters?: OptionalParGetExamsStarted): Promise<SPExam[] | any> {
     const url: string = "/sp/search/applications/exams";
-    return (await apiService.api.get(url, { headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN), params: { optionalParamters } })).data;
+    return (await apiService.api.get(url, { headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN), params: { optionalParameters } })).data;
 }
 
 export async function getGroupIdsForExam(examId: number): Promise<number[] | any> {

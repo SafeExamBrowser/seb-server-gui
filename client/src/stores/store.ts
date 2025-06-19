@@ -33,12 +33,12 @@ export const useAppBarStore = defineStore("appBar", () => {
         title,
         examOverviewShowPastExams,
         examOverviewShowUpcomingExams,
-        galleryGridSize, 
-        galleryIsNameEnabled, 
-        galleryIsIpEnabled, 
-        galleryIsMetadataEnabled, 
-        galleryCurrentPage, 
-        galleryMaxPages, 
+        galleryGridSize,
+        galleryIsNameEnabled,
+        galleryIsIpEnabled,
+        galleryIsMetadataEnabled,
+        galleryCurrentPage,
+        galleryMaxPages,
         galleryLiveSessions,
         galleryAmountOfSessions,
         galleryDescription,
@@ -53,6 +53,20 @@ export const useNavigationStore = defineStore("navigation", () => {
 
     return {
         isNavigationOverviewOpen
+    };
+});
+
+
+export const useLayoutStore = defineStore("layout", () => {
+    const isBlueBackground = ref(false);
+
+    function setBlueBackground(value: boolean) {
+        isBlueBackground.value = value;
+    }
+
+    return {
+        isBlueBackground,
+        setBlueBackground,
     };
 });
 
@@ -182,7 +196,7 @@ export const useTableStore = defineStore("table", () => {
     const isIndicatorExpandButtonDisabled = ref<boolean>(false);
 
     const isIpDisplayList = ref<{day: string, isIp: boolean}[]>([]);
-  
+
     return {isIndicatorsExpanded, isIpDisplayList, isIndicatorExpandButtonDisabled};
 });
 
@@ -190,6 +204,6 @@ export const useTableStore = defineStore("table", () => {
 //----------------------gallery view---------------------------//
 export const useGalleryStore = defineStore("gallery", () => {
     const focusedImageIndexes = ref<boolean[]>([]);
-  
+
     return {focusedImageIndexes};
 });

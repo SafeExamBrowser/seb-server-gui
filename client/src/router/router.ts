@@ -3,6 +3,7 @@ import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 import LoginPage from "@/components/views/LoginPage.vue";
 import RegisterPage from "@/components/views/RegisterPage.vue";
 import HomePage from "@/components/views/seb-server/home/HomePage.vue";
+import UserAccounts from "@/components/views/seb-server/accounts/UserAccounts.vue";
 import ExamListContainer from "@/components/views/seb-server/exam/list/ExamListContainer.vue";
 import ExamDetailContainer from "@/components/views/seb-server/exam/detail/ExamDetailContainer.vue";
 import * as constants from "@/utils/constants";
@@ -15,7 +16,10 @@ import MonitoringOverviewContainer from "@/components/views/seb-server/monitorin
 import * as authenticationService from "@/services/authenticationService";
 import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
 import MonitoringDetailsContainer from "@/components/views/seb-server/monitoring/client-detail/MonitoringDetailsContainer.vue";
-
+import UserAccountEditForm from "@/components/views/seb-server/accounts/UserAccountEditForm.vue";
+import CreateUserAccount from "@/components/views/seb-server/accounts/CreateUserAccount.vue";
+import ProfilePage from "@/components/views/seb-server/accounts/ProfilePage.vue";
+import EditUserAccount from "@/components/views/seb-server/accounts/EditUserAccount.vue";
 
 //----------screen-proctoring ---------
 import * as spConstants from "@/utils/sp-constants";
@@ -25,7 +29,9 @@ import ProctoringViewPage from "@/components/views/screen-proctoring/proctoring/
 import ProctoringApplicationSearchPage from "@/components/views/screen-proctoring/proctoring/ProctoringApplicationSearchPage.vue";
 import ExamsOverviewPage from "@/components/views/screen-proctoring/exams-overview/ExamsOverviewPage.vue";
 import SearchPage from "@/components/views/screen-proctoring/search/SearchPage.vue";
+
 import { useAuthStore } from "@/stores/authentication/authenticationStore";
+
 
 
 
@@ -49,24 +55,23 @@ const routes: Array<RouteRecordRaw> = [
         meta: {requiresAuth: false},
         beforeEnter: async (to, from) => {
           const authStore = useAuthStore();
-    
+
           if(to.query.token != null){
             try{
               const tokenObject: JwtTokenResponse = await authenticationService.verifyJwt(to.query.token.toString());
               authStore.loginWithJwt(tokenObject.login.access_token, tokenObject.login.refresh_token, tokenObject.redirect);
-    
               return;
-    
+
             }catch(error){
               return true;
             }
           }
-    
+
           //true means redirecting to Login Page
           return true;
         },
         component: LoginPage
-    },    
+    },
     {
         path: constants.DEFAULT_ROUTE,
         component: ContainerLayout,
@@ -150,9 +155,47 @@ const routes: Array<RouteRecordRaw> = [
                     titleKey: "titles.monitoring"
                 },
             },
-
-
-
+            //----------user accounts routes---------
+            {
+                path: constants.USER_ACCOUNTS_ROUTE + "/:userId",
+                name: "ProfileRoute",
+                component: UserAccountEditForm,
+                meta: {
+                    titleKey: "titles.userAccounts"
+                },
+            },
+            {
+                path: constants.PROFILE_ROUTE,
+                name: "ProfileRoute",
+                component: ProfilePage,
+                meta: {
+                    titleKey: "titles.profile"
+                },
+            },
+            {
+                path: constants.EDIT_USER_ACCOUNT + "/:userUuid",
+                name: "EditUserAccount",
+                component: EditUserAccount,
+                meta: {
+                    titleKey: "titles.editUserAccount"
+                },
+            },
+            {
+                path: constants.USER_ACCOUNTS_ROUTE,
+                name: "UserAccounts",
+                component: UserAccounts,
+                meta: {
+                    titleKey: "titles.userAccounts"
+                },
+            },
+            {
+                path: constants.CREATE_USER_ACCOUNTS_ROUTE,
+                name: "CreateUserAccount",
+                component: CreateUserAccount,
+                meta: {
+                    titleKey: "titles.createUserAccount"
+                },
+            },
         ]
     },
 
@@ -211,8 +254,6 @@ const routes: Array<RouteRecordRaw> = [
                 title: "Proctoring" + defaultPageTitle
             }
           },
-         
-    
         ]
       },
 ];

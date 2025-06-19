@@ -21,8 +21,8 @@ export async function updateExam(id: string, exam: Exam): Promise<Exam | any>{
     return (await apiService.api.put(examUrl + "/" + id, exam, {headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
 }
 
-export async function getExams(optionalParamters?: OptionalParGetExams): Promise<Exams | any>{
-    return (await apiService.api.get(examsUrl, {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN), params: {optionalParamters}})).data;
+export async function getExams(optionalParameters?: OptionalParGetExams): Promise<Exams | any>{
+    return (await apiService.api.get(examsUrl, {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN), params: {optionalParameters}})).data;
 }
 
 export async function archiveExam(id: string): Promise<Exam | any>{

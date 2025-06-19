@@ -25,7 +25,7 @@ export const useExamStore = defineStore("exam", () => {
         selectedExamTemplate.value = null;
         relatedAssessmentTool.value = null;
         selectedExamSupervisors.value = [];
-    }   
+    }
 
 
     return {

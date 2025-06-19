@@ -50,14 +50,24 @@
     "general": {
         "loadingText": "Loading... Please wait",
         "cancelButton": "Cancel",
+        "backButton": "Back",
         "searchButton": "Search",
         "saveButton": "Save",
         "startButton": "Start",
         "downloadButton": "Download",
         "editButton": "Edit",
         "deleteButton": "Delete",
+        "noData": "No Data Available",
+        "loading": "Loading",
         "true": "Yes",
-        "false": "No"
+        "false": "No",
+        "userRoles": {
+            "SEB_SERVER_ADMIN": "Server Administrator",
+            "INSTITUTIONAL_ADMIN": "Institutional Administrator",
+            "EXAM_ADMIN": "Exam Administrator",
+            "EXAM_SUPPORTER": "Examination Supervisor",
+            "TEACHER": "Teacher"
+        }
     },
 
     "screenReader": {
@@ -98,7 +108,9 @@
         "usernamePlaceholder": "Username *",
         "passwordPlaceholder": "Password *",
         "noAccount": "No Account? ",
-        "register": "Register"
+        "register": "Register",
+        "profile": "Profile",
+        "settings": "Settings"
     },
 
     "homePage": {
@@ -200,7 +212,133 @@
             "tableHeaderStatus": "Status"
         }
     },
+    "userAccount": {
+        "general": {
+            "validation": {
+              "required": "This field is required",
+              "passwordTooShort": "Password must be at least 8 characters",
+              "passwordsDontMatch": "Passwords must match",
+              "invalidEmail": "Invalid email format",
+              "invalidRoleSelection": "Please select at least one Role"
+            },
+            "status":{
+                "active" : "Active",
+                "inactive" : "Inactive"
+            }
+        },
+        "registerPage": {
+            "labels": {
+                "institutionLabel": "Institution *",
+                "usernameLabel": "Username *",
+                "nameLabel": "Name *",
+                "surnameLabel": "Last Name*",
+                "emailLabel": "Email",
+                "timeZoneLabel": "Time Zone *",
+                "passwordLabel": "Password *",
+                "confirmPasswordLabel": "Confirm Password *",
+                "selectRolesLabel": "Roles *"
+            },
+            "info" : {
+                "alreadyHaveAccount": "Already have an account?",
+                "accountRegistrationInfo": "Please fill the form to register for a SEB Server account."
+            },
+            "buttons" : {
+                "login": "Login",
+                "register": "Register"
+            }
+        },
 
+        "userAccountPage": {
+            "userAccountTableHeaders": {
+                "tableHeaderInstitution": "Institution",
+                "tableHeaderName": "Name",
+                "tableHeaderSurname": "Last Name",
+                "tableHeaderUsername": "Username",
+                "tableHeaderEmail": "Email",
+                "tableHeaderRoles": "Roles",
+                "tableHeaderStatus": "Status"
+            },
+            "deleteUserAccountContext": {
+                "title": "Confirm Deletion",
+                "informationPart1": "Are you sure you want to delete",
+                "informationPart2": "'s account (",
+                "informationPart3": ")?"
+            },
+            "changeUserAccountStatusContext": {
+                "activateTitle": "Activate {username}?",
+                "deactivateTitle": "Deactivate {username}?",
+                "activateMessage": "Are you sure you want to activate {name} {surname}'s account ({username})?",
+                "deactivateMessage": "Are you sure you want to deactivate {name} {surname}'s account ({username})?",
+                "buttons": {
+                    "activate": "Activate",
+                    "deactivate": "Deactivate"
+                }
+            },
+            "addUserContext": "Add User Account",
+            "filters": {
+                "searchTitle": "Search",
+                "searchField": "Search for Users",
+                "statusFilter": "Status",
+                "activeSelector": "Active",
+                "inactiveSelector": "Inactive",
+                "institutionFilter": "Institution"
+            },
+            "info": {
+                "noPermissionEditUser": "You don't have the permissions to edit this user"
+            }
+        },
+        "createUserAccountPage": {
+            "title": "New User Account",
+            "labels": {
+                "institutionLabel": "Institution *",
+                "usernameLabel": "Username *",
+                "nameLabel": "Name *",
+                "surnameLabel": "Last Name*",
+                "emailLabel": "Email",
+                "timeZoneLabel": "Time Zone *",
+                "passwordLabel": "Password *",
+                "confirmPasswordLabel": "Confirm Password *",
+                "selectRolesLabel": "Roles *"
+              },
+            "info" : {
+                "rolesSelectionInfo": "Please select at least one Role",
+                "accountCreationInfo": "Fill out the required * fields to create a new User Account"
+            },
+            "buttons": {
+                "createNewUser" : "Create"
+              }
+          },
+      "userAccountDetailAndEditPage": {
+          "changePasswordTitle": "Change User Password",
+          "labels": {
+              "institutionLabel": "Institution *",
+              "usernameLabel": "Username *",
+              "nameLabel": "Name *",
+              "surnameLabel": "Last Name*",
+              "emailLabel": "Email",
+              "timeZoneLabel": "Time Zone *",
+              "passwordLabel": "Password *",
+              "confirmPasswordLabel": "Confirm Password *",
+              "selectRolesLabel": "Roles *",
+              "adminPassword": "Personal Password",
+              "newPassword": "New Password",
+              "confirmNewPassword": "Repeat Password"
+          },
+          "info" : {
+              "rolesSelectionInfo": "Must have at least one Role",
+              "accountEditInfo": "Change the values of the fields to edit the user",
+              "changePasswordInfo": "Change \"{username}\"'s password",
+              "createdAtInfo": "Created at: "
+          },
+          "buttons": {
+              "saveChanges" : "Save Changes"
+          },
+          "warnings": {
+              "edit-success": "Edited User: \"{username}\".",
+              "no-edit-rights": "You do not have rights to edit this user."
+            }
+        }
+    },
     "examDetail": {
         "info": {
             "start": "Start",
@@ -439,30 +577,26 @@
     },
 
     "monitoringDetails": {
-        "info": {
-            "userNameOrSession": "User Name or Session",
-            "clientGroups": "Client Group(s)",
-            "connectionInfo": "Connection Info",
-            "status": "Status",
-            "actions": "Actions",
-            "lock": "Lock client",
-            "quit": "Quit client"
+      "info": {
+        "userNameOrSession": "User Name or Session",
+        "clientGroups": "Client Group(s)",
+        "connectionInfo": "Connection Info",
+        "status": "Status",
+        "actions": "Actions",
+        "lock": "Lock client",
+        "quit": "Quit client"
 
-        },
-
-        "main": {
-            "notifications": "Notifications",
-            "resolveRaiseHand": "Resolve Raise Hand",
-            "noNotifications": "No notifications available",
-            "messages": "Messages",
-            "resolveMessage": "Resolve Message",
-            "screenProctoring": "Screen Proctoring",
-            "clientLogs": "Client Logs"
-        }
+      },
+      "main": {
+        "notifications": "Notifications",
+        "resolveRaiseHand": "Resolve Raise Hand",
+        "noNotifications": "No notifications available",
+        "messages": "Messages",
+        "resolveMessage": "Resolve Message",
+        "screenProctoring": "Screen Proctoring",
+        "clientLogs": "Client Logs"
+      }
     },
-
-
-
     "titles": {
         "home": "Home",
         "navigationOverview": "Navigation Overview",
@@ -473,12 +607,17 @@
         "quizImport": "Prepare Exam",
         "preparation": "Preparation",
         "recentExams": "Last Edited Exams",
-
+        "settings": "Settings",
+        "register": "Register",
+        "userAccounts": "User Accounts",
+        "profileSettings": "Profile Settings",
         "screenProctoring": "Screen Proctoring",
         "spSearch": "Search",
-        "spApplications": "Applications"
+        "createUserAccount": "Create User Account",
+        "spApplications": "Applications",
+        "editUserAccount": "Edit User Account",
+        "profile": "Profile Settings"
     },
-
 
     "warnings": {
         "no-data": "No data available",
@@ -496,16 +635,10 @@
         "exam-update-failed": "Exam update failed",
         "activate-screen-proctoring-failed": "Activation of screen proctoring failed",
         "deactivate-screen-proctoring-failed": "Deactivation of screen proctoring failed",
-        "no-assessment-tool": "No assessment tool connected to SEB Server. Contact your institutional Administrator."
+        "no-assessment-tool": "No assessment tool connected to SEB Server. Contact your institutional Administrator.",
+        "deletion-success": "Deleted User: \"{username}\".",
+        "creation-success": "Added User: \"{username}\"."
     },
-
-
-
-
-
-
-
-
     "navigation": {
         "title": "SEB Screen Proctoring",
         "signIn": "Sign in",
@@ -518,7 +651,12 @@
             "finishedExams": "Finished Exams",
             "SEBClientLogs": "SEB Client Logs",
             "search": "Search",
-            "applications": "Applications"
+            "assessmentToolConnections": "Assessment Tool Connections",
+            "connectionConfiguration": "Connection Configuration",
+            "certificates": "Certificates",
+            "userAccounts": "User Accounts",
+            "createUserAccount": "New User Account"
+
         },
 
         "screenReader": {

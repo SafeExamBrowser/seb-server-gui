@@ -18,7 +18,7 @@ export async function login(username: string, password: string, isSpLogin: boole
         if(isSpLogin){
             url = ENV.SERVER_URL + ENV.SERVER_PORT + "/sp-authorize";
         }
-
+        console.log(username, password, url);
         //this is implemented for general api-calls in apiService.ts but has to be done explicitly for login as it does not use said service
         setLoginTimeouts();
 
@@ -30,7 +30,7 @@ export async function login(username: string, password: string, isSpLogin: boole
         if (response.status === 200) {
             resetLoadingState();
             return response.data;
-        } 
+        }
 
     } catch (error) {
         resetLoadingState();
@@ -47,11 +47,11 @@ export async function login(username: string, password: string, isSpLogin: boole
             loadingStore.isTimeout = true;
         }, 10000);
     }
-    
+
     function resetLoadingState(){
-        if (loadingTimeout) clearTimeout(loadingTimeout); 
-        if (loadingEndTimeout) clearTimeout(loadingEndTimeout); 
-    
+        if (loadingTimeout) clearTimeout(loadingTimeout);
+        if (loadingEndTimeout) clearTimeout(loadingEndTimeout);
+
         loadingStore.isLoading = false;
     }
 }
@@ -71,7 +71,7 @@ export async function refresh(isSpRefresh: boolean): Promise<string | any>{
         const headers = {
             "Authorization": "Bearer " + authStore.getStorageItem(refreshTokenString),
         };
-    
+
         const response: AxiosResponse<Token> = await axios.post(url, {}, {headers: headers});
 
         return response.data;
@@ -85,13 +85,13 @@ export async function verifyJwt(token: string): Promise<string | any> {
 
     try {
       const url: string = ENV.SERVER_URL + ENV.SERVER_PORT + "/jwttoken/verify";
-      
+
       const response = await axios.post(url, {token});
-  
+
       if (response.status === 200) {
         return response.data;
-      } 
-  
+      }
+
     } catch (error) {
       throw error;
     }

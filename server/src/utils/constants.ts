@@ -15,10 +15,21 @@ export const EXAM_SCREEN_PROCTORING_ROUTE = "/exam/:id/screen-proctoring"
 export const EXAM_TEMPLATE_ROUTE = "/exam-template";
 export const EXAM_TEMPLATE_SCREEN_PROCTORING_ROUTE = "/exam-template/:id/screen-proctoring";
 
+//institution
+export const ADMIN_INSTITUTION_INFO_ROUTE = "/info/institution";
+export const INSTITUTION_ROUTE = "/institution";
+
 //user account
 export const USER_ACCOUNT_ROUTE = "/useraccount";
 export const USER_ACCOUNT_NAMES_ROUTE = "/useraccount/names";
+export const USER_ACCOUNT_REGISTRATION_SERVER_ROUTE = "/register";
+export const USER_ACCOUNT_REGISTRATION_ROUTE = "/useraccount/register";
 export const SUPERVISOR_ACCOUNT_NAMES_ROUTE = "/useraccount/supervisors";
+export const DEACTIVATION_ROUTE = "/inactive";
+export const ACTIVATION_ROUTE = "/active";
+
+export const CHANGE_PASSWORD_ROUTE = "/password";
+
 
 //client config
 export const CONNECTION_CONFIG_ROUTE = "/client_configuration";

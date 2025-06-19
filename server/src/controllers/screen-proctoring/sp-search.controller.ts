@@ -4,7 +4,7 @@ import * as searchService from '../../services/screen-proctoring/sp-search.servi
 
 export async function searchSessionsDay(req: Request, res: Response){
     try{
-        const [sessions, status] = await searchService.searchSessionsDay(req.headers.authorization, req.query.optionalParamters);
+        const [sessions, status] = await searchService.searchSessionsDay(req.headers.authorization, req.query.optionalParameters);
         return res.status(status).json(sessions);
 
     }catch(error){
@@ -14,7 +14,7 @@ export async function searchSessionsDay(req: Request, res: Response){
 
 export async function searchSessions(req: Request, res: Response){
     try{
-        const [sessions, status] = await searchService.searchSessions(req.headers.authorization, req.query.optionalParamters);
+        const [sessions, status] = await searchService.searchSessions(req.headers.authorization, req.query.optionalParameters);
         return res.status(status).json(sessions);
 
     }catch(error){
@@ -24,7 +24,7 @@ export async function searchSessions(req: Request, res: Response){
 
 export async function searchScreenshots(req: Request, res: Response){
     try{
-        const [screenshots, status] = await searchService.searchScreenshots(req.headers.authorization, req.query.optionalParamters);
+        const [screenshots, status] = await searchService.searchScreenshots(req.headers.authorization, req.query.optionalParameters);
         return res.status(status).json(screenshots);
 
     }catch(error){
@@ -34,7 +34,7 @@ export async function searchScreenshots(req: Request, res: Response){
 
 export async function searchTimeline(req: Request, res: Response){
     try{
-        const [timeline, status] = await searchService.searchTimeline(req.headers.authorization, req.params.sessionId, req.query.optionalParamters);
+        const [timeline, status] = await searchService.searchTimeline(req.headers.authorization, req.params.sessionId, req.query.optionalParameters);
         return res.status(status).json(timeline);
 
     }catch(error){

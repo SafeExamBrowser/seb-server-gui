@@ -25,7 +25,7 @@ export function createApiInterceptor(){
 
     let loadingTimer: NodeJS.Timeout | null = null;
     let loadingTimout: number = 500;
-    
+
     let loadingEndTimer: NodeJS.Timeout | null = null;
 
     api.interceptors.request.use(async (config) => {
@@ -96,7 +96,7 @@ export function createApiInterceptor(){
         }
 
     });
-    
+
 
     async function handleAuthenticationError(originalRequest: any){
         try{
@@ -111,7 +111,7 @@ export function createApiInterceptor(){
                 authStore.setStorageItem(StorageItemEnum.SP_ACCESS_TOKEN, spResponse.access_token);
                 authStore.setStorageItem(StorageItemEnum.SP_REFRESH_TOKEN, spResponse.refresh_token);
             }
-            
+
             originalRequest._retry = true;
             originalRequest.headers = getHeaders(StorageItemEnum.ACCESS_TOKEN);
 
@@ -142,8 +142,8 @@ export function createApiInterceptor(){
 
 
     function resetLoadingState(){
-        if (loadingTimer) clearTimeout(loadingTimer); 
-        if (loadingEndTimer) clearTimeout(loadingEndTimer); 
+        if (loadingTimer) clearTimeout(loadingTimer);
+        if (loadingEndTimer) clearTimeout(loadingEndTimer);
 
         loadingStore.isLoading = false;
         loadingStore.skipLoading = false;
@@ -167,6 +167,16 @@ export function getPostHeaders(type: string): object{
       "accept": "application/json",
       "Authorization": "Bearer " + authStore.getStorageItem(type),
       "Content-Type": "application/json"
+    };
+}
+
+export function getPutHeaders(type: string): object{
+    const authStore = useAuthStore();
+
+    return {
+        "accept": "application/json",
+        "Authorization": "Bearer " + authStore.getStorageItem(type),
+        "Content-Type": "application/json"
     };
 }
 
@@ -196,12 +206,12 @@ export function throttle<T extends (...args: any[]) => void>(func: T, limit: num
 
 function getIgnoredUrls(): string[]{
     return [
-        "/quiz", 
+        "/quiz",
         "/exams",
-        "/sp/screenshot/", 
-        "/sp/screenshot-data/", 
-        "/sp/screenshot-timestamps/", 
-        "/sp/search/timeline", 
+        "/sp/screenshot/",
+        "/sp/screenshot-data/",
+        "/sp/screenshot-timestamps/",
+        "/sp/search/timeline",
         "/sp/search/sessions",
         "/monitoring"
 
@@ -211,8 +221,8 @@ function getIgnoredUrls(): string[]{
 function isUrlIgnorable(url: string | undefined): boolean{
     if(url == null){
         return false;
-    } 
-    
+    }
+
     const ignoredUrls: string[] = getIgnoredUrls();
 
     // if(url == "/search/sessions/day"){

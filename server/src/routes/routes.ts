@@ -20,6 +20,8 @@ import * as spUserAccountController from "../controllers/screen-proctoring/sp-us
 import * as settingsController from "../controllers/screen-proctoring/sp-settings.controller";
 import * as applicationSearchController from "../controllers/screen-proctoring/sp-application-search.controller";
 import * as spAuthorizationAdditional from "../middleware/spAuthorizationAdditional";
+import * as institutionsController from "../controllers/seb-server/institution.controller";
+import {USER_ACCOUNT_REGISTRATION_ROUTE} from "../utils/constants";
 
 const router: Router = express.Router();
 
@@ -59,10 +61,22 @@ router.get(constants.EXAM_TEMPLATE_ROUTE + "/:id", examTemplateController.getExa
 router.get(constants.EXAM_TEMPLATE_ROUTE, examTemplateController.getExamTemplates);
 router.get(constants.EXAM_TEMPLATE_SCREEN_PROCTORING_ROUTE, examTemplateController.getExamTemplateSp);
 
+//institutions
+router.get(constants.INSTITUTION_ROUTE, institutionsController.getInstitutions);
+router.get(constants.INSTITUTION_ROUTE, institutionsController.getInstitutions);
+
 //user accounts
 router.get(constants.USER_ACCOUNT_ROUTE + "/:id", userAccountController.getUserAccount);
+router.get(constants.USER_ACCOUNT_ROUTE, userAccountController.getUserAccounts);
 router.get(constants.USER_ACCOUNT_NAMES_ROUTE, userAccountController.getUserAccountNames);
 router.get(constants.SUPERVISOR_ACCOUNT_NAMES_ROUTE, userAccountController.getSupervisorAccountNames);
+router.post(constants.USER_ACCOUNT_REGISTRATION_ROUTE, userAccountController.registerUserAccount);
+router.post(constants.USER_ACCOUNT_ROUTE + "/:modelId" + constants.ACTIVATION_ROUTE, userAccountController.activateAccount);
+router.post(constants.USER_ACCOUNT_ROUTE + "/:modelId" + constants.DEACTIVATION_ROUTE, userAccountController.deactivateAccount);
+router.post(constants.USER_ACCOUNT_ROUTE, userAccountController.createUserAccount);
+router.put(constants.USER_ACCOUNT_ROUTE, userAccountController.editUserAccount);
+router.put(constants.USER_ACCOUNT_ROUTE + constants.CHANGE_PASSWORD_ROUTE, userAccountController.changePassword);
+router.delete(constants.USER_ACCOUNT_ROUTE + "/:id", userAccountController.deleteUserAccount);
 
 //connection configurations
 router.get(constants.DOWNLOAD_EXAM_CONFIG_ROUTE + "/:id", configurationController.downloadExamConfig);

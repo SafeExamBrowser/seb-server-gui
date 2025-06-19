@@ -9,7 +9,9 @@
                     </v-app-bar-title>
 
                     <v-row class="mt-4 mb-16 mr-0">
-                        <v-col cols="4">
+
+                        <!---------------Preparation List----------------->
+                        <v-col cols="3">
                             <h4 class="text-subtitle-1 font-weight-bold mb-3">{{ translate("titles.preparation").toUpperCase() }}</h4>
 
                             <v-divider class="section-divider" />
@@ -39,7 +41,9 @@
                             <v-divider class="section-divider" />
                         </v-col>
 
-                        <v-col cols="4">
+                        <!---------------Monitoring List----------------->
+
+                        <v-col cols="3">
                             <h4 class="text-subtitle-1 font-weight-bold mb-3">{{ translate("titles.monitoring").toUpperCase() }}</h4>
 
                             <v-divider class="section-divider" />
@@ -63,9 +67,39 @@
                             <v-divider class="section-divider" />
                         </v-col>
 
+                        <!---------------Settings List----------------->
+                        <v-col cols="3">
+                            <h4 class="text-subtitle-1 font-weight-bold mb-3">{{ translate("titles.settings").toUpperCase() }}</h4>
 
+<!--                            <v-divider class="section-divider" />-->
 
-                        <v-col cols="4" v-if="generalUtils.stringToBoolean(authStore.getStorageItem(StorageItemEnum.IS_SP_AVAILABLE))">
+<!--                            <v-list-item class="px-0 nav-hover">-->
+<!--                                <span class="link-color nav-link">{{ translate("navigation.routeNames.assessmentToolConnections") }}</span>-->
+<!--                            </v-list-item>-->
+
+                            <v-divider class="section-divider" />
+
+                            <v-list-item class="px-0 nav-hover">
+                                <span class="link-color nav-link">{{ translate("navigation.routeNames.connectionConfiguration") }}</span>
+                            </v-list-item>
+
+                            <v-divider class="section-divider" />
+
+                            <v-list-item class="px-0 nav-hover">
+                                <span class="link-color nav-link">{{ translate("navigation.routeNames.certificates") }}</span>
+                            </v-list-item>
+
+                            <v-divider class="section-divider" />
+
+                            <v-list-item class="px-0 nav-hover">
+                                <router-link class="link-color nav-link" :to="constants.USER_ACCOUNTS_ROUTE">{{ translate("navigation.routeNames.userAccounts") }}</router-link>
+                            </v-list-item>
+
+                            <v-divider class="section-divider" />
+                        </v-col>
+
+                        <!---------------Screen Proctoring----------------->
+                        <v-col cols="3" v-if="generalUtils.stringToBoolean(authStore.getStorageItem(StorageItemEnum.IS_SP_AVAILABLE))">
                             <h4 class="text-subtitle-1 font-weight-bold mb-3">{{ translate("titles.screenProctoring").toUpperCase() }}</h4>
 
                             <v-divider class="section-divider" />
@@ -162,6 +196,7 @@
 
     onBeforeMount(() => {
         appBarStore.title = translate("titles.navigationOverview");
+
     });
 
     onMounted(() => {
