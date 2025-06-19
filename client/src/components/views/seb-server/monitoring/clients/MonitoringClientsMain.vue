@@ -79,16 +79,16 @@
                             <td>{{ translate(item.status) }}</td>
 
                             <!------battery indicator------->
-                            <td v-if="(tableStore.isIndicatorsExpanded || isBatteryIndicator) && batteryIndicatorId != null">
-                                <v-chip :color="getIndicatorColor(item.indicators?.get(batteryIndicatorId))">
-                                    {{ item.indicators?.get(batteryIndicatorId)?.indicatorValue }}
+                            <td v-if="(tableStore.isIndicatorsExpanded || isBatteryIndicator) && monitoringStore.batteryIndicatorId != null">
+                                <v-chip :color="getIndicatorColor(item.indicators?.get(monitoringStore.batteryIndicatorId))">
+                                    {{ item.indicators?.get(monitoringStore.batteryIndicatorId)?.indicatorValue }}
                                 </v-chip>
                             </td>
 
                             <!------wlan indicator------->
-                            <td v-if="(tableStore.isIndicatorsExpanded || isWlanIndicator) && wlanIndicatorId != null">
-                                <v-chip :color="getIndicatorColor(item.indicators?.get(wlanIndicatorId))">
-                                    {{ item.indicators?.get(wlanIndicatorId)?.indicatorValue }}
+                            <td v-if="(tableStore.isIndicatorsExpanded || isWlanIndicator) && monitoringStore.wlanIndicatorId != null">
+                                <v-chip :color="getIndicatorColor(item.indicators?.get(monitoringStore.wlanIndicatorId))">
+                                    {{ item.indicators?.get(monitoringStore.wlanIndicatorId)?.indicatorValue }}
                                 </v-chip>
                             </td>
 
@@ -151,12 +151,8 @@
     // const monitoringData = ref<Map<number, MonitoringRow>>(new Map());
 
     //indicators
-    const batteryIndicatorId = ref<number | null>(null);
     const isBatteryIndicator = ref<boolean>(false);
-
-    const wlanIndicatorId = ref<number | null>(null);
     const isWlanIndicator = ref<boolean>(false);
-
 
     //interval
     let intervalRefresh: any | null = null;
@@ -438,14 +434,12 @@
                     indicatorObject: indicator,
                 }
 
-                console.log("value: " + value)
-
                 if(indicatorFullObject.indicatorType == IndicatorEnum.BATTERY_STATUS){
-                    batteryIndicatorId.value = indicator.id;
+                    monitoringStore.batteryIndicatorId = indicator.id;
                 }
 
                 if(indicatorFullObject.indicatorType == IndicatorEnum.WLAN_STATUS){
-                    wlanIndicatorId.value = indicator.id;
+                    monitoringStore.wlanIndicatorId = indicator.id;
                 }
 
                 indicatorsMap.set(indicator.id, indicatorFullObject);
@@ -458,14 +452,28 @@
     function addIndicatorHeaders(){
         tableStore.isIndicatorsExpanded = true;
 
-        clientsTableHeaders.value.splice(4, 0, {title: "Battery status", key: "", width: "8%", sortable: false});
-        clientsTableHeaders.value.splice(5, 0, {title: "Wlan status", key: "", width: "8%", sortable: false});
+        if(monitoringStore.batteryIndicatorId != null){
+            clientsTableHeaders.value.splice(4, 0, {title: "Battery status", key: "", width: "8%", sortable: false});
+        }
+
+        if(monitoringStore.wlanIndicatorId != null){
+            clientsTableHeaders.value.splice(5, 0, {title: "Wlan status", key: "", width: "8%", sortable: false});
+        }
     }
 
     function removeIndicatorHeaders(){
+        if(monitoringStore.batteryIndicatorId == null && monitoringStore.wlanIndicatorId == null){
+            return;
+        }
+
         tableStore.isIndicatorsExpanded = false;
 
-        clientsTableHeaders.value.splice(4, 2);
+        if(monitoringStore.batteryIndicatorId != null && monitoringStore.wlanIndicatorId != null){
+            clientsTableHeaders.value.splice(4, 2);
+            return;
+        }
+
+        clientsTableHeaders.value.splice(4, 1);
     }
 
     function modifyIndicatorHeaders(indicatorString: any | null){

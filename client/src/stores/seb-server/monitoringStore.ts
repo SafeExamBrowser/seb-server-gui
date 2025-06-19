@@ -24,6 +24,9 @@ export const useMonitoringStore = defineStore("monitoring", () => {
     const monitoringData = ref<Map<number, MonitoringRow>>(new Map());
     const staticClientDataList = ref<MonitoringStaticClientData | null>(null);
     const currentMonitoringQuery = ref<{}>();
+    const batteryIndicatorId = ref<number | null>(null);
+    const wlanIndicatorId = ref<number | null>(null);
+
 
     //monitoring detail
     const selectedSingleConn = ref<SingleConnection | null>(null);
@@ -38,6 +41,8 @@ export const useMonitoringStore = defineStore("monitoring", () => {
         clientGroups.value = null;
         monitoringData.value = new Map();
         staticClientDataList.value = null;
+        batteryIndicatorId.value = null;
+        wlanIndicatorId.value = null;
     }
 
     return {
@@ -58,6 +63,8 @@ export const useMonitoringStore = defineStore("monitoring", () => {
         selectedSingleConn,
         clientGroupsSingle,
         currentMonitoringQuery,
-        pendingNotifications
+        pendingNotifications,
+        batteryIndicatorId,
+        wlanIndicatorId
     };
 });
