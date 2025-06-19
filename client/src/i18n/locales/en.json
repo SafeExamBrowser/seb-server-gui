@@ -328,7 +328,8 @@
               "saveChanges" : "Save Changes"
           },
           "warnings": {
-              "edit-success": "Edited User: \"{username}\"."
+              "edit-success": "Edited User: \"{username}\".",
+              "no-edit-rights": "You do not have rights to edit this user."
             }
         }
     },

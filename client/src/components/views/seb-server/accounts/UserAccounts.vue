@@ -211,8 +211,9 @@
                                     :color="item.active ? 'green' : 'red'"
                                     dark
                                     small
-                                    class="text-white font-weight-medium status-chip cursor-pointer"
-                                    @click.stop="openStatusDialog(item)"
+                                    class="text-white font-weight-medium status-chip"
+                                    :class="!hasEditingRights(item.userRoles as UserRoleEnum[]) ? 'cursor-default opacity-50' : 'cursor-pointer'"
+                                    @click.stop="hasEditingRights(item.userRoles as UserRoleEnum[]) && openStatusDialog(item)"
                                 >
                                     {{
                                         item.active ? translate("userAccount.userAccountPage.filters.activeSelector") : translate("userAccount.userAccountPage.filters.inactiveSelector")
@@ -223,16 +224,20 @@
                             <td class="icon-cell">
                                 <div class="d-flex align-center justify-end h-100">
                                     <v-icon
-                                        icon="mdi-pencil"
+                                        :icon="hasEditingRights(item.userRoles as UserRoleEnum[]) ? 'mdi-pencil' : 'mdi-eye'"
                                         class="action-icon mr-2"
+                                        :class="hasEditingRights(item.userRoles as UserRoleEnum[]) ? '' : 'cursor-pointer'"
                                         @click.stop="navigateTo(`${constants.EDIT_USER_ACCOUNT}/${item.uuid}`)"
                                     ></v-icon>
+
 
                                     <v-icon
                                         icon="mdi-delete"
                                         class="action-icon"
-                                        @click.stop="openDeleteDialog(item)"
+                                        :class="!hasEditingRights(item.userRoles as UserRoleEnum[]) && 'cursor-default opacity-50'"
+                                        @click.stop="hasEditingRights(item.userRoles as UserRoleEnum[]) && openDeleteDialog(item)"
                                     ></v-icon>
+
                                 </div>
                             </td>
 
@@ -325,6 +330,7 @@
     const isLoading = ref<boolean>(true);
     const deleteSuccess = ref(false);
     const deletedUsername = ref("");
+    const editingRightsRevoked = ref(false);
     const statuses = [
         {value: "Active", label: translate("userAccount.userAccountPage.filters.activeSelector")},
         {value: "Inactive", label: translate("userAccount.userAccountPage.filters.inactiveSelector")}
@@ -530,7 +536,6 @@
         const fetchAllPaging = {...serverTablePaging, itemsPerPage: 500, page: 1};
         userAccountStore.currentPagingOptions = serverTablePaging;
         isLoading.value = true;
-
         const optionalParams = tableUtils.assignUserAccountSelectPagingOptions(fetchAllPaging);
         const response = await userAccountViewService.getUserAccounts(optionalParams);
 
@@ -593,6 +598,17 @@
 
         statusDialog.value = false;
         statusDialogUser.value = null;
+    }
+
+    function hasEditingRights(targetUserRoles: UserRoleEnum[]): boolean {
+        const currentUserRoles = authenticatedUserAccountStore.userAccount?.userRoles ?? [];
+
+        const isCurrentUserSebAdmin = currentUserRoles.includes(UserRoleEnum.SEB_SERVER_ADMIN);
+        const isCurrentUserOnlyInstitutional = currentUserRoles.includes(UserRoleEnum.INSTITUTIONAL_ADMIN) && !isCurrentUserSebAdmin;
+        const isTargetSebAdmin = targetUserRoles.includes(UserRoleEnum.SEB_SERVER_ADMIN);
+
+        if (isCurrentUserSebAdmin) return true;
+        return !(isCurrentUserOnlyInstitutional && isTargetSebAdmin);
     }
 
 </script>

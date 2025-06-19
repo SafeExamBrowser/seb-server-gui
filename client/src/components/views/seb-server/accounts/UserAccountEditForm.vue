@@ -39,7 +39,6 @@
 
                     <v-divider class="section-divider mb-16"/>
                 </v-col>
-
                 <!--success message-->
                 <div class="success-message-div pt-4 bottom-0">
                     <AlertMsg
@@ -60,7 +59,7 @@
             <v-row class="d-flex align-center justify-space-between px-6 pt-6">
                 <v-row class="d-flex align-center justify-space-between px-6 pt-0">
                     <div class="text-primary text-h5 font-weight-bold">
-                        {{props.title}}
+                        {{ props.title }}
                     </div>
                     <v-chip
                         class="ma-2 text-subtitle-1 px-5 py-2 font-weight-bold"
@@ -86,7 +85,9 @@
                 </div>
 
                 <div class="text-body-2 text-grey-darken-1">
-                    {{ translate("userAccount.userAccountDetailAndEditPage.info.createdAtInfo") + formatDisplayDate(user?.creationDate) }}
+                    {{
+                        translate("userAccount.userAccountDetailAndEditPage.info.createdAtInfo") + formatDisplayDate(user?.creationDate)
+                    }}
                 </div>
             </v-row>
             <!-- form-->
@@ -112,7 +113,7 @@
                                             item-title="name"
                                             item-value="modelId"
                                             :rules="[requiredRule]"
-                                            :disabled="institutionSelectDisabled"
+                                            :disabled="institutionSelectDisabled || editingRightsRevoked"
                                         />
                                     </v-col>
                                     <!-- name -->
@@ -124,6 +125,7 @@
                                             :label="translate('userAccount.userAccountDetailAndEditPage.labels.nameLabel')"
                                             variant="outlined"
                                             v-model="name"
+                                            :disabled="editingRightsRevoked"
                                             :rules="[requiredRule]"
                                         />
                                     </v-col>
@@ -137,6 +139,7 @@
                                             :label="translate('userAccount.userAccountDetailAndEditPage.labels.surnameLabel')"
                                             variant="outlined"
                                             v-model="surname"
+                                            :disabled="editingRightsRevoked"
                                             :rules="[requiredRule]"
                                         />
                                     </v-col>
@@ -149,6 +152,7 @@
                                             density="compact"
                                             :label="translate('userAccount.userAccountDetailAndEditPage.labels.usernameLabel')"
                                             variant="outlined"
+                                            :disabled="editingRightsRevoked"
                                             v-model="username"
                                             :rules="[requiredRule]"
                                         />
@@ -162,6 +166,7 @@
                                             :label="translate('userAccount.userAccountDetailAndEditPage.labels.emailLabel')"
                                             variant="outlined"
                                             v-model="email"
+                                            :disabled="editingRightsRevoked"
                                             :rules="[emailRule]"
                                             validate-on="blur"
                                         />
@@ -176,6 +181,7 @@
                                             :label="translate('userAccount.userAccountDetailAndEditPage.labels.timeZoneLabel')"
                                             variant="outlined"
                                             v-model="timezone"
+                                            :disabled="editingRightsRevoked"
                                             :items="timezoneOptions"
                                             :rules="[requiredRule]"
                                             :return-object="false"
@@ -184,12 +190,16 @@
 
                                     <!--  password reset-->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
-                                        <div @click="changePasswordDialog = true" class="clickable-password-field">
+                                        <div @click="!editingRightsRevoked && (changePasswordDialog = true)"
+                                             :class="{
+                                                'clickable-password-field': !editingRightsRevoked,
+                                              }">
                                             <v-text-field
                                                 :label="translate('userAccount.userAccountDetailAndEditPage.labels.passwordLabel')"
                                                 type="password"
                                                 variant="outlined"
                                                 density="compact"
+                                                :disabled="editingRightsRevoked"
                                                 model-value="'************'"
                                                 prepend-inner-icon="mdi-lock-outline"
                                                 append-inner-icon="mdi-pencil"
@@ -225,40 +235,56 @@
 
                                     <!--  roles-->
                                     <v-col cols="12" class=" ml-16">
-                                        <div class="text-subtitle-1 font-weight-medium">
-                                            {{
-                                                translate("userAccount.userAccountDetailAndEditPage.labels.selectRolesLabel")
-                                            }}
-                                        </div>
-                                        <div class="text-body-2 text-grey-darken-1 mb-5">
-                                            {{
-                                                translate("userAccount.userAccountDetailAndEditPage.info.rolesSelectionInfo")
-                                            }}
-                                        </div>
-                                        <v-row dense>
-                                            <v-col
-                                                v-for="role in availableRoles"
-                                                :key="role.value"
-                                                cols="12"
-                                                md="7"
-                                                lg="7"
-                                                class="py-1"
-                                            >
-                                                <v-checkbox
-                                                    v-model="selectedRoles"
-                                                    :label="role.label"
-                                                    :value="role.value"
-                                                    density="compact"
-                                                    hide-details
-                                                    class="custom-role-checkbox"
-                                                />
-                                            </v-col>
-                                        </v-row>
-                                        <!--  roles rule error text-->
-                                        <div v-if="rolesTouched && selectedRoles.length === 0"
-                                             class="text-error text-caption mt-1">
-                                            {{ rolesRule([]) }}
-                                        </div>
+                                        <template v-if="!editingRightsRevoked">
+                                            <div class="text-subtitle-1 font-weight-medium">
+                                                {{
+                                                    translate("userAccount.userAccountDetailAndEditPage.labels.selectRolesLabel")
+                                                }}
+                                            </div>
+                                            <div class="text-body-2 text-grey-darken-1 mb-5">
+                                                {{
+                                                    translate("userAccount.userAccountDetailAndEditPage.info.rolesSelectionInfo")
+                                                }}
+                                            </div>
+                                            <v-row dense>
+                                                <v-col
+                                                    v-for="role in availableRoles"
+                                                    :key="role.value"
+                                                    cols="12"
+                                                    md="7"
+                                                    lg="7"
+                                                    class="py-1"
+                                                >
+                                                    <v-checkbox
+                                                        :disabled="editingRightsRevoked"
+                                                        v-model="selectedRoles"
+                                                        :label="role.label"
+                                                        :value="role.value"
+                                                        density="compact"
+                                                        hide-details
+                                                        class="custom-role-checkbox"
+                                                    />
+                                                </v-col>
+                                            </v-row>
+                                            <!--  roles rule error text-->
+                                            <div v-if="rolesTouched && selectedRoles.length === 0"
+                                                 class="text-error text-caption mt-1">
+                                                {{ rolesRule([]) }}
+                                            </div>
+                                        </template>
+                                        <template v-else>
+                                            <div class="no-edit-rights-div">
+                                                <div class="custom-alert">
+                                                    <div class="alert-icon-circle">i</div>
+                                                    <span class="alert-text">
+    {{ i18n.t('userAccount.userAccountDetailAndEditPage.warnings.no-edit-rights', { username: editedUserName }) }}
+  </span>
+                                                </div>
+
+
+                                            </div>
+                                        </template>
+
                                     </v-col>
                                 </v-col>
                             </v-row>
@@ -281,6 +307,7 @@
                         </v-btn>
 
                         <v-btn
+                            v-if="!editingRightsRevoked"
                             rounded="sm"
                             color="primary"
                             variant="flat"
@@ -357,7 +384,7 @@
                 <v-btn
                     color="primary"
                     variant="flat"
-                    :disabled="!isPasswordFormValid"
+                    :disabled="!isPasswordFormValid || editingRightsRevoked"
                     @click="changeUserPassword"
                 >
                     {{ translate("general.saveButton") }}
@@ -430,6 +457,7 @@
     const confirmPasswordFieldRef = ref();
     const confirmPasswordTouched = ref(false);
     const institutionSelectDisabled = ref(false);
+    const editingRightsRevoked = ref(false);
 
     const selectedRoles = ref<string[]>([]);
     const formRef = ref();
@@ -457,9 +485,6 @@
         label: translate(`general.userRoles.${role}`),
         value: role
     }));
-
-
-
 
     onBeforeUnmount(() => {
         layoutStore.setBlueBackground(false);
@@ -496,11 +521,26 @@
         const authenticatedUserRoles = authenticatedUser?.userRoles as UserRoleEnum[] ?? [];
         setupAvailableRoles(authenticatedUserRoles);
         configureInstitutionField(authenticatedUserRoles, authenticatedUser);
-
+        checkEditingRights(fetchedUser, authenticatedUser);
         patchUserInstitutionIfSebAdmin(fetchedUser, authenticatedUserRoles);
         populateUserFields(fetchedUser);
     };
 
+    function checkEditingRights(fetchedUser: UserAccount, authenticatedUser: UserAccount) {
+        const editedUserRoles = fetchedUser.userRoles as UserRoleEnum[];
+        const authenticatedUserRoles = authenticatedUser?.userRoles as UserRoleEnum[] ?? [];
+
+        const isAuthOnlyInstitutionalAdmin =
+            authenticatedUserRoles.includes(UserRoleEnum.INSTITUTIONAL_ADMIN) &&
+            !authenticatedUserRoles.includes(UserRoleEnum.SEB_SERVER_ADMIN);
+
+        const isEditedUserSebAdmin = editedUserRoles.includes(UserRoleEnum.SEB_SERVER_ADMIN);
+
+        if (isAuthOnlyInstitutionalAdmin && isEditedUserSebAdmin) {
+            editingRightsRevoked.value = true;
+            return;
+        }
+    }
 
     function setupInstitutionList(result: Institution[]) {
         institutions.value = result;
@@ -667,7 +707,7 @@
     };
 
     const toggleStatusLocally = (user: UserAccount | null) => {
-        if (!user) return;
+        if (editingRightsRevoked.value || !user) return;
         user.active = !user.active;
     };
 
@@ -719,7 +759,7 @@
     }
 
     .success-message-div {
-        margin-top: 26.5rem;
+        margin-top: 20.5rem;
         width: 85% !important;
     }
 
@@ -813,6 +853,12 @@
         width: 85% !important;
     }
 
+    .no-edit-rights-div{
+        margin-top: 12.3rem;
+        width: 93% !important;
+    }
+
+
     .custom-padding-textbox {
         padding-top: 8px !important;
         padding-bottom: 8px !important;
@@ -821,6 +867,41 @@
     .clickable-password-field {
         cursor: pointer;
     }
+
+    .custom-alert {
+        border: 1px solid #215CAE;       /* Primary blue border */
+        background-color: white;         /* White background */
+        color: #215CAE;                  /* Primary blue text */
+        padding: 12px 16px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 16px;
+        font-family: sans-serif;
+    }
+
+    .alert-icon-circle {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background-color: white;         /* White background */
+        border: 2px solid #215CAE;       /* Primary blue border */
+        color: #215CAE;                  /* Primary blue text */
+        font-weight: 800;                /* Very bold */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;                 /* Slightly bigger for visibility */
+        flex-shrink: 0;
+        line-height: 1;
+    }
+
+    .alert-text {
+        flex: 1;
+        font-weight: 500;
+    }
+
 
     .no-pointer-events {
         pointer-events: none;
