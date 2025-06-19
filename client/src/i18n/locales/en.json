@@ -321,8 +321,8 @@
           "info" : {
               "rolesSelectionInfo": "Must have at least one Role",
               "accountEditInfo": "Change the values of the fields to edit the user",
-              "changePasswordInfo": "Change \"{username}\"'s password"
-
+              "changePasswordInfo": "Change \"{username}\"'s password",
+              "createdAtInfo": "Created at: "
           },
           "buttons": {
               "saveChanges" : "Save Changes"

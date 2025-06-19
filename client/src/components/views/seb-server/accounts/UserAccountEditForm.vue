@@ -80,9 +80,13 @@
                 </v-row>
             </v-row>
             <v-divider class="custom-divider mx-6 my-4 mt-7"/>
-            <v-row class="px-8 mt-2">
+            <v-row class="px-8 mt-2 d-flex justify-space-between">
                 <div class="text-body-2 text-grey-darken-1">
                     {{ translate("userAccount.userAccountDetailAndEditPage.info.accountEditInfo") }}
+                </div>
+
+                <div class="text-body-2 text-grey-darken-1">
+                    {{ translate("userAccount.userAccountDetailAndEditPage.info.createdAtInfo") + formatDisplayDate(user?.creationDate) }}
                 </div>
             </v-row>
             <!-- form-->
@@ -498,8 +502,6 @@
     };
 
 
-
-
     function setupInstitutionList(result: Institution[]) {
         institutions.value = result;
 
@@ -562,6 +564,11 @@
             timezone: timezone.value,
             userRoles: [...selectedRoles.value]
         };
+    }
+
+    function formatDisplayDate(dateString?: string): string {
+        if (!dateString) return "";
+        return moment(dateString).format("MMM D, YYYY");
     }
 
     function getAvailableRolesForUser(userRoles: UserRoleEnum[]): UserRoleOption[] {
