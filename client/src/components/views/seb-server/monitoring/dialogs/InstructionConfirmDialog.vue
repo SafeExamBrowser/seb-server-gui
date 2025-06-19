@@ -40,7 +40,7 @@
                         color="black" 
                         variant="outlined"
                         @click="emit('closeInstructionConfirmDialog')">
-                        Cancel
+                        {{translate("monitoringDialog.instructionConfirm.cancel")}}
                     </v-btn>
 
                     <v-btn 
@@ -62,6 +62,7 @@
 <script setup lang="ts">
     import { InstructionEnum } from "@/models/seb-server/instructionEnum";
     import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
+    import {translate} from "@/utils/generalUtils";
 
     //exam
     const examId = useRoute().params.examId.toString();
@@ -84,15 +85,15 @@
 
     function getTitle(): string{
         if(props.instructionType == InstructionEnum.SEB_FORCE_LOCK_SCREEN){
-            return "Lock SEB Clients";
+            return translate("monitoringDialog.instructionConfirm.lockSeb");
         }
 
         if(props.instructionType == InstructionEnum.SEB_QUIT){
-            return "Quit SEB Clients";
+            return translate("monitoringDialog.instructionConfirm.quitSeb");
         }
 
         if(props.isCancelInstruction){
-            return "Mark Clients as canceled";
+            return translate("monitoringDialog.instructionConfirm.cancelSeb");
         }
 
         return "";
@@ -100,15 +101,15 @@
 
     function getDescription(): string{
         if(props.instructionType == InstructionEnum.SEB_FORCE_LOCK_SCREEN){
-            return "This actions locks all selected SEB clients";
+            return translate("monitoringDialog.instructionConfirm.lockAction");
         }
 
         if(props.instructionType == InstructionEnum.SEB_QUIT){
-            return "This actions quits all selected SEB clients";
+            return translate("monitoringDialog.instructionConfirm.quitAction");
         }
 
         if(props.isCancelInstruction){
-            return "This actions marks all selected SEB clients as canceled";
+            return translate("monitoringDialog.instructionConfirm.cancelAction");
         }
 
         return "";
@@ -116,7 +117,7 @@
 
     function getQuestionConfirmText(): string{
         if(props.instructionType == InstructionEnum.SEB_QUIT){
-            return "Are you sure to quit all selected SEB clients?";
+            return translate("monitoringDialog.instructionConfirm.quitQuestion");
         }
 
         return "";
@@ -124,15 +125,15 @@
 
     function getButtonText(): string{
         if(props.instructionType == InstructionEnum.SEB_FORCE_LOCK_SCREEN){
-            return "Lock";
+            return translate("monitoringDialog.instructionConfirm.lock");
         }
 
         if(props.instructionType == InstructionEnum.SEB_QUIT){
-            return "Quit";
+            return translate("monitoringDialog.instructionConfirm.quit");
         }
 
         if(props.isCancelInstruction){
-            return "Cancel"
+            return translate("monitoringDialog.instructionConfirm.cancel");
         }
         
         return "";
@@ -166,9 +167,6 @@
     }
 
     async function cancelClients(){
-
-        console.log("it got here")
-
         if(!props.isCancelInstruction){
             return;
         }

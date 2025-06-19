@@ -357,16 +357,79 @@
         }
     },
 
+    "monitoringDialog": {
+        "info": {
+            "name": "Name",
+            "type": "Type",
+            "typeDesc": "Type Description",
+            "startIp": "Start of IP range",
+            "endIp": "End of IP range",
+            "clientOs": "Client OS Type",
+            "startLetter": "Start Letter",
+            "endLetter": "End Letter"
+        },
+
+        "instructionConfirm": {
+            "cancel": "Cancel",
+            "lock": "Lock",
+            "lockSeb": "Lock SEB Clients",
+            "lockAction": "This actions locks all selected SEB clients",
+            "quit": "Quit",
+            "quitSeb": "Quit SEB Clients",
+            "quitAction": "This actions quits all selected SEB clients",
+            "quitQuestion": "Are you sure to quit all selected SEB clients?",
+            "cancelSeb": "Mark Clients as canceled",
+            "cancelAction": "This actions marks all selected SEB clients as canceled"
+        }
+    },
 
     "monitoringOverview": {
         "warning": {
             "notExist": "Exam does not exist",
             "notRunning": "Exam is not Running"
+        },
+
+        "infos": {
+            "start": "Start",
+            "end": "End"
+        },
+
+        "clients": {
+            "total": "Total:"
+        },
+
+        "groups": {
+            "groups": "Groups",
+            "remainingClients": "Remaining Clients",
+            "allClients": "All Clients",
+            "showAll": "Show All"
+        },
+
+        "notifications": {
+            "notifications": "Notifications",
+            "indicators": "Indicators"
         }
     },
 
     "monitoringClients": {
+        "info": {
+            "clearAll": "Clear All",
+            "filters": "Filters",
+            "actions": "Actions",
+            "groups": "Groups",
+            "clientStates": "Client States",
+            "notifications": "Notifications",
+            "indicators": "Indicators",
+            "lockClients": "Lock selected clients",
+            "quitClients": "Quit selected clients",
+            "cancelClients": "Mark selected clients as canceled"
+        },
+
         "main": {
+            "displayedClients": "Displayed clients:",
+            "selectedClients": "Selected clients:",
+            "tableHeaderBattery": "Battery Status",
+            "tableHeaderWlan": "Wlan Status",
             "tableHeaderNameSession": "User Name or Session",
             "tableHeaderClientGroups": "Group(s)",
             "tableHeaderConnectionInfo": "Connection Info",
@@ -381,14 +444,22 @@
             "clientGroups": "Client Group(s)",
             "connectionInfo": "Connection Info",
             "status": "Status",
-            "actions": "Actions"
+            "actions": "Actions",
+            "lock": "Lock client",
+            "quit": "Quit client"
+
+        },
+
+        "main": {
+            "notifications": "Notifications",
+            "resolveRaiseHand": "Resolve Raise Hand",
+            "noNotifications": "No notifications available",
+            "messages": "Messages",
+            "resolveMessage": "Resolve Message",
+            "screenProctoring": "Screen Proctoring",
+            "clientLogs": "Client Logs"
         }
     },
-
-
-
-
-
 
 
 

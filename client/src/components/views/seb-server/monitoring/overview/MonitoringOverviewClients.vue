@@ -17,7 +17,7 @@
                     :data="chartData"
                 />
                 <div class="chart-label text-h5 font-weight-bold">
-                    Total: {{ monitoringStore.monitoringOverviewData?.clientStates.total }}
+                    {{translate("monitoringOverview.clients.total")}} {{ monitoringStore.monitoringOverviewData?.clientStates.total }}
                 </div>
             </section>
         </v-col>

@@ -11,7 +11,9 @@
 
                     <v-spacer></v-spacer>
                     <v-col cols="4">
-                        <span class="primary-text-color text-h6 font-weight-bold">Filters</span>
+                        <span class="primary-text-color text-h6 font-weight-bold"> 
+                            {{translate("monitoringClients.info.filters")}}
+                        </span>
                         <v-chip 
                             v-if="!monitoringStore.isNoFilterSelected"
                             class="ml-4"
@@ -19,13 +21,13 @@
                             variant="tonal"
                             append-icon="mdi-close"
                             @click="monitoringViewService.applyShowAllFilter()">
-                            Clear All
+                            {{translate("monitoringClients.info.clearAll")}}
                         </v-chip>
                     </v-col>
                     <v-spacer></v-spacer>
 
                     <v-col cols="3" class="primary-text-color text-h6 font-weight-bold">
-                        Actions
+                        {{translate("monitoringClients.info.actions")}}
                     </v-col>
                 
                 </v-row>
@@ -108,7 +110,7 @@
                                 <!------------group filters------------->
                                 <v-col v-if="monitoringStore.monitoringOverviewData?.clientGroups.length != 0">
                                     <div class="primary-text-color text-subtitle-1">
-                                        Groups
+                                        {{translate("monitoringClients.info.groups")}}
                                     </div>
     
                                     <div v-for="clientGroup in monitoringStore.monitoringOverviewData?.clientGroups" :key="clientGroup.id">
@@ -128,7 +130,7 @@
                                 <!------------client states filters------------->
                                 <v-col v-if="monitoringStore.monitoringOverviewData?.clientStates.total != 0">
                                     <div class="primary-text-color text-subtitle-1">
-                                        Client States
+                                        {{translate("monitoringClients.info.clientStates")}}
                                     </div>
     
                                     <template v-for="(value, key) in monitoringStore.monitoringOverviewData?.clientStates" :key="key">
@@ -149,7 +151,7 @@
                                 <!------------notification filters------------->
                                 <v-col v-if="monitoringStore.monitoringOverviewData?.notifications.total != 0">
                                     <div class="primary-text-color text-subtitle-1">
-                                        Notifications
+                                        {{translate("monitoringClients.info.notifications")}}
                                     </div>
     
                                     <template v-for="(value, key) in monitoringStore.monitoringOverviewData?.notifications" :key="key">
@@ -170,7 +172,7 @@
                                 <!------------indicators filters------------->
                                 <v-col v-if="monitoringStore.monitoringOverviewData != null && Object.keys(monitoringStore.monitoringOverviewData?.indicators).length != 0">
                                     <div class="primary-text-color text-subtitle-1">
-                                        Indicators
+                                        {{translate("monitoringClients.info.indicators")}}
                                     </div>
     
                                     <template v-for="(value, key) in monitoringStore.monitoringOverviewData?.indicators" :key="key">
@@ -219,7 +221,7 @@
                                 variant="outlined"
                                 prepend-icon="mdi-monitor-lock"
                                 @click="openInstructionConfirmDialog(InstructionEnum.SEB_FORCE_LOCK_SCREEN, false)">
-                                Lock selected clients
+                                {{translate("monitoringClients.info.lockClients")}}
                             </v-btn>
                         </div>
 
@@ -232,7 +234,7 @@
                                 variant="outlined"
                                 prepend-icon="mdi-backspace-outline"
                                 @click="openInstructionConfirmDialog(InstructionEnum.SEB_QUIT, false)">
-                                Quit selected clients
+                                {{translate("monitoringClients.info.quitClients")}}
                             </v-btn>
                         </div>
 
@@ -245,7 +247,7 @@
                                 variant="outlined"
                                 prepend-icon="mdi-cancel"
                                 @click="openInstructionConfirmDialog(null, true)">
-                                Mark selected clients as canceled
+                                {{translate("monitoringClients.info.cancelClients")}}
                             </v-btn>
                         </div>
                     </v-col>

@@ -2,7 +2,7 @@
     <!------title------->
     <v-row class="mb-3">
         <v-col class="primary-text-color text-h5 font-weight-bold">
-            Groups
+            {{translate("monitoringOverview.groups.groups")}}
         </v-col>
     </v-row>
 
@@ -17,7 +17,7 @@
                         <!--------name-------->
                         <v-col cols="4" class="font-weight-medium primary-text-color text-h6">
                             <template v-if="clientGroupItem.type == ClientGroupEnum.SP_FALLBACK_GROUP && isSPGroupAvailable">
-                                Remaining Clients
+                                {{translate("monitoringOverview.groups.remainingClients")}}
                             </template>
                             <template v-else>
                                 {{ clientGroupItem.name }}
@@ -75,7 +75,7 @@
                 <v-row align="center">
                     <!--------name-------->
                     <v-col cols="4" class="font-weight-medium primary-text-color text-h6">
-                        All Clients
+                        {{translate("monitoringOverview.groups.allClients")}}
                     </v-col>
 
                     <!--------group type placeholder-------->
@@ -134,7 +134,7 @@
                     MonitoringHeaderEnum.SHOW_ALL, 
                     true, 
                     examId)">
-                Show all
+                {{translate("monitoringOverview.groups.showAll")}}
             </v-btn>
         </v-col>
     </v-row>
