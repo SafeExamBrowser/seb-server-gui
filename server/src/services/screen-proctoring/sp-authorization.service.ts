@@ -5,16 +5,24 @@ import * as apiService from "../../services/screen-proctoring/sp-api.service";
 import * as utils from "../../utils/utils";
 import FormData from "form-data";
 
-
-const tokenUrl: string = ENV.PROCTOR_SERVER_URL + ENV.PROCTOR_SERVER_PORT + "/oauth/token?grant_type=";
+const tokenUrlWithoutGrantType: string = ENV.PROCTOR_SERVER_URL + ENV.PROCTOR_SERVER_PORT + "/oauth/token";
 const jwtUrl: string = ENV.PROCTOR_SERVER_URL + ENV.PROCTOR_SERVER_PORT + "/oauth/jwttoken/verify";
 
-export async function authorizeViaScreenProctoringServer(username: string, password: string){
-    const url: string = tokenUrl + "password&username=" + username + "&password=" + password;
-    const encodedCredentials: string = utils.createEncodedCredentials(ENV.PROCTOR_SERVER_USERNAME, ENV.PROCTOR_SERVER_PASSWORD);
+export async function authorizeViaScreenProctoringServer(username: string, password: string) {
+    const encodedCredentials: string = utils.createEncodedCredentials(
+        ENV.PROCTOR_SERVER_USERNAME,
+        ENV.PROCTOR_SERVER_PASSWORD
+    );
 
-    const {data, status} = await axios.post(url, {}, {
-        headers: apiService.getAuthorizationHeaders(encodedCredentials)
+    const body = new URLSearchParams();
+    body.append("grant_type", "password");
+    body.append("username", username);
+    body.append("password", password);
+
+    const { data, status } = await axios.post(tokenUrlWithoutGrantType, body.toString(), {
+        headers: {
+            ...apiService.getAuthorizationHeadersBasic(encodedCredentials),
+        }
     });
 
     return [data, status];

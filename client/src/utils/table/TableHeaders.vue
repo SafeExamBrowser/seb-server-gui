@@ -58,7 +58,7 @@
                 </template>
                 <!----------------------------------------------------------------->
 
-                <template v-if="tableKey == 'monitoringClients' && column.key == 'status' && !tableStore.isIndicatorExpandButtonDisabled">
+                <template v-if="tableKey == 'monitoringClients' && column.key == 'status' && !tableStore.isIndicatorExpandButtonDisabled && (monitoringStore.batteryIndicatorId != null || monitoringStore.wlanIndicatorId != null)">
                     <v-btn 
                         :aria-label="tableStore.isIndicatorsExpanded ? 'hide exam details' : 'show exam details'"
                         :icon="tableStore.isIndicatorsExpanded ? 'mdi-arrow-expand-left' : 'mdi-arrow-expand-right'" 
@@ -78,10 +78,12 @@
     import { ref, onBeforeMount, onBeforeUnmount } from "vue";
     import * as tableUtils from "@/utils/table/tableUtils";
     import { useAppBarStore, useTableStore } from "@/stores/store";
+    import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 
     //stores
     // const appBarStore = useAppBarStore();
     const tableStore = useTableStore();
+    const monitoringStore = useMonitoringStore()
 
     //header reactivity
     const headerRefs = ref<any[] | null>();

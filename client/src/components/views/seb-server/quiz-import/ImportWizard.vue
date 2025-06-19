@@ -24,7 +24,6 @@
         <v-row>
             <v-col>
                 <v-stepper 
-                    editable
                     v-model="quizImportStore.currentStep"
                     elevation="4"
                     class="rounded-lg">
