@@ -15,7 +15,7 @@
                         <!------------Group Name------------->
                         <v-row align="center">
                             <v-col>
-                                Name
+                                {{translate("monitoringDialog.info.name")}}
                             </v-col>
                             <v-col>
                                 <v-text-field
@@ -32,7 +32,7 @@
                         <!------------Group Type------------->
                         <v-row align="center">
                             <v-col>
-                                Type
+                                {{translate("monitoringDialog.info.type")}}
                             </v-col>
                             <v-col>
                                 <v-select
@@ -49,7 +49,7 @@
                         <!------------Type Description------------->
                         <v-row align="center">
                             <v-col>
-                                Type Description
+                                {{translate("monitoringDialog.info.typeDesc")}}
                             </v-col>
                             <v-col>
                                 {{ clientGroupDescription }}
@@ -60,7 +60,7 @@
                         <template v-if="clientGroupTypeSelect == ClientGroupEnum.IP_V4_RANGE">
                             <v-row>
                                 <v-col>
-                                    Start of IP rage
+                                    {{translate("monitoringDialog.info.startIp")}}
                                 </v-col>
                                 <v-col>
                                     <v-text-field
@@ -75,7 +75,7 @@
                             </v-row>
                             <v-row>
                                 <v-col>
-                                    End of IP rage
+                                    {{translate("monitoringDialog.info.endIp")}}
                                 </v-col>
                                 <v-col>
                                     <v-text-field
@@ -94,7 +94,7 @@
                         <template v-if="clientGroupTypeSelect == ClientGroupEnum.CLIENT_OS">
                             <v-row>
                                 <v-col>
-                                    Client OS Type
+                                    {{translate("monitoringDialog.info.clientOs")}}
                                 </v-col>
                                 <v-col>
                                     <v-select
@@ -113,7 +113,7 @@
                         <template v-if="clientGroupTypeSelect == ClientGroupEnum.NAME_ALPHABETICAL_RANGE">
                             <v-row>
                                 <v-col>
-                                    Start Letter
+                                    {{translate("monitoringDialog.info.startLetter")}}
                                 </v-col>
                                 <v-col>
                                     <v-text-field
@@ -128,7 +128,7 @@
                             </v-row>
                             <v-row>
                                 <v-col>
-                                    End Letter
+                                    {{translate("monitoringDialog.info.endLetter")}}
                                 </v-col>
                                 <v-col>
                                     <v-text-field

@@ -6,12 +6,12 @@
                 class="rounded-lg pa-8">
 
                 <div class="mb-2">
-                    Displayed clients: {{ monitoringDataTable.length }}
+                    {{translate("monitoringClients.main.displayedClients")}} {{ monitoringDataTable.length }}
                 </div>
                 <div 
                     v-if="monitoringStore.selectedMonitoringIds.length != 0"
                     class="mb-2">
-                    Selected clients: {{ monitoringStore.selectedMonitoringIds.length }}
+                    {{translate("monitoringClients.main.selectedClients")}} {{ monitoringStore.selectedMonitoringIds.length }}
                 </div>
 
                 <v-data-table
@@ -131,12 +131,16 @@
     import { MonitoringRow } from "@/models/seb-server/monitoringClients";
     import * as tableUtils from "@/utils/table/tableUtils";
     import { storeToRefs } from "pinia";
+    import { useI18n } from "vue-i18n";
 
     //exam
     const examId = useRoute().params.examId.toString();
 
     //router
     const route = useRoute();
+
+    //i18n
+    const i18n = useI18n();
 
     //stores
     const monitoringStore = useMonitoringStore();
@@ -453,11 +457,11 @@
         tableStore.isIndicatorsExpanded = true;
 
         if(monitoringStore.batteryIndicatorId != null){
-            clientsTableHeaders.value.splice(4, 0, {title: "Battery status", key: "", width: "8%", sortable: false});
+            clientsTableHeaders.value.splice(4, 0, {title: translate("monitoringClients.main.tableHeaderBattery", i18n), key: "", width: "8%", sortable: false});
         }
 
         if(monitoringStore.wlanIndicatorId != null){
-            clientsTableHeaders.value.splice(5, 0, {title: "Wlan status", key: "", width: "8%", sortable: false});
+            clientsTableHeaders.value.splice(5, 0, {title: translate("monitoringClients.main.tableHeaderWlan", i18n), key: "", width: "8%", sortable: false});
         }
     }
 
@@ -494,27 +498,22 @@
 
         //remove battery indicator
         if(!indicatorString.includes(IndicatorEnum.BATTERY_STATUS.toString()) && isBatteryIndicator.value){
-            console.log("remove battery")
             removeBatteryHeader(4);
         }
 
         //add battery indicator
         if(indicatorString.includes(IndicatorEnum.BATTERY_STATUS.toString()) && !tableStore.isIndicatorsExpanded && !isBatteryIndicator.value){
-            console.log("add battery")
             addBatteryHeader(4);
         }
 
         //remove wlan indicator
         if(!indicatorString.includes(IndicatorEnum.WLAN_STATUS.toString()) && isWlanIndicator.value){
-            console.log("remove wlan")
             const index: number = isBatteryIndicator.value ? 5 : 4;
             removeWlanHeader(index);
         }
 
         //add wlan indicator
         if(indicatorString.includes(IndicatorEnum.WLAN_STATUS.toString()) && !tableStore.isIndicatorsExpanded && !isWlanIndicator.value){
-            console.log("add wlan")
-
             const index: number = isBatteryIndicator.value ? 5 : 4;
             addWlanHeader(index);
         }
@@ -522,7 +521,7 @@
 
     function addBatteryHeader(index: number){
         isBatteryIndicator.value = true;
-        clientsTableHeaders.value.splice(index, 0, {title: "Battery status", key: "", width: "8%", sortable: false});
+        clientsTableHeaders.value.splice(index, 0, {title: translate("monitoringClients.main.tableHeaderBattery", i18n), key: "", width: "8%", sortable: false});
     }
 
     function removeBatteryHeader(index: number){
@@ -532,7 +531,7 @@
 
     function addWlanHeader(index: number){
         isWlanIndicator.value = true;
-        clientsTableHeaders.value.splice(index, 0, {title: "Wlan status", key: "", width: "8%", sortable: false});
+        clientsTableHeaders.value.splice(index, 0, {title: translate("monitoringClients.main.tableHeaderWlan", i18n), key: "", width: "8%", sortable: false});
     }
 
     function removeWlanHeader(index: number){

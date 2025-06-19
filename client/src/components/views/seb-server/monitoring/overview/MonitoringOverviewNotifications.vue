@@ -3,7 +3,7 @@
     <template v-if="monitoringStore.monitoringOverviewData?.notifications">
         <v-row>
             <v-col class="primary-text-color text-h5 font-weight-bold">
-                Notifications
+                {{ translate("monitoringOverview.notifications.notifications") }}
             </v-col>
         </v-row>
     
@@ -39,7 +39,7 @@
     <template v-if="monitoringStore.monitoringOverviewData?.indicators">
         <v-row>
             <v-col class="primary-text-color text-h5 font-weight-bold">
-                Indicators
+                {{ translate("monitoringOverview.notifications.indicators") }}
             </v-col>
         </v-row>
     

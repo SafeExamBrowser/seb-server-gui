@@ -73,7 +73,7 @@
                                 variant="outlined"
                                 prepend-icon="mdi-monitor-lock"
                                 @click="openInstructionConfirmDialog(InstructionEnum.SEB_FORCE_LOCK_SCREEN)">
-                                Lock client
+                                {{translate("monitoringDetails.info.lock")}}
                             </v-btn>
                         </div>
 
@@ -85,7 +85,7 @@
                                 variant="outlined"
                                 prepend-icon="mdi-backspace-outline"
                                 @click="openInstructionConfirmDialog(InstructionEnum.SEB_QUIT)">
-                                Quit client
+                                {{translate("monitoringDetails.info.quit")}}
                             </v-btn>
                         </div>
                     </v-col>

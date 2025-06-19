@@ -12,7 +12,7 @@
                     <!------notifications: raise hand panel------->
                     <v-expansion-panel class="rounded-lg">
                         <v-expansion-panel-title class="font-weight-bold">
-                            Notifications
+                            {{translate("monitoringDetails.main.notifications")}}
                         </v-expansion-panel-title>
 
                         <v-expansion-panel-text>
@@ -33,14 +33,14 @@
                                                     color="primary" 
                                                     variant="flat" 
                                                     @click="confirmNotification(raiseHandNotification.id.toString())">
-                                                    Resolve Raise Hand
+                                                    {{translate("monitoringDetails.main.resolveRaiseHand")}}
                                                 </v-btn>
                                             </v-col>
                                         </v-row>
                                     </v-card>
         
                                     <div v-else align="center"> 
-                                        No notifications available
+                                        {{translate("monitoringDetails.main.noNotifications")}}
                                     </div>
                                 </v-col>
                             </v-row>
@@ -51,7 +51,7 @@
                     <!------messages------->
                     <v-expansion-panel class="rounded-lg">
                         <v-expansion-panel-title class="font-weight-bold">
-                            Messages
+                            {{translate("monitoringDetails.main.messages")}}
                         </v-expansion-panel-title>
 
                         <v-expansion-panel-text>
@@ -75,7 +75,7 @@
                                                         color="primary" 
                                                         variant="flat" 
                                                         @click="confirmNotification(message.id.toString())">
-                                                        Resolve Message
+                                                        {{translate("monitoringDetails.main.resolveMessage")}}
                                                     </v-btn>
                                                 </v-col>
                                             </v-row>
@@ -84,7 +84,7 @@
                                     </template>
         
                                     <div v-else align="center"> 
-                                        No notifications available
+                                        {{translate("monitoringDetails.main.noNotifications")}}
                                     </div>
                                 </v-col>
                             </v-row>
@@ -95,7 +95,7 @@
                     <!------screen proctoring------->
                     <v-expansion-panel class="rounded-lg">
                         <v-expansion-panel-title class="font-weight-bold">
-                            Screen Proctoring
+                            {{translate("monitoringDetails.main.screenProctoring")}}
                         </v-expansion-panel-title>
 
                         <v-expansion-panel-text>
@@ -107,7 +107,7 @@
                     <!------logs------->
                     <v-expansion-panel class="rounded-lg">
                         <v-expansion-panel-title class="font-weight-bold">
-                            Client Logs
+                            {{translate("monitoringDetails.main.clientLogs")}}
                         </v-expansion-panel-title>
 
                         <v-expansion-panel-text>
@@ -130,6 +130,7 @@
     import { NotificationEnum } from "@/models/seb-server/monitoringEnums";
     import { useDisplay } from "vuetify";
     import { InstructionEnum } from "@/models/seb-server/instructionEnum";
+    import {translate} from "@/utils/generalUtils";
 
 
     //route params

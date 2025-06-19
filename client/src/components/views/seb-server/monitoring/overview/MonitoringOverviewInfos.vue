@@ -19,12 +19,12 @@
     <v-row class="mt-6">
         <!------start time label------->
         <v-col class="text-subtitle-1">
-            Start
+            {{translate("monitoringOverview.infos.start")}}
         </v-col>
 
         <!------end time label------->
         <v-col class="text-subtitle-1">
-            End
+            {{translate("monitoringOverview.infos.end")}}
         </v-col>
     </v-row>
 
