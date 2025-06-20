@@ -195,6 +195,27 @@
         }
     },
 
+    "galleryView": {
+        "generalInfo": {
+            "page": "Page",
+            "sessions": "Sessions",
+            "sessionsTooltip": "currently live / total amount of sessions"
+        },
+
+        "gridSize": "Grid Size",
+        "sortByName": "Sort by Name",
+        "showName": "Show Name",
+        "showIp": "Show IP",
+        "metadata": "Metadata",
+
+        "screenReader": {
+            "settings": "Gallery View Settings",
+            "expandImage": "Expand Image",
+            "openProcotringView": "Open Proctoring View",
+            "collapseImage": "Collapse Image"
+        }
+    },
+
     "examList": {
         "info": {
             "selectExam": "Select Exam",

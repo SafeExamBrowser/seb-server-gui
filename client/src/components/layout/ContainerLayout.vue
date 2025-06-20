@@ -15,6 +15,115 @@
         </v-app-bar-title>
 
         <template v-slot:append>
+
+            <!--exams overview specfic items-->
+            <template v-if="useRoute().name == 'ExamsOverview'">
+                <div class="mr-4">
+                    <v-menu :close-on-content-click="false">
+                        <template v-slot:activator="{ props }">
+                            <v-btn 
+                                aria-label="Running Exams Settings"
+                                icon="mdi-cog" 
+                                v-bind="props"
+                                color="primary">
+                            </v-btn>
+                        </template>
+                        <v-list>
+                            <v-list-item>
+                                <v-switch 
+                                    hide-details
+                                    class="mx-auto" 
+                                    label="Show past exams" 
+                                    color="primary" 
+                                    v-model="appBarStore.examOverviewShowPastExams">
+                                </v-switch>
+                            </v-list-item>
+                            <v-list-item>
+                                <v-switch 
+                                    hide-details
+                                    class="mx-auto" 
+                                    label="Show upcoming exams" 
+                                    color="primary" 
+                                    v-model="appBarStore.examOverviewShowUpcomingExams">
+                                </v-switch>
+                            </v-list-item>
+                        </v-list>
+                    </v-menu>
+                </div>
+            </template>
+            <!-------–--------------------->
+        
+            <!--gallery view specfic items-->
+            <template v-if="useRoute().name == 'GalleryViewPage'">
+                
+                <!--session infos-->
+                <v-chip class="mr-4" role="none">
+                    {{ translate("galleryView.generalInfo.page") }}: {{ appBarStore.galleryCurrentPage }} / {{ appBarStore.galleryMaxPages }}
+                </v-chip>
+                <v-chip class="mr-4" role="none">
+                    {{ translate("galleryView.generalInfo.sessions") }}: {{ appBarStore.galleryLiveSessions }} / {{ appBarStore.galleryAmountOfSessions }}
+                    <v-tooltip
+                        role="none"
+                        activator="parent"
+                        location="bottom"
+                        :aria-label="translate('galleryView.generalInfo.sessionsTooltip')">
+                        {{ translate("galleryView.generalInfo.sessionsTooltip") }}
+                    </v-tooltip>
+                </v-chip>
+
+                <!--change grid size-->
+                <div class="mr-4">
+                    <v-menu>
+                        <template v-slot:activator="{ props }">
+                            <v-btn v-bind="props" rounded="sm" color="primary" variant="flat">
+                                <v-icon start icon="mdi-chevron-down" size="x-large"></v-icon>
+                                {{ translate("galleryView.gridSize") }}: {{ appBarStore.galleryGridSize.title }}
+                            </v-btn>
+                        </template>
+                        <v-list>
+                            <v-list-item class="d-flex justify-center align-center" v-for="(gridSize, index) in gridSizes" :key="index" :value="index" @click="changeGridSize(gridSize)">
+                                <v-list-item-title>{{ gridSize.title }}</v-list-item-title>
+                            </v-list-item>
+                        </v-list>
+                    </v-menu>
+                </div>
+
+                <!--settings-->
+                <div>
+                    <v-menu :close-on-content-click="false">
+                        <template v-slot:activator="{ props }">
+                            <v-btn 
+                                :aria-label="translate('galleryView.screenReader.settings')"
+                                icon="mdi-cog" 
+                                v-bind="props"
+                                color="primary">
+                            </v-btn>
+                        </template>
+                        <v-list>
+                            <v-list-item>
+                                <v-switch class="mx-auto" :label="translate('galleryView.showName')" color="primary" v-model="appBarStore.galleryIsNameEnabled" hide-details></v-switch>
+                                <v-switch class="mx-auto" :label="translate('galleryView.showIp')" color="primary" v-model="appBarStore.galleryIsIpEnabled" hide-details></v-switch>
+                            </v-list-item>
+
+                            <v-divider></v-divider>
+
+                            <v-list-item>
+                                <v-btn
+                                    variant="outlined"
+                                    @click="appBarStore.galleryIsNameSortAsc = !appBarStore.galleryIsNameSortAsc">
+                                    {{ translate("galleryView.sortByName") }}
+                                    <template v-slot:append>
+                                        <v-icon size="x-large" :icon="appBarStore.galleryIsNameSortAsc ? 'mdi-chevron-up' : 'mdi-chevron-down'"></v-icon>
+                                    </template>
+                                </v-btn>
+                            </v-list-item>
+                        </v-list>
+                    </v-menu>
+                </div>
+
+            </template>
+            <!----------------------------->
+
             <!--profile icon menu-->
             <div class="profile-icon-container d-flex align-center" aria-label="Profile">
                 <div class="user-header-container d-flex flex-column align-center mr-2">
@@ -111,7 +220,7 @@
 
                         <div class="d-flex justify-space-between align-center w-100 ">
                             <span class="text-caption font-weight-light text-grey-lighten-2">
-                                {{ $t('navigation.loggedInAs') }}
+                                {{ translate('navigation.loggedInAs') }}
                             </span>
 
                             <v-btn
@@ -247,6 +356,13 @@
         // {title: "Screen Proctoring", route: spConstants.RUNNING_EXAMS_ROUTE, icon: "mdi-video"},
     ];
 
+    //gallery view
+    const gridSizes: GridSize[] = [
+        {title: "2x2", value: 2},
+        {title: "3x3", value: 3},
+        {title: "4x4", value: 4}
+    ];
+
 
     //stores
     const authStore = useAuthStore();
@@ -313,6 +429,12 @@
         }
         return import.meta.env.VITE_SUB_PATH + constants.HOME_PAGE_ROUTE;
     }
+
+    //gallery view
+    function changeGridSize(gridSize: GridSize){
+        appBarStore.galleryGridSize = gridSize;
+    }
+
 </script>
 
 <style scoped>
