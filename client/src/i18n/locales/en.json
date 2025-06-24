@@ -114,7 +114,13 @@
     },
 
     "homePage": {
-        "prepareExam": "Prepare Exam",
+        "createTemplates": "Create\n  Templates",
+        "prepareExam": "Prepare\n Exam",
+
+
+        "monitorExams": "Monitor\n Exams",
+
+        "something" : "Something",
         "startNow": "Start now",
 
         "screenProctoring": "Screen Proctoring",
