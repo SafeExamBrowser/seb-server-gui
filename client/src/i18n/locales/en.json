@@ -670,7 +670,6 @@
         "routeNames": {
             "runningExams": "Running Exams",
             "finishedExams": "Finished Exams",
-            "SEBClientLogs": "SEB Client Logs",
             "search": "Search",
             "assessmentToolConnections": "Assessment Tool Connections",
             "connectionConfiguration": "Connection Configuration",
