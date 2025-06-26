@@ -9,70 +9,66 @@
             <v-sheet
                 elevation="4"
                 class="rounded-sm pa-4 d-flex flex-column justify-space-between"
-                style="width: 100%; max-width: 95%; "
+                style="width: 100%; max-width: 95%; height: 30%;"
             >
-                <div class="primary-text-color text-h5 font-weight-black mb-16">
+
+            <div class="primary-text-color text-h5 font-weight-black mb-16">
                     {{ translate('homePage.createTemplates') }}
                 </div>
-                <v-row class="mt-16">
-                    <v-col align="right">
-                        <v-btn
-                            rounded="sm"
-                            color="primary"
-                            variant="flat"
-                            class="bigger-btn"
-                        >
-                            {{ translate('homePage.startNow') }}
-                        </v-btn>
-                    </v-col>
-                </v-row>
+                <div class="d-flex justify-end mt-auto">
+                    <v-btn
+                        rounded="sm"
+                        color="primary"
+                        variant="flat"
+                        class="bigger-btn"
+                    >
+                        {{ translate('homePage.startNow') }}
+                    </v-btn>
+                </div>
             </v-sheet>
 
             <v-sheet
                 elevation="4"
                 class="rounded-sm pa-4 d-flex flex-column justify-space-between"
-                style="width: 100%; max-width: 95%; ;"
+                style="width: 100%; max-width: 95%; height: 30%;"
             >
-                <div class="primary-text-color text-h5 font-weight-black mb-16">
+
+            <div class="primary-text-color text-h5 font-weight-black mb-16">
                     {{ translate('homePage.monitorExams') }}
                 </div>
-                <v-row class="mt-16">
-                    <v-col align="right">
-                        <v-btn
-                            rounded="sm"
-                            color="primary"
-                            variant="flat"
-                            :to="constants.MONITORING_ROUTE"
-                            class="bigger-btn"
-                        >
-                            {{ translate('homePage.startNow') }}
-                        </v-btn>
-                    </v-col>
-                </v-row>
+                <div class="d-flex justify-end mt-auto">
+                    <v-btn
+                        rounded="sm"
+                        color="primary"
+                        variant="flat"
+                        :to="constants.MONITORING_ROUTE"
+                        class="bigger-btn"
+                    >
+                        {{ translate('homePage.startNow') }}
+                    </v-btn>
+                </div>
             </v-sheet>
 
             <v-sheet
                 elevation="4"
                 class="rounded-sm pa-4 d-flex flex-column justify-space-between"
-                style="width: 100%; max-width: 95%;"
+                style="width: 100%; max-width: 95%; height: 30%;"
             >
-                <div class="primary-text-color text-h5 font-weight-black mb-16">
+
+            <div class="primary-text-color text-h5 font-weight-black mb-16">
                     {{ translate('homePage.prepareExam') }}
                 </div>
-                <v-row class="mt-16">
-                    <v-col align="right">
-                        <v-btn
-                            rounded="sm"
-                            color="primary"
-                            variant="flat"
-                            :to="constants.QUIZ_IMPORT_ROUTE"
-                            class="bigger-btn"
-
-                        >
-                            {{ translate('homePage.startNow') }}
-                        </v-btn>
-                    </v-col>
-                </v-row>
+                <div class="d-flex justify-end mt-auto">
+                    <v-btn
+                        rounded="sm"
+                        color="primary"
+                        variant="flat"
+                        :to="constants.QUIZ_IMPORT_ROUTE"
+                        class="bigger-btn"
+                    >
+                        {{ translate('homePage.startNow') }}
+                    </v-btn>
+                </div>
             </v-sheet>
         </v-col>
 

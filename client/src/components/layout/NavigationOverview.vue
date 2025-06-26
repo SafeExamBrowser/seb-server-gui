@@ -3,7 +3,6 @@
         <v-container class="ml-16 mr-0">
             <v-col>
                 <v-sheet elevation="0" color="primary" class="rounded-lg pa-4">
-
                     <v-app-bar-title class="mb-16">
                         <h1 class="title-inherit-styling text-h4">{{ appBarStore.title }}</h1>
                     </v-app-bar-title>
