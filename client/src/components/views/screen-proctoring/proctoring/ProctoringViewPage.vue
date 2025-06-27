@@ -1,8 +1,11 @@
 <template>
-    <v-row v-if="!showError">
+    <v-row v-if="!showError" class="d-flex" align="stretch" no-gutters :class="{ 'details-open': isMetadataInfo }">
 
         <!-----------video player---------->
-        <v-col>
+        <v-col
+            :cols="isMetadataInfo ? 8 : 11"
+            class="video-col"
+            :class="{ open: isMetadataInfo, closed: !isMetadataInfo }">
             <v-sheet
                 elevation="4"
                 class="rounded-lg pt-4 pl-4 pr-4">
@@ -18,9 +21,15 @@
                     <!-----------controls---------->
                     <div class="controls" :class="{ 'controls-hidden': !controlsVisible }">
                     <!-----------slider---------->
-                        <!-- <v-slider class="mt-4" :min="sliderMin" :max="lastScreenshotTime" :step="1000" v-model="sliderTime" thumb-label> -->
-                        <v-slider class="mt-4" :min="sliderMin" :max="sliderMax" :step="1000" v-model="sliderTime"
-                                  @update:focused="updateSliderManually()" thumb-label>
+                        <v-slider class="mt-4"
+                                  :min="sliderMin"
+                                  :max="sliderMax"
+                                  :step="1000"
+                                  v-model="sliderTime"
+                                  thumb-label
+                                  :color="isFullscreen ? 'white' : undefined"
+                                  :track-color="isFullscreen ? '#bbb' : undefined"
+                                  :thumb-color="isFullscreen ? 'white' : undefined">
                             <template v-slot:thumb-label> {{ currentTimeString }} </template>
 
 
@@ -75,7 +84,7 @@
 
                             <!-----------time---------->
                             <template v-slot:append>
-                                <v-menu>
+                                <v-menu attach="#player-wrapper">
                                     <template v-slot:activator="{ props }">
                                         <v-btn
                                             :disabled="isLiveSelected"
@@ -127,19 +136,16 @@
 
         <!-----------info box---------->
         <v-col
-            v-if="isMetadataInfo"
-            cols="4">
-            <v-card
-                class="mx-auto">
-                <template v-slot:title>
-                    <v-btn
-                        @click="hideShowMetadataInfo()"
-                        variant="text"
-                        icon="mdi-information"
-                        aria-label="Details"
-                        :aria-expanded="isMetadataInfo">
-                    </v-btn>
-                    <h2 class="title-inherit-styling title-no-line-break">Details</h2>
+            cols="3"
+            class="metadata-col"
+            :class="{ open: isMetadataInfo, closed: !isMetadataInfo }">
+
+            <v-card class="metadata-card d-flex flex-column"
+                    :style="{ height: videoHeight ? videoHeight + 'px' : 'auto', width: '100%' }">
+
+            <template v-slot:title>
+                <v-btn @click="hideShowMetadataInfo()" variant="text" icon="mdi-information" aria-label="Details" :aria-expanded="isMetadataInfo"></v-btn>
+                <h2 class="title-inherit-styling title-no-line-break">Details</h2>
                 </template>
                 <v-card-text>
                     <v-table density="comfortable" class="text-caption">
@@ -176,17 +182,15 @@
                 </v-card-text>
             </v-card>
         </v-col>
-        <v-col v-else cols="1" align="center">
-            <v-card>
-                <v-btn
-                    @click="hideShowMetadataInfo()"
-                    variant="text"
-                    size="x-large"
-                    density="default"
-                    icon="mdi-information"
-                    aria-label="Details"
-                    :aria-expanded="isMetadataInfo">
-                </v-btn>
+        <v-col
+            cols="1"
+            class="toggle-col d-flex align-center justify-center"
+            :class="{ open: isMetadataInfo, closed: !isMetadataInfo }"
+            @click="hideShowMetadataInfo()">
+            <v-card class="toggle-card d-flex flex-column align-center justify-center" elevation="4"
+                    style="width: 100%; height: 100%;">
+                <v-icon icon="mdi-information" />
+                <v-icon :icon="isMetadataInfo ? 'mdi-chevron-double-right' : 'mdi-chevron-double-left'" />
             </v-card>
         </v-col>
         <!-------------------------->
@@ -197,7 +201,7 @@
 
 <script setup lang="ts">
 import {useRoute} from "vue-router";
-import {ref, onBeforeMount, onBeforeUnmount, watch, computed} from "vue";
+import {ref, onBeforeMount, onBeforeUnmount, watch, computed, nextTick, onMounted} from "vue";
 import * as proctoringViewService from "@/services/screen-proctoring/component-services/proctoringViewService";
 import * as timeUtils from "@/utils/timeUtils";
 import * as groupingUtils from "@/utils/groupingUtils";
@@ -207,6 +211,7 @@ import {useFullscreen} from "@vueuse/core";
 import * as linkService from "@/services/screen-proctoring/component-services/linkService";
 import {SortOrder} from "@/models/screen-proctoring/sortOrderEnum";
 import * as apiService from "@/services/apiService";
+
 
 //slider
 const sliderTime = ref<number>();
@@ -268,7 +273,7 @@ const searchTimestampOnLoad = ref<boolean>(false);
 const searchTimestamp: string | undefined = useRoute().query.searchTimestamp?.toString();
 
 //fullscreen
-const videoPlayer = ref(null);
+const videoPlayer = ref<HTMLDivElement | null>(null);
 const { isFullscreen, enter, exit, toggle } = useFullscreen(videoPlayer);
 
 
@@ -286,6 +291,8 @@ const props = defineProps<{
     sessionIdProp?: string
 }>();
 
+const videoHeight = ref(0);
+
 
 //=============lifecycle and watchers==================
 onBeforeMount(async () => {
@@ -301,13 +308,20 @@ onBeforeMount(async () => {
         totalAmountOfScreenshots.value = await calcTotalNrOfScreenshots()
     }
 
-    //this has to stay here --> when the user reloads the page the title is not know anymore
     appBarStore.title = "Proctoring: " + currentScreenshotData.value?.clientName;
 });
 
+onMounted(() => {
+    if (isMetadataInfo.value) {
+        nextTick(() => {
+            if (videoPlayer.value) {
+                videoHeight.value = videoPlayer.value.clientHeight;
+            }
+        });
+    }
+});
 
 onBeforeUnmount(() => {
-    //clear interval when component gets closed, otherwise intervals will continue to run
     stopIntervalScreenshots();
     stopIntervalLiveImage();
     stopIntervalRefresh();
@@ -315,33 +329,28 @@ onBeforeUnmount(() => {
 
 
 function onMouseMove() {
-    if (!isFullscreen.value) return;        // Only handle auto-hide in fullscreen
+    if (!isFullscreen.value) return;
     controlsVisible.value = true;
-    // Reset the hide timer on every mouse move
     if (hideControlsTimeout) clearTimeout(hideControlsTimeout);
     hideControlsTimeout = setTimeout(() => {
         controlsVisible.value = false;
-    }, 3000);  // hide after 3 seconds of inactivity
+    }, 2000);
 }
 
 function onMouseLeave() {
     if (!isFullscreen.value) return;
-    // Immediately hide controls when pointer leaves the video area
     controlsVisible.value = false;
     if (hideControlsTimeout) clearTimeout(hideControlsTimeout);
 }
 
 watch(isFullscreen, (fullscreen) => {
     if (fullscreen) {
-        // When entering fullscreen, show controls initially...
         controlsVisible.value = true;
         if (hideControlsTimeout) clearTimeout(hideControlsTimeout);
-        // ...and start auto-hide timer
         hideControlsTimeout = setTimeout(() => {
             controlsVisible.value = false;
         }, 3000);
     } else {
-        // When exiting fullscreen, ensure controls are visible in normal view
         controlsVisible.value = true;
         if (hideControlsTimeout) clearTimeout(hideControlsTimeout);
     }
@@ -353,18 +362,15 @@ watch(sliderTime, async () => {
         return;
     }
 
-    //if the user clicks somewhere into the slider
     if (sliderTime.value != sliderMax.value && !intervalScreenshots) {
         pause();
         isLiveButtonDisabled.value = false;
     }
 
-    //do nothing if the live button is selected as always the latest screenshot must be shown
     if (isLiveSelected.value) {
         return;
     }
 
-    //calc timestamp list for navigation forwards / backwards
     const sliderTimeForIndex: number = Math.floor(sliderTime.value / 1000);
     if (screenshotTimestampsFloored.value.includes(sliderTimeForIndex)) {
         timestampsIndex.value = screenshotTimestampsFloored.value.indexOf(sliderTimeForIndex);
@@ -375,7 +381,6 @@ watch(sliderTime, async () => {
     const screenshotTimestampsShortend: number[] = screenshotTimestamps.value.map(timestamp => Math.floor(timestamp / 10000));
     const sliderTimeForIndexShortend: number = Math.floor(sliderTime.value / 10000);
 
-    //check if current timestamp is included in the list, othwerise get the list
     if (screenshotTimestampsShortend.includes(sliderTimeForIndexShortend)) {
         timestampsIndex.value = screenshotTimestampsShortend.indexOf(sliderTimeForIndexShortend);
 
@@ -387,21 +392,18 @@ watch(sliderTime, async () => {
 });
 
 watch(liveTimestamp, async () => {
-    //get new image via current time
     if (isLive.value && isLiveSelected.value) {
         throttledSetImageLink(Date.now().toString());
         assignScreenshotData();
         return;
     }
 
-    //if is live but recording is beeing used
     if (isLive.value) {
         assignScreenshotDataByTimestamp(sliderTime.value?.toString());
         return;
     }
 });
 
-//check if session is still live
 watch(currentScreenshotData, () => {
     if (currentScreenshotData.value) {
         liveSessionTime.value = timeUtils.toTimeString(currentScreenshotData.value?.endTime - currentScreenshotData.value?.startTime);
@@ -409,13 +411,22 @@ watch(currentScreenshotData, () => {
     }
 });
 
-//stop the live interval when live status changed
 watch(isLive, async () => {
     if (!isLive.value) {
         isLiveSelected.value = false;
         stopIntervalLiveImage();
         totalAmountOfScreenshots.value = await calcTotalNrOfScreenshots()
         return;
+    }
+});
+
+watch(isMetadataInfo, (newVal) => {
+    if (newVal) {
+        nextTick(() => {
+            if (videoPlayer.value) {
+                videoHeight.value = videoPlayer.value.clientHeight;
+            }
+        });
     }
 });
 
@@ -800,36 +811,156 @@ async function calcTotalNrOfScreenshots(): Promise<number> {
     z-index: 0;
 }
 
-/* Controls bar styling */
+
 .controls {
     width: 100%;
-    position: static;              /* Sit in normal document flow (below image) */
-    opacity: 1;                    /* Visible by default */
-    transition: opacity 0.3s ease; /* Smooth transition for hide/show */
+    position: static;
+    opacity: 1;
+    transition: opacity 0.3s ease;
 }
 
-/* Hidden state for controls (used when controlsVisible is false) */
+
 .controls-hidden {
     opacity: 0;
-    pointer-events: none;          /* Ignore mouse events when hidden */
+    pointer-events: none;
 }
 
 /* Fullscreen mode controls styling */
 .player-wrapper:fullscreen .controls,
 .player-wrapper:-webkit-full-screen .controls {
-    position: absolute !important;       /* Overlay on video */
+    position: absolute !important;
     bottom: 16px;
     left: 0;
     width: 100%;
-    z-index: 999;                       /* Above the video content */
-    background: rgba(0, 0, 0, 0.5);      /* Semi-transparent background for controls */
-    padding: 8px 0;                     /* Vertical padding for some breathing room */
+    z-index: 999;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 8px 0;
 }
 
-/* Ensure control buttons (icons) are visible on dark background in fullscreen */
 .player-wrapper:fullscreen .controls .v-btn,
 .player-wrapper:-webkit-full-screen .controls .v-btn {
     color: white !important;
+}
+
+
+.player-wrapper:fullscreen .controls .v-slider-track__background,
+.player-wrapper:fullscreen .controls .v-slider-track__fill,
+.player-wrapper:fullscreen .controls .v-slider-track__tick,
+.player-wrapper:fullscreen .controls .v-slider-thumb__surface {
+    background-color: white !important;
+}
+
+.player-wrapper:fullscreen .controls .v-slider-thumb__surface {
+    border-color: white !important;
+}
+
+.player-wrapper:fullscreen .controls .v-chip {
+    color: white !important;
+    border-color: white !important;
+}
+
+.player-wrapper:-webkit-full-screen .controls .v-slider-track__background,
+.player-wrapper:-webkit-full-screen .controls .v-slider-track__fill,
+.player-wrapper:-webkit-full-screen .controls .v-slider-track__tick,
+.player-wrapper:-webkit-full-screen .controls .v-slider-thumb__surface {
+    background-color: white !important;
+}
+
+.player-wrapper:-webkit-full-screen .controls .v-slider-thumb__surface {
+    border-color: white !important;
+}
+
+.player-wrapper:-webkit-full-screen .controls .v-chip {
+    color: white !important;
+    border-color: white !important;
+}
+
+
+/* Metadata Buttoon*/
+.metadata-card {
+    /* width: 100% is set via binding or could be enforced here if needed */
+}
+.metadata-card .v-card-text {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+.metadata-card .v-card-title,
+.metadata-card .v-card-subtitle {
+    flex: 0 0 auto;
+}
+
+
+.toggle-col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.toggle-col v-btn {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+}
+
+
+.v-icon {
+    color: #215CAF;
+}
+
+
+
+/* Transition for smooth width changes */
+.video-col, .metadata-col, .toggle-col {
+    transition: flex-basis 0.3s ease, max-width 0.3s ease, opacity 0.3s ease;
+}
+
+/* Video column: expand or shrink when details toggled */
+.video-col.closed {
+    /* Closed (details hidden): take 91.66% (11/12 columns) */
+    flex: 0 0 91.66% !important;
+    max-width: 91.66% !important;
+}
+.video-col.open {
+    /* Open (details shown): base 66.66% (8/12), allow growth to fill extra space */
+    flex: 1 1 66.66% !important;
+    max-width: 100% !important;  /* allow flex to expand if needed */
+}
+
+/* Details column: fade in and slide from 0 to 25% */
+.metadata-col.closed {
+    flex: 0 0 0 !important;
+    max-width: 0 !important;
+    opacity: 0;
+    overflow: hidden;
+}
+.metadata-col.open {
+    flex: 0 0 25% !important;   /* 3/12 columns = 25% */
+    max-width: 25% !important;
+    opacity: 1;
+    /* The card inside will already match video height */
+}
+
+/* Toggle column: shrink when open */
+.toggle-col.closed {
+    flex: 0 0 8.33% !important;  /* 1/12 column = 8.33% */
+    max-width: 8.33% !important;
+}
+.toggle-col.open {
+    flex: 0 0 50px !important;   /* fixed ~50px width when open (just icons) */
+    max-width: 50px !important;
+}
+
+/* Style the toggle card */
+.toggle-card {
+    /* You can adjust background or text color if needed.
+       By default, v-card uses the app's surface color (usually white in light theme). */
+    /* Example: give the card a slight border radius or specific color if desired: */
+    /* border-radius: 4px; */
+}
+/* Increase visibility of the toggle icons (already colored via .v-icon style) */
+.toggle-card .v-icon {
+    /* Inherit the color styling (#215CAF) from parent scope, or set explicitly if needed */
 }
 
 
