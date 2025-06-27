@@ -1,127 +1,107 @@
 <template>
+
+    <!-- Raised Hand Popup  -->
+    <v-row
+        v-if="raiseHandNotification != null"
+        elevation="4"
+        class="rounded-lg pa-4 raise-hand-row mb-1"
+        style="background-color: #FFFFFE; border: 2px solid #205caf;"
+    >
+        <v-row align="center" justify="center">
+            <v-col cols="1">
+                <v-icon class="ml-5" icon="mdi-hand-back-right" style="color: #205caf;"></v-icon>
+            </v-col>
+            <v-col>
+                {{ raiseHandNotification.text }}
+            </v-col>
+            <v-col align="right">
+                <v-btn
+                    :loading="resolveRaiseHandSent"
+                    rounded="sm"
+                    color="primary"
+                    variant="flat"
+                    @click="confirmNotification(raiseHandNotification.id.toString())"
+                >
+                    {{ translate("monitoringDetails.main.resolveRaiseHand") }}
+                </v-btn>
+            </v-col>
+        </v-row>
+    </v-row>
+
+    <!-- Messages -->
     <v-row>
-        <v-col>
-            <v-sheet 
-                elevation="4"
-                class="rounded-lg pa-8">
+        <v-col cols="12" class="mb-1">
+            <template v-if="messages != null">
+                <v-row
+                    v-for="message in messages"
+                    :key="message.id"
+                    elevation="4"
+                    class="rounded-lg pa-4 message-card"
+                    style="background-color: #FFFFFE; border: 2px solid #205caf;"
+                >
+                    <v-row align="center" justify="center">
+                        <v-col cols="1">
+                            <v-icon icon="ml-5 mdi-monitor-lock" style="color: #205caf;"></v-icon>
+                        </v-col>
+                        <v-col>
+                            {{ message.text }}
+                        </v-col>
+                        <v-col align="right">
+                            <v-btn
+                                :loading="resolveLockScreenSent"
+                                rounded="sm"
+                                color="primary"
+                                variant="flat"
+                                @click="confirmNotification(message.id.toString())"
+                            >
+                                {{ translate("monitoringDetails.main.resolveMessage") }}
+                            </v-btn>
+                        </v-col>
+                    </v-row>
+                </v-row>
+            </template>
 
-                <v-expansion-panels 
-                    v-model="panels" 
-                    multiple>
-
-                    <!------notifications: raise hand panel------->
-                    <v-expansion-panel class="rounded-lg">
-                        <v-expansion-panel-title class="font-weight-bold">
-                            {{translate("monitoringDetails.main.notifications")}}
-                        </v-expansion-panel-title>
-
-                        <v-expansion-panel-text>
-                            <v-row justify="center">
-                                <v-col cols="12" lg="6">
-                                    <v-card v-if="raiseHandNotification != null" elevation="4" class="rounded-lg pa-4" >
-                                        <v-row align="center" justify="center">
-                                            <v-col cols="1">
-                                                <v-icon icon="mdi-hand-back-right"></v-icon>
-                                            </v-col>
-                                            <v-col>
-                                                {{ raiseHandNotification.text }}
-                                            </v-col>
-                                            <v-col align="right">
-                                                <v-btn 
-                                                    :loading="resolveRaiseHandSent"
-                                                    rounded="sm" 
-                                                    color="primary" 
-                                                    variant="flat" 
-                                                    @click="confirmNotification(raiseHandNotification.id.toString())">
-                                                    {{translate("monitoringDetails.main.resolveRaiseHand")}}
-                                                </v-btn>
-                                            </v-col>
-                                        </v-row>
-                                    </v-card>
-        
-                                    <div v-else align="center"> 
-                                        {{translate("monitoringDetails.main.noNotifications")}}
-                                    </div>
-                                </v-col>
-                            </v-row>
-                        </v-expansion-panel-text>
-                    </v-expansion-panel>
-
-
-                    <!------messages------->
-                    <v-expansion-panel class="rounded-lg">
-                        <v-expansion-panel-title class="font-weight-bold">
-                            {{translate("monitoringDetails.main.messages")}}
-                        </v-expansion-panel-title>
-
-                        <v-expansion-panel-text>
-                            <v-row justify="center">
-                                <v-col cols="12" lg="6">
-
-                                    <template v-if="messages != null">
-
-                                        <v-card v-for="message in messages" elevation="4" class="rounded-lg pa-4" >
-                                            <v-row align="center" justify="center">
-                                                <v-col cols="1">
-                                                    <v-icon icon="mdi-hand-back-right"></v-icon>
-                                                </v-col>
-                                                <v-col>
-                                                    {{ message.text }}
-                                                </v-col>
-                                                <v-col align="right">
-                                                    <v-btn 
-                                                        :loading="resolveLockScreenSent"
-                                                        rounded="sm" 
-                                                        color="primary" 
-                                                        variant="flat" 
-                                                        @click="confirmNotification(message.id.toString())">
-                                                        {{translate("monitoringDetails.main.resolveMessage")}}
-                                                    </v-btn>
-                                                </v-col>
-                                            </v-row>
-                                        </v-card>
-
-                                    </template>
-        
-                                    <div v-else align="center"> 
-                                        {{translate("monitoringDetails.main.noNotifications")}}
-                                    </div>
-                                </v-col>
-                            </v-row>
-                        </v-expansion-panel-text>
-                    </v-expansion-panel>
-
-
-                    <!------screen proctoring------->
-                    <v-expansion-panel class="rounded-lg">
-                        <v-expansion-panel-title class="font-weight-bold">
-                            {{translate("monitoringDetails.main.screenProctoring")}}
-                        </v-expansion-panel-title>
-
-                        <v-expansion-panel-text>
-                            <ProctoringViewPage :session-id-prop="connectionToken"></ProctoringViewPage>
-                        </v-expansion-panel-text>
-                    </v-expansion-panel>
-
-
-                    <!------logs------->
-                    <v-expansion-panel class="rounded-lg">
-                        <v-expansion-panel-title class="font-weight-bold">
-                            {{translate("monitoringDetails.main.clientLogs")}}
-                        </v-expansion-panel-title>
-
-                        <v-expansion-panel-text>
-                            test
-                        </v-expansion-panel-text>
-                    </v-expansion-panel>
-                    
-
-                </v-expansion-panels>
-            </v-sheet>
+            <div v-else align="center">
+                {{ translate("monitoringDetails.main.noNotifications") }}
+            </div>
         </v-col>
     </v-row>
 
-    
+    <v-row>
+        <v-col>
+            <div elevation="4" class="rounded-lg pa-4" style="position: relative;">
+
+                <!-- Top-right toggle -->
+                <div class="d-flex justify-end mb-2">
+                    <v-btn-toggle v-model="currentView" mandatory>
+                        <v-btn value="proctoring" color="primary" size="small">
+                            {{ translate("monitoringDetails.main.screenProctoring") }}
+                        </v-btn>
+                        <v-btn value="logs" color="primary" size="small">
+                            {{ translate("monitoringDetails.main.clientLogs") }}
+                        </v-btn>
+                    </v-btn-toggle>
+                </div>
+
+                <!-- Proctoring view -->
+                <div v-if="currentView === 'proctoring'" class="view-container">
+                    <ProctoringViewPage :session-id-prop="connectionToken" />
+                </div>
+
+                <!-- Logs view -->
+                <div v-else class="view-container">
+                    <!-- Replace this with your real logs content -->
+                    <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                        test (logs view placeholder)
+                    </div>
+                </div>
+
+            </div>
+        </v-col>
+    </v-row>
+
+
+
 </template>
 
 <script setup lang="ts">
@@ -145,6 +125,9 @@
     //stores
     const monitoringStore = useMonitoringStore();
 
+    //display main content
+    const currentView = ref<'proctoring' | 'logs'>('proctoring');
+
     //display
     const {lg} = useDisplay();
 
@@ -155,6 +138,9 @@
     watch(lg, () => {
         console.log(lg.value)
     })
+
+
+
 
 
     const raiseHandNotification: ComputedRef<ClientNotification | null> = computed(() => {
@@ -177,6 +163,30 @@
         return null;
     });
 
+
+    import { nextTick } from "vue";
+
+    watch(raiseHandNotification, (newVal) => {
+        if (newVal !== null) {
+            scrollToTop();
+        }
+    });
+
+    // Watch messages
+    watch(messages, (newVal) => {
+        if (newVal !== null && newVal.length > 0) {
+            scrollToTop();
+        }
+    });
+
+    function scrollToTop() {
+        nextTick(() => {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        });
+    }
 
     async function confirmNotification(notificationId: string){
         monitoringViewService.confirmNotification(examId, notificationId, connectionToken);

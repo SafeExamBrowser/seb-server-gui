@@ -1,171 +1,351 @@
 <template>
-    <v-row>
-        <v-col>
-            <v-sheet elevation="4" class="rounded-lg pl-4 pt-3 pr-4">
 
-                <!------title and headers------->
-                <v-row class="fill-height" align="center">
-                    <v-col cols="2" class="primary-text-color text-h5 font-weight-bold">
-                        {{monitoringStore.selectedExam?.quizName}}
-                    </v-col>
+    <!-- Path -->
+    <v-row style="background-color: #FFFFFE;">
+        <div class="path-text ml-10 mt-4">
+                    <span
+                        class="monitoring-link"
+                        @click="navigateTo(constants.MONITORING_ROUTE)"
+                    >
+                        {{ translate("titles.monitoring") }}
+                    </span>
+            &nbsp;>&nbsp;
+            <span
+                class="exam-name"
+                @click="navigateTo(constants.MONITORING_CLIENTS_ROUTE + '/' + examId, monitoringStore.currentMonitoringQuery)"
+            >
+                      {{ monitoringStore.selectedExam?.quizName }}
+                    </span>
+        </div>
+    </v-row>
 
-                    <v-col cols="2" class="text-subtitle-1 font-weight-bold">
-                        {{translate("monitoringDetails.info.userNameOrSession")}}
-                    </v-col>
+    <v-row style="background-color: #FFFFFE;">
+        <!-- User Name -->
+        <v-col cols="12" md="3">
 
-                    <v-col cols="2" class="text-subtitle-1 font-weight-bold">
-                        {{translate("monitoringDetails.info.clientGroups")}}
-                    </v-col>
+            <!-- Name split across lines -->
+            <div v-if="nameParts.length" class="top-container ml-10">
+                <div
+                    v-for="(part, index) in nameParts"
+                    :key="index"
+                    class="name-part"
+                >
+                    {{ part }}
+                </div>
+            </div>
+        </v-col>
 
-                    <v-col cols="2" class="text-subtitle-1 font-weight-bold">
-                        {{translate("monitoringDetails.info.connectionInfo")}}
-                    </v-col>
 
-                    <v-col cols="2" class="text-subtitle-1 font-weight-bold">
-                        {{translate("monitoringDetails.info.status")}}
-                    </v-col>
+        <!-- User Info -->
+        <v-col cols="12" md="3" class="user-info-col">
+            <div class="top-container">
+            <!-- Status -->
+                <div v-if="currentStatus">
+                    <v-card
+                        class="rounded-lg pa-2 text-center"
+                        variant="flat"
+                        :color="getConnectionStatusColor(currentStatus)"
+                        max-width="130"
+                    >
+                        <v-row>
+                            <v-col class="text-body-3">
+                                {{ translate(currentStatus) }}
+                            </v-col>
+                        </v-row>
+                    </v-card>
+                </div>
 
-                    <v-col cols="2" class="text-subtitle-1 font-weight-bold">
-                        {{translate("monitoringDetails.info.actions")}}
-                    </v-col>
-                </v-row>
+            <!-- Group -->
+                <div class=" mt-2 d-flex align-center flex-wrap group-container">
+                    <span class="group-label mr-2">Group:</span>
+                    <v-chip
+                        v-for="clientGroup in monitoringStore.clientGroupsSingle"
+                        :key="clientGroup.id"
+                        size="default"
+                        class="mr-1 pl-5 pr-5 text-body-4"
+                        variant="tonal"
+                    >
+                        {{ clientGroup.name }}
+                    </v-chip>
+                </div>
 
-                <!------url and values------->
-                <v-row>
-                    <!------placeholder------->
-                    <v-col cols="2" class="text-h7 text-decoration-underline">
-                    </v-col>
 
-                    <!------user name or session------->
-                    <v-col cols="2" class="text-h6 font-weight-bold">
-                        {{monitoringStore.selectedSingleConn?.cdat.examUserSessionId}}
-                    </v-col>
+                <!-- SEB info tags -->
+                <div class="mt-2">
+                    <v-chip
+                        v-for="(info, index) in sebInfoParts"
+                        :key="index"
+                        size="default"
+                        class="mr-1 mb-1 text-body-3"
+                        variant="outlined"
+                    >
+                        {{ info }}
+                    </v-chip>
+                </div>
 
-                    <!------client groups------->
-                    <v-col cols="2" class="text-h6 font-weight-bold">
-                        <div v-for="clientGroup in monitoringStore.clientGroupsSingle" :key="clientGroup.id">
-                                <v-chip 
-                                    size="small" 
-                                    class="mr-2 mt-2"
-                                    variant="tonal">
-                                    {{clientGroup.name}}
-                                </v-chip>
-                            </div>
-                    </v-col>
 
-                    <!------connection info------->
-                    <v-col cols="2">
-                        {{monitoringStore.selectedSingleConn?.cdat.seb_info}}
-                    </v-col>
+            </div>
+        </v-col>
 
-                    <!------status------->
-                    <v-col cols="2">
-                        {{ translate(generalUtils.findEnumValue(ConnectionStatusEnum, monitoringStore.selectedSingleConn?.cdat.status)) }}
-                    </v-col>
 
-                    <!------actions------->
-                    <v-col cols="2">
-                        <div>
-                            <v-btn 
-                                class="mt-2"
-                                rounded="sm" 
-                                color="black" 
-                                variant="outlined"
-                                prepend-icon="mdi-monitor-lock"
-                                @click="openInstructionConfirmDialog(InstructionEnum.SEB_FORCE_LOCK_SCREEN)">
-                                {{translate("monitoringDetails.info.lock")}}
-                            </v-btn>
-                        </div>
+        <!-- Indicators -->
+        <v-col cols="12" md="3">
+            <v-card
 
-                        <div>
-                            <v-btn 
-                                class="mt-2"
-                                rounded="sm" 
-                                color="black" 
-                                variant="outlined"
-                                prepend-icon="mdi-backspace-outline"
-                                @click="openInstructionConfirmDialog(InstructionEnum.SEB_QUIT)">
-                                {{translate("monitoringDetails.info.quit")}}
-                            </v-btn>
-                        </div>
-                    </v-col>
-                </v-row>
+                class=" ml-4 top-container pa-3"
 
-                <!------------navigation row------------->
-                <v-row>
-                    <!------------back button------------->
-                    <v-col class="d-flex flex-column">
-                        <div class="d-flex justify-start mt-auto">
-                            <v-icon 
-                                variant="flat" 
-                                icon="mdi-arrow-left"
-                                @click="navigateTo(constants.MONITORING_CLIENTS_ROUTE + '/' + examId, monitoringStore.currentMonitoringQuery)">
-                            </v-icon>
-                        </div>
-                    </v-col>
-                </v-row>
+                style="height: 100%;  display: flex; flex-wrap: wrap; align-content: flex-start;"
+            >
+                <!-- Battery -->
+                <div class="indicator-item d-flex align-center mb-5 mt-5" style="width: 33%;">
+                    <v-icon icon="mdi-battery-50" class="mr-1" />
+                    <span>50%</span>
+                </div>
 
-            </v-sheet>
+                <!-- Last ping -->
+                <div class="indicator-item d-flex align-center mb-5 mt-5 " style="width: 33%;">
+                    <v-icon icon="mdi-wifi" class="mr-1" />
+                    <span>10s ago</span>
+                </div>
+
+                <div style="width: 33%;">
+
+                </div>
+
+                <!-- Error log -->
+                <div class="indicator-item d-flex align-center " style="width: 33%;">
+                    <v-icon icon="mdi-alert-circle" class="mr-1" color="red" />
+                    <span>3</span>
+                </div>
+
+                <!-- Warning log -->
+                <div class="indicator-item d-flex align-center " style="width: 33%;">
+                    <v-icon icon="mdi-alert" class="mr-1" color="orange" />
+                    <span>2</span>
+                </div>
+
+                <!-- Info log -->
+                <div class="indicator-item d-flex align-center" style="width: 33%;">
+                    <v-icon icon="mdi-information" class="mr-1" color="blue" />
+                    <span>5</span>
+                </div>
+
+            </v-card>
+        </v-col>
+
+        <!-- Action Buttons -->
+        <v-col cols="12" md="3" class="button-col">
+            <div class="top-container d-flex flex-column align-end justify-center h-100 mr-5">
+                <v-btn
+                    class="action-btn mb-2"
+                    rounded="sm"
+                    color="black"
+                    variant="outlined"
+                    prepend-icon="mdi-monitor-lock"
+                    @click="openInstructionConfirmDialog(InstructionEnum.SEB_MARK_AS_CANCELLED)"
+                >
+                    {{ translate("monitoringDetails.info.mark-cancelled") }}
+                </v-btn>
+
+                <v-btn
+                    class="action-btn mb-2"
+                    rounded="sm"
+                    color="black"
+                    variant="outlined"
+                    prepend-icon="mdi-monitor-lock"
+                    @click="openInstructionConfirmDialog(InstructionEnum.SEB_FORCE_LOCK_SCREEN)"
+                >
+                    {{ translate("monitoringDetails.info.lock") }}
+                </v-btn>
+
+                <v-btn
+                    class="action-btn"
+                    rounded="sm"
+                    color="black"
+                    variant="outlined"
+                    prepend-icon="mdi-backspace-outline"
+                    @click="openInstructionConfirmDialog(InstructionEnum.SEB_QUIT)"
+                >
+                    {{ translate("monitoringDetails.info.quit") }}
+                </v-btn>
+            </div>
+        </v-col>
+
+    </v-row>
+
+    <v-row class="pb-4 pr-4 pl-4 " style="background-color: #FFFFFE;">
+        <v-col class="d-flex justify-start">
+            <v-icon
+                icon="mdi-arrow-left"
+                @click="navigateTo(constants.MONITORING_CLIENTS_ROUTE + '/' + examId, monitoringStore.currentMonitoringQuery)"
+            />
         </v-col>
     </v-row>
 
-    <!-----------instruction confirm dialog---------->      
     <v-dialog v-model="instructionConfirmDialog" max-width="600">
         <InstructionConfirmDialog
             @close-instruction-confirm-dialog="closeInstructionConfirmDialog"
             :instruction-type="selectedInstructionType"
-            :connectionTokens="connectionToken">
-        </InstructionConfirmDialog>
+            :connectionTokens="connectionToken"
+        />
     </v-dialog>
-
-
 </template>
 
+
 <script setup lang="ts">
-    import {useMonitoringStore} from "@/stores/seb-server/monitoringStore";
-    import * as generalUtils from "@/utils/generalUtils";
-    import {translate} from "@/utils/generalUtils";
-    import { useI18n } from "vue-i18n";
-    import {ConnectionStatusEnum} from "@/models/seb-server/connectionStatusEnum";
-    import { InstructionEnum } from "@/models/seb-server/instructionEnum";
-    import {navigateTo} from "@/router/navigation";
-    import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
-    import * as constants from "@/utils/constants";
-    import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums";
+import {useMonitoringStore} from "@/stores/seb-server/monitoringStore";
+import * as generalUtils from "@/utils/generalUtils";
+import {translate} from "@/utils/generalUtils";
+import {useI18n} from "vue-i18n";
+import {ConnectionStatusEnum} from "@/models/seb-server/connectionStatusEnum";
+import {InstructionEnum} from "@/models/seb-server/instructionEnum";
+import {navigateTo} from "@/router/navigation";
+import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
+import * as constants from "@/utils/constants";
+import {MonitoringHeaderEnum} from "@/models/seb-server/monitoringEnums";
 
 
-    //i18n
-    const i18n = useI18n();
+//i18n
+const i18n = useI18n();
 
-    //route params
-    const examId = useRoute().params.examId.toString();
-    const connectionToken = useRoute().params.connectionToken.toString();
+//route params
+const examId = useRoute().params.examId.toString();
+const connectionToken = useRoute().params.connectionToken.toString();
 
-    //stores
-    const monitoringStore = useMonitoringStore();
+//stores
+const monitoringStore = useMonitoringStore();
 
-    //instruction confirm dialog
-    const instructionConfirmDialog = ref<boolean>(false);
-    const selectedInstructionType = ref<InstructionEnum | null>(null);
-
-
+//instruction confirm dialog
+const instructionConfirmDialog = ref<boolean>(false);
+const selectedInstructionType = ref<InstructionEnum | null>(null);
 
 
-    //===============instruction confirm dialog====================
-    function openInstructionConfirmDialog(instructionType: InstructionEnum){
-        selectedInstructionType.value = instructionType;
-        instructionConfirmDialog.value = true;
+//===============instruction confirm dialog====================
+function openInstructionConfirmDialog(instructionType: InstructionEnum) {
+    selectedInstructionType.value = instructionType;
+    instructionConfirmDialog.value = true;
+}
+
+function closeInstructionConfirmDialog() {
+    instructionConfirmDialog.value = false;
+}
+
+
+//===============split name in parts====================
+const nameParts = computed(() => {
+    const rawName = monitoringStore.selectedSingleConn?.cdat.examUserSessionId || '';
+    return rawName.split(' ').filter(p => p.trim() !== '');
+});
+
+
+//===============groups, tags, and status====================
+
+const sebInfoParts = computed(() => {
+    const rawInfo = monitoringStore.selectedSingleConn?.cdat.seb_info || '';
+    return rawInfo.split(',').map(p => p.trim()).filter(p => p !== '');
+});
+
+
+//status
+const currentStatus = computed(() => {
+    return monitoringStore.selectedSingleConn?.cdat.status ?? null;
+});
+
+function getConnectionStatusColor(connectionStatus: String | null): string {
+    if (connectionStatus == null) return "#000000";
+
+    switch (connectionStatus) {
+        case ConnectionStatusEnum.CONNECTION_REQUESTED:
+            return "#d7fad9";
+        case ConnectionStatusEnum.READY:
+            return "#abf7af";
+        case ConnectionStatusEnum.ACTIVE:
+            return "#66BB6A";
+        case ConnectionStatusEnum.CLOSED:
+            return "#d4f7ff";
+        case ConnectionStatusEnum.DISABLED:
+            return "#9E9E9E";
+        case ConnectionStatusEnum.MISSING:
+            return "#EF5350";
+        default:
+            return "#000000";
     }
+}
 
-    function closeInstructionConfirmDialog(){
-        instructionConfirmDialog.value = false;
+function getConnectionStatusIcon(connectionStatus: ConnectionStatusEnum | null): string {
+    if (connectionStatus == null) return "mdi-chevron-right";
+
+    switch (connectionStatus) {
+        case ConnectionStatusEnum.CONNECTION_REQUESTED:
+            return "mdi-signal-distance-variant";
+        case ConnectionStatusEnum.READY:
+            return "mdi-check";
+        case ConnectionStatusEnum.ACTIVE:
+            return "mdi-check-underline";
+        case ConnectionStatusEnum.CLOSED:
+            return "mdi-close";
+        case ConnectionStatusEnum.DISABLED:
+            return "mdi-send-lock";
+        case ConnectionStatusEnum.MISSING:
+            return "mdi-signal-off";
+        default:
+            return "mdi-chevron-right";
     }
-
+}
 
 
 </script>
 
 <style scoped>
+
+
+/* buttons */
+.action-btn {
+    min-width: 180px;
+    max-width: 220px;
+    width: 100%;
+}
+
+
+/* path */
+
+.path-text {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+.monitoring-link {
+    color: black;
+    cursor: pointer;
+}
+
+/* name */
+.exam-name {
+    color: #205caf;
+    cursor: pointer;
+}
+
+.top-container {
+    margin-top: 1rem;
+}
+
+.name-part {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #205caf;
+}
+
+/* groups, tags and status */
+.user-info-col .v-chip {
+    font-size: 0.95rem;
+
+}
+
+/* indicators */
+.indicator-item span {
+    font-size: 1.1rem;
+}
+
 
 
 </style>

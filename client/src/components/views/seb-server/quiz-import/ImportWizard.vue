@@ -13,7 +13,7 @@
     </template>
 
     <template v-if="!isNoAssessmentTool">
-        <component 
+        <component
             v-if="quizImportStore.steps[quizImportStore.currentStep-1].value == 2"
             :is="quizImportStore.infoBoxComponents[quizImportStore.currentStep-1]"
             @loadExamItemsCaller="loadExamItemsCaller"
@@ -23,7 +23,7 @@
         <!---------wizard---------->
         <v-row>
             <v-col>
-                <v-stepper 
+                <v-stepper
                     v-model="quizImportStore.currentStep"
                     elevation="4"
                     class="rounded-lg">
@@ -36,7 +36,7 @@
                             <v-divider class="border-opacity-25" :thickness="2" v-if="index != quizImportStore.steps.length-1"></v-divider>
                         </template>
 
-                        <v-icon 
+                        <v-icon
                             icon="mdi-chevron-left"
                             style="font-size: 40px;"
                             :aria-label="translate('quizImportWizard.steps.previousStep')"
@@ -45,7 +45,7 @@
                             :disabled="quizImportStore.currentStep == 1">
                         </v-icon>
 
-                        <v-icon 
+                        <v-icon
                             class="mr-6"
                             icon="mdi-chevron-right"
                             style="font-size: 40px;"
@@ -66,7 +66,7 @@
 
                         </template>
                     </v-stepper-window>
-                    
+
                 </v-stepper>
 
             </v-col>
@@ -108,7 +108,7 @@
 
     //modify title in tab display current step
     watch(quizImportStoreRef.currentStep, () => {
-        setTabTitle(); 
+        setTabTitle();
     });
 
 
@@ -190,9 +190,9 @@
     }
 
     function setTabTitle(){
-        document.title = 
-            quizImportStore.currentStep + " - " + 
-            quizImportStore.steps[quizImportStore.currentStep-1].name + " | " + 
+        document.title =
+            quizImportStore.currentStep + " - " +
+            quizImportStore.steps[quizImportStore.currentStep-1].name + " | " +
             translate("titles.quizImport", i18n);
     }
 

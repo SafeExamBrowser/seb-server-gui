@@ -604,25 +604,25 @@
     },
 
     "monitoringDetails": {
-      "info": {
-        "userNameOrSession": "User Name or Session",
-        "clientGroups": "Client Group(s)",
-        "connectionInfo": "Connection Info",
-        "status": "Status",
-        "actions": "Actions",
-        "lock": "Lock client",
-        "quit": "Quit client"
-
-      },
-      "main": {
-        "notifications": "Notifications",
-        "resolveRaiseHand": "Resolve Raise Hand",
-        "noNotifications": "No notifications available",
-        "messages": "Messages",
-        "resolveMessage": "Resolve Message",
-        "screenProctoring": "Screen Proctoring",
-        "clientLogs": "Client Logs"
-      }
+        "info": {
+            "userNameOrSession": "User Name or Session",
+            "clientGroups": "Client Group(s)",
+            "connectionInfo": "Connection Info",
+            "status": "Status",
+            "actions": "Actions",
+            "lock": "Lock client",
+            "quit": "Quit client",
+            "mark-cancelled": "Mark as cancelled"
+        },
+        "main": {
+            "notifications": "Notifications",
+            "resolveRaiseHand": "Resolve Raise Hand",
+            "noNotifications": "No notifications available",
+            "messages": "Messages",
+            "resolveMessage": "Resolve Message",
+            "screenProctoring": "Screen Proctoring",
+            "clientLogs": "Client Logs"
+        }
     },
     "titles": {
         "home": "Home",
