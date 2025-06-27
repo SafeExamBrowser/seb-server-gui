@@ -1,17 +1,15 @@
 <template>
-    <v-row v-if="!showError" class="d-flex" align="stretch" no-gutters :class="{ 'details-open': isMetadataInfo }">
+    <v-row v-if="!showError" class="d-flex" align="stretch" no-gutters>
 
         <!-----------video player---------->
         <v-col
             :cols="isMetadataInfo ? 8 : 11"
             class="video-col"
             :class="{ open: isMetadataInfo, closed: !isMetadataInfo }">
-            <v-sheet
-                elevation="4"
-                class="rounded-lg pt-4 pl-4 pr-4">
+            <v-sheet elevation="4" class="rounded-lg pt-4 pl-4 pr-4">
+
                 <div id="player-wrapper" ref="videoPlayer" class="player-wrapper"
                      @mousemove="onMouseMove" @mouseleave="onMouseLeave">
-                    <!-----------video---------->
                     <v-img :src="imageLink" :aspect-ratio="16/9" class="img-styling">
                         <template v-slot:error>
                             no img available
@@ -135,13 +133,14 @@
         <!-------------------------->
 
         <!-----------info box---------->
+
         <v-col
             cols="3"
             class="metadata-col"
             :class="{ open: isMetadataInfo, closed: !isMetadataInfo }">
 
             <v-card class="metadata-card d-flex flex-column"
-                    :style="{ height: videoHeight ? videoHeight + 'px' : 'auto', width: '100%' }">
+                    style="height: 100%; width: 100%;">
 
             <template v-slot:title>
                 <v-btn @click="hideShowMetadataInfo()" variant="text" icon="mdi-information" aria-label="Details" :aria-expanded="isMetadataInfo"></v-btn>
@@ -811,7 +810,6 @@ async function calcTotalNrOfScreenshots(): Promise<number> {
     z-index: 0;
 }
 
-
 .controls {
     width: 100%;
     position: static;
@@ -819,13 +817,11 @@ async function calcTotalNrOfScreenshots(): Promise<number> {
     transition: opacity 0.3s ease;
 }
 
-
 .controls-hidden {
     opacity: 0;
     pointer-events: none;
 }
 
-/* Fullscreen mode controls styling */
 .player-wrapper:fullscreen .controls,
 .player-wrapper:-webkit-full-screen .controls {
     position: absolute !important;
@@ -875,11 +871,6 @@ async function calcTotalNrOfScreenshots(): Promise<number> {
     border-color: white !important;
 }
 
-
-/* Metadata Buttoon*/
-.metadata-card {
-    /* width: 100% is set via binding or could be enforced here if needed */
-}
 .metadata-card .v-card-text {
     flex: 1 1 auto;
     overflow-y: auto;
@@ -889,7 +880,6 @@ async function calcTotalNrOfScreenshots(): Promise<number> {
 .metadata-card .v-card-subtitle {
     flex: 0 0 auto;
 }
-
 
 .toggle-col {
     display: flex;
@@ -903,31 +893,23 @@ async function calcTotalNrOfScreenshots(): Promise<number> {
     border-radius: 0;
 }
 
-
 .v-icon {
     color: #215CAF;
 }
 
-
-
-/* Transition for smooth width changes */
 .video-col, .metadata-col, .toggle-col {
     transition: flex-basis 0.3s ease, max-width 0.3s ease, opacity 0.3s ease;
 }
 
-/* Video column: expand or shrink when details toggled */
 .video-col.closed {
-    /* Closed (details hidden): take 91.66% (11/12 columns) */
     flex: 0 0 91.66% !important;
     max-width: 91.66% !important;
 }
 .video-col.open {
-    /* Open (details shown): base 66.66% (8/12), allow growth to fill extra space */
     flex: 1 1 66.66% !important;
-    max-width: 100% !important;  /* allow flex to expand if needed */
+    max-width: 100% !important;
 }
 
-/* Details column: fade in and slide from 0 to 25% */
 .metadata-col.closed {
     flex: 0 0 0 !important;
     max-width: 0 !important;
@@ -935,33 +917,43 @@ async function calcTotalNrOfScreenshots(): Promise<number> {
     overflow: hidden;
 }
 .metadata-col.open {
-    flex: 0 0 25% !important;   /* 3/12 columns = 25% */
+    flex: 0 0 25% !important;
     max-width: 25% !important;
     opacity: 1;
-    /* The card inside will already match video height */
 }
 
-/* Toggle column: shrink when open */
 .toggle-col.closed {
-    flex: 0 0 8.33% !important;  /* 1/12 column = 8.33% */
+    flex: 0 0 8.33% !important;
     max-width: 8.33% !important;
 }
 .toggle-col.open {
-    flex: 0 0 50px !important;   /* fixed ~50px width when open (just icons) */
+    flex: 0 0 50px !important;
     max-width: 50px !important;
 }
 
-/* Style the toggle card */
-.toggle-card {
-    /* You can adjust background or text color if needed.
-       By default, v-card uses the app's surface color (usually white in light theme). */
-    /* Example: give the card a slight border radius or specific color if desired: */
-    /* border-radius: 4px; */
-}
-/* Increase visibility of the toggle icons (already colored via .v-icon style) */
-.toggle-card .v-icon {
-    /* Inherit the color styling (#215CAF) from parent scope, or set explicitly if needed */
+
+
+.metadata-col {
+    transform: translateZ(0);
 }
 
+
+.video-col, .toggle-col {
+    transition: flex-basis 0.3s ease, max-width 0.3s ease;
+}
+
+
+.metadata-card {
+    height: 100%;
+}
+
+.scrollable-details {
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.toggle-col {
+    cursor: pointer;
+}
 
 </style>
