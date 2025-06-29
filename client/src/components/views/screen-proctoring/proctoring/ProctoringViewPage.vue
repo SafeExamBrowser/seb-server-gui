@@ -143,8 +143,6 @@
                     style="height: 100%; width: 100%;">
 
             <template v-slot:title>
-                <v-btn @click="hideShowMetadataInfo()" variant="text" icon="mdi-information" aria-label="Details" :aria-expanded="isMetadataInfo"></v-btn>
-                <h2 class="title-inherit-styling title-no-line-break">Details</h2>
                 </template>
                 <v-card-text>
                     <v-table density="comfortable" class="text-caption">

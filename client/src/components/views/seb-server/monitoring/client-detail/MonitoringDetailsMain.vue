@@ -69,7 +69,7 @@
 
     <v-row>
         <v-col>
-            <div elevation="4" class="rounded-lg pa-4" style="position: relative;">
+            <div elevation="4" class="rounded-lg pr-4 pl-4" style="position: relative;">
 
                 <!-- Top-right toggle -->
                 <div class="d-flex justify-end mb-2">
