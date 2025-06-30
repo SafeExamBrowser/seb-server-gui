@@ -114,11 +114,11 @@
     },
 
     "homePage": {
-        "createTemplates": "Create\n  Templates",
+        "createTemplates": "Create\n  Template",
         "prepareExam": "Prepare\n Exam",
 
 
-        "monitorExams": "Monitor\n Exams",
+        "monitorExams": "Monitor\n Exam",
 
         "something" : "Something",
         "startNow": "Start now",
