@@ -51,6 +51,9 @@
                             <v-col class="text-body-3">
                                 {{ translate(currentStatus) }}
                             </v-col>
+                            <v-col align="right">
+                                <v-icon :icon="getConnectionStatusIcon(currentStatus)"></v-icon>
+                            </v-col>
                         </v-row>
                     </v-card>
                 </div>
@@ -111,6 +114,9 @@
                 <div style="width: 33%;">
 
                 </div>
+
+
+                {{monitoringStore.selectedSingleConn?.iVal}}
 
                 <!-- Error log -->
                 <div class="indicator-item d-flex align-center " style="width: 33%;">
@@ -272,7 +278,7 @@ function getConnectionStatusColor(connectionStatus: String | null): string {
     }
 }
 
-function getConnectionStatusIcon(connectionStatus: ConnectionStatusEnum | null): string {
+function getConnectionStatusIcon(connectionStatus: String | null): string {
     if (connectionStatus == null) return "mdi-chevron-right";
 
     switch (connectionStatus) {

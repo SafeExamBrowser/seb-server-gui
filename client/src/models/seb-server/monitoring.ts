@@ -84,9 +84,9 @@ type StaticClientConnectionData = {
 type SingleConnection = {
     miss: boolean;
     pnot: boolean;
-    isVal: {
+    iVal: {
         id: number;
-        val: number;        
+        val: number;
     }[];
     cg: number[];
     cdat: {
