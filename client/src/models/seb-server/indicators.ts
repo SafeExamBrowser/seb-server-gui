@@ -15,3 +15,12 @@ type Indicator = {
     tags?: string;
     thresholds?: Threshold[];
 };
+
+
+type IndicatorType = {
+    BATTERY_STATUS: "BATTERY_STATUS",
+    LAST_PING: "LAST_PING",
+    ERROR_COUNT: "ERROR_COUNT",
+    WARN_COUNT: "WARN_COUNT",
+    INFO_COUNT: "INFO_COUNT",
+}

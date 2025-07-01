@@ -39,7 +39,7 @@
         <!-- User Info -->
         <v-col cols="12" md="3" class="user-info-col">
             <div class="top-container">
-            <!-- Status -->
+                <!-- Status -->
                 <div v-if="currentStatus">
                     <v-card
                         class="rounded-lg pa-2 text-center"
@@ -58,7 +58,7 @@
                     </v-card>
                 </div>
 
-            <!-- Group -->
+                <!-- Group -->
                 <div class=" mt-2 d-flex align-center flex-wrap group-container">
                     <span class="group-label mr-2">Group:</span>
                     <v-chip
@@ -94,47 +94,22 @@
         <!-- Indicators -->
         <v-col cols="12" md="3">
             <v-card
-
                 class=" ml-4 top-container pa-3"
-
                 style="height: 100%;  display: flex; flex-wrap: wrap; align-content: flex-start;"
             >
-                <!-- Battery -->
-                <div class="indicator-item d-flex align-center mb-5 mt-5" style="width: 33%;">
-                    <v-icon icon="mdi-battery-50" class="mr-1" />
-                    <span>50%</span>
+
+                <div
+                    v-for="indicator in mergedIndicators"
+                    :key="indicator.id"
+                    class="indicator-item d-flex align-center mb-5 mt-5"
+                    style="width: 33%;"
+                >
+                    <v-icon :icon="indicator.icon" class="mr-1" :color="indicator.color"/>
+                    <span>
+                        {{ indicator.value }}{{ indicator.unit ? indicator.unit : '' }}
+                    </span>
                 </div>
 
-                <!-- Last ping -->
-                <div class="indicator-item d-flex align-center mb-5 mt-5 " style="width: 33%;">
-                    <v-icon icon="mdi-wifi" class="mr-1" />
-                    <span>10s ago</span>
-                </div>
-
-                <div style="width: 33%;">
-
-                </div>
-
-
-                {{monitoringStore.selectedSingleConn?.iVal}}
-
-                <!-- Error log -->
-                <div class="indicator-item d-flex align-center " style="width: 33%;">
-                    <v-icon icon="mdi-alert-circle" class="mr-1" color="red" />
-                    <span>3</span>
-                </div>
-
-                <!-- Warning log -->
-                <div class="indicator-item d-flex align-center " style="width: 33%;">
-                    <v-icon icon="mdi-alert" class="mr-1" color="orange" />
-                    <span>2</span>
-                </div>
-
-                <!-- Info log -->
-                <div class="indicator-item d-flex align-center" style="width: 33%;">
-                    <v-icon icon="mdi-information" class="mr-1" color="blue" />
-                    <span>5</span>
-                </div>
 
             </v-card>
         </v-col>
@@ -209,6 +184,8 @@ import {navigateTo} from "@/router/navigation";
 import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
 import * as constants from "@/utils/constants";
 import {MonitoringHeaderEnum} from "@/models/seb-server/monitoringEnums";
+import { IndicatorEnum } from "@/models/seb-server/monitoringEnums";
+
 
 
 //i18n
@@ -252,10 +229,26 @@ const sebInfoParts = computed(() => {
 });
 
 
-//status
 const currentStatus = computed(() => {
     return monitoringStore.selectedSingleConn?.cdat.status ?? null;
 });
+
+
+//===============indicators====================
+const mergedIndicators = computed(() => {
+    const definitions = monitoringStore.indicators?.content || [];
+    const values = monitoringStore.selectedSingleConn?.iVal || [];
+
+    return definitions.map((def) => {
+        const valObj = values.find((v) => v.id === def.id);
+        return {
+            ...def,
+            value: valObj ? valObj.val : null,
+            ...indicatorTypeConfig[def.type]
+        };
+    });
+});
+
 
 function getConnectionStatusColor(connectionStatus: String | null): string {
     if (connectionStatus == null) return "#000000";
@@ -298,6 +291,16 @@ function getConnectionStatusIcon(connectionStatus: String | null): string {
             return "mdi-chevron-right";
     }
 }
+
+
+const indicatorTypeConfig: Record<string, { icon: string; unit?: string; color?: string }> = {
+    [IndicatorEnum.BATTERY_STATUS]: {icon: "mdi-battery", unit: "%"},
+    [IndicatorEnum.LAST_PING]: {icon: "mdi-wifi", unit: "s ago"},
+    [IndicatorEnum.ERROR_COUNT]: {icon: "mdi-alert-circle", color: "red"},
+    [IndicatorEnum.WARN_COUNT]: {icon: "mdi-alert", color: "orange"},
+    [IndicatorEnum.INFO_COUNT]: {icon: "mdi-information", color: "blue"},
+    [IndicatorEnum.WLAN_STATUS]: {icon: "mdi-wifi", color: "green"},
+};
 
 
 </script>
@@ -351,7 +354,6 @@ function getConnectionStatusIcon(connectionStatus: String | null): string {
 .indicator-item span {
     font-size: 1.1rem;
 }
-
 
 
 </style>

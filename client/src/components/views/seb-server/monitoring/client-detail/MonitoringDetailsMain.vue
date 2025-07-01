@@ -90,10 +90,9 @@
 
                 <!-- Logs view -->
                 <div v-else class="view-container">
-                    <!-- Replace this with your real logs content -->
-                    <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
-                        test (logs view placeholder)
-                    </div>
+                    <MonitoringClientLogsContainer>
+
+                    </MonitoringClientLogsContainer>
                 </div>
 
             </div>
@@ -138,9 +137,6 @@
     watch(lg, () => {
         console.log(lg.value)
     })
-
-
-
 
 
     const raiseHandNotification: ComputedRef<ClientNotification | null> = computed(() => {

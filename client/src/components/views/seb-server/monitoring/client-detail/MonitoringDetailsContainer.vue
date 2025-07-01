@@ -10,6 +10,7 @@
     import { useAppBarStore } from "@/stores/store";
     import {translate} from "@/utils/generalUtils";
     import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
+    import * as indicatorViewService from "@/services/seb-server/component-services/indicatorViewService";
 
 
     //route params
@@ -26,12 +27,14 @@
 
     //interval
     let intervalRefresh: any | null = null;
+    //todo set interval
     const REFRESH_INTERVAL: number = 1 * 5000;
 
     onBeforeMount(async () => {
         appBarStore.title = translate("titles.monitoring");
 
         await getSingleConnection();
+        await getIndicators();
         await monitoringViewService.getExamAndStore(examId);
         await monitoringViewService.getClientGroups(examId);
         await getPendingNotifications();
@@ -56,6 +59,18 @@
 
         monitoringStore.selectedSingleConn = singleConnectionResponse;
     }
+
+
+    async function getIndicators(){
+        const indicatorsResponse: Indicators | null = await indicatorViewService.getIndicators(examId);
+
+        if(indicatorsResponse == null){
+            return;
+        }
+
+        monitoringStore.indicators = indicatorsResponse;
+    }
+
 
     async function getPendingNotifications(){
         const notificationsResponse: ClientNotification[] | null = await monitoringViewService.getPendingNotifcations(examId, connectionToken);
