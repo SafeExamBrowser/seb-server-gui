@@ -1,6 +1,17 @@
 import * as apiService from "./api.service";
 import * as constants from "../../utils/constants";
 
+
+interface ClientEventLogOptions {
+    page_number?: number;
+    page_size?: number;
+    sort?: string;
+    institutionId?: number;
+    allRequestParams?: object | string;
+}
+
+
+
 export async function applyTestRun(token: string, id: string): Promise<[object, number]>{
     const url: string = constants.MONITORING_TEST_RUN_ROUTE + "/" + id;
     const {data, status} = await apiService.api.post(url, {}, {headers: apiService.getHeaders(token)});
@@ -101,6 +112,43 @@ export async function getSingleConnection(token: string, id: string, connectionT
 
     return [data, status];
 }
+
+export async function getClientEventLogs(
+    token: string,
+    connectionId: string,
+    options?: any
+): Promise<[object, number]> {
+    let parsedOptions: Record<string, any> = {};
+
+    if (typeof options === 'string') {
+        try {
+            parsedOptions = JSON.parse(options);
+        } catch (e) {
+            throw new Error("Invalid optionalParameters JSON");
+        }
+    } else if (Array.isArray(options)) {
+        throw new Error("Invalid optionalParameters format: array is not supported");
+    } else if (typeof options === 'object' && options !== null) {
+        parsedOptions = options as Record<string, any>;
+    }
+
+    const params: Record<string, any> = {
+        ...parsedOptions,
+        allRequestParams: JSON.stringify({ clientConnectionId: connectionId })
+    };
+
+    const { data, status } = await apiService.api.get(
+        constants.MONITORING_LOGS_ROUTE,
+        {
+            headers: apiService.getHeaders(token),
+            params
+        }
+    );
+
+    return [data, status];
+}
+
+
 
 export async function getStaticClientData(token: string, id: string, modelIds: {}): Promise<[object, number]>{
     const url: string = constants.MONITORING_ROUTE + "/" + id + "/static-client-data";

@@ -106,7 +106,9 @@
                 >
                     <v-icon :icon="indicator.icon" class="mr-1" :color="indicator.color"/>
                     <span>
-                        {{ indicator.value }}{{ indicator.unit ? indicator.unit : '' }}
+                        <span>
+                          {{ indicator.displayValue }}
+                        </span>
                     </span>
                 </div>
 
@@ -241,9 +243,18 @@ const mergedIndicators = computed(() => {
 
     return definitions.map((def) => {
         const valObj = values.find((v) => v.id === def.id);
+        let displayValue: string | number | null = valObj ? valObj.val : null;
+
+        if (def.type === IndicatorEnum.LAST_PING && typeof displayValue === "number") {
+            displayValue = generalUtils.formatPing(displayValue);
+        } else if (displayValue !== null) {
+            displayValue = `${displayValue}${indicatorTypeConfig[def.type]?.unit || ""}`;
+        }
+
         return {
             ...def,
-            value: valObj ? valObj.val : null,
+            rawValue: valObj ? valObj.val : null,
+            displayValue,
             ...indicatorTypeConfig[def.type]
         };
     });
@@ -301,6 +312,8 @@ const indicatorTypeConfig: Record<string, { icon: string; unit?: string; color?:
     [IndicatorEnum.INFO_COUNT]: {icon: "mdi-information", color: "blue"},
     [IndicatorEnum.WLAN_STATUS]: {icon: "mdi-wifi", color: "green"},
 };
+
+
 
 
 </script>

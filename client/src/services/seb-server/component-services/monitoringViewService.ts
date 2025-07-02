@@ -38,6 +38,14 @@ export async function getSingleConnection(examId: string, connectionToken: strin
     }
 }
 
+export async function getSingleConnectionEvents( clientConnectionId: string, optionalParameters?: OptionalParGetUserAccounts): Promise<ClientEventResponse | null >{
+    try{
+        return await monitoringService.getSingleConnectionEvents(clientConnectionId, optionalParameters);
+    }catch(error){
+        return null;
+    }
+}
+
 export async function getStaticClientData(examId: string, modelIds: string): Promise<MonitoringStaticClientData | null>{
     try{
         return await monitoringService.getStaticClientData(examId, modelIds);
@@ -120,7 +128,7 @@ export function applyFilter(query: LocationQuery, filterType: MonitoringHeaderEn
 export function applyShowAllFilter(){
     //removes all selected clients (checkbox in table)
     removeAllSelectedClients();
-    
+
     navigation.addQueryParam({
        [MonitoringHeaderEnum.SHOW_ALL]: true
     });
@@ -143,7 +151,7 @@ function removeQueryParam(query: LocationQuery, filterType: MonitoringHeaderEnum
         //remove value
         const values: string[] = currentValue.split(',');
         const filteredValues = values.filter(value => value.trim() != filterValue);
-        
+
         // remove key if empty
         if (filteredValues.length === 0) {
             delete record[filterType];
@@ -166,21 +174,21 @@ function removeAllSelectedClients(){
 
 
 //================display / text logic===============
-export function isMonitoringDisabled(): boolean{    
+export function isMonitoringDisabled(): boolean{
     const selectedExam: Exam | null = useMonitoringStore().selectedExam;
-  
+
     if(selectedExam == null) return true;
-  
+
     const examStatus: ExamStatusEnum | null = generalUtils.findEnumValue(ExamStatusEnum, selectedExam.status);
     const allowedExamStatuses: (ExamStatusEnum | null)[] = [ExamStatusEnum.RUNNING, ExamStatusEnum.TEST_RUN];
-  
+
     return !allowedExamStatuses.includes(examStatus);
 }
 
 export function getMonitoringDisabledWarningText(): string{
     if(useMonitoringStore().selectedExam == null){
         return translate("monitoringOverview.warning.notExist");
-    } 
+    }
 
     if(generalUtils.findEnumValue(ExamStatusEnum, useMonitoringStore().selectedExam?.status) != ExamStatusEnum.RUNNING){
         return translate("monitoringOverview.warning.notRunning");
@@ -198,7 +206,7 @@ export function goToMonitoring(header: MonitoringHeaderEnum, value: string | boo
 }
 
 export function goToMonitoringDetails(examId: string, connectionToken: string, query: {}){
-    useMonitoringStore().currentMonitoringQuery = query; 
+    useMonitoringStore().currentMonitoringQuery = query;
     navigateTo(constants.MONITORING_ROUTE + '/' + examId + "/details/" + connectionToken);
 }
 

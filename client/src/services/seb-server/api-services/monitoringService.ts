@@ -2,6 +2,8 @@ import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
 
 const monitoringUrl: string = "/monitoring"
+const clientEventUrl: string = "/seb-client-event"
+
 
 export async function applyTestRun(id: string): Promise<Exam | any>{
     return (await apiService.api.post(monitoringUrl + "/testrun/" + id, {}, {headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
@@ -19,6 +21,14 @@ export async function getConnections(examId: string, optionalHeaders: {}): Promi
 export async function getSingleConnection(examId: string, connectionToken: string): Promise<SingleConnection | any>{
     const url: string = "/get-monitoring/" + examId + "/" + connectionToken;
     return (await apiService.api.get(url, {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
+}
+
+export async function getSingleConnectionEvents(clientConnectionId: string, optionalParameters?: OptionalParGetUserAccounts): Promise<ClientEventResponse | null >{
+    const url: string = clientEventUrl + "/search" + "/" + clientConnectionId;
+    return(await apiService.api.get(url,
+        {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+                params: {optionalParameters}
+        })).data;
 }
 
 export async function getStaticClientData(examId: string, modelIds: string): Promise<MonitoringStaticClientData | any>{

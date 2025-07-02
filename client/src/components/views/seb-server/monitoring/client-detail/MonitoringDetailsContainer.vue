@@ -12,7 +12,6 @@
     import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
     import * as indicatorViewService from "@/services/seb-server/component-services/indicatorViewService";
 
-
     //route params
     const examId = useRoute().params.examId.toString();
     const connectionToken = useRoute().params.connectionToken.toString();
@@ -106,6 +105,21 @@
         }
     }
 
+
+    // //todo
+    //
+    // // Search + clear search
+    // function onSearch() {
+    //     searchQuery.value = userAccountStore.searchField?.trim().toLowerCase() ?? "";
+    //     options.value.page = 1;
+    // }
+    // function onClearSearch() {
+    //     userAccountStore.searchField = "";
+    //     searchQuery.value = "";
+    //     selectedStatus.value = null;
+    //     selectedInstitutionId.value = null;
+    //     options.value.page = 1;
+    // }
 
 </script>
 

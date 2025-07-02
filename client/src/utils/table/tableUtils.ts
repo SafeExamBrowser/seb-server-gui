@@ -209,3 +209,23 @@ export function assignUserAccountSelectPagingOptions(
     return opt;
 }
 
+
+export function buildClientEventQueryParams(
+    serverTablePaging: ServerTablePaging,
+): Record<string, any> {
+    const opt: Record<string, any> = {};
+
+    opt.page_size = serverTablePaging.itemsPerPage;
+    opt.page_number = serverTablePaging.page;
+
+    if (serverTablePaging.sortBy.length !== 0) {
+        let sortString = serverTablePaging.sortBy[0].key;
+        if (serverTablePaging.sortBy[0].order === "desc") {
+            sortString = "-" + sortString;
+        }
+        opt.sort = sortString;
+    }
+    return opt;
+}
+
+

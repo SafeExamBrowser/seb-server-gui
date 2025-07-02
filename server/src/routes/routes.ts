@@ -21,7 +21,7 @@ import * as settingsController from "../controllers/screen-proctoring/sp-setting
 import * as applicationSearchController from "../controllers/screen-proctoring/sp-application-search.controller";
 import * as spAuthorizationAdditional from "../middleware/spAuthorizationAdditional";
 import * as institutionsController from "../controllers/seb-server/institution.controller";
-import {USER_ACCOUNT_REGISTRATION_ROUTE} from "../utils/constants";
+import {MONITORING_LOGS_ROUTE, USER_ACCOUNT_REGISTRATION_ROUTE} from "../utils/constants";
 
 const router: Router = express.Router();
 
@@ -96,6 +96,8 @@ router.post(constants.MONITORING_INSTRUCTION_ROUTE, monitoringController.registe
 router.get(constants.MONITORING_NOTIFICATIONS_ROUTE + "/:connectionToken", monitoringController.getPendingNotifications);
 router.post(constants.MONITORING_NOTIFICATIONS_ROUTE + "/:notficationId/:connectionToken", monitoringController.confirmNotification);
 router.post(constants.MONITORING_DISABLE_CONNECTIONS_ROUTE, monitoringController.disableConnections);
+router.get(constants.MONITORING_LOGS_ROUTE + "/:id" , monitoringController.getClientEventLogs);
+
  
 
 //client groups

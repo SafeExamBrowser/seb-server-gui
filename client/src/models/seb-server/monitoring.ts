@@ -112,7 +112,29 @@ type ClientNotification = {
     notificationType: string;
 }
 
+type ClientEvent = {
+    id: number;
+    clientConnectionId: number;
+    institutionId: number;
+    examId: number;
+    examUserSessionId: string;
+    type: string;
+    timestamp: number;
+    serverTime: number;
+    text: string;
+    value: string;
+    numericValue: number;
+    notificationType: string;
+}
 
+
+type ClientEventResponse = {
+    number_of_pages: number;
+    page_number: number;
+    page_size: number;
+    content: ClientEvent[];
+    complete: boolean;
+};
 
 // {
 //     "id": 10551,

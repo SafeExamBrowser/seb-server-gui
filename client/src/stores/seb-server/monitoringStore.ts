@@ -14,7 +14,7 @@ export const useMonitoringStore = defineStore("monitoring", () => {
 
     //monitoring overview
     const selectedExam = ref<Exam | null>(null);
-    const monitoringOverviewData = ref<MonitoringOverview | null>(null); 
+    const monitoringOverviewData = ref<MonitoringOverview | null>(null);
 
     //monitoring clients
     const isNoFilterSelected = ref<boolean>(false);
@@ -32,6 +32,9 @@ export const useMonitoringStore = defineStore("monitoring", () => {
     const selectedSingleConn = ref<SingleConnection | null>(null);
     const clientGroupsSingle = ref<ClientGroup[]>([]);
     const pendingNotifications = ref<ClientNotification[]>([]);
+    const clientLogEvents = ref<ClientEvent[] | null>(null);
+
+    const currentMonitoringDetailPagingOptions = ref<ServerTablePaging>();
 
 
 
@@ -43,6 +46,7 @@ export const useMonitoringStore = defineStore("monitoring", () => {
         staticClientDataList.value = null;
         batteryIndicatorId.value = null;
         wlanIndicatorId.value = null;
+        clientLogEvents.value = null;
     }
 
     return {
@@ -65,6 +69,8 @@ export const useMonitoringStore = defineStore("monitoring", () => {
         currentMonitoringQuery,
         pendingNotifications,
         batteryIndicatorId,
-        wlanIndicatorId
+        wlanIndicatorId,
+        clientLogEvents,
+        currentMonitoringDetailPagingOptions
     };
 });
