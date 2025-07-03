@@ -130,7 +130,7 @@ function isNextButtonDisabled(step: number): boolean {
     }
 
     let addStepGroup: number = 0;
-    if (quizImportStore.steps.some((step: { type: string }) => step.type == constants.getQuizImportGroupStep().type)) {
+    if (quizImportStore.steps.some((step) => step.type === constants.getQuizImportGroupStep().type)) {
         addStepGroup += 1;
     }
 
