@@ -1,6 +1,6 @@
 <template>
 
-    <v-app-bar>
+    <v-app-bar app>
         <!--seb logo-->
         <template v-slot:prepend>
             <a :href="getHomePageRoute()" class="text-decoration-none text-black">
@@ -21,29 +21,29 @@
                 <div class="mr-4">
                     <v-menu :close-on-content-click="false">
                         <template v-slot:activator="{ props }">
-                            <v-btn 
+                            <v-btn
                                 aria-label="Running Exams Settings"
-                                icon="mdi-cog" 
+                                icon="mdi-cog"
                                 v-bind="props"
                                 color="primary">
                             </v-btn>
                         </template>
                         <v-list>
                             <v-list-item>
-                                <v-switch 
+                                <v-switch
                                     hide-details
-                                    class="mx-auto" 
-                                    label="Show past exams" 
-                                    color="primary" 
+                                    class="mx-auto"
+                                    label="Show past exams"
+                                    color="primary"
                                     v-model="appBarStore.examOverviewShowPastExams">
                                 </v-switch>
                             </v-list-item>
                             <v-list-item>
-                                <v-switch 
+                                <v-switch
                                     hide-details
-                                    class="mx-auto" 
-                                    label="Show upcoming exams" 
-                                    color="primary" 
+                                    class="mx-auto"
+                                    label="Show upcoming exams"
+                                    color="primary"
                                     v-model="appBarStore.examOverviewShowUpcomingExams">
                                 </v-switch>
                             </v-list-item>
@@ -52,10 +52,10 @@
                 </div>
             </template>
             <!-------–--------------------->
-        
+
             <!--gallery view specfic items-->
             <template v-if="useRoute().name == 'GalleryViewPage'">
-                
+
                 <!--session infos-->
                 <v-chip class="mr-4" role="none">
                     {{ translate("galleryView.generalInfo.page") }}: {{ appBarStore.galleryCurrentPage }} / {{ appBarStore.galleryMaxPages }}
@@ -92,9 +92,9 @@
                 <div>
                     <v-menu :close-on-content-click="false">
                         <template v-slot:activator="{ props }">
-                            <v-btn 
+                            <v-btn
                                 :aria-label="translate('galleryView.screenReader.settings')"
-                                icon="mdi-cog" 
+                                icon="mdi-cog"
                                 v-bind="props"
                                 color="primary">
                             </v-btn>
@@ -172,7 +172,6 @@
                     >
                         {{ translateRole(userRoles[0]) }}
                     </span>
-
 
                 </div>
                 <!--profile icon-->
@@ -270,7 +269,7 @@
     </v-app-bar>
 
     <!---------------main navigation drawer----------------->
-    <v-navigation-drawer v-model="navigationDrawer" :permanent="true" width="70" class="mt-0">
+    <v-navigation-drawer app v-model="navigationDrawer" :permanent="true" width="70" class="mt-0">
         <v-list lines="two" class="pt-0">
             <v-list-item v-if="canAccessNavigationOverview" link elevation="0" :to="getNavigationOverviewRoute()"
                 variant="elevated" class="d-flex flex-column justify-center text-center"
@@ -315,8 +314,9 @@
         ? 'blue-background'
         : 'generic-background'
     ]"
+        class="d-flex flex-column fill-height"
     >
-        <v-container fluid class="main-content">
+        <v-container fluid class=" main-content h-80">
             <router-view />
         </v-container>
     </v-main>
