@@ -11,8 +11,8 @@ type GridSize = {
 };
 
 type NavigationItem = {
-    title: string, 
-    route: string, 
+    title: string,
+    route: string,
     icon: string
 }
 
@@ -26,8 +26,3 @@ type Page = {
     page_size: number
 }
 
-type ImportWizardSteps = {
-    name: string, 
-    value: number, 
-    type?: string
-}
