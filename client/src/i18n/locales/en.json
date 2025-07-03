@@ -198,6 +198,11 @@
             "clientGroups": "Groups",
             "supervisors": "Examination Supervisors",
             "password": "Quit Password"
+        },
+        "buttons": {
+            "back" : "back",
+            "next" : "next",
+            "save" : "save"
         }
     },
 

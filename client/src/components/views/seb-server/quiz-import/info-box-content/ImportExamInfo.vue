@@ -22,7 +22,7 @@
                             @keyup.enter="loadExamItemsCaller()"
                             @keyup.esc="clearForm()">
                             <!------------search field------------->
-                            <v-row align="center"> 
+                            <v-row align="center">
                                 <v-col class="mb-6">
                                     {{translate("quizImportWizard.examInfo.search")}}
                                 </v-col>
@@ -44,7 +44,7 @@
 
                             <!------------start date------------->
                             <v-row align="center">
-                                <v-col class="mb-2"> 
+                                <v-col class="mb-2">
                                     {{translate("quizImportWizard.examInfo.start")}}
                                 </v-col>
                                 <v-col cols="9" class="mb-2">
@@ -68,19 +68,19 @@
                             <!------------Buttons------------->
                             <v-row>
                                 <v-col align="right">
-                                    <v-btn 
-                                        rounded="sm" 
-                                        color="black" 
+                                    <v-btn
+                                        rounded="sm"
+                                        color="black"
                                         variant="outlined"
                                         @click="clearForm()"
                                         :aria-label="translate('general.cancelButton')">
                                         {{translate("general.cancelButton")}}
                                     </v-btn>
 
-                                    <v-btn 
-                                        rounded="sm" 
-                                        color="primary" 
-                                        variant="flat" 
+                                    <v-btn
+                                        rounded="sm"
+                                        color="primary"
+                                        variant="flat"
                                         class="ml-2"
                                         @click="loadExamItemsCaller()"
                                         :aria-label="translate('general.searchButton')">
@@ -131,17 +131,12 @@
 
     function clearForm(){
         quizImportStore.searchField = "";
-
         datepicker.value = null;
         quizImportStore.startTimestamp = null;
-        
         loadExamItemsCaller();
     }
-
 
 </script>
 
 <style scoped>
-
-
 </style>

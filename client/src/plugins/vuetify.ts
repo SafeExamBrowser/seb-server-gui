@@ -1,8 +1,14 @@
 import "@mdi/font/css/materialdesignicons.css"
 import "vuetify/styles"
+import { VStepperVertical, VStepperVerticalItem, VStepperVerticalActions } from 'vuetify/labs/VStepperVertical'
 import { createVuetify } from "vuetify"
 
 export default createVuetify({
+    components: {
+        VStepperVertical,
+        VStepperVerticalItem,
+        VStepperVerticalActions
+    },
     theme: {
         themes: {
             light: {
