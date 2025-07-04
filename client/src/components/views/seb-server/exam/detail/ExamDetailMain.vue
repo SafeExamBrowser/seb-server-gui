@@ -1,7 +1,7 @@
 <template>
     <v-row>
         <v-col>
-            <v-sheet 
+            <v-sheet
                 elevation="4"
                 class="rounded-lg pa-8">
 
@@ -25,7 +25,7 @@
                         <!----------test run--------->
                         <v-row>
                             <v-col>
-                                <v-sheet 
+                                <v-sheet
                                     elevation="4"
                                     class="rounded-lg pa-4">
 
@@ -34,20 +34,20 @@
                                             {{translate("examDetail.main.testExam")}}
                                         </v-col>
                                         <v-col align="right" cols="4" xl="3">
-                                            <v-btn 
+                                            <v-btn
                                                 v-if="generalUtils.findEnumValue(ExamStatusEnum, examStore.selectedExam?.status) == ExamStatusEnum.TEST_RUN"
                                                 block
-                                                rounded="sm" 
-                                                color="primary" 
+                                                rounded="sm"
+                                                color="primary"
                                                 variant="flat"
                                                 @click="applyTestRun()">
                                                 {{translate("examDetail.main.testRunDisable")}}
                                             </v-btn>
-                                            <v-btn 
+                                            <v-btn
                                                 v-else
                                                 block
-                                                rounded="sm" 
-                                                color="primary" 
+                                                rounded="sm"
+                                                color="primary"
                                                 variant="flat"
                                                 :disabled="examViewService.isExamFunctionalityDisabled([ExamStatusEnum.UP_COMING], examStore.selectedExam?.status)"
                                                 @click="applyTestRun()">
@@ -67,7 +67,7 @@
                         <!----------monitor exam--------->
                         <v-row class="mt-6">
                             <v-col>
-                                <v-card 
+                                <v-card
                                     elevation="4"
                                     class="rounded-lg pa-4">
 
@@ -76,11 +76,11 @@
                                             {{translate("examDetail.main.monitorExam")}}
                                         </v-col>
                                         <v-col align="right" cols="4" xl="3">
-                                            <v-btn 
+                                            <v-btn
                                                 block
-                                                rounded="sm" 
-                                                color="primary" 
-                                                variant="flat" 
+                                                rounded="sm"
+                                                color="primary"
+                                                variant="flat"
                                                 :disabled="examViewService.isExamFunctionalityDisabled([ExamStatusEnum.RUNNING, ExamStatusEnum.TEST_RUN], examStore.selectedExam?.status)"
                                                 @click="navigateTo(constants.MONITORING_OVERVIEW_ROUTE + '/' + examId)">
                                                 {{translate("examDetail.main.monitorStart")}}
@@ -98,7 +98,7 @@
 
                         <!----------template--------->
                         <v-row class="mt-10">
-                            <v-col class="primary-text-color text-h6"> 
+                            <v-col class="primary-text-color text-h6">
                                 {{translate("examDetail.main.examTemplate")}}
                             </v-col>
                             <v-col align="right">
@@ -113,7 +113,7 @@
                             </v-col>
                         </v-row>
                         <v-divider class="border-opacity-25" :thickness="2"></v-divider>
-                        
+
                         <v-row class="mt-1">
                             <v-col>
                                 <div class="text-subtitle-1">
@@ -130,7 +130,7 @@
 
                         <!-------supervisors------>
                         <v-row class="mt-10">
-                            <v-col class="primary-text-color text-h6"> 
+                            <v-col class="primary-text-color text-h6">
                                 {{translate("examDetail.main.examSupervisors")}}
                             </v-col>
 
@@ -148,11 +148,11 @@
 
                         <v-row>
                             <v-col>
-                                <v-data-table 
+                                <v-data-table
                                     hide-default-footer
-                                    item-value="id" 
+                                    item-value="id"
                                     class="rounded-lg elevation-2 mt-4"
-                                    :headers="supervisorsTableHeaders" 
+                                    :headers="supervisorsTableHeaders"
                                     :items="examStore.selectedExamSupervisors">
 
                                     <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort}">
@@ -172,7 +172,7 @@
 
                         <!-------Groups------>
                         <v-row class="mt-10">
-                            <v-col class="primary-text-color text-h6"> 
+                            <v-col class="primary-text-color text-h6">
                                 {{translate("examDetail.main.groups")}}
                             </v-col>
 
@@ -200,11 +200,11 @@
                         <v-row>
                             <v-col>
                                 <!--@vue-ignore-->
-                                <v-data-table 
+                                <v-data-table
                                     hide-default-footer
-                                    item-value="id" 
+                                    item-value="id"
                                     class="rounded-lg elevation-2 mt-4"
-                                    :headers="clientGroupTableHeaders" 
+                                    :headers="clientGroupTableHeaders"
                                     :items="examStore.selectedClientGroups">
 
                                     <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort}">
@@ -263,7 +263,7 @@
                             </v-col>
                         </v-row>
                         <!------------------->
-                    
+
                     </v-col>
                     <!----------------------->
 
@@ -276,7 +276,7 @@
                         <!----------edit seb settings--------->
                         <v-row>
                             <v-col>
-                                <v-sheet 
+                                <v-sheet
                                     elevation="4"
                                     class="rounded-lg pa-4">
 
@@ -284,13 +284,13 @@
                                         <v-col>
                                             {{translate("examDetail.main.appNetworkSettings")}}
                                         </v-col>
-                                        
+
                                         <v-col align="right" cols="4" xl="3">
-                     
-                                            <v-btn 
+
+                                            <v-btn
                                                 block
-                                                rounded="sm" 
-                                                color="primary" 
+                                                rounded="sm"
+                                                color="primary"
                                                 variant="flat"
                                                 :disabled="!hasSEBSettings || !editableSEBSettings"
                                                 @click="openSebSettingsDialog()">
@@ -309,7 +309,7 @@
                         <!----------exam config--------->
                         <v-row class="mt-6">
                             <v-col>
-                                <v-sheet 
+                                <v-sheet
                                     elevation="4"
                                     class="rounded-lg pa-4">
 
@@ -318,11 +318,11 @@
                                             {{translate("examDetail.main.downloadExamConfig")}}
                                         </v-col>
                                         <v-col align="right" cols="4" xl="3">
-                                            <v-btn 
+                                            <v-btn
                                                 block
-                                                rounded="sm" 
-                                                color="primary" 
-                                                variant="flat" 
+                                                rounded="sm"
+                                                color="primary"
+                                                variant="flat"
                                                 :disabled="examViewService.isExamFunctionalityDisabled([ExamStatusEnum.UP_COMING, ExamStatusEnum.RUNNING, ExamStatusEnum.TEST_RUN], examStore.selectedExam?.status)"
                                                 @click="startExamConfigDownloadProcess()">
                                                 {{translate("general.downloadButton")}}
@@ -337,7 +337,7 @@
                         <!----------more options--------->
                         <v-row class="mt-6">
                             <v-col>
-                                <v-card 
+                                <v-card
                                     color="primary"
                                     variant="outlined"
                                     class="rounded-lg pa-4">
@@ -357,7 +357,7 @@
                                                     </v-list-item-title>
                                                     <template v-slot:append="{ isSelected }" >
                                                         <v-list-item-action class="flex-column align-right">
-                                                            <v-switch 
+                                                            <v-switch
                                                                 v-model="isScreenProctoringActive"
                                                                 v-on:update:model-value="applyScreenProctoring()"
                                                                 hide-details
@@ -376,7 +376,7 @@
                                                     </v-list-item-title>
                                                     <template v-slot:append="{ isSelected }" >
                                                         <v-list-item-action class="flex-column align-right">
-                                                            <v-switch 
+                                                            <v-switch
                                                                 v-model="isSEBLockActive"
                                                                 v-on:update:model-value="applySEBLock()"
                                                                 hide-details
@@ -395,7 +395,7 @@
                                                     </v-list-item-title>
                                                     <template v-slot:append="{ isSelected }" >
                                                         <v-list-item-action class="flex-column align-right">
-                                                            <v-icon 
+                                                            <v-icon
                                                                 icon="mdi-key-outline"
                                                                 style="font-size: 30px;"
                                                                 :disabled="!hasSEBRestrictionFeature() || examViewService.isExamFunctionalityDisabled([ExamStatusEnum.UP_COMING, ExamStatusEnum.RUNNING, ExamStatusEnum.TEST_RUN, ExamStatusEnum.FINISHED], examStore.selectedExam?.status)"
@@ -413,7 +413,7 @@
                                                     </v-list-item-title>
                                                     <template v-slot:append="{ isSelected }" >
                                                         <v-list-item-action class="flex-column align-right">
-                                                            <v-icon 
+                                                            <v-icon
                                                                 icon="mdi-archive-outline"
                                                                 style="font-size: 30px;"
                                                                 :disabled="examViewService.isExamFunctionalityDisabled([ExamStatusEnum.FINISHED], examStore.selectedExam?.status)"
@@ -436,7 +436,7 @@
                                                     </v-list-item-title>
                                                     <template v-slot:append="{ isSelected }" >
                                                         <v-list-item-action class="flex-column align-right">
-                                                            <v-icon 
+                                                            <v-icon
                                                                 icon="mdi-delete-outline"
                                                                 style="font-size: 30px;"
                                                                 @click="openDeleteDialog()">
@@ -453,7 +453,7 @@
                             </v-col>
                         </v-row>
                         <!----------------------->
-                    
+
                     </v-col>
                     <!----------end right side--------->
                     <v-spacer></v-spacer>
@@ -461,38 +461,38 @@
 
                 </v-row>
                 <!--------end info and action row------>
-            
+
             </v-sheet>
         </v-col>
     </v-row>
 
-    <!-----------supervisor dialog---------->      
+    <!-----------supervisor dialog---------->
     <v-dialog v-model="supervisorsDialog" max-width="1200">
-        <ExamDetailSupervisorsDialog 
+        <ExamDetailSupervisorsDialog
             :initalSupervisors="examStore.selectedExamSupervisors"
             @closeSupervisorsDialog="closeSupervisorsDialog"
             @updateExamSupervisors="updateExamSupervisors">
         </ExamDetailSupervisorsDialog>
     </v-dialog>
 
-    <!-----------connection configuration dialog---------->      
+    <!-----------connection configuration dialog---------->
     <v-dialog v-model="configDialog" v-if="connectionConfigurationsPar" max-width="800">
-        <ExamDetailConfigDialog 
-            :connection-configurations="connectionConfigurationsPar" 
+        <ExamDetailConfigDialog
+            :connection-configurations="connectionConfigurationsPar"
             @closeConfigDialog="closeConfigDialog"
             @downloadExamConfig="downloadExamConfig">
         </ExamDetailConfigDialog>
     </v-dialog>
 
-    <!-----------archive dialog---------->      
+    <!-----------archive dialog---------->
     <v-dialog v-model="archiveDialog" max-width="800">
-        <ExamDetailArchiveDialog 
+        <ExamDetailArchiveDialog
             @close-archive-dialog="closeArchiveDialog"
             @archive-exam="archiveExam">
         </ExamDetailArchiveDialog>
     </v-dialog>
 
-    <!-----------delete exam dialog---------->      
+    <!-----------delete exam dialog---------->
     <v-dialog v-model="deleteDialog" max-width="800">
         <DeleteConfirmDialog
             @close-delete-dialog="closeDeleteDialog"
@@ -504,37 +504,37 @@
         </DeleteConfirmDialog>
     </v-dialog>
 
-    <!-----------exam template dialog---------->      
+    <!-----------exam template dialog---------->
     <v-dialog v-model="examTemplateDialog" max-width="600">
-        <ExamTemplateDialog 
+        <ExamTemplateDialog
             :exam-template="examStore.selectedExamTemplate"
             @close-exam-template-dialog="closeExamTemplateDialog()">
         </ExamTemplateDialog>
     </v-dialog>
 
-    <!-----------seb settings dialog---------->      
+    <!-----------seb settings dialog---------->
     <v-dialog v-model="sebSettingsDialog" max-width="1200">
-        <SebSettingsDialog 
+        <SebSettingsDialog
             @close-seb-settings-dialog="closeSebSettingsDialog()">
         </SebSettingsDialog>
     </v-dialog>
 
-    <!-----------group dialog---------->      
+    <!-----------group dialog---------->
     <v-dialog v-model="clientGroupDialog" max-width="1200">
-        <ClienGroupListDialog 
+        <ClienGroupListDialog
             @closeClientGroupDialog="closeClientGroupDialog">
         </ClienGroupListDialog>
     </v-dialog>
 
-    <!-----------add groups dialog---------->      
+    <!-----------add groups dialog---------->
     <v-dialog v-model="addclientGroupDialog" max-width="800">
-        <AddClientGroupDialog 
+        <AddClientGroupDialog
             @closeAddClientGroupDialog="closeAddClientGroupDialog">
         </AddClientGroupDialog>
     </v-dialog>
 
     <!--alert msg-->
-    <AlertMsg 
+    <AlertMsg
         v-if="alertAvailable"
         :alertProps="{
             title: '',
@@ -596,7 +596,7 @@
         {title: translate("examDetail.main.supervisorUsername"), key: "username"},
         {title: translate("examDetail.main.supervisorName"), key: "name"},
         {title: translate("examDetail.main.supervisorSurname"), key: "surname"}
-    ]); 
+    ]);
 
     //supervisors dialog
     const supervisorsDialog = ref<boolean>(false);
@@ -630,7 +630,7 @@
     const hasSEBSettings = ref<boolean>(false);
     const editableSEBSettings = ref<boolean>(false);
     const sebSettingsDialog = ref<boolean>(false);
-    
+
 
     //client groups
     const clientGroupDialog = ref<boolean>(false);
@@ -639,11 +639,11 @@
         {title: translate("examDetail.main.tableHeadersGroupName"), key: "name", width: "45%"},
         {title: translate("examDetail.main.tableHeadersGroupType"), key: "type", width: "45%"},
         {title: translate("examDetail.main.tableHeadersScreenProctoring"), key: "sp", width: "10%", center: true, align: "center"}
-    ]); 
+    ]);
 
     //add client groups
     const addclientGroupDialog = ref<boolean>(false);
-    
+
     onBeforeMount(async () => {
         examStore.clearSelectedValues();
 
@@ -743,13 +743,13 @@
         changeSEBLock(false);
     }
 
-    async function changeSEBLock(enable: boolean){  
+    async function changeSEBLock(enable: boolean){
         if(examStore.selectedExam == null){
             return;
         }
 
         const applySEBLockResponse: Exam | null = await examViewService.applySEBLock(
-            examStore.selectedExam.id.toString(), 
+            examStore.selectedExam.id.toString(),
             enable
         );
 
@@ -760,7 +760,7 @@
 
         examStore.selectedExam = applySEBLockResponse;
     }
-    
+
 
     //===============supervisors logic====================
     async function getExamSupervisors(){
@@ -903,7 +903,7 @@
     function setScreenProctoring(){
         if(examStore.selectedExam == null){
             return;
-        } 
+        }
 
         if(examStore.selectedExam.additionalAttributes.enableScreenProctoring == "true"){
             isScreenProctoringActive.value = true;
@@ -919,13 +919,13 @@
         changeScreenProctoringSettings(false);
     }
 
-    async function changeScreenProctoringSettings(enable: boolean){  
+    async function changeScreenProctoringSettings(enable: boolean){
         if(examStore.selectedExam == null){
             return;
         }
 
         const saveScreenProcResponse: Exam | null = await examViewService.activateScreenProctoring(
-            examStore.selectedExam.id.toString(), 
+            examStore.selectedExam.id.toString(),
             enable
         );
 
@@ -979,7 +979,7 @@
         }
 
         const examTemplateSp: ScreenProctoringSettings | null = await examViewService.getExamTemplateSp(examStore.selectedExamTemplate!.id.toString());
-    
+
         if(examTemplateSp == null){
             return;
         }

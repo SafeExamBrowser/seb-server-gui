@@ -627,7 +627,25 @@
             "resolveMessage": "Resolve Message",
             "screenProctoring": "Screen Proctoring",
             "clientLogs": "Client Logs"
+        },
+        "logContainer" : {
+            "tableHeaders" : {
+                "eventType" : "Event Type",
+                "sebClientTime" : "Seb Client Time",
+                "sebServerTime" : "Seb Server Time",
+                "value" : "Value",
+                "message" : "Message"
+            },
+            "sortingAndFilter" : {
+                "all" : "All",
+                "info" : "Info",
+                "warning" : "Warning",
+                "error" : "Error",
+                "searchForLogs" : "Search For Logs"
+
+            }
         }
+
     },
     "titles": {
         "home": "Home",

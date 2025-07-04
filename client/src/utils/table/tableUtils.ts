@@ -210,22 +210,36 @@ export function assignUserAccountSelectPagingOptions(
 }
 
 
-export function buildClientEventQueryParams(
+export function assignClientLogDetailsPagingOptions
+(
     serverTablePaging: ServerTablePaging,
-): Record<string, any> {
-    const opt: Record<string, any> = {};
+    name: string | null,
+    type: string | null
+): OptionalParGetMonitoringClientLogs {
+    const optionalParGetMonitoringClientLogs: OptionalParGetMonitoringClientLogs = {};
 
-    opt.page_size = serverTablePaging.itemsPerPage;
-    opt.page_number = serverTablePaging.page;
+    optionalParGetMonitoringClientLogs.page_size = serverTablePaging.itemsPerPage;
+    optionalParGetMonitoringClientLogs.page_number = serverTablePaging.page;
 
-    if (serverTablePaging.sortBy.length !== 0) {
-        let sortString = serverTablePaging.sortBy[0].key;
-        if (serverTablePaging.sortBy[0].order === "desc") {
+    if (name != null && name !== "") {
+        optionalParGetMonitoringClientLogs.text = name;
+    }
+    if (type != null && type !== "all") {
+        optionalParGetMonitoringClientLogs.type = type;
+    }
+    if (serverTablePaging.sortBy.length != 0) {
+        let sortString: string = serverTablePaging.sortBy[0].key;
+        if (serverTablePaging.sortBy[0].order == "desc") {
             sortString = "-" + sortString;
         }
-        opt.sort = sortString;
+
+        optionalParGetMonitoringClientLogs.sort = sortString;
     }
-    return opt;
+
+    return optionalParGetMonitoringClientLogs;
 }
+
+
+
 
 

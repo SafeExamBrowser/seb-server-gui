@@ -23,7 +23,7 @@ export async function getSingleConnection(examId: string, connectionToken: strin
     return (await apiService.api.get(url, {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
 }
 
-export async function getSingleConnectionEvents(clientConnectionId: string, optionalParameters?: OptionalParGetUserAccounts): Promise<ClientEventResponse | null >{
+export async function getSingleConnectionEvents(clientConnectionId: string, optionalParameters?: OptionalParGetMonitoringClientLogs): Promise<ClientEventResponse | null >{
     const url: string = clientEventUrl + "/search" + "/" + clientConnectionId;
     return(await apiService.api.get(url,
         {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
