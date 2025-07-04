@@ -36,3 +36,13 @@ type OptionalParGetExams = {
     type?: string;
     start_timestamp_millis?: number;
 }
+
+
+type OptionalParGetMonitoringClientLogs = {
+    page_number?: number;
+    page_size?: number;
+    sort?: string;
+    text?: string;
+    type?: string;
+
+}

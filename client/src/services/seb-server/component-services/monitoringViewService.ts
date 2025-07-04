@@ -38,7 +38,7 @@ export async function getSingleConnection(examId: string, connectionToken: strin
     }
 }
 
-export async function getSingleConnectionEvents( clientConnectionId: string, optionalParameters?: OptionalParGetUserAccounts): Promise<ClientEventResponse | null >{
+export async function getSingleConnectionEvents( clientConnectionId: string, optionalParameters?: OptionalParGetMonitoringClientLogs): Promise<ClientEventResponse | null >{
     try{
         return await monitoringService.getSingleConnectionEvents(clientConnectionId, optionalParameters);
     }catch(error){

@@ -33,6 +33,7 @@ export const useMonitoringStore = defineStore("monitoring", () => {
     const clientGroupsSingle = ref<ClientGroup[]>([]);
     const pendingNotifications = ref<ClientNotification[]>([]);
     const clientLogEvents = ref<ClientEvent[] | null>(null);
+    const logSearchField = ref<string | null>(null);
 
     const currentMonitoringDetailPagingOptions = ref<ServerTablePaging>();
 
@@ -71,6 +72,7 @@ export const useMonitoringStore = defineStore("monitoring", () => {
         batteryIndicatorId,
         wlanIndicatorId,
         clientLogEvents,
-        currentMonitoringDetailPagingOptions
+        currentMonitoringDetailPagingOptions,
+        logSearchField
     };
 });
