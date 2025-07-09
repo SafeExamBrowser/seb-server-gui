@@ -56,6 +56,7 @@
         "startButton": "Start",
         "downloadButton": "Download",
         "editButton": "Edit",
+        "viewButton": "View",
         "deleteButton": "Delete",
         "noData": "No Data Available",
         "loading": "Loading",
@@ -503,6 +504,13 @@
                     "action_0": "Block",
                     "action_1": "Allow"
                 },
+                "proxySettingsPolicy": {
+                    "0": "Use system proxy settings",
+                    "1": "Use SEB proxy settings"
+                },
+                "ExcludeSimpleHostnames": "Exclude simple hostnames",
+                "ExceptionsList": "Bypass proxy settings for these hosts and domains",
+                "FTPPassive": "Use Passive FTP Mode (PASV)",
                 "proxies": "Proxies"
             }
         }

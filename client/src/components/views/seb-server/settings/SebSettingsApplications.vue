@@ -3,14 +3,16 @@
         <v-col>
             <v-checkbox-btn 
                 v-model="allowSwitchToApplicationsVal"
-                @click="saveSingleValue(allowSwitchToApplications.id, allowSwitchToApplicationsVal ? 'false' : 'true')"
-                :label="translate('examDetail.sebSettings.applicationView.allowSwitchToApplications')"></v-checkbox-btn> 
+                @update:modelValue="saveSingleValue(allowSwitchToApplications.id, allowSwitchToApplicationsVal ? 'true' : 'false')"
+                :label="translate('examDetail.sebSettings.applicationView.allowSwitchToApplications')"
+                :disabled="readOnly"></v-checkbox-btn> 
         </v-col>
         <v-col>
             <v-checkbox-btn 
                 v-model="allowFlashFullscreenVal"
-                @click="saveSingleValue(allowFlashFullscreen.id, allowFlashFullscreenVal ? 'false' : 'true')"
-                :label="translate('examDetail.sebSettings.applicationView.allowFlashFullscreen')"></v-checkbox-btn>
+                @update:modelValue="saveSingleValue(allowFlashFullscreen.id, allowFlashFullscreenVal ? 'true' : 'false')"
+                :label="translate('examDetail.sebSettings.applicationView.allowFlashFullscreen')"
+                :disabled="readOnly"></v-checkbox-btn>
         </v-col>
     </v-row>
 
@@ -24,7 +26,8 @@
                         density="compact"
                         variant="text"
                         icon="mdi-plus-circle-outline"
-                        @click="newPermittedProcess()">
+                        @click="newPermittedProcess()"
+                        :disabled="readOnly">
                     </v-btn>
                 </v-col>
             </v-row>
@@ -77,7 +80,8 @@
                     <v-btn 
                         variant="text" 
                         icon="mdi-delete-outline"
-                        @click="permittedProcessDelete(item.index!)">
+                        @click="permittedProcessDelete(item.index!)"
+                        :disabled="readOnly">
                     </v-btn>
                 </template>
             </v-data-table>
@@ -103,7 +107,8 @@
                         density="compact"
                         variant="text"
                         icon="mdi-plus-circle-outline"
-                        @click="newProhibitedProcess()">
+                        @click="newProhibitedProcess()"
+                        :disabled="readOnly">
                     </v-btn>
                 </v-col>
             </v-row>
@@ -153,7 +158,8 @@
                     <v-btn 
                         variant="text" 
                         icon="mdi-delete-outline"
-                        @click="prohibitedProcessDelete(item.index!)">
+                        @click="prohibitedProcessDelete(item.index!)"
+                        :disabled="readOnly">
                     </v-btn>
                 </template>
             </v-data-table>
@@ -178,9 +184,13 @@
     import * as examViewService from "@/services/seb-server/component-services/examViewService";
     import { useI18n } from "vue-i18n";
     import {translate} from "@/utils/generalUtils";
+    import {useUserAccountStore} from "@/stores/authentication/authenticationStore";
 
     const i18n = useI18n();
     const examStore = useExamStore();
+    const userAccountStore = useUserAccountStore();
+    const userAccount = computed(() => userAccountStore.userAccount);
+    const userRoles = computed(() => userAccount.value?.userRoles || []);
 
     // single attributes
     const allowSwitchToApplicationsVal = ref<boolean>(false);
@@ -219,9 +229,10 @@
     let allowSwitchToApplications: SEBSettingsValue;
     let allowFlashFullscreen: SEBSettingsValue;
 
-    onBeforeMount(async () => {
+    onBeforeMount(async () => { 
         // TODO apply readonly according to user privileges
         readOnly = false;
+        
 
         if(examStore.selectedExam == null){
             return;
@@ -230,6 +241,11 @@
         const applicationSettings: SEBSettingsView | null = await examViewService.getApplicationViewSettings(examStore.selectedExam.id.toString())
         if(applicationSettings == null){
             return;
+        }
+
+        if (readOnly) {
+            permittedProcessHeaders.value[4].title = translate("general.viewButton", i18n);
+            prohibitedProcessHeaders.value[4].title = translate("general.viewButton", i18n);
         }
 
         examId = examStore.selectedExam.id.toString();

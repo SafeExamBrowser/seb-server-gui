@@ -4,14 +4,16 @@
         <v-col>
             <v-checkbox-btn 
                 v-model="urlFilterEnableVal"
-                @click="saveSingleValue(urlFilterEnable.id, urlFilterEnableVal ? 'false' : 'true')"
-                :label="translate('examDetail.sebSettings.networkView.URLFilterEnable')"></v-checkbox-btn> 
+                @update:modelValue="saveSingleValue(urlFilterEnable.id, urlFilterEnableVal ? 'true' : 'false')"
+                :label="translate('examDetail.sebSettings.networkView.URLFilterEnable')"
+                :disabled="readOnly"></v-checkbox-btn> 
         </v-col>
         <v-col>
             <v-checkbox-btn 
                 v-model="urlFilterEnableContentFilterVal"
-                @click="saveSingleValue(urlFilterEnableContentFilter.id, urlFilterEnableContentFilterVal ? 'false' : 'true')"
-                :label="translate('examDetail.sebSettings.networkView.URLFilterEnableContentFilter')"></v-checkbox-btn>
+                @update:modelValue="saveSingleValue(urlFilterEnableContentFilter.id, urlFilterEnableContentFilterVal ? 'true' : 'false')"
+                :label="translate('examDetail.sebSettings.networkView.URLFilterEnableContentFilter')"
+                :disabled="readOnly"></v-checkbox-btn>
         </v-col>
     </v-row>
 
@@ -25,7 +27,8 @@
                         density="compact"
                         variant="text"
                         icon="mdi-plus-circle-outline"
-                        @click="newURLFilterRule()">
+                        @click="newURLFilterRule()"
+                        :disabled="readOnly">
                     </v-btn>
                 </v-col>
             </v-row>
@@ -83,7 +86,8 @@
                     <v-btn 
                         variant="text" 
                         icon="mdi-delete-outline"
-                        @click="urlFilterRuleDelete(item.index!)">
+                        @click="urlFilterRuleDelete(item.index!)"
+                        :disabled="readOnly">
                     </v-btn>
                 </template>
             </v-data-table>
@@ -108,9 +112,44 @@
         </v-col>
     </v-row>
 
+    <!-----------Proxy settings---------->      
     <v-row>
         <v-col>
-            AAAAAAAAAAAAA
+            <v-row>
+                <v-radio-group
+                    v-model="proxySettingsPolicyVal"
+                    @update:modelValue="saveSingleValue(proxySettingsPolicy.id, proxySettingsPolicyVal)"
+                    :disabled="readOnly">
+                    <v-radio :label="translate('examDetail.sebSettings.networkView.proxySettingsPolicy.0')" value="0"></v-radio>
+                    <v-radio :label="translate('examDetail.sebSettings.networkView.proxySettingsPolicy.1')" value="1"></v-radio>
+                </v-radio-group>
+            </v-row>
+            <v-row>
+                <v-checkbox-btn 
+                    v-model="ExcludeSimpleHostnamesVal"
+                    @update:modelValue="saveSingleValue(ExcludeSimpleHostnames.id, ExcludeSimpleHostnamesVal ? 'true' : 'false')"
+                    :label="translate('examDetail.sebSettings.networkView.ExcludeSimpleHostnames')"
+                    :disabled="readOnly"></v-checkbox-btn> 
+            </v-row>
+            <v-row>{{translate("examDetail.sebSettings.networkView.ExceptionsList")}}</v-row>
+            <v-row>
+                <v-text-field
+                    single-line
+                    hide-details
+                    v-model="ExceptionsListVal"
+                    @update:focused="saveOnFocusLost($event, ExceptionsList.id, ExceptionsListVal)"
+                    density="compact"
+                    variant="outlined"
+                    :disabled="readOnly">
+                </v-text-field>
+            </v-row>
+            <v-row>
+                <v-checkbox-btn 
+                    v-model="FTPPassiveVal"
+                    @update:modelValue="saveSingleValue(FTPPassive.id, FTPPassiveVal ? 'true' : 'false')"
+                    :label="translate('examDetail.sebSettings.networkView.FTPPassive')"
+                    :disabled="readOnly"></v-checkbox-btn> 
+            </v-row>
         </v-col>
         <v-col>
             BBBBBBBBBBBBBBB
@@ -134,6 +173,12 @@
     const urlFilterEnableVal = ref<boolean>(false);
     const urlFilterEnableContentFilterVal = ref<boolean>(false);
 
+    // single selection or radio button
+    const proxySettingsPolicyVal = ref<string>("0");
+    const ExcludeSimpleHostnamesVal = ref<boolean>(false);
+    const ExceptionsListVal = ref<string>("");
+    const FTPPassiveVal = ref<boolean>(false);
+
     // url filter
     const editURLFilterRuleDialog = ref<boolean>(false);
     const selectedURLFilterRule = ref<URLFilterRule | null>(null);
@@ -148,10 +193,16 @@
         {title: translate("general.deleteButton"), key: "delete", sortable: false, width: "5%", center: true}
     ]);
 
+    // TODO apply readonly according to user privileges
     let readOnly: boolean = false;
     let examId: string;
     let urlFilterEnable: SEBSettingsValue;
     let urlFilterEnableContentFilter: SEBSettingsValue;
+
+    let proxySettingsPolicy: SEBSettingsValue;
+    let ExcludeSimpleHostnames: SEBSettingsValue;
+    let ExceptionsList: SEBSettingsValue;
+    let FTPPassive: SEBSettingsValue;
 
     onBeforeMount(async () => {
         // TODO apply readonly according to user privileges
@@ -166,10 +217,16 @@
             return;
         }
 
+        if (readOnly) {
+            urlFilterHeaders.value[4].title = translate("general.viewButton", i18n);
+        }
+
         examId = examStore.selectedExam.id.toString();
         const settingsView: SEBSettingsView = applicationSettings;
         const tableValues: Map<string, SEBSettingsTableRowValues[]> = new Map<string, SEBSettingsTableRowValues[]>(Object.entries(settingsView.tableValues));
         const singleValues: Map<String, SEBSettingsValue> = new Map<String, SEBSettingsValue>(Object.entries(settingsView.singleValues));
+        const proxyValues: Map<String, SEBSettingsValue> = new Map<String, SEBSettingsValue>(Object.entries(tableValues.get("proxies")![0].rowValues));
+
 
         urlFilterEnable = singleValues.get("URLFilterEnable")!;
         urlFilterEnableContentFilter = singleValues.get("URLFilterEnableContentFilter")!;
@@ -183,6 +240,19 @@
         }
 
         updateURLFilterRulesTable(urlFilterRules);
+
+        // Proxy single settings
+        proxySettingsPolicy = singleValues.get("proxySettingsPolicy")!;
+        proxySettingsPolicyVal.value = proxySettingsPolicy.value;
+
+        ExcludeSimpleHostnames = proxyValues.get("ExcludeSimpleHostnames")!;
+        ExcludeSimpleHostnamesVal.value = ExcludeSimpleHostnames.value == "true";
+
+        ExceptionsList = proxyValues.get("ExceptionsList")!;
+        ExceptionsListVal.value = ExceptionsList.value;
+
+        FTPPassive = proxyValues.get("FTPPassive")!;
+        FTPPassiveVal.value = FTPPassive.value == "true";
     });
 
     // ********* URL Filter Rule functions *********************
@@ -277,5 +347,10 @@
         await examViewService.updateSEBSettingValue(examId, valId.toString(), value );
     }
 
+    async function saveOnFocusLost(focusIn: boolean, valId: number, value: string) {
+        if (!focusIn) {
+            saveSingleValue(valId, value);
+        }
+    }
 
 </script>

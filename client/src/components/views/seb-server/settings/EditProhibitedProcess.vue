@@ -19,7 +19,7 @@
                                 <v-tooltip activator="parent"><p v-html="translateWithBR('examDetail.sebSettings.applicationView.prohibitedProcess.active_tooltip')" /></v-tooltip>
                                 {{translate("examDetail.sebSettings.applicationView.prohibitedProcess.active")}}
                             </v-col>
-                            <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.prohibitedProcess!.active"></v-checkbox-btn> </v-col>
+                            <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.prohibitedProcess!.active" :disabled="props.readOnly"></v-checkbox-btn> </v-col>
                         </v-row>
                         <!------------OS Type------------->
                         <v-row align="center">
@@ -32,7 +32,8 @@
                                     v-model="props.prohibitedProcess!.os"
                                     density="compact"
                                     variant="outlined"
-                                    :items="osItems">
+                                    :items="osItems"
+                                    :disabled="props.readOnly">
                                 </v-select>
                             </v-col>
                         </v-row>
@@ -48,7 +49,8 @@
                                     hide-details
                                     v-model="props.prohibitedProcess!.executable"
                                     density="compact"
-                                    variant="outlined">
+                                    variant="outlined"
+                                    :disabled="props.readOnly">
                                 </v-text-field>
                             </v-col>
                         </v-row>
@@ -64,7 +66,8 @@
                                     hide-details
                                     v-model="props.prohibitedProcess!.originalName"
                                     density="compact"
-                                    variant="outlined">
+                                    variant="outlined"
+                                    :disabled="props.readOnly">
                                 </v-text-field>
                             </v-col>
                         </v-row>
@@ -80,7 +83,8 @@
                                     hide-details
                                     v-model="props.prohibitedProcess!.description"
                                     density="compact"
-                                    variant="outlined">
+                                    variant="outlined"
+                                    :disabled="props.readOnly">
                                 </v-text-field>
                             </v-col>
                         </v-row>
@@ -96,7 +100,8 @@
                                     hide-details
                                     v-model="props.prohibitedProcess!.identifier"
                                     density="compact"
-                                    variant="outlined">
+                                    variant="outlined"
+                                    :disabled="props.readOnly">
                                 </v-text-field>
                             </v-col>
                         </v-row>
@@ -106,7 +111,7 @@
                                 <v-tooltip activator="parent"><p v-html="translateWithBR('examDetail.sebSettings.applicationView.prohibitedProcess.strongKill_tooltip')" /></v-tooltip>
                                 {{translate("examDetail.sebSettings.applicationView.prohibitedProcess.strongKill")}}
                             </v-col>
-                            <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.prohibitedProcess!.strongKill"></v-checkbox-btn> </v-col>
+                            <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.prohibitedProcess!.strongKill" :disabled="props.readOnly"></v-checkbox-btn> </v-col>
                         </v-row>
                         <!------------ ignore AAC------------->
                         <v-row align="center">
@@ -114,7 +119,7 @@
                                 <v-tooltip activator="parent"><p v-html="translateWithBR('examDetail.sebSettings.applicationView.prohibitedProcess.ignoreAAC_tooltip')" /></v-tooltip>
                                 {{translate("examDetail.sebSettings.applicationView.prohibitedProcess.ignoreAAC")}}
                             </v-col>
-                            <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.prohibitedProcess!.ignoreInAAC"></v-checkbox-btn> </v-col>
+                            <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.prohibitedProcess!.ignoreInAAC" :disabled="props.readOnly"></v-checkbox-btn> </v-col>
                         </v-row>
 
                         <!------------Buttons------------->

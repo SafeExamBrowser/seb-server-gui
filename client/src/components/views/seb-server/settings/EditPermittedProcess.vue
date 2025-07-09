@@ -19,7 +19,7 @@
                                 <v-tooltip activator="parent"><p v-html="translateWithBR('examDetail.sebSettings.applicationView.permittedProcess.active_tooltip')" /></v-tooltip>
                                 {{translate("examDetail.sebSettings.applicationView.permittedProcess.active")}}
                             </v-col>
-                            <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.permittedProcess!.active"></v-checkbox-btn> </v-col>
+                            <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.permittedProcess!.active" :disabled="props.readOnly"></v-checkbox-btn> </v-col>
                         </v-row>
                         <!------------OS Type------------->
                         <v-row align="center">
@@ -32,7 +32,8 @@
                                     v-model="props.permittedProcess!.os"
                                     density="compact"
                                     variant="outlined"
-                                    :items="osItems">
+                                    :items="osItems"
+                                    :disabled="props.readOnly">
                                 </v-select>
                             </v-col>
                         </v-row>
@@ -48,7 +49,8 @@
                                     hide-details
                                     v-model="props.permittedProcess!.executable"
                                     density="compact"
-                                    variant="outlined">
+                                    variant="outlined"
+                                    :disabled="props.readOnly">
                                 </v-text-field>
                             </v-col>
                         </v-row>
@@ -64,7 +66,8 @@
                                     hide-details
                                     v-model="props.permittedProcess!.title"
                                     density="compact"
-                                    variant="outlined">
+                                    variant="outlined"
+                                    :disabled="props.readOnly">
                                 </v-text-field>
                             </v-col>
                         </v-row>
@@ -77,7 +80,8 @@
                                     hide-details
                                     v-model="props.permittedProcess!.originalName"
                                     density="compact"
-                                    variant="outlined">
+                                    variant="outlined"
+                                    :disabled="props.readOnly">
                                 </v-text-field>
                             </v-col>
                         </v-row>
@@ -90,7 +94,8 @@
                                     hide-details
                                     v-model="props.permittedProcess!.signature"
                                     density="compact"
-                                    variant="outlined">
+                                    variant="outlined"
+                                    :disabled="props.readOnly">
                                 </v-text-field>
                             </v-col>
                         </v-row>
@@ -103,7 +108,8 @@
                                     hide-details
                                     v-model="props.permittedProcess!.path"
                                     density="compact"
-                                    variant="outlined">
+                                    variant="outlined"
+                                    :disabled="props.readOnly">
                                 </v-text-field>
                             </v-col>
                         </v-row>
@@ -119,7 +125,8 @@
                                     hide-details
                                     v-model="props.permittedProcess!.teamIdentifier"
                                     density="compact"
-                                    variant="outlined">
+                                    variant="outlined"
+                                    :disabled="props.readOnly">
                                 </v-text-field>
                             </v-col>
                         </v-row>
@@ -134,7 +141,8 @@
                                     density="compact"
                                     variant="text"
                                     icon="mdi-plus-circle-outline"
-                                    @click="addArgument()">
+                                    @click="addArgument()"
+                                    :disabled="props.readOnly">
                                 </v-btn></v-col>
               
                                 <v-data-table 
@@ -155,7 +163,7 @@
 
                                     <!-------active hook------->
                                     <template v-slot:item.active="{ item }">
-                                        <v-checkbox-btn v-model="item.active"></v-checkbox-btn>
+                                        <v-checkbox-btn v-model="item.active" :disabled="props.readOnly"></v-checkbox-btn>
                                     </template>
 
                                     <!-------argument hook------->
@@ -165,7 +173,8 @@
                                             hide-details
                                             v-model="item.argument"
                                             density="compact"
-                                            variant="outlined">
+                                            variant="outlined"
+                                            :disabled="props.readOnly">
                                         </v-text-field>
                                     </template>
 
@@ -174,7 +183,8 @@
                                         <v-btn 
                                             variant="text" 
                                             icon="mdi-delete-outline"
-                                            @click="deleteArgument(argumentsTable.indexOf(item))">
+                                            @click="deleteArgument(argumentsTable.indexOf(item))"
+                                            :disabled="props.readOnly">
                                         </v-btn>
                                     </template>
                                 </v-data-table>
@@ -186,7 +196,7 @@
                                 <v-tooltip activator="parent"><p v-html="translateWithBR('examDetail.sebSettings.applicationView.permittedProcess.iconInTaskbar_tooltip')" /></v-tooltip>
                                 {{translate("examDetail.sebSettings.applicationView.permittedProcess.iconInTaskbar")}}
                             </v-col>
-                            <v-col class="pb-0"><v-checkbox-btn v-model="props.permittedProcess!.iconInTaskbar"></v-checkbox-btn> </v-col>
+                            <v-col class="pb-0"><v-checkbox-btn v-model="props.permittedProcess!.iconInTaskbar" :disabled="props.readOnly"></v-checkbox-btn> </v-col>
                         </v-row>
                         <!------------ allowOpenAndSavePanel ------------->
                         <v-row align="center">
@@ -194,7 +204,7 @@
                                 <v-tooltip activator="parent"><p v-html="translateWithBR('examDetail.sebSettings.applicationView.permittedProcess.allowOpenAndSavePanel_tooltip')" /></v-tooltip>
                                 {{translate("examDetail.sebSettings.applicationView.permittedProcess.allowOpenAndSavePanel")}}
                             </v-col>
-                            <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.permittedProcess!.allowOpenAndSavePanel"></v-checkbox-btn> </v-col>
+                            <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.permittedProcess!.allowOpenAndSavePanel" :disabled="props.readOnly"></v-checkbox-btn> </v-col>
                         </v-row>
                         <!------------ autostart ------------->
                         <v-row align="center">
@@ -202,7 +212,7 @@
                                 <v-tooltip activator="parent"><p v-html="translateWithBR('examDetail.sebSettings.applicationView.permittedProcess.autostart_tooltip')" /></v-tooltip>
                                 {{translate("examDetail.sebSettings.applicationView.permittedProcess.autostart")}}
                             </v-col>
-                            <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.permittedProcess!.autostart"></v-checkbox-btn> </v-col>
+                            <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.permittedProcess!.autostart" :disabled="props.readOnly"></v-checkbox-btn> </v-col>
                         </v-row>
                         <!------------ allowShareSheet ------------->
                         <v-row align="center">
@@ -210,7 +220,7 @@
                                 <v-tooltip activator="parent"><p v-html="translateWithBR('examDetail.sebSettings.applicationView.permittedProcess.allowShareSheet_tooltip')" /></v-tooltip>
                                 {{translate("examDetail.sebSettings.applicationView.permittedProcess.allowShareSheet")}}
                             </v-col>
-                            <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.permittedProcess!.allowShareSheet"></v-checkbox-btn> </v-col>
+                            <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.permittedProcess!.allowShareSheet" :disabled="props.readOnly"></v-checkbox-btn> </v-col>
                         </v-row>
                         <!------------ runInBackground ------------->
                         <v-row align="center">
@@ -218,7 +228,7 @@
                                 <v-tooltip activator="parent"><p v-html="translateWithBR('examDetail.sebSettings.applicationView.permittedProcess.runInBackground_tooltip')" /></v-tooltip>
                                 {{translate("examDetail.sebSettings.applicationView.permittedProcess.runInBackground")}}
                             </v-col>
-                            <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.permittedProcess!.runInBackground"></v-checkbox-btn> </v-col>
+                            <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.permittedProcess!.runInBackground" :disabled="props.readOnly"></v-checkbox-btn> </v-col>
                         </v-row>
                         <!------------ allowManualStart ------------->
                         <v-row align="center">
@@ -226,12 +236,12 @@
                                 <v-tooltip activator="parent"><p v-html="translateWithBR('examDetail.sebSettings.applicationView.permittedProcess.allowManualStart_tooltip')" /></v-tooltip>
                                 {{translate("examDetail.sebSettings.applicationView.permittedProcess.allowManualStart")}}
                             </v-col>
-                            <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.permittedProcess!.allowManualStart"></v-checkbox-btn> </v-col>
+                            <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.permittedProcess!.allowManualStart" :disabled="props.readOnly"></v-checkbox-btn> </v-col>
                         </v-row>
                         <!------------ allowUserToChooseApp ------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">{{translate("examDetail.sebSettings.applicationView.permittedProcess.allowUserToChooseApp")}}</v-col>
-                            <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.permittedProcess!.allowUserToChooseApp"></v-checkbox-btn> </v-col>
+                            <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.permittedProcess!.allowUserToChooseApp" :disabled="props.readOnly"></v-checkbox-btn> </v-col>
                         </v-row>
                         <!------------ allowNetworkAccess ------------->
                         <v-row align="center">
@@ -239,7 +249,7 @@
                                 <v-tooltip activator="parent"><p v-html="translateWithBR('examDetail.sebSettings.applicationView.permittedProcess.allowNetworkAccess_tooltip')" /></v-tooltip>
                                 {{translate("examDetail.sebSettings.applicationView.permittedProcess.allowNetworkAccess")}}
                             </v-col>
-                            <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.permittedProcess!.allowNetworkAccess"></v-checkbox-btn> </v-col>
+                            <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.permittedProcess!.allowNetworkAccess" :disabled="props.readOnly"></v-checkbox-btn> </v-col>
                         </v-row>
                         <!------------ strongKill ------------->
                         <v-row align="center">
@@ -247,7 +257,7 @@
                                 <v-tooltip activator="parent"><p v-html="translateWithBR('examDetail.sebSettings.applicationView.permittedProcess.strongKill_tooltip')" /></v-tooltip>
                                 {{translate("examDetail.sebSettings.applicationView.permittedProcess.strongKill")}}
                             </v-col>
-                            <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.permittedProcess!.strongKill"></v-checkbox-btn> </v-col>
+                            <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.permittedProcess!.strongKill" :disabled="props.readOnly"></v-checkbox-btn> </v-col>
                         </v-row>
                          <!------------Buttons------------->
                          <v-row align="center">

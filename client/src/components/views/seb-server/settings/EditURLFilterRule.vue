@@ -18,14 +18,14 @@
                             <v-col class="pt-0 pb-0">
                                 {{translate("examDetail.sebSettings.networkView.URLFilterRules.active")}}
                             </v-col>
-                            <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.urlFilterRule!.active"></v-checkbox-btn> </v-col>
+                            <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.urlFilterRule!.active" :disabled="props.readOnly"></v-checkbox-btn> </v-col>
                         </v-row>
                         <!------------regex------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">
                                 {{translate("examDetail.sebSettings.networkView.URLFilterRules.regex")}}
                             </v-col>
-                            <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.urlFilterRule!.regex"></v-checkbox-btn> </v-col>
+                            <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.urlFilterRule!.regex" :disabled="props.readOnly"></v-checkbox-btn> </v-col>
                         </v-row>
                         <!------------Expression------------->
                         <v-row>
@@ -38,7 +38,8 @@
                                     hide-details
                                     v-model="props.urlFilterRule!.expression"
                                     density="compact"
-                                    variant="outlined">
+                                    variant="outlined"
+                                    :disabled="props.readOnly">
                                 </v-text-field>
                             </v-col>
                         </v-row>
@@ -53,7 +54,8 @@
                                     v-model="props.urlFilterRule!.action"
                                     density="compact"
                                     variant="outlined"
-                                    :items="actionItems">
+                                    :items="actionItems"
+                                    :disabled="props.readOnly">
                                 </v-select>
                             </v-col>
                         </v-row>
@@ -74,7 +76,7 @@
                                     color="primary" 
                                     variant="flat" 
                                     class="ml-2"
-                                    :disabled="isSaveButtonDisabled()"
+                                    :disabled="props.readOnly"
                                     @click="emit('closeEditURLFilterRule', true)">
                                     {{translate("general.saveButton")}}
                                 </v-btn>
@@ -111,9 +113,6 @@
         {title: translate("examDetail.sebSettings.networkView.URLFilterRules.action_0"), value: "0" }, 
         {title: translate("examDetail.sebSettings.networkView.URLFilterRules.action_1"), value: "1" } ];
 
-    function isSaveButtonDisabled() {
-        return props.readOnly;
-    }
 
 </script>
 

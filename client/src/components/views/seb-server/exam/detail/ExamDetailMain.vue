@@ -585,7 +585,6 @@
     const examId = useRoute().params.examId.toString();
 
     //pw field
-    let initalPassword: string | null = null;
     const passwordVisible = ref<boolean>(false);
     const quitPassword = ref<string>("");
     //let quitPasswordTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -805,17 +804,17 @@
         }
 
         quitPassword.value = examStore.selectedExam?.quitPassword;
-        initalPassword = examStore.selectedExam?.quitPassword;
     }
 
     async function saveNewPassword(focusIn: boolean) {
+        //console.info("******** exam pwd: " + examStore.selectedExam?.quitPassword + " selected: " + quitPassword.value + " check: " + (quitPassword.value !== examStore.selectedExam!.quitPassword));
         if (!focusIn) {
             updateQuitPassword();
         }
     }   
 
     async function updateQuitPassword(){
-        if(examStore.selectedExam == null || initalPassword == quitPassword.value){
+        if(examStore.selectedExam == null || quitPassword.value == examStore.selectedExam?.quitPassword){
             return;
         }
 
