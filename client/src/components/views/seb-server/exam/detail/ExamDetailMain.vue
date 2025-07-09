@@ -557,7 +557,6 @@
     import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
     import * as clientGroupViewService from "@/services/seb-server/component-services/clientGroupViewService";
     import { storeToRefs } from "pinia";
-    //import * as timeUtils from "@/utils/timeUtils";
     import * as generalUtils from "@/utils/generalUtils";
     import { navigateTo } from '@/router/navigation';
     import { ExamStatusEnum, ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
@@ -660,20 +659,6 @@
         setScreenProctoring();
         isPageInitalizing.value = false;
     });
-
-    // watch(quitPassword, () => {
-    //     if(isPageInitalizing.value){
-    //         return;
-    //     }
-
-    //     if(quitPasswordTimeout){
-    //         clearTimeout(quitPasswordTimeout);
-    //     }
-
-    //     quitPasswordTimeout = setTimeout(() => {
-    //         updateQuitPassword();
-    //     }, 500);
-    // });
 
     //========exam api===========
     async function getExam(){
