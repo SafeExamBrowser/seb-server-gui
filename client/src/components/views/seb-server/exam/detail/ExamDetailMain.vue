@@ -248,7 +248,8 @@
                                     placeholder="Password"
                                     variant="outlined"
                                     :disabled="examViewService.isExamFunctionalityDisabled([ExamStatusEnum.UP_COMING, ExamStatusEnum.RUNNING, ExamStatusEnum.TEST_RUN], examStore.selectedExam?.status)"
-                                    v-model="quitPassword">
+                                    v-model="quitPassword"
+                                    @update:focused="saveNewPassword($event)">
 
                                     <template v-slot:append-inner>
                                         <v-btn
@@ -556,7 +557,7 @@
     import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
     import * as clientGroupViewService from "@/services/seb-server/component-services/clientGroupViewService";
     import { storeToRefs } from "pinia";
-    import * as timeUtils from "@/utils/timeUtils";
+    //import * as timeUtils from "@/utils/timeUtils";
     import * as generalUtils from "@/utils/generalUtils";
     import { navigateTo } from '@/router/navigation';
     import { ExamStatusEnum, ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
@@ -588,7 +589,7 @@
     let initalPassword: string | null = null;
     const passwordVisible = ref<boolean>(false);
     const quitPassword = ref<string>("");
-    let quitPasswordTimeout: ReturnType<typeof setTimeout> | null = null;
+    //let quitPasswordTimeout: ReturnType<typeof setTimeout> | null = null;
 
     //supervisors table
     const supervisorsTableHeadersRef = ref<any[]>();
@@ -660,19 +661,19 @@
         isPageInitalizing.value = false;
     });
 
-    watch(quitPassword, () => {
-        if(isPageInitalizing.value){
-            return;
-        }
+    // watch(quitPassword, () => {
+    //     if(isPageInitalizing.value){
+    //         return;
+    //     }
 
-        if(quitPasswordTimeout){
-            clearTimeout(quitPasswordTimeout);
-        }
+    //     if(quitPasswordTimeout){
+    //         clearTimeout(quitPasswordTimeout);
+    //     }
 
-        quitPasswordTimeout = setTimeout(() => {
-            updateQuitPassword();
-        }, 500);
-    });
+    //     quitPasswordTimeout = setTimeout(() => {
+    //         updateQuitPassword();
+    //     }, 500);
+    // });
 
     //========exam api===========
     async function getExam(){
@@ -821,6 +822,12 @@
         quitPassword.value = examStore.selectedExam?.quitPassword;
         initalPassword = examStore.selectedExam?.quitPassword;
     }
+
+    async function saveNewPassword(focusIn: boolean) {
+        if (!focusIn) {
+            updateQuitPassword();
+        }
+    }   
 
     async function updateQuitPassword(){
         if(examStore.selectedExam == null || initalPassword == quitPassword.value){
