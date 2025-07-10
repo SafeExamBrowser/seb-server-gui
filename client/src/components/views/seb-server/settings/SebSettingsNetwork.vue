@@ -131,9 +131,11 @@
                     :label="translate('examDetail.sebSettings.networkView.ExcludeSimpleHostnames')"
                     :disabled="readOnly"></v-checkbox-btn> 
             </v-row>
-            <v-row>{{translate("examDetail.sebSettings.networkView.ExceptionsList")}}</v-row>
+
             <v-row>
-                <v-text-field
+                <v-col>
+                {{translate("examDetail.sebSettings.networkView.ExceptionsList")}}
+                <v-text-field 
                     single-line
                     hide-details
                     v-model="ExceptionsListVal"
@@ -142,6 +144,7 @@
                     variant="outlined"
                     :disabled="readOnly">
                 </v-text-field>
+                </v-col>
             </v-row>
             <v-row>
                 <v-checkbox-btn 
@@ -152,7 +155,15 @@
             </v-row>
         </v-col>
         <v-col>
-            BBBBBBBBBBBBBBB
+            <v-expansion-panels variant="accordion">
+                <v-expansion-panel title="Auto Proxy Discovers"><v-expansion-panel-text>Some Form</v-expansion-panel-text></v-expansion-panel>
+                <v-expansion-panel title="Automatic Proxy Configuration"><v-expansion-panel-text>Some Form</v-expansion-panel-text></v-expansion-panel>
+                <v-expansion-panel title="Web Proxy (HTTP)"><v-expansion-panel-text>Some Form</v-expansion-panel-text></v-expansion-panel>
+                <v-expansion-panel title="Secure Web Proxy (HTTPS)"><v-expansion-panel-text>Some Form</v-expansion-panel-text></v-expansion-panel>
+                <v-expansion-panel title="FTP Proxy"><v-expansion-panel-text>Some Form</v-expansion-panel-text></v-expansion-panel>
+                <v-expansion-panel title="SOCKS Proxy"><v-expansion-panel-text>Some Form</v-expansion-panel-text></v-expansion-panel>
+                <v-expansion-panel title="Streaming Proxy (RTSP)"><v-expansion-panel-text>Some Form</v-expansion-panel-text></v-expansion-panel>
+            </v-expansion-panels>
         </v-col>
     </v-row>
 
