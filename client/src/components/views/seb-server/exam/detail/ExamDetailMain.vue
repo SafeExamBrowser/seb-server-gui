@@ -807,7 +807,6 @@
     }
 
     async function saveNewPassword(focusIn: boolean) {
-        //console.info("******** exam pwd: " + examStore.selectedExam?.quitPassword + " selected: " + quitPassword.value + " check: " + (quitPassword.value !== examStore.selectedExam!.quitPassword));
         if (!focusIn) {
             updateQuitPassword();
         }
