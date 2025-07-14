@@ -4,6 +4,7 @@
     </div>
     <v-row class="mt-10 w-98 h-100">
         <v-col cols="3" class="pt-0 pb-0 h-100 d-flex flex-column">
+
             <v-sheet class="rounded-lg ml-6 pb-0 h-100 w-100 bg-primary d-flex flex-column flex-grow-1">
                 <!-- settings navigation-->
                 <v-col class="pt-0 pb h-100">
@@ -95,8 +96,7 @@
                 <v-col cols="12" md="12" class="pa-0 mb-4 h-100">
                     <v-card-text>
                         <v-form ref="formRef" @keyup.enter="saveChanges()">
-                            <v-row dense>
-                            </v-row>
+
                             <v-row dense>
                                 <v-col>
                                     <!-- institution-->
@@ -290,6 +290,11 @@
                     </v-card-text>
                 </v-col>
             </v-sheet>
+
+
+
+
+
 
             <!--  buttons-->
             <v-row class="px-6 pt-0">
