@@ -87,29 +87,22 @@
             </div>
         </v-col>
 
-
         <!-- Indicators -->
         <v-col cols="12" md="3">
             <v-card
-                class=" ml-4 top-container pa-3"
-                style="height: 100%;  display: flex; flex-wrap: wrap; align-content: flex-start;"
+                v-if="filteredIndicators.length > 0 && currentStatus !== ConnectionStatusEnum.CLOSED && currentStatus !== ConnectionStatusEnum.DISABLED"
+                class="ml-4 top-container pa-3"
+                style="height: 100%; display: flex; flex-wrap: wrap; align-content: flex-start;"
             >
-
                 <div
-                    v-for="indicator in mergedIndicators"
+                    v-for="indicator in filteredIndicators"
                     :key="indicator.id"
                     class="indicator-item d-flex align-center mb-5 mt-5"
                     style="width: 33%;"
                 >
-                    <v-icon :icon="indicator.icon" class="mr-1" :color="indicator.color"/>
-                    <span>
-                        <span>
-                          {{ indicator.displayValue }}
-                        </span>
-                    </span>
+                    <v-icon :icon="indicator.icon" class="mr-1" :color="indicator.color" />
+                    <span>{{ indicator.displayValue }}</span>
                 </div>
-
-
             </v-card>
         </v-col>
 
@@ -122,6 +115,7 @@
                     color="black"
                     variant="outlined"
                     prepend-icon="mdi-monitor-lock"
+                    :disabled="!connectionStateBehavior[currentStatus || 'UNKNOWN']?.cancel"
                     @click="openInstructionConfirmDialog(InstructionEnum.SEB_MARK_AS_CANCELLED)"
                 >
                     {{ translate("monitoringDetails.info.mark-cancelled") }}
@@ -133,6 +127,7 @@
                     color="black"
                     variant="outlined"
                     prepend-icon="mdi-monitor-lock"
+                    :disabled="!connectionStateBehavior[currentStatus || 'UNKNOWN']?.lock"
                     @click="openInstructionConfirmDialog(InstructionEnum.SEB_FORCE_LOCK_SCREEN)"
                 >
                     {{ translate("monitoringDetails.info.lock") }}
@@ -144,10 +139,12 @@
                     color="black"
                     variant="outlined"
                     prepend-icon="mdi-backspace-outline"
+                    :disabled="!connectionStateBehavior[currentStatus || 'UNKNOWN']?.quit"
                     @click="openInstructionConfirmDialog(InstructionEnum.SEB_QUIT)"
                 >
                     {{ translate("monitoringDetails.info.quit") }}
                 </v-btn>
+
             </div>
         </v-col>
 
@@ -276,6 +273,61 @@ function getConnectionStatusColor(connectionStatus: String | null): string {
             return "#000000";
     }
 }
+
+type ConnectionStateBehavior = {
+    wlan: boolean;
+    battery: boolean;
+    quit: boolean;
+    lock: boolean;
+    cancel: boolean;
+};
+
+const connectionStateBehavior: Record<string, ConnectionStateBehavior> = {
+    CONNECTION_REQUESTED: { wlan: true, battery: true, quit: true, lock: true, cancel: false },
+    READY:               { wlan: true, battery: true, quit: true, lock: true, cancel: false },
+    ACTIVE:              { wlan: true, battery: true, quit: true, lock: true, cancel: false },
+    CLOSED:              { wlan: false, battery: false, quit: false, lock: false, cancel: true },
+    MISSING:             { wlan: true, battery: true, quit: false, lock: false, cancel: true },
+    DISABLED:            { wlan: false, battery: false, quit: false, lock: false, cancel: false },
+};
+
+
+const filteredIndicators = computed(() => {
+    const definitions = monitoringStore.indicators?.content || [];
+    const values = monitoringStore.selectedSingleConn?.iVal || [];
+    const state = currentStatus.value ?? "UNKNOWN";
+    const behavior = connectionStateBehavior[state as keyof typeof connectionStateBehavior] || {
+        wlan: false,
+        battery: false,
+        quit: false,
+        lock: false,
+        cancel: false,
+    };
+
+    return definitions
+        .filter((def) => {
+            if (def.type === IndicatorEnum.BATTERY_STATUS && !behavior.battery) return false;
+            if (def.type === IndicatorEnum.WLAN_STATUS && !behavior.wlan) return false;
+            return true; // always show other indicators
+        })
+        .map((def) => {
+            const valObj = values.find((v) => v.id === def.id);
+            let displayValue: string | number | null = valObj ? valObj.val : null;
+
+            if (def.type === IndicatorEnum.LAST_PING && typeof displayValue === "number") {
+                displayValue = generalUtils.formatPing(displayValue);
+            } else if (displayValue !== null) {
+                displayValue = `${displayValue}${indicatorTypeConfig[def.type]?.unit || ""}`;
+            }
+
+            return {
+                ...def,
+                rawValue: valObj ? valObj.val : null,
+                displayValue,
+                ...indicatorTypeConfig[def.type],
+            };
+        });
+});
 
 function getConnectionStatusIcon(connectionStatus: String | null): string {
     if (connectionStatus == null) return "mdi-chevron-right";
