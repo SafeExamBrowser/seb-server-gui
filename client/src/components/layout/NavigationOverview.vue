@@ -1,6 +1,6 @@
 <template>
     <v-row class="navigation-overview-container">
-        <v-container class="ml-16 mr-0">
+        <v-container class="ml-16 mr-0" fluid>
             <v-col>
                 <v-sheet elevation="0" color="primary" class="rounded-lg pa-4">
                     <v-app-bar-title class="mb-16">
@@ -10,7 +10,7 @@
                     <v-row class="mt-4 mb-16 mr-0">
 
                         <!---------------Settings List----------------->
-                        <v-col cols="4">
+                        <v-col cols="3">
                             <h4 class="text-subtitle-1 font-weight-bold mb-3">
                                 {{ translate("titles.settings").toUpperCase() }}
                             </h4>
@@ -52,10 +52,19 @@
 
 
                         <!---------------Preparation List----------------->
-                        <v-col cols="4">
+                        <v-col cols="3">
                             <h4 class="text-subtitle-1 font-weight-bold mb-3">
                                 {{ translate("titles.preparation").toUpperCase() }}
                             </h4>
+
+                            <v-divider class="section-divider"/>
+
+
+                            <v-list-item class="px-0 nav-hover">
+                                <span class="link-color nav-link">{{ translate("titles.createTemplate")
+                                    }}
+                                </span>
+                            </v-list-item>
 
                             <v-divider class="section-divider"/>
 
@@ -67,23 +76,11 @@
 
                             <v-divider class="section-divider"/>
 
-                            <v-list-item class="px-0 nav-hover">
-                                <router-link class="link-color nav-link" :to="constants.EXAM_ROUTE">Second Link
-                                </router-link>
-                            </v-list-item>
-
-                            <v-divider class="section-divider"/>
 
                             <v-list-item class="px-0 nav-hover">
-                                <router-link class="link-color nav-link" :to="constants.EXAM_ROUTE">Third Link
-                                </router-link>
-                            </v-list-item>
-
-                            <v-divider class="section-divider"/>
-
-                            <v-list-item class="px-0 nav-hover">
-                                <router-link class="link-color nav-link" :to="constants.EXAM_ROUTE">Fourth Link
-                                </router-link>
+                                <span class="link-color nav-link">{{ translate("titles.addExamWithURL")
+                                    }}
+                                </span>
                             </v-list-item>
 
                             <v-divider class="section-divider"/>
@@ -92,7 +89,7 @@
 
                         <!---------------Monitoring / Screen Proctoring List----------------->
 
-                        <v-col cols="4">
+                        <v-col cols="3">
                             <h4 class="text-subtitle-1 font-weight-bold mb-3">
                                 {{
                                     generalUtils.stringToBoolean(authStore.getStorageItem(StorageItemEnum.IS_SP_AVAILABLE))
@@ -154,6 +151,23 @@
                             </template>
                         </v-col>
 
+                        <!-- Follow Up -->
+                        <v-col cols="3">
+                            <h4 class="text-subtitle-1 font-weight-bold mb-3">
+                                {{ translate("titles.followUp").toUpperCase() }}
+                            </h4>
+
+                            <v-divider class="section-divider"/>
+
+                            <v-list-item class="px-0 nav-hover">
+                                <span class="link-color nav-link">
+                                    {{ translate("titles.archiveExams") }}
+                                </span>
+                            </v-list-item>
+
+                            <v-divider class="section-divider"/>
+                        </v-col>
+
                     </v-row>
                 </v-sheet>
             </v-col>
@@ -193,7 +207,7 @@
 <style scoped>
     .navigation-overview-container {
         color: white;
-        padding: 16px;
+
     }
 
     .link-color {

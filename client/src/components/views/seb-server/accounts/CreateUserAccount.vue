@@ -64,187 +64,212 @@
                     {{ translate("userAccount.createUserAccountPage.info.accountCreationInfo") }}
                 </div>
             </v-row>
-            <v-sheet  class="rounded-lg mt-4">
+
+            <!-- Form-->
+            <v-sheet class="rounded-lg mt-4">
                 <v-col cols="12" md="12" class="pa-0 mb-4 h-100">
                     <v-card-text>
-
-                        <!-- New User Account Form-->
                         <v-form ref="formRef" @keyup.enter="submit()">
+
                             <v-row dense>
+                                <v-col>
+                                    <!-- Institution-->
+                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                        <v-select
+                                            required
+                                            prepend-inner-icon="mdi-domain"
+                                            density="compact"
+                                            :label="translate('userAccount.createUserAccountPage.labels.institutionLabel')"
+                                            variant="outlined"
+                                            v-model="selectedInstitution"
+                                            :items="institutions"
+                                            item-title="name"
+                                            item-value="modelId"
+                                            :rules="[requiredRule]"
+                                            :disabled="institutionSelectDisabled"
+                                        />
+                                    </v-col>
 
-                                <!-- Institution-->
-                                <v-col cols="12" md="6" class="mt-2">
-                                    <v-select
-                                        required
-                                        prepend-inner-icon="mdi-domain"
-                                        density="compact"
-                                        :label="translate('userAccount.createUserAccountPage.labels.institutionLabel')"
-                                        variant="outlined"
-                                        v-model="selectedInstitution"
-                                        :items="institutions"
-                                        item-title="name"
-                                        item-value="modelId"
-                                        :rules="[requiredRule]"
-                                        :disabled="institutionSelectDisabled"
-                                    />
-                                </v-col>
+                                    <!-- Username-->
+                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                        <v-text-field
+                                            required
+                                            prepend-inner-icon="mdi-account-outline"
+                                            density="compact"
+                                            :label="translate('userAccount.createUserAccountPage.labels.usernameLabel')"
+                                            variant="outlined"
+                                            v-model="username"
+                                            :rules="[requiredRule]"
+                                        />
+                                    </v-col>
 
-                                <!-- Username-->
-                                <v-col cols="12" md="6" class="mt-2">
-                                    <v-text-field
-                                        required
-                                        prepend-inner-icon="mdi-account-outline"
-                                        density="compact"
-                                        :label="translate('userAccount.createUserAccountPage.labels.usernameLabel')"
-                                        variant="outlined"
-                                        v-model="username"
-                                        :rules="[requiredRule]"
-                                    />
-                                </v-col>
+                                    <!-- Name-->
+                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                        <v-text-field
+                                            required
+                                            prepend-inner-icon="mdi-account-outline"
+                                            density="compact"
+                                            :label="translate('userAccount.createUserAccountPage.labels.nameLabel')"
+                                            variant="outlined"
+                                            v-model="name"
+                                            :rules="[requiredRule]"
+                                        />
+                                    </v-col>
 
-                                <!-- Name-->
-                                <v-col cols="12" md="6" class="mt-2">
-                                    <v-text-field
-                                        required
-                                        prepend-inner-icon="mdi-account-outline"
-                                        density="compact"
-                                        :label="translate('userAccount.createUserAccountPage.labels.nameLabel')"
-                                        variant="outlined"
-                                        v-model="name"
-                                        :rules="[requiredRule]"
-                                    />
-                                </v-col>
+                                    <!-- Surname-->
+                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                        <v-text-field
+                                            required
+                                            prepend-inner-icon="mdi-account-outline"
+                                            density="compact"
+                                            :label="translate('userAccount.createUserAccountPage.labels.surnameLabel')"
+                                            variant="outlined"
+                                            v-model="surname"
+                                            :rules="[requiredRule]"
+                                        />
+                                    </v-col>
 
-                                <!-- Surname-->
-                                <v-col cols="12" md="6" class="mt-2">
-                                    <v-text-field
-                                        required
-                                        prepend-inner-icon="mdi-account-outline"
-                                        density="compact"
-                                        :label="translate('userAccount.createUserAccountPage.labels.surnameLabel')"
-                                        variant="outlined"
-                                        v-model="surname"
-                                        :rules="[requiredRule]"
-                                    />
-                                </v-col>
+                                    <!-- Email-->
+                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                        <v-text-field
+                                            prepend-inner-icon="mdi-email-outline"
+                                            density="compact"
+                                            :label="translate('userAccount.createUserAccountPage.labels.emailLabel')"
+                                            variant="outlined"
+                                            v-model="email"
+                                            :rules="[emailRule]"
+                                            validate-on="blur"
+                                        />
+                                    </v-col>
 
-                                <!-- Email-->
-                                <v-col cols="12" md="6" class="mt-2">
-                                    <v-text-field
-                                        prepend-inner-icon="mdi-email-outline"
-                                        density="compact"
-                                        :label="translate('userAccount.createUserAccountPage.labels.emailLabel')"
-                                        variant="outlined"
-                                        v-model="email"
-                                        :rules="[emailRule]"
-                                        validate-on="blur"
-                                    />
-                                </v-col>
+                                    <!-- Timezone-->
+                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                        <v-select
+                                            required
+                                            prepend-inner-icon="mdi-map-clock-outline"
+                                            density="compact"
+                                            :label="translate('userAccount.createUserAccountPage.labels.timeZoneLabel')"
+                                            variant="outlined"
+                                            v-model="timezone"
+                                            :items="timezoneOptions"
+                                            :rules="[requiredRule]"
+                                            :return-object="false"
+                                        />
+                                    </v-col>
 
-                                <!-- Timezone-->
-                                <v-col cols="12" md="6" class="mt-2">
-                                    <v-select
-                                        required
-                                        prepend-inner-icon="mdi-map-clock-outline"
-                                        density="compact"
-                                        :label="translate('userAccount.createUserAccountPage.labels.timeZoneLabel')"
-                                        variant="outlined"
-                                        v-model="timezone"
-                                        :items="timezoneOptions"
-                                        :rules="[requiredRule]"
-                                        :return-object="false"
-                                    />
-                                </v-col>
-
-                                <!-- Password-->
-                                <v-col cols="12" md="6" class="mt-2">
-                                    <v-text-field
-                                        required
-                                        :type="passwordVisible ? 'text' : 'password'"
-                                        prepend-inner-icon="mdi-lock-outline"
-                                        density="compact"
-                                        :label="translate('userAccount.createUserAccountPage.labels.passwordLabel')"
-                                        variant="outlined"
-                                        v-model="password"
-                                        :rules="[requiredRule, passwordRule]"
-                                        validate-on="blur"
-                                    >
-                                        <template v-slot:append-inner>
-                                            <v-btn
-                                                density="compact"
-                                                variant="text"
-                                                :icon="passwordVisible ? 'mdi-eye-off' : 'mdi-eye'"
-                                                @click="passwordVisible = !passwordVisible"
-                                            />
-                                        </template>
-                                    </v-text-field>
-                                </v-col>
-
-                                <!-- Confirm Password-->
-                                <v-col cols="12" md="6" class="mt-2">
-                                    <v-text-field
-                                        ref="confirmPasswordFieldRef"
-                                        required
-                                        :type="confirmPasswordVisible ? 'text' : 'password'"
-                                        prepend-inner-icon="mdi-lock-outline"
-                                        density="compact"
-                                        :label="translate('userAccount.createUserAccountPage.labels.confirmPasswordLabel')"
-                                        variant="outlined"
-                                        v-model="confirmPassword"
-                                        :rules="[requiredRule, confirmPasswordRule]"
-                                        validate-on="blur"
-                                        @blur="confirmPasswordTouched = true"
-                                        class="mb-2"
-                                    >
-                                        <template v-slot:append-inner>
-                                            <v-btn
-                                                density="compact"
-                                                variant="text"
-                                                :icon="confirmPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
-                                                @click="confirmPasswordVisible = !confirmPasswordVisible"
-                                            />
-                                        </template>
-                                    </v-text-field>
-                                </v-col>
-
-                                <!-- Role Selection-->
-                                <v-col cols="12" class="mt-2">
-                                    <div class="text-subtitle-1 font-weight-medium mb-2">
-                                        {{ translate("userAccount.createUserAccountPage.labels.selectRolesLabel")}}
-                                    </div>
-                                    <div class="text-body-2 text-grey-darken-1 mb-5">
-                                        {{ translate("userAccount.createUserAccountPage.info.rolesSelectionInfo") }}
-                                    </div>
-                                    <v-row dense>
-                                        <v-col
-                                            v-for="role in availableRoles"
-                                            :key="role.value"
-                                            cols="12"
-                                            md="6"
-                                            lg="4"
-                                            class="py-1"
+                                    <!-- Password-->
+                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                        <v-text-field
+                                            required
+                                            :type="passwordVisible ? 'text' : 'password'"
+                                            prepend-inner-icon="mdi-lock-outline"
+                                            density="compact"
+                                            :label="translate('userAccount.createUserAccountPage.labels.passwordLabel')"
+                                            variant="outlined"
+                                            v-model="password"
+                                            :rules="[requiredRule, passwordRule]"
+                                            validate-on="blur"
                                         >
-                                            <v-checkbox
-                                                v-model="selectedRoles"
-                                                :label="role.label"
-                                                :value="role.value"
-                                                density="compact"
-                                                hide-details
-                                                class="custom-checkbox"
-                                            />
-                                        </v-col>
-                                    </v-row>
-                                    <div v-if="rolesTouched && selectedRoles.length === 0" class="text-error text-caption mt-1">
-                                        {{ rolesRule([]) }}
-                                    </div>
+                                            <template v-slot:append-inner>
+                                                <v-btn
+                                                    density="compact"
+                                                    variant="text"
+                                                    :icon="passwordVisible ? 'mdi-eye-off' : 'mdi-eye'"
+                                                    @click="passwordVisible = !passwordVisible"
+                                                />
+                                            </template>
+                                        </v-text-field>
+                                    </v-col>
+
+                                    <!-- Confirm Password-->
+                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                        <v-text-field
+                                            ref="confirmPasswordFieldRef"
+                                            required
+                                            :type="confirmPasswordVisible ? 'text' : 'password'"
+                                            prepend-inner-icon="mdi-lock-outline"
+                                            density="compact"
+                                            :label="translate('userAccount.createUserAccountPage.labels.confirmPasswordLabel')"
+                                            variant="outlined"
+                                            v-model="confirmPassword"
+                                            :rules="[requiredRule, confirmPasswordRule]"
+                                            validate-on="blur"
+                                            @blur="confirmPasswordTouched = true"
+                                            class="mb-2"
+                                        >
+                                            <template v-slot:append-inner>
+                                                <v-btn
+                                                    density="compact"
+                                                    variant="text"
+                                                    :icon="confirmPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
+                                                    @click="confirmPasswordVisible = !confirmPasswordVisible"
+                                                />
+                                            </template>
+                                        </v-text-field>
+                                    </v-col>
+                                </v-col>
+
+                                <!-- user circle and roles-->
+                                <v-col>
+                                    <v-col cols="12" class="d-flex justify-center mb-6">
+                                        <div
+                                            class="rounded-circle d-flex align-center justify-center"
+                                            style="
+                                            background-color: transparent;
+                                            border: 0.5rem solid #215CAF;
+                                            width: 13rem;
+                                            height: 13rem;
+                                            min-width: 13rem;
+                                            font-weight: 600;
+                                            font-size: 4rem;
+                                            color: #215CAF;
+                                            "
+                                        >
+                                            {{
+                                                (name?.[0] || '') +
+                                                (surname?.[0] || '')
+                                            }}
+                                        </div>
+                                    </v-col>
+
+                                    <!--  roles-->
+                                    <v-col cols="12" class="ml-16">
+                                        <div class="text-subtitle-1 font-weight-medium mb-2">
+                                            {{ translate("userAccount.createUserAccountPage.labels.selectRolesLabel") }}
+                                        </div>
+                                        <div class="text-body-2 text-grey-darken-1 mb-5">
+                                            {{ translate("userAccount.createUserAccountPage.info.rolesSelectionInfo") }}
+                                        </div>
+                                        <v-row dense>
+                                            <v-col
+                                                v-for="role in availableRoles"
+                                                :key="role.value"
+                                                cols="12"
+                                                md="7"
+                                                lg="7"
+                                                class="py-1"
+                                            >
+                                                <v-checkbox
+                                                    v-model="selectedRoles"
+                                                    :label="role.label"
+                                                    :value="role.value"
+                                                    density="compact"
+                                                    hide-details
+                                                    class="custom-checkbox"
+                                                />
+                                            </v-col>
+                                        </v-row>
+                                        <div v-if="rolesTouched && selectedRoles.length === 0" class="text-error text-caption mt-1">
+                                            {{ rolesRule([]) }}
+                                        </div>
+                                    </v-col>
                                 </v-col>
                             </v-row>
                         </v-form>
                     </v-card-text>
-
                 </v-col>
-
             </v-sheet>
+
             <!-- Buttons-->
             <v-row class="px-6 pt-0">
                 <v-col cols="12" md="12" class="pa-0 mb-4">
@@ -508,5 +533,43 @@
     .success-message-div {
         margin-top: 25.5rem;
         width: 85% !important;
+    }
+
+    .custom-padding-textbox {
+        padding-top: 8px !important;
+        padding-bottom: 8px !important;
+    }
+
+    .custom-role-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 0.0rem;
+    }
+
+    .custom-role-checkbox input[type="checkbox"] {
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #215CAE;
+        border-radius: 50%;
+        background-color: white;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        position: relative;
+        flex-shrink: 0;
+    }
+
+    .custom-role-checkbox input[type="checkbox"]:checked {
+        border-width: 6px;
+    }
+
+    .custom-role-checkbox label {
+        color: #215caf;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 24px;
+        font-family: Roboto, sans-serif;
+        letter-spacing: 0.15px;
+        cursor: pointer;
     }
 </style>

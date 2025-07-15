@@ -623,8 +623,9 @@
             "connectionInfo": "Connection Info",
             "status": "Status",
             "actions": "Actions",
-            "lock": "Lock client",
-            "quit": "Quit client",
+            "lock": "Lock Screen",
+            "quit": "Quit Client",
+            "group" : "Group:",
             "mark-cancelled": "Mark as cancelled"
         },
         "main": {
@@ -632,7 +633,7 @@
             "resolveRaiseHand": "Resolve Raise Hand",
             "noNotifications": "No notifications available",
             "messages": "Messages",
-            "resolveMessage": "Resolve Message",
+            "unlockScreen": "Unlock Screen",
             "screenProctoring": "Screen Proctoring",
             "clientLogs": "Client Logs"
         },
@@ -663,6 +664,10 @@
         "examDetails": "Exam Details",
         "monitoring": "Monitoring",
         "quizImport": "Prepare Exam",
+        "createTemplate": "Create Template",
+        "addExamWithURL": "Add Exam With URL",
+        "followUp" : "Follow Up",
+        "archiveExams" : "Archive Exams",
         "preparation": "Preparation",
         "recentExams": "Last Edited Exams",
         "settings": "Settings",

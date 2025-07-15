@@ -869,6 +869,69 @@ async function calcTotalNrOfScreenshots(): Promise<number> {
     border-color: white !important;
 }
 
+
+
+
+.player-wrapper:fullscreen .controls,
+.player-wrapper:-moz-full-screen .controls {
+    position: absolute !important;
+    bottom: 16px;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 8px 0;
+}
+
+
+
+.player-wrapper:fullscreen .controls .v-btn,
+.player-wrapper:-moz-full-screen .controls .v-btn {
+    color: white !important;
+}
+
+
+.player-wrapper:fullscreen .controls .v-slider-track__background,
+.player-wrapper:fullscreen .controls .v-slider-track__fill,
+.player-wrapper:fullscreen .controls .v-slider-track__tick,
+.player-wrapper:fullscreen .controls .v-slider-thumb__surface {
+    background-color: white !important;
+}
+
+.player-wrapper:fullscreen .controls .v-slider-thumb__surface {
+    border-color: white !important;
+}
+
+.player-wrapper:fullscreen .controls .v-chip {
+    color: white !important;
+    border-color: white !important;
+}
+
+.player-wrapper:-moz-full-screen .controls .v-slider-track__background,
+.player-wrapper:-moz-full-screen .controls .v-slider-track__fill,
+.player-wrapper:-moz-full-screen .controls .v-slider-track__tick,
+.player-wrapper:-moz-full-screen .controls .v-slider-thumb__surface {
+    background-color: white !important;
+}
+
+.player-wrapper:-moz-full-screen .controls .v-slider-thumb__surface {
+    border-color: white !important;
+}
+
+.player-wrapper:-moz-full-screen .controls .v-chip {
+    color: white !important;
+    border-color: white !important;
+}
+
+
+
+
+
+
+
+
+
+
 .metadata-card .v-card-text {
     flex: 1 1 auto;
     overflow-y: auto;
