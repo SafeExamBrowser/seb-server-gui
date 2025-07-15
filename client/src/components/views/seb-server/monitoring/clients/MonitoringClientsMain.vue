@@ -76,7 +76,7 @@
                             <td>{{ item.connectionInfo }}</td>
 
                             <!------status------->
-                            <td>{{ translate(item.status) }}</td>
+                            <td>{{ translateStatus(item) }}</td>
 
                             <!------battery indicator------->
                             <td v-if="(tableStore.isIndicatorsExpanded || isBatteryIndicator) && monitoringStore.batteryIndicatorId != null">
@@ -302,9 +302,8 @@
             if(monitoringRowData != null){
                 if(dynamicData.st != monitoringRowData.status){
                     idsToUpdateMap.set(monitoringRowData.id, index);
-
                 }else{
-                    updateIndicator(monitoringRowData.indicators, dynamicData.iv);
+                    updateConnectionRow(monitoringRowData, dynamicData);
                 }
             }
         });
@@ -409,8 +408,17 @@
             clientGroups: monitoringViewService.extractClientGroupNames(staticClientData.cg),
             connectionInfo: staticClientData.seb_info,
             status: fullPageDataConnection.st,
+            missing: (fullPageDataConnection.nf & 1) > 0,
+            invalidSEBVersion: (fullPageDataConnection.nf & 16) > 0,
             indicators: extractIndicators(fullPageDataConnection.iv),
         }
+    }
+
+    function translateStatus(row: MonitoringRow): string {
+        if (row.missing) {
+            return translate("MISSING", i18n);
+        }
+        return translate(row.status, i18n);
     }
 
     function getAllConnectionIds(): number[]{
@@ -537,6 +545,11 @@
     function removeWlanHeader(index: number){
         isWlanIndicator.value = false;
         clientsTableHeaders.value.splice(index, 1);
+    }
+
+    function updateConnectionRow(row: MonitoringRow, data: MonitoringClientConnection) {
+        updateIndicator(row.indicators, data.iv);
+        row.missing = (data.nf & 1) > 0;
     }
 
     function updateIndicator(indicatorMap: Map<number, IndicatorObject> | undefined, indicatorValues: Record<string, string>){

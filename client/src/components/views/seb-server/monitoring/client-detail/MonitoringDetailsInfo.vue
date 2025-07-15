@@ -232,6 +232,9 @@ const sebInfoParts = computed(() => {
 
 
 const currentStatus = computed(() => {
+    if (monitoringStore.selectedSingleConn?.miss) {
+        return "MIISSING";
+    }
     return monitoringStore.selectedSingleConn?.cdat.status ?? null;
 });
 

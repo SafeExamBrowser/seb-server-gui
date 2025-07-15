@@ -7,7 +7,8 @@ export type MonitoringRow = {
     clientGroups: ClientGroup[];
     connectionInfo: string;
     status: string;
-
+    missing: boolean;
+    invalidSEBVersion: boolean;
     indicators?: Map<number, IndicatorObject>
 
     // indicators?: (IndicatorObject | undefined)[];
