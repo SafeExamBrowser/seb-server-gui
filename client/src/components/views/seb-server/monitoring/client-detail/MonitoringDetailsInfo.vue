@@ -59,32 +59,29 @@
                 </div>
 
                 <!-- Group -->
-                <div class=" mt-2 d-flex align-center flex-wrap group-container">
-                    <span class="group-label mr-2">Group:</span>
-                    <v-chip
-                        v-for="clientGroup in monitoringStore.clientGroupsSingle"
-                        :key="clientGroup.id"
-                        size="default"
-                        class="mr-1 pl-5 pr-5 text-body-4"
-                        variant="tonal"
-                    >
-                        {{ clientGroup.name }}
-                    </v-chip>
+                <div class="mt-2 d-flex align-center flex-wrap group-container">
+                    <span class="group-label mr-2">{{ translate("monitoringDetails.info.connectionInfo") }}</span>
+
                 </div>
+
+
+                <div class="mt-2 d-flex align-center flex-wrap group-container">
+                    <template v-for="clientGroup in monitoringStore.clientGroupsSingle" :key="clientGroup.id">
+                        <span class="group-label mr-2">{{ clientGroup.name }}</span>
+                    </template>
+                </div>
+
 
 
                 <!-- SEB info tags -->
-                <div class="mt-2">
-                    <v-chip
-                        v-for="(info, index) in sebInfoParts"
-                        :key="index"
-                        size="default"
-                        class="mr-1 mb-1 text-body-3"
-                        variant="outlined"
-                    >
-                        {{ info }}
-                    </v-chip>
+                <div class="mt-2 d-flex align-center flex-wrap group-container">
+                    <span class="text-body-3">
+                        <template v-for="(info, index) in sebInfoParts" :key="index">
+                            {{ info }}<span v-if="index < sebInfoParts.length - 1">;&nbsp;&nbsp;&nbsp;</span>
+                        </template>
+                    </span>
                 </div>
+
 
 
             </div>
@@ -183,9 +180,7 @@ import {useI18n} from "vue-i18n";
 import {ConnectionStatusEnum} from "@/models/seb-server/connectionStatusEnum";
 import {InstructionEnum} from "@/models/seb-server/instructionEnum";
 import {navigateTo} from "@/router/navigation";
-import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
 import * as constants from "@/utils/constants";
-import {MonitoringHeaderEnum} from "@/models/seb-server/monitoringEnums";
 import { IndicatorEnum } from "@/models/seb-server/monitoringEnums";
 
 

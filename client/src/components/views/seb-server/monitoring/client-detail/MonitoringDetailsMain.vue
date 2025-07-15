@@ -54,7 +54,7 @@
                                 variant="flat"
                                 @click="confirmNotification(message.id.toString())"
                             >
-                                {{ translate("monitoringDetails.main.resolveMessage") }}
+                                {{ translate("monitoringDetails.main.unlockScreen") }}
                             </v-btn>
                         </v-col>
                     </v-row>
