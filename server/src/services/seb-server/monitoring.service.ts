@@ -2,16 +2,6 @@ import * as apiService from "./api.service";
 import * as constants from "../../utils/constants";
 
 
-interface ClientEventLogOptions {
-    page_number?: number;
-    page_size?: number;
-    sort?: string;
-    institutionId?: number;
-    allRequestParams?: object | string;
-}
-
-
-
 export async function applyTestRun(token: string, id: string): Promise<[object, number]>{
     const url: string = constants.MONITORING_TEST_RUN_ROUTE + "/" + id;
     const {data, status} = await apiService.api.post(url, {}, {headers: apiService.getHeaders(token)});
@@ -134,8 +124,8 @@ export async function getClientEventLogs(
 
     const params: Record<string, any> = {
         ...parsedOptions,
-        allRequestParams: JSON.stringify({ clientConnectionId: connectionId })
-    };
+        clientConnectionId: connectionId
+    }
 
     const { data, status } = await apiService.api.get(
         constants.MONITORING_LOGS_ROUTE,
