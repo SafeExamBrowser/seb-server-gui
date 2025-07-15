@@ -71,8 +71,8 @@
         <v-col>
             <div elevation="4" class="rounded-lg pr-4 pl-4" style="position: relative;">
 
-                <!-- Top-right toggle -->
-                <div class="d-flex justify-end mb-2">
+                <!-- Top-right toggle, shown only if screen proctoring is enabled -->
+                <div v-if="screenProctoringEnabled" class="d-flex justify-end mb-2">
                     <v-btn-toggle v-model="currentView" mandatory>
                         <v-btn value="proctoring" color="primary" size="small">
                             {{ translate("monitoringDetails.main.screenProctoring") }}
@@ -82,6 +82,7 @@
                         </v-btn>
                     </v-btn-toggle>
                 </div>
+
 
                 <!-- Proctoring view -->
                 <div v-if="currentView === 'proctoring'" class="view-container">
@@ -110,7 +111,7 @@
     import { useDisplay } from "vuetify";
     import { InstructionEnum } from "@/models/seb-server/instructionEnum";
     import {translate} from "@/utils/generalUtils";
-
+    import { nextTick } from "vue";
 
     //route params
     const examId = useRoute().params.examId.toString();
@@ -121,11 +122,15 @@
     const resolveRaiseHandSent = ref<boolean>(false);
     const resolveLockScreenSent = ref<boolean>(false);
 
+
     //stores
     const monitoringStore = useMonitoringStore();
 
-    //display main content
-    const currentView = ref<'proctoring' | 'logs'>('proctoring');
+    //attributes for switch between logs and screen proctor view
+    const screenProctoringEnabled = computed(() => {
+        return monitoringStore.selectedExam?.additionalAttributes.enableScreenProctoring === "true";
+    });
+    const currentView = ref<'proctoring' | 'logs'>(screenProctoringEnabled.value ? 'proctoring' : 'logs');
 
     //display
     const {lg} = useDisplay();
@@ -133,11 +138,6 @@
     onMounted(() => {
         console.log(lg.value)
     });
-
-    watch(lg, () => {
-        console.log(lg.value)
-    })
-
 
     const raiseHandNotification: ComputedRef<ClientNotification | null> = computed(() => {
         const raiseHand: ClientNotification | undefined = monitoringStore.pendingNotifications.find(item => item.notificationType == NotificationEnum.RAISE_HAND);
@@ -159,9 +159,6 @@
         return null;
     });
 
-
-    import { nextTick } from "vue";
-
     watch(raiseHandNotification, (newVal) => {
         if (newVal !== null) {
             scrollToTop();
@@ -175,6 +172,16 @@
         }
     });
 
+    watch(lg, () => {
+        console.log(lg.value)
+    })
+
+
+    watch(screenProctoringEnabled, (enabled) => {
+        currentView.value = enabled ? 'proctoring' : 'logs';
+    });
+
+
     function scrollToTop() {
         nextTick(() => {
             window.scrollTo({
@@ -185,7 +192,7 @@
     }
 
     async function confirmNotification(notificationId: string){
-        monitoringViewService.confirmNotification(examId, notificationId, connectionToken);
+        await monitoringViewService.confirmNotification(examId, notificationId, connectionToken);
     }
 
 

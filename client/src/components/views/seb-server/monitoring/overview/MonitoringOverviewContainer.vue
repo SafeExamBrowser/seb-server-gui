@@ -44,7 +44,7 @@
                 <MonitoringOverviewNotifications></MonitoringOverviewNotifications>
             </v-sheet>
         </v-col>
-        
+
     </v-row>
 
 </template>
@@ -78,7 +78,7 @@
         await monitoringViewService.getExamAndStore(examId);
         await getOverviewData();
         // setRandomData();
-
+        monitoringStore.selectedExam?.additionalAttributes
         startIntervalRefresh()
     });
 
@@ -122,24 +122,24 @@
         const randomNumber6: number = Math.floor(Math.random() * 1000) + 1;
 
 
-        monitoringStore.monitoringOverviewData!.clientStates.DISABLED = randomNumber1; 
-        monitoringStore.monitoringOverviewData!.clientStates.READY = randomNumber2; 
-        monitoringStore.monitoringOverviewData!.clientStates.ACTIVE = randomNumber3; 
-        monitoringStore.monitoringOverviewData!.clientStates.CONNECTION_REQUESTED = randomNumber4; 
-        monitoringStore.monitoringOverviewData!.clientStates.MISSING = randomNumber5; 
-        monitoringStore.monitoringOverviewData!.clientStates.CLOSED = randomNumber6; 
+        monitoringStore.monitoringOverviewData!.clientStates.DISABLED = randomNumber1;
+        monitoringStore.monitoringOverviewData!.clientStates.READY = randomNumber2;
+        monitoringStore.monitoringOverviewData!.clientStates.ACTIVE = randomNumber3;
+        monitoringStore.monitoringOverviewData!.clientStates.CONNECTION_REQUESTED = randomNumber4;
+        monitoringStore.monitoringOverviewData!.clientStates.MISSING = randomNumber5;
+        monitoringStore.monitoringOverviewData!.clientStates.CLOSED = randomNumber6;
 
 
-        monitoringStore.monitoringOverviewData!.clientGroups[0].clientAmount = randomNumber1; 
-        monitoringStore.monitoringOverviewData!.clientGroups[1].clientAmount = randomNumber2; 
-        // monitoringStore.monitoringOverviewData!.clientGroups[2].clientAmount = randomNumber3; 
-        // monitoringStore.monitoringOverviewData!.clientGroups[3].clientAmount = randomNumber4; 
+        monitoringStore.monitoringOverviewData!.clientGroups[0].clientAmount = randomNumber1;
+        monitoringStore.monitoringOverviewData!.clientGroups[1].clientAmount = randomNumber2;
+        // monitoringStore.monitoringOverviewData!.clientGroups[2].clientAmount = randomNumber3;
+        // monitoringStore.monitoringOverviewData!.clientGroups[3].clientAmount = randomNumber4;
 
-        monitoringStore.monitoringOverviewData!.notifications.LOCK_SCREEN = randomNumber1; 
-        monitoringStore.monitoringOverviewData!.notifications.RAISE_HAND = randomNumber2; 
+        monitoringStore.monitoringOverviewData!.notifications.LOCK_SCREEN = randomNumber1;
+        monitoringStore.monitoringOverviewData!.notifications.RAISE_HAND = randomNumber2;
 
-        // monitoringStore.monitoringOverviewData!.indicators.BATTERY_STATUS = randomNumber3; 
-        // monitoringStore.monitoringOverviewData!.indicators.WLAN_STATUS = randomNumber4; 
+        // monitoringStore.monitoringOverviewData!.indicators.BATTERY_STATUS = randomNumber3;
+        // monitoringStore.monitoringOverviewData!.indicators.WLAN_STATUS = randomNumber4;
 
 
 
