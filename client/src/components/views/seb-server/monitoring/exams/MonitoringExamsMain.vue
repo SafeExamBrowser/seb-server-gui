@@ -155,7 +155,7 @@
             activeStatusFilter
         );
 
-        const examsResponse: Exams | null = await examViewService.getExams(optionalParGetExams);
+        const examsResponse: Exams | null = await examViewService.getExamsForMonitoring(optionalParGetExams);
 
         if(examsResponse == null){
             isLoading.value = false;

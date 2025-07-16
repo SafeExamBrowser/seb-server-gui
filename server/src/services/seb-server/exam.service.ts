@@ -45,6 +45,13 @@ export async function getExams(token: string, options?: {}): Promise<[object, nu
     return [data, status];
 } 
 
+export async function getExamsForMonitoring(token: string, options?: {}): Promise<[object, number]>{
+    const url: string = "/monitoring";
+    const {data, status} = await apiService.api.get(url, {headers: apiService.getHeaders(token), params: options});
+
+    return [data, status];
+} 
+
 //todo: check why this method with config object works and the defautl one does not
 export async function archiveExam(token: string, id: string): Promise<[object, number]>{
     const url: string =  constants.EXAM_ROUTE + "/" + id + "/archive";
@@ -62,13 +69,6 @@ export async function archiveExam(token: string, id: string): Promise<[object, n
 
     return [data, status];
 } 
-
-// export async function archiveExam(token: string, id: string): Promise<[object, number]>{
-//     const url: string =  constants.EXAM_ROUTE + "/" + id + "/archive";
-//     const {data, status} = await apiService.api.patch(url, {}, {headers: apiService.getPatchHeaders(token)});
-
-//     return [data, status];
-// }
 
 export async function putSEBLock(token: string, id: string){
     const url: string =  "/exam/" + id + "/seb-restriction";

@@ -50,6 +50,14 @@ export async function getExams(optionalParGetExams?: OptionalParGetExams): Promi
     }
 }
 
+export async function getExamsForMonitoring(optionalParGetExams?: OptionalParGetExams): Promise<Exams | null>{
+    try{
+        return await examService.getExamsForMonitoring(optionalParGetExams);
+    }catch(error){
+        return null;
+    }
+}
+
 export async function updateExam(examId: string, exam: Exam): Promise<Exam | null>{
     try{
         return await examService.updateExam(examId, exam);

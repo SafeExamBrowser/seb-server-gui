@@ -25,6 +25,10 @@ export async function getExams(optionalParameters?: OptionalParGetExams): Promis
     return (await apiService.api.get(examsUrl, {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN), params: {optionalParameters}})).data;
 }
 
+export async function getExamsForMonitoring(optionalParameters?: OptionalParGetExams): Promise<Exams | any>{
+    return (await apiService.api.get(examsUrl + "/monitoring", {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN), params: {optionalParameters}})).data;
+}
+
 export async function archiveExam(id: string): Promise<Exam | any>{
     return (await apiService.api.patch(examUrl + "/" + id + "/archive", {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
 }

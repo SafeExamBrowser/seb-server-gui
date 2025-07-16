@@ -36,6 +36,7 @@ router.put(constants.EXAM_ROUTE + "/:id", examController.updateExam);
 router.patch(constants.EXAM_ARCHIVE_ROUTE, examController.archiveExam)
 router.get(constants.EXAM_GET_ROUTE + "/:id", examController.getExam);
 router.get(constants.EXAM_CONFIGURATION_MAP_ROUTE + "/:id", examController.getExamConfigurationMap);
+router.get(constants.EXAMS_ROUTE + "/monitoring", examController.getExamsForMonitoring);
 
 // SEB lock
 router.put(constants.EXAM_ROUTE + "/:id" + "/apply-seb-restriction", examController.putSEBLock);
