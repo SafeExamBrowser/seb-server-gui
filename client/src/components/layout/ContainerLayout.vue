@@ -316,7 +316,7 @@
     ]"
         class="d-flex flex-column fill-height"
     >
-        <v-container fluid class=" main-content h-80">
+        <v-container fluid class="flex-grow-1">
             <router-view />
         </v-container>
     </v-main>
@@ -438,10 +438,6 @@
 </script>
 
 <style scoped>
-    .main-content {
-        /* background-color: #e4e4e4; */
-    }
-
     .user-name {
         font-size: 0.9rem;
     }
