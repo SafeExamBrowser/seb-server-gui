@@ -133,7 +133,7 @@
         }
 
         if(props.isCancelInstruction){
-            return translate("monitoringDialog.instructionConfirm.cancel");
+            return translate("monitoringDialog.instructionConfirm.markCancel");
         }
         
         return "";

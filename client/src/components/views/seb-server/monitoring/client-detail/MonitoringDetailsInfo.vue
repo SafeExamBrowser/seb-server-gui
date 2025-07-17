@@ -164,6 +164,7 @@
             @close-instruction-confirm-dialog="closeInstructionConfirmDialog"
             :instruction-type="selectedInstructionType"
             :connectionTokens="connectionToken"
+            :is-cancel-instruction="isSelectedInstructionCancel"
         />
     </v-dialog>
 </template>
@@ -195,12 +196,14 @@ const monitoringStore = useMonitoringStore();
 //instruction confirm dialog
 const instructionConfirmDialog = ref<boolean>(false);
 const selectedInstructionType = ref<InstructionEnum | null>(null);
+const isSelectedInstructionCancel = ref<boolean>(false);
 
 
 //===============instruction confirm dialog====================
 function openInstructionConfirmDialog(instructionType: InstructionEnum) {
     selectedInstructionType.value = instructionType;
     instructionConfirmDialog.value = true;
+    isSelectedInstructionCancel.value = instructionType == InstructionEnum.SEB_MARK_AS_CANCELLED;
 }
 
 function closeInstructionConfirmDialog() {

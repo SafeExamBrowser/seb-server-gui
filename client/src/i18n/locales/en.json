@@ -549,6 +549,7 @@
 
         "instructionConfirm": {
             "cancel": "Cancel",
+            "markCancel": "Mark Cancel",
             "lock": "Lock",
             "lockSeb": "Lock SEB Clients",
             "lockAction": "This actions locks all selected SEB clients",
