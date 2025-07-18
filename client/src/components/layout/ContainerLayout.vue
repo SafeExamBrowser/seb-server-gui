@@ -314,7 +314,7 @@
         ? 'blue-background'
         : 'generic-background'
     ]"
-        class="d-flex flex-column fill-height"
+        class="d-flex flex-column fill-height  "
     >
         <v-container fluid class="flex-grow-1">
             <router-view />

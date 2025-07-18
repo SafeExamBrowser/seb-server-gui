@@ -7,7 +7,7 @@
 
         <!------running label------->
         <v-col>
-            <v-chip 
+            <v-chip
                 variant="flat"
                 class=""
                 :color="generalUtils.getExamStatusFilterColor(generalUtils.findEnumValue(ExamStatusEnum, monitoringStore.selectedExam?.status))">

@@ -5,11 +5,11 @@
         <div class="path-text ml-10 mt-4">
                     <span
                         class="monitoring-link"
-                        @click="navigateTo(constants.MONITORING_ROUTE)"
-                    >
+                        @click="navigateTo(constants.MONITORING_ROUTE)">
                         {{ translate("titles.monitoring") }}
                     </span>
             &nbsp;>&nbsp;
+
             <span
                 class="exam-name"
                 @click="navigateTo(constants.MONITORING_CLIENTS_ROUTE + '/' + examId, monitoringStore.currentMonitoringQuery)"
