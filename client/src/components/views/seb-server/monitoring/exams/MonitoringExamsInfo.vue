@@ -1,5 +1,5 @@
 <template>
-    <!--    new-->
+    <!-- Breadcrumb and Title-->
     <v-row dense>
         <v-col cols="12" md="10" class="pl-5">
             <div class="path-text">
@@ -22,12 +22,13 @@
         </v-col>
     </v-row>
 
-
+    <!-- Sheet Section -->
     <v-row class="">
         <v-col cols="12" class="">
             <v-sheet class="rounded-lg pa-4" elevation="4"
                      @keyup="handleKeyUp"
             >
+                <!-- Search Titles -->
                 <v-row dense>
                     <v-col cols="12" md="6">
                         <div class="text-subtitle-1 font-weight-medium mb-2">
@@ -39,12 +40,11 @@
                             {{ translate("monitoringExams.info.examStartSearchPlaceholder") }}
                         </div>
                     </v-col>
-
                 </v-row>
                 <v-row dense>
+
                     <!-- Search Input -->
                     <v-col cols="12" md="6">
-
                         <v-text-field
                             v-model="monitoringStore.searchField"
                             single-line
@@ -62,8 +62,6 @@
 
                     <!-- Start Date Picker -->
                     <v-col cols="12" md="3">
-
-
                         <v-date-input
                             single-line
                             hide-details
@@ -80,7 +78,6 @@
                                 {{ translate("monitoringExams.info.examStart") }}
                             </template>
                         </v-date-input>
-
                     </v-col>
 
                     <!-- Buttons -->
@@ -105,9 +102,8 @@
 
                     </v-col>
 
-
+                    <!-- Filters -->
                     <v-col cols="12" class="pt-4">
-
                         <!-- Type Filters -->
                         <v-row>
                             <v-col cols="12" md="4" xxl="3">
@@ -126,6 +122,7 @@
                                 </v-chip>
                             </v-col>
 
+                            <!-- Exam State Filters -->
                             <v-col cols="12" md="4" xxl="2">
                                 <div class="text-subtitle-2 font-weight-medium">
                                     {{ translate("monitoringExams.info.examState") }}

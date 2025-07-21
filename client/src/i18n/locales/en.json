@@ -230,11 +230,17 @@
 
     "examList": {
         "info": {
+            "examNameSearchPlaceholder": "Search Exams by Exam Name",
+            "examStartSearchPlaceholder": "Search Exams by Exam Start",
             "selectExam": "Select Exam",
             "search": "Search:",
             "searchPlaceholder": "Search Exams",
             "start": "Exam Start:",
-            "filter": "Filter"
+            "filter": "Filter",
+            "examType" : "Exam Type",
+            "examState" : "Exam State",
+            "examName": "Exam Name",
+            "examStart": "Exam Start"
 
         },
         "main": {
