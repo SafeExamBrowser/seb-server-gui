@@ -2,12 +2,13 @@
     <!-- Breadcrumb and Title-->
     <v-row dense>
         <v-col cols="12" md="10" class="pl-5">
-            <div class="path-text">
-            <span
-                class="link"
-                @click="navigateTo(constants.MONITORING_ROUTE)">
-                {{ translate("titles.monitoring") }}
-            </span>
+            <div class="path-text" style="visibility: hidden;">
+                <span
+                    class="link"
+                    @click="navigateTo(constants.MONITORING_ROUTE)"
+                >
+                    {{ translate("titles.monitoring") }}
+                </span>
                 &nbsp;>&nbsp;
             </div>
         </v-col>

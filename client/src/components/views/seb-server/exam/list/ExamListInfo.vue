@@ -2,7 +2,7 @@
     <!-- Breadcrumb & Title -->
     <v-row dense>
         <v-col cols="12" md="10" class="pl-5">
-            <div class="path-text">
+            <div class="path-text" style="visibility: hidden;">
                 <span
                     class="link"
                     @click="navigateTo(constants.EXAM_ROUTE)"
@@ -25,7 +25,8 @@
     <!-- Sheet Section -->
     <v-row>
         <v-col cols="12">
-            <v-sheet class="rounded-lg pa-4" elevation="4" @keyup.enter="loadExamItemsCaller()" @keyup.esc="clearForm()">
+            <v-sheet class="rounded-lg pa-4" elevation="4" @keyup.enter="loadExamItemsCaller()"
+                     @keyup.esc="clearForm()">
                 <!-- Labels Row -->
                 <v-row dense>
                     <v-col cols="12" md="6">
@@ -157,84 +158,114 @@
 
 
 <script setup lang="ts">
-    import {useExamStore} from "@/stores/seb-server/examStore";
-    import { ExamStatusEnum, ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
-    import * as generalUtils from "@/utils/generalUtils";
-    import { VDateInput } from "vuetify/labs/VDateInput";
-    import {translate} from "@/utils/generalUtils";
-    import { useI18n } from "vue-i18n";
-    import {navigateTo} from "@/router/navigation";
-    import * as constants from "@/utils/constants";
+import {useExamStore} from "@/stores/seb-server/examStore";
+import {ExamStatusEnum, ExamTypeEnum} from "@/models/seb-server/examFiltersEnum";
+import * as generalUtils from "@/utils/generalUtils";
+import {VDateInput} from "vuetify/labs/VDateInput";
+import {translate} from "@/utils/generalUtils";
+import {useI18n} from "vue-i18n";
+import {navigateTo} from "@/router/navigation";
+import * as constants from "@/utils/constants";
 
-    //i18n
-    const i18n = useI18n();
+//i18n
+const i18n = useI18n();
 
-    //stores
-    const examStore = useExamStore();
+//stores
+const examStore = useExamStore();
 
-    //datepicker
-    const datepicker = ref();
+//datepicker
+const datepicker = ref();
 
-    //emits - call loadExamItemsCaller in parent
-    const emit = defineEmits<{
-        loadExamItemsCaller: any;
-    }>();
+//emits - call loadExamItemsCaller in parent
+const emit = defineEmits<{
+    loadExamItemsCaller: any;
+}>();
 
-    //filters exam type
-    const typeFilters: {name: string, value: ExamTypeEnum, eventFunction: (filter: ExamTypeEnum) => void}[] = [
-        {name: translate(ExamTypeEnum.BYOD), value: ExamTypeEnum.BYOD, eventFunction: setActiveTypeFilter},
-        {name: translate(ExamTypeEnum.MANAGED), value: ExamTypeEnum.MANAGED, eventFunction: setActiveTypeFilter},
-        {name: translate(ExamTypeEnum.VDI), value: ExamTypeEnum.VDI, eventFunction: setActiveTypeFilter},
-        {name: translate(ExamTypeEnum.UNDEFINED), value: ExamTypeEnum.UNDEFINED, eventFunction: setActiveTypeFilter}
-    ];
+//filters exam type
+const typeFilters: { name: string, value: ExamTypeEnum, eventFunction: (filter: ExamTypeEnum) => void }[] = [
+    {name: translate(ExamTypeEnum.BYOD), value: ExamTypeEnum.BYOD, eventFunction: setActiveTypeFilter},
+    {name: translate(ExamTypeEnum.MANAGED), value: ExamTypeEnum.MANAGED, eventFunction: setActiveTypeFilter},
+    {name: translate(ExamTypeEnum.VDI), value: ExamTypeEnum.VDI, eventFunction: setActiveTypeFilter},
+    {name: translate(ExamTypeEnum.UNDEFINED), value: ExamTypeEnum.UNDEFINED, eventFunction: setActiveTypeFilter}
+];
 
-    //filters exam status
-    const statusFilters: {name: string, value: ExamStatusEnum, color: string, eventFunction: (filter: ExamStatusEnum) => void}[] = [
-        {name: translate(ExamStatusEnum.UP_COMING), value: ExamStatusEnum.UP_COMING, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.UP_COMING), eventFunction: setActiveStatusFilter},
-        {name: translate(ExamStatusEnum.TEST_RUN), value: ExamStatusEnum.TEST_RUN, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.TEST_RUN), eventFunction: setActiveStatusFilter},
-        {name: translate(ExamStatusEnum.RUNNING), value: ExamStatusEnum.RUNNING, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.RUNNING), eventFunction: setActiveStatusFilter},
-        {name: translate(ExamStatusEnum.FINISHED), value: ExamStatusEnum.FINISHED, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.FINISHED), eventFunction: setActiveStatusFilter},
-        {name: translate(ExamStatusEnum.ARCHIVED), value: ExamStatusEnum.ARCHIVED, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.ARCHIVED), eventFunction: setActiveStatusFilter}
-    ];
+//filters exam status
+const statusFilters: {
+    name: string,
+    value: ExamStatusEnum,
+    color: string,
+    eventFunction: (filter: ExamStatusEnum) => void
+}[] = [
+    {
+        name: translate(ExamStatusEnum.UP_COMING),
+        value: ExamStatusEnum.UP_COMING,
+        color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.UP_COMING),
+        eventFunction: setActiveStatusFilter
+    },
+    {
+        name: translate(ExamStatusEnum.TEST_RUN),
+        value: ExamStatusEnum.TEST_RUN,
+        color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.TEST_RUN),
+        eventFunction: setActiveStatusFilter
+    },
+    {
+        name: translate(ExamStatusEnum.RUNNING),
+        value: ExamStatusEnum.RUNNING,
+        color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.RUNNING),
+        eventFunction: setActiveStatusFilter
+    },
+    {
+        name: translate(ExamStatusEnum.FINISHED),
+        value: ExamStatusEnum.FINISHED,
+        color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.FINISHED),
+        eventFunction: setActiveStatusFilter
+    },
+    {
+        name: translate(ExamStatusEnum.ARCHIVED),
+        value: ExamStatusEnum.ARCHIVED,
+        color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.ARCHIVED),
+        eventFunction: setActiveStatusFilter
+    }
+];
 
-    function loadExamItemsCaller(){
-        if(datepicker != null && datepicker.value != null){
-            examStore.startDate = datepicker.value.getTime();
-        }
-
-        emit("loadExamItemsCaller");
+function loadExamItemsCaller() {
+    if (datepicker != null && datepicker.value != null) {
+        examStore.startDate = datepicker.value.getTime();
     }
 
-    function clearForm(){
-        examStore.searchField = "";
+    emit("loadExamItemsCaller");
+}
 
-        datepicker.value = null;
-        examStore.startDate = null;
+function clearForm() {
+    examStore.searchField = "";
 
+    datepicker.value = null;
+    examStore.startDate = null;
+
+    loadExamItemsCaller();
+}
+
+function setActiveTypeFilter(filter: ExamTypeEnum) {
+    if (examStore.activeTypeFilter == filter) {
+        examStore.activeTypeFilter = null;
         loadExamItemsCaller();
+        return;
     }
 
-    function setActiveTypeFilter(filter: ExamTypeEnum){
-        if(examStore.activeTypeFilter == filter){
-            examStore.activeTypeFilter = null;
-            loadExamItemsCaller();
-            return;
-        }
+    examStore.activeTypeFilter = filter;
+    loadExamItemsCaller();
+}
 
-        examStore.activeTypeFilter = filter;
+function setActiveStatusFilter(filter: ExamStatusEnum) {
+    if (examStore.activeStatusFilter == filter) {
+        examStore.activeStatusFilter = null;
         loadExamItemsCaller();
+        return;
     }
 
-    function setActiveStatusFilter(filter: ExamStatusEnum){
-        if(examStore.activeStatusFilter == filter){
-            examStore.activeStatusFilter = null;
-            loadExamItemsCaller();
-            return;
-        }
-
-        examStore.activeStatusFilter = filter;
-        loadExamItemsCaller();
-    }
+    examStore.activeStatusFilter = filter;
+    loadExamItemsCaller();
+}
 
 </script>
 
