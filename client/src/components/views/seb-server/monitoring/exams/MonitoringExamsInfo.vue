@@ -25,10 +25,26 @@
 
     <v-row class="">
         <v-col cols="12" class="">
-            <v-sheet class="rounded-lg pa-4" elevation="4">
+            <v-sheet class="rounded-lg pa-4" elevation="4"
+                     @keyup="handleKeyUp"
+            >
+                <v-row dense>
+                    <v-col cols="12" md="6">
+                        <div class="text-subtitle-1 font-weight-medium mb-2">
+                            {{ translate("monitoringExams.info.examNameSearchPlaceholder") }}
+                        </div>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                        <div class="text-subtitle-1 font-weight-medium mb-2">
+                            {{ translate("monitoringExams.info.examStartSearchPlaceholder") }}
+                        </div>
+                    </v-col>
+
+                </v-row>
                 <v-row dense>
                     <!-- Search Input -->
                     <v-col cols="12" md="6">
+
                         <v-text-field
                             v-model="monitoringStore.searchField"
                             single-line
@@ -36,31 +52,35 @@
                             density="compact"
                             variant="outlined"
                             append-inner-icon="mdi-magnify"
-                            :placeholder="translate('monitoringExams.info.searchPlaceholder')"
+                            :placeholder="translate('monitoringExams.info.examName')"
                         >
                             <template #label>
-                                {{ translate("monitoringExams.info.search") }}
+                                {{ translate("monitoringExams.info.examName") }}
                             </template>
                         </v-text-field>
                     </v-col>
 
                     <!-- Start Date Picker -->
                     <v-col cols="12" md="3">
+
+
                         <v-date-input
-                            v-model="datepicker"
                             single-line
                             hide-details
+                            v-model="datepicker"
                             density="compact"
                             variant="outlined"
                             placeholder="dd.MM.yyyy"
                             display-date-format="dd.MM.yyyy"
                             input-format="dd.MM.yyyy"
+                            prepend-icon=""
                             append-inner-icon="mdi-calendar"
-                        >
+                            class="ml-3">
                             <template #label>
-                                {{ translate("monitoringExams.info.start") }}
+                                {{ translate("monitoringExams.info.examStart") }}
                             </template>
                         </v-date-input>
+
                     </v-col>
 
                     <!-- Buttons -->
@@ -91,7 +111,9 @@
                         <!-- Type Filters -->
                         <v-row>
                             <v-col cols="12" md="4" xxl="3">
-                                <div class="text-subtitle-2 font-weight-medium ">Exam Type</div>
+                                <div class="text-subtitle-2 font-weight-medium ">
+                                    {{ translate("monitoringExams.info.examType") }}
+                                </div>
                                 <v-chip
                                     v-for="filter in typeFilters"
                                     :key="filter.value"
@@ -105,7 +127,9 @@
                             </v-col>
 
                             <v-col cols="12" md="4" xxl="2">
-                                <div class="text-subtitle-2 font-weight-medium">Exam State</div>
+                                <div class="text-subtitle-2 font-weight-medium">
+                                    {{ translate("monitoringExams.info.examState") }}
+                                </div>
 
                                 <v-chip
                                     v-for="filter in statusFilters"
@@ -219,6 +243,14 @@ function setActiveStatusFilter(filter: ExamStatusEnum) {
 
     monitoringStore.activeStatusFilter = filter;
     loadMonitoringListItemsCaller();
+}
+
+function handleKeyUp(event: KeyboardEvent) {
+    if (event.key === "Enter") {
+        loadMonitoringListItemsCaller();
+    } else if (event.key === "Escape") {
+        clearForm();
+    }
 }
 
 
