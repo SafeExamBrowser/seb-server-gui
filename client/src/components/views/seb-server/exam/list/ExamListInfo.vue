@@ -1,144 +1,160 @@
 <template>
+    <!-- Breadcrumb & Title -->
+    <v-row dense>
+        <v-col cols="12" md="10" class="pl-5">
+            <div class="path-text">
+                <span
+                    class="link"
+                    @click="navigateTo(constants.EXAM_ROUTE)"
+                >
+                    {{ translate("titles.exams") }}
+                </span>
+                &nbsp;>&nbsp;
+            </div>
+        </v-col>
 
+        <v-col cols="12" md="10" class="pl-10">
+            <div class="primary-text-color text-h5 font-weight-bold">
+                {{ translate('examList.info.selectExam') }}
+            </div>
+        </v-col>
+
+        <v-col cols="12" md="2" class="pl-10"></v-col>
+    </v-row>
+
+    <!-- Sheet Section -->
     <v-row>
-        <v-col>
-            <v-sheet elevation="4" class="rounded-lg pl-4 pt-3 pr-4">
-
-                <!------------title row------------->
-                <v-row>
-                    <v-col>
-                        <div class="primary-text-color text-h5 font-weight-bold">
-                            {{translate('examList.info.selectExam')}}
+        <v-col cols="12">
+            <v-sheet class="rounded-lg pa-4" elevation="4" @keyup.enter="loadExamItemsCaller()" @keyup.esc="clearForm()">
+                <!-- Labels Row -->
+                <v-row dense>
+                    <v-col cols="12" md="6">
+                        <div class="text-subtitle-1 font-weight-medium mb-2">
+                            {{ translate("examList.info.examNameSearchPlaceholder") }}
+                        </div>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                        <div class="text-subtitle-1 font-weight-medium mb-2">
+                            {{ translate("examList.info.examStartSearchPlaceholder") }}
                         </div>
                     </v-col>
                 </v-row>
 
-                <!------------form------------->
-                <v-row>
-                    <v-spacer></v-spacer>
-
-                    <v-col cols="4">
-                        <v-form
-                            @keyup.enter="loadExamItemsCaller()"
-                            @keyup.esc="clearForm()">
-                            <!------------search field------------->
-                            <v-row align="center">
-                                <v-col>
-                                    {{translate('examList.info.search')}}
-                                </v-col>
-                                <v-col cols="9">
-                                    <v-text-field
-                                        single-line
-                                        hide-details
-                                        v-model="examStore.searchField"
-                                        type="text"
-                                        append-inner-icon="mdi-magnify"
-                                        density="compact"
-                                        :placeholder="translate('examList.info.searchPlaceholder')"
-                                        variant="outlined">
-                                    </v-text-field>
-                                </v-col>
-                            </v-row>
-
-                            <!------------start date------------->
-                            <v-row align="center">
-                                <v-col>
-                                    {{translate('examList.info.start')}}
-                                </v-col>
-                                <v-col cols="9" >
-                                    <v-date-input
-                                        single-line
-                                        hide-details
-                                        v-model="datepicker"
-                                        density="compact"
-                                        variant="outlined"
-                                        placeholder="dd.MM.yyyy"
-                                        display-date-format="dd.MM.yyyy"
-                                        input-format="dd.MM.yyyy"
-                                        prepend-icon=""
-                                        append-inner-icon="mdi-calendar">
-                                    </v-date-input>
-                                </v-col>
-                            </v-row>
-
-                            <!------------Buttons------------->
-                            <v-row>
-                                <v-col align="right">
-                                    <v-btn
-                                        rounded="sm"
-                                        color="black"
-                                        variant="outlined"
-                                        @click="clearForm()">
-                                        {{translate("general.cancelButton")}}
-                                    </v-btn>
-
-                                    <v-btn
-                                        rounded="sm"
-                                        color="primary"
-                                        variant="flat"
-                                        class="ml-2"
-                                        @click="loadExamItemsCaller()">
-                                        {{translate("general.searchButton")}}
-                                    </v-btn>
-
-                                </v-col>
-                            </v-row>
-                        </v-form>
+                <!-- Inputs and Buttons -->
+                <v-row dense>
+                    <!-- Search Input -->
+                    <v-col cols="12" md="6">
+                        <v-text-field
+                            v-model="examStore.searchField"
+                            single-line
+                            hide-details
+                            density="compact"
+                            variant="outlined"
+                            append-inner-icon="mdi-magnify"
+                            :placeholder="translate('examList.info.examName')"
+                        >
+                            <template #label>
+                                {{ translate("examList.info.examName") }}
+                            </template>
+                        </v-text-field>
                     </v-col>
 
-                    <!------------filters------------->
-                    <v-col cols="4" class="ml-16">
-                        <div class="primary-text-color text-subtitle-1">
-                            {{translate('examList.info.filter')}}
-                        </div>
-
-                        <!------------type------------->
-                        <div>
-                            <v-chip
-                                v-for="filter in typeFilters"
-                                :key="filter.value"
-
-                                :variant="examStore.activeTypeFilter == filter.value ? 'flat' : 'tonal'"
-                                size="small"
-                                class="mr-2 mt-2"
-                                @click="filter.eventFunction(filter.value)">
-                                {{filter.name}}
-                            </v-chip>
-                        </div>
-
-                        <!------------status------------->
-                        <div>
-                            <v-chip
-                                v-for="filter in statusFilters"
-                                :key="filter.value"
-
-                                :variant="examStore.activeStatusFilter == filter.value ? 'flat' : 'tonal'"
-                                size="small"
-                                class="mr-2 mt-2"
-                                :color="filter.color"
-                                @click="filter.eventFunction(filter.value)">
-                                {{filter.name}}
-                            </v-chip>
-                        </div>
+                    <!-- Date Picker -->
+                    <v-col cols="12" md="3">
+                        <v-date-input
+                            v-model="datepicker"
+                            single-line
+                            hide-details
+                            density="compact"
+                            variant="outlined"
+                            placeholder="dd.MM.yyyy"
+                            display-date-format="dd.MM.yyyy"
+                            input-format="dd.MM.yyyy"
+                            prepend-icon=""
+                            append-inner-icon="mdi-calendar"
+                            class="ml-3"
+                        >
+                            <template #label>
+                                {{ translate("examList.info.examStart") }}
+                            </template>
+                        </v-date-input>
                     </v-col>
 
-                    <v-spacer></v-spacer>
+                    <!-- Buttons -->
+                    <v-col cols="12" md="3" class="d-flex justify-end align-center">
+                        <v-btn
+                            color="primary"
+                            variant="flat"
+                            class="rounded mr-2"
+                            @click="loadExamItemsCaller()"
+                        >
+                            {{ translate("general.searchButton") }}
+                        </v-btn>
+                        <v-btn
+                            color="black"
+                            variant="outlined"
+                            class="rounded"
+                            @click="clearForm()"
+                        >
+                            {{ translate("general.cancelButton") }}
+                        </v-btn>
+                    </v-col>
+
+                    <!-- Filters Section -->
+                    <v-col cols="12" class="pt-4">
+                        <v-row>
+                            <!-- Type Filters -->
+                            <v-col cols="12" md="4" xxl="3">
+                                <div class="text-subtitle-2 font-weight-medium">
+                                    {{ translate("examList.info.examType") }}
+                                </div>
+                                <v-chip
+                                    v-for="filter in typeFilters"
+                                    :key="filter.value"
+                                    :variant="examStore.activeTypeFilter === filter.value ? 'flat' : 'tonal'"
+                                    size="small"
+                                    class="mr-2 mt-2"
+                                    @click="filter.eventFunction(filter.value)"
+                                >
+                                    {{ filter.name }}
+                                </v-chip>
+                            </v-col>
+
+                            <!-- Status Filters -->
+                            <v-col cols="12" md="4" xxl="2">
+                                <div class="text-subtitle-2 font-weight-medium">
+                                    {{ translate("examList.info.examState") }}
+                                </div>
+                                <v-chip
+                                    v-for="filter in statusFilters"
+                                    :key="filter.value"
+                                    :variant="examStore.activeStatusFilter === filter.value ? 'flat' : 'tonal'"
+                                    :color="filter.color"
+                                    size="small"
+                                    class="mr-2 mt-2"
+                                    @click="filter.eventFunction(filter.value)"
+                                >
+                                    {{ filter.name }}
+                                </v-chip>
+                            </v-col>
+                        </v-row>
+                    </v-col>
                 </v-row>
-
             </v-sheet>
         </v-col>
     </v-row>
-
 </template>
+
 
 <script setup lang="ts">
     import {useExamStore} from "@/stores/seb-server/examStore";
     import { ExamStatusEnum, ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
     import * as generalUtils from "@/utils/generalUtils";
     import { VDateInput } from "vuetify/labs/VDateInput";
-    import * as timeUtils from "@/utils/timeUtils";
     import {translate} from "@/utils/generalUtils";
     import { useI18n } from "vue-i18n";
+    import {navigateTo} from "@/router/navigation";
+    import * as constants from "@/utils/constants";
 
     //i18n
     const i18n = useI18n();
@@ -214,5 +230,14 @@
 
 <style scoped>
 
+.link {
+    color: black;
+    cursor: pointer;
+}
+
+.link-color {
+    color: #205caf;
+    cursor: pointer;
+}
 
 </style>
