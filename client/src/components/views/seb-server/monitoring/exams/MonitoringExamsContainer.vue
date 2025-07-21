@@ -4,13 +4,13 @@
         class="d-flex flex-column align-stretch px-0 pa-0"
         style="min-height: 90vh;"
     >
-        <!-- Info stays same size -->
+        <!-- Info and Search -->
         <MonitoringExamsInfo
             class="flex-grow-0"
             @loadMonitoringListItemsCaller="loadMonitoringListItemsCaller"
         />
 
-        <!-- Main fills rest, and causes page scroll if too tall -->
+        <!-- Table Component -->
         <MonitoringExamsMain
             class="flex-grow-1"
             style="min-height: 69vh;"

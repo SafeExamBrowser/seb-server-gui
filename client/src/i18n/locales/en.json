@@ -520,11 +520,15 @@
         "info": {
             "runningExams": "Running Exams",
             "search": "Search:",
-            "searchPlaceholder": "Search Exams",
             "start": "Exam Start:",
-            "filter": "Filter"
+            "examStartSearchPlaceholder": "Search Exams by Exam Start",
+            "examNameSearchPlaceholder": "Search Exams by Exam Name",
 
-
+            "filter": "Filter",
+            "examType" : "Exam Type",
+            "examState" : "Exam State",
+            "examName": "Exam Name",
+            "examStart": "Exam Start"
         },
         "main": {
             "tableHeaderName": "Name",
