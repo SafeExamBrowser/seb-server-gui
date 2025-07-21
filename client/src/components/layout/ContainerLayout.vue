@@ -308,17 +308,19 @@
     </v-navigation-drawer>
 
     <!--main content view-->
-    <v-main
-        :class="[
+    <v-main class="d-flex flex-column fill-height">
+        <div
+            :class="[
       isNavOverviewRoute || layoutStore.isBlueBackground
-        ? 'blue-background'
-        : 'generic-background'
+        ? 'full-page-blue'
+        : 'full-page-default'
     ]"
-        class="d-flex flex-column fill-height  "
-    >
-        <v-container fluid class="flex-grow-1">
-            <router-view />
-        </v-container>
+            style="min-height: 100%; width: 100%;"
+        >
+            <v-container fluid class="flex-grow-1">
+                <router-view />
+            </v-container>
+        </div>
     </v-main>
 
 </template>
@@ -659,4 +661,15 @@
         background-color: #A30774 !important; /* Vuetify default red */
     }
 
+     .full-page-blue {
+         background-color: #215caf;
+         min-height: 100%;
+         width: 100%;
+     }
+
+    .full-page-default {
+        background-color: #f6f6f6;
+        min-height: 100%;
+        width: 100%;
+    }
 </style>
