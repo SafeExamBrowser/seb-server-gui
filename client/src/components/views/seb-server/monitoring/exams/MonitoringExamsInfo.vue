@@ -81,32 +81,41 @@
                     </v-col>
 
                     <!-- Buttons -->
-                    <v-col cols="12" md="3" class="d-flex justify-end align-center">
-                        <v-btn
-                            color="primary"
-                            variant="flat"
-                            class="rounded mr-2"
-                            @click="loadMonitoringListItemsCaller()"
-                        >
-                            {{ translate("general.searchButton") }}
-                        </v-btn>
-
-                        <v-btn
-                            color="black"
-                            variant="outlined"
-                            class="rounded"
-                            @click="clearForm()"
-                        >
-                            {{ translate("general.cancelButton") }}
-                        </v-btn>
-
+                    <v-col cols="12" md="3">
+                        <v-row>
+                            <v-col cols="4">
+                            </v-col>
+                            <v-col cols="4" class="pl-0">
+                                <v-btn
+                                    block
+                                    color="primary"
+                                    variant="flat"
+                                    class="rounded"
+                                    @click="loadMonitoringListItemsCaller()"
+                                >
+                                    {{ translate("general.searchButton") }}
+                                </v-btn>
+                            </v-col>
+                            <v-col cols="4" class="pl-0">
+                                <v-btn
+                                    block
+                                    color="black"
+                                    variant="outlined"
+                                    class="rounded ml-0"
+                                    @click="clearForm()"
+                                >
+                                    {{ translate("general.cancelButton") }}
+                                </v-btn>
+                            </v-col>
+                        </v-row>
                     </v-col>
+
 
                     <!-- Filters -->
                     <v-col cols="12" class="pt-4">
                         <!-- Type Filters -->
                         <v-row>
-                            <v-col cols="12" md="4" xxl="3">
+                            <v-col cols="12" sm="3" md="6" lg="6" xl="4" xxl="3">
                                 <div class="text-subtitle-2 font-weight-medium ">
                                     {{ translate("monitoringExams.info.examType") }}
                                 </div>
@@ -123,7 +132,7 @@
                             </v-col>
 
                             <!-- Exam State Filters -->
-                            <v-col cols="12" md="4" xxl="2">
+                            <v-col cols="12" sm="9" md="6" lg="5" xl="4" xxl="2">
                                 <div class="text-subtitle-2 font-weight-medium">
                                     {{ translate("monitoringExams.info.examState") }}
                                 </div>
