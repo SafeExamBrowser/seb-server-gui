@@ -579,8 +579,9 @@
         },
 
         "infos": {
-            "start": "Start",
-            "end": "End"
+            "start": "Start Date",
+            "end": "End Date",
+            "status": "Status"
         },
 
         "clients": {

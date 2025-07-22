@@ -10,42 +10,74 @@
         }">
     </AlertMsg>
 
+
     <v-row v-else>
-        <v-col cols="4">
-            <!--------infos-------->
-            <v-row>
-                <v-col>
-                    <v-sheet class="rounded-lg pa-4" elevation="4">
-                        <MonitoringOverviewInfos></MonitoringOverviewInfos>
-                    </v-sheet>
+        <v-col cols="12">
+            <!-- Infos -->
+            <v-row dense>
+                <v-col  cols="12" class="">
+                    <MonitoringOverviewInfos></MonitoringOverviewInfos>
                 </v-col>
             </v-row>
 
-            <!--------clients-------->
-            <v-row>
-                <v-col>
-                    <v-sheet class="rounded-lg pa-4" elevation="4">
-                        <MonitoringOverviewClients></MonitoringOverviewClients>
-                    </v-sheet>
+            <!-- Client States, Notifications and Indicators -->
+            <v-row >
+                <!-- Client States -->
+                <v-col  cols="4">
+                    <MonitoringOverviewClients></MonitoringOverviewClients>
+                </v-col>
+
+                <!-- Notifications and Indicators -->
+                <v-col  cols="8" v-if="monitoringStore.monitoringOverviewData?.notifications || monitoringStore.monitoringOverviewData?.indicators">
+                    <MonitoringOverviewNotifications></MonitoringOverviewNotifications>
+                </v-col>
+            </v-row>
+
+            <!-- Groups -->
+            <v-row >
+                <v-col  cols="12" >
+                    <MonitoringOverviewGroups></MonitoringOverviewGroups>
                 </v-col>
             </v-row>
         </v-col>
-
-        <!--------groups-------->
-        <v-col cols="5">
-            <v-sheet class="rounded-lg pa-4" elevation="4">
-                <MonitoringOverviewGroups></MonitoringOverviewGroups>
-            </v-sheet>
-        </v-col>
-
-        <!--------notifications & indicators-------->
-        <v-col cols="3" v-if="monitoringStore.monitoringOverviewData?.notifications || monitoringStore.monitoringOverviewData?.indicators">
-            <v-sheet class="rounded-lg pa-4" elevation="4">
-                <MonitoringOverviewNotifications></MonitoringOverviewNotifications>
-            </v-sheet>
-        </v-col>
-
     </v-row>
+
+<!--    <v-row v-else>-->
+<!--        <v-col cols="4">-->
+<!--            &lt;!&ndash;&#45;&#45;&#45;&#45;&#45;&#45;infos&#45;&#45;&#45;&#45;&#45;&#45;&ndash;&gt;-->
+<!--            <v-row>-->
+<!--                <v-col>-->
+<!--                    <v-sheet class="rounded-lg pa-4" elevation="4">-->
+<!--                        <MonitoringOverviewInfos></MonitoringOverviewInfos>-->
+<!--                    </v-sheet>-->
+<!--                </v-col>-->
+<!--            </v-row>-->
+
+<!--            &lt;!&ndash;&#45;&#45;&#45;&#45;&#45;&#45;clients&#45;&#45;&#45;&#45;&#45;&#45;&ndash;&gt;-->
+<!--            <v-row>-->
+<!--                <v-col>-->
+<!--                    <v-sheet class="rounded-lg pa-4" elevation="4">-->
+<!--                        <MonitoringOverviewClients></MonitoringOverviewClients>-->
+<!--                    </v-sheet>-->
+<!--                </v-col>-->
+<!--            </v-row>-->
+<!--        </v-col>-->
+
+<!--        &lt;!&ndash;&#45;&#45;&#45;&#45;&#45;&#45;groups&#45;&#45;&#45;&#45;&#45;&#45;&ndash;&gt;-->
+<!--        <v-col cols="5">-->
+<!--            <v-sheet class="rounded-lg pa-4" elevation="4">-->
+<!--                <MonitoringOverviewGroups></MonitoringOverviewGroups>-->
+<!--            </v-sheet>-->
+<!--        </v-col>-->
+
+<!--        &lt;!&ndash;&#45;&#45;&#45;&#45;&#45;&#45;notifications & indicators&#45;&#45;&#45;&#45;&#45;&#45;&ndash;&gt;-->
+<!--        <v-col cols="3" v-if="monitoringStore.monitoringOverviewData?.notifications || monitoringStore.monitoringOverviewData?.indicators">-->
+<!--            <v-sheet class="rounded-lg pa-4" elevation="4">-->
+<!--                <MonitoringOverviewNotifications></MonitoringOverviewNotifications>-->
+<!--            </v-sheet>-->
+<!--        </v-col>-->
+
+<!--    </v-row>-->
 
 </template>
 
@@ -57,6 +89,8 @@
     import * as generalUtils from "@/utils/generalUtils";
     import {translate} from "@/utils/generalUtils";
     import { useAppBarStore } from "@/stores/store";
+    import {navigateTo} from "@/router/navigation";
+    import * as constants from "@/utils/constants";
 
 
     //exam

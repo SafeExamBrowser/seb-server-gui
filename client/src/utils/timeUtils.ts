@@ -15,12 +15,12 @@ export function formatIsoDateToFullDate(dateString: string | null | undefined): 
 
     // Parse the input date string
     const date = new Date(dateString);
-    
+
     // Check if the date is valid
     if (isNaN(date.getTime())) {
         return "";
     }
-    
+
     // Format the date using Intl.DateTimeFormat with the specified timezone
     const formatter = new Intl.DateTimeFormat('de-DE', {
         day: '2-digit',
@@ -32,16 +32,16 @@ export function formatIsoDateToFullDate(dateString: string | null | undefined): 
         timeZone: timeZone,
         hour12: false
     });
-    
+
     // Get formatted parts
     const parts = formatter.formatToParts(date);
-    
+
     // Build the formatted string
     const formattedParts: Record<string, string> = {};
     parts.forEach(part => {
         formattedParts[part.type] = part.value;
     });
-    
+
     // Create the formatted string in the required format: DD.MM.YYYY HH:MM:SS
     return `${formattedParts.day}.${formattedParts.month}.${formattedParts.year} ${formattedParts.hour}:${formattedParts.minute}:${formattedParts.second}`;
 }
@@ -49,9 +49,9 @@ export function formatIsoDateToFullDate(dateString: string | null | undefined): 
 export function getCurrentDateString(): string{
     const date = new Date();
     const year = date.getFullYear();
-    const month = date.getMonth() + 1; 
+    const month = date.getMonth() + 1;
     const day = date.getDate();
-    
+
     return `${year}-${month}-${day}`;
 }
 
@@ -60,9 +60,25 @@ export function formatDate(dateString: string): string{
     return `${day}.${month}.${year}`;
 }
 
+export function formatIsoToReadableDateTime(dateStr?: string | null): string {
+    if (!dateStr) return "-";
 
+    const date = new Date(dateStr);
 
+    const datePart = date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    });
 
+    const timePart = date.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+    });
+
+    return `${datePart} • ${timePart}`; // e.g., August 7, 2025 • 11:18
+}
 
 
 export function formatTimestampToFullDate(timestamp: string | any): string{
@@ -81,7 +97,7 @@ export function formatTimestampToFullDate(timestamp: string | any): string{
     const minutes = ("0" + date.getMinutes()).slice(-2);
     const seconds = ("0" + date.getSeconds()).slice(-2);
 
-    return day + "." + month + "." + year + " " + hours + ":" + minutes + ":" + seconds; 
+    return day + "." + month + "." + year + " " + hours + ":" + minutes + ":" + seconds;
 }
 
 export function formatTimestampToDate(timestamp: number): string{
@@ -96,7 +112,7 @@ export function formatTimestampToDate(timestamp: number): string{
     const month = ("0" + (date.getMonth() + 1)).slice(-2);
     const year = date.getFullYear();
 
-    return day + "." + month + "." + year; 
+    return day + "." + month + "." + year;
 }
 
 export function formatTimestampToTime(timestamp: number): string{
@@ -111,7 +127,7 @@ export function formatTimestampToTime(timestamp: number): string{
     const minutes = ("0" + date.getMinutes()).slice(-2);
     const seconds = ("0" + date.getSeconds()).slice(-2);
 
-    return hours + ":" + minutes + ":" + seconds; 
+    return hours + ":" + minutes + ":" + seconds;
 }
 
 export function toTimeString(milliseconds: number): string {
@@ -191,7 +207,7 @@ export function calcTimeSelection(timeSelectionPicker: any): [string, string]{
     if(timeSelectionPicker.value == null){
         return ["", ""];
     }
-    
+
     //@ts-ignore
     return [timeSelectionPicker.value[0].getTime(), timeSelectionPicker.value[1].getTime()];
 }
@@ -219,4 +235,4 @@ export function getTimestampFromPeriodSelection(timePeriod: number, amount: numb
     }
 
     return now.getTime().toString();
-}       
+}
