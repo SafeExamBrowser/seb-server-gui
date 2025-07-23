@@ -15,7 +15,7 @@
                             :options="chartOptions"
                             :data="chartData"
                         />
-                        <div class="chart-label text-h5 font-weight-bold">
+                        <div class="chart-label font-weight-bold">
                             {{ translate("monitoringOverview.clients.total") }}
                             {{ monitoringStore.monitoringOverviewData?.clientStates.total }}
                         </div>
@@ -235,22 +235,25 @@ function getConnectionStatusIcon(connectionStatus: ConnectionStatusEnum | null):
 
 .chart-container {
     position: relative;
-    width: 50vw;
-    max-width: 230px;
+    width: 100%;
     aspect-ratio: 1 / 1;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    max-width: 230px;
 }
 .chart-container canvas {
     width: 100% !important;
     height: auto !important;
 }
+
 .chart-label {
     position: absolute;
     text-align: center;
+    font-size: clamp(0.9rem, 2vw, 1.2rem);
+    line-height: 1.2;
 }
 
 </style>

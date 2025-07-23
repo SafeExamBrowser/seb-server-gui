@@ -23,13 +23,45 @@
 
         <v-col cols="12" md="2" class="pl-10"></v-col>
     </v-row>
-    <!-- New Section for redesigned part -->
+
+    <!-- Status, Start and End Date -->
     <v-row dense class="mt-5">
         <v-col cols="12">
             <v-sheet
                 elevation="4"
                 class="rounded-lg pa-4 d-flex justify-space-between align-center"
             >
+                <!-- Status -->
+                <v-col cols="4">
+                    <div class="d-flex align-center" style="margin-right: 24px;">
+                        <div
+                            class="mr-3 d-flex align-center justify-center"
+                            style="width: 52px; height: 52px; background-color: #e0f5ed; border-radius: 10px; padding: 8px;"
+                        >
+                            <v-icon size="28" color="green">mdi-play</v-icon>
+                        </div>
+                        <div>
+                            <div class="text-body-2 font-weight-bold text-grey-darken-1">
+                                {{ translate("monitoringOverview.infos.status") }}
+                            </div>
+                            <div
+                                class="font-weight-bold text-body-1 mt-1"
+                                :style="{
+                                    color: generalUtils.getExamStatusFilterColor(
+                                    generalUtils.findEnumValue(ExamStatusEnum, monitoringStore.selectedExam?.status)
+                                        )
+                                    }"
+                            >
+                                {{
+                                    translate(
+                                        generalUtils.findEnumValue(ExamStatusEnum, monitoringStore.selectedExam?.status)
+                                    )
+                                }}
+                            </div>
+                        </div>
+                    </div>
+                </v-col>
+
                 <!-- Start Date -->
                 <v-col cols="4">
                     <div class="d-flex align-center">
@@ -72,37 +104,6 @@
                                         timeUtils.formatIsoToReadableDateTime(monitoringStore.selectedExam?.quizEndTime)
                                     }}
                                 </template>
-                            </div>
-                        </div>
-                    </div>
-                </v-col>
-
-                <!-- Status -->
-                <v-col cols="4">
-                    <div class="d-flex align-center" style="margin-right: 24px;">
-                        <div
-                            class="mr-3 d-flex align-center justify-center"
-                            style="width: 52px; height: 52px; background-color: #e0f5ed; border-radius: 10px; padding: 8px;"
-                        >
-                            <v-icon size="28" color="green">mdi-play</v-icon>
-                        </div>
-                        <div>
-                            <div class="text-body-2 font-weight-bold text-grey-darken-1">
-                                {{ translate("monitoringOverview.infos.status") }}
-                            </div>
-                            <div
-                                class="font-weight-bold text-body-1 mt-1"
-                                :style="{
-                                    color: generalUtils.getExamStatusFilterColor(
-                                    generalUtils.findEnumValue(ExamStatusEnum, monitoringStore.selectedExam?.status)
-                                        )
-                                    }"
-                                >
-                                {{
-                                    translate(
-                                        generalUtils.findEnumValue(ExamStatusEnum, monitoringStore.selectedExam?.status)
-                                    )
-                                }}
                             </div>
                         </div>
                     </div>
