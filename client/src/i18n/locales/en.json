@@ -592,7 +592,16 @@
             "groups": "Groups",
             "remainingClients": "Remaining Clients",
             "allClients": "All Clients",
-            "showAll": "Show All"
+            "showAll": "Show All Clients",
+            "addGroup": "Add Group",
+            "group": "Group:",
+            "range": "Range:",
+            "noGroupClients": "Clients not in any group",
+            "clients": " Clients",
+            "buttons" : {
+                "proctor": "Proctor",
+                "viewList": "View List"
+            }
         },
 
         "notifications": {

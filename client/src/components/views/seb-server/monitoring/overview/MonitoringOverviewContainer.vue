@@ -46,7 +46,7 @@
             <!-- Groups -->
             <v-row class="mt-5">
                 <v-col cols="12">
-                    <v-sheet elevation="4" rounded="lg" class="pa-6 h-100">
+                    <v-sheet elevation="4" rounded="lg" class="pa-6 fill-height min-height-sheet">
                         <MonitoringOverviewGroups></MonitoringOverviewGroups>
                     </v-sheet>
                 </v-col>
@@ -170,5 +170,9 @@ function stopIntervalRefresh() {
 </script>
 
 <style scoped>
+
+.min-height-sheet {
+    min-height: 354px;
+}
 
 </style>
