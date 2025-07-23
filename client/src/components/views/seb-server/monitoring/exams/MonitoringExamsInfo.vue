@@ -14,7 +14,7 @@
         </v-col>
         <v-col cols="12" md="10" class="pl-10">
 
-            <div class="primary-text-color text-h5 font-weight-bold ">
+            <div class="primary-text-color text-h4 font-weight-bold ">
                 {{ translate('monitoringExams.info.runningExams') }}
             </div>
         </v-col>

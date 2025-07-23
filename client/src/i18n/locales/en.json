@@ -596,8 +596,15 @@
         },
 
         "notifications": {
-            "notifications": "Notifications",
-            "indicators": "Indicators"
+            "notifications": "Notifications"
+        },
+        "clientStates": {
+            "clientStates" : "Client States"
+        },
+        "indicators": {
+            "indicators": "Indicators",
+            "batteryStatusInfo": "Clients with critical battery level",
+            "wlanStatusInfo": "Clients with weak WLAN signal"
         }
     },
 
