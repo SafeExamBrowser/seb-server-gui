@@ -16,7 +16,7 @@
 
         <!-- Title -->
         <v-col cols="12" md="10" class="pl-10">
-            <div class="primary-text-color text-h5 font-weight-bold">
+            <div class="primary-text-color text-h4 font-weight-bold">
                 {{ monitoringStore.selectedExam?.quizName }}
             </div>
         </v-col>
@@ -35,7 +35,7 @@
                     <div class="d-flex align-center">
                         <div
                             class="mr-3 d-flex align-center justify-center"
-                            style="width: 52px; height: 52px; background-color: #e7e9f5; border-radius: 10px; padding: 8px;"
+                            style="width: 52px; height: 52px; background-color: #EBEFF7; border-radius: 10px; padding: 8px;"
                         >
                             <v-icon size="28" color="#205caf">mdi-calendar-blank</v-icon>
                         </div>
@@ -55,7 +55,7 @@
                     <div class="d-flex align-center">
                         <div
                             class="mr-3 d-flex align-center justify-center"
-                            style="width: 52px; height: 52px; background-color: #e7e9f5; border-radius: 10px; padding: 8px;"
+                            style="width: 52px; height: 52px; background-color: #EBEFF7; border-radius: 10px; padding: 8px;"
                         >
                             <v-icon size="28" color="#205caf">mdi-calendar-check</v-icon>
                         </div>
@@ -129,5 +129,15 @@ const monitoringStore = useMonitoringStore();
 </script>
 
 <style scoped>
+
+.link {
+    color: black;
+    cursor: pointer;
+}
+
+.link-color {
+    color: #205caf;
+    cursor: pointer;
+}
 
 </style>

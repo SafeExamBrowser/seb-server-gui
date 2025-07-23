@@ -70,6 +70,7 @@ declare module 'vue' {
     MonitoringOverviewClients: typeof import('./components/views/seb-server/monitoring/overview/MonitoringOverviewClients.vue')['default']
     MonitoringOverviewContainer: typeof import('./components/views/seb-server/monitoring/overview/MonitoringOverviewContainer.vue')['default']
     MonitoringOverviewGroups: typeof import('./components/views/seb-server/monitoring/overview/MonitoringOverviewGroups.vue')['default']
+    MonitoringOverviewIndicators: typeof import('./components/views/seb-server/monitoring/overview/MonitoringOverviewIndicators.vue')['default']
     MonitoringOverviewInfos: typeof import('./components/views/seb-server/monitoring/overview/MonitoringOverviewInfos.vue')['default']
     MonitoringOverviewNotifications: typeof import('./components/views/seb-server/monitoring/overview/MonitoringOverviewNotifications.vue')['default']
     NavigationOverview: typeof import('./components/layout/NavigationOverview.vue')['default']

@@ -1,12 +1,23 @@
 <template>
-    <!------title------->
-    <v-row class="mb-3">
-        <v-col class="primary-text-color text-h5 font-weight-bold">
-            {{translate("monitoringOverview.groups.groups")}}
+
+
+    <v-row>
+        <v-col cols="12">
+            <!------title------->
+            <div class="text-h6 font-weight-bold mb-4">
+                {{ translate("monitoringOverview.groups.groups") }}
+            </div>
+
+            <!-- New Redesigned Groups -->
+            <v-row>
+
+
+
+            </v-row>
         </v-col>
     </v-row>
 
-    <!--------group cards-------->
+    <!--------old group cards-------->
     <template v-for="(clientGroupItem, index) in overViewClientGroups">
         <!--@vue-ignore-->
         <v-row no-gutters :class="[index != overViewClientGroups.length-1 ? 'mb-4' : '']">
@@ -23,7 +34,7 @@
                                 {{ clientGroupItem.name }}
                             </template>
                         </v-col>
-    
+
                         <!--------group type-------->
                         <v-col cols="6">
                             <div v-if="clientGroupItem.type != ClientGroupEnum.SP_FALLBACK_GROUP" class="font-weight-medium">
@@ -33,31 +44,31 @@
                                 {{ translate(clientGroupItem.typeValue) }}
                             </div>
                         </v-col>
-    
+
                         <!--------client amount-------->
                         <v-col cols="1" class="text-h6 primary-text-color">
                             {{ clientGroupItem.clientAmount }}
                         </v-col>
-    
+
                         <!--------monitoring button-------->
                         <v-col cols="1">
-                            <v-icon 
-                                icon="mdi-chevron-right" 
+                            <v-icon
+                                icon="mdi-chevron-right"
                                 @click="monitoringViewService.goToMonitoring(
-                                    MonitoringHeaderEnum.SHOW_CLIENT_GROUPS, 
-                                    generalUtils.createStringCommaList([clientGroupItem.id]), 
+                                    MonitoringHeaderEnum.SHOW_CLIENT_GROUPS,
+                                    generalUtils.createStringCommaList([clientGroupItem.id]),
                                     examId)">
                             </v-icon>
                         </v-col>
                     </v-row>
                 </v-sheet>
             </v-col>
-    
+
             <!--------sp button-------->
             <v-col v-if="clientGroupItem.spsGroupUUID" cols="1" class="ml-4">
                 <v-sheet class="rounded-lg d-flex align-center justify-center fill-height" elevation="4">
-                    <v-btn 
-                        variant="text" 
+                    <v-btn
+                        variant="text"
                         icon="mdi-video"
                         @click="navigation.openUrlInNewTab(linkService.getGalleryViewLink(clientGroupItem.spsGroupUUID))">
                     </v-btn>
@@ -94,11 +105,11 @@
 
                     <!--------monitoring button-------->
                     <v-col cols="1">
-                        <v-icon 
-                            icon="mdi-chevron-right" 
+                        <v-icon
+                            icon="mdi-chevron-right"
                             @click="monitoringViewService.goToMonitoring(
-                                MonitoringHeaderEnum.SHOW_ALL, 
-                                true, 
+                                MonitoringHeaderEnum.SHOW_ALL,
+                                true,
                                 examId)">
                         </v-icon>
                     </v-col>
@@ -109,8 +120,8 @@
           <!--------sp button-------->
           <v-col v-if="monitoringStore.monitoringOverviewData != null && monitoringStore.monitoringOverviewData.clientGroups.length != 0" cols="1" class="ml-4">
             <v-sheet class="rounded-lg d-flex align-center justify-center fill-height" elevation="4">
-                <v-btn 
-                    variant="text" 
+                <v-btn
+                    variant="text"
                     icon="mdi-video"
                     @click="
                     navigation.openUrlInNewTab(
@@ -128,11 +139,11 @@
     <!--------show all button-------->
     <v-row v-if="isSPGroupAvailable || monitoringStore.monitoringOverviewData?.clientGroups.length == 0">
         <v-col align="right">
-            <v-btn 
-                color="primary" 
+            <v-btn
+                color="primary"
                 @click="monitoringViewService.goToMonitoring(
-                    MonitoringHeaderEnum.SHOW_ALL, 
-                    true, 
+                    MonitoringHeaderEnum.SHOW_ALL,
+                    true,
                     examId)">
                 {{translate("monitoringOverview.groups.showAll")}}
             </v-btn>
@@ -159,7 +170,7 @@
 
     //exam
     const examId = useRoute().params.examId.toString();
-    
+
     const overViewClientGroups: ComputedRef<OverviewClientGroup[] | null> = computed(() => {
         if(monitoringStore.monitoringOverviewData?.clientGroups == null){
             return null;
@@ -190,7 +201,7 @@
 
         return false;
     });
-    
+
 </script>
 
 <style scoped>
