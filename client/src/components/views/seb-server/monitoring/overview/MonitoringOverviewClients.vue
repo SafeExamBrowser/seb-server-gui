@@ -50,27 +50,30 @@
                     </v-row>
 
                     <!------missing state------->
-                    <v-row v-if="clientStates.includes(ConnectionStatusEnum.MISSING)" class="mt-6">
-                        <v-card
-                            class="rounded-lg mb-3 pa-2"
-                            variant="flat"
-                            :hover="true"
-                            :ripple="false"
-                            :color="getConnectionStatusColor(clientStates[clientStates.length-1])"
-                            @click="monitoringViewService.goToMonitoring(
-                                    MonitoringHeaderEnum.SHOW_STATES,
-                                    ConnectionStatusEnum.MISSING,
-                                    examId)">
 
-                            <v-row>
-                                <v-col align="left">{{ clientData[clientData.length - 1] }}
-                                    {{ translate(clientStates[clientStates.length - 1]) }}
-                                </v-col>
-                                <v-col align="right">
-                                    <v-icon :icon="getConnectionStatusIcon(ConnectionStatusEnum.MISSING)"></v-icon>
-                                </v-col>
-                            </v-row>
-                        </v-card>
+                    <v-row v-if="clientStates.includes(ConnectionStatusEnum.MISSING)" class="mt-6">
+                        <v-col>
+                            <v-card
+                                class="rounded-lg mb-3 pa-2"
+                                variant="flat"
+                                :hover="true"
+                                :ripple="false"
+                                :color="getConnectionStatusColor(clientStates[clientStates.length-1])"
+                                @click="monitoringViewService.goToMonitoring(
+                                        MonitoringHeaderEnum.SHOW_STATES,
+                                        ConnectionStatusEnum.MISSING,
+                                        examId)">
+
+                                <v-row>
+                                    <v-col align="left">{{ clientData[clientData.length - 1] }}
+                                        {{ translate(clientStates[clientStates.length - 1]) }}
+                                    </v-col>
+                                    <v-col align="right">
+                                        <v-icon :icon="getConnectionStatusIcon(ConnectionStatusEnum.MISSING)"></v-icon>
+                                    </v-col>
+                                </v-row>
+                            </v-card>
+                        </v-col>
                     </v-row>
                 </v-col>
             </v-row>
