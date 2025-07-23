@@ -9,8 +9,15 @@ export async function applyTestRun(id: string): Promise<Exam | any>{
     return (await apiService.api.post(monitoringUrl + "/testrun/" + id, {}, {headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
 }
 
-export async function getOverview(examId: string): Promise<MonitoringOverview | any>{
-    return (await apiService.api.get(monitoringUrl + "/get-overview/" + examId, {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
+export async function getOverview(examId: string): Promise<MonitoringOverview | any> {
+    const response = await apiService.api.get(
+        monitoringUrl + "/get-overview/" + examId,
+        { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN) }
+    );
+
+    console.log("🚀 getOverview API response:", response.data); // <-- Add this line
+
+    return response.data;
 }
 
 export async function getConnections(examId: string, optionalHeaders: {}): Promise<MonitoringConnections | any>{

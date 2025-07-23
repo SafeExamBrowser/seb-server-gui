@@ -108,8 +108,10 @@ function getIndicatorCardBackground(key: string): string {
     return getIndicatorIconBackground(key);
 }
 
+
 function getIndicatorIconColor(key: string): string {
     const hasColor = indicators?.[key]?.color;
+    console.log("fsdfas" , indicators?.BATTERY_STATUS?.color)
     switch (key) {
         case "BATTERY_STATUS":
             return hasColor ? "#E53935" : "#000000";
