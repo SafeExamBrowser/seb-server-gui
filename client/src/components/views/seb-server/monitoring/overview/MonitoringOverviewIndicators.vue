@@ -110,7 +110,7 @@ function getIndicatorCardBackground(key: string): string {
 
 
 function getIndicatorIconColor(key: string): string {
-    const hasColor = indicators?.[key]?.color;
+    const hasColor = null //todo add colors
     console.log("fsdfas" , indicators?.BATTERY_STATUS?.color)
     switch (key) {
         case "BATTERY_STATUS":
@@ -123,7 +123,7 @@ function getIndicatorIconColor(key: string): string {
 }
 
 function getIndicatorIconBackground(key: string): string {
-    const hasColor = indicators?.[key]?.color;
+    const hasColor = null //todo add colors
     switch (key) {
         case "BATTERY_STATUS":
             return hasColor ? "#FFEBEE" : "#f0f0f0";
@@ -135,7 +135,7 @@ function getIndicatorIconBackground(key: string): string {
 }
 
 function getIndicatorAvatarColor(key: string): string {
-    const hasColor = indicators?.[key]?.color;
+    const hasColor = null //todo add colors
     switch (key) {
         case "BATTERY_STATUS":
             return hasColor ? "#E53935" : "#BDBDBD";

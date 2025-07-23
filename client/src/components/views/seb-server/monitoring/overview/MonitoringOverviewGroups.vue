@@ -28,8 +28,11 @@
                     <div
                         class="group-card-header px-4 py-3"
                         :style="{
-              backgroundColor: clientGroupItem.color ? '#' + clientGroupItem.color + '10' : '#f5f5f5',
-              borderLeft: `6px solid ${clientGroupItem.color ? '#' + clientGroupItem.color : '#000'}`
+              backgroundColor: '#f5f5f5',
+              borderLeft: `6px solid #000}`
+
+              //       backgroundColor: clientGroupItem.color ? '#' + clientGroupItem.color + '10' : '#f5f5f5',
+              // borderLeft: `6px solid ${clientGroupItem.color ? '#' + clientGroupItem.color : '#000'}`
             }"
                     >
                         <div class="d-flex justify-space-between align-start align-center">
@@ -50,7 +53,9 @@
                             <div
                                 class="custom-chip"
                                 :style="{
-                                    color: clientGroupItem.color ? '#' + clientGroupItem.color : '#000'
+                                    color: '#000'
+
+                                           // color: clientGroupItem.color ? '#' + clientGroupItem.color : '#000'
                                   }"
                                 >
                                 {{ clientGroupItem.clientAmount }} {{ translate("monitoringOverview.groups.clients") }}
