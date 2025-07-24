@@ -276,7 +276,7 @@
 <style scoped>
 
 .add-group-btn {
-    color: #205caf !important;
+    color: #215caf !important;
     font-weight: bold;
 }
 

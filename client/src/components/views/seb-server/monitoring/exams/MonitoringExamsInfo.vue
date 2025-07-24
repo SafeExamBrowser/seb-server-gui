@@ -271,7 +271,7 @@ function handleKeyUp(event: KeyboardEvent) {
 }
 
 .link-color {
-    color: #205caf;
+    color: #215caf;
     cursor: pointer;
 }
 </style>

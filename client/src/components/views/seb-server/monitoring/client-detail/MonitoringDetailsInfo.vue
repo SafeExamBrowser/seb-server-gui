@@ -396,7 +396,7 @@ const indicatorTypeConfig: Record<string, { icon: string; unit?: string; color?:
 
 /* name */
 .exam-name {
-    color: #205caf;
+    color: #215caf;
     cursor: pointer;
 }
 
@@ -407,7 +407,7 @@ const indicatorTypeConfig: Record<string, { icon: string; unit?: string; color?:
 .name-part {
     font-size: 2rem;
     font-weight: bold;
-    color: #205caf;
+    color: #215caf;
 }
 
 /* groups, tags and status */

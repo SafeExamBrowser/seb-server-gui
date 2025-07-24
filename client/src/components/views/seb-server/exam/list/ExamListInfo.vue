@@ -277,7 +277,7 @@ function setActiveStatusFilter(filter: ExamStatusEnum) {
 }
 
 .link-color {
-    color: #205caf;
+    color: #215CAF;
     cursor: pointer;
 }
 

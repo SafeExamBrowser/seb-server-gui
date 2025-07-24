@@ -69,7 +69,7 @@
                             class="mr-3 d-flex align-center justify-center"
                             style="width: 52px; height: 52px; background-color: #EBEFF7; border-radius: 10px; padding: 8px;"
                         >
-                            <v-icon size="28" color="#205caf">mdi-calendar-blank</v-icon>
+                            <v-icon size="28" color="#215caf">mdi-calendar-blank</v-icon>
                         </div>
                         <div>
                             <div class="text-body-2 font-weight-bold text-grey-darken-1">
@@ -89,7 +89,7 @@
                             class="mr-3 d-flex align-center justify-center"
                             style="width: 52px; height: 52px; background-color: #EBEFF7; border-radius: 10px; padding: 8px;"
                         >
-                            <v-icon size="28" color="#205caf">mdi-calendar-check</v-icon>
+                            <v-icon size="28" color="#215caf">mdi-calendar-check</v-icon>
                         </div>
                         <div>
                             <div class="text-body-2 font-weight-bold text-grey-darken-1">
@@ -137,7 +137,7 @@ const monitoringStore = useMonitoringStore();
 }
 
 .link-color {
-    color: #205caf;
+    color: #215caf;
     cursor: pointer;
 }
 
