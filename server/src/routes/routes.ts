@@ -21,7 +21,12 @@ import * as settingsController from "../controllers/screen-proctoring/sp-setting
 import * as applicationSearchController from "../controllers/screen-proctoring/sp-application-search.controller";
 import * as spAuthorizationAdditional from "../middleware/spAuthorizationAdditional";
 import * as institutionsController from "../controllers/seb-server/institution.controller";
-import {MONITORING_LOGS_ROUTE, USER_ACCOUNT_REGISTRATION_ROUTE} from "../utils/constants";
+import {
+    ADMIN_INSTITUTION_INFO_ROUTE,
+    ADMIN_INSTITUTION_LOGO_ROUTE,
+    MONITORING_LOGS_ROUTE,
+    USER_ACCOUNT_REGISTRATION_ROUTE
+} from "../utils/constants";
 
 const router: Router = express.Router();
 
@@ -65,6 +70,7 @@ router.get(constants.EXAM_TEMPLATE_SCREEN_PROCTORING_ROUTE, examTemplateControll
 //institutions
 router.get(constants.INSTITUTION_ROUTE, institutionsController.getInstitutions);
 router.get(constants.INSTITUTION_ROUTE, institutionsController.getInstitutions);
+router.get(constants.ADMIN_INSTITUTION_LOGO_ROUTE + "/:suffix", institutionsController.getInstitutionLogo)
 
 //user accounts
 router.get(constants.USER_ACCOUNT_ROUTE + "/:id", userAccountController.getUserAccount);
