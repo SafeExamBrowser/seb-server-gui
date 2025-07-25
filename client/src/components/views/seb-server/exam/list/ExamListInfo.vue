@@ -1,21 +1,29 @@
 <template>
     <!-- Breadcrumb & Title -->
     <v-row dense>
-        <v-col cols="12" md="10" class="pl-5">
-            <div class="path-text" style="visibility: hidden;">
+        <v-col cols="12" md="10" class="pl-5 mb-1">
+            <div class="path-text d-flex align-center">
+            <span
+                class="breadcrumb-link"
+                @click="navigateTo(constants.HOME_PAGE_ROUTE)"
+            >
+                {{ translate("titles.home") }}
+            </span>
+
+                <span class="breadcrumb-arrow">›</span>
+
                 <span
-                    class="link"
+                    class="breadcrumb-active"
                     @click="navigateTo(constants.EXAM_ROUTE)"
                 >
-                    {{ translate("titles.exams") }}
+                {{ translate("titles.exams") }}
                 </span>
-                &nbsp;>&nbsp;
             </div>
         </v-col>
 
         <v-col cols="12" md="10" class="pl-10">
             <div class="primary-text-color text-h4 font-weight-bold">
-                {{ translate('examList.info.selectExam') }}
+                {{ translate('titles.exams') }}
             </div>
         </v-col>
 
@@ -271,14 +279,6 @@ function setActiveStatusFilter(filter: ExamStatusEnum) {
 
 <style scoped>
 
-.link {
-    color: black;
-    cursor: pointer;
-}
 
-.link-color {
-    color: #215CAF;
-    cursor: pointer;
-}
 
 </style>

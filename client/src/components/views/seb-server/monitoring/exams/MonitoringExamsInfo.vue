@@ -2,20 +2,28 @@
     <!-- Breadcrumb and Title-->
     <v-row dense>
         <v-col cols="12" md="10" class="pl-5">
-            <div class="path-text" style="visibility: hidden;">
+            <div class="path-text">
                 <span
-                    class="link"
+                    class="link pr-1"
+                    @click="navigateTo(constants.HOME_PAGE_ROUTE)"
+
+                >
+                    {{ translate("titles.home") }}
+                </span>
+
+                >
+                <span
+                    class="link-color pl-1"
                     @click="navigateTo(constants.MONITORING_ROUTE)"
                 >
                     {{ translate("titles.monitoring") }}
                 </span>
-                &nbsp;>&nbsp;
             </div>
         </v-col>
         <v-col cols="12" md="10" class="pl-10">
 
             <div class="primary-text-color text-h4 font-weight-bold ">
-                {{ translate('monitoringExams.info.runningExams') }}
+                {{ translate('titles.monitoring') }}
             </div>
         </v-col>
 

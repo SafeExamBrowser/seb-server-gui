@@ -1,4 +1,28 @@
 <template>
+
+    <v-row dense>
+        <v-col cols="12" md="10" class="pl-5">
+            <div class="path-text">
+                <span
+                    class="pr-1"
+                    @click="navigateTo(constants.HOME_PAGE_ROUTE)"
+                    style="visibility: hidden;"
+                >
+                    {{ translate("titles.home") }}
+                </span>
+            </div>
+        </v-col>
+        <v-col cols="12" md="10" class="pl-10">
+            <div class="primary-text-color text-h4 font-weight-bold ">
+                {{ translate('titles.home') }}
+            </div>
+        </v-col>
+
+        <v-col cols="12" md="2" class="pl-10 ">
+        </v-col>
+    </v-row>
+
+
     <v-row>
         <!-- First Column -->
         <v-col
@@ -92,7 +116,7 @@
     import * as generalUtils from "@/utils/generalUtils";
     import { useAuthStore, useUserAccountStore } from '@/stores/authentication/authenticationStore';
     import { StorageItemEnum } from "@/models/StorageItemEnum";
-
+    import {navigateTo} from "@/router/navigation";
 
     //stores
     const appBarStore = useAppBarStore();

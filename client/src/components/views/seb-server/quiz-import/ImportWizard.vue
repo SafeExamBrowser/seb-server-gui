@@ -1,5 +1,32 @@
 <template>
+    <v-row dense class="mb-3">
+        <v-col cols="12" md="10" class="pl-5">
+            <div class="path-text">
+                <span
+                    class="pr-1 link"
+                    @click="navigateTo(constants.HOME_PAGE_ROUTE)"
+                >
+                    {{ translate("titles.home") }}
+                </span>
 
+                >
+                <span
+                    class="link-color pl-1"
+                    @click="navigateTo(constants.QUIZ_IMPORT_ROUTE)"
+                >
+                    {{ translate("titles.quizImport") }}
+                </span>
+            </div>
+        </v-col>
+
+        <v-col cols="12" md="10" class="pl-10">
+            <div class="primary-text-color text-h4 font-weight-bold">
+                {{ translate('titles.quizImport') }}
+            </div>
+        </v-col>
+
+        <v-col cols="12" md="2" class="pl-10"></v-col>
+    </v-row>
     <!------------top info box or alert------------->
     <template v-if="isNoAssessmentTool">
         <AlertMsg
@@ -21,10 +48,9 @@
         <component v-else :is="quizImportStore.infoBoxComponents[quizImportStore.currentStep-1]"/>
 
         <!---------new stepper and content---------->
-        <v-row class="d-flex">
-
+        <v-row class="d-flex fill-height">
             <v-col cols="9" class=" d-flex flex-column fill-height" style="overflow: auto;">
-                <v-card elevation="4" class="d-flex flex-column fill-height rounded-lg">
+                <v-card elevation="4" class="d-flex flex-column rounded-lg">
                     <!-- Render the current step’s content component -->
                     <v-sheet class="pa-4 mt-lg-4 mt-md-2 mt-sm-1 flex-column fill-height">
                     <component :is="quizImportStore.mainContentComponents[quizImportStore.currentStep - 1]"/>
@@ -33,10 +59,9 @@
             </v-col>
             <v-col cols="3" class="d-flex flex-column fill-height">
                 <v-card elevation="4" class="d-flex flex-column fill-height rounded-lg">
-
                     <v-stepper-vertical
                         v-model="quizImportStore.currentStep"
-                        class="bg-transparent clean-stepper mt-lg-16 mt-md-8 mt-sm-4 ml-4"
+                        class="bg-transparent clean-stepper mt-lg-10 mt-md-8 mt-sm-4 ml-4 mb-16"
                         style="flex: 1; display: flex; flex-direction: row;"
                     >
                         <template v-slot:default="{ step }">
@@ -93,6 +118,7 @@ import {useI18n} from "vue-i18n";
 import * as quizImportWizardViewService from "@/services/seb-server/component-services/quizImportWizardViewService";
 import {navigateTo} from "@/router/navigation";
 import {useExamStore} from "@/stores/seb-server/examStore";
+import {QUIZ_IMPORT_ROUTE} from "@/utils/constants";
 
 //i18n
 const i18n = useI18n();
@@ -267,5 +293,10 @@ function handleStepperNext(index: number, next: () => void) {
     background: transparent !important;
 }
 
+
+.link-color {
+    color: #215CAF;
+    cursor: pointer;
+}
 
 </style>

@@ -13,7 +13,7 @@
         <!-- Table Component -->
         <ExamListMain
             class="flex-grow-1"
-            style="min-height: 69vh;"
+            style="min-height: 63vh;"
             ref="examListMainRef">
         </ExamListMain>
     </v-container>
