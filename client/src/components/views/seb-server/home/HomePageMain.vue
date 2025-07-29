@@ -1,31 +1,5 @@
 <template>
 
-    <v-row dense>
-        <!-- Breadcrumb -->
-        <v-col cols="12" md="10" class="pl-5 mb-1 mt-2">
-            <div class="path-text d-flex align-center">
-                <span
-                    class="breadcrumb-link"
-                    @click="navigateTo(constants.HOME_PAGE_ROUTE)"
-
-                >
-                    {{ translate("titles.home") }}
-                </span>
-
-            </div>
-        </v-col>
-
-        <!-- Title -->
-        <v-col cols="12" md="10" class="pl-10">
-            <div class="primary-text-color text-h4 font-weight-bold">
-                {{ translate('titles.home') }}
-            </div>
-        </v-col>
-
-        <v-col cols="12" md="2" class="pl-10 ">
-        </v-col>
-    </v-row>
-
 
     <v-row>
         <!-- First Column -->
@@ -111,31 +85,11 @@
 
 
 <script setup lang="ts">
-import {useAppBarStore} from '@/stores/store';
 import * as constants from "@/utils/constants";
-import * as spConstants from "@/utils/sp-constants";
-import {useI18n} from "vue-i18n";
 import {translate} from "@/utils/generalUtils";
-import * as generalUtils from "@/utils/generalUtils";
-import {useAuthStore, useUserAccountStore} from '@/stores/authentication/authenticationStore';
-import {StorageItemEnum} from "@/models/StorageItemEnum";
-import {navigateTo} from "@/router/navigation";
-
-//stores
-const appBarStore = useAppBarStore();
-const authStore = useAuthStore();
-
-//i18n
-const i18n = useI18n();
-
-onBeforeMount(() => {
-    appBarStore.title = translate('titles.home');
-
-    console.log(useUserAccountStore().userAccount)
-});
-
-
 </script>
+
+
 
 <style scoped>
 
