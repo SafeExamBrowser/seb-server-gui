@@ -1,23 +1,57 @@
 <template>
+
+    <!-- Breadcrumb and Title -->
+    <v-row dense>
+        <!-- Breadcrumb -->
+        <v-col cols="12" md="10" class="pl-5 mb-1">
+            <div class="path-text d-flex align-center">
+            <span
+                class="breadcrumb-link"
+                @click="navigateTo(constants.HOME_PAGE_ROUTE)"
+            >
+                {{ translate("titles.home") }}
+            </span>
+
+                <span class="breadcrumb-arrow">›</span>
+
+                <span
+                    class="breadcrumb-active"
+                    @click="navigateTo(constants.MONITORING_ROUTE)"
+                >
+                {{ translate("titles.monitoring") }}
+                </span>
+            </div>
+        </v-col>
+
+        <!-- Title -->
+        <v-col cols="12" md="10" class="pl-10">
+            <div class="primary-text-color text-h4 font-weight-bold">
+                {{ monitoringStore.selectedExam?.quizName }}
+            </div>
+        </v-col>
+
+        <v-col cols="12" md="2" class="pl-10"></v-col>
+    </v-row>
+
     <v-row v-if="isInfoExpanded">
         <v-col>
             <v-sheet elevation="4" class="rounded-lg pl-4 pt-3 pr-4">
-                
+
                 <!------------title row------------->
-                <v-row> 
+                <v-row>
                     <v-col cols="4" class="primary-text-color text-h5 font-weight-bold">
                         {{monitoringStore.selectedExam?.quizName}}
                     </v-col>
 
                     <v-spacer></v-spacer>
                     <v-col cols="4">
-                        <span class="primary-text-color text-h6 font-weight-bold"> 
+                        <span class="primary-text-color text-h6 font-weight-bold">
                             {{translate("monitoringClients.info.filters")}}
                         </span>
-                        <v-chip 
+                        <v-chip
                             v-if="!monitoringStore.isNoFilterSelected"
                             class="ml-4"
-                            size="small" 
+                            size="small"
                             variant="tonal"
                             append-icon="mdi-close"
                             @click="monitoringViewService.applyShowAllFilter()">
@@ -29,7 +63,7 @@
                     <v-col cols="3" class="primary-text-color text-h6 font-weight-bold">
                         {{translate("monitoringClients.info.actions")}}
                     </v-col>
-                
+
                 </v-row>
 
                 <!------------search, filters and action buttons------------->
@@ -42,7 +76,7 @@
                             @keyup.esc="clearForm()">
 
                             <!------------field------------->
-                            <v-row align="center"> 
+                            <v-row align="center">
                                 <!-- <v-col>
                                     {{translate("monitoringExams.info.search")}}
                                 </v-col> -->
@@ -63,29 +97,29 @@
                             <!------------Buttons------------->
                             <v-row>
                                 <v-col align="right">
-                                    <v-btn 
-                                        rounded="sm" 
-                                        color="black" 
+                                    <v-btn
+                                        rounded="sm"
+                                        color="black"
                                         variant="outlined"
                                         size="small"
                                         @click="clearForm()">
                                         {{translate("general.cancelButton")}}
                                     </v-btn>
 
-                                    <v-btn 
-                                        rounded="sm" 
-                                        color="primary" 
-                                        variant="flat" 
+                                    <v-btn
+                                        rounded="sm"
+                                        color="primary"
+                                        variant="flat"
                                         size="small"
                                         class="ml-2"
                                         @click="loadMonitoringListItemsCaller()">
                                         {{translate("general.searchButton")}}
                                     </v-btn>
 
-                                    <!-- <v-btn 
-                                        rounded="sm" 
-                                        color="secondary" 
-                                        variant="flat" 
+                                    <!-- <v-btn
+                                        rounded="sm"
+                                        color="secondary"
+                                        variant="flat"
                                         size="small"
                                         class="ml-2"
                                         @click="monitoringViewService.applyShowAllFilter()">
@@ -101,7 +135,7 @@
                     <!------------filters------------->
                     <v-spacer></v-spacer>
                     <v-col cols="4">
-                        <v-card 
+                        <v-card
                             variant="flat"
                             class="rounded-lg">
 
@@ -112,10 +146,10 @@
                                     <div class="primary-text-color text-subtitle-1">
                                         {{translate("monitoringClients.info.groups")}}
                                     </div>
-    
+
                                     <div v-for="clientGroup in monitoringStore.monitoringOverviewData?.clientGroups" :key="clientGroup.id">
-                                        <v-chip 
-                                            size="small" 
+                                        <v-chip
+                                            size="small"
                                             class="mr-2 mt-2"
                                             :variant="isFilterSelected(MonitoringHeaderEnum.SHOW_CLIENT_GROUPS, clientGroup.id.toString()) ? 'flat' : 'tonal'"
                                             @click="monitoringViewService.applyFilter(
@@ -126,17 +160,17 @@
                                         </v-chip>
                                     </div>
                                 </v-col>
-    
+
                                 <!------------client states filters------------->
                                 <v-col v-if="monitoringStore.monitoringOverviewData?.clientStates.total != 0">
                                     <div class="primary-text-color text-subtitle-1">
                                         {{translate("monitoringClients.info.clientStates")}}
                                     </div>
-    
+
                                     <template v-for="(value, key) in monitoringStore.monitoringOverviewData?.clientStates" :key="key">
-                                        <v-chip 
+                                        <v-chip
                                             v-if="key != 'total' && value != 0"
-                                            size="small" 
+                                            size="small"
                                             class="mr-2 mt-2"
                                             :variant="isFilterSelected(MonitoringHeaderEnum.SHOW_STATES, key) ? 'flat' : 'tonal'"
                                             @click="monitoringViewService.applyFilter(
@@ -147,17 +181,17 @@
                                         </v-chip>
                                     </template>
                                 </v-col>
-    
+
                                 <!------------notification filters------------->
                                 <v-col v-if="monitoringStore.monitoringOverviewData?.notifications.total != 0">
                                     <div class="primary-text-color text-subtitle-1">
                                         {{translate("monitoringClients.info.notifications")}}
                                     </div>
-    
+
                                     <template v-for="(value, key) in monitoringStore.monitoringOverviewData?.notifications" :key="key">
-                                        <v-chip 
+                                        <v-chip
                                             v-if="key != 'total' && value != 0"
-                                            size="small" 
+                                            size="small"
                                             class="mr-2 mt-2"
                                             :variant="isFilterSelected(MonitoringHeaderEnum.SHOW_NOTIFCATION, key) ? 'flat' : 'tonal'"
                                             @click="monitoringViewService.applyFilter(
@@ -168,18 +202,18 @@
                                         </v-chip>
                                     </template>
                                 </v-col>
-    
+
                                 <!------------indicators filters------------->
                                 <v-col v-if="monitoringStore.monitoringOverviewData != null && Object.keys(monitoringStore.monitoringOverviewData?.indicators).length != 0">
                                     <div class="primary-text-color text-subtitle-1">
                                         {{translate("monitoringClients.info.indicators")}}
                                     </div>
-    
+
                                     <template v-for="(value, key) in monitoringStore.monitoringOverviewData?.indicators" :key="key">
                                         <!-- v-if="key != 'total' && value != 0" -->
 
-                                        <v-chip 
-                                            size="small" 
+                                        <v-chip
+                                            size="small"
                                             class="mr-2 mt-2"
                                             :variant="isFilterSelected(MonitoringHeaderEnum.SHOW_INDICATORS, key) ? 'flat' : 'tonal'"
                                             @click="monitoringViewService.applyFilter(
@@ -195,9 +229,9 @@
                                     <div v-show="false" class="primary-text-color text-subtitle-1">
                                         placeholder
                                     </div>
-                                    <v-chip 
+                                    <v-chip
                                         class="mt-2"
-                                        size="small" 
+                                        size="small"
                                         variant="tonal"
                                         append-icon="mdi-close"
                                         @click="monitoringViewService.applyShowAllFilter()">
@@ -213,11 +247,11 @@
                     <!------------action buttons------------->
                     <v-col cols="3">
                         <div>
-                            <v-btn 
+                            <v-btn
                                 :disabled="monitoringStore.selectedMonitoringIds.length == 0"
                                 class="mt-2"
-                                rounded="sm" 
-                                color="black" 
+                                rounded="sm"
+                                color="black"
                                 variant="outlined"
                                 prepend-icon="mdi-monitor-lock"
                                 @click="openInstructionConfirmDialog(InstructionEnum.SEB_FORCE_LOCK_SCREEN, false)">
@@ -226,11 +260,11 @@
                         </div>
 
                         <div>
-                            <v-btn 
+                            <v-btn
                                 :disabled="monitoringStore.selectedMonitoringIds.length == 0"
                                 class="mt-2"
-                                rounded="sm" 
-                                color="black" 
+                                rounded="sm"
+                                color="black"
                                 variant="outlined"
                                 prepend-icon="mdi-backspace-outline"
                                 @click="openInstructionConfirmDialog(InstructionEnum.SEB_QUIT, false)">
@@ -239,11 +273,11 @@
                         </div>
 
                         <div>
-                            <v-btn 
+                            <v-btn
                                 :disabled="monitoringStore.selectedMonitoringIds.length == 0"
                                 class="mt-2"
-                                rounded="sm" 
-                                color="black" 
+                                rounded="sm"
+                                color="black"
                                 variant="outlined"
                                 prepend-icon="mdi-cancel"
                                 @click="openInstructionConfirmDialog(null, true)">
@@ -259,8 +293,8 @@
                     <!------------back button------------->
                     <v-col class="d-flex flex-column">
                         <div class="d-flex justify-start mt-auto">
-                            <v-icon 
-                                variant="flat" 
+                            <v-icon
+                                variant="flat"
                                 icon="mdi-arrow-left"
                                 @click="navigateTo(constants.MONITORING_OVERVIEW_ROUTE + '/' + examId)">
                             </v-icon>
@@ -270,8 +304,8 @@
                     <!------------collapse button------------->
                     <v-col class="d-flex flex-column">
                         <div class="d-flex justify-end mt-auto">
-                            <v-icon 
-                                variant="flat" 
+                            <v-icon
+                                variant="flat"
                                 icon="mdi-chevron-up"
                                 @click="isInfoExpanded = !isInfoExpanded">
                             </v-icon>
@@ -295,8 +329,8 @@
                     </v-col>
                     <v-col class="d-flex flex-column">
                         <div class="d-flex justify-end mt-auto">
-                            <v-icon 
-                                variant="flat" 
+                            <v-icon
+                                variant="flat"
                                 icon="mdi-chevron-down"
                                 @click="isInfoExpanded = !isInfoExpanded">
                             </v-icon>
@@ -307,7 +341,7 @@
         </v-col>
     </v-row>
 
-    <!-----------instruction confirm dialog---------->      
+    <!-----------instruction confirm dialog---------->
     <v-dialog v-model="instructionConfirmDialog" max-width="600">
         <InstructionConfirmDialog
             @close-instruction-confirm-dialog="closeInstructionConfirmDialog"
@@ -332,7 +366,7 @@
     import * as constants from "@/utils/constants";
     import { InstructionEnum } from "@/models/seb-server/instructionEnum";
     import { useErrorStore } from "@/stores/seb-server/errorStore";
-    
+
     //i18n
     const i18n = useI18n();
 
@@ -365,7 +399,7 @@
     }>();
 
 
-    function loadMonitoringListItemsCaller(){ 
+    function loadMonitoringListItemsCaller(){
         if(datepicker != null && datepicker.value != null){
             monitoringStore.startDate = datepicker.value.getTime();
         }
@@ -378,7 +412,7 @@
 
         datepicker.value = null;
         monitoringStore.startDate = null;
-        
+
         loadMonitoringListItemsCaller();
     }
 

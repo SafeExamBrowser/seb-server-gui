@@ -1,34 +1,33 @@
 <template>
-    <!-- Breadcrumb and Title-->
+    <!-- Breadcrumb & Title -->
     <v-row dense>
-        <v-col cols="12" md="10" class="pl-5">
-            <div class="path-text">
-                <span
-                    class="link pr-1"
-                    @click="navigateTo(constants.HOME_PAGE_ROUTE)"
+        <v-col cols="12" md="10" class="pl-5 mb-1">
+            <div class="path-text d-flex align-center">
+            <span
+                class="breadcrumb-link"
+                @click="navigateTo(constants.HOME_PAGE_ROUTE)"
+            >
+                {{ translate("titles.home") }}
+            </span>
 
-                >
-                    {{ translate("titles.home") }}
-                </span>
+                <span class="breadcrumb-arrow">›</span>
 
-                >
                 <span
-                    class="link-color pl-1"
+                    class="breadcrumb-active"
                     @click="navigateTo(constants.MONITORING_ROUTE)"
                 >
-                    {{ translate("titles.monitoring") }}
+                {{ translate("titles.monitoring") }}
                 </span>
             </div>
         </v-col>
-        <v-col cols="12" md="10" class="pl-10">
 
-            <div class="primary-text-color text-h4 font-weight-bold ">
+        <v-col cols="12" md="10" class="pl-10">
+            <div class="primary-text-color text-h4 font-weight-bold">
                 {{ translate('titles.monitoring') }}
             </div>
         </v-col>
 
-        <v-col cols="12" md="2" class="pl-10 ">
-        </v-col>
+        <v-col cols="12" md="2" class="pl-10"></v-col>
     </v-row>
 
     <!-- Sheet Section -->
@@ -273,13 +272,4 @@ function handleKeyUp(event: KeyboardEvent) {
 
 <style scoped>
 
-.link {
-    color: black;
-    cursor: pointer;
-}
-
-.link-color {
-    color: #215caf;
-    cursor: pointer;
-}
 </style>
