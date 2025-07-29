@@ -2,7 +2,6 @@ import { createRouter, RouteRecordRaw, createWebHistory } from "vue-router";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 import LoginPage from "@/components/views/LoginPage.vue";
 import RegisterPage from "@/components/views/RegisterPage.vue";
-import HomePage from "@/components/views/seb-server/home/HomePage.vue";
 import UserAccounts from "@/components/views/seb-server/accounts/UserAccounts.vue";
 import ExamListContainer from "@/components/views/seb-server/exam/list/ExamListContainer.vue";
 import ExamDetailContainer from "@/components/views/seb-server/exam/detail/ExamDetailContainer.vue";

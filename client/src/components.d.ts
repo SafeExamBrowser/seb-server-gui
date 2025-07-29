@@ -38,7 +38,6 @@ declare module 'vue' {
     ExamTemplateDialog: typeof import('./components/widgets/ExamTemplateDialog.vue')['default']
     GalleryImage: typeof import('./components/views/screen-proctoring/gallery/GalleryImage.vue')['default']
     GalleryViewPage: typeof import('./components/views/screen-proctoring/gallery/GalleryViewPage.vue')['default']
-    HomePage: typeof import('./components/views/seb-server/home/HomePage.vue')['default']
     HomePageContainer: typeof import('./components/views/seb-server/home/HomePageContainer.vue')['default']
     HomePageMain: typeof import('./components/views/seb-server/home/HomePageMain.vue')['default']
     HonePageInfo: typeof import('./components/views/seb-server/home/HonePageInfo.vue')['default']
