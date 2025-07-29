@@ -230,8 +230,8 @@
 
     "examList": {
         "info": {
-            "examNameSearchPlaceholder": "Search Exams by Exam Name",
-            "examStartSearchPlaceholder": "Search Exams by Exam Start",
+            "examNameSearchPlaceholder": "Search by Name",
+            "examStartSearchPlaceholder": "Search by Date",
             "selectExam": "Select Exam",
             "search": "Search:",
             "searchPlaceholder": "Search Exams",
@@ -527,8 +527,8 @@
             "runningExams": "Running Exams",
             "search": "Search:",
             "start": "Exam Start:",
-            "examStartSearchPlaceholder": "Search Exams by Exam Start",
-            "examNameSearchPlaceholder": "Search Exams by Exam Name",
+            "examStartSearchPlaceholder": "Search by Date",
+            "examNameSearchPlaceholder": "Search by Name",
 
             "filter": "Filter",
             "examType" : "Exam Type",

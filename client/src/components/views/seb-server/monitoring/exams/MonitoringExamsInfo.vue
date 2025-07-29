@@ -44,7 +44,7 @@
                         </div>
                     </v-col>
                     <v-col cols="12" md="3">
-                        <div class="text-subtitle-1 font-weight-medium mb-2">
+                        <div class="text-subtitle-1 font-weight-medium mb-2 ml-3">
                             {{ translate("monitoringExams.info.examStartSearchPlaceholder") }}
                         </div>
                     </v-col>
@@ -82,9 +82,6 @@
                             prepend-icon=""
                             append-inner-icon="mdi-calendar"
                             class="ml-3">
-                            <template #label>
-                                {{ translate("monitoringExams.info.examStart") }}
-                            </template>
                         </v-date-input>
                     </v-col>
 
