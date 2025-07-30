@@ -28,6 +28,8 @@ export const USER_ACCOUNT_REGISTRATION_ROUTE = "/useraccount/register";
 export const SUPERVISOR_ACCOUNT_NAMES_ROUTE = "/useraccount/supervisors";
 export const DEACTIVATION_ROUTE = "/inactive";
 export const ACTIVATION_ROUTE = "/active";
+export const FEATURE_ROUTE = "/useraccount/me/features";
+
 
 export const CHANGE_PASSWORD_ROUTE = "/password";
 

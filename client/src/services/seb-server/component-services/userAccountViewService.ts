@@ -24,9 +24,9 @@ export async function setPersonalUserAccount(){
 
 }
 
-export async function getPersonalUserAccount(): Promise<UserAccount | null>{
+export async function getPersonalUserAccountFeatures(): Promise<any | null>{
     try{
-        return await userAccountService.getPersonalUserAccount();
+        return await userAccountService.getPersonalUserAccountFeatures();
 
     }catch(error){
         return null;
