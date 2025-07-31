@@ -272,7 +272,7 @@
     <!---------------main navigation drawer----------------->
     <v-navigation-drawer app v-model="navigationDrawer" :permanent="true" width="70" class="mt-0">
         <v-list lines="two" class="pt-0">
-            <v-list-item v-if="canAccessNavigationOverview" link elevation="0" :to="getNavigationOverviewRoute()"
+            <v-list-item v-if="$can('view', 'NavigationOverview')" link elevation="0" :to="getNavigationOverviewRoute()"
                 variant="elevated" class="d-flex flex-column justify-center text-center"
                 :class="[navigationStore.isNavigationOverviewOpen ? 'navigation-overview-background' : '']">
 
@@ -285,7 +285,6 @@
                 </template>
 
             </v-list-item>
-
             <v-divider></v-divider>
 
             <!--------navigation items---------->
@@ -340,9 +339,12 @@
     import * as constants from "@/utils/constants";
     import router from "@/router/router";
     import {translate} from "@/utils/generalUtils";
-    import {UserRoleEnum} from "@/models/userRoleEnum";
+    import { useAbility } from '@casl/vue'
+
+
     import {getInstitutions} from "@/services/seb-server/component-services/registerAccountViewService";
     import {getInstitution, getInstitutionLogo} from "@/services/seb-server/api-services/institutionService";
+    import {defineRulesForRoles} from "@/casl/ability";
 
 
     //i18n
@@ -367,7 +369,7 @@
     ];
     const institutions = ref<Institution[]>([]);
     const institutionName = ref<string>();
-
+    const ability = useAbility()
 
     //gallery view
     const gridSizes: GridSize[] = [
@@ -382,7 +384,7 @@
     const appBarStore = useAppBarStore();
     const userAccountStore = useUserAccountStore();
     const navigationStore = useNavigationStore();
-    const ALLOWED_ROLES: string[] = [UserRoleEnum.INSTITUTIONAL_ADMIN, UserRoleEnum.SEB_SERVER_ADMIN];
+
     const effectiveTitle = computed(() => {
         return institutionName.value?.length ? institutionName.value : (appBarStore.title || '...');
     });
@@ -396,10 +398,6 @@
     theme.global.name.value = localstorageTheme ?? theme.global.name.value ?? "light";
     const themeToggle = ref<number>(theme.global.name.value === "dark" ? 1 : 0);
 
-    const canAccessNavigationOverview = computed(() => {
-        const roles = userAccountStore.userAccount?.userRoles ?? [];
-        return roles.some(role => ALLOWED_ROLES.includes(role));
-    });
     const institutionLogo = ref<string | null>(null);
 
 
@@ -412,17 +410,19 @@
 
         const matchedInstitution = institutions.value.find(inst => inst.modelId === userInstitutionId);
         if (matchedInstitution) {
-            institutionName.value = matchedInstitution.name; //
+            institutionName.value = matchedInstitution.name;
 
             const logoBase64: string = await getInstitutionLogo(matchedInstitution.name);
             if (logoBase64) {
                 institutionLogo.value = `data:image/png;base64,${logoBase64}`;
             }
-            console.log(institutionLogo.value);
         }
     });
 
-
+    watch(userRoles, (roles) => {
+        ability.update(defineRulesForRoles(roles).rules)
+        console.log("user roles: ", userRoles.value)
+    }, { immediate: true })
 
     watch(languageToggle, () => {
         locale.value = languageToggle.value === 0 ? "en" : "de";

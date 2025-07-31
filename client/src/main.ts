@@ -3,6 +3,8 @@ import App from './App.vue'
 import { registerPlugins } from '@/plugins'
 import AlertMsg from '@/components/widgets/AlertMsg.vue'
 import i18n from './i18n'
+import { abilitiesPlugin } from '@casl/vue'
+import { ability } from '@/casl/ability'
 
 // 🚀 Vuetify setup
 import 'vuetify/styles'
@@ -25,6 +27,7 @@ const vuetify = createVuetify({
 const app = createApp(App)
 app.use(vuetify)
 registerPlugins(app)
+app.use(abilitiesPlugin, ability, { useGlobalProperties: true })
 app.use(i18n)
 
 app.component('AlertMsg', AlertMsg)
