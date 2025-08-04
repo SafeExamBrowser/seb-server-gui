@@ -1,25 +1,27 @@
 <template>
-    <v-row dense class="mb-3">
-        <v-col cols="12" md="10" class="pl-5">
-            <div class="path-text">
-                <span
-                    class="pr-1 link"
-                    @click="navigateTo(constants.HOME_PAGE_ROUTE)"
-                >
-                    {{ translate("titles.home") }}
-                </span>
+    <!-- Breadcrumb & Title -->
+    <v-row dense>
+        <v-col cols="12" md="10" class="pl-5 mb-1">
+            <div class="path-text d-flex align-center">
+            <span
+                class="breadcrumb-link"
+                @click="navigateTo(constants.HOME_PAGE_ROUTE)"
+            >
+                {{ translate("titles.home") }}
+            </span>
 
-                >
+                <span class="breadcrumb-arrow">›</span>
+
                 <span
-                    class="link-color pl-1"
+                    class="breadcrumb-active"
                     @click="navigateTo(constants.QUIZ_IMPORT_ROUTE)"
                 >
-                    {{ translate("titles.quizImport") }}
+                {{ translate("titles.quizImport") }}
                 </span>
             </div>
         </v-col>
 
-        <v-col cols="12" md="10" class="pl-10">
+        <v-col cols="12" md="10" class="pl-10 mb-7">
             <div class="primary-text-color text-h4 font-weight-bold">
                 {{ translate('titles.quizImport') }}
             </div>
@@ -48,17 +50,22 @@
         <component v-else :is="quizImportStore.infoBoxComponents[quizImportStore.currentStep-1]"/>
 
         <!---------new stepper and content---------->
-        <v-row class="d-flex fill-height">
-            <v-col cols="9" class=" d-flex flex-column fill-height" style="overflow: auto;">
-                <v-card elevation="4" class="d-flex flex-column rounded-lg">
-                    <!-- Render the current step’s content component -->
-                    <v-sheet class="pa-4 mt-lg-4 mt-md-2 mt-sm-1 flex-column fill-height">
-                    <component :is="quizImportStore.mainContentComponents[quizImportStore.currentStep - 1]"/>
+        <v-row class="d-flex align-stretch mt-3">
+            <!-- Left side -->
+            <v-col cols="9" class="d-flex flex-column">
+                <v-card elevation="4" class="d-flex flex-column rounded-lg " style="min-height: 100%;">
+                    <v-sheet
+                        class="pa-4 mt-lg-4 mt-md-2 mt-sm-1 d-flex flex-column "
+                        style="flex: 1;"
+                    >
+                        <component :is="quizImportStore.mainContentComponents[quizImportStore.currentStep - 1]" />
                     </v-sheet>
                 </v-card>
             </v-col>
-            <v-col cols="3" class="d-flex flex-column fill-height">
-                <v-card elevation="4" class="d-flex flex-column fill-height rounded-lg">
+
+            <!-- Right side -->
+            <v-col cols="3" class="d-flex flex-column">
+                <v-card elevation="4" class="d-flex flex-column rounded-lg" style="min-height: 100%;">
                     <v-stepper-vertical
                         v-model="quizImportStore.currentStep"
                         class="bg-transparent clean-stepper mt-lg-10 mt-md-8 mt-sm-4 ml-4 mb-16"
@@ -78,28 +85,26 @@
                                             :disabled="isNextButtonDisabled(index + 1)"
                                             @click="handleStepperNext(index, next)"
                                         >
-                                            {{ index + 1 === quizImportStore.steps.length ? translate("quizImportWizard.buttons.save") : translate("quizImportWizard.buttons.next") }}
+                                            {{ index + 1 === quizImportStore.steps.length
+                                            ? translate("quizImportWizard.buttons.save")
+                                            : translate("quizImportWizard.buttons.next") }}
                                         </v-btn>
                                     </template>
 
                                     <template v-slot:prev="{ prev }">
-                                        <v-btn
-                                            v-if="index > 0"
-                                            variant="plain"
-                                            @click="prev"
-                                        >
-                                            {{translate("quizImportWizard.buttons.back")}}
+                                        <v-btn v-if="index > 0" variant="plain" @click="prev">
+                                            {{ translate("quizImportWizard.buttons.back") }}
                                         </v-btn>
                                     </template>
                                 </v-stepper-vertical-item>
                             </template>
                         </template>
                     </v-stepper-vertical>
-                    <!-- Empty space filler -->
                     <div style="flex-grow: 1;"></div>
                 </v-card>
             </v-col>
         </v-row>
+
         <!------------------------------------->
     </div>
 
