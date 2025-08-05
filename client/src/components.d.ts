@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AddClientGroupDialog: typeof import('./components/views/seb-server/exam/detail/dialogs/client-group/AddClientGroupDialog.vue')['default']
+    AksDialog: typeof import('./components/views/seb-server/monitoring/overview/dialogs/AksDialog.vue')['default']
     AlertMsg: typeof import('./components/widgets/AlertMsg.vue')['default']
     ApplicationsSearchExamList: typeof import('./components/views/screen-proctoring/applications-search/ApplicationsSearchExamList.vue')['default']
     ApplicationsSearchMetadata: typeof import('./components/views/screen-proctoring/applications-search/ApplicationsSearchMetadata.vue')['default']
