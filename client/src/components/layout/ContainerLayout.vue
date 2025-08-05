@@ -156,7 +156,7 @@
 
                         <v-list class="py-0 bg-primary roles-list-popup">
                             <v-list-item
-                                v-for="role in userRoles"
+                                v-for="role in sortedUserRoles"
                                 :key="role"
                                 class="text-body-2 px-4 "
                             >
@@ -445,6 +445,23 @@
             default: return role;
         }
     }
+
+
+    const rolePriority = [
+        "SEB_SERVER_ADMIN",
+        "INSTITUTIONAL_ADMIN",
+        "EXAM_ADMIN",
+        "EXAM_SUPPORTER",
+        "TEACHER"
+    ];
+
+    const sortedUserRoles = computed(() => {
+        return [...userRoles.value].sort((a, b) => {
+            const indexA = rolePriority.indexOf(a);
+            const indexB = rolePriority.indexOf(b);
+            return indexA - indexB;
+        });
+    });
 
     async function userMenuOpened() {
         await userAccountViewService.setPersonalUserAccount();
