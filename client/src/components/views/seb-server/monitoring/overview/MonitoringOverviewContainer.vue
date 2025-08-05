@@ -26,7 +26,7 @@
                     </v-sheet>
                 </v-col>
 
-                <!-- Notifications -->
+                <!-- Notifications and ask -->
                 <v-col cols="4"
                       >
                     <v-sheet elevation="4" rounded="lg" class="pa-6 h-100">

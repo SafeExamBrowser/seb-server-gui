@@ -6,47 +6,6 @@
                     {{ translate("monitoringOverview.indicators.indicators") }}
                 </div>
 
-
-                <!-- AKS keys -->
-                <v-card
-                    class="rounded-lg mb-3 px-4 py-3 d-flex align-center justify-space-between"
-                    variant="flat"
-                    :hover="true"
-                    :ripple="false"
-                    style="background-color: #f0f0f0;"
-                    @click="openAksDialog()">
-
-
-                    <div class="d-flex align-center">
-                        <!-- Icon Box -->
-                        <div
-                            class="mr-3 d-flex align-center justify-center"
-                            style="width: 52px; height: 52px; border-radius: 10px; padding: 8px; background-color: #f0f0f0"
-                        >
-                            <v-icon size="28" color="#000000">
-                                mdi-shield-key-outline
-                            </v-icon>
-                        </div>
-
-                        <div>
-                            <div class="text-body-2 font-weight-bold text-grey-darken-1">
-                                {{ translate('monitoringOverview.indicators.aksKey') }}
-                            </div>
-                            <div class="font-weight-bold text-body-1">
-                                {{ translate("monitoringOverview.indicators.aksKeyInfo") }}
-                            </div>
-                        </div>
-                    </div>
-
-                    <v-avatar size="45" style="background-color: #BDBDBD;">
-                        <span class="text-white text-subtitle-1 font-weight-bold">
-                          {{ indicators.BATTERY_STATUS?.incident ?? 0 }}
-                        </span>
-                    </v-avatar>
-                </v-card>
-
-
-
                 <!-- Battery Status -->
                 <v-card
                     class="rounded-lg mb-3 px-4 py-3 d-flex align-center justify-space-between"
@@ -133,13 +92,13 @@
             </template>
         </v-col>
     </v-row>
-  <v-dialog v-model="aksDialog" max-width="1200">
-<!--    <AksDialog-->
-<!--        :initalSupervisors="examStore.selectedExamSupervisors"-->
-<!--        @closeSupervisorsDialog="closeSupervisorsDialog"-->
-<!--        @updateExamSupervisors="updateExamSupervisors">-->
-<!--    </AksDialog>-->
+  <v-dialog v-model="askDialog" max-width="1200">
+    <AskDialog
+        :appSignatureKeys="appSignatureKeys"
+        @closeAskDialog="closeAskDialog"
+    />
   </v-dialog>
+
 
 </template>
 
@@ -148,14 +107,17 @@ import { IndicatorEnum, MonitoringHeaderEnum } from "@/models/seb-server/monitor
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import { translate } from "@/utils/generalUtils";
 import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
+import AskDialog from "@/components/views/seb-server/monitoring/overview/dialogs/AskDialog.vue";
 
 const examId = useRoute().params.examId.toString();
 const monitoringStore = useMonitoringStore();
 const indicators = monitoringStore.monitoringOverviewData?.indicators;
+const appSignatureKeys = computed<AppSignatureKey[]>(() => monitoringStore.appSignatureKeys ?? []);
 
-//AKS key Dialog
-const aksDialog = ref<boolean>(false);
+//ASK key Dialog
+const askDialog = ref<boolean>(false);
 
+const askKeyCount = computed(() => appSignatureKeys.value?.length ?? 0);
 
 function getIndicatorCardBackground(key: string): string {
     return getIndicatorIconBackground(key);
@@ -164,7 +126,6 @@ function getIndicatorCardBackground(key: string): string {
 
 function getIndicatorIconColor(key: string): string {
     const hasColor = null //todo add colors
-    console.log("fsdfas" , indicators?.BATTERY_STATUS?.color)
     switch (key) {
         case "BATTERY_STATUS":
             return hasColor ? "#E53935" : "#000000";
@@ -199,11 +160,13 @@ function getIndicatorAvatarColor(key: string): string {
     }
 }
 
-function openAksDialog(){
-    aksDialog.value = true;
+function openAskDialog(){
+    askDialog.value = true;
 }
-function closeSupervisorsDialog(){
-    aksDialog.value = false;
+function closeAskDialog(){
+    askDialog.value = false;
 }
+
+
 
 </script>

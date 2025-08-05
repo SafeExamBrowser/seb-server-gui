@@ -15,11 +15,6 @@
             >
                 {{ translate("monitoringOverview.groups.addGroup") }}
             </v-btn>
-
-
-            {{monitoringStore.selectedExam?.id}}
-
-
         </v-col>
     </v-row>
 

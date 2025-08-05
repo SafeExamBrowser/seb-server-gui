@@ -614,10 +614,14 @@
             "indicators": "Indicators",
             "batteryStatusInfo": "Clients with critical battery level",
             "wlanStatusInfo": "Clients with weak WLAN signal",
-            "aksKey" : "App Signature Keys",
-            "aksKeyInfo" : "Number of connected AKS Keys",
-            "aksKeyDescription" : "The following App Signature Keys (AKS) have connected to this exam:",
-            "aksKeyConnected" : " Connected"
+        },
+        "ask": {
+            "askKey" : "App Signature Keys",
+            "askKeyInfo" : "Number of connected ASK",
+
+
+            "askKeyDescription" : "The following App Signature Keys (ASK) have connected to this exam:",
+            "askKeyConnected" : " Connected"
         }
     },
 

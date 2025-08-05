@@ -8,13 +8,13 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AddClientGroupDialog: typeof import('./components/views/seb-server/exam/detail/dialogs/client-group/AddClientGroupDialog.vue')['default']
-    AksDialog: typeof import('./components/views/seb-server/monitoring/overview/dialogs/AksDialog.vue')['default']
     AlertMsg: typeof import('./components/widgets/AlertMsg.vue')['default']
     ApplicationsSearchExamList: typeof import('./components/views/screen-proctoring/applications-search/ApplicationsSearchExamList.vue')['default']
     ApplicationsSearchMetadata: typeof import('./components/views/screen-proctoring/applications-search/ApplicationsSearchMetadata.vue')['default']
     ApplicationsSearchUserList: typeof import('./components/views/screen-proctoring/applications-search/ApplicationsSearchUserList.vue')['default']
     ApplicationsSearchViewPage: typeof import('./components/views/screen-proctoring/applications-search/ApplicationsSearchViewPage.vue')['default']
     ApplicationsSearchWindowTitle: typeof import('./components/views/screen-proctoring/applications-search/ApplicationsSearchWindowTitle.vue')['default']
+    AskDialog: typeof import('./components/views/seb-server/monitoring/overview/dialogs/AskDialog.vue')['default']
     ClienGroupListDialog: typeof import('./components/views/seb-server/exam/detail/dialogs/client-group/ClienGroupListDialog.vue')['default']
     ClientGroupInfoDialog: typeof import('./components/views/seb-server/monitoring/dialogs/ClientGroupInfoDialog.vue')['default']
     ContainerLayout: typeof import('./components/layout/ContainerLayout.vue')['default']
@@ -71,6 +71,7 @@ declare module 'vue' {
     MonitoringExamsContainer: typeof import('./components/views/seb-server/monitoring/exams/MonitoringExamsContainer.vue')['default']
     MonitoringExamsInfo: typeof import('./components/views/seb-server/monitoring/exams/MonitoringExamsInfo.vue')['default']
     MonitoringExamsMain: typeof import('./components/views/seb-server/monitoring/exams/MonitoringExamsMain.vue')['default']
+    MonitoringOverviewASK: typeof import('./components/views/seb-server/monitoring/overview/MonitoringOverviewASK.vue')['default']
     MonitoringOverviewClients: typeof import('./components/views/seb-server/monitoring/overview/MonitoringOverviewClients.vue')['default']
     MonitoringOverviewContainer: typeof import('./components/views/seb-server/monitoring/overview/MonitoringOverviewContainer.vue')['default']
     MonitoringOverviewGroups: typeof import('./components/views/seb-server/monitoring/overview/MonitoringOverviewGroups.vue')['default']

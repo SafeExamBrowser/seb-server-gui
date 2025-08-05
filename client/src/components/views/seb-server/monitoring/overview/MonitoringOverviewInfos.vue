@@ -40,14 +40,9 @@
                 class="rounded-lg pa-4 d-flex justify-space-between align-center"
             >
                 <!-- Status -->
-                <v-col cols="4">
+                <v-col cols="3">
                     <div class="d-flex align-center" style="margin-right: 24px;">
-                        <div
-                            class="mr-3 d-flex align-center justify-center"
-                            style="width: 52px; height: 52px; background-color: #e0f5ed; border-radius: 10px; padding: 8px;"
-                        >
-                            <v-icon size="28" color="green">mdi-play</v-icon>
-                        </div>
+
                         <div>
                             <div class="text-body-2 font-weight-bold text-grey-darken-1">
                                 {{ translate("monitoringOverview.infos.status") }}
@@ -71,14 +66,9 @@
                 </v-col>
 
                 <!-- Start Date -->
-                <v-col cols="4">
+                <v-col cols="2">
                     <div class="d-flex align-center">
-                        <div
-                            class="mr-3 d-flex align-center justify-center"
-                            style="width: 52px; height: 52px; background-color: #EBEFF7; border-radius: 10px; padding: 8px;"
-                        >
-                            <v-icon size="28" color="#215caf">mdi-calendar-blank</v-icon>
-                        </div>
+
                         <div>
                             <div class="text-body-2 font-weight-bold text-grey-darken-1">
                                 {{ translate("monitoringOverview.infos.start") }}
@@ -91,14 +81,9 @@
                 </v-col>
 
                 <!-- End Date -->
-                <v-col cols="4">
+                <v-col cols="2">
                     <div class="d-flex align-center">
-                        <div
-                            class="mr-3 d-flex align-center justify-center"
-                            style="width: 52px; height: 52px; background-color: #EBEFF7; border-radius: 10px; padding: 8px;"
-                        >
-                            <v-icon size="28" color="#215caf">mdi-calendar-check</v-icon>
-                        </div>
+
                         <div>
                             <div class="text-body-2 font-weight-bold text-grey-darken-1">
                                 {{ translate("monitoringOverview.infos.end") }}
@@ -115,6 +100,12 @@
                             </div>
                         </div>
                     </div>
+                </v-col>
+                <v-col cols="2">
+                </v-col>
+
+                <v-col cols="3">
+                    <MonitoringOverviewASK></MonitoringOverviewASK>
                 </v-col>
             </v-sheet>
         </v-col>
