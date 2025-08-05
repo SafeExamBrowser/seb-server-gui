@@ -20,10 +20,6 @@
             </span>
 
                 <span class="breadcrumb-arrow">›</span>
-
-                <span class="breadcrumb-active">
-                {{ examStore.selectedExam?.quizName }}
-            </span>
             </div>
         </v-col>
 
@@ -43,8 +39,8 @@
 
                         <!------title and headers------->
                         <v-row>
-                            <v-col cols="3" class="primary-text-color text-h5 font-weight-bold">
-                                {{examStore.selectedExam?.quizName}}
+                            <v-col cols="3" class="text-subtitle-1">
+                                {{translate("examDetail.info.url")}}
                             </v-col>
 
                             <v-col cols="2" class="text-subtitle-1">

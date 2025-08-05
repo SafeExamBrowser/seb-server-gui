@@ -12,12 +12,6 @@
 
                 <span class="breadcrumb-arrow">›</span>
 
-                <span
-                    class="breadcrumb-active"
-                    @click="navigateTo(constants.MONITORING_ROUTE)"
-                >
-                {{ translate("titles.monitoring") }}
-                </span>
             </div>
         </v-col>
 

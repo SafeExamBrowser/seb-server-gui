@@ -380,6 +380,7 @@
     },
     "examDetail": {
         "info": {
+            "url" : "Url",
             "start": "Start",
             "end": "End",
             "description": "Description",

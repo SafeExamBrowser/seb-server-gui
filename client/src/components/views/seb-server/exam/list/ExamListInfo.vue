@@ -12,12 +12,7 @@
 
                 <span class="breadcrumb-arrow">›</span>
 
-                <span
-                    class="breadcrumb-active"
-                    @click="navigateTo(constants.EXAM_ROUTE)"
-                >
-                {{ translate("titles.exams") }}
-                </span>
+
             </div>
         </v-col>
 

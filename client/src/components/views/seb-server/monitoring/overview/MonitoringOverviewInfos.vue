@@ -19,6 +19,8 @@
                 >
                 {{ translate("titles.monitoring") }}
                 </span>
+                <span class="breadcrumb-arrow">›</span>
+
             </div>
         </v-col>
 
