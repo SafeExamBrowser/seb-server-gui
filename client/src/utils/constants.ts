@@ -41,6 +41,9 @@ export const MONITORING_DETAILS_ROUTE: string = MONITORING_ROUTE + "/:examId" + 
 export const QUIZ_IMPORT_ROUTE: string = "/quiz-import";
 
 
+export const PLAYGROUND: string = "/playground";
+
+
 //quiz import wizard steps & components
 export function getQuizImportGroupStep(i18nParam?: any | null): ImportWizardSteps{
     if(i18nParam != null){

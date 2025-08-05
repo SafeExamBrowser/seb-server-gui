@@ -66,7 +66,7 @@
             "SEB_SERVER_ADMIN": "Server Administrator",
             "INSTITUTIONAL_ADMIN": "Institutional Administrator",
             "EXAM_ADMIN": "Exam Administrator",
-            "EXAM_SUPPORTER": "Examination Supervisor",
+            "EXAM_SUPPORTER": "Exam Supervisor",
             "TEACHER": "Teacher"
         }
     },
@@ -139,7 +139,7 @@
             "selectExam": "Select Exam",
             "chooseTemplate": "Choose Template",
             "selectGroup": "Select Groups",
-            "addSupervisors": "Add Examination Supervisor",
+            "addSupervisors": "Add Exam Supervisor",
             "quitPassword": "Set Quit Password",
             "configurationSummary": "Configuration Summary",
             "previousStep": "Previous Step",
@@ -197,7 +197,7 @@
             "configurationSummary": "Configuration Summary",
             "examTemplate": "Exam Template",
             "clientGroups": "Groups",
-            "supervisors": "Examination Supervisors",
+            "supervisors": "Exam Supervisors",
             "password": "Quit Password"
         },
         "buttons": {
@@ -397,7 +397,7 @@
         
             "examTemplate": "Exam Template",
 
-            "examSupervisors": "Examination Supervisors",
+            "examSupervisors": "Exam Supervisors",
             "supervisorUsername": "Username",
             "supervisorName": "Name",
             "supervisorSurname": "Surname",

@@ -437,7 +437,7 @@
     function translateRole(role: string): string {
         switch (role) {
             case "EXAM_ADMIN": return "Exam Admin";
-            case "EXAM_SUPPORTER": return "Exam Supporter";
+            case "EXAM_SUPPORTER": return "Exam Supervisor";
             case "SEB_SERVER_ADMIN": return "SEB Server Admin";
             case "INSTITUTIONAL_ADMIN": return "Institutional Admin";
             case "TEACHER": return "Teacher";

@@ -16,6 +16,10 @@
                 {{ translate("monitoringOverview.groups.addGroup") }}
             </v-btn>
 
+
+            {{monitoringStore.selectedExam?.id}}
+
+
         </v-col>
     </v-row>
 
@@ -107,7 +111,7 @@
                             variant="flat"
                             prepend-icon="mdi-monitor-eye"
                             v-if="clientGroupItem.spsGroupUUID"
-                            @click="navigation.openUrlInNewTab(linkService.getGalleryViewLink(clientGroupItem.spsGroupUUID))"
+                            @click="navigation.openUrlInNewTab(linkService.getGalleryViewLink(clientGroupItem.spsGroupUUID, examId))"
                         >
                             {{ translate("monitoringOverview.groups.buttons.proctor") }}
                         </v-btn>
@@ -176,7 +180,7 @@
                         v-if="monitoringStore.monitoringOverviewData?.clientGroups.at(-1)?.spsGroupUUID"
                         @click="navigation.openUrlInNewTab(
                         linkService.getGalleryViewLink(
-                          monitoringStore.monitoringOverviewData.clientGroups.at(-1)?.spsGroupUUID ?? ''
+                          monitoringStore.monitoringOverviewData.clientGroups.at(-1)?.spsGroupUUID ?? '' , examId
                         )
 
           )"
