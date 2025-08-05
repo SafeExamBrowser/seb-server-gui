@@ -142,7 +142,7 @@
                                 v-bind="props"
                                 class="user-role-badge text-white bg-primary d-flex align-center justify-center px-3 py-1 role-badge-wrappe"
                             >
-                                <span class="mx-auto">Roles</span>
+                            <span class="mx-auto">{{ translateRole(sortedUserRoles[0]) }}</span>
                                 <v-icon
                                     size="small"
                                     class="fade-in-arrow"
