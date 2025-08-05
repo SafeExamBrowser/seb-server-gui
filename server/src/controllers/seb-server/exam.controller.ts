@@ -13,6 +13,16 @@ export async function getExam(req: Request, res: Response){
     }
 }
 
+export async function getExamAppSignatureKeys(req: Request, res: Response){
+    try{
+        const [AppSignatureKeys, status] = await examService.getExamAppSignatureKeys(req.headers.authorization, req.params.id);
+        return res.status(status).json(AppSignatureKeys);
+
+    }catch(error){
+        apiService.handleGenericApiError(error, res);
+    }
+}
+
 export async function getExamConfigurationMap(req: Request, res: Response){
     try{
         const [examConfigurationMap, status] = await examService.getExamConfigurationMap(req.headers.authorization, req.params.id, req.query.optionalParameters);

@@ -18,9 +18,19 @@ export async function getExam(id: string): Promise<Exam | null>{
     }
 }
 
+
+export async function getExamAppSignatureKeys(id: string): Promise<AppSignatureKey[] | null>{
+    try{
+        return await examService.getExamAppSignatureKeys(id);
+    }catch(error){
+        return null;
+    }
+}
+
+
 export async function hasSEBLock(id: string): Promise<boolean>{
     try{
-        return await examService.checkSEBLock(id);    
+        return await examService.checkSEBLock(id);
     }catch(error){
         return false;
     }

@@ -82,6 +82,8 @@ onBeforeMount(async () => {
 
     await monitoringViewService.getExamAndStore(examId);
     await getOverviewData();
+    await monitoringViewService.getAksAndStore(examId);
+    console.log("AKS KEYS: " , monitoringStore.appSignatureKeys)
     // setRandomData();
     monitoringStore.selectedExam?.additionalAttributes
     startIntervalRefresh()

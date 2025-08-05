@@ -41,6 +41,7 @@ router.delete(constants.EXAM_ROUTE + "/:id", examController.deleteExam);
 router.put(constants.EXAM_ROUTE + "/:id", examController.updateExam);
 router.patch(constants.EXAM_ARCHIVE_ROUTE, examController.archiveExam)
 router.get(constants.EXAM_GET_ROUTE + "/:id", examController.getExam);
+router.get(constants.EXAM_ROUTE + "/:id" + constants.KEY_INFO_ROUTE, examController.getExamAppSignatureKeys);
 router.get(constants.EXAM_CONFIGURATION_MAP_ROUTE + "/:id", examController.getExamConfigurationMap);
 router.get(constants.EXAMS_ROUTE + "/monitoring", examController.getExamsForMonitoring);
 

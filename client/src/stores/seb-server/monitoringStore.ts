@@ -26,6 +26,7 @@ export const useMonitoringStore = defineStore("monitoring", () => {
     const currentMonitoringQuery = ref<{}>();
     const batteryIndicatorId = ref<number | null>(null);
     const wlanIndicatorId = ref<number | null>(null);
+    const appSignatureKeys = ref<AppSignatureKey[] | null>(null);
 
 
     //monitoring detail
@@ -59,6 +60,7 @@ export const useMonitoringStore = defineStore("monitoring", () => {
         selectedExam,
         monitoringOverviewData,
         indicators,
+        appSignatureKeys,
         clientGroups,
         selectedMonitoringIds,
         clearValues,
