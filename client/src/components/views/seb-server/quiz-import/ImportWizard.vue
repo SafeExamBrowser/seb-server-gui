@@ -53,10 +53,10 @@
         <v-row class="d-flex align-stretch mt-3">
             <!-- Left side -->
             <v-col cols="9" class="d-flex flex-column">
-                <v-card elevation="4" class="d-flex flex-column rounded-lg " style="min-height: 100%;">
+                <v-card elevation="4" class="d-flex flex-column rounded-lg "   style="min-height: 63vh;">
                     <v-sheet
-                        class="pa-4 mt-lg-4 mt-md-2 mt-sm-1 d-flex flex-column "
-                        style="flex: 1;"
+                        class="pa-4 mt-lg-4 mt-md-2 mt-sm-1 d-flex flex-column flex-grow-1"
+                        style="overflow-y: hidden;"
                     >
                         <component :is="quizImportStore.mainContentComponents[quizImportStore.currentStep - 1]" />
                     </v-sheet>
@@ -65,7 +65,7 @@
 
             <!-- Right side -->
             <v-col cols="3" class="d-flex flex-column">
-                <v-card elevation="4" class="d-flex flex-column rounded-lg" style="min-height: 100%;">
+                <v-card elevation="4" class="d-flex flex-column rounded-lg"   style="min-height: 63vh;">
                     <v-stepper-vertical
                         v-model="quizImportStore.currentStep"
                         class="bg-transparent clean-stepper mt-lg-10 mt-md-8 mt-sm-4 ml-4 mb-16"
@@ -78,6 +78,8 @@
                                     :value="index + 1"
                                     :title="stepItem.name"
                                     :complete="step > index + 1"
+                                    color="#215CAF"
+
                                 >
                                     <template v-slot:next="{ next }">
                                         <v-btn
@@ -124,6 +126,7 @@ import * as quizImportWizardViewService from "@/services/seb-server/component-se
 import {navigateTo} from "@/router/navigation";
 import {useExamStore} from "@/stores/seb-server/examStore";
 import {QUIZ_IMPORT_ROUTE} from "@/utils/constants";
+import MonitoringExamsMain from "@/components/views/seb-server/monitoring/exams/MonitoringExamsMain.vue";
 
 //i18n
 const i18n = useI18n();
@@ -203,7 +206,7 @@ async function loadAssessmentToolSelection() {
     quizImportStore.availableAssessmentTools = activeAssessmentTools;
     quizImportStore.forceNewSearch = true;
 
-    //if more then one assessment tools connected --> show selection
+    //if more than one assessment tools connected --> show selection
     if (quizImportStore.availableAssessmentTools.content.length == 1) {
         //if only 1 connected --> select assessment tool & remove components from wizard
         quizImportStore.selectedAssessmentTool = activeAssessmentTools.content[0].id;

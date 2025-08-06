@@ -176,6 +176,7 @@
         },
 
         "templateMain": {
+            "title" : "Select Exam Template",
             "description": "Click on the Exam Template you want to use for the exam",
             "templateInfo": "Open template info",
             "templateSelect": "Select template"
@@ -189,7 +190,12 @@
         },
 
         "supervisorsMain": {
+            "searchButton" : "Search",
+            "cancelButton" : "Cancel",
+            "title" : "Assign Supervisors",
+            "description": "Select staff members to supervise this examination.",
             "search": "Search",
+            "availableSupervisors" : "Available Supervisors",
             "selectedSupervisors": "Selected Supervisors",
             "tableHeaderName": "Name"
         },

@@ -1,107 +1,108 @@
 <template>
-    <v-row>
-        <v-col>
-            <div class="text-h6 font-weight-bold mb-1">
-                {{ translate("quizImportWizard.examMain.title") }}
-            </div>
-            <div class="mb-10 text-body-2">
-                {{ translate("quizImportWizard.examMain.description") }}
-            </div>
+    <div class="h-100 w-100">
 
-            <v-form @keyup.enter="loadExamItemsCaller()" @keyup.esc="clearForm()">
-                <v-row dense  align="center" class="mt-3">
-                    <v-col cols="12" md="8">
-                        <div class="text-body-2">
-                            {{ translate("quizImportWizard.examMain.searchName") }}
-                        </div>
-                    </v-col>
-                    <v-col cols="12" md="4">
-                        <div class="text-body-2 ml-3">
-                            {{ translate("quizImportWizard.examMain.filterDate") }}
-                        </div>
-                    </v-col>
-                </v-row>
+        <v-row>
+            <v-col>
+                <div class="text-h6 font-weight-bold mb-1">
+                    {{ translate("quizImportWizard.examMain.title") }}
+                </div>
+                <div class="mb-10 text-body-2">
+                    {{ translate("quizImportWizard.examMain.description") }}
+                </div>
+
+                <v-form @keyup.enter="loadExamItemsCaller()" @keyup.esc="clearForm()">
+                    <v-row dense align="center" class="mt-3">
+                        <v-col cols="12" md="8">
+                            <div class="text-body-2">
+                                {{ translate("quizImportWizard.examMain.searchName") }}
+                            </div>
+                        </v-col>
+                        <v-col cols="12" md="4">
+                            <div class="text-body-2 ml-3">
+                                {{ translate("quizImportWizard.examMain.filterDate") }}
+                            </div>
+                        </v-col>
+                    </v-row>
 
 
+                    <v-row dense class="mb-6" align="center">
+                        <!-- Search -->
+                        <v-col cols="12" md="8">
+                            <v-text-field
+                                v-model="quizImportStore.searchField"
+                                single-line
+                                hide-details
+                                density="compact"
+                                variant="outlined"
+                                append-inner-icon="mdi-magnify"
+                                :placeholder="translate('quizImportWizard.examMain.examName')"
+                            />
+                        </v-col>
 
-                <v-row dense class="mb-6" align="center">
-                    <!-- Search -->
-                    <v-col cols="12" md="8">
-                        <v-text-field
-                            v-model="quizImportStore.searchField"
-                            single-line
-                            hide-details
-                            density="compact"
-                            variant="outlined"
-                            append-inner-icon="mdi-magnify"
-                            :placeholder="translate('quizImportWizard.examMain.examName')"
+                        <!-- Date -->
+                        <v-col cols="12" md="4">
+                            <v-date-input
+                                single-line
+                                hide-details
+                                v-model="datepicker"
+                                density="compact"
+                                variant="outlined"
+                                placeholder="dd.MM.yyyy"
+                                display-date-format="dd.MM.yyyy"
+                                input-format="dd.MM.yyyy"
+                                prepend-icon=""
+                                append-inner-icon="mdi-calendar"
+                                class="ml-3">
+                            </v-date-input>
+                        </v-col>
+                    </v-row>
+                </v-form>
+            </v-col>
+        </v-row>
+
+        <v-row>
+            <v-col>
+                <v-data-table-server
+                    item-value="quiz_id"
+                    @update:options="loadItems"
+                    :hover="true"
+                    :loading="isLoading"
+                    :loading-text="translate('general.loadingText')"
+                    :items="quizzes?.content"
+                    :items-length="totalItems"
+                    :items-per-page="tableUtils.calcDefaultItemsPerPage(totalItems)"
+                    :items-per-page-options="tableUtils.calcItemsPerPage(totalItems)"
+                    :headers="quizzesTableHeaders"
+                    class="elevation-1 rounded-lg"
+                >
+                    <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort }">
+                        <TableHeaders
+                            :columns="columns"
+                            :is-sorted="isSorted"
+                            :get-sort-icon="getSortIcon"
+                            :toggle-sort="toggleSort"
+                            :header-refs-prop="quizzesTableHeadersRef"
                         />
-                    </v-col>
+                    </template>
 
-                    <!-- Date -->
-                    <v-col cols="12" md="4">
-                        <v-date-input
-                            single-line
-                            hide-details
-                            v-model="datepicker"
-                            density="compact"
-                            variant="outlined"
-                            placeholder="dd.MM.yyyy"
-                            display-date-format="dd.MM.yyyy"
-                            input-format="dd.MM.yyyy"
-                            prepend-icon=""
-                            append-inner-icon="mdi-calendar"
-                            class="ml-3">
-                        </v-date-input>
-                    </v-col>
-                </v-row>
-            </v-form>
-        </v-col>
-    </v-row>
-
-    <v-row>
-        <v-col>
-            <v-data-table-server
-                item-value="quiz_id"
-                @update:options="loadItems"
-                :hover="true"
-                :loading="isLoading"
-                :loading-text="translate('general.loadingText')"
-                :items="quizzes?.content"
-                :items-length="totalItems"
-                :items-per-page="tableUtils.calcDefaultItemsPerPage(totalItems)"
-                :items-per-page-options="tableUtils.calcItemsPerPage(totalItems)"
-                :headers="quizzesTableHeaders"
-                class="elevation-1 rounded-lg"
-            >
-                <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort }">
-                    <TableHeaders
-                        :columns="columns"
-                        :is-sorted="isSorted"
-                        :get-sort-icon="getSortIcon"
-                        :toggle-sort="toggleSort"
-                        :header-refs-prop="quizzesTableHeadersRef"
-                    />
-                </template>
-
-                <template v-slot:item="{ item }">
-                    <tr
-                        tabindex="0"
-                        @keyup.enter="onTableRowClick(item)"
-                        @click="onTableRowClick(item)"
-                        class="on-row-hover"
-                        :class="[quizImportStore.selectedQuiz?.quiz_id === item.quiz_id ? 'selected-row' : '']"
-                    >
-                        <td>{{ item.quiz_name }}</td>
-                        <td>{{ timeUtils.formatIsoToReadableDateTime(item.quiz_start_time) }}</td>
-                        <td>{{ timeUtils.formatIsoToReadableDateTime(item.quiz_end_time) }}</td>
-                    </tr>
-                </template>
-            </v-data-table-server>
-        </v-col>
-    </v-row>
+                    <template v-slot:item="{ item }">
+                        <tr
+                            tabindex="0"
+                            @keyup.enter="onTableRowClick(item)"
+                            @click="onTableRowClick(item)"
+                            class="on-row-hover"
+                            :class="[quizImportStore.selectedQuiz?.quiz_id === item.quiz_id ? 'selected-row' : '']"
+                        >
+                            <td>{{ item.quiz_name }}</td>
+                            <td>{{ timeUtils.formatIsoToReadableDateTime(item.quiz_start_time) }}</td>
+                            <td>{{ timeUtils.formatIsoToReadableDateTime(item.quiz_end_time) }}</td>
+                        </tr>
+                    </template>
+                </v-data-table-server>
+            </v-col>
+        </v-row>
+    </div>
 </template>
-
 
 
 <script setup lang="ts">
@@ -113,7 +114,7 @@ import {useQuizImportStore} from "@/stores/seb-server/quizImportStore";
 import {storeToRefs} from "pinia";
 import {translate} from "@/utils/generalUtils";
 import {wait} from "@/utils/generalUtils";
-import { VDateInput } from "vuetify/labs/VDateInput";
+import {VDateInput} from "vuetify/labs/VDateInput";
 
 
 //stores
@@ -136,7 +137,6 @@ const quizzesTableHeaders = ref([
     {title: translate("quizImportWizard.examMain.tableHeaderStart"), key: "quiz_start_time", width: "20%"},
     {title: translate("quizImportWizard.examMain.tableHeaderEnd"), key: "quiz_end_time", width: "20%"},
 ]);
-
 
 
 //emits - call loadExamItemsCaller in parent
@@ -272,8 +272,8 @@ function finishFatching() {
     fetching = false;
 }
 
-function loadExamItemsCaller(){
-    if(datepicker != null && datepicker.value != null){
+function loadExamItemsCaller() {
+    if (datepicker != null && datepicker.value != null) {
         quizImportStore.startTimestamp = datepicker.value.getTime();
     }
 
@@ -283,7 +283,7 @@ function loadExamItemsCaller(){
     }
 }
 
-function clearForm(){
+function clearForm() {
     quizImportStore.searchField = "";
     datepicker.value = null;
     quizImportStore.startTimestamp = null;
