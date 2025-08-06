@@ -165,10 +165,6 @@ const filteredAvailableSupervisors = computed(() => {
         });
 });
 
-
-
-
-
 //=======================events & watchers=======================
 onBeforeMount(async () => {
     const userAccountNamesResponse: UserAccountName[] | null = await userAccountViewService.getSupervisorNames({institutionId: userAccountStore.userAccount?.institutionId});
