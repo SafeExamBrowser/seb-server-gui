@@ -165,9 +165,14 @@
         },
 
         "examMain": {
+            "title" : "Select Exam",
+            "description" : "Select an exam from your Learning Management System to import the questions and structure.",
             "tableHeaderName": "Name",
             "tableHeaderStart": "Start",
-            "tableHeaderEnd": "End"
+            "tableHeaderEnd": "End",
+            "examName" : "Exam Name",
+            "filterDate" : "Filter By Date",
+            "searchName" : "Search by Name"
         },
 
         "templateMain": {
