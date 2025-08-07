@@ -65,7 +65,7 @@
 
             <!-- Right side -->
             <v-col cols="3" class="d-flex flex-column">
-                <v-card elevation="4" class="d-flex flex-column rounded-lg"   style="min-height: 63vh;">
+                <v-card elevation="4" class="d-flex flex-column rounded-lg"   style="min-height: 100%;">
                     <v-stepper-vertical
                         v-model="quizImportStore.currentStep"
                         class="bg-transparent clean-stepper mt-lg-10 mt-md-8 mt-sm-4 ml-4 mb-16"

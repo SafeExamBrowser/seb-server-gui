@@ -204,7 +204,7 @@
             "password": "Password",
             "title" : "Set Quit Password",
             "quitPassword" : "Quit Password",
-            "description" : "Set a quit password to prevent unauthorized exits and allow early exam termination if needed.",
+            "description" : "Set the quit password, otherwise a student can easily quit SEB.",
             "warning" : "This password should be kept confidential and shared only with exam supervisors"
         },
 
@@ -216,7 +216,9 @@
             "templateName": "Template Name:",
             "clientGroups": "Groups",
             "supervisors": "Exam Supervisors",
-            "password": "Quit Password"
+            "password": "Quit Password",
+            "clientGroup": "Client Group"
+
         },
         "buttons": {
             "back" : "back",

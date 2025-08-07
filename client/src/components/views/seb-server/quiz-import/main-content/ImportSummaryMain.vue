@@ -51,7 +51,7 @@
                     >
                         <v-row>
                             <v-col cols="4">
-                                <span class="summary-label">Client Group:</span>
+                                <span class="summary-label">{{ translate("quizImportWizard.summaryMain.clientGroup") }}</span>
                             </v-col>
                             <v-col>
                                 <span>{{ clientGroup.name }}</span>
@@ -90,7 +90,7 @@
                     <div class="summary-row">
                         <v-row class="align-center">
                             <v-col cols="4">
-                                <span class="summary-label">Quit Password:</span>
+                                <span class="summary-label"> {{ translate("quizImportWizard.passwordMain.quitPassword") }}</span>
                             </v-col>
                             <v-col class="d-flex align-center">
                                 <span>{{ passwordVisible ? quizImportStore.selectedQuitPassword : maskedPassword }}</span>

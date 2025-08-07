@@ -35,7 +35,7 @@
 
                             <!------start time------->
                             <v-col cols="2" class="primary-text-color text-h6 font-weight-bold">
-                                {{timeUtils.formatIsoDateToFullDate(quizImportStore.selectedQuiz?.quiz_start_time)}}
+                                {{timeUtils.formatIsoToReadableDateTime(quizImportStore.selectedQuiz?.quiz_start_time)}}
                             </v-col>
 
                             <!------end time------->
@@ -44,7 +44,7 @@
                                     -
                                 </template>
                                 <template v-else>
-                                    {{timeUtils.formatIsoDateToFullDate(quizImportStore.selectedQuiz?.quiz_end_time)}}
+                                    {{timeUtils.formatIsoToReadableDateTime(quizImportStore.selectedQuiz?.quiz_end_time)}}
                                 </template>
                             </v-col>
 

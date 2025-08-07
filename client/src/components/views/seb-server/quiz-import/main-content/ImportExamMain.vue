@@ -12,22 +12,23 @@
 
                 <v-form @keyup.enter="loadExamItemsCaller()" @keyup.esc="clearForm()">
                     <v-row dense align="center" class="mt-3">
-                        <v-col cols="12" md="8">
+                        <v-col cols="5" md="5">
                             <div class="text-body-2">
                                 {{ translate("quizImportWizard.examMain.searchName") }}
                             </div>
                         </v-col>
-                        <v-col cols="12" md="4">
+                        <v-col cols="3" md="3">
                             <div class="text-body-2 ml-3">
                                 {{ translate("quizImportWizard.examMain.filterDate") }}
                             </div>
                         </v-col>
+                        <v-spacer></v-spacer>
                     </v-row>
 
 
                     <v-row dense class="mb-6" align="center">
                         <!-- Search -->
-                        <v-col cols="12" md="8">
+                        <v-col cols="5" md="5">
                             <v-text-field
                                 v-model="quizImportStore.searchField"
                                 single-line
@@ -40,7 +41,7 @@
                         </v-col>
 
                         <!-- Date -->
-                        <v-col cols="12" md="4">
+                        <v-col cols="3" md="3">
                             <v-date-input
                                 single-line
                                 hide-details
@@ -55,6 +56,32 @@
                                 class="ml-3">
                             </v-date-input>
                         </v-col>
+
+                        <v-col cols="2">
+                            <v-btn
+                                block
+                                color="primary"
+                                variant="flat"
+                                class="rounded"
+                                @click="loadExamItemsCaller()"
+                            >
+                                {{ translate("general.searchButton") }}
+                            </v-btn>
+                        </v-col>
+                        <v-col cols="2">
+
+                            <v-btn
+                                block
+                                color="black"
+                                variant="outlined"
+                                class="rounded ml-0"
+                                @click="clearForm()"
+                            >
+                                {{ translate("general.cancelButton") }}
+                            </v-btn>
+                        </v-col>
+
+
                     </v-row>
                 </v-form>
             </v-col>
@@ -157,9 +184,6 @@ watch(quizImportStoreRef.selectedAssessmentTool, () => {
     if (quizImportStore.currentPagingOptions == null) {
         return;
     }
-
-    console.log("********* selectedAssessmentTool");
-
     loadItems(quizImportStore.currentPagingOptions);
 });
 
@@ -172,9 +196,6 @@ watch(quizImportStoreRef.loadExamItemsCaller, () => {
     if (quizImportStore.currentPagingOptions.itemsPerPage == 0) {
         quizImportStore.currentPagingOptions.itemsPerPage = 10;
     }
-
-    console.log("********* loadExamItemsCaller");
-
     loadItems(quizImportStore.currentPagingOptions);
 });
 
