@@ -2,8 +2,8 @@
     <v-row>
         <v-col>
             <v-sheet elevation="4" class="rounded-lg pl-4 pt-3 pr-4">
-                <v-row class="fill-height" align="center">
-                    <v-col>
+                <v-row class="fill-height min-height" align="center">
+                    <v-col v-if="quizImportStore.selectedQuiz">
 
                         <!------title and headers------->
                         <v-row>
@@ -18,10 +18,7 @@
                             <v-col cols="2" class="text-subtitle-1">
                                 {{translate("quizImportWizard.genericInfo.end")}}
                             </v-col>
-
-                            <v-col cols="3" class="text-subtitle-1">
-                                {{translate("quizImportWizard.genericInfo.description")}}
-                            </v-col>
+                            <v-spacer/>
                         </v-row>
 
                         <!------url and values------->
@@ -48,15 +45,7 @@
                                 </template>
                             </v-col>
 
-                            <!------description------->
-                            <v-col cols="5">
-                                <template v-if="quizImportStore.selectedQuiz?.quiz_description == null || ''">
-                                    -
-                                </template>
-                                <template v-else>
-                                    <span v-html="quizImportStore.selectedQuiz?.quiz_description"></span>
-                                </template>
-                            </v-col>
+                            <v-spacer/>
                         </v-row>
 
                     </v-col>
@@ -79,7 +68,9 @@
 </script>
 
 <style scoped>
-
+.min-height {
+    min-height: 10vh;
+}
 
 
 </style>
