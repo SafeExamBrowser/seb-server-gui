@@ -106,7 +106,7 @@
                             variant="flat"
                             prepend-icon="mdi-monitor-eye"
                             v-if="clientGroupItem.spsGroupUUID"
-                            @click="navigation.openUrlInNewTab(linkService.getGalleryViewLink(clientGroupItem.spsGroupUUID, examId))"
+                            @click="navigation.openUrlInNewTab(linkService.getGalleryViewLinkByExamId(clientGroupItem.spsGroupUUID, examId))"
                         >
                             {{ translate("monitoringOverview.groups.buttons.proctor") }}
                         </v-btn>
@@ -174,7 +174,7 @@
                         prepend-icon="mdi-monitor-eye"
                         v-if="monitoringStore.monitoringOverviewData?.clientGroups.at(-1)?.spsGroupUUID"
                         @click="navigation.openUrlInNewTab(
-                        linkService.getGalleryViewLink(
+                        linkService.getGalleryViewLinkByExamId(
                           monitoringStore.monitoringOverviewData.clientGroups.at(-1)?.spsGroupUUID ?? '' , examId
                         )
 
