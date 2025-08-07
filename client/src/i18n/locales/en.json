@@ -166,7 +166,7 @@
 
         "examMain": {
             "title" : "Select Exam",
-            "description" : "Select an exam from your Learning Management System to import the questions and structure.",
+            "description" : "Search and select the exam you want to prepare",
             "tableHeaderName": "Name",
             "tableHeaderStart": "Start",
             "tableHeaderEnd": "End",
@@ -177,7 +177,7 @@
 
         "templateMain": {
             "title" : "Select Exam Template",
-            "description": "Click on the Exam Template you want to use for the exam",
+            "description": "Click on the Exam Template you want to use for the exam.",
             "templateInfo": "Open template info",
             "templateSelect": "Select template"
         },
@@ -201,12 +201,19 @@
         },
 
         "passwordMain": {
-            "password": "Password"
+            "password": "Password",
+            "title" : "Set Quit Password",
+            "quitPassword" : "Quit Password",
+            "description" : "Set a quit password to prevent unauthorized exits and allow early exam termination if needed.",
+            "warning" : "This password should be kept confidential and shared only with exam supervisors"
         },
 
         "summaryMain": {
+            "title" : "Configuration Summary",
+            "description" : "Review your exam configuration before finalizing.",
             "configurationSummary": "Configuration Summary",
             "examTemplate": "Exam Template",
+            "templateName": "Template Name:",
             "clientGroups": "Groups",
             "supervisors": "Exam Supervisors",
             "password": "Quit Password"

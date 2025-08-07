@@ -1,144 +1,167 @@
 <template>
-    <v-row>
-        <v-spacer></v-spacer>
-        <v-col cols="8" xl="6">
-            <!--------Title------>
-            <v-row class="mb-10">
-                <v-col>
-                    <div class="primary-text-color text-h6 font-weight-bold">
-                        {{translate("quizImportWizard.summaryMain.configurationSummary")}}
+    <div class="h-100 w-100">
+        <!-- Title and Description -->
+        <v-row dense>
+            <v-col>
+                <div class="text-h6 font-weight-bold mb-1">
+                    {{ translate("quizImportWizard.summaryMain.title") }}
+                </div>
+                <div class="mb-3 text-body-2">
+                    {{ translate("quizImportWizard.summaryMain.description") }}
+                </div>
+            </v-col>
+        </v-row>
+
+        <v-row>
+            <v-col cols="12">
+                <!-- Template -->
+                <v-row>
+                    <v-col>
+                        <div class="text-subtitle-1 font-weight-medium mb-2">
+                            {{ translate("quizImportWizard.summaryMain.examTemplate") }}
+                        </div>
+                    </v-col>
+                </v-row>
+                <div class="summary-box mb-10">
+                    <div class="summary-row">
+                        <v-row>
+                            <v-col cols="4">
+                                <span class="summary-label">{{ translate("quizImportWizard.summaryMain.templateName") }}</span>
+                            </v-col>
+                            <v-col>
+                                <span>{{ quizImportStore.selectedExamTemplate?.name }}</span>
+                            </v-col>
+                        </v-row>
                     </div>
-                    <v-divider class="border-opacity-25" :thickness="2"></v-divider>
-                </v-col>
-            </v-row>
+                </div>
 
-            <!--------Template------>
-            <v-row>
-                <v-col>
-                    <div class="primary-text-color text-subtitle-1">
-                        {{translate("quizImportWizard.summaryMain.examTemplate")}}
+                <!-- Client Groups -->
+                <v-row v-if="quizImportStore.selectedClientGroups.length">
+                    <v-col>
+                        <div class="text-subtitle-1 font-weight-medium mb-2">
+                            {{ translate("quizImportWizard.summaryMain.clientGroups") }}
+                        </div>
+                    </v-col>
+                </v-row>
+                <div v-if="quizImportStore.selectedClientGroups.length" class="summary-box mb-10">
+                    <div
+                        v-for="clientGroup in quizImportStore.selectedClientGroups"
+                        :key="clientGroup.id"
+                        class="summary-row"
+                    >
+                        <v-row>
+                            <v-col cols="4">
+                                <span class="summary-label">Client Group:</span>
+                            </v-col>
+                            <v-col>
+                                <span>{{ clientGroup.name }}</span>
+                            </v-col>
+                        </v-row>
                     </div>
-                    <v-divider class="border-opacity-25" :thickness="2"></v-divider>
-                </v-col>
-            </v-row>
-            <v-row class="mb-10">
-                <v-col>
-                    {{ quizImportStore.selectedExamTemplate?.name }}
-                </v-col>
-            </v-row>
+                </div>
 
-            <!--------client groups------>
-            <v-row v-if="quizImportStore.selectedClientGroups.length != 0">
-                <v-col>
-                    <div class="primary-text-color text-subtitle-1">
-                        {{translate("quizImportWizard.summaryMain.clientGroups")}}
+                <!-- Supervisors -->
+                <v-row>
+                    <v-col>
+                        <div class="text-subtitle-1 font-weight-medium mb-2">
+                            {{ translate("quizImportWizard.summaryMain.supervisors") }}
+                        </div>
+                    </v-col>
+                </v-row>
+                <div class="summary-box mb-10">
+                    <div
+                        v-for="supervisor in quizImportStore.selectedExamSupervisors"
+                        :key="supervisor.modelId"
+                        class="summary-row"
+                    >
+                        <span>{{ supervisor.name }}</span>
                     </div>
-                    <v-divider class="border-opacity-25" :thickness="2"></v-divider>
-                </v-col>
-            </v-row>
-            <v-row v-if="quizImportStore.selectedClientGroups.length != 0" class="mb-10">
-                <v-col>
-                    <v-list>
-                        <template
-                            v-for="clientGroup in quizImportStore.selectedClientGroups"
-                            :key="clientGroup.id"
-                            :value="clientGroup.id">
+                </div>
 
-                            <v-list-item>
-                                <v-list-item-title>{{ clientGroup.name }}</v-list-item-title>
-                            </v-list-item>
-
-                            <v-divider class="border-opacity-25" :thickness="2"></v-divider>
-
-                        </template>
-                    </v-list>
-                </v-col>
-            </v-row>
-
-            <!--------supervisors------>
-            <v-row>
-                <v-col>
-                    <div class="primary-text-color text-subtitle-1">
-                        {{translate("quizImportWizard.summaryMain.supervisors")}}
+                <!-- Quit Password -->
+                <v-row>
+                    <v-col>
+                        <div class="text-subtitle-1 font-weight-medium mb-2">
+                            {{ translate("quizImportWizard.summaryMain.password") }}
+                        </div>
+                    </v-col>
+                </v-row>
+                <div class="summary-box">
+                    <div class="summary-row">
+                        <v-row class="align-center">
+                            <v-col cols="4">
+                                <span class="summary-label">Quit Password:</span>
+                            </v-col>
+                            <v-col class="d-flex align-center">
+                                <span>{{ passwordVisible ? quizImportStore.selectedQuitPassword : maskedPassword }}</span>
+                                <v-btn
+                                    size="small"
+                                    icon
+                                    variant="text"
+                                    @click="passwordVisible = !passwordVisible"
+                                >
+                                    <v-icon>
+                                        {{ passwordVisible ? 'mdi-eye-off' : 'mdi-eye' }}
+                                    </v-icon>
+                                </v-btn>
+                            </v-col>
+                        </v-row>
                     </div>
-                    <v-divider class="border-opacity-25" :thickness="2"></v-divider>
-                </v-col>
-            </v-row>
-            <v-row class="mb-10">
-                <v-col>
-                    <v-list>
-                        <template
-                            v-for="supervisor in quizImportStore.selectedExamSupervisors"
-                            :key="supervisor.modelId"
-                            :value="supervisor.modelId">
-
-                            <v-list-item>
-                                <v-list-item-title>{{ supervisor.name }}</v-list-item-title>
-                            </v-list-item>
-
-                            <v-divider class="border-opacity-25" :thickness="2"></v-divider>
-
-                        </template>
-                    </v-list>
-                </v-col>
-            </v-row>
-
-            <!--------quit password------>
-            <v-row>
-                <v-col>
-                    <div class="primary-text-color text-subtitle-1">
-                        {{translate("quizImportWizard.summaryMain.password")}}
-                    </div>
-                    <v-divider class="border-opacity-25" :thickness="2"></v-divider>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col>
-                    <v-text-field
-                        :type="passwordVisible ? 'text' : 'password'"
-                        prepend-inner-icon="mdi-lock-outline"
-                        density="compact"
-                        :placeholder="translate('quizImportWizard.passwordMain.password')"
-                        variant="outlined"
-                        v-model="quizImportStore.selectedQuitPassword"
-                        readonly>
-
-                        <template v-slot:append-inner>
-                            <v-btn
-                                density="compact"
-                                variant="text"
-                                :icon="passwordVisible ? 'mdi-eye-off' : 'mdi-eye'"
-                                @click="passwordVisible = !passwordVisible">
-                            </v-btn>
-                        </template>
-
-                    </v-text-field>
-                </v-col>
-            </v-row>
-        </v-col>
-        <v-spacer></v-spacer>
-    </v-row>
+                </div>
+            </v-col>
+        </v-row>
+    </div>
 </template>
 
 
+
 <script setup lang="ts">
-    import * as quizImportWizardViewService from "@/services/seb-server/component-services/quizImportWizardViewService";
-    import { useQuizImportStore } from "@/stores/seb-server/quizImportStore";
-    import { useExamStore } from '@/stores/seb-server/examStore';
-    import {navigateTo} from "@/router/navigation";
-    import * as constants from "@/utils/constants";
-    import {translate} from "@/utils/generalUtils";
-    import * as generalUtils from "@/utils/generalUtils";
+import * as quizImportWizardViewService from "@/services/seb-server/component-services/quizImportWizardViewService";
+import {useQuizImportStore} from "@/stores/seb-server/quizImportStore";
+import {useExamStore} from '@/stores/seb-server/examStore';
+import {navigateTo} from "@/router/navigation";
+import * as constants from "@/utils/constants";
+import {translate} from "@/utils/generalUtils";
+import * as generalUtils from "@/utils/generalUtils";
 
 
-    //stores
-    const quizImportStore = useQuizImportStore();
+//stores
+const quizImportStore = useQuizImportStore();
 
-    //pw field
-    const passwordVisible = ref<boolean>(false);
+//pw field
+const passwordVisible = ref<boolean>(false);
+
+const maskedPassword = computed(() =>
+    quizImportStore.selectedQuitPassword?.replace(/./g, "•") || ""
+);
 
 </script>
 
+<style scoped>
+.summary-box {
+    background-color: #f9fafb;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.summary-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #1f2937;
+    margin-bottom: 8px;
+}
+
+.summary-label {
+    font-weight: 600;
+    margin-right: 8px;
+}
+
+.v-btn {
+    margin-left: 12px;
+}
+</style>
 
 
 <style scoped>
