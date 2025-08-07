@@ -12,7 +12,7 @@
             <v-row>
                 <v-col cols="12">
                     <div class="dashboard-toolbar">
-                        <v-btn color="primary" @click="addWidget">Add Widget</v-btn>
+<!--                        <v-btn color="primary" @click="addWidget">Add Widget</v-btn>-->
                         <v-btn color="error" @click="clearWidgets">Clear All</v-btn>
                     </div>
                     <div class="grid-stack"></div>
@@ -38,15 +38,15 @@ const authStore = useAuthStore();
 const i18n = useI18n();
 
 let grid: GridStack;
-
-const addWidget = () => {
-    const nodeCount = grid.engine.nodes.length + 1;
-    grid.addWidget({
-        w: 2,
-        h: 2,
-        el: createWidgetElement(nodeCount)
-    });
-};
+//
+// const addWidget = () => {
+//     const nodeCount = grid.engine.nodes.length + 1;
+//     grid.addWidget({
+//         w: 2,
+//         h: 2,
+//         el: createWidgetElement(nodeCount)
+//     });
+// };
 
 
 
