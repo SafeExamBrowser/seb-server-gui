@@ -1,4 +1,4 @@
-{   
+{
     "-------ExamTypeEnum------": "----------",
     "BYOD": "BYOD",
     "MANAGED": "Managed Devices",
@@ -57,6 +57,7 @@
         "downloadButton": "Download",
         "editButton": "Edit",
         "viewButton": "View",
+        "createButton": "Create",
         "deleteButton": "Delete",
         "noData": "No Data Available",
         "loading": "Loading",
@@ -74,7 +75,7 @@
     "screenReader": {
         "logo": "SEB Logo"
     },
-        
+
 
     "clientGroups": {
         "description": {
@@ -250,7 +251,7 @@
 
     "examList": {
         "info": {
-            "examNameSearchPlaceholder": "Search by Name",
+            "examNameSearchPlaceholder": "Search",
             "examStartSearchPlaceholder": "Search by Date",
             "selectExam": "Select Exam",
             "search": "Search:",
@@ -398,6 +399,28 @@
             }
         }
     },
+    "assessmentToolConnections" : {
+        "general" : {
+
+        },
+
+        "assessmentToolsPage":{
+            "addAssessmentTool": "Add Assessment Tool Setup",
+            "filters" : {
+                "searchTitle" : "Search",
+                "searchField" : "Search for Assessment Tool Connections",
+                "institutionFilter" : "Institution",
+                "statusFilter" : "Status",
+                "activeSelector": "Active",
+                "inactiveSelector": "Inactive"
+            }
+        },
+        "createAssessmentToolConnectionsPage" : {
+            "info": {
+                "assessmentToolConnectionsCreationInfo" : "Fill out the required * fields to create a new Assessment Tool Connection"
+            }
+        }
+    },
     "examDetail": {
         "info": {
             "url" : "Url",
@@ -411,11 +434,11 @@
             "testRunDisable": "Disable Test Run",
             "testRunApply": "Apply Test Run",
             "testTooltip": "Test run is only activated when exam is Up Coming",
-        
+
             "monitorExam": "Monitor Exam",
             "monitorStart": "Monitor",
             "monitorTooltip": "Monitoring is only activated when exam is running",
-        
+
             "examTemplate": "Exam Template",
 
             "examSupervisors": "Exam Supervisors",
@@ -515,7 +538,7 @@
                     "ignoreAAC": "Ignore in AAC",
                     "ignoreAAC_tooltip": "When using the AAC kiosk mode\n(which prevents network and screen access for other processes),\nignore this prohibited process"
                 }
-            
+
             },
             "networkView": {
                 "filterGroupTitle": "URL Filter",
@@ -634,7 +657,7 @@
         "indicators": {
             "indicators": "Indicators",
             "batteryStatusInfo": "Clients with critical battery level",
-            "wlanStatusInfo": "Clients with weak WLAN signal",
+            "wlanStatusInfo": "Clients with weak WLAN signal"
         },
         "ask": {
             "askKey" : "App Signature Keys",
@@ -736,7 +759,9 @@
         "createUserAccount": "Create User Account",
         "spApplications": "Applications",
         "editUserAccount": "Edit User Account",
-        "profile": "Profile Settings"
+        "profile": "Profile Settings",
+        "assessmentToolConnections": "Assessment Tool Connections",
+        "createAssessmentTool": "Assessment Tool Setup"
     },
 
     "warnings": {
