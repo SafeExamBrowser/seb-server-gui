@@ -17,7 +17,7 @@
 
         <v-col cols="12" md="10" class="pl-10">
             <div class="primary-text-color text-h4 font-weight-bold">
-                {{ translate('titles.monitoring') }}
+                {{ translate('monitoringExams.title') }}
             </div>
         </v-col>
 

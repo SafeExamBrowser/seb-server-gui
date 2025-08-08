@@ -250,8 +250,8 @@
 
     "examList": {
         "info": {
-            "examNameSearchPlaceholder": "Search by Name",
-            "examStartSearchPlaceholder": "Search by Date",
+            "examNameSearchPlaceholder": "Search",
+            "examStartSearchPlaceholder": "Filter by Date",
             "selectExam": "Select Exam",
             "search": "Search:",
             "searchPlaceholder": "Search Exams",
@@ -544,12 +544,13 @@
     },
 
     "monitoringExams": {
+        "title" : "Monitor Exams",
         "info": {
             "runningExams": "Running Exams",
             "search": "Search:",
             "start": "Exam Start:",
-            "examStartSearchPlaceholder": "Search by Date",
-            "examNameSearchPlaceholder": "Search by Name",
+            "examStartSearchPlaceholder": "Filter by Date",
+            "examNameSearchPlaceholder": "Search",
 
             "filter": "Filter",
             "examType" : "Exam Type",
@@ -634,7 +635,7 @@
         "indicators": {
             "indicators": "Indicators",
             "batteryStatusInfo": "Clients with critical battery level",
-            "wlanStatusInfo": "Clients with weak WLAN signal",
+            "wlanStatusInfo": "Clients with weak Wifi signal"
         },
         "ask": {
             "askKey" : "App Signature Keys",
@@ -664,7 +665,7 @@
             "displayedClients": "Displayed clients:",
             "selectedClients": "Selected clients:",
             "tableHeaderBattery": "Battery Status",
-            "tableHeaderWlan": "Wlan Status",
+            "tableHeaderWlan": "Wifi Status",
             "tableHeaderNameSession": "User Name or Session",
             "tableHeaderClientGroups": "Group(s)",
             "tableHeaderConnectionInfo": "Connection Info",

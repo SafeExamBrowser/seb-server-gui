@@ -34,7 +34,8 @@
                             <v-divider class="section-divider"/>
 
                             <v-list-item class="px-0 nav-hover">
-                                <span class="link-color nav-link">{{ translate("navigation.routeNames.certificates")
+                                <span class="link-color nav-link">{{
+                                        translate("navigation.routeNames.certificates")
                                     }}
                                 </span>
                             </v-list-item>
@@ -61,7 +62,8 @@
 
 
                             <v-list-item class="px-0 nav-hover">
-                                <span class="link-color nav-link">{{ translate("titles.createTemplate")
+                                <span class="link-color nav-link">{{
+                                        translate("titles.createTemplate")
                                     }}
                                 </span>
                             </v-list-item>
@@ -78,7 +80,8 @@
 
 
                             <v-list-item class="px-0 nav-hover">
-                                <span class="link-color nav-link">{{ translate("titles.addExamWithURL")
+                                <span class="link-color nav-link">{{
+                                        translate("titles.addExamWithURL")
                                     }}
                                 </span>
                             </v-list-item>
@@ -107,13 +110,7 @@
                                 </router-link>
                             </v-list-item>
 
-                            <v-divider class="section-divider"/>
 
-                            <v-list-item class="px-0 nav-hover">
-                                <span class="link-color nav-link">{{ translate("navigation.routeNames.finishedExams")
-                                    }}
-                                </span>
-                            </v-list-item>
 
                             <v-divider
                                 :class="[
@@ -160,6 +157,15 @@
                             <v-divider class="section-divider"/>
 
                             <v-list-item class="px-0 nav-hover">
+                                <span class="link-color nav-link">{{
+                                        translate("navigation.routeNames.finishedExams")
+                                    }}
+                                </span>
+                            </v-list-item>
+                            <v-divider class="section-divider"/>
+
+
+                            <v-list-item class="px-0 nav-hover">
                                 <span class="link-color nav-link">
                                     {{ translate("titles.archiveExams") }}
                                 </span>
@@ -176,97 +182,97 @@
 </template>
 
 <script setup lang="ts">
-    import {useAppBarStore, useNavigationStore} from "@/stores/store";
-    import * as constants from "@/utils/constants";
-    import * as spConstants from "@/utils/sp-constants";
-    import {translate} from "@/utils/generalUtils";
-    import * as generalUtils from "@/utils/generalUtils";
-    import {useAuthStore} from "@/stores/authentication/authenticationStore";
-    import {StorageItemEnum} from "@/models/StorageItemEnum";
+import {useAppBarStore, useNavigationStore} from "@/stores/store";
+import * as constants from "@/utils/constants";
+import * as spConstants from "@/utils/sp-constants";
+import {translate} from "@/utils/generalUtils";
+import * as generalUtils from "@/utils/generalUtils";
+import {useAuthStore} from "@/stores/authentication/authenticationStore";
+import {StorageItemEnum} from "@/models/StorageItemEnum";
 
-    const appBarStore = useAppBarStore();
-    const navigationStore = useNavigationStore();
-    const authStore = useAuthStore();
+const appBarStore = useAppBarStore();
+const navigationStore = useNavigationStore();
+const authStore = useAuthStore();
 
-    onBeforeMount(() => {
-        appBarStore.title = translate("titles.navigationOverview");
+onBeforeMount(() => {
+    appBarStore.title = translate("titles.navigationOverview");
 
-    });
+});
 
-    onMounted(() => {
-        navigationStore.isNavigationOverviewOpen = true;
-    });
+onMounted(() => {
+    navigationStore.isNavigationOverviewOpen = true;
+});
 
-    onUnmounted(() => {
-        navigationStore.isNavigationOverviewOpen = false;
-    });
+onUnmounted(() => {
+    navigationStore.isNavigationOverviewOpen = false;
+});
 
 
 </script>
 
 <style scoped>
-    .navigation-overview-container {
-        color: white;
+.navigation-overview-container {
+    color: white;
 
-    }
+}
 
-    .link-color {
-        color: white;
-        text-decoration: none;
-    }
+.link-color {
+    color: white;
+    text-decoration: none;
+}
 
-    .border-top {
-        border-top: 1px solid rgba(255, 255, 255, 0.3);
-    }
+.border-top {
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
 
-    .nav-hover {
-        transition: background 0.4s ease;
-        border-radius: 4px;
-        background: transparent;
-        padding-left: 8px;
-        width: 85% !important;
-    }
+.nav-hover {
+    transition: background 0.4s ease;
+    border-radius: 4px;
+    background: transparent;
+    padding-left: 8px;
+    width: 85% !important;
+}
 
-    .nav-hover:hover {
-        background: linear-gradient(
-            to right,
-            rgba(255, 255, 255, 1) 0%,
-            rgba(255, 255, 255, 0.98) 10%,
-            rgba(255, 255, 255, 0.96) 20%,
-            rgba(255, 255, 255, 0.93) 25%,
-            rgba(255, 255, 255, 0.90) 30%,
-            rgba(255, 255, 255, 0.86) 40%,
-            rgba(255, 255, 255, 0.80) 60%,
-            rgba(255, 255, 255, 0.70) 68%,
-            rgba(255, 255, 255, 0.60) 75%,
-            rgba(255, 255, 255, 0.45) 82%,
-            rgba(33, 92, 175, 0.20) 88%,
-            rgba(33, 92, 175, 0.12) 92%,
-            rgba(33, 92, 175, 0.08) 96%,
-            rgba(33, 92, 175, 0.04) 98%,
-            rgba(33, 92, 175, 0.01) 99%,
-            rgba(33, 92, 175, 0) 100%
-        );
-    }
+.nav-hover:hover {
+    background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 1) 0%,
+        rgba(255, 255, 255, 0.98) 10%,
+        rgba(255, 255, 255, 0.96) 20%,
+        rgba(255, 255, 255, 0.93) 25%,
+        rgba(255, 255, 255, 0.90) 30%,
+        rgba(255, 255, 255, 0.86) 40%,
+        rgba(255, 255, 255, 0.80) 60%,
+        rgba(255, 255, 255, 0.70) 68%,
+        rgba(255, 255, 255, 0.60) 75%,
+        rgba(255, 255, 255, 0.45) 82%,
+        rgba(33, 92, 175, 0.20) 88%,
+        rgba(33, 92, 175, 0.12) 92%,
+        rgba(33, 92, 175, 0.08) 96%,
+        rgba(33, 92, 175, 0.04) 98%,
+        rgba(33, 92, 175, 0.01) 99%,
+        rgba(33, 92, 175, 0) 100%
+    );
+}
 
-    .nav-link {
-        transition: color 0.4s ease;
-        margin-left: 10px;
-    }
+.nav-link {
+    transition: color 0.4s ease;
+    margin-left: 10px;
+}
 
-    .nav-hover:hover .nav-link {
-        color: #215caf;
-    }
+.nav-hover:hover .nav-link {
+    color: #215caf;
+}
 
-    .section-divider {
-        background-color: white !important;
-        height: 1px !important;
-        opacity: 1 !important;
-        width: 85% !important;
-    }
+.section-divider {
+    background-color: white !important;
+    height: 1px !important;
+    opacity: 1 !important;
+    width: 85% !important;
+}
 
-    .thick-divider {
-        border-top-width: 2px !important;
-    }
+.thick-divider {
+    border-top-width: 2px !important;
+}
 
 </style>
