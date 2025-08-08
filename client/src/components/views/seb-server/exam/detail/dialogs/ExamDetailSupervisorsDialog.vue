@@ -10,9 +10,8 @@
 
         <v-card-text>
             <v-row>
-                <!-----------user selection table---------->      
-                <v-col cols="7"> 
-    
+                <!-----------user selection table---------->
+                <v-col cols="7">
                     <v-row>
                         <v-col cols="6">
                             <v-text-field
@@ -26,11 +25,11 @@
                             </v-text-field>
                         </v-col>
                     </v-row>
-    
+
                     <v-row>
                         <v-col>
                             <v-data-table
-                                item-value="quiz_id" 
+                                item-value="quiz_id"
                                 :hover="true"
                                 :items="userAccountNames"
                                 :items-length="userAccountNames.length"
@@ -40,11 +39,11 @@
                                 :search="search"
                             >
                                 <template v-slot:item="{item}">
-                                    <tr 
-                                        class="on-row-hover" 
+                                    <tr
+                                        class="on-row-hover"
                                         @click="onTableRowClick(item)"
                                         :class="[selectedExamSupervisors.some(userAccount => userAccount.uuid == item.modelId) ? 'selected-row' : '']">
-    
+
                                         <td>{{ item.name }}</td>
                                     </tr>
                                 </template>
@@ -52,43 +51,43 @@
                         </v-col>
                     </v-row>
                 </v-col>
-    
-                <!-----------user list summary---------->      
+
+                <!-----------user list summary---------->
                 <v-col cols="3">
                     <v-row>
                         <v-col>
                             <div class="text-h6">Selected Supervisors</div>
                         </v-col>
                     </v-row>
-    
+
                     <v-row>
                         <v-col>
-    
+
                             <v-list select-strategy="leaf">
-                                <template 
+                                <template
                                     v-for="supervisor in selectedExamSupervisors"
                                     :key="supervisor.uuid"
                                     :value="supervisor.uuid">
-                                
+
                                     <v-list-item>
                                         <v-list-item-title>{{ getFullUserName(supervisor) }}</v-list-item-title>
-    
+
                                         <template v-slot:append="{ isSelected }">
                                             <v-list-item-action class="flex-column align-end">
                                                 <v-spacer></v-spacer>
-    
-                                                <v-btn 
+
+                                                <v-btn
                                                     @click="removeExamSupervisor(supervisor.uuid)"
                                                     variant="flat"
                                                     icon="mdi-close">
                                                 </v-btn>
-    
+
                                             </v-list-item-action>
                                         </template>
                                     </v-list-item>
-    
+
                                     <v-divider class="border-opacity-25" :thickness="2"></v-divider>
-    
+
                                 </template>
                             </v-list>
                         </v-col>
@@ -97,21 +96,21 @@
 
             </v-row>
 
-            <!-----------button row---------->      
+            <!-----------button row---------->
             <v-row align="center">
                 <v-col align="right">
-                    <v-btn 
-                        rounded="sm" 
-                        color="black" 
+                    <v-btn
+                        rounded="sm"
+                        color="black"
                         variant="outlined"
                         @click="emit('closeSupervisorsDialog')">
                         {{translate("general.cancelButton")}}
                     </v-btn>
 
-                    <v-btn 
-                        rounded="sm" 
-                        color="primary" 
-                        variant="flat" 
+                    <v-btn
+                        rounded="sm"
+                        color="primary"
+                        variant="flat"
                         class="ml-2"
                         :disabled="!hasDataChanged"
                         @click="emit('updateExamSupervisors', selectedExamSupervisors)">
@@ -139,7 +138,7 @@
     //table
     const tableHeaders = ref([
         {title: "Name", key: "name"}
-    ]);    
+    ]);
 
     //local user search / filter
     const search = ref<string>();
@@ -148,7 +147,7 @@
     const props = defineProps<{
         initalSupervisors: UserAccount[]
     }>();
-    
+
     const initalSupervisorsUuids: string[] = props.initalSupervisors.map(supervisor => supervisor.uuid);
 
     //emits
@@ -190,7 +189,7 @@
     //add exam supervisor
     async function onTableRowClick(selectedUserAccount: UserAccountName){
         const index: number = selectedExamSupervisors.value.findIndex(userAccount => userAccount.uuid == selectedUserAccount.modelId);
-        
+
         if(index != -1){
             selectedExamSupervisors.value.splice(index, 1);
             return;

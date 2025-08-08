@@ -21,7 +21,13 @@ import * as settingsController from "../controllers/screen-proctoring/sp-setting
 import * as applicationSearchController from "../controllers/screen-proctoring/sp-application-search.controller";
 import * as spAuthorizationAdditional from "../middleware/spAuthorizationAdditional";
 import * as institutionsController from "../controllers/seb-server/institution.controller";
-import {MONITORING_LOGS_ROUTE, USER_ACCOUNT_REGISTRATION_ROUTE} from "../utils/constants";
+import {
+    ADMIN_INSTITUTION_INFO_ROUTE,
+    ADMIN_INSTITUTION_LOGO_ROUTE,
+    MONITORING_LOGS_ROUTE,
+    USER_ACCOUNT_REGISTRATION_ROUTE
+} from "../utils/constants";
+import {getUserAccountFeatures} from "../controllers/seb-server/user-account.controller";
 
 const router: Router = express.Router();
 
@@ -35,6 +41,7 @@ router.delete(constants.EXAM_ROUTE + "/:id", examController.deleteExam);
 router.put(constants.EXAM_ROUTE + "/:id", examController.updateExam);
 router.patch(constants.EXAM_ARCHIVE_ROUTE, examController.archiveExam)
 router.get(constants.EXAM_GET_ROUTE + "/:id", examController.getExam);
+router.get(constants.EXAM_ROUTE + "/:id" + constants.KEY_INFO_ROUTE, examController.getExamAppSignatureKeys);
 router.get(constants.EXAM_CONFIGURATION_MAP_ROUTE + "/:id", examController.getExamConfigurationMap);
 router.get(constants.EXAMS_ROUTE + "/monitoring", examController.getExamsForMonitoring);
 
@@ -65,10 +72,12 @@ router.get(constants.EXAM_TEMPLATE_SCREEN_PROCTORING_ROUTE, examTemplateControll
 //institutions
 router.get(constants.INSTITUTION_ROUTE, institutionsController.getInstitutions);
 router.get(constants.INSTITUTION_ROUTE, institutionsController.getInstitutions);
+router.get(constants.ADMIN_INSTITUTION_LOGO_ROUTE + "/:suffix", institutionsController.getInstitutionLogo)
 
 //user accounts
 router.get(constants.USER_ACCOUNT_ROUTE + "/:id", userAccountController.getUserAccount);
 router.get(constants.USER_ACCOUNT_ROUTE, userAccountController.getUserAccounts);
+router.get(constants.FEATURE_ROUTE, userAccountController.getUserAccountFeatures);
 router.get(constants.USER_ACCOUNT_NAMES_ROUTE, userAccountController.getUserAccountNames);
 router.get(constants.SUPERVISOR_ACCOUNT_NAMES_ROUTE, userAccountController.getSupervisorAccountNames);
 router.post(constants.USER_ACCOUNT_REGISTRATION_ROUTE, userAccountController.registerUserAccount);

@@ -66,7 +66,7 @@
             "SEB_SERVER_ADMIN": "Server Administrator",
             "INSTITUTIONAL_ADMIN": "Institutional Administrator",
             "EXAM_ADMIN": "Exam Administrator",
-            "EXAM_SUPPORTER": "Examination Supervisor",
+            "EXAM_SUPPORTER": "Exam Supervisor",
             "TEACHER": "Teacher"
         }
     },
@@ -139,7 +139,7 @@
             "selectExam": "Select Exam",
             "chooseTemplate": "Choose Template",
             "selectGroup": "Select Groups",
-            "addSupervisors": "Add Examination Supervisor",
+            "addSupervisors": "Add Exam Supervisor",
             "quitPassword": "Set Quit Password",
             "configurationSummary": "Configuration Summary",
             "previousStep": "Previous Step",
@@ -165,13 +165,19 @@
         },
 
         "examMain": {
+            "title" : "Select Exam",
+            "description" : "Search and select the exam you want to prepare",
             "tableHeaderName": "Name",
             "tableHeaderStart": "Start",
-            "tableHeaderEnd": "End"
+            "tableHeaderEnd": "End",
+            "examName" : "Exam Name",
+            "filterDate" : "Filter By Date",
+            "searchName" : "Search by Name"
         },
 
         "templateMain": {
-            "description": "Click on the Exam Template you want to use for the exam",
+            "title" : "Select Exam Template",
+            "description": "Click on the Exam Template you want to use for the exam.",
             "templateInfo": "Open template info",
             "templateSelect": "Select template"
         },
@@ -184,21 +190,35 @@
         },
 
         "supervisorsMain": {
+            "searchButton" : "Search",
+            "cancelButton" : "Cancel",
+            "title" : "Assign Supervisors",
+            "description": "Select staff members to supervise this examination.",
             "search": "Search",
+            "availableSupervisors" : "Available Supervisors",
             "selectedSupervisors": "Selected Supervisors",
             "tableHeaderName": "Name"
         },
 
         "passwordMain": {
-            "password": "Password"
+            "password": "Password",
+            "title" : "Set Quit Password",
+            "quitPassword" : "Quit Password",
+            "description" : "Set the quit password, otherwise a student can easily quit SEB.",
+            "warning" : "This password should be kept confidential and shared only with exam supervisors"
         },
 
         "summaryMain": {
+            "title" : "Configuration Summary",
+            "description" : "Review your exam configuration before finalizing.",
             "configurationSummary": "Configuration Summary",
             "examTemplate": "Exam Template",
+            "templateName": "Template Name:",
             "clientGroups": "Groups",
-            "supervisors": "Examination Supervisors",
-            "password": "Quit Password"
+            "supervisors": "Exam Supervisors",
+            "password": "Quit Password",
+            "clientGroup": "Client Group"
+
         },
         "buttons": {
             "back" : "back",
@@ -230,11 +250,17 @@
 
     "examList": {
         "info": {
+            "examNameSearchPlaceholder": "Search by Name",
+            "examStartSearchPlaceholder": "Search by Date",
             "selectExam": "Select Exam",
             "search": "Search:",
             "searchPlaceholder": "Search Exams",
             "start": "Exam Start:",
-            "filter": "Filter"
+            "filter": "Filter",
+            "examType" : "Exam Type",
+            "examState" : "Exam State",
+            "examName": "Exam Name",
+            "examStart": "Exam Start"
 
         },
         "main": {
@@ -374,6 +400,7 @@
     },
     "examDetail": {
         "info": {
+            "url" : "Url",
             "start": "Start",
             "end": "End",
             "description": "Description",
@@ -391,7 +418,7 @@
         
             "examTemplate": "Exam Template",
 
-            "examSupervisors": "Examination Supervisors",
+            "examSupervisors": "Exam Supervisors",
             "supervisorUsername": "Username",
             "supervisorName": "Name",
             "supervisorSurname": "Surname",
@@ -520,11 +547,15 @@
         "info": {
             "runningExams": "Running Exams",
             "search": "Search:",
-            "searchPlaceholder": "Search Exams",
             "start": "Exam Start:",
-            "filter": "Filter"
+            "examStartSearchPlaceholder": "Search by Date",
+            "examNameSearchPlaceholder": "Search by Name",
 
-
+            "filter": "Filter",
+            "examType" : "Exam Type",
+            "examState" : "Exam State",
+            "examName": "Exam Name",
+            "examStart": "Exam Start"
         },
         "main": {
             "tableHeaderName": "Name",
@@ -569,8 +600,9 @@
         },
 
         "infos": {
-            "start": "Start",
-            "end": "End"
+            "start": "Start Date",
+            "end": "End Date",
+            "status": "Status"
         },
 
         "clients": {
@@ -581,12 +613,36 @@
             "groups": "Groups",
             "remainingClients": "Remaining Clients",
             "allClients": "All Clients",
-            "showAll": "Show All"
+            "showAll": "Show All Clients",
+            "addGroup": "Add Group",
+            "group": "Group:",
+            "range": "Range:",
+            "noGroupClients": "Clients not in any group",
+            "clients": " Clients",
+            "buttons" : {
+                "proctor": "Proctor",
+                "viewList": "View List"
+            }
         },
 
         "notifications": {
-            "notifications": "Notifications",
-            "indicators": "Indicators"
+            "notifications": "Notifications"
+        },
+        "clientStates": {
+            "clientStates" : "Client States"
+        },
+        "indicators": {
+            "indicators": "Indicators",
+            "batteryStatusInfo": "Clients with critical battery level",
+            "wlanStatusInfo": "Clients with weak WLAN signal",
+        },
+        "ask": {
+            "askKey" : "App Signature Keys",
+            "askKeyInfo" : "Number of connected ASK",
+
+
+            "askKeyDescription" : "The following App Signature Keys (ASK) have connected to this exam:",
+            "askKeyConnected" : " Connected"
         }
     },
 

@@ -12,3 +12,14 @@ export async function getInstitutions(req: Request, res: Response){
         apiService.handleGenericApiError(error, res);
     }
 }
+
+
+export async function getInstitutionLogo(req: Request, res: Response){
+    try{
+        const [logo, status] = await institutionService.getInstitutionLogo(req.params.suffix);
+        return res.status(status).json(logo);
+
+    }catch(error){
+        apiService.handleGenericApiError(error, res);
+    }
+}

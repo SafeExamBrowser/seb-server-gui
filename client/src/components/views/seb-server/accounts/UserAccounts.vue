@@ -86,7 +86,7 @@
                 <!-- Search field -->
                 <v-col cols="12" md="5" class="pa-0 mb-4">
                     <div class="text-caption text-grey-darken-1 mt-1 mb-1">
-                        {{ translate("userAccount.userAccountPage.filters.searchTitled") }}
+                        {{ translate("userAccount.userAccountPage.filters.searchTitle") }}
                     </div>
                     <v-text-field
                         v-model="userAccountStore.searchField"

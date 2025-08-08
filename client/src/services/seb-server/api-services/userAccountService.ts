@@ -49,6 +49,11 @@ export async function getPersonalUserAccount(): Promise<UserAccount | any> {
     return (await apiService.api.get(url, {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
 }
 
+export async function getPersonalUserAccountFeatures(): Promise<any | any> {
+    const url: string = userAccountUrl + "/me/features";
+    return (await apiService.api.get(url, {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
+}
+
 export async function getUserAccountById(accountId: string): Promise<UserAccount | any> {
     const url: string = userAccountUrl + "/" + accountId;
     return (await apiService.api.get(url, {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
@@ -66,7 +71,6 @@ export async function createUserAccount(userAccount: CreateUserPar): Promise<Sin
 }
 
 
-// adjust endpoint to patch or maybe differnt path?
 export async function editUserAccount(userAccount: EditUserAccountParameters): Promise<UserAccountResponse | any> {
     return (await apiService.api.put(userAccountUrl, userAccount, {headers: apiService.getPutHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
 }

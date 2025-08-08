@@ -29,3 +29,8 @@ export function getSpecificImageLink(screenshot: ScreenshotData | undefined, tim
 export function getGalleryViewLink(groupUuid: string): string {
     return spConstants.GALLERY_VIEW_ROUTE + "/" + groupUuid;
 }
+
+
+export function getGalleryViewLinkByExamId(groupUuid: string, examId: string): string {
+    return spConstants.GALLERY_VIEW_ROUTE + "/" + groupUuid + spConstants.EXAM_ID + "/" + examId;
+}

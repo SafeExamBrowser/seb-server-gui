@@ -1,60 +1,60 @@
 <template>
-
-    <v-row>
-        <v-spacer></v-spacer>
-        <v-col cols="6" xl="4">
-            <v-row>
-                <v-col class="text-h6">
-                    {{translate('quizImportWizard.templateMain.description')}}
-                </v-col>
-            </v-row>
-        </v-col>
-
-        <v-col cols="6" xl="4">
-
-            <v-row v-for="(row, rowIndex) in examTemplateRows" :key="rowIndex">
-                <v-col cols="4" v-for="(examTemplate, colIndex) in row" :key="`${rowIndex}-${colIndex}`">
-
-                    <v-card 
-                        class="rounded-lg"
-                        :color="examTemplate.name == 'System Template' ? 'green' : 'primary'"
-                        :ripple="false"
-                        :variant="quizImportStore.selectedExamTemplate?.id == examTemplate.id ? 'flat' : 'tonal'"
-                        :aria-label="translate('quizImportWizard.templateMain.templateSelect')"
-                        tabindex="0"
-                        :hover="true"
-                        @keyup.enter="onTemplateCardClick(examTemplate)"
-                        @click="onTemplateCardClick(examTemplate)">
-
-                        <v-toolbar color="transparent">
-                            <v-toolbar-title class="text-subtitle-1" :text="examTemplate.name"></v-toolbar-title>
-
-                            <template v-slot:append>
-                                <v-btn 
-                                    :aria-label="translate('quizImportWizard.templateMain.templateInfo')"
-                                    @click.stop="openExamTemplateDialog(examTemplate)" 
-                                    icon="mdi-information">
-                                </v-btn>
-                            </template>
-                        </v-toolbar>
-
-                        <v-card-text></v-card-text>
-
-                        <!-- <v-card-actions>
-                        </v-card-actions> -->
-                    </v-card>
-
-                </v-col>
-            </v-row>
-
-        </v-col>
-        <v-spacer></v-spacer>
-    </v-row>
+    <div class="h-100 w-100">
+        <v-row dense>
+            <v-col>
+                <div class="text-h6 font-weight-bold mb-1">
+                    {{ translate("quizImportWizard.templateMain.title") }}
+                </div>
+                <div class="mb-10 text-body-2">
+                    {{ translate("quizImportWizard.templateMain.description") }}
+                </div>
+            </v-col>
+        </v-row>
 
 
-    <!-----------description popup---------->      
+        <!-- SCROLLABLE CONTAINER -->
+        <div class="template-scroll-wrapper">
+            <v-card
+                v-for="examTemplate in examTemplates?.content"
+                :key="examTemplate.id"
+                class="exam-template-card"
+                :class="{ selected: quizImportStore.selectedExamTemplate?.id === examTemplate.id }"
+                :ripple="false"
+                variant="outlined"
+                :aria-label="translate('quizImportWizard.templateMain.templateSelect')"
+                tabindex="0"
+                @keyup.enter="onTemplateCardClick(examTemplate)"
+                @click="onTemplateCardClick(examTemplate)"
+            >
+                <div class="card-content">
+                    <div class="card-text">
+                        <div class="text-subtitle-1 font-weight-medium">
+                            {{ examTemplate.name }}
+                        </div>
+                        <div class="text-body-2 text-medium-emphasis">
+                            {{ examTemplate.description }}
+                        </div>
+                    </div>
+
+                    <v-btn
+                        icon="mdi-information"
+                        variant="text"
+                        color="grey-darken-1"
+                        class="info-button"
+                        @click.stop="openExamTemplateDialog(examTemplate)"
+                        :aria-label="translate('quizImportWizard.templateMain.templateInfo')"
+                    />
+                </div>
+            </v-card>
+        </div>
+
+
+    </div>
+
+
+    <!-----------description popup---------->
     <v-dialog v-model="dialog" max-width="600">
-        <ExamTemplateDialog 
+        <ExamTemplateDialog
             :exam-template="selectedTemplate"
             @close-exam-template-dialog="closeExamTemplateDialog()">
         </ExamTemplateDialog>
@@ -64,99 +64,137 @@
 
 
 <script setup lang="ts">
-    import ExamTemplateDialog from "@/components/widgets/ExamTemplateDialog.vue";
-    import * as quizImportWizardViewService from "@/services/seb-server/component-services/quizImportWizardViewService";
-    import * as examViewService from "@/services/seb-server/component-services/examViewService";
-    import { useQuizImportStore } from "@/stores/seb-server/quizImportStore";
-    import {translate} from "@/utils/generalUtils";
-    import * as generalUtils from "@/utils/generalUtils";
+import ExamTemplateDialog from "@/components/widgets/ExamTemplateDialog.vue";
+import * as quizImportWizardViewService from "@/services/seb-server/component-services/quizImportWizardViewService";
+import * as examViewService from "@/services/seb-server/component-services/examViewService";
+import {useQuizImportStore} from "@/stores/seb-server/quizImportStore";
+import {translate} from "@/utils/generalUtils";
+import * as generalUtils from "@/utils/generalUtils";
 
-    //stores
-    const quizImportStore = useQuizImportStore();
+//stores
+const quizImportStore = useQuizImportStore();
 
-    //items
-    const examTemplates = ref<ExamTemplates>();
+//items
+const examTemplates = ref<ExamTemplates>();
 
-    //dialog - description popup
-    const dialog = ref(false);
-    const selectedTemplate = ref<ExamTemplate | null>(null);
+//dialog - description popup
+const dialog = ref(false);
+const selectedTemplate = ref<ExamTemplate | null>(null);
 
-    //=======================events & watchers=======================
-    onBeforeMount(async () => {
-        const examTemplatesResponse: ExamTemplates | null = await quizImportWizardViewService.getExamTemplates();
+//=======================events & watchers=======================
+onBeforeMount(async () => {
+    const examTemplatesResponse: ExamTemplates | null = await quizImportWizardViewService.getExamTemplates();
 
-        if(examTemplatesResponse == null){
-            return;
-        }
+    if (examTemplatesResponse == null) {
+        return;
+    }
 
-        examTemplates.value = examTemplatesResponse;
-    });
+    examTemplates.value = examTemplatesResponse;
+});
 
 
-    async function onTemplateCardClick(examTemplate: ExamTemplate){
-        quizImportStore.selectedClientGroups = [];
-        if(examTemplate.id == quizImportStore.selectedExamTemplate?.id){
-            quizImportStore.selectedExamTemplate = null;
-            quizImportStore.removeGroupSelectionComponents();
-            return;
-        }
-
-        quizImportStore.selectedExamTemplate = examTemplate;
-
-        if(quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES != null && quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES.length > 1){
-            quizImportStore.addGroupSelectionComponents();
-
-            if(quizImportStore.selectedExamTemplate.EXAM_ATTRIBUTES.enableScreenProctoring){
-                await getExamTemplateSpGroups();
-            }
-
-            return;
-        }
-
-        if(quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES != null && quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES.length == 1){
-            quizImportStore.selectedClientGroups.push(quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES[0]);
-            return;
-        }
-
+async function onTemplateCardClick(examTemplate: ExamTemplate) {
+    quizImportStore.selectedClientGroups = [];
+    if (examTemplate.id == quizImportStore.selectedExamTemplate?.id) {
+        quizImportStore.selectedExamTemplate = null;
         quizImportStore.removeGroupSelectionComponents();
+        return;
     }
 
-    function openExamTemplateDialog(examTemplate: ExamTemplate){
-        selectedTemplate.value = examTemplate;
-        dialog.value = true;
-    }
+    quizImportStore.selectedExamTemplate = examTemplate;
 
-    function closeExamTemplateDialog(){
-        dialog.value = false;
-    }
+    if (quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES != null && quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES.length > 1) {
+        quizImportStore.addGroupSelectionComponents();
 
-    //===================================================
-    const examTemplateRows = computed(() => {
-        const chunkSize = 3;
-        return examTemplates.value?.content.reduce<ExamTemplate[][]>((acc, item, index) => {
-            const chunkIndex = Math.floor(index / chunkSize);
-
-            if (!acc[chunkIndex]){
-                acc[chunkIndex] = [];
-            } 
-
-            acc[chunkIndex].push(item);
-
-            return acc;
-        }, []);
-    });
-
-    async function getExamTemplateSpGroups(){
-        const examTemplateSp: ScreenProctoringSettings | null = await examViewService.getExamTemplateSp(quizImportStore.selectedExamTemplate!.id.toString());
-    
-        if(examTemplateSp == null){
-            return;
+        if (quizImportStore.selectedExamTemplate.EXAM_ATTRIBUTES.enableScreenProctoring) {
+            await getExamTemplateSpGroups();
         }
 
-        quizImportStore.availableSpClientGroupIds = generalUtils.createNumberIdList(examTemplateSp.spsSEBGroupsSelection);
+        return;
     }
+
+    if (quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES != null && quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES.length == 1) {
+        quizImportStore.selectedClientGroups.push(quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES[0]);
+        return;
+    }
+
+    quizImportStore.removeGroupSelectionComponents();
+}
+
+function openExamTemplateDialog(examTemplate: ExamTemplate) {
+    selectedTemplate.value = examTemplate;
+    dialog.value = true;
+}
+
+function closeExamTemplateDialog() {
+    dialog.value = false;
+}
+
+
+async function getExamTemplateSpGroups() {
+    const examTemplateSp: ScreenProctoringSettings | null = await examViewService.getExamTemplateSp(quizImportStore.selectedExamTemplate!.id.toString());
+
+    if (examTemplateSp == null) {
+        return;
+    }
+
+    quizImportStore.availableSpClientGroupIds = generalUtils.createNumberIdList(examTemplateSp.spsSEBGroupsSelection);
+}
 
 </script>
 
 <style scoped>
+
+
+.template-scroll-wrapper {
+    overflow-y: auto;
+    max-height: 100%;
+    padding-right: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Card layout */
+.exam-template-card {
+    width: 100%;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #E0E0E0;
+    background-color: #ffffff;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+/* Selected style */
+.exam-template-card.selected {
+    background-color: #f5faff;
+    border-color: #2196f3;
+}
+
+/* Content inside the card */
+.card-content {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Left side (title + description) */
+.card-text {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Info button style */
+.info-button {
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.info-button:hover {
+    opacity: 1;
+}
+
 </style>

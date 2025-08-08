@@ -1,218 +1,276 @@
 <template>
+    <!-- Breadcrumb & Title -->
+    <v-row dense>
+        <v-col cols="12" md="10" class="pl-5 mb-1">
+            <div class="path-text d-flex align-center">
+            <span
+                class="breadcrumb-link"
+                @click="navigateTo(constants.HOME_PAGE_ROUTE)"
+            >
+                {{ translate("titles.home") }}
+            </span>
 
+                <span class="breadcrumb-arrow">›</span>
+
+
+            </div>
+        </v-col>
+
+        <v-col cols="12" md="10" class="pl-10">
+            <div class="primary-text-color text-h4 font-weight-bold">
+                {{ translate('titles.exams') }}
+            </div>
+        </v-col>
+
+        <v-col cols="12" md="2" class="pl-10"></v-col>
+    </v-row>
+
+    <!-- Sheet Section -->
     <v-row>
-        <v-col>
-            <v-sheet elevation="4" class="rounded-lg pl-4 pt-3 pr-4">
-
-                <!------------title row------------->
-                <v-row>
-                    <v-col>
-                        <div class="primary-text-color text-h5 font-weight-bold">
-                            {{translate('examList.info.selectExam')}}
+        <v-col cols="12">
+            <v-sheet class="rounded-lg pa-4" elevation="4" @keyup.enter="loadExamItemsCaller()"
+                     @keyup.esc="clearForm()">
+                <!-- Labels Row -->
+                <v-row dense>
+                    <v-col cols="12" md="6">
+                        <div class="text-subtitle-1 font-weight-medium mb-2">
+                            {{ translate("examList.info.examNameSearchPlaceholder") }}
+                        </div>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                        <div class="text-subtitle-1 font-weight-medium mb-2 ml-3">
+                            {{ translate("examList.info.examStartSearchPlaceholder") }}
                         </div>
                     </v-col>
                 </v-row>
 
-                <!------------form------------->
-                <v-row>
-                    <v-spacer></v-spacer>
-
-                    <v-col cols="4">
-                        <v-form
-                            @keyup.enter="loadExamItemsCaller()"
-                            @keyup.esc="clearForm()">
-                            <!------------search field------------->
-                            <v-row align="center">
-                                <v-col>
-                                    {{translate('examList.info.search')}}
-                                </v-col>
-                                <v-col cols="9">
-                                    <v-text-field
-                                        single-line
-                                        hide-details
-                                        v-model="examStore.searchField"
-                                        type="text"
-                                        append-inner-icon="mdi-magnify"
-                                        density="compact"
-                                        :placeholder="translate('examList.info.searchPlaceholder')"
-                                        variant="outlined">
-                                    </v-text-field>
-                                </v-col>
-                            </v-row>
-
-                            <!------------start date------------->
-                            <v-row align="center">
-                                <v-col>
-                                    {{translate('examList.info.start')}}
-                                </v-col>
-                                <v-col cols="9" >
-                                    <v-date-input
-                                        single-line
-                                        hide-details
-                                        v-model="datepicker"
-                                        density="compact"
-                                        variant="outlined"
-                                        placeholder="dd.MM.yyyy"
-                                        display-date-format="dd.MM.yyyy"
-                                        input-format="dd.MM.yyyy"
-                                        prepend-icon=""
-                                        append-inner-icon="mdi-calendar">
-                                    </v-date-input>
-                                </v-col>
-                            </v-row>
-
-                            <!------------Buttons------------->
-                            <v-row>
-                                <v-col align="right">
-                                    <v-btn
-                                        rounded="sm"
-                                        color="black"
-                                        variant="outlined"
-                                        @click="clearForm()">
-                                        {{translate("general.cancelButton")}}
-                                    </v-btn>
-
-                                    <v-btn
-                                        rounded="sm"
-                                        color="primary"
-                                        variant="flat"
-                                        class="ml-2"
-                                        @click="loadExamItemsCaller()">
-                                        {{translate("general.searchButton")}}
-                                    </v-btn>
-
-                                </v-col>
-                            </v-row>
-                        </v-form>
+                <!-- Inputs and Buttons -->
+                <v-row dense>
+                    <!-- Search Input -->
+                    <v-col cols="12" md="6">
+                        <v-text-field
+                            v-model="examStore.searchField"
+                            single-line
+                            hide-details
+                            density="compact"
+                            variant="outlined"
+                            append-inner-icon="mdi-magnify"
+                            :placeholder="translate('examList.info.examName')"
+                        >
+                            <template #label>
+                                {{ translate("examList.info.examName") }}
+                            </template>
+                        </v-text-field>
                     </v-col>
 
-                    <!------------filters------------->
-                    <v-col cols="4" class="ml-16">
-                        <div class="primary-text-color text-subtitle-1">
-                            {{translate('examList.info.filter')}}
-                        </div>
-
-                        <!------------type------------->
-                        <div>
-                            <v-chip
-                                v-for="filter in typeFilters"
-                                :key="filter.value"
-
-                                :variant="examStore.activeTypeFilter == filter.value ? 'flat' : 'tonal'"
-                                size="small"
-                                class="mr-2 mt-2"
-                                @click="filter.eventFunction(filter.value)">
-                                {{filter.name}}
-                            </v-chip>
-                        </div>
-
-                        <!------------status------------->
-                        <div>
-                            <v-chip
-                                v-for="filter in statusFilters"
-                                :key="filter.value"
-
-                                :variant="examStore.activeStatusFilter == filter.value ? 'flat' : 'tonal'"
-                                size="small"
-                                class="mr-2 mt-2"
-                                :color="filter.color"
-                                @click="filter.eventFunction(filter.value)">
-                                {{filter.name}}
-                            </v-chip>
-                        </div>
+                    <!-- Date Picker -->
+                    <v-col cols="12" md="3">
+                        <v-date-input
+                            v-model="datepicker"
+                            single-line
+                            hide-details
+                            density="compact"
+                            variant="outlined"
+                            placeholder="dd.MM.yyyy"
+                            display-date-format="dd.MM.yyyy"
+                            input-format="dd.MM.yyyy"
+                            prepend-icon=""
+                            append-inner-icon="mdi-calendar"
+                            class="ml-3"
+                        >
+                        </v-date-input>
                     </v-col>
 
-                    <v-spacer></v-spacer>
+                    <!-- Buttons -->
+                    <v-col cols="12" md="3">
+                        <v-row>
+                            <v-col cols="4">
+                            </v-col>
+                            <v-col cols="4" class="pl-0">
+                                <v-btn
+                                    block
+                                    color="primary"
+                                    variant="flat"
+                                    class="rounded"
+                                    @click="loadExamItemsCaller()"
+                                >
+                                    {{ translate("general.searchButton") }}
+                                </v-btn>
+                            </v-col>
+                            <v-col cols="4" class="pl-0">
+                                <v-btn
+                                    block
+                                    color="black"
+                                    variant="outlined"
+                                    class="rounded ml-0"
+                                    @click="clearForm()"
+                                >
+                                    {{ translate("general.cancelButton") }}
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-col>
+
+                    <!-- Filters Section -->
+                    <v-col cols="12" class="pt-4">
+                        <v-row>
+                            <!-- Type Filters -->
+                            <v-col cols="12" sm="3" md="6" lg="6" xl="4" xxl="3">
+                                <div class="text-subtitle-2 font-weight-medium">
+                                    {{ translate("examList.info.examType") }}
+                                </div>
+                                <v-chip
+                                    v-for="filter in typeFilters"
+                                    :key="filter.value"
+                                    :variant="examStore.activeTypeFilter === filter.value ? 'flat' : 'tonal'"
+                                    size="small"
+                                    class="mr-2 mt-2"
+                                    @click="filter.eventFunction(filter.value)"
+                                >
+                                    {{ filter.name }}
+                                </v-chip>
+                            </v-col>
+
+                            <!-- Status Filters -->
+                            <v-col cols="12" sm="9" md="6" lg="5" xl="4" xxl="2">
+                                <div class="text-subtitle-2 font-weight-medium">
+                                    {{ translate("examList.info.examState") }}
+                                </div>
+                                <v-chip
+                                    v-for="filter in statusFilters"
+                                    :key="filter.value"
+                                    :variant="examStore.activeStatusFilter === filter.value ? 'flat' : 'tonal'"
+                                    :color="filter.color"
+                                    size="small"
+                                    class="mr-2 mt-2"
+                                    @click="filter.eventFunction(filter.value)"
+                                >
+                                    {{ filter.name }}
+                                </v-chip>
+                            </v-col>
+                        </v-row>
+                    </v-col>
                 </v-row>
-
             </v-sheet>
         </v-col>
     </v-row>
-
 </template>
 
+
 <script setup lang="ts">
-    import {useExamStore} from "@/stores/seb-server/examStore";
-    import { ExamStatusEnum, ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
-    import * as generalUtils from "@/utils/generalUtils";
-    import { VDateInput } from "vuetify/labs/VDateInput";
-    import * as timeUtils from "@/utils/timeUtils";
-    import {translate} from "@/utils/generalUtils";
-    import { useI18n } from "vue-i18n";
+import {useExamStore} from "@/stores/seb-server/examStore";
+import {ExamStatusEnum, ExamTypeEnum} from "@/models/seb-server/examFiltersEnum";
+import * as generalUtils from "@/utils/generalUtils";
+import {VDateInput} from "vuetify/labs/VDateInput";
+import {translate} from "@/utils/generalUtils";
+import {useI18n} from "vue-i18n";
+import {navigateTo} from "@/router/navigation";
+import * as constants from "@/utils/constants";
 
-    //i18n
-    const i18n = useI18n();
+//i18n
+const i18n = useI18n();
 
-    //stores
-    const examStore = useExamStore();
+//stores
+const examStore = useExamStore();
 
-    //datepicker
-    const datepicker = ref();
+//datepicker
+const datepicker = ref();
 
-    //emits - call loadExamItemsCaller in parent
-    const emit = defineEmits<{
-        loadExamItemsCaller: any;
-    }>();
+//emits - call loadExamItemsCaller in parent
+const emit = defineEmits<{
+    loadExamItemsCaller: any;
+}>();
 
-    //filters exam type
-    const typeFilters: {name: string, value: ExamTypeEnum, eventFunction: (filter: ExamTypeEnum) => void}[] = [
-        {name: translate(ExamTypeEnum.BYOD), value: ExamTypeEnum.BYOD, eventFunction: setActiveTypeFilter},
-        {name: translate(ExamTypeEnum.MANAGED), value: ExamTypeEnum.MANAGED, eventFunction: setActiveTypeFilter},
-        {name: translate(ExamTypeEnum.VDI), value: ExamTypeEnum.VDI, eventFunction: setActiveTypeFilter},
-        {name: translate(ExamTypeEnum.UNDEFINED), value: ExamTypeEnum.UNDEFINED, eventFunction: setActiveTypeFilter}
-    ];
+//filters exam type
+const typeFilters: { name: string, value: ExamTypeEnum, eventFunction: (filter: ExamTypeEnum) => void }[] = [
+    {name: translate(ExamTypeEnum.BYOD), value: ExamTypeEnum.BYOD, eventFunction: setActiveTypeFilter},
+    {name: translate(ExamTypeEnum.MANAGED), value: ExamTypeEnum.MANAGED, eventFunction: setActiveTypeFilter},
+    {name: translate(ExamTypeEnum.VDI), value: ExamTypeEnum.VDI, eventFunction: setActiveTypeFilter},
+    {name: translate(ExamTypeEnum.UNDEFINED), value: ExamTypeEnum.UNDEFINED, eventFunction: setActiveTypeFilter}
+];
 
-    //filters exam status
-    const statusFilters: {name: string, value: ExamStatusEnum, color: string, eventFunction: (filter: ExamStatusEnum) => void}[] = [
-        {name: translate(ExamStatusEnum.UP_COMING), value: ExamStatusEnum.UP_COMING, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.UP_COMING), eventFunction: setActiveStatusFilter},
-        {name: translate(ExamStatusEnum.TEST_RUN), value: ExamStatusEnum.TEST_RUN, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.TEST_RUN), eventFunction: setActiveStatusFilter},
-        {name: translate(ExamStatusEnum.RUNNING), value: ExamStatusEnum.RUNNING, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.RUNNING), eventFunction: setActiveStatusFilter},
-        {name: translate(ExamStatusEnum.FINISHED), value: ExamStatusEnum.FINISHED, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.FINISHED), eventFunction: setActiveStatusFilter},
-        {name: translate(ExamStatusEnum.ARCHIVED), value: ExamStatusEnum.ARCHIVED, color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.ARCHIVED), eventFunction: setActiveStatusFilter}
-    ];
+//filters exam status
+const statusFilters: {
+    name: string,
+    value: ExamStatusEnum,
+    color: string,
+    eventFunction: (filter: ExamStatusEnum) => void
+}[] = [
+    {
+        name: translate(ExamStatusEnum.UP_COMING),
+        value: ExamStatusEnum.UP_COMING,
+        color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.UP_COMING),
+        eventFunction: setActiveStatusFilter
+    },
+    {
+        name: translate(ExamStatusEnum.TEST_RUN),
+        value: ExamStatusEnum.TEST_RUN,
+        color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.TEST_RUN),
+        eventFunction: setActiveStatusFilter
+    },
+    {
+        name: translate(ExamStatusEnum.RUNNING),
+        value: ExamStatusEnum.RUNNING,
+        color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.RUNNING),
+        eventFunction: setActiveStatusFilter
+    },
+    {
+        name: translate(ExamStatusEnum.FINISHED),
+        value: ExamStatusEnum.FINISHED,
+        color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.FINISHED),
+        eventFunction: setActiveStatusFilter
+    },
+    {
+        name: translate(ExamStatusEnum.ARCHIVED),
+        value: ExamStatusEnum.ARCHIVED,
+        color: generalUtils.getExamStatusFilterColor(ExamStatusEnum.ARCHIVED),
+        eventFunction: setActiveStatusFilter
+    }
+];
 
-    function loadExamItemsCaller(){
-        if(datepicker != null && datepicker.value != null){
-            examStore.startDate = datepicker.value.getTime();
-        }
-
-        emit("loadExamItemsCaller");
+function loadExamItemsCaller() {
+    if (datepicker != null && datepicker.value != null) {
+        examStore.startDate = datepicker.value.getTime();
     }
 
-    function clearForm(){
-        examStore.searchField = "";
+    emit("loadExamItemsCaller");
+}
 
-        datepicker.value = null;
-        examStore.startDate = null;
+function clearForm() {
+    examStore.searchField = "";
 
+    datepicker.value = null;
+    examStore.startDate = null;
+
+    loadExamItemsCaller();
+}
+
+function setActiveTypeFilter(filter: ExamTypeEnum) {
+    if (examStore.activeTypeFilter == filter) {
+        examStore.activeTypeFilter = null;
         loadExamItemsCaller();
+        return;
     }
 
-    function setActiveTypeFilter(filter: ExamTypeEnum){
-        if(examStore.activeTypeFilter == filter){
-            examStore.activeTypeFilter = null;
-            loadExamItemsCaller();
-            return;
-        }
+    examStore.activeTypeFilter = filter;
+    loadExamItemsCaller();
+}
 
-        examStore.activeTypeFilter = filter;
+function setActiveStatusFilter(filter: ExamStatusEnum) {
+    if (examStore.activeStatusFilter == filter) {
+        examStore.activeStatusFilter = null;
         loadExamItemsCaller();
+        return;
     }
 
-    function setActiveStatusFilter(filter: ExamStatusEnum){
-        if(examStore.activeStatusFilter == filter){
-            examStore.activeStatusFilter = null;
-            loadExamItemsCaller();
-            return;
-        }
-
-        examStore.activeStatusFilter = filter;
-        loadExamItemsCaller();
-    }
+    examStore.activeStatusFilter = filter;
+    loadExamItemsCaller();
+}
 
 </script>
 
 <style scoped>
+
 
 
 </style>

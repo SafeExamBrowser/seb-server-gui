@@ -1,15 +1,17 @@
 import * as groupService from "@/services/screen-proctoring/api-services/groupService";
 import * as screenshotDataService from "@/services/screen-proctoring/api-services/screenshotDataService";
 import { SortOrder } from "@/models/screen-proctoring/sortOrderEnum";
-import {openUrlInNewTab} from "@/router/navigation";
+import {navigateTo, openUrlInNewTab} from "@/router/navigation";
 import * as spConstants from "@/utils/sp-constants";
+import {useMonitoringStore} from "@/stores/seb-server/monitoringStore";
+import * as constants from "@/utils/constants";
 
 //=============api==============
 export async function getGroup(groupUuid: string, currentWindow: number, pageSize: number, sortOrder: SortOrder): Promise<GroupUuid | null>{
     try {
-        const groupUuidResponse: GroupUuid = await groupService.getGroupByUuid(groupUuid, 
-            {   
-                pageNumber: currentWindow+=1, 
+        const groupUuidResponse: GroupUuid = await groupService.getGroupByUuid(groupUuid,
+            {
+                pageNumber: currentWindow+=1,
                 pageSize: Math.pow(pageSize, 2),
                 sortOrder: sortOrder
                 // sortBy: "clientName",
@@ -30,7 +32,7 @@ export async function getGroup(groupUuid: string, currentWindow: number, pageSiz
 
 export async function getLatestScreenshotData(sessionUuid: string, timestamp: number): Promise<ScreenshotData | null>{
     try{
-        return await screenshotDataService.getScreenshotDataByTimestamp(sessionUuid, timestamp.toString());        
+        return await screenshotDataService.getScreenshotDataByTimestamp(sessionUuid, timestamp.toString());
     }catch(error){
         console.error(error);
         return null;
@@ -50,10 +52,11 @@ export function currentIndexExists(screenshots: ScreenshotData[] | undefined, in
     return false;
 }
 
-//=============links============
-export function navigateToProctoringView(screenshot: ScreenshotData | undefined, groupUuid: string) {
-    if (screenshot != null) {
-        openUrlInNewTab(spConstants.PROCTORING_VIEW_ROUTE + "/" + screenshot.uuid);
+//============= TODO change link links============
+export function navigateToProctoringView(screenshot: ScreenshotData | undefined, examId: string | undefined) {
+    console.log("examId" + examId);
+    if (screenshot != null && examId != undefined) {
+        openUrlInNewTab(constants.MONITORING_ROUTE + "/" + examId + "/details/" + screenshot.uuid);
     }
 }
 

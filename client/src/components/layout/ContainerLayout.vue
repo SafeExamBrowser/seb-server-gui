@@ -10,9 +10,10 @@
         </template>
 
         <!--current site title-->
-        <v-app-bar-title>
-            <h1 class="title-inherit-styling">{{appBarStore.title}}</h1>
+        <v-app-bar-title class="d-flex align-center mr-0">
+            <h1 class="title-inherit-styling mb-0">{{ effectiveTitle }}</h1>
         </v-app-bar-title>
+
 
         <template v-slot:append>
 
@@ -141,7 +142,7 @@
                                 v-bind="props"
                                 class="user-role-badge text-white bg-primary d-flex align-center justify-center px-3 py-1 role-badge-wrappe"
                             >
-                                <span class="mx-auto">Roles</span>
+                            <span class="mx-auto">{{ translateRole(sortedUserRoles[0]) }}</span>
                                 <v-icon
                                     size="small"
                                     class="fade-in-arrow"
@@ -155,7 +156,7 @@
 
                         <v-list class="py-0 bg-primary roles-list-popup">
                             <v-list-item
-                                v-for="role in userRoles"
+                                v-for="role in sortedUserRoles"
                                 :key="role"
                                 class="text-body-2 px-4 "
                             >
@@ -271,7 +272,7 @@
     <!---------------main navigation drawer----------------->
     <v-navigation-drawer app v-model="navigationDrawer" :permanent="true" width="70" class="mt-0">
         <v-list lines="two" class="pt-0">
-            <v-list-item v-if="canAccessNavigationOverview" link elevation="0" :to="getNavigationOverviewRoute()"
+            <v-list-item v-if="$can('view', 'NavigationOverview')" link elevation="0" :to="getNavigationOverviewRoute()"
                 variant="elevated" class="d-flex flex-column justify-center text-center"
                 :class="[navigationStore.isNavigationOverviewOpen ? 'navigation-overview-background' : '']">
 
@@ -284,7 +285,6 @@
                 </template>
 
             </v-list-item>
-
             <v-divider></v-divider>
 
             <!--------navigation items---------->
@@ -308,32 +308,43 @@
     </v-navigation-drawer>
 
     <!--main content view-->
-    <v-main
-        :class="[
+    <v-main class="d-flex flex-column fill-height">
+        <div
+            :class="[
       isNavOverviewRoute || layoutStore.isBlueBackground
-        ? 'blue-background'
-        : 'generic-background'
+        ? 'full-page-blue'
+        : 'full-page-default'
     ]"
-        class="d-flex flex-column fill-height"
-    >
-        <v-container fluid class=" main-content h-80">
-            <router-view />
-        </v-container>
+            style="min-height: 100%; width: 100%;"
+        >
+            <v-container fluid class="flex-grow-1">
+                <router-view />
+            </v-container>
+        </div>
     </v-main>
 
 </template>
 
 <script setup lang="ts">
-    import {ref, watch} from "vue"
+    import {ref,onMounted,  watch} from "vue"
     import {useAppBarStore, useLayoutStore, useNavigationStore} from "@/stores/store";
-    import {useAuthStore, useUserAccountStore} from "@/stores/authentication/authenticationStore";
+    import {
+        useAuthStore,
+        useUserAccountStore as useAuthenticatedUserAccountStore,
+        useUserAccountStore
+    } from "@/stores/authentication/authenticationStore";
     import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
     import {useTheme} from "vuetify";
     import {useI18n} from "vue-i18n";
     import * as constants from "@/utils/constants";
     import router from "@/router/router";
     import {translate} from "@/utils/generalUtils";
-    import {UserRoleEnum} from "@/models/userRoleEnum";
+    import { useAbility } from '@casl/vue'
+
+
+    import {getInstitutions} from "@/services/seb-server/component-services/registerAccountViewService";
+    import {getInstitution, getInstitutionLogo} from "@/services/seb-server/api-services/institutionService";
+    import {defineRulesForRoles} from "@/casl/ability";
 
 
     //i18n
@@ -341,6 +352,7 @@
     const localStorageLocale: string | null = localStorage.getItem("locale");
     const languageToggle = ref<number>(locale.value === "en" ? 0 : 1);
     const layoutStore = useLayoutStore();
+    const authenticatedUserAccountStore = useAuthenticatedUserAccountStore();
     const isNavOverviewRoute = computed(() => {
         return router.currentRoute.value.path === constants.NAVIGATION_OVERVIEW_ROUTE;
     });
@@ -355,6 +367,9 @@
         {title: translate("titles.monitoring"), route: constants.MONITORING_ROUTE, icon: "mdi-eye"},
         // {title: "Screen Proctoring", route: spConstants.RUNNING_EXAMS_ROUTE, icon: "mdi-video"},
     ];
+    const institutions = ref<Institution[]>([]);
+    const institutionName = ref<string>();
+    const ability = useAbility()
 
     //gallery view
     const gridSizes: GridSize[] = [
@@ -369,8 +384,10 @@
     const appBarStore = useAppBarStore();
     const userAccountStore = useUserAccountStore();
     const navigationStore = useNavigationStore();
-    const ALLOWED_ROLES: string[] = [UserRoleEnum.INSTITUTIONAL_ADMIN, UserRoleEnum.SEB_SERVER_ADMIN];
 
+    const effectiveTitle = computed(() => {
+        return institutionName.value?.length ? institutionName.value : (appBarStore.title || '...');
+    });
 
     const userAccount = computed(() => userAccountStore.userAccount);
     const userRoles = computed(() => userAccount.value?.userRoles || []);
@@ -381,10 +398,31 @@
     theme.global.name.value = localstorageTheme ?? theme.global.name.value ?? "light";
     const themeToggle = ref<number>(theme.global.name.value === "dark" ? 1 : 0);
 
-    const canAccessNavigationOverview = computed(() => {
-        const roles = userAccountStore.userAccount?.userRoles ?? [];
-        return roles.some(role => ALLOWED_ROLES.includes(role));
+    const institutionLogo = ref<string | null>(null);
+
+
+    onMounted(async () => {
+        const user = authenticatedUserAccountStore.userAccount;
+        const userInstitutionId = String(user?.institutionId);
+
+        const result: Institution[] | null = await getInstitutions();
+        institutions.value = result ?? [];
+
+        const matchedInstitution = institutions.value.find(inst => inst.modelId === userInstitutionId);
+        if (matchedInstitution) {
+            institutionName.value = matchedInstitution.name;
+
+            const logoBase64: string = await getInstitutionLogo(matchedInstitution.name);
+            if (logoBase64) {
+                institutionLogo.value = `data:image/png;base64,${logoBase64}`;
+            }
+        }
     });
+
+    watch(userRoles, (roles) => {
+        ability.update(defineRulesForRoles(roles).rules)
+        console.log("user roles: ", userRoles.value)
+    }, { immediate: true })
 
     watch(languageToggle, () => {
         locale.value = languageToggle.value === 0 ? "en" : "de";
@@ -399,7 +437,7 @@
     function translateRole(role: string): string {
         switch (role) {
             case "EXAM_ADMIN": return "Exam Admin";
-            case "EXAM_SUPPORTER": return "Exam Supporter";
+            case "EXAM_SUPPORTER": return "Exam Supervisor";
             case "SEB_SERVER_ADMIN": return "SEB Server Admin";
             case "INSTITUTIONAL_ADMIN": return "Institutional Admin";
             case "TEACHER": return "Teacher";
@@ -407,6 +445,23 @@
             default: return role;
         }
     }
+
+
+    const rolePriority = [
+        "SEB_SERVER_ADMIN",
+        "INSTITUTIONAL_ADMIN",
+        "EXAM_ADMIN",
+        "EXAM_SUPPORTER",
+        "TEACHER"
+    ];
+
+    const sortedUserRoles = computed(() => {
+        return [...userRoles.value].sort((a, b) => {
+            const indexA = rolePriority.indexOf(a);
+            const indexB = rolePriority.indexOf(b);
+            return indexA - indexB;
+        });
+    });
 
     async function userMenuOpened() {
         await userAccountViewService.setPersonalUserAccount();
@@ -438,10 +493,6 @@
 </script>
 
 <style scoped>
-    .main-content {
-        /* background-color: #e4e4e4; */
-    }
-
     .user-name {
         font-size: 0.9rem;
     }
@@ -660,7 +711,29 @@
     }
 
     .bg-is-institutional-admin {
-        background-color: #A30774 !important; /* Vuetify default red */
+        background-color: #A30774 !important;
     }
+
+     .full-page-blue {
+         background-color: #215caf;
+         min-height: 100%;
+         width: 100%;
+     }
+
+    .full-page-default {
+        background-color: #f6f6f6;
+        min-height: 100%;
+        width: 100%;
+    }
+
+    .v-app-bar-title {
+        display: flex;
+        align-items: center;
+    }
+
+    .v-app-bar-title h1 {
+        white-space: nowrap;
+    }
+
 
 </style>

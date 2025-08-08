@@ -1,14 +1,14 @@
 <template>
     <v-row>
         <v-col>
-            <v-sheet 
+            <v-sheet
                 elevation="4"
                 class="rounded-lg pa-8">
 
                 <div class="mb-2">
                     {{translate("monitoringClients.main.displayedClients")}} {{ monitoringDataTable.length }}
                 </div>
-                <div 
+                <div
                     v-if="monitoringStore.selectedMonitoringIds.length != 0"
                     class="mb-2">
                     {{translate("monitoringClients.main.selectedClients")}} {{ monitoringStore.selectedMonitoringIds.length }}
@@ -19,7 +19,7 @@
                     show-select
                     select-strategy="all"
                     v-model="monitoringStore.selectedMonitoringIds"
-                    item-value="id" 
+                    item-value="id"
                     :hover="true"
                     :items="monitoringDataTable"
                     :items-length="monitoringDataTable.length"
@@ -47,7 +47,7 @@
 
                             <!------selection checkbox------->
                             <td>
-                                <v-checkbox-btn 
+                                <v-checkbox-btn
                                     :model-value="isSelected(internalItem)"
                                     @update:model-value="toggleSelect(internalItem)">
                                 </v-checkbox-btn>
@@ -55,12 +55,12 @@
 
                             <!------client name------->
                             <td>{{ item.nameOrSession }}</td>
-                            
+
                             <!------client groups------->
                             <td>
                                 <template v-for="(clientGroup, index) in item.clientGroups" :key="clientGroup.id">
                                     <div>
-                                        <v-chip 
+                                        <v-chip
                                             :class="[index == 0 ? 'mt-2' : '']"
                                             class="mb-2"
                                             variant="tonal"
@@ -94,7 +94,7 @@
 
                             <!------navigation button------->
                             <td align="right">
-                                <v-icon 
+                                <v-icon
                                     icon="mdi-chevron-right"
                                     style="font-size: 30px;"
                                     @click="monitoringViewService.goToMonitoringDetails(examId, item.connectionToken, route.query)">
@@ -108,9 +108,9 @@
         </v-col>
     </v-row>
 
-    <!-----------group dialog---------->      
+    <!-----------group dialog---------->
     <v-dialog v-model="clientGroupDialog" max-width="800">
-        <ClientGroupInfoDialog 
+        <ClientGroupInfoDialog
             :client-group="clientGroupToView"
             @closeClientGroupDialog="closeClientGroupDialog">
         </ClientGroupInfoDialog>
@@ -174,7 +174,7 @@
         {title: translate("monitoringClients.main.tableHeaderConnectionInfo"), key: "connectionInfo", width: "20%", sortable: true},
         {title: translate("monitoringClients.main.tableHeaderStatus"), key: "status", width: "10%", sortable: true},
         {title: "", key: "link", width: "5%"}
-    ]);  
+    ]);
 
     watch(monitoringStoreRef.selectedMonitoringIds, () => {
         // console.log(monitoringStore.selectedMonitoringIds)
@@ -183,7 +183,7 @@
 
     //=========events & watchers================
     onMounted(async () => {
-        await initalize();  
+        await initalize();
     });
 
     onBeforeUnmount(() => {
@@ -252,8 +252,8 @@
         }
 
         const fullPageResponse: MonitoringConnections | null = await monitoringViewService.getConnections(
-            examId, 
-            {   
+            examId,
+            {
                 [MonitoringHeaderEnum.SHOW_ALL]: monitoringStore.isNoFilterSelected,
                 [MonitoringHeaderEnum.SHOW_CLIENT_GROUPS]: route.query[MonitoringHeaderEnum.SHOW_CLIENT_GROUPS] || [],
                 [MonitoringHeaderEnum.SHOW_STATES]: route.query[MonitoringHeaderEnum.SHOW_STATES] || [],
@@ -330,7 +330,7 @@
                 monitoringStore.monitoringData.set(
                     staticData.id,
                     createMonitoringRowData(
-                        connections.value.monitoringConnectionData.cons[fullPageItemIndex], 
+                        connections.value.monitoringConnectionData.cons[fullPageItemIndex],
                         staticData
                     )
                 );
@@ -394,7 +394,7 @@
                 const monitoringRow: MonitoringRow = createMonitoringRowData(dynamicData, staticClientData);
                 monitoringStore.monitoringData.set(monitoringRow.id, monitoringRow);
             }
-            
+
         });
 
         updateTableData();

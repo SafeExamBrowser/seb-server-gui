@@ -2,7 +2,6 @@ import { createRouter, RouteRecordRaw, createWebHistory } from "vue-router";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 import LoginPage from "@/components/views/LoginPage.vue";
 import RegisterPage from "@/components/views/RegisterPage.vue";
-import HomePage from "@/components/views/seb-server/home/HomePage.vue";
 import UserAccounts from "@/components/views/seb-server/accounts/UserAccounts.vue";
 import ExamListContainer from "@/components/views/seb-server/exam/list/ExamListContainer.vue";
 import ExamDetailContainer from "@/components/views/seb-server/exam/detail/ExamDetailContainer.vue";
@@ -31,6 +30,8 @@ import ExamsOverviewPage from "@/components/views/screen-proctoring/exams-overvi
 import SearchPage from "@/components/views/screen-proctoring/search/SearchPage.vue";
 
 import { useAuthStore } from "@/stores/authentication/authenticationStore";
+import HomePageContainer from "@/components/views/seb-server/home/HomePageContainer.vue";
+import HomePlayground from "@/components/views/seb-server/home/HomePlayground.vue";
 
 
 
@@ -80,7 +81,7 @@ const routes: Array<RouteRecordRaw> = [
             {
                 path: constants.HOME_PAGE_ROUTE,
                 name: "HomePage",
-                component: HomePage,
+                component: HomePageContainer,
                 meta: {
                     titleKey: "titles.home"
                 }
@@ -196,6 +197,14 @@ const routes: Array<RouteRecordRaw> = [
                     titleKey: "titles.createUserAccount"
                 },
             },
+            {
+                path: constants.PLAYGROUND,
+                name: "Playground",
+                component: HomePlayground,
+                meta: {
+                    titleKey: "titles.home"
+                },
+            },
         ]
     },
 
@@ -231,7 +240,7 @@ const routes: Array<RouteRecordRaw> = [
             }
           },
           {
-            path: spConstants.GALLERY_VIEW_ROUTE + "/:uuid",
+            path: spConstants.GALLERY_VIEW_ROUTE + "/:uuid" + spConstants.EXAM_ID + "/:examId",
             name: "GalleryViewPage",
             component: GalleryViewPage,
             meta: {

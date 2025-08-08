@@ -77,6 +77,7 @@
                                 : translate('userAccount.general.status.inactive')
                         }}
                     </v-chip>
+
                 </v-row>
             </v-row>
             <v-divider class="custom-divider mx-6 my-4 mt-7"/>
@@ -113,7 +114,7 @@
                                             item-title="name"
                                             item-value="modelId"
                                             :rules="[requiredRule]"
-                                            :disabled="institutionSelectDisabled || editingRightsRevoked"
+                                            disabled
                                         />
                                     </v-col>
                                     <!-- name -->

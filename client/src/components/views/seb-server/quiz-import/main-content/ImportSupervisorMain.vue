@@ -1,191 +1,293 @@
 <template>
+    <div class="h-100 w-100">
+        <v-row dense>
+            <v-col>
+                <div class="text-h6 font-weight-bold mb-1">
+                    {{ translate("quizImportWizard.supervisorsMain.title") }}
+                </div>
+                <div class="mb-3 text-body-2">
+                    {{ translate("quizImportWizard.supervisorsMain.description") }}
+                </div>
+            </v-col>
+        </v-row>
 
-    <v-row>
-        
-        <!-----------user selection table---------->      
-        <v-spacer></v-spacer>
-        <v-col cols="7" xl="5"> 
+        <v-row align="center">
+            <v-col cols="6">
+                <v-text-field
+                    v-model="searchInput"
+                    :label="translate('quizImportWizard.supervisorsMain.search')"
+                    prepend-inner-icon="mdi-magnify"
+                    variant="outlined"
+                    density="compact"
+                    hide-details
+                    single-line
+                    @keydown.enter="search = searchInput"
+                    @keydown.esc="clearSearch"
+                />
+            </v-col>
 
-            <v-row>
-                <v-col cols="6">
-                    <v-text-field
-                        v-model="search"
-                        :label="translate('quizImportWizard.supervisorsMain.search')"
-                        prepend-inner-icon="mdi-magnify"
-                        variant="outlined"
-                        density="compact"
-                        hide-details
-                        single-line>
-                    </v-text-field>
-                </v-col>
-            </v-row>
+            <v-col cols="2">
+                <v-btn
+                    block
+                    color="primary"
+                    variant="flat"
+                    class="rounded"
+                    @click="search = searchInput"
+                >
+                    {{ translate("general.searchButton") }}
+                </v-btn>
+            </v-col>
+            <v-col cols="2">
 
-            <v-row>
-                <v-col>
+                <v-btn
+                    block
+                    color="black"
+                    variant="outlined"
+                    class="rounded ml-0"
+                    @click="clearSearch"
+                >
+                    {{ translate("general.cancelButton") }}
+                </v-btn>
+            </v-col>
+        </v-row>
+
+
+        <v-row>
+            <!-- Available Supervisors -->
+            <v-col cols="6">
+                <div class="text-subtitle-1 font-weight-medium">
+                    {{ translate("quizImportWizard.supervisorsMain.availableSupervisors") }}
+                </div>
+
+                <div class="supervisor-table-wrapper">
                     <v-data-table
-                        item-value="quiz_id" 
+                        item-value="quiz_id"
                         :hover="true"
-                        :items="userAccountNames"
-                        :items-length="userAccountNames.length"
-                        :items-per-page="tableUtils.calcDefaultItemsPerPage(userAccountNames)"
-                        :items-per-page-options="tableUtils.calcItemsPerPage(userAccountNames)"
-                        :headers="tableHeaders"
-                        :search="search">
+                        :items="filteredAvailableSupervisors"
+                        :items-length="filteredAvailableSupervisors.length"
+                        :items-per-page="10"
+                        :headers="[]"
+                        :footer-props="{ itemsPerPageOptions: [] }"
+                        class="bordered-table no-header-table"
+                    >
 
-                        <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort}">
-                            <TableHeaders
-                                :columns="columns"
-                                :is-sorted="isSorted"
-                                :get-sort-icon="getSortIcon"
-                                :toggle-sort="toggleSort"
-                                :header-refs-prop="tableHeadersRef">
-                            </TableHeaders>
-                        </template>
-                        
-                        <template v-slot:item="{item}">
-                            <tr 
-                                class="on-row-hover" 
-                                tabindex="0"
-                                @keyup.enter="onTableRowClick(item)"
-                                @click="onTableRowClick(item)"
-                                :class="[quizImportStore.selectedExamSupervisors.some(userAccount => userAccount.modelId == item.modelId) ? 'selected-row' : '']">
-
-                                <td>{{ item.name }}</td>
+                    <template v-slot:item="{ item }">
+                            <tr class="supervisor-row">
+                                <td class="supervisor-cell">
+                                    <div class="supervisor-row-content">
+                                        <div>
+                                            <div class="font-weight-medium">{{ getUsername(item.name) }}</div>
+                                            <div class="text-caption">{{ getFullName(item.name) }}</div>
+                                        </div>
+                                        <v-icon
+                                            class="clickable"
+                                            color="primary"
+                                            @click="onTableRowClick(item)"
+                                        >
+                                            mdi-plus
+                                        </v-icon>
+                                    </div>
+                                </td>
                             </tr>
                         </template>
                     </v-data-table>
-                </v-col>
-            </v-row>
-        </v-col>
-        <!------------------------>
+                </div>
+            </v-col>
 
 
-        <!-----------user list summary---------->      
-        <v-col cols="4" xl="2">
-            <v-row>
-                <v-col>
-                    <div class="text-h6">
-                        {{translate("quizImportWizard.supervisorsMain.selectedSupervisors")}}
-                    </div>
-                </v-col>
-            </v-row>
+            <!-- Selected Supervisors -->
+            <v-col cols="6">
+                <div class="text-subtitle-1 font-weight-medium">
+                    {{ translate("quizImportWizard.supervisorsMain.selectedSupervisors") }}
+                </div>
 
-            <v-row>
-                <v-col>
-
-                    <v-list select-strategy="leaf">
-                        <template 
+                <div class="supervisor-table-wrapper">
+                    <!-- Scrollable container for the list -->
+                    <div class="selected-supervisors-scroll">
+                        <div
                             v-for="supervisor in quizImportStore.selectedExamSupervisors"
                             :key="supervisor.modelId"
-                            :value="supervisor.modelId">
-                        
-                            <v-list-item>
-                                <v-list-item-title>{{ supervisor.name }}</v-list-item-title>
+                            class="supervisor-row"
+                        >
+                            <div class="supervisor-row-content">
+                                <div>
+                                    <div class="font-weight-medium">{{ getUsername(supervisor.name) }}</div>
+                                    <div class="text-caption">{{ getFullName(supervisor.name) }}</div>
+                                </div>
 
-                                <template v-slot:append="{ isSelected }">
-                                    <v-list-item-action class="flex-column align-end">
-                                        <v-spacer></v-spacer>
+                                <v-icon
+                                    class="clickable"
+                                    color="error"
+                                    @click="removeExamSupervisor(supervisor.modelId)"
+                                >
+                                    mdi-minus
+                                </v-icon>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </v-col>
 
-                                        <v-btn 
-                                            @click="removeExamSupervisor(supervisor.modelId)"
-                                            variant="flat"
-                                            icon="mdi-close">
-                                        </v-btn>
 
-                                    </v-list-item-action>
-                                </template>
-                            </v-list-item>
-
-                            <v-divider class="border-opacity-25" :thickness="2"></v-divider>
-
-                        </template>
-                    </v-list>
-                </v-col>
-            </v-row>
-
-        </v-col>
-        <v-spacer></v-spacer>
-        <!------------------------>
-
-    </v-row>
+        </v-row>
+    </div>
 </template>
 
 
 <script setup lang="ts">
-    import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
-    import { useQuizImportStore } from "@/stores/seb-server/quizImportStore";
-    import * as tableUtils from "@/utils/table/tableUtils";
-    import {translate} from "@/utils/generalUtils";
-    import TableHeaders from "@/utils/table/TableHeaders.vue";
-    import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
-    
-    //stores
-    const quizImportStore = useQuizImportStore();
-    const userAccountStore = useUserAccountStore();
+import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
+import {useQuizImportStore} from "@/stores/seb-server/quizImportStore";
+import * as tableUtils from "@/utils/table/tableUtils";
+import {translate} from "@/utils/generalUtils";
+import TableHeaders from "@/utils/table/TableHeaders.vue";
+import {useUserAccountStore} from "@/stores/authentication/authenticationStore";
 
-    //items
-    const userAccountNames = ref<UserAccountName[]>([]);
+//stores
+const quizImportStore = useQuizImportStore();
+const userAccountStore = useUserAccountStore();
 
-    //table
-    const tableHeadersRef = ref<any[]>();
-    const tableHeaders = ref([
-        {title: translate("quizImportWizard.supervisorsMain.tableHeaderName"), key: "name"}
-    ]);    
+//items
+const userAccountNames = ref<UserAccountName[]>([]);
 
-    //local user search / filter
-    const search = ref<string>();
+const searchInput = ref<string>();
+const search = ref<string>();
 
 
-    //=======================events & watchers=======================
-    onBeforeMount(async () => {
 
+const filteredAvailableSupervisors = computed(() => {
+    return userAccountNames.value
+        .filter(u => !quizImportStore.selectedExamSupervisors.some(s => s.modelId === u.modelId))
+        .filter(u => {
+            if (!search.value) return true;
+            const searchLower = search.value.toLowerCase();
+            return getUsername(u.name).toLowerCase().includes(searchLower) ||
+                getFullName(u.name).toLowerCase().includes(searchLower);
+        });
+});
 
-        const userAccountNamesResponse: UserAccountName[] | null = await userAccountViewService.getSupervisorNames({institutionId: userAccountStore.userAccount?.institutionId});
+//=======================events & watchers=======================
+onBeforeMount(async () => {
+    const userAccountNamesResponse: UserAccountName[] | null = await userAccountViewService.getSupervisorNames({institutionId: userAccountStore.userAccount?.institutionId});
 
-        if(userAccountNamesResponse == null){
-            return;
-        }
-        userAccountNames.value = userAccountNamesResponse;
+    if (userAccountNamesResponse == null) {
+        return;
+    }
+    userAccountNames.value = userAccountNamesResponse;
 
-        //add supervisors from template to list
-        if(quizImportStore.selectedExamTemplate?.supporter != null){
-            quizImportStore.selectedExamSupervisors.push(
-            ...userAccountNames.value.filter(user => 
+    //add supervisors from template to list
+    if (quizImportStore.selectedExamTemplate?.supporter != null) {
+        quizImportStore.selectedExamSupervisors.push(
+            ...userAccountNames.value.filter(user =>
                 quizImportStore.selectedExamTemplate?.supporter.includes(user.modelId))
-            );
-        }
-    });
-
-    //add exam supervisor
-    function onTableRowClick(selectedUserAccountName: UserAccountName){
-        const index: number = quizImportStore.selectedExamSupervisors.findIndex(userAccount => userAccount.modelId == selectedUserAccountName.modelId);
-        
-        if(index != -1){
-            quizImportStore.selectedExamSupervisors.splice(index, 1);
-            return;
-        }
-
-        quizImportStore.selectedExamSupervisors.push(selectedUserAccountName);
+        );
     }
+});
 
-    function removeExamSupervisor(supervisorId: string){
-        const index: number = quizImportStore.selectedExamSupervisors.findIndex(userAccount => userAccount.modelId == supervisorId);
+//add exam supervisor
+function onTableRowClick(selectedUserAccountName: UserAccountName) {
+    const index: number = quizImportStore.selectedExamSupervisors.findIndex(userAccount => userAccount.modelId == selectedUserAccountName.modelId);
+
+    if (index != -1) {
         quizImportStore.selectedExamSupervisors.splice(index, 1);
+        return;
     }
 
+    quizImportStore.selectedExamSupervisors.push(selectedUserAccountName);
+}
+
+function removeExamSupervisor(supervisorId: string) {
+    const index: number = quizImportStore.selectedExamSupervisors.findIndex(userAccount => userAccount.modelId == supervisorId);
+    quizImportStore.selectedExamSupervisors.splice(index, 1);
+}
+
+function getUsername(fullName: string): string {
+    const match = fullName.match(/^(.+?) \(/);
+    return match?.[1] ?? fullName;
+}
+
+function getFullName(fullName: string): string {
+    const match = fullName.match(/\((.*?)\)/);
+    return match?.[1] ?? "";
+}
+function clearSearch() {
+    searchInput.value = "";
+    search.value = "";
+}
 
 </script>
 
 <style scoped>
 
-    .on-row-hover:hover{
-        background: #e4e4e4 !important;
-        cursor: pointer;
-    }
 
-    .selected-row {
-        background-color: #e4e4e4 !important;
-    }
+
+.supervisor-row-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background-color: white;
+}
+
+.supervisor-table-wrapper {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    height: 50vh;
+    overflow: hidden;
+}
+
+.bordered-table {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.bordered-table {
+    border-collapse: collapse;
+}
+
+.supervisor-row {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.supervisor-cell {
+    padding: 0 !important;
+}
+
+.supervisor-row-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background-color: white;
+}
+
+.no-header-table >>> thead {
+    display: none;
+}
+
+
+.clickable {
+    cursor: pointer;
+}
+
+.selected-supervisors-scroll {
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.supervisor-row-content .font-weight-medium {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 500;
+}
+
+.supervisor-row-content .text-caption {
+    font-size: 12px;
+    line-height: 16px;
+    color: #6b6b6b;
+}
+
 
 
 </style>

@@ -1,57 +1,102 @@
 <template>
+    <div class="h-100 w-100">
+        <!-- Title and Description -->
+        <v-row dense>
+            <v-col>
+                <div class="text-h6 font-weight-bold mb-1">
+                    {{ translate("quizImportWizard.passwordMain.title") }}
+                </div>
+                <div class="mb-3 text-body-2">
+                    {{ translate("quizImportWizard.passwordMain.description") }}
+                </div>
+            </v-col>
+        </v-row>
 
-    <v-row>
-        <v-spacer></v-spacer>
-        <v-col cols="4">
-            <v-text-field
-                :type="passwordVisible ? 'text' : 'password'"
-                prepend-inner-icon="mdi-lock-outline"
-                density="compact"
-                :placeholder="translate('quizImportWizard.passwordMain.password')"
-                variant="outlined"
-                v-model="quizImportStore.selectedQuitPassword">
+        <!-- Password Field -->
+        <v-row dense class="mt-6">
+            <v-col cols="12" md="6">
+                <div class="text-subtitle-1 font-weight-medium mb-2">
+                    {{ translate("quizImportWizard.passwordMain.quitPassword") }}
+                </div>
+            </v-col>
+        </v-row>
 
-                <template v-slot:append-inner>
-                    <v-btn
-                        density="compact"
-                        variant="text"
-                        :icon="passwordVisible ? 'mdi-eye-off' : 'mdi-eye'"
-                        @click="passwordVisible = !passwordVisible">
-                    </v-btn>
-                </template>
+        <v-row dense>
+            <v-col cols="6">
+                <v-text-field
+                    v-model="quizImportStore.selectedQuitPassword"
+                    :type="passwordVisible ? 'text' : 'password'"
+                    prepend-inner-icon="mdi-lock-outline"
+                    :placeholder="translate('quizImportWizard.passwordMain.password')"
+                    variant="outlined"
+                    density="comfortable"
+                >
+                    <template v-slot:append-inner>
+                        <v-btn
+                            icon
+                            variant="text"
+                            density="compact"
+                            @click="passwordVisible = !passwordVisible"
+                        >
+                            <v-icon>{{ passwordVisible ? 'mdi-eye-off' : 'mdi-eye' }}</v-icon>
+                        </v-btn>
+                    </template>
+                </v-text-field>
 
-            </v-text-field>
-        </v-col>
-        <v-spacer></v-spacer>
-    </v-row>
+                <!-- Imported Info Text -->
+                <div v-if="showImportedHint" class="text-caption text-grey mt-1">
+                    Password imported from selected Exam Template
+                </div>
 
-
+                <!-- Warning Box -->
+                <v-alert
+                    type="warning"
+                    variant="outlined"
+                    density="comfortable"
+                    border="start"
+                    class="mt-4"
+                >
+                    <template v-slot:prepend>
+                        <v-icon>mdi-alert</v-icon>
+                    </template>
+                    {{ translate("quizImportWizard.passwordMain.warning") }}
+                </v-alert>
+            </v-col>
+        </v-row>
+    </div>
 </template>
 
 
+
 <script setup lang="ts">
-    import { useQuizImportStore } from '@/stores/seb-server/quizImportStore';
-    import {storeToRefs} from "pinia";
-    import {translate} from "@/utils/generalUtils";
+import { useQuizImportStore } from '@/stores/seb-server/quizImportStore';
+import { storeToRefs } from "pinia";
+import { translate } from "@/utils/generalUtils";
+import { watch, ref, computed } from 'vue';
 
+// stores
+const quizImportStore = useQuizImportStore();
+const { selectedQuiz, selectedQuitPassword } = storeToRefs(quizImportStore);
 
-    //stores
-    const quizImportStore = useQuizImportStore();
-    const quizImportStoreRef = storeToRefs(quizImportStore);
+// pw visibility toggle
+const passwordVisible = ref(false);
 
+// get template quit password (might be null/undefined)
+const importedPassword = computed(() =>
+    quizImportStore.selectedExamTemplate?.EXAM_ATTRIBUTES?.quitPassword?.trim() || ''
+);
 
-    //pw field
-    const passwordVisible = ref<boolean>(false);
-
-
-    watch(quizImportStoreRef.selectedQuiz, () => {
-
-    });
-
-    function setQuitPwFromMoodle(){
-        // if(quizImportStore.selectedQuiz?.additionalAttributes.q)
+// apply imported password once (on load or template change)
+watch(importedPassword, (value) => {
+    if (value && !selectedQuitPassword.value) {
+        selectedQuitPassword.value = value;
     }
+});
 
+//show a hint in case password is imported from template
+const showImportedHint = computed(() =>
+    !!importedPassword.value && selectedQuitPassword.value === importedPassword.value
+);
 </script>
 
 <style scoped>

@@ -8,3 +8,28 @@
 // @use 'vuetify/settings' with (
 //   $color-pack: false
 // );
+
+
+.breadcrumb-link {
+  color: #6B7280;
+  cursor: pointer;
+  font-weight: 450;
+  transition: color 0.2s;
+}
+
+.breadcrumb-link:hover {
+  color: #215CAF;
+  font-weight: bold;
+
+}
+
+.breadcrumb-active {
+  color: #215CAF;
+  font-weight: 500;
+}
+
+.breadcrumb-arrow {
+  color: #9CA3AF;
+  margin: 0 4px;
+  font-size: 20px;
+}

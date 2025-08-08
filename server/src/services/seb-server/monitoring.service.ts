@@ -11,7 +11,12 @@ export async function applyTestRun(token: string, id: string): Promise<[object, 
 
 export async function getOverview(token: string, id: string): Promise<[object, number]>{
     const url: string = "/monitoring/overview/" + id;
-    const {data, status} = await apiService.api.get(url, {headers: apiService.getHeaders(token)});
+    const { data, status } = await apiService.api.get(url, {
+        headers: apiService.getHeaders(token),
+    });
+
+    console.log("[getOverview] Response data:", data);
+    console.log("[getOverview] Response status:", status);
 
     // const data = {
     //     "clientStates": {

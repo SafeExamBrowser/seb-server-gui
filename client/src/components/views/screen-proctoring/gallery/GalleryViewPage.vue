@@ -16,10 +16,10 @@
 
                     </v-col>
                 </v-row>
-            </template>
 
-            <AlertMsg 
-                v-else 
+            </template>
+            <AlertMsg
+                v-else
                 :alertProps="{
                     title: '',
                     textKey: alertMsgKey,
@@ -46,8 +46,8 @@
     const group = ref<GroupUuid | null>();
     const timestamp = ref(Date.now());
     const maxPages = ref<number>(1);
-    const currentWindow = ref<number>(0);  
-    const sortOrder = ref<SortOrder>(SortOrder.asc); 
+    const currentWindow = ref<number>(0);
+    const sortOrder = ref<SortOrder>(SortOrder.asc);
 
     //error handling
     const noScreenshotData = ref<boolean>(false);

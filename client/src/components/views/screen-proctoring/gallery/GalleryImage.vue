@@ -4,13 +4,13 @@
         <!--todo: add max height  -->
         <v-img
             eager
-            tabindex="0"   
+            tabindex="0"
             @focus="setTabFocus($event)"
             @keydown="registerKeyPress($event)"
             @mousedown="registerKeyPress($event)"
             v-if="screenshot"
             v-bind="props"
-            class="img-styling" 
+            class="img-styling"
             @dblclick="openDialog()"
             :aspect-ratio="16/9"
             :class="{'on-hover': isHovering}"
@@ -21,7 +21,7 @@
                     <v-col>
                         <div v-if="appBarStore.galleryIsMetadataEnabled">
                             <v-expansion-panels color="#404040">
-                                <v-expansion-panel  
+                                <v-expansion-panel
                                     :title="i18n.t('galleryView.metadata')">
                                     <v-expansion-panel-text>
                                         <v-row v-for="(value, key) in galleryViewService.getScreenshotMetadata(screenshot.metaData)" :key="key" no-gutters>
@@ -49,10 +49,10 @@
                             </div>
                             <v-spacer></v-spacer>
                             <span>
-                                <v-btn 
-                                    rounded="sm" 
-                                    color="white" 
-                                    variant="outlined" 
+                                <v-btn
+                                    rounded="sm"
+                                    color="white"
+                                    variant="outlined"
                                     icon="mdi-arrow-expand"
                                     size="small"
                                     :aria-label="i18n.t('galleryView.screenReader.expandImage')"
@@ -60,14 +60,14 @@
                                 </v-btn>
 
                                 <v-btn
-                                    rounded="sm" 
-                                    color="primary" 
-                                    variant="flat" 
+                                    rounded="sm"
+                                    color="primary"
+                                    variant="flat"
                                     class="ml-2"
                                     icon="mdi-video"
                                     size="small"
                                     :aria-label="i18n.t('galleryView.screenReader.openProcotringView')"
-                                    @click="galleryViewService.navigateToProctoringView(screenshot, groupUuid)">
+                                    @click="galleryViewService.navigateToProctoringView(screenshot, examId)">
                                 </v-btn>
                             </span>
                         </v-sheet>
@@ -75,8 +75,8 @@
                 </v-row>
             </div>
         </v-img>
-        <v-img 
-            v-else 
+        <v-img
+            v-else
             eager
             class="content-filler"
             :aspect-ratio="16/9"
@@ -85,10 +85,10 @@
     </v-hover>
     <!-------------------------->
 
-    <!-----------expanded image---------->      
+    <!-----------expanded image---------->
     <v-dialog v-model="dialog" max-width="1500">
         <v-card>
-            <v-img 
+            <v-img
                 eager
                 v-if="screenshot"
                 class="img-styling"
@@ -102,7 +102,7 @@
                                 <v-expansion-panels>
                                     <v-expansion-panel>
                                         <v-expansion-panel-title color="#404040">
-                                            
+
                                             <template v-slot:default="{ expanded }">
                                                 <v-icon
                                                     class="mr-2"
@@ -110,11 +110,11 @@
                                                 </v-icon>
                                                 {{ $t('galleryView.metadata') }}
                                             </template>
-                                            
+
                                             <template v-slot:actions="{ expanded }">
                                                 <v-btn
-                                                    color="white" 
-                                                    variant="outlined" 
+                                                    color="white"
+                                                    variant="outlined"
                                                     rounded="sm"
                                                     icon="mdi-arrow-collapse"
                                                     size="small"
@@ -128,7 +128,7 @@
                                             <div class="metadata-container">
                                                 <v-table density="compact">
                                                     <tbody>
-                                                        <tr v-for="(value, key) in galleryViewService.getScreenshotMetadata(screenshot.metaData)" 
+                                                        <tr v-for="(value, key) in galleryViewService.getScreenshotMetadata(screenshot.metaData)"
                                                             :key="key">
                                                             <td>
                                                                 {{key}}
@@ -156,9 +156,9 @@
                                 <v-spacer></v-spacer>
                                 <span>
                                     <v-btn
-                                        rounded="sm" 
-                                        color="primary" 
-                                        variant="flat" 
+                                        rounded="sm"
+                                        color="primary"
+                                        variant="flat"
                                         class="ml-2"
                                         icon="mdi-video"
                                         size="small"
@@ -184,6 +184,8 @@
     import * as linkService from "@/services/screen-proctoring/component-services/linkService";
     import { useAppBarStore, useGalleryStore } from "@/stores/store";
     import { useI18n } from "vue-i18n";
+    import {useExamStore} from "@/stores/seb-server/examStore";
+    import {useMonitoringStore} from "@/stores/seb-server/monitoringStore";
 
     //props
     const props = defineProps<{
@@ -196,6 +198,11 @@
     //store
     const appBarStore = useAppBarStore();
     const galleryStore = useGalleryStore();
+
+
+    //examId
+    const route = useRoute();
+    const examId = computed(() => route.params.examId?.toString() ?? "");
 
     //i18n
     const i18n = useI18n();
@@ -221,9 +228,9 @@
 
     const expandedScreenshotLink = computed<string>(() => {
         return linkService.getLatestImageLink(props.screenshot, props.timestamp.toString());
-    });                                                         
+    });
 
-    function setTabFocus(event: any){   
+    function setTabFocus(event: any){
         if(lastKeyPressed.value != "Tab" || lastKeyPressed.value == null){
             return;
         }
@@ -252,7 +259,7 @@
     }
 
     .img-styling .hover-overlay {
-        position: absolute;                     
+        position: absolute;
         top: 0;
         right: 0;
         bottom: 0;

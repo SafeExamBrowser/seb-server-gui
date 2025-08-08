@@ -5,11 +5,11 @@
         v-if="raiseHandNotification != null"
         elevation="4"
         class="rounded-lg pa-4 raise-hand-row mb-1"
-        style="background-color: #FFFFFE; border: 2px solid #205caf;"
+        style="background-color: #FFFFFE; border: 2px solid #215caf;"
     >
         <v-row align="center" justify="center">
             <v-col cols="1">
-                <v-icon class="ml-5" icon="mdi-hand-back-right" style="color: #205caf;"></v-icon>
+                <v-icon class="ml-5" icon="mdi-hand-back-right" style="color: #215caf;"></v-icon>
             </v-col>
             <v-col>
                 {{ raiseHandNotification.text }}
@@ -37,11 +37,11 @@
                     :key="message.id"
                     elevation="4"
                     class="rounded-lg pa-4 message-card"
-                    style="background-color: #FFFFFE; border: 2px solid #205caf;"
+                    style="background-color: #FFFFFE; border: 2px solid #215caf;"
                 >
                     <v-row align="center" justify="center">
                         <v-col cols="1">
-                            <v-icon icon="ml-5 mdi-monitor-lock" style="color: #205caf;"></v-icon>
+                            <v-icon icon="ml-5 mdi-monitor-lock" style="color: #215caf;"></v-icon>
                         </v-col>
                         <v-col>
                             {{ message.text }}

@@ -10,7 +10,7 @@ export const EXAM_GET_ROUTE = "/get-exam";
 export const EXAMS_ROUTE = "/exams";
 export const EXAM_CONFIGURATION_MAP_ROUTE = "/exam-configuration-map";
 export const EXAM_SCREEN_PROCTORING_ROUTE = "/exam/:id/screen-proctoring"
-
+export const KEY_INFO_ROUTE = "/sebkeyinfo"
 //exam template
 export const EXAM_TEMPLATE_ROUTE = "/exam-template";
 export const EXAM_TEMPLATE_SCREEN_PROCTORING_ROUTE = "/exam-template/:id/screen-proctoring";
@@ -18,6 +18,7 @@ export const EXAM_TEMPLATE_SCREEN_PROCTORING_ROUTE = "/exam-template/:id/screen-
 //institution
 export const ADMIN_INSTITUTION_INFO_ROUTE = "/info/institution";
 export const INSTITUTION_ROUTE = "/institution";
+export const ADMIN_INSTITUTION_LOGO_ROUTE = "/info/logo";
 
 //user account
 export const USER_ACCOUNT_ROUTE = "/useraccount";
@@ -27,6 +28,8 @@ export const USER_ACCOUNT_REGISTRATION_ROUTE = "/useraccount/register";
 export const SUPERVISOR_ACCOUNT_NAMES_ROUTE = "/useraccount/supervisors";
 export const DEACTIVATION_ROUTE = "/inactive";
 export const ACTIVATION_ROUTE = "/active";
+export const FEATURE_ROUTE = "/useraccount/me/features";
+
 
 export const CHANGE_PASSWORD_ROUTE = "/password";
 

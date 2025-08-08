@@ -1,4 +1,36 @@
 <template>
+    <!-- Breadcrumb and Title-->
+    <v-row dense>
+        <v-col cols="12" md="10" class="pl-5 mb-1">
+            <div class="path-text d-flex align-center">
+            <span
+                class="breadcrumb-link"
+                @click="navigateTo(constants.HOME_PAGE_ROUTE)"
+            >
+                {{ translate("titles.home") }}
+            </span>
+
+                <span class="breadcrumb-arrow">›</span>
+
+                <span
+                    class="breadcrumb-link"
+                    @click="navigateTo(constants.EXAM_ROUTE)"
+                >
+                {{ translate("titles.exams") }}
+            </span>
+
+                <span class="breadcrumb-arrow">›</span>
+            </div>
+        </v-col>
+
+        <v-col cols="12" md="10" class="pl-10">
+            <div class="primary-text-color text-h4 font-weight-bold">
+                {{examStore.selectedExam?.quizName}}
+            </div>
+        </v-col>
+    </v-row>
+
+
     <v-row>
         <v-col>
             <v-sheet elevation="4" class="rounded-lg pl-4 pt-3 pr-4">
@@ -7,8 +39,8 @@
 
                         <!------title and headers------->
                         <v-row>
-                            <v-col cols="3" class="primary-text-color text-h5 font-weight-bold">
-                                {{examStore.selectedExam?.quizName}}
+                            <v-col cols="3" class="text-subtitle-1">
+                                {{translate("examDetail.info.url")}}
                             </v-col>
 
                             <v-col cols="2" class="text-subtitle-1">
@@ -64,13 +96,13 @@
 
                             <!------exam type & status------->
                             <v-col cols="2">
-                                <v-chip 
+                                <v-chip
                                     class="mr-1"
                                     variant="tonal"
                                     size="small">
                                     {{ translate(generalUtils.findEnumValue(ExamTypeEnum, examStore.selectedExam?.type)) }}
                                 </v-chip>
-                                <v-chip 
+                                <v-chip
                                     variant="tonal"
                                     size="small"
                                     :color="generalUtils.getExamStatusFilterColor(generalUtils.findEnumValue(ExamStatusEnum, examStore.selectedExam?.status))">
@@ -84,7 +116,7 @@
             </v-sheet>
         </v-col>
     </v-row>
-           
+
 </template>
 
 <script setup lang="ts">
@@ -95,6 +127,7 @@
     import { ExamStatusEnum, ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
     import { useI18n } from "vue-i18n";
     import {translate} from "@/utils/generalUtils";
+    import {navigateTo} from "@/router/navigation";
 
     //i18n
     const i18n = useI18n();
@@ -105,5 +138,6 @@
 </script>
 
 <style scoped>
+
 
 </style>

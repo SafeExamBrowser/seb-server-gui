@@ -11,6 +11,7 @@ import * as constants from "@/utils/constants";
 import * as navigation from "@/router/navigation";
 import { LocationQuery } from "vue-router";
 import * as clientGroupViewService from "@/services/seb-server/component-services/clientGroupViewService";
+import {getExamAppSignatureKeys} from "@/services/seb-server/component-services/examViewService";
 
 
 //================api===============
@@ -60,8 +61,16 @@ export async function getExamAndStore(examId: string){
     if(examResponse == null){
         return;
     }
-
     useMonitoringStore().selectedExam = examResponse;
+}
+
+export async function getAksAndStore(examId: string){
+    const examResponse: AppSignatureKey[] | null = await examViewService.getExamAppSignatureKeys(examId);
+
+    if(examResponse == null){
+        return;
+    }
+    useMonitoringStore().appSignatureKeys = examResponse;
 }
 
 

@@ -1,13 +1,12 @@
 <template>
-    <v-row>
+    <v-row >
         <v-col>
-
-            <v-sheet 
+            <v-sheet
                 elevation="4"
-                class="rounded-lg pa-8">
+                class="rounded-lg fill-height pa-8">
 
                 <v-data-table-server
-                    item-value="id" 
+                    item-value="id"
                     @update:options="loadItems"
                     :hover="true"
                     :loading="isLoading"
@@ -29,7 +28,7 @@
                     </template>
 
                     <template v-slot:item="{item}">
-                        <tr 
+                        <tr
                             @click="onTableRowClick(item)"
                             class="on-row-hover"
                             :class="[selectedExam?.id == item.id ? 'selected-row' : '']">
@@ -38,14 +37,14 @@
                             <td>{{ timeUtils.formatIsoDateToFullDate(item.quizStartTime) }}</td>
                             <td>{{ timeUtils.formatIsoDateToFullDate(item.quizEndTime) }}</td>
                             <td>
-                                <v-chip 
+                                <v-chip
                                     variant="tonal"
                                     size="small">
                                     {{ translate(generalUtils.findEnumValue(ExamTypeEnum, item.type)) }}
                                 </v-chip>
                             </td>
                             <td>
-                                <v-chip 
+                                <v-chip
                                     variant="tonal"
                                     size="small"
                                     :color="generalUtils.getExamStatusFilterColor(generalUtils.findEnumValue(ExamStatusEnum, item.status))">
@@ -53,7 +52,7 @@
                                 </v-chip>
                             </td>
                             <td align="right">
-                                <v-icon 
+                                <v-icon
                                     class="mr-6"
                                     icon="mdi-chevron-right"
                                     style="font-size: 30px;"
@@ -64,7 +63,7 @@
                     </template>
 
                 </v-data-table-server>
-                
+
             </v-sheet>
 
         </v-col>
@@ -107,8 +106,8 @@
         {title: translate("monitoringExams.main.tableHeaderType"), key: "type", sortable: false, width: "12.5%"},
         {title: translate("monitoringExams.main.tableHeaderStatus"), key: "status", sortable: false, width: "12.5%"},
         {title: "", key: "examLink", width: "5%"},
-    ]);    
-    
+    ]);
+
     defineExpose({
         loadItems
     });
@@ -148,8 +147,8 @@
 
         const optionalParGetExams: OptionalParGetExams = tableUtils.assignExamSelectPagingOptions
         (
-            serverTablePaging, 
-            monitoringStore.searchField, 
+            serverTablePaging,
+            monitoringStore.searchField,
             startTimestamp,
             monitoringStore.activeTypeFilter,
             activeStatusFilter
