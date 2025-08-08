@@ -5,57 +5,12 @@
     <v-row class="mt-10 w-98 h-100">
 
         <!-- settings navigation-->
-        <v-col cols="3" class="pt-0 h-100">
-            <v-sheet  class="rounded-lg ml-6 w-100 h-100 bg-primary">
-                <v-col class="pt-0">
-                    <v-divider class="section-divider" />
-
-                    <v-list-item class="px-0 nav-hover">
-                        <router-link class="link-color nav-link" :to="constants.ASSESSMENT_TOOL_CONNECTIONS">
-                            {{ translate("titles.assessmentToolConnections") }}
-                        </router-link>
-                    </v-list-item>
-
-                    <v-divider class="section-divider" />
-
-                    <v-list-item class="px-0 nav-hover">
-                        <span class="link-color nav-link">{{ translate("navigation.routeNames.connectionConfiguration") }}</span>
-                    </v-list-item>
-
-                    <v-divider class="section-divider" />
-
-                    <v-list-item class="px-0 nav-hover">
-                        <span class="link-color nav-link">{{ translate("navigation.routeNames.certificates") }}</span>
-                    </v-list-item>
-
-                    <v-divider class="section-divider" />
-
-                    <v-list-item class="px-0 nav-hover">
-                        <router-link class="link-color nav-link" :to="constants.USER_ACCOUNTS_ROUTE">{{ translate("navigation.routeNames.userAccounts") }}</router-link>
-                    </v-list-item>
-
-                    <v-divider class="section-divider mb-10" />
-                </v-col>
-
-                <!-- Success Message for creation -->
-                <div class="success-message-div">
-                    <AlertMsg
-                        v-if="createdSuccess"
-                        :alertProps="{
-                            title: '',
-                            color: 'success',
-                            type: 'alert',
-                            customText: i18n.t('warnings.creation-success', { username: createdUserName})
-                        }"
-                    />
-                </div>
-            </v-sheet>
-        </v-col>
+      <SettingsNavigation/>
 
         <v-col elevation="4" cols="9" class="bg-white rounded-lg">
             <v-row class="d-flex align-center justify-space-between px-6 pt-6">
                 <div class="text-primary text-h5 font-weight-bold">
-                    {{ translate("userAccount.createUserAccountPage.title") }}
+                    {{ translate("titles.createAssessmentTool") }}
                 </div>
             </v-row>
 
@@ -63,7 +18,7 @@
             <v-divider class="custom-divider mx-6 my-4 mt-7" />
             <v-row class="px-8 mt-2">
                 <div class="text-body-2 text-grey-darken-1">
-                    {{ translate("userAccount.createUserAccountPage.info.accountCreationInfo") }}
+                    {{ translate("assessmentToolConnections.createAssessmentToolConnectionsPage.info.assessmentToolConnectionsCreationInfo") }}
                 </div>
             </v-row>
 
@@ -81,29 +36,17 @@
                                             required
                                             prepend-inner-icon="mdi-domain"
                                             density="compact"
-                                            :label="translate('userAccount.createUserAccountPage.labels.institutionLabel')"
+                                            :label="translate('userAccount.userAccountDetailAndEditPage.labels.institutionLabel')"
                                             variant="outlined"
                                             v-model="selectedInstitution"
                                             :items="institutions"
                                             item-title="name"
                                             item-value="modelId"
                                             :rules="[requiredRule]"
-                                            :disabled="institutionSelectDisabled"
+                                            disabled
                                         />
                                     </v-col>
 
-                                    <!-- Username-->
-                                    <v-col cols="12" md="12" class="custom-padding-textbox">
-                                        <v-text-field
-                                            required
-                                            prepend-inner-icon="mdi-account-outline"
-                                            density="compact"
-                                            :label="translate('userAccount.createUserAccountPage.labels.usernameLabel')"
-                                            variant="outlined"
-                                            v-model="username"
-                                            :rules="[requiredRule]"
-                                        />
-                                    </v-col>
 
                                     <!-- Name-->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
@@ -118,7 +61,7 @@
                                         />
                                     </v-col>
 
-                                    <!-- Surname-->
+                                    <!-- Type-->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
                                             required
@@ -131,7 +74,7 @@
                                         />
                                     </v-col>
 
-                                    <!-- Email-->
+                                    <!-- Assessment Tool Server Address-->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
                                             prepend-inner-icon="mdi-email-outline"
@@ -144,20 +87,35 @@
                                         />
                                     </v-col>
 
-                                    <!-- Timezone-->
+                                    <!-- Assessment Tool Server Username-->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
-                                        <v-select
-                                            required
-                                            prepend-inner-icon="mdi-map-clock-outline"
+                                        <v-text-field
+                                            prepend-inner-icon="mdi-email-outline"
                                             density="compact"
-                                            :label="translate('userAccount.createUserAccountPage.labels.timeZoneLabel')"
+                                            :label="translate('userAccount.createUserAccountPage.labels.emailLabel')"
                                             variant="outlined"
-                                            v-model="timezone"
-                                            :items="timezoneOptions"
-                                            :rules="[requiredRule]"
-                                            :return-object="false"
+                                            v-model="email"
+                                            :rules="[emailRule]"
+                                            validate-on="blur"
                                         />
                                     </v-col>
+
+                                    <!-- Assessment Tool Server Password-->
+                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                        <v-text-field
+                                            prepend-inner-icon="mdi-email-outline"
+                                            density="compact"
+                                            :label="translate('userAccount.createUserAccountPage.labels.emailLabel')"
+                                            variant="outlined"
+                                            v-model="email"
+                                            :rules="[emailRule]"
+                                            validate-on="blur"
+                                        />
+                                    </v-col>
+
+
+
+
 
                                     <!-- Password-->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
@@ -211,60 +169,9 @@
                                     </v-col>
                                 </v-col>
 
-                                <!-- user circle and roles-->
+                                <!-- Second Section-->
                                 <v-col>
-                                    <v-col cols="12" class="d-flex justify-center mb-6">
-                                        <div
-                                            class="rounded-circle d-flex align-center justify-center"
-                                            style="
-                                            background-color: transparent;
-                                            border: 0.5rem solid #215CAF;
-                                            width: 13rem;
-                                            height: 13rem;
-                                            min-width: 13rem;
-                                            font-weight: 600;
-                                            font-size: 4rem;
-                                            color: #215CAF;
-                                            "
-                                        >
-                                            {{
-                                                (name?.[0] || '') +
-                                                (surname?.[0] || '')
-                                            }}
-                                        </div>
-                                    </v-col>
-
-                                    <!--  roles-->
-                                    <v-col cols="12" class="ml-16">
-                                        <div class="text-subtitle-1 font-weight-medium mb-2">
-                                            {{ translate("userAccount.createUserAccountPage.labels.selectRolesLabel") }}
-                                        </div>
-                                        <div class="text-body-2 text-grey-darken-1 mb-5">
-                                            {{ translate("userAccount.createUserAccountPage.info.rolesSelectionInfo") }}
-                                        </div>
-                                        <v-row dense>
-                                            <v-col
-                                                v-for="role in availableRoles"
-                                                :key="role.value"
-                                                cols="12"
-                                                md="7"
-                                                lg="7"
-                                                class="py-1"
-                                            >
-                                                <v-checkbox
-                                                    v-model="selectedRoles"
-                                                    :label="role.label"
-                                                    :value="role.value"
-                                                    density="compact"
-                                                    hide-details
-                                                    class="custom-checkbox"
-                                                />
-                                            </v-col>
-                                        </v-row>
-                                        <div v-if="rolesTouched && selectedRoles.length === 0" class="text-error text-caption mt-1">
-                                            {{ rolesRule([]) }}
-                                        </div>
-                                    </v-col>
+                                   dasda
                                 </v-col>
                             </v-row>
                         </v-form>
@@ -292,7 +199,7 @@
                             class="ml-2"
                             @click="submit()"
                         >
-                            {{ translate("general.cancelButton") }}
+                            {{ translate("general.createButton") }}
                         </v-btn>
                     </div>
                 </v-col>
@@ -341,7 +248,6 @@
 
     const institutions = ref<Institution[]>([]);
     const selectedRoles = ref<string[]>([]);
-    const timezoneOptions = moment.tz.names();
     const authenticatedUserAccountStore = useAuthenticatedUserAccountStore();
 
 
@@ -350,15 +256,12 @@
     const passwordTooShortMessage = translate("userAccount.general.validation.passwordTooShort");
     const passwordsDontMatchMessage = translate("userAccount.general.validation.passwordsDontMatch");
     const invalidEmailMessage = translate("userAccount.general.validation.invalidEmail");
-    const invalidRoleSelectionMessage = translate("userAccount.general.validation.invalidRoleSelection");
 
     const requiredRule = (v: string) => !!v || requiredMessage;
     const passwordRule = (v: string) => (v && v.length >= 8) || passwordTooShortMessage;
     const confirmPasswordRule = (v: string) => v === password.value || passwordsDontMatchMessage;
     const emailRule = (v: string) => !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || invalidEmailMessage;
-    const rolesRule = (v: string[]) => v.length > 0 || invalidRoleSelectionMessage;
 
-    const availableRoles = ref<{ label: string; value: string }[]>([]);
 
     const allRoles = Object.values(UserRoleEnum).map(role => ({
         label: translate(`general.userRoles.${role}`),
@@ -380,7 +283,7 @@
     }
 
     onMounted(async () => {
-        appBarStore.title = translate("titles.createUserAccount");
+        appBarStore.title = translate("titles.createAssessmentTool");
         layoutStore.setBlueBackground(true);
 
         const user = authenticatedUserAccountStore.userAccount;
@@ -389,7 +292,6 @@
         const result : Institution[] | null = await getInstitutions();
         institutions.value = result ?? [];
 
-        availableRoles.value = getAvailableRolesForUser(roles);
 
         if (roles.includes(UserRoleEnum.SEB_SERVER_ADMIN)) {
             institutionSelectDisabled.value = false;
@@ -458,15 +360,12 @@
             }, 1500);
 
         }
-    };
+    }
 
     onBeforeUnmount(() => {
         layoutStore.setBlueBackground(false);
     });
-    onMounted(() => {
-        appBarStore.title = translate("titles.createUserAccount");
-        layoutStore.setBlueBackground(true);
-    });
+
 
 </script>
 
