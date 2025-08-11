@@ -413,6 +413,28 @@
                 "statusFilter" : "Status",
                 "activeSelector": "Active",
                 "inactiveSelector": "Inactive"
+            },
+            "assessmentToolTableHeaders": {
+                "tableHeaderInstitution": "Institution",
+                "tableHeaderName": "Name",
+                "tableHeaderAssessmentToolType": "Assessment Tool Type",
+                "tableHeaderStatus": "Status"
+            },
+            "changeAssessmentToolStatusContext": {
+                "activateTitle": "Activate Assessment Tool?",
+                "deactivateTitle": "Deactivate Assessment Tool?",
+                "activateMessage": "Are you sure you want to activate {name}?",
+                "deactivateMessage": "Are you sure you want to deactivate {name}?",
+                "buttons": {
+                    "activate": "Activate",
+                    "deactivate": "Deactivate"
+                }
+            },
+            "deleteAssessmentToolContext": {
+                "title": "Confirm Deletion",
+                "informationPart1": "Are you sure you want to delete",
+                "informationPart2": "'s account (",
+                "informationPart3": ")?"
             }
         },
         "createAssessmentToolConnectionsPage" : {

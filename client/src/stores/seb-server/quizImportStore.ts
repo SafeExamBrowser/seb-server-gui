@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import * as constants from "@/utils/constants";
-import ImportGroupInfo from "@/components/views/seb-server/quiz-import/info-box-content/ImportGroupInfo.vue"; 
-import ImportGroupMain from "@/components/views/seb-server/quiz-import/main-content/ImportGroupMain.vue"; 
+import ImportGroupInfo from "@/components/views/seb-server/quiz-import/info-box-content/ImportGroupInfo.vue";
+import ImportGroupMain from "@/components/views/seb-server/quiz-import/main-content/ImportGroupMain.vue";
 import { useI18n } from "vue-i18n";
 
 
@@ -12,7 +12,7 @@ export const useQuizImportStore = defineStore("quizImport", () => {
     //steps
     const currentStep = ref<number>(1);
     const steps = ref<ImportWizardSteps[]>(constants.getQuizImportSteps(i18n));
-    
+
     //stepper components
     const infoBoxComponents = ref<Component[]>(constants.quizImportInfoBoxComponents.map(component => markRaw(component)));
     const mainContentComponents = ref<Component[]>(constants.quizImportMainContentComponents.map(component => markRaw(component)));
@@ -34,7 +34,7 @@ export const useQuizImportStore = defineStore("quizImport", () => {
 
     //other values
     const availableSpClientGroupIds = ref<number[]>([]);
-    const availableAssessmentTools = ref<AssessmentTools>();
+    const availableAssessmentTools = ref<AssessmentToolsResponse>();
     const forceNewSearch = ref<boolean>(false);
 
 

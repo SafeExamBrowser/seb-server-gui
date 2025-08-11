@@ -182,6 +182,7 @@
                     :items-per-page-options="[5, 10, 15]"
                     :headers="userAccountsTableHeaders"
                     :loading="isLoading"
+                    style="min-height:40vh"
                 >
                     <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort }">
                         <TableHeaders
@@ -586,6 +587,7 @@
         searchQuery.value = userAccountStore.searchField?.trim().toLowerCase() ?? "";
         options.value.page = 1;
     }
+
     function onClearSearch() {
         userAccountStore.searchField = "";
         searchQuery.value = "";

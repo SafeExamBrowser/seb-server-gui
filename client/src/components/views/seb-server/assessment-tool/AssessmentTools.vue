@@ -38,7 +38,7 @@
                         {{ translate("assessmentToolConnections.assessmentToolsPage.filters.searchTitle") }}
                     </div>
                     <v-text-field
-                        v-model="userAccountStore.searchField"
+                        v-model="assessmentToolStore.searchField"
                         :placeholder="translate('assessmentToolConnections.assessmentToolsPage.filters.searchField')"
                         variant="outlined"
                         density="comfortable"
@@ -71,7 +71,7 @@
                     </div>
                 </v-col>
                 <v-col
-                    v-if="showInstitutionColumn && institutions.length > 0"
+                    v-if="institutions.length > 0"
                     cols="12"
                     md="4"
                     class="pa-0 mb-2 ml-10"
@@ -129,8 +129,9 @@
                     :loading-text="translate('general.loading')"
                     :items-per-page="options.itemsPerPage"
                     :items-per-page-options="[5, 10, 15]"
-                    :headers="userAccountsTableHeaders"
+                    :headers="assessmentToolTableHeaders"
                     :loading="isLoading"
+                    style="min-height:40vh"
                 >
                     <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort }">
                         <TableHeaders
@@ -138,45 +139,24 @@
                             :is-sorted="isSorted"
                             :get-sort-icon="getSortIcon"
                             :toggle-sort="toggleSort"
-                            :header-refs-prop="userAccountsTableHeadersRef"
+                            :header-refs-prop="assessmentToolTableHeadersRef"
                         />
                     </template>
 
                     <template v-slot:item="{ item }">
                         <tr
-                            :class="[selectedUserAccount?.id === item.id ? 'selected-row' : '']"
+                            :class="[selectedAssessmentTool?.id === item.id ? 'selected-row' : '']"
                         >
                             <!-- Column Definition -->
-                            <td v-if="showInstitutionColumn" class="text-primary">
+                            <td class="text-primary">
                                 {{ item.institutionName || item.institutionId }}
                             </td>
-                            <td class="text-primary">{{ item.surname }}</td>
                             <td class="text-primary">{{ item.name }}</td>
-                            <td class="text-primary">{{ item.username }}</td>
-                            <td class="text-primary">{{ item.email }}</td>
+                            <td class="text-primary">{{ item.lmsType }}</td>
 
                             <td>
-                                <v-tooltip v-if="!hasEditingRights(item.userRoles as UserRoleEnum[])" location="top">
-                                    <template #activator="{ props }">
-                                        <v-chip
-                                            v-bind="props"
-                                            :color="item.active ? 'green' : 'red'"
-                                            dark
-                                            small
-                                            class="text-white font-weight-medium status-chip cursor-default opacity-50"
-                                        >
-                                            {{
-                                                item.active
-                                                    ? translate("assessmentToolConnections.assessmentToolsPage.filters.activeSelector")
-                                                    : translate("assessmentToolConnections.assessmentToolsPage.filters.inactiveSelector")
-                                            }}
-                                        </v-chip>
-                                    </template>
-                                    <span>{{ translate("userAccount.userAccountPage.info.noPermissionEditUser") }}</span>
-                                </v-tooltip>
 
                                 <v-chip
-                                    v-else
                                     :color="item.active ? 'green' : 'red'"
                                     dark
                                     small
@@ -193,29 +173,13 @@
                             <td class="icon-cell">
                                 <div class="d-flex align-center justify-end h-100">
                                     <v-icon
-                                        :icon="hasEditingRights(item.userRoles as UserRoleEnum[]) ? 'mdi-pencil' : 'mdi-eye'"
-                                        class="action-icon mr-2"
-                                        :class="hasEditingRights(item.userRoles as UserRoleEnum[]) ? '' : 'cursor-pointer'"
-                                        @click.stop="navigateTo(`${constants.EDIT_USER_ACCOUNT}/${item.uuid}`)"
+                                        :icon="'mdi-eye'"
+                                        class="action-icon mr-2 cursor-pointer"
+                                        @click.stop="navigateTo(`${constants.EDIT_USER_ACCOUNT}/${item.id}`)"
                                     ></v-icon>
 
 
-                                    <v-tooltip
-                                        v-if="!hasEditingRights(item.userRoles as UserRoleEnum[])"
-                                        location="top"
-                                    >
-                                        <template #activator="{ props }">
-                                            <v-icon
-                                                icon="mdi-delete"
-                                                class="action-icon cursor-default opacity-50"
-                                                v-bind="props"
-                                            />
-                                        </template>
-                                        <span>{{ translate("userAccount.userAccountPage.info.noPermissionEditUser") }}</span>
-                                    </v-tooltip>
-
                                     <v-icon
-                                        v-else
                                         icon="mdi-delete"
                                         class="action-icon"
                                         @click.stop="openDeleteDialog(item)"
@@ -232,18 +196,18 @@
                 <v-dialog v-model="deleteDialog" max-width="500">
                     <v-card>
                         <v-card-title class="text-h6 font-weight-bold">
-                            {{ translate("userAccount.userAccountPage.deleteUserAccountContext.title") }}
+                            {{ translate("assessmentToolConnections.assessmentToolsPage.deleteAssessmentToolContext.title") }}
                         </v-card-title>
                         <v-card-text>
-                            {{ translate("userAccount.userAccountPage.deleteUserAccountContext.informationPart1") }}
-                            <strong>{{ userToDelete?.name }} {{
-                                    userToDelete?.surname
+                            {{ translate("assessmentToolConnections.assessmentToolsPage.deleteAssessmentToolContext.informationPart1") }}
+                            <strong>{{ asessmentToolToDelete?.name }} {{
+                                    asessmentToolToDelete?.name
                                 }}</strong>{{
-                                translate("userAccount.userAccountPage.deleteUserAccountContext.informationPart2")
+                                translate("assessmentToolConnections.assessmentToolsPage.deleteAssessmentToolContext.informationPart2")
                             }}<strong>{{
-                                userToDelete?.username
+                                asessmentToolToDelete?.name
                             }}</strong>{{
-                                translate("userAccount.userAccountPage.deleteUserAccountContext.informationPart3")
+                                translate("assessmentToolConnections.assessmentToolsPage.deleteAssessmentToolContext.informationPart3")
                             }}
                         </v-card-text>
                         <v-card-actions class="justify-end">
@@ -268,7 +232,7 @@
                                 {{ translate("general.cancelButton") }}
                             </v-btn>
                             <v-btn
-                                :color="statusDialogUser?.active ? 'red' : 'green'"
+                                :color="statusDialogAssessmentTool?.active ? 'red' : 'green'"
                                 text
                                 @click="confirmStatusChange"
                             >
@@ -286,61 +250,63 @@
 <script setup lang="ts">
     import {ref, computed, onMounted, onBeforeUnmount} from "vue";
     import {useAppBarStore, useLayoutStore} from "@/stores/store";
-    import {useUserAccountStore} from "@/stores/seb-server/userAccountStore";
     import {useI18n} from "vue-i18n";
     import {translate} from "@/utils/generalUtils";
     import * as tableUtils from "@/utils/table/tableUtils";
     import TableHeaders from "@/utils/table/TableHeaders.vue";
-    import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
+    import * as assessmentToolViewService from "@/services/seb-server/component-services/assessmentToolViewService";
+
     import {navigateTo} from "@/router/navigation";
     import * as constants from "@/utils/constants";
-    import {useUserAccountStore as useAuthenticatedUserAccountStore} from "@/stores/authentication/authenticationStore";
-    import {UserRoleEnum} from "@/models/userRoleEnum";
     import {getInstitutions} from "@/services/seb-server/component-services/registerAccountViewService";
+    import {getAssessmentTools} from "@/services/seb-server/component-services/assessmentToolViewService";
+    import {useAssessmentToolStore} from "@/stores/seb-server/asessmentToolStore";
 
-    const authenticatedUserAccountStore = useAuthenticatedUserAccountStore();
     const appBarStore = useAppBarStore();
     const layoutStore = useLayoutStore();
-    const userAccountStore = useUserAccountStore();
+    const assessmentToolStore = useAssessmentToolStore();
     const i18n = useI18n();
 
     // UI State
     const selectedStatus = ref<string | null>(null);
-    const selectedUserAccount = ref<UserAccount | null>(null);
+    const selectedAssessmentTool = ref<AssessmentTool | null>(null);
     const selectedInstitutionId = ref<string | null>(null);
     const deleteDialog = ref(false);
-    const userToDelete = ref<UserAccount | null>(null);
+    const asessmentToolToDelete = ref<AssessmentTool | null>(null);
     const isLoading = ref<boolean>(true);
     const deleteSuccess = ref(false);
-    const deletedUsername = ref("");
-    const editingRightsRevoked = ref(false);
+    const deletedName = ref("");
+
     const statuses = [
         {value: "Active", label: translate("assessmentToolConnections.assessmentToolsPage.filters.activeSelector")},
         {value: "Inactive", label: translate("assessmentToolConnections.assessmentToolsPage.filters.inactiveSelector")}
     ];
     const institutions = ref<Institution[]>([]);
-    const showInstitutionColumn = computed(() => {
-        const roles = authenticatedUserAccountStore.userAccount?.userRoles ?? [];
-        return roles.includes(UserRoleEnum.SEB_SERVER_ADMIN);
-    });
+
     const statusDialog = ref(false);
-    const statusDialogUser = ref<UserAccount | null>(null);
+    const statusDialogAssessmentTool = ref<AssessmentTool | null>(null);
 
 
     //search string
     const searchQuery = ref("");
     // API response
-    const userAccounts = ref<UserAccountResponse>();
+    const assessmentTools = ref<AssessmentToolsResponse>();
+
+    const assessmentToolTableHeadersRef = ref<any[]>();
 
 
     onMounted(async () => {
         appBarStore.title = translate("titles.assessmentToolConnections");
         layoutStore.setBlueBackground(true);
-        if (showInstitutionColumn.value) {
-            const result = await getInstitutions();
-            if (result && result.length > 0) {
-                institutions.value = result;
-            }
+
+        const assessmentTools = await getAssessmentTools();
+
+        console.log(assessmentTools);
+
+        const result = await getInstitutions();
+        if (result && result.length > 0) {
+            institutions.value = result;
+
         }
         await loadItems(options.value);
     });
@@ -361,52 +327,35 @@
 
 
     // Table header config
-    const userAccountsTableHeadersRef = ref<any[]>();
-
-    const userAccountsTableHeaders = computed(() => {
+    const assessmentToolTableHeaders = computed(() => {
         const headers = [];
-
-        if (showInstitutionColumn.value) {
-            headers.push({
-                title: translate("userAccount.userAccountPage.userAccountTableHeaders.tableHeaderInstitution"),
-                key: "institutionName",
-                width: "12%",
-                sortable: true
-            });
-        }
 
         headers.push(
             {
-                title: translate("userAccount.userAccountPage.userAccountTableHeaders.tableHeaderSurname"),
-                key: "surname",
-                width: "12%",
+                title: translate("assessmentToolConnections.assessmentToolsPage.assessmentToolTableHeaders.tableHeaderInstitution"),
+                key: "institutionName",
+                width: "20%",
                 sortable: true
             },
             {
-                title: translate("userAccount.userAccountPage.userAccountTableHeaders.tableHeaderName"),
+                title: translate("assessmentToolConnections.assessmentToolsPage.assessmentToolTableHeaders.tableHeaderName"),
                 key: "name",
-                width: "10%",
+                width: "20%",
                 sortable: true
             },
             {
-                title: translate("userAccount.userAccountPage.userAccountTableHeaders.tableHeaderUsername"),
-                key: "username",
-                width: "12%",
-                sortable: true
-            },
-            {
-                title: translate("userAccount.userAccountPage.userAccountTableHeaders.tableHeaderEmail"),
-                key: "email",
-                width: "10%",
-                sortable: true
-            },
-            {
-                title: translate("userAccount.userAccountPage.userAccountTableHeaders.tableHeaderStatus"),
-                key: "status",
-                width: "2%",
+                title: translate("assessmentToolConnections.assessmentToolsPage.assessmentToolTableHeaders.tableHeaderAssessmentToolType"),
+                key: "assessmentToolType",
+                width: "20%",
                 sortable: false
             },
-            { title: "", key: "userAccountLink", width: "1%" }
+            {
+                title: translate("assessmentToolConnections.assessmentToolsPage.assessmentToolTableHeaders.tableHeaderStatus"),
+                key: "active",
+                width: "15%",
+                sortable: false
+            },
+            { title: "", key: "assessmentToolLink", width: "1%" }
         );
 
         return headers;
@@ -421,8 +370,8 @@
 
     // Filters + Sorting
     const filteredUsers = computed(() => {
-        if (!userAccounts.value?.content) return [];
-        let result: (UserAccount & { institutionName?: string })[] = [...userAccounts.value.content];
+        if (!assessmentTools.value?.content) return [];
+        let result: (AssessmentTool & { institutionName?: string })[] = [...assessmentTools.value.content];
 
 
         // Status filter
@@ -434,26 +383,26 @@
         // Search filter
         const searchTerm = searchQuery.value;
         if (searchQuery) {
-            result = result.filter(user =>
-                [user.name, user.surname, user.username, user.email]
+            result = result.filter(asessmentTool =>
+                [asessmentTool.name]
                     .some(field => field?.toLowerCase().includes(searchTerm))
             );
         }
         if (selectedInstitutionId.value) {
             result = result.filter(
-                user => String(user.institutionId) === selectedInstitutionId.value
+                asessmentTool => String(asessmentTool.institutionId) === selectedInstitutionId.value
             );
         }
 
-        result = result.map(user => ({
-            ...user,
-            institutionName: institutionIdToNameMap.value.get(String(user.institutionId)) || "",
+        result = result.map(asessmentTool => ({
+            ...asessmentTool,
+            institutionName: institutionIdToNameMap.value.get(String(asessmentTool.institutionId)) || "",
         }));
 
         //sort
-        type SortableKey = keyof Pick<UserAccount & {
+        type SortableKey = keyof Pick<AssessmentTool & {
             institutionName?: string
-        }, "name" | "surname" | "username" | "email" | "institutionName">;
+        }, "name" | "lmsType" | "active" | "institutionName">;
 
         const sort = options.value.sortBy?.[0];
         if (sort && ["name", "surname", "username", "email", "institutionName"].includes(sort.key)) {
@@ -470,46 +419,43 @@
     });
 
     //update status
-    async function onStatusChange(user: UserAccount, newStatus: string) {
-        if (newStatus === "Active" && !user.active) {
-            await userAccountViewService.activateUserAccount(user.uuid);
-        } else if (newStatus === "Inactive" && user.active) {
-            await userAccountViewService.deactivateUserAccount(user.uuid);
+    async function onStatusChange(assessmentTool: AssessmentTool, newStatus: string) {
+        if (newStatus === "Active" && !assessmentTool.active) {
+            await assessmentToolViewService.activateUserAccount(assessmentTool.id.toString());
+        } else if (newStatus === "Inactive" && assessmentTool.active) {
+            await assessmentToolViewService.deactivateUserAccount(assessmentTool.id.toString());
         }
         await loadItems(options.value); // refresh table
 
     }
 
     const statusDialogTitle = computed(() => {
-        if (!statusDialogUser.value) return "";
+        if (!statusDialogAssessmentTool.value) return "";
         return i18n.t(
-            statusDialogUser.value.active
-                ? "userAccount.userAccountPage.changeUserAccountStatusContext.deactivateTitle"
-                : "userAccount.userAccountPage.changeUserAccountStatusContext.activateTitle",
-            {username: statusDialogUser.value.username}
+            statusDialogAssessmentTool.value.active
+                ? "assessmentToolConnections.assessmentToolsPage.changeAssessmentToolStatusContext.deactivateTitle"
+                : "assessmentToolConnections.assessmentToolsPage.changeAssessmentToolStatusContext.activateTitle"
         );
     });
 
     const statusDialogMessage = computed(() => {
-        if (!statusDialogUser.value) return "";
+        if (!statusDialogAssessmentTool.value) return "";
         return i18n.t(
-            statusDialogUser.value.active
-                ? "userAccount.userAccountPage.changeUserAccountStatusContext.deactivateMessage"
-                : "userAccount.userAccountPage.changeUserAccountStatusContext.activateMessage",
+            statusDialogAssessmentTool.value.active
+                ? "assessmentToolConnections.assessmentToolsPage.changeAssessmentToolStatusContext.deactivateMessage"
+                : "assessmentToolConnections.assessmentToolsPage.changeAssessmentToolStatusContext.activateMessage",
             {
-                name: statusDialogUser.value.name,
-                surname: statusDialogUser.value.surname,
-                username: statusDialogUser.value.username,
+                name: statusDialogAssessmentTool.value.name,
             }
         );
     });
 
     const statusDialogButtonLabel = computed(() => {
-        if (!statusDialogUser.value) return "";
+        if (!statusDialogAssessmentTool.value) return "";
         return translate(
-            statusDialogUser.value.active
-                ? "userAccount.userAccountPage.changeUserAccountStatusContext.buttons.deactivate"
-                : "userAccount.userAccountPage.changeUserAccountStatusContext.buttons.activate"
+            statusDialogAssessmentTool.value.active
+                ? "assessmentToolConnections.assessmentToolsPage.changeAssessmentToolStatusContext.buttons.deactivate"
+                : "assessmentToolConnections.assessmentToolsPage.changeAssessmentToolStatusContext.buttons.activate"
         );
     });
 
@@ -517,27 +463,28 @@
     // Load users with full pagination from backend
     async function loadItems(serverTablePaging: ServerTablePaging) {
         const fetchAllPaging = {...serverTablePaging, itemsPerPage: 500, page: 1};
-        userAccountStore.currentPagingOptions = serverTablePaging;
+        assessmentToolStore.currentPagingOptions = serverTablePaging;
         isLoading.value = true;
         const optionalParams = tableUtils.assignUserAccountSelectPagingOptions(fetchAllPaging);
-        const response = await userAccountViewService.getUserAccounts(optionalParams);
+        const response = await assessmentToolViewService.getAssessmentTools(optionalParams);
 
         if (!response) {
             isLoading.value = false;
             return;
         }
 
-        userAccounts.value = response;
+        assessmentTools.value = response;
         isLoading.value = false;
     }
 
     // Search + clear search
     function onSearch() {
-        searchQuery.value = userAccountStore.searchField?.trim().toLowerCase() ?? "";
+        searchQuery.value = assessmentToolStore.searchField?.trim().toLowerCase() ?? "";
         options.value.page = 1;
     }
+
     function onClearSearch() {
-        userAccountStore.searchField = "";
+        assessmentToolStore.searchField = "";
         searchQuery.value = "";
         selectedStatus.value = null;
         selectedInstitutionId.value = null;
@@ -546,17 +493,17 @@
 
     //dialogs and logic
     //delete
-    function openDeleteDialog(user: UserAccount) {
-        userToDelete.value = user;
+    function openDeleteDialog(assessmentTool: AssessmentTool) {
+        asessmentToolToDelete.value = assessmentTool;
         deleteDialog.value = true;
     }
 
     async function confirmDelete() {
-        if (userToDelete.value) {
+        if (asessmentToolToDelete.value) {
 
-            const response = await userAccountViewService.deleteUserAccount(userToDelete.value.uuid);
+            const response = await assessmentToolViewService.deleteUserAccount(asessmentToolToDelete.value.id.toString());
             if (response !== null) {
-                deletedUsername.value = userToDelete.value.username;
+                deletedName.value = asessmentToolToDelete.value.name;
                 deleteSuccess.value = true;
                 setTimeout(() => {
                     deleteSuccess.value = false;
@@ -565,35 +512,23 @@
             }
         }
         deleteDialog.value = false;
-        userToDelete.value = null;
+        asessmentToolToDelete.value = null;
     }
 
     //status
-    function openStatusDialog(user: UserAccount) {
-        statusDialogUser.value = user;
+    function openStatusDialog(assessmentTool: AssessmentTool) {
+        statusDialogAssessmentTool.value = assessmentTool;
         statusDialog.value = true;
     }
     async function confirmStatusChange() {
-        if (!statusDialogUser.value) return;
+        if (!statusDialogAssessmentTool.value) return;
 
-        const newStatus = statusDialogUser.value.active ? "Inactive" : "Active";
-        await onStatusChange(statusDialogUser.value, newStatus);
+        const newStatus = statusDialogAssessmentTool.value.active ? "Inactive" : "Active";
+        await onStatusChange(statusDialogAssessmentTool.value, newStatus);
 
         statusDialog.value = false;
-        statusDialogUser.value = null;
+        statusDialogAssessmentTool.value = null;
     }
-
-    function hasEditingRights(targetUserRoles: UserRoleEnum[]): boolean {
-        const currentUserRoles = authenticatedUserAccountStore.userAccount?.userRoles ?? [];
-
-        const isCurrentUserSebAdmin = currentUserRoles.includes(UserRoleEnum.SEB_SERVER_ADMIN);
-        const isCurrentUserOnlyInstitutional = currentUserRoles.includes(UserRoleEnum.INSTITUTIONAL_ADMIN) && !isCurrentUserSebAdmin;
-        const isTargetSebAdmin = targetUserRoles.includes(UserRoleEnum.SEB_SERVER_ADMIN);
-
-        if (isCurrentUserSebAdmin) return true;
-        return !(isCurrentUserOnlyInstitutional && isTargetSebAdmin);
-    }
-
 </script>
 
 <style scoped>
@@ -606,61 +541,10 @@
         align-items: center;
     }
 
-    .nav-hover:hover .nav-link {
+    .nav-hover:hover {
         color: #215caf;
     }
 
-    .nav-link {
-        transition: color 0.4s ease;
-        margin-left: 10px;
-    }
-
-    .nav-hover {
-        transition: background 0.4s ease;
-        border-radius: 4px;
-        background: transparent;
-        padding-left: 8px;
-        width: 85% !important;
-    }
-
-    .nav-hover:hover {
-        background: linear-gradient(
-            to right,
-            rgba(255, 255, 255, 1) 0%,
-            rgba(255, 255, 255, 0.98) 10%,
-            rgba(255, 255, 255, 0.96) 20%,
-            rgba(255, 255, 255, 0.93) 25%,
-            rgba(255, 255, 255, 0.90) 30%,
-            rgba(255, 255, 255, 0.86) 40%,
-            rgba(255, 255, 255, 0.80) 60%,
-            rgba(255, 255, 255, 0.70) 68%,
-            rgba(255, 255, 255, 0.60) 75%,
-            rgba(255, 255, 255, 0.45) 82%,
-            rgba(33, 92, 175, 0.20) 88%,
-            rgba(33, 92, 175, 0.12) 92%,
-            rgba(33, 92, 175, 0.08) 96%,
-            rgba(33, 92, 175, 0.04) 98%,
-            rgba(33, 92, 175, 0.01) 99%,
-            rgba(33, 92, 175, 0) 100%
-        );
-    }
-
-    .link-color {
-        color: white;
-        text-decoration: none;
-    }
-
-    .section-divider {
-        background-color: white !important;
-        height: 1px !important;
-        opacity: 1 !important;
-        width: 85% !important;
-    }
-
-    .success-message-div {
-        margin-top: 25.5rem;
-        width: 85% !important;
-    }
 
     .w-98 {
         width: 98% !important;
@@ -699,18 +583,15 @@
         cursor: pointer;
     }
 
-    /* Fix focused border */
     .search-input :deep(.v-field--focused) {
         border-color: #215caf !important;
     }
 
-    /* Fix focused placeholder */
     .search-input :deep(input::placeholder) {
         color: #215caf !important;
         opacity: 1 !important;
     }
 
-    /* Fix focused icon */
     .search-input :deep(.v-icon) {
         transition: color 0.3s ease;
     }
@@ -719,7 +600,6 @@
         color: #215caf !important;
     }
 
-    /* Filter chip styles */
     .filter-chip {
         padding: 0.25rem 0.7rem;
         background-color: #f0f0f0;
@@ -733,10 +613,6 @@
         margin: 0.1em;
     }
 
-    .filter-chip-selected {
-        background-color: #215caf;
-        color: white;
-    }
 
     .icon-cell {
         vertical-align: middle !important;

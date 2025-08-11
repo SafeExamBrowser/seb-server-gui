@@ -1,4 +1,4 @@
-type AssessmentTools = {
+type AssessmentToolsResponse = {
     number_of_pages: number;
     page_number: number;
     page_size: number;
@@ -24,4 +24,12 @@ type AssessmentTool = {
     updateTime: number;
     connectionId: string;
     integrationActive: boolean;
+}
+
+
+type OptionalParGetAssessmentTool = {
+    page_size?: number;
+    page_number?: number;
+    status?: string | null
+    sort?: string;
 }
