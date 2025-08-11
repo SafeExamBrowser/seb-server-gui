@@ -1,5 +1,4 @@
 import * as assessmentToolService from "@/services/seb-server/api-services/assessmentToolService";
-import * as userAccountService from "@/services/seb-server/api-services/userAccountService";
 
 
 export async function getAssessmentToolsActive(): Promise<AssessmentToolsResponse | null>{
@@ -29,18 +28,18 @@ export async function getAssessmentTools(optionalParameters?: OptionalParGetAsse
 }
 
 
-export async function activateUserAccount(accountId: string): Promise<UserAccount | null>{
+export async function activateAssessmentTool(assessmentToolId: string): Promise<AssessmentTool | null>{
     try{
-        return await userAccountService.activateUserAccount(accountId)
+        return await assessmentToolService.activateAssessmentTool(assessmentToolId)
 
     }catch(error){
         return null;
     }
 }
 
-export async function deactivateUserAccount(accountId: string): Promise<UserAccount | null>{
+export async function deactivateAssessmentTool(assessmentToolId: string): Promise<AssessmentTool | null>{
     try{
-        return await userAccountService.deactivateUserAccount(accountId)
+        return await assessmentToolService.deactivateAssessmentTool(assessmentToolId)
 
     }catch(error){
         return null;
@@ -48,9 +47,9 @@ export async function deactivateUserAccount(accountId: string): Promise<UserAcco
 }
 
 
-export async function deleteUserAccount(accountId: string): Promise<any | null>{
+export async function deleteAssessmentTool(assessmentToolId: string): Promise<any | null>{
     try{
-        return await userAccountService.deleteUserAccount(accountId)
+        return await assessmentToolService.deleteAssessmentTool(assessmentToolId)
     }catch(error){
         return null;
     }

@@ -432,9 +432,9 @@
             },
             "deleteAssessmentToolContext": {
                 "title": "Confirm Deletion",
-                "informationPart1": "Are you sure you want to delete",
-                "informationPart2": "'s account (",
-                "informationPart3": ")?"
+                "informationPart1": "Delete Assessment Tool: ",
+
+                "informationPart3": " ?"
             }
         },
         "createAssessmentToolConnectionsPage" : {

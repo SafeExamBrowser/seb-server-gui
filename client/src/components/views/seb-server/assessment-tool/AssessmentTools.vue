@@ -173,9 +173,10 @@
                             <td class="icon-cell">
                                 <div class="d-flex align-center justify-end h-100">
                                     <v-icon
-                                        :icon="'mdi-eye'"
+                                        :icon="'mdi-pencil'"
                                         class="action-icon mr-2 cursor-pointer"
                                         @click.stop="navigateTo(`${constants.EDIT_USER_ACCOUNT}/${item.id}`)"
+                                        disabled
                                     ></v-icon>
 
 
@@ -200,12 +201,11 @@
                         </v-card-title>
                         <v-card-text>
                             {{ translate("assessmentToolConnections.assessmentToolsPage.deleteAssessmentToolContext.informationPart1") }}
-                            <strong>{{ asessmentToolToDelete?.name }} {{
-                                    asessmentToolToDelete?.name
-                                }}</strong>{{
-                                translate("assessmentToolConnections.assessmentToolsPage.deleteAssessmentToolContext.informationPart2")
-                            }}<strong>{{
-                                asessmentToolToDelete?.name
+                            <strong>{{ assessmentToolToDelete?.name }} {{
+                                    assessmentToolToDelete?.name
+                                }}</strong>
+                            <strong>{{
+                                assessmentToolToDelete?.name
                             }}</strong>{{
                                 translate("assessmentToolConnections.assessmentToolsPage.deleteAssessmentToolContext.informationPart3")
                             }}
@@ -259,7 +259,6 @@
     import {navigateTo} from "@/router/navigation";
     import * as constants from "@/utils/constants";
     import {getInstitutions} from "@/services/seb-server/component-services/registerAccountViewService";
-    import {getAssessmentTools} from "@/services/seb-server/component-services/assessmentToolViewService";
     import {useAssessmentToolStore} from "@/stores/seb-server/asessmentToolStore";
 
     const appBarStore = useAppBarStore();
@@ -272,7 +271,7 @@
     const selectedAssessmentTool = ref<AssessmentTool | null>(null);
     const selectedInstitutionId = ref<string | null>(null);
     const deleteDialog = ref(false);
-    const asessmentToolToDelete = ref<AssessmentTool | null>(null);
+    const assessmentToolToDelete = ref<AssessmentTool | null>(null);
     const isLoading = ref<boolean>(true);
     const deleteSuccess = ref(false);
     const deletedName = ref("");
@@ -299,7 +298,7 @@
         appBarStore.title = translate("titles.assessmentToolConnections");
         layoutStore.setBlueBackground(true);
 
-        const assessmentTools = await getAssessmentTools();
+        const assessmentTools = await assessmentToolViewService.getAssessmentTools();
 
         console.log(assessmentTools);
 
@@ -421,9 +420,9 @@
     //update status
     async function onStatusChange(assessmentTool: AssessmentTool, newStatus: string) {
         if (newStatus === "Active" && !assessmentTool.active) {
-            await assessmentToolViewService.activateUserAccount(assessmentTool.id.toString());
+            await assessmentToolViewService.activateAssessmentTool(assessmentTool.id.toString());
         } else if (newStatus === "Inactive" && assessmentTool.active) {
-            await assessmentToolViewService.deactivateUserAccount(assessmentTool.id.toString());
+            await assessmentToolViewService.deactivateAssessmentTool(assessmentTool.id.toString());
         }
         await loadItems(options.value); // refresh table
 
@@ -494,16 +493,16 @@
     //dialogs and logic
     //delete
     function openDeleteDialog(assessmentTool: AssessmentTool) {
-        asessmentToolToDelete.value = assessmentTool;
+        assessmentToolToDelete.value = assessmentTool;
         deleteDialog.value = true;
     }
 
     async function confirmDelete() {
-        if (asessmentToolToDelete.value) {
+        if (assessmentToolToDelete.value) {
 
-            const response = await assessmentToolViewService.deleteUserAccount(asessmentToolToDelete.value.id.toString());
+            const response = await assessmentToolViewService.deleteAssessmentTool(assessmentToolToDelete.value.id.toString());
             if (response !== null) {
-                deletedName.value = asessmentToolToDelete.value.name;
+                deletedName.value = assessmentToolToDelete.value.name;
                 deleteSuccess.value = true;
                 setTimeout(() => {
                     deleteSuccess.value = false;
@@ -512,7 +511,7 @@
             }
         }
         deleteDialog.value = false;
-        asessmentToolToDelete.value = null;
+        assessmentToolToDelete.value = null;
     }
 
     //status
