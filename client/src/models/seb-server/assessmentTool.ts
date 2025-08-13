@@ -32,6 +32,8 @@ type OptionalParGetAssessmentTool = {
     page_number?: number;
     status?: string | null
     sort?: string;
+    lmsType?: LMSTypeEnum | null;
+
 }
 
 
@@ -67,4 +69,13 @@ type UpdateAssessmentToolPar = {
     lmsProxyPort?: number;
     lmsProxyAuthUsername?: string;
     lmsProxyAuthSecret?: string;
+}
+
+enum LMSTypeEnum {
+    MOCKUP = "MOCKUP",
+    OPEN_EDX = "OPEN_EDX",
+    MOODLE= "MOODLE",
+    MOODLE_PLUGIN = "MOODLE_PLUGIN",
+    ANS_DELFT = "ANS_DELFT",
+    OPEN_OLAT = "OPEN_OLAT"
 }

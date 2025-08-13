@@ -410,7 +410,8 @@
                 "institutionFilter" : "Institution",
                 "statusFilter" : "Status",
                 "activeSelector": "Active",
-                "inactiveSelector": "Inactive"
+                "inactiveSelector": "Inactive",
+                "typeFilter" : "Assessment Tool Type"
             },
             "assessmentToolTableHeaders": {
                 "tableHeaderInstitution": "Institution",

@@ -33,7 +33,7 @@
                 <!-- Search and filters row -->
                 <v-row class="px-6 pt-4 d-flex flex-wrap align-start">
                     <!-- Search field -->
-                    <v-col cols="12" md="5" class="pa-0 mb-4">
+                    <v-col cols="5" md="5" class="pa-0 mb-4 bg-amber">
                         <div class="text-caption text-grey-darken-1 mt-1 mb-1">
                             {{ translate("assessmentToolConnections.assessmentToolsPage.filters.searchTitle") }}
                         </div>
@@ -54,43 +54,69 @@
                         </v-text-field>
                     </v-col>
                     <!-- Status Filters -->
-                    <v-col cols="12" md="2" class="pa-0 mb-2 ml-10">
-                        <div class="text-caption text-grey-darken-1 mb-1">
-                            {{ translate("assessmentToolConnections.assessmentToolsPage.filters.statusFilter") }}
-                        </div>
-                        <div class="d-flex flex-wrap gap-2">
-                            <v-chip
-                                v-for="status in statuses"
-                                :key="status.value"
-                                size="small"
-                                class="mr-2 mt-2"
-                                :class="['filter-chip', selectedStatus === status.value && 'filter-chip-selected']"
-                                @click="selectedStatus = selectedStatus === status.value ? null : status.value"
-                            >{{ status.label }}
-                            </v-chip>
-                        </div>
-                    </v-col>
-                    <v-col
-                        v-if="institutions.length > 0"
-                        cols="12"
-                        md="4"
-                        class="pa-0 mb-2 ml-10"
-                    >
-                        <div class="text-caption text-grey-darken-1 mb-1">
-                            {{ translate("assessmentToolConnections.assessmentToolsPage.filters.institutionFilter") }}
-                        </div>
-                        <div class="d-flex flex-wrap gap-2">
-                            <v-chip
-                                v-for="institution in institutions"
-                                :key="institution.modelId"
-                                size="small"
-                                class="mr-2 mt-2"
-                                :class="['filter-chip', selectedInstitutionId === institution.modelId && 'filter-chip-selected']"
-                                @click="selectedInstitutionId = selectedInstitutionId === institution.modelId ? null : institution.modelId"
+                    <v-col cols="7">
+                        <v-row dense>
+                            <v-col cols="3" class="pa-0 mb-2">
+                                <div class="text-caption text-grey-darken-1 mb-1">
+                                    {{
+                                        translate("assessmentToolConnections.assessmentToolsPage.filters.statusFilter")
+                                    }}
+                                </div>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <v-chip
+                                        v-for="status in statuses"
+                                        :key="status.value"
+                                        size="small"
+                                        class="mr-2 mt-2"
+                                        :class="['filter-chip', selectedStatus === status.value && 'filter-chip-selected']"
+                                        @click="selectedStatus = selectedStatus === status.value ? null : status.value"
+                                    >{{ status.label }}
+                                    </v-chip>
+                                </div>
+                            </v-col>
+                            <v-col
+                                v-if="institutions.length > 0"
+                                cols="4"
+                                class="pa-0 mb-2"
                             >
-                                {{ institution.name }}
-                            </v-chip>
-                        </div>
+                                <div class="text-caption text-grey-darken-1 mb-1">
+                                    {{
+                                        translate("assessmentToolConnections.assessmentToolsPage.filters.institutionFilter")
+                                    }}
+                                </div>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <v-chip
+                                        v-for="institution in institutions"
+                                        :key="institution.modelId"
+                                        size="small"
+                                        class="mr-2 mt-2"
+                                        :class="['filter-chip', selectedInstitutionId === institution.modelId && 'filter-chip-selected']"
+                                        @click="selectedInstitutionId = selectedInstitutionId === institution.modelId ? null : institution.modelId"
+                                    >
+                                        {{ institution.name }}
+                                    </v-chip>
+                                </div>
+                            </v-col>
+
+                            <v-col cols="4" class="pa-0 mb-2 ml-3">
+                                <div class="text-caption text-grey-darken-1 mb-1">
+                                    {{ translate("assessmentToolConnections.assessmentToolsPage.filters.typeFilter") }}
+                                </div>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <v-chip
+                                        v-for="t in typeOptions"
+                                        :key="t.value"
+                                        size="small"
+                                        class="mr-2 mt-2"
+                                        :class="['filter-chip', selectedType === t.value && 'filter-chip-selected']"
+                                        @click="selectedType = selectedType === t.value ? null : t.value"
+                                    >
+                                        {{ t.label }}
+                                    </v-chip>
+                                </div>
+                            </v-col>
+
+                        </v-row>
                     </v-col>
                 </v-row>
 
@@ -121,7 +147,7 @@
                 </v-row>
 
                 <!-- Data Table Definition-->
-                <v-sheet class="rounded-lg mt-10" >
+                <v-sheet class="rounded-lg mt-10">
                     <v-data-table
                         v-model:options="options"
                         :items="filteredUsers"
@@ -272,7 +298,7 @@ import {navigateTo} from "@/router/navigation";
 import * as constants from "@/utils/constants";
 import {getInstitutions} from "@/services/seb-server/component-services/registerAccountViewService";
 import {useAssessmentToolStore} from "@/stores/seb-server/asessmentToolStore";
-import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums";
+import {LMSTypeEnum} from "@/models/seb-server/assessmentToolEnums";
 
 const appBarStore = useAppBarStore();
 const layoutStore = useLayoutStore();
@@ -288,6 +314,8 @@ const assessmentToolToDelete = ref<AssessmentTool | null>(null);
 const isLoading = ref<boolean>(true);
 const deleteSuccess = ref(false);
 const deletedName = ref("");
+const selectedType = ref<LMSTypeEnum | null>(null);
+
 
 const statuses = [
     {value: "Active", label: translate("assessmentToolConnections.assessmentToolsPage.filters.activeSelector")},
@@ -309,6 +337,11 @@ const assessmentToolTableHeadersRef = ref<any[]>();
 const translateLmsType = (value: string | LMSTypeEnum) => {
     return translate(`assessmentToolConnections.lmsTypes.${value}`);
 };
+
+const typeOptions = Object.values(LMSTypeEnum).map(v => ({
+    value: v as LMSTypeEnum,
+    label: translate(`assessmentToolConnections.lmsTypes.${v}`)
+}));
 
 onMounted(async () => {
     appBarStore.title = translate("titles.assessmentToolConnections");
@@ -480,7 +513,12 @@ async function loadItems(serverTablePaging: ServerTablePaging) {
     const fetchAllPaging = {...serverTablePaging, itemsPerPage: 500, page: 1};
     assessmentToolStore.currentPagingOptions = serverTablePaging;
     isLoading.value = true;
-    const optionalParams = tableUtils.assignUserAccountSelectPagingOptions(fetchAllPaging);
+    const optionalParams: OptionalParGetAssessmentTool = {
+        ...tableUtils.assignUserAccountSelectPagingOptions(fetchAllPaging),
+        status: selectedStatus.value,
+        lmsType: selectedType.value ?? null,
+
+    };
     const response = await assessmentToolViewService.getAssessmentTools(optionalParams);
 
     if (!response) {
@@ -495,7 +533,6 @@ async function loadItems(serverTablePaging: ServerTablePaging) {
 // Search + clear search
 function onSearch() {
     searchQuery.value = assessmentToolStore.searchField?.trim().toLowerCase() ?? "";
-    options.value.page = 1;
 }
 
 function onClearSearch() {
@@ -503,6 +540,7 @@ function onClearSearch() {
     searchQuery.value = "";
     selectedStatus.value = null;
     selectedInstitutionId.value = null;
+    selectedType.value = null;
     options.value.page = 1;
 }
 
@@ -549,6 +587,11 @@ async function confirmStatusChange() {
 function goToDetails(item: AssessmentTool, edit: boolean) {
     navigateTo(`${constants.ASSESSMENT_TOOL_CONNECTIONS}/${item.id}/${edit}`);
 }
+
+watch(selectedType, () => {
+    options.value.page = 1;
+    loadItems(options.value);
+});
 </script>
 
 <style scoped>
