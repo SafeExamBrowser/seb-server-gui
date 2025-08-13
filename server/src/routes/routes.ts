@@ -105,6 +105,7 @@ router.post(constants.ASSESSMENT_TOOL_ROUTE + "/:id" + constants.ACTIVATION_ROUT
 router.post(constants.ASSESSMENT_TOOL_ROUTE + "/:id" + constants.DEACTIVATION_ROUTE, assessmentToolController.deactivateAssessmentTool);
 router.delete(constants.ASSESSMENT_TOOL_ROUTE+ "/:id", assessmentToolController.deleteAssessmentTool);
 router.post(constants.ASSESSMENT_TOOL_ROUTE, assessmentToolController.createAssessmentTool);
+router.put(constants.ASSESSMENT_TOOL_ROUTE, assessmentToolController.editAssessmentTool);
 
 
 //monitoring

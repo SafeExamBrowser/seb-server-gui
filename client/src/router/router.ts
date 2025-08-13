@@ -32,9 +32,10 @@ import SearchPage from "@/components/views/screen-proctoring/search/SearchPage.v
 import { useAuthStore } from "@/stores/authentication/authenticationStore";
 import HomePageContainer from "@/components/views/seb-server/home/HomePageContainer.vue";
 import HomePlayground from "@/components/views/seb-server/home/HomePlayground.vue";
-import {ASSESSMENT_TOOL_CONNECTIONS, CREATE_ASSESSMENT_TOOL_CONNECTIONS} from "@/utils/constants";
 import AssessmentTools from "@/components/views/seb-server/assessment-tool/AssessmentTools.vue";
 import CreateAssessmentTool from "@/components/views/seb-server/assessment-tool/CreateAssessmentTool.vue";
+import AssessmentToolDetailsAndEdit from "@/components/views/seb-server/assessment-tool/AssessmentToolDetailsAndEdit.vue";
+import {ASSESSMENT_TOOL_CONNECTIONS} from "@/utils/constants";
 
 
 
@@ -219,6 +220,15 @@ const routes: Array<RouteRecordRaw> = [
                     titleKey: "titles.createAssessmentTool"
                 },
             },
+            {
+                path: constants.ASSESSMENT_TOOL_CONNECTIONS + "/:lmsId" + "/:edit",
+                name: "AssessmentToolDetailAndView",
+                component: AssessmentToolDetailsAndEdit,
+                meta: {
+                    titleKey: "titles.assessmentToolEdit"
+                },
+            },
+
             {
                 path: constants.PLAYGROUND,
                 name: "Playground",

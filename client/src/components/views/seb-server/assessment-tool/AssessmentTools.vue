@@ -145,14 +145,19 @@
 
                         <template v-slot:item="{ item }">
                             <tr
-                                :class="[selectedAssessmentTool?.id === item.id ? 'selected-row' : '']"
+                                :class="[
+                                    selectedAssessmentTool?.id === item.id ? 'selected-row' : '',
+                                    'row-clickable' // NEW
+                                ]"
+                                @click="goToDetails(item, false)"
                             >
+
                                 <!-- Column Definition -->
                                 <td class="text-primary">
                                     {{ item.institutionName || item.institutionId }}
                                 </td>
                                 <td class="text-primary">{{ item.name }}</td>
-                                <td class="text-primary">{{ item.lmsType }}</td>
+                                <td class="text-primary">{{ translateLmsType(item.lmsType) }}</td>
 
                                 <td>
 
@@ -175,8 +180,7 @@
                                         <v-icon
                                             :icon="'mdi-pencil'"
                                             class="action-icon mr-2 cursor-pointer"
-                                            @click.stop="navigateTo(`${constants.EDIT_USER_ACCOUNT}/${item.id}`)"
-                                            disabled
+                                            @click.stop="goToDetails(item, true)"
                                         ></v-icon>
 
 
@@ -268,6 +272,7 @@ import {navigateTo} from "@/router/navigation";
 import * as constants from "@/utils/constants";
 import {getInstitutions} from "@/services/seb-server/component-services/registerAccountViewService";
 import {useAssessmentToolStore} from "@/stores/seb-server/asessmentToolStore";
+import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums";
 
 const appBarStore = useAppBarStore();
 const layoutStore = useLayoutStore();
@@ -301,6 +306,9 @@ const assessmentTools = ref<AssessmentToolsResponse>();
 
 const assessmentToolTableHeadersRef = ref<any[]>();
 
+const translateLmsType = (value: string | LMSTypeEnum) => {
+    return translate(`assessmentToolConnections.lmsTypes.${value}`);
+};
 
 onMounted(async () => {
     appBarStore.title = translate("titles.assessmentToolConnections");
@@ -537,6 +545,10 @@ async function confirmStatusChange() {
     statusDialog.value = false;
     statusDialogAssessmentTool.value = null;
 }
+
+function goToDetails(item: AssessmentTool, edit: boolean) {
+    navigateTo(`${constants.ASSESSMENT_TOOL_CONNECTIONS}/${item.id}/${edit}`);
+}
 </script>
 
 <style scoped>
@@ -654,6 +666,15 @@ async function confirmStatusChange() {
 .action-icon:hover {
     color: #215caf;
     background-color: rgba(33, 92, 175, 0.1);
+}
+
+.row-clickable {
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.row-clickable:hover {
+    background-color: rgba(33, 92, 175, 0.06);
 }
 
 </style>

@@ -267,7 +267,6 @@
 
 <script setup lang="ts">
     import { useExamStore } from '@/stores/seb-server/examStore';
-    import * as tableUtils from "@/utils/table/tableUtils";
     import * as clientGroupViewService from "@/services/seb-server/component-services/clientGroupViewService";
     import { ClientGroupEnum, ClientOSEnum } from "@/models/seb-server/clientGroupEnum";
     import * as generalUtils from "@/utils/generalUtils";

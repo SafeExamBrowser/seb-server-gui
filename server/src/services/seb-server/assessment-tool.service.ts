@@ -46,3 +46,15 @@ export async function createAssessmentTool(token: string, newAssessmentTool: {})
     const {data, status} = await apiService.api.post(constants.LMS_SETUP_ENDPOINT, apiService.createUrlEncodedBody(newAssessmentTool), {headers: apiService.getHeaders(token)});
     return [data, status];
 }
+
+
+
+export async function editAssessmentTool(token: string, editedAssessmentToolPars: {}): Promise<[object, number]> {
+    const headers = apiService.getPutHeaders(token);
+    const { data, status } = await apiService.api.put(
+        constants.LMS_SETUP_ENDPOINT,
+        editedAssessmentToolPars,
+        { headers }
+    );
+    return [data, status];
+}

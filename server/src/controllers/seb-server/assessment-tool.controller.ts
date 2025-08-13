@@ -69,3 +69,12 @@ export async function createAssessmentTool(req: Request, res: Response) {
         apiService.handleGenericApiError(error, res);
     }
 }
+
+export async function editAssessmentTool(req: Request, res: Response) {
+    try {
+        const [assessmentTool, status] = await assessmentToolService.editAssessmentTool(req.headers.authorization, req.body);
+        return res.status(status).json(assessmentTool);
+    } catch (error) {
+        apiService.handleGenericApiError(error, res);
+    }
+}

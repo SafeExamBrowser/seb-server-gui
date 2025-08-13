@@ -44,7 +44,6 @@ type CreateAssessmentToolPar = {
     lmsClientname: string;
     lmsClientsecret: string;
     lmsRestApiToken?: string;
-    withProxy: boolean;
 
     //proxy
     lmsProxyHost? : string;
@@ -52,3 +51,20 @@ type CreateAssessmentToolPar = {
     lmsProxyAuthUsername?: string;
     lmsProxyAuthSecret? : string;
 };
+
+
+type UpdateAssessmentToolPar = {
+    id: string;
+    institutionId: string;
+    name: string;
+    lmsType: string;
+    lmsUrl: string;
+    lmsClientname: string;
+    lmsClientsecret: string;
+    lmsRestApiToken: string;
+    // proxy
+    lmsProxyHost?: string;
+    lmsProxyPort?: number;
+    lmsProxyAuthUsername?: string;
+    lmsProxyAuthSecret?: string;
+}

@@ -49,3 +49,7 @@ export async function deleteAssessmentTool(assessmentToolId: string): Promise<an
 export async function createAssessmentTool(assessmentTool: CreateAssessmentToolPar): Promise<any | any> {
     return (await apiService.api.post(assessmentToolUrl, assessmentTool, {headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
 }
+
+export async function editAssessmentTool(assessmentTool: UpdateAssessmentToolPar): Promise<AssessmentTool | any> {
+    return (await apiService.api.put(assessmentToolUrl, assessmentTool, {headers: apiService.getPutHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
+}

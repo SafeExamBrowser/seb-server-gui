@@ -2,40 +2,53 @@
     <div class="text-white text-h5 font-weight-black ml-10 mt-5 ">
         {{ translate("titles.settings") }}
     </div>
-    <v-row class="mt-10 w-98 h-100">
 
+    <v-row class="mt-10 w-98 h-100">
         <!-- settings navigation-->
         <SettingsNavigation/>
 
         <v-col elevation="4" cols="9" class="bg-white rounded-lg">
             <v-row class="d-flex align-center justify-space-between px-6 pt-6">
                 <div class="text-primary text-h5 font-weight-bold">
-                    {{ translate("titles.createAssessmentTool") }}
+                    {{ translate("titles.assessmentToolEdit") }}
                 </div>
+                <v-chip
+                    class="ma-2 text-subtitle-1 px-5 py-2 font-weight-bold"
+                    :color="active ? 'success' : 'error'"
+                    text-color="white"
+                    size="large"
+                    label
+                    :disabled="isSaving"
+                    @click="!isSaving && toggleStatusLocally()"
+                    style="cursor:pointer;"
+                >
+                    {{
+                        active
+                            ? translate('assessmentToolConnections.assessmentToolsPage.filters.activeSelector')
+                            : translate('assessmentToolConnections.assessmentToolsPage.filters.inactiveSelector')
+                    }}
+                </v-chip>
             </v-row>
-
 
             <v-divider class="custom-divider mx-6 my-4 mt-7"/>
             <v-row class="px-8 mt-2">
-                <div class="text-body-2 text-grey-darken-1">
+                <div class="text-body-2 text-grey-darken-1" style="visibility: hidden">
                     {{
                         translate("assessmentToolConnections.createAssessmentToolConnectionsPage.info.assessmentToolConnectionsCreationInfo")
                     }}
                 </div>
             </v-row>
 
-            <!-- Form-->
+            <!-- Form -->
             <v-sheet class="rounded-lg mt-4" style="min-height: 46.9vh">
-                <v-form ref="formRef" @keyup.enter="submit()">
-
-
+                <v-form ref="formRef" @keyup.enter="onSave()">
                     <v-col cols="12" md="12" class="pa-0 mb-4 h-100">
                         <v-card-text>
 
                             <!-- First Section -->
                             <v-row dense>
                                 <v-col>
-                                    <!-- Institution-->
+                                    <!-- Institution (never changeable) -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-select
                                             required
@@ -48,7 +61,7 @@
                                             item-title="name"
                                             item-value="modelId"
                                             :rules="[requiredRule]"
-                                            disabled
+                                            :disabled="true"
                                         />
                                     </v-col>
 
@@ -69,9 +82,9 @@
                                     </v-col>
                                 </v-col>
 
-                                <!-- Second Section-->
+                                <!-- Second Column -->
                                 <v-col>
-                                    <!-- Name-->
+                                    <!-- Name -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
                                             required
@@ -83,7 +96,6 @@
                                             :rules="[requiredRule]"
                                         />
                                     </v-col>
-
                                 </v-col>
                             </v-row>
 
@@ -98,12 +110,12 @@
                                             :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.assessmentToolServerAddressLabel')"
                                             variant="outlined"
                                             v-model="assessmentToolServerAddress"
-                                            :rules="[requiredRule]"
+                                            :rules="[requiredRule, httpPrefixRule]"
                                             validate-on="blur"
                                         />
                                     </v-col>
 
-                                    <!-- Access Token-->
+                                    <!-- Access Token -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
                                             ref="confirmPasswordFieldRef"
@@ -117,7 +129,7 @@
                                             validate-on="blur"
                                             class="mb-2"
                                         >
-                                            <template v-slot:append-inner>
+                                            <template #append-inner>
                                                 <v-btn
                                                     density="compact"
                                                     variant="text"
@@ -128,8 +140,9 @@
                                         </v-text-field>
                                     </v-col>
                                 </v-col>
+
                                 <v-col>
-                                    <!-- Assessment Tool Server Username-->
+                                    <!-- Assessment Tool Server Username -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
                                             prepend-inner-icon="mdi-email-outline"
@@ -142,7 +155,7 @@
                                         />
                                     </v-col>
 
-                                    <!-- Assessment Tool Server Password-->
+                                    <!-- Assessment Tool Server Password -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
                                             required
@@ -155,7 +168,7 @@
                                             :rules="[requiredRule]"
                                             validate-on="blur"
                                         >
-                                            <template v-slot:append-inner>
+                                            <template #append-inner>
                                                 <v-btn
                                                     density="compact"
                                                     variant="text"
@@ -166,13 +179,11 @@
                                         </v-text-field>
                                     </v-col>
                                 </v-col>
-
                             </v-row>
 
                             <!-- Third Section for proxy stuff -->
                             <v-row dense>
                                 <v-divider class="custom-divider mx-1 my-2"/>
-
                                 <v-col>
                                     <!-- With Proxy -->
                                     <v-col cols="6" md="6" class="custom-padding-textbox">
@@ -230,6 +241,7 @@
                                                         />
                                                     </v-col>
                                                 </v-col>
+
                                                 <v-col>
                                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                                         <v-text-field
@@ -269,26 +281,23 @@
                                         </div>
                                     </v-expand-transition>
                                 </v-col>
-
                             </v-row>
-
 
                         </v-card-text>
                     </v-col>
                 </v-form>
             </v-sheet>
 
-            <!-- Buttons-->
-            <v-row class="px-6 pt-0">
+            <v-row class="px-6 pt-3">
                 <v-col cols="12" md="12" class="pa-0 mb-4">
                     <div class="d-flex justify-end">
                         <v-btn
                             rounded="sm"
                             color="black"
                             variant="outlined"
-                            @click="navigateTo(constants.ASSESSMENT_TOOL_CONNECTIONS)"
+                            @click="onCancel()"
                         >
-                            {{ translate("general.cancelButton") }}
+                            {{ translate("general.backButton") }}
                         </v-btn>
 
                         <v-btn
@@ -296,11 +305,13 @@
                             color="primary"
                             variant="flat"
                             class="ml-2"
-                            @click="submit()"
-                            :disabled="isCreateDisabled"
+                            :loading="isSaving"
+                            :disabled="!canSave"
+                            @click="onSave()"
                         >
-                            {{ translate("general.createButton") }}
+                            {{ translate('assessmentToolConnections.assessmentToolDetailAndEditPage.buttons.saveChanges') }}
                         </v-btn>
+
                     </div>
                 </v-col>
             </v-row>
@@ -309,25 +320,24 @@
 </template>
 
 <script setup lang="ts">
-import {ref, onMounted, onBeforeUnmount} from 'vue';
+import {ref, computed, onMounted, onBeforeUnmount, watch} from 'vue';
+import {useRoute} from 'vue-router';
 import {useAppBarStore, useLayoutStore} from '@/stores/store';
 import {translate} from '@/utils/generalUtils';
-import * as constants from '@/utils/constants';
-import moment from "moment-timezone";
-import {getInstitutions} from "@/services/seb-server/component-services/registerAccountViewService";
-import {createUserAccount} from "@/services/seb-server/component-services/userAccountViewService";
-import {navigateTo} from "@/router/navigation";
-import {UserRoleEnum} from '@/models/userRoleEnum';
-import {useI18n} from "vue-i18n";
 import {useUserAccountStore as useAuthenticatedUserAccountStore} from "@/stores/authentication/authenticationStore";
-import {createAssessmentTool} from "@/services/seb-server/component-services/assessmentToolViewService";
 import {LMSTypeEnum} from "@/models/seb-server/assessmentToolEnums";
+import {getInstitutions} from "@/services/seb-server/api-services/institutionService";
+import * as assessmentToolViewService from "@/services/seb-server/component-services/assessmentToolViewService";
 
+// Router
+const route = useRoute();
 
+// Stores
 const appBarStore = useAppBarStore();
 const layoutStore = useLayoutStore();
+const authenticatedUserAccountStore = useAuthenticatedUserAccountStore();
 
-//fields
+// Fields
 const institution = ref<string | null>(null);
 const name = ref<string>("");
 const lmsType = ref<LMSTypeEnum | null>(null);
@@ -343,71 +353,149 @@ const proxyUsername = ref<string>('');
 const proxyPassword = ref<string>('');
 const proxyPasswordVisible = ref<boolean>(false);
 
-const i18n = useI18n();
-
 const formRef = ref();
-
-const createdSuccess = ref(false);
 const passwordVisible = ref<boolean>(false);
 const confirmPasswordVisible = ref<boolean>(false);
 const confirmPasswordFieldRef = ref();
-const institutionSelectDisabled = ref(true);
-const createdAssessmentToolName = ref<string>("");
 
 const institutions = ref<Institution[]>([]);
-const authenticatedUserAccountStore = useAuthenticatedUserAccountStore();
+
+// Internal state
+const originalSnapshot = ref<Record<string, any> | null>(null);
+const fetchedId = ref<number | null>(null);
+const active = ref<boolean>(false);
+const initialActiveStatus = ref<boolean | null>(null);
+const isSaving = ref(false);
 
 
-//validation rules
+// Validation rules
 const requiredMessage = translate("assessmentToolConnections.createAssessmentToolConnectionsPage.validation.required");
 const invalidPortMessage = translate("assessmentToolConnections.createAssessmentToolConnectionsPage.validation.invalidPort") || "Invalid port";
+const httpPrefixMessage = translate("assessmentToolConnections.createAssessmentToolConnectionsPage.validation.httpPrefix") || "Must start with http://";
 
 const requiredRule = (v: string) => !!v || requiredMessage;
-
-// Required only when withProxy is true
 const requiredIfProxyRule = (v: string) => {
     if (!withProxy.value) return true;
     return (!!v && v.toString().trim().length > 0) || requiredMessage;
 };
-
-// Port number rule (1..65535)
 const portNumberRule = (v: string) => {
     if (!withProxy.value) return true;
     const n = Number(v);
-    return Number.isInteger(n) && n >= 1 && n <= 65535 || invalidPortMessage;
+    return (Number.isInteger(n) && n >= 1 && n <= 65535) || invalidPortMessage;
 };
-
+const httpPrefixRule = (v: string) => /^https?:\/\//i.test(v) || httpPrefixMessage;
 
 const lmsTypeItems = Object.values(LMSTypeEnum).map((v) => ({
     label: translate(`assessmentToolConnections.lmsTypes.${v}`),
     value: v as LMSTypeEnum,
 }));
 
+const statusChanged = computed(() =>
+    initialActiveStatus.value !== null && active.value !== initialActiveStatus.value
+);
+
+const canSave = computed(() =>
+    !isSaving.value && (statusChanged.value || (isDirty.value && !isSaveDisabled.value))
+);
 
 onMounted(async () => {
-    appBarStore.title = translate("titles.createAssessmentTool");
+    appBarStore.title = translate("titles.assessmentTool");
     layoutStore.setBlueBackground(true);
 
-    const user = authenticatedUserAccountStore.userAccount;
+    // Load institutions so the disabled select shows a label
+    const inst = await getInstitutions().catch(() => null);
+    institutions.value = inst ?? [];
 
-    const result: Institution[] | null = await getInstitutions();
-    institutions.value = result ?? [];
-
-
-    const userInstitutionId = String(user?.institutionId);
-    const matchedInstitution = institutions.value.find(inst => inst.modelId === userInstitutionId);
-
-    if (matchedInstitution) {
-        institution.value = matchedInstitution.modelId;
-        institutionSelectDisabled.value = true;
-        institutions.value = [matchedInstitution];
-    } else {
-        console.warn("User's institution not found in fetched institutions.");
+    // Fetch the tool
+    const idNum = Number(route.params.lmsId);
+    if (Number.isFinite(idNum)) {
+        const dto: AssessmentTool | null = await assessmentToolViewService.getAssessmentTool(idNum);
+        if (dto) {
+            populateFromDto(dto);
+            fetchedId.value = dto.id;
+        }
     }
+
+    // Fallback if institution missing
+    if (!institution.value) {
+        institution.value = authenticatedUserAccountStore.userAccount?.institutionId?.toString() ?? null;
+    }
+
+    takeSnapshot();
 });
 
-// Create button disabled state
-const isCreateDisabled = computed(() => {
+onBeforeUnmount(() => {
+    layoutStore.setBlueBackground(false);
+});
+
+function populateFromDto(dto: AssessmentTool) {
+    institution.value = dto.institutionId != null ? String(dto.institutionId) : null;
+    name.value = dto.name ?? '';
+    lmsType.value = (dto.lmsType as LMSTypeEnum) ?? null;
+    assessmentToolServerAddress.value = dto.lmsUrl ?? '';
+    assessmentToolServerUsername.value = dto.lmsClientname ?? '';
+    assessmentToolServerPassword.value = dto.lmsClientsecret ?? '';
+    accessToken.value = dto.lmsRestApiToken ?? '';
+
+    // Proxy fields
+    proxyHost.value = dto.lmsProxyHost ?? '';
+    proxyPort.value = dto.lmsProxyPort != null ? String(dto.lmsProxyPort) : '';
+    proxyUsername.value = dto.lmsProxyAuthUsername ?? '';
+    proxyPassword.value = dto.lmsProxyAuthSecret ?? '';
+
+    active.value = !!dto.active;
+    initialActiveStatus.value = !!dto.active;
+
+    // Auto-enable withProxy if any proxy detail present
+    withProxy.value = !!(
+        (dto.lmsProxyHost && dto.lmsProxyHost.trim()) ||
+        (dto.lmsProxyPort != null && String(dto.lmsProxyPort).trim()) ||
+        (dto.lmsProxyAuthUsername && dto.lmsProxyAuthUsername.trim()) ||
+        (dto.lmsProxyAuthSecret && dto.lmsProxyAuthSecret.trim())
+    );
+}
+
+function toggleStatusLocally() {
+    active.value = !active.value;
+}
+
+async function persistStatusChange() {
+    const id = String(fetchedId.value ?? route.params.lmsId);
+    if (active.value) {
+        await assessmentToolViewService.activateAssessmentTool(id);
+    } else {
+        await assessmentToolViewService.deactivateAssessmentTool(id);
+    }
+}
+
+function currentFormState() {
+    return {
+        institution: institution.value,
+        name: name.value,
+        lmsType: lmsType.value,
+        assessmentToolServerAddress: assessmentToolServerAddress.value,
+        assessmentToolServerUsername: assessmentToolServerUsername.value,
+        assessmentToolServerPassword: assessmentToolServerPassword.value,
+        accessToken: accessToken.value,
+        withProxy: withProxy.value,
+        proxyHost: proxyHost.value,
+        proxyPort: proxyPort.value,
+        proxyUsername: proxyUsername.value,
+        proxyPassword: proxyPassword.value,
+    };
+}
+
+function takeSnapshot() {
+    originalSnapshot.value = JSON.parse(JSON.stringify(currentFormState()));
+}
+
+// show Save/Cancel only when any value differs from snapshot
+const isDirty = computed(() => {
+    if (!originalSnapshot.value) return false;
+    return JSON.stringify(currentFormState()) !== JSON.stringify(originalSnapshot.value);
+});
+
+const isSaveDisabled = computed(() => {
     const baseMissing =
         !institution.value ||
         !name.value.trim() ||
@@ -418,63 +506,114 @@ const isCreateDisabled = computed(() => {
 
     if (baseMissing) return true;
 
+    // address must start with http://
+    if (!assessmentToolServerAddress.value.startsWith('http://')) return true;
+
     if (!withProxy.value) return false;
 
-    // withProxy on → require proxy fields
+    // withProxy on -> require proxy fields
     const proxyMissing =
         !proxyHost.value.trim() ||
         !proxyPort.value.trim() ||
         !proxyUsername.value.trim() ||
         !proxyPassword.value.trim();
 
-    // validates port range
     const n = Number(proxyPort.value);
     const badPort = !(Number.isInteger(n) && n >= 1 && n <= 65535);
 
     return proxyMissing || badPort;
 });
 
+function onCancel() {
+    if (originalSnapshot.value) {
+        const s = originalSnapshot.value as any;
+        institution.value = s.institution;
+        name.value = s.name;
+        lmsType.value = s.lmsType;
+        assessmentToolServerAddress.value = s.assessmentToolServerAddress;
+        assessmentToolServerUsername.value = s.assessmentToolServerUsername;
+        assessmentToolServerPassword.value = s.assessmentToolServerPassword;
+        accessToken.value = s.accessToken;
+        withProxy.value = s.withProxy;
+        proxyHost.value = s.proxyHost;
+        proxyPort.value = s.proxyPort;
+        proxyUsername.value = s.proxyUsername;
+        proxyPassword.value = s.proxyPassword;
+    }
+    if (initialActiveStatus.value !== null) {
+        active.value = initialActiveStatus.value;
+    }
+}
 
-async function submit() {
-    const {valid} = await formRef.value.validate();
-    if (!valid) return;
-    // Prepare the request
-    const createAssessmentToolsParams: CreateAssessmentToolPar = {
+async function onSave() {
+    if (isSaving.value) return;
+    const fieldsChanged = isDirty.value;
+    const statusWasChanged = statusChanged.value;
+
+    // If fields changed, validate; status-only skips validation
+    if (fieldsChanged) {
+        const { valid } = await (formRef.value as any).validate();
+        if (!valid || isSaveDisabled.value) return;
+    }
+
+    isSaving.value = true;
+    try {
+        // 1) Only status changed
+        if (!fieldsChanged && statusWasChanged) {
+            await persistStatusChange();
+            initialActiveStatus.value = active.value;
+            return;
+        }
+
+        // 2) Only fields changed
+        if (fieldsChanged && !statusWasChanged) {
+            await editAssessmentToolOnly();
+            takeSnapshot();
+            return;
+        }
+
+        // 3) Both changed: status first, then fields
+        if (fieldsChanged && statusWasChanged) {
+            await persistStatusChange();
+            await editAssessmentToolOnly();
+            initialActiveStatus.value = active.value;
+            takeSnapshot();
+        }
+    } finally {
+        isSaving.value = false;
+    }
+}
+
+
+async function editAssessmentToolOnly() {
+    const idToSend = String(fetchedId.value ?? route.params.lmsId);
+
+    const payload: UpdateAssessmentToolPar = {
+        id: idToSend,
         institutionId: institution.value!,
         name: name.value,
-        lmsType: lmsType.value!,
+        lmsType: lmsType.value as string,
         lmsUrl: assessmentToolServerAddress.value,
         lmsClientname: assessmentToolServerUsername.value,
         lmsClientsecret: assessmentToolServerPassword.value,
         lmsRestApiToken: accessToken.value,
-        ...(withProxy.value ? {
-            lmsProxyHost: proxyHost.value,
-            lmsProxyPort: Number(proxyPort.value.trim()).toString(),
-            lmsProxyAuthUsername: proxyUsername.value,
-            lmsProxyAuthSecret: proxyPassword.value,
-        } : {})
+        ...(withProxy.value
+            ? {
+                lmsProxyHost: proxyHost.value,
+                lmsProxyPort: Number(proxyPort.value.trim()),
+                lmsProxyAuthUsername: proxyUsername.value,
+                lmsProxyAuthSecret: proxyPassword.value,
+            }
+            : {
+                lmsProxyHost: '',
+                lmsProxyPort: 0,
+                lmsProxyAuthUsername: '',
+                lmsProxyAuthSecret: '',
+            })
     };
 
-    // Call the service
-    const createdAssessmentToolResponse: any | null = await createAssessmentTool(createAssessmentToolsParams);
-
-    if (createdAssessmentToolResponse == null) {
-        return;
-    } else {
-        createdAssessmentToolName.value = createdAssessmentToolResponse.name;
-        createdSuccess.value = true;
-        setTimeout(() => {
-            createdSuccess.value = false;
-            navigateTo(constants.ASSESSMENT_TOOL_CONNECTIONS);
-        }, 1500);
-
-    }
+    await assessmentToolViewService.editAssessmentTool(payload);
 }
-
-onBeforeUnmount(() => {
-    layoutStore.setBlueBackground(false);
-});
-
 
 </script>
 
@@ -482,7 +621,6 @@ onBeforeUnmount(() => {
 .nav-hover:hover .nav-link {
     color: #215caf;
 }
-
 
 .w-98 {
     width: 98% !important;
@@ -494,12 +632,10 @@ onBeforeUnmount(() => {
     width: 100%;
 }
 
-
 .custom-padding-textbox {
     padding-top: 8px !important;
     padding-bottom: 8px !important;
 }
-
 
 .custom-role-checkbox input[type="checkbox"] {
     appearance: none;
@@ -527,4 +663,5 @@ onBeforeUnmount(() => {
     letter-spacing: 0.15px;
     cursor: pointer;
 }
+
 </style>

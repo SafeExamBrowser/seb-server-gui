@@ -460,18 +460,23 @@
                 "proxyUsername": "Enter proxy username",
                 "proxyPassword": "Enter proxy password",
             },
-            "lmsTypes": {
-                "MOCKUP": "Testing",
-                "OPEN_EDX": "Open edX",
-                "MOODLE": "Moodle",
-                "MOODLE_PLUGIN": "Moodle with Seb Server Plugin",
-                "ANS_DELFT": "Ans Delft",
-                "OPEN_OLAT": "OLAT"
-            },
             "validation" : {
               "required" : "This field is required"
             }
 
+        },
+        "assessmentToolDetailAndEditPage" : {
+            "buttons" : {
+                "saveChanges": "Save Changes"
+            }
+        },
+        "lmsTypes": {
+            "MOCKUP": "Testing",
+            "OPEN_EDX": "Open edX",
+            "MOODLE": "Moodle",
+            "MOODLE_PLUGIN": "Moodle with Seb Server Plugin",
+            "ANS_DELFT": "Ans Delft",
+            "OPEN_OLAT": "OLAT"
         }
     },
     "examDetail": {
@@ -815,7 +820,11 @@
         "editUserAccount": "Edit User Account",
         "profile": "Profile Settings",
         "assessmentToolConnections": "Assessment Tool Connections",
-        "createAssessmentTool": "Assessment Tool Setup"
+        "createAssessmentTool": "Assessment Tool Setup",
+        "assessmentToolViewAndEdit": "Assessment Tool",
+        "editAssessmentTool" : "Edit Assessment Tool",
+        "assessmentToolEdit" : "Edit Assessment Tool"
+
     },
 
     "warnings": {

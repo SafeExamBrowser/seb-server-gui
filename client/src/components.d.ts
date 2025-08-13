@@ -15,6 +15,7 @@ declare module 'vue' {
     ApplicationsSearchViewPage: typeof import('./components/views/screen-proctoring/applications-search/ApplicationsSearchViewPage.vue')['default']
     ApplicationsSearchWindowTitle: typeof import('./components/views/screen-proctoring/applications-search/ApplicationsSearchWindowTitle.vue')['default']
     AskDialog: typeof import('./components/views/seb-server/monitoring/overview/dialogs/AskDialog.vue')['default']
+    AssessmentToolDetailsAndEdit: typeof import('./components/views/seb-server/assessment-tool/AssessmentToolDetailsAndEdit.vue')['default']
     AssessmentTools: typeof import('./components/views/seb-server/assessment-tool/AssessmentTools.vue')['default']
     ClienGroupListDialog: typeof import('./components/views/seb-server/exam/detail/dialogs/client-group/ClienGroupListDialog.vue')['default']
     ClientGroupInfoDialog: typeof import('./components/views/seb-server/monitoring/dialogs/ClientGroupInfoDialog.vue')['default']

@@ -11,9 +11,9 @@
                     <v-divider class="section-divider"/>
 
                     <v-list-item class="px-0 nav-hover">
-                        <span class="link-color nav-link">{{
-                                translate("navigation.routeNames.assessmentToolConnections")
-                            }}</span>
+                        <router-link class="link-color nav-link" :to="constants.ASSESSMENT_TOOL_CONNECTIONS">
+                            {{ translate("titles.assessmentToolConnections") }}
+                        </router-link>
                     </v-list-item>
 
                     <v-divider class="section-divider"/>
@@ -291,12 +291,6 @@
                     </v-card-text>
                 </v-col>
             </v-sheet>
-
-
-
-
-
-
             <!--  buttons-->
             <v-row class="px-6 pt-0">
                 <v-col cols="12" md="12" class="pa-0 mb-4">
