@@ -182,7 +182,7 @@
                     :items-per-page-options="[5, 10, 15]"
                     :headers="userAccountsTableHeaders"
                     :loading="isLoading"
-                    style="min-height:40vh"
+                    style="min-height:35vh"
                 >
                     <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort }">
                         <TableHeaders

@@ -400,9 +400,7 @@
         }
     },
     "assessmentToolConnections" : {
-        "general" : {
 
-        },
 
         "assessmentToolsPage":{
             "addAssessmentTool": "Add Assessment Tool Setup",
@@ -440,7 +438,40 @@
         "createAssessmentToolConnectionsPage" : {
             "info": {
                 "assessmentToolConnectionsCreationInfo" : "Fill out the required * fields to create a new Assessment Tool Connection"
+            },
+            "labels": {
+                "institutionLabel": "Institution *",
+                "nameLabel": "Name *",
+                "typeLabel": "Type*",
+                "assessmentToolServerAddressLabel": "Assessment Tool Server Address *",
+                "assessmentToolServerUsernameLabel": "Assessment Tool Server Username *",
+                "assessmentToolServerPasswordLabel": "Assessment Tool Server Password *",
+                "accessTokenLabel": "Access Token",
+                "withProxyLabel": "With Proxy",
+                "withProxyAria": "Toggle proxy settings",
+                "proxyHostLabel": "Proxy Host",
+                "proxyPortLabel": "Proxy Port",
+                "proxyUsernameLabel": "Proxy Username",
+                "proxyPasswordLabel": "Proxy Password"
+            },
+            "placeholders": {
+                "proxyHost": "Enter proxy host",
+                "proxyPort": "Enter proxy port",
+                "proxyUsername": "Enter proxy username",
+                "proxyPassword": "Enter proxy password",
+            },
+            "lmsTypes": {
+                "MOCKUP": "Testing",
+                "OPEN_EDX": "Open edX",
+                "MOODLE": "Moodle",
+                "MOODLE_PLUGIN": "Moodle with Seb Server Plugin",
+                "ANS_DELFT": "Ans Delft",
+                "OPEN_OLAT": "OLAT"
+            },
+            "validation" : {
+              "required" : "This field is required"
             }
+
         }
     },
     "examDetail": {

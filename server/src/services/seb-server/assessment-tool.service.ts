@@ -40,3 +40,9 @@ export async function deleteAssessmentTool(token: string, id: string): Promise<[
 
     return [data, status];
 }
+
+
+export async function createAssessmentTool(token: string, newAssessmentTool: {}): Promise<[object, number]>{
+    const {data, status} = await apiService.api.post(constants.LMS_SETUP_ENDPOINT, apiService.createUrlEncodedBody(newAssessmentTool), {headers: apiService.getHeaders(token)});
+    return [data, status];
+}

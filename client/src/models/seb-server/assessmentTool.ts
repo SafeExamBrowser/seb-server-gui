@@ -33,3 +33,22 @@ type OptionalParGetAssessmentTool = {
     status?: string | null
     sort?: string;
 }
+
+
+
+type CreateAssessmentToolPar = {
+    institutionId: string;
+    name: string;
+    lmsType: string;
+    lmsUrl: string;
+    lmsClientname: string;
+    lmsClientsecret: string;
+    lmsRestApiToken?: string;
+    withProxy: boolean;
+
+    //proxy
+    lmsProxyHost? : string;
+    lmsProxyPort? : string;
+    lmsProxyAuthUsername?: string;
+    lmsProxyAuthSecret? : string;
+};

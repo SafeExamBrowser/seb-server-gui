@@ -44,3 +44,8 @@ export async function deleteAssessmentTool(assessmentToolId: string): Promise<an
     return (await apiService.api.delete(assessmentToolUrl + "/" + assessmentToolId, {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
 
 }
+
+
+export async function createAssessmentTool(assessmentTool: CreateAssessmentToolPar): Promise<any | any> {
+    return (await apiService.api.post(assessmentToolUrl, assessmentTool, {headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
+}
