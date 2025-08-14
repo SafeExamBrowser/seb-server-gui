@@ -10,7 +10,7 @@
         <v-col elevation="4" cols="9" class="bg-white rounded-lg">
             <v-row class="d-flex align-center justify-space-between px-6 pt-6">
                 <div class="text-primary text-h5 font-weight-bold">
-                    {{ translate("titles.assessmentToolEdit") }}
+                    {{ translate("titles.connectionConfigurationViewAndEdit") }}
                 </div>
                 <v-chip
                     class="ma-2 text-subtitle-1 px-5 py-2 font-weight-bold"

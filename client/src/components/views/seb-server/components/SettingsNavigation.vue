@@ -5,15 +5,16 @@
                 <v-divider class="section-divider" />
 
                 <v-list-item class="px-0 nav-hover">
-                    <router-link class="link-color nav-link" :to="constants.ASSESSMENT_TOOL_CONNECTIONS">
+                    <router-link class="link-color nav-link" :to="constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE">
                         {{ translate("titles.assessmentToolConnections") }}
                     </router-link>
                 </v-list-item>
 
                 <v-divider class="section-divider" />
-
                 <v-list-item class="px-0 nav-hover">
-                    <span class="link-color nav-link">{{ translate("navigation.routeNames.connectionConfiguration") }}</span>
+                    <router-link class="link-color nav-link" :to="constants.CONNECTION_CONFIGURATIONS_ROUTE">
+                        {{ translate("navigation.routeNames.connectionConfiguration") }}
+                    </router-link>
                 </v-list-item>
 
                 <v-divider class="section-divider" />

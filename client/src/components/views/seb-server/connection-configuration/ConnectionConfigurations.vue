@@ -10,7 +10,7 @@
             <!-- Title and Add User Button -->
             <v-row class="d-flex align-center justify-space-between px-6 pt-6">
                 <div class="text-primary text-h5 font-weight-bold">
-                    {{ translate("titles.assessmentToolConnections") }}
+                    {{ translate("titles.connectionConfigurations") }}
                 </div>
 
                 <div class="d-flex align-center cursor-pointer add-user-container"
@@ -26,7 +26,7 @@
                     </div>
                 </div>
             </v-row>
-
+            seb-client-config-controller
             <v-divider class="custom-divider mx-6 my-4 mt-7"/>
             <v-sheet>
 

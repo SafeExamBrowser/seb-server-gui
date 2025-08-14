@@ -11,7 +11,7 @@
                     <v-divider class="section-divider" />
 
                     <v-list-item class="px-0 nav-hover">
-                        <router-link class="link-color nav-link" :to="constants.ASSESSMENT_TOOL_CONNECTIONS">
+                        <router-link class="link-color nav-link" :to="constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE">
                             {{ translate("titles.assessmentToolConnections") }}
                         </router-link>
                     </v-list-item>

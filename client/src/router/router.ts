@@ -35,7 +35,17 @@ import HomePlayground from "@/components/views/seb-server/home/HomePlayground.vu
 import AssessmentTools from "@/components/views/seb-server/assessment-tool/AssessmentTools.vue";
 import CreateAssessmentTool from "@/components/views/seb-server/assessment-tool/CreateAssessmentTool.vue";
 import AssessmentToolDetailsAndEdit from "@/components/views/seb-server/assessment-tool/AssessmentToolDetailsAndEdit.vue";
-import {ASSESSMENT_TOOL_CONNECTIONS} from "@/utils/constants";
+import {
+    ASSESSMENT_TOOL_CONNECTIONS_ROUTE,
+    CONNECTION_CONFIGURATIONS_ROUTE,
+    CREATE_CONNECTION_CONFIGURATION_ROUTE
+} from "@/utils/constants";
+import CreateConnectionConfiguration
+    from "@/components/views/seb-server/connection-configuration/CreateConnectionConfiguration.vue";
+import ConnectionConfigurations
+    from "@/components/views/seb-server/connection-configuration/ConnectionConfigurations.vue";
+import ConnectionConfigurationlDetailsAndEdit
+    from "@/components/views/seb-server/connection-configuration/ConnectionConfigurationlDetailsAndEdit.vue";
 
 
 
@@ -204,7 +214,7 @@ const routes: Array<RouteRecordRaw> = [
 
             //assessment tools
             {
-                path: constants.ASSESSMENT_TOOL_CONNECTIONS,
+                path: constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE,
                 name: "AssessmentToolConnections",
                 component: AssessmentTools,
                 meta: {
@@ -213,7 +223,7 @@ const routes: Array<RouteRecordRaw> = [
             },
 
             {
-                path: constants.CREATE_ASSESSMENT_TOOL_CONNECTIONS,
+                path: constants.CREATE_ASSESSMENT_TOOL_CONNECTION_ROUTE,
                 name: "CreateAssessmentToolConnection",
                 component: CreateAssessmentTool,
                 meta: {
@@ -221,11 +231,38 @@ const routes: Array<RouteRecordRaw> = [
                 },
             },
             {
-                path: constants.ASSESSMENT_TOOL_CONNECTIONS + "/:lmsId" + "/:edit",
+                path: constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE + "/:lmsId" + "/:edit",
                 name: "AssessmentToolDetailAndView",
                 component: AssessmentToolDetailsAndEdit,
                 meta: {
                     titleKey: "titles.assessmentToolEdit"
+                },
+            },
+
+            //connection configuration
+            {
+                path: constants.CONNECTION_CONFIGURATIONS_ROUTE,
+                name: "ConnectionConfigurations",
+                component: ConnectionConfigurations,
+                meta: {
+                    titleKey: "titles.connectionConfigurations"
+                },
+            },
+
+            {
+                path: constants.CREATE_CONNECTION_CONFIGURATION_ROUTE,
+                name: "CreateConnectionConfiguration",
+                component: CreateConnectionConfiguration,
+                meta: {
+                    titleKey: "titles.createConnectionConfiguration"
+                },
+            },
+            {
+                path: constants.CONNECTION_CONFIGURATIONS_ROUTE + "/:id",
+                name: "ConnectionConfigurationDetailAndView",
+                component: ConnectionConfigurationlDetailsAndEdit,
+                meta: {
+                    titleKey: "titles.connectionConfigurationViewAndEdit"
                 },
             },
 

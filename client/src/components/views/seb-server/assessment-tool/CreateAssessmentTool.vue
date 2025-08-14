@@ -286,7 +286,7 @@
                             rounded="sm"
                             color="black"
                             variant="outlined"
-                            @click="navigateTo(constants.ASSESSMENT_TOOL_CONNECTIONS)"
+                            @click="navigateTo(constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE)"
                         >
                             {{ translate("general.cancelButton") }}
                         </v-btn>
@@ -469,7 +469,7 @@ async function submit() {
         createdSuccess.value = true;
         setTimeout(() => {
             createdSuccess.value = false;
-            navigateTo(constants.ASSESSMENT_TOOL_CONNECTIONS);
+            navigateTo(constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE);
         }, 1500);
 
     }

@@ -833,7 +833,10 @@
         "createAssessmentTool": "Assessment Tool Setup",
         "assessmentToolViewAndEdit": "Assessment Tool",
         "editAssessmentTool" : "Edit Assessment Tool",
-        "assessmentToolEdit" : "Edit Assessment Tool"
+        "assessmentToolEdit" : "Edit Assessment Tool",
+        "connectionConfigurationViewAndEdit": "Connection Configuration",
+        "createConnectionConfiguration" : "Edit Connection Configuration",
+        "connectionConfigurations" : "Connection Configurations"
 
     },
 
