@@ -1,26 +1,48 @@
 import { defineStore } from "pinia";
 import {UserRoleEnum} from "@/models/userRoleEnum";
+import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum";
 import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
 import * as generalUtils from "@/utils/generalUtils";
 
 export enum GUIComponents {
+    // Overall components
     NavigationOverview = "NavigationOverview",
+
+    // User Account Components
     UserAccount = "UserAccount"
 };
     
 export enum GUIAction  {
+    // User Account actions
     CreateUserAccount = "CreateUserAccount", 
     EditUserAccount = "EditUserAccount",
     DeleteUserAccount = "DeleteUserAccount",
 
-    EditExam = "EditExam",
-
+    // Exam actions
+    EditExamSettings = "EditExamSettings",
+    ArchiveExam = "ArchiveExam",
+    DeleteExam = "DeleteExam",
+    ApplyTestRun = "ApplyTestRun",
+    DisableTestRun = "DisableTestRun",
+    ExportExamClientConfig = "ExportExamClientConfig",
+    ViewASKSettings = "ViewASKSettings",
+    EditASKSettings = "EditASKSettings",
+    EditScreenProctoring = "EditScreenProctoring",
+    EditSEBSettings = "EditSEBSettings",
+    EditIndicators = "EditIndicators",
+    EditClientGroups = "EditClientGroups",
+    ApplySEBRestriction = "ApplySEBRestriction",
+    ShowMonitoring = "ShowMonitoring",
 };
 
 export const useAbilities = defineStore("ability", () => {
 
     const guiComponents = ref<Map<UserRoleEnum, Set<GUIComponents>>>(new Map<UserRoleEnum, Set<GUIComponents>>());
     const guiActions = ref<Map<UserRoleEnum, Set<GUIAction>>>(new Map<UserRoleEnum, Set<GUIAction>>());
+    const examStatusActions = ref<Map<ExamStatusEnum, Set<GUIAction>>>(new Map<ExamStatusEnum, Set<GUIAction>>());
+
+    // -----------------------------------------------------------------------------
+    // User Role based ability mapping
 
     guiComponents.value.set(
     UserRoleEnum.SEB_SERVER_ADMIN, 
@@ -47,7 +69,83 @@ export const useAbilities = defineStore("ability", () => {
         new Set<GUIAction>([ 
             GUIAction.CreateUserAccount, 
             GUIAction.EditUserAccount, 
-            GUIAction.DeleteUserAccount]));
+            GUIAction.DeleteUserAccount,
+
+            GUIAction.ArchiveExam]));
+
+    // -----------------------------------------------------------------------
+    // Exam Status ability mapping (SEBSERV-685)
+
+    // ExamStatusEnum.UP_COMING
+    examStatusActions.value.set(
+        ExamStatusEnum.UP_COMING,
+        new Set<GUIAction>([ 
+            GUIAction.EditExamSettings,
+            GUIAction.DeleteExam,
+            GUIAction.ApplyTestRun,
+            GUIAction.ExportExamClientConfig,
+            GUIAction.ViewASKSettings,
+            GUIAction.EditASKSettings,
+            GUIAction.EditScreenProctoring ,
+            GUIAction.EditSEBSettings ,
+            GUIAction.EditIndicators ,
+            GUIAction.EditClientGroups,
+            GUIAction.ApplySEBRestriction,
+        ]));
+
+    // ExamStatusEnum.TEST_RUN
+    examStatusActions.value.set(
+        ExamStatusEnum.TEST_RUN,
+        new Set<GUIAction>([ 
+            GUIAction.EditExamSettings,
+            GUIAction.DeleteExam,
+            GUIAction.DisableTestRun,
+            GUIAction.ExportExamClientConfig,
+            GUIAction.ViewASKSettings,
+            GUIAction.EditASKSettings,
+            GUIAction.EditScreenProctoring ,
+            GUIAction.EditSEBSettings ,
+            GUIAction.EditIndicators ,
+            GUIAction.EditClientGroups,
+            GUIAction.ApplySEBRestriction,
+            GUIAction.ShowMonitoring,
+        ]));
+
+    // ExamStatusEnum.RUNNING
+    examStatusActions.value.set(
+        ExamStatusEnum.RUNNING,
+        new Set<GUIAction>([ 
+            GUIAction.EditExamSettings,
+            GUIAction.DeleteExam,
+            GUIAction.ExportExamClientConfig,
+            GUIAction.ViewASKSettings,
+            GUIAction.EditASKSettings,
+            GUIAction.EditScreenProctoring ,
+            GUIAction.EditSEBSettings ,
+            GUIAction.EditIndicators ,
+            GUIAction.EditClientGroups,
+            GUIAction.ApplySEBRestriction,
+            GUIAction.ShowMonitoring,
+        ]));
+
+    // ExamStatusEnum.FINISHED
+    examStatusActions.value.set(
+        ExamStatusEnum.FINISHED,
+        new Set<GUIAction>([ 
+            GUIAction.ArchiveExam,
+            GUIAction.DeleteExam,
+            GUIAction.ExportExamClientConfig,
+            GUIAction.ViewASKSettings,
+            GUIAction.ApplySEBRestriction,
+        ]));
+
+    // ExamStatusEnum.ARCHIVED
+    examStatusActions.value.set(
+        ExamStatusEnum.ARCHIVED,
+        new Set<GUIAction>([ 
+            GUIAction.DeleteExam,
+            GUIAction.ViewASKSettings,
+        ]));
 
     function canView(view: GUIComponents): boolean {
         
@@ -74,9 +172,12 @@ export const useAbilities = defineStore("ability", () => {
         for (var role of user.userRoles) {
             const roleEnum = generalUtils.findEnumValue(UserRoleEnum, role);
             if (roleEnum != null && guiActions.value.get(roleEnum)?.has(action)) {
+                console.info("*********** yes for: " + action);
                 return true;
             }
         };
+
+        console.info("*********** no for: " + action);
 
         return false; 
     }
@@ -95,10 +196,29 @@ export const useAbilities = defineStore("ability", () => {
         return false;
     }
 
+    function canDoExamAction(action: GUIAction, examStatusString: string | undefined): boolean {
+        if(examStatusString == null){
+            return false;
+        }
+
+        const examStatus: ExamStatusEnum | null = generalUtils.findEnumValue(ExamStatusEnum, examStatusString);
+        if (examStatus == null) {
+            return false;
+        }
+
+        const statusSet = examStatusActions.value.get(examStatus);
+        if (statusSet) {
+            return statusSet.has(action);
+        }
+
+        return false;
+    }
+
     return {
         canView,
         canDo,
-        isExamSupporter
+        isExamSupporter,
+        canDoExamAction
     }
 });
 
