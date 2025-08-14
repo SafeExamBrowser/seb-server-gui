@@ -18,9 +18,9 @@
                             <v-divider class="section-divider"/>
 
                             <v-list-item class="px-0 nav-hover">
-                                <span class="link-color nav-link">
+                                <router-link class="link-color nav-link" :to="constants.ASSESSMENT_TOOL_CONNECTIONS">
                                     {{ translate("navigation.routeNames.assessmentToolConnections") }}
-                                </span>
+                                </router-link>
                             </v-list-item>
 
                             <v-divider class="section-divider"/>
@@ -71,7 +71,7 @@
                             <v-divider class="section-divider"/>
 
                             <v-list-item class="px-0 nav-hover">
-                                <router-link class="link-color nav-link" :to="constants.EXAM_ROUTE">
+                                <router-link class="link-color nav-link" :to="constants.QUIZ_IMPORT_ROUTE">
                                     {{ translate("titles.quizImport") }}
                                 </router-link>
                             </v-list-item>

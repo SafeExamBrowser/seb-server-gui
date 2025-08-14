@@ -11,7 +11,9 @@
                     <v-divider class="section-divider" />
 
                     <v-list-item class="px-0 nav-hover">
-                        <span class="link-color nav-link">{{ translate("navigation.routeNames.assessmentToolConnections") }}</span>
+                        <router-link class="link-color nav-link" :to="constants.ASSESSMENT_TOOL_CONNECTIONS">
+                            {{ translate("titles.assessmentToolConnections") }}
+                        </router-link>
                     </v-list-item>
 
                     <v-divider class="section-divider" />
@@ -290,7 +292,7 @@
                             class="ml-2"
                             @click="submit()"
                         >
-                            {{ translate("userAccount.createUserAccountPage.buttons.createNewUser") }}
+                            {{ translate("general.cancelButton") }}
                         </v-btn>
                     </div>
                 </v-col>

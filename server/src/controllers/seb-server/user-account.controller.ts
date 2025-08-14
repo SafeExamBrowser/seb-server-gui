@@ -58,9 +58,7 @@ export async function registerUserAccount(req: Request, res: Response) {
 
 export async function deactivateAccount(req: Request, res: Response) {
     try {
-
-        console.log(req.headers.authorization);
-        const [userAccount, status] = await userAccountService.deactivateAccount(req.headers.authorization, req.params.modelId);
+        const [userAccount, status] = await userAccountService.deactivateAccount(req.headers.authorization, req.params.id);
         return res.status(status).json(userAccount);
     } catch (error) {
         apiService.handleGenericApiError(error, res);
@@ -68,7 +66,7 @@ export async function deactivateAccount(req: Request, res: Response) {
 }
 export async function activateAccount(req: Request, res: Response) {
     try {
-        const [userAccount, status] = await userAccountService.activateAccount(req.headers.authorization, req.params.modelId);
+        const [userAccount, status] = await userAccountService.activateAccount(req.headers.authorization, req.params.id);
         return res.status(status).json(userAccount);
     } catch (error) {
         apiService.handleGenericApiError(error, res);

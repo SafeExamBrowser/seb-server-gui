@@ -214,7 +214,8 @@ function getIgnoredUrls(): string[]{
         "/sp/search/timeline",
         "/sp/search/sessions",
         "/monitoring",
-        "/institution"
+        "/institution",
+        "/assessment-tools",
     ];
 }
 
