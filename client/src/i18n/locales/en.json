@@ -462,13 +462,21 @@
                 "proxyPassword": "Enter proxy password",
             },
             "validation" : {
-              "required" : "This field is required"
+                "required" : "This field is required",
+                "assessmentToolServerAddressLabel" : "Must start with http://",
+                "invalidPort" : "Invalid port, ex. 8080"
             }
 
         },
         "assessmentToolDetailAndEditPage" : {
             "buttons" : {
-                "saveChanges": "Save Changes"
+                "saveChanges": "Save Changes",
+                "revertChanges": "Revert Changes"
+            },
+            "validation" : {
+                "required" : "This field is required",
+                "assessmentToolServerAddressLabel" : "Must start with http://",
+                "invalidPort" : "Invalid port, ex. 8080"
             }
         },
         "lmsTypes": {

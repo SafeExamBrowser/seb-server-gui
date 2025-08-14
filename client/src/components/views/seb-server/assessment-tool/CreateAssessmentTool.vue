@@ -98,7 +98,7 @@
                                             :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.assessmentToolServerAddressLabel')"
                                             variant="outlined"
                                             v-model="assessmentToolServerAddress"
-                                            :rules="[requiredRule]"
+                                            :rules="[requiredRule, httpPrefixRule]"
                                             validate-on="blur"
                                         />
                                     </v-col>
@@ -361,8 +361,12 @@ const authenticatedUserAccountStore = useAuthenticatedUserAccountStore();
 //validation rules
 const requiredMessage = translate("assessmentToolConnections.createAssessmentToolConnectionsPage.validation.required");
 const invalidPortMessage = translate("assessmentToolConnections.createAssessmentToolConnectionsPage.validation.invalidPort") || "Invalid port";
+const httpPrefixMessage = translate("assessmentToolConnections.createAssessmentToolConnectionsPage.validation.httpPrefix") || "Must start with http://";
 
 const requiredRule = (v: string) => !!v || requiredMessage;
+
+const httpPrefixRule = (v: string) => /^https?:\/\//i.test(v) || httpPrefixMessage;
+
 
 // Required only when withProxy is true
 const requiredIfProxyRule = (v: string) => {

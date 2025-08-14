@@ -289,30 +289,51 @@
             </v-sheet>
 
             <v-row class="px-6 pt-3">
-                <v-col cols="12" md="12" class="pa-0 mb-4">
-                    <div class="d-flex justify-end">
-                        <v-btn
-                            rounded="sm"
-                            color="black"
-                            variant="outlined"
-                            @click="onCancel()"
-                        >
-                            {{ translate("general.backButton") }}
-                        </v-btn>
+                <v-col cols="12" md="12" class="pa-0 mb-4 ">
+                    <v-row>
+                        <v-col>
+                            <button
+                                v-if="isDirty || statusChanged"
+                                class="revert-link d-inline-flex align-center"
+                                type="button"
+                                @click="onCancel()"
+                                :aria-label="translate('general.revertChanges')"
+                            >
+                                <v-icon size="18" class="mr-1">mdi-arrow-left-circle</v-icon>
+                                <span>{{ translate('assessmentToolConnections.assessmentToolDetailAndEditPage.buttons.revertChanges') }}</span>
+                            </button>
+                        </v-col>
 
-                        <v-btn
-                            rounded="sm"
-                            color="primary"
-                            variant="flat"
-                            class="ml-2"
-                            :loading="isSaving"
-                            :disabled="!canSave"
-                            @click="onSave()"
-                        >
-                            {{ translate('assessmentToolConnections.assessmentToolDetailAndEditPage.buttons.saveChanges') }}
-                        </v-btn>
+                        <v-spacer>
+                        </v-spacer>
+                        <v-col>
+                            <div class="d-flex justify-end">
+                                <v-btn
+                                    rounded="sm"
+                                    color="black"
+                                    variant="outlined"
+                                    @click="onBack()"
+                                >
+                                    {{ translate("general.backButton") }}
+                                </v-btn>
 
-                    </div>
+                                <v-btn
+                                    rounded="sm"
+                                    color="primary"
+                                    variant="flat"
+                                    class="ml-2"
+                                    :loading="isSaving"
+                                    :disabled="!canSave"
+                                    @click="onSave()"
+                                >
+                                    {{
+                                        translate('assessmentToolConnections.assessmentToolDetailAndEditPage.buttons.saveChanges')
+                                    }}
+                                </v-btn>
+                            </div>
+                        </v-col>
+                    </v-row>
+
                 </v-col>
             </v-row>
         </v-col>
@@ -328,6 +349,9 @@ import {useUserAccountStore as useAuthenticatedUserAccountStore} from "@/stores/
 import {LMSTypeEnum} from "@/models/seb-server/assessmentToolEnums";
 import {getInstitutions} from "@/services/seb-server/api-services/institutionService";
 import * as assessmentToolViewService from "@/services/seb-server/component-services/assessmentToolViewService";
+import router from "@/router/router";
+import {navigateTo} from "@/router/navigation";
+import * as constants from "@/utils/constants";
 
 // Router
 const route = useRoute();
@@ -369,15 +393,19 @@ const isSaving = ref(false);
 
 
 // Validation rules
-const requiredMessage = translate("assessmentToolConnections.createAssessmentToolConnectionsPage.validation.required");
-const invalidPortMessage = translate("assessmentToolConnections.createAssessmentToolConnectionsPage.validation.invalidPort") || "Invalid port";
-const httpPrefixMessage = translate("assessmentToolConnections.createAssessmentToolConnectionsPage.validation.httpPrefix") || "Must start with http://";
+const requiredMessage = translate("assessmentToolConnections.assessmentToolDetailAndEditPage.validation.required");
+const invalidPortMessage = translate("assessmentToolConnections.assessmentToolDetailAndEditPage.validation.invalidPort") || "Invalid port";
+const httpPrefixMessage = translate("assessmentToolConnections.assessmentToolDetailAndEditPage.validation.httpPrefix") || "Must start with http://";
 
 const requiredRule = (v: string) => !!v || requiredMessage;
 const requiredIfProxyRule = (v: string) => {
     if (!withProxy.value) return true;
     return (!!v && v.toString().trim().length > 0) || requiredMessage;
 };
+
+
+
+
 const portNumberRule = (v: string) => {
     if (!withProxy.value) return true;
     const n = Number(v);
@@ -524,6 +552,14 @@ const isSaveDisabled = computed(() => {
     return proxyMissing || badPort;
 });
 
+function onBack() {
+    if (window.history.length > 1) {
+        router.back();
+    } else {
+        navigateTo(constants.ASSESSMENT_TOOL_CONNECTIONS);
+    }
+}
+
 function onCancel() {
     if (originalSnapshot.value) {
         const s = originalSnapshot.value as any;
@@ -552,7 +588,7 @@ async function onSave() {
 
     // If fields changed, validate; status-only skips validation
     if (fieldsChanged) {
-        const { valid } = await (formRef.value as any).validate();
+        const {valid} = await (formRef.value as any).validate();
         if (!valid || isSaveDisabled.value) return;
     }
 
@@ -663,5 +699,30 @@ async function editAssessmentToolOnly() {
     letter-spacing: 0.15px;
     cursor: pointer;
 }
+
+
+.revert-link {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    color: #215caf;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 999px;
+    line-height: 1;
+}
+
+.revert-link:focus-visible {
+    outline: 2px solid rgba(33, 92, 175, 0.3);
+    outline-offset: 2px;
+    border-radius: 8px;
+}
+
+.revert-link:hover {
+    text-decoration: underline;
+}
+
 
 </style>

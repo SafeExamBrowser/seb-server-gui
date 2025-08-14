@@ -27,14 +27,20 @@ type AssessmentTool = {
 }
 
 
+
 type OptionalParGetAssessmentTool = {
     page_size?: number;
     page_number?: number;
-    status?: string | null
     sort?: string;
-    lmsType?: LMSTypeEnum | null;
+    name?: string
 
-}
+    lms_type?: LMSTypeEnum | null;
+    active?: string | null;
+    institutionId?: string | null;
+
+    status?: string | null;
+};
+
 
 
 

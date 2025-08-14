@@ -33,7 +33,7 @@
                 <!-- Search and filters row -->
                 <v-row class="px-6 pt-4 d-flex flex-wrap align-start">
                     <!-- Search field -->
-                    <v-col cols="5" md="5" class="pa-0 mb-4 bg-amber">
+                    <v-col cols="5" md="5" class="pa-0 mb-4 ">
                         <div class="text-caption text-grey-darken-1 mt-1 mb-1">
                             {{ translate("assessmentToolConnections.assessmentToolsPage.filters.searchTitle") }}
                         </div>
@@ -148,18 +148,21 @@
 
                 <!-- Data Table Definition-->
                 <v-sheet class="rounded-lg mt-10">
-                    <v-data-table
+                    <v-data-table-server
                         v-model:options="options"
-                        :items="filteredUsers"
-                        :no-data-text="translate('general.noData')"
-                        :loading-text="translate('general.loading')"
-                        :items-per-page="options.itemsPerPage"
-                        :items-per-page-options="[5, 10, 15]"
-                        :headers="assessmentToolTableHeaders"
+                        @update:options="loadItems"
+                        :hover="true"
                         :loading="isLoading"
+                        :loading-text="translate('general.loading')"
+                        :items="assessmentTools?.content"
+                        :items-length="totalItems"
+                        :items-per-page="5"
+                        :items-per-page-options="tableUtils.calcItemsPerPage(totalItems)"
+                        :headers="assessmentToolTableHeaders"
                         style="min-height:35vh"
                     >
-                        <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort }">
+
+                    <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort }">
                             <TableHeaders
                                 :columns="columns"
                                 :is-sorted="isSorted"
@@ -173,14 +176,14 @@
                             <tr
                                 :class="[
                                     selectedAssessmentTool?.id === item.id ? 'selected-row' : '',
-                                    'row-clickable' // NEW
+                                    'row-clickable'
                                 ]"
                                 @click="goToDetails(item, false)"
                             >
 
                                 <!-- Column Definition -->
                                 <td class="text-primary">
-                                    {{ item.institutionName || item.institutionId }}
+                                    {{ getInstitutionName(item.institutionId) || item.institutionId }}
                                 </td>
                                 <td class="text-primary">{{ item.name }}</td>
                                 <td class="text-primary">{{ translateLmsType(item.lmsType) }}</td>
@@ -221,7 +224,7 @@
 
                             </tr>
                         </template>
-                    </v-data-table>
+                    </v-data-table-server>
 
                     <!-- Delete User Account Dialog -->
                     <v-dialog v-model="deleteDialog" max-width="500">
@@ -305,6 +308,7 @@ const layoutStore = useLayoutStore();
 const assessmentToolStore = useAssessmentToolStore();
 const i18n = useI18n();
 
+
 // UI State
 const selectedStatus = ref<string | null>(null);
 const selectedAssessmentTool = ref<AssessmentTool | null>(null);
@@ -315,7 +319,13 @@ const isLoading = ref<boolean>(true);
 const deleteSuccess = ref(false);
 const deletedName = ref("");
 const selectedType = ref<LMSTypeEnum | null>(null);
+const totalItems = ref<number>(0);
 
+const options = ref({
+    page: 1,
+    itemsPerPage: 5,
+    sortBy: [{ key: "name", order: "asc" }],
+});
 
 const statuses = [
     {value: "Active", label: translate("assessmentToolConnections.assessmentToolsPage.filters.activeSelector")},
@@ -347,17 +357,15 @@ onMounted(async () => {
     appBarStore.title = translate("titles.assessmentToolConnections");
     layoutStore.setBlueBackground(true);
 
-    const assessmentTools = await assessmentToolViewService.getAssessmentTools();
-
-    console.log(assessmentTools);
-
     const result = await getInstitutions();
     if (result && result.length > 0) {
         institutions.value = result;
-
     }
+
     await loadItems(options.value);
 });
+
+
 
 const institutionIdToNameMap = computed(() => {
     const map = new Map<string, string>();
@@ -410,62 +418,6 @@ const assessmentToolTableHeaders = computed(() => {
 });
 
 
-const options = ref({
-    page: 1,
-    itemsPerPage: 5,
-    sortBy: [{key: "name", order: "asc"}],
-});
-
-// Filters + Sorting
-const filteredUsers = computed(() => {
-    if (!assessmentTools.value?.content) return [];
-    let result: (AssessmentTool & { institutionName?: string })[] = [...assessmentTools.value.content];
-
-
-    // Status filter
-    if (selectedStatus.value) {
-        const isActive = selectedStatus.value === "Active";
-        result = result.filter(user => user.active === isActive);
-    }
-
-    // Search filter
-    const searchTerm = searchQuery.value;
-    if (searchQuery) {
-        result = result.filter(asessmentTool =>
-            [asessmentTool.name]
-                .some(field => field?.toLowerCase().includes(searchTerm))
-        );
-    }
-    if (selectedInstitutionId.value) {
-        result = result.filter(
-            asessmentTool => String(asessmentTool.institutionId) === selectedInstitutionId.value
-        );
-    }
-
-    result = result.map(asessmentTool => ({
-        ...asessmentTool,
-        institutionName: institutionIdToNameMap.value.get(String(asessmentTool.institutionId)) || "",
-    }));
-
-    //sort
-    type SortableKey = keyof Pick<AssessmentTool & {
-        institutionName?: string
-    }, "name" | "lmsType" | "active" | "institutionName">;
-
-    const sort = options.value.sortBy?.[0];
-    if (sort && ["name", "surname", "username", "email", "institutionName"].includes(sort.key)) {
-        const sortKey = sort.key as SortableKey;
-        result.sort((a, b) => {
-            const valA = a[sortKey]?.toString().toLowerCase() || "";
-            const valB = b[sortKey]?.toString().toLowerCase() || "";
-            return sort.order === "asc"
-                ? valA.localeCompare(valB)
-                : valB.localeCompare(valA);
-        });
-    }
-    return result;
-});
-
 //update status
 async function onStatusChange(assessmentTool: AssessmentTool, newStatus: string) {
     if (newStatus === "Active" && !assessmentTool.active) {
@@ -473,7 +425,7 @@ async function onStatusChange(assessmentTool: AssessmentTool, newStatus: string)
     } else if (newStatus === "Inactive" && assessmentTool.active) {
         await assessmentToolViewService.deactivateAssessmentTool(assessmentTool.id.toString());
     }
-    await loadItems(options.value); // refresh table
+    await loadItems(options.value);
 
 }
 
@@ -507,34 +459,41 @@ const statusDialogButtonLabel = computed(() => {
     );
 });
 
-
-// Load users with full pagination from backend
 async function loadItems(serverTablePaging: ServerTablePaging) {
-    const fetchAllPaging = {...serverTablePaging, itemsPerPage: 500, page: 1};
     assessmentToolStore.currentPagingOptions = serverTablePaging;
     isLoading.value = true;
-    const optionalParams: OptionalParGetAssessmentTool = {
-        ...tableUtils.assignUserAccountSelectPagingOptions(fetchAllPaging),
-        status: selectedStatus.value,
-        lmsType: selectedType.value ?? null,
 
-    };
+    const optionalParams = tableUtils.assignAssessmentToolSelectPagingOptions(
+        serverTablePaging,
+        selectedStatus.value,
+        selectedType.value ?? null,
+        selectedInstitutionId.value,
+        assessmentToolStore.searchField && assessmentToolStore.searchField.trim() !== ""
+            ? assessmentToolStore.searchField.trim()
+            : null
+    );
+
+
     const response = await assessmentToolViewService.getAssessmentTools(optionalParams);
 
-    if (!response) {
-        isLoading.value = false;
-        return;
-    }
-
-    assessmentTools.value = response;
     isLoading.value = false;
+    if (!response) return;
+
+    totalItems.value = (response.number_of_pages ?? 1) * (response.page_size ?? (response.content?.length ?? 0));
+    assessmentTools.value = response;
+
 }
+
+const getInstitutionName = (id: string | number | null | undefined) =>
+    (id != null ? institutionIdToNameMap.value.get(String(id)) : "") ?? "";
+
 
 // Search + clear search
 function onSearch() {
     searchQuery.value = assessmentToolStore.searchField?.trim().toLowerCase() ?? "";
+    options.value.page = 1;
+    loadItems(options.value);
 }
-
 function onClearSearch() {
     assessmentToolStore.searchField = "";
     searchQuery.value = "";
@@ -542,7 +501,9 @@ function onClearSearch() {
     selectedInstitutionId.value = null;
     selectedType.value = null;
     options.value.page = 1;
+    loadItems(options.value);
 }
+
 
 //dialogs and logic
 //delete
@@ -588,10 +549,12 @@ function goToDetails(item: AssessmentTool, edit: boolean) {
     navigateTo(`${constants.ASSESSMENT_TOOL_CONNECTIONS}/${item.id}/${edit}`);
 }
 
-watch(selectedType, () => {
+
+watch([selectedType, selectedStatus, selectedInstitutionId], () => {
     options.value.page = 1;
     loadItems(options.value);
 });
+
 </script>
 
 <style scoped>
@@ -719,5 +682,12 @@ watch(selectedType, () => {
 .row-clickable:hover {
     background-color: rgba(33, 92, 175, 0.06);
 }
+
+.filter-chip-selected {
+    background-color: #215caf !important;
+    color: white !important;
+}
+
+
 
 </style>
