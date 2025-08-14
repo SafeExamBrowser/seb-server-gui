@@ -56,7 +56,7 @@
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-select
                                             required
-                                            prepend-inner-icon="mdi-account-outline"
+                                            prepend-inner-icon="mdi-shape-outline"
                                             density="compact"
                                             :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.typeLabel')"
                                             variant="outlined"
@@ -93,7 +93,7 @@
                                     <!-- Assessment Tool Server Address-->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
-                                            prepend-inner-icon="mdi-email-outline"
+                                            prepend-inner-icon="mdi-server"
                                             density="compact"
                                             :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.assessmentToolServerAddressLabel')"
                                             variant="outlined"
@@ -109,7 +109,7 @@
                                             ref="confirmPasswordFieldRef"
                                             required
                                             :type="confirmPasswordVisible ? 'text' : 'password'"
-                                            prepend-inner-icon="mdi-lock-outline"
+                                            prepend-inner-icon="mdi-key-variant"
                                             density="compact"
                                             :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.accessTokenLabel')"
                                             variant="outlined"
@@ -132,7 +132,7 @@
                                     <!-- Assessment Tool Server Username-->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
-                                            prepend-inner-icon="mdi-email-outline"
+                                            prepend-inner-icon="mdi-account"
                                             density="compact"
                                             :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.assessmentToolServerUsernameLabel')"
                                             variant="outlined"
