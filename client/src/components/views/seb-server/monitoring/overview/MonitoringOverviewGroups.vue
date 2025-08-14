@@ -8,13 +8,6 @@
             </div>
         </v-col>
         <v-col cols="6" class="text-right">
-            <v-btn
-                variant="text"
-                class="add-group-btn font-weight-bold"
-                prepend-icon="mdi-plus"
-            >
-                {{ translate("monitoringOverview.groups.addGroup") }}
-            </v-btn>
         </v-col>
     </v-row>
 
