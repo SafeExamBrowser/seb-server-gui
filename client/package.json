@@ -3,6 +3,7 @@
     "version": "0.0.0",
     "scripts": {
         "dev": "sh env.sh && vite",
+        "dev-win": "env.sh && vite",
         "build": "vue-tsc --noEmit && vite build",
         "preview": "vite preview",
         "lint": "eslint . --fix --ignore-path .gitignore"
