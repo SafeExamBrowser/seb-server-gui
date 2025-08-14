@@ -261,6 +261,7 @@ function handleStepperNext(index: number, next: () => void) {
             externalId: quizImportStore.selectedQuiz.quiz_id,
             quiz_id: quizImportStore.selectedQuiz.quiz_id,
             examTemplateId: quizImportStore.selectedExamTemplate.id,
+            type: quizImportStore.selectedExamTemplate.examType,
             quitPassword: quizImportStore.selectedQuitPassword,
             supporter: quizImportStore.selectedExamSupervisors.map(userAccountName => userAccountName.modelId),
             clientGroupIds: generalUtils.createStringCommaList(quizImportStore.selectedClientGroups.map(clientGroup => clientGroup.id!))
