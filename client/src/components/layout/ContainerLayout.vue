@@ -272,7 +272,7 @@
     <!---------------main navigation drawer----------------->
     <v-navigation-drawer app v-model="navigationDrawer" :permanent="true" width="70" class="mt-0">
         <v-list lines="two" class="pt-0">
-            <v-list-item v-if="$can('view', 'NavigationOverview')" link elevation="0" :to="getNavigationOverviewRoute()"
+            <v-list-item v-if="ability.canView(GUIComponents.NavigationOverview)" link elevation="0" :to="getNavigationOverviewRoute()"
                 variant="elevated" class="d-flex flex-column justify-center text-center"
                 :class="[navigationStore.isNavigationOverviewOpen ? 'navigation-overview-background' : '']">
 
@@ -339,13 +339,10 @@
     import * as constants from "@/utils/constants";
     import router from "@/router/router";
     import {translate} from "@/utils/generalUtils";
-    import { useAbility } from '@casl/vue'
-
-
+    //import * as abilitiy from "@/casl/ability";
     import {getInstitutions} from "@/services/seb-server/component-services/registerAccountViewService";
     import {getInstitution, getInstitutionLogo} from "@/services/seb-server/api-services/institutionService";
-    import {defineRulesForRoles} from "@/casl/ability";
-
+    import { useAbilities, GUIComponents } from '@/services/ability';
 
     //i18n
     const {locale} = useI18n();
@@ -369,7 +366,7 @@
     ];
     const institutions = ref<Institution[]>([]);
     const institutionName = ref<string>();
-    const ability = useAbility()
+    const ability = useAbilities()
 
     //gallery view
     const gridSizes: GridSize[] = [
@@ -419,10 +416,10 @@
         }
     });
 
-    watch(userRoles, (roles) => {
-        ability.update(defineRulesForRoles(roles).rules)
-        console.log("user roles: ", userRoles.value)
-    }, { immediate: true })
+    // watch(userRoles, (roles) => {
+    //     ability.update(defineRulesForRoles(roles).rules)
+    //     console.log("user roles: ", userRoles.value)
+    // }, { immediate: true })
 
     watch(languageToggle, () => {
         locale.value = languageToggle.value === 0 ? "en" : "de";
