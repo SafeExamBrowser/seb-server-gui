@@ -40,6 +40,7 @@
                                                 rounded="sm"
                                                 color="primary"
                                                 variant="flat"
+                                                :disabled="!ability.canDoExamAction(GUIAction.DisableTestRun, examStore.selectedExam?.status)"
                                                 @click="applyTestRun()">
                                                 {{translate("examDetail.main.testRunDisable")}}
                                             </v-btn>
@@ -49,7 +50,7 @@
                                                 rounded="sm"
                                                 color="primary"
                                                 variant="flat"
-                                                :disabled="examViewService.isExamFunctionalityDisabled([ExamStatusEnum.UP_COMING], examStore.selectedExam?.status)"
+                                                :disabled="!ability.canDoExamAction(GUIAction.ApplyTestRun, examStore.selectedExam?.status)"
                                                 @click="applyTestRun()">
                                                 {{translate("examDetail.main.testRunApply")}}
                                             </v-btn>
@@ -81,14 +82,14 @@
                                                 rounded="sm"
                                                 color="primary"
                                                 variant="flat"
-                                                :disabled="examViewService.isExamFunctionalityDisabled([ExamStatusEnum.RUNNING, ExamStatusEnum.TEST_RUN], examStore.selectedExam?.status)"
+                                                :disabled="!ability.canDoExamAction(GUIAction.ShowMonitoring, examStore.selectedExam?.status)"
                                                 @click="navigateTo(constants.MONITORING_OVERVIEW_ROUTE + '/' + examId)">
                                                 {{translate("examDetail.main.monitorStart")}}
                                             </v-btn>
                                         </v-col>
                                     </v-row>
 
-                                    <v-tooltip v-if="examViewService.isExamFunctionalityDisabled([ExamStatusEnum.RUNNING, ExamStatusEnum.TEST_RUN], examStore.selectedExam?.status)" activator="parent">
+                                    <v-tooltip v-if="!ability.canDoExamAction(GUIAction.ShowMonitoring, examStore.selectedExam?.status)" activator="parent">
                                         {{translate("examDetail.main.monitorTooltip")}}
                                     </v-tooltip>
 
@@ -182,7 +183,7 @@
                                     density="compact"
                                     variant="text"
                                     icon="mdi-plus-circle-outline"
-                                    :disabled="examViewService.isExamFunctionalityDisabled([ExamStatusEnum.UP_COMING, ExamStatusEnum.RUNNING, ExamStatusEnum.TEST_RUN], examStore.selectedExam?.status)"
+                                    :disabled="!ability.canDoExamAction(GUIAction.EditClientGroups, examStore.selectedExam?.status)"
                                     @click="openAddClientGroupDialog()">
                                 </v-btn>
                                 <v-btn
@@ -190,7 +191,7 @@
                                     density="compact"
                                     variant="text"
                                     icon="mdi-pencil-circle-outline"
-                                    :disabled="examViewService.isExamFunctionalityDisabled([ExamStatusEnum.UP_COMING, ExamStatusEnum.RUNNING, ExamStatusEnum.TEST_RUN], examStore.selectedExam?.status)"
+                                    :disabled="!ability.canDoExamAction(GUIAction.EditClientGroups, examStore.selectedExam?.status)"
                                     @click="openClientGroupDialog()">
                                 </v-btn>
                             </v-col>
@@ -247,7 +248,7 @@
                                     density="compact"
                                     placeholder="Password"
                                     variant="outlined"
-                                    :disabled="examViewService.isExamFunctionalityDisabled([ExamStatusEnum.UP_COMING, ExamStatusEnum.RUNNING, ExamStatusEnum.TEST_RUN], examStore.selectedExam?.status)"
+                                    :disabled="!ability.canDoExamAction(GUIAction.EditExamSettings, examStore.selectedExam?.status)"
                                     v-model="quitPassword"
                                     @update:focused="saveNewPassword($event)">
 
@@ -324,7 +325,7 @@
                                                 rounded="sm"
                                                 color="primary"
                                                 variant="flat"
-                                                :disabled="examViewService.isExamFunctionalityDisabled([ExamStatusEnum.UP_COMING, ExamStatusEnum.RUNNING, ExamStatusEnum.TEST_RUN], examStore.selectedExam?.status)"
+                                                :disabled="!ability.canDoExamAction(GUIAction.EditSEBSettings, examStore.selectedExam?.status)"
                                                 @click="startExamConfigDownloadProcess()">
                                                 {{translate("general.downloadButton")}}
                                             </v-btn>
@@ -353,7 +354,7 @@
 
                                                 <!----------Apply Screen Proctoring--------->
                                                 <v-list-item>
-                                                    <v-list-item-title :class="[examViewService.isExamFunctionalityDisabled([ExamStatusEnum.UP_COMING, ExamStatusEnum.RUNNING, ExamStatusEnum.TEST_RUN], examStore.selectedExam?.status) ? 'disabled-text-color' : '']">
+                                                    <v-list-item-title :class="[!ability.canDoExamAction(GUIAction.EditScreenProctoring, examStore.selectedExam?.status) ? 'disabled-text-color' : '']">
                                                         {{translate("examDetail.main.applySP")}}
                                                     </v-list-item-title>
                                                     <template v-slot:append="{ isSelected }" >
@@ -362,7 +363,7 @@
                                                                 v-model="isScreenProctoringActive"
                                                                 v-on:update:model-value="applyScreenProctoring()"
                                                                 hide-details
-                                                                :disabled="examViewService.isExamFunctionalityDisabled([ExamStatusEnum.UP_COMING, ExamStatusEnum.RUNNING, ExamStatusEnum.TEST_RUN], examStore.selectedExam?.status)"
+                                                                :disabled="!ability.canDoExamAction(GUIAction.EditScreenProctoring, examStore.selectedExam?.status)"
                                                                 color="primary">
                                                             </v-switch>
                                                         </v-list-item-action>
@@ -372,7 +373,7 @@
 
                                                 <!----------Apply SEB Lock--------->
                                                 <v-list-item>
-                                                    <v-list-item-title :class="[hasSEBRestrictionFeature() && !examViewService.isExamFunctionalityDisabled([ExamStatusEnum.UP_COMING, ExamStatusEnum.RUNNING, ExamStatusEnum.TEST_RUN, ExamStatusEnum.FINISHED], examStore.selectedExam?.status) ? '' : 'disabled-text-color']">
+                                                    <v-list-item-title :class="[hasSEBRestrictionFeature() && ability.canDoExamAction(GUIAction.ApplySEBRestriction, examStore.selectedExam?.status) ? '' : 'disabled-text-color']">
                                                         {{translate("examDetail.main.applySebLock")}}
                                                     </v-list-item-title>
                                                     <template v-slot:append="{ isSelected }" >
@@ -381,7 +382,7 @@
                                                                 v-model="isSEBLockActive"
                                                                 v-on:update:model-value="applySEBLock()"
                                                                 hide-details
-                                                                :disabled="!hasSEBRestrictionFeature() || examViewService.isExamFunctionalityDisabled([ExamStatusEnum.UP_COMING, ExamStatusEnum.RUNNING, ExamStatusEnum.TEST_RUN, ExamStatusEnum.FINISHED], examStore.selectedExam?.status)"
+                                                                :disabled="!hasSEBRestrictionFeature() || !ability.canDoExamAction(GUIAction.ApplySEBRestriction, examStore.selectedExam?.status)"
                                                                 color="primary">
                                                             </v-switch>
                                                         </v-list-item-action>
@@ -391,7 +392,7 @@
 
                                                 <!----------SEB Keys--------->
                                                 <v-list-item>
-                                                    <v-list-item-title :class="[hasSEBRestrictionFeature() && !examViewService.isExamFunctionalityDisabled([ExamStatusEnum.UP_COMING, ExamStatusEnum.RUNNING, ExamStatusEnum.TEST_RUN, ExamStatusEnum.FINISHED], examStore.selectedExam?.status) ? '' : 'disabled-text-color']">
+                                                    <v-list-item-title :class="[hasSEBRestrictionFeature() && ability.canDoExamAction(GUIAction.ApplySEBRestriction, examStore.selectedExam?.status) ? '' : 'disabled-text-color']">
                                                         {{translate("examDetail.main.sebKeys")}}
                                                     </v-list-item-title>
                                                     <template v-slot:append="{ isSelected }" >
@@ -399,7 +400,7 @@
                                                             <v-icon
                                                                 icon="mdi-key-outline"
                                                                 style="font-size: 30px;"
-                                                                :disabled="!hasSEBRestrictionFeature() || examViewService.isExamFunctionalityDisabled([ExamStatusEnum.UP_COMING, ExamStatusEnum.RUNNING, ExamStatusEnum.TEST_RUN, ExamStatusEnum.FINISHED], examStore.selectedExam?.status)"
+                                                                :disabled="!hasSEBRestrictionFeature() || !ability.canDoExamAction(GUIAction.ApplySEBRestriction, examStore.selectedExam?.status)"
                                                                 @click="">
                                                             </v-icon>
                                                         </v-list-item-action>
@@ -408,8 +409,8 @@
                                                 <v-divider class="border-opacity-25" :thickness="2"></v-divider>
 
                                                 <!----------Archive Exam--------->
-                                                <v-list-item v-if="userAccountStore.userAccount?.userRoles.includes(UserRoleEnum.INSTITUTIONAL_ADMIN)">
-                                                    <v-list-item-title :class="[examViewService.isExamFunctionalityDisabled([ExamStatusEnum.FINISHED], examStore.selectedExam?.status) ? 'disabled-text-color' : '']">
+                                                <v-list-item v-if="ability.canDo(GUIAction.ArchiveExam)">
+                                                    <v-list-item-title :class="[!ability.canDoExamAction(GUIAction.ArchiveExam, examStore.selectedExam?.status) ? 'disabled-text-color' : '']">
                                                         {{translate("examDetail.main.archiveExam")}}
                                                     </v-list-item-title>
                                                     <template v-slot:append="{ isSelected }" >
@@ -417,18 +418,18 @@
                                                             <v-icon
                                                                 icon="mdi-archive-outline"
                                                                 style="font-size: 30px;"
-                                                                :disabled="examViewService.isExamFunctionalityDisabled([ExamStatusEnum.FINISHED], examStore.selectedExam?.status)"
+                                                                :disabled="!ability.canDoExamAction(GUIAction.ArchiveExam, examStore.selectedExam?.status)"
                                                                 @click="openArchiveDialog()">
                                                             </v-icon>
                                                         </v-list-item-action>
                                                     </template>
 
-                                                    <v-tooltip v-if="examViewService.isExamFunctionalityDisabled([ExamStatusEnum.FINISHED], examStore.selectedExam?.status)" activator="parent">
+                                                    <v-tooltip v-if="!ability.canDoExamAction(GUIAction.ApplySEBRestriction, examStore.selectedExam?.status)" activator="parent">
                                                         {{translate("examDetail.main.archiveTooltip")}}
                                                     </v-tooltip>
 
                                                 </v-list-item>
-                                                <v-divider v-if="userAccountStore.userAccount?.userRoles.includes(UserRoleEnum.INSTITUTIONAL_ADMIN)" class="border-opacity-25" :thickness="2"></v-divider>
+                                                <v-divider v-if="ability.canDo(GUIAction.ArchiveExam)" class="border-opacity-25" :thickness="2"></v-divider>
 
                                                 <!----------Delete Exam--------->
                                                 <v-list-item>
@@ -556,19 +557,16 @@
     import * as assessmentToolViewService from "@/services/seb-server/component-services/assessmentToolViewService";
     import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
     import * as clientGroupViewService from "@/services/seb-server/component-services/clientGroupViewService";
-    import { storeToRefs } from "pinia";
     import * as generalUtils from "@/utils/generalUtils";
     import { navigateTo } from '@/router/navigation';
-    import { ExamStatusEnum, ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
+    import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum";
     import DeleteConfirmDialog from "@/components/widgets/DeleteConfirmDialog.vue";
     import { ClientGroupEnum, ClientOSEnum } from "@/models/seb-server/clientGroupEnum";
     import TableHeaders from "@/utils/table/TableHeaders.vue";
     import { useI18n } from "vue-i18n";
     import {translate} from "@/utils/generalUtils";
     import { LMSFeatureEnum } from '@/models/seb-server/assessmentToolEnums';
-    import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
-    import { UserRoleEnum } from '@/models/userRoleEnum';
-
+    import { useAbilities, GUIComponents, GUIAction } from '@/services/ability';
 
     //i18n
     const i18n = useI18n();
@@ -578,8 +576,7 @@
 
     //stores
     const examStore = useExamStore();
-    const examStoreRef = storeToRefs(examStore);
-    const userAccountStore = useUserAccountStore();
+    const ability = useAbilities()
 
     //exam
     const examId = useRoute().params.examId.toString();
@@ -587,7 +584,6 @@
     //pw field
     const passwordVisible = ref<boolean>(false);
     const quitPassword = ref<string>("");
-    //let quitPasswordTimeout: ReturnType<typeof setTimeout> | null = null;
 
     //supervisors table
     const supervisorsTableHeadersRef = ref<any[]>();
@@ -1008,7 +1004,7 @@
         } else {
             hasSEBSettings.value = configs.length > 0;
         }
-        editableSEBSettings.value = !examViewService.isExamFunctionalityDisabled([ExamStatusEnum.UP_COMING, ExamStatusEnum.RUNNING, ExamStatusEnum.TEST_RUN], examStore.selectedExam?.status);
+        editableSEBSettings.value = ability.canDoExamAction(GUIAction.EditSEBSettings, examStore.selectedExam?.status);
     }
 
     function openSebSettingsDialog(){
