@@ -154,7 +154,8 @@
         },
 
         "assessmentTool": {
-            "title": "Select Assessment Tool"
+            "title": "Select Assessment Tool",
+            "description" : "Please select an assessment tool to continue."
         },
 
         "examInfo":{
@@ -167,7 +168,7 @@
 
         "examMain": {
             "title" : "Select Exam",
-            "description" : "Search and select the exam you want to prepare",
+            "description" : "Search and select the exam you want to prepare.",
             "tableHeaderName": "Name",
             "tableHeaderStart": "Start",
             "tableHeaderEnd": "End",
