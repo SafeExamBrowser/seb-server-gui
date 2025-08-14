@@ -240,6 +240,41 @@ export function assignClientLogDetailsPagingOptions
 }
 
 
+export function assignAssessmentToolSelectPagingOptions(
+    serverTablePaging: ServerTablePaging,
+    selectedStatus: string | null,
+    selectedType: LMSTypeEnum | null,
+    selectedInstitutionId: string | null,
+    name: string | null
+): OptionalParGetAssessmentTool {
+    const opt: OptionalParGetAssessmentTool = {};
+
+    opt.page_size  = serverTablePaging.itemsPerPage;
+    opt.page_number = serverTablePaging.page;
+
+    if (serverTablePaging.sortBy?.length) {
+        let sortString = serverTablePaging.sortBy[0].key;
+        if (serverTablePaging.sortBy[0].order === "desc") sortString = "-" + sortString;
+        opt.sort = sortString;
+    }
+
+    // filters
+    opt.lms_type = selectedType ?? null;
+    opt.active =
+        selectedStatus === "Active" ? "true" :
+            selectedStatus === "Inactive" ? "false" :
+                null;
+    opt.institutionId = selectedInstitutionId ?? null;
+
+    // NEW: search
+    if (name && name !== "") {
+        opt.name = name;
+    }
+
+    return opt;
+}
+
+
 
 
 

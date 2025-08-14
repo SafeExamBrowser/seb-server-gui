@@ -1,4 +1,4 @@
-{   
+{
     "-------ExamTypeEnum------": "----------",
     "BYOD": "BYOD",
     "MANAGED": "Managed Devices",
@@ -57,6 +57,7 @@
         "downloadButton": "Download",
         "editButton": "Edit",
         "viewButton": "View",
+        "createButton": "Create",
         "deleteButton": "Delete",
         "noData": "No Data Available",
         "loading": "Loading",
@@ -74,7 +75,7 @@
     "screenReader": {
         "logo": "SEB Logo"
     },
-        
+
 
     "clientGroups": {
         "description": {
@@ -398,6 +399,95 @@
             }
         }
     },
+    "assessmentToolConnections" : {
+
+
+        "assessmentToolsPage":{
+            "addAssessmentTool": "Add Assessment Tool Setup",
+            "filters" : {
+                "searchTitle" : "Search",
+                "searchField" : "Search for Assessment Tool Connections",
+                "institutionFilter" : "Institution",
+                "statusFilter" : "Status",
+                "activeSelector": "Active",
+                "inactiveSelector": "Inactive",
+                "typeFilter" : "Assessment Tool Type"
+            },
+            "assessmentToolTableHeaders": {
+                "tableHeaderInstitution": "Institution",
+                "tableHeaderName": "Name",
+                "tableHeaderAssessmentToolType": "Assessment Tool Type",
+                "tableHeaderStatus": "Status"
+            },
+            "changeAssessmentToolStatusContext": {
+                "activateTitle": "Activate Assessment Tool?",
+                "deactivateTitle": "Deactivate Assessment Tool?",
+                "activateMessage": "Are you sure you want to activate {name}?",
+                "deactivateMessage": "Are you sure you want to deactivate {name}?",
+                "buttons": {
+                    "activate": "Activate",
+                    "deactivate": "Deactivate"
+                }
+            },
+            "deleteAssessmentToolContext": {
+                "title": "Confirm Deletion",
+                "informationPart1": "Delete Assessment Tool: ",
+
+                "informationPart3": " ?"
+            }
+        },
+        "createAssessmentToolConnectionsPage" : {
+            "info": {
+                "assessmentToolConnectionsCreationInfo" : "Fill out the required * fields to create a new Assessment Tool Connection"
+            },
+            "labels": {
+                "institutionLabel": "Institution *",
+                "nameLabel": "Name *",
+                "typeLabel": "Type*",
+                "assessmentToolServerAddressLabel": "Assessment Tool Server Address *",
+                "assessmentToolServerUsernameLabel": "Assessment Tool Server Username *",
+                "assessmentToolServerPasswordLabel": "Assessment Tool Server Password *",
+                "accessTokenLabel": "Access Token",
+                "withProxyLabel": "With Proxy",
+                "withProxyAria": "Toggle proxy settings",
+                "proxyHostLabel": "Proxy Host",
+                "proxyPortLabel": "Proxy Port",
+                "proxyUsernameLabel": "Proxy Username",
+                "proxyPasswordLabel": "Proxy Password"
+            },
+            "placeholders": {
+                "proxyHost": "Enter proxy host",
+                "proxyPort": "Enter proxy port",
+                "proxyUsername": "Enter proxy username",
+                "proxyPassword": "Enter proxy password",
+            },
+            "validation" : {
+                "required" : "This field is required",
+                "assessmentToolServerAddressLabel" : "Must start with http://",
+                "invalidPort" : "Invalid port, ex. 8080"
+            }
+
+        },
+        "assessmentToolDetailAndEditPage" : {
+            "buttons" : {
+                "saveChanges": "Save Changes",
+                "revertChanges": "Revert Changes"
+            },
+            "validation" : {
+                "required" : "This field is required",
+                "assessmentToolServerAddressLabel" : "Must start with http://",
+                "invalidPort" : "Invalid port, ex. 8080"
+            }
+        },
+        "lmsTypes": {
+            "MOCKUP": "Testing",
+            "OPEN_EDX": "Open edX",
+            "MOODLE": "Moodle",
+            "MOODLE_PLUGIN": "Moodle with Seb Server Plugin",
+            "ANS_DELFT": "Ans Delft",
+            "OPEN_OLAT": "OLAT"
+        }
+    },
     "examDetail": {
         "info": {
             "url" : "Url",
@@ -411,11 +501,11 @@
             "testRunDisable": "Disable Test Run",
             "testRunApply": "Apply Test Run",
             "testTooltip": "Test run is only activated when exam is Up Coming",
-        
+
             "monitorExam": "Monitor Exam",
             "monitorStart": "Monitor",
             "monitorTooltip": "Monitoring is only activated when exam is running",
-        
+
             "examTemplate": "Exam Template",
 
             "examSupervisors": "Exam Supervisors",
@@ -515,7 +605,7 @@
                     "ignoreAAC": "Ignore in AAC",
                     "ignoreAAC_tooltip": "When using the AAC kiosk mode\n(which prevents network and screen access for other processes),\nignore this prohibited process"
                 }
-            
+
             },
             "networkView": {
                 "filterGroupTitle": "URL Filter",
@@ -737,7 +827,13 @@
         "createUserAccount": "Create User Account",
         "spApplications": "Applications",
         "editUserAccount": "Edit User Account",
-        "profile": "Profile Settings"
+        "profile": "Profile Settings",
+        "assessmentToolConnections": "Assessment Tool Connections",
+        "createAssessmentTool": "Assessment Tool Setup",
+        "assessmentToolViewAndEdit": "Assessment Tool",
+        "editAssessmentTool" : "Edit Assessment Tool",
+        "assessmentToolEdit" : "Edit Assessment Tool"
+
     },
 
     "warnings": {

@@ -66,3 +66,6 @@ export const EXAM_SEB_SETTINGS_ROUTE = EXAM_ROUTE + "/seb-settings";
 //indicator
 export const INDICATOR_ROUTE = "/indicator";
 
+
+//active filter
+export const ACTIVE = "/active";

@@ -195,7 +195,7 @@ function loadExamItemsCaller() {
 
 
 async function loadAssessmentToolSelection() {
-    const activeAssessmentTools: AssessmentTools | null = await getActiveAssessmentTools();
+    const activeAssessmentTools: AssessmentToolsResponse | null = await getActiveAssessmentTools();
 
     //if no assessment tools connected --> show error msg
     if (activeAssessmentTools == null || activeAssessmentTools.content.length == 0) {
@@ -220,8 +220,8 @@ async function loadAssessmentToolSelection() {
 }
 
 
-async function getActiveAssessmentTools(): Promise<AssessmentTools | null> {
-    const assessmentToolsResponse: AssessmentTools | null = await assessmentToolViewService.getAssessmentTools("active");
+async function getActiveAssessmentTools(): Promise<AssessmentToolsResponse | null> {
+    const assessmentToolsResponse: AssessmentToolsResponse | null = await assessmentToolViewService.getAssessmentToolsActive();
 
     if (assessmentToolsResponse == null) {
         return null;

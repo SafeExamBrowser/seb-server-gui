@@ -11,9 +11,9 @@
                     <v-divider class="section-divider"/>
 
                     <v-list-item class="px-0 nav-hover">
-                        <span class="link-color nav-link">{{
-                                translate("navigation.routeNames.assessmentToolConnections")
-                            }}</span>
+                        <router-link class="link-color nav-link" :to="constants.ASSESSMENT_TOOL_CONNECTIONS">
+                            {{ translate("titles.assessmentToolConnections") }}
+                        </router-link>
                     </v-list-item>
 
                     <v-divider class="section-divider"/>
@@ -182,6 +182,7 @@
                     :items-per-page-options="[5, 10, 15]"
                     :headers="userAccountsTableHeaders"
                     :loading="isLoading"
+                    style="min-height:35vh"
                 >
                     <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort }">
                         <TableHeaders
@@ -364,7 +365,6 @@
     const isLoading = ref<boolean>(true);
     const deleteSuccess = ref(false);
     const deletedUsername = ref("");
-    const editingRightsRevoked = ref(false);
     const statuses = [
         {value: "Active", label: translate("userAccount.userAccountPage.filters.activeSelector")},
         {value: "Inactive", label: translate("userAccount.userAccountPage.filters.inactiveSelector")}
@@ -587,6 +587,7 @@
         searchQuery.value = userAccountStore.searchField?.trim().toLowerCase() ?? "";
         options.value.page = 1;
     }
+
     function onClearSearch() {
         userAccountStore.searchField = "";
         searchQuery.value = "";
@@ -822,4 +823,6 @@
         color: #215caf;
         background-color: rgba(33, 92, 175, 0.1);
     }
+
+
 </style>
