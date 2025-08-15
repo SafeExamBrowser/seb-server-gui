@@ -162,7 +162,7 @@
                                     selectedConnectionConfiguration?.id === item.id ? 'selected-row' : '',
                                     'row-clickable'
                                 ]"
-                                @click="goToDetails(item, false)"
+                                @click="goToDetails(item)"
                             >
 
                                 <!-- Column Definition -->
@@ -193,7 +193,7 @@
                                         <v-icon
                                             :icon="'mdi-pencil'"
                                             class="action-icon mr-2 cursor-pointer"
-                                            @click.stop="goToDetails(item, true)"
+                                            @click.stop="goToDetails(item)"
                                         ></v-icon>
 
 
@@ -518,8 +518,8 @@ async function confirmStatusChange() {
     statusDialogConnectionConfiguration.value = null;
 }
 
-function goToDetails(item: ConnectionConfiguration, edit: boolean) {
-    navigateTo(`${constants.CONNECTION_CONFIGURATIONS_ROUTE}/${item.id}/${edit}`);
+function goToDetails(item: ConnectionConfiguration) {
+    navigateTo(`${constants.CONNECTION_CONFIGURATIONS_ROUTE}/${item.id}`);
 }
 
 
