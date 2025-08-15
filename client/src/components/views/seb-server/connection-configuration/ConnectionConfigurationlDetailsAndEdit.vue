@@ -403,9 +403,6 @@ const requiredIfProxyRule = (v: string) => {
     return (!!v && v.toString().trim().length > 0) || requiredMessage;
 };
 
-
-
-
 const portNumberRule = (v: string) => {
     if (!withProxy.value) return true;
     const n = Number(v);
