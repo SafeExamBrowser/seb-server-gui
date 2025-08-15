@@ -402,7 +402,6 @@
     },
     "assessmentToolConnections" : {
 
-
         "assessmentToolsPage":{
             "addAssessmentTool": "Add Assessment Tool Setup",
             "filters" : {
@@ -437,6 +436,7 @@
                 "informationPart3": " ?"
             }
         },
+
         "createAssessmentToolConnectionsPage" : {
             "info": {
                 "assessmentToolConnectionsCreationInfo" : "Fill out the required * fields to create a new Assessment Tool Connection"
@@ -469,6 +469,7 @@
             }
 
         },
+
         "assessmentToolDetailAndEditPage" : {
             "buttons" : {
                 "saveChanges": "Save Changes",
@@ -489,6 +490,96 @@
             "OPEN_OLAT": "OLAT"
         }
     },
+
+    "connectionConfigurations" : {
+
+        "connectionConfigurationsPage":{
+            "addConnectionConfiguration": "Add ConnectionConfiguration",
+            "filters" : {
+                "searchTitle" : "Search",
+                "searchField" : "Search for Connection Configuration",
+                "institutionFilter" : "Institution",
+                "statusFilter" : "Status",
+                "activeSelector": "Active",
+                "inactiveSelector": "Inactive"
+            },
+            "connectionConfigurationsTableHeaders": {
+                "tableHeaderInstitution": "Institution",
+                "tableHeaderName": "Name",
+                "tableHeaderCreationDate": "Creation Date",
+                "tableHeaderStatus": "Status"
+            },
+            "changeConnectionConfigurationStatusContext": {
+                "activateTitle": "Activate Connection Configuration?",
+                "deactivateTitle": "Deactivate Connection Configuration?",
+                "activateMessage": "Are you sure you want to activate {name}?",
+                "deactivateMessage": "Are you sure you want to deactivate {name}?",
+                "buttons": {
+                    "activate": "Activate",
+                    "deactivate": "Deactivate"
+                }
+            },
+            "deleteConnectionConfigurationContext": {
+                "title": "Confirm Deletion",
+                "informationPart1": "Delete Connection Configuration: ",
+                "informationPart3": " ?"
+            }
+        },
+
+        "createAssessmentToolConnectionsPage" : {
+            "info": {
+                "assessmentToolConnectionsCreationInfo" : "Fill out the required * fields to create a new Assessment Tool Connection"
+            },
+            "labels": {
+                "institutionLabel": "Institution *",
+                "nameLabel": "Name *",
+                "typeLabel": "Type*",
+                "assessmentToolServerAddressLabel": "Assessment Tool Server Address *",
+                "assessmentToolServerUsernameLabel": "Assessment Tool Server Username *",
+                "assessmentToolServerPasswordLabel": "Assessment Tool Server Password *",
+                "accessTokenLabel": "Access Token",
+                "withProxyLabel": "With Proxy",
+                "withProxyAria": "Toggle proxy settings",
+                "proxyHostLabel": "Proxy Host",
+                "proxyPortLabel": "Proxy Port",
+                "proxyUsernameLabel": "Proxy Username",
+                "proxyPasswordLabel": "Proxy Password"
+            },
+            "placeholders": {
+                "proxyHost": "Enter proxy host",
+                "proxyPort": "Enter proxy port",
+                "proxyUsername": "Enter proxy username",
+                "proxyPassword": "Enter proxy password",
+            },
+            "validation" : {
+                "required" : "This field is required",
+                "assessmentToolServerAddressLabel" : "Must start with http://",
+                "invalidPort" : "Invalid port, ex. 8080"
+            }
+
+        },
+
+        "assessmentToolDetailAndEditPage" : {
+            "buttons" : {
+                "saveChanges": "Save Changes",
+                "revertChanges": "Revert Changes"
+            },
+            "validation" : {
+                "required" : "This field is required",
+                "assessmentToolServerAddressLabel" : "Must start with http://",
+                "invalidPort" : "Invalid port, ex. 8080"
+            }
+        },
+        "lmsTypes": {
+            "MOCKUP": "Testing",
+            "OPEN_EDX": "Open edX",
+            "MOODLE": "Moodle",
+            "MOODLE_PLUGIN": "Moodle with Seb Server Plugin",
+            "ANS_DELFT": "Ans Delft",
+            "OPEN_OLAT": "OLAT"
+        }
+    },
+
     "examDetail": {
         "info": {
             "url" : "Url",

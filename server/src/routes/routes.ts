@@ -16,23 +16,10 @@ import * as examSEBSettingsController from "../controllers/seb-server/exam-sebse
 import * as groupController from "../controllers/screen-proctoring/sp-group.controller";
 import * as screenshotDataController from "../controllers/screen-proctoring/sp-screenshot-data.controller";
 import * as searchController from "../controllers/screen-proctoring/sp-search.controller";
-import * as spUserAccountController from "../controllers/screen-proctoring/sp-user-account.controller";
 import * as settingsController from "../controllers/screen-proctoring/sp-settings.controller";
 import * as applicationSearchController from "../controllers/screen-proctoring/sp-application-search.controller";
-import * as spAuthorizationAdditional from "../middleware/spAuthorizationAdditional";
 import * as institutionsController from "../controllers/seb-server/institution.controller";
-import {
-    ADMIN_INSTITUTION_INFO_ROUTE,
-    ADMIN_INSTITUTION_LOGO_ROUTE,
-    MONITORING_LOGS_ROUTE,
-    USER_ACCOUNT_REGISTRATION_ROUTE
-} from "../utils/constants";
-import {getUserAccountFeatures} from "../controllers/seb-server/user-account.controller";
-import {
-    activateAssessmentTool,
-    deactivateAssessmentTool,
-    deleteAssessmentTool
-} from "../controllers/seb-server/assessment-tool.controller";
+
 
 const router: Router = express.Router();
 
@@ -95,7 +82,17 @@ router.delete(constants.USER_ACCOUNT_ROUTE + "/:id", userAccountController.delet
 
 //connection configurations
 router.get(constants.DOWNLOAD_EXAM_CONFIG_ROUTE + "/:id", configurationController.downloadExamConfig);
+router.get(constants.CONNECTION_CONFIG_ROUTE + constants.ACTIVE, configurationController.getConnectionConfigurationsActive);
+
+router.get(constants.CONNECTION_CONFIG_ROUTE + "/:id", configurationController.getConnectionConfiguration);
 router.get(constants.CONNECTION_CONFIG_ROUTE, configurationController.getConnectionConfigurations);
+router.post(constants.CONNECTION_CONFIG_ROUTE + "/:id" + constants.ACTIVATION_ROUTE, configurationController.activateConnectionConfiguration);
+router.post(constants.CONNECTION_CONFIG_ROUTE + "/:id" + constants.DEACTIVATION_ROUTE, configurationController.deactivateConnectionConfiguration);
+router.delete(constants.CONNECTION_CONFIG_ROUTE+ "/:id", configurationController.deleteConnectionConfiguration);
+// router.post(constants.CONNECTION_CONFIG_ROUTE, configurationController.createAssessmentTool);
+// router.put(constants.CONNECTION_CONFIG_ROUTE, configurationController.editAssessmentTool);
+
+
 
 //assessment tool
 router.get(constants.ASSESSMENT_TOOL_GET_ROUTE + "/:id", assessmentToolController.getAssessmentTool);

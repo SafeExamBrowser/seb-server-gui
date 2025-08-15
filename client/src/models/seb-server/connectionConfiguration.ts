@@ -17,7 +17,7 @@ type ConnectionConfiguration = {
     sebServerFallbackPasswordHashConfirm: string;
     hashedQuitPassword: string;
     hashedQuitPasswordConfirm: string;
-    creation_date: Date;
+    date: string;
     encryptSecret: string;
     confirm_encrypt_secret: string;
     cert_alias: string;
@@ -33,4 +33,15 @@ type ConnectionConfigurations = {
     page_number: number;
     page_size: number;
     content: ConnectionConfiguration[];
+};
+
+
+type OptionalParGetConnectionConfiguration = {
+    page_size?: number;
+    page_number?: number;
+    sort?: string;
+    name?: string
+
+    active?: string | null;
+    institutionId?: string | null;
 };

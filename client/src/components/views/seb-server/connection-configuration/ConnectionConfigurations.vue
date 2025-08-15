@@ -14,11 +14,11 @@
                 </div>
 
                 <div class="d-flex align-center cursor-pointer add-user-container"
-                     @click="navigateTo(constants.CREATE_ASSESSMENT_TOOL_CONNECTION_ROUTE)"
+                     @click="navigateTo(constants.CREATE_CONNECTION_CONFIGURATION_ROUTE)"
                 >
                     <span
                         class="text-primary font-weight-medium mr-2">{{
-                            translate("assessmentToolConnections.assessmentToolsPage.addAssessmentTool")
+                            translate("connectionConfigurations.connectionConfigurationsPage.addConnectionConfiguration")
                         }}</span>
 
                     <div class="add-user-icon d-flex align-center justify-center">
@@ -26,7 +26,6 @@
                     </div>
                 </div>
             </v-row>
-            seb-client-config-controller
             <v-divider class="custom-divider mx-6 my-4 mt-7"/>
             <v-sheet>
 
@@ -35,11 +34,11 @@
                     <!-- Search field -->
                     <v-col cols="5" md="5" class="pa-0 mb-4 ">
                         <div class="text-caption text-grey-darken-1 mt-1 mb-1">
-                            {{ translate("assessmentToolConnections.assessmentToolsPage.filters.searchTitle") }}
+                            {{ translate("connectionConfigurations.connectionConfigurationsPage.filters.searchTitle") }}
                         </div>
                         <v-text-field
-                            v-model="assessmentToolStore.searchField"
-                            :placeholder="translate('assessmentToolConnections.assessmentToolsPage.filters.searchField')"
+                            v-model="connectionConfigurationStore.searchField"
+                            :placeholder="translate('connectionConfigurations.connectionConfigurationsPage.filters.searchField')"
                             variant="outlined"
                             density="comfortable"
                             type="text"
@@ -59,7 +58,7 @@
                             <v-col cols="3" class="pa-0 mb-2">
                                 <div class="text-caption text-grey-darken-1 mb-1">
                                     {{
-                                        translate("assessmentToolConnections.assessmentToolsPage.filters.statusFilter")
+                                        translate("connectionConfigurations.connectionConfigurationsPage.filters.statusFilter")
                                     }}
                                 </div>
                                 <div class="d-flex flex-wrap gap-2">
@@ -81,7 +80,7 @@
                             >
                                 <div class="text-caption text-grey-darken-1 mb-1">
                                     {{
-                                        translate("assessmentToolConnections.assessmentToolsPage.filters.institutionFilter")
+                                        translate("connectionConfigurations.connectionConfigurationsPage.filters.institutionFilter")
                                     }}
                                 </div>
                                 <div class="d-flex flex-wrap gap-2">
@@ -98,23 +97,8 @@
                                 </div>
                             </v-col>
 
-                            <v-col cols="4" class="pa-0 mb-2 ml-3">
-                                <div class="text-caption text-grey-darken-1 mb-1">
-                                    {{ translate("assessmentToolConnections.assessmentToolsPage.filters.typeFilter") }}
-                                </div>
-                                <div class="d-flex flex-wrap gap-2">
-                                    <v-chip
-                                        v-for="t in typeOptions"
-                                        :key="t.value"
-                                        size="small"
-                                        class="mr-2 mt-2"
-                                        :class="['filter-chip', selectedType === t.value && 'filter-chip-selected']"
-                                        @click="selectedType = selectedType === t.value ? null : t.value"
-                                    >
-                                        {{ t.label }}
-                                    </v-chip>
-                                </div>
-                            </v-col>
+                            <v-spacer>
+                            </v-spacer>
 
                         </v-row>
                     </v-col>
@@ -154,11 +138,11 @@
                         :hover="true"
                         :loading="isLoading"
                         :loading-text="translate('general.loading')"
-                        :items="assessmentTools?.content"
+                        :items="connectionConfigurations?.content"
                         :items-length="totalItems"
                         :items-per-page="5"
                         :items-per-page-options="tableUtils.calcItemsPerPage(totalItems)"
-                        :headers="assessmentToolTableHeaders"
+                        :headers="connectionConfigurationTableHeaders"
                         style="min-height:35vh"
                     >
 
@@ -168,14 +152,14 @@
                                 :is-sorted="isSorted"
                                 :get-sort-icon="getSortIcon"
                                 :toggle-sort="toggleSort"
-                                :header-refs-prop="assessmentToolTableHeadersRef"
+                                :header-refs-prop="connectionConfigurationTableHeadersRef"
                             />
                         </template>
 
                         <template v-slot:item="{ item }">
                             <tr
                                 :class="[
-                                    selectedAssessmentTool?.id === item.id ? 'selected-row' : '',
+                                    selectedConnectionConfiguration?.id === item.id ? 'selected-row' : '',
                                     'row-clickable'
                                 ]"
                                 @click="goToDetails(item, false)"
@@ -186,7 +170,7 @@
                                     {{ getInstitutionName(item.institutionId) || item.institutionId }}
                                 </td>
                                 <td class="text-primary">{{ item.name }}</td>
-                                <td class="text-primary">{{ translateLmsType(item.lmsType) }}</td>
+                                <td class="text-primary">{{ timeUtils.formatIsoToReadableDateTime(item.date) }}</td>
 
                                 <td>
 
@@ -199,8 +183,8 @@
                                     >
                                         {{
                                             item.active
-                                                ? translate("assessmentToolConnections.assessmentToolsPage.filters.activeSelector")
-                                                : translate("assessmentToolConnections.assessmentToolsPage.filters.inactiveSelector")
+                                                ? translate("connectionConfigurations.connectionConfigurationsPage.filters.activeSelector")
+                                                : translate("connectionConfigurations.connectionConfigurationsPage.filters.inactiveSelector")
                                         }}
                                     </v-chip>
                                 </td>
@@ -231,20 +215,20 @@
                         <v-card>
                             <v-card-title class="text-h6 font-weight-bold">
                                 {{
-                                    translate("assessmentToolConnections.assessmentToolsPage.deleteAssessmentToolContext.title")
+                                    translate("connectionConfigurations.connectionConfigurationsPage.deleteConnectionConfigurationContext.title")
                                 }}
                             </v-card-title>
                             <v-card-text>
                                 {{
-                                    translate("assessmentToolConnections.assessmentToolsPage.deleteAssessmentToolContext.informationPart1")
+                                    translate("connectionConfigurations.connectionConfigurationsPage.deleteConnectionConfigurationContext.informationPart1")
                                 }}
-                                <strong>{{ assessmentToolToDelete?.name }} {{
-                                        assessmentToolToDelete?.name
+                                <strong>{{ connectionConfigurationToDelete?.name }} {{
+                                        connectionConfigurationToDelete?.name
                                     }}</strong>
                                 <strong>{{
-                                        assessmentToolToDelete?.name
+                                        connectionConfigurationToDelete?.name
                                     }}</strong>{{
-                                    translate("assessmentToolConnections.assessmentToolsPage.deleteAssessmentToolContext.informationPart3")
+                                    translate("connectionConfigurations.connectionConfigurationsPage.deleteConnectionConfigurationContext.informationPart3")
                                 }}
                             </v-card-text>
                             <v-card-actions class="justify-end">
@@ -272,7 +256,7 @@
                                     {{ translate("general.cancelButton") }}
                                 </v-btn>
                                 <v-btn
-                                    :color="statusDialogAssessmentTool?.active ? 'red' : 'green'"
+                                    :color="statusDialogConnectionConfiguration?.active ? 'red' : 'green'"
                                     text
                                     @click="confirmStatusChange"
                                 >
@@ -295,30 +279,29 @@ import {useI18n} from "vue-i18n";
 import {translate} from "@/utils/generalUtils";
 import * as tableUtils from "@/utils/table/tableUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
-import * as assessmentToolViewService from "@/services/seb-server/component-services/assessmentToolViewService";
+import * as connectionConfigurationViewService from "@/services/seb-server/component-services/connectionConfigurationViewService";
+import * as timeUtils from "@/utils/timeUtils";
 
 import {navigateTo} from "@/router/navigation";
 import * as constants from "@/utils/constants";
 import {getInstitutions} from "@/services/seb-server/component-services/registerAccountViewService";
-import {useAssessmentToolStore} from "@/stores/seb-server/asessmentToolStore";
-import {LMSTypeEnum} from "@/models/seb-server/assessmentToolEnums";
+import {useConnectionConfigurationStore} from "@/stores/seb-server/connectionConfigurationStore";
 
 const appBarStore = useAppBarStore();
 const layoutStore = useLayoutStore();
-const assessmentToolStore = useAssessmentToolStore();
 const i18n = useI18n();
+const connectionConfigurationStore = useConnectionConfigurationStore();
 
 
 // UI State
 const selectedStatus = ref<string | null>(null);
-const selectedAssessmentTool = ref<AssessmentTool | null>(null);
+const selectedConnectionConfiguration = ref<ConnectionConfiguration | null>(null);
 const selectedInstitutionId = ref<string | null>(null);
 const deleteDialog = ref(false);
-const assessmentToolToDelete = ref<AssessmentTool | null>(null);
+const connectionConfigurationToDelete = ref<ConnectionConfiguration | null>(null);
 const isLoading = ref<boolean>(true);
 const deleteSuccess = ref(false);
 const deletedName = ref("");
-const selectedType = ref<LMSTypeEnum | null>(null);
 const totalItems = ref<number>(0);
 
 const options = ref({
@@ -328,33 +311,26 @@ const options = ref({
 });
 
 const statuses = [
-    {value: "Active", label: translate("assessmentToolConnections.assessmentToolsPage.filters.activeSelector")},
-    {value: "Inactive", label: translate("assessmentToolConnections.assessmentToolsPage.filters.inactiveSelector")}
+    {value: "Active", label: translate("connectionConfigurations.connectionConfigurationsPage.filters.activeSelector")},
+    {value: "Inactive", label: translate("connectionConfigurations.connectionConfigurationsPage.filters.inactiveSelector")}
 ];
 const institutions = ref<Institution[]>([]);
 
 const statusDialog = ref(false);
-const statusDialogAssessmentTool = ref<AssessmentTool | null>(null);
+const statusDialogConnectionConfiguration = ref<ConnectionConfiguration | null>(null);
 
 
 //search string
 const searchQuery = ref("");
 // API response
-const assessmentTools = ref<AssessmentToolsResponse>();
+const connectionConfigurations = ref<ConnectionConfigurations>();
 
-const assessmentToolTableHeadersRef = ref<any[]>();
+const connectionConfigurationTableHeadersRef = ref<any[]>();
 
-const translateLmsType = (value: string | LMSTypeEnum) => {
-    return translate(`assessmentToolConnections.lmsTypes.${value}`);
-};
 
-const typeOptions = Object.values(LMSTypeEnum).map(v => ({
-    value: v as LMSTypeEnum,
-    label: translate(`assessmentToolConnections.lmsTypes.${v}`)
-}));
 
 onMounted(async () => {
-    appBarStore.title = translate("titles.assessmentToolConnections");
+    appBarStore.title = translate("titles.connectionConfigurations");
     layoutStore.setBlueBackground(true);
 
     const result = await getInstitutions();
@@ -364,7 +340,6 @@ onMounted(async () => {
 
     await loadItems(options.value);
 });
-
 
 
 const institutionIdToNameMap = computed(() => {
@@ -383,35 +358,35 @@ defineExpose({loadItems});
 
 
 // Table header config
-const assessmentToolTableHeaders = computed(() => {
+const connectionConfigurationTableHeaders = computed(() => {
     const headers = [];
 
     headers.push(
         {
-            title: translate("assessmentToolConnections.assessmentToolsPage.assessmentToolTableHeaders.tableHeaderInstitution"),
+            title: translate("connectionConfigurations.connectionConfigurationsPage.connectionConfigurationsTableHeaders.tableHeaderInstitution"),
             key: "institutionName",
             width: "20%",
             sortable: true
         },
         {
-            title: translate("assessmentToolConnections.assessmentToolsPage.assessmentToolTableHeaders.tableHeaderName"),
+            title: translate("connectionConfigurations.connectionConfigurationsPage.connectionConfigurationsTableHeaders.tableHeaderName"),
             key: "name",
             width: "20%",
             sortable: true
         },
         {
-            title: translate("assessmentToolConnections.assessmentToolsPage.assessmentToolTableHeaders.tableHeaderAssessmentToolType"),
-            key: "assessmentToolType",
+            title: translate("connectionConfigurations.connectionConfigurationsPage.connectionConfigurationsTableHeaders.tableHeaderCreationDate"),
+            key: "date",
             width: "20%",
-            sortable: false
+            sortable: true
         },
         {
-            title: translate("assessmentToolConnections.assessmentToolsPage.assessmentToolTableHeaders.tableHeaderStatus"),
+            title: translate("connectionConfigurations.connectionConfigurationsPage.connectionConfigurationsTableHeaders.tableHeaderStatus"),
             key: "active",
             width: "15%",
             sortable: false
         },
-        {title: "", key: "assessmentToolLink", width: "1%"}
+        {title: "", key: "connectionConfigurationLink", width: "1%"}
     );
 
     return headers;
@@ -419,68 +394,67 @@ const assessmentToolTableHeaders = computed(() => {
 
 
 //update status
-async function onStatusChange(assessmentTool: AssessmentTool, newStatus: string) {
-    if (newStatus === "Active" && !assessmentTool.active) {
-        await assessmentToolViewService.activateAssessmentTool(assessmentTool.id.toString());
-    } else if (newStatus === "Inactive" && assessmentTool.active) {
-        await assessmentToolViewService.deactivateAssessmentTool(assessmentTool.id.toString());
+async function onStatusChange(connectionConfiguration: ConnectionConfiguration, newStatus: string) {
+    if (newStatus === "Active" && !connectionConfiguration.active) {
+        await connectionConfigurationViewService.activateConnectionConfiguration(connectionConfiguration.id.toString());
+    } else if (newStatus === "Inactive" && connectionConfiguration.active) {
+        await connectionConfigurationViewService.deactivateConnectionConfiguration(connectionConfiguration.id.toString());
     }
     await loadItems(options.value);
 
 }
 
 const statusDialogTitle = computed(() => {
-    if (!statusDialogAssessmentTool.value) return "";
+    if (!statusDialogConnectionConfiguration.value) return "";
     return i18n.t(
-        statusDialogAssessmentTool.value.active
-            ? "assessmentToolConnections.assessmentToolsPage.changeAssessmentToolStatusContext.deactivateTitle"
-            : "assessmentToolConnections.assessmentToolsPage.changeAssessmentToolStatusContext.activateTitle"
+        statusDialogConnectionConfiguration.value.active
+            ? "connectionConfigurations.connectionConfigurationsPage.changeConnectionConfigurationStatusContext.deactivateTitle"
+            : "connectionConfigurations.connectionConfigurationsPage.changeConnectionConfigurationStatusContext.activateTitle"
     );
 });
 
 const statusDialogMessage = computed(() => {
-    if (!statusDialogAssessmentTool.value) return "";
+    if (!statusDialogConnectionConfiguration.value) return "";
     return i18n.t(
-        statusDialogAssessmentTool.value.active
-            ? "assessmentToolConnections.assessmentToolsPage.changeAssessmentToolStatusContext.deactivateMessage"
-            : "assessmentToolConnections.assessmentToolsPage.changeAssessmentToolStatusContext.activateMessage",
+        statusDialogConnectionConfiguration.value.active
+            ? "connectionConfigurations.connectionConfigurationsPage.changeConnectionConfigurationStatusContext.deactivateMessage"
+            : "connectionConfigurations.connectionConfigurationsPage.changeConnectionConfigurationStatusContext.activateMessage",
         {
-            name: statusDialogAssessmentTool.value.name,
+            name: statusDialogConnectionConfiguration.value.name,
         }
     );
 });
 
 const statusDialogButtonLabel = computed(() => {
-    if (!statusDialogAssessmentTool.value) return "";
+    if (!statusDialogConnectionConfiguration.value) return "";
     return translate(
-        statusDialogAssessmentTool.value.active
-            ? "assessmentToolConnections.assessmentToolsPage.changeAssessmentToolStatusContext.buttons.deactivate"
-            : "assessmentToolConnections.assessmentToolsPage.changeAssessmentToolStatusContext.buttons.activate"
+        statusDialogConnectionConfiguration.value.active
+            ? "connectionConfigurations.connectionConfigurationsPage.changeConnectionConfigurationStatusContext.buttons.deactivate"
+            : "connectionConfigurations.connectionConfigurationsPage.changeConnectionConfigurationStatusContext.buttons.activate"
     );
 });
 
 async function loadItems(serverTablePaging: ServerTablePaging) {
-    assessmentToolStore.currentPagingOptions = serverTablePaging;
+    connectionConfigurationStore.currentPagingOptions = serverTablePaging;
     isLoading.value = true;
 
-    const optionalParams = tableUtils.assignAssessmentToolSelectPagingOptions(
+    const optionalParams = tableUtils.assignConnectionConfigurationSelectPagingOptions(
         serverTablePaging,
         selectedStatus.value,
-        selectedType.value ?? null,
         selectedInstitutionId.value,
-        assessmentToolStore.searchField && assessmentToolStore.searchField.trim() !== ""
-            ? assessmentToolStore.searchField.trim()
+        connectionConfigurationStore.searchField && connectionConfigurationStore.searchField.trim() !== ""
+            ? connectionConfigurationStore.searchField.trim()
             : null
     );
 
 
-    const response = await assessmentToolViewService.getAssessmentTools(optionalParams);
+    const response = await connectionConfigurationViewService.getConnectionConfigurations(optionalParams);
 
     isLoading.value = false;
     if (!response) return;
 
     totalItems.value = (response.number_of_pages ?? 1) * (response.page_size ?? (response.content?.length ?? 0));
-    assessmentTools.value = response;
+    connectionConfigurations.value = response;
 
 }
 
@@ -490,16 +464,15 @@ const getInstitutionName = (id: string | number | null | undefined) =>
 
 // Search + clear search
 function onSearch() {
-    searchQuery.value = assessmentToolStore.searchField?.trim().toLowerCase() ?? "";
+    searchQuery.value = connectionConfigurationStore.searchField?.trim().toLowerCase() ?? "";
     options.value.page = 1;
     loadItems(options.value);
 }
 function onClearSearch() {
-    assessmentToolStore.searchField = "";
+    connectionConfigurationStore.searchField = "";
     searchQuery.value = "";
     selectedStatus.value = null;
     selectedInstitutionId.value = null;
-    selectedType.value = null;
     options.value.page = 1;
     loadItems(options.value);
 }
@@ -507,17 +480,17 @@ function onClearSearch() {
 
 //dialogs and logic
 //delete
-function openDeleteDialog(assessmentTool: AssessmentTool) {
-    assessmentToolToDelete.value = assessmentTool;
+function openDeleteDialog(connectionConfiguration: ConnectionConfiguration) {
+    connectionConfigurationToDelete.value = connectionConfiguration;
     deleteDialog.value = true;
 }
 
 async function confirmDelete() {
-    if (assessmentToolToDelete.value) {
+    if (connectionConfigurationToDelete.value) {
 
-        const response = await assessmentToolViewService.deleteAssessmentTool(assessmentToolToDelete.value.id.toString());
+        const response = await connectionConfigurationViewService.deleteConnectionConfiguration(connectionConfigurationToDelete.value.id.toString());
         if (response !== null) {
-            deletedName.value = assessmentToolToDelete.value.name;
+            deletedName.value = connectionConfigurationToDelete.value.name;
             deleteSuccess.value = true;
             setTimeout(() => {
                 deleteSuccess.value = false;
@@ -526,31 +499,31 @@ async function confirmDelete() {
         }
     }
     deleteDialog.value = false;
-    assessmentToolToDelete.value = null;
+    connectionConfigurationToDelete.value = null;
 }
 
 //status
-function openStatusDialog(assessmentTool: AssessmentTool) {
-    statusDialogAssessmentTool.value = assessmentTool;
+function openStatusDialog(connectionConfiguration: ConnectionConfiguration) {
+    statusDialogConnectionConfiguration.value = connectionConfiguration;
     statusDialog.value = true;
 }
 
 async function confirmStatusChange() {
-    if (!statusDialogAssessmentTool.value) return;
+    if (!statusDialogConnectionConfiguration.value) return;
 
-    const newStatus = statusDialogAssessmentTool.value.active ? "Inactive" : "Active";
-    await onStatusChange(statusDialogAssessmentTool.value, newStatus);
+    const newStatus = statusDialogConnectionConfiguration.value.active ? "Inactive" : "Active";
+    await onStatusChange(statusDialogConnectionConfiguration.value, newStatus);
 
     statusDialog.value = false;
-    statusDialogAssessmentTool.value = null;
+    statusDialogConnectionConfiguration.value = null;
 }
 
-function goToDetails(item: AssessmentTool, edit: boolean) {
-    navigateTo(`${constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE}/${item.id}/${edit}`);
+function goToDetails(item: ConnectionConfiguration, edit: boolean) {
+    navigateTo(`${constants.CONNECTION_CONFIGURATIONS_ROUTE}/${item.id}/${edit}`);
 }
 
 
-watch([selectedType, selectedStatus, selectedInstitutionId], () => {
+watch([selectedStatus, selectedInstitutionId], () => {
     options.value.page = 1;
     loadItems(options.value);
 });

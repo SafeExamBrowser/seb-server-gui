@@ -274,6 +274,40 @@ export function assignAssessmentToolSelectPagingOptions(
     return opt;
 }
 
+export function assignConnectionConfigurationSelectPagingOptions(
+    serverTablePaging: ServerTablePaging,
+    selectedStatus: string | null,
+    selectedInstitutionId: string | null,
+    name: string | null
+): OptionalParGetConnectionConfiguration {
+    const opt: OptionalParGetConnectionConfiguration = {};
+
+    opt.page_size  = serverTablePaging.itemsPerPage;
+    opt.page_number = serverTablePaging.page;
+
+    if (serverTablePaging.sortBy?.length) {
+        let sortString = serverTablePaging.sortBy[0].key;
+        if (serverTablePaging.sortBy[0].order === "desc") sortString = "-" + sortString;
+        opt.sort = sortString;
+    }
+
+    // filters
+    opt.active =
+        selectedStatus === "Active" ? "true" :
+            selectedStatus === "Inactive" ? "false" :
+                null;
+
+    opt.institutionId = selectedInstitutionId ?? null;
+
+    // search (name)
+    if (name && name.trim() !== "") {
+        opt.name = name.trim();
+    }
+
+    return opt;
+}
+
+
 
 
 

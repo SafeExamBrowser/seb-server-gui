@@ -78,7 +78,7 @@ export async function updateExam(examId: string, exam: Exam): Promise<Exam | nul
 
 export async function getConnectionConfigurations(): Promise<ConnectionConfigurations | null>{
     try{
-        return await configurationService.getConnectionConfigurations("true");
+        return await configurationService.getConnectionConfigurationsActive("true");
     }catch(error){
         return null;
     }

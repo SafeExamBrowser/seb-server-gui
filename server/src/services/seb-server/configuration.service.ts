@@ -9,9 +9,41 @@ export async function downloadExamConfig(token: string, connectionId: string, ex
     return [data, status];
 }
 
-export async function getConnectionConfigurations(token: string, isActive: {}){
+export async function getConnectionConfigurationsActive(token: string, isActive: {}){
     const url: string =  constants.CONNECTION_CONFIG_ROUTE;
     const {data, status} = await apiService.api.get(url, {headers: apiService.getHeaders(token), params: {active: isActive}});
+
+    return [data, status];
+}
+
+export async function getConnectionConfigurations(token: string, options?: {}): Promise<[object, number]>{
+    const {data, status} = await apiService.api.get(constants.CONNECTION_CONFIG_ROUTE, {headers: apiService.getHeaders(token), params: options});
+    return [data, status];
+}
+
+export async function getConnectionConfiguration(token: string, id: string): Promise<[object, number]>{
+    const url: string =  constants.CONNECTION_CONFIG_ROUTE + "/" + id;
+    const {data, status} = await apiService.api.get(url, {headers: apiService.getHeaders(token)});
+
+    return [data, status];
+}
+
+
+export async function deactivateConnectionConfiguration(token: string, id: string, body: Record<string, any> = {}): Promise<[object, number]> {
+    const url: string = constants.CONNECTION_CONFIG_ROUTE + "/" + id + constants.DEACTIVATION_ROUTE;
+    const { data, status } = await apiService.api.post(url, apiService.createUrlEncodedBody(body), {headers: apiService.getHeaders(token)});
+    return [data, status];
+}
+
+export async function activateConnectionConfiguration(token: string, id: string, body: Record<string, any> = {}): Promise<[object, number]> {
+    const url: string = constants.CONNECTION_CONFIG_ROUTE + "/" + id + constants.ACTIVATION_ROUTE;
+    const { data, status } = await apiService.api.post(url, apiService.createUrlEncodedBody(body), {headers: apiService.getHeaders(token)});
+    return [data, status];
+}
+
+export async function deleteConnectionConfiguration(token: string, id: string): Promise<[object, number]>{
+    const url: string =  constants.CONNECTION_CONFIG_ROUTE + "/" + id;
+    const {data, status} = await apiService.api.delete(url, {headers: apiService.getHeaders(token)});
 
     return [data, status];
 }

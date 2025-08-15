@@ -37,8 +37,6 @@ type OptionalParGetAssessmentTool = {
     lms_type?: LMSTypeEnum | null;
     active?: string | null;
     institutionId?: string | null;
-
-    status?: string | null;
 };
 
 
