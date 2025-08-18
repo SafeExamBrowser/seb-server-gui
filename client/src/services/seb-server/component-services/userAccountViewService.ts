@@ -38,7 +38,14 @@ export async function getPersonalUserAccountFeatures(): Promise<any | null>{
 export async function getUserAccountById(accountId: string): Promise<UserAccount | null>{
     try{
         return await userAccountService.getUserAccountById(accountId)
+    }catch(error){
+        return null;
+    }
+}
 
+export async function getUserAccountByIdOptional(accountId: string): Promise<UserAccount | null>{
+    try{
+        return await userAccountService.getUserAccountByIdOptional(accountId)
     }catch(error){
         return null;
     }

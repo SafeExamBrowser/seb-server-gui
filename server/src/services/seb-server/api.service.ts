@@ -70,17 +70,17 @@ export function createUrlEncodedBody(body: any): string{
 
 export function handleGenericApiError(error: any, res: Response){
 
-    //if there is an error-response from sp-server
+    //if there is an error-response from webservice
     if(error.response){
         console.error(error.response.status);
         console.error(error.response.data)
         return res.status(error.response.status).json(error.response.data);
     }
 
-    //if there is no response from the sp-server
+    //if there is no response from the webservice
     if(error.request){
-        console.error(500)
-        return res.status(500).json("server-error");
+        console.error(503)
+        return res.status(503).json("webservice unavailable");
     }
     
     //else if there is another type of error

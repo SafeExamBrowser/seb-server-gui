@@ -756,10 +756,10 @@
 
         examStore.selectedExamSupervisors = [];
         for(let i = 0; i < examStore.selectedExam.supporter.length; i++){
-            const userAccount: UserAccount | null = await userAccountViewService.getUserAccountById(examStore.selectedExam.supporter[i]);
+            const userAccount: UserAccount | any = await userAccountViewService.getUserAccountByIdOptional(examStore.selectedExam.supporter[i]);
 
-            if(userAccount == null){
-                return;
+            if(userAccount == null || userAccount == undefined || userAccount == ""){
+                continue;
             }
 
             examStore.selectedExamSupervisors.push(userAccount);

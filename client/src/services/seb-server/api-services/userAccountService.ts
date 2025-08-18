@@ -59,6 +59,11 @@ export async function getUserAccountById(accountId: string): Promise<UserAccount
     return (await apiService.api.get(url, {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
 }
 
+export async function getUserAccountByIdOptional(accountId: string): Promise<UserAccount | any> {
+    const url: string = userAccountUrl + "/" + accountId;
+    return (await apiService.api.get(url, {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN), params: {skip_error: "404"}})).data;
+}
+
 export async function getUserAccounts(optionalParameters?: OptionalParGetUserAccounts): Promise<UserAccountResponse | any> {
     return (await apiService.api.get(userAccountUrl, {
         headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),

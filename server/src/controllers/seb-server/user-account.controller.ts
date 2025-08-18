@@ -1,17 +1,18 @@
 import {Request, Response} from "express";
-import {LOG} from "../../logging/logger";
 import * as userAccountService from "../../services/seb-server/user-account.service";
 import * as apiService from "../../services/seb-server/api.service";
-import * as examService from "../../services/seb-server/exam.service";
 
 
 export async function getUserAccount(req: Request, res: Response){
     try{
         const [userAccount, status] = await userAccountService.getUserAccount(req.headers.authorization, req.params.id);
         return res.status(status).json(userAccount);
-
     }catch(error){
-        apiService.handleGenericApiError(error, res);
+        if (req.query.skip_error && req.query.skip_error.toString().includes(error.status.toString())) {
+            res.status(206).send(null)
+        } else {
+            apiService.handleGenericApiError(error, res);
+        }
     }
 }
 
@@ -24,8 +25,6 @@ export async function getUserAccountFeatures(req: Request, res: Response){
         apiService.handleGenericApiError(error, res);
     }
 }
-
-
 
 export async function getUserAccountNames(req: Request, res: Response){
     try{
