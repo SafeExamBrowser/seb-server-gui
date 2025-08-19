@@ -566,7 +566,7 @@
     import { useI18n } from "vue-i18n";
     import {translate} from "@/utils/generalUtils";
     import { LMSFeatureEnum } from '@/models/seb-server/assessmentToolEnums';
-    import { useAbilities, GUIComponents, GUIAction } from '@/services/ability';
+    import { useAbilities, GUIAction } from '@/services/ability';
 
     //i18n
     const i18n = useI18n();

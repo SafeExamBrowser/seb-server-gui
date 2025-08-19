@@ -4,7 +4,7 @@ import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum";
 import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
 import * as generalUtils from "@/utils/generalUtils";
 
-export enum GUIComponents {
+export enum GUIComponent {
     // Overall components
     NavigationOverview = "NavigationOverview",
 
@@ -17,6 +17,8 @@ export enum GUIAction  {
     CreateUserAccount = "CreateUserAccount", 
     EditUserAccount = "EditUserAccount",
     DeleteUserAccount = "DeleteUserAccount",
+
+    // Exam import actions
 
     // Exam actions
     EditExamSettings = "EditExamSettings",
@@ -37,7 +39,7 @@ export enum GUIAction  {
 
 export const useAbilities = defineStore("ability", () => {
 
-    const guiComponents = ref<Map<UserRoleEnum, Set<GUIComponents>>>(new Map<UserRoleEnum, Set<GUIComponents>>());
+    const guiComponents = ref<Map<UserRoleEnum, Set<GUIComponent>>>(new Map<UserRoleEnum, Set<GUIComponent>>());
     const guiActions = ref<Map<UserRoleEnum, Set<GUIAction>>>(new Map<UserRoleEnum, Set<GUIAction>>());
     const examStatusActions = ref<Map<ExamStatusEnum, Set<GUIAction>>>(new Map<ExamStatusEnum, Set<GUIAction>>());
 
@@ -46,10 +48,21 @@ export const useAbilities = defineStore("ability", () => {
 
     guiComponents.value.set(
     UserRoleEnum.SEB_SERVER_ADMIN, 
-    new Set<GUIComponents>([ 
-        GUIComponents.NavigationOverview]));
+    new Set<GUIComponent>([ 
+        GUIComponent.NavigationOverview]));
 
-    // SEB_SERVER_ADMIN action privileges
+    // --- GUI Component Privileges -----------------------
+
+    // --- INSTITUTIONAL_ADMIN component privileges
+    guiComponents.value.set(
+        UserRoleEnum.INSTITUTIONAL_ADMIN, 
+        new Set<GUIComponent>([ 
+            GUIComponent.NavigationOverview]));
+
+
+    // --- GUI Action Privileges -----------------------
+
+    // --- SEB_SERVER_ADMIN action privileges
     guiActions.value.set(
         UserRoleEnum.SEB_SERVER_ADMIN, 
         new Set<GUIAction>([ 
@@ -57,21 +70,69 @@ export const useAbilities = defineStore("ability", () => {
             GUIAction.EditUserAccount, 
             GUIAction.DeleteUserAccount]));
 
-    // INSTITUTIONAL_ADMIN component privileges
-    guiComponents.value.set(
-        UserRoleEnum.INSTITUTIONAL_ADMIN, 
-        new Set<GUIComponents>([ 
-            GUIComponents.NavigationOverview]));
-
-    // INSTITUTIONAL_ADMIN action privileges
+    // --- INSTITUTIONAL_ADMIN action privileges
     guiActions.value.set(
         UserRoleEnum.INSTITUTIONAL_ADMIN, 
         new Set<GUIAction>([ 
+            // User Account actions
             GUIAction.CreateUserAccount, 
             GUIAction.EditUserAccount, 
             GUIAction.DeleteUserAccount,
 
-            GUIAction.ArchiveExam]));
+            // Exam actions
+            GUIAction.ArchiveExam,
+            GUIAction.DeleteExam,
+            GUIAction.ViewASKSettings]));
+
+    // --- EXAM_ADMIN action privileges
+    guiActions.value.set(
+        UserRoleEnum.EXAM_ADMIN, 
+        new Set<GUIAction>([ 
+
+            // Exam actions
+            GUIAction.EditExamSettings,
+            GUIAction.ArchiveExam,
+            GUIAction.DeleteExam,
+            GUIAction.ApplyTestRun,
+            GUIAction.DisableTestRun,
+            GUIAction.ExportExamClientConfig,
+            GUIAction.ViewASKSettings,
+            GUIAction.EditASKSettings,
+            GUIAction.EditScreenProctoring,
+            GUIAction.EditSEBSettings,
+            GUIAction.EditIndicators,
+            GUIAction.EditClientGroups,
+            GUIAction.ApplySEBRestriction,
+            GUIAction.ShowMonitoring]));
+
+    // --- EXAM_SUPPORTER action privileges
+    guiActions.value.set(
+        UserRoleEnum.EXAM_SUPPORTER, 
+        new Set<GUIAction>([ 
+            
+            // Exam actions
+            GUIAction.EditExamSettings,
+            GUIAction.ApplyTestRun,
+            GUIAction.DisableTestRun,
+            GUIAction.ExportExamClientConfig,
+            GUIAction.ViewASKSettings,
+            GUIAction.EditASKSettings,
+            GUIAction.EditScreenProctoring,
+            GUIAction.EditSEBSettings,
+            GUIAction.EditIndicators,
+            GUIAction.EditClientGroups,
+            GUIAction.ApplySEBRestriction,
+            GUIAction.ShowMonitoring]));
+
+    // --- TEACHER action privileges
+    guiActions.value.set(
+        UserRoleEnum.TEACHER, 
+        new Set<GUIAction>([ 
+            
+            // Exam actions
+            GUIAction.ApplyTestRun,
+            GUIAction.DisableTestRun,
+            GUIAction.ViewASKSettings]));
 
     // -----------------------------------------------------------------------
     // Exam Status ability mapping (SEBSERV-685)
@@ -137,6 +198,7 @@ export const useAbilities = defineStore("ability", () => {
             GUIAction.ExportExamClientConfig,
             GUIAction.ViewASKSettings,
             GUIAction.ApplySEBRestriction,
+            GUIAction.ShowMonitoring
         ]));
 
     // ExamStatusEnum.ARCHIVED
@@ -145,9 +207,10 @@ export const useAbilities = defineStore("ability", () => {
         new Set<GUIAction>([ 
             GUIAction.DeleteExam,
             GUIAction.ViewASKSettings,
+            GUIAction.ShowMonitoring
         ]));
 
-    function canView(view: GUIComponents): boolean {
+    function canView(view: GUIComponent): boolean {
         
         const user = useUserAccountStore().userAccount;
         if (user == null)
@@ -172,13 +235,9 @@ export const useAbilities = defineStore("ability", () => {
         for (var role of user.userRoles) {
             const roleEnum = generalUtils.findEnumValue(UserRoleEnum, role);
             if (roleEnum != null && guiActions.value.get(roleEnum)?.has(action)) {
-                console.info("*********** yes for: " + action);
                 return true;
             }
         };
-
-        console.info("*********** no for: " + action);
-
         return false; 
     }
 
@@ -198,6 +257,12 @@ export const useAbilities = defineStore("ability", () => {
 
     function canDoExamAction(action: GUIAction, examStatusString: string | undefined): boolean {
         if(examStatusString == null){
+            return false;
+        }
+
+        // TODO test if this works for all cases. See: SEBSERV-685. If so, remove debug output
+        if (!canDo(action)) {
+            console.info("User cannot do: " + action);
             return false;
         }
 

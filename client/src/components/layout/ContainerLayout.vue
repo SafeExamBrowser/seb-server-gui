@@ -272,7 +272,7 @@
     <!---------------main navigation drawer----------------->
     <v-navigation-drawer app v-model="navigationDrawer" :permanent="true" width="70" class="mt-0">
         <v-list lines="two" class="pt-0">
-            <v-list-item v-if="ability.canView(GUIComponents.NavigationOverview)" link elevation="0" :to="getNavigationOverviewRoute()"
+            <v-list-item v-if="ability.canView(GUIComponent.NavigationOverview)" link elevation="0" :to="getNavigationOverviewRoute()"
                 variant="elevated" class="d-flex flex-column justify-center text-center"
                 :class="[navigationStore.isNavigationOverviewOpen ? 'navigation-overview-background' : '']">
 
@@ -342,7 +342,7 @@
     //import * as abilitiy from "@/casl/ability";
     import {getInstitutions} from "@/services/seb-server/component-services/registerAccountViewService";
     import {getInstitution, getInstitutionLogo} from "@/services/seb-server/api-services/institutionService";
-    import { useAbilities, GUIComponents } from '@/services/ability';
+    import { useAbilities, GUIComponent } from '@/services/ability';
 
     //i18n
     const {locale} = useI18n();
