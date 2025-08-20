@@ -20,6 +20,14 @@ export async function getExamTemplates(optionalParameters?: OptionalParGeneric):
     }
 }
 
+export async function getExamTemplate(id: string): Promise<ExamTemplate | null>{
+    try{
+        return await examTemplateService.getExamTemplate(id);        
+    }catch(error){
+        return null;
+    }
+}
+
 export async function createExam(createExamPar: CreateExamPar): Promise<Exam | null>{
     try{
         return await examService.createExam(createExamPar);        

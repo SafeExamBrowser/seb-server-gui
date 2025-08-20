@@ -70,9 +70,12 @@ import * as examViewService from "@/services/seb-server/component-services/examV
 import {useQuizImportStore} from "@/stores/seb-server/quizImportStore";
 import {translate} from "@/utils/generalUtils";
 import * as generalUtils from "@/utils/generalUtils";
+import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
+import {useUserAccountStore} from "@/stores/authentication/authenticationStore";
 
 //stores
 const quizImportStore = useQuizImportStore();
+const userAccountStore = useUserAccountStore();
 
 //items
 const examTemplates = ref<ExamTemplates>();
@@ -94,21 +97,47 @@ onBeforeMount(async () => {
 
 
 async function onTemplateCardClick(examTemplate: ExamTemplate) {
-    quizImportStore.selectedClientGroups = [];
+
+    // if the same is selected just leave
     if (examTemplate.id == quizImportStore.selectedExamTemplate?.id) {
-        quizImportStore.selectedExamTemplate = null;
-        quizImportStore.removeGroupSelectionComponents();
         return;
     }
 
-    quizImportStore.selectedExamTemplate = examTemplate;
+    // clear exam template affected settings first. They will be re-assigned from actual selected template.
+    quizImportStore.clearTemplatePreSelection();
 
+    // select template and set quit password from template
+    quizImportStore.selectedExamTemplate = examTemplate;
+    if (examTemplate.EXAM_ATTRIBUTES.quitPassword) {
+        // get single template to get plain quit-password
+        const examTemplateResponse: ExamTemplate | null = await quizImportWizardViewService.getExamTemplate(examTemplate.id.toString());
+        if (examTemplateResponse != null) {
+            quizImportStore.selectedQuitPassword = examTemplateResponse.EXAM_ATTRIBUTES.quitPassword || "";
+            quizImportStore.templateQuitPassword = examTemplateResponse.EXAM_ATTRIBUTES.quitPassword || "";
+        }
+    }
+    
+    // select supervisors from template
+    const userAccountNamesResponse: UserAccountName[] | null = await userAccountViewService.getSupervisorNames({institutionId: userAccountStore.userAccount?.institutionId});
+    if (userAccountNamesResponse != null) {
+
+        //add supervisors from template to list
+        if (quizImportStore.selectedExamTemplate?.supporter != null) {
+            quizImportStore.selectedExamSupervisors.push(
+                ...userAccountNamesResponse.filter(user =>
+                    quizImportStore.selectedExamTemplate?.supporter.includes(user.modelId))
+            );
+        }
+    }
+
+    // apply client groups
     if (quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES != null && quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES.length > 1) {
         quizImportStore.addGroupSelectionComponents();
 
-        if (quizImportStore.selectedExamTemplate.EXAM_ATTRIBUTES.enableScreenProctoring) {
-            await getExamTemplateSpGroups();
-        }
+        // TODO why is this necessary?
+        // if (quizImportStore.selectedExamTemplate.EXAM_ATTRIBUTES.enableScreenProctoring) {
+        //     await getExamTemplateSpGroups();
+        // }
 
         return;
     }

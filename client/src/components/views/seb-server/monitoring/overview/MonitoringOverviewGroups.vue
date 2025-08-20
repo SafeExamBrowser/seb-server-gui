@@ -19,14 +19,7 @@
                     <!-- Colored Section -->
                     <div
                         class="group-card-header px-4 py-3"
-                        :style="{
-              backgroundColor: '#f5f5f5',
-              borderLeft: `6px solid #000}`
-
-              //       backgroundColor: clientGroupItem.color ? '#' + clientGroupItem.color + '10' : '#f5f5f5',
-              // borderLeft: `6px solid ${clientGroupItem.color ? '#' + clientGroupItem.color : '#000'}`
-            }"
-                    >
+                        :style="{backgroundColor: '#f5f5f5', borderLeft: `6px solid #000}`}">
                         <div class="d-flex justify-space-between align-start align-center">
                             <div>
                                 <div class="font-weight-bold text-subtitle-1">
@@ -83,7 +76,7 @@
 
                         <!-- Text -->
                         <span class="ml-1" v-if="clientGroupItem.type === ClientGroupEnum.NAME_ALPHABETICAL_RANGE">
-                            Range: {{ translate(clientGroupItem.typeValue) }}
+                            Range: {{ clientGroupItem.typeValue }}
                         </span>
                         <span class="ml-1" v-else-if="clientGroupItem.type === ClientGroupEnum.NONE || clientGroupItem.type === ClientGroupEnum.SP_FALLBACK_GROUP">
                             {{ translate("monitoringOverview.groups.noGroupClients") }}
@@ -182,12 +175,7 @@
                         color="primary"
                         class="ml-4"
                         prepend-icon="mdi-format-list-bulleted"
-                        @click="monitoringViewService.goToMonitoring(
-            MonitoringHeaderEnum.SHOW_ALL,
-            true,
-            examId
-          )"
-                    >
+                        @click="monitoringViewService.goToMonitoring(MonitoringHeaderEnum.SHOW_ALL, true, examId)">
                         {{ translate("monitoringOverview.groups.buttons.viewList") }}
                     </v-btn>
                 </div>

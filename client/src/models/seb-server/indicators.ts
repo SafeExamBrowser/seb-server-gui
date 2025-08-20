@@ -19,6 +19,7 @@ type Indicator = {
 
 type IndicatorType = {
     BATTERY_STATUS: "BATTERY_STATUS",
+    WLAN_STATUS: "WLAN_STATUS",
     LAST_PING: "LAST_PING",
     ERROR_COUNT: "ERROR_COUNT",
     WARN_COUNT: "WARN_COUNT",

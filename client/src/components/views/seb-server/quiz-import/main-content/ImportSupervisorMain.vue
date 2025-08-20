@@ -173,14 +173,6 @@ onBeforeMount(async () => {
         return;
     }
     userAccountNames.value = userAccountNamesResponse;
-
-    //add supervisors from template to list
-    if (quizImportStore.selectedExamTemplate?.supporter != null) {
-        quizImportStore.selectedExamSupervisors.push(
-            ...userAccountNames.value.filter(user =>
-                quizImportStore.selectedExamTemplate?.supporter.includes(user.modelId))
-        );
-    }
 });
 
 //add exam supervisor

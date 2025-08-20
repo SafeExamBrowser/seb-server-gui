@@ -30,6 +30,7 @@ export const useQuizImportStore = defineStore("quizImport", () => {
     const selectedExamTemplate = ref<ExamTemplate | null>(null);
     const selectedClientGroups = ref<ClientGroup[]>([]);
     const selectedExamSupervisors = ref<UserAccountName[]>([]);
+    const templateQuitPassword = ref<string>();
     const selectedQuitPassword = ref<string>();
 
     //other values
@@ -74,6 +75,14 @@ export const useQuizImportStore = defineStore("quizImport", () => {
         mainContentComponents.value.splice(arrayIndex, 1);
     }
 
+    function clearTemplatePreSelection() {
+        selectedClientGroups.value = [];
+        selectedQuitPassword.value = "";
+        templateQuitPassword.value = "";
+        removeGroupSelectionComponents();
+        selectedExamSupervisors.value = [];
+    }
+
     function clearValues(){
         currentStep.value = 1;
 
@@ -88,6 +97,7 @@ export const useQuizImportStore = defineStore("quizImport", () => {
         selectedClientGroups.value = [];
         selectedExamSupervisors.value = [];
         selectedQuitPassword.value = "";
+        templateQuitPassword.value = "";
     }
 
 
@@ -107,7 +117,9 @@ export const useQuizImportStore = defineStore("quizImport", () => {
         selectedClientGroups,
         selectedExamSupervisors,
         selectedQuitPassword,
+        templateQuitPassword,
         clearValues,
+        clearTemplatePreSelection,
         availableAssessmentTools,
         addGroupSelectionComponents,
         removeGroupSelectionComponents,

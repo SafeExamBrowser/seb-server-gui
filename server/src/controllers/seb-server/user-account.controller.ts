@@ -8,6 +8,7 @@ export async function getUserAccount(req: Request, res: Response){
         const [userAccount, status] = await userAccountService.getUserAccount(req.headers.authorization, req.params.id);
         return res.status(status).json(userAccount);
     }catch(error){
+        // TODO find better or general way to do skip errors
         if (req.query.skip_error && req.query.skip_error.toString().includes(error.status.toString())) {
             res.status(206).send(null)
         } else {

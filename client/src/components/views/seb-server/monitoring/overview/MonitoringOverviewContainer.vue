@@ -57,7 +57,6 @@
 
 <script setup lang="ts">
 import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
-import * as indicatorService from "@/services/seb-server/component-services/indicatorViewService";
 import {useMonitoringStore} from "@/stores/seb-server/monitoringStore";
 import {translate} from "@/utils/generalUtils";
 import {useAppBarStore} from "@/stores/store";
@@ -93,18 +92,16 @@ onBeforeUnmount(() => {
     stopIntervalRefresh();
 });
 
-//TODO Only one indicator being sent in overview, but more than one in getIndicators, for the same exam
 async function getOverviewData() {
     const overviewResponse: MonitoringOverview | null = await monitoringViewService.getOverview(examId);
-    const indicatorResponse: Indicators | null = await indicatorService.getIndicators(examId);
-
-    console.log("📦 overviewResponse:", JSON.stringify(overviewResponse, null, 2));
-    console.log("📦 indicatorResponse:", JSON.stringify(indicatorResponse, null, 2));
-
-    if (!overviewResponse) return;
-
+    if (!overviewResponse) 
+        return;
     monitoringStore.monitoringOverviewData = overviewResponse;
 }
+
+
+    
+
 
 async function startIntervalRefresh() {
     intervalRefresh = setInterval(async () => {

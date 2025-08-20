@@ -1,5 +1,4 @@
 import * as apiService from "./api.service";
-import * as constants from "../../utils/constants";
 
 const indicatorUrl: string = "/indicator";
 

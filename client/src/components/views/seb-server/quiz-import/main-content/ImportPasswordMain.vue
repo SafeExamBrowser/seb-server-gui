@@ -72,30 +72,18 @@
 import { useQuizImportStore } from '@/stores/seb-server/quizImportStore';
 import { storeToRefs } from "pinia";
 import { translate } from "@/utils/generalUtils";
-import { watch, ref, computed } from 'vue';
+import { ref, computed } from 'vue';
 
 // stores
 const quizImportStore = useQuizImportStore();
-const { selectedQuiz, selectedQuitPassword } = storeToRefs(quizImportStore);
+const { templateQuitPassword, selectedQuitPassword } = storeToRefs(quizImportStore);
 
 // pw visibility toggle
 const passwordVisible = ref(false);
 
-// get template quit password (might be null/undefined)
-const importedPassword = computed(() =>
-    quizImportStore.selectedExamTemplate?.EXAM_ATTRIBUTES?.quitPassword?.trim() || ''
-);
-
-// apply imported password once (on load or template change)
-watch(importedPassword, (value) => {
-    if (value && !selectedQuitPassword.value) {
-        selectedQuitPassword.value = value;
-    }
-});
-
 //show a hint in case password is imported from template
 const showImportedHint = computed(() =>
-    !!importedPassword.value && selectedQuitPassword.value === importedPassword.value
+    !!templateQuitPassword.value && selectedQuitPassword.value === templateQuitPassword.value
 );
 </script>
 

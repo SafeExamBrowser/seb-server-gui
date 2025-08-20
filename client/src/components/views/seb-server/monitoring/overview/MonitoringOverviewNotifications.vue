@@ -18,12 +18,7 @@
                         :hover="true"
                         :ripple="false"
                         :color="getNotificationCardBackground(key)"
-                        @click="monitoringViewService.goToMonitoring(
-              MonitoringHeaderEnum.SHOW_NOTIFCATION,
-              generalUtils.findEnumValue(NotificationEnum, key)!,
-              examId
-            )"
-                    >
+                        @click="monitoringViewService.goToMonitoring(MonitoringHeaderEnum.SHOW_NOTIFCATION, generalUtils.findEnumValue(NotificationEnum, key)!, examId)">
                         <div class="d-flex align-center">
                             <!-- Icon Box -->
                             <div
@@ -72,23 +67,14 @@ import {NotificationEnum, IndicatorEnum} from "@/models/seb-server/monitoringEnu
 import {useMonitoringStore} from "@/stores/seb-server/monitoringStore";
 import {translate} from "@/utils/generalUtils";
 import * as generalUtils from "@/utils/generalUtils";
-import {ConnectionStatusEnum} from "@/models/seb-server/connectionStatusEnum";
 import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
 import {MonitoringHeaderEnum} from "@/models/seb-server/monitoringEnums";
-import AskDialog from "@/components/views/seb-server/monitoring/overview/dialogs/AskDialog.vue";
 
 //exam
 const examId = useRoute().params.examId.toString();
 
 //stores
 const monitoringStore = useMonitoringStore();
-
-
-//ASK key Dialog
-const appSignatureKeys = computed<AppSignatureKey[]>(() => monitoringStore.appSignatureKeys ?? []);
-const askDialog = ref<boolean>(false);
-
-const askKeyCount = computed(() => appSignatureKeys.value?.length ?? 0);
 
 
 function getNotificationIconColor(key: string): string {
@@ -129,13 +115,6 @@ function getNotificationIcon(notification: NotificationEnum | null): string {
         default:
             return "mdi-chevron-right";
     }
-}
-
-function openAskDialog(){
-    askDialog.value = true;
-}
-function closeAskDialog(){
-    askDialog.value = false;
 }
 
 </script>

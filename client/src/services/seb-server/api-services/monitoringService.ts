@@ -15,7 +15,7 @@ export async function getOverview(examId: string): Promise<MonitoringOverview | 
         { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN) }
     );
 
-    console.log("🚀 getOverview API response:", response.data); // <-- Add this line
+    //console.log("🚀 getOverview API response:", response.data); // <-- Add this line
 
     return response.data;
 }
