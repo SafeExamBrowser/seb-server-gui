@@ -60,8 +60,8 @@ import * as monitoringViewService from "@/services/seb-server/component-services
 import {useMonitoringStore} from "@/stores/seb-server/monitoringStore";
 import {translate} from "@/utils/generalUtils";
 import {useAppBarStore} from "@/stores/store";
-import MonitoringOverviewIndicators
-    from "@/components/views/seb-server/monitoring/overview/MonitoringOverviewIndicators.vue";
+import MonitoringOverviewIndicators from "@/components/views/seb-server/monitoring/overview/MonitoringOverviewIndicators.vue";
+import * as indicatorService from "@/services/seb-server/component-services/indicatorViewService";
 
 
 //exam
@@ -81,6 +81,7 @@ onBeforeMount(async () => {
 
     await monitoringViewService.getExamAndStore(examId);
     await getOverviewData();
+    await getIndicatorData();
     await monitoringViewService.getAksAndStore(examId);
     console.log("AKS KEYS: " , monitoringStore.appSignatureKeys)
     // setRandomData();
@@ -99,62 +100,19 @@ async function getOverviewData() {
     monitoringStore.monitoringOverviewData = overviewResponse;
 }
 
+async function getIndicatorData() {
+    const indicatorResponse: Indicators | null = await indicatorService.getIndicators(examId);
+    if (!indicatorResponse) 
+        return;
 
-    
-
+    monitoringStore.indicators = indicatorResponse;
+}
 
 async function startIntervalRefresh() {
     intervalRefresh = setInterval(async () => {
-
         getOverviewData();
-        // setRandomData();
-
     }, REFRESH_INTERVAL);
 }
-
-
-function setRandomData() {
-    getOverviewData();
-
-    // console.log(monitoringStore.monitoringOverviewData)
-
-    const randomNumber1: number = Math.floor(Math.random() * 1000) + 1;
-    const randomNumber2: number = Math.floor(Math.random() * 1000) + 1;
-    const randomNumber3: number = Math.floor(Math.random() * 1000) + 1;
-    const randomNumber4: number = Math.floor(Math.random() * 1000) + 1;
-    const randomNumber5: number = Math.floor(Math.random() * 1000) + 1;
-    const randomNumber6: number = Math.floor(Math.random() * 1000) + 1;
-
-
-    monitoringStore.monitoringOverviewData!.clientStates.DISABLED = randomNumber1;
-    monitoringStore.monitoringOverviewData!.clientStates.READY = randomNumber2;
-    monitoringStore.monitoringOverviewData!.clientStates.ACTIVE = randomNumber3;
-    monitoringStore.monitoringOverviewData!.clientStates.CONNECTION_REQUESTED = randomNumber4;
-    monitoringStore.monitoringOverviewData!.clientStates.MISSING = randomNumber5;
-    monitoringStore.monitoringOverviewData!.clientStates.CLOSED = randomNumber6;
-
-
-    monitoringStore.monitoringOverviewData!.clientGroups[0].clientAmount = randomNumber1;
-    monitoringStore.monitoringOverviewData!.clientGroups[1].clientAmount = randomNumber2;
-    // monitoringStore.monitoringOverviewData!.clientGroups[2].clientAmount = randomNumber3;
-    // monitoringStore.monitoringOverviewData!.clientGroups[3].clientAmount = randomNumber4;
-
-    monitoringStore.monitoringOverviewData!.notifications.LOCK_SCREEN = randomNumber1;
-    monitoringStore.monitoringOverviewData!.notifications.RAISE_HAND = randomNumber2;
-
-    // monitoringStore.monitoringOverviewData!.indicators.BATTERY_STATUS = randomNumber3;
-    // monitoringStore.monitoringOverviewData!.indicators.WLAN_STATUS = randomNumber4;
-
-
-    // if(randomNumber1 > 700){
-    //     monitoringStore.monitoringOverviewData?.clientGroups.push({
-    //         id: 46,
-    //         clientAmount: 50
-    //     })
-
-    // }
-}
-
 
 function stopIntervalRefresh() {
     if (intervalRefresh) {

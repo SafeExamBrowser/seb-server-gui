@@ -98,7 +98,6 @@ import { IndicatorEnum, MonitoringHeaderEnum } from "@/models/seb-server/monitor
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import { translate } from "@/utils/generalUtils";
 import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
-import * as indicatorService from "@/services/seb-server/component-services/indicatorViewService";
 
 const examId = useRoute().params.examId.toString();
 const monitoringStore = useMonitoringStore();
@@ -106,18 +105,9 @@ let batteryStatusDefaultColor: string | null = null;
 let wlanStatusDefaultColor: string | null = null;
 
 onBeforeMount(async () => {
-    await getIndicatorData();
     batteryStatusDefaultColor = getBatteryStatusDefaultColor();
     wlanStatusDefaultColor = getWLANStatusDefaultColor();
 });
-
-async function getIndicatorData() {
-    const indicatorResponse: Indicators | null = await indicatorService.getIndicators(examId);
-    if (!indicatorResponse) 
-        return;
-
-    monitoringStore.indicators = indicatorResponse;
-}
 
 function getBatteryStatusDefaultColor(): string {
     if (monitoringStore.indicators?.content) {
