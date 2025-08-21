@@ -49,7 +49,7 @@
 
     onBeforeUnmount(() => {
         stopIntervalRefresh();
-        monitoringStore.clearValues();
+        monitoringStore.clearClientValues();
     });
 
     async function getOverviewData(){

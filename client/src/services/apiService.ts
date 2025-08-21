@@ -26,12 +26,20 @@ export function createApiInterceptor(){
     let loadingTimer: NodeJS.Timeout | null = null;
     let loadingTimout: number = 500;
 
+    let requests = 0;
+
     let loadingEndTimer: NodeJS.Timeout | null = null;
 
     api.interceptors.request.use(async (config) => {
         //check if url does not need loading spinner
         const isIgnoredUrl: boolean = isUrlIgnorable(config.url);
         if(loadingStore.skipLoading || isIgnoredUrl){
+            return config;
+        }
+
+        requests++;
+        //console.info("************* --> requests: " + requests);
+        if (requests > 1) {
             return config;
         }
 
@@ -59,7 +67,6 @@ export function createApiInterceptor(){
 
     }, async error => {
         resetLoadingState();
-
         console.error(error)
 
         //check if error is authentication error
@@ -142,6 +149,13 @@ export function createApiInterceptor(){
 
 
     function resetLoadingState(){
+        requests--;
+        //console.info("************* <-- requests: " + requests);
+        if (requests > 0) {
+            return;
+        }
+
+        requests = 0;
         if (loadingTimer) clearTimeout(loadingTimer);
         if (loadingEndTimer) clearTimeout(loadingEndTimer);
 

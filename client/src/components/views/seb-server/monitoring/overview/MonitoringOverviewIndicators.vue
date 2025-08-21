@@ -101,45 +101,10 @@ import * as monitoringViewService from "@/services/seb-server/component-services
 
 const examId = useRoute().params.examId.toString();
 const monitoringStore = useMonitoringStore();
-let batteryStatusDefaultColor: string | null = null;
-let wlanStatusDefaultColor: string | null = null;
-
-onBeforeMount(async () => {
-    batteryStatusDefaultColor = getBatteryStatusDefaultColor();
-    wlanStatusDefaultColor = getWLANStatusDefaultColor();
-});
-
-function getBatteryStatusDefaultColor(): string {
-    if (monitoringStore.indicators?.content) {
-        for (var indicator of monitoringStore.indicators?.content) {
-            if (indicator.type == "BATTERY_STATUS") {
-                if (indicator.color) {
-                    return "#" + indicator.color
-                }
-            }
-        }
-    }
-
-    return "#f0f0f0";
-}
-
-function getWLANStatusDefaultColor(): string {
-    if (monitoringStore.indicators?.content) {
-        for (var indicator of monitoringStore.indicators?.content) {
-            if (indicator.type == "WLAN_STATUS") {
-                if (indicator.color) {
-                    return "#" + indicator.color
-                }
-            }
-        }
-    }
-    
-    return "#f0f0f0";
-}
 
 function getBatteryStatusColor(color: string | undefined): string {
     if(color == null) {
-        return batteryStatusDefaultColor ?? "#f0f0f0";
+        return monitoringStore.batteryStatusDefaultColor ?? "#f0f0f0";
     }
 
     return "#" + color;
@@ -147,22 +112,23 @@ function getBatteryStatusColor(color: string | undefined): string {
 
 function getWLANStatusColor(color: string | undefined): string {
     if(color == null){
-        return wlanStatusDefaultColor ?? "#f0f0f0";
+        return monitoringStore.wlanStatusDefaultColor ?? "#f0f0f0";
     }
 
     return "#" + color;
 }
 
 function getIndicatorNumber(incident: number | undefined, warning: number | undefined): number {
+    let num = 0;
     if (incident != null && incident > 0) {
-        return incident;
+        num = incident;
     }
 
     if (warning != null && warning > 0) {
-        return warning;
+        num += warning;
     }
 
-    return 0;
+    return num;
 }
 
 </script>

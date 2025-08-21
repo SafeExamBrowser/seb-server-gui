@@ -15,6 +15,8 @@ export const useMonitoringStore = defineStore("monitoring", () => {
     //monitoring overview
     const selectedExam = ref<Exam | null>(null);
     const monitoringOverviewData = ref<MonitoringOverview | null>(null);
+    const batteryStatusDefaultColor = ref<string>("#f0f0f0");
+    const wlanStatusDefaultColor = ref<string>("#f0f0f0");
 
     //monitoring clients
     const isNoFilterSelected = ref<boolean>(false);
@@ -38,9 +40,7 @@ export const useMonitoringStore = defineStore("monitoring", () => {
 
     const currentMonitoringDetailPagingOptions = ref<ServerTablePaging>();
 
-
-
-    function clearValues(){
+    function clearClientValues(){
         selectedMonitoringIds.value = [];
         indicators.value = null;
         clientGroups.value = null;
@@ -59,11 +59,13 @@ export const useMonitoringStore = defineStore("monitoring", () => {
         activeStatusFilter,
         selectedExam,
         monitoringOverviewData,
+        batteryStatusDefaultColor,
+        wlanStatusDefaultColor,
+
         indicators,
         appSignatureKeys,
         clientGroups,
         selectedMonitoringIds,
-        clearValues,
         isNoFilterSelected,
         monitoringData,
         staticClientDataList,
@@ -75,6 +77,8 @@ export const useMonitoringStore = defineStore("monitoring", () => {
         wlanIndicatorId,
         clientLogEvents,
         currentMonitoringDetailPagingOptions,
-        logSearchField
+        logSearchField,
+
+        clearClientValues
     };
 });

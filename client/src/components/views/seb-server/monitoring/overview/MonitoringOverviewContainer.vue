@@ -63,7 +63,6 @@ import {useAppBarStore} from "@/stores/store";
 import MonitoringOverviewIndicators from "@/components/views/seb-server/monitoring/overview/MonitoringOverviewIndicators.vue";
 import * as indicatorService from "@/services/seb-server/component-services/indicatorViewService";
 
-
 //exam
 const examId = useRoute().params.examId.toString();
 
@@ -78,15 +77,14 @@ const REFRESH_INTERVAL: number = 1 * 5000;
 
 onBeforeMount(async () => {
     appBarStore.title = translate("titles.monitoring");
-
     await monitoringViewService.getExamAndStore(examId);
-    await getOverviewData();
     await getIndicatorData();
+    await getOverviewData();
     await monitoringViewService.getAksAndStore(examId);
     console.log("AKS KEYS: " , monitoringStore.appSignatureKeys)
-    // setRandomData();
     monitoringStore.selectedExam?.additionalAttributes
     startIntervalRefresh()
+    
 });
 
 onBeforeUnmount(() => {
@@ -106,6 +104,18 @@ async function getIndicatorData() {
         return;
 
     monitoringStore.indicators = indicatorResponse;
+
+    for (var indicator of monitoringStore.indicators?.content) {
+        if (indicator.type == "BATTERY_STATUS") {
+            if (indicator.color) {
+                monitoringStore.batteryStatusDefaultColor = "#" + indicator.color;
+            }
+        } else if (indicator.type == "WLAN_STATUS") {
+            if (indicator.color) {
+                monitoringStore.wlanStatusDefaultColor = "#" + indicator.color;
+            }
+        }
+    }
 }
 
 async function startIntervalRefresh() {
