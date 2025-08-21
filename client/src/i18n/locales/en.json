@@ -571,6 +571,7 @@
         },
 
         "assessmentToolDetailAndEditPage" : {
+            "title" : "Edit Connection Configuration",
             "buttons" : {
                 "saveChanges": "Save Changes",
                 "revertChanges": "Revert Changes"
