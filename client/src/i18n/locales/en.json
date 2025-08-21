@@ -450,7 +450,7 @@
                 "assessmentToolServerPasswordLabel": "Assessment Tool Server Password *",
                 "accessTokenLabel": "Access Token",
                 "withProxyLabel": "With Proxy",
-                "withProxyAria": "Toggle proxy settings",
+                "withProxyArea": "Toggle proxy settings",
                 "proxyHostLabel": "Proxy Host",
                 "proxyPortLabel": "Proxy Port",
                 "proxyUsernameLabel": "Proxy Username",
@@ -460,7 +460,7 @@
                 "proxyHost": "Enter proxy host",
                 "proxyPort": "Enter proxy port",
                 "proxyUsername": "Enter proxy username",
-                "proxyPassword": "Enter proxy password",
+                "proxyPassword": "Enter proxy password"
             },
             "validation" : {
                 "required" : "This field is required",
@@ -492,9 +492,8 @@
     },
 
     "connectionConfigurations" : {
-
         "connectionConfigurationsPage":{
-            "addConnectionConfiguration": "Add ConnectionConfiguration",
+            "addConnectionConfiguration": "Add Connection Configuration",
             "filters" : {
                 "searchTitle" : "Search",
                 "searchField" : "Search for Connection Configuration",
@@ -526,37 +525,49 @@
             }
         },
 
-        "createAssessmentToolConnectionsPage" : {
+        "createConnectionConfigurationPage" : {
             "info": {
-                "assessmentToolConnectionsCreationInfo" : "Fill out the required * fields to create a new Assessment Tool Connection"
+                "createConnectionConfigurationInfo" : "Fill out the required * fields to create a new Connection Configuration"
             },
             "labels": {
-                "institutionLabel": "Institution *",
-                "nameLabel": "Name *",
-                "typeLabel": "Type*",
-                "assessmentToolServerAddressLabel": "Assessment Tool Server Address *",
-                "assessmentToolServerUsernameLabel": "Assessment Tool Server Username *",
-                "assessmentToolServerPasswordLabel": "Assessment Tool Server Password *",
-                "accessTokenLabel": "Access Token",
-                "withProxyLabel": "With Proxy",
-                "withProxyAria": "Toggle proxy settings",
-                "proxyHostLabel": "Proxy Host",
-                "proxyPortLabel": "Proxy Port",
-                "proxyUsernameLabel": "Proxy Username",
-                "proxyPasswordLabel": "Proxy Password"
+                "configurationPurpose": "Configuration Purpose *",
+                "name": "Name *",
+                "configurationPassword": "Configuration Password",
+                "confirmConfigurationPassword": "Confirm Configuration Password",
+                "encryptWithCertificate": "Encrypt With Certificate",
+                "useAsymmetricOnlyEncryption": "Use asymmetric-only encryption",
+                "pingInterval": "Ping Interval *",
+                "exams": "Exams",
+
+                "withFallback": "With Fallback",
+                "withFallbackArea": "Toggle Fallback settings",
+
+                "fallbackStartURL": "Fallback Start URL *",
+                "connectionAttempts": "Connection Attempts *",
+                "interval": "Interval *",
+                "connectionTimeout": "Connection Timeout *",
+                "fallbackPassword": "Fallback Password",
+                "confirmFallbackPassword": "Confirm Fallback Password",
+                "quitPassword": "Quit Password",
+                "confirmQuitPassword": "Confirm Quit Password"
             },
             "placeholders": {
                 "proxyHost": "Enter proxy host",
                 "proxyPort": "Enter proxy port",
                 "proxyUsername": "Enter proxy username",
-                "proxyPassword": "Enter proxy password",
+                "proxyPassword": "Enter proxy password"
             },
             "validation" : {
                 "required" : "This field is required",
                 "assessmentToolServerAddressLabel" : "Must start with http://",
-                "invalidPort" : "Invalid port, ex. 8080"
+                "invalidPort" : "Invalid port, ex. 8080",
+                "noMatch" : "Passwords don't match",
+                "mustBeNumber" : "The value can only consist of numbers"
+            },
+            "selectValues": {
+                "start_exam" : "Starting an Exam",
+                "configure_client": "Configure a Client"
             }
-
         },
 
         "assessmentToolDetailAndEditPage" : {
@@ -926,9 +937,8 @@
         "editAssessmentTool" : "Edit Assessment Tool",
         "assessmentToolEdit" : "Edit Assessment Tool",
         "connectionConfigurationViewAndEdit": "Connection Configuration",
-        "createConnectionConfiguration" : "Edit Connection Configuration",
+        "createConnectionConfiguration" : "Add Connection Configuration",
         "connectionConfigurations" : "Connection Configurations"
-
     },
 
     "warnings": {
