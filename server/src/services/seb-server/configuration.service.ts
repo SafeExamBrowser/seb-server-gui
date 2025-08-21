@@ -2,6 +2,13 @@ import * as apiService from "./api.service";
 import * as constants from "../../utils/constants";
 
 
+
+export async function createConnectionConfiguration(token: string, newConnectionConfiguration: {}): Promise<[object, number]>{
+    const {data, status} = await apiService.api.post(constants.CONNECTION_CONFIG_ROUTE, apiService.createUrlEncodedBody(newConnectionConfiguration), {headers: apiService.getHeaders(token)});
+    return [data, status];
+}
+
+
 export async function downloadExamConfig(token: string, connectionId: string, examId: {}): Promise<[object, number]>{
     const url: string =  constants.DOWNLOAD_EXAM_CONFIG_ROUTE + "/" + connectionId;
     const {data, status} = await apiService.api.get(url, {headers: apiService.getOctetStreamHeaders(token), params: {id: examId}, responseType: "arraybuffer"});

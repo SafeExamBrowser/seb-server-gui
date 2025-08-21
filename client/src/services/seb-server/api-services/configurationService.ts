@@ -51,13 +51,11 @@ export async function deleteConnectionConfiguration(id: string): Promise<any | a
 }
 
 
-
-//todo types
-
-export async function createConnectionConfiguration(assessmentTool: CreateAssessmentToolPar): Promise<any | any> {
-    return (await apiService.api.post(connectionConfigurationUrl, assessmentTool, {headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
+export async function createConnectionConfiguration(connectionConfigurationPar: CreateConnectionConfigurationPar): Promise<any | any> {
+    return (await apiService.api.post(connectionConfigurationUrl, connectionConfigurationPar, {headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
 }
 
-export async function editConnectionConfiguration(assessmentTool: UpdateAssessmentToolPar): Promise<AssessmentTool | any> {
-    return (await apiService.api.put(connectionConfigurationUrl, assessmentTool, {headers: apiService.getPutHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
+
+export async function editConnectionConfiguration(connectionConfiguration: UpdateConnectionConfigurationPar): Promise<ConnectionConfiguration | any> {
+    return (await apiService.api.put(connectionConfigurationUrl, connectionConfiguration, {headers: apiService.getPutHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
 }

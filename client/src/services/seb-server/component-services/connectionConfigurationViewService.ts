@@ -17,7 +17,6 @@ export async function getConnectionConfigurations(optionalParameters?: OptionalP
     }
 }
 
-
 export async function activateConnectionConfiguration(id: string): Promise<ConnectionConfiguration | null>{
     try{
         return await connectionConfigurationService.activateConnectionConfiguration(id)
@@ -36,7 +35,6 @@ export async function deactivateConnectionConfiguration(id: string): Promise<Con
     }
 }
 
-
 export async function deleteConnectionConfiguration(id: string): Promise<any | null>{
     try{
         return await connectionConfigurationService.deleteConnectionConfiguration(id)
@@ -46,11 +44,7 @@ export async function deleteConnectionConfiguration(id: string): Promise<any | n
 }
 
 
-
-
-//todo types
-
-export async function createConnectionConfiguration(connectionConfigurationPar: CreateAssessmentToolPar): Promise<ConnectionConfiguration | null>{
+export async function createConnectionConfiguration(connectionConfigurationPar: CreateConnectionConfigurationPar): Promise<ConnectionConfiguration | null>{
     try{
         return await connectionConfigurationService.createConnectionConfiguration(connectionConfigurationPar)
 
@@ -59,10 +53,9 @@ export async function createConnectionConfiguration(connectionConfigurationPar: 
     }
 }
 
-
-export async function editConnectionConfiguration(assessmentToolPar: UpdateAssessmentToolPar): Promise<ConnectionConfiguration | null>{
+export async function editConnectionConfiguration(connectionConfiguration: UpdateConnectionConfigurationPar): Promise<ConnectionConfiguration | null>{
     try{
-        return await connectionConfigurationService.editConnectionConfiguration(assessmentToolPar)
+        return await connectionConfigurationService.editConnectionConfiguration(connectionConfiguration)
 
     }catch(error){
         return null;
