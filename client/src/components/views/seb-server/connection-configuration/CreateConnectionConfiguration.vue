@@ -14,7 +14,6 @@
                 </div>
             </v-row>
 
-
             <v-divider class="custom-divider mx-6 my-4 mt-7"/>
             <v-row class="px-8 mt-2">
                 <div class="text-body-2 text-grey-darken-1">
@@ -27,8 +26,6 @@
             <!-- Form-->
             <v-sheet class="rounded-lg mt-4" style="min-height: 46.9vh">
                 <v-form ref="formRef" @keyup.enter="submit()">
-
-
                     <v-col cols="12" md="12" class="pa-0 mb-4 h-100">
                         <v-card-text>
 
@@ -47,7 +44,6 @@
                                             :rules="[requiredRule]"
                                         />
                                     </v-col>
-
 
                                     <!-- Configuration Password (optional) -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
@@ -187,7 +183,6 @@
                                     </v-col>
                                 </v-col>
                             </v-row>
-
 
                             <!-- Third Section for Fallback -->
                             <v-row dense>
@@ -330,7 +325,7 @@
                                                         />
                                                     </v-col>
 
-                                                    <!-- Confirm Fallback Password (required iff fallbackPassword set) -->
+                                                    <!-- Confirm Fallback Password (required if fallbackPassword set) -->
                                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                                         <v-text-field
                                                             ref="confirmFallbackPwdRef"
@@ -354,7 +349,7 @@
                                                         </v-text-field>
                                                     </v-col>
 
-                                                    <!-- Confirm Quit Password (required iff quitPassword set) -->
+                                                    <!-- Confirm Quit Password (required if quitPassword set) -->
                                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                                         <v-text-field
                                                             ref="confirmQuitPwdRef"
@@ -428,7 +423,6 @@ import * as connectionConfigurationViewService
     from "@/services/seb-server/component-services/connectionConfigurationViewService";
 
 
-// ---- Fields mapped to CreateConnectionConfigurationPar ----
 const name = ref<string>("");
 const configurationPassword = ref<string>("");
 const confirmConfigurationPassword = ref<string>("");
@@ -437,7 +431,6 @@ const pingInterval = ref<number | null>(1000);
 const exams = ref<number[]>([]);
 const asymmetricOnlyEncryption = ref<boolean>(false);
 
-// Fallback toggle + fields
 const withFallback = ref<boolean>(false);
 const fallbackStartUrl = ref<string>("");
 const interval = ref<number | null>(2000);
@@ -447,8 +440,6 @@ const fallbackPassword = ref<string>("");
 const confirmFallbackPassword = ref<string>("");
 const quitPassword = ref<string>("");
 const confirmQuitPassword = ref<string>("");
-
-// kept for layout only (not sent)
 const configurationPurpose = ref<string | null>(null);
 
 // UI state
@@ -470,7 +461,6 @@ const layoutStore = useLayoutStore();
 const configPwdRef = ref<any>(null);
 const confirmConfigPwdRef = ref<any>(null);
 
-
 const fallbackPwdRef = ref<any>(null);
 const confirmFallbackPwdRef = ref<any>(null);
 
@@ -485,7 +475,6 @@ const encryptWithCertificateItems = [
     {label: 'No', value: 'NO'}
 ];
 
-
 const configurationPurposeItems = [
     {
         label: translate('connectionConfigurations.createConnectionConfigurationPage.selectValues.start_exam'),
@@ -497,9 +486,7 @@ const configurationPurposeItems = [
     }
 ];
 
-
 const examItems = ref<{ label: string; value: number }[]>([]);
-
 
 // Validation messages
 const requiredMessage = translate("connectionConfigurations.createConnectionConfigurationPage.validation.required");
@@ -517,7 +504,6 @@ const requiredNumberRule = (v: any) => requiredRule(v) === true && numberRule(v)
 
 const requiredIfFallbackRule = (v: any) => !withFallback.value || requiredRule(v) === true || requiredMessage;
 const requiredNumberIfFallbackRule = (v: any) => !withFallback.value || requiredNumberRule(v) === true || (isNaN(Number(v)) ? mustBeNumberMessage : requiredMessage);
-
 
 const isCreateDisabled = computed(() => {
     if (!name.value.trim()) return true;
@@ -549,8 +535,7 @@ const isCreateDisabled = computed(() => {
             }
         }
     }
-
-    // main pair
+    // config pwd pair
     const a = (configurationPassword.value ?? '').trim();
     const b = (confirmConfigurationPassword.value ?? '').trim();
     if (a || b) {
@@ -562,9 +547,7 @@ const isCreateDisabled = computed(() => {
 });
 
 
-
-
-// must match when both have values password rules
+// must match pwd rules
 const configPwdMustMatchRule = (v: any) => {
     const a = (configurationPassword.value ?? '').trim();
     const b = (confirmConfigurationPassword.value ?? '').trim();
@@ -605,19 +588,14 @@ async function submit() {
     const {valid} = await formRef.value.validate();
     if (!valid) return;
 
-    // build the normal, type-safe payload
     const connectionConfigParams: CreateConnectionConfigurationPar = {
         name: name.value.trim(),
         sebServerPingTime: Number(pingInterval.value!),
-
         sebConfigPurpose: configurationPurpose.value!,
         exam_selection: undefined,
-
         encryptSecret: configurationPassword.value ?? undefined,
         confirm_encrypt_secret: confirmConfigurationPassword.value?.trim() || undefined,
         cert_encryption_asym: !!asymmetricOnlyEncryption.value,
-
-        // work
         sebServerFallback: !!withFallback.value,
 
         ...(withFallback.value
@@ -632,7 +610,6 @@ async function submit() {
                 hashedQuitPasswordConfirm: confirmQuitPassword.value?.trim() || undefined,
             }
             : {}),
-
         vdiSetup: "NO",
     };
 
@@ -688,7 +665,6 @@ watch([quitPassword, confirmQuitPassword], ([a, b]) => {
     color: #215caf;
 }
 
-
 .w-98 {
     width: 98% !important;
 }
@@ -699,12 +675,10 @@ watch([quitPassword, confirmQuitPassword], ([a, b]) => {
     width: 100%;
 }
 
-
 .custom-padding-textbox {
     padding-top: 8px !important;
     padding-bottom: 8px !important;
 }
-
 
 .custom-role-checkbox input[type="checkbox"] {
     appearance: none;
