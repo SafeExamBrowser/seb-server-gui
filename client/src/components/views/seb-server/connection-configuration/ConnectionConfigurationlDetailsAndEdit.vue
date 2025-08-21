@@ -10,10 +10,10 @@
         <v-col elevation="4" cols="9" class="bg-white rounded-lg">
             <v-row class="d-flex align-center justify-space-between px-6 pt-6">
                 <div class="text-primary text-h5 font-weight-bold">
-                    {{ translate("titles.connectionConfigurationViewAndEdit") }}
+                    {{ translate("connectionConfigurations.assessmentToolDetailAndEditPage.title") }}
                 </div>
                 <v-chip
-                    class="ma-2 text-subtitle-1 px-5 py-2 font-weight-bold"
+                    class=" text-subtitle-1 px-5 py-2 font-weight-bold"
                     :color="active ? 'success' : 'error'"
                     text-color="white"
                     size="large"
@@ -33,9 +33,7 @@
             <v-divider class="custom-divider mx-6 my-4 mt-7"/>
             <v-row class="px-8 mt-2">
                 <div class="text-body-2 text-grey-darken-1" style="visibility: hidden">
-                    {{
-                        translate("assessmentToolConnections.createAssessmentToolConnectionsPage.info.assessmentToolConnectionsCreationInfo")
-                    }}
+                    {{ translate("connectionConfigurations.assessmentToolDetailAndEditPage.info") }}
                 </div>
             </v-row>
 
@@ -48,154 +46,146 @@
                             <!-- First Section -->
                             <v-row dense>
                                 <v-col>
-                                    <!-- Institution (never changeable) -->
-                                    <v-col cols="12" md="12" class="custom-padding-textbox">
-                                        <v-select
-                                            required
-                                            prepend-inner-icon="mdi-domain"
-                                            density="compact"
-                                            :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.institutionLabel')"
-                                            variant="outlined"
-                                            v-model="institution"
-                                            :items="institutions"
-                                            item-title="name"
-                                            item-value="modelId"
-                                            :rules="[requiredRule]"
-                                            :disabled="true"
-                                        />
-                                    </v-col>
-
-                                    <!-- Type -->
-                                    <v-col cols="12" md="12" class="custom-padding-textbox">
-                                        <v-select
-                                            required
-                                            prepend-inner-icon="mdi-shape-outline"
-                                            density="compact"
-                                            :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.typeLabel')"
-                                            variant="outlined"
-                                            v-model="lmsType"
-                                            :items="lmsTypeItems"
-                                            item-title="label"
-                                            item-value="value"
-                                            :rules="[requiredRule]"
-                                        />
-                                    </v-col>
-                                </v-col>
-
-                                <!-- Second Column -->
-                                <v-col>
-                                    <!-- Name -->
+                                    <!-- Name* -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
                                             required
                                             prepend-inner-icon="mdi-account-outline"
                                             density="compact"
-                                            :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.nameLabel')"
+                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.name')"
                                             variant="outlined"
                                             v-model="name"
                                             :rules="[requiredRule]"
                                         />
                                     </v-col>
-                                </v-col>
-                            </v-row>
 
-                            <!-- Second Section -->
-                            <v-row dense>
-                                <v-col>
-                                    <!-- Assessment Tool Server Address-->
+                                    <!-- Configuration Password (optional) -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
-                                            prepend-inner-icon="mdi-email-outline"
-                                            density="compact"
-                                            :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.assessmentToolServerAddressLabel')"
-                                            variant="outlined"
-                                            v-model="assessmentToolServerAddress"
-                                            :rules="[requiredRule, httpPrefixRule]"
-                                            validate-on="blur"
-                                        />
-                                    </v-col>
-
-                                    <!-- Access Token -->
-                                    <v-col cols="12" md="12" class="custom-padding-textbox">
-                                        <v-text-field
-                                            ref="confirmPasswordFieldRef"
-                                            required
-                                            :type="confirmPasswordVisible ? 'text' : 'password'"
+                                            ref="configPwdRef"
+                                            :type="configurationPasswordVisible ? 'text' : 'password'"
                                             prepend-inner-icon="mdi-key-variant"
                                             density="compact"
-                                            :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.accessTokenLabel')"
+                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.configurationPassword')"
                                             variant="outlined"
-                                            v-model="accessToken"
-                                            validate-on="blur"
-                                            class="mb-2"
+                                            v-model="configurationPassword"
+                                            validate-on="input"
                                         >
                                             <template #append-inner>
                                                 <v-btn
                                                     density="compact"
                                                     variant="text"
-                                                    :icon="confirmPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
-                                                    @click="confirmPasswordVisible = !confirmPasswordVisible"
+                                                    :icon="configurationPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
+                                                    @click="configurationPasswordVisible = !configurationPasswordVisible"
                                                 />
                                             </template>
                                         </v-text-field>
                                     </v-col>
-                                </v-col>
 
-                                <v-col>
-                                    <!-- Assessment Tool Server Username -->
+                                    <!-- Encrypt With Certificate (optional) -->
+                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                        <v-select
+                                            prepend-inner-icon="mdi-shield-key-outline"
+                                            density="compact"
+                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.encryptWithCertificate')"
+                                            variant="outlined"
+                                            v-model="encryptWithCertificate"
+                                            :items="encryptWithCertificateItems"
+                                            :return-object="false"
+                                            item-title="label"
+                                            item-value="value"
+                                        />
+                                    </v-col>
+
+                                    <!-- Ping Interval* (number) -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
-                                            prepend-inner-icon="mdi-account"
+                                            prepend-inner-icon="mdi-timer-outline"
                                             density="compact"
-                                            :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.assessmentToolServerUsernameLabel')"
+                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.pingInterval')"
                                             variant="outlined"
-                                            v-model="assessmentToolServerUsername"
-                                            :rules="[requiredRule]"
+                                            v-model.number="pingInterval"
+                                            type="number"
+                                            inputmode="numeric"
+                                            :rules="[requiredNumberRule]"
                                             validate-on="blur"
                                         />
                                     </v-col>
 
-                                    <!-- Assessment Tool Server Password -->
+                                    <!-- Exams (optional, multi-select) -->
+                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                        <v-select
+                                            prepend-inner-icon="mdi-file-document-multiple-outline"
+                                            density="compact"
+                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.exams')"
+                                            variant="outlined"
+                                            v-model="exams"
+                                            :items="examItems"
+                                            item-title="label"
+                                            item-value="value"
+                                            multiple
+                                            chips
+                                            closable-chips
+                                            :loading="examsLoading"
+                                            :disabled="examsLoading"
+                                        />
+                                    </v-col>
+
+                                </v-col>
+
+                                <!-- Second Section -->
+                                <v-col>
+                                    <!-- Configuration Purpose -->
+                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                        <v-select
+                                            prepend-inner-icon="mdi-shape-outline"
+                                            density="compact"
+                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.configurationPurpose')"
+                                            variant="outlined"
+                                            v-model="configurationPurpose"
+                                            :items="configurationPurposeItems"
+                                            item-title="label"
+                                            item-value="value"
+                                            :rules="[requiredRule]"
+                                            validate-on="input"
+                                        />
+                                    </v-col>
+
+                                    <!-- Confirm Configuration Password (required if configurationPassword set) -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
-                                            required
-                                            :type="passwordVisible ? 'text' : 'password'"
+                                            ref="confirmConfigPwdRef"
+                                            :type="confirmConfigurationPasswordVisible ? 'text' : 'password'"
                                             prepend-inner-icon="mdi-lock-outline"
                                             density="compact"
-                                            :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.assessmentToolServerPasswordLabel')"
+                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.confirmConfigurationPassword')"
                                             variant="outlined"
-                                            v-model="assessmentToolServerPassword"
-                                            :rules="[requiredRule]"
-                                            validate-on="blur"
+                                            v-model="confirmConfigurationPassword"
+                                            validate-on="input"
+                                            :rules="[configPwdMustMatchRule]"
                                         >
                                             <template #append-inner>
                                                 <v-btn
                                                     density="compact"
                                                     variant="text"
-                                                    :icon="passwordVisible ? 'mdi-eye-off' : 'mdi-eye'"
-                                                    @click="passwordVisible = !passwordVisible"
+                                                    :icon="confirmConfigurationPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
+                                                    @click="confirmConfigurationPasswordVisible = !confirmConfigurationPasswordVisible"
                                                 />
                                             </template>
                                         </v-text-field>
                                     </v-col>
-                                </v-col>
-                            </v-row>
 
-                            <!-- Third Section for proxy stuff -->
-                            <v-row dense>
-                                <v-divider class="custom-divider mx-1 my-2"/>
-                                <v-col>
-                                    <!-- With Proxy -->
-                                    <v-col cols="6" md="6" class="custom-padding-textbox">
+                                    <!-- Use asymmetric-only encryption (toggle preserved for layout, not sent) -->
+                                    <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <div class="d-flex align-center justify-space-between w-100">
                                             <label class="text-grey-darken-1 text-body-1 ml-11">
                                                 {{
-                                                    translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.withProxyLabel')
+                                                    translate('connectionConfigurations.createConnectionConfigurationPage.labels.useAsymmetricOnlyEncryption')
                                                 }}
                                             </label>
 
                                             <v-switch
-                                                v-model="withProxy"
+                                                v-model="asymmetricOnlyEncryption"
                                                 inset
                                                 hide-details
                                                 density="compact"
@@ -208,70 +198,190 @@
                                 </v-col>
                             </v-row>
 
+                            <!-- Third Section for Fallback -->
+                            <v-row dense>
+                                <v-divider class="custom-divider mx-1 my-2"/>
+
+                                <v-col>
+                                    <!-- With Fallback -->
+                                    <v-col cols="6" md="6" class="custom-padding-textbox">
+                                        <div class="d-flex align-center justify-space-between w-100">
+                                            <label class="text-grey-darken-1 text-body-1 ml-11">
+                                                {{
+                                                    translate('connectionConfigurations.createConnectionConfigurationPage.labels.withFallback')
+                                                }}
+                                            </label>
+
+                                            <v-switch
+                                                v-model="withFallback"
+                                                inset
+                                                hide-details
+                                                density="compact"
+                                                color="primary"
+                                                class="ml-4"
+                                                :aria-label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.withFallbackArea')"
+                                            />
+                                        </div>
+                                    </v-col>
+                                </v-col>
+                            </v-row>
+
                             <v-row dense>
                                 <v-col>
                                     <!-- Animated expansion -->
                                     <v-expand-transition>
-                                        <div v-show="withProxy">
+                                        <div v-show="withFallback">
                                             <v-row>
                                                 <v-col>
+                                                    <!-- Fallback Start URL* -->
                                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                                         <v-text-field
                                                             prepend-inner-icon="mdi-server"
                                                             density="compact"
-                                                            :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.proxyHostLabel')"
+                                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.fallbackStartURL')"
                                                             variant="outlined"
-                                                            v-model="proxyHost"
-                                                            :rules="[requiredIfProxyRule]"
+                                                            v-model="fallbackStartUrl"
+                                                            :rules="[requiredIfFallbackRule]"
                                                             validate-on="blur"
                                                         />
                                                     </v-col>
 
+                                                    <!-- Connection Attempts* (number) -->
                                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                                         <v-text-field
                                                             prepend-inner-icon="mdi-numeric"
                                                             density="compact"
-                                                            :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.proxyPortLabel')"
+                                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.connectionAttempts')"
                                                             variant="outlined"
-                                                            v-model="proxyPort"
+                                                            v-model.number="connectionAttempts"
                                                             type="number"
                                                             inputmode="numeric"
-                                                            :rules="[requiredIfProxyRule, portNumberRule]"
-                                                            validate-on="blur"
-                                                        />
-                                                    </v-col>
-                                                </v-col>
-
-                                                <v-col>
-                                                    <v-col cols="12" md="12" class="custom-padding-textbox">
-                                                        <v-text-field
-                                                            prepend-inner-icon="mdi-account-outline"
-                                                            density="compact"
-                                                            :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.proxyUsernameLabel')"
-                                                            variant="outlined"
-                                                            v-model="proxyUsername"
-                                                            :rules="[requiredIfProxyRule]"
+                                                            :rules="[requiredNumberIfFallbackRule]"
                                                             validate-on="blur"
                                                         />
                                                     </v-col>
 
+                                                    <!-- Fallback Password (optional) -->
                                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                                         <v-text-field
-                                                            :type="proxyPasswordVisible ? 'text' : 'password'"
-                                                            prepend-inner-icon="mdi-lock-outline"
+                                                            ref="fallbackPwdRef"
+                                                            :type="fallbackPasswordVisible ? 'text' : 'password'"
+                                                            prepend-inner-icon="mdi-key-variant"
                                                             density="compact"
-                                                            :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.proxyPasswordLabel')"
+                                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.fallbackPassword')"
                                                             variant="outlined"
-                                                            v-model="proxyPassword"
-                                                            :rules="[requiredIfProxyRule]"
-                                                            validate-on="blur"
+                                                            v-model="fallbackPassword"
+                                                            validate-on="input"
                                                         >
                                                             <template #append-inner>
                                                                 <v-btn
                                                                     density="compact"
                                                                     variant="text"
-                                                                    :icon="proxyPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
-                                                                    @click="proxyPasswordVisible = !proxyPasswordVisible"
+                                                                    :icon="fallbackPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
+                                                                    @click="fallbackPasswordVisible = !fallbackPasswordVisible"
+                                                                />
+                                                            </template>
+                                                        </v-text-field>
+                                                    </v-col>
+
+                                                    <!-- Quit Password (optional) -->
+                                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                                        <v-text-field
+                                                            ref="quitPwdRef"
+                                                            :type="quitPasswordVisible ? 'text' : 'password'"
+                                                            prepend-inner-icon="mdi-key-variant"
+                                                            density="compact"
+                                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.quitPassword')"
+                                                            variant="outlined"
+                                                            v-model="quitPassword"
+                                                            validate-on="input"
+                                                        >
+                                                            <template #append-inner>
+                                                                <v-btn
+                                                                    density="compact"
+                                                                    variant="text"
+                                                                    :icon="quitPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
+                                                                    @click="quitPasswordVisible = !quitPasswordVisible"
+                                                                />
+                                                            </template>
+                                                        </v-text-field>
+                                                    </v-col>
+                                                </v-col>
+                                                <v-col>
+
+                                                    <!-- Interval* (number) -->
+                                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                                        <v-text-field
+                                                            prepend-inner-icon="mdi-timer-outline"
+                                                            density="compact"
+                                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.interval')"
+                                                            variant="outlined"
+                                                            v-model.number="interval"
+                                                            type="number"
+                                                            inputmode="numeric"
+                                                            :rules="[requiredNumberIfFallbackRule]"
+                                                            validate-on="blur"
+                                                        />
+                                                    </v-col>
+
+                                                    <!-- Connection Timeout* (number) -->
+                                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                                        <v-text-field
+                                                            prepend-inner-icon="mdi-clock-outline"
+                                                            density="compact"
+                                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.connectionTimeout')"
+                                                            variant="outlined"
+                                                            v-model.number="connectionTimeout"
+                                                            type="number"
+                                                            inputmode="numeric"
+                                                            :rules="[requiredNumberIfFallbackRule]"
+                                                            validate-on="blur"
+                                                        />
+                                                    </v-col>
+
+                                                    <!-- Confirm Fallback Password (required if fallbackPassword set) -->
+                                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                                        <v-text-field
+                                                            ref="confirmFallbackPwdRef"
+                                                            :type="confirmFallbackPasswordVisible ? 'text' : 'password'"
+                                                            prepend-inner-icon="mdi-key-variant"
+                                                            density="compact"
+                                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.confirmFallbackPassword')"
+                                                            variant="outlined"
+                                                            v-model="confirmFallbackPassword"
+                                                            validate-on="input"
+                                                            :rules="[fallbackPwdMustMatchRule]"
+                                                        >
+                                                            <template #append-inner>
+                                                                <v-btn
+                                                                    density="compact"
+                                                                    variant="text"
+                                                                    :icon="confirmFallbackPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
+                                                                    @click="confirmFallbackPasswordVisible = !confirmFallbackPasswordVisible"
+                                                                />
+                                                            </template>
+                                                        </v-text-field>
+                                                    </v-col>
+
+                                                    <!-- Confirm Quit Password (required if quitPassword set) -->
+                                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                                        <v-text-field
+                                                            ref="confirmQuitPwdRef"
+                                                            :type="confirmQuitPasswordVisible ? 'text' : 'password'"
+                                                            prepend-inner-icon="mdi-key-variant"
+                                                            density="compact"
+                                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.confirmQuitPassword')"
+                                                            variant="outlined"
+                                                            v-model="confirmQuitPassword"
+                                                            validate-on="input"
+                                                            :rules="[quitPwdMustMatchRule]"
+                                                        >
+                                                            <template #append-inner>
+                                                                <v-btn
+                                                                    density="compact"
+                                                                    variant="text"
+                                                                    :icon="confirmQuitPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
+                                                                    @click="confirmQuitPasswordVisible = !confirmQuitPasswordVisible"
                                                                 />
                                                             </template>
                                                         </v-text-field>
@@ -300,12 +410,11 @@
                                 :aria-label="translate('general.revertChanges')"
                             >
                                 <v-icon size="18" class="mr-1">mdi-arrow-left-circle</v-icon>
-                                <span>{{ translate('assessmentToolConnections.assessmentToolDetailAndEditPage.buttons.revertChanges') }}</span>
+                                <span>{{ translate('connectionConfigurations.assessmentToolDetailAndEditPage.buttons.revertChanges') }}</span>
                             </button>
                         </v-col>
 
-                        <v-spacer>
-                        </v-spacer>
+                        <v-spacer/>
                         <v-col>
                             <div class="d-flex justify-end">
                                 <v-btn
@@ -326,9 +435,7 @@
                                     :disabled="!canSave"
                                     @click="onSave()"
                                 >
-                                    {{
-                                        translate('assessmentToolConnections.assessmentToolDetailAndEditPage.buttons.saveChanges')
-                                    }}
+                                    {{ translate('connectionConfigurations.assessmentToolDetailAndEditPage.buttons.saveChanges') }}
                                 </v-btn>
                             </div>
                         </v-col>
@@ -345,13 +452,10 @@ import {ref, computed, onMounted, onBeforeUnmount, watch} from 'vue';
 import {useRoute} from 'vue-router';
 import {useAppBarStore, useLayoutStore} from '@/stores/store';
 import {translate} from '@/utils/generalUtils';
-import {useUserAccountStore as useAuthenticatedUserAccountStore} from "@/stores/authentication/authenticationStore";
-import {LMSTypeEnum} from "@/models/seb-server/assessmentToolEnums";
-import {getInstitutions} from "@/services/seb-server/api-services/institutionService";
-import * as assessmentToolViewService from "@/services/seb-server/component-services/assessmentToolViewService";
-import router from "@/router/router";
-import {navigateTo} from "@/router/navigation";
-import * as constants from "@/utils/constants";
+import {navigateTo} from '@/router/navigation';
+import * as constants from '@/utils/constants';
+import * as connectionConfigurationViewService from '@/services/seb-server/component-services/connectionConfigurationViewService';
+import router from '@/router/router';
 
 // Router
 const route = useRoute();
@@ -359,91 +463,174 @@ const route = useRoute();
 // Stores
 const appBarStore = useAppBarStore();
 const layoutStore = useLayoutStore();
-const authenticatedUserAccountStore = useAuthenticatedUserAccountStore();
 
-// Fields
-const institution = ref<string | null>(null);
+// Fields (mirroring the Create page)
 const name = ref<string>("");
-const lmsType = ref<LMSTypeEnum | null>(null);
-const assessmentToolServerAddress = ref<string>("");
-const assessmentToolServerUsername = ref<string>("");
-const assessmentToolServerPassword = ref<string>("");
-const accessToken = ref<string>("");
-const withProxy = ref<boolean>(false);
+const configurationPassword = ref<string>("");
+const confirmConfigurationPassword = ref<string>("");
+const encryptWithCertificate = ref<string | undefined>(undefined);
+const pingInterval = ref<number | null>(1000);
+const exams = ref<number[]>([]);
+const asymmetricOnlyEncryption = ref<boolean>(false);
 
-const proxyHost = ref<string>('');
-const proxyPort = ref<string>('');
-const proxyUsername = ref<string>('');
-const proxyPassword = ref<string>('');
-const proxyPasswordVisible = ref<boolean>(false);
+const withFallback = ref<boolean>(false);
+const fallbackStartUrl = ref<string>("");
+const interval = ref<number | null>(2000);
+const connectionAttempts = ref<number | null>(5);
+const connectionTimeout = ref<number | null>(30000);
+const fallbackPassword = ref<string>("");
+const confirmFallbackPassword = ref<string>("");
+const quitPassword = ref<string>("");
+const confirmQuitPassword = ref<string>("");
+const configurationPurpose = ref<string | null>(null);
 
+// UI state
 const formRef = ref();
-const passwordVisible = ref<boolean>(false);
-const confirmPasswordVisible = ref<boolean>(false);
-const confirmPasswordFieldRef = ref();
+const configurationPasswordVisible = ref<boolean>(false);
+const confirmConfigurationPasswordVisible = ref<boolean>(false);
+const fallbackPasswordVisible = ref<boolean>(false);
+const confirmFallbackPasswordVisible = ref<boolean>(false);
+const quitPasswordVisible = ref<boolean>(false);
+const confirmQuitPasswordVisible = ref<boolean>(false);
+const examsLoading = ref<boolean>(false);
 
-const institutions = ref<Institution[]>([]);
-
-// Internal state
-const originalSnapshot = ref<Record<string, any> | null>(null);
-const fetchedId = ref<number | null>(null);
+// status/state
 const active = ref<boolean>(false);
 const initialActiveStatus = ref<boolean | null>(null);
-const isSaving = ref(false);
+const isSaving = ref<boolean>(false);
+const fetchedId = ref<number | null>(null);
+const originalSnapshot = ref<Record<string, any> | null>(null);
 
+// Refs for validation control
+const configPwdRef = ref<any>(null);
+const confirmConfigPwdRef = ref<any>(null);
+const fallbackPwdRef = ref<any>(null);
+const confirmFallbackPwdRef = ref<any>(null);
+const quitPwdRef = ref<any>(null);
+const confirmQuitPwdRef = ref<any>(null);
 
-// Validation rules
-const requiredMessage = translate("assessmentToolConnections.assessmentToolDetailAndEditPage.validation.required");
-const invalidPortMessage = translate("assessmentToolConnections.assessmentToolDetailAndEditPage.validation.invalidPort") || "Invalid port";
-const httpPrefixMessage = translate("assessmentToolConnections.assessmentToolDetailAndEditPage.validation.httpPrefix") || "Must start with http://";
+// Select items
+const encryptWithCertificateItems = [
+    {label: '—', value: undefined},
+    {label: 'Yes', value: 'YES'},
+    {label: 'No', value: 'NO'}
+];
 
-const requiredRule = (v: string) => !!v || requiredMessage;
-const requiredIfProxyRule = (v: string) => {
-    if (!withProxy.value) return true;
-    return (!!v && v.toString().trim().length > 0) || requiredMessage;
+const configurationPurposeItems = [
+    {
+        label: translate('connectionConfigurations.createConnectionConfigurationPage.selectValues.start_exam'),
+        value: 'START_EXAM'
+    },
+    {
+        label: translate('connectionConfigurations.createConnectionConfigurationPage.selectValues.configure_client'),
+        value: 'CONFIGURE_CLIENT'
+    }
+];
+
+const examItems = ref<{ label: string; value: number }[]>([]);
+
+// Validation messages
+const requiredMessage = translate("connectionConfigurations.createConnectionConfigurationPage.validation.required");
+const mustMatchMessage = translate('connectionConfigurations.createConnectionConfigurationPage.validation.noMatch');
+const mustBeNumberMessage = translate('connectionConfigurations.createConnectionConfigurationPage.validation.mustBeNumber');
+
+// Rules (same as create)
+const requiredRule = (v: any) => {
+    if (v === null || v === undefined) return requiredMessage;
+    return (typeof v === 'number' ? true : String(v).trim().length > 0) || requiredMessage;
+};
+const numberRule = (v: any) => (v === null || v === undefined || v === '' || isNaN(Number(v)) ? mustBeNumberMessage : true);
+const requiredNumberRule = (v: any) => requiredRule(v) === true && numberRule(v) === true || (isNaN(Number(v)) ? mustBeNumberMessage : requiredMessage);
+
+const requiredIfFallbackRule = (v: any) => !withFallback.value || requiredRule(v) === true || requiredMessage;
+const requiredNumberIfFallbackRule = (v: any) => !withFallback.value || requiredNumberRule(v) === true || (isNaN(Number(v)) ? mustBeNumberMessage : requiredMessage);
+
+const configPwdMustMatchRule = (_v: any) => {
+    const a = (configurationPassword.value ?? '').trim();
+    const b = (confirmConfigurationPassword.value ?? '').trim();
+    if (!a && !b) return true;
+    if (!a || !b) return mustMatchMessage;
+    return a === b || mustMatchMessage;
 };
 
-const portNumberRule = (v: string) => {
-    if (!withProxy.value) return true;
-    const n = Number(v);
-    return (Number.isInteger(n) && n >= 1 && n <= 65535) || invalidPortMessage;
+const fallbackPwdMustMatchRule = (_v: any) => {
+    const a = (fallbackPassword.value ?? '').trim();
+    const b = (confirmFallbackPassword.value ?? '').trim();
+    if (!a && !b) return true;
+    if (!a || !b) return mustMatchMessage;
+    return a === b || mustMatchMessage;
 };
-const httpPrefixRule = (v: string) => /^https?:\/\//i.test(v) || httpPrefixMessage;
 
-const lmsTypeItems = Object.values(LMSTypeEnum).map((v) => ({
-    label: translate(`assessmentToolConnections.lmsTypes.${v}`),
-    value: v as LMSTypeEnum,
-}));
+const quitPwdMustMatchRule = (_v: any) => {
+    const a = (quitPassword.value ?? '').trim();
+    const b = (confirmQuitPassword.value ?? '').trim();
+    if (!a && !b) return true;
+    if (!a || !b) return mustMatchMessage;
+    return a === b || mustMatchMessage;
+};
 
-const statusChanged = computed(() =>
-    initialActiveStatus.value !== null && active.value !== initialActiveStatus.value
-);
+// Derived state
+const statusChanged = computed(() => initialActiveStatus.value !== null && active.value !== initialActiveStatus.value);
 
-const canSave = computed(() =>
-    !isSaving.value && (statusChanged.value || (isDirty.value && !isSaveDisabled.value))
-);
+const isSaveDisabled = computed(() => {
+    if (!name.value.trim()) return true;
+    if (!configurationPurpose.value) return true;
+    if (pingInterval.value === null || isNaN(Number(pingInterval.value))) return true;
 
-onMounted(async () => {
-    appBarStore.title = translate("titles.assessmentTool");
-    layoutStore.setBlueBackground(true);
+    // config pwd pair
+    const a = (configurationPassword.value ?? '').trim();
+    const b = (confirmConfigurationPassword.value ?? '').trim();
+    if (a || b) {
+        if (!a || !b) return true;
+        if (a !== b) return true;
+    }
 
-    // Load institutions so the disabled select shows a label
-    const inst = await getInstitutions().catch(() => null);
-    institutions.value = inst ?? [];
+    if (withFallback.value) {
+        if (!fallbackStartUrl.value.trim()) return true;
+        if (interval.value === null || isNaN(Number(interval.value))) return true;
+        if (connectionAttempts.value === null || isNaN(Number(connectionAttempts.value))) return true;
+        if (connectionTimeout.value === null || isNaN(Number(connectionTimeout.value))) return true;
 
-    // Fetch the tool
-    const idNum = Number(route.params.lmsId);
-    if (Number.isFinite(idNum)) {
-        const dto: AssessmentTool | null = await assessmentToolViewService.getAssessmentTool(idNum);
-        if (dto) {
-            populateFromDto(dto);
-            fetchedId.value = dto.id;
+        // fallback pair
+        const fp = (fallbackPassword.value ?? '').trim();
+        const fpc = (confirmFallbackPassword.value ?? '').trim();
+        if (fp || fpc) {
+            if (!fp || !fpc) return true;
+            if (fp !== fpc) return true;
+        }
+        // quit pair
+        const qp = (quitPassword.value ?? '').trim();
+        const qpc = (confirmQuitPassword.value ?? '').trim();
+        if (qp || qpc) {
+            if (!qp || !qpc) return true;
+            if (qp !== qpc) return true;
         }
     }
 
-    // Fallback if institution missing
-    if (!institution.value) {
-        institution.value = authenticatedUserAccountStore.userAccount?.institutionId?.toString() ?? null;
+    return false;
+});
+
+const canSave = computed(() => !isSaving.value && (statusChanged.value || (isDirty.value && !isSaveDisabled.value)));
+
+onMounted(async () => {
+    appBarStore.title = translate("titles.connectionConfiguration");
+    layoutStore.setBlueBackground(true);
+
+    // Load list items if needed (exams, etc.)
+    // TODO: Wire real examItems + loading if available
+    examsLoading.value = false;
+
+    // Fetch Connection Configuration by ID
+    const idParam = route.params.connectionConfigId ?? route.params.id;
+    const idNum = Number(idParam);
+    if (Number.isFinite(idNum)) {
+        const dto: any = await connectionConfigurationViewService.getConnectionConfiguration(idNum).catch(() => null);
+        if (dto) {
+            populateFromDto(dto);
+            fetchedId.value = dto.id ?? idNum;
+            initialActiveStatus.value = !!dto.active;
+            active.value = !!dto.active;
+        }
     }
 
     takeSnapshot();
@@ -453,60 +640,43 @@ onBeforeUnmount(() => {
     layoutStore.setBlueBackground(false);
 });
 
-function populateFromDto(dto: AssessmentTool) {
-    institution.value = dto.institutionId != null ? String(dto.institutionId) : null;
-    name.value = dto.name ?? '';
-    lmsType.value = (dto.lmsType as LMSTypeEnum) ?? null;
-    assessmentToolServerAddress.value = dto.lmsUrl ?? '';
-    assessmentToolServerUsername.value = dto.lmsClientname ?? '';
-    assessmentToolServerPassword.value = dto.lmsClientsecret ?? '';
-    accessToken.value = dto.lmsRestApiToken ?? '';
+function populateFromDto(dto: any) {
+    name.value = (dto.name ?? '').toString();
+    configurationPurpose.value = dto.sebConfigPurpose ?? null;
+    encryptWithCertificate.value = dto.encryptWithCertificate ?? undefined;
+    pingInterval.value = dto.sebServerPingTime != null ? Number(dto.sebServerPingTime) : 1000;
+    exams.value = Array.isArray(dto.exam_selection) ? dto.exam_selection : [];
+    asymmetricOnlyEncryption.value = !!dto.cert_encryption_asym;
 
-    // Proxy fields
-    proxyHost.value = dto.lmsProxyHost ?? '';
-    proxyPort.value = dto.lmsProxyPort != null ? String(dto.lmsProxyPort) : '';
-    proxyUsername.value = dto.lmsProxyAuthUsername ?? '';
-    proxyPassword.value = dto.lmsProxyAuthSecret ?? '';
+    withFallback.value = !!dto.sebServerFallback;
+    fallbackStartUrl.value = dto.startURL ?? '';
+    interval.value = dto.sebServerFallbackAttemptInterval != null ? Number(dto.sebServerFallbackAttemptInterval) : 2000;
+    connectionAttempts.value = dto.sebServerFallbackAttempts != null ? Number(dto.sebServerFallbackAttempts) : 5;
+    connectionTimeout.value = dto.sebServerFallbackTimeout != null ? Number(dto.sebServerFallbackTimeout) : 30000;
 
-    active.value = !!dto.active;
-    initialActiveStatus.value = !!dto.active;
-
-    // Auto-enable withProxy if any proxy detail present
-    withProxy.value = !!(
-        (dto.lmsProxyHost && dto.lmsProxyHost.trim()) ||
-        (dto.lmsProxyPort != null && String(dto.lmsProxyPort).trim()) ||
-        (dto.lmsProxyAuthUsername && dto.lmsProxyAuthUsername.trim()) ||
-        (dto.lmsProxyAuthSecret && dto.lmsProxyAuthSecret.trim())
-    );
-}
-
-function toggleStatusLocally() {
-    active.value = !active.value;
-}
-
-async function persistStatusChange() {
-    const id = String(fetchedId.value ?? route.params.lmsId);
-    if (active.value) {
-        await assessmentToolViewService.activateAssessmentTool(id);
-    } else {
-        await assessmentToolViewService.deactivateAssessmentTool(id);
-    }
+    // passwords are not returned -> keep empty for security
+    fallbackPassword.value = '';
+    confirmFallbackPassword.value = '';
+    quitPassword.value = '';
+    confirmQuitPassword.value = '';
+    configurationPassword.value = '';
+    confirmConfigurationPassword.value = '';
 }
 
 function currentFormState() {
     return {
-        institution: institution.value,
         name: name.value,
-        lmsType: lmsType.value,
-        assessmentToolServerAddress: assessmentToolServerAddress.value,
-        assessmentToolServerUsername: assessmentToolServerUsername.value,
-        assessmentToolServerPassword: assessmentToolServerPassword.value,
-        accessToken: accessToken.value,
-        withProxy: withProxy.value,
-        proxyHost: proxyHost.value,
-        proxyPort: proxyPort.value,
-        proxyUsername: proxyUsername.value,
-        proxyPassword: proxyPassword.value,
+        configurationPurpose: configurationPurpose.value,
+        encryptWithCertificate: encryptWithCertificate.value,
+        pingInterval: pingInterval.value,
+        exams: exams.value,
+        asymmetricOnlyEncryption: asymmetricOnlyEncryption.value,
+        withFallback: withFallback.value,
+        fallbackStartUrl: fallbackStartUrl.value,
+        interval: interval.value,
+        connectionAttempts: connectionAttempts.value,
+        connectionTimeout: connectionTimeout.value,
+        // do not include password fields in dirty tracking (they're empty by default)
     };
 }
 
@@ -514,64 +684,54 @@ function takeSnapshot() {
     originalSnapshot.value = JSON.parse(JSON.stringify(currentFormState()));
 }
 
-// show Save/Cancel only when any value differs from snapshot
 const isDirty = computed(() => {
     if (!originalSnapshot.value) return false;
     return JSON.stringify(currentFormState()) !== JSON.stringify(originalSnapshot.value);
 });
 
-const isSaveDisabled = computed(() => {
-    const baseMissing =
-        !institution.value ||
-        !name.value.trim() ||
-        !lmsType.value ||
-        !assessmentToolServerAddress.value.trim() ||
-        !assessmentToolServerUsername.value.trim() ||
-        !assessmentToolServerPassword.value.trim();
+function toggleStatusLocally() {
+    active.value = !active.value;
+}
 
-    if (baseMissing) return true;
-
-    // address must start with http://
-    if (!assessmentToolServerAddress.value.startsWith('http://')) return true;
-
-    if (!withProxy.value) return false;
-
-    // withProxy on -> require proxy fields
-    const proxyMissing =
-        !proxyHost.value.trim() ||
-        !proxyPort.value.trim() ||
-        !proxyUsername.value.trim() ||
-        !proxyPassword.value.trim();
-
-    const n = Number(proxyPort.value);
-    const badPort = !(Number.isInteger(n) && n >= 1 && n <= 65535);
-
-    return proxyMissing || badPort;
-});
+async function persistStatusChange() {
+    const id = String(fetchedId.value ?? route.params.connectionConfigId ?? route.params.id);
+    if (active.value) {
+        await connectionConfigurationViewService.activateConnectionConfiguration(id);
+    } else {
+        await connectionConfigurationViewService.deactivateConnectionConfiguration(id);
+    }
+}
 
 function onBack() {
     if (window.history.length > 1) {
         router.back();
     } else {
-        navigateTo(constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE);
+        navigateTo(constants.CONNECTION_CONFIGURATIONS_ROUTE);
     }
 }
 
 function onCancel() {
     if (originalSnapshot.value) {
         const s = originalSnapshot.value as any;
-        institution.value = s.institution;
         name.value = s.name;
-        lmsType.value = s.lmsType;
-        assessmentToolServerAddress.value = s.assessmentToolServerAddress;
-        assessmentToolServerUsername.value = s.assessmentToolServerUsername;
-        assessmentToolServerPassword.value = s.assessmentToolServerPassword;
-        accessToken.value = s.accessToken;
-        withProxy.value = s.withProxy;
-        proxyHost.value = s.proxyHost;
-        proxyPort.value = s.proxyPort;
-        proxyUsername.value = s.proxyUsername;
-        proxyPassword.value = s.proxyPassword;
+        configurationPurpose.value = s.configurationPurpose;
+        encryptWithCertificate.value = s.encryptWithCertificate;
+        pingInterval.value = s.pingInterval;
+        exams.value = s.exams;
+        asymmetricOnlyEncryption.value = s.asymmetricOnlyEncryption;
+        withFallback.value = s.withFallback;
+        fallbackStartUrl.value = s.fallbackStartUrl;
+        interval.value = s.interval;
+        connectionAttempts.value = s.connectionAttempts;
+        connectionTimeout.value = s.connectionTimeout;
+
+        // wipe passwords
+        configurationPassword.value = '';
+        confirmConfigurationPassword.value = '';
+        fallbackPassword.value = '';
+        confirmFallbackPassword.value = '';
+        quitPassword.value = '';
+        confirmQuitPassword.value = '';
     }
     if (initialActiveStatus.value !== null) {
         active.value = initialActiveStatus.value;
@@ -583,7 +743,6 @@ async function onSave() {
     const fieldsChanged = isDirty.value;
     const statusWasChanged = statusChanged.value;
 
-    // If fields changed, validate; status-only skips validation
     if (fieldsChanged) {
         const {valid} = await (formRef.value as any).validate();
         if (!valid || isSaveDisabled.value) return;
@@ -600,15 +759,15 @@ async function onSave() {
 
         // 2) Only fields changed
         if (fieldsChanged && !statusWasChanged) {
-            await editAssessmentToolOnly();
+            await editConnectionConfigurationOnly();
             takeSnapshot();
             return;
         }
 
-        // 3) Both changed: status first, then fields
+        // 3) Both changed
         if (fieldsChanged && statusWasChanged) {
             await persistStatusChange();
-            await editAssessmentToolOnly();
+            await editConnectionConfigurationOnly();
             initialActiveStatus.value = active.value;
             takeSnapshot();
         }
@@ -617,37 +776,91 @@ async function onSave() {
     }
 }
 
+async function editConnectionConfigurationOnly() {
+    const idToSend = String(fetchedId.value ?? route.params.connectionConfigId ?? route.params.id);
 
-async function editAssessmentToolOnly() {
-    const idToSend = String(fetchedId.value ?? route.params.lmsId);
-
-    const payload: UpdateAssessmentToolPar = {
+    const basePayload: any = {
         id: idToSend,
-        institutionId: institution.value!,
-        name: name.value,
-        lmsType: lmsType.value as string,
-        lmsUrl: assessmentToolServerAddress.value,
-        lmsClientname: assessmentToolServerUsername.value,
-        lmsClientsecret: assessmentToolServerPassword.value,
-        lmsRestApiToken: accessToken.value,
-        ...(withProxy.value
+        name: name.value.trim(),
+        sebServerPingTime: Number(pingInterval.value!),
+        sebConfigPurpose: configurationPurpose.value!,
+        exam_selection: exams.value?.length ? exams.value : undefined,
+        encryptSecret: configurationPassword.value?.trim() || undefined,
+        confirm_encrypt_secret: confirmConfigurationPassword.value?.trim() || undefined,
+        cert_encryption_asym: !!asymmetricOnlyEncryption.value,
+        sebServerFallback: !!withFallback.value,
+        vdiSetup: 'NO',
+        // If your backend expects encryptWithCertificate, include it here
+        encryptWithCertificate: encryptWithCertificate.value,
+    };
+
+    const payload: any = {
+        ...basePayload,
+        ...(withFallback.value
             ? {
-                lmsProxyHost: proxyHost.value,
-                lmsProxyPort: Number(proxyPort.value.trim()),
-                lmsProxyAuthUsername: proxyUsername.value,
-                lmsProxyAuthSecret: proxyPassword.value,
+                startURL: fallbackStartUrl.value.trim(),
+                sebServerFallbackAttemptInterval: Number(interval.value!),
+                sebServerFallbackAttempts: Number(connectionAttempts.value!),
+                sebServerFallbackTimeout: Number(connectionTimeout.value!),
+                sebServerFallbackPasswordHash: fallbackPassword.value?.trim() || undefined,
+                sebServerFallbackPasswordHashConfirm: confirmFallbackPassword.value?.trim() || undefined,
+                hashedQuitPassword: quitPassword.value?.trim() || undefined,
+                hashedQuitPasswordConfirm: confirmQuitPassword.value?.trim() || undefined,
             }
             : {
-                lmsProxyHost: '',
-                lmsProxyPort: 0,
-                lmsProxyAuthUsername: '',
-                lmsProxyAuthSecret: '',
+                startURL: '',
+                sebServerFallbackAttemptInterval: 0,
+                sebServerFallbackAttempts: 0,
+                sebServerFallbackTimeout: 0,
+                sebServerFallbackPasswordHash: undefined,
+                sebServerFallbackPasswordHashConfirm: undefined,
+                hashedQuitPassword: undefined,
+                hashedQuitPasswordConfirm: undefined,
             })
     };
 
-    await assessmentToolViewService.editAssessmentTool(payload);
+    // TEMP backend quirk (same as create): duplicate key with space
+    const toSend: any = { ...payload, ['sebServerFallback ']: payload.sebServerFallback };
+
+    await connectionConfigurationViewService.editConnectionConfiguration(toSend as UpdateConnectionConfigurationPar);
 }
 
+// watchers to live-validate password pairs
+watch([configurationPassword, confirmConfigurationPassword], ([a, b]) => {
+    const aTrim = (a ?? '').trim();
+    const bTrim = (b ?? '').trim();
+    if (!aTrim && !bTrim) {
+        configPwdRef.value?.resetValidation?.();
+        confirmConfigPwdRef.value?.resetValidation?.();
+        return;
+    }
+    configPwdRef.value?.validate?.();
+    confirmConfigPwdRef.value?.validate?.();
+});
+
+watch([fallbackPassword, confirmFallbackPassword], ([a, b]) => {
+    const aTrim = (a ?? '').trim();
+    const bTrim = (b ?? '').trim();
+    if (!aTrim && !bTrim) {
+        fallbackPwdRef.value?.resetValidation?.();
+        confirmFallbackPwdRef.value?.resetValidation?.();
+        return;
+    }
+    fallbackPwdRef.value?.validate?.();
+    confirmFallbackPwdRef.value?.validate?.();
+});
+
+watch([quitPassword, confirmQuitPassword], ([a, b]) => {
+    const aTrim = (a ?? '').trim();
+    const bTrim = (b ?? '').trim();
+    if (!aTrim && !bTrim) {
+        quitPwdRef.value?.resetValidation?.();
+        confirmQuitPwdRef.value?.resetValidation?.();
+        return;
+    }
+    quitPwdRef.value?.validate?.();
+    confirmQuitPwdRef.value?.validate?.();
+});
 </script>
 
 <style scoped>
@@ -697,7 +910,6 @@ async function editAssessmentToolOnly() {
     cursor: pointer;
 }
 
-
 .revert-link {
     background: transparent;
     border: none;
@@ -720,6 +932,4 @@ async function editAssessmentToolOnly() {
 .revert-link:hover {
     text-decoration: underline;
 }
-
-
 </style>
