@@ -112,25 +112,6 @@
                                         />
                                     </v-col>
 
-                                    <!-- Exams (optional, multi-select) -->
-                                    <v-col cols="12" md="12" class="custom-padding-textbox">
-                                        <v-select
-                                            prepend-inner-icon="mdi-file-document-multiple-outline"
-                                            density="compact"
-                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.exams')"
-                                            variant="outlined"
-                                            v-model="exams"
-                                            :items="examItems"
-                                            item-title="label"
-                                            item-value="value"
-                                            multiple
-                                            chips
-                                            closable-chips
-                                            :loading="examsLoading"
-                                            :disabled="examsLoading"
-                                        />
-                                    </v-col>
-
                                 </v-col>
 
                                 <!-- Second Section -->
@@ -241,8 +222,8 @@
                                                             :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.fallbackStartURL')"
                                                             variant="outlined"
                                                             v-model="fallbackStartUrl"
-                                                            :rules="[requiredIfFallbackRule]"
-                                                            validate-on="blur"
+                                                            :rules="[requiredIfFallbackRule, urlIfFallbackRule]"
+                                                            validate-on="input"
                                                         />
                                                     </v-col>
 
@@ -316,7 +297,7 @@
                                                             density="compact"
                                                             :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.interval')"
                                                             variant="outlined"
-                                                            v-model.number="interval"
+                                                            v-model.number="fallbackInterval"
                                                             type="number"
                                                             inputmode="numeric"
                                                             :rules="[requiredNumberIfFallbackRule]"
@@ -456,6 +437,7 @@ import {navigateTo} from '@/router/navigation';
 import * as constants from '@/utils/constants';
 import * as connectionConfigurationViewService from '@/services/seb-server/component-services/connectionConfigurationViewService';
 import router from '@/router/router';
+import {Connect} from "vite";
 
 // Router
 const route = useRoute();
@@ -475,7 +457,7 @@ const asymmetricOnlyEncryption = ref<boolean>(false);
 
 const withFallback = ref<boolean>(false);
 const fallbackStartUrl = ref<string>("");
-const interval = ref<number | null>(2000);
+const fallbackInterval = ref<number | null>(2000);
 const connectionAttempts = ref<number | null>(5);
 const connectionTimeout = ref<number | null>(30000);
 const fallbackPassword = ref<string>("");
@@ -483,6 +465,7 @@ const confirmFallbackPassword = ref<string>("");
 const quitPassword = ref<string>("");
 const confirmQuitPassword = ref<string>("");
 const configurationPurpose = ref<string | null>(null);
+const institutionId = ref<number | undefined>(undefined);
 
 // UI state
 const formRef = ref();
@@ -533,6 +516,7 @@ const examItems = ref<{ label: string; value: number }[]>([]);
 const requiredMessage = translate("connectionConfigurations.createConnectionConfigurationPage.validation.required");
 const mustMatchMessage = translate('connectionConfigurations.createConnectionConfigurationPage.validation.noMatch');
 const mustBeNumberMessage = translate('connectionConfigurations.createConnectionConfigurationPage.validation.mustBeNumber');
+const mustBeUrlMessage = translate('connectionConfigurations.createConnectionConfigurationPage.validation.assessmentToolServerAddressLabel');
 
 // Rules (same as create)
 const requiredRule = (v: any) => {
@@ -544,6 +528,12 @@ const requiredNumberRule = (v: any) => requiredRule(v) === true && numberRule(v)
 
 const requiredIfFallbackRule = (v: any) => !withFallback.value || requiredRule(v) === true || requiredMessage;
 const requiredNumberIfFallbackRule = (v: any) => !withFallback.value || requiredNumberRule(v) === true || (isNaN(Number(v)) ? mustBeNumberMessage : requiredMessage);
+const urlIfFallbackRule = (v: any) => {
+    if (!withFallback.value) return true; // only check when fallback enabled
+    if (!v || typeof v !== 'string') return mustBeUrlMessage;
+    const trimmed = v.trim().toLowerCase();
+    return (trimmed.startsWith("http://") || trimmed.startsWith("https://")) || mustBeUrlMessage;
+};
 
 const configPwdMustMatchRule = (_v: any) => {
     const a = (configurationPassword.value ?? '').trim();
@@ -586,8 +576,8 @@ const isSaveDisabled = computed(() => {
     }
 
     if (withFallback.value) {
-        if (!fallbackStartUrl.value.trim()) return true;
-        if (interval.value === null || isNaN(Number(interval.value))) return true;
+        if (!fallbackStartUrl.value) return true;
+        if (fallbackInterval.value === null || isNaN(Number(fallbackInterval.value))) return true;
         if (connectionAttempts.value === null || isNaN(Number(connectionAttempts.value))) return true;
         if (connectionTimeout.value === null || isNaN(Number(connectionTimeout.value))) return true;
 
@@ -616,20 +606,17 @@ onMounted(async () => {
     appBarStore.title = translate("titles.connectionConfiguration");
     layoutStore.setBlueBackground(true);
 
-    // Load list items if needed (exams, etc.)
-    // TODO: Wire real examItems + loading if available
     examsLoading.value = false;
 
-    // Fetch Connection Configuration by ID
     const idParam = route.params.connectionConfigId ?? route.params.id;
     const idNum = Number(idParam);
-    if (Number.isFinite(idNum)) {
-        const dto: any = await connectionConfigurationViewService.getConnectionConfiguration(idNum).catch(() => null);
+    if (idNum != null) {
+        const dto: ConnectionConfiguration | null = await connectionConfigurationViewService.getConnectionConfiguration(idNum).catch(() => null);
         if (dto) {
             populateFromDto(dto);
             fetchedId.value = dto.id ?? idNum;
-            initialActiveStatus.value = !!dto.active;
-            active.value = !!dto.active;
+            initialActiveStatus.value = dto.active;
+            active.value = dto.active;
         }
     }
 
@@ -640,27 +627,29 @@ onBeforeUnmount(() => {
     layoutStore.setBlueBackground(false);
 });
 
-function populateFromDto(dto: any) {
+function populateFromDto(dto: ConnectionConfiguration) {
     name.value = (dto.name ?? '').toString();
+    institutionId.value = dto.institutionId;
     configurationPurpose.value = dto.sebConfigPurpose ?? null;
-    encryptWithCertificate.value = dto.encryptWithCertificate ?? undefined;
+    encryptWithCertificate.value = undefined;
     pingInterval.value = dto.sebServerPingTime != null ? Number(dto.sebServerPingTime) : 1000;
     exams.value = Array.isArray(dto.exam_selection) ? dto.exam_selection : [];
-    asymmetricOnlyEncryption.value = !!dto.cert_encryption_asym;
+    asymmetricOnlyEncryption.value = dto.cert_encryption_asym;
 
-    withFallback.value = !!dto.sebServerFallback;
-    fallbackStartUrl.value = dto.startURL ?? '';
-    interval.value = dto.sebServerFallbackAttemptInterval != null ? Number(dto.sebServerFallbackAttemptInterval) : 2000;
-    connectionAttempts.value = dto.sebServerFallbackAttempts != null ? Number(dto.sebServerFallbackAttempts) : 5;
-    connectionTimeout.value = dto.sebServerFallbackTimeout != null ? Number(dto.sebServerFallbackTimeout) : 30000;
+    withFallback.value = !!dto.startURL;
+    fallbackStartUrl.value = dto.startURL;
+    fallbackInterval.value = dto.sebServerFallbackAttemptInterval;
+    connectionAttempts.value = dto.sebServerFallbackAttempts;
+    connectionTimeout.value = dto.sebServerFallbackTimeout;
 
-    // passwords are not returned -> keep empty for security
-    fallbackPassword.value = '';
-    confirmFallbackPassword.value = '';
-    quitPassword.value = '';
-    confirmQuitPassword.value = '';
-    configurationPassword.value = '';
-    confirmConfigurationPassword.value = '';
+    // passwords
+    fallbackPassword.value = dto.sebServerFallbackPasswordHash;
+    confirmFallbackPassword.value = dto.sebServerFallbackPasswordHash;
+    quitPassword.value = dto.hashedQuitPassword;
+    confirmQuitPassword.value = dto.hashedQuitPassword;
+    configurationPassword.value = dto.encryptSecret;
+    confirmConfigurationPassword.value = dto.encryptSecret;
+
 }
 
 function currentFormState() {
@@ -673,10 +662,16 @@ function currentFormState() {
         asymmetricOnlyEncryption: asymmetricOnlyEncryption.value,
         withFallback: withFallback.value,
         fallbackStartUrl: fallbackStartUrl.value,
-        interval: interval.value,
+        interval: fallbackInterval.value,
         connectionAttempts: connectionAttempts.value,
         connectionTimeout: connectionTimeout.value,
-        // do not include password fields in dirty tracking (they're empty by default)
+
+        encryptSecret: configurationPassword.value,
+        confirm_encrypt_secret: confirmConfigurationPassword.value,
+        sebServerFallbackPasswordHash: fallbackPassword.value,
+        sebServerFallbackPasswordHashConfirm: confirmFallbackPassword.value,
+        hashedQuitPassword: quitPassword.value,
+        hashedQuitPasswordConfirm: confirmQuitPassword.value,
     };
 }
 
@@ -721,17 +716,17 @@ function onCancel() {
         asymmetricOnlyEncryption.value = s.asymmetricOnlyEncryption;
         withFallback.value = s.withFallback;
         fallbackStartUrl.value = s.fallbackStartUrl;
-        interval.value = s.interval;
+        fallbackInterval.value = s.interval;
         connectionAttempts.value = s.connectionAttempts;
         connectionTimeout.value = s.connectionTimeout;
 
         // wipe passwords
-        configurationPassword.value = '';
-        confirmConfigurationPassword.value = '';
-        fallbackPassword.value = '';
-        confirmFallbackPassword.value = '';
-        quitPassword.value = '';
-        confirmQuitPassword.value = '';
+        configurationPassword.value = s.encryptSecret;
+        confirmConfigurationPassword.value = s.encryptSecret;
+        fallbackPassword.value = s.sebServerFallbackPasswordHash;
+        confirmFallbackPassword.value = s.sebServerFallbackPasswordHash;
+        quitPassword.value = s.hashedQuitPassword;
+        confirmQuitPassword.value = s.hashedQuitPassword;
     }
     if (initialActiveStatus.value !== null) {
         active.value = initialActiveStatus.value;
@@ -779,27 +774,35 @@ async function onSave() {
 async function editConnectionConfigurationOnly() {
     const idToSend = String(fetchedId.value ?? route.params.connectionConfigId ?? route.params.id);
 
-    const basePayload: any = {
+    if (institutionId.value == null) {
+        console.warn("Skipping save: institutionId is not set");
+        return;
+    }
+
+    const basePayload: UpdateConnectionConfigurationPar = {
         id: idToSend,
+        institutionId: institutionId.value.toString(),
         name: name.value.trim(),
-        sebServerPingTime: Number(pingInterval.value!),
         sebConfigPurpose: configurationPurpose.value!,
+        sebServerPingTime: Number(pingInterval.value!),
         exam_selection: exams.value?.length ? exams.value : undefined,
+
         encryptSecret: configurationPassword.value?.trim() || undefined,
         confirm_encrypt_secret: confirmConfigurationPassword.value?.trim() || undefined,
+
         cert_encryption_asym: !!asymmetricOnlyEncryption.value,
+
         sebServerFallback: !!withFallback.value,
-        vdiSetup: 'NO',
-        // If your backend expects encryptWithCertificate, include it here
-        encryptWithCertificate: encryptWithCertificate.value,
+
+        vdiSetup: "NO",
     };
 
-    const payload: any = {
+    const payload = {
         ...basePayload,
         ...(withFallback.value
             ? {
                 startURL: fallbackStartUrl.value.trim(),
-                sebServerFallbackAttemptInterval: Number(interval.value!),
+                sebServerFallbackAttemptInterval: Number(fallbackInterval.value!),
                 sebServerFallbackAttempts: Number(connectionAttempts.value!),
                 sebServerFallbackTimeout: Number(connectionTimeout.value!),
                 sebServerFallbackPasswordHash: fallbackPassword.value?.trim() || undefined,
@@ -808,21 +811,24 @@ async function editConnectionConfigurationOnly() {
                 hashedQuitPasswordConfirm: confirmQuitPassword.value?.trim() || undefined,
             }
             : {
-                startURL: '',
-                sebServerFallbackAttemptInterval: 0,
-                sebServerFallbackAttempts: 0,
-                sebServerFallbackTimeout: 0,
+                startURL: undefined,
+                sebServerFallbackAttemptInterval: undefined,
+                sebServerFallbackAttempts: undefined,
+                sebServerFallbackTimeout: undefined,
                 sebServerFallbackPasswordHash: undefined,
                 sebServerFallbackPasswordHashConfirm: undefined,
                 hashedQuitPassword: undefined,
                 hashedQuitPasswordConfirm: undefined,
-            })
+            }),
     };
 
-    // TEMP backend quirk (same as create): duplicate key with space
-    const toSend: any = { ...payload, ['sebServerFallback ']: payload.sebServerFallback };
-
-    await connectionConfigurationViewService.editConnectionConfiguration(toSend as UpdateConnectionConfigurationPar);
+    //todo this removes the default key and replaces it with sebserverfallback with a space at the end to satisfy backend bug
+    const { sebServerFallback, ...rest } = payload as any;
+    const toSend = {
+        ...rest,
+        ['sebServerFallback ']: sebServerFallback,
+    };
+    await connectionConfigurationViewService.editConnectionConfiguration(toSend as any);
 }
 
 // watchers to live-validate password pairs

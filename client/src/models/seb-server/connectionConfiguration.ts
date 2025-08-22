@@ -48,22 +48,22 @@ type OptionalParGetConnectionConfiguration = {
 
 type CreateConnectionConfigurationPar = {
     name: string;
-    sebConfigPurpose : string; //Config Purpose
-    sebServerPingTime: number;  //Interval
-    exam_selection? : Number[]; //Exam Selection
+    sebConfigPurpose : string;
+    sebServerPingTime: number;
+    exam_selection? : Number[];
 
-    encryptSecret? : string; //encrypt with certificate
+    encryptSecret? : string;
     confirm_encrypt_secret? : string;
-    cert_encryption_asym? : boolean; // use asymmetric only encryption
+    cert_encryption_asym? : boolean;
 
     configurationPassword? : string;
     confirmConfigurationPassword? : string;
 
-    sebServerFallback : boolean; //with Fallback value
-    startURL? : string; //Fallback Start URL
-    sebServerFallbackTimeout? : number;  //Connection Timeout
-    sebServerFallbackAttempts? : number;  //Connection Attempts
-    sebServerFallbackAttemptInterval? : number; //Fallback Interval
+    sebServerFallback : boolean;
+    startURL? : string;
+    sebServerFallbackTimeout? : number;
+    sebServerFallbackAttempts? : number;
+    sebServerFallbackAttemptInterval? : number;
 
     sebServerFallbackPasswordHash?: string;
     sebServerFallbackPasswordHashConfirm? : string;
@@ -78,18 +78,30 @@ type CreateConnectionConfigurationPar = {
 
 type UpdateConnectionConfigurationPar = {
     id: string;
+    institutionId: string;
     name: string;
+    sebConfigPurpose : string;
+    sebServerPingTime: number;
+    exam_selection? : Number[];
+
+    encryptSecret? : string;
+    confirm_encrypt_secret? : string;
+    cert_encryption_asym? : boolean;
+
     configurationPassword? : string;
     confirmConfigurationPassword? : string;
-    encryptWithCertificate? : string;
-    pingInterval: number;
-    exams? : Number[]
-    fallbackStartUrl? : string;
-    interval? : number;
-    connectionAttempts? : number;
-    connectionTimeout? : number;
-    fallbackPassword?: string;
-    confirmFallbackPassword? : string;
-    quitPassword? : string;
-    confirmQuitPassword? : string;
+
+    sebServerFallback : boolean;
+    startURL? : string;
+    sebServerFallbackTimeout? : number;
+    sebServerFallbackAttempts? : number;
+    sebServerFallbackAttemptInterval? : number;
+
+    sebServerFallbackPasswordHash?: string;
+    sebServerFallbackPasswordHashConfirm? : string;
+
+    hashedQuitPassword? : string;
+    hashedQuitPasswordConfirm? : string;
+
+    "vdiSetup": "NO"
 }

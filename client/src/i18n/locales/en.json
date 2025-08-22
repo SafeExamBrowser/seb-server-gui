@@ -559,7 +559,7 @@
             },
             "validation" : {
                 "required" : "This field is required",
-                "assessmentToolServerAddressLabel" : "Must start with http://",
+                "assessmentToolServerAddressLabel" : "Must start with http:// or https://",
                 "invalidPort" : "Invalid port, ex. 8080",
                 "noMatch" : "Passwords don't match",
                 "mustBeNumber" : "The value can only consist of numbers"
@@ -578,8 +578,10 @@
             },
             "validation" : {
                 "required" : "This field is required",
-                "assessmentToolServerAddressLabel" : "Must start with http://",
+                "noMatch" : "Passwords don't match",
+                "assessmentToolServerAddressLabel" : "Must start with http:// or https://",
                 "invalidPort" : "Invalid port, ex. 8080"
+
             }
         },
         "lmsTypes": {
