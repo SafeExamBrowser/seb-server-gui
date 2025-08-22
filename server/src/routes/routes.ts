@@ -19,6 +19,7 @@ import * as searchController from "../controllers/screen-proctoring/sp-search.co
 import * as settingsController from "../controllers/screen-proctoring/sp-settings.controller";
 import * as applicationSearchController from "../controllers/screen-proctoring/sp-application-search.controller";
 import * as institutionsController from "../controllers/seb-server/institution.controller";
+import {editConnectionConfiguration} from "../controllers/seb-server/configuration.controller";
 
 
 const router: Router = express.Router();
@@ -90,7 +91,7 @@ router.post(constants.CONNECTION_CONFIG_ROUTE + "/:id" + constants.ACTIVATION_RO
 router.post(constants.CONNECTION_CONFIG_ROUTE + "/:id" + constants.DEACTIVATION_ROUTE, configurationController.deactivateConnectionConfiguration);
 router.delete(constants.CONNECTION_CONFIG_ROUTE+ "/:id", configurationController.deleteConnectionConfiguration);
 router.post(constants.CONNECTION_CONFIG_ROUTE, configurationController.createConnectionConfiguration);
-// router.put(constants.CONNECTION_CONFIG_ROUTE, configurationController.editAssessmentTool);
+router.put(constants.CONNECTION_CONFIG_ROUTE, configurationController.editConnectionConfiguration);
 
 
 

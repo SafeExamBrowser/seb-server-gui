@@ -227,8 +227,8 @@
                                                             :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.fallbackStartURL')"
                                                             variant="outlined"
                                                             v-model="fallbackStartUrl"
-                                                            :rules="[requiredIfFallbackRule]"
-                                                            validate-on="blur"
+                                                            :rules="[requiredIfFallbackRule, urlIfFallbackRule]"
+                                                            validate-on="input"
                                                         />
                                                     </v-col>
 
@@ -492,6 +492,7 @@ const examItems = ref<{ label: string; value: number }[]>([]);
 const requiredMessage = translate("connectionConfigurations.createConnectionConfigurationPage.validation.required");
 const mustMatchMessage = translate('connectionConfigurations.createConnectionConfigurationPage.validation.noMatch')
 const mustBeNumberMessage = translate('connectionConfigurations.createConnectionConfigurationPage.validation.mustBeNumber')
+const mustBeUrlMessage = translate('connectionConfigurations.createConnectionConfigurationPage.validation.assessmentToolServerAddressLabel');
 
 
 // Rules
@@ -504,6 +505,14 @@ const requiredNumberRule = (v: any) => requiredRule(v) === true && numberRule(v)
 
 const requiredIfFallbackRule = (v: any) => !withFallback.value || requiredRule(v) === true || requiredMessage;
 const requiredNumberIfFallbackRule = (v: any) => !withFallback.value || requiredNumberRule(v) === true || (isNaN(Number(v)) ? mustBeNumberMessage : requiredMessage);
+const urlIfFallbackRule = (v: any) => {
+    if (!withFallback.value) return true; // only check when fallback enabled
+    if (!v || typeof v !== 'string') return mustBeUrlMessage;
+    const trimmed = v.trim().toLowerCase();
+    return (trimmed.startsWith("http://") || trimmed.startsWith("https://")) || mustBeUrlMessage;
+};
+
+
 
 const isCreateDisabled = computed(() => {
     if (!name.value.trim()) return true;

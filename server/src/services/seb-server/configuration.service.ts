@@ -54,3 +54,14 @@ export async function deleteConnectionConfiguration(token: string, id: string): 
 
     return [data, status];
 }
+
+
+export async function editConnectionConfiguration(token: string, editConnectionConfigurationPars: {}): Promise<[object, number]> {
+    const headers = apiService.getPutHeaders(token);
+    const { data, status } = await apiService.api.put(
+        constants.CONNECTION_CONFIG_ROUTE,
+        editConnectionConfigurationPars,
+        { headers }
+    );
+    return [data, status];
+}
