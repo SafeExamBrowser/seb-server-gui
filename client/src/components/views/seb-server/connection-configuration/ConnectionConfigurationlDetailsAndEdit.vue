@@ -223,7 +223,7 @@
                                                             variant="outlined"
                                                             v-model="fallbackStartUrl"
                                                             :rules="[requiredIfFallbackRule, urlIfFallbackRule]"
-                                                            validate-on="input"
+                                                            validate-on="blur"
                                                         />
                                                     </v-col>
 
