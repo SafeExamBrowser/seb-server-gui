@@ -567,6 +567,12 @@
             "selectValues": {
                 "start_exam" : "Starting an Exam",
                 "configure_client": "Configure a Client"
+            },
+            "certificateDialog" : {
+                "uploadCertificate" : "Upload Certificte",
+                "selectFromFolder" : "Select From Files",
+                "uploadCertificateHelp" : "Drag and Drop or Search through Finder for a .pfx file",
+                "import" : "Import"
             }
         },
 

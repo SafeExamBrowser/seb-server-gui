@@ -80,8 +80,22 @@
                                             :return-object="false"
                                             item-title="label"
                                             item-value="value"
-                                        />
+                                            @update:modelValue="onSelectEncryptCert"
+                                        >
+                                        <!-- Fancy first item with upload icon -->
+                                        <template #item="{ item, props }">
+                                            <v-list-item v-bind="props">
+                                                <template #prepend>
+                                                    <v-icon v-if="item?.raw?.isAction" class="mr-2">mdi-upload</v-icon>
+                                                </template>
+                                                <template #title>
+                                                    <span class="font-weight-medium">{{ item?.title }}</span>
+                                                </template>
+                                            </v-list-item>
+                                        </template>
+                                        </v-select>
                                     </v-col>
+
 
                                     <!-- Ping Interval* (number) -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
@@ -410,6 +424,74 @@
                 </v-col>
             </v-row>
         </v-col>
+        <!-- Upload Certificate Dialog (NEW) -->
+        <v-dialog v-model="certDialog" max-width="720">
+            <v-card>
+                <v-card-title class="text-h6 font-weight-bold">
+                    {{ translate('connectionConfigurations.createConnectionConfigurationPage.certificateDialog.uploadCertificate') || 'Upload Certificate (.pfx)' }}
+                </v-card-title>
+
+                <v-card-text>
+                    <div class="text-body-2 text-grey-darken-1 mb-4">
+                        {{ translate('connectionConfigurations.createConnectionConfigurationPage.certificateDialog.uploadCertificateHelp')
+                    || 'Drag & drop a .pfx file here or choose one from your computer.' }}
+                    </div>
+
+                    <!-- Drag & Drop Zone -->
+                    <v-sheet
+                        class="d-flex flex-column align-center justify-center pa-8 mb-4 upload-dropzone"
+                        :class="{ 'upload-dropzone--active': dragActive }"
+                        @dragover.prevent="onDragOver"
+                        @dragleave.prevent="onDragLeave"
+                        @drop.prevent="onDrop"
+                        elevation="1"
+                    >
+                        <v-icon size="48" class="mb-3">mdi-file-certificate-outline</v-icon>
+                        <div class="text-subtitle-2 mb-2">{{ selectedFileName || 'Drop .pfx file here' }}</div>
+                        <div class="text-caption text-grey-darken-1 mb-4">.pfx only</div>
+
+                        <v-btn variant="outlined" @click="triggerFilePicker" :disabled="uploading">
+                            {{ translate('connectionConfigurations.createConnectionConfigurationPage.certificateDialog.selectFromFolder') || 'Choose file' }}
+                        </v-btn>
+                        <input
+                            ref="fileInputRef"
+                            type="file"
+                            class="d-none"
+                            accept=".pfx"
+                            @change="onFilePicked"
+                        />
+                    </v-sheet>
+
+                    <v-alert
+                        v-if="uploadError"
+                        type="error"
+                        variant="tonal"
+                        class="mb-2"
+                        density="comfortable"
+                    >
+                        {{ uploadError }}
+                    </v-alert>
+
+                    <v-progress-linear
+                        v-if="uploading"
+                        :model-value="uploadProgress"
+                        height="6"
+                        class="mb-2"
+                        rounded
+                    />
+                </v-card-text>
+
+                <v-card-actions class="justify-end">
+                    <v-btn text @click="closeCertDialog" :disabled="uploading">
+                        {{ translate("general.cancelButton") }}
+                    </v-btn>
+                    <v-btn color="primary" text @click="mockUpload" :disabled="!selectedFile || uploading">
+                        {{ translate("connectionConfigurations.createConnectionConfigurationPage.certificateDialog.import") || 'Upload' }}
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
     </v-row>
 </template>
 
@@ -468,12 +550,18 @@ const quitPwdRef = ref<any>(null);
 const confirmQuitPwdRef = ref<any>(null);
 
 
-// Select items
-const encryptWithCertificateItems = [
-    {label: '—', value: undefined},
-    {label: 'Yes', value: 'YES'},
-    {label: 'No', value: 'NO'}
-];
+
+
+const certDialog = ref(false);
+const dragActive = ref(false);
+const selectedFile = ref<File | null>(null);
+const selectedFileName = ref<string>('');
+const uploadError = ref<string>('');
+const uploading = ref(false);
+const uploadProgress = ref(0);
+const fileInputRef = ref<HTMLInputElement | null>(null);
+
+
 
 const configurationPurposeItems = [
     {
@@ -666,6 +754,129 @@ watch([quitPassword, confirmQuitPassword], ([a, b]) => {
     quitPwdRef.value?.validate?.();
     confirmQuitPwdRef.value?.validate?.();
 });
+
+
+
+//dialog
+
+
+
+// --- NEW: handler when user selects the special upload action ---
+function onSelectEncryptCert(val: string | undefined) {
+    if (val === '__UPLOAD__') {
+        // open dialog, but don't keep this value as selection
+        certDialog.value = true;
+        // reset selection to previous (or undefined)
+        encryptWithCertificate.value = undefined;
+    }
+}
+
+// --- NEW: dialog helpers ---
+function triggerFilePicker() {
+    fileInputRef.value?.click();
+}
+
+function validPfx(file: File) {
+    return /\.pfx$/i.test(file.name);
+}
+
+function onFilePicked(e: Event) {
+    const input = e.target as HTMLInputElement;
+    const file = input.files?.[0] || null;
+    if (!file) return;
+    if (!validPfx(file)) {
+        uploadError.value = 'Only .pfx files are allowed.';
+        selectedFile.value = null;
+        selectedFileName.value = '';
+        input.value = '';
+        return;
+    }
+    uploadError.value = '';
+    selectedFile.value = file;
+    selectedFileName.value = file.name;
+}
+
+function onDragOver() {
+    dragActive.value = true;
+}
+function onDragLeave() {
+    dragActive.value = false;
+}
+function onDrop(e: DragEvent) {
+    dragActive.value = false;
+    const file = e.dataTransfer?.files?.[0];
+    if (!file) return;
+    if (!validPfx(file)) {
+        uploadError.value = 'Only .pfx files are allowed.';
+        selectedFile.value = null;
+        selectedFileName.value = '';
+        return;
+    }
+    uploadError.value = '';
+    selectedFile.value = file;
+    selectedFileName.value = file.name;
+}
+
+// --- NEW: mock upload (simulates API) ---
+async function mockUpload() {
+    if (!selectedFile.value) return;
+    uploadError.value = '';
+    uploading.value = true;
+    uploadProgress.value = 0;
+
+    // fake progress
+    const steps = 8;
+    for (let i = 1; i <= steps; i++) {
+        await new Promise(r => setTimeout(r, 120));
+        uploadProgress.value = Math.round((i / steps) * 100);
+    }
+
+    // "API" result
+    const created = {
+        id: `cert_${Math.random().toString(36).slice(2, 8)}`,
+        name: selectedFile.value.name.replace(/\.pfx$/i, ''),
+    };
+
+    // add to list (after the '—' separator)
+    const idx = encryptWithCertificateItems.value.findIndex(i => i.value === undefined);
+    const insertAt = idx >= 0 ? idx + 1 : encryptWithCertificateItems.value.length;
+    encryptWithCertificateItems.value.splice(insertAt, 0, {
+        label: created.name,
+        value: created.id,
+    });
+
+    // auto-select it
+    encryptWithCertificate.value = created.id;
+
+    // reset dialog
+    uploading.value = false;
+    closeCertDialog();
+}
+
+function closeCertDialog() {
+    certDialog.value = false;
+    dragActive.value = false;
+    selectedFile.value = null;
+    selectedFileName.value = '';
+    uploadError.value = '';
+    uploading.value = false;
+    uploadProgress.value = 0;
+    if (fileInputRef.value) fileInputRef.value.value = '';
+}
+
+type CertItem = {
+    label: string;
+    value: string | undefined;
+    isAction?: boolean;
+};
+
+const encryptWithCertificateItems = ref<CertItem[]>([
+    { label: translate('connectionConfigurations.createConnectionConfigurationPage.certificateDialog.uploadCertificate') || 'Upload certificate…', value: '__UPLOAD__', isAction: true },
+    { label: 'Corp Root CA 2025', value: 'cert_1' },
+    { label: 'Exam Signing Cert – Zurich', value: 'cert_2' },
+    { label: 'Fallback Encrypter PFX', value: 'cert_3' },
+]);
+
 
 </script>
 
