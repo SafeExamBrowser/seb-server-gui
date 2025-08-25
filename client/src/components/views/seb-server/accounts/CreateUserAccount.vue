@@ -5,52 +5,7 @@
     <v-row class="mt-10 w-98 h-100">
 
         <!-- settings navigation-->
-        <v-col cols="3" class="pt-0 h-100">
-            <v-sheet  class="rounded-lg ml-6 w-100 h-100 bg-primary">
-                <v-col class="pt-0">
-                    <v-divider class="section-divider" />
-
-                    <v-list-item class="px-0 nav-hover">
-                        <router-link class="link-color nav-link" :to="constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE">
-                            {{ translate("titles.assessmentToolConnections") }}
-                        </router-link>
-                    </v-list-item>
-
-                    <v-divider class="section-divider" />
-
-                    <v-list-item class="px-0 nav-hover">
-                        <span class="link-color nav-link">{{ translate("navigation.routeNames.connectionConfiguration") }}</span>
-                    </v-list-item>
-
-                    <v-divider class="section-divider" />
-
-                    <v-list-item class="px-0 nav-hover">
-                        <span class="link-color nav-link">{{ translate("navigation.routeNames.certificates") }}</span>
-                    </v-list-item>
-
-                    <v-divider class="section-divider" />
-
-                    <v-list-item class="px-0 nav-hover">
-                        <router-link class="link-color nav-link" :to="constants.USER_ACCOUNTS_ROUTE">{{ translate("navigation.routeNames.userAccounts") }}</router-link>
-                    </v-list-item>
-
-                    <v-divider class="section-divider mb-10" />
-                </v-col>
-
-                <!-- Success Message for creation -->
-                <div class="success-message-div">
-                    <AlertMsg
-                        v-if="createdSuccess"
-                        :alertProps="{
-                            title: '',
-                            color: 'success',
-                            type: 'alert',
-                            customText: i18n.t('warnings.creation-success', { username: createdUserName})
-                        }"
-                    />
-                </div>
-            </v-sheet>
-        </v-col>
+        <SettingsNavigation/>
 
         <v-col elevation="4" cols="9" class="bg-white rounded-lg">
             <v-row class="d-flex align-center justify-space-between px-6 pt-6">

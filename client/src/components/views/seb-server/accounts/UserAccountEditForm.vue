@@ -3,57 +3,8 @@
         {{ translate("titles.settings") }}
     </div>
     <v-row class="mt-10 w-98 h-100">
-        <v-col cols="3" class="pt-0 pb-0 h-100 d-flex flex-column">
-
-            <v-sheet class="rounded-lg ml-6 pb-0 h-100 w-100 bg-primary d-flex flex-column flex-grow-1">
-                <!-- settings navigation-->
-                <v-col class="pt-0 pb h-100">
-                    <v-divider class="section-divider"/>
-
-                    <v-list-item class="px-0 nav-hover">
-                        <router-link class="link-color nav-link" :to="constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE">
-                            {{ translate("titles.assessmentToolConnections") }}
-                        </router-link>
-                    </v-list-item>
-
-                    <v-divider class="section-divider"/>
-
-                    <v-list-item class="px-0 nav-hover">
-                        <span class="link-color nav-link">{{
-                                translate("navigation.routeNames.connectionConfiguration")
-                            }}</span>
-                    </v-list-item>
-
-                    <v-divider class="section-divider"/>
-
-                    <v-list-item class="px-0 nav-hover">
-                        <span class="link-color nav-link">{{ translate("navigation.routeNames.certificates") }}</span>
-                    </v-list-item>
-
-                    <v-divider class="section-divider"/>
-
-                    <v-list-item class="px-0 nav-hover">
-                        <router-link class="link-color nav-link" :to="constants.USER_ACCOUNTS_ROUTE">
-                            {{ translate("navigation.routeNames.userAccounts") }}
-                        </router-link>
-                    </v-list-item>
-
-                    <v-divider class="section-divider mb-16"/>
-                </v-col>
-                <!--success message-->
-                <div class="success-message-div pt-4 bottom-0">
-                    <AlertMsg
-                        v-if="editedSuccess || passwordEditedSuccess"
-                        :alertProps="{
-                            title: '',
-                            color: 'success',
-                            type: 'alert',
-                            customText: i18n.t('userAccount.userAccountDetailAndEditPage.warnings.edit-success', { username: editedUserName})
-                        }"
-                    />
-                </div>
-            </v-sheet>
-        </v-col>
+        <!-- settings navigation-->
+        <SettingsNavigation/>
 
         <!-- main div-->
         <v-col elevation="4" cols="9" class="bg-white rounded-lg">
