@@ -144,7 +144,10 @@
 
                     <template v-slot:item="{ item }">
                         <tr
-                            :class="[selectedUserAccount?.id === item.id ? 'selected-row' : '']"
+                            :class="[selectedUserAccount?.id === item.id ? 'selected-row' : '',
+                                'row-clickable'
+                            ]"
+                            @click="goToDetails(item, false)"
                         >
                             <!-- Column Definition -->
                             <td v-if="showInstitutionColumn" class="text-primary">
@@ -594,6 +597,12 @@
         return !(isCurrentUserOnlyInstitutional && isTargetSebAdmin);
     }
 
+
+    function goToDetails(item: UserAccount) {
+        navigateTo(`${constants.EDIT_USER_ACCOUNT}/${item.uuid}`);
+    }
+
+
 </script>
 
 <style scoped>
@@ -772,5 +781,14 @@
         background-color: rgba(33, 92, 175, 0.1);
     }
 
+
+    .row-clickable {
+        cursor: pointer;
+        transition: background-color 0.15s ease-in-out;
+    }
+
+    .row-clickable:hover {
+        background-color: rgba(33, 92, 175, 0.06);
+    }
 
 </style>
