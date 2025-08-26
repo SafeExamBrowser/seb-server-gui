@@ -568,12 +568,7 @@
                 "start_exam" : "Starting an Exam",
                 "configure_client": "Configure a Client"
             },
-            "certificateDialog" : {
-                "uploadCertificate" : "Upload Certificte",
-                "selectFromFolder" : "Select From Files",
-                "uploadCertificateHelp" : "Drag and Drop or Search through Finder for a .pfx file",
-                "import" : "Import"
-            }
+
         },
 
         "assessmentToolDetailAndEditPage" : {
@@ -598,6 +593,40 @@
             "ANS_DELFT": "Ans Delft",
             "OPEN_OLAT": "OLAT"
         }
+    },
+
+    "certificates" : {
+        "addCertificate" : "Add Certificate",
+        "filters" : {
+            "searchTitle" : "Search",
+            "searchField" : "Search for Certificates"
+        },
+
+        "certificateTableHeaders": {
+            "tableHeaderAlias": "Alias",
+            "tableHeaderValidFrom": "Valid From",
+            "tableHeaderValidTo": "Valid To",
+            "tableHeaderTypes": "Types"
+        },
+        "deleteCertificateContext": {
+            "title": "Confirm Deletion",
+            "informationPart1": "Delete Certificate: ",
+            "informationPart3": " ?"
+        },
+        "certificateDialog" : {
+            "uploadCertificate" : "Upload Certificate",
+            "selectFromFolder" : "Select From Files",
+            "uploadCertificateHelp" : "Drag and Drop or Search through Finder for a .pfx file",
+            "import" : "Import"
+        },
+        "types": {
+            "UNKNOWN": "Unknown",
+            "DIGITAL_SIGNATURE": "TLS/SSL",
+            "DATA_ENCIPHERMENT": "Encipherment",
+            "DATA_ENCIPHERMENT_PRIVATE_KEY": "Identity",
+            "KEY_CERT_SIGN": "CA"
+        }
+
     },
 
     "examDetail": {
@@ -947,7 +976,8 @@
         "assessmentToolEdit" : "Edit Assessment Tool",
         "connectionConfigurationViewAndEdit": "Connection Configuration",
         "createConnectionConfiguration" : "Add Connection Configuration",
-        "connectionConfigurations" : "Connection Configurations"
+        "connectionConfigurations" : "Connection Configurations",
+        "certificates" : "Certificates"
     },
 
     "warnings": {

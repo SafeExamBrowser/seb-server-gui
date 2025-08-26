@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AddCertificateDialog: typeof import('./components/views/seb-server/certificates/AddCertificateDialog.vue')['default']
     AddClientGroupDialog: typeof import('./components/views/seb-server/exam/detail/dialogs/client-group/AddClientGroupDialog.vue')['default']
     AlertMsg: typeof import('./components/widgets/AlertMsg.vue')['default']
     ApplicationsSearchExamList: typeof import('./components/views/screen-proctoring/applications-search/ApplicationsSearchExamList.vue')['default']
@@ -17,6 +18,7 @@ declare module 'vue' {
     AskDialog: typeof import('./components/views/seb-server/monitoring/overview/dialogs/AskDialog.vue')['default']
     AssessmentToolDetailsAndEdit: typeof import('./components/views/seb-server/assessment-tool/AssessmentToolDetailsAndEdit.vue')['default']
     AssessmentTools: typeof import('./components/views/seb-server/assessment-tool/AssessmentTools.vue')['default']
+    Certificates: typeof import('./components/views/seb-server/certificates/Certificates.vue')['default']
     ClienGroupListDialog: typeof import('./components/views/seb-server/exam/detail/dialogs/client-group/ClienGroupListDialog.vue')['default']
     ClientGroupInfoDialog: typeof import('./components/views/seb-server/monitoring/dialogs/ClientGroupInfoDialog.vue')['default']
     ConnectionConfigurationlDetailsAndEdit: typeof import('./components/views/seb-server/connection-configuration/ConnectionConfigurationlDetailsAndEdit.vue')['default']

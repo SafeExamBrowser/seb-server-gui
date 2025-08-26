@@ -1,6 +1,5 @@
 import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
-import AssessmentTools from "@/components/views/seb-server/assessment-tool/AssessmentTools.vue";
 
 
 

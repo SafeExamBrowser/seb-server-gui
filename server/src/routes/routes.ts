@@ -19,7 +19,7 @@ import * as searchController from "../controllers/screen-proctoring/sp-search.co
 import * as settingsController from "../controllers/screen-proctoring/sp-settings.controller";
 import * as applicationSearchController from "../controllers/screen-proctoring/sp-application-search.controller";
 import * as institutionsController from "../controllers/seb-server/institution.controller";
-import {editConnectionConfiguration} from "../controllers/seb-server/configuration.controller";
+import * as certificateController from "../controllers/seb-server/certificate.controller";
 
 
 const router: Router = express.Router();
@@ -84,7 +84,6 @@ router.delete(constants.USER_ACCOUNT_ROUTE + "/:id", userAccountController.delet
 //connection configurations
 router.get(constants.DOWNLOAD_EXAM_CONFIG_ROUTE + "/:id", configurationController.downloadExamConfig);
 router.get(constants.CONNECTION_CONFIG_ROUTE + constants.ACTIVE, configurationController.getConnectionConfigurationsActive);
-
 router.get(constants.CONNECTION_CONFIG_ROUTE + "/:id", configurationController.getConnectionConfiguration);
 router.get(constants.CONNECTION_CONFIG_ROUTE, configurationController.getConnectionConfigurations);
 router.post(constants.CONNECTION_CONFIG_ROUTE + "/:id" + constants.ACTIVATION_ROUTE, configurationController.activateConnectionConfiguration);
@@ -92,8 +91,6 @@ router.post(constants.CONNECTION_CONFIG_ROUTE + "/:id" + constants.DEACTIVATION_
 router.delete(constants.CONNECTION_CONFIG_ROUTE+ "/:id", configurationController.deleteConnectionConfiguration);
 router.post(constants.CONNECTION_CONFIG_ROUTE, configurationController.createConnectionConfiguration);
 router.put(constants.CONNECTION_CONFIG_ROUTE, configurationController.editConnectionConfiguration);
-
-
 
 //assessment tool
 router.get(constants.ASSESSMENT_TOOL_GET_ROUTE + "/:id", assessmentToolController.getAssessmentTool);
@@ -104,6 +101,11 @@ router.post(constants.ASSESSMENT_TOOL_ROUTE + "/:id" + constants.DEACTIVATION_RO
 router.delete(constants.ASSESSMENT_TOOL_ROUTE+ "/:id", assessmentToolController.deleteAssessmentTool);
 router.post(constants.ASSESSMENT_TOOL_ROUTE, assessmentToolController.createAssessmentTool);
 router.put(constants.ASSESSMENT_TOOL_ROUTE, assessmentToolController.editAssessmentTool);
+
+//certificate
+router.post(constants.CERTIFICATE_ROUTE, certificateController.createCertificate);
+router.get(constants.CERTIFICATE_ROUTE, certificateController.getCertificates);
+router.delete(constants.CERTIFICATE_ROUTE + "/:alias", certificateController.deleteCertificate);
 
 
 //monitoring

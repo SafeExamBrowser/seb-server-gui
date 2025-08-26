@@ -34,10 +34,9 @@
                             <v-divider class="section-divider"/>
 
                             <v-list-item class="px-0 nav-hover">
-                                <span class="link-color nav-link">{{
-                                        translate("navigation.routeNames.certificates")
-                                    }}
-                                </span>
+                                <router-link class="link-color nav-link" :to="constants.CERTIFICATES_ROUTE">
+                                    {{ translate("navigation.routeNames.certificates") }}
+                                </router-link>
                             </v-list-item>
 
                             <v-divider class="section-divider"/>

@@ -45,6 +45,10 @@ export const CONNECTION_CONFIGURATIONS_ROUTE: string =  "/connection-configurati
 export const CREATE_CONNECTION_CONFIGURATION_ROUTE: string = CONNECTION_CONFIGURATIONS_ROUTE + "/create";
 
 
+//certificates
+export const CERTIFICATES_ROUTE: string =  "/certificates";
+
+
 // export const USER_ACCOUNTS_ROUTE: string = MONITORING_ROUTE + "/userAccounts";
 
 

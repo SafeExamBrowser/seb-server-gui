@@ -270,7 +270,6 @@ export function assignAssessmentToolSelectPagingOptions(
     if (name && name !== "") {
         opt.name = name;
     }
-
     return opt;
 }
 
@@ -306,6 +305,31 @@ export function assignConnectionConfigurationSelectPagingOptions(
 
     return opt;
 }
+
+
+
+export function assignCertificateSelectPagingOptions(
+    serverTablePaging: ServerTablePaging,
+
+    alias: string | null
+): OptionalParGetCertificates {
+    const opt: OptionalParGetCertificates = {};
+
+    opt.page_size  = serverTablePaging.itemsPerPage;
+    opt.page_number = serverTablePaging.page;
+
+    if (serverTablePaging.sortBy?.length) {
+        let sortString = serverTablePaging.sortBy[0].key;
+        if (serverTablePaging.sortBy[0].order === "desc") sortString = "-" + sortString;
+        opt.sort = sortString;
+    }
+    // NEW: search
+    if (alias && alias !== "") {
+        opt.alias = alias;
+    }
+    return opt;
+}
+
 
 
 

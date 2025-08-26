@@ -36,7 +36,7 @@ import AssessmentTools from "@/components/views/seb-server/assessment-tool/Asses
 import CreateAssessmentTool from "@/components/views/seb-server/assessment-tool/CreateAssessmentTool.vue";
 import AssessmentToolDetailsAndEdit from "@/components/views/seb-server/assessment-tool/AssessmentToolDetailsAndEdit.vue";
 import {
-    ASSESSMENT_TOOL_CONNECTIONS_ROUTE,
+    ASSESSMENT_TOOL_CONNECTIONS_ROUTE, CERTIFICATES_ROUTE,
     CONNECTION_CONFIGURATIONS_ROUTE,
     CREATE_CONNECTION_CONFIGURATION_ROUTE
 } from "@/utils/constants";
@@ -46,6 +46,7 @@ import ConnectionConfigurations
     from "@/components/views/seb-server/connection-configuration/ConnectionConfigurations.vue";
 import ConnectionConfigurationlDetailsAndEdit
     from "@/components/views/seb-server/connection-configuration/ConnectionConfigurationlDetailsAndEdit.vue";
+import Certificates from "@/components/views/seb-server/certificates/Certificates.vue";
 
 
 
@@ -265,6 +266,18 @@ const routes: Array<RouteRecordRaw> = [
                     titleKey: "titles.connectionConfigurationViewAndEdit"
                 },
             },
+
+            //certificates
+
+            {
+                path: constants.CERTIFICATES_ROUTE,
+                name: "Certificates",
+                component: Certificates,
+                meta: {
+                    titleKey: "titles.certificates"
+                },
+            },
+
 
             {
                 path: constants.PLAYGROUND,

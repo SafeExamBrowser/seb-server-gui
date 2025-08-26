@@ -52,6 +52,27 @@
                                 <v-icon class="search-icon" @click="onSearch">mdi-magnify</v-icon>
                             </template>
                         </v-text-field>
+
+                        <div class="d-flex justify-end w-90 mt-5">
+                            <v-btn
+                                rounded="sm"
+                                color="black"
+                                variant="outlined"
+                                @click="onClearSearch()"
+                            >
+                                {{ translate("general.cancelButton") }}
+                            </v-btn>
+
+                            <v-btn
+                                rounded="sm"
+                                color="primary"
+                                variant="flat"
+                                class="ml-2"
+                                @click="onSearch()"
+                            >
+                                {{ translate("general.searchButton") }}
+                            </v-btn>
+                        </div>
                     </v-col>
                     <!-- Status Filters -->
                     <v-col cols="7">
@@ -119,33 +140,6 @@
                         </v-row>
                     </v-col>
                 </v-row>
-
-                <!-- Search buttons -->
-                <v-row class="px-6 pt-0">
-                    <v-col cols="12" md="5" class="pa-0 mb-4">
-                        <div class="d-flex justify-end w-90">
-                            <v-btn
-                                rounded="sm"
-                                color="black"
-                                variant="outlined"
-                                @click="onClearSearch()"
-                            >
-                                {{ translate("general.cancelButton") }}
-                            </v-btn>
-
-                            <v-btn
-                                rounded="sm"
-                                color="primary"
-                                variant="flat"
-                                class="ml-2"
-                                @click="onSearch()"
-                            >
-                                {{ translate("general.searchButton") }}
-                            </v-btn>
-                        </div>
-                    </v-col>
-                </v-row>
-
                 <!-- Data Table Definition-->
                 <v-sheet class="rounded-lg mt-10">
                     <v-data-table-server
