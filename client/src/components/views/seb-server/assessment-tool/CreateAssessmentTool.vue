@@ -357,8 +357,8 @@ const authenticatedUserAccountStore = useAuthenticatedUserAccountStore();
 
 //validation rules
 const requiredMessage = translate("assessmentToolConnections.createAssessmentToolConnectionsPage.validation.required");
-const invalidPortMessage = translate("assessmentToolConnections.createAssessmentToolConnectionsPage.validation.invalidPort") || "Invalid port";
-const httpPrefixMessage = translate("assessmentToolConnections.createAssessmentToolConnectionsPage.validation.httpPrefix") || "Must start with http://";
+const invalidPortMessage = translate("assessmentToolConnections.createAssessmentToolConnectionsPage.validation.invalidPort");
+const httpPrefixMessage = translate("assessmentToolConnections.createAssessmentToolConnectionsPage.validation.httpPrefix");
 
 const requiredRule = (v: string) => !!v || requiredMessage;
 

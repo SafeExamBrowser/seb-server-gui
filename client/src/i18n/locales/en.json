@@ -253,7 +253,7 @@
     "examList": {
         "info": {
             "examNameSearchPlaceholder": "Search",
-            "examStartSearchPlaceholder": "Filter by Date",
+            "examStartSearchPlaceholder": "Filter by Start Date",
             "selectExam": "Select Exam",
             "search": "Search:",
             "searchPlaceholder": "Search Exams",
@@ -615,9 +615,14 @@
         },
         "certificateDialog" : {
             "uploadCertificate" : "Upload Certificate",
-            "selectFromFolder" : "Select From Files",
-            "uploadCertificateHelp" : "Drag and Drop or Search through Finder for a .pfx file",
-            "import" : "Import"
+            "selectFromFolder" : "Select From File Explorer",
+            "uploadCertificateHelp" : "Drag and Drop or Search through File Explorer",
+            "addCertificate" : "Add Certificate",
+            "onlyAllowed" : "File Type not allowed",
+            "allowed" : "Allowed File Types",
+            "dropHere" : "Drop a certificate file here",
+            "password" : "Password",
+            "uploadFailed" : "Failed to upload certificate, please contact a system administrator"
         },
         "types": {
             "UNKNOWN": "Unknown",
@@ -780,7 +785,7 @@
             "runningExams": "Running Exams",
             "search": "Search:",
             "start": "Exam Start:",
-            "examStartSearchPlaceholder": "Filter by Date",
+            "examStartSearchPlaceholder": "Filter by Start Date",
             "examNameSearchPlaceholder": "Search",
 
             "filter": "Filter",

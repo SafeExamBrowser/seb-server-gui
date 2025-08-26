@@ -24,7 +24,10 @@ export async function deleteCertificate(req: Request, res: Response){
 
 export async function createCertificate(req: Request, res: Response) {
     try {
-        const [certificate, status] = await certificateService.createCertificate(req.headers.authorization, req.body);
+        const [certificate, status] = await certificateService.createCertificate(
+            req.headers.authorization as string,
+            req.body
+        );
         return res.status(status).json(certificate);
     } catch (error) {
         apiService.handleGenericApiError(error, res);

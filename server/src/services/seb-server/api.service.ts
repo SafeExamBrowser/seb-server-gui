@@ -43,6 +43,14 @@ export function getOctetStreamHeaders(token: string): object {
     };
 }
 
+export function getOctetStreamHeadersAcceptJson(token: string): object {
+    return {
+        "accept": "application/json",
+        "Authorization": token,
+        "Content-Type": "application/octet-stream"
+    };
+}
+
 export function getApplicationJsonHeaders(token: string): object {
     return {
         "accept": "application/json",
@@ -82,7 +90,7 @@ export function handleGenericApiError(error: any, res: Response){
         console.error(503)
         return res.status(503).json("webservice unavailable");
     }
-    
+
     //else if there is another type of error
     return res.status(500).send();
 }

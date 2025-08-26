@@ -23,14 +23,20 @@ type OptionalParGetCertificates = {
 };
 
 
-type CreateCertificatePar = {
-    alias: string;
-    validityFrom: string;
-    validityTo: string;
-    certType: string;
+ type CreateCertificatePar = {
+    file: Blob;
+    fileName: string;
+    password?: string
 };
 
- enum CertificateTypeEnum {
+type CreateCertificateJSON = {
+    fileBase64: string;
+    fileName: string;
+    password?: string;
+};
+
+
+enum CertificateTypeEnum {
     UNKNOWN = "UNKNOWN",
     DIGITAL_SIGNATURE = "DIGITAL_SIGNATURE",
     DATA_ENCIPHERMENT = "DATA_ENCIPHERMENT",

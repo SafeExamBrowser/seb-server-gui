@@ -701,7 +701,6 @@ const encryptWithCertificateItems = ref<CertItem[]>([
 ]);
 
 
-//certification add dialog
 function onSelectEncryptCert(val: string | undefined) {
     if (val === '__UPLOAD__') {
         certDialog.value = true;

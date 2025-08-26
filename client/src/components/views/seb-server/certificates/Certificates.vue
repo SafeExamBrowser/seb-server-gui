@@ -12,15 +12,11 @@
                 <div class="text-primary text-h5 font-weight-bold">
                     {{ translate("titles.certificates") }}
                 </div>
-
                 <div class="d-flex align-center cursor-pointer add-user-container"
-                     @click=""
-                >
-                    <span
-                        class="text-primary font-weight-medium mr-2">{{
-                            translate("certificates.addCertificate")
-                        }}</span>
-
+                     @click="uploadDialog = true">
+                        <span class="text-primary font-weight-medium mr-2">
+                            {{ translate("certificates.addCertificate") }}
+                        </span>
                     <div class="add-user-icon d-flex align-center justify-center">
                         <v-icon size="28">mdi-plus</v-icon>
                     </div>
@@ -111,8 +107,14 @@
                             >
                                 <!-- Column Definition -->
                                 <td class="text-primary">{{ item.alias }}</td>
-                                <td class="text-primary">{{ timeUtils.formatIsoToReadableDateTime(item.validityFrom) }}</td>
-                                <td class="text-primary">{{ timeUtils.formatIsoToReadableDateTime(item.validityTo) }}</td>
+                                <td class="text-primary">{{
+                                        timeUtils.formatIsoToReadableDateTime(item.validityFrom)
+                                    }}
+                                </td>
+                                <td class="text-primary">{{
+                                        timeUtils.formatIsoToReadableDateTime(item.validityTo)
+                                    }}
+                                </td>
                                 <td class="text-primary">{{ formatCertTypes(item.certType) }}</td>
 
                                 <td class="icon-cell">
@@ -156,8 +158,13 @@
                             </v-card-actions>
                         </v-card>
                     </v-dialog>
+
                 </v-sheet>
             </v-sheet>
+            <AddCertificateDialog
+                v-model="uploadDialog"
+                @imported="onCertificateImported"
+            />
         </v-col>
     </v-row>
 </template>
@@ -187,14 +194,14 @@ const deleteSuccess = ref(false);
 const deletedName = ref("");
 const totalItems = ref<number>(0);
 const selectedCertificate = ref<Certificate | null>(null);
+const uploadDialog = ref(false);
 
 
 const options = ref({
     page: 1,
     itemsPerPage: 5,
-    sortBy: [{ key: "name", order: "asc" }],
+    sortBy: [{key: "name", order: "asc"}],
 });
-
 
 
 //search string
@@ -282,6 +289,7 @@ function onSearch() {
     options.value.page = 1;
     loadItems(options.value);
 }
+
 function onClearSearch() {
     certificateStore.searchField = "";
     searchQuery.value = "";
@@ -321,13 +329,16 @@ function formatCertTypes(types?: CertificateTypeEnum[] | null): string {
 }
 
 const CERT_TYPE_LABELS: Record<CertificateTypeEnum, string> = {
-    [CertificateTypeEnum.UNKNOWN]: "Unknown",
-    [CertificateTypeEnum.DIGITAL_SIGNATURE]: "TLS/SSL",
-    [CertificateTypeEnum.DATA_ENCIPHERMENT]: "Encipherment",
-    [CertificateTypeEnum.DATA_ENCIPHERMENT_PRIVATE_KEY]: "Identity",
-    [CertificateTypeEnum.KEY_CERT_SIGN]: "CA",
+    [CertificateTypeEnum.UNKNOWN]: translate("certificates.types.UNKNOWN"),
+    [CertificateTypeEnum.DIGITAL_SIGNATURE]: translate("certificates.types.DIGITAL_SIGNATURE"),
+    [CertificateTypeEnum.DATA_ENCIPHERMENT]: translate("certificates.types.DATA_ENCIPHERMENT"),
+    [CertificateTypeEnum.DATA_ENCIPHERMENT_PRIVATE_KEY]: translate("certificates.types.DATA_ENCIPHERMENT_PRIVATE_KEY"),
+    [CertificateTypeEnum.KEY_CERT_SIGN]: translate("certificates.types.KEY_CERT_SIGN"),
 };
 
+async function onCertificateImported(cert: { id: string; name: string }) {
+    await loadItems(options.value);
+}
 
 
 </script>
@@ -457,8 +468,6 @@ const CERT_TYPE_LABELS: Record<CertificateTypeEnum, string> = {
 .row-clickable:hover {
     background-color: rgba(33, 92, 175, 0.06);
 }
-
-
 
 
 </style>

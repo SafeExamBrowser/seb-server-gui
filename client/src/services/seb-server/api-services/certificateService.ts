@@ -17,7 +17,18 @@ export async function deleteCertificate(certificateId: string): Promise<any | an
 
 }
 
-export async function createCertificate(certificatePar: CreateCertificatePar): Promise<any | any> {
-    return (await apiService.api.post(certificatesURL, certificatePar, {headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
-}
+type CreateCertificateJSON = {
+    fileBase64: string;
+    fileName: string;
+    password?: string;
+};
 
+
+export async function createCertificate(payload: CreateCertificateJSON): Promise<any> {
+    const { data } = await apiService.api.post(
+        certificatesURL,
+        payload,
+        { headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN) }
+    );
+    return data;
+}
