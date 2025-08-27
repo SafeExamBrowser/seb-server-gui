@@ -299,7 +299,7 @@
                             @click="submit()"
                             :disabled="isCreateDisabled"
                         >
-                            {{ translate("general.createButton") }}
+                            {{ translate("general.saveButton") }}
                         </v-btn>
                     </div>
                 </v-col>

@@ -406,19 +406,6 @@
             <v-row class="px-6 pt-3">
                 <v-col cols="12" md="12" class="pa-0 mb-4 ">
                     <v-row>
-                        <v-col>
-                            <button
-                                v-if="isDirty || statusChanged"
-                                class="revert-link d-inline-flex align-center"
-                                type="button"
-                                @click="onCancel()"
-                                :aria-label="translate('general.revertChanges')"
-                            >
-                                <v-icon size="18" class="mr-1">mdi-arrow-left-circle</v-icon>
-                                <span>{{ translate('connectionConfigurations.assessmentToolDetailAndEditPage.buttons.revertChanges') }}</span>
-                            </button>
-                        </v-col>
-
                         <v-spacer/>
                         <v-col>
                             <div class="d-flex justify-end">
@@ -753,34 +740,6 @@ function onBack() {
     }
 }
 
-function onCancel() {
-    if (originalSnapshot.value) {
-        const s = originalSnapshot.value as any;
-        name.value = s.name;
-        configurationPurpose.value = s.configurationPurpose;
-        encryptWithCertificate.value = s.encryptWithCertificate;
-        pingInterval.value = s.pingInterval;
-        exams.value = s.exams;
-        asymmetricOnlyEncryption.value = s.asymmetricOnlyEncryption;
-        withFallback.value = s.withFallback;
-        fallbackStartUrl.value = s.fallbackStartUrl;
-        fallbackInterval.value = s.interval;
-        connectionAttempts.value = s.connectionAttempts;
-        connectionTimeout.value = s.connectionTimeout;
-
-        // wipe passwords
-        configurationPassword.value = s.encryptSecret;
-        confirmConfigurationPassword.value = s.encryptSecret;
-        fallbackPassword.value = s.sebServerFallbackPasswordHash;
-        confirmFallbackPassword.value = s.sebServerFallbackPasswordHash;
-        quitPassword.value = s.hashedQuitPassword;
-        confirmQuitPassword.value = s.hashedQuitPassword;
-    }
-    if (initialActiveStatus.value !== null) {
-        active.value = initialActiveStatus.value;
-    }
-}
-
 async function onSave() {
     if (isSaving.value) return;
     const fieldsChanged = isDirty.value;
@@ -1006,26 +965,4 @@ function formatDisplayDate(dateString?: string): string {
     cursor: pointer;
 }
 
-.revert-link {
-    background: transparent;
-    border: none;
-    padding: 0;
-    margin: 0;
-    color: #215caf;
-    font-size: 0.875rem;
-    font-weight: 500;
-    cursor: pointer;
-    border-radius: 999px;
-    line-height: 1;
-}
-
-.revert-link:focus-visible {
-    outline: 2px solid rgba(33, 92, 175, 0.3);
-    outline-offset: 2px;
-    border-radius: 8px;
-}
-
-.revert-link:hover {
-    text-decoration: underline;
-}
 </style>

@@ -403,7 +403,7 @@
     "assessmentToolConnections" : {
 
         "assessmentToolsPage":{
-            "addAssessmentTool": "Add Assessment Tool Setup",
+            "addAssessmentTool": "Add Assessment Tool Connection",
             "filters" : {
                 "searchTitle" : "Search",
                 "searchField" : "Search for Assessment Tool Connections",
@@ -979,8 +979,7 @@
         "assessmentToolConnections": "Assessment Tool Connections",
         "createAssessmentTool": "Assessment Tool Setup",
         "assessmentToolViewAndEdit": "Assessment Tool",
-        "editAssessmentTool" : "Edit Assessment Tool",
-        "assessmentToolEdit" : "Edit Assessment Tool",
+        "assessmentToolEdit" : "Edit Assessment Tool Connection",
         "connectionConfigurationViewAndEdit": "Connection Configuration",
         "createConnectionConfiguration" : "Add Connection Configuration",
         "connectionConfigurations" : "Connection Configurations",

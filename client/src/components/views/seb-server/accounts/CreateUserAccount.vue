@@ -247,7 +247,7 @@
                             class="ml-2"
                             @click="submit()"
                         >
-                            {{ translate("general.cancelButton") }}
+                            {{ translate("general.saveButton") }}
                         </v-btn>
                     </div>
                 </v-col>
@@ -430,53 +430,6 @@
         color: #215caf;
     }
 
-    .nav-link {
-        transition: color 0.4s ease;
-        margin-left: 10px;
-    }
-
-    .nav-hover {
-        transition: background 0.4s ease;
-        border-radius: 4px;
-        background: transparent;
-        padding-left: 8px;
-        width: 85% !important;
-    }
-
-    .nav-hover:hover {
-        background: linear-gradient(
-            to right,
-            rgba(255, 255, 255, 1) 0%,
-            rgba(255, 255, 255, 0.98) 10%,
-            rgba(255, 255, 255, 0.96) 20%,
-            rgba(255, 255, 255, 0.93) 25%,
-            rgba(255, 255, 255, 0.90) 30%,
-            rgba(255, 255, 255, 0.86) 40%,
-            rgba(255, 255, 255, 0.80) 60%,
-            rgba(255, 255, 255, 0.70) 68%,
-            rgba(255, 255, 255, 0.60) 75%,
-            rgba(255, 255, 255, 0.45) 82%,
-            rgba(33, 92, 175, 0.20) 88%,
-            rgba(33, 92, 175, 0.12) 92%,
-            rgba(33, 92, 175, 0.08) 96%,
-            rgba(33, 92, 175, 0.04) 98%,
-            rgba(33, 92, 175, 0.01) 99%,
-            rgba(33, 92, 175, 0) 100%
-        );
-    }
-
-    .link-color {
-        color: white;
-        text-decoration: none;
-    }
-
-    .section-divider {
-        background-color: white !important;
-        height: 1px !important;
-        opacity: 1 !important;
-        width: 85% !important;
-    }
-
     .w-98 {
         width: 98% !important;
     }
@@ -487,20 +440,9 @@
         width: 100%;
     }
 
-    .success-message-div {
-        margin-top: 25.5rem;
-        width: 85% !important;
-    }
-
     .custom-padding-textbox {
         padding-top: 8px !important;
         padding-bottom: 8px !important;
-    }
-
-    .custom-role-checkbox {
-        display: flex;
-        align-items: center;
-        gap: 0.0rem;
     }
 
     .custom-role-checkbox input[type="checkbox"] {

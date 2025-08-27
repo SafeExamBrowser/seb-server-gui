@@ -232,7 +232,7 @@ const routes: Array<RouteRecordRaw> = [
                 },
             },
             {
-                path: constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE + "/:lmsId" + "/:edit",
+                path: constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE + "/:lmsId",
                 name: "AssessmentToolDetailAndView",
                 component: AssessmentToolDetailsAndEdit,
                 meta: {

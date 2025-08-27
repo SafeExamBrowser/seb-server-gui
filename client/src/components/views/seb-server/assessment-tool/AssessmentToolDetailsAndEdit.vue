@@ -291,19 +291,6 @@
             <v-row class="px-6 pt-3">
                 <v-col cols="12" md="12" class="pa-0 mb-4 ">
                     <v-row>
-                        <v-col>
-                            <button
-                                v-if="isDirty || statusChanged"
-                                class="revert-link d-inline-flex align-center"
-                                type="button"
-                                @click="onCancel()"
-                                :aria-label="translate('general.revertChanges')"
-                            >
-                                <v-icon size="18" class="mr-1">mdi-arrow-left-circle</v-icon>
-                                <span>{{ translate('assessmentToolConnections.assessmentToolDetailAndEditPage.buttons.revertChanges') }}</span>
-                            </button>
-                        </v-col>
-
                         <v-spacer>
                         </v-spacer>
                         <v-col>
@@ -402,8 +389,6 @@ const requiredIfProxyRule = (v: string) => {
     if (!withProxy.value) return true;
     return (!!v && v.toString().trim().length > 0) || requiredMessage;
 };
-
-
 
 
 const portNumberRule = (v: string) => {
@@ -560,26 +545,6 @@ function onBack() {
     }
 }
 
-function onCancel() {
-    if (originalSnapshot.value) {
-        const s = originalSnapshot.value as any;
-        institution.value = s.institution;
-        name.value = s.name;
-        lmsType.value = s.lmsType;
-        assessmentToolServerAddress.value = s.assessmentToolServerAddress;
-        assessmentToolServerUsername.value = s.assessmentToolServerUsername;
-        assessmentToolServerPassword.value = s.assessmentToolServerPassword;
-        accessToken.value = s.accessToken;
-        withProxy.value = s.withProxy;
-        proxyHost.value = s.proxyHost;
-        proxyPort.value = s.proxyPort;
-        proxyUsername.value = s.proxyUsername;
-        proxyPassword.value = s.proxyPassword;
-    }
-    if (initialActiveStatus.value !== null) {
-        active.value = initialActiveStatus.value;
-    }
-}
 
 async function onSave() {
     if (isSaving.value) return;
@@ -699,30 +664,5 @@ async function editAssessmentToolOnly() {
     letter-spacing: 0.15px;
     cursor: pointer;
 }
-
-
-.revert-link {
-    background: transparent;
-    border: none;
-    padding: 0;
-    margin: 0;
-    color: #215caf;
-    font-size: 0.875rem;
-    font-weight: 500;
-    cursor: pointer;
-    border-radius: 999px;
-    line-height: 1;
-}
-
-.revert-link:focus-visible {
-    outline: 2px solid rgba(33, 92, 175, 0.3);
-    outline-offset: 2px;
-    border-radius: 8px;
-}
-
-.revert-link:hover {
-    text-decoration: underline;
-}
-
 
 </style>

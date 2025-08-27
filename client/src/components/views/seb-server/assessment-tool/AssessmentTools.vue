@@ -341,10 +341,17 @@ const translateLmsType = (value: string | LMSTypeEnum) => {
     return translate(`assessmentToolConnections.lmsTypes.${value}`);
 };
 
-const typeOptions = Object.values(LMSTypeEnum).map(v => ({
-    value: v as LMSTypeEnum,
-    label: translate(`assessmentToolConnections.lmsTypes.${v}`)
-}));
+const typeOptions = computed(() =>
+    Object.values(LMSTypeEnum)
+        .map((v) => ({
+            value: v as LMSTypeEnum,
+            label: i18n.t(`assessmentToolConnections.lmsTypes.${v}`) as string,
+        }))
+        .sort((a, b) =>
+            a.label.localeCompare(b.label, i18n.locale?.value ?? undefined, { sensitivity: "base" })
+        )
+);
+
 
 onMounted(async () => {
     appBarStore.title = translate("titles.assessmentToolConnections");
