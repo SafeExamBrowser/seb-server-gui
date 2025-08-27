@@ -183,7 +183,6 @@
                                 <td class="text-primary">{{ translateLmsType(item.lmsType) }}</td>
 
                                 <td>
-
                                     <v-chip
                                         :color="item.active ? 'green' : 'red'"
                                         dark

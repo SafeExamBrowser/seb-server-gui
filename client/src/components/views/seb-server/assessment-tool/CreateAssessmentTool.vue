@@ -411,11 +411,11 @@ onMounted(async () => {
 const isCreateDisabled = computed(() => {
     const baseMissing =
         !institution.value ||
-        !name.value.trim() ||
+        !name.value ||
         !lmsType.value ||
-        !assessmentToolServerAddress.value.trim() ||
-        !assessmentToolServerUsername.value.trim() ||
-        !assessmentToolServerPassword.value.trim();
+        !assessmentToolServerAddress.value ||
+        !assessmentToolServerUsername.value ||
+        !assessmentToolServerPassword.value;
 
     if (baseMissing) return true;
 
@@ -423,10 +423,10 @@ const isCreateDisabled = computed(() => {
 
     // withProxy on → require proxy fields
     const proxyMissing =
-        !proxyHost.value.trim() ||
-        !proxyPort.value.trim() ||
-        !proxyUsername.value.trim() ||
-        !proxyPassword.value.trim();
+        !proxyHost.value ||
+        !proxyPort.value ||
+        !proxyUsername.value ||
+        !proxyPassword.value;
 
     // validates port range
     const n = Number(proxyPort.value);

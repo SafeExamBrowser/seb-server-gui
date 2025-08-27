@@ -549,7 +549,8 @@
                 "fallbackPassword": "Fallback Password",
                 "confirmFallbackPassword": "Confirm Fallback Password",
                 "quitPassword": "Quit Password",
-                "confirmQuitPassword": "Confirm Quit Password"
+                "confirmQuitPassword": "Confirm Quit Password",
+                "noCertificatesUploadedYet" : "No certificates uploaded yet"
             },
             "placeholders": {
                 "proxyHost": "Enter proxy host",

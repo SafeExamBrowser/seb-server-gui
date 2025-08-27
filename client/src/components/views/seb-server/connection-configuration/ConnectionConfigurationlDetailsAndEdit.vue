@@ -90,11 +90,30 @@
                                             :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.encryptWithCertificate')"
                                             variant="outlined"
                                             v-model="encryptWithCertificate"
-                                            :items="encryptWithCertificateItems"
-                                            :return-object="false"
+                                            :items="certificateItems"
                                             item-title="label"
                                             item-value="value"
-                                        />
+                                            :loading="certificatesLoading"
+                                            :disabled="certificatesLoading"
+                                            :menu-props="{ maxHeight: 240 }"
+                                            @update:modelValue="handleCertChange"
+                                        >
+                                            <template #item="{ props, item }">
+                                                <v-list-item v-bind="props">
+                                                    <template #prepend>
+                                                        <v-icon v-if="item.raw.value === '__UPLOAD__'">mdi-upload</v-icon>
+                                                    </template>
+                                                </v-list-item>
+
+                                                <v-divider v-if="item.raw.value === '__UPLOAD__'" class="my-1" />
+                                            </template>
+
+                                            <template v-if="!hasRealCerts" #append-item>
+                                                <div class="text-caption text-grey-darken-1 px-4 py-2">
+                                                    {{ translate('connectionConfigurations.createConnectionConfigurationPage.labels.noCertificatesUploadedYet') }}
+                                                </div>
+                                            </template>
+                                        </v-select>
                                     </v-col>
 
                                     <!-- Ping Interval* (number) -->
@@ -425,6 +444,13 @@
                 </v-col>
             </v-row>
         </v-col>
+
+        <!-- Upload Certificate Dialog-->
+        <AddCertificateDialog
+            v-model="certDialog"
+            :simulate="true"
+            @imported="onCertImported"
+        />
     </v-row>
 </template>
 
@@ -437,7 +463,7 @@ import {navigateTo} from '@/router/navigation';
 import * as constants from '@/utils/constants';
 import * as connectionConfigurationViewService from '@/services/seb-server/component-services/connectionConfigurationViewService';
 import router from '@/router/router';
-import {Connect} from "vite";
+import * as certificateViewService from "@/services/seb-server/component-services/certificateViewService";
 
 // Router
 const route = useRoute();
@@ -476,6 +502,9 @@ const confirmFallbackPasswordVisible = ref<boolean>(false);
 const quitPasswordVisible = ref<boolean>(false);
 const confirmQuitPasswordVisible = ref<boolean>(false);
 const examsLoading = ref<boolean>(false);
+const certificatesLoading = ref<boolean>(false);
+const certDialog = ref(false);
+
 
 // status/state
 const active = ref<boolean>(false);
@@ -492,12 +521,7 @@ const confirmFallbackPwdRef = ref<any>(null);
 const quitPwdRef = ref<any>(null);
 const confirmQuitPwdRef = ref<any>(null);
 
-// Select items
-const encryptWithCertificateItems = [
-    {label: '—', value: undefined},
-    {label: 'Yes', value: 'YES'},
-    {label: 'No', value: 'NO'}
-];
+
 
 const configurationPurposeItems = [
     {
@@ -510,7 +534,13 @@ const configurationPurposeItems = [
     }
 ];
 
-const examItems = ref<{ label: string; value: number }[]>([]);
+const certificateItems = ref<{ label: string; value: string }[]>([
+    {
+        label: translate('certificates.certificateDialog.uploadCertificate'),
+        value: '__UPLOAD__',
+    },
+]);
+
 
 // Validation messages
 const requiredMessage = translate("connectionConfigurations.createConnectionConfigurationPage.validation.required");
@@ -562,6 +592,8 @@ const quitPwdMustMatchRule = (_v: any) => {
 // Derived state
 const statusChanged = computed(() => initialActiveStatus.value !== null && active.value !== initialActiveStatus.value);
 
+const hasRealCerts = computed(() => certificateItems.value.length > 1);
+
 const isSaveDisabled = computed(() => {
     if (!name.value.trim()) return true;
     if (!configurationPurpose.value) return true;
@@ -606,6 +638,8 @@ onMounted(async () => {
     appBarStore.title = translate("titles.connectionConfiguration");
     layoutStore.setBlueBackground(true);
 
+    await loadCertificates();
+
     examsLoading.value = false;
 
     const idParam = route.params.connectionConfigId ?? route.params.id;
@@ -631,7 +665,13 @@ function populateFromDto(dto: ConnectionConfiguration) {
     name.value = (dto.name ?? '').toString();
     institutionId.value = dto.institutionId;
     configurationPurpose.value = dto.sebConfigPurpose ?? null;
-    encryptWithCertificate.value = undefined;
+    const aliasFromBackend =
+        (dto as any).cert_alias ??
+        (dto as any).certificateAlias ??
+        (dto as any).certificate?.alias ??
+        undefined;
+
+    encryptWithCertificate.value = aliasFromBackend || undefined;
     pingInterval.value = dto.sebServerPingTime != null ? Number(dto.sebServerPingTime) : 1000;
     exams.value = Array.isArray(dto.exam_selection) ? dto.exam_selection : [];
     asymmetricOnlyEncryption.value = dto.cert_encryption_asym;
@@ -786,6 +826,7 @@ async function editConnectionConfigurationOnly() {
         sebConfigPurpose: configurationPurpose.value!,
         sebServerPingTime: Number(pingInterval.value!),
         exam_selection: exams.value?.length ? exams.value : undefined,
+        cert_alias: encryptWithCertificate.value || undefined,
 
         encryptSecret: configurationPassword.value?.trim() || undefined,
         confirm_encrypt_secret: confirmConfigurationPassword.value?.trim() || undefined,
@@ -867,6 +908,43 @@ watch([quitPassword, confirmQuitPassword], ([a, b]) => {
     quitPwdRef.value?.validate?.();
     confirmQuitPwdRef.value?.validate?.();
 });
+
+
+async function loadCertificates() {
+    certificatesLoading.value = true;
+    try {
+        const optionalParams = { page_number: 1, page_size: 500 };
+        const response = await certificateViewService.getCertificates(optionalParams);
+
+        const certAliases: { label: string; value: string }[] =
+            response?.content?.map((c: { alias: string }) => ({
+                label: c.alias,
+                value: c.alias,
+            })) ?? [];
+
+        certificateItems.value = [certificateItems.value[0], ...certAliases];
+    } finally {
+        certificatesLoading.value = false;
+    }
+}
+
+function handleCertChange(val: string | undefined) {
+    if (val === '__UPLOAD__') {
+        certDialog.value = true;
+        encryptWithCertificate.value = undefined;
+    } else {
+        encryptWithCertificate.value = val;
+    }
+}
+
+async function onCertImported(created: { id: string; name: string }) {
+    const uploadedAlias = created.name;
+    await loadCertificates();
+    encryptWithCertificate.value = uploadedAlias;
+}
+
+
+
 </script>
 
 <style scoped>

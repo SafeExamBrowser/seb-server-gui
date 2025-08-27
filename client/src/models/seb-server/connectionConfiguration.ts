@@ -52,6 +52,7 @@ type CreateConnectionConfigurationPar = {
     sebServerPingTime: number;
     exam_selection? : Number[];
 
+    cert_alias? :string;
     encryptSecret? : string;
     confirm_encrypt_secret? : string;
     cert_encryption_asym? : boolean;
@@ -87,6 +88,7 @@ type UpdateConnectionConfigurationPar = {
     encryptSecret? : string;
     confirm_encrypt_secret? : string;
     cert_encryption_asym? : boolean;
+    cert_alias? :string;
 
     configurationPassword? : string;
     confirmConfigurationPassword? : string;

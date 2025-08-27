@@ -103,15 +103,11 @@ import {ref, watch, computed} from 'vue';
 import {translate} from '@/utils/generalUtils';
 import * as certificateViewService from '@/services/seb-server/component-services/certificateViewService';
 
-
-const alias = ref<string>('');
 const password = ref<string>('');
 const passwordVisible = ref<boolean>(false);
 
-
 const props = defineProps<{
     modelValue: boolean;
-    acceptExt?: string;
     simulate?: boolean;
 }>();
 
@@ -141,17 +137,10 @@ function onToggle(val: boolean) {
     emit('update:modelValue', val);
 }
 
-
 const defaultExtList = ['.p12', '.pfx', '.pem', '.crt', '.cer'];
-const acceptExt = computed(() => props.acceptExt ?? defaultExtList.join(','));
+const acceptExt = defaultExtList.join(',');
 
-const acceptExtHuman = computed(() =>
-    acceptExt.value
-        .split(',')
-        .map(s => s.trim())
-        .filter(Boolean)
-        .join(', ')
-);
+const acceptExtHuman = defaultExtList.join(', ');
 
 
 function triggerFilePicker() {
@@ -159,16 +148,12 @@ function triggerFilePicker() {
 }
 
 function extList(): string[] {
-    return acceptExt.value
-        .split(',')
-        .map(e => e.trim().toLowerCase())
-        .filter(Boolean);
+    return defaultExtList.slice();
 }
 
 function validExt(file: File) {
     const lower = file.name.toLowerCase();
-    const exts = extList();
-    return exts.some(ext => lower.endsWith(ext));
+    return extList().some(ext => lower.endsWith(ext));
 }
 
 function onFilePicked(e: Event) {
@@ -230,8 +215,7 @@ async function doUpload() {
         const res = await certificateViewService.createCertificate({
             file: selectedFile.value,
             fileName: selectedFile.value.name,
-            alias: alias.value?.trim() || undefined,
-            password: password.value?.trim() || undefined
+            password: password.value || undefined
         } as CreateCertificatePar);
         uploadProgress.value = 90;
         if (!res) {
@@ -248,7 +232,6 @@ async function doUpload() {
         uploading.value = false;
     }
 }
-
 
 </script>
 

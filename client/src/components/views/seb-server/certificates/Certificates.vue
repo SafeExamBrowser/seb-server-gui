@@ -172,7 +172,6 @@
 <script setup lang="ts">
 import {ref, computed, onMounted, onBeforeUnmount} from "vue";
 import {useAppBarStore, useLayoutStore} from "@/stores/store";
-import {useI18n} from "vue-i18n";
 import {translate} from "@/utils/generalUtils";
 import * as tableUtils from "@/utils/table/tableUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";

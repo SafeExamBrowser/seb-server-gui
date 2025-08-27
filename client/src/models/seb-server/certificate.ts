@@ -8,7 +8,6 @@ type CertificatesResponse = {
 }
 
 type Certificate = {
-    id: string;
     alias: string;
     validityFrom: string;
     validityTo: string;

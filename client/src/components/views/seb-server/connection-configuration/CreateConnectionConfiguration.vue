@@ -76,26 +76,31 @@
                                             :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.encryptWithCertificate')"
                                             variant="outlined"
                                             v-model="encryptWithCertificate"
-                                            :items="encryptWithCertificateItems"
-                                            :return-object="false"
+                                            :items="certificateItems"
                                             item-title="label"
                                             item-value="value"
-                                            @update:modelValue="onSelectEncryptCert"
+                                            :loading="certificatesLoading"
+                                            :disabled="certificatesLoading"
+                                            :menu-props="{ maxHeight: 240 }"
+                                            @update:modelValue="handleCertChange"
                                         >
-                                        <!-- Fancy first item with upload icon -->
-                                        <template #item="{ item, props }">
-                                            <v-list-item v-bind="props">
-                                                <template #prepend>
-                                                    <v-icon v-if="item?.raw?.isAction" class="mr-2">mdi-upload</v-icon>
-                                                </template>
-                                                <template #title>
-                                                    <span class="font-weight-medium">{{ item?.title }}</span>
-                                                </template>
-                                            </v-list-item>
-                                        </template>
+                                            <template #item="{ props, item }">
+                                                <v-list-item v-bind="props">
+                                                    <template #prepend>
+                                                        <v-icon v-if="item.raw.value === '__UPLOAD__'">mdi-upload</v-icon>
+                                                    </template>
+                                                </v-list-item>
+
+                                                <v-divider v-if="item.raw.value === '__UPLOAD__'" class="my-1" />
+                                            </template>
+
+                                            <template v-if="!hasRealCerts" #append-item>
+                                                <div class="text-caption text-grey-darken-1 px-4 py-2">
+                                                    {{ translate('connectionConfigurations.createConnectionConfigurationPage.labels.noCertificatesUploadedYet') }}
+                                                </div>
+                                            </template>
                                         </v-select>
                                     </v-col>
-
 
                                     <!-- Ping Interval* (number) -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
@@ -111,26 +116,6 @@
                                             validate-on="blur"
                                         />
                                     </v-col>
-
-                                    <!-- Exams (optional, multi-select) -->
-                                    <v-col cols="12" md="12" class="custom-padding-textbox">
-                                        <v-select
-                                            prepend-inner-icon="mdi-file-document-multiple-outline"
-                                            density="compact"
-                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.exams')"
-                                            variant="outlined"
-                                            v-model="exams"
-                                            :items="examItems"
-                                            item-title="label"
-                                            item-value="value"
-                                            multiple
-                                            chips
-                                            closable-chips
-                                            :loading="examsLoading"
-                                            :disabled="examsLoading"
-                                        />
-                                    </v-col>
-
                                 </v-col>
 
                                 <!-- Second Section-->
@@ -424,10 +409,9 @@
                 </v-col>
             </v-row>
         </v-col>
-        <!-- Upload Certificate Dialog (NEW) -->
+        <!-- Upload Certificate Dialog-->
         <AddCertificateDialog
             v-model="certDialog"
-            acceptExt=".pfx"
             :simulate="true"
             @imported="onCertImported"
         />
@@ -443,6 +427,8 @@ import * as constants from '@/utils/constants';
 import {navigateTo} from "@/router/navigation";
 import * as connectionConfigurationViewService
     from "@/services/seb-server/component-services/connectionConfigurationViewService";
+import * as certificateViewService
+    from "@/services/seb-server/component-services/certificateViewService";
 
 
 const name = ref<string>("");
@@ -450,7 +436,6 @@ const configurationPassword = ref<string>("");
 const confirmConfigurationPassword = ref<string>("");
 const encryptWithCertificate = ref<string | undefined>(undefined);
 const pingInterval = ref<number | null>(1000);
-const exams = ref<number[]>([]);
 const asymmetricOnlyEncryption = ref<boolean>(false);
 
 const withFallback = ref<boolean>(false);
@@ -472,8 +457,9 @@ const fallbackPasswordVisible = ref<boolean>(false);
 const confirmFallbackPasswordVisible = ref<boolean>(false);
 const quitPasswordVisible = ref<boolean>(false);
 const confirmQuitPasswordVisible = ref<boolean>(false);
-const examsLoading = ref<boolean>(false);
 const certDialog = ref(false);
+const certificatesLoading = ref<boolean>(false);
+
 
 // Stores
 const appBarStore = useAppBarStore();
@@ -491,8 +477,6 @@ const quitPwdRef = ref<any>(null);
 const confirmQuitPwdRef = ref<any>(null);
 
 
-
-
 const configurationPurposeItems = [
     {
         label: translate('connectionConfigurations.createConnectionConfigurationPage.selectValues.start_exam'),
@@ -504,7 +488,13 @@ const configurationPurposeItems = [
     }
 ];
 
-const examItems = ref<{ label: string; value: number }[]>([]);
+const certificateItems = ref<{ label: string; value: string }[]>([
+    {
+        label: translate('certificates.certificateDialog.uploadCertificate'),
+        value: '__UPLOAD__',
+    },
+]);
+
 
 // Validation messages
 const requiredMessage = translate("connectionConfigurations.createConnectionConfigurationPage.validation.required");
@@ -524,17 +514,16 @@ const requiredNumberRule = (v: any) => requiredRule(v) === true && numberRule(v)
 const requiredIfFallbackRule = (v: any) => !withFallback.value || requiredRule(v) === true || requiredMessage;
 const requiredNumberIfFallbackRule = (v: any) => !withFallback.value || requiredNumberRule(v) === true || (isNaN(Number(v)) ? mustBeNumberMessage : requiredMessage);
 const urlIfFallbackRule = (v: any) => {
-    if (!withFallback.value) return true; // only check when fallback enabled
+    if (!withFallback.value) return true;
     if (!v || typeof v !== 'string') return mustBeUrlMessage;
     const trimmed = v.trim().toLowerCase();
     return (trimmed.startsWith("http://") || trimmed.startsWith("https://")) || mustBeUrlMessage;
 };
 
 
-
 const isCreateDisabled = computed(() => {
     if (!name.value.trim()) return true;
-    if (!configurationPurpose.value) return true; // ← require a selection
+    if (!configurationPurpose.value) return true;
     if (pingInterval.value === null || isNaN(Number(pingInterval.value))) return true;
 
     if (withFallback.value) {
@@ -604,6 +593,7 @@ const quitPwdMustMatchRule = (_v: any) => {
 onMounted(async () => {
     appBarStore.title = translate("titles.createConnectionConfiguration");
     layoutStore.setBlueBackground(true);
+    await loadCertificates();
 });
 
 onBeforeUnmount(() => {
@@ -616,25 +606,26 @@ async function submit() {
     if (!valid) return;
 
     const connectionConfigParams: CreateConnectionConfigurationPar = {
-        name: name.value.trim(),
+        name: name.value,
         sebServerPingTime: Number(pingInterval.value!),
         sebConfigPurpose: configurationPurpose.value!,
+        cert_alias: encryptWithCertificate.value!,
         exam_selection: undefined,
         encryptSecret: configurationPassword.value ?? undefined,
-        confirm_encrypt_secret: confirmConfigurationPassword.value?.trim() || undefined,
+        confirm_encrypt_secret: confirmConfigurationPassword.value || undefined,
         cert_encryption_asym: !!asymmetricOnlyEncryption.value,
         sebServerFallback: !!withFallback.value,
 
         ...(withFallback.value
             ? {
-                startURL: fallbackStartUrl.value.trim(),
+                startURL: fallbackStartUrl.value,
                 sebServerFallbackAttemptInterval: Number(interval.value!),
                 sebServerFallbackAttempts: Number(connectionAttempts.value!),
                 sebServerFallbackTimeout: Number(connectionTimeout.value!),
-                sebServerFallbackPasswordHash: fallbackPassword.value?.trim() || undefined,
-                sebServerFallbackPasswordHashConfirm: confirmFallbackPassword.value?.trim() || undefined,
+                sebServerFallbackPasswordHash: fallbackPassword.value || undefined,
+                sebServerFallbackPasswordHashConfirm: confirmFallbackPassword.value || undefined,
                 hashedQuitPassword: quitPassword.value?.trim() || undefined,
-                hashedQuitPasswordConfirm: confirmQuitPassword.value?.trim() || undefined,
+                hashedQuitPasswordConfirm: confirmQuitPassword.value || undefined,
             }
             : {}),
         vdiSetup: "NO",
@@ -685,42 +676,41 @@ watch([quitPassword, confirmQuitPassword], ([a, b]) => {
     confirmQuitPwdRef.value?.validate?.();
 });
 
+const hasRealCerts = computed(() => certificateItems.value.length > 1);
 
 
-type CertItem = {
-    label: string;
-    value: string | undefined;
-    isAction?: boolean;
-};
+async function loadCertificates() {
+    certificatesLoading.value = true;
+    try {
+        const optionalParams = { page_number: 1, page_size: 500 };
+        const response = await certificateViewService.getCertificates(optionalParams);
 
-const encryptWithCertificateItems = ref<CertItem[]>([
-    { label: translate('certificates.certificateDialog.uploadCertificate') || 'Upload certificate…', value: '__UPLOAD__', isAction: true },
-    { label: 'Corp Root CA 2025', value: 'cert_1' },
-    { label: 'Exam Signing Cert – Zurich', value: 'cert_2' },
-    { label: 'Fallback Encrypter PFX', value: 'cert_3' },
-]);
+        const certAliases: { label: string; value: string }[] =
+            response?.content?.map((c: { alias: string }) => ({
+                label: c.alias,
+                value: c.alias,
+            })) ?? [];
 
-
-function onSelectEncryptCert(val: string | undefined) {
-    if (val === '__UPLOAD__') {
-        certDialog.value = true;
-        encryptWithCertificate.value = undefined;
+        certificateItems.value = [certificateItems.value[0], ...certAliases];
+    } finally {
+        certificatesLoading.value = false;
     }
 }
 
-function onCertImported(created: { id: string; name: string }) {
-    const idx = encryptWithCertificateItems.value.findIndex(i => i.value === undefined);
-    const insertAt = idx >= 0 ? idx + 1 : encryptWithCertificateItems.value.length;
-    encryptWithCertificateItems.value.splice(insertAt, 0, {
-        label: created.name,
-        value: created.id,
-    });
-
-    encryptWithCertificate.value = created.id;
+function handleCertChange(val: string | undefined) {
+    if (val === '__UPLOAD__') {
+        certDialog.value = true;
+        encryptWithCertificate.value = undefined;
+    } else {
+        encryptWithCertificate.value = val;
+    }
 }
 
-
-
+async function onCertImported(created: { id: string; name: string }) {
+    const uploadedAlias = created.name;
+    await loadCertificates();
+    encryptWithCertificate.value = uploadedAlias;
+}
 
 
 </script>
