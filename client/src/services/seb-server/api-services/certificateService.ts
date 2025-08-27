@@ -17,13 +17,6 @@ export async function deleteCertificate(certificateId: string): Promise<any | an
 
 }
 
-type CreateCertificateJSON = {
-    fileBase64: string;
-    fileName: string;
-    password?: string;
-};
-
-
 export async function createCertificate(payload: CreateCertificateJSON): Promise<any> {
     const { data } = await apiService.api.post(
         certificatesURL,
