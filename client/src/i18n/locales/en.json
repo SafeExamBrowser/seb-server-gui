@@ -194,8 +194,8 @@
         "supervisorsMain": {
             "searchButton" : "Search",
             "cancelButton" : "Cancel",
-            "title" : "Assign Supervisors",
-            "description": "Select staff members to supervise this examination.",
+            "title" : "Add Exam Supervisors",
+            "description": "Select or remove Exam Supervisors",
             "search": "Search",
             "availableSupervisors" : "Available Supervisors",
             "selectedSupervisors": "Selected Supervisors",
@@ -212,7 +212,7 @@
 
         "summaryMain": {
             "title" : "Configuration Summary",
-            "description" : "Review your exam configuration before finalizing.",
+            "description" : "Review your configuration before saving.",
             "configurationSummary": "Configuration Summary",
             "examTemplate": "Exam Template",
             "templateName": "Template Name:",

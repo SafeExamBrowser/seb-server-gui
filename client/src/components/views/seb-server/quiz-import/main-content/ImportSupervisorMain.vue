@@ -74,15 +74,16 @@
                     <template v-slot:item="{ item }">
                             <tr class="supervisor-row">
                                 <td class="supervisor-cell">
-                                    <div class="supervisor-row-content">
+                                    <div class="supervisor-row-content clickable"
+                                         @click="onTableRowClick(item)"
+                                    >
                                         <div>
                                             <div class="font-weight-medium">{{ getUsername(item.name) }}</div>
                                             <div class="text-caption">{{ getFullName(item.name) }}</div>
+
                                         </div>
                                         <v-icon
-                                            class="clickable"
                                             color="primary"
-                                            @click="onTableRowClick(item)"
                                         >
                                             mdi-plus
                                         </v-icon>
@@ -103,11 +104,12 @@
 
                 <div class="supervisor-table-wrapper">
                     <!-- Scrollable container for the list -->
-                    <div class="selected-supervisors-scroll">
+                    <div class="selected-supervisors-scroll clickable">
                         <div
                             v-for="supervisor in quizImportStore.selectedExamSupervisors"
                             :key="supervisor.modelId"
                             class="supervisor-row"
+                            @click="removeExamSupervisor(supervisor.modelId)"
                         >
                             <div class="supervisor-row-content">
                                 <div>
@@ -116,9 +118,7 @@
                                 </div>
 
                                 <v-icon
-                                    class="clickable"
                                     color="error"
-                                    @click="removeExamSupervisor(supervisor.modelId)"
                                 >
                                     mdi-minus
                                 </v-icon>
@@ -281,5 +281,9 @@ function clearSearch() {
 }
 
 
+
+.supervisor-row-content:hover{
+    background-color: #D8D8D8;
+}
 
 </style>

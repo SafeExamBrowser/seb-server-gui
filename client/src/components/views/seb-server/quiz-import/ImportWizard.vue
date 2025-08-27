@@ -11,13 +11,6 @@
             </span>
 
                 <span class="breadcrumb-arrow">›</span>
-
-                <span
-                    class="breadcrumb-active"
-                    @click="navigateTo(constants.QUIZ_IMPORT_ROUTE)"
-                >
-                {{ translate("titles.quizImport") }}
-                </span>
             </div>
         </v-col>
 
