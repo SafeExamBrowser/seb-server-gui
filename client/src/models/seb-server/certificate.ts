@@ -28,6 +28,8 @@ type OptionalParGetCertificates = {
     password?: string
 };
 
+
+
 type CreateCertificateJSON = {
     fileBase64: string;
     fileName: string;

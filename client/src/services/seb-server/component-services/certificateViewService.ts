@@ -17,7 +17,7 @@ export async function deleteCertificate(certificateId: string): Promise<any | nu
     }
 }
 
-export async function createCertificate(params: CreateCertificatePar): Promise<any | null> {
+export async function createCertificate(params: CreateCertificatePar) {
     try {
         const fileBase64 = await blobToBase64(params.file);
         return await certificateService.createCertificate({
@@ -26,7 +26,8 @@ export async function createCertificate(params: CreateCertificatePar): Promise<a
             password: params.password,
         });
     } catch (e) {
-        return null;
+        (e as any).__where = 'component-services.createCertificate';
+        throw e;
     }
 }
 

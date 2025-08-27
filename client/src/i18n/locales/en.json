@@ -623,7 +623,8 @@
             "allowed" : "Allowed File Types",
             "dropHere" : "Drop a certificate file here",
             "password" : "Password",
-            "uploadFailed" : "Failed to upload certificate, please contact a system administrator"
+            "uploadFailed" : "Failed to upload certificate, please contact a system administrator",
+            "keystorePasswordIncorrect" : "The password was incorrect. Please try again or contact a system administrator"
         },
         "types": {
             "UNKNOWN": "Unknown",

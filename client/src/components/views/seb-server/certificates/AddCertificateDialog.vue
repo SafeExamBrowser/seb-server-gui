@@ -102,6 +102,7 @@
 import {ref, watch, computed} from 'vue';
 import {translate} from '@/utils/generalUtils';
 import * as certificateViewService from '@/services/seb-server/component-services/certificateViewService';
+import { useI18n } from "vue-i18n";
 
 const password = ref<string>('');
 const passwordVisible = ref<boolean>(false);
@@ -128,8 +129,7 @@ const uploadError = ref<string>('');
 const uploading = ref(false);
 const uploadProgress = ref(0);
 const fileInputRef = ref<HTMLInputElement | null>(null);
-
-
+const { t } = useI18n();
 const internalOpen = ref<boolean>(props.modelValue);
 watch(() => props.modelValue, v => (internalOpen.value = v));
 
@@ -179,7 +179,7 @@ function onDrop(e: DragEvent) {
 function setFile(file: File | null) {
     if (!file) return;
     if (!validExt(file)) {
-        uploadError.value = `${translate('certificates.certificateDialog.onlyAllowed')}: ${acceptExtHuman}`;
+        uploadError.value = `${t('certificates.certificateDialog.onlyAllowed')}: ${acceptExtHuman}`;
         selectedFile.value = null;
         selectedFileName.value = '';
         if (fileInputRef.value) fileInputRef.value.value = '';
@@ -219,7 +219,7 @@ async function doUpload() {
         } as CreateCertificatePar);
         uploadProgress.value = 90;
         if (!res) {
-            throw new Error(translate('certificates.certificateDialog.uploadFailed'));
+            throw new Error(t('certificates.certificateDialog.uploadFailed'));
         }
         const createdName = res.alias || selectedFile.value.name.replace(/\.[^.]+$/i, '');
         const createdId = res.alias || createdName;
@@ -227,8 +227,21 @@ async function doUpload() {
         uploadProgress.value = 100;
         close();
     } catch (e: any) {
-        uploadError.value = e?.message || (translate('certificates.certificateDialog.uploadFailed'));
-    } finally {
+        //dispaly password incorrect text conditionally
+        const data = e?.response?.data;
+
+        const errObj = Array.isArray(data) ? data[0] : data;
+
+        const details = errObj?.details || errObj?.systemMessage || e?.message;
+
+        if (typeof details === 'string' && /keystore password was incorrect/i.test(details)) {
+            uploadError.value = t('certificates.certificateDialog.keystorePasswordIncorrect');
+        } else {
+            const serverMsg = errObj?.systemMessage || errObj?.message;
+            uploadError.value = serverMsg || details || t('certificates.certificateDialog.uploadFailed');
+        }
+    }
+    finally {
         uploading.value = false;
     }
 }
