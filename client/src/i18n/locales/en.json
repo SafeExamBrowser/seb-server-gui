@@ -40,7 +40,7 @@
     "WARN_COUNT": "Warn count",
     "INFO_COUNT": "Info count",
     "BATTERY_STATUS": "Battery status",
-    "WLAN_STATUS": "Wlan status",
+    "WLAN_STATUS": "Wifi status",
 
     "-------NotificationTypeEnum------": "----------",
     "LOCK_SCREEN": "Lock screen",

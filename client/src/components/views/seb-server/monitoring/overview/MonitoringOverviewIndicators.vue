@@ -40,7 +40,7 @@
                         {{ getIndicatorNumber(
                                 monitoringStore.monitoringOverviewData.indicators.BATTERY_STATUS?.incident,
                                 monitoringStore.monitoringOverviewData.indicators.BATTERY_STATUS?.warning,
-                            ) 
+                            )
                         }}
                         </span>
                     </v-avatar>
@@ -81,7 +81,7 @@
                             {{ getIndicatorNumber(
                                     monitoringStore.monitoringOverviewData.indicators.WLAN_STATUS?.incident,
                                     monitoringStore.monitoringOverviewData.indicators.WLAN_STATUS?.warning,
-                                ) 
+                                )
                             }}
                         </span>
                     </v-avatar>
