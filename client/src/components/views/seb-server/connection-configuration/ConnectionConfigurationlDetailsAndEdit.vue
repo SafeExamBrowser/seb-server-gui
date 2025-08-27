@@ -31,9 +31,14 @@
             </v-row>
 
             <v-divider class="custom-divider mx-6 my-4 mt-7"/>
-            <v-row class="px-8 mt-2">
+            <v-row class="px-8 mt-2 d-flex justify-space-between">
                 <div class="text-body-2 text-grey-darken-1" style="visibility: hidden">
                     {{ translate("connectionConfigurations.assessmentToolDetailAndEditPage.info") }}
+                </div>
+                <div class="text-body-2 text-grey-darken-1">
+                    {{
+                        translate("userAccount.userAccountDetailAndEditPage.info.createdAtInfo") + formatDisplayDate(creationDate)
+                    }}
                 </div>
             </v-row>
 
@@ -464,6 +469,7 @@ import * as constants from '@/utils/constants';
 import * as connectionConfigurationViewService from '@/services/seb-server/component-services/connectionConfigurationViewService';
 import router from '@/router/router';
 import * as certificateViewService from "@/services/seb-server/component-services/certificateViewService";
+import moment from "moment-timezone";
 
 // Router
 const route = useRoute();
@@ -492,6 +498,7 @@ const quitPassword = ref<string>("");
 const confirmQuitPassword = ref<string>("");
 const configurationPurpose = ref<string | null>(null);
 const institutionId = ref<number | undefined>(undefined);
+const creationDate = ref<string | undefined>(undefined);
 
 // UI state
 const formRef = ref();
@@ -690,6 +697,7 @@ function populateFromDto(dto: ConnectionConfiguration) {
     configurationPassword.value = dto.encryptSecret;
     confirmConfigurationPassword.value = dto.encryptSecret;
 
+    creationDate.value = dto.date
 }
 
 function currentFormState() {
@@ -909,7 +917,7 @@ watch([quitPassword, confirmQuitPassword], ([a, b]) => {
     confirmQuitPwdRef.value?.validate?.();
 });
 
-
+//certificates
 async function loadCertificates() {
     certificatesLoading.value = true;
     try {
@@ -943,7 +951,11 @@ async function onCertImported(created: { id: string; name: string }) {
     encryptWithCertificate.value = uploadedAlias;
 }
 
-
+//format date
+function formatDisplayDate(dateString?: string): string {
+    if (!dateString) return "";
+    return moment(dateString).format("MMM D, YYYY");
+}
 
 </script>
 
