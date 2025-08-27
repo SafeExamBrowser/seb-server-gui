@@ -172,7 +172,7 @@
                                     selectedAssessmentTool?.id === item.id ? 'selected-row' : '',
                                     'row-clickable'
                                 ]"
-                                @click="goToDetails(item, false)"
+                                @click="goToDetails(item)"
                             >
 
                                 <!-- Column Definition -->
@@ -202,7 +202,7 @@
                                         <v-icon
                                             :icon="'mdi-pencil'"
                                             class="action-icon mr-2 cursor-pointer"
-                                            @click.stop="goToDetails(item, true)"
+                                            @click.stop="goToDetails(item)"
                                         ></v-icon>
 
 
@@ -538,8 +538,8 @@ async function confirmStatusChange() {
     statusDialogAssessmentTool.value = null;
 }
 
-function goToDetails(item: AssessmentTool, edit: boolean) {
-    navigateTo(`${constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE}/${item.id}/${edit}`);
+function goToDetails(item: AssessmentTool) {
+    navigateTo(`${constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE}/${item.id}`);
 }
 
 

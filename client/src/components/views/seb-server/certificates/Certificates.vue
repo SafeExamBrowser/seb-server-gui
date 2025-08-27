@@ -101,7 +101,7 @@
                         <template v-slot:item="{ item }">
                             <tr
                                 :class="[
-                                    selectedCertificate?.id === item.id ? 'selected-row' : '',
+                                    selectedCertificate?.alias === item.alias ? 'selected-row' : '',
                                     'row-clickable'
                                 ]"
                             >
@@ -460,7 +460,6 @@ async function onCertificateImported(cert: { id: string; name: string }) {
 }
 
 .row-clickable {
-    cursor: pointer;
     transition: background-color 0.15s ease-in-out;
 }
 

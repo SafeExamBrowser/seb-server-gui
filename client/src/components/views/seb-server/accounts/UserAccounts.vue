@@ -147,7 +147,7 @@
                             :class="[selectedUserAccount?.id === item.id ? 'selected-row' : '',
                                 'row-clickable'
                             ]"
-                            @click="goToDetails(item, false)"
+                            @click="goToDetails(item)"
                         >
                             <!-- Column Definition -->
                             <td v-if="showInstitutionColumn" class="text-primary">

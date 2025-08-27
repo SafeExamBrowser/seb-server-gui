@@ -179,7 +179,7 @@ function onDrop(e: DragEvent) {
 function setFile(file: File | null) {
     if (!file) return;
     if (!validExt(file)) {
-        uploadError.value = `${translate('certificates.certificateDialog.onlyAllowed')}: ${acceptExtHuman.value}`;
+        uploadError.value = `${translate('certificates.certificateDialog.onlyAllowed')}: ${acceptExtHuman}`;
         selectedFile.value = null;
         selectedFileName.value = '';
         if (fileInputRef.value) fileInputRef.value.value = '';
