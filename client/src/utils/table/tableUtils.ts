@@ -192,6 +192,9 @@ export function assignPagingOptions(serverTablePaging: ServerTablePaging, paging
 
 export function assignUserAccountSelectPagingOptions(
     serverTablePaging: ServerTablePaging,
+    name: string | null,
+    selectedStatus: string | null,
+    selectedInstitutionId: string | null,
 ): OptionalParGetUserAccounts {
     const opt: OptionalParGetUserAccounts = {};
 
@@ -204,6 +207,15 @@ export function assignUserAccountSelectPagingOptions(
             sortString = "-" + sortString;
         }
         opt.sort = sortString;
+    }
+    opt.active =
+        selectedStatus === "Active" ? "true" :
+            selectedStatus === "Inactive" ? "false" :
+                null;
+    opt.institutionId = selectedInstitutionId ?? null;
+
+    if (name && name !== "") {
+        opt.username = name;
     }
 
     return opt;
@@ -266,7 +278,6 @@ export function assignAssessmentToolSelectPagingOptions(
                 null;
     opt.institutionId = selectedInstitutionId ?? null;
 
-    // NEW: search
     if (name && name !== "") {
         opt.name = name;
     }
@@ -323,7 +334,6 @@ export function assignCertificateSelectPagingOptions(
         if (serverTablePaging.sortBy[0].order === "desc") sortString = "-" + sortString;
         opt.sort = sortString;
     }
-    // NEW: search
     if (alias && alias !== "") {
         opt.alias = alias;
     }

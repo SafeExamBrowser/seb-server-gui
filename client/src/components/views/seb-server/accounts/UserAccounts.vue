@@ -121,15 +121,21 @@
 
             <!-- Data Table Definition-->
             <v-sheet class="rounded-lg mt-10">
-                <v-data-table
+                <v-data-table-server
                     v-model:options="options"
-                    :items="filteredUsers"
+                    @update:options="loadItems"
+
+                    :hover="true"
+                    :loading="isLoading"
                     :no-data-text="translate('general.noData')"
                     :loading-text="translate('general.loading')"
-                    :items-per-page="options.itemsPerPage"
-                    :items-per-page-options="[5, 10, 15]"
+
+                    :items="userAccounts?.content"
+                    :items-length="totalItems"
+
+                    :items-per-page="5"
+                    :items-per-page-options="tableUtils.calcItemsPerPage(totalItems)"
                     :headers="userAccountsTableHeaders"
-                    :loading="isLoading"
                     style="min-height:35vh"
                 >
                     <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort }">
@@ -151,7 +157,7 @@
                         >
                             <!-- Column Definition -->
                             <td v-if="showInstitutionColumn" class="text-primary">
-                                {{ item.institutionName || item.institutionId }}
+                                {{ getInstitutionName(item.institutionId) || item.institutionId }}
                             </td>
                             <td class="text-primary">{{ item.surname }}</td>
                             <td class="text-primary">{{ item.name }}</td>
@@ -229,7 +235,7 @@
 
                         </tr>
                     </template>
-                </v-data-table>
+                </v-data-table-server>
 
                 <!-- Delete User Account Dialog -->
                 <v-dialog v-model="deleteDialog" max-width="500">
@@ -327,6 +333,7 @@
     });
     const statusDialog = ref(false);
     const statusDialogUser = ref<UserAccount | null>(null);
+    const totalItems = ref<number>(0);
 
 
     //search string
@@ -421,55 +428,6 @@
         sortBy: [{key: "name", order: "asc"}],
     });
 
-    // Filters + Sorting
-    const filteredUsers = computed(() => {
-        if (!userAccounts.value?.content) return [];
-        let result: (UserAccount & { institutionName?: string })[] = [...userAccounts.value.content];
-
-
-        // Status filter
-        if (selectedStatus.value) {
-            const isActive = selectedStatus.value === "Active";
-            result = result.filter(user => user.active === isActive);
-        }
-
-        // Search filter
-        const searchTerm = searchQuery.value;
-        if (searchQuery) {
-            result = result.filter(user =>
-                [user.name, user.surname, user.username, user.email]
-                    .some(field => field?.toLowerCase().includes(searchTerm))
-            );
-        }
-        if (selectedInstitutionId.value) {
-            result = result.filter(
-                user => String(user.institutionId) === selectedInstitutionId.value
-            );
-        }
-
-        result = result.map(user => ({
-            ...user,
-            institutionName: institutionIdToNameMap.value.get(String(user.institutionId)) || "",
-        }));
-
-        //sort
-        type SortableKey = keyof Pick<UserAccount & {
-            institutionName?: string
-        }, "name" | "surname" | "username" | "email" | "institutionName">;
-
-        const sort = options.value.sortBy?.[0];
-        if (sort && ["name", "surname", "username", "email", "institutionName"].includes(sort.key)) {
-            const sortKey = sort.key as SortableKey;
-            result.sort((a, b) => {
-                const valA = a[sortKey]?.toString().toLowerCase() || "";
-                const valB = b[sortKey]?.toString().toLowerCase() || "";
-                return sort.order === "asc"
-                    ? valA.localeCompare(valB)
-                    : valB.localeCompare(valA);
-            });
-        }
-        return result;
-    });
 
     //update status
     async function onStatusChange(user: UserAccount, newStatus: string) {
@@ -478,7 +436,7 @@
         } else if (newStatus === "Inactive" && user.active) {
             await userAccountViewService.deactivateUserAccount(user.uuid);
         }
-        await loadItems(options.value); // refresh table
+        await loadItems(options.value);
 
     }
 
@@ -518,17 +476,23 @@
 
     // Load users with full pagination from backend
     async function loadItems(serverTablePaging: ServerTablePaging) {
-        const fetchAllPaging = {...serverTablePaging, itemsPerPage: 500, page: 1};
         userAccountStore.currentPagingOptions = serverTablePaging;
         isLoading.value = true;
-        const optionalParams = tableUtils.assignUserAccountSelectPagingOptions(fetchAllPaging);
+        const optionalParams = tableUtils.assignUserAccountSelectPagingOptions(userAccountStore.currentPagingOptions,
+            userAccountStore.searchField,
+            selectedStatus.value,
+            selectedInstitutionId.value
+        );
+
+
         const response = await userAccountViewService.getUserAccounts(optionalParams);
 
         if (!response) {
             isLoading.value = false;
             return;
         }
-
+        totalItems.value = (response.number_of_pages ?? 1) * (response.page_size ?? (response.content?.length ?? 0));
+        console.log(totalItems.value, " total items")
         userAccounts.value = response;
         isLoading.value = false;
     }
@@ -537,6 +501,7 @@
     function onSearch() {
         searchQuery.value = userAccountStore.searchField?.trim().toLowerCase() ?? "";
         options.value.page = 1;
+        loadItems(options.value);
     }
 
     function onClearSearch() {
@@ -545,7 +510,12 @@
         selectedStatus.value = null;
         selectedInstitutionId.value = null;
         options.value.page = 1;
+        loadItems(options.value);
     }
+
+    const getInstitutionName = (id: string | number | null | undefined) =>
+        (id != null ? institutionIdToNameMap.value.get(String(id)) : "") ?? "";
+
 
     //dialogs and logic
     //delete
@@ -601,6 +571,11 @@
     function goToDetails(item: UserAccount) {
         navigateTo(`${constants.EDIT_USER_ACCOUNT}/${item.uuid}`);
     }
+
+    watch([selectedStatus, selectedInstitutionId], () => {
+        options.value.page = 1;
+        loadItems(options.value);
+    });
 
 
 </script>

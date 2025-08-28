@@ -145,9 +145,11 @@
                     <v-data-table-server
                         v-model:options="options"
                         @update:options="loadItems"
+
                         :hover="true"
                         :loading="isLoading"
                         :loading-text="translate('general.loading')"
+
                         :items="assessmentTools?.content"
                         :items-length="totalItems"
                         :items-per-page="5"
@@ -364,7 +366,6 @@ onMounted(async () => {
 
     await loadItems(options.value);
 });
-
 
 
 const institutionIdToNameMap = computed(() => {

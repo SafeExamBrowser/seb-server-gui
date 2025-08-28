@@ -75,6 +75,7 @@ type OptionalParGetUserAccounts = {
     page_size?: number;
     page_number?: number;
     username?: string;
-    status?: string | null
+    active?: string | null;
+    institutionId?: string | null;
     sort?: string;
 }
