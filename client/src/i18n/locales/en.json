@@ -338,7 +338,7 @@
             "addUserContext": "Add User Account",
             "filters": {
                 "searchTitle": "Search",
-                "searchField": "Search for Users",
+                "searchField": "Search by Last Name",
                 "statusFilter": "Status",
                 "activeSelector": "Active",
                 "inactiveSelector": "Inactive",

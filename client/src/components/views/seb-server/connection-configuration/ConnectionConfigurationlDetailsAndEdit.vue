@@ -934,8 +934,8 @@ function formatDisplayDate(dateString?: string): string {
 }
 
 .custom-padding-textbox {
-    padding-top: 8px !important;
-    padding-bottom: 8px !important;
+    padding-top: 1px !important;
+    padding-bottom: 1px !important;
 }
 
 .custom-role-checkbox input[type="checkbox"] {

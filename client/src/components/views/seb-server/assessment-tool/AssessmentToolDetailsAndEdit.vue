@@ -47,7 +47,7 @@
 
                             <!-- First Section -->
                             <v-row dense>
-                                <v-col>
+                                <v-col cols="8">
                                     <!-- Institution (never changeable) -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-select
@@ -62,6 +62,19 @@
                                             item-value="modelId"
                                             :rules="[requiredRule]"
                                             :disabled="true"
+                                        />
+                                    </v-col>
+
+                                    <!-- Name -->
+                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                        <v-text-field
+                                            required
+                                            prepend-inner-icon="mdi-account-outline"
+                                            density="compact"
+                                            :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.nameLabel')"
+                                            variant="outlined"
+                                            v-model="name"
+                                            :rules="[requiredRule]"
                                         />
                                     </v-col>
 
@@ -80,28 +93,7 @@
                                             :rules="[requiredRule]"
                                         />
                                     </v-col>
-                                </v-col>
 
-                                <!-- Second Column -->
-                                <v-col>
-                                    <!-- Name -->
-                                    <v-col cols="12" md="12" class="custom-padding-textbox">
-                                        <v-text-field
-                                            required
-                                            prepend-inner-icon="mdi-account-outline"
-                                            density="compact"
-                                            :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.nameLabel')"
-                                            variant="outlined"
-                                            v-model="name"
-                                            :rules="[requiredRule]"
-                                        />
-                                    </v-col>
-                                </v-col>
-                            </v-row>
-
-                            <!-- Second Section -->
-                            <v-row dense>
-                                <v-col>
                                     <!-- Assessment Tool Server Address-->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
@@ -139,9 +131,7 @@
                                             </template>
                                         </v-text-field>
                                     </v-col>
-                                </v-col>
 
-                                <v-col>
                                     <!-- Assessment Tool Server Username -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
@@ -178,14 +168,20 @@
                                             </template>
                                         </v-text-field>
                                     </v-col>
+
+
+                                </v-col>
+
+                                <!-- Second Column -->
+                                <v-col cols="4">
+
                                 </v-col>
                             </v-row>
-
-                            <!-- Third Section for proxy stuff -->
+                            <!-- Proxy toggle and expansion -->
                             <v-row dense>
                                 <v-divider class="custom-divider mx-1 my-2"/>
                                 <v-col>
-                                    <!-- With Proxy -->
+                                    <!-- With Proxy Toggle -->
                                     <v-col cols="6" md="6" class="custom-padding-textbox">
                                         <div class="d-flex align-center justify-space-between w-100">
                                             <label class="text-grey-darken-1 text-body-1 ml-11">
@@ -214,7 +210,9 @@
                                     <v-expand-transition>
                                         <div v-show="withProxy">
                                             <v-row>
-                                                <v-col>
+                                                <v-col cols="8">
+
+                                                    <!-- Proxy Host -->
                                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                                         <v-text-field
                                                             prepend-inner-icon="mdi-server"
@@ -227,6 +225,7 @@
                                                         />
                                                     </v-col>
 
+                                                    <!-- Proxy Port -->
                                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                                         <v-text-field
                                                             prepend-inner-icon="mdi-numeric"
@@ -240,9 +239,8 @@
                                                             validate-on="blur"
                                                         />
                                                     </v-col>
-                                                </v-col>
 
-                                                <v-col>
+                                                    <!-- Proxy Username-->
                                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                                         <v-text-field
                                                             prepend-inner-icon="mdi-account-outline"
@@ -255,6 +253,7 @@
                                                         />
                                                     </v-col>
 
+                                                    <!-- Proxy Password -->
                                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                                         <v-text-field
                                                             :type="proxyPasswordVisible ? 'text' : 'password'"
@@ -276,6 +275,9 @@
                                                             </template>
                                                         </v-text-field>
                                                     </v-col>
+                                                </v-col>
+
+                                                <v-col cols="4">
                                                 </v-col>
                                             </v-row>
                                         </div>
@@ -634,8 +636,8 @@ async function editAssessmentToolOnly() {
 }
 
 .custom-padding-textbox {
-    padding-top: 8px !important;
-    padding-bottom: 8px !important;
+    padding-top: 1px !important;
+    padding-bottom: 1px !important;
 }
 
 .custom-role-checkbox input[type="checkbox"] {
