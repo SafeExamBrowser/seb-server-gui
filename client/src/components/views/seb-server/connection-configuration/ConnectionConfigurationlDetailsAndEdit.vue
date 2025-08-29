@@ -10,7 +10,7 @@
         <v-col elevation="4" cols="9" class="bg-white rounded-lg">
             <v-row class="d-flex align-center justify-space-between px-6 pt-6">
                 <div class="text-primary text-h5 font-weight-bold">
-                    {{ translate("connectionConfigurations.assessmentToolDetailAndEditPage.title") }}
+                    {{ translate("titles.connectionConfigurationViewAndEdit") }}
                 </div>
                 <v-chip
                     class=" text-subtitle-1 px-5 py-2 font-weight-bold"
@@ -24,20 +24,20 @@
                 >
                     {{
                         active
-                            ? translate('assessmentToolConnections.assessmentToolsPage.filters.activeSelector')
-                            : translate('assessmentToolConnections.assessmentToolsPage.filters.inactiveSelector')
+                            ? translate('connectionConfigurations.connectionConfigurationViewAndEditPage.filters.activeSelector')
+                            : translate('connectionConfigurations.connectionConfigurationViewAndEditPage.filters.inactiveSelector')
                     }}
                 </v-chip>
             </v-row>
 
             <v-divider class="custom-divider mx-6 my-4 mt-7"/>
             <v-row class="px-8 mt-2 d-flex justify-space-between">
-                <div class="text-body-2 text-grey-darken-1" style="visibility: hidden">
-                    {{ translate("connectionConfigurations.assessmentToolDetailAndEditPage.info") }}
+                <div class="text-body-2 text-grey-darken-1">
+                    {{ translate("connectionConfigurations.connectionConfigurationViewAndEditPage.info.lastUpdatedAt") + formatDisplayDate(updateDate) + translate("connectionConfigurations.connectionConfigurationViewAndEditPage.info.by") +  userNamesOfLastUserToUpdate}}
                 </div>
                 <div class="text-body-2 text-grey-darken-1">
                     {{
-                        translate("userAccount.userAccountDetailAndEditPage.info.createdAtInfo") + formatDisplayDate(creationDate)
+                        translate("connectionConfigurations.connectionConfigurationViewAndEditPage.info.createdAt") + formatDisplayDate(creationDate)
                     }}
                 </div>
             </v-row>
@@ -50,17 +50,33 @@
 
                             <!-- First Section -->
                             <v-row dense>
-                                <v-col>
+                                <v-col cols="8">
                                     <!-- Name* -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
                                             required
                                             prepend-inner-icon="mdi-account-outline"
                                             density="compact"
-                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.name')"
+                                            :label="translate('connectionConfigurations.connectionConfigurationViewAndEditPage.labels.name')"
                                             variant="outlined"
                                             v-model="name"
                                             :rules="[requiredRule]"
+                                        />
+                                    </v-col>
+
+                                    <!-- Configuration Purpose -->
+                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                        <v-select
+                                            prepend-inner-icon="mdi-shape-outline"
+                                            density="compact"
+                                            :label="translate('connectionConfigurations.connectionConfigurationViewAndEditPage.labels.configurationPurpose')"
+                                            variant="outlined"
+                                            v-model="configurationPurpose"
+                                            :items="configurationPurposeItems"
+                                            item-title="label"
+                                            item-value="value"
+                                            :rules="[requiredRule]"
+                                            validate-on="input"
                                         />
                                     </v-col>
 
@@ -71,7 +87,7 @@
                                             :type="configurationPasswordVisible ? 'text' : 'password'"
                                             prepend-inner-icon="mdi-key-variant"
                                             density="compact"
-                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.configurationPassword')"
+                                            :label="translate('connectionConfigurations.connectionConfigurationViewAndEditPage.labels.configurationPassword')"
                                             variant="outlined"
                                             v-model="configurationPassword"
                                             validate-on="input"
@@ -87,12 +103,47 @@
                                         </v-text-field>
                                     </v-col>
 
+                                    <!-- Confirm Configuration Password (required if configurationPassword set) -->
+                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                        <v-text-field
+                                            ref="confirmConfigPwdRef"
+                                            :type="confirmConfigurationPasswordVisible ? 'text' : 'password'"
+                                            prepend-inner-icon="mdi-lock-outline"
+                                            density="compact"
+                                            :label="translate('connectionConfigurations.connectionConfigurationViewAndEditPage.labels.confirmConfigurationPassword')"
+                                            variant="outlined"
+                                            v-model="confirmConfigurationPassword"
+                                            validate-on="input"
+                                            :rules="[configPwdMustMatchRule]"
+                                        >
+                                            <template #append-inner>
+                                                <v-btn
+                                                    density="compact"
+                                                    variant="text"
+                                                    :icon="confirmConfigurationPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
+                                                    @click="confirmConfigurationPasswordVisible = !confirmConfigurationPasswordVisible"
+                                                />
+                                            </template>
+                                        </v-text-field>
+                                    </v-col>
+                                </v-col>
+
+                                <!-- Second Column first section -->
+                                <v-col cols-="4">
+
+                                </v-col>
+                            </v-row>
+
+                            <!-- Second Section-->
+                            <v-row dense class="mt-0">
+                                <v-col cols="8">
+
                                     <!-- Encrypt With Certificate (optional) -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-select
                                             prepend-inner-icon="mdi-shield-key-outline"
                                             density="compact"
-                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.encryptWithCertificate')"
+                                            :label="translate('connectionConfigurations.connectionConfigurationViewAndEditPage.labels.encryptWithCertificate')"
                                             variant="outlined"
                                             v-model="encryptWithCertificate"
                                             :items="certificateItems"
@@ -115,7 +166,7 @@
 
                                             <template v-if="!hasRealCerts" #append-item>
                                                 <div class="text-caption text-grey-darken-1 px-4 py-2">
-                                                    {{ translate('connectionConfigurations.createConnectionConfigurationPage.labels.noCertificatesUploadedYet') }}
+                                                    {{ translate('connectionConfigurations.connectionConfigurationViewAndEditPage.labels.noCertificatesUploadedYet') }}
                                                 </div>
                                             </template>
                                         </v-select>
@@ -126,7 +177,7 @@
                                         <v-text-field
                                             prepend-inner-icon="mdi-timer-outline"
                                             density="compact"
-                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.pingInterval')"
+                                            :label="translate('connectionConfigurations.connectionConfigurationViewAndEditPage.labels.pingInterval')"
                                             variant="outlined"
                                             v-model.number="pingInterval"
                                             type="number"
@@ -138,54 +189,14 @@
 
                                 </v-col>
 
-                                <!-- Second Section -->
-                                <v-col>
-                                    <!-- Configuration Purpose -->
-                                    <v-col cols="12" md="12" class="custom-padding-textbox">
-                                        <v-select
-                                            prepend-inner-icon="mdi-shape-outline"
-                                            density="compact"
-                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.configurationPurpose')"
-                                            variant="outlined"
-                                            v-model="configurationPurpose"
-                                            :items="configurationPurposeItems"
-                                            item-title="label"
-                                            item-value="value"
-                                            :rules="[requiredRule]"
-                                            validate-on="input"
-                                        />
-                                    </v-col>
 
-                                    <!-- Confirm Configuration Password (required if configurationPassword set) -->
-                                    <v-col cols="12" md="12" class="custom-padding-textbox">
-                                        <v-text-field
-                                            ref="confirmConfigPwdRef"
-                                            :type="confirmConfigurationPasswordVisible ? 'text' : 'password'"
-                                            prepend-inner-icon="mdi-lock-outline"
-                                            density="compact"
-                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.confirmConfigurationPassword')"
-                                            variant="outlined"
-                                            v-model="confirmConfigurationPassword"
-                                            validate-on="input"
-                                            :rules="[configPwdMustMatchRule]"
-                                        >
-                                            <template #append-inner>
-                                                <v-btn
-                                                    density="compact"
-                                                    variant="text"
-                                                    :icon="confirmConfigurationPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
-                                                    @click="confirmConfigurationPasswordVisible = !confirmConfigurationPasswordVisible"
-                                                />
-                                            </template>
-                                        </v-text-field>
-                                    </v-col>
-
+                                <v-col cols="4">
                                     <!-- Use asymmetric-only encryption (toggle preserved for layout, not sent) -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <div class="d-flex align-center justify-space-between w-100">
                                             <label class="text-grey-darken-1 text-body-1 ml-11">
                                                 {{
-                                                    translate('connectionConfigurations.createConnectionConfigurationPage.labels.useAsymmetricOnlyEncryption')
+                                                    translate('connectionConfigurations.connectionConfigurationViewAndEditPage.labels.useAsymmetricOnlyEncryption')
                                                 }}
                                             </label>
 
@@ -196,7 +207,7 @@
                                                 density="compact"
                                                 color="primary"
                                                 class="ml-4"
-                                                :aria-label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.withProxyAria')"
+                                                :aria-label="translate('connectionConfigurations.connectionConfigurationViewAndEditPage.labels.withFallbackArea')"
                                             />
                                         </div>
                                     </v-col>
@@ -213,7 +224,7 @@
                                         <div class="d-flex align-center justify-space-between w-100">
                                             <label class="text-grey-darken-1 text-body-1 ml-11">
                                                 {{
-                                                    translate('connectionConfigurations.createConnectionConfigurationPage.labels.withFallback')
+                                                    translate('connectionConfigurations.connectionConfigurationViewAndEditPage.labels.withFallback')
                                                 }}
                                             </label>
 
@@ -224,12 +235,13 @@
                                                 density="compact"
                                                 color="primary"
                                                 class="ml-4"
-                                                :aria-label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.withFallbackArea')"
+                                                :aria-label="translate('connectionConfigurations.connectionConfigurationViewAndEditPage.labels.withFallbackArea')"
                                             />
                                         </div>
                                     </v-col>
                                 </v-col>
                             </v-row>
+
 
                             <v-row dense>
                                 <v-col>
@@ -237,13 +249,13 @@
                                     <v-expand-transition>
                                         <div v-show="withFallback">
                                             <v-row>
-                                                <v-col>
+                                                <v-col cols="8">
                                                     <!-- Fallback Start URL* -->
                                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                                         <v-text-field
                                                             prepend-inner-icon="mdi-server"
                                                             density="compact"
-                                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.fallbackStartURL')"
+                                                            :label="translate('connectionConfigurations.connectionConfigurationViewAndEditPage.labels.fallbackStartURL')"
                                                             variant="outlined"
                                                             v-model="fallbackStartUrl"
                                                             :rules="[requiredIfFallbackRule, urlIfFallbackRule]"
@@ -256,9 +268,39 @@
                                                         <v-text-field
                                                             prepend-inner-icon="mdi-numeric"
                                                             density="compact"
-                                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.connectionAttempts')"
+                                                            :label="translate('connectionConfigurations.connectionConfigurationViewAndEditPage.labels.connectionAttempts')"
                                                             variant="outlined"
                                                             v-model.number="connectionAttempts"
+                                                            type="number"
+                                                            inputmode="numeric"
+                                                            :rules="[requiredNumberIfFallbackRule]"
+                                                            validate-on="blur"
+                                                        />
+                                                    </v-col>
+
+                                                    <!-- Interval* (number) -->
+                                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                                        <v-text-field
+                                                            prepend-inner-icon="mdi-timer-outline"
+                                                            density="compact"
+                                                            :label="translate('connectionConfigurations.connectionConfigurationViewAndEditPage.labels.interval')"
+                                                            variant="outlined"
+                                                            v-model.number="fallbackInterval"
+                                                            type="number"
+                                                            inputmode="numeric"
+                                                            :rules="[requiredNumberIfFallbackRule]"
+                                                            validate-on="blur"
+                                                        />
+                                                    </v-col>
+
+                                                    <!-- Connection Timeout* (number) -->
+                                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                                        <v-text-field
+                                                            prepend-inner-icon="mdi-clock-outline"
+                                                            density="compact"
+                                                            :label="translate('connectionConfigurations.connectionConfigurationViewAndEditPage.labels.connectionTimeout')"
+                                                            variant="outlined"
+                                                            v-model.number="connectionTimeout"
                                                             type="number"
                                                             inputmode="numeric"
                                                             :rules="[requiredNumberIfFallbackRule]"
@@ -273,7 +315,7 @@
                                                             :type="fallbackPasswordVisible ? 'text' : 'password'"
                                                             prepend-inner-icon="mdi-key-variant"
                                                             density="compact"
-                                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.fallbackPassword')"
+                                                            :label="translate('connectionConfigurations.connectionConfigurationViewAndEditPage.labels.fallbackPassword')"
                                                             variant="outlined"
                                                             v-model="fallbackPassword"
                                                             validate-on="input"
@@ -289,61 +331,6 @@
                                                         </v-text-field>
                                                     </v-col>
 
-                                                    <!-- Quit Password (optional) -->
-                                                    <v-col cols="12" md="12" class="custom-padding-textbox">
-                                                        <v-text-field
-                                                            ref="quitPwdRef"
-                                                            :type="quitPasswordVisible ? 'text' : 'password'"
-                                                            prepend-inner-icon="mdi-key-variant"
-                                                            density="compact"
-                                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.quitPassword')"
-                                                            variant="outlined"
-                                                            v-model="quitPassword"
-                                                            validate-on="input"
-                                                        >
-                                                            <template #append-inner>
-                                                                <v-btn
-                                                                    density="compact"
-                                                                    variant="text"
-                                                                    :icon="quitPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
-                                                                    @click="quitPasswordVisible = !quitPasswordVisible"
-                                                                />
-                                                            </template>
-                                                        </v-text-field>
-                                                    </v-col>
-                                                </v-col>
-                                                <v-col>
-
-                                                    <!-- Interval* (number) -->
-                                                    <v-col cols="12" md="12" class="custom-padding-textbox">
-                                                        <v-text-field
-                                                            prepend-inner-icon="mdi-timer-outline"
-                                                            density="compact"
-                                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.interval')"
-                                                            variant="outlined"
-                                                            v-model.number="fallbackInterval"
-                                                            type="number"
-                                                            inputmode="numeric"
-                                                            :rules="[requiredNumberIfFallbackRule]"
-                                                            validate-on="blur"
-                                                        />
-                                                    </v-col>
-
-                                                    <!-- Connection Timeout* (number) -->
-                                                    <v-col cols="12" md="12" class="custom-padding-textbox">
-                                                        <v-text-field
-                                                            prepend-inner-icon="mdi-clock-outline"
-                                                            density="compact"
-                                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.connectionTimeout')"
-                                                            variant="outlined"
-                                                            v-model.number="connectionTimeout"
-                                                            type="number"
-                                                            inputmode="numeric"
-                                                            :rules="[requiredNumberIfFallbackRule]"
-                                                            validate-on="blur"
-                                                        />
-                                                    </v-col>
-
                                                     <!-- Confirm Fallback Password (required if fallbackPassword set) -->
                                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                                         <v-text-field
@@ -351,7 +338,7 @@
                                                             :type="confirmFallbackPasswordVisible ? 'text' : 'password'"
                                                             prepend-inner-icon="mdi-key-variant"
                                                             density="compact"
-                                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.confirmFallbackPassword')"
+                                                            :label="translate('connectionConfigurations.connectionConfigurationViewAndEditPage.labels.confirmFallbackPassword')"
                                                             variant="outlined"
                                                             v-model="confirmFallbackPassword"
                                                             validate-on="input"
@@ -368,6 +355,29 @@
                                                         </v-text-field>
                                                     </v-col>
 
+                                                    <!-- Quit Password (optional) -->
+                                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                                        <v-text-field
+                                                            ref="quitPwdRef"
+                                                            :type="quitPasswordVisible ? 'text' : 'password'"
+                                                            prepend-inner-icon="mdi-key-variant"
+                                                            density="compact"
+                                                            :label="translate('connectionConfigurations.connectionConfigurationViewAndEditPage.labels.quitPassword')"
+                                                            variant="outlined"
+                                                            v-model="quitPassword"
+                                                            validate-on="input"
+                                                        >
+                                                            <template #append-inner>
+                                                                <v-btn
+                                                                    density="compact"
+                                                                    variant="text"
+                                                                    :icon="quitPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
+                                                                    @click="quitPasswordVisible = !quitPasswordVisible"
+                                                                />
+                                                            </template>
+                                                        </v-text-field>
+                                                    </v-col>
+
                                                     <!-- Confirm Quit Password (required if quitPassword set) -->
                                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                                         <v-text-field
@@ -375,7 +385,7 @@
                                                             :type="confirmQuitPasswordVisible ? 'text' : 'password'"
                                                             prepend-inner-icon="mdi-key-variant"
                                                             density="compact"
-                                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.confirmQuitPassword')"
+                                                            :label="translate('connectionConfigurations.connectionConfigurationViewAndEditPage.labels.confirmQuitPassword')"
                                                             variant="outlined"
                                                             v-model="confirmQuitPassword"
                                                             validate-on="input"
@@ -391,7 +401,12 @@
                                                             </template>
                                                         </v-text-field>
                                                     </v-col>
+
                                                 </v-col>
+
+                                                <v-col cols="4">
+                                                </v-col>
+
                                             </v-row>
                                         </div>
                                     </v-expand-transition>
@@ -427,7 +442,7 @@
                                     :disabled="!canSave"
                                     @click="onSave()"
                                 >
-                                    {{ translate('connectionConfigurations.assessmentToolDetailAndEditPage.buttons.saveChanges') }}
+                                    {{ translate('connectionConfigurations.connectionConfigurationViewAndEditPage.buttons.saveChanges') }}
                                 </v-btn>
                             </div>
                         </v-col>
@@ -447,16 +462,18 @@
 </template>
 
 <script setup lang="ts">
-import {ref, computed, onMounted, onBeforeUnmount, watch} from 'vue';
+import {computed, onBeforeUnmount, onMounted, ref, watch} from 'vue';
 import {useRoute} from 'vue-router';
 import {useAppBarStore, useLayoutStore} from '@/stores/store';
 import {translate} from '@/utils/generalUtils';
 import {navigateTo} from '@/router/navigation';
 import * as constants from '@/utils/constants';
-import * as connectionConfigurationViewService from '@/services/seb-server/component-services/connectionConfigurationViewService';
+import * as connectionConfigurationViewService
+    from '@/services/seb-server/component-services/connectionConfigurationViewService';
 import router from '@/router/router';
 import * as certificateViewService from "@/services/seb-server/component-services/certificateViewService";
 import moment from "moment-timezone";
+import {getUserAccountById} from "@/services/seb-server/component-services/userAccountViewService";
 
 // Router
 const route = useRoute();
@@ -470,15 +487,15 @@ const name = ref<string>("");
 const configurationPassword = ref<string>("");
 const confirmConfigurationPassword = ref<string>("");
 const encryptWithCertificate = ref<string | undefined>(undefined);
-const pingInterval = ref<number | null>(1000);
+const pingInterval = ref<number | null>(1);
 const exams = ref<number[]>([]);
 const asymmetricOnlyEncryption = ref<boolean>(false);
 
 const withFallback = ref<boolean>(false);
 const fallbackStartUrl = ref<string>("");
-const fallbackInterval = ref<number | null>(2000);
+const fallbackInterval = ref<number | null>(2);
 const connectionAttempts = ref<number | null>(5);
-const connectionTimeout = ref<number | null>(30000);
+const connectionTimeout = ref<number | null>(30);
 const fallbackPassword = ref<string>("");
 const confirmFallbackPassword = ref<string>("");
 const quitPassword = ref<string>("");
@@ -486,6 +503,7 @@ const confirmQuitPassword = ref<string>("");
 const configurationPurpose = ref<string | null>(null);
 const institutionId = ref<number | undefined>(undefined);
 const creationDate = ref<string | undefined>(undefined);
+const updateDate = ref<string | undefined>(undefined);
 
 // UI state
 const formRef = ref();
@@ -514,16 +532,17 @@ const fallbackPwdRef = ref<any>(null);
 const confirmFallbackPwdRef = ref<any>(null);
 const quitPwdRef = ref<any>(null);
 const confirmQuitPwdRef = ref<any>(null);
-
+const userToLastUpdate = ref<UserAccount | null>(null);
+const userNamesOfLastUserToUpdate = ref<string | undefined>(undefined);
 
 
 const configurationPurposeItems = [
     {
-        label: translate('connectionConfigurations.createConnectionConfigurationPage.selectValues.start_exam'),
+        label: translate('connectionConfigurations.connectionConfigurationViewAndEditPage.selectValues.start_exam'),
         value: 'START_EXAM'
     },
     {
-        label: translate('connectionConfigurations.createConnectionConfigurationPage.selectValues.configure_client'),
+        label: translate('connectionConfigurations.connectionConfigurationViewAndEditPage.selectValues.configure_client'),
         value: 'CONFIGURE_CLIENT'
     }
 ];
@@ -537,10 +556,10 @@ const certificateItems = ref<{ label: string; value: string }[]>([
 
 
 // Validation messages
-const requiredMessage = translate("connectionConfigurations.createConnectionConfigurationPage.validation.required");
-const mustMatchMessage = translate('connectionConfigurations.createConnectionConfigurationPage.validation.noMatch');
-const mustBeNumberMessage = translate('connectionConfigurations.createConnectionConfigurationPage.validation.mustBeNumber');
-const mustBeUrlMessage = translate('connectionConfigurations.createConnectionConfigurationPage.validation.assessmentToolServerAddressLabel');
+const requiredMessage = translate("connectionConfigurations.connectionConfigurationViewAndEditPage.validation.required");
+const mustMatchMessage = translate('connectionConfigurations.connectionConfigurationViewAndEditPage.validation.noMatch');
+const mustBeNumberMessage = translate('connectionConfigurations.connectionConfigurationViewAndEditPage.validation.mustBeNumber');
+const mustBeUrlMessage = translate('connectionConfigurations.connectionConfigurationViewAndEditPage.validation.mustBeWithUrl');
 
 // Rules (same as create)
 const requiredRule = (v: any) => {
@@ -641,7 +660,10 @@ onMounted(async () => {
     if (idNum != null) {
         const dto: ConnectionConfiguration | null = await connectionConfigurationViewService.getConnectionConfiguration(idNum).catch(() => null);
         if (dto) {
+            userToLastUpdate.value = await getUserAccountById(dto.lastUpdateUser);
+
             populateFromDto(dto);
+
             fetchedId.value = dto.id ?? idNum;
             initialActiveStatus.value = dto.active;
             active.value = dto.active;
@@ -659,6 +681,7 @@ function populateFromDto(dto: ConnectionConfiguration) {
     name.value = (dto.name ?? '').toString();
     institutionId.value = dto.institutionId;
     configurationPurpose.value = dto.sebConfigPurpose ?? null;
+
     const aliasFromBackend =
         (dto as any).cert_alias ??
         (dto as any).certificateAlias ??
@@ -666,15 +689,16 @@ function populateFromDto(dto: ConnectionConfiguration) {
         undefined;
 
     encryptWithCertificate.value = aliasFromBackend || undefined;
-    pingInterval.value = dto.sebServerPingTime != null ? Number(dto.sebServerPingTime) : 1000;
+    // Convert ms → s
+    pingInterval.value = dto.sebServerPingTime != null ? Math.round(Number(dto.sebServerPingTime) / 1000) : 1;
+    fallbackInterval.value = dto.sebServerFallbackAttemptInterval != null ? Math.round(Number(dto.sebServerFallbackAttemptInterval) / 1000) : 2;
+    connectionTimeout.value = dto.sebServerFallbackTimeout != null ? Math.round(Number(dto.sebServerFallbackTimeout) / 1000) : 30;
     exams.value = Array.isArray(dto.exam_selection) ? dto.exam_selection : [];
     asymmetricOnlyEncryption.value = dto.cert_encryption_asym;
 
     withFallback.value = !!dto.startURL;
     fallbackStartUrl.value = dto.startURL;
-    fallbackInterval.value = dto.sebServerFallbackAttemptInterval;
     connectionAttempts.value = dto.sebServerFallbackAttempts;
-    connectionTimeout.value = dto.sebServerFallbackTimeout;
 
     // passwords
     fallbackPassword.value = dto.sebServerFallbackPasswordHash;
@@ -685,6 +709,9 @@ function populateFromDto(dto: ConnectionConfiguration) {
     confirmConfigurationPassword.value = dto.encryptSecret;
 
     creationDate.value = dto.date
+    updateDate.value =dto.lastUpdateTime.toString();
+
+    userNamesOfLastUserToUpdate.value = userToLastUpdate.value?.name + " " + userToLastUpdate.value?.surname + " (" + userToLastUpdate.value?.username + ")";
 }
 
 function currentFormState() {
@@ -785,13 +812,14 @@ async function editConnectionConfigurationOnly() {
         console.warn("Skipping save: institutionId is not set");
         return;
     }
+    const toMs = (s: number | null) => (s == null ? null : Math.round(Number(s) * 1000));
 
     const basePayload: UpdateConnectionConfigurationPar = {
         id: idToSend,
         institutionId: institutionId.value.toString(),
         name: name.value.trim(),
         sebConfigPurpose: configurationPurpose.value!,
-        sebServerPingTime: Number(pingInterval.value!),
+        sebServerPingTime: toMs(pingInterval.value)!,
         exam_selection: exams.value?.length ? exams.value : undefined,
         cert_alias: encryptWithCertificate.value || undefined,
 
@@ -810,9 +838,9 @@ async function editConnectionConfigurationOnly() {
         ...(withFallback.value
             ? {
                 startURL: fallbackStartUrl.value.trim(),
-                sebServerFallbackAttemptInterval: Number(fallbackInterval.value!),
+                sebServerFallbackAttemptInterval: toMs(fallbackInterval.value)!,
                 sebServerFallbackAttempts: Number(connectionAttempts.value!),
-                sebServerFallbackTimeout: Number(connectionTimeout.value!),
+                sebServerFallbackTimeout: toMs(connectionTimeout.value)!,
                 sebServerFallbackPasswordHash: fallbackPassword.value?.trim() || undefined,
                 sebServerFallbackPasswordHashConfirm: confirmFallbackPassword.value?.trim() || undefined,
                 hashedQuitPassword: quitPassword.value?.trim() || undefined,

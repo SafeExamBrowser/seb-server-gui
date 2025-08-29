@@ -172,11 +172,13 @@
 
                                 </v-col>
 
-                                <!-- Second Column -->
+                                <!-- Second Column first section-->
                                 <v-col cols="4">
 
                                 </v-col>
                             </v-row>
+
+
                             <!-- Proxy toggle and expansion -->
                             <v-row dense>
                                 <v-divider class="custom-divider mx-1 my-2"/>

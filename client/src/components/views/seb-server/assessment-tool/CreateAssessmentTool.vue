@@ -159,7 +159,7 @@
 
                                 </v-col>
 
-                                <!-- Second Section-->
+                                <!-- Second Column first Section-->
                                 <v-col cols="4">
 
                                 </v-col>
