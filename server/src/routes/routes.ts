@@ -20,7 +20,7 @@ import * as settingsController from "../controllers/screen-proctoring/sp-setting
 import * as applicationSearchController from "../controllers/screen-proctoring/sp-application-search.controller";
 import * as institutionsController from "../controllers/seb-server/institution.controller";
 import * as certificateController from "../controllers/seb-server/certificate.controller";
-
+import * as clientConnectionController from "../controllers/seb-server/client-connection.controller";
 
 const router: Router = express.Router();
 
@@ -128,6 +128,10 @@ router.get(constants.CLIENT_GROUP_ROUTE, clientGroupsController.getClientGroups)
 router.post(constants.CLIENT_GROUP_ROUTE, clientGroupsController.createClientGroup);
 router.put(constants.CLIENT_GROUP_ROUTE, clientGroupsController.updateClientGroup);
 router.delete(constants.CLIENT_GROUP_ROUTE + "/:id", clientGroupsController.deleteClientGroup);
+
+//client connection
+router.get(constants.CLIENT_CONNECTION_ROUTE + "/list", clientConnectionController.getClientConnectionList)
+
 
 //indicator
 router.get(constants.INDICATOR_ROUTE, indicatorController.getIndicators);

@@ -80,11 +80,10 @@ onBeforeMount(async () => {
     await monitoringViewService.getExamAndStore(examId);
     await getIndicatorData();
     await getOverviewData();
-    await monitoringViewService.getAksAndStore(examId);
-    console.log("AKS KEYS: " , monitoringStore.appSignatureKeys)
+    await monitoringViewService.getAskAndStore(examId);
     monitoringStore.selectedExam?.additionalAttributes
     startIntervalRefresh()
-    
+
 });
 
 onBeforeUnmount(() => {
@@ -93,14 +92,14 @@ onBeforeUnmount(() => {
 
 async function getOverviewData() {
     const overviewResponse: MonitoringOverview | null = await monitoringViewService.getOverview(examId);
-    if (!overviewResponse) 
+    if (!overviewResponse)
         return;
     monitoringStore.monitoringOverviewData = overviewResponse;
 }
 
 async function getIndicatorData() {
     const indicatorResponse: Indicators | null = await indicatorService.getIndicators(examId);
-    if (!indicatorResponse) 
+    if (!indicatorResponse)
         return;
 
     monitoringStore.indicators = indicatorResponse;

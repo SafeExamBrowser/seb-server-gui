@@ -70,3 +70,6 @@ export const INDICATOR_ROUTE = "/indicator";
 
 //active filter
 export const ACTIVE = "/active";
+
+//client Connection
+export const CLIENT_CONNECTION_ROUTE = "/seb-client-connection"

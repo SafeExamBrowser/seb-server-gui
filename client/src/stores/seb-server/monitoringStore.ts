@@ -29,6 +29,8 @@ export const useMonitoringStore = defineStore("monitoring", () => {
     const batteryIndicatorId = ref<number | null>(null);
     const wlanIndicatorId = ref<number | null>(null);
     const appSignatureKeys = ref<AppSignatureKey[] | null>(null);
+    const clientConnectionList = ref<SebClientConnection[] | null>(null);
+
 
 
     //monitoring detail
@@ -39,6 +41,15 @@ export const useMonitoringStore = defineStore("monitoring", () => {
     const logSearchField = ref<string | null>(null);
 
     const currentMonitoringDetailPagingOptions = ref<ServerTablePaging>();
+
+
+    const clientConnectionsById = computed<Record<number, SebClientConnection>>(() => {
+        const map: Record<number, SebClientConnection> = {};
+        for (const c of clientConnectionList.value ?? []) {
+            map[c.id] = c;
+        }
+        return map;
+    });
 
     function clearClientValues(){
         selectedMonitoringIds.value = [];
@@ -78,6 +89,8 @@ export const useMonitoringStore = defineStore("monitoring", () => {
         clientLogEvents,
         currentMonitoringDetailPagingOptions,
         logSearchField,
+        clientConnectionList,
+        clientConnectionsById,
 
         clearClientValues
     };

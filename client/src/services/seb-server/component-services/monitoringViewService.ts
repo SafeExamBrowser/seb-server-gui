@@ -11,7 +11,7 @@ import * as constants from "@/utils/constants";
 import * as navigation from "@/router/navigation";
 import { LocationQuery } from "vue-router";
 import * as clientGroupViewService from "@/services/seb-server/component-services/clientGroupViewService";
-import {getExamAppSignatureKeys} from "@/services/seb-server/component-services/examViewService";
+import * as clientConnectionService from "@/services/seb-server/api-services/clientConnectionService";
 
 
 //================api===============
@@ -64,13 +64,27 @@ export async function getExamAndStore(examId: string){
     useMonitoringStore().selectedExam = examResponse;
 }
 
-export async function getAksAndStore(examId: string){
-    const examResponse: AppSignatureKey[] | null = await examViewService.getExamAppSignatureKeys(examId);
+export async function getAskAndStore(examId: string) {
+    const store = useMonitoringStore();
+    const ask: AppSignatureKey[] | null = await examViewService.getExamAppSignatureKeys(examId);
 
-    if(examResponse == null){
+    store.appSignatureKeys = ask ?? [];
+
+    const ids: number[] = Array.from(
+        new Set(
+            (ask ?? []).flatMap(k =>
+                Object.keys(k.connectionIds ?? {}).map((id) => Number(id))
+            )
+        )
+    ).filter((n) => Number.isFinite(n));
+
+    if (ids.length === 0) {
+        store.clientConnectionList = [];
         return;
     }
-    useMonitoringStore().appSignatureKeys = examResponse;
+
+    const list = await clientConnectionService.getClientConnectionList(ids);
+    store.clientConnectionList = list ?? [];
 }
 
 
