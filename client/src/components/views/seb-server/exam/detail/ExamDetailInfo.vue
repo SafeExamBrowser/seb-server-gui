@@ -43,17 +43,15 @@
                                 {{translate("examDetail.info.url")}}
                             </v-col>
 
-                            <v-col cols="2" class="text-subtitle-1">
+                            <v-col cols="3" class="text-subtitle-1">
                                 {{translate("examDetail.info.start")}}
                             </v-col>
 
-                            <v-col cols="2" class="text-subtitle-1">
+                            <v-col cols="3" class="text-subtitle-1">
                                 {{translate("examDetail.info.end")}}
                             </v-col>
+                            <v-spacer></v-spacer>
 
-                            <v-col cols="3" class="text-subtitle-1">
-                                {{translate("examDetail.info.description")}}
-                            </v-col>
 
                             <v-col cols="2" class="text-subtitle-1">
                                 {{translate("examDetail.info.typeStatus")}}
@@ -70,29 +68,20 @@
                             </v-col>
 
                             <!------start time------->
-                            <v-col cols="2" class="primary-text-color text-h6 font-weight-bold">
-                                {{timeUtils.formatIsoDateToFullDate(examStore.selectedExam?.quizStartTime)}}
+                            <v-col cols="3" class="primary-text-color text-h6 font-weight-bold">
+                                {{timeUtils.formatIsoToReadableDateTime(examStore.selectedExam?.quizStartTime)}}
                             </v-col>
 
                             <!------end time------->
-                            <v-col cols="2" class="primary-text-color text-h6 font-weight-bold">
+                            <v-col cols="3" class="primary-text-color text-h6 font-weight-bold">
                                 <template v-if="examStore.selectedExam?.quizEndTime == null || ''">
                                     -
                                 </template>
                                 <template v-else>
-                                    {{timeUtils.formatIsoDateToFullDate(examStore.selectedExam?.quizEndTime)}}
+                                    {{timeUtils.formatIsoToReadableDateTime(examStore.selectedExam?.quizEndTime)}}
                                 </template>
                             </v-col>
-
-                            <!------description------->
-                            <v-col cols="3">
-                                <template v-if="examStore.selectedExam?.description == null || ''">
-                                    -
-                                </template>
-                                <template v-else>
-                                    <span v-html="examStore.selectedExam?.description"></span>
-                                </template>
-                            </v-col>
+                            <v-spacer></v-spacer>
 
                             <!------exam type & status------->
                             <v-col cols="2">

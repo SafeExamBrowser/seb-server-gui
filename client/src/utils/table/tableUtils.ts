@@ -192,7 +192,7 @@ export function assignPagingOptions(serverTablePaging: ServerTablePaging, paging
 
 export function assignUserAccountSelectPagingOptions(
     serverTablePaging: ServerTablePaging,
-    name: string | null,
+    surnameQuery: string | null,
     selectedStatus: string | null,
     selectedInstitutionId: string | null,
 ): OptionalParGetUserAccounts {
@@ -214,8 +214,8 @@ export function assignUserAccountSelectPagingOptions(
                 null;
     opt.institutionId = selectedInstitutionId ?? null;
 
-    if (name && name !== "") {
-        opt.username = name;
+    if (surnameQuery && surnameQuery !== "") {
+        opt.surname = surnameQuery;
     }
 
     return opt;

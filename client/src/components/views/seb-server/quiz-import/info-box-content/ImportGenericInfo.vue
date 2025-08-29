@@ -11,13 +11,15 @@
                                 {{quizImportStore.selectedQuiz?.quiz_name}}
                             </v-col>
 
-                            <v-col cols="2" class="text-subtitle-1">
+                            <v-col cols="3" class="text-subtitle-1">
                                 {{translate("quizImportWizard.genericInfo.start")}}
                             </v-col>
 
-                            <v-col cols="2" class="text-subtitle-1">
+                            <v-col cols="3" class="text-subtitle-1">
                                 {{translate("quizImportWizard.genericInfo.end")}}
                             </v-col>
+                            <v-spacer></v-spacer>
+
                             <v-spacer/>
                         </v-row>
 
@@ -31,12 +33,12 @@
                             </v-col>
 
                             <!------start time------->
-                            <v-col cols="2" class="primary-text-color text-h6 font-weight-bold">
+                            <v-col cols="3" class="primary-text-color text-h6 font-weight-bold">
                                 {{timeUtils.formatIsoToReadableDateTime(quizImportStore.selectedQuiz?.quiz_start_time)}}
                             </v-col>
 
                             <!------end time------->
-                            <v-col cols="2" class="primary-text-color text-h6 font-weight-bold">
+                            <v-col cols="3" class="primary-text-color text-h6 font-weight-bold">
                                 <template v-if="quizImportStore.selectedQuiz?.quiz_end_time == null || ''">
                                     -
                                 </template>
@@ -44,6 +46,8 @@
                                     {{timeUtils.formatIsoToReadableDateTime(quizImportStore.selectedQuiz?.quiz_end_time)}}
                                 </template>
                             </v-col>
+                            <v-spacer></v-spacer>
+
 
                             <v-spacer/>
                         </v-row>

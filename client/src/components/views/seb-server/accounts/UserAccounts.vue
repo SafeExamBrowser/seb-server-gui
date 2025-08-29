@@ -492,7 +492,6 @@
             return;
         }
         totalItems.value = (response.number_of_pages ?? 1) * (response.page_size ?? (response.content?.length ?? 0));
-        console.log(totalItems.value, " total items")
         userAccounts.value = response;
         isLoading.value = false;
     }

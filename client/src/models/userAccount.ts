@@ -74,7 +74,7 @@ type CreateUserPar = {
 type OptionalParGetUserAccounts = {
     page_size?: number;
     page_number?: number;
-    username?: string;
+    surname?: string;
     active?: string | null;
     institutionId?: string | null;
     sort?: string;
