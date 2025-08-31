@@ -516,6 +516,18 @@
         cursor: pointer;
     }
 
+    .navigation-overview-background {
+        background-color: #215caf;
+    }
+
+    .generic-background {
+        background-color: #f6f6f6;
+    }
+
+    .blue-background {
+        background-color: #215caf;
+    }
+
     .fade-in-arrow {
         opacity: 0;
         transition: opacity 0.2s ease;
@@ -566,6 +578,21 @@
         opacity: 1;
     }
 
+    .bg-is-institutional-admin {
+        background-color: #A30774 !important;
+    }
+
+
+    .blue-background {
+        background-color: #215caf;
+    }
+
+    .bg-is-institutional-admin {
+        background-color: #A30774 !important;
+    }
+
+
+
     .fade-in-arrow {
         opacity: 0;
         transition: opacity 0.2s ease;
@@ -614,6 +641,10 @@
         width: 100%;
         background-color: white;
         opacity: 1;
+    }
+
+    .bg-is-institutional-admin {
+        background-color: #A30774 !important;
     }
 
     .fade-in-arrow {
@@ -671,8 +702,19 @@
         white-space: nowrap;
     }
 
+     .full-page-blue {
+         background-color: #215caf;
+         min-height: 100%;
+         width: 100%;
+     }
 
-    .title-center {
+    .full-page-default {
+        background-color: #f6f6f6;
+        min-height: 100%;
+        width: 100%;
+    }
+
+    .v-app-bar-title {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -686,6 +728,14 @@
         height: 55px;
         width: auto;
         flex: 0 0 auto;
+    }
+
+    .title-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: .5rem;
+        white-space: nowrap;
     }
 
     .title-center .v-img {
