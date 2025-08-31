@@ -10,9 +10,18 @@
         </template>
 
         <!--current site title-->
-        <v-app-bar-title class="d-flex align-center mr-0">
-            <h1 class="title-inherit-styling mb-0">{{ effectiveTitle }}</h1>
+        <v-app-bar-title class="d-flex align-center justify-center flex-grow-1">
+            <div class="title-center">
+                <img
+                    v-if="institutionLogo"
+                    :src="institutionLogo"
+                    alt="Institution Logo"
+                    class="title-logo"
+                />
+                <h1 class="title-inherit-styling mb-0">{{ effectiveTitle }}</h1>
+            </div>
         </v-app-bar-title>
+
 
 
         <template v-slot:append>
@@ -507,18 +516,6 @@
         cursor: pointer;
     }
 
-    .navigation-overview-background {
-        background-color: #215caf;
-    }
-
-    .generic-background {
-        background-color: #f6f6f6;
-    }
-
-    .blue-background {
-        background-color: #215caf;
-    }
-
     .fade-in-arrow {
         opacity: 0;
         transition: opacity 0.2s ease;
@@ -548,14 +545,6 @@
         line-height: 1.2;
     }
 
-    .logout-btn {
-        padding: 0;
-        min-width: unset;
-        margin-right: 0.25rem;
-        text-transform: none;
-        color: #b0bec5;
-    }
-
     .logout-icon {
         font-size: 1.3rem;
         font-weight: 300;
@@ -575,15 +564,6 @@
         width: 100%;
         background-color: white;
         opacity: 1;
-    }
-
-    .bg-is-institutional-admin {
-        background-color: #A30774 !important; /* Vuetify default red */
-    }
-
-
-    .blue-background {
-        background-color: #215caf;
     }
 
     .fade-in-arrow {
@@ -615,14 +595,6 @@
         line-height: 1.2;
     }
 
-    .logout-btn {
-        padding: 0;
-        min-width: unset;
-        margin-right: 0.25rem;
-        text-transform: none;
-        color: #b0bec5;
-    }
-
     .logout-icon {
         font-size: 1.3rem;
         font-weight: 300;
@@ -643,11 +615,6 @@
         background-color: white;
         opacity: 1;
     }
-
-    .bg-is-institutional-admin {
-        background-color: #A30774 !important; /* Vuetify default red */
-    }
-
 
     .fade-in-arrow {
         opacity: 0;
@@ -678,13 +645,6 @@
         line-height: 1.2;
     }
 
-    .logout-btn {
-        padding: 0;
-        min-width: unset;
-        margin-right: 0.25rem;
-        text-transform: none;
-        color: #b0bec5;
-    }
 
     .logout-icon {
         font-size: 1.3rem;
@@ -707,30 +667,29 @@
         opacity: 1;
     }
 
-    .bg-is-institutional-admin {
-        background-color: #A30774 !important;
-    }
-
-     .full-page-blue {
-         background-color: #215caf;
-         min-height: 100%;
-         width: 100%;
-     }
-
-    .full-page-default {
-        background-color: #f6f6f6;
-        min-height: 100%;
-        width: 100%;
-    }
-
-    .v-app-bar-title {
-        display: flex;
-        align-items: center;
-    }
-
     .v-app-bar-title h1 {
         white-space: nowrap;
     }
 
+
+    .title-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: .5rem;
+        white-space: nowrap;
+    }
+
+    .title-logo {
+        display: inline-block;
+        max-height: 55px;
+        height: 55px;
+        width: auto;
+        flex: 0 0 auto;
+    }
+
+    .title-center .v-img {
+        flex: 0 0 auto;
+    }
 
 </style>
