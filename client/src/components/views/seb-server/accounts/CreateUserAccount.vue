@@ -34,7 +34,6 @@
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-select
                                             required
-                                            prepend-inner-icon="mdi-domain"
                                             density="compact"
                                             :label="translate('userAccount.createUserAccountPage.labels.institutionLabel')"
                                             variant="outlined"
@@ -51,7 +50,6 @@
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
                                             required
-                                            prepend-inner-icon="mdi-account-outline"
                                             density="compact"
                                             :label="translate('userAccount.createUserAccountPage.labels.usernameLabel')"
                                             variant="outlined"
@@ -64,7 +62,6 @@
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
                                             required
-                                            prepend-inner-icon="mdi-account-outline"
                                             density="compact"
                                             :label="translate('userAccount.createUserAccountPage.labels.nameLabel')"
                                             variant="outlined"
@@ -77,7 +74,6 @@
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
                                             required
-                                            prepend-inner-icon="mdi-account-outline"
                                             density="compact"
                                             :label="translate('userAccount.createUserAccountPage.labels.surnameLabel')"
                                             variant="outlined"
@@ -89,7 +85,6 @@
                                     <!-- Email-->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
-                                            prepend-inner-icon="mdi-email-outline"
                                             density="compact"
                                             :label="translate('userAccount.createUserAccountPage.labels.emailLabel')"
                                             variant="outlined"
@@ -103,7 +98,6 @@
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-select
                                             required
-                                            prepend-inner-icon="mdi-map-clock-outline"
                                             density="compact"
                                             :label="translate('userAccount.createUserAccountPage.labels.timeZoneLabel')"
                                             variant="outlined"
@@ -119,7 +113,6 @@
                                         <v-text-field
                                             required
                                             :type="passwordVisible ? 'text' : 'password'"
-                                            prepend-inner-icon="mdi-lock-outline"
                                             density="compact"
                                             :label="translate('userAccount.createUserAccountPage.labels.passwordLabel')"
                                             variant="outlined"
@@ -144,7 +137,6 @@
                                             ref="confirmPasswordFieldRef"
                                             required
                                             :type="confirmPasswordVisible ? 'text' : 'password'"
-                                            prepend-inner-icon="mdi-lock-outline"
                                             density="compact"
                                             :label="translate('userAccount.createUserAccountPage.labels.confirmPasswordLabel')"
                                             variant="outlined"

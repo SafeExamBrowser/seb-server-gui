@@ -56,7 +56,6 @@
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-select
                                             required
-                                            prepend-inner-icon="mdi-domain"
                                             density="compact"
                                             :label="translate('userAccount.userAccountDetailAndEditPage.labels.institutionLabel')"
                                             variant="outlined"
@@ -72,7 +71,6 @@
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
                                             required
-                                            prepend-inner-icon="mdi-account-outline"
                                             density="compact"
                                             :label="translate('userAccount.userAccountDetailAndEditPage.labels.nameLabel')"
                                             variant="outlined"
@@ -86,7 +84,6 @@
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
                                             required
-                                            prepend-inner-icon="mdi-account-outline"
                                             density="compact"
                                             :label="translate('userAccount.userAccountDetailAndEditPage.labels.surnameLabel')"
                                             variant="outlined"
@@ -100,7 +97,6 @@
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
                                             required
-                                            prepend-inner-icon="mdi-account-outline"
                                             density="compact"
                                             :label="translate('userAccount.userAccountDetailAndEditPage.labels.usernameLabel')"
                                             variant="outlined"
@@ -113,7 +109,6 @@
                                     <!--  email-->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
-                                            prepend-inner-icon="mdi-email-outline"
                                             density="compact"
                                             :label="translate('userAccount.userAccountDetailAndEditPage.labels.emailLabel')"
                                             variant="outlined"
@@ -128,7 +123,6 @@
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-select
                                             required
-                                            prepend-inner-icon="mdi-map-clock-outline"
                                             density="compact"
                                             :label="translate('userAccount.userAccountDetailAndEditPage.labels.timeZoneLabel')"
                                             variant="outlined"
@@ -153,7 +147,6 @@
                                                 density="compact"
                                                 :disabled="editingRightsRevoked"
                                                 model-value="'************'"
-                                                prepend-inner-icon="mdi-lock-outline"
                                                 append-inner-icon="mdi-pencil"
                                                 readonly
                                                 class="no-pointer-events"
@@ -289,7 +282,6 @@
                             type="password"
                             :label="translate('userAccount.userAccountDetailAndEditPage.labels.adminPassword')"
                             :rules="[requiredRule]"
-                            prepend-inner-icon="mdi-lock-outline"
                             variant="outlined"
                             @blur="adminPwTouched = true"
                             validate-on="blur"
@@ -302,7 +294,6 @@
                             type="password"
                             :label="translate('userAccount.userAccountDetailAndEditPage.labels.newPassword')"
                             :rules="[requiredRule, newPasswordRule]"
-                            prepend-inner-icon="mdi-lock-outline"
                             variant="outlined"
                             density="compact"
                             @blur="newPwTouched = true"
@@ -315,7 +306,6 @@
                             type="password"
                             :label="translate('userAccount.userAccountDetailAndEditPage.labels.confirmNewPassword')"
                             :rules="[requiredRule, v => v === newUserPassword || passwordsDontMatchMessage]"
-                            prepend-inner-icon="mdi-lock-outline"
                             variant="outlined"
                             density="compact"
                             @blur="confirmPwTouched = true"

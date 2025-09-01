@@ -52,7 +52,6 @@
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-select
                                             required
-                                            prepend-inner-icon="mdi-domain"
                                             density="compact"
                                             :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.institutionLabel')"
                                             variant="outlined"
@@ -69,7 +68,6 @@
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
                                             required
-                                            prepend-inner-icon="mdi-account-outline"
                                             density="compact"
                                             :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.nameLabel')"
                                             variant="outlined"
@@ -82,7 +80,6 @@
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-select
                                             required
-                                            prepend-inner-icon="mdi-shape-outline"
                                             density="compact"
                                             :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.typeLabel')"
                                             variant="outlined"
@@ -97,7 +94,6 @@
                                     <!-- Assessment Tool Server Address-->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
-                                            prepend-inner-icon="mdi-email-outline"
                                             density="compact"
                                             :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.assessmentToolServerAddressLabel')"
                                             variant="outlined"
@@ -113,7 +109,6 @@
                                             ref="confirmPasswordFieldRef"
                                             required
                                             :type="confirmPasswordVisible ? 'text' : 'password'"
-                                            prepend-inner-icon="mdi-key-variant"
                                             density="compact"
                                             :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.accessTokenLabel')"
                                             variant="outlined"
@@ -135,7 +130,6 @@
                                     <!-- Assessment Tool Server Username -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
-                                            prepend-inner-icon="mdi-account"
                                             density="compact"
                                             :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.assessmentToolServerUsernameLabel')"
                                             variant="outlined"
@@ -150,7 +144,6 @@
                                         <v-text-field
                                             required
                                             :type="passwordVisible ? 'text' : 'password'"
-                                            prepend-inner-icon="mdi-lock-outline"
                                             density="compact"
                                             :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.assessmentToolServerPasswordLabel')"
                                             variant="outlined"
@@ -217,7 +210,6 @@
                                                     <!-- Proxy Host -->
                                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                                         <v-text-field
-                                                            prepend-inner-icon="mdi-server"
                                                             density="compact"
                                                             :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.proxyHostLabel')"
                                                             variant="outlined"
@@ -230,7 +222,6 @@
                                                     <!-- Proxy Port -->
                                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                                         <v-text-field
-                                                            prepend-inner-icon="mdi-numeric"
                                                             density="compact"
                                                             :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.proxyPortLabel')"
                                                             variant="outlined"
@@ -245,7 +236,6 @@
                                                     <!-- Proxy Username-->
                                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                                         <v-text-field
-                                                            prepend-inner-icon="mdi-account-outline"
                                                             density="compact"
                                                             :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.proxyUsernameLabel')"
                                                             variant="outlined"
@@ -259,7 +249,6 @@
                                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                                         <v-text-field
                                                             :type="proxyPasswordVisible ? 'text' : 'password'"
-                                                            prepend-inner-icon="mdi-lock-outline"
                                                             density="compact"
                                                             :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.proxyPasswordLabel')"
                                                             variant="outlined"

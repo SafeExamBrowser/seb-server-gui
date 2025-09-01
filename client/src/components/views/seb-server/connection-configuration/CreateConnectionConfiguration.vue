@@ -36,7 +36,6 @@
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
                                             required
-                                            prepend-inner-icon="mdi-account-outline"
                                             density="compact"
                                             :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.name')"
                                             variant="outlined"
@@ -48,7 +47,6 @@
                                     <!-- Configuration Purpose-->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-select
-                                            prepend-inner-icon="mdi-shape-outline"
                                             density="compact"
                                             :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.configurationPurpose')"
                                             variant="outlined"
@@ -66,7 +64,6 @@
                                         <v-text-field
                                             ref="configPwdRef"
                                             :type="configurationPasswordVisible ? 'text' : 'password'"
-                                            prepend-inner-icon="mdi-key-variant"
                                             density="compact"
                                             :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.configurationPassword')"
                                             variant="outlined"
@@ -90,7 +87,6 @@
                                         <v-text-field
                                             ref="confirmConfigPwdRef"
                                             :type="confirmConfigurationPasswordVisible ? 'text' : 'password'"
-                                            prepend-inner-icon="mdi-key-variant"
                                             density="compact"
                                             :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.confirmConfigurationPassword')"
                                             variant="outlined"
@@ -119,7 +115,6 @@
                                     <!-- Encrypt With Certificate (optional) -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-select
-                                            prepend-inner-icon="mdi-shield-key-outline"
                                             density="compact"
                                             :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.encryptWithCertificate')"
                                             variant="outlined"
@@ -153,7 +148,6 @@
                                     <!-- Ping Interval* (number) -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
-                                            prepend-inner-icon="mdi-timer-outline"
                                             density="compact"
                                             :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.pingInterval')"
                                             variant="outlined"
@@ -230,7 +224,6 @@
                                                     <!-- Fallback Start URL* -->
                                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                                         <v-text-field
-                                                            prepend-inner-icon="mdi-server"
                                                             density="compact"
                                                             :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.fallbackStartURL')"
                                                             variant="outlined"
@@ -243,7 +236,6 @@
                                                     <!-- Connection Attempts* (number) -->
                                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                                         <v-text-field
-                                                            prepend-inner-icon="mdi-numeric"
                                                             density="compact"
                                                             :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.connectionAttempts')"
                                                             variant="outlined"
@@ -258,7 +250,6 @@
                                                     <!-- Interval* (number) -->
                                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                                         <v-text-field
-                                                            prepend-inner-icon="mdi-timer-outline"
                                                             density="compact"
                                                             :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.interval')"
                                                             variant="outlined"
@@ -273,7 +264,6 @@
                                                     <!-- Connection Timeout* (number) -->
                                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                                         <v-text-field
-                                                            prepend-inner-icon="mdi-clock-outline"
                                                             density="compact"
                                                             :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.connectionTimeout')"
                                                             variant="outlined"
@@ -290,7 +280,6 @@
                                                         <v-text-field
                                                             ref="fallbackPwdRef"
                                                             :type="fallbackPasswordVisible ? 'text' : 'password'"
-                                                            prepend-inner-icon="mdi-key-variant"
                                                             density="compact"
                                                             :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.fallbackPassword')"
                                                             variant="outlined"
@@ -313,7 +302,6 @@
                                                         <v-text-field
                                                             ref="confirmFallbackPwdRef"
                                                             :type="confirmFallbackPasswordVisible ? 'text' : 'password'"
-                                                            prepend-inner-icon="mdi-key-variant"
                                                             density="compact"
                                                             :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.confirmFallbackPassword')"
                                                             variant="outlined"
@@ -337,7 +325,6 @@
                                                         <v-text-field
                                                             ref="quitPwdRef"
                                                             :type="quitPasswordVisible ? 'text' : 'password'"
-                                                            prepend-inner-icon="mdi-key-variant"
                                                             density="compact"
                                                             :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.quitPassword')"
                                                             variant="outlined"
@@ -361,7 +348,6 @@
                                                         <v-text-field
                                                             ref="confirmQuitPwdRef"
                                                             :type="confirmQuitPasswordVisible ? 'text' : 'password'"
-                                                            prepend-inner-icon="mdi-key-variant"
                                                             density="compact"
                                                             :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.confirmQuitPassword')"
                                                             variant="outlined"
