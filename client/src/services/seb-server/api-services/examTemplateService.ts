@@ -12,5 +12,5 @@ export async function getExamTemplates(optionalParameters?: OptionalParGeneric):
 }
 
 export async function getExamTemplateSp(id: string): Promise<ScreenProctoringSettings | any>{
-    return (await apiService.api.get(url + "/" + id + "/screen-proctoring", {headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN)})).data;
+        return (await apiService.api.get(url + "/" + id + "/screen-proctoring", {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
 }

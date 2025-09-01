@@ -1,170 +1,357 @@
 <template>
-    <v-row>
-        <!-----------group selection table---------->      
-        <v-spacer></v-spacer>
-        <v-col cols="7" xl="5"> 
+    <div class="h-100 w-100">
+        <!-- Title + description -->
+        <v-row dense>
+            <v-col>
+                <div class="text-h6 font-weight-bold mb-1">
+                    {{ translate("quizImportWizard.groupMain.title") }}
+                </div>
+                <div class="mb-3 text-body-2">
+                    {{ translate("quizImportWizard.groupMain.description") }}
+                </div>
+            </v-col>
+        </v-row>
 
-            <v-row>
-                <v-col cols="6">
-                    <v-text-field
-                        v-model="search"
-                        :aria-label="translate('quizImportWizard.groupMain.search')"
-                        :label="translate('quizImportWizard.groupMain.search')"
-                        prepend-inner-icon="mdi-magnify"
-                        variant="outlined"
-                        density="compact"
-                        hide-details
-                        single-line>
-                    </v-text-field>
-                </v-col>
-            </v-row>
+        <!-- Search + cancel -->
+        <v-row align="center">
+            <v-col cols="6">
+                <v-text-field
+                    v-model="searchInput"
+                    :label="translate('quizImportWizard.groupMain.search')"
+                    prepend-inner-icon="mdi-magnify"
+                    variant="outlined"
+                    density="compact"
+                    hide-details
+                    single-line
+                    @keydown.enter="search = searchInput"
+                    @keydown.esc="clearSearch"
+                />
+            </v-col>
 
-            <v-row>
-                <v-col>
-                    <!--@vue-ignore-->
+            <v-col cols="2">
+                <v-btn
+                    block
+                    color="primary"
+                    variant="flat"
+                    class="rounded"
+                    @click="search = searchInput"
+                >
+                    {{ translate("general.searchButton") }}
+                </v-btn>
+            </v-col>
+
+            <v-col cols="2">
+                <v-btn
+                    block
+                    color="black"
+                    variant="outlined"
+                    class="rounded ml-0"
+                    @click="clearSearch"
+                >
+                    {{ translate("general.cancelButton") }}
+                </v-btn>
+            </v-col>
+        </v-row>
+
+        <v-row>
+            <!-- Available Groups -->
+            <v-col cols="6">
+                <div class="text-subtitle-1 font-weight-medium">
+                    {{ translate("quizImportWizard.groupMain.availableGroups") }}
+                </div>
+
+                <div class="supervisor-table-wrapper">
                     <v-data-table
-                        item-value="quiz_id" 
+                        item-value="id"
                         :hover="true"
-                        :items="quizImportStore.selectedExamTemplate?.CLIENT_GROUP_TEMPLATES"
-                        :items-length="quizImportStore.selectedExamTemplate?.CLIENT_GROUP_TEMPLATES.length"
-                        :items-per-page="tableUtils.calcDefaultItemsPerPage(quizImportStore.selectedExamTemplate?.CLIENT_GROUP_TEMPLATES)"
-                        :items-per-page-options="tableUtils.calcItemsPerPage(quizImportStore.selectedExamTemplate?.CLIENT_GROUP_TEMPLATES)"
-                        :headers="tableHeaders"
-                        :search="search">
+                        :items="filteredAvailableGroups"
+                        :items-length="filteredAvailableGroups.length"
+                        :items-per-page="10"
+                        :headers="[]"
+                        :footer-props="{ itemsPerPageOptions: [] }"
+                        class="bordered-table no-header-table"
+                    >
+                        <template v-slot:item="{ item }">
+                            <tr class="supervisor-row">
+                                <td class="supervisor-cell">
+                                    <div
+                                        class="supervisor-row-content clickable"
+                                        @click="onAvailableRowClick(item)"
+                                    >
+                                        <div class="mr-3">
+                                            <div class="font-weight-medium">{{ item.name }}</div>
 
-                        <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort}">
-                            <TableHeaders
-                                :columns="columns"
-                                :is-sorted="isSorted"
-                                :get-sort-icon="getSortIcon"
-                                :toggle-sort="toggleSort"
-                                :header-refs-prop="tableHeadersRef">
-                            </TableHeaders>
-                        </template>
-                        
-                        <template v-slot:item="{item}">
-                            <tr 
-                                class="on-row-hover" 
-                                tabindex="0"
-                                @keyup.enter="onTableRowClick(item)"
-                                @click="onTableRowClick(item)"
-                                :class="[quizImportStore.selectedClientGroups.some(clientGroup => clientGroup.id == item.id) ? 'selected-row' : '']">
+                                            <!-- Meta line: icon + translated type + detail -->
+                                            <div class="meta-row mt-2">
+                                                <v-icon size="16" class="mr-1">{{ getTypeIcon(item) }}</v-icon>
+                                                <span class="meta-type">{{ translate(item.type) }}</span>
+                                                <span v-if="getTypeDetail(item)" class="meta-sep">•</span>
+                                                <span class="meta-detail">{{ getTypeDetail(item) }}</span>
+                                            </div>
 
-                                <td>{{ item.name }}</td>
-                                <td align="center">
-                                    <v-icon :icon="quizImportStore.availableSpClientGroupIds.includes(item.id!) ? 'mdi-check' : ''"></v-icon>
+                                            <!-- Badges -->
+                                            <div class="badge-row">
+                                                <v-chip
+                                                    v-if="isSp(item.id)"
+                                                    size="small"
+                                                    density="comfortable"
+                                                    variant="tonal"
+                                                    class="chip-sp"
+                                                >
+                                                    {{ translate('quizImportWizard.groupMain.spAvailable') }}
+                                                </v-chip>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex align-center" style="gap: 8px;">
+                                            <v-icon color="primary">mdi-plus</v-icon>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         </template>
                     </v-data-table>
-                </v-col>
-            </v-row>
-        </v-col>
-        <!------------------------>
+                </div>
+            </v-col>
 
+            <!-- Selected Groups -->
+            <v-col cols="6">
+                <div class="text-subtitle-1 font-weight-medium">
+                    {{ translate("quizImportWizard.groupMain.selectedGroups") }}
+                </div>
 
-        <!-----------client group list summary---------->      
-        <v-col cols="4" xl="2">
-            <v-row>
-                <v-col>
-                    <div class="text-h6">
-                        {{translate('quizImportWizard.groupMain.selectedGroups')}}
+                <div class="supervisor-table-wrapper">
+                    <div class="selected-supervisors-scroll clickable">
+                        <div
+                            v-for="group in quizImportStore.selectedClientGroups"
+                            :key="group.id"
+                            class="supervisor-row"
+                            @click="removeClientGroup(group.id!)"
+                        >
+                            <div class="supervisor-row-content">
+                                <div class="mr-3">
+                                    <div class="font-weight-medium">{{ group.name }}</div>
+
+                                    <div class="meta-row mt-2">
+                                        <v-icon size="16" class="mr-1">{{ getTypeIcon(group) }}</v-icon>
+                                        <span class="meta-type">{{ translate(group.type) }}</span>
+                                        <span v-if="getTypeDetail(group)" class="meta-sep">•</span>
+                                        <span class="meta-detail">{{ getTypeDetail(group) }}</span>
+                                    </div>
+
+                                    <div class="badge-row">
+                                        <v-chip
+                                            v-if="isSp(group.id)"
+                                            size="small"
+                                            density="comfortable"
+                                            variant="tonal"
+                                            class="chip-sp"
+                                        >
+                                            {{ translate('quizImportWizard.groupMain.spAvailable') }}
+                                        </v-chip>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex align-center" style="gap: 8px;">
+                                    <v-icon color="error">mdi-minus</v-icon>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </v-col>
-            </v-row>
-
-            <v-row>
-                <v-col>
-
-                    <v-list select-strategy="leaf">
-                        <template 
-                            v-for="clientGroup in quizImportStore.selectedClientGroups"
-                            :key="clientGroup.id"
-                            :value="clientGroup.id">
-                        
-                            <v-list-item>
-                                <v-list-item-title>{{ clientGroup.name }}</v-list-item-title>
-
-                                <template v-slot:append="{ isSelected }">
-                                    <v-list-item-action class="flex-column align-end">
-                                        <v-spacer></v-spacer>
-
-                                        <v-btn 
-                                            @click="removeClientGroup(clientGroup.id!)"
-                                            variant="flat"
-                                            icon="mdi-close">
-                                        </v-btn>
-
-                                    </v-list-item-action>
-                                </template>
-                            </v-list-item>
-
-                            <v-divider class="border-opacity-25" :thickness="2"></v-divider>
-
-                        </template>
-                    </v-list>
-                </v-col>
-            </v-row>
-
-        </v-col>
-        <v-spacer></v-spacer>
-        <!------------------------>
-
-    </v-row>
+                </div>
+            </v-col>
+        </v-row>
+    </div>
 </template>
 
-
 <script setup lang="ts">
-    import { useQuizImportStore } from "@/stores/seb-server/quizImportStore";
-    import * as tableUtils from "@/utils/table/tableUtils";
-    import {translate} from "@/utils/generalUtils";
-    import TableHeaders from "@/utils/table/TableHeaders.vue";
+import { useQuizImportStore } from "@/stores/seb-server/quizImportStore";
+import { translate } from "@/utils/generalUtils";
 
-    
-    //stores
-    const quizImportStore = useQuizImportStore();
+// stores
+const quizImportStore = useQuizImportStore();
 
-    //table
-    const tableHeadersRef = ref<any[]>();
-    const tableHeaders = ref([
-        {title: translate("quizImportWizard.groupMain.tableHeaderName"), key: "name"},
-        {title: translate("quizImportWizard.groupMain.tableHeaderScreenProctoring"), key: "sp", center: true, align: "center"}
-    ]);    
+// local search state
+const searchInput = ref<string>();
+const search = ref<string>();
 
-    //local client group search / filter
-    const search = ref<string>();
+// derive available list from the template
+const allGroups = computed<ClientGroup[]>(() =>
+    quizImportStore.selectedExamTemplate?.CLIENT_GROUP_TEMPLATES ?? []
+);
 
+// filter
+const filteredAvailableGroups = computed<ClientGroup[]>(() => {
+    const selectedIds = new Set(quizImportStore.selectedClientGroups.map(g => g.id));
+    const base = allGroups.value.filter(g => !selectedIds.has(g.id!));
 
-    //add exam client groups
-    function onTableRowClick(selectedClientGroup: ClientGroup){
-        const index: number = quizImportStore.selectedClientGroups.findIndex(clientGroup => clientGroup.id == selectedClientGroup.id);
-        
-        if(index != -1){
-            quizImportStore.selectedClientGroups.splice(index, 1);
-            return;
-        }
+    if (!search.value) return base;
 
-        quizImportStore.selectedClientGroups.push(selectedClientGroup);
-    }
+    const q = (search.value || "").toLowerCase();
+    return base.filter(g => (g.name ?? "").toLowerCase().includes(q));
+});
 
-    function removeClientGroup(groupId: number){
-        const index: number = quizImportStore.selectedClientGroups.findIndex(clientGroup => clientGroup.id == groupId);
+// interactions
+function onAvailableRowClick(selectedGroup: ClientGroup) {
+    const index = quizImportStore.selectedClientGroups.findIndex(g => g.id == selectedGroup.id);
+    if (index !== -1) {
         quizImportStore.selectedClientGroups.splice(index, 1);
+        return;
     }
+    quizImportStore.selectedClientGroups.push(selectedGroup);
+}
 
+function removeClientGroup(groupId: number) {
+    const index = quizImportStore.selectedClientGroups.findIndex(g => g.id == groupId);
+    if (index !== -1) quizImportStore.selectedClientGroups.splice(index, 1);
+}
+
+function clearSearch() {
+    searchInput.value = "";
+    search.value = "";
+}
+
+const isSp = (id?: number) =>
+    id != null && quizImportStore.availableSpClientGroupIds.includes(id);
+
+// Icon by type (and OS when applicable)
+function getTypeIcon(g: ClientGroup): string {
+    switch (g.type) {
+        case "NAME_ALPHABETICAL_RANGE":
+            return "mdi-sort-alphabetical-variant";
+        case "IP_V4_RANGE":
+            return "mdi-lan";
+        case "CLIENT_OS":
+            return osToIcon(g.clientOS);
+        case "SP_FALLBACK_GROUP":
+        case "NONE":
+        default:
+            return "mdi-account-multiple-remove";
+    }
+}
+
+function osToIcon(os?: string): string {
+    const v = (os ?? "").toUpperCase();
+    if (v.includes("WINDOWS")) return "mdi-microsoft-windows";
+    if (v.includes("MAC")) return "mdi-apple";
+    if (v.includes("IOS") || v.includes("IPAD")) return "mdi-cellphone";
+    if (v.includes("LINUX")) return "mdi-linux";
+    return "mdi-help-circle-outline";
+}
+
+// Detail text by type
+function getTypeDetail(g: ClientGroup): string {
+    switch (g.type) {
+        case "CLIENT_OS":
+            return g.clientOS ?? "";
+        case "IP_V4_RANGE": {
+            const a = g.ipRangeStart ?? "";
+            const b = g.ipRangeEnd ?? "";
+            if (a && b) return `${a} – ${b}`;
+            return a || b || "";
+        }
+        case "NAME_ALPHABETICAL_RANGE": {
+            const a = g.nameRangeStartLetter ?? "";
+            const b = g.nameRangeEndLetter ?? "";
+            if (a && b) return `${a} – ${b}`;
+            return a || b || "";
+        }
+        // SP_FALLBACK_GROUP and NONE: name is enough
+        case "SP_FALLBACK_GROUP":
+        case "NONE":
+        default:
+            return "";
+    }
+}
 
 </script>
 
 <style scoped>
+.supervisor-table-wrapper {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    height: 48vh;
+    overflow: hidden;
+}
 
-    .on-row-hover:hover{
-        background: #e4e4e4 !important;
-        cursor: pointer;
-    }
+.bordered-table {
+    flex-grow: 1;
+    overflow-y: auto;
+    border-collapse: collapse;
+}
 
-    .selected-row {
-        background-color: #e4e4e4 !important;
-    }
+.no-header-table >>> thead {
+    display: none;
+}
 
+.supervisor-row {
+    border-bottom: 1px solid #e0e0e0;
+}
 
+.supervisor-cell {
+    padding: 0 !important;
+}
+
+.supervisor-row-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background-color: white;
+}
+
+.supervisor-row-content .font-weight-medium {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 500;
+}
+
+.supervisor-row-content .text-caption {
+    font-size: 12px;
+    line-height: 16px;
+    color: #6b6b6b;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.selected-supervisors-scroll {
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.supervisor-row-content:hover {
+    background-color: #D8D8D8;
+}
+
+.meta-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    line-height: 16px;
+    color: #6b6b6b;
+    margin-top: 2px;
+}
+
+.meta-type {
+    font-weight: 500;
+}
+
+.meta-sep {
+    opacity: 0.6;
+}
+
+.meta-detail {
+    opacity: 0.9;
+}
+
+.badge-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+}
 </style>

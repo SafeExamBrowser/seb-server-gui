@@ -101,6 +101,7 @@
                     :items-per-page-options="tableUtils.calcItemsPerPage(totalItems)"
                     :headers="quizzesTableHeaders"
                     class="elevation-1 rounded-lg"
+                    style="min-height:38vh"
                 >
                     <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort }">
                         <TableHeaders
@@ -153,7 +154,7 @@ const quizzes = ref<Quizzes>();
 
 //table - pagination, item size, search
 const isLoading = ref<boolean>(false);
-const totalItems = ref<number>(15);
+const totalItems = ref<number>(5);
 
 //table
 const isOnLoad = ref<boolean>(true);

@@ -225,7 +225,7 @@ function clearSearch() {
     border-radius: 8px;
     display: flex;
     flex-direction: column;
-    height: 50vh;
+    height: 48vh;
     overflow: hidden;
 }
 
@@ -285,5 +285,7 @@ function clearSearch() {
 .supervisor-row-content:hover{
     background-color: #D8D8D8;
 }
+
+
 
 </style>

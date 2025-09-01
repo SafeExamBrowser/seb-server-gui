@@ -87,7 +87,6 @@ const selectedTemplate = ref<ExamTemplate | null>(null);
 //=======================events & watchers=======================
 onBeforeMount(async () => {
     const examTemplatesResponse: ExamTemplates | null = await quizImportWizardViewService.getExamTemplates();
-
     if (examTemplatesResponse == null) {
         return;
     }
@@ -116,7 +115,8 @@ async function onTemplateCardClick(examTemplate: ExamTemplate) {
             quizImportStore.templateQuitPassword = examTemplateResponse.EXAM_ATTRIBUTES.quitPassword || "";
         }
     }
-    
+    await getExamTemplateSpGroups()
+
     // select supervisors from template
     const userAccountNamesResponse: UserAccountName[] | null = await userAccountViewService.getSupervisorNames({institutionId: userAccountStore.userAccount?.institutionId});
     if (userAccountNamesResponse != null) {

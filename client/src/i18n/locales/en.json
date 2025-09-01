@@ -185,10 +185,15 @@
         },
 
         "groupMain": {
+            "title" : "Add Groups",
             "search": "Search",
             "selectedGroups": "Selected Groups",
+            "availableGroups": "Available Groups",
+            "description" : "Select or Remove Groups",
             "tableHeaderName": "Name",
-            "tableHeaderScreenProctoring": "Screen Proctoring"
+            "tableHeaderScreenProctoring": "Screen Proctoring",
+            "spAvailable": "Screen Proctoring enabled",
+
         },
 
         "supervisorsMain": {
