@@ -47,7 +47,8 @@
                             density="compact"
                             :placeholder="translate('loginPage.usernamePlaceholder')"
                             variant="outlined"
-                            v-model="username">
+                            v-model="username"
+                            data-testid="login-username-input">
                         </v-text-field>
 
                         <v-text-field
@@ -56,7 +57,8 @@
                             density="compact"
                             :placeholder="translate('loginPage.passwordPlaceholder')"
                             variant="outlined"
-                            v-model="password">
+                            v-model="password"
+                            data-testid="login-password-input">
 
                             <template v-slot:append-inner>
                                 <v-btn
@@ -73,7 +75,8 @@
                             block
                             rounded="sm"
                             color="primary"
-                            @click="signIn()">
+                            @click="signIn()"
+                            data-testid="login-signin-btn">
                             {{translate('loginPage.signIn')}}
                         </v-btn>
 
@@ -87,7 +90,8 @@
                             class="text-decoration-underline text-blue"
                             role="button"
                             tabindex="0"
-                            @keydown="handleTabKeyEvent($event, 'navigate')">
+                            @keydown="handleTabKeyEvent($event, 'navigate')"
+                            data-testid="login-register-link">
                             <router-link :to=constants.REGISTER_ROUTE>
                                 {{translate('loginPage.register')}}
                             </router-link>
