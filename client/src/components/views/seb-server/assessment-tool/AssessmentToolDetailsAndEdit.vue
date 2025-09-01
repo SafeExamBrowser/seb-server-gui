@@ -103,64 +103,90 @@
                                         />
                                     </v-col>
 
-                                    <!-- Access Token -->
+                                    <!-- Auth Mode -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
-                                        <v-text-field
-                                            ref="confirmPasswordFieldRef"
-                                            required
-                                            :type="confirmPasswordVisible ? 'text' : 'password'"
-                                            density="compact"
-                                            :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.accessTokenLabel')"
-                                            variant="outlined"
-                                            v-model="accessToken"
-                                            validate-on="blur"
-                                            class="mb-2"
-                                        >
-                                            <template #append-inner>
-                                                <v-btn
-                                                    density="compact"
-                                                    variant="text"
-                                                    :icon="confirmPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
-                                                    @click="confirmPasswordVisible = !confirmPasswordVisible"
-                                                />
-                                            </template>
-                                        </v-text-field>
+                                        <div class="d-flex align-center justify-space-between">
+                                            <label class="text-grey-darken-1 text-body-1 ml-1 mb-6 mt-3">
+                                                {{ translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.authenticationMode') }}
+                                            </label>
+                                            <v-btn-toggle
+                                                v-model="authMode"
+                                                density="comfortable"
+                                                mandatory
+                                                class="ml-4 mb-6 mt-3"
+                                            >
+                                                <v-btn value="client">
+                                                    {{ translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.clientCredentials') }}
+                                                </v-btn>
+                                                <v-btn value="token">
+                                                    {{ translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.restApiToken') }}
+                                                </v-btn>
+                                            </v-btn-toggle>
+                                        </div>
                                     </v-col>
 
-                                    <!-- Assessment Tool Server Username -->
-                                    <v-col cols="12" md="12" class="custom-padding-textbox">
-                                        <v-text-field
-                                            density="compact"
-                                            :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.assessmentToolServerUsernameLabel')"
-                                            variant="outlined"
-                                            v-model="assessmentToolServerUsername"
-                                            :rules="[requiredRule]"
-                                            validate-on="blur"
-                                        />
-                                    </v-col>
+                                    <!-- Client Credentials (only in client mode) -->
+                                    <template v-if="authMode === 'client'">
+                                        <!-- Username -->
+                                        <v-col cols="12" md="12" class="custom-padding-textbox">
+                                            <v-text-field
+                                                density="compact"
+                                                :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.assessmentToolServerUsernameLabel')"
+                                                variant="outlined"
+                                                v-model="assessmentToolServerUsername"
+                                                :rules="[requiredIfClientRule]"
+                                                validate-on="blur"
+                                            />
+                                        </v-col>
 
-                                    <!-- Assessment Tool Server Password -->
-                                    <v-col cols="12" md="12" class="custom-padding-textbox">
-                                        <v-text-field
-                                            required
-                                            :type="passwordVisible ? 'text' : 'password'"
-                                            density="compact"
-                                            :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.assessmentToolServerPasswordLabel')"
-                                            variant="outlined"
-                                            v-model="assessmentToolServerPassword"
-                                            :rules="[requiredRule]"
-                                            validate-on="blur"
-                                        >
-                                            <template #append-inner>
-                                                <v-btn
-                                                    density="compact"
-                                                    variant="text"
-                                                    :icon="passwordVisible ? 'mdi-eye-off' : 'mdi-eye'"
-                                                    @click="passwordVisible = !passwordVisible"
-                                                />
-                                            </template>
-                                        </v-text-field>
-                                    </v-col>
+                                        <!-- Password -->
+                                        <v-col cols="12" md="12" class="custom-padding-textbox">
+                                            <v-text-field
+                                                :type="passwordVisible ? 'text' : 'password'"
+                                                density="compact"
+                                                :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.assessmentToolServerPasswordLabel')"
+                                                variant="outlined"
+                                                v-model="assessmentToolServerPassword"
+                                                :rules="[requiredIfClientRule]"
+                                                validate-on="blur"
+                                            >
+                                                <template #append-inner>
+                                                    <v-btn
+                                                        density="compact"
+                                                        variant="text"
+                                                        :icon="passwordVisible ? 'mdi-eye-off' : 'mdi-eye'"
+                                                        @click="passwordVisible = !passwordVisible"
+                                                    />
+                                                </template>
+                                            </v-text-field>
+                                        </v-col>
+                                    </template>
+
+                                    <!-- REST API Token (only in token mode) -->
+                                    <template v-else>
+                                        <v-col cols="12" md="12" class="custom-padding-textbox">
+                                            <v-text-field
+                                                ref="confirmPasswordFieldRef"
+                                                :type="confirmPasswordVisible ? 'text' : 'password'"
+                                                density="compact"
+                                                :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.accessTokenLabel')"
+                                                variant="outlined"
+                                                v-model="accessToken"
+                                                :rules="[requiredIfTokenRule]"
+                                                validate-on="blur"
+                                                class="mb-2"
+                                            >
+                                                <template #append-inner>
+                                                    <v-btn
+                                                        density="compact"
+                                                        variant="text"
+                                                        :icon="confirmPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
+                                                        @click="confirmPasswordVisible = !confirmPasswordVisible"
+                                                    />
+                                                </template>
+                                            </v-text-field>
+                                        </v-col>
+                                    </template>
 
 
                                 </v-col>
@@ -371,6 +397,9 @@ const active = ref<boolean>(false);
 const initialActiveStatus = ref<boolean | null>(null);
 const isSaving = ref(false);
 
+type AuthMode = 'client' | 'token';
+const authMode = ref<AuthMode>('token');
+
 
 // Validation rules
 const requiredMessage = translate("assessmentToolConnections.assessmentToolDetailAndEditPage.validation.required");
@@ -390,6 +419,25 @@ const portNumberRule = (v: string) => {
     return (Number.isInteger(n) && n >= 1 && n <= 65535) || invalidPortMessage;
 };
 const httpPrefixRule = (v: string) => /^https?:\/\//i.test(v) || httpPrefixMessage;
+
+
+const requiredIfClientRule = (v: string) => {
+    if (authMode.value !== 'client') return true;
+    return (!!v && v.toString().trim().length > 0) || requiredMessage;
+};
+
+const requiredIfTokenRule = (v: string) => {
+    if (authMode.value !== 'token') return true;
+    return (!!v && v.toString().trim().length > 0) || requiredMessage;
+};
+
+const isAuthValid = computed(() => {
+    const hasClient = !!assessmentToolServerUsername.value && !!assessmentToolServerPassword.value;
+    const hasToken = !!accessToken.value;
+    return (authMode.value === 'client' && hasClient && !hasToken) ||
+        (authMode.value === 'token'  && hasToken && !hasClient);
+});
+
 
 const lmsTypeItems = Object.values(LMSTypeEnum).map((v) => ({
     label: translate(`assessmentToolConnections.lmsTypes.${v}`),
@@ -439,11 +487,25 @@ function populateFromDto(dto: AssessmentTool) {
     name.value = dto.name ?? '';
     lmsType.value = (dto.lmsType as LMSTypeEnum) ?? null;
     assessmentToolServerAddress.value = dto.lmsUrl ?? '';
-    assessmentToolServerUsername.value = dto.lmsClientname ?? '';
-    assessmentToolServerPassword.value = dto.lmsClientsecret ?? '';
-    accessToken.value = dto.lmsRestApiToken ?? '';
 
-    // Proxy fields
+    // decide auth mode from DTO
+    const hasToken = !!(dto.lmsRestApiToken && dto.lmsRestApiToken.trim());
+    const hasClient = !!(dto.lmsClientname && dto.lmsClientsecret &&
+        dto.lmsClientname.trim() && dto.lmsClientsecret.trim());
+
+    if (hasToken && !hasClient) {
+        authMode.value = 'token';
+        accessToken.value = dto.lmsRestApiToken ?? '';
+        assessmentToolServerUsername.value = '';
+        assessmentToolServerPassword.value = '';
+    } else {
+        authMode.value = 'client';
+        assessmentToolServerUsername.value = dto.lmsClientname ?? '';
+        assessmentToolServerPassword.value = dto.lmsClientsecret ?? '';
+        accessToken.value = '';
+    }
+
+    // Proxy
     proxyHost.value = dto.lmsProxyHost ?? '';
     proxyPort.value = dto.lmsProxyPort != null ? String(dto.lmsProxyPort) : '';
     proxyUsername.value = dto.lmsProxyAuthUsername ?? '';
@@ -452,7 +514,6 @@ function populateFromDto(dto: AssessmentTool) {
     active.value = !!dto.active;
     initialActiveStatus.value = !!dto.active;
 
-    // Auto-enable withProxy if any proxy detail present
     withProxy.value = !!(
         (dto.lmsProxyHost && dto.lmsProxyHost.trim()) ||
         (dto.lmsProxyPort != null && String(dto.lmsProxyPort).trim()) ||
@@ -460,6 +521,7 @@ function populateFromDto(dto: AssessmentTool) {
         (dto.lmsProxyAuthSecret && dto.lmsProxyAuthSecret.trim())
     );
 }
+
 
 function toggleStatusLocally() {
     active.value = !active.value;
@@ -506,18 +568,16 @@ const isSaveDisabled = computed(() => {
         !institution.value ||
         !name.value.trim() ||
         !lmsType.value ||
-        !assessmentToolServerAddress.value.trim() ||
-        !assessmentToolServerUsername.value.trim() ||
-        !assessmentToolServerPassword.value.trim();
+        !assessmentToolServerAddress.value.trim();
 
     if (baseMissing) return true;
 
-    // address must start with http://
-    if (!assessmentToolServerAddress.value.startsWith('http://')) return true;
+    if (!/^https?:\/\//i.test(assessmentToolServerAddress.value)) return true;
+
+    if (!isAuthValid.value) return true;
 
     if (!withProxy.value) return false;
 
-    // withProxy on -> require proxy fields
     const proxyMissing =
         !proxyHost.value.trim() ||
         !proxyPort.value.trim() ||
@@ -529,6 +589,7 @@ const isSaveDisabled = computed(() => {
 
     return proxyMissing || badPort;
 });
+
 
 function onBack() {
     if (window.history.length > 1) {
@@ -578,19 +639,15 @@ async function onSave() {
     }
 }
 
-
 async function editAssessmentToolOnly() {
     const idToSend = String(fetchedId.value ?? route.params.lmsId);
 
-    const payload: UpdateAssessmentToolPar = {
+    const common: any = {
         id: idToSend,
         institutionId: institution.value!,
         name: name.value,
         lmsType: lmsType.value as string,
         lmsUrl: assessmentToolServerAddress.value,
-        lmsClientname: assessmentToolServerUsername.value,
-        lmsClientsecret: assessmentToolServerPassword.value,
-        lmsRestApiToken: accessToken.value,
         ...(withProxy.value
             ? {
                 lmsProxyHost: proxyHost.value,
@@ -606,8 +663,35 @@ async function editAssessmentToolOnly() {
             })
     };
 
+    const authPart =
+        authMode.value === 'client'
+            ? {
+                lmsClientname: assessmentToolServerUsername.value,
+                lmsClientsecret: assessmentToolServerPassword.value,
+                lmsRestApiToken: '',
+            }
+            : {
+                lmsRestApiToken: accessToken.value,
+                lmsClientname: '',
+                lmsClientsecret: '',
+            };
+
+    const payload: UpdateAssessmentToolPar = {
+        ...common,
+        ...authPart,
+    };
+
     await assessmentToolViewService.editAssessmentTool(payload);
 }
+
+watch(authMode, (mode) => {
+    if (mode === 'client') {
+        accessToken.value = '';
+    } else {
+        assessmentToolServerUsername.value = '';
+        assessmentToolServerPassword.value = '';
+    }
+});
 
 </script>
 

@@ -41,22 +41,33 @@ type OptionalParGetAssessmentTool = {
 
 
 
-
-type CreateAssessmentToolPar = {
+type CommonAssessmentToolPar = {
     institutionId: string;
     name: string;
     lmsType: string;
     lmsUrl: string;
+    // proxy (unchanged)
+    lmsProxyHost?: string;
+    lmsProxyPort?: string;
+    lmsProxyAuthUsername?: string;
+    lmsProxyAuthSecret?: string;
+};
+
+type CreateAssessmentToolPar =
+    | (CommonAssessmentToolPar & {
+    authMode: 'token';
+    lmsRestApiToken: string;
+    lmsClientname?: never;
+    lmsClientsecret?: never;
+})
+    | (CommonAssessmentToolPar & {
+    authMode: 'client';
     lmsClientname: string;
     lmsClientsecret: string;
-    lmsRestApiToken?: string;
+    lmsRestApiToken?: never;
+});
 
-    //proxy
-    lmsProxyHost? : string;
-    lmsProxyPort? : string;
-    lmsProxyAuthUsername?: string;
-    lmsProxyAuthSecret? : string;
-};
+
 
 
 type UpdateAssessmentToolPar = {

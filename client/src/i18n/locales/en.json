@@ -448,13 +448,16 @@
                 "assessmentToolServerAddressLabel": "Assessment Tool Server Address *",
                 "assessmentToolServerUsernameLabel": "Assessment Tool Server Username *",
                 "assessmentToolServerPasswordLabel": "Assessment Tool Server Password *",
-                "accessTokenLabel": "Access Token",
+                "accessTokenLabel": "Access Token *",
                 "withProxyLabel": "With Proxy",
                 "withProxyArea": "Toggle proxy settings",
                 "proxyHostLabel": "Proxy Host",
                 "proxyPortLabel": "Proxy Port",
                 "proxyUsernameLabel": "Proxy Username",
-                "proxyPasswordLabel": "Proxy Password"
+                "proxyPasswordLabel": "Proxy Password",
+                "authenticationMode" : "Authentication Mode",
+                "clientCredentials" : "Credentials",
+                "restApiToken" : "Access Token"
             },
             "placeholders": {
                 "proxyHost": "Enter proxy host",
