@@ -1,5 +1,4 @@
 <template>
-    <div data-testid="home-page-container">
     <v-row>
         <v-col cols="12">
             <!-- Infos -->
@@ -16,7 +15,6 @@
 
         </v-col>
     </v-row>
-    </div>
 </template>
 
 

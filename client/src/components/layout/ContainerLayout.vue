@@ -1,11 +1,14 @@
 <template>
 
-    <v-app-bar app>
+    <v-app-bar app data-testid="layout-app-bar">
         <!--seb logo-->
         <template v-slot:prepend>
-            <a :href="getHomePageRoute()" class="text-decoration-none text-black">
+            <a :href="getHomePageRoute()" class="text-decoration-none text-black"
+               data-testid="layout-appLogo-link"
+            >
                 <v-img :width=50 src="/img/seb-logo-no-border.png"
-                    :alt="translate('navigation.screenReader.titleImage')"></v-img>
+                    :alt="translate('navigation.screenReader.titleImage')"
+                ></v-img>
             </a>
         </template>
 
@@ -18,7 +21,7 @@
                     alt="Institution Logo"
                     class="title-logo"
                 />
-                <h1 class="title-inherit-styling mb-0">{{ effectiveTitle }}</h1>
+                <h1 class="title-inherit-styling mb-0" data-testid="layout-institutionTitle-text">{{ effectiveTitle }}</h1>
             </div>
         </v-app-bar-title>
 
@@ -205,7 +208,8 @@
                                 width: 3rem;
                                 height: 3rem;
                                 min-width: 3rem;
-                                padding: 0;">
+                                padding: 0;"
+                                data-testid="layout-profile-button">
                                 <span style="font-weight: 500; font-size: 1.1rem;">
                                     {{
                                         (userAccountStore.userAccount?.name?.[0] || '') +
@@ -225,7 +229,7 @@
                     </template>
 
                     <!--profile menu-->
-                    <v-list class="profile-list-popup bg-primary text-white px-4 py-3">
+                    <v-list class="profile-list-popup bg-primary text-white px-4 py-3" data-testid="layout-profile-menu">
 
                         <div class="d-flex justify-space-between align-center w-100 ">
                             <span class="text-caption font-weight-light text-grey-lighten-2">
@@ -236,6 +240,7 @@
                                 @click="authStore.logout()"
                                 variant="text"
                                 class="logout-wrap text-caption font-weight-light d-flex align-center"
+                                data-testid="layout-logout-button"
                             >
                                 <span class="text-grey-lighten-2 mr-1">Log out</span>
                                 <v-icon class="logout-icon">mdi-logout</v-icon>
@@ -279,7 +284,7 @@
     </v-app-bar>
 
     <!---------------main navigation drawer----------------->
-    <v-navigation-drawer app v-model="navigationDrawer" :permanent="true" width="70" class="mt-0">
+    <v-navigation-drawer app v-model="navigationDrawer" :permanent="true" width="70" class="mt-0" data-testid="layout-nav-drawer">
         <v-list lines="two" class="pt-0">
             <v-list-item v-if="ability.canView(GUIComponent.NavigationOverview)" link elevation="0" :to="getNavigationOverviewRoute()"
                 variant="elevated" class="d-flex flex-column justify-center text-center"
@@ -298,7 +303,13 @@
 
             <!--------navigation items---------->
             <template v-for="{ title, route, icon } in mainNavigationLinks" :key="title">
-                <v-list-item link :to="route" color="#215caf" class="d-flex flex-column justify-center text-center">
+                <v-list-item
+                    link
+                    :to="route"
+                    color="#215caf"
+                    class="d-flex flex-column justify-center text-center"
+                    :data-testid="`layout-nav-item-${route.replace('/', '') || 'home'}`"
+                >
 
                     <template v-slot:default="{ isActive }">
                         <v-icon :icon="icon" :color="isActive ? '' : '#797979'">
@@ -325,8 +336,11 @@
         : 'full-page-default'
     ]"
             style="min-height: 100%; width: 100%;"
+            data-testid="layout-content"
         >
-            <v-container fluid class="flex-grow-1">
+            <v-container fluid class="flex-grow-1"
+                         :data-testid="`layout-page-root-${(useRoute().name || 'unknown').toString().toLowerCase()}`"
+            >
                 <router-view />
             </v-container>
         </div>

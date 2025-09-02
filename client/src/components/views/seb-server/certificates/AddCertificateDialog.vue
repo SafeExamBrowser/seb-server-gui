@@ -99,7 +99,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref, watch, computed} from 'vue';
+import {ref, computed} from 'vue';
 import {translate} from '@/utils/generalUtils';
 import * as certificateViewService from '@/services/seb-server/component-services/certificateViewService';
 import { useI18n } from "vue-i18n";
@@ -245,6 +245,14 @@ async function doUpload() {
         uploading.value = false;
     }
 }
+
+watch(internalOpen, (val) => {
+    if (!val) {
+        resetState();
+        password.value = '';
+        passwordVisible.value = false;
+    }
+});
 
 </script>
 
