@@ -49,7 +49,6 @@ declare module 'vue' {
     GalleryViewPage: typeof import('./components/views/screen-proctoring/gallery/GalleryViewPage.vue')['default']
     HomePageContainer: typeof import('./components/views/seb-server/home/HomePageContainer.vue')['default']
     HomePageMain: typeof import('./components/views/seb-server/home/HomePageMain.vue')['default']
-    HomePlayground: typeof import('./components/views/seb-server/home/HomePlayground.vue')['default']
     HonePageInfo: typeof import('./components/views/seb-server/home/HonePageInfo.vue')['default']
     ImportAssessmentInfo: typeof import('./components/views/seb-server/quiz-import/info-box-content/ImportAssessmentInfo.vue')['default']
     ImportAssessmentMain: typeof import('./components/views/seb-server/quiz-import/main-content/ImportAssessmentMain.vue')['default']

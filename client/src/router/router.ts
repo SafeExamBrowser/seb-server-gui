@@ -31,7 +31,6 @@ import SearchPage from "@/components/views/screen-proctoring/search/SearchPage.v
 
 import { useAuthStore } from "@/stores/authentication/authenticationStore";
 import HomePageContainer from "@/components/views/seb-server/home/HomePageContainer.vue";
-import HomePlayground from "@/components/views/seb-server/home/HomePlayground.vue";
 import AssessmentTools from "@/components/views/seb-server/assessment-tool/AssessmentTools.vue";
 import CreateAssessmentTool from "@/components/views/seb-server/assessment-tool/CreateAssessmentTool.vue";
 import AssessmentToolDetailsAndEdit from "@/components/views/seb-server/assessment-tool/AssessmentToolDetailsAndEdit.vue";
@@ -275,16 +274,6 @@ const routes: Array<RouteRecordRaw> = [
                 component: Certificates,
                 meta: {
                     titleKey: "titles.certificates"
-                },
-            },
-
-
-            {
-                path: constants.PLAYGROUND,
-                name: "Playground",
-                component: HomePlayground,
-                meta: {
-                    titleKey: "titles.home"
                 },
             },
         ]

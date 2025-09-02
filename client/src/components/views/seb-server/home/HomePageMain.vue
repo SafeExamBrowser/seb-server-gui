@@ -1,6 +1,4 @@
 <template>
-
-
     <v-row>
         <!-- First Column -->
         <v-col
