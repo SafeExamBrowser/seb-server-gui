@@ -14,6 +14,7 @@
 
                             <div class="mt-10">
                                 <AlertMsg
+                                    data-testid="register-error-alert"
                                     v-if="registerError"
                                     :alertProps="{
                             title: '',
@@ -23,6 +24,7 @@
                         }">
                                 </AlertMsg>
                                 <AlertMsg
+                                    data-testid="register-success-alert"
                                     v-if="registerSuccess"
                                     :alertProps="{
                             title: '',
@@ -44,6 +46,7 @@
                                     <v-row dense>
                                         <v-col cols="12" md="6">
                                             <v-select
+                                                data-testid="register-institution-select"
                                                 required
                                                 prepend-inner-icon="mdi-domain"
                                                 density="compact"
@@ -60,6 +63,7 @@
 
                                         <v-col cols="12" md="6">
                                             <v-text-field
+                                                data-testid="register-username-input"
                                                 required
                                                 prepend-inner-icon="mdi-account-outline"
                                                 density="compact"
@@ -72,6 +76,7 @@
 
                                         <v-col cols="12" md="6">
                                             <v-text-field
+                                                data-testid="register-name-input"
                                                 required
                                                 prepend-inner-icon="mdi-account-outline"
                                                 density="compact"
@@ -84,6 +89,7 @@
 
                                         <v-col cols="12" md="6">
                                             <v-text-field
+                                                data-testid="register-surname-input"
                                                 required
                                                 prepend-inner-icon="mdi-account-outline"
                                                 density="compact"
@@ -96,6 +102,7 @@
 
                                         <v-col cols="12" md="6">
                                             <v-text-field
+                                                data-testid="register-email-input"
                                                 prepend-inner-icon="mdi-email-outline"
                                                 density="compact"
                                                 :label="translate('userAccount.registerPage.labels.emailLabel')"
@@ -108,6 +115,7 @@
 
                                         <v-col cols="12" md="6">
                                             <v-select
+                                                data-testid="register-timezone-select"
                                                 required
                                                 prepend-inner-icon="mdi-map-clock-outline"
                                                 density="compact"
@@ -122,6 +130,7 @@
 
                                         <v-col cols="12" md="6">
                                             <v-text-field
+                                                data-testid="register-password-input"
                                                 required
                                                 :type="passwordVisible ? 'text' : 'password'"
                                                 prepend-inner-icon="mdi-lock-outline"
@@ -134,6 +143,7 @@
                                             >
                                                 <template v-slot:append-inner>
                                                     <v-btn
+                                                        data-testid="register-password-toggle"
                                                         density="compact"
                                                         variant="text"
                                                         :icon="passwordVisible ? 'mdi-eye-off' : 'mdi-eye'"
@@ -145,6 +155,7 @@
 
                                         <v-col cols="12" md="6">
                                             <v-text-field
+                                                data-testid="register-confirmPassword-input"
                                                 required
                                                 :type="confirmPasswordVisible ? 'text' : 'password'"
                                                 prepend-inner-icon="mdi-lock-outline"
@@ -158,6 +169,7 @@
                                             >
                                                 <template v-slot:append-inner>
                                                     <v-btn
+                                                        data-testid="register-confirmPassword-toggle"
                                                         density="compact"
                                                         variant="text"
                                                         :icon="confirmPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
@@ -169,6 +181,7 @@
 
                                         <v-col cols="12">
                                             <v-btn
+                                                data-testid="register-submit-btn"
                                                 block
                                                 rounded="sm"
                                                 color="primary"

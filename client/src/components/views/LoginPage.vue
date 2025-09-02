@@ -7,11 +7,12 @@
                         <img class="logo-img" src="/img/seb-logo-no-border.png" :alt="translate('screenReader.logo')"/>
                     </div>
                     <div class="d-flex ml-15 mr-15 mt-5 justify-center">
-                        <div class="text-h6">{{ translate('loginPage.title') }}</div>
+                        <div data-testid="login-title" class="text-h6" >{{ translate('loginPage.title') }} </div>
                     </div>
 
                     <div class="mt-10">
                         <AlertMsg
+                            data-testid="login-error-alert"
                             v-if="loginError"
                             :alertProps="{
                             title: '',
@@ -21,6 +22,7 @@
                         }">
                         </AlertMsg>
                         <AlertMsg
+                            data-testid="timeout-error-alert"
                             v-if="loadingStore.isTimeout"
                             :alertProps="{
                             title: '',
@@ -62,6 +64,7 @@
 
                                 <template v-slot:append-inner>
                                     <v-btn
+                                        data-testid="login-password-toggle"
                                         density="compact"
                                         variant="text"
                                         :icon="passwordVisible ? 'mdi-eye-off' : 'mdi-eye'"
