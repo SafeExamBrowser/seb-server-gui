@@ -440,7 +440,7 @@ async function initialize() {
         return;
     }
 
-    setSliderMax(currentScreenshotData.value.timestamp);
+    setSliderMax(currentScreenshotData.value.endTime);
     searchTimeline.value = await searchViewService.searchTimeline(sessionId);
 
     await assignScreenshotDataByTimestamp(currentScreenshotData.value?.startTime.toString());
