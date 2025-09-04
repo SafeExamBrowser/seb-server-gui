@@ -37,10 +37,10 @@
                     </div>
                     <div class="heading-underline mt-3"></div>
 
-                    <!-- Configuration Template -->
-                    <v-col cols="12" md="6" class="pr-md-3 mb-4 mb-md-0">
+                    <!-- SEB-client Template -->
+                    <v-col cols="12" md="6" class="pr-md-3 ">
                         <v-card
-                            class="template-card"
+                            class="template-card d-flex align-center"
                             variant="flat"
                             elevation="0"
                             role="button"
@@ -49,7 +49,7 @@
                             @keyup.enter="goToSebClientCreation"
                             @keyup.space.prevent="goToSebClientCreation"
                         >
-                            <v-row no-gutters class="template-card__content">
+                            <v-row no-gutters class="template-card__content" >
                                 <v-col cols="7" class="template-card__text">
                                     <div class="template-card__title">
                                         {{ translate("templates.createTemplate.sebClientTemplate") }}
@@ -76,7 +76,7 @@
                     <!-- Exam Template -->
                     <v-col cols="12" md="6" class="pl-md-3">
                         <v-card
-                            class="template-card"
+                            class="template-card d-flex align-center "
                             variant="flat"
                             elevation="0"
                             role="button"
@@ -99,7 +99,7 @@
                                 <v-spacer/>
                                 <div class="card-divider"></div>
                                 <v-col cols="1" class="right-rail d-flex align-center">
-                                    <v-btn class="chevron-btn mr-2 mt-2 mb-2" icon variant="text"
+                                    <v-btn class="chevron-btn mx-2" icon variant="text"
                                            aria-label="Create Exam Template">
                                         <v-icon icon="mdi-chevron-right"></v-icon>
                                     </v-btn>
@@ -177,9 +177,8 @@ const goToExamTemplateCreation = () => navigateTo(constants.CREATE_EXAM_TEMPLATE
     line-height: 1.5;
 }
 
-.right-rail {
-    gap: 0;
-}
+.right-rail { gap: 0; }
+
 
 .card-divider {
     width: 1px;
