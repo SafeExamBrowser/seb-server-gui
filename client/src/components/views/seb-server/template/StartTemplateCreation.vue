@@ -29,7 +29,7 @@
     <v-container class="px-md-10 px-5 mt-4">
         <v-row class="mt-16" align="stretch" justify="start" no-gutters>
             <v-spacer/>
-            <v-col cols="10">
+            <v-col cols="12" md="11" sm="6" >
                 <v-row>
                     <!-- Info -->
                     <div class="section-heading ml-1 text-h5 font-weight-bold text-primary">
