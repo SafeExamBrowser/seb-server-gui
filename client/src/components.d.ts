@@ -100,6 +100,7 @@ declare module 'vue' {
     SebSettingsDialog: typeof import('./components/views/seb-server/settings/SebSettingsDialog.vue')['default']
     SebSettingsNetwork: typeof import('./components/views/seb-server/settings/SebSettingsNetwork.vue')['default']
     SettingsNavigation: typeof import('./components/views/seb-server/components/SettingsNavigation.vue')['default']
+    StartTemplateCreation: typeof import('./components/views/seb-server/template/StartTemplateCreation.vue')['default']
     UserAccountEditForm: typeof import('./components/views/seb-server/accounts/UserAccountEditForm.vue')['default']
     UserAccounts: typeof import('./components/views/seb-server/accounts/UserAccounts.vue')['default']
   }

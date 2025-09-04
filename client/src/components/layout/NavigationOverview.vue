@@ -61,10 +61,9 @@
 
 
                             <v-list-item class="px-0 nav-hover">
-                                <span class="link-color nav-link">{{
-                                        translate("titles.createTemplate")
-                                    }}
-                                </span>
+                                <router-link class="link-color nav-link" :to="constants.CREATE_TEMPLATE_ROUTE">
+                                    {{ translate("titles.createTemplate") }}
+                                </router-link>
                             </v-list-item>
 
                             <v-divider class="section-divider"/>

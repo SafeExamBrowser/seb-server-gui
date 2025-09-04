@@ -51,12 +51,15 @@ export const CERTIFICATES_ROUTE: string =  "/certificates";
 
 // export const USER_ACCOUNTS_ROUTE: string = MONITORING_ROUTE + "/userAccounts";
 
+//templates
+export const TEMPLATE_ROUTE = "/templates"
+export const CREATE_TEMPLATE_ROUTE = TEMPLATE_ROUTE + "/create";
+export const CREATE_SEB_CLIENT_TEMPLATE_ROUTE = CREATE_TEMPLATE_ROUTE + "/seb-client";
+export const CREATE_EXAM_TEMPLATE_ROUTE = CREATE_TEMPLATE_ROUTE + "/exam-template";
+
+
 
 export const QUIZ_IMPORT_ROUTE: string = "/quiz-import";
-
-
-export const PLAYGROUND: string = "/playground";
-
 
 //quiz import wizard steps & components
 export function getQuizImportGroupStep(i18nParam?: any | null): ImportWizardSteps{

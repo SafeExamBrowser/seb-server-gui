@@ -34,11 +34,7 @@ import HomePageContainer from "@/components/views/seb-server/home/HomePageContai
 import AssessmentTools from "@/components/views/seb-server/assessment-tool/AssessmentTools.vue";
 import CreateAssessmentTool from "@/components/views/seb-server/assessment-tool/CreateAssessmentTool.vue";
 import AssessmentToolDetailsAndEdit from "@/components/views/seb-server/assessment-tool/AssessmentToolDetailsAndEdit.vue";
-import {
-    ASSESSMENT_TOOL_CONNECTIONS_ROUTE, CERTIFICATES_ROUTE,
-    CONNECTION_CONFIGURATIONS_ROUTE,
-    CREATE_CONNECTION_CONFIGURATION_ROUTE
-} from "@/utils/constants";
+
 import CreateConnectionConfiguration
     from "@/components/views/seb-server/connection-configuration/CreateConnectionConfiguration.vue";
 import ConnectionConfigurations
@@ -46,6 +42,9 @@ import ConnectionConfigurations
 import ConnectionConfigurationlDetailsAndEdit
     from "@/components/views/seb-server/connection-configuration/ConnectionConfigurationlDetailsAndEdit.vue";
 import Certificates from "@/components/views/seb-server/certificates/Certificates.vue";
+
+import CreateTemplate from "@/components/views/seb-server/template/StartTemplateCreation.vue";
+
 
 
 
@@ -267,7 +266,6 @@ const routes: Array<RouteRecordRaw> = [
             },
 
             //certificates
-
             {
                 path: constants.CERTIFICATES_ROUTE,
                 name: "Certificates",
@@ -276,6 +274,16 @@ const routes: Array<RouteRecordRaw> = [
                     titleKey: "titles.certificates"
                 },
             },
+
+            //templates
+            {
+                path: constants.CREATE_TEMPLATE_ROUTE,
+                name: "CreateTemplate",
+                component: CreateTemplate,
+                meta: {
+                    titleKey: "titles.createTemplate"
+                },
+            }
         ]
     },
 

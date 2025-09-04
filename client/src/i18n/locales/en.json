@@ -192,8 +192,7 @@
             "description" : "Select or Remove Groups",
             "tableHeaderName": "Name",
             "tableHeaderScreenProctoring": "Screen Proctoring",
-            "spAvailable": "Screen Proctoring enabled",
-
+            "spAvailable": "Screen Proctoring enabled"
         },
 
         "supervisorsMain": {
@@ -678,6 +677,16 @@
             "KEY_CERT_SIGN": "CA"
         }
 
+    },
+
+    "templates" : {
+        "createTemplate" : {
+            "info" : "What kind of template do you want to create?",
+            "sebClientTemplate" : "SEB Client Template",
+            "examTemplate" : "Exam Template",
+            "sebClientTemplateInfo" : "To create an exam template you need a configuration template. If there is no configuration template in place please create new configuration template first.",
+            "examTemplateInfo" : "To create an exam template you need a configuration template. If there is no configuration template in place please create new configuration template first."
+        }
     },
 
     "examDetail": {

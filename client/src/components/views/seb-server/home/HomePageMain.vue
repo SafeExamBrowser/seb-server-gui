@@ -20,6 +20,7 @@
                         rounded="sm"
                         color="primary"
                         variant="flat"
+                        :to="constants.CREATE_TEMPLATE_ROUTE"
                         class="bigger-btn"
                     >
                         {{ translate('homePage.startNow') }}
