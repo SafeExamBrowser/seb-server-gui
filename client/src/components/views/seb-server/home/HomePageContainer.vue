@@ -1,22 +1,20 @@
 <template>
-    <v-row>
-        <v-col cols="12">
+    <v-row data-testid="homepageContainer-page-container">
+        <v-col cols="12" data-testid="homepageContainer-root-col">
             <!-- Infos -->
-            <v-row>
-                <v-col cols="12">
-                    <HomePageInfo></HomePageInfo>
+            <v-row data-testid="homepageContainer-info-section">
+                <v-col cols="12" data-testid="homepageContainer-info-col">
+                    <HomePageInfo data-testid="homepageContainer-homePageInfo-component" />
                 </v-col>
             </v-row>
 
             <!-- Main -->
-            <v-row class="mt-5" align="stretch">
-                <HomePageMain></HomePageMain>
+            <v-row class="mt-5" align="stretch" data-testid="homepageContainer-main-section">
+                <HomePageMain data-testid="homepageContainer-homePageMain-component" />
             </v-row>
-
         </v-col>
     </v-row>
 </template>
-
 
 <script setup lang="ts">
 import {useAppBarStore} from '@/stores/store';
