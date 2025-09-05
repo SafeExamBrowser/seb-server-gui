@@ -1,0 +1,171 @@
+services:
+  mariadb:
+    image: "mariadb:10.5"
+    container_name: seb-server-demo-mariadb
+    environment:
+      - MARIADB_ROOT_PASSWORD=admin123
+      - MARIADB_AUTO_UPGRADE=1
+    ports:
+      - "3307:3306"
+    volumes:
+      - seb-server-demo-mariadb:/var/lib/mysql
+      - ./config/mariadb/config.cnf:/etc/mysql/conf.d/config.cnf
+    networks:
+      - seb-server-network
+    restart: unless-stopped
+
+  seb-server:
+    image: "anhefti/seb-server:sprint-testing"
+    platform: linux/amd64
+    container_name: seb-server
+    environment:
+      # Service runtime settings
+      - JAVA_HEAP_MIN=1G
+      - JAVA_HEAP_MAX=8G
+      - spring_profiles_active=bundled,demo
+      - sebserver_test_property=This is a SEB Server Demo Setup
+
+      # SEB Server password, internally used to en-/decrypt sensitive data secure internal communication
+      - sebserver_password=somePW
+
+      # Data Base settings
+      - sebserver_mariadb_password=admin123
+      - datastore_mariadb_server_address=seb-server-demo-mariadb
+      - datastore_mariadb_server_port=3306
+      - spring_flyway_locations=classpath:config/sql/base,classpath:config/sql/demo
+
+      # External URL settings
+      - sebserver_webservice_http_external_scheme=http
+      - sebserver_webservice_http_external_servername=localhost
+      - sebserver_webservice_http_external_port=8080
+      - sebserver_webservice_autologin_url=http://localhost
+
+      # Screen Proctoring settings and passwords
+      - sebserver_feature_exam_seb_screenProctoring_bundled_url=http://localhost:8090
+      - sps_sebserver_client_secret=somePW
+      - sps_sebserver_password=admin
+
+      # swagger
+      - enable_swagger=true
+
+      # Logging
+      - logging_level_ch_ethz_seb_sebserver_webservice_servicelayer=DEBUG
+
+    ports:
+      - "8080:8080"
+    networks:
+      - seb-server-network
+    depends_on:
+      - "mariadb"
+    restart: unless-stopped
+
+  sps-webservice:
+    image: "anhefti/seb-sps:sprint-testing"
+    platform: linux/amd64
+    container_name: sps-webservice
+    environment:
+      # Service runtime settings
+      - JAVA_HEAP_MIN=1G
+      - JAVA_HEAP_MAX=6G
+      - SERVER_PORT=8090
+      - spring_profiles_active=bundled,demo
+      - sps_webservice_distributed=false
+
+      # SEB Server password, internally used to en-/decrypt sensitive data secure internal communication
+      - sebserver_password=somePW
+
+      # Data Base settings
+      - datastore_mariadb_server_port=3306
+      - datastore_mariadb_server_address=seb-server-demo-mariadb
+      - mariadb_password=admin123
+      - spring_flyway_locations=classpath:config/sql/base,classpath:config/sql/demo
+      - sps_data_store_adapter=FULL_RDBMS
+
+      # External URL settings
+      - sps_webservice_http_external_scheme=http
+      - sps_webservice_http_external_servername=localhost
+      - sps_webservice_http_external_port=8090
+
+      # SEB Server client connection detail settings
+      - sebserver_client_secret=somePW
+      - sps_gui_redirect_url=http://localhost:3000
+      - sps_webservice_sebserver_bundle=true
+
+      # Screen Proctoring GUI client connection detail settings
+      - spsgui_client_secret=somePW
+      - sps_init_sebserveraccount_password=admin
+
+      # Logging
+      - logging_level_ch_ethz_seb_sps_server_servicelayer_impl=DEBUG
+      - logging_level_ch_ethz_seb_sps_server_weblayer=DEBUG
+
+    volumes:
+      - .:/sebsps/config/spring
+    ports:
+      - "8090:8090"
+    networks:
+      - seb-server-network
+    depends_on:
+      - "mariadb"
+    restart: unless-stopped
+
+  fe-server:
+    image: "node:22.2.0"
+    container_name: fe-server
+    working_dir: /app/server
+    environment:
+      - NODE_ENV=dev
+      - SERVER_PORT=3001
+      - SEB_SERVER_USERNAME=guiClient
+      - SEB_SERVER_PASSWORD=somePW
+      - SEB_SERVER_URL=http://seb-server
+      - SEB_SERVER_PORT=8080
+      - SEB_SERVER_DEFAULT_URL=/admin-api/v1
+      - PROCTOR_SERVER_URL=http://sps-webservice
+      - PROCTOR_SERVER_PORT=8090
+      - PROCTOR_DEFAULT_URL=/admin-api/v1
+      - PROCTOR_SERVER_USERNAME=spsGuiClient
+      - PROCTOR_SERVER_PASSWORD=somePW
+      - DEV_SERVER_URL=http://localhost
+      - DEV_SERVER_PORT=8082
+    volumes:
+      - ./server:/app/server
+      - /app/server/node_modules
+    ports:
+      - "3001:3001"
+    networks:
+      - seb-server-network
+    depends_on:
+      - "seb-server"
+      - "sps-webservice"
+    command: >
+      sh -c "npm ci && npm run dev"
+    restart: unless-stopped
+
+  fe-client:
+    image: "node:22.2.0"
+    container_name: fe-client
+    working_dir: /app/client
+    environment:
+      - VITE_SERVER_URL=http://localhost
+      - VITE_SERVER_PORT=3001
+    volumes:
+      - ./client:/app/client
+      - /app/client/node_modules
+    ports:
+      - "8082:8082"
+    networks:
+      - seb-server-network
+    depends_on:
+      - "fe-server"
+    command: >
+      sh -c "npm ci && sh env.sh && npx vite --host 0.0.0.0"
+    restart: unless-stopped
+
+networks:
+  seb-server-network:
+    name: seb-server-demo-network
+
+volumes:
+  seb-server-demo-mariadb:
+    name: seb-server-demo-db
