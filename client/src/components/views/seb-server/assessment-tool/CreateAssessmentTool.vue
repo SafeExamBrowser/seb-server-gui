@@ -1,41 +1,46 @@
 <template>
-    <div class="text-white text-h5 font-weight-black ml-10 mt-5 ">
+    <div
+        class="text-white text-h5 font-weight-black ml-10 mt-5"
+        data-testid="assessmentToolsCreate-page-title"
+    >
         {{ translate("titles.settings") }}
     </div>
+
     <v-row class="mt-10 w-98 h-100">
+        <!-- settings navigation -->
+        <SettingsNavigation data-testid="assessmentToolsCreate-settingsNavigation-component" />
 
-        <!-- settings navigation-->
-        <SettingsNavigation/>
-
-        <v-col elevation="4" cols="9" class="bg-white rounded-lg">
-            <v-row class="d-flex align-center justify-space-between px-6 pt-6">
-                <div class="text-primary text-h5 font-weight-bold">
+        <v-col
+            elevation="4"
+            cols="9"
+            class="bg-white rounded-lg"
+            data-testid="assessmentToolsCreate-form-container"
+        >
+            <v-row class="d-flex align-center justify-space-between px-6 pt-6" data-testid="assessmentToolsCreate-header-row">
+                <div class="text-primary text-h5 font-weight-bold" data-testid="assessmentToolsCreate-title-text">
                     {{ translate("titles.createAssessmentTool") }}
                 </div>
             </v-row>
 
+            <v-divider class="custom-divider mx-6 my-4 mt-7" data-testid="assessmentToolsCreate-divider-top" />
 
-            <v-divider class="custom-divider mx-6 my-4 mt-7"/>
-            <v-row class="px-8 mt-2">
-                <div class="text-body-2 text-grey-darken-1">
+            <v-row class="px-8 mt-2" data-testid="assessmentToolsCreate-intro-row">
+                <div class="text-body-2 text-grey-darken-1" data-testid="assessmentToolsCreate-intro-text">
                     {{
                         translate("assessmentToolConnections.createAssessmentToolConnectionsPage.info.assessmentToolConnectionsCreationInfo")
                     }}
                 </div>
             </v-row>
 
-            <!-- Form-->
-            <v-sheet class="rounded-lg mt-4" style="min-height: 46.9vh">
-                <v-form ref="formRef" @keyup.enter="submit()">
-
-
+            <!-- Form -->
+            <v-sheet class="rounded-lg mt-4" style="min-height: 46.9vh" data-testid="assessmentToolsCreate-form-sheet">
+                <v-form ref="formRef" @keyup.enter="submit()" data-testid="assessmentToolsCreate-form">
                     <v-col cols="12" md="12" class="pa-0 mb-4 h-100">
                         <v-card-text>
-
                             <!-- First Section -->
-                            <v-row dense>
-                                <v-col cols="8">
-                                    <!-- Institution-->
+                            <v-row dense data-testid="assessmentToolsCreate-form-row-1">
+                                <v-col cols="8" data-testid="assessmentToolsCreate-form-left-col">
+                                    <!-- Institution -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-select
                                             required
@@ -48,10 +53,11 @@
                                             item-value="modelId"
                                             :rules="[requiredRule]"
                                             disabled
+                                            data-testid="assessmentToolsCreate-institution-select"
                                         />
                                     </v-col>
 
-                                    <!-- Name-->
+                                    <!-- Name -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
                                             required
@@ -60,6 +66,7 @@
                                             variant="outlined"
                                             v-model="name"
                                             :rules="[requiredRule]"
+                                            data-testid="assessmentToolsCreate-name-input"
                                         />
                                     </v-col>
 
@@ -75,10 +82,11 @@
                                             item-title="label"
                                             item-value="value"
                                             :rules="[requiredRule]"
+                                            data-testid="assessmentToolsCreate-type-select"
                                         />
                                     </v-col>
 
-                                    <!-- Assessment Tool Server Address-->
+                                    <!-- Assessment Tool Server Address -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
                                             density="compact"
@@ -87,13 +95,20 @@
                                             v-model="assessmentToolServerAddress"
                                             :rules="[requiredRule, httpPrefixRule]"
                                             validate-on="blur"
+                                            data-testid="assessmentToolsCreate-serverAddress-input"
                                         />
                                     </v-col>
 
                                     <!-- Auth Mode -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
-                                        <div class="d-flex align-center justify-space-between">
-                                            <label class="text-grey-darken-1 text-body-1 ml-1 mb-6 mt-3">
+                                        <div
+                                            class="d-flex align-center justify-space-between"
+                                            data-testid="assessmentToolsCreate-authMode-row"
+                                        >
+                                            <label
+                                                class="text-grey-darken-1 text-body-1 ml-1 mb-6 mt-3"
+                                                data-testid="assessmentToolsCreate-authMode-label"
+                                            >
                                                 {{ translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.authenticationMode') }}
                                             </label>
                                             <v-btn-toggle
@@ -101,11 +116,12 @@
                                                 density="comfortable"
                                                 mandatory
                                                 class="ml-4 mb-6 mt-3"
+                                                data-testid="assessmentToolsCreate-authMode-toggle"
                                             >
-                                                <v-btn value="client">
+                                                <v-btn value="client" data-testid="assessmentToolsCreate-authMode-client-button">
                                                     {{ translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.clientCredentials') }}
                                                 </v-btn>
-                                                <v-btn value="token">
+                                                <v-btn value="token" data-testid="assessmentToolsCreate-authMode-token-button">
                                                     {{ translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.restApiToken') }}
                                                 </v-btn>
                                             </v-btn-toggle>
@@ -114,7 +130,7 @@
 
                                     <!-- Client Credentials (shown only in client mode) -->
                                     <template v-if="authMode === 'client'">
-                                        <!-- Assessment Tool Server Username-->
+                                        <!-- Username -->
                                         <v-col cols="12" md="12" class="custom-padding-textbox">
                                             <v-text-field
                                                 density="compact"
@@ -123,10 +139,11 @@
                                                 v-model="assessmentToolServerUsername"
                                                 :rules="[requiredIfClientRule]"
                                                 validate-on="blur"
+                                                data-testid="assessmentToolsCreate-client-username-input"
                                             />
                                         </v-col>
 
-                                        <!-- Assessment Tool Server Password-->
+                                        <!-- Password -->
                                         <v-col cols="12" md="12" class="custom-padding-textbox">
                                             <v-text-field
                                                 :type="passwordVisible ? 'text' : 'password'"
@@ -136,6 +153,7 @@
                                                 v-model="assessmentToolServerPassword"
                                                 :rules="[requiredIfClientRule]"
                                                 validate-on="blur"
+                                                data-testid="assessmentToolsCreate-client-password-input"
                                             >
                                                 <template v-slot:append-inner>
                                                     <v-btn
@@ -143,6 +161,7 @@
                                                         variant="text"
                                                         :icon="passwordVisible ? 'mdi-eye-off' : 'mdi-eye'"
                                                         @click="passwordVisible = !passwordVisible"
+                                                        data-testid="assessmentToolsCreate-client-password-toggle"
                                                     />
                                                 </template>
                                             </v-text-field>
@@ -151,7 +170,6 @@
 
                                     <!-- REST API Token (shown only in token mode) -->
                                     <template v-else>
-                                        <!-- Access Token-->
                                         <v-col cols="12" md="12" class="custom-padding-textbox">
                                             <v-text-field
                                                 ref="confirmPasswordFieldRef"
@@ -163,6 +181,7 @@
                                                 :rules="[requiredIfTokenRule]"
                                                 validate-on="blur"
                                                 class="mb-2"
+                                                data-testid="assessmentToolsCreate-token-input"
                                             >
                                                 <template v-slot:append-inner>
                                                     <v-btn
@@ -170,30 +189,31 @@
                                                         variant="text"
                                                         :icon="confirmPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
                                                         @click="confirmPasswordVisible = !confirmPasswordVisible"
+                                                        data-testid="assessmentToolsCreate-token-toggle"
                                                     />
                                                 </template>
                                             </v-text-field>
                                         </v-col>
                                     </template>
-
-
                                 </v-col>
 
-                                <!-- Second Column first Section-->
-                                <v-col cols="4">
-
+                                <!-- Second Column first Section (placeholder) -->
+                                <v-col cols="4" data-testid="assessmentToolsCreate-form-right-col">
                                 </v-col>
                             </v-row>
 
                             <!-- Proxy toggle and expansion -->
-                            <v-row dense>
-                                <v-divider class="custom-divider mx-1 my-2"/>
+                            <v-row dense data-testid="assessmentToolsCreate-proxy-section">
+                                <v-divider class="custom-divider mx-1 my-2" data-testid="assessmentToolsCreate-divider-proxy" />
 
                                 <v-col>
                                     <!-- With Proxy Toggle -->
                                     <v-col cols="6" md="6" class="custom-padding-textbox">
                                         <div class="d-flex align-center justify-space-between w-100">
-                                            <label class="text-grey-darken-1 text-body-1 ml-11">
+                                            <label
+                                                class="text-grey-darken-1 text-body-1 ml-11"
+                                                data-testid="assessmentToolsCreate-proxy-label"
+                                            >
                                                 {{
                                                     translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.withProxyLabel')
                                                 }}
@@ -207,17 +227,18 @@
                                                 color="primary"
                                                 class="ml-4"
                                                 :aria-label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.withProxyAria')"
+                                                data-testid="assessmentToolsCreate-proxy-switch"
                                             />
                                         </div>
                                     </v-col>
                                 </v-col>
                             </v-row>
 
-                            <v-row dense>
+                            <v-row dense data-testid="assessmentToolsCreate-proxy-fields-row">
                                 <v-col>
                                     <!-- Animated expansion -->
                                     <v-expand-transition>
-                                        <div v-show="withProxy">
+                                        <div v-show="withProxy" data-testid="assessmentToolsCreate-proxy-fields">
                                             <v-row>
                                                 <v-col cols="8">
                                                     <!-- Proxy Host -->
@@ -229,6 +250,7 @@
                                                             v-model="proxyHost"
                                                             :rules="[requiredIfProxyRule]"
                                                             validate-on="blur"
+                                                            data-testid="assessmentToolsCreate-proxy-host-input"
                                                         />
                                                     </v-col>
 
@@ -243,10 +265,11 @@
                                                             inputmode="numeric"
                                                             :rules="[requiredIfProxyRule, portNumberRule]"
                                                             validate-on="blur"
+                                                            data-testid="assessmentToolsCreate-proxy-port-input"
                                                         />
                                                     </v-col>
 
-                                                    <!-- Proxy Username-->
+                                                    <!-- Proxy Username -->
                                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                                         <v-text-field
                                                             density="compact"
@@ -255,6 +278,7 @@
                                                             v-model="proxyUsername"
                                                             :rules="[requiredIfProxyRule]"
                                                             validate-on="blur"
+                                                            data-testid="assessmentToolsCreate-proxy-username-input"
                                                         />
                                                     </v-col>
 
@@ -268,6 +292,7 @@
                                                             v-model="proxyPassword"
                                                             :rules="[requiredIfProxyRule]"
                                                             validate-on="blur"
+                                                            data-testid="assessmentToolsCreate-proxy-password-input"
                                                         >
                                                             <template #append-inner>
                                                                 <v-btn
@@ -275,28 +300,26 @@
                                                                     variant="text"
                                                                     :icon="proxyPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
                                                                     @click="proxyPasswordVisible = !proxyPasswordVisible"
+                                                                    data-testid="assessmentToolsCreate-proxy-password-toggle"
                                                                 />
                                                             </template>
                                                         </v-text-field>
                                                     </v-col>
                                                 </v-col>
-                                                <v-col cols="4">
-                                                </v-col>
+
+                                                <v-col cols="4"></v-col>
                                             </v-row>
                                         </div>
                                     </v-expand-transition>
                                 </v-col>
-
                             </v-row>
-
-
                         </v-card-text>
                     </v-col>
                 </v-form>
             </v-sheet>
 
-            <!-- Buttons-->
-            <v-row class="px-6 pt-0">
+            <!-- Buttons -->
+            <v-row class="px-6 pt-0" data-testid="assessmentToolsCreate-actions-row">
                 <v-col cols="12" md="12" class="pa-0 mb-4">
                     <div class="d-flex justify-end">
                         <v-btn
@@ -304,6 +327,7 @@
                             color="black"
                             variant="outlined"
                             @click="navigateTo(constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE)"
+                            data-testid="assessmentToolsCreate-cancel-button"
                         >
                             {{ translate("general.cancelButton") }}
                         </v-btn>
@@ -315,6 +339,7 @@
                             class="ml-2"
                             @click="submit()"
                             :disabled="isCreateDisabled"
+                            data-testid="assessmentToolsCreate-save-button"
                         >
                             {{ translate("general.saveButton") }}
                         </v-btn>
@@ -324,6 +349,7 @@
         </v-col>
     </v-row>
 </template>
+
 
 <script setup lang="ts">
 import {ref, onMounted, onBeforeUnmount} from 'vue';

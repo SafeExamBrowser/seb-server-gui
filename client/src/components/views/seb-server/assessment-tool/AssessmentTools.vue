@@ -1,25 +1,27 @@
 <template>
-    <div class="text-white text-h5 font-weight-black ml-10 mt-5 ">
+    <div class="text-white text-h5 font-weight-black ml-10 mt-5" data-testid="assessmentTools-page-title">
         {{ translate("titles.settings") }}
     </div>
+
     <v-row class="mt-10 w-98 h-100">
-        <SettingsNavigation/>
+        <SettingsNavigation data-testid="assessmentTools-settingsNavigation-component" />
 
         <!-- Main Component -->
-        <v-col elevation="4" cols="9" class="bg-white rounded-lg mb-3">
-            <!-- Title and Add User Button -->
-            <v-row class="d-flex align-center justify-space-between px-6 pt-6">
-                <div class="text-primary text-h5 font-weight-bold">
+        <v-col elevation="4" cols="9" class="bg-white rounded-lg mb-3" data-testid="assessmentTools-list-container">
+            <!-- Title and Add Button -->
+            <v-row class="d-flex align-center justify-space-between px-6 pt-6" data-testid="assessmentTools-header-row">
+                <div class="text-primary text-h5 font-weight-bold" data-testid="assessmentTools-title-text">
                     {{ translate("titles.assessmentToolConnections") }}
                 </div>
 
-                <div class="d-flex align-center cursor-pointer add-user-container"
-                     @click="navigateTo(constants.CREATE_ASSESSMENT_TOOL_CONNECTION_ROUTE)"
+                <div
+                    class="d-flex align-center cursor-pointer add-user-container"
+                    @click="navigateTo(constants.CREATE_ASSESSMENT_TOOL_CONNECTION_ROUTE)"
+                    data-testid="assessmentTools-addAssessmentTool-button"
                 >
-                    <span
-                        class="text-primary font-weight-medium mr-2">{{
-                            translate("assessmentToolConnections.assessmentToolsPage.addAssessmentTool")
-                        }}</span>
+          <span class="text-primary font-weight-medium mr-2">
+            {{ translate("assessmentToolConnections.assessmentToolsPage.addAssessmentTool") }}
+          </span>
 
                     <div class="add-user-icon d-flex align-center justify-center">
                         <v-icon size="28">mdi-plus</v-icon>
@@ -27,14 +29,14 @@
                 </div>
             </v-row>
 
-            <v-divider class="custom-divider mx-6 my-4 mt-7"/>
-            <v-sheet>
+            <v-divider class="custom-divider mx-6 my-4 mt-7" data-testid="assessmentTools-divider-top" />
 
+            <v-sheet data-testid="assessmentTools-filters-and-table">
                 <!-- Search and filters row -->
-                <v-row class="px-6 pt-4 d-flex flex-wrap align-start">
+                <v-row class="px-6 pt-4 d-flex flex-wrap align-start" data-testid="assessmentTools-filters-row">
                     <!-- Search field -->
-                    <v-col cols="5" md="5" class="pa-0 mb-4 ">
-                        <div class="text-caption text-grey-darken-1 mt-1 mb-1">
+                    <v-col cols="5" md="5" class="pa-0 mb-4" data-testid="assessmentTools-search-section">
+                        <div class="text-caption text-grey-darken-1 mt-1 mb-1" data-testid="assessmentTools-search-label">
                             {{ translate("assessmentToolConnections.assessmentToolsPage.filters.searchTitle") }}
                         </div>
                         <v-text-field
@@ -47,18 +49,22 @@
                             hide-details
                             @keydown.enter="onSearch"
                             @keydown.esc="onClearSearch"
+                            data-testid="assessmentTools-search-input"
                         >
                             <template #append-inner>
-                                <v-icon class="search-icon" @click="onSearch">mdi-magnify</v-icon>
+                                <v-icon class="search-icon" @click="onSearch" data-testid="assessmentTools-searchIcon-button">
+                                    mdi-magnify
+                                </v-icon>
                             </template>
                         </v-text-field>
 
-                        <div class="d-flex justify-end w-90 mt-5">
+                        <div class="d-flex justify-end w-90 mt-5" data-testid="assessmentTools-search-actions">
                             <v-btn
                                 rounded="sm"
                                 color="black"
                                 variant="outlined"
                                 @click="onClearSearch()"
+                                data-testid="assessmentTools-cancel-button"
                             >
                                 {{ translate("general.cancelButton") }}
                             </v-btn>
@@ -69,21 +75,22 @@
                                 variant="flat"
                                 class="ml-2"
                                 @click="onSearch()"
+                                data-testid="assessmentTools-search-button"
                             >
                                 {{ translate("general.searchButton") }}
                             </v-btn>
                         </div>
                     </v-col>
-                    <!-- Status Filters -->
-                    <v-col cols="7">
+
+                    <!-- Filters -->
+                    <v-col cols="7" data-testid="assessmentTools-filters-right">
                         <v-row dense>
-                            <v-col cols="3" class="pa-0 mb-2">
-                                <div class="text-caption text-grey-darken-1 mb-1">
-                                    {{
-                                        translate("assessmentToolConnections.assessmentToolsPage.filters.statusFilter")
-                                    }}
+                            <!-- Status -->
+                            <v-col cols="3" class="pa-0 mb-2" data-testid="assessmentTools-statusFilter-section">
+                                <div class="text-caption text-grey-darken-1 mb-1" data-testid="assessmentTools-statusFilter-label">
+                                    {{ translate("assessmentToolConnections.assessmentToolsPage.filters.statusFilter") }}
                                 </div>
-                                <div class="d-flex flex-wrap gap-2">
+                                <div class="d-flex flex-wrap gap-2" data-testid="assessmentTools-statusFilter-chips">
                                     <v-chip
                                         v-for="status in statuses"
                                         :key="status.value"
@@ -91,21 +98,24 @@
                                         class="mr-2 mt-2"
                                         :class="['filter-chip', selectedStatus === status.value && 'filter-chip-selected']"
                                         @click="selectedStatus = selectedStatus === status.value ? null : status.value"
-                                    >{{ status.label }}
+                                        :data-testid="`assessmentTools-statusFilter-chip-${status.value}`"
+                                    >
+                                        {{ status.label }}
                                     </v-chip>
                                 </div>
                             </v-col>
+
+                            <!-- Institution -->
                             <v-col
                                 v-if="institutions.length > 0"
                                 cols="4"
                                 class="pa-0 mb-2"
+                                data-testid="assessmentTools-institutionFilter-section"
                             >
-                                <div class="text-caption text-grey-darken-1 mb-1">
-                                    {{
-                                        translate("assessmentToolConnections.assessmentToolsPage.filters.institutionFilter")
-                                    }}
+                                <div class="text-caption text-grey-darken-1 mb-1" data-testid="assessmentTools-institutionFilter-label">
+                                    {{ translate("assessmentToolConnections.assessmentToolsPage.filters.institutionFilter") }}
                                 </div>
-                                <div class="d-flex flex-wrap gap-2">
+                                <div class="d-flex flex-wrap gap-2" data-testid="assessmentTools-institutionFilter-chips">
                                     <v-chip
                                         v-for="institution in institutions"
                                         :key="institution.modelId"
@@ -113,17 +123,19 @@
                                         class="mr-2 mt-2"
                                         :class="['filter-chip', selectedInstitutionId === institution.modelId && 'filter-chip-selected']"
                                         @click="selectedInstitutionId = selectedInstitutionId === institution.modelId ? null : institution.modelId"
+                                        :data-testid="`assessmentTools-institutionFilter-chip-${institution.modelId}`"
                                     >
                                         {{ institution.name }}
                                     </v-chip>
                                 </div>
                             </v-col>
 
-                            <v-col cols="4" class="pa-0 mb-2 ml-3">
-                                <div class="text-caption text-grey-darken-1 mb-1">
+                            <!-- Type -->
+                            <v-col cols="4" class="pa-0 mb-2 ml-3" data-testid="assessmentTools-typeFilter-section">
+                                <div class="text-caption text-grey-darken-1 mb-1" data-testid="assessmentTools-typeFilter-label">
                                     {{ translate("assessmentToolConnections.assessmentToolsPage.filters.typeFilter") }}
                                 </div>
-                                <div class="d-flex flex-wrap gap-2">
+                                <div class="d-flex flex-wrap gap-2" data-testid="assessmentTools-typeFilter-chips">
                                     <v-chip
                                         v-for="t in typeOptions"
                                         :key="t.value"
@@ -131,66 +143,69 @@
                                         class="mr-2 mt-2"
                                         :class="['filter-chip', selectedType === t.value && 'filter-chip-selected']"
                                         @click="selectedType = selectedType === t.value ? null : t.value"
+                                        :data-testid="`assessmentTools-typeFilter-chip-${t.value}`"
                                     >
                                         {{ t.label }}
                                     </v-chip>
                                 </div>
                             </v-col>
-
                         </v-row>
                     </v-col>
                 </v-row>
-                <!-- Data Table Definition-->
-                <v-sheet class="rounded-lg mt-10">
+
+                <!-- Data Table -->
+                <v-sheet class="rounded-lg mt-10" data-testid="assessmentTools-table-section">
                     <v-data-table-server
                         v-model:options="options"
                         @update:options="loadItems"
-
                         :hover="true"
                         :loading="isLoading"
                         :loading-text="translate('general.loading')"
-
                         :items="assessmentTools?.content"
                         :items-length="totalItems"
                         :items-per-page="5"
                         :items-per-page-options="tableUtils.calcItemsPerPage(totalItems)"
                         :headers="assessmentToolTableHeaders"
                         style="min-height:35vh"
+                        data-testid="assessmentTools-table"
                     >
-
-                    <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort }">
+                        <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort }">
                             <TableHeaders
                                 :columns="columns"
                                 :is-sorted="isSorted"
                                 :get-sort-icon="getSortIcon"
                                 :toggle-sort="toggleSort"
                                 :header-refs-prop="assessmentToolTableHeadersRef"
+                                data-testid="assessmentTools-tableHeaders-component"
                             />
                         </template>
 
                         <template v-slot:item="{ item }">
                             <tr
                                 :class="[
-                                    selectedAssessmentTool?.id === item.id ? 'selected-row' : '',
-                                    'row-clickable'
-                                ]"
+                  selectedAssessmentTool?.id === item.id ? 'selected-row' : '',
+                  'row-clickable'
+                ]"
                                 @click="goToDetails(item)"
+                                :data-testid="`assessmentTools-row-${item.id}`"
                             >
-
-                                <!-- Column Definition -->
-                                <td class="text-primary">
+                                <!-- Columns -->
+                                <td class="text-primary" :data-testid="`assessmentTools-cell-institution-${item.id}`">
                                     {{ getInstitutionName(item.institutionId) || item.institutionId }}
                                 </td>
-                                <td class="text-primary">{{ item.name }}</td>
-                                <td class="text-primary">{{ translateLmsType(item.lmsType) }}</td>
+                                <td class="text-primary" :data-testid="`assessmentTools-cell-name-${item.id}`">{{ item.name }}</td>
+                                <td class="text-primary" :data-testid="`assessmentTools-cell-type-${item.id}`">
+                                    {{ translateLmsType(item.lmsType) }}
+                                </td>
 
-                                <td>
+                                <td :data-testid="`assessmentTools-cell-status-${item.id}`">
                                     <v-chip
                                         :color="item.active ? 'green' : 'red'"
                                         dark
                                         small
                                         class="text-white font-weight-medium status-chip cursor-pointer"
                                         @click.stop="openStatusDialog(item)"
+                                        :data-testid="`assessmentTools-status-chip-${item.id}`"
                                     >
                                         {{
                                             item.active
@@ -199,89 +214,81 @@
                                         }}
                                     </v-chip>
                                 </td>
-                                <td class="icon-cell">
+
+                                <td class="icon-cell" :data-testid="`assessmentTools-cell-actions-${item.id}`">
                                     <div class="d-flex align-center justify-end h-100">
                                         <v-icon
                                             :icon="'mdi-pencil'"
                                             class="action-icon mr-2 cursor-pointer"
                                             @click.stop="goToDetails(item)"
+                                            :data-testid="`assessmentTools-edit-icon-${item.id}`"
                                         ></v-icon>
-
 
                                         <v-icon
                                             icon="mdi-delete"
                                             class="action-icon"
                                             @click.stop="openDeleteDialog(item)"
+                                            :data-testid="`assessmentTools-delete-icon-${item.id}`"
                                         />
-
                                     </div>
                                 </td>
-
                             </tr>
                         </template>
                     </v-data-table-server>
 
-                    <!-- Delete User Account Dialog -->
-                    <v-dialog v-model="deleteDialog" max-width="500">
+                    <!-- Delete Assessment Tool Dialog -->
+                    <v-dialog v-model="deleteDialog" max-width="500" data-testid="assessmentTools-delete-dialog">
                         <v-card>
-                            <v-card-title class="text-h6 font-weight-bold">
-                                {{
-                                    translate("assessmentToolConnections.assessmentToolsPage.deleteAssessmentToolContext.title")
-                                }}
+                            <v-card-title class="text-h6 font-weight-bold" data-testid="assessmentTools-delete-dialog-title">
+                                {{ translate("assessmentToolConnections.assessmentToolsPage.deleteAssessmentToolContext.title") }}
                             </v-card-title>
-                            <v-card-text>
-                                {{
-                                    translate("assessmentToolConnections.assessmentToolsPage.deleteAssessmentToolContext.informationPart1")
-                                }}
-                                <strong>{{ assessmentToolToDelete?.name }} {{
-                                        assessmentToolToDelete?.name
-                                    }}</strong>
-                                <strong>{{
-                                        assessmentToolToDelete?.name
-                                    }}</strong>{{
-                                    translate("assessmentToolConnections.assessmentToolsPage.deleteAssessmentToolContext.informationPart3")
-                                }}
+                            <v-card-text data-testid="assessmentTools-delete-dialog-text">
+                                {{ translate("assessmentToolConnections.assessmentToolsPage.deleteAssessmentToolContext.informationPart1") }}
+                                <strong>{{ assessmentToolToDelete?.name }} {{ assessmentToolToDelete?.name }}</strong>
+                                <strong>{{ assessmentToolToDelete?.name }}</strong>
+                                {{ translate("assessmentToolConnections.assessmentToolsPage.deleteAssessmentToolContext.informationPart3") }}
                             </v-card-text>
-                            <v-card-actions class="justify-end">
-                                <v-btn text @click="deleteDialog = false">{{
-                                        translate("general.cancelButton")
-                                    }}
+                            <v-card-actions class="justify-end" data-testid="assessmentTools-delete-dialog-actions">
+                                <v-btn text @click="deleteDialog = false" data-testid="assessmentTools-delete-cancel-button">
+                                    {{ translate("general.cancelButton") }}
                                 </v-btn>
-                                <v-btn color="red" text @click="confirmDelete">{{ translate("general.deleteButton") }}
+                                <v-btn color="red" text @click="confirmDelete" data-testid="assessmentTools-delete-confirm-button">
+                                    {{ translate("general.deleteButton") }}
                                 </v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-dialog>
 
                     <!-- Change Status Dialog -->
-                    <v-dialog v-model="statusDialog" max-width="500">
+                    <v-dialog v-model="statusDialog" max-width="500" data-testid="assessmentTools-status-dialog">
                         <v-card>
-                            <v-card-title class="text-h6 font-weight-bold">
+                            <v-card-title class="text-h6 font-weight-bold" data-testid="assessmentTools-status-dialog-title">
                                 {{ statusDialogTitle }}
                             </v-card-title>
-                            <v-card-text>
+                            <v-card-text data-testid="assessmentTools-status-dialog-text">
                                 {{ statusDialogMessage }}
                             </v-card-text>
-                            <v-card-actions class="justify-end">
-                                <v-btn text @click="statusDialog = false">
+                            <v-card-actions class="justify-end" data-testid="assessmentTools-status-dialog-actions">
+                                <v-btn text @click="statusDialog = false" data-testid="assessmentTools-status-cancel-button">
                                     {{ translate("general.cancelButton") }}
                                 </v-btn>
                                 <v-btn
                                     :color="statusDialogAssessmentTool?.active ? 'red' : 'green'"
                                     text
                                     @click="confirmStatusChange"
+                                    data-testid="assessmentTools-status-confirm-button"
                                 >
                                     {{ statusDialogButtonLabel }}
                                 </v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-dialog>
-
                 </v-sheet>
             </v-sheet>
         </v-col>
     </v-row>
 </template>
+
 
 <script setup lang="ts">
 import {ref, computed, onMounted, onBeforeUnmount} from "vue";

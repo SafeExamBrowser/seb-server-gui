@@ -3,7 +3,7 @@
         {{ translate("titles.settings") }}
     </div>
 
-    <v-row class="mt-10 w-98 h-100" data-testid="userAccounts-page-container">
+    <v-row class="mt-10 w-98 h-100">
         <SettingsNavigation data-testid="userAccounts-settingsNavigation-component" />
 
         <v-col elevation="4" cols="9" class="bg-white rounded-lg mb-3" data-testid="userAccounts-list-container">

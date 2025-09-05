@@ -7,7 +7,6 @@
     </div>
     <v-row
         class="mt-10 w-98 h-100"
-        data-testid="createUserAccount-page-container"
     >
         <!-- settings navigation -->
         <SettingsNavigation data-testid="createUserAccount-settingsNavigation-component" />
