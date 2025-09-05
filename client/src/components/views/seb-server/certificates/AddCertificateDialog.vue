@@ -1,15 +1,19 @@
 <template>
-    <v-dialog v-model="internalOpen" max-width="720" @update:modelValue="onToggle">
-        <v-card>
-            <v-card-title class="text-h6 font-weight-bold">
+    <v-dialog
+        v-model="internalOpen"
+        max-width="720"
+        @update:modelValue="onToggle"
+        data-testid="certificates-addDialog-root"
+    >
+        <v-card data-testid="certificates-addDialog-card">
+            <v-card-title class="text-h6 font-weight-bold" data-testid="certificates-addDialog-title">
                 {{ translate('certificates.certificateDialog.uploadCertificate') }}
             </v-card-title>
 
-            <v-card-text>
-                <div class="text-body-2 text-grey-darken-1 mb-4">
+            <v-card-text data-testid="certificates-addDialog-body">
+                <div class="text-body-2 text-grey-darken-1 mb-4" data-testid="certificates-addDialog-help">
                     {{ translate('certificates.certificateDialog.uploadCertificateHelp') }}
                 </div>
-
 
                 <!-- Drag & Drop Zone -->
                 <v-sheet
@@ -19,32 +23,42 @@
                     @dragleave.prevent="onDragLeave"
                     @drop.prevent="onDrop"
                     elevation="1"
+                    data-testid="certificates-addDialog-dropzone"
                 >
-                    <v-icon size="48" class="mb-3">mdi-file-certificate-outline</v-icon>
-                    <div class="text-subtitle-2 mb-2">
+                    <v-icon size="48" class="mb-3" data-testid="certificates-addDialog-dropzone-icon">
+                        mdi-file-certificate-outline
+                    </v-icon>
+
+                    <div class="text-subtitle-2 mb-2" data-testid="certificates-addDialog-fileLabel">
                         {{ selectedFileName || translate('certificates.certificateDialog.dropHere') }}
                     </div>
 
                     <!-- Dynamic allowed extensions -->
-                    <div class="text-caption text-grey-darken-1 mb-4">
+                    <div class="text-caption text-grey-darken-1 mb-4" data-testid="certificates-addDialog-allowedExt">
                         {{ translate('certificates.certificateDialog.allowed') }}: {{ acceptExtHuman }}
                     </div>
 
-                    <v-btn variant="outlined" @click="triggerFilePicker" :disabled="uploading">
+                    <v-btn
+                        variant="outlined"
+                        @click="triggerFilePicker"
+                        :disabled="uploading"
+                        data-testid="certificates-addDialog-selectFile-button"
+                    >
                         {{ translate('certificates.certificateDialog.selectFromFolder') }}
                     </v-btn>
+
                     <input
                         ref="fileInputRef"
                         type="file"
                         class="d-none"
                         :accept="acceptExt"
                         @change="onFilePicked"
+                        data-testid="certificates-addDialog-fileInput"
                     />
                 </v-sheet>
 
-                <!-- Optional: Alias + Password -->
-                <v-row class="mt-5">
-
+                <!-- Password -->
+                <v-row class="mt-5" data-testid="certificates-addDialog-password-row">
                     <v-col cols="12" md="12" class="pt-0">
                         <v-text-field
                             v-model="password"
@@ -54,6 +68,7 @@
                             :label="translate('certificates.certificateDialog.password')"
                             prepend-inner-icon="mdi-lock-outline"
                             hide-details
+                            data-testid="certificates-addDialog-password-input"
                         >
                             <template #append-inner>
                                 <v-btn
@@ -61,6 +76,7 @@
                                     density="compact"
                                     :icon="passwordVisible ? 'mdi-eye-off' : 'mdi-eye'"
                                     @click="passwordVisible = !passwordVisible"
+                                    data-testid="certificates-addDialog-password-toggle"
                                 />
                             </template>
                         </v-text-field>
@@ -73,6 +89,7 @@
                     variant="tonal"
                     class="mb-2"
                     density="comfortable"
+                    data-testid="certificates-addDialog-error-alert"
                 >
                     {{ uploadError }}
                 </v-alert>
@@ -83,20 +100,33 @@
                     height="6"
                     class="mb-2"
                     rounded
+                    data-testid="certificates-addDialog-progress"
                 />
             </v-card-text>
 
-            <v-card-actions class="justify-end">
-                <v-btn text @click="close()" :disabled="uploading">
+            <v-card-actions class="justify-end" data-testid="certificates-addDialog-actions">
+                <v-btn
+                    text
+                    @click="close()"
+                    :disabled="uploading"
+                    data-testid="certificates-addDialog-cancel-button"
+                >
                     {{ translate('general.cancelButton') }}
                 </v-btn>
-                <v-btn color="primary" text @click="doUpload" :disabled="!selectedFile || uploading">
+                <v-btn
+                    color="primary"
+                    text
+                    @click="doUpload"
+                    :disabled="!selectedFile || uploading"
+                    data-testid="certificates-addDialog-submit-button"
+                >
                     {{ translate('certificates.certificateDialog.addCertificate') }}
                 </v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
 </template>
+
 
 <script setup lang="ts">
 import {ref, computed} from 'vue';

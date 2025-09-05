@@ -1,33 +1,52 @@
 <template>
-    <div class="text-white text-h5 font-weight-black ml-10 mt-5 ">
+    <div
+        class="text-white text-h5 font-weight-black ml-10 mt-5 "
+        data-testid="certificates-page-title"
+    >
         {{ translate("titles.settings") }}
     </div>
-    <v-row class="mt-10 w-98 h-100">
-        <SettingsNavigation/>
+
+    <v-row class="mt-10 w-98 h-100" data-testid="certificates-page-container">
+        <SettingsNavigation data-testid="certificates-settingsNavigation-component"/>
 
         <!-- Main Component -->
-        <v-col elevation="4" cols="9" class="bg-white rounded-lg mb-3">
-            <!-- Title and Add User Button -->
-            <v-row class="d-flex align-center justify-space-between px-6 pt-6">
-                <div class="text-primary text-h5 font-weight-bold">
+        <v-col
+            elevation="4"
+            cols="9"
+            class="bg-white rounded-lg mb-3"
+            data-testid="certificates-content-container"
+        >
+            <!-- Title and Add Button -->
+            <v-row
+                class="d-flex align-center justify-space-between px-6 pt-6"
+                data-testid="certificates-header-row"
+            >
+                <div class="text-primary text-h5 font-weight-bold" data-testid="certificates-title-text">
                     {{ translate("titles.certificates") }}
                 </div>
-                <div class="d-flex align-center cursor-pointer add-user-container"
-                     @click="uploadDialog = true">
-                        <span class="text-primary font-weight-medium mr-2">
-                            {{ translate("certificates.addCertificate") }}
-                        </span>
+
+                <div
+                    class="d-flex align-center cursor-pointer add-user-container"
+                    @click="uploadDialog = true"
+                    data-testid="certificates-add-button"
+                >
+                    <span class="text-primary font-weight-medium mr-2">
+                        {{ translate("certificates.addCertificate") }}
+                    </span>
                     <div class="add-user-icon d-flex align-center justify-center">
                         <v-icon size="28">mdi-plus</v-icon>
                     </div>
                 </div>
             </v-row>
 
-            <v-divider class="custom-divider mx-6 my-4 mt-7"/>
-            <v-sheet>
+            <v-divider
+                class="custom-divider mx-6 my-4 mt-7"
+                data-testid="certificates-divider-top"
+            />
 
-                <!-- Search and filters row -->
-                <v-row class="px-6 pt-4 d-flex flex-wrap align-start">
+            <v-sheet data-testid="certificates-filters-sheet">
+                <!-- Search row -->
+                <v-row class="px-6 pt-4 d-flex flex-wrap align-start" data-testid="certificates-filters-row">
                     <!-- Search field -->
                     <v-col cols="5" md="5" class="pa-0 mb-4 ">
                         <div class="text-caption text-grey-darken-1 mt-1 mb-1">
@@ -43,18 +62,22 @@
                             hide-details
                             @keydown.enter="onSearch"
                             @keydown.esc="onClearSearch"
+                            data-testid="certificates-search-input"
                         >
                             <template #append-inner>
-                                <v-icon class="search-icon" @click="onSearch">mdi-magnify</v-icon>
+                                <v-icon class="search-icon" @click="onSearch" data-testid="certificates-search-icon">
+                                    mdi-magnify
+                                </v-icon>
                             </template>
                         </v-text-field>
 
-                        <div class="d-flex justify-end w-90 mt-5">
+                        <div class="d-flex justify-end w-90 mt-5" data-testid="certificates-search-actions">
                             <v-btn
                                 rounded="sm"
                                 color="black"
                                 variant="outlined"
                                 @click="onClearSearch()"
+                                data-testid="certificates-cancel-button"
                             >
                                 {{ translate("general.cancelButton") }}
                             </v-btn>
@@ -65,6 +88,7 @@
                                 variant="flat"
                                 class="ml-2"
                                 @click="onSearch()"
+                                data-testid="certificates-search-button"
                             >
                                 {{ translate("general.searchButton") }}
                             </v-btn>
@@ -72,8 +96,8 @@
                     </v-col>
                 </v-row>
 
-                <!-- Data Table Definition-->
-                <v-sheet class="rounded-lg mt-10">
+                <!-- Data Table -->
+                <v-sheet class="rounded-lg mt-10" data-testid="certificates-table-sheet">
                     <v-data-table-server
                         v-model:options="options"
                         @update:options="loadItems"
@@ -86,8 +110,8 @@
                         :items-per-page-options="tableUtils.calcItemsPerPage(totalItems)"
                         :headers="certificatesTableHeaders"
                         style="min-height:35vh"
+                        data-testid="certificates-table"
                     >
-
                         <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort }">
                             <TableHeaders
                                 :columns="columns"
@@ -95,6 +119,7 @@
                                 :get-sort-icon="getSortIcon"
                                 :toggle-sort="toggleSort"
                                 :header-refs-prop="certificateTableHeadersRef"
+                                data-testid="certificates-table-headers"
                             />
                         </template>
 
@@ -104,18 +129,19 @@
                                     selectedCertificate?.alias === item.alias ? 'selected-row' : '',
                                     'row-clickable'
                                 ]"
+                                :data-testid="`certificates-row-${(item.alias || '').toString().toLowerCase().replace(/[^a-z0-9]+/g,'-')}`"
                             >
-                                <!-- Column Definition -->
-                                <td class="text-primary">{{ item.alias }}</td>
-                                <td class="text-primary">{{
-                                        timeUtils.formatIsoToReadableDateTime(item.validityFrom)
-                                    }}
+                                <!-- Columns -->
+                                <td class="text-primary" data-testid="certificates-row-alias">{{ item.alias }}</td>
+                                <td class="text-primary" data-testid="certificates-row-validFrom">
+                                    {{ timeUtils.formatIsoToReadableDateTime(item.validityFrom) }}
                                 </td>
-                                <td class="text-primary">{{
-                                        timeUtils.formatIsoToReadableDateTime(item.validityTo)
-                                    }}
+                                <td class="text-primary" data-testid="certificates-row-validTo">
+                                    {{ timeUtils.formatIsoToReadableDateTime(item.validityTo) }}
                                 </td>
-                                <td class="text-primary">{{ formatCertTypes(item.certType) }}</td>
+                                <td class="text-primary" data-testid="certificates-row-types">
+                                    {{ formatCertTypes(item.certType) }}
+                                </td>
 
                                 <td class="icon-cell">
                                     <div class="d-flex align-center justify-end h-100">
@@ -123,51 +149,50 @@
                                             icon="mdi-delete"
                                             class="action-icon"
                                             @click.stop="openDeleteDialog(item)"
+                                            :data-testid="`certificates-row-${(item.alias || '').toString().toLowerCase().replace(/[^a-z0-9]+/g,'-')}-delete-button`"
                                         />
-
                                     </div>
                                 </td>
                             </tr>
                         </template>
                     </v-data-table-server>
 
-                    <!-- Delete User Account Dialog -->
-                    <v-dialog v-model="deleteDialog" max-width="500">
+                    <!-- Delete Certificate Dialog -->
+                    <v-dialog v-model="deleteDialog" max-width="500" data-testid="certificates-deleteDialog">
                         <v-card>
-                            <v-card-title class="text-h6 font-weight-bold">
-                                {{
-                                    translate("certificates.deleteCertificateContext.title")
-                                }}
+                            <v-card-title class="text-h6 font-weight-bold"
+                                          data-testid="certificates-deleteDialog-title">
+                                {{ translate("certificates.deleteCertificateContext.title") }}
                             </v-card-title>
-                            <v-card-text>
-                                {{
-                                    translate("certificates.deleteCertificateContext.informationPart1")
-                                }}
+                            <v-card-text data-testid="certificates-deleteDialog-text">
+                                {{ translate("certificates.deleteCertificateContext.informationPart1") }}
                                 <strong>{{ certificateToDelete?.alias }} </strong>
-                                {{
-                                    translate("certificates.deleteCertificateContext.informationPart3")
-                                }}
+                                {{ translate("certificates.deleteCertificateContext.informationPart3") }}
                             </v-card-text>
-                            <v-card-actions class="justify-end">
-                                <v-btn text @click="deleteDialog = false">{{
-                                        translate("general.cancelButton")
-                                    }}
+                            <v-card-actions class="justify-end" data-testid="certificates-deleteDialog-actions">
+                                <v-btn text @click="deleteDialog = false"
+                                       data-testid="certificates-deleteDialog-cancel-button">
+                                    {{ translate("general.cancelButton") }}
                                 </v-btn>
-                                <v-btn color="red" text @click="confirmDelete">{{ translate("general.deleteButton") }}
+                                <v-btn color="red" text @click="confirmDelete"
+                                       data-testid="certificates-deleteDialog-confirm-button">
+                                    {{ translate("general.deleteButton") }}
                                 </v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-dialog>
-
                 </v-sheet>
             </v-sheet>
+
             <AddCertificateDialog
                 v-model="uploadDialog"
                 @imported="onCertificateImported"
+                data-testid="certificates-add-dialog"
             />
         </v-col>
     </v-row>
 </template>
+
 
 <script setup lang="ts">
 import {ref, computed, onMounted, onBeforeUnmount} from "vue";

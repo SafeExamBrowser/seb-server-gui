@@ -20,7 +20,7 @@
                     data-testid="assessmentTools-addAssessmentTool-button"
                 >
           <span class="text-primary font-weight-medium mr-2">
-            {{ translate("assessmentToolConnections.assessmentToolsPage.addAssessmentTool") }}
+              {{ translate("assessmentToolConnections.assessmentToolsPage.addAssessmentTool") }}
           </span>
 
                     <div class="add-user-icon d-flex align-center justify-center">
@@ -183,9 +183,9 @@
                         <template v-slot:item="{ item }">
                             <tr
                                 :class="[
-                  selectedAssessmentTool?.id === item.id ? 'selected-row' : '',
-                  'row-clickable'
-                ]"
+                                    selectedAssessmentTool?.id === item.id ? 'selected-row' : '',
+                                    'row-clickable'
+                                    ]"
                                 @click="goToDetails(item)"
                                 :data-testid="`assessmentTools-row-${item.id}`"
                             >
