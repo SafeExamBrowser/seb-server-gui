@@ -118,8 +118,7 @@ import {useI18n} from "vue-i18n";
 import * as quizImportWizardViewService from "@/services/seb-server/component-services/quizImportWizardViewService";
 import {navigateTo} from "@/router/navigation";
 import {useExamStore} from "@/stores/seb-server/examStore";
-import {QUIZ_IMPORT_ROUTE} from "@/utils/constants";
-import MonitoringExamsMain from "@/components/views/seb-server/monitoring/exams/MonitoringExamsMain.vue";
+
 
 //i18n
 const i18n = useI18n();

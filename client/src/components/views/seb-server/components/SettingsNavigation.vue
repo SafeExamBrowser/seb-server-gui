@@ -5,14 +5,14 @@
                 <v-divider class="section-divider" />
 
                 <v-list-item class="px-0 nav-hover">
-                    <router-link class="link-color nav-link" :to="constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE">
+                    <router-link class="link-color nav-link" :to="constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE" data-testid="settingsNavigation-assessmentToolConnections-link">
                         {{ translate("titles.assessmentToolConnections") }}
                     </router-link>
                 </v-list-item>
 
                 <v-divider class="section-divider" />
                 <v-list-item class="px-0 nav-hover">
-                    <router-link class="link-color nav-link" :to="constants.CONNECTION_CONFIGURATIONS_ROUTE">
+                    <router-link class="link-color nav-link" :to="constants.CONNECTION_CONFIGURATIONS_ROUTE" data-testid="settingsNavigation-connectionConfigurations-link">
                         {{ translate("navigation.routeNames.connectionConfiguration") }}
                     </router-link>
                 </v-list-item>
@@ -20,7 +20,7 @@
                 <v-divider class="section-divider" />
 
                 <v-list-item class="px-0 nav-hover">
-                    <router-link class="link-color nav-link" :to="constants.CERTIFICATES_ROUTE">
+                    <router-link class="link-color nav-link" :to="constants.CERTIFICATES_ROUTE" data-testid="settingsNavigation-certificates-link">
                         {{ translate("navigation.routeNames.certificates") }}
                     </router-link>
                 </v-list-item>
@@ -28,7 +28,9 @@
                 <v-divider class="section-divider" />
 
                 <v-list-item class="px-0 nav-hover">
-                    <router-link class="link-color nav-link" :to="constants.USER_ACCOUNTS_ROUTE">{{ translate("navigation.routeNames.userAccounts") }}</router-link>
+                    <router-link class="link-color nav-link" :to="constants.USER_ACCOUNTS_ROUTE"
+                                 data-testid="settingsNavigation-userAccounts-link">
+                        {{ translate("navigation.routeNames.userAccounts") }}</router-link>
                 </v-list-item>
 
                 <v-divider class="section-divider mb-10" />

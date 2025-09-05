@@ -1,36 +1,58 @@
 <template>
-    <div class="text-white text-h5 font-weight-black ml-10 mt-5 ">
+    <div
+        class="text-white text-h5 font-weight-black ml-10 mt-5"
+        data-testid="createUserAccount-page-title"
+    >
         {{ translate("titles.settings") }}
     </div>
-    <v-row class="mt-10 w-98 h-100">
+    <v-row
+        class="mt-10 w-98 h-100"
+        data-testid="createUserAccount-page-container"
+    >
+        <!-- settings navigation -->
+        <SettingsNavigation data-testid="createUserAccount-settingsNavigation-component" />
 
-        <!-- settings navigation-->
-        <SettingsNavigation/>
-
-        <v-col elevation="4" cols="9" class="bg-white rounded-lg">
+        <v-col
+            elevation="4"
+            cols="9"
+            class="bg-white rounded-lg"
+            data-testid="createUserAccount-form-container"
+        >
             <v-row class="d-flex align-center justify-space-between px-6 pt-6">
-                <div class="text-primary text-h5 font-weight-bold">
+                <div
+                    class="text-primary text-h5 font-weight-bold"
+                    data-testid="createUserAccount-form-title"
+                >
                     {{ translate("userAccount.createUserAccountPage.title") }}
                 </div>
             </v-row>
 
+            <v-divider
+                class="custom-divider mx-6 my-4 mt-7"
+                data-testid="createUserAccount-divider-top"
+            />
 
-            <v-divider class="custom-divider mx-6 my-4 mt-7" />
             <v-row class="px-8 mt-2">
-                <div class="text-body-2 text-grey-darken-1">
+                <div
+                    class="text-body-2 text-grey-darken-1"
+                    data-testid="createUserAccount-form-infoText"
+                >
                     {{ translate("userAccount.createUserAccountPage.info.accountCreationInfo") }}
                 </div>
             </v-row>
 
-            <!-- Form-->
+            <!-- Form -->
             <v-sheet class="rounded-lg mt-4">
                 <v-col cols="12" md="12" class="pa-0 mb-4 h-100">
                     <v-card-text>
-                        <v-form ref="formRef" @keyup.enter="submit()">
-
+                        <v-form
+                            ref="formRef"
+                            @keyup.enter="submit()"
+                            data-testid="createUserAccount-form"
+                        >
                             <v-row dense>
                                 <v-col>
-                                    <!-- Institution-->
+                                    <!-- Institution -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-select
                                             required
@@ -43,10 +65,11 @@
                                             item-value="modelId"
                                             :rules="[requiredRule]"
                                             :disabled="institutionSelectDisabled"
+                                            data-testid="createUserAccount-institution-select"
                                         />
                                     </v-col>
 
-                                    <!-- Username-->
+                                    <!-- Username -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
                                             required
@@ -55,10 +78,11 @@
                                             variant="outlined"
                                             v-model="username"
                                             :rules="[requiredRule]"
+                                            data-testid="createUserAccount-username-input"
                                         />
                                     </v-col>
 
-                                    <!-- Name-->
+                                    <!-- Name -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
                                             required
@@ -67,10 +91,11 @@
                                             variant="outlined"
                                             v-model="name"
                                             :rules="[requiredRule]"
+                                            data-testid="createUserAccount-name-input"
                                         />
                                     </v-col>
 
-                                    <!-- Surname-->
+                                    <!-- Surname -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
                                             required
@@ -79,10 +104,11 @@
                                             variant="outlined"
                                             v-model="surname"
                                             :rules="[requiredRule]"
+                                            data-testid="createUserAccount-surname-input"
                                         />
                                     </v-col>
 
-                                    <!-- Email-->
+                                    <!-- Email -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
                                             density="compact"
@@ -91,10 +117,11 @@
                                             v-model="email"
                                             :rules="[emailRule]"
                                             validate-on="blur"
+                                            data-testid="createUserAccount-email-input"
                                         />
                                     </v-col>
 
-                                    <!-- Timezone-->
+                                    <!-- Timezone -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-select
                                             required
@@ -105,10 +132,11 @@
                                             :items="timezoneOptions"
                                             :rules="[requiredRule]"
                                             :return-object="false"
+                                            data-testid="createUserAccount-timezone-select"
                                         />
                                     </v-col>
 
-                                    <!-- Password-->
+                                    <!-- Password -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
                                             required
@@ -119,6 +147,7 @@
                                             v-model="password"
                                             :rules="[requiredRule, passwordRule]"
                                             validate-on="blur"
+                                            data-testid="createUserAccount-password-input"
                                         >
                                             <template v-slot:append-inner>
                                                 <v-btn
@@ -126,12 +155,13 @@
                                                     variant="text"
                                                     :icon="passwordVisible ? 'mdi-eye-off' : 'mdi-eye'"
                                                     @click="passwordVisible = !passwordVisible"
+                                                    data-testid="createUserAccount-password-toggle"
                                                 />
                                             </template>
                                         </v-text-field>
                                     </v-col>
 
-                                    <!-- Confirm Password-->
+                                    <!-- Confirm Password -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
                                             ref="confirmPasswordFieldRef"
@@ -145,6 +175,7 @@
                                             validate-on="blur"
                                             @blur="confirmPasswordTouched = true"
                                             class="mb-2"
+                                            data-testid="createUserAccount-confirmPassword-input"
                                         >
                                             <template v-slot:append-inner>
                                                 <v-btn
@@ -152,27 +183,32 @@
                                                     variant="text"
                                                     :icon="confirmPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
                                                     @click="confirmPasswordVisible = !confirmPasswordVisible"
+                                                    data-testid="createUserAccount-confirmPassword-toggle"
                                                 />
                                             </template>
                                         </v-text-field>
                                     </v-col>
                                 </v-col>
 
-                                <!-- user circle and roles-->
+                                <!-- user circle and roles -->
                                 <v-col>
-                                    <v-col cols="12" class="d-flex justify-center mb-6">
+                                    <v-col
+                                        cols="12"
+                                        class="d-flex justify-center mb-6"
+                                        data-testid="createUserAccount-userCircle"
+                                    >
                                         <div
                                             class="rounded-circle d-flex align-center justify-center"
                                             style="
-                                            background-color: transparent;
-                                            border: 0.5rem solid #215CAF;
-                                            width: 13rem;
-                                            height: 13rem;
-                                            min-width: 13rem;
-                                            font-weight: 600;
-                                            font-size: 4rem;
-                                            color: #215CAF;
-                                            "
+                        background-color: transparent;
+                        border: 0.5rem solid #215CAF;
+                        width: 13rem;
+                        height: 13rem;
+                        min-width: 13rem;
+                        font-weight: 600;
+                        font-size: 4rem;
+                        color: #215CAF;
+                      "
                                         >
                                             {{
                                                 (name?.[0] || '') +
@@ -181,12 +217,18 @@
                                         </div>
                                     </v-col>
 
-                                    <!--  roles-->
+                                    <!-- roles -->
                                     <v-col cols="12" class="ml-16">
-                                        <div class="text-subtitle-1 font-weight-medium mb-2">
+                                        <div
+                                            class="text-subtitle-1 font-weight-medium mb-2"
+                                            data-testid="createUserAccount-roles-label"
+                                        >
                                             {{ translate("userAccount.createUserAccountPage.labels.selectRolesLabel") }}
                                         </div>
-                                        <div class="text-body-2 text-grey-darken-1 mb-5">
+                                        <div
+                                            class="text-body-2 text-grey-darken-1 mb-5"
+                                            data-testid="createUserAccount-roles-info"
+                                        >
                                             {{ translate("userAccount.createUserAccountPage.info.rolesSelectionInfo") }}
                                         </div>
                                         <v-row dense>
@@ -205,10 +247,15 @@
                                                     density="compact"
                                                     hide-details
                                                     class="custom-checkbox"
+                                                    :data-testid="`createUserAccount-role-${role.value}-checkbox`"
                                                 />
                                             </v-col>
                                         </v-row>
-                                        <div v-if="rolesTouched && selectedRoles.length === 0" class="text-error text-caption mt-1">
+                                        <div
+                                            v-if="rolesTouched && selectedRoles.length === 0"
+                                            class="text-error text-caption mt-1"
+                                            data-testid="createUserAccount-roles-error"
+                                        >
                                             {{ rolesRule([]) }}
                                         </div>
                                     </v-col>
@@ -219,15 +266,16 @@
                 </v-col>
             </v-sheet>
 
-            <!-- Buttons-->
+            <!-- Buttons -->
             <v-row class="px-6 pt-0">
                 <v-col cols="12" md="12" class="pa-0 mb-4">
-                    <div class="d-flex justify-end" >
+                    <div class="d-flex justify-end">
                         <v-btn
                             rounded="sm"
                             color="black"
                             variant="outlined"
                             @click="navigateTo(constants.USER_ACCOUNTS_ROUTE)"
+                            data-testid="createUserAccount-cancel-button"
                         >
                             {{ translate("general.cancelButton") }}
                         </v-btn>
@@ -238,6 +286,7 @@
                             variant="flat"
                             class="ml-2"
                             @click="submit()"
+                            data-testid="createUserAccount-save-button"
                         >
                             {{ translate("general.saveButton") }}
                         </v-btn>

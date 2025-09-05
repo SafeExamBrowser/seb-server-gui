@@ -13,5 +13,6 @@
     <UserAccountEditForm
         :userUuid="userId"
         :title="translate('titles.profileSettings')"
+        data-testid="profile-form-parentComponent"
     />
 </template>

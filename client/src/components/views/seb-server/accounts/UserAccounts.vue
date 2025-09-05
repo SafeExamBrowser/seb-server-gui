@@ -1,28 +1,25 @@
 <template>
-    <div class="text-white text-h5 font-weight-black ml-10 mt-5 ">
+    <div class="text-white text-h5 font-weight-black ml-10 mt-5" data-testid="userAccounts-page-title">
         {{ translate("titles.settings") }}
     </div>
-    <v-row class="mt-10 w-98 h-100">
 
-        <!-- settings navigation-->
-        <SettingsNavigation/>
+    <v-row class="mt-10 w-98 h-100" data-testid="userAccounts-page-container">
+        <SettingsNavigation data-testid="userAccounts-settingsNavigation-component" />
 
-        <!-- Main Component -->
-        <v-col elevation="4" cols="9" class="bg-white rounded-lg mb-3">
-
-            <!-- Title and Add User Button -->
-            <v-row class="d-flex align-center justify-space-between px-6 pt-6">
-                <div class="text-primary text-h5 font-weight-bold">
+        <v-col elevation="4" cols="9" class="bg-white rounded-lg mb-3" data-testid="userAccounts-list-container">
+            <v-row class="d-flex align-center justify-space-between px-6 pt-6" data-testid="userAccounts-header-row">
+                <div class="text-primary text-h5 font-weight-bold" data-testid="userAccounts-title-text">
                     {{ translate("navigation.routeNames.userAccounts") }}
                 </div>
 
-                <div class="d-flex align-center cursor-pointer add-user-container"
-                     @click="navigateTo(constants.CREATE_USER_ACCOUNTS_ROUTE)"
+                <div
+                    class="d-flex align-center cursor-pointer add-user-container"
+                    @click="navigateTo(constants.CREATE_USER_ACCOUNTS_ROUTE)"
+                    data-testid="userAccounts-addUser-button"
                 >
-                    <span
-                        class="text-primary font-weight-medium mr-2">{{
-                            translate("userAccount.userAccountPage.addUserContext")
-                        }}</span>
+          <span class="text-primary font-weight-medium mr-2">
+            {{ translate("userAccount.userAccountPage.addUserContext") }}
+          </span>
 
                     <div class="add-user-icon d-flex align-center justify-center">
                         <v-icon size="28">mdi-plus</v-icon>
@@ -30,15 +27,16 @@
                 </div>
             </v-row>
 
-            <v-divider class="custom-divider mx-6 my-4 mt-7"/>
+            <v-divider class="custom-divider mx-6 my-4 mt-7" data-testid="userAccounts-divider-top" />
 
             <!-- Search and filters row -->
-            <v-row class="px-6 pt-4 d-flex flex-wrap align-start">
+            <v-row class="px-6 pt-4 d-flex flex-wrap align-start" data-testid="userAccounts-filters-row">
                 <!-- Search field -->
-                <v-col cols="12" md="5" class="pa-0 mb-4">
-                    <div class="text-caption text-grey-darken-1 mt-1 mb-1">
+                <v-col cols="12" md="5" class="pa-0 mb-4" data-testid="userAccounts-search-section">
+                    <div class="text-caption text-grey-darken-1 mt-1 mb-1" data-testid="userAccounts-search-label">
                         {{ translate("userAccount.userAccountPage.filters.searchTitle") }}
                     </div>
+
                     <v-text-field
                         v-model="userAccountStore.searchField"
                         :placeholder="translate('userAccount.userAccountPage.filters.searchField')"
@@ -49,18 +47,20 @@
                         hide-details
                         @keydown.enter="onSearch"
                         @keydown.esc="onClearSearch"
+                        data-testid="userAccounts-search-input"
                     >
                         <template #append-inner>
-                            <v-icon class="search-icon" @click="onSearch">mdi-magnify</v-icon>
+                            <v-icon class="search-icon" @click="onSearch" data-testid="userAccounts-searchIcon-button">mdi-magnify</v-icon>
                         </template>
                     </v-text-field>
 
-                    <div class="d-flex justify-end w-90 mt-5">
+                    <div class="d-flex justify-end w-90 mt-5" data-testid="userAccounts-search-actions">
                         <v-btn
                             rounded="sm"
                             color="black"
                             variant="outlined"
                             @click="onClearSearch()"
+                            data-testid="userAccounts-cancel-button"
                         >
                             {{ translate("general.cancelButton") }}
                         </v-btn>
@@ -71,17 +71,19 @@
                             variant="flat"
                             class="ml-2"
                             @click="onSearch()"
+                            data-testid="userAccounts-search-button"
                         >
                             {{ translate("general.searchButton") }}
                         </v-btn>
                     </div>
                 </v-col>
+
                 <!-- Status Filters -->
-                <v-col cols="12" md="2" class="pa-0 mb-2 ml-10">
-                    <div class="text-caption text-grey-darken-1 mb-1">
+                <v-col cols="12" md="2" class="pa-0 mb-2 ml-10" data-testid="userAccounts-statusFilter-section">
+                    <div class="text-caption text-grey-darken-1 mb-1" data-testid="userAccounts-statusFilter-label">
                         {{ translate("userAccount.userAccountPage.filters.statusFilter") }}
                     </div>
-                    <div class="d-flex flex-wrap gap-2">
+                    <div class="d-flex flex-wrap gap-2" data-testid="userAccounts-statusFilter-chips">
                         <v-chip
                             v-for="status in statuses"
                             :key="status.value"
@@ -89,20 +91,25 @@
                             class="mr-2 mt-2"
                             :class="['filter-chip', selectedStatus === status.value && 'filter-chip-selected']"
                             @click="selectedStatus = selectedStatus === status.value ? null : status.value"
-                        >{{ status.label }}
+                            :data-testid="`userAccounts-statusFilter-chip-${status.value}`"
+                        >
+                            {{ status.label }}
                         </v-chip>
                     </div>
                 </v-col>
+
+                <!-- Institution Filters -->
                 <v-col
                     v-if="showInstitutionColumn && institutions.length > 0"
                     cols="12"
                     md="4"
                     class="pa-0 mb-2 ml-10"
+                    data-testid="userAccounts-institutionFilter-section"
                 >
-                    <div class="text-caption text-grey-darken-1 mb-1">
+                    <div class="text-caption text-grey-darken-1 mb-1" data-testid="userAccounts-institutionFilter-label">
                         {{ translate("userAccount.userAccountPage.filters.institutionFilter") }}
                     </div>
-                    <div class="d-flex flex-wrap gap-2">
+                    <div class="d-flex flex-wrap gap-2" data-testid="userAccounts-institutionFilter-chips">
                         <v-chip
                             v-for="institution in institutions"
                             :key="institution.modelId"
@@ -110,6 +117,7 @@
                             class="mr-2 mt-2"
                             :class="['filter-chip', selectedInstitutionId === institution.modelId && 'filter-chip-selected']"
                             @click="selectedInstitutionId = selectedInstitutionId === institution.modelId ? null : institution.modelId"
+                            :data-testid="`userAccounts-institutionFilter-chip-${institution.modelId}`"
                         >
                             {{ institution.name }}
                         </v-chip>
@@ -117,26 +125,22 @@
                 </v-col>
             </v-row>
 
-
-
-            <!-- Data Table Definition-->
-            <v-sheet class="rounded-lg mt-10">
+            <!-- Data Table -->
+            <v-sheet class="rounded-lg mt-10" data-testid="userAccounts-table-section">
                 <v-data-table-server
                     v-model:options="options"
                     @update:options="loadItems"
-
                     :hover="true"
                     :loading="isLoading"
                     :no-data-text="translate('general.noData')"
                     :loading-text="translate('general.loading')"
-
                     :items="userAccounts?.content"
                     :items-length="totalItems"
-
                     :items-per-page="5"
                     :items-per-page-options="tableUtils.calcItemsPerPage(totalItems)"
                     :headers="userAccountsTableHeaders"
                     style="min-height:35vh"
+                    data-testid="userAccounts-table"
                 >
                     <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort }">
                         <TableHeaders
@@ -145,26 +149,26 @@
                             :get-sort-icon="getSortIcon"
                             :toggle-sort="toggleSort"
                             :header-refs-prop="userAccountsTableHeadersRef"
+                            data-testid="userAccounts-tableHeaders-component"
                         />
                     </template>
 
                     <template v-slot:item="{ item }">
                         <tr
-                            :class="[selectedUserAccount?.id === item.id ? 'selected-row' : '',
-                                'row-clickable'
-                            ]"
+                            :class="[selectedUserAccount?.id === item.id ? 'selected-row' : '', 'row-clickable']"
                             @click="goToDetails(item)"
+                            :data-testid="`userAccounts-row-${item.uuid}`"
                         >
-                            <!-- Column Definition -->
-                            <td v-if="showInstitutionColumn" class="text-primary">
+                            <td v-if="showInstitutionColumn" class="text-primary" :data-testid="`userAccounts-cell-institution-${item.uuid}`">
                                 {{ getInstitutionName(item.institutionId) || item.institutionId }}
                             </td>
-                            <td class="text-primary">{{ item.surname }}</td>
-                            <td class="text-primary">{{ item.name }}</td>
-                            <td class="text-primary">{{ item.username }}</td>
-                            <td class="text-primary">{{ item.email }}</td>
 
-                            <td>
+                            <td class="text-primary" :data-testid="`userAccounts-cell-surname-${item.uuid}`">{{ item.surname }}</td>
+                            <td class="text-primary" :data-testid="`userAccounts-cell-name-${item.uuid}`">{{ item.name }}</td>
+                            <td class="text-primary" :data-testid="`userAccounts-cell-username-${item.uuid}`">{{ item.username }}</td>
+                            <td class="text-primary" :data-testid="`userAccounts-cell-email-${item.uuid}`">{{ item.email }}</td>
+
+                            <td :data-testid="`userAccounts-cell-status-${item.uuid}`">
                                 <v-tooltip v-if="!hasEditingRights(item.userRoles as UserRoleEnum[])" location="top">
                                     <template #activator="{ props }">
                                         <v-chip
@@ -173,6 +177,7 @@
                                             dark
                                             small
                                             class="text-white font-weight-medium status-chip cursor-default opacity-50"
+                                            :data-testid="`userAccounts-status-chip-${item.uuid}`"
                                         >
                                             {{
                                                 item.active
@@ -191,6 +196,7 @@
                                     small
                                     class="text-white font-weight-medium status-chip cursor-pointer"
                                     @click.stop="openStatusDialog(item)"
+                                    :data-testid="`userAccounts-status-chip-${item.uuid}`"
                                 >
                                     {{
                                         item.active
@@ -199,15 +205,16 @@
                                     }}
                                 </v-chip>
                             </td>
-                            <td class="icon-cell">
+
+                            <td class="icon-cell" :data-testid="`userAccounts-cell-actions-${item.uuid}`">
                                 <div class="d-flex align-center justify-end h-100">
                                     <v-icon
                                         :icon="hasEditingRights(item.userRoles as UserRoleEnum[]) ? 'mdi-pencil' : 'mdi-eye'"
                                         class="action-icon mr-2"
                                         :class="hasEditingRights(item.userRoles as UserRoleEnum[]) ? '' : 'cursor-pointer'"
                                         @click.stop="navigateTo(`${constants.EDIT_USER_ACCOUNT}/${item.uuid}`)"
+                                        :data-testid="`userAccounts-edit-icon-${item.uuid}`"
                                     ></v-icon>
-
 
                                     <v-tooltip
                                         v-if="!hasEditingRights(item.userRoles as UserRoleEnum[])"
@@ -218,6 +225,7 @@
                                                 icon="mdi-delete"
                                                 class="action-icon cursor-default opacity-50"
                                                 v-bind="props"
+                                                :data-testid="`userAccounts-delete-icon-disabled-${item.uuid}`"
                                             />
                                         </template>
                                         <span>{{ translate("userAccount.userAccountPage.info.noPermissionEditUser") }}</span>
@@ -228,69 +236,67 @@
                                         icon="mdi-delete"
                                         class="action-icon"
                                         @click.stop="openDeleteDialog(item)"
+                                        :data-testid="`userAccounts-delete-icon-${item.uuid}`"
                                     />
-
                                 </div>
                             </td>
-
                         </tr>
                     </template>
                 </v-data-table-server>
 
                 <!-- Delete User Account Dialog -->
-                <v-dialog v-model="deleteDialog" max-width="500">
+                <v-dialog v-model="deleteDialog" max-width="500" data-testid="userAccounts-delete-dialog">
                     <v-card>
-                        <v-card-title class="text-h6 font-weight-bold">
+                        <v-card-title class="text-h6 font-weight-bold" data-testid="userAccounts-delete-dialog-title">
                             {{ translate("userAccount.userAccountPage.deleteUserAccountContext.title") }}
                         </v-card-title>
-                        <v-card-text>
+                        <v-card-text data-testid="userAccounts-delete-dialog-text">
                             {{ translate("userAccount.userAccountPage.deleteUserAccountContext.informationPart1") }}
-                            <strong>{{ userToDelete?.name }} {{
-                                    userToDelete?.surname
-                                }}</strong>{{
-                                translate("userAccount.userAccountPage.deleteUserAccountContext.informationPart2")
-                            }}<strong>{{
-                                userToDelete?.username
-                            }}</strong>{{
-                                translate("userAccount.userAccountPage.deleteUserAccountContext.informationPart3")
-                            }}
+                            <strong>{{ userToDelete?.name }} {{ userToDelete?.surname }}</strong>
+                            {{ translate("userAccount.userAccountPage.deleteUserAccountContext.informationPart2") }}
+                            <strong>{{ userToDelete?.username }}</strong>
+                            {{ translate("userAccount.userAccountPage.deleteUserAccountContext.informationPart3") }}
                         </v-card-text>
-                        <v-card-actions class="justify-end">
-                            <v-btn text @click="deleteDialog = false">{{ translate("general.cancelButton") }}</v-btn>
-                            <v-btn color="red" text @click="confirmDelete">{{ translate("general.deleteButton") }}
+                        <v-card-actions class="justify-end" data-testid="userAccounts-delete-dialog-actions">
+                            <v-btn text @click="deleteDialog = false" data-testid="userAccounts-delete-cancel-button">
+                                {{ translate("general.cancelButton") }}
+                            </v-btn>
+                            <v-btn color="red" text @click="confirmDelete" data-testid="userAccounts-delete-confirm-button">
+                                {{ translate("general.deleteButton") }}
                             </v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
 
                 <!-- Change Status Dialog -->
-                <v-dialog v-model="statusDialog" max-width="500">
+                <v-dialog v-model="statusDialog" max-width="500" data-testid="userAccounts-status-dialog">
                     <v-card>
-                        <v-card-title class="text-h6 font-weight-bold">
+                        <v-card-title class="text-h6 font-weight-bold" data-testid="userAccounts-status-dialog-title">
                             {{ statusDialogTitle }}
                         </v-card-title>
-                        <v-card-text>
+                        <v-card-text data-testid="userAccounts-status-dialog-text">
                             {{ statusDialogMessage }}
                         </v-card-text>
-                        <v-card-actions class="justify-end">
-                            <v-btn text @click="statusDialog = false">
+                        <v-card-actions class="justify-end" data-testid="userAccounts-status-dialog-actions">
+                            <v-btn text @click="statusDialog = false" data-testid="userAccounts-status-cancel-button">
                                 {{ translate("general.cancelButton") }}
                             </v-btn>
                             <v-btn
                                 :color="statusDialogUser?.active ? 'red' : 'green'"
                                 text
                                 @click="confirmStatusChange"
+                                data-testid="userAccounts-status-confirm-button"
                             >
                                 {{ statusDialogButtonLabel }}
                             </v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
-
             </v-sheet>
         </v-col>
     </v-row>
 </template>
+
 
 <script setup lang="ts">
     import {ref, computed, onMounted, onBeforeUnmount} from "vue";
