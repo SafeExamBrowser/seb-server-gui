@@ -1,3 +1,4 @@
+```vue
 <template>
     <div class="text-white text-h5 font-weight-black ml-10 mt-5 ">
         {{ translate("titles.settings") }}
@@ -9,17 +10,21 @@
         <v-col elevation="4" cols="9" class="bg-white rounded-lg mb-3">
             <!-- Title and Add User Button -->
             <v-row class="d-flex align-center justify-space-between px-6 pt-6">
-                <div class="text-primary text-h5 font-weight-bold">
+                <div
+                    class="text-primary text-h5 font-weight-bold"
+                    data-testid="connectionConfigurations-title-text"
+                >
                     {{ translate("titles.connectionConfigurations") }}
                 </div>
 
-                <div class="d-flex align-center cursor-pointer add-user-container"
-                     @click="navigateTo(constants.CREATE_CONNECTION_CONFIGURATION_ROUTE)"
+                <div
+                    class="d-flex align-center cursor-pointer add-user-container"
+                    @click="navigateTo(constants.CREATE_CONNECTION_CONFIGURATION_ROUTE)"
+                    data-testid="connectionConfigurations-addConnectionConfiguration-button"
                 >
-                    <span
-                        class="text-primary font-weight-medium mr-2">{{
-                            translate("connectionConfigurations.connectionConfigurationsPage.addConnectionConfiguration")
-                        }}</span>
+                    <span class="text-primary font-weight-medium mr-2">
+                        {{ translate("connectionConfigurations.connectionConfigurationsPage.addConnectionConfiguration") }}
+                    </span>
 
                     <div class="add-user-icon d-flex align-center justify-center">
                         <v-icon size="28">mdi-plus</v-icon>
@@ -30,7 +35,7 @@
             <v-sheet>
 
                 <!-- Search and filters row -->
-                <v-row class="px-6 pt-4 d-flex flex-wrap align-start">
+                <v-row class="px-6 pt-4 d-flex flex-wrap align-start" data-testid="connectionConfigurations-filters-container">
                     <!-- Search field -->
                     <v-col cols="5" md="5" class="pa-0 mb-4 ">
                         <div class="text-caption text-grey-darken-1 mt-1 mb-1">
@@ -46,9 +51,16 @@
                             hide-details
                             @keydown.enter="onSearch"
                             @keydown.esc="onClearSearch"
+                            data-testid="connectionConfigurations-search-input"
                         >
                             <template #append-inner>
-                                <v-icon class="search-icon" @click="onSearch">mdi-magnify</v-icon>
+                                <v-icon
+                                    class="search-icon"
+                                    @click="onSearch"
+                                    data-testid="connectionConfigurations-search-submit-icon"
+                                >
+                                    mdi-magnify
+                                </v-icon>
                             </template>
                         </v-text-field>
 
@@ -58,6 +70,7 @@
                                 color="black"
                                 variant="outlined"
                                 @click="onClearSearch()"
+                                data-testid="connectionConfigurations-search-cancel-button"
                             >
                                 {{ translate("general.cancelButton") }}
                             </v-btn>
@@ -68,6 +81,7 @@
                                 variant="flat"
                                 class="ml-2"
                                 @click="onSearch()"
+                                data-testid="connectionConfigurations-search-button"
                             >
                                 {{ translate("general.searchButton") }}
                             </v-btn>
@@ -78,11 +92,9 @@
                         <v-row dense>
                             <v-col cols="3" class="pa-0 mb-2">
                                 <div class="text-caption text-grey-darken-1 mb-1">
-                                    {{
-                                        translate("connectionConfigurations.connectionConfigurationsPage.filters.statusFilter")
-                                    }}
+                                    {{ translate("connectionConfigurations.connectionConfigurationsPage.filters.statusFilter") }}
                                 </div>
-                                <div class="d-flex flex-wrap gap-2">
+                                <div class="d-flex flex-wrap gap-2" data-testid="connectionConfigurations-statusFilter-container">
                                     <v-chip
                                         v-for="status in statuses"
                                         :key="status.value"
@@ -90,7 +102,9 @@
                                         class="mr-2 mt-2"
                                         :class="['filter-chip', selectedStatus === status.value && 'filter-chip-selected']"
                                         @click="selectedStatus = selectedStatus === status.value ? null : status.value"
-                                    >{{ status.label }}
+                                        :data-testid="`connectionConfigurations-statusFilter-chip-${status.value}`"
+                                    >
+                                        {{ status.label }}
                                     </v-chip>
                                 </div>
                             </v-col>
@@ -100,11 +114,9 @@
                                 class="pa-0 mb-2"
                             >
                                 <div class="text-caption text-grey-darken-1 mb-1">
-                                    {{
-                                        translate("connectionConfigurations.connectionConfigurationsPage.filters.institutionFilter")
-                                    }}
+                                    {{ translate("connectionConfigurations.connectionConfigurationsPage.filters.institutionFilter") }}
                                 </div>
-                                <div class="d-flex flex-wrap gap-2">
+                                <div class="d-flex flex-wrap gap-2" data-testid="connectionConfigurations-institutionFilter-container">
                                     <v-chip
                                         v-for="institution in institutions"
                                         :key="institution.modelId"
@@ -112,15 +124,14 @@
                                         class="mr-2 mt-2"
                                         :class="['filter-chip', selectedInstitutionId === institution.modelId && 'filter-chip-selected']"
                                         @click="selectedInstitutionId = selectedInstitutionId === institution.modelId ? null : institution.modelId"
+                                        :data-testid="`connectionConfigurations-institutionFilter-chip-${institution.modelId}`"
                                     >
                                         {{ institution.name }}
                                     </v-chip>
                                 </div>
                             </v-col>
 
-                            <v-spacer>
-                            </v-spacer>
-
+                            <v-spacer/>
                         </v-row>
                     </v-col>
                 </v-row>
@@ -139,15 +150,17 @@
                         :items-per-page-options="tableUtils.calcItemsPerPage(totalItems)"
                         :headers="connectionConfigurationTableHeaders"
                         style="min-height:35vh"
+                        data-testid="connectionConfigurations-table"
                     >
 
-                    <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort }">
+                        <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort }">
                             <TableHeaders
                                 :columns="columns"
                                 :is-sorted="isSorted"
                                 :get-sort-icon="getSortIcon"
                                 :toggle-sort="toggleSort"
                                 :header-refs-prop="connectionConfigurationTableHeadersRef"
+                                data-testid="connectionConfigurations-tableHeaders-component"
                             />
                         </template>
 
@@ -158,8 +171,8 @@
                                     'row-clickable'
                                 ]"
                                 @click="goToDetails(item)"
+                                :data-testid="`connectionConfigurations-row-${item.id}`"
                             >
-
                                 <!-- Column Definition -->
                                 <td class="text-primary">
                                     {{ getInstitutionName(item.institutionId) || item.institutionId }}
@@ -168,13 +181,13 @@
                                 <td class="text-primary">{{ timeUtils.formatIsoToReadableDateTime(item.date) }}</td>
 
                                 <td>
-
                                     <v-chip
                                         :color="item.active ? 'green' : 'red'"
                                         dark
                                         small
                                         class="text-white font-weight-medium status-chip cursor-pointer"
                                         @click.stop="openStatusDialog(item)"
+                                        :data-testid="`connectionConfigurations-status-chip-${item.id}`"
                                     >
                                         {{
                                             item.active
@@ -189,15 +202,15 @@
                                             :icon="'mdi-pencil'"
                                             class="action-icon mr-2 cursor-pointer"
                                             @click.stop="goToDetails(item)"
+                                            :data-testid="`connectionConfigurations-edit-button-${item.id}`"
                                         ></v-icon>
-
 
                                         <v-icon
                                             icon="mdi-delete"
                                             class="action-icon"
                                             @click.stop="openDeleteDialog(item)"
+                                            :data-testid="`connectionConfigurations-delete-button-${item.id}`"
                                         />
-
                                     </div>
                                 </td>
 
@@ -205,55 +218,71 @@
                         </template>
                     </v-data-table-server>
 
-                    <!-- Delete User Account Dialog -->
-                    <v-dialog v-model="deleteDialog" max-width="500">
+                    <!-- Delete Dialog -->
+                    <v-dialog
+                        v-model="deleteDialog"
+                        max-width="500"
+                        data-testid="connectionConfigurations-deleteDialog-dialog"
+                    >
                         <v-card>
                             <v-card-title class="text-h6 font-weight-bold">
-                                {{
-                                    translate("connectionConfigurations.connectionConfigurationsPage.deleteConnectionConfigurationContext.title")
-                                }}
+                                {{ translate("connectionConfigurations.connectionConfigurationsPage.deleteConnectionConfigurationContext.title") }}
                             </v-card-title>
                             <v-card-text>
                                 {{
                                     translate("connectionConfigurations.connectionConfigurationsPage.deleteConnectionConfigurationContext.informationPart1")
                                 }}
-                                <strong>{{ connectionConfigurationToDelete?.name }} {{
-                                        connectionConfigurationToDelete?.name
-                                    }}</strong>
-                                <strong>{{
-                                        connectionConfigurationToDelete?.name
-                                    }}</strong>{{
+                                <strong>{{ connectionConfigurationToDelete?.name }}</strong>
+                                {{
                                     translate("connectionConfigurations.connectionConfigurationsPage.deleteConnectionConfigurationContext.informationPart3")
                                 }}
                             </v-card-text>
                             <v-card-actions class="justify-end">
-                                <v-btn text @click="deleteDialog = false">{{
-                                        translate("general.cancelButton")
-                                    }}
+                                <v-btn
+                                    text
+                                    @click="deleteDialog = false"
+                                    data-testid="connectionConfigurations-deleteDialog-cancel-button"
+                                >
+                                    {{ translate("general.cancelButton") }}
                                 </v-btn>
-                                <v-btn color="red" text @click="confirmDelete">{{ translate("general.deleteButton") }}
+                                <v-btn
+                                    color="red"
+                                    text
+                                    @click="confirmDelete"
+                                    data-testid="connectionConfigurations-deleteDialog-confirm-button"
+                                >
+                                    {{ translate("general.deleteButton") }}
                                 </v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-dialog>
 
                     <!-- Change Status Dialog -->
-                    <v-dialog v-model="statusDialog" max-width="500">
+                    <v-dialog
+                        v-model="statusDialog"
+                        max-width="500"
+                        data-testid="connectionConfigurations-statusDialog-dialog"
+                    >
                         <v-card>
-                            <v-card-title class="text-h6 font-weight-bold">
+                            <v-card-title class="text-h6 font-weight-bold" data-testid="connectionConfigurations-statusDialog-title">
                                 {{ statusDialogTitle }}
                             </v-card-title>
-                            <v-card-text>
+                            <v-card-text data-testid="connectionConfigurations-statusDialog-message">
                                 {{ statusDialogMessage }}
                             </v-card-text>
                             <v-card-actions class="justify-end">
-                                <v-btn text @click="statusDialog = false">
+                                <v-btn
+                                    text
+                                    @click="statusDialog = false"
+                                    data-testid="connectionConfigurations-statusDialog-cancel-button"
+                                >
                                     {{ translate("general.cancelButton") }}
                                 </v-btn>
                                 <v-btn
                                     :color="statusDialogConnectionConfiguration?.active ? 'red' : 'green'"
                                     text
                                     @click="confirmStatusChange"
+                                    data-testid="connectionConfigurations-statusDialog-confirm-button"
                                 >
                                     {{ statusDialogButtonLabel }}
                                 </v-btn>

@@ -14,7 +14,6 @@
             elevation="4"
             cols="9"
             class="bg-white rounded-lg mb-3"
-            data-testid="certificates-content-container"
         >
             <!-- Title and Add Button -->
             <v-row

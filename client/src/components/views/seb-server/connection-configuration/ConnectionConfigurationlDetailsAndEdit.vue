@@ -1,3 +1,4 @@
+```vue
 <template>
     <div class="text-white text-h5 font-weight-black ml-10 mt-5 ">
         {{ translate("titles.settings") }}
@@ -9,7 +10,10 @@
 
         <v-col elevation="4" cols="9" class="bg-white rounded-lg">
             <v-row class="d-flex align-center justify-space-between px-6 pt-6">
-                <div class="text-primary text-h5 font-weight-bold">
+                <div
+                    class="text-primary text-h5 font-weight-bold"
+                    data-testid="connectionConfigurationEdit-title-text"
+                >
                     {{ translate("titles.connectionConfigurationViewAndEdit") }}
                 </div>
                 <v-chip
@@ -21,6 +25,7 @@
                     :disabled="isSaving"
                     @click="!isSaving && toggleStatusLocally()"
                     style="cursor:pointer;"
+                    data-testid="connectionConfigurationEdit-status-chip"
                 >
                     {{
                         active
@@ -32,10 +37,16 @@
 
             <v-divider class="custom-divider mx-6 my-4 mt-7"/>
             <v-row class="px-8 mt-2 d-flex justify-space-between">
-                <div class="text-body-2 text-grey-darken-1">
+                <div
+                    class="text-body-2 text-grey-darken-1"
+                    data-testid="connectionConfigurationEdit-lastUpdated-text"
+                >
                     {{ translate("connectionConfigurations.connectionConfigurationViewAndEditPage.info.lastUpdatedAt") + formatDisplayDate(updateDate) + translate("connectionConfigurations.connectionConfigurationViewAndEditPage.info.by") +  userNamesOfLastUserToUpdate}}
                 </div>
-                <div class="text-body-2 text-grey-darken-1">
+                <div
+                    class="text-body-2 text-grey-darken-1"
+                    data-testid="connectionConfigurationEdit-createdAt-text"
+                >
                     {{
                         translate("connectionConfigurations.connectionConfigurationViewAndEditPage.info.createdAt") + formatDisplayDate(creationDate)
                     }}
@@ -43,8 +54,16 @@
             </v-row>
 
             <!-- Form -->
-            <v-sheet class="rounded-lg mt-4" style="min-height: 46.9vh">
-                <v-form ref="formRef" @keyup.enter="onSave()">
+            <v-sheet
+                class="rounded-lg mt-4"
+                style="min-height: 46.9vh"
+                data-testid="connectionConfigurationEdit-form-sheet"
+            >
+                <v-form
+                    ref="formRef"
+                    @keyup.enter="onSave()"
+                    data-testid="connectionConfigurationEdit-form-root"
+                >
                     <v-col cols="12" md="12" class="pa-0 mb-4 h-100">
                         <v-card-text>
 
@@ -60,6 +79,7 @@
                                             variant="outlined"
                                             v-model="name"
                                             :rules="[requiredRule]"
+                                            data-testid="connectionConfigurationEdit-name-input"
                                         />
                                     </v-col>
 
@@ -75,6 +95,7 @@
                                             item-value="value"
                                             :rules="[requiredRule]"
                                             validate-on="input"
+                                            data-testid="connectionConfigurationEdit-configurationPurpose-select"
                                         />
                                     </v-col>
 
@@ -88,6 +109,7 @@
                                             variant="outlined"
                                             v-model="configurationPassword"
                                             validate-on="input"
+                                            data-testid="connectionConfigurationEdit-configurationPassword-input"
                                         >
                                             <template #append-inner>
                                                 <v-btn
@@ -95,6 +117,7 @@
                                                     variant="text"
                                                     :icon="configurationPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
                                                     @click="configurationPasswordVisible = !configurationPasswordVisible"
+                                                    data-testid="connectionConfigurationEdit-configurationPassword-toggle"
                                                 />
                                             </template>
                                         </v-text-field>
@@ -111,6 +134,7 @@
                                             v-model="confirmConfigurationPassword"
                                             validate-on="input"
                                             :rules="[configPwdMustMatchRule]"
+                                            data-testid="connectionConfigurationEdit-confirmConfigurationPassword-input"
                                         >
                                             <template #append-inner>
                                                 <v-btn
@@ -118,6 +142,7 @@
                                                     variant="text"
                                                     :icon="confirmConfigurationPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
                                                     @click="confirmConfigurationPasswordVisible = !confirmConfigurationPasswordVisible"
+                                                    data-testid="connectionConfigurationEdit-confirmConfigurationPassword-toggle"
                                                 />
                                             </template>
                                         </v-text-field>
@@ -126,7 +151,6 @@
 
                                 <!-- Second Column first section -->
                                 <v-col cols-="4">
-
                                 </v-col>
                             </v-row>
 
@@ -148,6 +172,7 @@
                                             :disabled="certificatesLoading"
                                             :menu-props="{ maxHeight: 240 }"
                                             @update:modelValue="handleCertChange"
+                                            data-testid="connectionConfigurationEdit-encryptWithCertificate-select"
                                         >
                                             <template #item="{ props, item }">
                                                 <v-list-item v-bind="props">
@@ -178,11 +203,11 @@
                                             inputmode="numeric"
                                             :rules="[requiredNumberRule]"
                                             validate-on="blur"
+                                            data-testid="connectionConfigurationEdit-pingInterval-input"
                                         />
                                     </v-col>
 
                                 </v-col>
-
 
                                 <v-col cols="4">
                                     <!-- Use asymmetric-only encryption (toggle preserved for layout, not sent) -->
@@ -202,6 +227,7 @@
                                                 color="primary"
                                                 class="ml-4"
                                                 :aria-label="translate('connectionConfigurations.connectionConfigurationViewAndEditPage.labels.withFallbackArea')"
+                                                data-testid="connectionConfigurationEdit-asymmetricOnlyEncryption-toggle"
                                             />
                                         </div>
                                     </v-col>
@@ -230,18 +256,21 @@
                                                 color="primary"
                                                 class="ml-4"
                                                 :aria-label="translate('connectionConfigurations.connectionConfigurationViewAndEditPage.labels.withFallbackArea')"
+                                                data-testid="connectionConfigurationEdit-withFallback-toggle"
                                             />
                                         </div>
                                     </v-col>
                                 </v-col>
                             </v-row>
 
-
                             <v-row dense>
                                 <v-col>
                                     <!-- Animated expansion -->
                                     <v-expand-transition>
-                                        <div v-show="withFallback">
+                                        <div
+                                            v-show="withFallback"
+                                            data-testid="connectionConfigurationEdit-fallback-section"
+                                        >
                                             <v-row>
                                                 <v-col cols="8">
                                                     <!-- Fallback Start URL* -->
@@ -253,6 +282,7 @@
                                                             v-model="fallbackStartUrl"
                                                             :rules="[requiredIfFallbackRule, urlIfFallbackRule]"
                                                             validate-on="blur"
+                                                            data-testid="connectionConfigurationEdit-fallbackStartUrl-input"
                                                         />
                                                     </v-col>
 
@@ -267,6 +297,7 @@
                                                             inputmode="numeric"
                                                             :rules="[requiredNumberIfFallbackRule]"
                                                             validate-on="blur"
+                                                            data-testid="connectionConfigurationEdit-connectionAttempts-input"
                                                         />
                                                     </v-col>
 
@@ -281,6 +312,7 @@
                                                             inputmode="numeric"
                                                             :rules="[requiredNumberIfFallbackRule]"
                                                             validate-on="blur"
+                                                            data-testid="connectionConfigurationEdit-fallbackInterval-input"
                                                         />
                                                     </v-col>
 
@@ -295,6 +327,7 @@
                                                             inputmode="numeric"
                                                             :rules="[requiredNumberIfFallbackRule]"
                                                             validate-on="blur"
+                                                            data-testid="connectionConfigurationEdit-connectionTimeout-input"
                                                         />
                                                     </v-col>
 
@@ -308,6 +341,7 @@
                                                             variant="outlined"
                                                             v-model="fallbackPassword"
                                                             validate-on="input"
+                                                            data-testid="connectionConfigurationEdit-fallbackPassword-input"
                                                         >
                                                             <template #append-inner>
                                                                 <v-btn
@@ -315,6 +349,7 @@
                                                                     variant="text"
                                                                     :icon="fallbackPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
                                                                     @click="fallbackPasswordVisible = !fallbackPasswordVisible"
+                                                                    data-testid="connectionConfigurationEdit-fallbackPassword-toggle"
                                                                 />
                                                             </template>
                                                         </v-text-field>
@@ -331,6 +366,7 @@
                                                             v-model="confirmFallbackPassword"
                                                             validate-on="input"
                                                             :rules="[fallbackPwdMustMatchRule]"
+                                                            data-testid="connectionConfigurationEdit-confirmFallbackPassword-input"
                                                         >
                                                             <template #append-inner>
                                                                 <v-btn
@@ -338,6 +374,7 @@
                                                                     variant="text"
                                                                     :icon="confirmFallbackPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
                                                                     @click="confirmFallbackPasswordVisible = !confirmFallbackPasswordVisible"
+                                                                    data-testid="connectionConfigurationEdit-confirmFallbackPassword-toggle"
                                                                 />
                                                             </template>
                                                         </v-text-field>
@@ -353,6 +390,7 @@
                                                             variant="outlined"
                                                             v-model="quitPassword"
                                                             validate-on="input"
+                                                            data-testid="connectionConfigurationEdit-quitPassword-input"
                                                         >
                                                             <template #append-inner>
                                                                 <v-btn
@@ -360,6 +398,7 @@
                                                                     variant="text"
                                                                     :icon="quitPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
                                                                     @click="quitPasswordVisible = !quitPasswordVisible"
+                                                                    data-testid="connectionConfigurationEdit-quitPassword-toggle"
                                                                 />
                                                             </template>
                                                         </v-text-field>
@@ -376,6 +415,7 @@
                                                             v-model="confirmQuitPassword"
                                                             validate-on="input"
                                                             :rules="[quitPwdMustMatchRule]"
+                                                            data-testid="connectionConfigurationEdit-confirmQuitPassword-input"
                                                         >
                                                             <template #append-inner>
                                                                 <v-btn
@@ -383,6 +423,7 @@
                                                                     variant="text"
                                                                     :icon="confirmQuitPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
                                                                     @click="confirmQuitPasswordVisible = !confirmQuitPasswordVisible"
+                                                                    data-testid="connectionConfigurationEdit-confirmQuitPassword-toggle"
                                                                 />
                                                             </template>
                                                         </v-text-field>
@@ -415,6 +456,7 @@
                                     color="black"
                                     variant="outlined"
                                     @click="onBack()"
+                                    data-testid="connectionConfigurationEdit-back-button"
                                 >
                                     {{ translate("general.backButton") }}
                                 </v-btn>
@@ -427,6 +469,7 @@
                                     :loading="isSaving"
                                     :disabled="!canSave"
                                     @click="onSave()"
+                                    data-testid="connectionConfigurationEdit-save-button"
                                 >
                                     {{ translate('connectionConfigurations.connectionConfigurationViewAndEditPage.buttons.saveChanges') }}
                                 </v-btn>

@@ -4,7 +4,7 @@
             <!-- Infos -->
             <v-row>
                 <v-col cols="12">
-                    <HonePageInfo></HonePageInfo>
+                    <HomePageInfo></HomePageInfo>
                 </v-col>
             </v-row>
 
@@ -28,7 +28,7 @@ import * as generalUtils from "@/utils/generalUtils";
 import {useAuthStore, useUserAccountStore} from '@/stores/authentication/authenticationStore';
 import {StorageItemEnum} from "@/models/StorageItemEnum";
 import {navigateTo} from "@/router/navigation";
-import HonePageInfo from "@/components/views/seb-server/home/HonePageInfo.vue";
+import HomePageInfo from "@/components/views/seb-server/home/HomePageInfo.vue";
 import HomePageMain from "@/components/views/seb-server/home/HomePageMain.vue";
 
 //stores

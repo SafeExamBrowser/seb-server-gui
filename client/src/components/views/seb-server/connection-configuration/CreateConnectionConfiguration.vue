@@ -1,3 +1,4 @@
+```vue
 <template>
     <div class="text-white text-h5 font-weight-black ml-10 mt-5 ">
         {{ translate("titles.settings") }}
@@ -9,14 +10,20 @@
 
         <v-col elevation="4" cols="9" class="bg-white rounded-lg">
             <v-row class="d-flex align-center justify-space-between px-6 pt-6">
-                <div class="text-primary text-h5 font-weight-bold">
+                <div
+                    class="text-primary text-h5 font-weight-bold"
+                    data-testid="connectionConfigurationCreation-title-text"
+                >
                     {{ translate("titles.createConnectionConfiguration") }}
                 </div>
             </v-row>
 
             <v-divider class="custom-divider mx-6 my-4 mt-7"/>
             <v-row class="px-8 mt-2">
-                <div class="text-body-2 text-grey-darken-1">
+                <div
+                    class="text-body-2 text-grey-darken-1"
+                    data-testid="connectionConfigurationCreation-info-text"
+                >
                     {{
                         translate("connectionConfigurations.createConnectionConfigurationPage.info.createConnectionConfigurationInfo")
                     }}
@@ -25,7 +32,11 @@
 
             <!-- Form-->
             <v-sheet class="rounded-lg mt-4" style="min-height: 46.9vh">
-                <v-form ref="formRef" @keyup.enter="submit()">
+                <v-form
+                    ref="formRef"
+                    @keyup.enter="submit()"
+                    data-testid="connectionConfigurationCreation-form"
+                >
                     <v-col cols="12" md="12" class="pa-0 mb-4 h-100">
                         <v-card-text>
 
@@ -41,6 +52,7 @@
                                             variant="outlined"
                                             v-model="name"
                                             :rules="[requiredRule]"
+                                            data-testid="connectionConfigurationCreation-name-input"
                                         />
                                     </v-col>
 
@@ -56,6 +68,7 @@
                                             item-value="value"
                                             :rules="[requiredRule]"
                                             validate-on="input"
+                                            data-testid="connectionConfigurationCreation-configurationPurpose-select"
                                         />
                                     </v-col>
 
@@ -69,6 +82,7 @@
                                             variant="outlined"
                                             v-model="configurationPassword"
                                             validate-on="input"
+                                            data-testid="connectionConfigurationCreation-configurationPassword-input"
                                         >
                                             <template v-slot:append-inner>
                                                 <v-btn
@@ -76,13 +90,13 @@
                                                     variant="text"
                                                     :icon="configurationPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
                                                     @click="configurationPasswordVisible = !configurationPasswordVisible"
+                                                    data-testid="connectionConfigurationCreation-configurationPassword-toggle"
                                                 />
                                             </template>
                                         </v-text-field>
                                     </v-col>
 
-
-                                    <!-- Confirm Configuration Password (required if configurationPassword set) -->
+                                    <!-- Confirm Configuration Password -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
                                             ref="confirmConfigPwdRef"
@@ -93,6 +107,7 @@
                                             v-model="confirmConfigurationPassword"
                                             validate-on="input"
                                             :rules="[configPwdMustMatchRule]"
+                                            data-testid="connectionConfigurationCreation-confirmConfigurationPassword-input"
                                         >
                                             <template v-slot:append-inner>
                                                 <v-btn
@@ -100,13 +115,13 @@
                                                     variant="text"
                                                     :icon="confirmConfigurationPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
                                                     @click="confirmConfigurationPasswordVisible = !confirmConfigurationPasswordVisible"
+                                                    data-testid="connectionConfigurationCreation-confirmConfigurationPassword-toggle"
                                                 />
                                             </template>
                                         </v-text-field>
                                     </v-col>
                                 </v-col>
-                                <v-col cols="4">
-                                </v-col>
+                                <v-col cols="4"></v-col>
                             </v-row>
 
                             <!-- Second Section-->
@@ -126,6 +141,7 @@
                                             :disabled="certificatesLoading"
                                             :menu-props="{ maxHeight: 240 }"
                                             @update:modelValue="handleCertChange"
+                                            data-testid="connectionConfigurationCreation-encryptWithCertificate-select"
                                         >
                                             <template #item="{ props, item }">
                                                 <v-list-item v-bind="props">
@@ -133,19 +149,21 @@
                                                         <v-icon v-if="item.raw.value === '__UPLOAD__'">mdi-upload</v-icon>
                                                     </template>
                                                 </v-list-item>
-
                                                 <v-divider v-if="item.raw.value === '__UPLOAD__'" class="my-1" />
                                             </template>
 
                                             <template v-if="!hasRealCerts" #append-item>
-                                                <div class="text-caption text-grey-darken-1 px-4 py-2">
+                                                <div
+                                                    class="text-caption text-grey-darken-1 px-4 py-2"
+                                                    data-testid="connectionConfigurationCreation-noCertificates-label"
+                                                >
                                                     {{ translate('connectionConfigurations.createConnectionConfigurationPage.labels.noCertificatesUploadedYet') }}
                                                 </div>
                                             </template>
                                         </v-select>
                                     </v-col>
 
-                                    <!-- Ping Interval* (number) -->
+                                    <!-- Ping Interval* -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <v-text-field
                                             density="compact"
@@ -156,13 +174,13 @@
                                             inputmode="numeric"
                                             :rules="[requiredNumberRule]"
                                             validate-on="blur"
+                                            data-testid="connectionConfigurationCreation-pingInterval-input"
                                         />
                                     </v-col>
                                 </v-col>
 
                                 <v-col cols="4">
-
-                                    <!-- Use asymmetric-only encryption (toggle preserved for layout, not sent) -->
+                                    <!-- Use asymmetric-only encryption (toggle preserved for layout) -->
                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                         <div class="d-flex align-center justify-space-between w-100">
                                             <label class="text-grey-darken-1 text-body-1 ml-11">
@@ -179,10 +197,10 @@
                                                 color="primary"
                                                 class="ml-4"
                                                 :aria-label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.withFallbackArea')"
+                                                data-testid="connectionConfigurationCreation-asymmetricOnlyEncryption-toggle"
                                             />
                                         </div>
                                     </v-col>
-
                                 </v-col>
                             </v-row>
 
@@ -208,6 +226,7 @@
                                                 color="primary"
                                                 class="ml-4"
                                                 :aria-label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.withFallbackArea')"
+                                                data-testid="connectionConfigurationCreation-withFallback-toggle"
                                             />
                                         </div>
                                     </v-col>
@@ -218,7 +237,7 @@
                                 <v-col>
                                     <!-- Animated expansion -->
                                     <v-expand-transition>
-                                        <div v-show="withFallback">
+                                        <div v-show="withFallback" data-testid="connectionConfigurationCreation-fallbackSection-container">
                                             <v-row>
                                                 <v-col cols="8">
                                                     <!-- Fallback Start URL* -->
@@ -230,10 +249,11 @@
                                                             v-model="fallbackStartUrl"
                                                             :rules="[requiredIfFallbackRule, urlIfFallbackRule]"
                                                             validate-on="blur"
+                                                            data-testid="connectionConfigurationCreation-fallbackStartUrl-input"
                                                         />
                                                     </v-col>
 
-                                                    <!-- Connection Attempts* (number) -->
+                                                    <!-- Connection Attempts* -->
                                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                                         <v-text-field
                                                             density="compact"
@@ -244,10 +264,11 @@
                                                             inputmode="numeric"
                                                             :rules="[requiredNumberIfFallbackRule]"
                                                             validate-on="blur"
+                                                            data-testid="connectionConfigurationCreation-connectionAttempts-input"
                                                         />
                                                     </v-col>
 
-                                                    <!-- Interval* (number) -->
+                                                    <!-- Interval* -->
                                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                                         <v-text-field
                                                             density="compact"
@@ -258,10 +279,11 @@
                                                             inputmode="numeric"
                                                             :rules="[requiredNumberIfFallbackRule]"
                                                             validate-on="blur"
+                                                            data-testid="connectionConfigurationCreation-interval-input"
                                                         />
                                                     </v-col>
 
-                                                    <!-- Connection Timeout* (number) -->
+                                                    <!-- Connection Timeout* -->
                                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                                         <v-text-field
                                                             density="compact"
@@ -272,6 +294,7 @@
                                                             inputmode="numeric"
                                                             :rules="[requiredNumberIfFallbackRule]"
                                                             validate-on="blur"
+                                                            data-testid="connectionConfigurationCreation-connectionTimeout-input"
                                                         />
                                                     </v-col>
 
@@ -285,6 +308,7 @@
                                                             variant="outlined"
                                                             v-model="fallbackPassword"
                                                             validate-on="input"
+                                                            data-testid="connectionConfigurationCreation-fallbackPassword-input"
                                                         >
                                                             <template v-slot:append-inner>
                                                                 <v-btn
@@ -292,12 +316,13 @@
                                                                     variant="text"
                                                                     :icon="fallbackPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
                                                                     @click="fallbackPasswordVisible = !fallbackPasswordVisible"
+                                                                    data-testid="connectionConfigurationCreation-fallbackPassword-toggle"
                                                                 />
                                                             </template>
                                                         </v-text-field>
                                                     </v-col>
 
-                                                    <!-- Confirm Fallback Password (required if fallbackPassword set) -->
+                                                    <!-- Confirm Fallback Password -->
                                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                                         <v-text-field
                                                             ref="confirmFallbackPwdRef"
@@ -308,6 +333,7 @@
                                                             v-model="confirmFallbackPassword"
                                                             validate-on="input"
                                                             :rules="[fallbackPwdMustMatchRule]"
+                                                            data-testid="connectionConfigurationCreation-confirmFallbackPassword-input"
                                                         >
                                                             <template v-slot:append-inner>
                                                                 <v-btn
@@ -315,6 +341,7 @@
                                                                     variant="text"
                                                                     :icon="confirmFallbackPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
                                                                     @click="confirmFallbackPasswordVisible = !confirmFallbackPasswordVisible"
+                                                                    data-testid="connectionConfigurationCreation-confirmFallbackPassword-toggle"
                                                                 />
                                                             </template>
                                                         </v-text-field>
@@ -330,6 +357,7 @@
                                                             variant="outlined"
                                                             v-model="quitPassword"
                                                             validate-on="input"
+                                                            data-testid="connectionConfigurationCreation-quitPassword-input"
                                                         >
                                                             <template v-slot:append-inner>
                                                                 <v-btn
@@ -337,13 +365,13 @@
                                                                     variant="text"
                                                                     :icon="quitPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
                                                                     @click="quitPasswordVisible = !quitPasswordVisible"
+                                                                    data-testid="connectionConfigurationCreation-quitPassword-toggle"
                                                                 />
                                                             </template>
                                                         </v-text-field>
                                                     </v-col>
 
-
-                                                    <!-- Confirm Quit Password (required if quitPassword set) -->
+                                                    <!-- Confirm Quit Password -->
                                                     <v-col cols="12" md="12" class="custom-padding-textbox">
                                                         <v-text-field
                                                             ref="confirmQuitPwdRef"
@@ -354,6 +382,7 @@
                                                             v-model="confirmQuitPassword"
                                                             validate-on="input"
                                                             :rules="[quitPwdMustMatchRule]"
+                                                            data-testid="connectionConfigurationCreation-confirmQuitPassword-input"
                                                         >
                                                             <template v-slot:append-inner>
                                                                 <v-btn
@@ -361,16 +390,14 @@
                                                                     variant="text"
                                                                     :icon="confirmQuitPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
                                                                     @click="confirmQuitPasswordVisible = !confirmQuitPasswordVisible"
+                                                                    data-testid="connectionConfigurationCreation-confirmQuitPassword-toggle"
                                                                 />
                                                             </template>
                                                         </v-text-field>
                                                     </v-col>
-
-
                                                 </v-col>
-                                                <v-col cols="4">
 
-                                                </v-col>
+                                                <v-col cols="4"></v-col>
                                             </v-row>
                                         </div>
                                     </v-expand-transition>
@@ -390,6 +417,7 @@
                             color="black"
                             variant="outlined"
                             @click="navigateTo(constants.CONNECTION_CONFIGURATIONS_ROUTE)"
+                            data-testid="connectionConfigurationCreation-cancel-button"
                         >
                             {{ translate("general.cancelButton") }}
                         </v-btn>
@@ -401,6 +429,7 @@
                             class="ml-2"
                             @click="submit()"
                             :disabled="isCreateDisabled"
+                            data-testid="connectionConfigurationCreation-save-button"
                         >
                             {{ translate("general.saveButton") }}
                         </v-btn>
@@ -408,13 +437,13 @@
                 </v-col>
             </v-row>
         </v-col>
-        <!-- Upload Certificate Dialog-->
+
+        <!-- Upload Certificate Dialog (opened from select) -->
         <AddCertificateDialog
             v-model="certDialog"
             :simulate="true"
             @imported="onCertImported"
         />
-
     </v-row>
 </template>
 

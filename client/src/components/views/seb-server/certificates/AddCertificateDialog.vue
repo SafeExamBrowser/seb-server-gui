@@ -3,7 +3,7 @@
         v-model="internalOpen"
         max-width="720"
         @update:modelValue="onToggle"
-        data-testid="certificates-addDialog-root"
+        data-testid="certificates-add-dialog"
     >
         <v-card data-testid="certificates-addDialog-card">
             <v-card-title class="text-h6 font-weight-bold" data-testid="certificates-addDialog-title">
