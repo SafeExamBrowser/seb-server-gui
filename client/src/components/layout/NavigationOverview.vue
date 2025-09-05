@@ -1,15 +1,17 @@
 <template>
-    <v-row class="navigation-overview-container">
+    <v-row class="navigation-overview-container" data-testid="navigationOverview-page-container">
         <v-container class="ml-16 mr-0" fluid>
             <v-col>
                 <v-sheet elevation="0" color="primary" class="rounded-lg pa-4">
                     <v-app-bar-title class="mb-16">
-                        <h1 class="title-inherit-styling text-h4">{{ appBarStore.title }}</h1>
+                        <h1 class="title-inherit-styling text-h4" data-testid="navigationOverview-title-text">
+                            {{ appBarStore.title }}
+                        </h1>
                     </v-app-bar-title>
 
                     <v-row class="mt-4 mb-16 mr-0">
 
-                        <!---------------Settings List----------------->
+                        <!-- Settings -->
                         <v-col cols="3">
                             <h4 class="text-subtitle-1 font-weight-bold mb-3">
                                 {{ translate("titles.settings").toUpperCase() }}
@@ -18,7 +20,11 @@
                             <v-divider class="section-divider"/>
 
                             <v-list-item class="px-0 nav-hover">
-                                <router-link class="link-color nav-link" :to="constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE">
+                                <router-link
+                                    class="link-color nav-link"
+                                    :to="constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE"
+                                    data-testid="navigationOverview-assessmentToolConnections-link"
+                                >
                                     {{ translate("navigation.routeNames.assessmentToolConnections") }}
                                 </router-link>
                             </v-list-item>
@@ -26,7 +32,11 @@
                             <v-divider class="section-divider"/>
 
                             <v-list-item class="px-0 nav-hover">
-                                <router-link class="link-color nav-link" :to="constants.CONNECTION_CONFIGURATIONS_ROUTE">
+                                <router-link
+                                    class="link-color nav-link"
+                                    :to="constants.CONNECTION_CONFIGURATIONS_ROUTE"
+                                    data-testid="navigationOverview-connectionConfigurations-link"
+                                >
                                     {{ translate("navigation.routeNames.connectionConfiguration") }}
                                 </router-link>
                             </v-list-item>
@@ -34,7 +44,11 @@
                             <v-divider class="section-divider"/>
 
                             <v-list-item class="px-0 nav-hover">
-                                <router-link class="link-color nav-link" :to="constants.CERTIFICATES_ROUTE">
+                                <router-link
+                                    class="link-color nav-link"
+                                    :to="constants.CERTIFICATES_ROUTE"
+                                    data-testid="navigationOverview-certificates-link"
+                                >
                                     {{ translate("navigation.routeNames.certificates") }}
                                 </router-link>
                             </v-list-item>
@@ -42,7 +56,11 @@
                             <v-divider class="section-divider"/>
 
                             <v-list-item class="px-0 nav-hover">
-                                <router-link class="link-color nav-link" :to="constants.USER_ACCOUNTS_ROUTE">
+                                <router-link
+                                    class="link-color nav-link"
+                                    :to="constants.USER_ACCOUNTS_ROUTE"
+                                    data-testid="navigationOverview-userAccounts-link"
+                                >
                                     {{ translate("navigation.routeNames.userAccounts") }}
                                 </router-link>
                             </v-list-item>
@@ -50,8 +68,7 @@
                             <v-divider class="section-divider"/>
                         </v-col>
 
-
-                        <!---------------Preparation List----------------->
+                        <!-- Preparation -->
                         <v-col cols="3">
                             <h4 class="text-subtitle-1 font-weight-bold mb-3">
                                 {{ translate("titles.preparation").toUpperCase() }}
@@ -59,9 +76,12 @@
 
                             <v-divider class="section-divider"/>
 
-
                             <v-list-item class="px-0 nav-hover">
-                                <router-link class="link-color nav-link" :to="constants.CREATE_TEMPLATE_ROUTE">
+                                <router-link
+                                    class="link-color nav-link"
+                                    :to="constants.CREATE_TEMPLATE_ROUTE"
+                                    data-testid="navigationOverview-createTemplate-link"
+                                >
                                     {{ translate("titles.createTemplate") }}
                                 </router-link>
                             </v-list-item>
@@ -69,27 +89,27 @@
                             <v-divider class="section-divider"/>
 
                             <v-list-item class="px-0 nav-hover">
-                                <router-link class="link-color nav-link" :to="constants.QUIZ_IMPORT_ROUTE">
+                                <router-link
+                                    class="link-color nav-link"
+                                    :to="constants.QUIZ_IMPORT_ROUTE"
+                                    data-testid="navigationOverview-quizImport-link"
+                                >
                                     {{ translate("titles.quizImport") }}
                                 </router-link>
                             </v-list-item>
 
                             <v-divider class="section-divider"/>
 
-
                             <v-list-item class="px-0 nav-hover">
-                                <span class="link-color nav-link">{{
-                                        translate("titles.addExamWithURL")
-                                    }}
+                                <span class="link-color nav-link">
+                                  {{ translate("titles.addExamWithURL") }}
                                 </span>
                             </v-list-item>
 
                             <v-divider class="section-divider"/>
                         </v-col>
 
-
-                        <!---------------Monitoring / Screen Proctoring List----------------->
-
+                        <!-- Monitoring / Screen Proctoring -->
                         <v-col cols="3">
                             <h4 class="text-subtitle-1 font-weight-bold mb-3">
                                 {{
@@ -101,27 +121,31 @@
 
                             <v-divider class="section-divider"/>
 
-                            <!-- Monitoring List Items -->
                             <v-list-item class="px-0 nav-hover">
-                                <router-link class="link-color nav-link" :to="constants.MONITORING_ROUTE">
+                                <router-link
+                                    class="link-color nav-link"
+                                    :to="constants.MONITORING_ROUTE"
+                                    data-testid="navigationOverview-runningExams-link"
+                                >
                                     {{ translate("navigation.routeNames.runningExams") }}
                                 </router-link>
                             </v-list-item>
 
-
-
                             <v-divider
                                 :class="[
-                                  'section-divider',
-                                  generalUtils.stringToBoolean(authStore.getStorageItem(StorageItemEnum.IS_SP_AVAILABLE)) ? 'thick-divider' : ''
-                                ]"
+                                      'section-divider',
+                                      generalUtils.stringToBoolean(authStore.getStorageItem(StorageItemEnum.IS_SP_AVAILABLE)) ? 'thick-divider' : ''
+                                    ]"
                             />
 
-                            <!-- Screen Proctoring Items -->
                             <template
                                 v-if="generalUtils.stringToBoolean(authStore.getStorageItem(StorageItemEnum.IS_SP_AVAILABLE))">
                                 <v-list-item class="px-0 nav-hover">
-                                    <router-link class="link-color nav-link" :to="spConstants.RUNNING_EXAMS_ROUTE">
+                                    <router-link
+                                        class="link-color nav-link"
+                                        :to="spConstants.RUNNING_EXAMS_ROUTE"
+                                        data-testid="navigationOverview-screenProctoring-link"
+                                    >
                                         {{ translate("titles.screenProctoring") }}
                                     </router-link>
                                 </v-list-item>
@@ -129,7 +153,11 @@
                                 <v-divider class="section-divider"/>
 
                                 <v-list-item class="px-0 nav-hover">
-                                    <router-link class="link-color nav-link" :to="spConstants.SEARCH_ROUTE">
+                                    <router-link
+                                        class="link-color nav-link"
+                                        :to="spConstants.SEARCH_ROUTE"
+                                        data-testid="navigationOverview-spSearch-link"
+                                    >
                                         {{ translate("titles.spSearch") }}
                                     </router-link>
                                 </v-list-item>
@@ -137,7 +165,11 @@
                                 <v-divider class="section-divider"/>
 
                                 <v-list-item class="px-0 nav-hover">
-                                    <router-link class="link-color nav-link" :to="spConstants.APPLICATIONS_ROUTE">
+                                    <router-link
+                                        class="link-color nav-link"
+                                        :to="spConstants.APPLICATIONS_ROUTE"
+                                        data-testid="navigationOverview-spApplications-link"
+                                    >
                                         {{ translate("titles.spApplications") }}
                                     </router-link>
                                 </v-list-item>
@@ -155,13 +187,11 @@
                             <v-divider class="section-divider"/>
 
                             <v-list-item class="px-0 nav-hover">
-                                <span class="link-color nav-link">{{
-                                        translate("navigation.routeNames.finishedExams")
-                                    }}
+                                <span class="link-color nav-link">
+                                    {{ translate("navigation.routeNames.finishedExams") }}
                                 </span>
                             </v-list-item>
                             <v-divider class="section-divider"/>
-
 
                             <v-list-item class="px-0 nav-hover">
                                 <span class="link-color nav-link">
@@ -178,6 +208,7 @@
         </v-container>
     </v-row>
 </template>
+
 
 <script setup lang="ts">
 import {useAppBarStore, useNavigationStore} from "@/stores/store";

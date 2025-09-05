@@ -288,7 +288,8 @@
         <v-list lines="two" class="pt-0">
             <v-list-item v-if="ability.canView(GUIComponent.NavigationOverview)" link elevation="0" :to="getNavigationOverviewRoute()"
                 variant="elevated" class="d-flex flex-column justify-center text-center"
-                :class="[navigationStore.isNavigationOverviewOpen ? 'navigation-overview-background' : '']">
+                :class="[navigationStore.isNavigationOverviewOpen ? 'navigation-overview-background' : '']" data-testid="layout-navOverview-toggle"
+            >
 
                 <template v-if="navigationStore.isNavigationOverviewOpen">
                     <v-icon icon="mdi-close" color="white"></v-icon>
@@ -308,7 +309,7 @@
                     :to="route"
                     color="#215caf"
                     class="d-flex flex-column justify-center text-center"
-                    :data-testid="`layout-nav-item-${route.replace('/', '') || 'home'}`"
+                    :data-testid="`layout-${route.replace('/', '') || 'home'}-button`"
                 >
 
                     <template v-slot:default="{ isActive }">
@@ -339,7 +340,7 @@
             data-testid="layout-content"
         >
             <v-container fluid class="flex-grow-1"
-                         :data-testid="`layout-page-root-${(useRoute().name || 'unknown').toString().toLowerCase()}`"
+                         :data-testid="`${(useRoute().name || 'unknown').toString().toLowerCase()}-page-container`"
             >
                 <router-view />
             </v-container>
@@ -362,9 +363,8 @@
     import * as constants from "@/utils/constants";
     import router from "@/router/router";
     import {translate} from "@/utils/generalUtils";
-    //import * as abilitiy from "@/casl/ability";
     import {getInstitutions} from "@/services/seb-server/component-services/registerAccountViewService";
-    import {getInstitution, getInstitutionLogo} from "@/services/seb-server/api-services/institutionService";
+    import {getInstitutionLogo} from "@/services/seb-server/api-services/institutionService";
     import { useAbilities, GUIComponent } from '@/services/ability';
 
     //i18n
