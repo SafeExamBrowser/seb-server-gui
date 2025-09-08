@@ -38,5 +38,6 @@ If you're just working on the frontend part (SEB Server GUI), this is the easies
 ## Follow these steps
 
 1. Run `docker-compose up -d`
-1. Run `docker-compose logs seb-server | grep "SEB Server initial admin-account"` to see the admin user and password that was generated for your instance of seb-server (write this down, you will need it later)
+2. The setup comes with demo data and you should be able to login with super-admin / admin
+1. Alternatively you can run `docker-compose logs seb-server | grep "SEB Server initial admin-account"` to see the admin user and password that was generated for your instance of seb-server (write this down, you will need it later)
 1. Visit http://localhost:8082 and login to confirm that the full setup works
