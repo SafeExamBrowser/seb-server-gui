@@ -1,4 +1,4 @@
-# sebs-erver-gui
+# seb-server-gui
 
 GUI component for Safe Exam Browser Server project.
 
