@@ -11,6 +11,7 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request'
     strategy:
       matrix:
         tag_suffix: ["", "-single-host"]
