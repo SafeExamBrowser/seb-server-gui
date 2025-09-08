@@ -2,8 +2,8 @@ name: Build and Push to Docker Hub
 
 on:
   workflow_dispatch:
-  pull_request:
-    branches: [ "main" ]
+  # pull_request:
+  #   branches: [ "main" ]
   push: 
     tags:
       - '**'
@@ -11,7 +11,6 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    if: github.event_name != 'pull_request'
     strategy:
       matrix:
         tag_suffix: ["", "-single-host"]
@@ -49,7 +48,6 @@ jobs:
         
   build-and-push-admin:
     runs-on: ubuntu-latest
-    if: github.event_name != 'pull_request'
     strategy:
       matrix:
         tag_suffix: [ "", "-single-host" ]
