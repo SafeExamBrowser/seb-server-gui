@@ -1,3 +1,34 @@
+# sebs-erver-gui
+
+GUI component for Safe Exam Browser Server project.
+
+This is a sub-project of SEB Server. For full usage and installation, please visit the [SEB Server page](https://github.com/SafeExamBrowser/seb-server)
+
+## Overview
+
+**This project is still under development and has not yet an official release or release data.**
+
+This project consists of two parts. A client component and a server component. The server contains no businesses logic but serves as a lightweight api-gateway between the client and the [SP-Server](https://github.com/SafeExamBrowser/seb-screen-proctoring-server). The easiest way to build and deploy the project is via docker. 
+
+
+### Client
+
+The client uses the following technologies:
+
+#### [VueJs Version 3.4.*](https://vuejs.org/)
+ - Composition API and Script Setup Syntax
+ - Typescript
+ - [Vuetify](https://vuetifyjs.com/en/) as the componenet framework
+
+### Server
+
+The server uses the following technologies:
+
+#### [ExpressJs Version 4.19.*](https://expressjs.com/)
+ - Typescript
+ - Axios as API-Request library
+
+
 # Development Setup
 
 ## Intro
