@@ -8,7 +8,7 @@ This is a sub-project of SEB Server. For full usage and installation, please vis
 
 **This project is still under development and has not yet an official release or release data.**
 
-This project consists of two parts. A client component and a server component. The server contains no businesses logic but serves as a lightweight api-gateway between the client and the [SP-Server](https://github.com/SafeExamBrowser/seb-screen-proctoring-server). The easiest way to build and deploy the project is via docker. 
+This project consists of two parts. A client component and a server component. The server contains no businesses logic but serves as a lightweight api-gateway between the client and the [SEB-Server](https://github.com/SafeExamBrowser/seb-server). The easiest way to build and deploy the project is via docker. 
 
 
 ### Client
