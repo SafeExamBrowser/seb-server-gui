@@ -16,7 +16,8 @@ services:
 
   seb-server:
     image: "anhefti/seb-server:sprint-testing"
-    platform: linux/amd64
+    # NOTE: this is only needed for mac with amd
+    # platform: linux/amd64
     container_name: seb-server
     environment:
       # Service runtime settings
@@ -61,7 +62,8 @@ services:
 
   sps-webservice:
     image: "anhefti/seb-sps:sprint-testing"
-    platform: linux/amd64
+    # NOTE: this is only needed for mac with amd
+    # platform: linux/amd64
     container_name: sps-webservice
     environment:
       # Service runtime settings
