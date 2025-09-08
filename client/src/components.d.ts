@@ -50,7 +50,6 @@ declare module 'vue' {
     HomePageContainer: typeof import('./components/views/seb-server/home/HomePageContainer.vue')['default']
     HomePageInfo: typeof import('./components/views/seb-server/home/HomePageInfo.vue')['default']
     HomePageMain: typeof import('./components/views/seb-server/home/HomePageMain.vue')['default']
-    HonePageInfo: typeof import('./components/views/seb-server/home/HonePageInfo.vue')['default']
     ImportAssessmentInfo: typeof import('./components/views/seb-server/quiz-import/info-box-content/ImportAssessmentInfo.vue')['default']
     ImportAssessmentMain: typeof import('./components/views/seb-server/quiz-import/main-content/ImportAssessmentMain.vue')['default']
     ImportExamInfo: typeof import('./components/views/seb-server/quiz-import/info-box-content/ImportExamInfo.vue')['default']

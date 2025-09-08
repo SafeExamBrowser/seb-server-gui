@@ -35,8 +35,8 @@
                             :class="[selectedExam?.id == item.id ? 'selected-row' : '']">
 
                             <td>{{ item.quizName }}</td>
-                            <td>{{ timeUtils.formatIsoDateToFullDate(item.quizStartTime) }}</td>
-                            <td>{{ timeUtils.formatIsoDateToFullDate(item.quizEndTime) }}</td>
+                            <td>{{ timeUtils.formatIsoToReadableDateTime(item.quizStartTime) }}</td>
+                            <td>{{ timeUtils.formatIsoToReadableDateTime(item.quizEndTime) }}</td>
                             <td>
                                 <v-chip
                                     variant="tonal"

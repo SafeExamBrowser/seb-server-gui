@@ -61,7 +61,7 @@ export function formatDate(dateString: string): string{
 }
 
 export function formatIsoToReadableDateTime(dateStr?: string | null): string {
-    if (!dateStr) return "-";
+    if (!dateStr) return "";
 
     const date = new Date(dateStr);
 
