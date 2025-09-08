@@ -14,7 +14,7 @@
                 <span class="breadcrumb-arrow">›</span>
 
                 <span
-                    class="breadcrumb-active"
+                    class="breadcrumb-link"
                     @click="navigateTo(constants.MONITORING_ROUTE)"
                 >
                 {{ translate("titles.monitoring") }}
