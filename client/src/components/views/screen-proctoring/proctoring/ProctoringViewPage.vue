@@ -1,78 +1,97 @@
 <template>
-    <v-row v-if="!showError" class="d-flex" align="stretch" no-gutters>
-
+    <v-row v-if="!showError" align="stretch" class="d-flex" no-gutters>
         <!-----------video player---------->
         <v-col
-            :cols="isMetadataInfo ? 8 : 11"
             class="video-col"
-            :class="{ open: isMetadataInfo, closed: !isMetadataInfo }">
-            <v-sheet elevation="4" class="rounded-lg pt-4 pl-4 pr-4">
-
-                <div id="player-wrapper" ref="videoPlayer" class="player-wrapper"
-                     @mousemove="onMouseMove" @mouseleave="onMouseLeave">
-                    <v-img :src="imageLink" :aspect-ratio="16/9" class="img-styling">
-                        <template v-slot:error>
-                            no img available
-                        </template>
+            :class="{ open: isMetadataInfo, closed: !isMetadataInfo }"
+            :cols="isMetadataInfo ? 8 : 11"
+        >
+            <v-sheet class="rounded-lg pt-4 pl-4 pr-4" elevation="4">
+                <div
+                    id="player-wrapper"
+                    ref="videoPlayer"
+                    class="player-wrapper"
+                    @mouseleave="onMouseLeave"
+                    @mousemove="onMouseMove"
+                >
+                    <v-img
+                        :aspect-ratio="16 / 9"
+                        class="img-styling"
+                        :src="imageLink"
+                    >
+                        <template #error> no img available </template>
                     </v-img>
 
                     <!-----------controls---------->
-                    <div class="controls" :class="{ 'controls-hidden': !controlsVisible }">
-                    <!-----------slider---------->
-                        <v-slider class="mt-4"
-                                  :min="sliderMin"
-                                  :max="sliderMax"
-                                  :step="1000"
-                                  v-model="sliderTime"
-                                  thumb-label
-                                  :color="isFullscreen ? 'white' : undefined"
-                                  :track-color="isFullscreen ? '#bbb' : undefined"
-                                  :thumb-color="isFullscreen ? 'white' : undefined">
-                            <template v-slot:thumb-label> {{ currentTimeString }} </template>
-
+                    <div
+                        class="controls"
+                        :class="{ 'controls-hidden': !controlsVisible }"
+                    >
+                        <!-----------slider---------->
+                        <v-slider
+                            v-model="sliderTime"
+                            class="mt-4"
+                            :color="isFullscreen ? 'white' : undefined"
+                            :max="sliderMax"
+                            :min="sliderMin"
+                            :step="1000"
+                            :thumb-color="isFullscreen ? 'white' : undefined"
+                            thumb-label
+                            :track-color="isFullscreen ? '#bbb' : undefined"
+                        >
+                            <template #thumb-label>
+                                {{ currentTimeString }}
+                            </template>
 
                             <!-----------control buttons---------->
-                            <template v-slot:prepend>
+                            <template #prepend>
                                 <!--backwards-->
                                 <v-btn
+                                    aria-label="backwards"
                                     :disabled="isLiveSelected"
-                                    @click="backwards()"
+                                    icon="mdi-step-backward"
                                     size="small"
                                     variant="text"
-                                    icon="mdi-step-backward"
-                                    aria-label="backwards">
+                                    @click="backwards()"
+                                >
                                 </v-btn>
 
                                 <!--pause / play-->
                                 <v-btn
-                                    @click="isPlaying ? pause() : play()"
+                                    :aria-label="isPlaying ? 'pause' : 'play'"
+                                    :icon="isPlaying ? 'mdi-pause' : 'mdi-play'"
                                     size="small"
                                     variant="text"
-                                    :icon="isPlaying ? 'mdi-pause' : 'mdi-play'"
-                                    :aria-label="isPlaying ? 'pause' : 'play'">
+                                    @click="isPlaying ? pause() : play()"
+                                >
                                 </v-btn>
 
                                 <!--forwards-->
                                 <v-btn
+                                    aria-label="forwards"
                                     :disabled="isLiveSelected"
-                                    @click="forwards()"
+                                    icon="mdi-step-forward"
                                     size="small"
                                     variant="text"
-                                    icon="mdi-step-forward"
-                                    aria-label="forwards">
+                                    @click="forwards()"
+                                >
                                 </v-btn>
 
                                 <!--live button-->
                                 <v-btn
                                     v-if="isLive"
+                                    aria-label="Go Live"
                                     variant="text"
                                     @click="goLive()"
-                                    aria-label="Go Live">
-                                    <template v-slot:prepend>
+                                >
+                                    <template #prepend>
                                         <v-badge
+                                            :color="
+                                                isLiveSelected ? 'error' : ''
+                                            "
                                             dot
                                             inline
-                                            :color="isLiveSelected ? 'error' : ''">
+                                        >
                                         </v-badge>
                                     </template>
                                     LIVE
@@ -81,15 +100,16 @@
                             <!-------------------------->
 
                             <!-----------time---------->
-                            <template v-slot:append>
+                            <template #append>
                                 <v-menu attach="#player-wrapper">
-                                    <template v-slot:activator="{ props }">
+                                    <template #activator="{ props }">
                                         <v-btn
-                                            :disabled="isLiveSelected"
-                                            variant="text"
-                                            icon="mdi-cog"
                                             v-bind="props"
-                                            aria-label="Playback Speed Selection">
+                                            aria-label="Playback Speed Selection"
+                                            :disabled="isLiveSelected"
+                                            icon="mdi-cog"
+                                            variant="text"
+                                        >
                                         </v-btn>
                                     </template>
                                     <v-list>
@@ -98,13 +118,27 @@
                                         </v-list-item>
                                         <v-divider></v-divider>
                                         <v-list-item
-                                            v-for="(playbackSpeed, index) in playbackSpeeds"
+                                            v-for="(
+                                                playbackSpeed, index
+                                            ) in playbackSpeeds"
                                             :key="index"
                                             :value="index"
-                                            @click="changePlaybackSpeed(playbackSpeed.id)">
-
-                                            <template v-if="playbackSpeed.id == selectedSpeedId" v-slot:append>
-                                                <v-icon icon="mdi-check"></v-icon>
+                                            @click="
+                                                changePlaybackSpeed(
+                                                    playbackSpeed.id,
+                                                )
+                                            "
+                                        >
+                                            <template
+                                                v-if="
+                                                    playbackSpeed.id ==
+                                                    selectedSpeedId
+                                                "
+                                                #append
+                                            >
+                                                <v-icon
+                                                    icon="mdi-check"
+                                                ></v-icon>
                                             </template>
 
                                             {{ playbackSpeed.title }}
@@ -116,18 +150,21 @@
                                     {{ liveSessionTime }}
                                 </v-chip>
                                 <v-chip v-else variant="outlined">
-                                    {{ currentTimeString }} / {{ endTimeString }}
+                                    {{ currentTimeString }} /
+                                    {{ endTimeString }}
                                 </v-chip>
-                                <v-btn @click="toggle" variant="text" icon="mdi-fullscreen"
-                                       aria-label="Fullscreen"></v-btn>
+                                <v-btn
+                                    aria-label="Fullscreen"
+                                    icon="mdi-fullscreen"
+                                    variant="text"
+                                    @click="toggle"
+                                ></v-btn>
                             </template>
                             <!-------------------------->
-
                         </v-slider>
                         <!-------------------------->
                     </div>
                 </div>
-
             </v-sheet>
         </v-col>
         <!-------------------------->
@@ -135,87 +172,116 @@
         <!-----------info box---------->
 
         <v-col
-            cols="3"
             class="metadata-col"
-            :class="{ open: isMetadataInfo, closed: !isMetadataInfo }">
-
-            <v-card class="metadata-card d-flex flex-column"
-                    style="height: 100%; width: 100%;">
-
-            <template v-slot:title>
-                </template>
+            :class="{ open: isMetadataInfo, closed: !isMetadataInfo }"
+            cols="3"
+        >
+            <v-card
+                class="metadata-card d-flex flex-column"
+                style="height: 100%; width: 100%"
+            >
+                <template #title> </template>
                 <v-card-text>
-                    <v-table density="comfortable" class="text-caption">
+                    <v-table class="text-caption" density="comfortable">
                         <thead>
-                        <tr>
-                            <th class="text-left text-no-wrap">
-                                <h3 class="title-inherit-styling text-subtitle-2">SEB Session Info</h3>
-                            </th>
-                            <th class="text-left"></th>
-                        </tr>
+                            <tr>
+                                <th class="text-left text-no-wrap">
+                                    <h3
+                                        class="title-inherit-styling text-subtitle-2"
+                                    >
+                                        SEB Session Info
+                                    </h3>
+                                </th>
+                                <th class="text-left"></th>
+                            </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="(value, key) in sessionInfodata" :key="key">
-                            <th>{{ key }}</th>
-                            <td align="right">{{ value }}</td>
-                        </tr>
+                            <tr
+                                v-for="(value, key) in sessionInfodata"
+                                :key="key"
+                            >
+                                <th>{{ key }}</th>
+                                <td align="right">{{ value }}</td>
+                            </tr>
                         </tbody>
 
                         <thead>
-                        <tr>
-                            <th class="text-left text-no-wrap">
-                                <h3 class="title-inherit-styling text-subtitle-2">Screenshot Metadata</h3>
-                            </th>
-                            <th class="text-left"></th>
-                        </tr>
+                            <tr>
+                                <th class="text-left text-no-wrap">
+                                    <h3
+                                        class="title-inherit-styling text-subtitle-2"
+                                    >
+                                        Screenshot Metadata
+                                    </h3>
+                                </th>
+                                <th class="text-left"></th>
+                            </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="(value, key) in screenshotMetadata" :key="key">
-                            <th>{{ key }}:</th>
-                            <td align="right">{{ value }}</td>
-                        </tr>
+                            <tr
+                                v-for="(value, key) in screenshotMetadata"
+                                :key="key"
+                            >
+                                <th>{{ key }}:</th>
+                                <td align="right">{{ value }}</td>
+                            </tr>
                         </tbody>
                     </v-table>
                 </v-card-text>
             </v-card>
         </v-col>
         <v-col
-            cols="1"
             class="toggle-col d-flex align-center justify-center"
             :class="{ open: isMetadataInfo, closed: !isMetadataInfo }"
-            @click="hideShowMetadataInfo()">
-            <v-card class="toggle-card d-flex flex-column align-center justify-center" elevation="4"
-                    style="width: 100%; height: 100%;">
+            cols="1"
+            @click="hideShowMetadataInfo()"
+        >
+            <v-card
+                class="toggle-card d-flex flex-column align-center justify-center"
+                elevation="4"
+                style="width: 100%; height: 100%"
+            >
                 <v-icon icon="mdi-information" />
-                <v-icon :icon="isMetadataInfo ? 'mdi-chevron-double-right' : 'mdi-chevron-double-left'" />
+                <v-icon
+                    :icon="
+                        isMetadataInfo
+                            ? 'mdi-chevron-double-right'
+                            : 'mdi-chevron-double-left'
+                    "
+                />
             </v-card>
         </v-col>
         <!-------------------------->
-
     </v-row>
-
 </template>
 
 <script setup lang="ts">
-import {useRoute} from "vue-router";
-import {ref, onBeforeMount, onBeforeUnmount, watch, computed, nextTick, onMounted} from "vue";
+import { useRoute } from "vue-router";
+import {
+    computed,
+    nextTick,
+    onBeforeMount,
+    onBeforeUnmount,
+    onMounted,
+    ref,
+    watch,
+} from "vue";
 import * as proctoringViewService from "@/services/screen-proctoring/component-services/proctoringViewService";
 import * as timeUtils from "@/utils/timeUtils";
 import * as groupingUtils from "@/utils/groupingUtils";
-import {useAppBarStore} from "@/stores/store";
+import { useAppBarStore } from "@/stores/store";
 import * as searchViewService from "@/services/screen-proctoring/component-services/searchViewService";
-import {useFullscreen} from "@vueuse/core";
+import { useFullscreen } from "@vueuse/core";
 import * as linkService from "@/services/screen-proctoring/component-services/linkService";
-import {SortOrder} from "@/models/screen-proctoring/sortOrderEnum";
+import { SortOrder } from "@/models/screen-proctoring/sortOrderEnum";
 import * as apiService from "@/services/apiService";
 
-
-//slider
+// slider
 const sliderTime = ref<number>();
 const sliderMin = ref<number>();
 const sliderMax = ref<number>();
 
-//screenshots
+// screenshots
 const isPlaying = ref<boolean>(false);
 const currentScreenshotData = ref<ScreenshotData>();
 const firstScreenshotTime = ref<number>();
@@ -224,14 +290,14 @@ const imageLink = ref<string>("");
 const showError = ref<boolean>(false);
 const searchTimeline = ref<SearchTimeline | null>();
 
-//live
+// live
 const isLive = ref<boolean>(false);
 const isLiveSelected = ref<boolean>(false);
 const isLiveButtonDisabled = ref<boolean>(false);
 const liveTimestamp = ref<number>(Date.now());
 const liveSessionTime = ref<string>();
 
-//screenshot list
+// screenshot list
 const allScreenshotTimestampsNotLive = ref<number[]>([]);
 const screenshotTimestamps = ref<number[]>([]);
 const screenshotTimestampsFloored = ref<number[]>([]);
@@ -239,73 +305,72 @@ const timestampsIndex = ref<number>(0);
 const backwardsFirstTime = ref<boolean>(true);
 const forwardsFirstTime = ref<boolean>(true);
 
-//time constants
+// time constants
 const LIVE_INTERVAL: number = 1 * 1000;
 const REFRESH_INTERVAL: number = 1 * 1000;
 
-//playback speed
+// playback speed
 const SLOW_PLAYBACK_SPEED: number = 1 * 2000;
 const DEFAULT_PLAYBACK_SPEED: number = 1 * 1000;
 const FAST_PLAYBACK_SPEED: number = 1 * 500;
 const PLAYBACK_SPEED = ref<number>(DEFAULT_PLAYBACK_SPEED);
 const selectedSpeedId = ref<number>(1);
-const playbackSpeeds: { title: string, id: number }[] = [
-    {title: "0.5", id: 0},
-    {title: "Normal", id: 1},
-    {title: "2.0", id: 2}
+const playbackSpeeds: { title: string; id: number }[] = [
+    { title: "0.5", id: 0 },
+    { title: "Normal", id: 1 },
+    { title: "2.0", id: 2 },
 ];
 
-//intervals
+// intervals
 let intervalScreenshots: any | null = null;
 let intervalLiveImage: any | null = null;
 let intervalRefresh: any | null = null;
 
-//store
+// store
 const appBarStore = useAppBarStore();
 
-//router params
+// router params
 let sessionId: string = "";
 const sessionIdRouteParam: string = useRoute().params.sessionId?.toString();
 const searchTimestampOnLoad = ref<boolean>(false);
-const searchTimestamp: string | undefined = useRoute().query.searchTimestamp?.toString();
+const searchTimestamp: string | undefined =
+    useRoute().query.searchTimestamp?.toString();
 
-//fullscreen
+// fullscreen
 const videoPlayer = ref<HTMLDivElement | null>(null);
 const { isFullscreen, enter, exit, toggle } = useFullscreen(videoPlayer);
 
-
-//metadata
+// metadata
 const isMetadataInfo = ref<boolean>(true);
 const totalAmountOfScreenshots = ref<number>();
-
 
 // New state for control visibility
 const controlsVisible = ref(true);
 let hideControlsTimeout: ReturnType<typeof setTimeout> | null = null;
 
-//props
+// props
 const props = defineProps<{
-    sessionIdProp?: string
+    sessionIdProp?: string;
 }>();
 
 const videoHeight = ref(0);
 
-
-//=============lifecycle and watchers==================
+//= ============lifecycle and watchers==================
 onBeforeMount(async () => {
     await initialize();
 
-    //todo: those functions calls could be moved to the "initialize" function
+    // todo: those functions calls could be moved to the "initialize" function
     setStartingSliderTime();
     await setTimestampsList(SortOrder.asc);
 
     if (currentScreenshotData.value?.active) {
         goLive();
     } else {
-        totalAmountOfScreenshots.value = await calcTotalNrOfScreenshots()
+        totalAmountOfScreenshots.value = await calcTotalNrOfScreenshots();
     }
 
-    appBarStore.title = "Proctoring: " + currentScreenshotData.value?.clientName;
+    appBarStore.title =
+        "Proctoring: " + currentScreenshotData.value?.clientName;
 });
 
 onMounted(() => {
@@ -323,7 +388,6 @@ onBeforeUnmount(() => {
     stopIntervalLiveImage();
     stopIntervalRefresh();
 });
-
 
 function onMouseMove() {
     if (!isFullscreen.value) return;
@@ -353,7 +417,6 @@ watch(isFullscreen, (fullscreen) => {
     }
 });
 
-
 watch(sliderTime, async () => {
     if (sliderTime.value == null) {
         return;
@@ -370,17 +433,24 @@ watch(sliderTime, async () => {
 
     const sliderTimeForIndex: number = Math.floor(sliderTime.value / 1000);
     if (screenshotTimestampsFloored.value.includes(sliderTimeForIndex)) {
-        timestampsIndex.value = screenshotTimestampsFloored.value.indexOf(sliderTimeForIndex);
+        timestampsIndex.value =
+            screenshotTimestampsFloored.value.indexOf(sliderTimeForIndex);
         assignScreenshotDataByTimestamp(sliderTime.value.toString());
         return;
     }
 
-    const screenshotTimestampsShortend: number[] = screenshotTimestamps.value.map(timestamp => Math.floor(timestamp / 10000));
-    const sliderTimeForIndexShortend: number = Math.floor(sliderTime.value / 10000);
+    const screenshotTimestampsShortend: number[] =
+        screenshotTimestamps.value.map((timestamp) =>
+            Math.floor(timestamp / 10000),
+        );
+    const sliderTimeForIndexShortend: number = Math.floor(
+        sliderTime.value / 10000,
+    );
 
     if (screenshotTimestampsShortend.includes(sliderTimeForIndexShortend)) {
-        timestampsIndex.value = screenshotTimestampsShortend.indexOf(sliderTimeForIndexShortend);
-
+        timestampsIndex.value = screenshotTimestampsShortend.indexOf(
+            sliderTimeForIndexShortend,
+        );
     } else {
         await setTimestampsList(SortOrder.asc);
     }
@@ -397,13 +467,15 @@ watch(liveTimestamp, async () => {
 
     if (isLive.value) {
         assignScreenshotDataByTimestamp(sliderTime.value?.toString());
-        return;
     }
 });
 
 watch(currentScreenshotData, () => {
     if (currentScreenshotData.value) {
-        liveSessionTime.value = timeUtils.toTimeString(currentScreenshotData.value?.endTime - currentScreenshotData.value?.startTime);
+        liveSessionTime.value = timeUtils.toTimeString(
+            currentScreenshotData.value?.endTime -
+                currentScreenshotData.value?.startTime,
+        );
         isLive.value = currentScreenshotData.value.active;
     }
 });
@@ -412,8 +484,7 @@ watch(isLive, async () => {
     if (!isLive.value) {
         isLiveSelected.value = false;
         stopIntervalLiveImage();
-        totalAmountOfScreenshots.value = await calcTotalNrOfScreenshots()
-        return;
+        totalAmountOfScreenshots.value = await calcTotalNrOfScreenshots();
     }
 });
 
@@ -427,11 +498,10 @@ watch(isMetadataInfo, (newVal) => {
     }
 });
 
-//initalize data
-//todo: improve structure of this function
+// initalize data
+// todo: improve structure of this function
 async function initialize() {
-
-    //get session id from either prop or url
+    // get session id from either prop or url
     setSessionId();
 
     await assignScreenshotData();
@@ -443,7 +513,9 @@ async function initialize() {
     setSliderMax(currentScreenshotData.value.endTime);
     searchTimeline.value = await searchViewService.searchTimeline(sessionId);
 
-    await assignScreenshotDataByTimestamp(currentScreenshotData.value?.startTime.toString());
+    await assignScreenshotDataByTimestamp(
+        currentScreenshotData.value?.startTime.toString(),
+    );
 
     if (currentScreenshotData.value == null) return;
 
@@ -453,56 +525,70 @@ async function initialize() {
 }
 
 function setSessionId() {
-    //rendered by component
+    // rendered by component
     if (sessionIdRouteParam == null && props.sessionIdProp != null) {
-        console.log("rendered by component")
+        console.log("rendered by component");
 
         sessionId = props.sessionIdProp;
         return;
     }
 
-    console.log("rendered by route")
-    //rendered by route
+    console.log("rendered by route");
+    // rendered by route
     sessionId = sessionIdRouteParam;
 }
 
-//==============================
+//= =============================
 
-
-//=============screenshot list logic==================
-//get timestamp list for recording
+//= ============screenshot list logic==================
+// get timestamp list for recording
 async function setTimestampsList(sortOrder: SortOrder) {
     if (sliderTime.value == null) return;
 
-    const timestampsResponse: number[] | null = await proctoringViewService.getScreenshotTimestamps(sessionId, sliderTime.value.toString(), sortOrder);
+    const timestampsResponse: number[] | null =
+        await proctoringViewService.getScreenshotTimestamps(
+            sessionId,
+            sliderTime.value.toString(),
+            sortOrder,
+        );
     if (timestampsResponse != null) {
         screenshotTimestamps.value = timestampsResponse;
-        screenshotTimestampsFloored.value = timestampsResponse.map(timestamp => Math.floor(timestamp / 1000));
+        screenshotTimestampsFloored.value = timestampsResponse.map(
+            (timestamp) => Math.floor(timestamp / 1000),
+        );
     }
 
     timestampsIndex.value = 0;
 }
 
-//throttle function to mitigate amount of api calls
+// throttle function to mitigate amount of api calls
 const throttledSetImageLink = apiService.throttle((timestamp: string) => {
     setImageLink(timestamp);
 }, 100);
 
 function setImageLink(timestamp: string) {
-    imageLink.value = linkService.getSpecificImageLink(currentScreenshotData.value, timestamp);
+    imageLink.value = linkService.getSpecificImageLink(
+        currentScreenshotData.value,
+        timestamp,
+    );
 }
 
-//=============screenshot logic==================
+//= ============screenshot logic==================
 async function assignScreenshotData() {
-    const screenshotDataResponse: ScreenshotData | null = await proctoringViewService.getScreenshotDataBySessionId(sessionId);
-    if (screenshotDataResponse) currentScreenshotData.value = screenshotDataResponse;
+    const screenshotDataResponse: ScreenshotData | null =
+        await proctoringViewService.getScreenshotDataBySessionId(sessionId);
+    if (screenshotDataResponse)
+        currentScreenshotData.value = screenshotDataResponse;
 }
-
 
 async function assignScreenshotDataByTimestamp(timestamp: string | undefined) {
     if (timestamp == null) return;
 
-    const screenshotDataResponse: ScreenshotData | null = await proctoringViewService.getScreenshotDataByTimestamp(sessionId, timestamp);
+    const screenshotDataResponse: ScreenshotData | null =
+        await proctoringViewService.getScreenshotDataByTimestamp(
+            sessionId,
+            timestamp,
+        );
 
     if (screenshotDataResponse) {
         currentScreenshotData.value = screenshotDataResponse;
@@ -529,18 +615,22 @@ const currentTimeString = computed<string>(() => {
 
 const endTimeString = computed<string>(() => {
     if (currentScreenshotData.value != null && sliderMin.value != null) {
-        return timeUtils.toTimeString(currentScreenshotData.value.endTime - sliderMin.value);
+        return timeUtils.toTimeString(
+            currentScreenshotData.value.endTime - sliderMin.value,
+        );
     }
 
     return "";
 });
 
 const sessionInfodata = computed<object>(() => {
-    return proctoringViewService.getSessionInfodata(currentScreenshotData.value || null);
+    return proctoringViewService.getSessionInfodata(
+        currentScreenshotData.value || null,
+    );
 });
-//==============================
+//= =============================
 
-//=========live=================
+//= ========live=================
 function goLive() {
     if (isLiveSelected.value) {
         isLiveSelected.value = false;
@@ -566,7 +656,6 @@ function startIntervalLiveImage() {
     intervalLiveImage = setInterval(() => {
         liveTimestamp.value = Date.now();
         setSliderMax(liveTimestamp.value);
-
     }, LIVE_INTERVAL);
 }
 
@@ -576,10 +665,9 @@ function stopIntervalLiveImage() {
     }
 }
 
-//==============================
+//= =============================
 
-
-//=========interval=============
+//= ========interval=============
 function startIntervalRefresh() {
     if (currentScreenshotData.value?.active) {
         intervalRefresh = setInterval(() => {
@@ -590,7 +678,6 @@ function startIntervalRefresh() {
             if (sliderTime.value != null && isLiveSelected.value) {
                 sliderTime.value = sliderMax.value;
             }
-
         }, REFRESH_INTERVAL);
     }
 }
@@ -599,9 +686,11 @@ function startIntervalScreenshots() {
     backwardsFirstTime.value = true;
 
     intervalScreenshots = setInterval(async () => {
-        if (currentScreenshotData.value != null &&
+        if (
+            currentScreenshotData.value != null &&
             sliderTime.value != null &&
-            timeUtils.toSeconds(sliderTime.value) == timeUtils.toSeconds(currentScreenshotData.value?.endTime) &&
+            timeUtils.toSeconds(sliderTime.value) ==
+                timeUtils.toSeconds(currentScreenshotData.value?.endTime) &&
             !isLive.value
         ) {
             stopIntervalScreenshots();
@@ -614,7 +703,6 @@ function startIntervalScreenshots() {
         }
         // setImageLink(screenshotTimestamps.value[timestampsIndex.value].toString());
         timestampsIndex.value += 1;
-
     }, PLAYBACK_SPEED.value);
 }
 
@@ -630,10 +718,9 @@ function stopIntervalRefresh() {
     }
 }
 
-//==============================
+//= =============================
 
-
-//======video intercation=======
+//= =====video intercation=======
 function updateSliderManually() {
     if (isLive.value) {
         pause();
@@ -666,7 +753,11 @@ async function backwards() {
     pause();
     forwardsFirstTime.value = true;
 
-    if (currentScreenshotData.value == null || sliderTime.value == null || sliderTime.value == currentScreenshotData.value.startTime) {
+    if (
+        currentScreenshotData.value == null ||
+        sliderTime.value == null ||
+        sliderTime.value == currentScreenshotData.value.startTime
+    ) {
         return;
     }
 
@@ -674,7 +765,9 @@ async function backwards() {
         await setTimestampsList(SortOrder.desc);
         timestampsIndex.value = 1;
 
-        throttledSetImageLink(screenshotTimestamps.value[timestampsIndex.value].toString());
+        throttledSetImageLink(
+            screenshotTimestamps.value[timestampsIndex.value].toString(),
+        );
         sliderTime.value -= DEFAULT_PLAYBACK_SPEED;
 
         backwardsFirstTime.value = false;
@@ -682,7 +775,9 @@ async function backwards() {
     }
 
     timestampsIndex.value += 1;
-    throttledSetImageLink(screenshotTimestamps.value[timestampsIndex.value].toString());
+    throttledSetImageLink(
+        screenshotTimestamps.value[timestampsIndex.value].toString(),
+    );
     sliderTime.value -= DEFAULT_PLAYBACK_SPEED;
 }
 
@@ -690,7 +785,11 @@ async function forwards() {
     pause();
     backwardsFirstTime.value = true;
 
-    if (currentScreenshotData.value == null || sliderTime.value == null || sliderTime.value == currentScreenshotData.value.startTime) {
+    if (
+        currentScreenshotData.value == null ||
+        sliderTime.value == null ||
+        sliderTime.value == currentScreenshotData.value.startTime
+    ) {
         return;
     }
 
@@ -698,16 +797,19 @@ async function forwards() {
         await setTimestampsList(SortOrder.asc);
         timestampsIndex.value = 1;
 
-        throttledSetImageLink(screenshotTimestamps.value[timestampsIndex.value].toString());
+        throttledSetImageLink(
+            screenshotTimestamps.value[timestampsIndex.value].toString(),
+        );
         sliderTime.value += DEFAULT_PLAYBACK_SPEED;
 
         forwardsFirstTime.value = false;
         return;
     }
 
-
     timestampsIndex.value += 1;
-    throttledSetImageLink(screenshotTimestamps.value[timestampsIndex.value].toString());
+    throttledSetImageLink(
+        screenshotTimestamps.value[timestampsIndex.value].toString(),
+    );
     sliderTime.value += DEFAULT_PLAYBACK_SPEED;
 }
 
@@ -722,43 +824,69 @@ function play() {
     startIntervalScreenshots();
 }
 
-//==============================
+//= =============================
 
-//=============metadata==================
-//additional grouping sorting functions for metadata
-//todo: could be removed as information gain is quite small
+//= ============metadata==================
+// additional grouping sorting functions for metadata
+// todo: could be removed as information gain is quite small
 const screenshotMetadata = computed<object>(() => {
     if (currentScreenshotData.value) {
-        return proctoringViewService.getScreenshotMetadata(sliderTime.value || 0, currentScreenshotData.value.metaData, additionalMetadataInfo.value, screenshotDisplay.value);
+        return proctoringViewService.getScreenshotMetadata(
+            sliderTime.value || 0,
+            currentScreenshotData.value.metaData,
+            additionalMetadataInfo.value,
+            screenshotDisplay.value,
+        );
     }
 
-    return proctoringViewService.getScreenshotMetadata(sliderTime.value || 0, null, additionalMetadataInfo.value, screenshotDisplay.value);
+    return proctoringViewService.getScreenshotMetadata(
+        sliderTime.value || 0,
+        null,
+        additionalMetadataInfo.value,
+        screenshotDisplay.value,
+    );
 });
 
 const additionalMetadataInfo = computed<string>(() => {
     let result: string = "";
 
-    searchTimeline.value?.timelineGroupDataList.forEach((timelineGroupData, firstIndex) => {
-        const screenshotsGrouped: ScreenshotsGrouped[] | null = groupingUtils.groupScreenshotsByMetadata(timelineGroupData.timelineScreenshotDataList, false);
+    searchTimeline.value?.timelineGroupDataList.forEach(
+        (timelineGroupData, firstIndex) => {
+            const screenshotsGrouped: ScreenshotsGrouped[] | null =
+                groupingUtils.groupScreenshotsByMetadata(
+                    timelineGroupData.timelineScreenshotDataList,
+                    false,
+                );
 
-        if (screenshotsGrouped != null) {
-            for (let i = 0; i < screenshotsGrouped.length; i++) {
-                const index: number = screenshotsGrouped[i].timelineScreenshotDataList.findIndex((group) => timeUtils.toTimeString(group.timestamp) == timeUtils.toTimeString(sliderTime.value!));
+            if (screenshotsGrouped != null) {
+                for (let i = 0; i < screenshotsGrouped.length; i++) {
+                    const index: number = screenshotsGrouped[
+                        i
+                    ].timelineScreenshotDataList.findIndex(
+                        (group) =>
+                            timeUtils.toTimeString(group.timestamp) ==
+                            timeUtils.toTimeString(sliderTime.value!),
+                    );
 
-                if (index !== -1) {
-                    result = `(${index + 1}/${screenshotsGrouped[i].timelineScreenshotDataList?.length})`;
-                    break;
+                    if (index !== -1) {
+                        result = `(${index + 1}/${screenshotsGrouped[i].timelineScreenshotDataList?.length})`;
+                        break;
+                    }
                 }
             }
-        }
-
-    });
+        },
+    );
 
     return result;
 });
 
 const screenshotDisplay = computed<string>(() => {
-    if (currentScreenshotData.value == null || firstScreenshotTime.value == null || sliderTime.value == null || sliderMax.value == null) {
+    if (
+        currentScreenshotData.value == null ||
+        firstScreenshotTime.value == null ||
+        sliderTime.value == null ||
+        sliderMax.value == null
+    ) {
         return "";
     }
 
@@ -766,7 +894,10 @@ const screenshotDisplay = computed<string>(() => {
         return "-";
     }
 
-    var currentScreenshotIndex: number = allScreenshotTimestampsNotLive.value.indexOf(currentScreenshotData.value.timestamp);
+    let currentScreenshotIndex: number =
+        allScreenshotTimestampsNotLive.value.indexOf(
+            currentScreenshotData.value.timestamp,
+        );
 
     if (currentScreenshotIndex == -1) {
         currentScreenshotIndex = 0;
@@ -778,13 +909,20 @@ const screenshotDisplay = computed<string>(() => {
 });
 
 function hideShowMetadataInfo() {
-    isMetadataInfo.value ? isMetadataInfo.value = false : isMetadataInfo.value = true;
+    isMetadataInfo.value
+        ? (isMetadataInfo.value = false)
+        : (isMetadataInfo.value = true);
 }
 
 async function calcTotalNrOfScreenshots(): Promise<number> {
     if (!firstScreenshotTime.value) return 0;
 
-    const screenshotTimestamps: number[] | null = await proctoringViewService.getScreenshotTimestamps(sessionId, firstScreenshotTime.value.toString(), SortOrder.asc);
+    const screenshotTimestamps: number[] | null =
+        await proctoringViewService.getScreenshotTimestamps(
+            sessionId,
+            firstScreenshotTime.value.toString(),
+            SortOrder.asc,
+        );
     if (screenshotTimestamps == null) return 0;
 
     allScreenshotTimestampsNotLive.value = screenshotTimestamps;
@@ -792,9 +930,7 @@ async function calcTotalNrOfScreenshots(): Promise<number> {
     return allScreenshotTimestampsNotLive.value.length;
 }
 
-//==============================
-
-
+//= =============================
 </script>
 
 <style scoped>
@@ -836,7 +972,6 @@ async function calcTotalNrOfScreenshots(): Promise<number> {
     color: white !important;
 }
 
-
 .player-wrapper:fullscreen .controls .v-slider-track__background,
 .player-wrapper:fullscreen .controls .v-slider-track__fill,
 .player-wrapper:fullscreen .controls .v-slider-track__tick,
@@ -869,9 +1004,6 @@ async function calcTotalNrOfScreenshots(): Promise<number> {
     border-color: white !important;
 }
 
-
-
-
 .player-wrapper:fullscreen .controls,
 .player-wrapper:-moz-full-screen .controls {
     position: absolute !important;
@@ -883,13 +1015,10 @@ async function calcTotalNrOfScreenshots(): Promise<number> {
     padding: 8px 0;
 }
 
-
-
 .player-wrapper:fullscreen .controls .v-btn,
 .player-wrapper:-moz-full-screen .controls .v-btn {
     color: white !important;
 }
-
 
 .player-wrapper:fullscreen .controls .v-slider-track__background,
 .player-wrapper:fullscreen .controls .v-slider-track__fill,
@@ -923,15 +1052,6 @@ async function calcTotalNrOfScreenshots(): Promise<number> {
     border-color: white !important;
 }
 
-
-
-
-
-
-
-
-
-
 .metadata-card .v-card-text {
     flex: 1 1 auto;
     overflow-y: auto;
@@ -955,11 +1075,16 @@ async function calcTotalNrOfScreenshots(): Promise<number> {
 }
 
 .v-icon {
-    color: #215CAF;
+    color: #215caf;
 }
 
-.video-col, .metadata-col, .toggle-col {
-    transition: flex-basis 0.3s ease, max-width 0.3s ease, opacity 0.3s ease;
+.video-col,
+.metadata-col,
+.toggle-col {
+    transition:
+        flex-basis 0.3s ease,
+        max-width 0.3s ease,
+        opacity 0.3s ease;
 }
 
 .video-col.closed {
@@ -992,17 +1117,16 @@ async function calcTotalNrOfScreenshots(): Promise<number> {
     max-width: 50px !important;
 }
 
-
-
 .metadata-col {
     transform: translateZ(0);
 }
 
-
-.video-col, .toggle-col {
-    transition: flex-basis 0.3s ease, max-width 0.3s ease;
+.video-col,
+.toggle-col {
+    transition:
+        flex-basis 0.3s ease,
+        max-width 0.3s ease;
 }
-
 
 .metadata-card {
     height: 100%;
@@ -1016,5 +1140,4 @@ async function calcTotalNrOfScreenshots(): Promise<number> {
 .toggle-col {
     cursor: pointer;
 }
-
 </style>

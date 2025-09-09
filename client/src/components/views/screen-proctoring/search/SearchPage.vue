@@ -1,27 +1,23 @@
 <template>
     <v-row>
         <v-col>
-            <v-sheet 
-                elevation="4"
-                class="rounded-lg"
-                title="Search">
-
-                <SearchForm 
-                    @searchSessions="searchSessions"
-                    @closeAllPanels="closeAllPanels"
+            <v-sheet class="rounded-lg" elevation="4" title="Search">
+                <SearchForm
+                    @close-all-panels="closeAllPanels"
+                    @search-sessions="searchSessions"
                 >
                 </SearchForm>
-                
             </v-sheet>
         </v-col>
     </v-row>
 
     <v-row v-if="searchResultAvailable">
         <v-col v-if="noResutsFound">
-            <v-sheet 
-                elevation="4"
+            <v-sheet
                 class="rounded-lg pa-4"
-                title="No results match your search criteria">
+                elevation="4"
+                title="No results match your search criteria"
+            >
                 <v-row>
                     <v-col align="left" class="text-h6">
                         No results match your search criteria
@@ -29,227 +25,242 @@
                 </v-row>
             </v-sheet>
         </v-col>
-        
+
         <v-col v-else>
-            <v-sheet 
-                elevation="4"
+            <v-sheet
                 class="rounded-lg pa-4"
-                :title="$t('searchPage.title')">
+                elevation="4"
+                :title="$t('searchPage.title')"
+            >
+                <!------------title and buttons------------->
+                <v-row>
+                    <v-col align="left">
+                        <h2 class="title-inherit-styling text-h6">
+                            {{ $t("searchPage.title") }}
+                        </h2>
+                    </v-col>
 
-                    <!------------title and buttons------------->
-                    <v-row>
-                        <v-col align="left">
-                            <h2 class="title-inherit-styling text-h6">{{ $t('searchPage.title') }}</h2>
-                        </v-col>
+                    <v-col align="right" class="mb-2">
+                        <v-btn
+                            class="mr-2"
+                            :ripple="false"
+                            variant="text"
+                            @click="changeSortOrder()"
+                        >
+                            Date
+                            <template #prepend>
+                                <v-icon
+                                    :icon="
+                                        isSearchDescending
+                                            ? 'mdi-chevron-down'
+                                            : 'mdi-chevron-up'
+                                    "
+                                    size="x-large"
+                                ></v-icon>
+                            </template>
+                        </v-btn>
+                        <v-btn
+                            class="mr-2"
+                            :color="closeAllPanelsDisabled ? 'grey' : 'black'"
+                            :ripple="false"
+                            variant="text"
+                            @click="closeAllPanels()"
+                        >
+                            {{ $t("searchPage.collapse") }}
+                            <template #prepend>
+                                <v-icon
+                                    icon="mdi-unfold-less-horizontal"
+                                    size="x-large"
+                                ></v-icon>
+                            </template>
+                        </v-btn>
+                    </v-col>
+                </v-row>
+                <!----------------------------------->
 
-                        <v-col align="right" class="mb-2">
-                            <v-btn
-                                class="mr-2"
-                                variant="text"
-                                :ripple="false"
-                                @click="changeSortOrder()">
-                                Date
-                                <template v-slot:prepend>
-                                    <v-icon size="x-large" :icon="isSearchDescending ? 'mdi-chevron-down' : 'mdi-chevron-up'"></v-icon>
-                                </template>
-                            </v-btn>
-                            <v-btn
-                                class="mr-2"
-                                variant="text"
-                                :color="closeAllPanelsDisabled ? 'grey' : 'black'"
-                                :ripple="false"
-                                @click="closeAllPanels()">
-                                {{ $t('searchPage.collapse') }}
-                                <template v-slot:prepend>
-                                    <v-icon size="x-large" icon="mdi-unfold-less-horizontal"></v-icon>
-                                </template>
-                            </v-btn>
-                        </v-col>
-                    </v-row>
-                    <!----------------------------------->
+                <v-expansion-panels v-model="sessionPanels" multiple>
+                    <v-expansion-panel
+                        v-for="day in sessionsDays"
+                        :key="day"
+                        :value="'sessionPanel' + day"
+                    >
+                        <v-expansion-panel-title class="font-weight-bold">
+                            {{ timeUtils.formatSqlDateToString(day) }}
+                        </v-expansion-panel-title>
 
-                    <v-expansion-panels v-model="sessionPanels" multiple>
-                        <v-expansion-panel
-                            v-for="day in sessionsDays"
-                            :key="day"
-                            :value="'sessionPanel' + day">
-
-                            <v-expansion-panel-title class="font-weight-bold">
-                                {{ timeUtils.formatSqlDateToString(day) }}
-                            </v-expansion-panel-title>
-                            
-                            <v-expansion-panel-text>
-                                <SearchSessionTable 
-                                    :day="day"
-                                    :search-parameters="searchParameters!">
-                                </SearchSessionTable>
-                            </v-expansion-panel-text>
-
-                        </v-expansion-panel>
-                    </v-expansion-panels>
-
+                        <v-expansion-panel-text>
+                            <SearchSessionTable
+                                :day="day"
+                                :search-parameters="searchParameters!"
+                            >
+                            </SearchSessionTable>
+                        </v-expansion-panel-text>
+                    </v-expansion-panel>
+                </v-expansion-panels>
             </v-sheet>
         </v-col>
     </v-row>
-            
-    <AlertMsg 
+
+    <AlertMsg
         v-if="loadingStore.isTimeout"
-        :alertProps="{
+        :alert-props="{
             title: 'title',
             color: 'error',
             type: 'snackbar',
-            textKey: 'timeout-error'
-        }">
+            textKey: 'timeout-error',
+        }"
+    >
     </AlertMsg>
 </template>
 
 <script setup lang="ts">
-    import { ref, onBeforeMount, watch } from "vue";
-    import { useAppBarStore, useTableStore, useLoadingStore } from "@/stores/store";
-    import * as searchViewService from "@/services/screen-proctoring/component-services/searchViewService";
-    import SearchForm from "./SearchForm.vue";
-    import SearchSessionTable from "./SearchSessionTable.vue";
-    import * as groupingUtils from "@/utils/groupingUtils";
-    import * as timeUtils from "@/utils/timeUtils";
+import { onBeforeMount, ref, watch } from "vue";
+import { useAppBarStore, useLoadingStore, useTableStore } from "@/stores/store";
+import * as searchViewService from "@/services/screen-proctoring/component-services/searchViewService";
+import SearchForm from "./SearchForm.vue";
+import SearchSessionTable from "./SearchSessionTable.vue";
+import * as groupingUtils from "@/utils/groupingUtils";
+import * as timeUtils from "@/utils/timeUtils";
 
-    //error handling
-    const searchResultAvailable = ref<boolean>(false);
-    const noResutsFound = ref<boolean>(false);
-    const errorAvailable = ref<boolean>();
+// error handling
+const searchResultAvailable = ref<boolean>(false);
+const noResutsFound = ref<boolean>(false);
+const errorAvailable = ref<boolean>();
 
-    //main data
-    const sessionsDays = ref<string[]>([]);
+// main data
+const sessionsDays = ref<string[]>([]);
 
-    //ui control
-    const isSearchDescending = ref<boolean>(true);
-    const sessionPanels = ref<string[]>([]);
-    const closeAllPanelsDisabled = ref<boolean>(true);
+// ui control
+const isSearchDescending = ref<boolean>(true);
+const sessionPanels = ref<string[]>([]);
+const closeAllPanelsDisabled = ref<boolean>(true);
 
-    //store
-    const appBarStore = useAppBarStore();
-    const tableStore = useTableStore();
-    const loadingStore = useLoadingStore();
+// store
+const appBarStore = useAppBarStore();
+const tableStore = useTableStore();
+const loadingStore = useLoadingStore();
 
-    //form data
-    const searchParameters = ref<OptionalParSearchSessions>();
-    let examNameSearch: string | null;
-    let groupNameSearch: string | null;
+// form data
+const searchParameters = ref<OptionalParSearchSessions>();
+let examNameSearch: string | null;
+let groupNameSearch: string | null;
 
-    let metadataSearchApplication: string | null;
-    let metadataSearchBrowserTitle: string | null;
-    let metadataSearchActivityDetails: string | null;
-    let metadataSearchWindowTitle: string | null;
+let metadataSearchApplication: string | null;
+let metadataSearchBrowserTitle: string | null;
+let metadataSearchActivityDetails: string | null;
+let metadataSearchWindowTitle: string | null;
 
-    let loginNameSearch: string | null;
-    let ipAddressSearch: string | null;
-    let machineNameSearch: string | null;
+let loginNameSearch: string | null;
+let ipAddressSearch: string | null;
+let machineNameSearch: string | null;
 
+onBeforeMount(async () => {
+    appBarStore.title = "Search";
+});
 
-    onBeforeMount(async () => {
-        appBarStore.title = "Search"
-    });
+watch(sessionPanels, () => {
+    if (sessionPanels.value.length == 0) {
+        closeAllPanelsDisabled.value = true;
+        return;
+    }
 
-    watch(sessionPanels, () => {
-        if(sessionPanels.value.length == 0){
-            closeAllPanelsDisabled.value = true;
-            return;
-        }
+    closeAllPanelsDisabled.value = false;
+});
 
-        closeAllPanelsDisabled.value = false;
-    });
+async function searchSessions(
+    examName: string,
+    groupName: string,
+    loginName: string,
+    ipAddress: string,
+    machineName: string,
 
-    async function searchSessions(
-        examName: string,
-        groupName: string, 
-        loginName: string, 
-        ipAddress: string,
-        machineName: string, 
+    metadataApplication: string,
+    metadataBrowserTitle: string,
+    metadataActivityDetails: string,
+    metadataWindowTitle: string,
 
-        metadataApplication: string,
-        metadataBrowserTitle: string,
-        metadataActivityDetails: string,
-        metadataWindowTitle: string,
+    fromTime: string,
+    toTime: string,
+    pageNumber: number,
+) {
+    errorAvailable.value = false;
+    noResutsFound.value = false;
 
-        fromTime: string, 
-        toTime: string,
-        pageNumber: number
-    ){
-        errorAvailable.value = false;
-        noResutsFound.value = false;
+    examNameSearch = examName == "" ? null : examName;
+    groupNameSearch = groupName == "" ? null : groupName;
 
-        examNameSearch = examName == "" ? null : examName;
-        groupNameSearch = groupName == "" ? null : groupName;
+    metadataSearchApplication =
+        metadataApplication == "" ? null : metadataApplication;
+    metadataSearchBrowserTitle =
+        metadataBrowserTitle == "" ? null : metadataBrowserTitle;
+    metadataSearchActivityDetails =
+        metadataActivityDetails == "" ? null : metadataActivityDetails;
+    metadataSearchWindowTitle =
+        metadataWindowTitle == "" ? null : metadataWindowTitle;
 
-        metadataSearchApplication = metadataApplication == "" ? null : metadataApplication;
-        metadataSearchBrowserTitle = metadataBrowserTitle == "" ? null : metadataBrowserTitle;
-        metadataSearchActivityDetails = metadataActivityDetails == "" ? null : metadataActivityDetails;
-        metadataSearchWindowTitle = metadataWindowTitle == "" ? null : metadataWindowTitle;
+    loginNameSearch = loginName == "" ? null : loginName;
+    ipAddressSearch = ipAddress == "" ? null : ipAddress;
+    machineNameSearch = machineName == "" ? null : machineName;
 
-        loginNameSearch = loginName == "" ? null : loginName;
-        ipAddressSearch = ipAddress == "" ? null : ipAddress;
-        machineNameSearch = machineName == "" ? null : machineName;
+    searchParameters.value = {
+        examName: examNameSearch,
+        groupName: groupNameSearch,
+        clientName: loginNameSearch,
+        clientIp: ipAddressSearch,
+        clientMachineName: machineNameSearch,
 
-        searchParameters.value = {   
-            examName: examNameSearch,
-            groupName: groupNameSearch,
-            clientName: loginNameSearch,
-            clientIp: ipAddressSearch,
-            clientMachineName: machineNameSearch,
+        screenProctoringMetadataApplication: metadataSearchApplication,
+        screenProctoringMetadataBrowser: metadataSearchBrowserTitle,
+        screenProctoringMetadataUserAction: metadataSearchActivityDetails,
+        screenProctoringMetadataWindowTitle: metadataSearchWindowTitle,
 
-            screenProctoringMetadataApplication: metadataSearchApplication,
-            screenProctoringMetadataBrowser: metadataSearchBrowserTitle,
-            screenProctoringMetadataUserAction: metadataSearchActivityDetails,
-            screenProctoringMetadataWindowTitle: metadataSearchWindowTitle,
+        fromTime,
+        toTime,
+        pageSize: 500,
+        pageNumber,
+    };
 
-            fromTime: fromTime, 
-            toTime: toTime,
-            pageSize: 500,
-            pageNumber: pageNumber
-        }
+    const sessionSearchResponse: string[] | null =
+        await searchViewService.searchSessionsDay(searchParameters.value);
 
-        const sessionSearchResponse: string[] | null = await searchViewService.searchSessionsDay(searchParameters.value);
-        
-        if(sessionSearchResponse == null){
-            errorAvailable.value = true;
-            return;
-        }
+    if (sessionSearchResponse == null) {
+        errorAvailable.value = true;
+        return;
+    }
 
-        sessionsDays.value = sessionSearchResponse;
+    sessionsDays.value = sessionSearchResponse;
 
-        if(sessionsDays.value.length == 0){
-            noResutsFound.value = true;
-            searchResultAvailable.value = true;
-            return;
-        }
-
-        loginNameIpToggleListFillUp();
-    
+    if (sessionsDays.value.length == 0) {
+        noResutsFound.value = true;
         searchResultAvailable.value = true;
-        isSearchDescending.value = true;
+        return;
     }
 
-    function loginNameIpToggleListFillUp(){
-        if(sessionsDays.value == null){
-            return;
-        }
+    loginNameIpToggleListFillUp();
 
-        for(var i = 0; i < sessionsDays.value.length; i++){
-            tableStore.isIpDisplayList.push(
-                {
-                    day: sessionsDays.value[i],
-                    isIp: false
-                }
-            );
-        }
+    searchResultAvailable.value = true;
+    isSearchDescending.value = true;
+}
+
+function loginNameIpToggleListFillUp() {
+    if (sessionsDays.value == null) {
+        return;
     }
 
-    function changeSortOrder(){
-        isSearchDescending.value = !isSearchDescending.value;
-        sessionsDays.value.reverse();
+    for (let i = 0; i < sessionsDays.value.length; i++) {
+        tableStore.isIpDisplayList.push({
+            day: sessionsDays.value[i],
+            isIp: false,
+        });
     }
+}
 
-    function closeAllPanels(){
-        sessionPanels.value = [];
-    }
+function changeSortOrder() {
+    isSearchDescending.value = !isSearchDescending.value;
+    sessionsDays.value.reverse();
+}
 
+function closeAllPanels() {
+    sessionPanels.value = [];
+}
 </script>

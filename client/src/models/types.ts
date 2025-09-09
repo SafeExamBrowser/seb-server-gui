@@ -1,9 +1,9 @@
-//todo: extract small types to this file
+// todo: extract small types to this file
 type ServerTablePaging = {
-    page: number,
-    itemsPerPage: number,
-    sortBy: {key: string, order: string}[]
-}
+    page: number;
+    itemsPerPage: number;
+    sortBy: { key: string; order: string }[];
+};
 
 type GridSize = {
     title: string;
@@ -11,24 +11,23 @@ type GridSize = {
 };
 
 type NavigationItem = {
-    title: string,
-    route: string,
-    icon: string
-}
+    title: string;
+    route: string;
+    icon: string;
+};
 
 type DetailedNavigationLinks = {
     [key: string]: NavigationItem[];
 };
 
 type Page = {
-    number_of_pages: number,
-    page_number: number,
-    page_size: number
-}
+    number_of_pages: number;
+    page_number: number;
+    page_size: number;
+};
 
 type ImportWizardSteps = {
-    name: string,
-    value: number,
-    type?: string
-}
-
+    name: string;
+    value: number;
+    type?: string;
+};

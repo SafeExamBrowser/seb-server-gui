@@ -8,8 +8,8 @@ type CreateExamPar = {
     type?: string;
     quitPassword?: string;
     supporter: string[];
-    clientGroupIds: string
-}
+    clientGroupIds: string;
+};
 
 type UpdateExamPar = {
     institutionId: number;
@@ -20,20 +20,20 @@ type UpdateExamPar = {
     examTemplateId?: number;
     type: string;
     quitPassword?: string;
-    supporter?: string[]
+    supporter?: string[];
     id: number;
     quizStartTime: string;
     quizEndTime: string;
     quizName: string;
     quiz_start_url: string;
-}
+};
 
 type Exams = {
     number_of_pages: number;
     page_number: number;
     page_size: number;
     content: Exam[];
-}
+};
 
 type Exam = {
     id: number;

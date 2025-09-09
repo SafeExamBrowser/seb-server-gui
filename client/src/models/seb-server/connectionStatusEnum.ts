@@ -5,5 +5,5 @@ export enum ConnectionStatusEnum {
     ACTIVE = "ACTIVE",
     DISABLED = "DISABLED",
     MISSING = "MISSING",
-    CLOSED = "CLOSED"
+    CLOSED = "CLOSED",
 }

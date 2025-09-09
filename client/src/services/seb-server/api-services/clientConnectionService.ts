@@ -1,11 +1,11 @@
 import * as apiService from "@/services/apiService";
-import {StorageItemEnum} from "@/models/StorageItemEnum";
+import { StorageItemEnum } from "@/models/StorageItemEnum";
 
-const url = "/seb-client-connection"
+const url = "/seb-client-connection";
 const listEndpoint = url + "/list";
 
 export async function getClientConnectionList(
-    modelIds: number[] | string
+    modelIds: number[] | string,
 ): Promise<SebClientConnection[]> {
     const value = Array.isArray(modelIds)
         ? modelIds.join(",")

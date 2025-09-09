@@ -1,180 +1,234 @@
 <template>
-    <v-row class="navigation-overview-container" data-testid="navigationOverview-page-container">
+    <v-row
+        class="navigation-overview-container"
+        data-testid="navigationOverview-page-container"
+    >
         <v-container class="ml-16 mr-0" fluid>
             <v-col>
-                <v-sheet elevation="0" color="primary" class="rounded-lg pa-4">
+                <v-sheet class="rounded-lg pa-4" color="primary" elevation="0">
                     <v-app-bar-title class="mb-16">
-                        <h1 class="title-inherit-styling text-h4" data-testid="navigationOverview-title-text">
+                        <h1
+                            class="title-inherit-styling text-h4"
+                            data-testid="navigationOverview-title-text"
+                        >
                             {{ appBarStore.title }}
                         </h1>
                     </v-app-bar-title>
 
                     <v-row class="mt-4 mb-16 mr-0">
-
                         <!-- Settings -->
                         <v-col cols="3">
                             <h4 class="text-subtitle-1 font-weight-bold mb-3">
                                 {{ translate("titles.settings").toUpperCase() }}
                             </h4>
 
-                            <v-divider class="section-divider"/>
+                            <v-divider class="section-divider" />
 
                             <v-list-item class="px-0 nav-hover">
                                 <router-link
                                     class="link-color nav-link"
-                                    :to="constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE"
                                     data-testid="navigationOverview-assessmentToolConnections-link"
+                                    :to="
+                                        constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE
+                                    "
                                 >
-                                    {{ translate("navigation.routeNames.assessmentToolConnections") }}
+                                    {{
+                                        translate(
+                                            "navigation.routeNames.assessmentToolConnections",
+                                        )
+                                    }}
                                 </router-link>
                             </v-list-item>
 
-                            <v-divider class="section-divider"/>
+                            <v-divider class="section-divider" />
 
                             <v-list-item class="px-0 nav-hover">
                                 <router-link
                                     class="link-color nav-link"
-                                    :to="constants.CONNECTION_CONFIGURATIONS_ROUTE"
                                     data-testid="navigationOverview-connectionConfigurations-link"
+                                    :to="
+                                        constants.CONNECTION_CONFIGURATIONS_ROUTE
+                                    "
                                 >
-                                    {{ translate("navigation.routeNames.connectionConfiguration") }}
+                                    {{
+                                        translate(
+                                            "navigation.routeNames.connectionConfiguration",
+                                        )
+                                    }}
                                 </router-link>
                             </v-list-item>
 
-                            <v-divider class="section-divider"/>
+                            <v-divider class="section-divider" />
 
                             <v-list-item class="px-0 nav-hover">
                                 <router-link
                                     class="link-color nav-link"
-                                    :to="constants.CERTIFICATES_ROUTE"
                                     data-testid="navigationOverview-certificates-link"
+                                    :to="constants.CERTIFICATES_ROUTE"
                                 >
-                                    {{ translate("navigation.routeNames.certificates") }}
+                                    {{
+                                        translate(
+                                            "navigation.routeNames.certificates",
+                                        )
+                                    }}
                                 </router-link>
                             </v-list-item>
 
-                            <v-divider class="section-divider"/>
+                            <v-divider class="section-divider" />
 
                             <v-list-item class="px-0 nav-hover">
                                 <router-link
                                     class="link-color nav-link"
-                                    :to="constants.USER_ACCOUNTS_ROUTE"
                                     data-testid="navigationOverview-userAccounts-link"
+                                    :to="constants.USER_ACCOUNTS_ROUTE"
                                 >
-                                    {{ translate("navigation.routeNames.userAccounts") }}
+                                    {{
+                                        translate(
+                                            "navigation.routeNames.userAccounts",
+                                        )
+                                    }}
                                 </router-link>
                             </v-list-item>
 
-                            <v-divider class="section-divider"/>
+                            <v-divider class="section-divider" />
                         </v-col>
 
                         <!-- Preparation -->
                         <v-col cols="3">
                             <h4 class="text-subtitle-1 font-weight-bold mb-3">
-                                {{ translate("titles.preparation").toUpperCase() }}
+                                {{
+                                    translate(
+                                        "titles.preparation",
+                                    ).toUpperCase()
+                                }}
                             </h4>
 
-                            <v-divider class="section-divider"/>
+                            <v-divider class="section-divider" />
 
                             <v-list-item class="px-0 nav-hover">
                                 <router-link
                                     class="link-color nav-link"
-                                    :to="constants.CREATE_TEMPLATE_ROUTE"
                                     data-testid="navigationOverview-createTemplate-link"
+                                    :to="constants.CREATE_TEMPLATE_ROUTE"
                                 >
                                     {{ translate("titles.createTemplate") }}
                                 </router-link>
                             </v-list-item>
 
-                            <v-divider class="section-divider"/>
+                            <v-divider class="section-divider" />
 
                             <v-list-item class="px-0 nav-hover">
                                 <router-link
                                     class="link-color nav-link"
-                                    :to="constants.QUIZ_IMPORT_ROUTE"
                                     data-testid="navigationOverview-quizImport-link"
+                                    :to="constants.QUIZ_IMPORT_ROUTE"
                                 >
                                     {{ translate("titles.quizImport") }}
                                 </router-link>
                             </v-list-item>
 
-                            <v-divider class="section-divider"/>
+                            <v-divider class="section-divider" />
 
                             <v-list-item class="px-0 nav-hover">
                                 <span class="link-color nav-link">
-                                  {{ translate("titles.addExamWithURL") }}
+                                    {{ translate("titles.addExamWithURL") }}
                                 </span>
                             </v-list-item>
 
-                            <v-divider class="section-divider"/>
+                            <v-divider class="section-divider" />
                         </v-col>
 
                         <!-- Monitoring / Screen Proctoring -->
                         <v-col cols="3">
                             <h4 class="text-subtitle-1 font-weight-bold mb-3">
                                 {{
-                                    generalUtils.stringToBoolean(authStore.getStorageItem(StorageItemEnum.IS_SP_AVAILABLE))
+                                    generalUtils.stringToBoolean(
+                                        authStore.getStorageItem(
+                                            StorageItemEnum.IS_SP_AVAILABLE,
+                                        ),
+                                    )
                                         ? `${translate("titles.monitoring").toUpperCase()} / ${translate("titles.screenProctoring").toUpperCase()}`
-                                        : translate("titles.monitoring").toUpperCase()
+                                        : translate(
+                                              "titles.monitoring",
+                                          ).toUpperCase()
                                 }}
                             </h4>
 
-                            <v-divider class="section-divider"/>
+                            <v-divider class="section-divider" />
 
                             <v-list-item class="px-0 nav-hover">
                                 <router-link
                                     class="link-color nav-link"
-                                    :to="constants.MONITORING_ROUTE"
                                     data-testid="navigationOverview-runningExams-link"
+                                    :to="constants.MONITORING_ROUTE"
                                 >
-                                    {{ translate("navigation.routeNames.runningExams") }}
+                                    {{
+                                        translate(
+                                            "navigation.routeNames.runningExams",
+                                        )
+                                    }}
                                 </router-link>
                             </v-list-item>
 
                             <v-divider
                                 :class="[
-                                      'section-divider',
-                                      generalUtils.stringToBoolean(authStore.getStorageItem(StorageItemEnum.IS_SP_AVAILABLE)) ? 'thick-divider' : ''
-                                    ]"
+                                    'section-divider',
+                                    generalUtils.stringToBoolean(
+                                        authStore.getStorageItem(
+                                            StorageItemEnum.IS_SP_AVAILABLE,
+                                        ),
+                                    )
+                                        ? 'thick-divider'
+                                        : '',
+                                ]"
                             />
 
                             <template
-                                v-if="generalUtils.stringToBoolean(authStore.getStorageItem(StorageItemEnum.IS_SP_AVAILABLE))">
+                                v-if="
+                                    generalUtils.stringToBoolean(
+                                        authStore.getStorageItem(
+                                            StorageItemEnum.IS_SP_AVAILABLE,
+                                        ),
+                                    )
+                                "
+                            >
                                 <v-list-item class="px-0 nav-hover">
                                     <router-link
                                         class="link-color nav-link"
-                                        :to="spConstants.RUNNING_EXAMS_ROUTE"
                                         data-testid="navigationOverview-screenProctoring-link"
+                                        :to="spConstants.RUNNING_EXAMS_ROUTE"
                                     >
-                                        {{ translate("titles.screenProctoring") }}
+                                        {{
+                                            translate("titles.screenProctoring")
+                                        }}
                                     </router-link>
                                 </v-list-item>
 
-                                <v-divider class="section-divider"/>
+                                <v-divider class="section-divider" />
 
                                 <v-list-item class="px-0 nav-hover">
                                     <router-link
                                         class="link-color nav-link"
-                                        :to="spConstants.SEARCH_ROUTE"
                                         data-testid="navigationOverview-spSearch-link"
+                                        :to="spConstants.SEARCH_ROUTE"
                                     >
                                         {{ translate("titles.spSearch") }}
                                     </router-link>
                                 </v-list-item>
 
-                                <v-divider class="section-divider"/>
+                                <v-divider class="section-divider" />
 
                                 <v-list-item class="px-0 nav-hover">
                                     <router-link
                                         class="link-color nav-link"
-                                        :to="spConstants.APPLICATIONS_ROUTE"
                                         data-testid="navigationOverview-spApplications-link"
+                                        :to="spConstants.APPLICATIONS_ROUTE"
                                     >
                                         {{ translate("titles.spApplications") }}
                                     </router-link>
                                 </v-list-item>
 
-                                <v-divider class="section-divider mb-16"/>
+                                <v-divider class="section-divider mb-16" />
                             </template>
                         </v-col>
 
@@ -184,14 +238,18 @@
                                 {{ translate("titles.followUp").toUpperCase() }}
                             </h4>
 
-                            <v-divider class="section-divider"/>
+                            <v-divider class="section-divider" />
 
                             <v-list-item class="px-0 nav-hover">
                                 <span class="link-color nav-link">
-                                    {{ translate("navigation.routeNames.finishedExams") }}
+                                    {{
+                                        translate(
+                                            "navigation.routeNames.finishedExams",
+                                        )
+                                    }}
                                 </span>
                             </v-list-item>
-                            <v-divider class="section-divider"/>
+                            <v-divider class="section-divider" />
 
                             <v-list-item class="px-0 nav-hover">
                                 <span class="link-color nav-link">
@@ -199,9 +257,8 @@
                                 </span>
                             </v-list-item>
 
-                            <v-divider class="section-divider"/>
+                            <v-divider class="section-divider" />
                         </v-col>
-
                     </v-row>
                 </v-sheet>
             </v-col>
@@ -209,15 +266,14 @@
     </v-row>
 </template>
 
-
 <script setup lang="ts">
-import {useAppBarStore, useNavigationStore} from "@/stores/store";
+import { useAppBarStore, useNavigationStore } from "@/stores/store";
 import * as constants from "@/utils/constants";
 import * as spConstants from "@/utils/sp-constants";
-import {translate} from "@/utils/generalUtils";
+import { translate } from "@/utils/generalUtils";
 import * as generalUtils from "@/utils/generalUtils";
-import {useAuthStore} from "@/stores/authentication/authenticationStore";
-import {StorageItemEnum} from "@/models/StorageItemEnum";
+import { useAuthStore } from "@/stores/authentication/authenticationStore";
+import { StorageItemEnum } from "@/models/StorageItemEnum";
 
 const appBarStore = useAppBarStore();
 const navigationStore = useNavigationStore();
@@ -225,7 +281,6 @@ const authStore = useAuthStore();
 
 onBeforeMount(() => {
     appBarStore.title = translate("titles.navigationOverview");
-
 });
 
 onMounted(() => {
@@ -235,14 +290,11 @@ onMounted(() => {
 onUnmounted(() => {
     navigationStore.isNavigationOverviewOpen = false;
 });
-
-
 </script>
 
 <style scoped>
 .navigation-overview-container {
     color: white;
-
 }
 
 .link-color {
@@ -269,13 +321,13 @@ onUnmounted(() => {
         rgba(255, 255, 255, 0.98) 10%,
         rgba(255, 255, 255, 0.96) 20%,
         rgba(255, 255, 255, 0.93) 25%,
-        rgba(255, 255, 255, 0.90) 30%,
+        rgba(255, 255, 255, 0.9) 30%,
         rgba(255, 255, 255, 0.86) 40%,
-        rgba(255, 255, 255, 0.80) 60%,
-        rgba(255, 255, 255, 0.70) 68%,
-        rgba(255, 255, 255, 0.60) 75%,
+        rgba(255, 255, 255, 0.8) 60%,
+        rgba(255, 255, 255, 0.7) 68%,
+        rgba(255, 255, 255, 0.6) 75%,
         rgba(255, 255, 255, 0.45) 82%,
-        rgba(33, 92, 175, 0.20) 88%,
+        rgba(33, 92, 175, 0.2) 88%,
         rgba(33, 92, 175, 0.12) 92%,
         rgba(33, 92, 175, 0.08) 96%,
         rgba(33, 92, 175, 0.04) 98%,
@@ -303,5 +355,4 @@ onUnmounted(() => {
 .thick-divider {
     border-top-width: 2px !important;
 }
-
 </style>

@@ -4,8 +4,7 @@ type AssessmentToolsResponse = {
     page_size: number;
     complete: boolean;
     content: AssessmentTool[];
-}
-
+};
 
 type AssessmentTool = {
     id: number;
@@ -24,22 +23,18 @@ type AssessmentTool = {
     updateTime: number;
     connectionId: string;
     integrationActive: boolean;
-}
-
-
+};
 
 type OptionalParGetAssessmentTool = {
     page_size?: number;
     page_number?: number;
     sort?: string;
-    name?: string
+    name?: string;
 
     lms_type?: LMSTypeEnum | null;
     active?: string | null;
     institutionId?: string | null;
 };
-
-
 
 type CommonAssessmentToolPar = {
     institutionId: string;
@@ -55,20 +50,17 @@ type CommonAssessmentToolPar = {
 
 type CreateAssessmentToolPar =
     | (CommonAssessmentToolPar & {
-    authMode: 'token';
-    lmsRestApiToken: string;
-    lmsClientname?: never;
-    lmsClientsecret?: never;
-})
+          authMode: "token";
+          lmsRestApiToken: string;
+          lmsClientname?: never;
+          lmsClientsecret?: never;
+      })
     | (CommonAssessmentToolPar & {
-    authMode: 'client';
-    lmsClientname: string;
-    lmsClientsecret: string;
-    lmsRestApiToken?: never;
-});
-
-
-
+          authMode: "client";
+          lmsClientname: string;
+          lmsClientsecret: string;
+          lmsRestApiToken?: never;
+      });
 
 type UpdateAssessmentToolPar = {
     id: string;
@@ -84,13 +76,13 @@ type UpdateAssessmentToolPar = {
     lmsProxyPort?: number;
     lmsProxyAuthUsername?: string;
     lmsProxyAuthSecret?: string;
-}
+};
 
 enum LMSTypeEnum {
     MOCKUP = "MOCKUP",
     OPEN_EDX = "OPEN_EDX",
-    MOODLE= "MOODLE",
+    MOODLE = "MOODLE",
     MOODLE_PLUGIN = "MOODLE_PLUGIN",
     ANS_DELFT = "ANS_DELFT",
-    OPEN_OLAT = "OPEN_OLAT"
+    OPEN_OLAT = "OPEN_OLAT",
 }

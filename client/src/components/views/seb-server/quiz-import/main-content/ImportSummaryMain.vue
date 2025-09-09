@@ -18,7 +18,11 @@
                 <v-row>
                     <v-col>
                         <div class="text-subtitle-1 font-weight-medium mb-2">
-                            {{ translate("quizImportWizard.summaryMain.examTemplate") }}
+                            {{
+                                translate(
+                                    "quizImportWizard.summaryMain.examTemplate",
+                                )
+                            }}
                         </div>
                     </v-col>
                 </v-row>
@@ -26,10 +30,16 @@
                     <div class="summary-row">
                         <v-row>
                             <v-col cols="4">
-                                <span class="summary-label">{{ translate("quizImportWizard.summaryMain.templateName") }}</span>
+                                <span class="summary-label">{{
+                                    translate(
+                                        "quizImportWizard.summaryMain.templateName",
+                                    )
+                                }}</span>
                             </v-col>
                             <v-col>
-                                <span>{{ quizImportStore.selectedExamTemplate?.name }}</span>
+                                <span>{{
+                                    quizImportStore.selectedExamTemplate?.name
+                                }}</span>
                             </v-col>
                         </v-row>
                     </div>
@@ -39,11 +49,18 @@
                 <v-row v-if="quizImportStore.selectedClientGroups.length">
                     <v-col>
                         <div class="text-subtitle-1 font-weight-medium mb-2">
-                            {{ translate("quizImportWizard.summaryMain.clientGroups") }}
+                            {{
+                                translate(
+                                    "quizImportWizard.summaryMain.clientGroups",
+                                )
+                            }}
                         </div>
                     </v-col>
                 </v-row>
-                <div v-if="quizImportStore.selectedClientGroups.length" class="summary-box mb-10">
+                <div
+                    v-if="quizImportStore.selectedClientGroups.length"
+                    class="summary-box mb-10"
+                >
                     <div
                         v-for="clientGroup in quizImportStore.selectedClientGroups"
                         :key="clientGroup.id"
@@ -51,7 +68,11 @@
                     >
                         <v-row>
                             <v-col cols="4">
-                                <span class="summary-label">{{ translate("quizImportWizard.summaryMain.clientGroup") }}</span>
+                                <span class="summary-label">{{
+                                    translate(
+                                        "quizImportWizard.summaryMain.clientGroup",
+                                    )
+                                }}</span>
                             </v-col>
                             <v-col>
                                 <span>{{ clientGroup.name }}</span>
@@ -64,7 +85,11 @@
                 <v-row>
                     <v-col>
                         <div class="text-subtitle-1 font-weight-medium mb-2">
-                            {{ translate("quizImportWizard.summaryMain.supervisors") }}
+                            {{
+                                translate(
+                                    "quizImportWizard.summaryMain.supervisors",
+                                )
+                            }}
                         </div>
                     </v-col>
                 </v-row>
@@ -82,7 +107,11 @@
                 <v-row>
                     <v-col>
                         <div class="text-subtitle-1 font-weight-medium mb-2">
-                            {{ translate("quizImportWizard.summaryMain.password") }}
+                            {{
+                                translate(
+                                    "quizImportWizard.summaryMain.password",
+                                )
+                            }}
                         </div>
                     </v-col>
                 </v-row>
@@ -90,18 +119,32 @@
                     <div class="summary-row">
                         <v-row class="align-center">
                             <v-col cols="4">
-                                <span class="summary-label"> {{ translate("quizImportWizard.passwordMain.quitPassword") }}</span>
+                                <span class="summary-label">
+                                    {{
+                                        translate(
+                                            "quizImportWizard.passwordMain.quitPassword",
+                                        )
+                                    }}</span
+                                >
                             </v-col>
                             <v-col class="d-flex align-center">
-                                <span>{{ passwordVisible ? quizImportStore.selectedQuitPassword : maskedPassword }}</span>
+                                <span>{{
+                                    passwordVisible
+                                        ? quizImportStore.selectedQuitPassword
+                                        : maskedPassword
+                                }}</span>
                                 <v-btn
-                                    size="small"
                                     icon
+                                    size="small"
                                     variant="text"
                                     @click="passwordVisible = !passwordVisible"
                                 >
                                     <v-icon>
-                                        {{ passwordVisible ? 'mdi-eye-off' : 'mdi-eye' }}
+                                        {{
+                                            passwordVisible
+                                                ? "mdi-eye-off"
+                                                : "mdi-eye"
+                                        }}
                                     </v-icon>
                                 </v-btn>
                             </v-col>
@@ -113,28 +156,24 @@
     </div>
 </template>
 
-
-
 <script setup lang="ts">
 import * as quizImportWizardViewService from "@/services/seb-server/component-services/quizImportWizardViewService";
-import {useQuizImportStore} from "@/stores/seb-server/quizImportStore";
-import {useExamStore} from '@/stores/seb-server/examStore';
-import {navigateTo} from "@/router/navigation";
+import { useQuizImportStore } from "@/stores/seb-server/quizImportStore";
+import { useExamStore } from "@/stores/seb-server/examStore";
+import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants";
-import {translate} from "@/utils/generalUtils";
+import { translate } from "@/utils/generalUtils";
 import * as generalUtils from "@/utils/generalUtils";
 
-
-//stores
+// stores
 const quizImportStore = useQuizImportStore();
 
-//pw field
+// pw field
 const passwordVisible = ref<boolean>(false);
 
-const maskedPassword = computed(() =>
-    quizImportStore.selectedQuitPassword?.replace(/./g, "•") || ""
+const maskedPassword = computed(
+    () => quizImportStore.selectedQuitPassword?.replace(/./g, "•") || "",
 );
-
 </script>
 
 <style scoped>
@@ -163,7 +202,4 @@ const maskedPassword = computed(() =>
 }
 </style>
 
-
-<style scoped>
-
-</style>
+<style scoped></style>

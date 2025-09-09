@@ -1,28 +1,33 @@
 import * as groupService from "@/services/screen-proctoring/api-services/groupService";
 import * as screenshotDataService from "@/services/screen-proctoring/api-services/screenshotDataService";
 import { SortOrder } from "@/models/screen-proctoring/sortOrderEnum";
-import {navigateTo, openUrlInNewTab} from "@/router/navigation";
+import { navigateTo, openUrlInNewTab } from "@/router/navigation";
 import * as spConstants from "@/utils/sp-constants";
-import {useMonitoringStore} from "@/stores/seb-server/monitoringStore";
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import * as constants from "@/utils/constants";
 
-//=============api==============
-export async function getGroup(groupUuid: string, currentWindow: number, pageSize: number, sortOrder: SortOrder): Promise<GroupUuid | null>{
+//= ============api==============
+export async function getGroup(
+    groupUuid: string,
+    currentWindow: number,
+    pageSize: number,
+    sortOrder: SortOrder,
+): Promise<GroupUuid | null> {
     try {
-        const groupUuidResponse: GroupUuid = await groupService.getGroupByUuid(groupUuid,
+        const groupUuidResponse: GroupUuid = await groupService.getGroupByUuid(
+            groupUuid,
             {
-                pageNumber: currentWindow+=1,
+                pageNumber: (currentWindow += 1),
                 pageSize: Math.pow(pageSize, 2),
-                sortOrder: sortOrder
+                sortOrder,
                 // sortBy: "clientName",
-            }
+            },
         );
 
         return groupUuidResponse;
-
     } catch (error: any) {
-        console.error(error)
-        if(error.response){
+        console.error(error);
+        if (error.response) {
             return error.response.data;
         }
 
@@ -30,21 +35,30 @@ export async function getGroup(groupUuid: string, currentWindow: number, pageSiz
     }
 }
 
-export async function getLatestScreenshotData(sessionUuid: string, timestamp: number): Promise<ScreenshotData | null>{
-    try{
-        return await screenshotDataService.getScreenshotDataByTimestamp(sessionUuid, timestamp.toString());
-    }catch(error){
+export async function getLatestScreenshotData(
+    sessionUuid: string,
+    timestamp: number,
+): Promise<ScreenshotData | null> {
+    try {
+        return await screenshotDataService.getScreenshotDataByTimestamp(
+            sessionUuid,
+            timestamp.toString(),
+        );
+    } catch (error) {
         console.error(error);
         return null;
     }
 }
 
-//=============index============
+//= ============index============
 export function calcIndex(i: number, n: number, gridSize: number): number {
-    return ((i - 1) * gridSize + (n - 1));
+    return (i - 1) * gridSize + (n - 1);
 }
 
-export function currentIndexExists(screenshots: ScreenshotData[] | undefined, index: number): boolean {
+export function currentIndexExists(
+    screenshots: ScreenshotData[] | undefined,
+    index: number,
+): boolean {
     if (screenshots != null && screenshots.length > index) {
         return true;
     }
@@ -52,21 +66,37 @@ export function currentIndexExists(screenshots: ScreenshotData[] | undefined, in
     return false;
 }
 
-//============= TODO change link links============
-export function navigateToProctoringView(screenshot: ScreenshotData | undefined, examId: string | undefined) {
+//= ============ TODO change link links============
+export function navigateToProctoringView(
+    screenshot: ScreenshotData | undefined,
+    examId: string | undefined,
+) {
     console.log("examId" + examId);
     if (screenshot != null && examId != undefined) {
-        openUrlInNewTab(constants.MONITORING_ROUTE + "/" + examId + "/details/" + screenshot.uuid);
+        openUrlInNewTab(
+            constants.MONITORING_ROUTE +
+                "/" +
+                examId +
+                "/details/" +
+                screenshot.uuid,
+        );
     }
 }
 
-//=============metadata=========
-export function getScreenshotMetadata(currentScreenshotMetadata: MetaData | null | undefined): object{
+//= ============metadata=========
+export function getScreenshotMetadata(
+    currentScreenshotMetadata: MetaData | null | undefined,
+): object {
     return {
-        [spConstants.APPLICATION_METADATA + ":"]: currentScreenshotMetadata?.screenProctoringMetadataApplication,
-        [spConstants.SEB_BROWSER_TITLE_METADATA + ":"]: currentScreenshotMetadata?.screenProctoringMetadataBrowser,
-        [spConstants.ACTIVITY_DETAILS_METADATA + ":"]: currentScreenshotMetadata?.screenProctoringMetadataUserAction,
-        [spConstants.SEB_BROWSER_URL_METADATA + ":"]: currentScreenshotMetadata?.screenProctoringMetadataURL,
-        [spConstants.WINDOW_TITLE_METADATA + ":"]: currentScreenshotMetadata?.screenProctoringMetadataWindowTitle
+        [spConstants.APPLICATION_METADATA + ":"]:
+            currentScreenshotMetadata?.screenProctoringMetadataApplication,
+        [spConstants.SEB_BROWSER_TITLE_METADATA + ":"]:
+            currentScreenshotMetadata?.screenProctoringMetadataBrowser,
+        [spConstants.ACTIVITY_DETAILS_METADATA + ":"]:
+            currentScreenshotMetadata?.screenProctoringMetadataUserAction,
+        [spConstants.SEB_BROWSER_URL_METADATA + ":"]:
+            currentScreenshotMetadata?.screenProctoringMetadataURL,
+        [spConstants.WINDOW_TITLE_METADATA + ":"]:
+            currentScreenshotMetadata?.screenProctoringMetadataWindowTitle,
     };
 }

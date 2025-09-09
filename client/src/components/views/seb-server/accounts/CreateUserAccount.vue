@@ -5,17 +5,17 @@
     >
         {{ translate("titles.settings") }}
     </div>
-    <v-row
-        class="mt-10 w-98 h-100"
-    >
+    <v-row class="mt-10 w-98 h-100">
         <!-- settings navigation -->
-        <SettingsNavigation data-testid="createUserAccount-settingsNavigation-component" />
+        <SettingsNavigation
+            data-testid="createUserAccount-settingsNavigation-component"
+        />
 
         <v-col
-            elevation="4"
-            cols="9"
             class="bg-white rounded-lg"
+            cols="9"
             data-testid="createUserAccount-form-container"
+            elevation="4"
         >
             <v-row class="d-flex align-center justify-space-between px-6 pt-6">
                 <div
@@ -36,153 +36,253 @@
                     class="text-body-2 text-grey-darken-1"
                     data-testid="createUserAccount-form-infoText"
                 >
-                    {{ translate("userAccount.createUserAccountPage.info.accountCreationInfo") }}
+                    {{
+                        translate(
+                            "userAccount.createUserAccountPage.info.accountCreationInfo",
+                        )
+                    }}
                 </div>
             </v-row>
 
             <!-- Form -->
             <v-sheet class="rounded-lg mt-4">
-                <v-col cols="12" md="12" class="pa-0 mb-4 h-100">
+                <v-col class="pa-0 mb-4 h-100" cols="12" md="12">
                     <v-card-text>
                         <v-form
                             ref="formRef"
-                            @keyup.enter="submit()"
                             data-testid="createUserAccount-form"
+                            @keyup.enter="submit()"
                         >
                             <v-row dense>
                                 <v-col>
                                     <!-- Institution -->
-                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                    <v-col
+                                        class="custom-padding-textbox"
+                                        cols="12"
+                                        md="12"
+                                    >
                                         <v-select
-                                            required
-                                            density="compact"
-                                            :label="translate('userAccount.createUserAccountPage.labels.institutionLabel')"
-                                            variant="outlined"
                                             v-model="selectedInstitution"
-                                            :items="institutions"
+                                            data-testid="createUserAccount-institution-select"
+                                            density="compact"
+                                            :disabled="
+                                                institutionSelectDisabled
+                                            "
                                             item-title="name"
                                             item-value="modelId"
+                                            :items="institutions"
+                                            :label="
+                                                translate(
+                                                    'userAccount.createUserAccountPage.labels.institutionLabel',
+                                                )
+                                            "
+                                            required
                                             :rules="[requiredRule]"
-                                            :disabled="institutionSelectDisabled"
-                                            data-testid="createUserAccount-institution-select"
+                                            variant="outlined"
                                         />
                                     </v-col>
 
                                     <!-- Username -->
-                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                    <v-col
+                                        class="custom-padding-textbox"
+                                        cols="12"
+                                        md="12"
+                                    >
                                         <v-text-field
-                                            required
-                                            density="compact"
-                                            :label="translate('userAccount.createUserAccountPage.labels.usernameLabel')"
-                                            variant="outlined"
                                             v-model="username"
-                                            :rules="[requiredRule]"
                                             data-testid="createUserAccount-username-input"
+                                            density="compact"
+                                            :label="
+                                                translate(
+                                                    'userAccount.createUserAccountPage.labels.usernameLabel',
+                                                )
+                                            "
+                                            required
+                                            :rules="[requiredRule]"
+                                            variant="outlined"
                                         />
                                     </v-col>
 
                                     <!-- Name -->
-                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                    <v-col
+                                        class="custom-padding-textbox"
+                                        cols="12"
+                                        md="12"
+                                    >
                                         <v-text-field
-                                            required
-                                            density="compact"
-                                            :label="translate('userAccount.createUserAccountPage.labels.nameLabel')"
-                                            variant="outlined"
                                             v-model="name"
-                                            :rules="[requiredRule]"
                                             data-testid="createUserAccount-name-input"
+                                            density="compact"
+                                            :label="
+                                                translate(
+                                                    'userAccount.createUserAccountPage.labels.nameLabel',
+                                                )
+                                            "
+                                            required
+                                            :rules="[requiredRule]"
+                                            variant="outlined"
                                         />
                                     </v-col>
 
                                     <!-- Surname -->
-                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                    <v-col
+                                        class="custom-padding-textbox"
+                                        cols="12"
+                                        md="12"
+                                    >
                                         <v-text-field
-                                            required
-                                            density="compact"
-                                            :label="translate('userAccount.createUserAccountPage.labels.surnameLabel')"
-                                            variant="outlined"
                                             v-model="surname"
-                                            :rules="[requiredRule]"
                                             data-testid="createUserAccount-surname-input"
+                                            density="compact"
+                                            :label="
+                                                translate(
+                                                    'userAccount.createUserAccountPage.labels.surnameLabel',
+                                                )
+                                            "
+                                            required
+                                            :rules="[requiredRule]"
+                                            variant="outlined"
                                         />
                                     </v-col>
 
                                     <!-- Email -->
-                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                    <v-col
+                                        class="custom-padding-textbox"
+                                        cols="12"
+                                        md="12"
+                                    >
                                         <v-text-field
-                                            density="compact"
-                                            :label="translate('userAccount.createUserAccountPage.labels.emailLabel')"
-                                            variant="outlined"
                                             v-model="email"
+                                            data-testid="createUserAccount-email-input"
+                                            density="compact"
+                                            :label="
+                                                translate(
+                                                    'userAccount.createUserAccountPage.labels.emailLabel',
+                                                )
+                                            "
                                             :rules="[emailRule]"
                                             validate-on="blur"
-                                            data-testid="createUserAccount-email-input"
+                                            variant="outlined"
                                         />
                                     </v-col>
 
                                     <!-- Timezone -->
-                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                    <v-col
+                                        class="custom-padding-textbox"
+                                        cols="12"
+                                        md="12"
+                                    >
                                         <v-select
-                                            required
-                                            density="compact"
-                                            :label="translate('userAccount.createUserAccountPage.labels.timeZoneLabel')"
-                                            variant="outlined"
                                             v-model="timezone"
-                                            :items="timezoneOptions"
-                                            :rules="[requiredRule]"
-                                            :return-object="false"
                                             data-testid="createUserAccount-timezone-select"
+                                            density="compact"
+                                            :items="timezoneOptions"
+                                            :label="
+                                                translate(
+                                                    'userAccount.createUserAccountPage.labels.timeZoneLabel',
+                                                )
+                                            "
+                                            required
+                                            :return-object="false"
+                                            :rules="[requiredRule]"
+                                            variant="outlined"
                                         />
                                     </v-col>
 
                                     <!-- Password -->
-                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                    <v-col
+                                        class="custom-padding-textbox"
+                                        cols="12"
+                                        md="12"
+                                    >
                                         <v-text-field
-                                            required
-                                            :type="passwordVisible ? 'text' : 'password'"
-                                            density="compact"
-                                            :label="translate('userAccount.createUserAccountPage.labels.passwordLabel')"
-                                            variant="outlined"
                                             v-model="password"
-                                            :rules="[requiredRule, passwordRule]"
-                                            validate-on="blur"
                                             data-testid="createUserAccount-password-input"
+                                            density="compact"
+                                            :label="
+                                                translate(
+                                                    'userAccount.createUserAccountPage.labels.passwordLabel',
+                                                )
+                                            "
+                                            required
+                                            :rules="[
+                                                requiredRule,
+                                                passwordRule,
+                                            ]"
+                                            :type="
+                                                passwordVisible
+                                                    ? 'text'
+                                                    : 'password'
+                                            "
+                                            validate-on="blur"
+                                            variant="outlined"
                                         >
-                                            <template v-slot:append-inner>
+                                            <template #append-inner>
                                                 <v-btn
-                                                    density="compact"
-                                                    variant="text"
-                                                    :icon="passwordVisible ? 'mdi-eye-off' : 'mdi-eye'"
-                                                    @click="passwordVisible = !passwordVisible"
                                                     data-testid="createUserAccount-password-toggle"
+                                                    density="compact"
+                                                    :icon="
+                                                        passwordVisible
+                                                            ? 'mdi-eye-off'
+                                                            : 'mdi-eye'
+                                                    "
+                                                    variant="text"
+                                                    @click="
+                                                        passwordVisible =
+                                                            !passwordVisible
+                                                    "
                                                 />
                                             </template>
                                         </v-text-field>
                                     </v-col>
 
                                     <!-- Confirm Password -->
-                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                    <v-col
+                                        class="custom-padding-textbox"
+                                        cols="12"
+                                        md="12"
+                                    >
                                         <v-text-field
                                             ref="confirmPasswordFieldRef"
-                                            required
-                                            :type="confirmPasswordVisible ? 'text' : 'password'"
-                                            density="compact"
-                                            :label="translate('userAccount.createUserAccountPage.labels.confirmPasswordLabel')"
-                                            variant="outlined"
                                             v-model="confirmPassword"
-                                            :rules="[requiredRule, confirmPasswordRule]"
-                                            validate-on="blur"
-                                            @blur="confirmPasswordTouched = true"
                                             class="mb-2"
                                             data-testid="createUserAccount-confirmPassword-input"
+                                            density="compact"
+                                            :label="
+                                                translate(
+                                                    'userAccount.createUserAccountPage.labels.confirmPasswordLabel',
+                                                )
+                                            "
+                                            required
+                                            :rules="[
+                                                requiredRule,
+                                                confirmPasswordRule,
+                                            ]"
+                                            :type="
+                                                confirmPasswordVisible
+                                                    ? 'text'
+                                                    : 'password'
+                                            "
+                                            validate-on="blur"
+                                            variant="outlined"
+                                            @blur="
+                                                confirmPasswordTouched = true
+                                            "
                                         >
-                                            <template v-slot:append-inner>
+                                            <template #append-inner>
                                                 <v-btn
-                                                    density="compact"
-                                                    variant="text"
-                                                    :icon="confirmPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
-                                                    @click="confirmPasswordVisible = !confirmPasswordVisible"
                                                     data-testid="createUserAccount-confirmPassword-toggle"
+                                                    density="compact"
+                                                    :icon="
+                                                        confirmPasswordVisible
+                                                            ? 'mdi-eye-off'
+                                                            : 'mdi-eye'
+                                                    "
+                                                    variant="text"
+                                                    @click="
+                                                        confirmPasswordVisible =
+                                                            !confirmPasswordVisible
+                                                    "
                                                 />
                                             </template>
                                         </v-text-field>
@@ -192,66 +292,77 @@
                                 <!-- user circle and roles -->
                                 <v-col>
                                     <v-col
-                                        cols="12"
                                         class="d-flex justify-center mb-6"
+                                        cols="12"
                                         data-testid="createUserAccount-userCircle"
                                     >
                                         <div
                                             class="rounded-circle d-flex align-center justify-center"
                                             style="
-                        background-color: transparent;
-                        border: 0.5rem solid #215CAF;
-                        width: 13rem;
-                        height: 13rem;
-                        min-width: 13rem;
-                        font-weight: 600;
-                        font-size: 4rem;
-                        color: #215CAF;
-                      "
+                                                background-color: transparent;
+                                                border: 0.5rem solid #215caf;
+                                                width: 13rem;
+                                                height: 13rem;
+                                                min-width: 13rem;
+                                                font-weight: 600;
+                                                font-size: 4rem;
+                                                color: #215caf;
+                                            "
                                         >
                                             {{
-                                                (name?.[0] || '') +
-                                                (surname?.[0] || '')
+                                                (name?.[0] || "") +
+                                                (surname?.[0] || "")
                                             }}
                                         </div>
                                     </v-col>
 
                                     <!-- roles -->
-                                    <v-col cols="12" class="ml-16">
+                                    <v-col class="ml-16" cols="12">
                                         <div
                                             class="text-subtitle-1 font-weight-medium mb-2"
                                             data-testid="createUserAccount-roles-label"
                                         >
-                                            {{ translate("userAccount.createUserAccountPage.labels.selectRolesLabel") }}
+                                            {{
+                                                translate(
+                                                    "userAccount.createUserAccountPage.labels.selectRolesLabel",
+                                                )
+                                            }}
                                         </div>
                                         <div
                                             class="text-body-2 text-grey-darken-1 mb-5"
                                             data-testid="createUserAccount-roles-info"
                                         >
-                                            {{ translate("userAccount.createUserAccountPage.info.rolesSelectionInfo") }}
+                                            {{
+                                                translate(
+                                                    "userAccount.createUserAccountPage.info.rolesSelectionInfo",
+                                                )
+                                            }}
                                         </div>
                                         <v-row dense>
                                             <v-col
                                                 v-for="role in availableRoles"
                                                 :key="role.value"
-                                                cols="12"
-                                                md="7"
-                                                lg="7"
                                                 class="py-1"
+                                                cols="12"
+                                                lg="7"
+                                                md="7"
                                             >
                                                 <v-checkbox
                                                     v-model="selectedRoles"
-                                                    :label="role.label"
-                                                    :value="role.value"
-                                                    density="compact"
-                                                    hide-details
                                                     class="custom-checkbox"
                                                     :data-testid="`createUserAccount-role-${role.value}-checkbox`"
+                                                    density="compact"
+                                                    hide-details
+                                                    :label="role.label"
+                                                    :value="role.value"
                                                 />
                                             </v-col>
                                         </v-row>
                                         <div
-                                            v-if="rolesTouched && selectedRoles.length === 0"
+                                            v-if="
+                                                rolesTouched &&
+                                                selectedRoles.length === 0
+                                            "
                                             class="text-error text-caption mt-1"
                                             data-testid="createUserAccount-roles-error"
                                         >
@@ -267,25 +378,25 @@
 
             <!-- Buttons -->
             <v-row class="px-6 pt-0">
-                <v-col cols="12" md="12" class="pa-0 mb-4">
+                <v-col class="pa-0 mb-4" cols="12" md="12">
                     <div class="d-flex justify-end">
                         <v-btn
-                            rounded="sm"
                             color="black"
+                            data-testid="createUserAccount-cancel-button"
+                            rounded="sm"
                             variant="outlined"
                             @click="navigateTo(constants.USER_ACCOUNTS_ROUTE)"
-                            data-testid="createUserAccount-cancel-button"
                         >
                             {{ translate("general.cancelButton") }}
                         </v-btn>
 
                         <v-btn
-                            rounded="sm"
-                            color="primary"
-                            variant="flat"
                             class="ml-2"
-                            @click="submit()"
+                            color="primary"
                             data-testid="createUserAccount-save-button"
+                            rounded="sm"
+                            variant="flat"
+                            @click="submit()"
                         >
                             {{ translate("general.saveButton") }}
                         </v-btn>
@@ -297,218 +408,235 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, onMounted, onBeforeUnmount } from 'vue';
-    import { useAppBarStore, useLayoutStore } from '@/stores/store';
-    import { translate } from '@/utils/generalUtils';
-    import * as constants from '@/utils/constants';
-    import moment from "moment-timezone";
-    import { getInstitutions } from "@/services/seb-server/component-services/registerAccountViewService";
-    import { createUserAccount } from "@/services/seb-server/component-services/userAccountViewService";
-    import { navigateTo } from "@/router/navigation";
-    import { UserRoleEnum } from '@/models/userRoleEnum';
-    import {useI18n} from "vue-i18n";
-    import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/authenticationStore";
+import { onBeforeUnmount, onMounted, ref } from "vue";
+import { useAppBarStore, useLayoutStore } from "@/stores/store";
+import { translate } from "@/utils/generalUtils";
+import * as constants from "@/utils/constants";
+import moment from "moment-timezone";
+import { getInstitutions } from "@/services/seb-server/component-services/registerAccountViewService";
+import { createUserAccount } from "@/services/seb-server/component-services/userAccountViewService";
+import { navigateTo } from "@/router/navigation";
+import { UserRoleEnum } from "@/models/userRoleEnum";
+import { useI18n } from "vue-i18n";
+import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/authenticationStore";
 
+const appBarStore = useAppBarStore();
+const layoutStore = useLayoutStore();
+const i18n = useI18n();
 
-    const appBarStore = useAppBarStore();
-    const layoutStore = useLayoutStore();
-    const i18n = useI18n();
+// fields
+const selectedInstitution = ref<string | null>(null);
+const name = ref<string>("");
+const surname = ref<string>("");
+const username = ref<string>("");
+const email = ref<string>();
+const timezone = ref<string>("");
+const password = ref<string>("");
+const confirmPassword = ref<string>("");
+const createdUserName = ref("");
+const formRef = ref();
 
-    //fields
-    const selectedInstitution = ref<string | null>(null);
-    const name = ref<string>("");
-    const surname = ref<string>("");
-    const username = ref<string>("");
-    const email = ref<string>();
-    const timezone = ref<string>("");
-    const password = ref<string>("");
-    const confirmPassword = ref<string>("");
-    const createdUserName = ref("");
-    const formRef = ref();
+const rolesTouched = ref(false);
+const createdSuccess = ref(false);
+const passwordVisible = ref<boolean>(false);
+const confirmPasswordVisible = ref<boolean>(false);
+const confirmPasswordFieldRef = ref();
+const confirmPasswordTouched = ref(false);
+const institutionSelectDisabled = ref(false);
 
-    const rolesTouched = ref(false);
-    const createdSuccess= ref(false);
-    const passwordVisible = ref<boolean>(false);
-    const confirmPasswordVisible = ref<boolean>(false);
-    const confirmPasswordFieldRef = ref();
-    const confirmPasswordTouched = ref(false);
-    const institutionSelectDisabled = ref(false);
+const institutions = ref<Institution[]>([]);
+const selectedRoles = ref<string[]>([]);
+const timezoneOptions = moment.tz.names();
+const authenticatedUserAccountStore = useAuthenticatedUserAccountStore();
 
-    const institutions = ref<Institution[]>([]);
-    const selectedRoles = ref<string[]>([]);
-    const timezoneOptions = moment.tz.names();
-    const authenticatedUserAccountStore = useAuthenticatedUserAccountStore();
+// validation rules
+const requiredMessage = translate("userAccount.general.validation.required");
+const passwordTooShortMessage = translate(
+    "userAccount.general.validation.passwordTooShort",
+);
+const passwordsDontMatchMessage = translate(
+    "userAccount.general.validation.passwordsDontMatch",
+);
+const invalidEmailMessage = translate(
+    "userAccount.general.validation.invalidEmail",
+);
+const invalidRoleSelectionMessage = translate(
+    "userAccount.general.validation.invalidRoleSelection",
+);
 
+const requiredRule = (v: string) => !!v || requiredMessage;
+const passwordRule = (v: string) =>
+    (v && v.length >= 8) || passwordTooShortMessage;
+const confirmPasswordRule = (v: string) =>
+    v === password.value || passwordsDontMatchMessage;
+const emailRule = (v: string) =>
+    !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || invalidEmailMessage;
+const rolesRule = (v: string[]) => v.length > 0 || invalidRoleSelectionMessage;
 
-    //validation rules
-    const requiredMessage = translate("userAccount.general.validation.required");
-    const passwordTooShortMessage = translate("userAccount.general.validation.passwordTooShort");
-    const passwordsDontMatchMessage = translate("userAccount.general.validation.passwordsDontMatch");
-    const invalidEmailMessage = translate("userAccount.general.validation.invalidEmail");
-    const invalidRoleSelectionMessage = translate("userAccount.general.validation.invalidRoleSelection");
+const availableRoles = ref<{ label: string; value: string }[]>([]);
 
-    const requiredRule = (v: string) => !!v || requiredMessage;
-    const passwordRule = (v: string) => (v && v.length >= 8) || passwordTooShortMessage;
-    const confirmPasswordRule = (v: string) => v === password.value || passwordsDontMatchMessage;
-    const emailRule = (v: string) => !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || invalidEmailMessage;
-    const rolesRule = (v: string[]) => v.length > 0 || invalidRoleSelectionMessage;
+const allRoles = Object.values(UserRoleEnum).map((role) => ({
+    label: translate(`general.userRoles.${role}`),
+    value: role,
+}));
 
-    const availableRoles = ref<{ label: string; value: string }[]>([]);
+function getAvailableRolesForUser(userRoles: string[]): typeof allRoles {
+    const hasSebServerAdmin = userRoles.includes(UserRoleEnum.SEB_SERVER_ADMIN);
+    const hasInstitutionalAdmin = userRoles.includes(
+        UserRoleEnum.INSTITUTIONAL_ADMIN,
+    );
+    if (hasSebServerAdmin) {
+        return allRoles;
+    }
+    if (hasInstitutionalAdmin) {
+        return allRoles.filter((role) =>
+            [
+                UserRoleEnum.INSTITUTIONAL_ADMIN,
+                UserRoleEnum.EXAM_ADMIN,
+                UserRoleEnum.EXAM_SUPPORTER,
+            ].includes(role.value),
+        );
+    }
+    return [];
+}
 
-    const allRoles = Object.values(UserRoleEnum).map(role => ({
-        label: translate(`general.userRoles.${role}`),
-        value: role
-    }));
+onMounted(async () => {
+    appBarStore.title = translate("titles.createUserAccount");
+    layoutStore.setBlueBackground(true);
 
-    function getAvailableRolesForUser(userRoles: string[]): typeof allRoles {
-        const hasSebServerAdmin = userRoles.includes(UserRoleEnum.SEB_SERVER_ADMIN);
-        const hasInstitutionalAdmin = userRoles.includes(UserRoleEnum.INSTITUTIONAL_ADMIN);
-        if (hasSebServerAdmin) {
-            return allRoles;
-        }
-        if (hasInstitutionalAdmin) {
-            return allRoles.filter(role =>
-                [UserRoleEnum.INSTITUTIONAL_ADMIN, UserRoleEnum.EXAM_ADMIN, UserRoleEnum.EXAM_SUPPORTER].includes(role.value)
+    const user = authenticatedUserAccountStore.userAccount;
+    const roles = user?.userRoles ?? [];
+
+    const result: Institution[] | null = await getInstitutions();
+    institutions.value = result ?? [];
+
+    availableRoles.value = getAvailableRolesForUser(roles);
+
+    if (roles.includes(UserRoleEnum.SEB_SERVER_ADMIN)) {
+        institutionSelectDisabled.value = false;
+    } else if (roles.includes(UserRoleEnum.INSTITUTIONAL_ADMIN)) {
+        const userInstitutionId = String(user?.institutionId);
+        const matchedInstitution = institutions.value.find(
+            (inst) => inst.modelId === userInstitutionId,
+        );
+
+        if (matchedInstitution) {
+            selectedInstitution.value = matchedInstitution.modelId;
+            institutionSelectDisabled.value = true;
+            institutions.value = [matchedInstitution];
+        } else {
+            console.warn(
+                "User's institution not found in fetched institutions.",
             );
         }
-        return [];
+    }
+});
+
+watch(selectedRoles, () => {
+    rolesTouched.value = true;
+});
+watch(password, () => {
+    if (confirmPasswordTouched.value) {
+        confirmPasswordFieldRef.value?.validate?.();
+    }
+});
+
+async function submit() {
+    rolesTouched.value = true;
+
+    // Always validate the form
+    const { valid } = await formRef.value.validate();
+
+    // Manually check roles
+    const rolesValid = selectedRoles.value.length > 0;
+
+    // If anything is invalid, stop
+    if (!valid || !rolesValid) {
+        return;
     }
 
-    onMounted(async () => {
-        appBarStore.title = translate("titles.createUserAccount");
-        layoutStore.setBlueBackground(true);
-
-        const user = authenticatedUserAccountStore.userAccount;
-        const roles = user?.userRoles ?? [];
-
-        const result : Institution[] | null = await getInstitutions();
-        institutions.value = result ?? [];
-
-        availableRoles.value = getAvailableRolesForUser(roles);
-
-        if (roles.includes(UserRoleEnum.SEB_SERVER_ADMIN)) {
-            institutionSelectDisabled.value = false;
-        } else if (roles.includes(UserRoleEnum.INSTITUTIONAL_ADMIN)) {
-            const userInstitutionId = String(user?.institutionId);
-            const matchedInstitution = institutions.value.find(inst => inst.modelId === userInstitutionId);
-
-            if (matchedInstitution) {
-                selectedInstitution.value = matchedInstitution.modelId;
-                institutionSelectDisabled.value = true;
-                institutions.value = [matchedInstitution];
-            } else {
-                console.warn("User's institution not found in fetched institutions.");
-            }
-        }
-    });
-
-    watch(selectedRoles, () => {
-        rolesTouched.value = true;
-    });
-    watch(password, () => {
-        if (confirmPasswordTouched.value) {
-            confirmPasswordFieldRef.value?.validate?.();
-        }
-    });
-
-    async function submit(){
-        rolesTouched.value = true;
-
-        // Always validate the form
-        const { valid } = await formRef.value.validate();
-
-        // Manually check roles
-        const rolesValid = selectedRoles.value.length > 0;
-
-        // If anything is invalid, stop
-        if (!valid || !rolesValid) {
-            return;
-        }
-
-        // Prepare the request
-        const createUserAcccountParams: CreateUserPar = {
-            institutionId: selectedInstitution.value!,
-            name: name.value,
-            surname: surname.value,
-            username: username.value,
-            newPassword: password.value,
-            confirmNewPassword: confirmPassword.value,
-            timezone: timezone.value,
-            language: "en",
-            email: email.value || "",
-            userRoles: selectedRoles.value
-        };
-
-        // Call the service
-        const createdUserAccountResponse: SingleUserAccountResponse | null = await createUserAccount(createUserAcccountParams);
-
-        if (createdUserAccountResponse == null) {
-            return;
-        } else {
-            createdUserName.value = createdUserAccountResponse.name;
-            createdSuccess.value = true;
-            setTimeout(() => {
-                createdSuccess.value = false;
-                navigateTo(constants.USER_ACCOUNTS_ROUTE);
-            }, 1500);
-
-        }
+    // Prepare the request
+    const createUserAcccountParams: CreateUserPar = {
+        institutionId: selectedInstitution.value!,
+        name: name.value,
+        surname: surname.value,
+        username: username.value,
+        newPassword: password.value,
+        confirmNewPassword: confirmPassword.value,
+        timezone: timezone.value,
+        language: "en",
+        email: email.value || "",
+        userRoles: selectedRoles.value,
     };
 
-    onBeforeUnmount(() => {
-        layoutStore.setBlueBackground(false);
-    });
-    onMounted(() => {
-        appBarStore.title = translate("titles.createUserAccount");
-        layoutStore.setBlueBackground(true);
-    });
+    // Call the service
+    const createdUserAccountResponse: SingleUserAccountResponse | null =
+        await createUserAccount(createUserAcccountParams);
 
+    if (createdUserAccountResponse == null) {
+    } else {
+        createdUserName.value = createdUserAccountResponse.name;
+        createdSuccess.value = true;
+        setTimeout(() => {
+            createdSuccess.value = false;
+            navigateTo(constants.USER_ACCOUNTS_ROUTE);
+        }, 1500);
+    }
+}
+
+onBeforeUnmount(() => {
+    layoutStore.setBlueBackground(false);
+});
+onMounted(() => {
+    appBarStore.title = translate("titles.createUserAccount");
+    layoutStore.setBlueBackground(true);
+});
 </script>
 
 <style scoped>
-    .nav-hover:hover .nav-link {
-        color: #215caf;
-    }
+.nav-hover:hover .nav-link {
+    color: #215caf;
+}
 
-    .w-98 {
-        width: 98% !important;
-    }
+.w-98 {
+    width: 98% !important;
+}
 
-    .custom-divider {
-        background-color: #DCDCDC !important;
-        height: 1px;
-        width: 100%;
-    }
+.custom-divider {
+    background-color: #dcdcdc !important;
+    height: 1px;
+    width: 100%;
+}
 
-    .custom-padding-textbox {
-        padding-top: 8px !important;
-        padding-bottom: 8px !important;
-    }
+.custom-padding-textbox {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+}
 
-    .custom-role-checkbox input[type="checkbox"] {
-        appearance: none;
-        width: 20px;
-        height: 20px;
-        border: 2px solid #215CAE;
-        border-radius: 50%;
-        background-color: white;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        position: relative;
-        flex-shrink: 0;
-    }
+.custom-role-checkbox input[type="checkbox"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #215cae;
+    border-radius: 50%;
+    background-color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    flex-shrink: 0;
+}
 
-    .custom-role-checkbox input[type="checkbox"]:checked {
-        border-width: 6px;
-    }
+.custom-role-checkbox input[type="checkbox"]:checked {
+    border-width: 6px;
+}
 
-    .custom-role-checkbox label {
-        color: #215caf;
-        font-size: 16px;
-        font-weight: 400;
-        line-height: 24px;
-        font-family: Roboto, sans-serif;
-        letter-spacing: 0.15px;
-        cursor: pointer;
-    }
+.custom-role-checkbox label {
+    color: #215caf;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    font-family: Roboto, sans-serif;
+    letter-spacing: 0.15px;
+    cursor: pointer;
+}
 </style>

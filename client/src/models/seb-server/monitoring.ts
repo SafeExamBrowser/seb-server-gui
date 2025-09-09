@@ -38,8 +38,7 @@ type OverviewClientGroup = {
     spsGroupUUID?: string;
     type: string;
     typeValue: string;
-}
-
+};
 
 type MonitoringConnections = {
     examId: number;
@@ -59,7 +58,7 @@ type MonitoringClientConnection = {
     nf: number;
     st: string;
     iv: Record<string, string>;
-}
+};
 
 type ScreenProctoringData = {
     uuid: string;
@@ -70,7 +69,7 @@ type ScreenProctoringData = {
 type MonitoringStaticClientData = {
     staticClientConnectionData: StaticClientConnectionData[];
     duplications: Set<number>;
-}
+};
 
 type StaticClientConnectionData = {
     id: number;
@@ -79,7 +78,7 @@ type StaticClientConnectionData = {
     ask: string;
     seb_info: string;
     cg: number[];
-}
+};
 
 type SingleConnection = {
     miss: boolean;
@@ -98,8 +97,8 @@ type SingleConnection = {
         institutionId: number;
         seb_info: string;
         status: string;
-    }
-}
+    };
+};
 
 type ClientNotification = {
     id: number;
@@ -110,7 +109,7 @@ type ClientNotification = {
     numericValue: number;
     text: string;
     notificationType: string;
-}
+};
 
 type ClientEvent = {
     id: number;
@@ -125,8 +124,7 @@ type ClientEvent = {
     value: string;
     numericValue: number;
     notificationType: string;
-}
-
+};
 
 type ClientEventResponse = {
     number_of_pages: number;

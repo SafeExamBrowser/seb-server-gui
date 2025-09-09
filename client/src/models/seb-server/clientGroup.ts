@@ -3,7 +3,7 @@ type ClientGroups = {
     page_number: number;
     page_size: number;
     content: ClientGroup[];
-}
+};
 
 type ClientGroup = {
     id?: number;
@@ -17,5 +17,5 @@ type ClientGroup = {
     clientOS?: string;
     nameRangeStartLetter?: string;
     nameRangeEndLetter?: string;
-    isSPSGroup?: boolean
+    isSPSGroup?: boolean;
 };

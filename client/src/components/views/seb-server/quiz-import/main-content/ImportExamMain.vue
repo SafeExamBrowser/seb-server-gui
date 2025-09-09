@@ -1,6 +1,5 @@
 <template>
     <div class="h-100 w-100">
-
         <v-row>
             <v-col>
                 <div class="text-h6 font-weight-bold mb-1">
@@ -10,78 +9,90 @@
                     {{ translate("quizImportWizard.examMain.description") }}
                 </div>
 
-                <v-form @keyup.enter="loadExamItemsCaller()" @keyup.esc="clearForm()">
-                    <v-row dense align="center" class="mt-3">
+                <v-form
+                    @keyup.enter="loadExamItemsCaller()"
+                    @keyup.esc="clearForm()"
+                >
+                    <v-row align="center" class="mt-3" dense>
                         <v-col cols="5" md="5">
                             <div class="text-body-2">
-                                {{ translate("quizImportWizard.examMain.searchName") }}
+                                {{
+                                    translate(
+                                        "quizImportWizard.examMain.searchName",
+                                    )
+                                }}
                             </div>
                         </v-col>
                         <v-col cols="3" md="3">
                             <div class="text-body-2 ml-3">
-                                {{ translate("quizImportWizard.examMain.filterDate") }}
+                                {{
+                                    translate(
+                                        "quizImportWizard.examMain.filterDate",
+                                    )
+                                }}
                             </div>
                         </v-col>
                         <v-spacer></v-spacer>
                     </v-row>
 
-
-                    <v-row dense class="mb-6" align="center">
+                    <v-row align="center" class="mb-6" dense>
                         <!-- Search -->
                         <v-col cols="5" md="5">
                             <v-text-field
                                 v-model="quizImportStore.searchField"
-                                single-line
-                                hide-details
-                                density="compact"
-                                variant="outlined"
                                 append-inner-icon="mdi-magnify"
-                                :placeholder="translate('quizImportWizard.examMain.examName')"
+                                density="compact"
+                                hide-details
+                                :placeholder="
+                                    translate(
+                                        'quizImportWizard.examMain.examName',
+                                    )
+                                "
+                                single-line
+                                variant="outlined"
                             />
                         </v-col>
 
                         <!-- Date -->
                         <v-col cols="3" md="3">
                             <v-date-input
-                                single-line
-                                hide-details
                                 v-model="datepicker"
-                                density="compact"
-                                variant="outlined"
-                                placeholder="dd.MM.yyyy"
-                                display-date-format="dd.MM.yyyy"
-                                input-format="dd.MM.yyyy"
-                                prepend-icon=""
                                 append-inner-icon="mdi-calendar"
-                                class="ml-3">
+                                class="ml-3"
+                                density="compact"
+                                display-date-format="dd.MM.yyyy"
+                                hide-details
+                                input-format="dd.MM.yyyy"
+                                placeholder="dd.MM.yyyy"
+                                prepend-icon=""
+                                single-line
+                                variant="outlined"
+                            >
                             </v-date-input>
                         </v-col>
 
                         <v-col cols="2">
                             <v-btn
                                 block
+                                class="rounded"
                                 color="primary"
                                 variant="flat"
-                                class="rounded"
                                 @click="loadExamItemsCaller()"
                             >
                                 {{ translate("general.searchButton") }}
                             </v-btn>
                         </v-col>
                         <v-col cols="2">
-
                             <v-btn
                                 block
+                                class="rounded ml-0"
                                 color="black"
                                 variant="outlined"
-                                class="rounded ml-0"
                                 @click="clearForm()"
                             >
                                 {{ translate("general.cancelButton") }}
                             </v-btn>
                         </v-col>
-
-
                     </v-row>
                 </v-form>
             </v-col>
@@ -90,40 +101,68 @@
         <v-row>
             <v-col>
                 <v-data-table-server
-                    item-value="quiz_id"
-                    @update:options="loadItems"
+                    class="elevation-1 rounded-lg"
+                    :headers="quizzesTableHeaders"
                     :hover="true"
-                    :loading="isLoading"
-                    :loading-text="translate('general.loadingText')"
+                    item-value="quiz_id"
                     :items="quizzes?.content"
                     :items-length="totalItems"
-                    :items-per-page="tableUtils.calcDefaultItemsPerPage(totalItems)"
-                    :items-per-page-options="tableUtils.calcItemsPerPage(totalItems)"
-                    :headers="quizzesTableHeaders"
-                    class="elevation-1 rounded-lg"
-                    style="min-height:38vh"
+                    :items-per-page="
+                        tableUtils.calcDefaultItemsPerPage(totalItems)
+                    "
+                    :items-per-page-options="
+                        tableUtils.calcItemsPerPage(totalItems)
+                    "
+                    :loading="isLoading"
+                    :loading-text="translate('general.loadingText')"
+                    style="min-height: 38vh"
+                    @update:options="loadItems"
                 >
-                    <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort }">
+                    <template
+                        #headers="{
+                            columns,
+                            isSorted,
+                            getSortIcon,
+                            toggleSort,
+                        }"
+                    >
                         <TableHeaders
                             :columns="columns"
-                            :is-sorted="isSorted"
                             :get-sort-icon="getSortIcon"
-                            :toggle-sort="toggleSort"
                             :header-refs-prop="quizzesTableHeadersRef"
+                            :is-sorted="isSorted"
+                            :toggle-sort="toggleSort"
                         />
                     </template>
 
-                    <template v-slot:item="{ item }">
+                    <template #item="{ item }">
                         <tr
-                            tabindex="0"
-                            @keyup.enter="onTableRowClick(item)"
-                            @click="onTableRowClick(item)"
                             class="on-row-hover"
-                            :class="[quizImportStore.selectedQuiz?.quiz_id === item.quiz_id ? 'selected-row' : '']"
+                            :class="[
+                                quizImportStore.selectedQuiz?.quiz_id ===
+                                item.quiz_id
+                                    ? 'selected-row'
+                                    : '',
+                            ]"
+                            tabindex="0"
+                            @click="onTableRowClick(item)"
+                            @keyup.enter="onTableRowClick(item)"
                         >
                             <td>{{ item.quiz_name }}</td>
-                            <td>{{ timeUtils.formatIsoToReadableDateTime(item.quiz_start_time) }}</td>
-                            <td>{{ timeUtils.formatIsoToReadableDateTime(item.quiz_end_time) }}</td>
+                            <td>
+                                {{
+                                    timeUtils.formatIsoToReadableDateTime(
+                                        item.quiz_start_time,
+                                    )
+                                }}
+                            </td>
+                            <td>
+                                {{
+                                    timeUtils.formatIsoToReadableDateTime(
+                                        item.quiz_end_time,
+                                    )
+                                }}
+                            </td>
                         </tr>
                     </template>
                 </v-data-table-server>
@@ -132,55 +171,64 @@
     </div>
 </template>
 
-
 <script setup lang="ts">
 import * as quizImportWizardViewService from "@/services/seb-server/component-services/quizImportWizardViewService";
 import * as tableUtils from "@/utils/table/tableUtils";
 import * as timeUtils from "@/utils/timeUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
-import {useQuizImportStore} from "@/stores/seb-server/quizImportStore";
-import {storeToRefs} from "pinia";
-import {translate} from "@/utils/generalUtils";
-import {wait} from "@/utils/generalUtils";
-import {VDateInput} from "vuetify/labs/VDateInput";
+import { useQuizImportStore } from "@/stores/seb-server/quizImportStore";
+import { storeToRefs } from "pinia";
+import { translate, wait } from "@/utils/generalUtils";
+import { VDateInput } from "vuetify/labs/VDateInput";
 
-
-//stores
+// stores
 const quizImportStore = useQuizImportStore();
 const quizImportStoreRef = storeToRefs(quizImportStore);
 
-//items
+// items
 const quizzes = ref<Quizzes>();
 
-//table - pagination, item size, search
+// table - pagination, item size, search
 const isLoading = ref<boolean>(false);
 const totalItems = ref<number>(5);
 
-//table
+// table
 const isOnLoad = ref<boolean>(true);
-const defaultSort: { key: string, order: string }[] = [{key: 'quiz_start_time', order: 'desc'}];
+const defaultSort: { key: string; order: string }[] = [
+    { key: "quiz_start_time", order: "desc" },
+];
 const quizzesTableHeadersRef = ref<any[]>();
 const quizzesTableHeaders = ref([
-    {title: translate("quizImportWizard.examMain.tableHeaderName"), key: "quiz_name", width: "60%"},
-    {title: translate("quizImportWizard.examMain.tableHeaderStart"), key: "quiz_start_time", width: "20%"},
-    {title: translate("quizImportWizard.examMain.tableHeaderEnd"), key: "quiz_end_time", width: "20%"},
+    {
+        title: translate("quizImportWizard.examMain.tableHeaderName"),
+        key: "quiz_name",
+        width: "60%",
+    },
+    {
+        title: translate("quizImportWizard.examMain.tableHeaderStart"),
+        key: "quiz_start_time",
+        width: "20%",
+    },
+    {
+        title: translate("quizImportWizard.examMain.tableHeaderEnd"),
+        key: "quiz_end_time",
+        width: "20%",
+    },
 ]);
 
-
-//emits - call loadExamItemsCaller in parent
+// emits - call loadExamItemsCaller in parent
 const emit = defineEmits<{
     loadExamItemsCaller: any;
 }>();
 
-//datepicker
+// datepicker
 const datepicker = ref();
 
-
 defineExpose({
-    loadItems
+    loadItems,
 });
 
-//=======================events & watchers=======================
+//= ======================events & watchers=======================
 watch(quizImportStoreRef.selectedAssessmentTool, () => {
     if (quizImportStore.currentPagingOptions == null) {
         return;
@@ -188,7 +236,7 @@ watch(quizImportStoreRef.selectedAssessmentTool, () => {
     loadItems(quizImportStore.currentPagingOptions);
 });
 
-//workaround es the method with "defineExpose" does not work
+// workaround es the method with "defineExpose" does not work
 watch(quizImportStoreRef.loadExamItemsCaller, () => {
     if (quizImportStore.currentPagingOptions == null) {
         return;
@@ -199,7 +247,6 @@ watch(quizImportStoreRef.loadExamItemsCaller, () => {
     }
     loadItems(quizImportStore.currentPagingOptions);
 });
-
 
 function onTableRowClick(quiz: Quiz) {
     if (quiz.quiz_id == quizImportStore.selectedQuiz?.quiz_id) {
@@ -212,7 +259,7 @@ function onTableRowClick(quiz: Quiz) {
 
 let fetching = false;
 
-//=======================data fetching===================
+//= ======================data fetching===================
 async function loadItems(serverTablePaging: ServerTablePaging) {
     // if it is already loading skip call
     if (fetching) {
@@ -228,9 +275,8 @@ async function loadItems(serverTablePaging: ServerTablePaging) {
     quizImportStore.currentPagingOptions = serverTablePaging;
     isLoading.value = true;
 
-
-    //current solution to default sort the table
-    //sort-by in data-table-server tag breaks the sorting as the headers are in a seperate component
+    // current solution to default sort the table
+    // sort-by in data-table-server tag breaks the sorting as the headers are in a seperate component
     if (isOnLoad.value) {
         serverTablePaging.sortBy = defaultSort;
     }
@@ -246,19 +292,20 @@ async function loadItems(serverTablePaging: ServerTablePaging) {
         assessmentToolId = quizImportStore.selectedAssessmentTool.toString();
     }
 
-    const optionalParGetQuizzes: OptionalParGetQuizzes = tableUtils.assignQuizSelectPagingOptions
-    (
-        serverTablePaging,
-        quizImportStore.searchField,
-        startTimestamp,
-        assessmentToolId,
-        quizImportStore.forceNewSearch,
-    );
+    const optionalParGetQuizzes: OptionalParGetQuizzes =
+        tableUtils.assignQuizSelectPagingOptions(
+            serverTablePaging,
+            quizImportStore.searchField,
+            startTimestamp,
+            assessmentToolId,
+            quizImportStore.forceNewSearch,
+        );
 
     // reset forceNewSearch once we have applied it
     quizImportStore.forceNewSearch = false;
 
-    let quizzesResponse: Quizzes | null = await quizImportWizardViewService.getQuizzes(optionalParGetQuizzes);
+    let quizzesResponse: Quizzes | null =
+        await quizImportWizardViewService.getQuizzes(optionalParGetQuizzes);
 
     if (quizzesResponse == null) {
         finishFatching();
@@ -274,13 +321,16 @@ async function loadItems(serverTablePaging: ServerTablePaging) {
 
     while (!allQuizzes && breaker_count < 30) {
         await wait(3000);
-        quizzesResponse = await quizImportWizardViewService.getQuizzes(optionalParGetQuizzes);
+        quizzesResponse = await quizImportWizardViewService.getQuizzes(
+            optionalParGetQuizzes,
+        );
         if (quizzesResponse == null) {
             finishFatching();
             return;
         }
         quizzes.value = quizzesResponse;
-        totalItems.value = quizzes.value.number_of_pages * quizzes.value.page_size;
+        totalItems.value =
+            quizzes.value.number_of_pages * quizzes.value.page_size;
         allQuizzes = quizzesResponse.complete;
         breaker_count++;
     }
@@ -295,7 +345,7 @@ function finishFatching() {
 }
 
 function loadExamItemsCaller() {
-    if (datepicker != null && datepicker.value != null) {
+    if (datepicker.value != null && datepicker.value != null) {
         quizImportStore.startTimestamp = datepicker.value.getTime();
     }
 
@@ -312,13 +362,10 @@ function clearForm() {
     loadExamItemsCaller();
 }
 
-//======================================================
-
-
+//= =====================================================
 </script>
 
 <style scoped>
-
 .on-row-hover:hover {
     background: #e4e4e4 !important;
     cursor: pointer;
@@ -336,6 +383,4 @@ function clearForm() {
 .selected-row {
     background-color: #e0f2ff !important;
 }
-
 </style>
-

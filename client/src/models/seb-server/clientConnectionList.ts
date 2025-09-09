@@ -20,7 +20,5 @@ enum SebClientConnectionStatusEnum {
     ACTIVE = "ACTIVE",
     DISABLED = "DISABLED",
     MISSING = "MISSING",
-    CLOSED = "CLOSED"
+    CLOSED = "CLOSED",
 }
-
-

@@ -4,26 +4,24 @@ import * as userAccountViewService from "@/services/seb-server/component-service
 import * as constants from "@/utils/constants";
 import * as authenticationService from "@/services/authenticationService";
 
-
-//--------------------app bar-----------------------------//
+// --------------------app bar-----------------------------//
 export const useAppBarStore = defineStore("appBar", () => {
     const previousTitle = ref<string>("");
     const title = ref<string>("Example Title");
-
 
     const examOverviewShowPastExams = ref<boolean>(false);
     const examOverviewShowUpcomingExams = ref<boolean>(false);
 
     const galleryGridSize = ref<GridSize>({
         title: "3x3",
-        value: 3
+        value: 3,
     });
     const galleryIsNameEnabled = ref<boolean>(true);
     const galleryIsIpEnabled = ref<boolean>(false);
     const galleryIsMetadataEnabled = ref<boolean>(false);
     const galleryCurrentPage = ref<number>(1);
     const galleryMaxPages = ref<number>(1);
-    const galleryLiveSessions = ref<number>(0)
+    const galleryLiveSessions = ref<number>(0);
     const galleryAmountOfSessions = ref<number>(0);
     const galleryDescription = ref<string>("");
     const galleryIsNameSortAsc = ref<boolean>(true);
@@ -42,20 +40,18 @@ export const useAppBarStore = defineStore("appBar", () => {
         galleryLiveSessions,
         galleryAmountOfSessions,
         galleryDescription,
-        galleryIsNameSortAsc
+        galleryIsNameSortAsc,
     };
 });
 
-
-//--------------------navigation-----------------------------//
+// --------------------navigation-----------------------------//
 export const useNavigationStore = defineStore("navigation", () => {
     const isNavigationOverviewOpen = ref<boolean>(false);
 
     return {
-        isNavigationOverviewOpen
+        isNavigationOverviewOpen,
     };
 });
-
 
 export const useLayoutStore = defineStore("layout", () => {
     const isBlueBackground = ref(false);
@@ -70,8 +66,7 @@ export const useLayoutStore = defineStore("layout", () => {
     };
 });
 
-
-//----------------------authentication---------------------------//
+// ----------------------authentication---------------------------//
 // export const useAuthStore = defineStore("auth", () => {
 //     const redirectRoute: string = "";
 
@@ -158,8 +153,7 @@ export const useLayoutStore = defineStore("layout", () => {
 //     return { redirectRoute, login, loginSP, loginWithJwt, logout, setAccessToken, getStorageItem, setRefreshToken, getStorageItem };
 // });
 
-
-//---------------------account----------------------------//
+// ---------------------account----------------------------//
 // export const useUserAccountStore = defineStore("account", () => {
 //     const userAccount = ref<UserAccount | null>();
 //     const isEditMode = ref<boolean>();
@@ -179,8 +173,7 @@ export const useLayoutStore = defineStore("layout", () => {
 //     return { userAccount, isEditMode, isAccountSelected, selectedAccountId, setUserTimeZone, getUserTimeZone };
 // });
 
-
-//----------------------loading---------------------------//
+// ----------------------loading---------------------------//
 export const useLoadingStore = defineStore("loading", () => {
     const skipLoading = ref<boolean>(false);
     const isLoading = ref<boolean>(false);
@@ -189,21 +182,23 @@ export const useLoadingStore = defineStore("loading", () => {
     return { skipLoading, isLoading, isTimeout };
 });
 
-
-//----------------------sp exams overview---------------------------//
+// ----------------------sp exams overview---------------------------//
 export const useTableStore = defineStore("table", () => {
     const isIndicatorsExpanded = ref<boolean>(false);
     const isIndicatorExpandButtonDisabled = ref<boolean>(false);
 
-    const isIpDisplayList = ref<{day: string, isIp: boolean}[]>([]);
+    const isIpDisplayList = ref<{ day: string; isIp: boolean }[]>([]);
 
-    return {isIndicatorsExpanded, isIpDisplayList, isIndicatorExpandButtonDisabled};
+    return {
+        isIndicatorsExpanded,
+        isIpDisplayList,
+        isIndicatorExpandButtonDisabled,
+    };
 });
 
-
-//----------------------gallery view---------------------------//
+// ----------------------gallery view---------------------------//
 export const useGalleryStore = defineStore("gallery", () => {
     const focusedImageIndexes = ref<boolean[]>([]);
 
-    return {focusedImageIndexes};
+    return { focusedImageIndexes };
 });

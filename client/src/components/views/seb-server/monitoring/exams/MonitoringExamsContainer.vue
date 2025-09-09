@@ -1,42 +1,44 @@
 <template>
     <v-container
-        fluid
         class="d-flex flex-column align-stretch px-0 pa-0"
-        style="min-height: 90vh;"
+        fluid
+        style="min-height: 90vh"
     >
         <!-- Info and Search -->
         <MonitoringExamsInfo
             class="flex-grow-0"
-            @loadMonitoringListItemsCaller="loadMonitoringListItemsCaller"
+            @load-monitoring-list-items-caller="loadMonitoringListItemsCaller"
         />
 
         <!-- Table Component -->
         <MonitoringExamsMain
-            class="flex-grow-1"
-            style="min-height: 63vh;"
             ref="monitoringExamsMainRef"
+            class="flex-grow-1"
+            style="min-height: 63vh"
         />
     </v-container>
 </template>
 <script setup lang="ts">
-import {useAppBarStore} from '@/stores/store';
+import { useAppBarStore } from "@/stores/store";
 import * as constants from "@/utils/constants";
 import MonitoringExamsMain from "@/components/views/seb-server/monitoring/exams/MonitoringExamsMain.vue";
-import {translate} from "@/utils/generalUtils";
-import {useMonitoringStore} from "@/stores/seb-server/monitoringStore";
+import { translate } from "@/utils/generalUtils";
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 
-//stores
+// stores
 const appBarStore = useAppBarStore();
 const monitoringStore = useMonitoringStore();
 
-//ref to ExamListMain
-const monitoringExamsMainRef = ref<InstanceType<typeof MonitoringExamsMain> | null>(null);
+// ref to ExamListMain
+const monitoringExamsMainRef = ref<InstanceType<
+    typeof MonitoringExamsMain
+> | null>(null);
 
 onBeforeMount(() => {
     appBarStore.title = translate("titles.monitoring");
 });
 
-//call function in "ExamListMain"
+// call function in "ExamListMain"
 function loadMonitoringListItemsCaller() {
     if (monitoringStore.currentPagingOptions == null) {
         return;
@@ -46,11 +48,10 @@ function loadMonitoringListItemsCaller() {
         monitoringStore.currentPagingOptions.itemsPerPage = 10;
     }
 
-    monitoringExamsMainRef.value?.loadItems(monitoringStore.currentPagingOptions);
+    monitoringExamsMainRef.value?.loadItems(
+        monitoringStore.currentPagingOptions,
+    );
 }
-
-
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

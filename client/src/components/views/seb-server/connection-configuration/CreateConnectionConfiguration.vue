@@ -1,14 +1,13 @@
 ```vue
 <template>
-    <div class="text-white text-h5 font-weight-black ml-10 mt-5 ">
+    <div class="text-white text-h5 font-weight-black ml-10 mt-5">
         {{ translate("titles.settings") }}
     </div>
     <v-row class="mt-10 w-98 h-100">
-
         <!-- settings navigation-->
-        <SettingsNavigation/>
+        <SettingsNavigation />
 
-        <v-col elevation="4" cols="9" class="bg-white rounded-lg">
+        <v-col class="bg-white rounded-lg" cols="9" elevation="4">
             <v-row class="d-flex align-center justify-space-between px-6 pt-6">
                 <div
                     class="text-primary text-h5 font-weight-bold"
@@ -18,14 +17,16 @@
                 </div>
             </v-row>
 
-            <v-divider class="custom-divider mx-6 my-4 mt-7"/>
+            <v-divider class="custom-divider mx-6 my-4 mt-7" />
             <v-row class="px-8 mt-2">
                 <div
                     class="text-body-2 text-grey-darken-1"
                     data-testid="connectionConfigurationCreation-info-text"
                 >
                     {{
-                        translate("connectionConfigurations.createConnectionConfigurationPage.info.createConnectionConfigurationInfo")
+                        translate(
+                            "connectionConfigurations.createConnectionConfigurationPage.info.createConnectionConfigurationInfo",
+                        )
                     }}
                 </div>
             </v-row>
@@ -34,88 +35,143 @@
             <v-sheet class="rounded-lg mt-4" style="min-height: 46.9vh">
                 <v-form
                     ref="formRef"
-                    @keyup.enter="submit()"
                     data-testid="connectionConfigurationCreation-form"
+                    @keyup.enter="submit()"
                 >
-                    <v-col cols="12" md="12" class="pa-0 mb-4 h-100">
+                    <v-col class="pa-0 mb-4 h-100" cols="12" md="12">
                         <v-card-text>
-
                             <!-- First Section -->
                             <v-row dense>
                                 <v-col cols="8">
                                     <!-- Name* -->
-                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                    <v-col
+                                        class="custom-padding-textbox"
+                                        cols="12"
+                                        md="12"
+                                    >
                                         <v-text-field
-                                            required
-                                            density="compact"
-                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.name')"
-                                            variant="outlined"
                                             v-model="name"
-                                            :rules="[requiredRule]"
                                             data-testid="connectionConfigurationCreation-name-input"
+                                            density="compact"
+                                            :label="
+                                                translate(
+                                                    'connectionConfigurations.createConnectionConfigurationPage.labels.name',
+                                                )
+                                            "
+                                            required
+                                            :rules="[requiredRule]"
+                                            variant="outlined"
                                         />
                                     </v-col>
 
                                     <!-- Configuration Purpose-->
-                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                    <v-col
+                                        class="custom-padding-textbox"
+                                        cols="12"
+                                        md="12"
+                                    >
                                         <v-select
-                                            density="compact"
-                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.configurationPurpose')"
-                                            variant="outlined"
                                             v-model="configurationPurpose"
-                                            :items="configurationPurposeItems"
+                                            data-testid="connectionConfigurationCreation-configurationPurpose-select"
+                                            density="compact"
                                             item-title="label"
                                             item-value="value"
+                                            :items="configurationPurposeItems"
+                                            :label="
+                                                translate(
+                                                    'connectionConfigurations.createConnectionConfigurationPage.labels.configurationPurpose',
+                                                )
+                                            "
                                             :rules="[requiredRule]"
                                             validate-on="input"
-                                            data-testid="connectionConfigurationCreation-configurationPurpose-select"
+                                            variant="outlined"
                                         />
                                     </v-col>
 
                                     <!-- Configuration Password (optional) -->
-                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                    <v-col
+                                        class="custom-padding-textbox"
+                                        cols="12"
+                                        md="12"
+                                    >
                                         <v-text-field
                                             ref="configPwdRef"
-                                            :type="configurationPasswordVisible ? 'text' : 'password'"
-                                            density="compact"
-                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.configurationPassword')"
-                                            variant="outlined"
                                             v-model="configurationPassword"
-                                            validate-on="input"
                                             data-testid="connectionConfigurationCreation-configurationPassword-input"
+                                            density="compact"
+                                            :label="
+                                                translate(
+                                                    'connectionConfigurations.createConnectionConfigurationPage.labels.configurationPassword',
+                                                )
+                                            "
+                                            :type="
+                                                configurationPasswordVisible
+                                                    ? 'text'
+                                                    : 'password'
+                                            "
+                                            validate-on="input"
+                                            variant="outlined"
                                         >
-                                            <template v-slot:append-inner>
+                                            <template #append-inner>
                                                 <v-btn
-                                                    density="compact"
-                                                    variant="text"
-                                                    :icon="configurationPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
-                                                    @click="configurationPasswordVisible = !configurationPasswordVisible"
                                                     data-testid="connectionConfigurationCreation-configurationPassword-toggle"
+                                                    density="compact"
+                                                    :icon="
+                                                        configurationPasswordVisible
+                                                            ? 'mdi-eye-off'
+                                                            : 'mdi-eye'
+                                                    "
+                                                    variant="text"
+                                                    @click="
+                                                        configurationPasswordVisible =
+                                                            !configurationPasswordVisible
+                                                    "
                                                 />
                                             </template>
                                         </v-text-field>
                                     </v-col>
 
                                     <!-- Confirm Configuration Password -->
-                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                    <v-col
+                                        class="custom-padding-textbox"
+                                        cols="12"
+                                        md="12"
+                                    >
                                         <v-text-field
                                             ref="confirmConfigPwdRef"
-                                            :type="confirmConfigurationPasswordVisible ? 'text' : 'password'"
-                                            density="compact"
-                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.confirmConfigurationPassword')"
-                                            variant="outlined"
-                                            v-model="confirmConfigurationPassword"
-                                            validate-on="input"
-                                            :rules="[configPwdMustMatchRule]"
+                                            v-model="
+                                                confirmConfigurationPassword
+                                            "
                                             data-testid="connectionConfigurationCreation-confirmConfigurationPassword-input"
+                                            density="compact"
+                                            :label="
+                                                translate(
+                                                    'connectionConfigurations.createConnectionConfigurationPage.labels.confirmConfigurationPassword',
+                                                )
+                                            "
+                                            :rules="[configPwdMustMatchRule]"
+                                            :type="
+                                                confirmConfigurationPasswordVisible
+                                                    ? 'text'
+                                                    : 'password'
+                                            "
+                                            validate-on="input"
+                                            variant="outlined"
                                         >
-                                            <template v-slot:append-inner>
+                                            <template #append-inner>
                                                 <v-btn
-                                                    density="compact"
-                                                    variant="text"
-                                                    :icon="confirmConfigurationPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
-                                                    @click="confirmConfigurationPasswordVisible = !confirmConfigurationPasswordVisible"
                                                     data-testid="connectionConfigurationCreation-confirmConfigurationPassword-toggle"
+                                                    density="compact"
+                                                    :icon="
+                                                        confirmConfigurationPasswordVisible
+                                                            ? 'mdi-eye-off'
+                                                            : 'mdi-eye'
+                                                    "
+                                                    variant="text"
+                                                    @click="
+                                                        confirmConfigurationPasswordVisible =
+                                                            !confirmConfigurationPasswordVisible
+                                                    "
                                                 />
                                             </template>
                                         </v-text-field>
@@ -125,79 +181,133 @@
                             </v-row>
 
                             <!-- Second Section-->
-                            <v-row dense class="mt-0">
+                            <v-row class="mt-0" dense>
                                 <v-col cols="8">
                                     <!-- Encrypt With Certificate (optional) -->
-                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                    <v-col
+                                        class="custom-padding-textbox"
+                                        cols="12"
+                                        md="12"
+                                    >
                                         <v-select
-                                            density="compact"
-                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.encryptWithCertificate')"
-                                            variant="outlined"
                                             v-model="encryptWithCertificate"
-                                            :items="certificateItems"
+                                            data-testid="connectionConfigurationCreation-encryptWithCertificate-select"
+                                            density="compact"
+                                            :disabled="certificatesLoading"
                                             item-title="label"
                                             item-value="value"
+                                            :items="certificateItems"
+                                            :label="
+                                                translate(
+                                                    'connectionConfigurations.createConnectionConfigurationPage.labels.encryptWithCertificate',
+                                                )
+                                            "
                                             :loading="certificatesLoading"
-                                            :disabled="certificatesLoading"
                                             :menu-props="{ maxHeight: 240 }"
-                                            @update:modelValue="handleCertChange"
-                                            data-testid="connectionConfigurationCreation-encryptWithCertificate-select"
+                                            variant="outlined"
+                                            @update:model-value="
+                                                handleCertChange
+                                            "
                                         >
                                             <template #item="{ props, item }">
                                                 <v-list-item v-bind="props">
                                                     <template #prepend>
-                                                        <v-icon v-if="item.raw.value === '__UPLOAD__'">mdi-upload</v-icon>
+                                                        <v-icon
+                                                            v-if="
+                                                                item.raw
+                                                                    .value ===
+                                                                '__UPLOAD__'
+                                                            "
+                                                            >mdi-upload</v-icon
+                                                        >
                                                     </template>
                                                 </v-list-item>
-                                                <v-divider v-if="item.raw.value === '__UPLOAD__'" class="my-1" />
+                                                <v-divider
+                                                    v-if="
+                                                        item.raw.value ===
+                                                        '__UPLOAD__'
+                                                    "
+                                                    class="my-1"
+                                                />
                                             </template>
 
-                                            <template v-if="!hasRealCerts" #append-item>
+                                            <template
+                                                v-if="!hasRealCerts"
+                                                #append-item
+                                            >
                                                 <div
                                                     class="text-caption text-grey-darken-1 px-4 py-2"
                                                     data-testid="connectionConfigurationCreation-noCertificates-label"
                                                 >
-                                                    {{ translate('connectionConfigurations.createConnectionConfigurationPage.labels.noCertificatesUploadedYet') }}
+                                                    {{
+                                                        translate(
+                                                            "connectionConfigurations.createConnectionConfigurationPage.labels.noCertificatesUploadedYet",
+                                                        )
+                                                    }}
                                                 </div>
                                             </template>
                                         </v-select>
                                     </v-col>
 
                                     <!-- Ping Interval* -->
-                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                    <v-col
+                                        class="custom-padding-textbox"
+                                        cols="12"
+                                        md="12"
+                                    >
                                         <v-text-field
-                                            density="compact"
-                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.pingInterval')"
-                                            variant="outlined"
                                             v-model.number="pingInterval"
-                                            type="number"
-                                            inputmode="numeric"
-                                            :rules="[requiredNumberRule]"
-                                            validate-on="blur"
                                             data-testid="connectionConfigurationCreation-pingInterval-input"
+                                            density="compact"
+                                            inputmode="numeric"
+                                            :label="
+                                                translate(
+                                                    'connectionConfigurations.createConnectionConfigurationPage.labels.pingInterval',
+                                                )
+                                            "
+                                            :rules="[requiredNumberRule]"
+                                            type="number"
+                                            validate-on="blur"
+                                            variant="outlined"
                                         />
                                     </v-col>
                                 </v-col>
 
                                 <v-col cols="4">
                                     <!-- Use asymmetric-only encryption (toggle preserved for layout) -->
-                                    <v-col cols="12" md="12" class="custom-padding-textbox">
-                                        <div class="d-flex align-center justify-space-between w-100">
-                                            <label class="text-grey-darken-1 text-body-1 ml-11">
+                                    <v-col
+                                        class="custom-padding-textbox"
+                                        cols="12"
+                                        md="12"
+                                    >
+                                        <div
+                                            class="d-flex align-center justify-space-between w-100"
+                                        >
+                                            <label
+                                                class="text-grey-darken-1 text-body-1 ml-11"
+                                            >
                                                 {{
-                                                    translate('connectionConfigurations.createConnectionConfigurationPage.labels.useAsymmetricOnlyEncryption')
+                                                    translate(
+                                                        "connectionConfigurations.createConnectionConfigurationPage.labels.useAsymmetricOnlyEncryption",
+                                                    )
                                                 }}
                                             </label>
 
                                             <v-switch
-                                                v-model="asymmetricOnlyEncryption"
-                                                inset
-                                                hide-details
-                                                density="compact"
-                                                color="primary"
+                                                v-model="
+                                                    asymmetricOnlyEncryption
+                                                "
+                                                :aria-label="
+                                                    translate(
+                                                        'connectionConfigurations.createConnectionConfigurationPage.labels.withFallbackArea',
+                                                    )
+                                                "
                                                 class="ml-4"
-                                                :aria-label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.withFallbackArea')"
+                                                color="primary"
                                                 data-testid="connectionConfigurationCreation-asymmetricOnlyEncryption-toggle"
+                                                density="compact"
+                                                hide-details
+                                                inset
                                             />
                                         </div>
                                     </v-col>
@@ -206,27 +316,41 @@
 
                             <!-- Third Section for Fallback -->
                             <v-row dense>
-                                <v-divider class="custom-divider mx-1 my-2"/>
+                                <v-divider class="custom-divider mx-1 my-2" />
 
                                 <v-col>
                                     <!-- With Fallback -->
-                                    <v-col cols="6" md="6" class="custom-padding-textbox">
-                                        <div class="d-flex align-center justify-space-between w-100">
-                                            <label class="text-grey-darken-1 text-body-1 ml-11">
+                                    <v-col
+                                        class="custom-padding-textbox"
+                                        cols="6"
+                                        md="6"
+                                    >
+                                        <div
+                                            class="d-flex align-center justify-space-between w-100"
+                                        >
+                                            <label
+                                                class="text-grey-darken-1 text-body-1 ml-11"
+                                            >
                                                 {{
-                                                    translate('connectionConfigurations.createConnectionConfigurationPage.labels.withFallback')
+                                                    translate(
+                                                        "connectionConfigurations.createConnectionConfigurationPage.labels.withFallback",
+                                                    )
                                                 }}
                                             </label>
 
                                             <v-switch
                                                 v-model="withFallback"
-                                                inset
-                                                hide-details
-                                                density="compact"
-                                                color="primary"
+                                                :aria-label="
+                                                    translate(
+                                                        'connectionConfigurations.createConnectionConfigurationPage.labels.withFallbackArea',
+                                                    )
+                                                "
                                                 class="ml-4"
-                                                :aria-label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.withFallbackArea')"
+                                                color="primary"
                                                 data-testid="connectionConfigurationCreation-withFallback-toggle"
+                                                density="compact"
+                                                hide-details
+                                                inset
                                             />
                                         </div>
                                     </v-col>
@@ -237,160 +361,308 @@
                                 <v-col>
                                     <!-- Animated expansion -->
                                     <v-expand-transition>
-                                        <div v-show="withFallback" data-testid="connectionConfigurationCreation-fallbackSection-container">
+                                        <div
+                                            v-show="withFallback"
+                                            data-testid="connectionConfigurationCreation-fallbackSection-container"
+                                        >
                                             <v-row>
                                                 <v-col cols="8">
                                                     <!-- Fallback Start URL* -->
-                                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                                    <v-col
+                                                        class="custom-padding-textbox"
+                                                        cols="12"
+                                                        md="12"
+                                                    >
                                                         <v-text-field
-                                                            density="compact"
-                                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.fallbackStartURL')"
-                                                            variant="outlined"
-                                                            v-model="fallbackStartUrl"
-                                                            :rules="[requiredIfFallbackRule, urlIfFallbackRule]"
-                                                            validate-on="blur"
+                                                            v-model="
+                                                                fallbackStartUrl
+                                                            "
                                                             data-testid="connectionConfigurationCreation-fallbackStartUrl-input"
+                                                            density="compact"
+                                                            :label="
+                                                                translate(
+                                                                    'connectionConfigurations.createConnectionConfigurationPage.labels.fallbackStartURL',
+                                                                )
+                                                            "
+                                                            :rules="[
+                                                                requiredIfFallbackRule,
+                                                                urlIfFallbackRule,
+                                                            ]"
+                                                            validate-on="blur"
+                                                            variant="outlined"
                                                         />
                                                     </v-col>
 
                                                     <!-- Connection Attempts* -->
-                                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                                    <v-col
+                                                        class="custom-padding-textbox"
+                                                        cols="12"
+                                                        md="12"
+                                                    >
                                                         <v-text-field
-                                                            density="compact"
-                                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.connectionAttempts')"
-                                                            variant="outlined"
-                                                            v-model.number="connectionAttempts"
-                                                            type="number"
-                                                            inputmode="numeric"
-                                                            :rules="[requiredNumberIfFallbackRule]"
-                                                            validate-on="blur"
+                                                            v-model.number="
+                                                                connectionAttempts
+                                                            "
                                                             data-testid="connectionConfigurationCreation-connectionAttempts-input"
+                                                            density="compact"
+                                                            inputmode="numeric"
+                                                            :label="
+                                                                translate(
+                                                                    'connectionConfigurations.createConnectionConfigurationPage.labels.connectionAttempts',
+                                                                )
+                                                            "
+                                                            :rules="[
+                                                                requiredNumberIfFallbackRule,
+                                                            ]"
+                                                            type="number"
+                                                            validate-on="blur"
+                                                            variant="outlined"
                                                         />
                                                     </v-col>
 
                                                     <!-- Interval* -->
-                                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                                    <v-col
+                                                        class="custom-padding-textbox"
+                                                        cols="12"
+                                                        md="12"
+                                                    >
                                                         <v-text-field
-                                                            density="compact"
-                                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.interval')"
-                                                            variant="outlined"
-                                                            v-model.number="interval"
-                                                            type="number"
-                                                            inputmode="numeric"
-                                                            :rules="[requiredNumberIfFallbackRule]"
-                                                            validate-on="blur"
+                                                            v-model.number="
+                                                                interval
+                                                            "
                                                             data-testid="connectionConfigurationCreation-interval-input"
+                                                            density="compact"
+                                                            inputmode="numeric"
+                                                            :label="
+                                                                translate(
+                                                                    'connectionConfigurations.createConnectionConfigurationPage.labels.interval',
+                                                                )
+                                                            "
+                                                            :rules="[
+                                                                requiredNumberIfFallbackRule,
+                                                            ]"
+                                                            type="number"
+                                                            validate-on="blur"
+                                                            variant="outlined"
                                                         />
                                                     </v-col>
 
                                                     <!-- Connection Timeout* -->
-                                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                                    <v-col
+                                                        class="custom-padding-textbox"
+                                                        cols="12"
+                                                        md="12"
+                                                    >
                                                         <v-text-field
-                                                            density="compact"
-                                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.connectionTimeout')"
-                                                            variant="outlined"
-                                                            v-model.number="connectionTimeout"
-                                                            type="number"
-                                                            inputmode="numeric"
-                                                            :rules="[requiredNumberIfFallbackRule]"
-                                                            validate-on="blur"
+                                                            v-model.number="
+                                                                connectionTimeout
+                                                            "
                                                             data-testid="connectionConfigurationCreation-connectionTimeout-input"
+                                                            density="compact"
+                                                            inputmode="numeric"
+                                                            :label="
+                                                                translate(
+                                                                    'connectionConfigurations.createConnectionConfigurationPage.labels.connectionTimeout',
+                                                                )
+                                                            "
+                                                            :rules="[
+                                                                requiredNumberIfFallbackRule,
+                                                            ]"
+                                                            type="number"
+                                                            validate-on="blur"
+                                                            variant="outlined"
                                                         />
                                                     </v-col>
 
                                                     <!-- Fallback Password (optional) -->
-                                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                                    <v-col
+                                                        class="custom-padding-textbox"
+                                                        cols="12"
+                                                        md="12"
+                                                    >
                                                         <v-text-field
                                                             ref="fallbackPwdRef"
-                                                            :type="fallbackPasswordVisible ? 'text' : 'password'"
-                                                            density="compact"
-                                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.fallbackPassword')"
-                                                            variant="outlined"
-                                                            v-model="fallbackPassword"
-                                                            validate-on="input"
+                                                            v-model="
+                                                                fallbackPassword
+                                                            "
                                                             data-testid="connectionConfigurationCreation-fallbackPassword-input"
+                                                            density="compact"
+                                                            :label="
+                                                                translate(
+                                                                    'connectionConfigurations.createConnectionConfigurationPage.labels.fallbackPassword',
+                                                                )
+                                                            "
+                                                            :type="
+                                                                fallbackPasswordVisible
+                                                                    ? 'text'
+                                                                    : 'password'
+                                                            "
+                                                            validate-on="input"
+                                                            variant="outlined"
                                                         >
-                                                            <template v-slot:append-inner>
+                                                            <template
+                                                                #append-inner
+                                                            >
                                                                 <v-btn
-                                                                    density="compact"
-                                                                    variant="text"
-                                                                    :icon="fallbackPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
-                                                                    @click="fallbackPasswordVisible = !fallbackPasswordVisible"
                                                                     data-testid="connectionConfigurationCreation-fallbackPassword-toggle"
+                                                                    density="compact"
+                                                                    :icon="
+                                                                        fallbackPasswordVisible
+                                                                            ? 'mdi-eye-off'
+                                                                            : 'mdi-eye'
+                                                                    "
+                                                                    variant="text"
+                                                                    @click="
+                                                                        fallbackPasswordVisible =
+                                                                            !fallbackPasswordVisible
+                                                                    "
                                                                 />
                                                             </template>
                                                         </v-text-field>
                                                     </v-col>
 
                                                     <!-- Confirm Fallback Password -->
-                                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                                    <v-col
+                                                        class="custom-padding-textbox"
+                                                        cols="12"
+                                                        md="12"
+                                                    >
                                                         <v-text-field
                                                             ref="confirmFallbackPwdRef"
-                                                            :type="confirmFallbackPasswordVisible ? 'text' : 'password'"
-                                                            density="compact"
-                                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.confirmFallbackPassword')"
-                                                            variant="outlined"
-                                                            v-model="confirmFallbackPassword"
-                                                            validate-on="input"
-                                                            :rules="[fallbackPwdMustMatchRule]"
+                                                            v-model="
+                                                                confirmFallbackPassword
+                                                            "
                                                             data-testid="connectionConfigurationCreation-confirmFallbackPassword-input"
+                                                            density="compact"
+                                                            :label="
+                                                                translate(
+                                                                    'connectionConfigurations.createConnectionConfigurationPage.labels.confirmFallbackPassword',
+                                                                )
+                                                            "
+                                                            :rules="[
+                                                                fallbackPwdMustMatchRule,
+                                                            ]"
+                                                            :type="
+                                                                confirmFallbackPasswordVisible
+                                                                    ? 'text'
+                                                                    : 'password'
+                                                            "
+                                                            validate-on="input"
+                                                            variant="outlined"
                                                         >
-                                                            <template v-slot:append-inner>
+                                                            <template
+                                                                #append-inner
+                                                            >
                                                                 <v-btn
-                                                                    density="compact"
-                                                                    variant="text"
-                                                                    :icon="confirmFallbackPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
-                                                                    @click="confirmFallbackPasswordVisible = !confirmFallbackPasswordVisible"
                                                                     data-testid="connectionConfigurationCreation-confirmFallbackPassword-toggle"
+                                                                    density="compact"
+                                                                    :icon="
+                                                                        confirmFallbackPasswordVisible
+                                                                            ? 'mdi-eye-off'
+                                                                            : 'mdi-eye'
+                                                                    "
+                                                                    variant="text"
+                                                                    @click="
+                                                                        confirmFallbackPasswordVisible =
+                                                                            !confirmFallbackPasswordVisible
+                                                                    "
                                                                 />
                                                             </template>
                                                         </v-text-field>
                                                     </v-col>
 
                                                     <!-- Quit Password (optional) -->
-                                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                                    <v-col
+                                                        class="custom-padding-textbox"
+                                                        cols="12"
+                                                        md="12"
+                                                    >
                                                         <v-text-field
                                                             ref="quitPwdRef"
-                                                            :type="quitPasswordVisible ? 'text' : 'password'"
-                                                            density="compact"
-                                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.quitPassword')"
-                                                            variant="outlined"
-                                                            v-model="quitPassword"
-                                                            validate-on="input"
+                                                            v-model="
+                                                                quitPassword
+                                                            "
                                                             data-testid="connectionConfigurationCreation-quitPassword-input"
+                                                            density="compact"
+                                                            :label="
+                                                                translate(
+                                                                    'connectionConfigurations.createConnectionConfigurationPage.labels.quitPassword',
+                                                                )
+                                                            "
+                                                            :type="
+                                                                quitPasswordVisible
+                                                                    ? 'text'
+                                                                    : 'password'
+                                                            "
+                                                            validate-on="input"
+                                                            variant="outlined"
                                                         >
-                                                            <template v-slot:append-inner>
+                                                            <template
+                                                                #append-inner
+                                                            >
                                                                 <v-btn
-                                                                    density="compact"
-                                                                    variant="text"
-                                                                    :icon="quitPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
-                                                                    @click="quitPasswordVisible = !quitPasswordVisible"
                                                                     data-testid="connectionConfigurationCreation-quitPassword-toggle"
+                                                                    density="compact"
+                                                                    :icon="
+                                                                        quitPasswordVisible
+                                                                            ? 'mdi-eye-off'
+                                                                            : 'mdi-eye'
+                                                                    "
+                                                                    variant="text"
+                                                                    @click="
+                                                                        quitPasswordVisible =
+                                                                            !quitPasswordVisible
+                                                                    "
                                                                 />
                                                             </template>
                                                         </v-text-field>
                                                     </v-col>
 
                                                     <!-- Confirm Quit Password -->
-                                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                                    <v-col
+                                                        class="custom-padding-textbox"
+                                                        cols="12"
+                                                        md="12"
+                                                    >
                                                         <v-text-field
                                                             ref="confirmQuitPwdRef"
-                                                            :type="confirmQuitPasswordVisible ? 'text' : 'password'"
-                                                            density="compact"
-                                                            :label="translate('connectionConfigurations.createConnectionConfigurationPage.labels.confirmQuitPassword')"
-                                                            variant="outlined"
-                                                            v-model="confirmQuitPassword"
-                                                            validate-on="input"
-                                                            :rules="[quitPwdMustMatchRule]"
+                                                            v-model="
+                                                                confirmQuitPassword
+                                                            "
                                                             data-testid="connectionConfigurationCreation-confirmQuitPassword-input"
+                                                            density="compact"
+                                                            :label="
+                                                                translate(
+                                                                    'connectionConfigurations.createConnectionConfigurationPage.labels.confirmQuitPassword',
+                                                                )
+                                                            "
+                                                            :rules="[
+                                                                quitPwdMustMatchRule,
+                                                            ]"
+                                                            :type="
+                                                                confirmQuitPasswordVisible
+                                                                    ? 'text'
+                                                                    : 'password'
+                                                            "
+                                                            validate-on="input"
+                                                            variant="outlined"
                                                         >
-                                                            <template v-slot:append-inner>
+                                                            <template
+                                                                #append-inner
+                                                            >
                                                                 <v-btn
-                                                                    density="compact"
-                                                                    variant="text"
-                                                                    :icon="confirmQuitPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
-                                                                    @click="confirmQuitPasswordVisible = !confirmQuitPasswordVisible"
                                                                     data-testid="connectionConfigurationCreation-confirmQuitPassword-toggle"
+                                                                    density="compact"
+                                                                    :icon="
+                                                                        confirmQuitPasswordVisible
+                                                                            ? 'mdi-eye-off'
+                                                                            : 'mdi-eye'
+                                                                    "
+                                                                    variant="text"
+                                                                    @click="
+                                                                        confirmQuitPasswordVisible =
+                                                                            !confirmQuitPasswordVisible
+                                                                    "
                                                                 />
                                                             </template>
                                                         </v-text-field>
@@ -410,26 +682,30 @@
 
             <!-- Buttons-->
             <v-row class="px-6 pt-0">
-                <v-col cols="12" md="12" class="pa-0 mb-4">
+                <v-col class="pa-0 mb-4" cols="12" md="12">
                     <div class="d-flex justify-end">
                         <v-btn
-                            rounded="sm"
                             color="black"
-                            variant="outlined"
-                            @click="navigateTo(constants.CONNECTION_CONFIGURATIONS_ROUTE)"
                             data-testid="connectionConfigurationCreation-cancel-button"
+                            rounded="sm"
+                            variant="outlined"
+                            @click="
+                                navigateTo(
+                                    constants.CONNECTION_CONFIGURATIONS_ROUTE,
+                                )
+                            "
                         >
                             {{ translate("general.cancelButton") }}
                         </v-btn>
 
                         <v-btn
-                            rounded="sm"
-                            color="primary"
-                            variant="flat"
                             class="ml-2"
-                            @click="submit()"
-                            :disabled="isCreateDisabled"
+                            color="primary"
                             data-testid="connectionConfigurationCreation-save-button"
+                            :disabled="isCreateDisabled"
+                            rounded="sm"
+                            variant="flat"
+                            @click="submit()"
                         >
                             {{ translate("general.saveButton") }}
                         </v-btn>
@@ -448,16 +724,13 @@
 </template>
 
 <script setup lang="ts">
-import {ref, onMounted, onBeforeUnmount, computed} from 'vue';
-import {useAppBarStore, useLayoutStore} from '@/stores/store';
-import {translate} from '@/utils/generalUtils';
-import * as constants from '@/utils/constants';
-import {navigateTo} from "@/router/navigation";
-import * as connectionConfigurationViewService
-    from "@/services/seb-server/component-services/connectionConfigurationViewService";
-import * as certificateViewService
-    from "@/services/seb-server/component-services/certificateViewService";
-
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
+import { useAppBarStore, useLayoutStore } from "@/stores/store";
+import { translate } from "@/utils/generalUtils";
+import * as constants from "@/utils/constants";
+import { navigateTo } from "@/router/navigation";
+import * as connectionConfigurationViewService from "@/services/seb-server/component-services/connectionConfigurationViewService";
+import * as certificateViewService from "@/services/seb-server/component-services/certificateViewService";
 
 const name = ref<string>("");
 const configurationPassword = ref<string>("");
@@ -488,13 +761,11 @@ const confirmQuitPasswordVisible = ref<boolean>(false);
 const certDialog = ref(false);
 const certificatesLoading = ref<boolean>(false);
 
-
 // Stores
 const appBarStore = useAppBarStore();
 const layoutStore = useLayoutStore();
 
-
-//pwd refs
+// pwd refs
 const configPwdRef = ref<any>(null);
 const confirmConfigPwdRef = ref<any>(null);
 
@@ -504,66 +775,100 @@ const confirmFallbackPwdRef = ref<any>(null);
 const quitPwdRef = ref<any>(null);
 const confirmQuitPwdRef = ref<any>(null);
 
-
 const configurationPurposeItems = [
     {
-        label: translate('connectionConfigurations.createConnectionConfigurationPage.selectValues.start_exam'),
-        value: 'START_EXAM'
+        label: translate(
+            "connectionConfigurations.createConnectionConfigurationPage.selectValues.start_exam",
+        ),
+        value: "START_EXAM",
     },
     {
-        label: translate('connectionConfigurations.createConnectionConfigurationPage.selectValues.configure_client'),
-        value: 'CONFIGURE_CLIENT'
-    }
+        label: translate(
+            "connectionConfigurations.createConnectionConfigurationPage.selectValues.configure_client",
+        ),
+        value: "CONFIGURE_CLIENT",
+    },
 ];
 
 const certificateItems = ref<{ label: string; value: string }[]>([
     {
-        label: translate('certificates.certificateDialog.uploadCertificate'),
-        value: '__UPLOAD__',
+        label: translate("certificates.certificateDialog.uploadCertificate"),
+        value: "__UPLOAD__",
     },
 ]);
 
-
 // Validation messages
-const requiredMessage = translate("connectionConfigurations.createConnectionConfigurationPage.validation.required");
-const mustMatchMessage = translate('connectionConfigurations.createConnectionConfigurationPage.validation.noMatch')
-const mustBeNumberMessage = translate('connectionConfigurations.createConnectionConfigurationPage.validation.mustBeNumber')
-const mustBeUrlMessage = translate('connectionConfigurations.createConnectionConfigurationPage.validation.mustBeWithUrl');
-
+const requiredMessage = translate(
+    "connectionConfigurations.createConnectionConfigurationPage.validation.required",
+);
+const mustMatchMessage = translate(
+    "connectionConfigurations.createConnectionConfigurationPage.validation.noMatch",
+);
+const mustBeNumberMessage = translate(
+    "connectionConfigurations.createConnectionConfigurationPage.validation.mustBeNumber",
+);
+const mustBeUrlMessage = translate(
+    "connectionConfigurations.createConnectionConfigurationPage.validation.mustBeWithUrl",
+);
 
 // Rules
 const requiredRule = (v: any) => {
     if (v === null || v === undefined) return requiredMessage;
-    return (typeof v === 'number' ? true : String(v).trim().length > 0) || requiredMessage;
+    return (
+        (typeof v === "number" ? true : String(v).trim().length > 0) ||
+        requiredMessage
+    );
 };
-const numberRule = (v: any) => (v === null || v === undefined || v === '' || isNaN(Number(v)) ? mustBeNumberMessage : true);
-const requiredNumberRule = (v: any) => requiredRule(v) === true && numberRule(v) === true || (isNaN(Number(v)) ? mustBeNumberMessage : requiredMessage);
+const numberRule = (v: any) =>
+    v === null || v === undefined || v === "" || isNaN(Number(v))
+        ? mustBeNumberMessage
+        : true;
+const requiredNumberRule = (v: any) =>
+    (requiredRule(v) === true && numberRule(v) === true) ||
+    (isNaN(Number(v)) ? mustBeNumberMessage : requiredMessage);
 
-const requiredIfFallbackRule = (v: any) => !withFallback.value || requiredRule(v) === true || requiredMessage;
-const requiredNumberIfFallbackRule = (v: any) => !withFallback.value || requiredNumberRule(v) === true || (isNaN(Number(v)) ? mustBeNumberMessage : requiredMessage);
+const requiredIfFallbackRule = (v: any) =>
+    !withFallback.value || requiredRule(v) === true || requiredMessage;
+const requiredNumberIfFallbackRule = (v: any) =>
+    !withFallback.value ||
+    requiredNumberRule(v) === true ||
+    (isNaN(Number(v)) ? mustBeNumberMessage : requiredMessage);
 const urlIfFallbackRule = (v: any) => {
     if (!withFallback.value) return true;
-    if (!v || typeof v !== 'string') return mustBeUrlMessage;
+    if (!v || typeof v !== "string") return mustBeUrlMessage;
     const trimmed = v.trim().toLowerCase();
-    return (trimmed.startsWith("http://") || trimmed.startsWith("https://")) || mustBeUrlMessage;
+    return (
+        trimmed.startsWith("http://") ||
+        trimmed.startsWith("https://") ||
+        mustBeUrlMessage
+    );
 };
-
 
 const isCreateDisabled = computed(() => {
     if (!name.value.trim()) return true;
     if (!configurationPurpose.value) return true;
-    if (pingInterval.value === null || isNaN(Number(pingInterval.value))) return true;
+    if (pingInterval.value === null || isNaN(Number(pingInterval.value)))
+        return true;
 
     if (withFallback.value) {
         if (!fallbackStartUrl.value.trim()) return true;
-        if (interval.value === null || isNaN(Number(interval.value))) return true;
-        if (connectionAttempts.value === null || isNaN(Number(connectionAttempts.value))) return true;
-        if (connectionTimeout.value === null || isNaN(Number(connectionTimeout.value))) return true;
+        if (interval.value === null || isNaN(Number(interval.value)))
+            return true;
+        if (
+            connectionAttempts.value === null ||
+            isNaN(Number(connectionAttempts.value))
+        )
+            return true;
+        if (
+            connectionTimeout.value === null ||
+            isNaN(Number(connectionTimeout.value))
+        )
+            return true;
 
         // fallback pair
         {
-            const fp = (fallbackPassword.value ?? '').trim();
-            const fpc = (confirmFallbackPassword.value ?? '').trim();
+            const fp = (fallbackPassword.value ?? "").trim();
+            const fpc = (confirmFallbackPassword.value ?? "").trim();
             if (fp || fpc) {
                 if (!fp || !fpc) return true;
                 if (fp !== fpc) return true;
@@ -571,8 +876,8 @@ const isCreateDisabled = computed(() => {
         }
         // quit pair
         {
-            const qp = (quitPassword.value ?? '').trim();
-            const qpc = (confirmQuitPassword.value ?? '').trim();
+            const qp = (quitPassword.value ?? "").trim();
+            const qpc = (confirmQuitPassword.value ?? "").trim();
             if (qp || qpc) {
                 if (!qp || !qpc) return true;
                 if (qp !== qpc) return true;
@@ -580,8 +885,8 @@ const isCreateDisabled = computed(() => {
         }
     }
     // config pwd pair
-    const a = (configurationPassword.value ?? '').trim();
-    const b = (confirmConfigurationPassword.value ?? '').trim();
+    const a = (configurationPassword.value ?? "").trim();
+    const b = (confirmConfigurationPassword.value ?? "").trim();
     if (a || b) {
         if (!a || !b) return true;
         if (a !== b) return true;
@@ -590,11 +895,10 @@ const isCreateDisabled = computed(() => {
     return false;
 });
 
-
 // must match pwd rules
 const configPwdMustMatchRule = (v: any) => {
-    const a = (configurationPassword.value ?? '').trim();
-    const b = (confirmConfigurationPassword.value ?? '').trim();
+    const a = (configurationPassword.value ?? "").trim();
+    const b = (confirmConfigurationPassword.value ?? "").trim();
 
     if (!a && !b) return true;
     if (!a || !b) return mustMatchMessage;
@@ -602,21 +906,20 @@ const configPwdMustMatchRule = (v: any) => {
 };
 
 const fallbackPwdMustMatchRule = (_v: any) => {
-    const a = (fallbackPassword.value ?? '').trim();
-    const b = (confirmFallbackPassword.value ?? '').trim();
+    const a = (fallbackPassword.value ?? "").trim();
+    const b = (confirmFallbackPassword.value ?? "").trim();
     if (!a && !b) return true;
     if (!a || !b) return mustMatchMessage;
     return a === b || mustMatchMessage;
 };
 
 const quitPwdMustMatchRule = (_v: any) => {
-    const a = (quitPassword.value ?? '').trim();
-    const b = (confirmQuitPassword.value ?? '').trim();
+    const a = (quitPassword.value ?? "").trim();
+    const b = (confirmQuitPassword.value ?? "").trim();
     if (!a && !b) return true;
     if (!a || !b) return mustMatchMessage;
     return a === b || mustMatchMessage;
 };
-
 
 onMounted(async () => {
     appBarStore.title = translate("titles.createConnectionConfiguration");
@@ -629,11 +932,11 @@ onBeforeUnmount(() => {
 });
 
 async function submit() {
-    const {valid} = await formRef.value.validate();
+    const { valid } = await formRef.value.validate();
     if (!valid) return;
 
-    const toMs = (s: number | null) => (s == null ? null : Math.round(Number(s) * 1000));
-
+    const toMs = (s: number | null) =>
+        s == null ? null : Math.round(Number(s) * 1000);
 
     const connectionConfigParams: CreateConnectionConfigurationPar = {
         name: name.value,
@@ -648,31 +951,44 @@ async function submit() {
 
         ...(withFallback.value
             ? {
-                startURL: fallbackStartUrl.value,
-                sebServerFallbackAttemptInterval: Number(toMs(interval.value)!),
-                sebServerFallbackAttempts: Number(connectionAttempts.value!),
-                sebServerFallbackTimeout: Number(toMs(connectionTimeout.value)!),
-                sebServerFallbackPasswordHash: fallbackPassword.value || undefined,
-                sebServerFallbackPasswordHashConfirm: confirmFallbackPassword.value || undefined,
-                hashedQuitPassword: quitPassword.value?.trim() || undefined,
-                hashedQuitPasswordConfirm: confirmQuitPassword.value || undefined,
-            }
+                  startURL: fallbackStartUrl.value,
+                  sebServerFallbackAttemptInterval: Number(
+                      toMs(interval.value)!,
+                  ),
+                  sebServerFallbackAttempts: Number(connectionAttempts.value!),
+                  sebServerFallbackTimeout: Number(
+                      toMs(connectionTimeout.value)!,
+                  ),
+                  sebServerFallbackPasswordHash:
+                      fallbackPassword.value || undefined,
+                  sebServerFallbackPasswordHashConfirm:
+                      confirmFallbackPassword.value || undefined,
+                  hashedQuitPassword: quitPassword.value?.trim() || undefined,
+                  hashedQuitPasswordConfirm:
+                      confirmQuitPassword.value || undefined,
+              }
             : {}),
         vdiSetup: "NO",
     };
 
-    //todo : wait on backend to remove the space after the key
-    const payload: any = {...connectionConfigParams, ['sebServerFallback ']: connectionConfigParams.sebServerFallback};
+    // todo : wait on backend to remove the space after the key
+    const payload: any = {
+        ...connectionConfigParams,
+        "sebServerFallback ": connectionConfigParams.sebServerFallback,
+    };
 
-    const created = await connectionConfigurationViewService.createConnectionConfiguration(payload);
+    const created =
+        await connectionConfigurationViewService.createConnectionConfiguration(
+            payload,
+        );
     if (!created) return;
     navigateTo(constants.CONNECTION_CONFIGURATIONS_ROUTE);
 }
 
-//pwd watchers
+// pwd watchers
 watch([configurationPassword, confirmConfigurationPassword], ([a, b]) => {
-    const aTrim = (a ?? '').trim();
-    const bTrim = (b ?? '').trim();
+    const aTrim = (a ?? "").trim();
+    const bTrim = (b ?? "").trim();
     if (!aTrim && !bTrim) {
         configPwdRef.value?.resetValidation?.();
         confirmConfigPwdRef.value?.resetValidation?.();
@@ -683,8 +999,8 @@ watch([configurationPassword, confirmConfigurationPassword], ([a, b]) => {
 });
 
 watch([fallbackPassword, confirmFallbackPassword], ([a, b]) => {
-    const aTrim = (a ?? '').trim();
-    const bTrim = (b ?? '').trim();
+    const aTrim = (a ?? "").trim();
+    const bTrim = (b ?? "").trim();
     if (!aTrim && !bTrim) {
         fallbackPwdRef.value?.resetValidation?.();
         confirmFallbackPwdRef.value?.resetValidation?.();
@@ -695,8 +1011,8 @@ watch([fallbackPassword, confirmFallbackPassword], ([a, b]) => {
 });
 
 watch([quitPassword, confirmQuitPassword], ([a, b]) => {
-    const aTrim = (a ?? '').trim();
-    const bTrim = (b ?? '').trim();
+    const aTrim = (a ?? "").trim();
+    const bTrim = (b ?? "").trim();
     if (!aTrim && !bTrim) {
         quitPwdRef.value?.resetValidation?.();
         confirmQuitPwdRef.value?.resetValidation?.();
@@ -708,12 +1024,12 @@ watch([quitPassword, confirmQuitPassword], ([a, b]) => {
 
 const hasRealCerts = computed(() => certificateItems.value.length > 1);
 
-
 async function loadCertificates() {
     certificatesLoading.value = true;
     try {
         const optionalParams = { page_number: 1, page_size: 500 };
-        const response = await certificateViewService.getCertificates(optionalParams);
+        const response =
+            await certificateViewService.getCertificates(optionalParams);
 
         const certAliases: { label: string; value: string }[] =
             response?.content?.map((c: { alias: string }) => ({
@@ -728,7 +1044,7 @@ async function loadCertificates() {
 }
 
 function handleCertChange(val: string | undefined) {
-    if (val === '__UPLOAD__') {
+    if (val === "__UPLOAD__") {
         certDialog.value = true;
         encryptWithCertificate.value = undefined;
     } else {
@@ -741,8 +1057,6 @@ async function onCertImported(created: { id: string; name: string }) {
     await loadCertificates();
     encryptWithCertificate.value = uploadedAlias;
 }
-
-
 </script>
 
 <style scoped>
@@ -755,7 +1069,7 @@ async function onCertImported(created: { id: string; name: string }) {
 }
 
 .custom-divider {
-    background-color: #DCDCDC !important;
+    background-color: #dcdcdc !important;
     height: 1px;
     width: 100%;
 }
@@ -769,7 +1083,7 @@ async function onCertImported(created: { id: string; name: string }) {
     appearance: none;
     width: 20px;
     height: 20px;
-    border: 2px solid #215CAE;
+    border: 2px solid #215cae;
     border-radius: 50%;
     background-color: white;
     cursor: pointer;

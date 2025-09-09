@@ -3,7 +3,7 @@ type UserAccountResponse = {
     page_number: number;
     page_size: number;
     content: UserAccount[];
-}
+};
 type SingleUserAccountResponse = {
     uuid: string;
     institutionId: number;
@@ -18,9 +18,9 @@ type SingleUserAccountResponse = {
     language: string;
     timezone: string;
     userRoles: string[];
-}
+};
 
-type EditUserAccountParameters= {
+type EditUserAccountParameters = {
     uuid: string;
     institutionId: number;
     creationDate: string;
@@ -53,10 +53,10 @@ type UserAccount = {
 };
 
 type UserAccountName = {
-    modelId: string,
-    entitiyType: string,
-    name: string
-}
+    modelId: string;
+    entitiyType: string;
+    name: string;
+};
 type CreateUserPar = {
     institutionId: string;
     name: string;
@@ -70,7 +70,6 @@ type CreateUserPar = {
     confirmNewPassword: string;
 };
 
-
 type OptionalParGetUserAccounts = {
     page_size?: number;
     page_number?: number;
@@ -78,4 +77,4 @@ type OptionalParGetUserAccounts = {
     active?: string | null;
     institutionId?: string | null;
     sort?: string;
-}
+};

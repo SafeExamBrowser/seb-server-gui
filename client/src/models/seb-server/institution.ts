@@ -1,5 +1,5 @@
 type Institution = {
     modelId: string;
-    entityType: 'INSTITUTION';
+    entityType: "INSTITUTION";
     name: string;
 };

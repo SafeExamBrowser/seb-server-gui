@@ -1,8 +1,8 @@
-import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { defineStore } from "pinia";
+import { ref } from "vue";
 
-//todo
-export const useCertificateStore = defineStore('certificate', () => {
+// todo
+export const useCertificateStore = defineStore("certificate", () => {
     const searchField = ref<string | null>(null);
     const currentPagingOptions = ref<ServerTablePaging>();
 

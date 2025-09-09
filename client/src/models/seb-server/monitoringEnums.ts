@@ -1,10 +1,10 @@
 export enum MonitoringHeaderEnum {
-    SHOW_ALL = "show-all",        
-    SHOW_STATES = "show-states",        
+    SHOW_ALL = "show-all",
+    SHOW_STATES = "show-states",
     SHOW_CLIENT_GROUPS = "show-client-groups",
     SHOW_INDICATORS = "show-indicators",
-    SHOW_NOTIFCATION = "show-notifications"
-}   
+    SHOW_NOTIFCATION = "show-notifications",
+}
 
 export enum IndicatorEnum {
     LAST_PING = "LAST_PING",
@@ -12,16 +12,16 @@ export enum IndicatorEnum {
     WARN_COUNT = "WARN_COUNT",
     INFO_COUNT = "INFO_COUNT",
     BATTERY_STATUS = "BATTERY_STATUS",
-    WLAN_STATUS = "WLAN_STATUS"
+    WLAN_STATUS = "WLAN_STATUS",
 }
 
 export enum NotificationEnum {
     LOCK_SCREEN = "LOCK_SCREEN",
-    RAISE_HAND = "RAISE_HAND"
+    RAISE_HAND = "RAISE_HAND",
 }
 
 export type IndicatorObject = {
-    indicatorType: IndicatorEnum | null; 
-    indicatorValue: number | string; 
+    indicatorType: IndicatorEnum | null;
+    indicatorValue: number | string;
     indicatorObject: Indicator;
-}
+};

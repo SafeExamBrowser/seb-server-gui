@@ -5,5 +5,5 @@ export enum StorageItemEnum {
     SP_ACCESS_TOKEN = "spAccessToken",
     SP_REFRESH_TOKEN = "spRefreshToken",
 
-    IS_SP_AVAILABLE = "isSpAvailable"
+    IS_SP_AVAILABLE = "isSpAvailable",
 }

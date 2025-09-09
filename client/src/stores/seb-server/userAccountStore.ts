@@ -1,8 +1,8 @@
-import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { defineStore } from "pinia";
+import { ref } from "vue";
 // (You can add more fields as you need them for the detail page, e.g. roles, messages, etc.)
 
-export const useUserAccountStore = defineStore('userAccount', () => {
+export const useUserAccountStore = defineStore("userAccount", () => {
     const searchField = ref<string | null>(null);
     const startDate = ref<number | null>(null);
     const currentPagingOptions = ref<ServerTablePaging>();

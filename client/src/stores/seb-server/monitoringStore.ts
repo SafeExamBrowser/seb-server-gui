@@ -1,24 +1,26 @@
 import { defineStore } from "pinia";
-import { ExamStatusEnum, ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
+import {
+    ExamStatusEnum,
+    ExamTypeEnum,
+} from "@/models/seb-server/examFiltersEnum";
 import { MonitoringRow } from "@/models/seb-server/monitoringClients";
 import { LocationQuery } from "vue-router";
 
 export const useMonitoringStore = defineStore("monitoring", () => {
-
-    //exam table
+    // exam table
     const searchField = ref<string | null>(null);
     const startDate = ref<number | null>(null);
     const currentPagingOptions = ref<ServerTablePaging>();
     const activeTypeFilter = ref<ExamTypeEnum | null>(null);
     const activeStatusFilter = ref<ExamStatusEnum | null>(null);
 
-    //monitoring overview
+    // monitoring overview
     const selectedExam = ref<Exam | null>(null);
     const monitoringOverviewData = ref<MonitoringOverview | null>(null);
     const batteryStatusDefaultColor = ref<string>("#f0f0f0");
     const wlanStatusDefaultColor = ref<string>("#f0f0f0");
 
-    //monitoring clients
+    // monitoring clients
     const isNoFilterSelected = ref<boolean>(false);
     const selectedMonitoringIds = ref<number[]>([]);
     const indicators = ref<Indicators | null>(null);
@@ -31,9 +33,7 @@ export const useMonitoringStore = defineStore("monitoring", () => {
     const appSignatureKeys = ref<AppSignatureKey[] | null>(null);
     const clientConnectionList = ref<SebClientConnection[] | null>(null);
 
-
-
-    //monitoring detail
+    // monitoring detail
     const selectedSingleConn = ref<SingleConnection | null>(null);
     const clientGroupsSingle = ref<ClientGroup[]>([]);
     const pendingNotifications = ref<ClientNotification[]>([]);
@@ -42,16 +42,17 @@ export const useMonitoringStore = defineStore("monitoring", () => {
 
     const currentMonitoringDetailPagingOptions = ref<ServerTablePaging>();
 
+    const clientConnectionsById = computed<Record<number, SebClientConnection>>(
+        () => {
+            const map: Record<number, SebClientConnection> = {};
+            for (const c of clientConnectionList.value ?? []) {
+                map[c.id] = c;
+            }
+            return map;
+        },
+    );
 
-    const clientConnectionsById = computed<Record<number, SebClientConnection>>(() => {
-        const map: Record<number, SebClientConnection> = {};
-        for (const c of clientConnectionList.value ?? []) {
-            map[c.id] = c;
-        }
-        return map;
-    });
-
-    function clearClientValues(){
+    function clearClientValues() {
         selectedMonitoringIds.value = [];
         indicators.value = null;
         clientGroups.value = null;
@@ -92,6 +93,6 @@ export const useMonitoringStore = defineStore("monitoring", () => {
         clientConnectionList,
         clientConnectionsById,
 
-        clearClientValues
+        clearClientValues,
     };
 });

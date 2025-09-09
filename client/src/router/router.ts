@@ -1,4 +1,4 @@
-import { createRouter, RouteRecordRaw, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import ContainerLayout from "@/components/layout/ContainerLayout.vue";
 import LoginPage from "@/components/views/LoginPage.vue";
 import RegisterPage from "@/components/views/RegisterPage.vue";
@@ -20,7 +20,7 @@ import CreateUserAccount from "@/components/views/seb-server/accounts/CreateUser
 import ProfilePage from "@/components/views/seb-server/accounts/ProfilePage.vue";
 import EditUserAccount from "@/components/views/seb-server/accounts/EditUserAccount.vue";
 
-//----------screen-proctoring ---------
+// ----------screen-proctoring ---------
 import * as spConstants from "@/utils/sp-constants";
 import GalleryViewPage from "@/components/views/screen-proctoring/gallery/GalleryViewPage.vue";
 import ApplicationsSearchViewPage from "@/components/views/screen-proctoring/applications-search/ApplicationsSearchViewPage.vue";
@@ -35,19 +35,12 @@ import AssessmentTools from "@/components/views/seb-server/assessment-tool/Asses
 import CreateAssessmentTool from "@/components/views/seb-server/assessment-tool/CreateAssessmentTool.vue";
 import AssessmentToolDetailsAndEdit from "@/components/views/seb-server/assessment-tool/AssessmentToolDetailsAndEdit.vue";
 
-import CreateConnectionConfiguration
-    from "@/components/views/seb-server/connection-configuration/CreateConnectionConfiguration.vue";
-import ConnectionConfigurations
-    from "@/components/views/seb-server/connection-configuration/ConnectionConfigurations.vue";
-import ConnectionConfigurationlDetailsAndEdit
-    from "@/components/views/seb-server/connection-configuration/ConnectionConfigurationlDetailsAndEdit.vue";
+import CreateConnectionConfiguration from "@/components/views/seb-server/connection-configuration/CreateConnectionConfiguration.vue";
+import ConnectionConfigurations from "@/components/views/seb-server/connection-configuration/ConnectionConfigurations.vue";
+import ConnectionConfigurationlDetailsAndEdit from "@/components/views/seb-server/connection-configuration/ConnectionConfigurationlDetailsAndEdit.vue";
 import Certificates from "@/components/views/seb-server/certificates/Certificates.vue";
 
 import CreateTemplate from "@/components/views/seb-server/template/StartTemplateCreation.vue";
-
-
-
-
 
 const defaultPageTitle: string = " | SEB Server";
 
@@ -66,25 +59,31 @@ const routes: Array<RouteRecordRaw> = [
     },
     {
         path: spConstants.JWT_LOGIN_ROUTE,
-        meta: {requiresAuth: false},
+        meta: { requiresAuth: false },
         beforeEnter: async (to, from) => {
-          const authStore = useAuthStore();
+            const authStore = useAuthStore();
 
-          if(to.query.token != null){
-            try{
-              const tokenObject: JwtTokenResponse = await authenticationService.verifyJwt(to.query.token.toString());
-              authStore.loginWithJwt(tokenObject.login.access_token, tokenObject.login.refresh_token, tokenObject.redirect);
-              return;
-
-            }catch(error){
-              return true;
+            if (to.query.token != null) {
+                try {
+                    const tokenObject: JwtTokenResponse =
+                        await authenticationService.verifyJwt(
+                            to.query.token.toString(),
+                        );
+                    authStore.loginWithJwt(
+                        tokenObject.login.access_token,
+                        tokenObject.login.refresh_token,
+                        tokenObject.redirect,
+                    );
+                    return;
+                } catch (error) {
+                    return true;
+                }
             }
-          }
 
-          //true means redirecting to Login Page
-          return true;
+            // true means redirecting to Login Page
+            return true;
         },
-        component: LoginPage
+        component: LoginPage,
     },
     {
         path: constants.DEFAULT_ROUTE,
@@ -96,25 +95,25 @@ const routes: Array<RouteRecordRaw> = [
                 name: "HomePage",
                 component: HomePageContainer,
                 meta: {
-                    titleKey: "titles.home"
-                }
+                    titleKey: "titles.home",
+                },
             },
             {
                 path: constants.NAVIGATION_OVERVIEW_ROUTE,
                 name: "NavigationOverview",
                 component: NavigationOverview,
                 meta: {
-                    titleKey: "titles.navigationOverview"
-                }
+                    titleKey: "titles.navigationOverview",
+                },
             },
 
-            //----------exam routes---------
+            // ----------exam routes---------
             {
                 path: constants.EXAM_ROUTE,
                 name: "Exams",
                 component: ExamListContainer,
                 meta: {
-                    titleKey: "titles.exams"
+                    titleKey: "titles.exams",
                 },
             },
             {
@@ -122,27 +121,27 @@ const routes: Array<RouteRecordRaw> = [
                 name: "ExamDetail",
                 component: ExamDetailContainer,
                 meta: {
-                    titleKey: "titles.examDetails"
+                    titleKey: "titles.examDetails",
                 },
             },
 
-            //----------import quiz routes---------
+            // ----------import quiz routes---------
             {
                 path: constants.QUIZ_IMPORT_ROUTE,
                 name: "QuizImport",
                 component: ImportWizard,
                 meta: {
-                    titleKey: "titles.quizImport"
-                }
+                    titleKey: "titles.quizImport",
+                },
             },
 
-            //----------monitoring routes---------
+            // ----------monitoring routes---------
             {
                 path: constants.MONITORING_ROUTE,
                 name: "Monitoring",
                 component: MonitoringExamsContainer,
                 meta: {
-                    titleKey: "titles.monitoring"
+                    titleKey: "titles.monitoring",
                 },
             },
             {
@@ -150,7 +149,7 @@ const routes: Array<RouteRecordRaw> = [
                 name: "MonitoringOverview",
                 component: MonitoringOverviewContainer,
                 meta: {
-                    titleKey: "titles.monitoring"
+                    titleKey: "titles.monitoring",
                 },
             },
             {
@@ -158,7 +157,7 @@ const routes: Array<RouteRecordRaw> = [
                 name: "MonitoringClients",
                 component: MonitoringClientsContainer,
                 meta: {
-                    titleKey: "titles.monitoring"
+                    titleKey: "titles.monitoring",
                 },
             },
             {
@@ -166,16 +165,16 @@ const routes: Array<RouteRecordRaw> = [
                 name: "MonitoringDetails",
                 component: MonitoringDetailsContainer,
                 meta: {
-                    titleKey: "titles.monitoring"
+                    titleKey: "titles.monitoring",
                 },
             },
-            //----------user accounts routes---------
+            // ----------user accounts routes---------
             {
                 path: constants.USER_ACCOUNTS_ROUTE + "/:userId",
                 name: "ProfileRoute",
                 component: UserAccountEditForm,
                 meta: {
-                    titleKey: "titles.userAccounts"
+                    titleKey: "titles.userAccounts",
                 },
             },
             {
@@ -183,7 +182,7 @@ const routes: Array<RouteRecordRaw> = [
                 name: "ProfileRoute",
                 component: ProfilePage,
                 meta: {
-                    titleKey: "titles.profile"
+                    titleKey: "titles.profile",
                 },
             },
             {
@@ -191,7 +190,7 @@ const routes: Array<RouteRecordRaw> = [
                 name: "EditUserAccount",
                 component: EditUserAccount,
                 meta: {
-                    titleKey: "titles.editUserAccount"
+                    titleKey: "titles.editUserAccount",
                 },
             },
             {
@@ -199,7 +198,7 @@ const routes: Array<RouteRecordRaw> = [
                 name: "UserAccounts",
                 component: UserAccounts,
                 meta: {
-                    titleKey: "titles.userAccounts"
+                    titleKey: "titles.userAccounts",
                 },
             },
             {
@@ -207,17 +206,17 @@ const routes: Array<RouteRecordRaw> = [
                 name: "CreateUserAccount",
                 component: CreateUserAccount,
                 meta: {
-                    titleKey: "titles.createUserAccount"
+                    titleKey: "titles.createUserAccount",
                 },
             },
 
-            //assessment tools
+            // assessment tools
             {
                 path: constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE,
                 name: "AssessmentToolConnections",
                 component: AssessmentTools,
                 meta: {
-                    titleKey: "titles.assessmentToolConnections"
+                    titleKey: "titles.assessmentToolConnections",
                 },
             },
 
@@ -226,7 +225,7 @@ const routes: Array<RouteRecordRaw> = [
                 name: "CreateAssessmentToolConnection",
                 component: CreateAssessmentTool,
                 meta: {
-                    titleKey: "titles.createAssessmentTool"
+                    titleKey: "titles.createAssessmentTool",
                 },
             },
             {
@@ -234,17 +233,17 @@ const routes: Array<RouteRecordRaw> = [
                 name: "AssessmentToolDetailAndView",
                 component: AssessmentToolDetailsAndEdit,
                 meta: {
-                    titleKey: "titles.assessmentToolEdit"
+                    titleKey: "titles.assessmentToolEdit",
                 },
             },
 
-            //connection configuration
+            // connection configuration
             {
                 path: constants.CONNECTION_CONFIGURATIONS_ROUTE,
                 name: "ConnectionConfigurations",
                 component: ConnectionConfigurations,
                 meta: {
-                    titleKey: "titles.connectionConfigurations"
+                    titleKey: "titles.connectionConfigurations",
                 },
             },
 
@@ -253,7 +252,7 @@ const routes: Array<RouteRecordRaw> = [
                 name: "CreateConnectionConfiguration",
                 component: CreateConnectionConfiguration,
                 meta: {
-                    titleKey: "titles.createConnectionConfiguration"
+                    titleKey: "titles.createConnectionConfiguration",
                 },
             },
             {
@@ -261,107 +260,112 @@ const routes: Array<RouteRecordRaw> = [
                 name: "ConnectionConfigurationDetailAndView",
                 component: ConnectionConfigurationlDetailsAndEdit,
                 meta: {
-                    titleKey: "titles.connectionConfigurationViewAndEdit"
+                    titleKey: "titles.connectionConfigurationViewAndEdit",
                 },
             },
 
-            //certificates
+            // certificates
             {
                 path: constants.CERTIFICATES_ROUTE,
                 name: "Certificates",
                 component: Certificates,
                 meta: {
-                    titleKey: "titles.certificates"
+                    titleKey: "titles.certificates",
                 },
             },
 
-            //templates
+            // templates
             {
                 path: constants.CREATE_TEMPLATE_ROUTE,
                 name: "CreateTemplate",
                 component: CreateTemplate,
                 meta: {
-                    titleKey: "titles.createTemplate"
+                    titleKey: "titles.createTemplate",
                 },
-            }
-        ]
+            },
+        ],
     },
 
-
-    //----------screen-proctoring routes---------
+    // ----------screen-proctoring routes---------
     {
         path: spConstants.DEFAULT_ROUTE,
         component: ContainerLayout,
-        meta: {requiresAuth: true},
+        meta: { requiresAuth: true },
         children: [
-          {
-            path: spConstants.RUNNING_EXAMS_ROUTE,
-            name: "ExamsOverview",
-            component: ExamsOverviewPage,
-            meta: {
-                title: "Running Exams" + defaultPageTitle
-            }
-          },
-          {
-            path: spConstants.SEARCH_ROUTE,
-            name: "Search",
-            component: SearchPage,
-            meta: {
-                title: "Search" + defaultPageTitle
-            }
-          },
-          {
-            path: spConstants.APPLICATIONS_ROUTE,
-            name: "Applications",
-            component: ApplicationsSearchViewPage,
-            meta: {
-                title: "Applications" + defaultPageTitle
-            }
-          },
-          {
-            path: spConstants.GALLERY_VIEW_ROUTE + "/:uuid" + spConstants.EXAM_ID + "/:examId",
-            name: "GalleryViewPage",
-            component: GalleryViewPage,
-            meta: {
-                title: "Gallery View" + defaultPageTitle
-            }
-          },
-          {
-            path: spConstants.PROCTORING_VIEW_ROUTE + "/:sessionId",
-            name: "ProctoringViewPage",
-            component: ProctoringViewPage,
-            meta: {
-                title: "Proctoring" + defaultPageTitle
-            }
-          },
-          {
-            path: spConstants.PROCTORING_APPLICATION_SEARCH_ROUTE + "/:sessionId",
-            name: "ProctoringApplicationSearchPage",
-            component: ProctoringApplicationSearchPage,
-            meta: {
-                title: "Proctoring" + defaultPageTitle
-            }
-          },
-        ]
-      },
+            {
+                path: spConstants.RUNNING_EXAMS_ROUTE,
+                name: "ExamsOverview",
+                component: ExamsOverviewPage,
+                meta: {
+                    title: "Running Exams" + defaultPageTitle,
+                },
+            },
+            {
+                path: spConstants.SEARCH_ROUTE,
+                name: "Search",
+                component: SearchPage,
+                meta: {
+                    title: "Search" + defaultPageTitle,
+                },
+            },
+            {
+                path: spConstants.APPLICATIONS_ROUTE,
+                name: "Applications",
+                component: ApplicationsSearchViewPage,
+                meta: {
+                    title: "Applications" + defaultPageTitle,
+                },
+            },
+            {
+                path:
+                    spConstants.GALLERY_VIEW_ROUTE +
+                    "/:uuid" +
+                    spConstants.EXAM_ID +
+                    "/:examId",
+                name: "GalleryViewPage",
+                component: GalleryViewPage,
+                meta: {
+                    title: "Gallery View" + defaultPageTitle,
+                },
+            },
+            {
+                path: spConstants.PROCTORING_VIEW_ROUTE + "/:sessionId",
+                name: "ProctoringViewPage",
+                component: ProctoringViewPage,
+                meta: {
+                    title: "Proctoring" + defaultPageTitle,
+                },
+            },
+            {
+                path:
+                    spConstants.PROCTORING_APPLICATION_SEARCH_ROUTE +
+                    "/:sessionId",
+                name: "ProctoringApplicationSearchPage",
+                component: ProctoringApplicationSearchPage,
+                meta: {
+                    title: "Proctoring" + defaultPageTitle,
+                },
+            },
+        ],
+    },
 ];
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.VITE_SUB_PATH || ""),
-    routes
+    routes,
 });
 
 router.beforeEach(async (to) => {
-    if(to.meta.requiresAuth){
+    if (to.meta.requiresAuth) {
         await userAccountViewService.setPersonalUserAccount();
     }
 
     const defaultTitle: string = "SEB Server";
 
-    //get title key from route meta
+    // get title key from route meta
     const titleKey = to.meta.titleKey as string | undefined;
 
-    //if title key exists, translate it and add the default suffix
+    // if title key exists, translate it and add the default suffix
     if (titleKey) {
         document.title = i18n.global.t(titleKey) + defaultPageTitle;
     } else {

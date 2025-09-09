@@ -5,7 +5,7 @@ type ScreenProctoringSettings = {
     spsAPIKey?: string;
     spsAPISecret?: string;
     spsAccountId?: string;
-    spsAccountPassword?: string; 
+    spsAccountPassword?: string;
     spsCollectingStrategy?: string;
     spsCollectingGroupName?: string;
     spsCollectingGroupSize?: number;

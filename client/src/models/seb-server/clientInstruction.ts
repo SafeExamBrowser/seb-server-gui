@@ -3,5 +3,5 @@ type ClientInstruction = {
     examId: number;
     type: string;
     connectionToken: string;
-    attributes?: {}
+    attributes?: {};
 };

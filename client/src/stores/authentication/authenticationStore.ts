@@ -1,4 +1,3 @@
-
 import { defineStore } from "pinia";
 import { navigateTo } from "@/router/navigation";
 import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
@@ -6,12 +5,14 @@ import * as constants from "@/utils/constants";
 import * as authenticationService from "@/services/authenticationService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
 
-
-//----------------------authentication---------------------------//
+// ----------------------authentication---------------------------//
 export const useAuthStore = defineStore("auth", () => {
     const redirectRoute: string = "";
 
-    async function login(accessTokenString: string, refreshTokenString: string) {
+    async function login(
+        accessTokenString: string,
+        refreshTokenString: string,
+    ) {
         setStorageItem(StorageItemEnum.ACCESS_TOKEN, accessTokenString);
         setStorageItem(StorageItemEnum.REFRESH_TOKEN, refreshTokenString);
 
@@ -21,7 +22,7 @@ export const useAuthStore = defineStore("auth", () => {
             navigateTo(constants.HOME_PAGE_ROUTE);
         } else {
             let route: string = useAuthStore().redirectRoute;
-            let subPath: string | null = import.meta.env.VITE_SUB_PATH;
+            const subPath: string | null = import.meta.env.VITE_SUB_PATH;
 
             if (subPath != null && route.includes(subPath)) {
                 route = route.replace(subPath, "");
@@ -31,7 +32,10 @@ export const useAuthStore = defineStore("auth", () => {
         }
     }
 
-    async function loginSP(accessTokenString: string, refreshTokenString: string) {
+    async function loginSP(
+        accessTokenString: string,
+        refreshTokenString: string,
+    ) {
         setStorageItem(StorageItemEnum.SP_ACCESS_TOKEN, accessTokenString);
         setStorageItem(StorageItemEnum.SP_REFRESH_TOKEN, refreshTokenString);
         setStorageItem(StorageItemEnum.IS_SP_AVAILABLE, "true");
@@ -39,7 +43,11 @@ export const useAuthStore = defineStore("auth", () => {
         // setStorageItem()
     }
 
-    async function loginWithJwt(accessTokenString: string, refreshTokenString: string, redirect: string) {
+    async function loginWithJwt(
+        accessTokenString: string,
+        refreshTokenString: string,
+        redirect: string,
+    ) {
         setStorageItem(StorageItemEnum.SP_ACCESS_TOKEN, accessTokenString);
         setStorageItem(StorageItemEnum.SP_REFRESH_TOKEN, refreshTokenString);
 
@@ -63,36 +71,55 @@ export const useAuthStore = defineStore("auth", () => {
         navigateTo(constants.DEFAULT_ROUTE);
     }
 
-    function setStorageItem(key: string, value: string){
+    function setStorageItem(key: string, value: string) {
         localStorage.setItem(key, value);
     }
 
     function getStorageItem(key: string): string {
         const token: string | null = localStorage.getItem(key);
-        if (token == null) { return key; }
+        if (token == null) {
+            return key;
+        }
         return token;
     }
 
-    return { redirectRoute, login, loginSP, loginWithJwt, logout, setStorageItem, getStorageItem };
+    return {
+        redirectRoute,
+        login,
+        loginSP,
+        loginWithJwt,
+        logout,
+        setStorageItem,
+        getStorageItem,
+    };
 });
 
-
-//---------------------account----------------------------//
+// ---------------------account----------------------------//
 export const useUserAccountStore = defineStore("account", () => {
     const userAccount = ref<UserAccount | null>();
     const isEditMode = ref<boolean>();
     const isAccountSelected = ref<boolean>(false);
     const selectedAccountId = ref<number>();
 
-    function setUserTimeZone(userTimeZone: string){
+    function setUserTimeZone(userTimeZone: string) {
         localStorage.setItem("userTimeZone", userTimeZone);
     }
 
-    function getUserTimeZone(): string{
-        const userTimeZone: string | null = localStorage.getItem("userTimeZone");
-        if (userTimeZone == null) { return "UTC"; }
+    function getUserTimeZone(): string {
+        const userTimeZone: string | null =
+            localStorage.getItem("userTimeZone");
+        if (userTimeZone == null) {
+            return "UTC";
+        }
         return userTimeZone;
     }
 
-    return { userAccount, isEditMode, isAccountSelected, selectedAccountId, setUserTimeZone, getUserTimeZone };
+    return {
+        userAccount,
+        isEditMode,
+        isAccountSelected,
+        selectedAccountId,
+        setUserTimeZone,
+        getUserTimeZone,
+    };
 });

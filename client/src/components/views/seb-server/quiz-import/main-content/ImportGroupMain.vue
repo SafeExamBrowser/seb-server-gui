@@ -17,12 +17,12 @@
             <v-col cols="6">
                 <v-text-field
                     v-model="searchInput"
-                    :label="translate('quizImportWizard.groupMain.search')"
-                    prepend-inner-icon="mdi-magnify"
-                    variant="outlined"
                     density="compact"
                     hide-details
+                    :label="translate('quizImportWizard.groupMain.search')"
+                    prepend-inner-icon="mdi-magnify"
                     single-line
+                    variant="outlined"
                     @keydown.enter="search = searchInput"
                     @keydown.esc="clearSearch"
                 />
@@ -31,9 +31,9 @@
             <v-col cols="2">
                 <v-btn
                     block
+                    class="rounded"
                     color="primary"
                     variant="flat"
-                    class="rounded"
                     @click="search = searchInput"
                 >
                     {{ translate("general.searchButton") }}
@@ -43,9 +43,9 @@
             <v-col cols="2">
                 <v-btn
                     block
+                    class="rounded ml-0"
                     color="black"
                     variant="outlined"
-                    class="rounded ml-0"
                     @click="clearSearch"
                 >
                     {{ translate("general.cancelButton") }}
@@ -57,21 +57,23 @@
             <!-- Available Groups -->
             <v-col cols="6">
                 <div class="text-subtitle-1 font-weight-medium">
-                    {{ translate("quizImportWizard.groupMain.availableGroups") }}
+                    {{
+                        translate("quizImportWizard.groupMain.availableGroups")
+                    }}
                 </div>
 
                 <div class="supervisor-table-wrapper">
                     <v-data-table
-                        item-value="id"
+                        class="bordered-table no-header-table"
+                        :footer-props="{ itemsPerPageOptions: [] }"
+                        :headers="[]"
                         :hover="true"
+                        item-value="id"
                         :items="filteredAvailableGroups"
                         :items-length="filteredAvailableGroups.length"
                         :items-per-page="10"
-                        :headers="[]"
-                        :footer-props="{ itemsPerPageOptions: [] }"
-                        class="bordered-table no-header-table"
                     >
-                        <template v-slot:item="{ item }">
+                        <template #item="{ item }">
                             <tr class="supervisor-row">
                                 <td class="supervisor-cell">
                                     <div
@@ -79,32 +81,57 @@
                                         @click="onAvailableRowClick(item)"
                                     >
                                         <div class="mr-3">
-                                            <div class="font-weight-medium">{{ item.name }}</div>
+                                            <div class="font-weight-medium">
+                                                {{ item.name }}
+                                            </div>
 
                                             <!-- Meta line: icon + translated type + detail -->
                                             <div class="meta-row mt-2">
-                                                <v-icon size="16" class="mr-1">{{ getTypeIcon(item) }}</v-icon>
-                                                <span class="meta-type">{{ translate(item.type) }}</span>
-                                                <span v-if="getTypeDetail(item)" class="meta-sep">•</span>
-                                                <span class="meta-detail">{{ getTypeDetail(item) }}</span>
+                                                <v-icon
+                                                    class="mr-1"
+                                                    size="16"
+                                                    >{{
+                                                        getTypeIcon(item)
+                                                    }}</v-icon
+                                                >
+                                                <span class="meta-type">{{
+                                                    translate(item.type)
+                                                }}</span>
+                                                <span
+                                                    v-if="getTypeDetail(item)"
+                                                    class="meta-sep"
+                                                    >•</span
+                                                >
+                                                <span class="meta-detail">{{
+                                                    getTypeDetail(item)
+                                                }}</span>
                                             </div>
 
                                             <!-- Badges -->
                                             <div class="badge-row">
                                                 <v-chip
                                                     v-if="isSp(item.id)"
-                                                    size="small"
-                                                    density="comfortable"
-                                                    variant="tonal"
                                                     class="chip-sp"
+                                                    density="comfortable"
+                                                    size="small"
+                                                    variant="tonal"
                                                 >
-                                                    {{ translate('quizImportWizard.groupMain.spAvailable') }}
+                                                    {{
+                                                        translate(
+                                                            "quizImportWizard.groupMain.spAvailable",
+                                                        )
+                                                    }}
                                                 </v-chip>
                                             </div>
                                         </div>
 
-                                        <div class="d-flex align-center" style="gap: 8px;">
-                                            <v-icon color="primary">mdi-plus</v-icon>
+                                        <div
+                                            class="d-flex align-center"
+                                            style="gap: 8px"
+                                        >
+                                            <v-icon color="primary"
+                                                >mdi-plus</v-icon
+                                            >
                                         </div>
                                     </div>
                                 </td>
@@ -130,29 +157,48 @@
                         >
                             <div class="supervisor-row-content">
                                 <div class="mr-3">
-                                    <div class="font-weight-medium">{{ group.name }}</div>
+                                    <div class="font-weight-medium">
+                                        {{ group.name }}
+                                    </div>
 
                                     <div class="meta-row mt-2">
-                                        <v-icon size="16" class="mr-1">{{ getTypeIcon(group) }}</v-icon>
-                                        <span class="meta-type">{{ translate(group.type) }}</span>
-                                        <span v-if="getTypeDetail(group)" class="meta-sep">•</span>
-                                        <span class="meta-detail">{{ getTypeDetail(group) }}</span>
+                                        <v-icon class="mr-1" size="16">{{
+                                            getTypeIcon(group)
+                                        }}</v-icon>
+                                        <span class="meta-type">{{
+                                            translate(group.type)
+                                        }}</span>
+                                        <span
+                                            v-if="getTypeDetail(group)"
+                                            class="meta-sep"
+                                            >•</span
+                                        >
+                                        <span class="meta-detail">{{
+                                            getTypeDetail(group)
+                                        }}</span>
                                     </div>
 
                                     <div class="badge-row">
                                         <v-chip
                                             v-if="isSp(group.id)"
-                                            size="small"
-                                            density="comfortable"
-                                            variant="tonal"
                                             class="chip-sp"
+                                            density="comfortable"
+                                            size="small"
+                                            variant="tonal"
                                         >
-                                            {{ translate('quizImportWizard.groupMain.spAvailable') }}
+                                            {{
+                                                translate(
+                                                    "quizImportWizard.groupMain.spAvailable",
+                                                )
+                                            }}
                                         </v-chip>
                                     </div>
                                 </div>
 
-                                <div class="d-flex align-center" style="gap: 8px;">
+                                <div
+                                    class="d-flex align-center"
+                                    style="gap: 8px"
+                                >
                                     <v-icon color="error">mdi-minus</v-icon>
                                 </div>
                             </div>
@@ -176,24 +222,28 @@ const searchInput = ref<string>();
 const search = ref<string>();
 
 // derive available list from the template
-const allGroups = computed<ClientGroup[]>(() =>
-    quizImportStore.selectedExamTemplate?.CLIENT_GROUP_TEMPLATES ?? []
+const allGroups = computed<ClientGroup[]>(
+    () => quizImportStore.selectedExamTemplate?.CLIENT_GROUP_TEMPLATES ?? [],
 );
 
 // filter
 const filteredAvailableGroups = computed<ClientGroup[]>(() => {
-    const selectedIds = new Set(quizImportStore.selectedClientGroups.map(g => g.id));
-    const base = allGroups.value.filter(g => !selectedIds.has(g.id!));
+    const selectedIds = new Set(
+        quizImportStore.selectedClientGroups.map((g) => g.id),
+    );
+    const base = allGroups.value.filter((g) => !selectedIds.has(g.id!));
 
     if (!search.value) return base;
 
     const q = (search.value || "").toLowerCase();
-    return base.filter(g => (g.name ?? "").toLowerCase().includes(q));
+    return base.filter((g) => (g.name ?? "").toLowerCase().includes(q));
 });
 
 // interactions
 function onAvailableRowClick(selectedGroup: ClientGroup) {
-    const index = quizImportStore.selectedClientGroups.findIndex(g => g.id == selectedGroup.id);
+    const index = quizImportStore.selectedClientGroups.findIndex(
+        (g) => g.id == selectedGroup.id,
+    );
     if (index !== -1) {
         quizImportStore.selectedClientGroups.splice(index, 1);
         return;
@@ -202,7 +252,9 @@ function onAvailableRowClick(selectedGroup: ClientGroup) {
 }
 
 function removeClientGroup(groupId: number) {
-    const index = quizImportStore.selectedClientGroups.findIndex(g => g.id == groupId);
+    const index = quizImportStore.selectedClientGroups.findIndex(
+        (g) => g.id == groupId,
+    );
     if (index !== -1) quizImportStore.selectedClientGroups.splice(index, 1);
 }
 
@@ -263,7 +315,6 @@ function getTypeDetail(g: ClientGroup): string {
             return "";
     }
 }
-
 </script>
 
 <style scoped>
@@ -324,7 +375,7 @@ function getTypeDetail(g: ClientGroup): string {
 }
 
 .supervisor-row-content:hover {
-    background-color: #D8D8D8;
+    background-color: #d8d8d8;
 }
 
 .meta-row {

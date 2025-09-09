@@ -1,41 +1,36 @@
-
 type CertificatesResponse = {
     number_of_pages: number;
     page_number: number;
     page_size: number;
     complete: boolean;
     content: Certificate[];
-}
+};
 
 type Certificate = {
     alias: string;
     validityFrom: string;
     validityTo: string;
     certType: CertificateTypeEnum[];
-}
+};
 
 type OptionalParGetCertificates = {
     page_size?: number;
     page_number?: number;
     sort?: string;
-    alias?: string
+    alias?: string;
 };
 
-
- type CreateCertificatePar = {
+type CreateCertificatePar = {
     file: Blob;
     fileName: string;
-    password?: string
+    password?: string;
 };
-
-
 
 type CreateCertificateJSON = {
     fileBase64: string;
     fileName: string;
     password?: string;
 };
-
 
 enum CertificateTypeEnum {
     UNKNOWN = "UNKNOWN",

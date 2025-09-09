@@ -1,31 +1,39 @@
 <template>
     <v-card>
         <v-toolbar color="transparent">
-            <v-toolbar-title class="text-h6">App Signature Keys</v-toolbar-title>
+            <v-toolbar-title class="text-h6"
+                >App Signature Keys</v-toolbar-title
+            >
             <template #append>
-                <v-btn @click="emit('closeAskDialog')" icon="mdi-close" />
+                <v-btn icon="mdi-close" @click="emit('closeAskDialog')" />
             </template>
         </v-toolbar>
 
         <v-card-text>
             <v-expansion-panels multiple>
-                <v-expansion-panel v-for="(ask, index) in askEnriched" :key="index">
+                <v-expansion-panel
+                    v-for="(ask, index) in askEnriched"
+                    :key="index"
+                >
                     <v-expansion-panel-title>
                         <div class="d-flex flex-column">
-              <span class="text-subtitle-1 font-weight-medium">
-                Key: {{ ask.keyValue }}
-              </span>
+                            <span class="text-subtitle-1 font-weight-medium">
+                                Key: {{ ask.keyValue }}
+                            </span>
                             <span class="text-caption text-grey-darken-1">
-                Institution ID: {{ ask.institutionId }} |
-                Exam ID: {{ ask.examId }} |
-                Connections: {{ ask.entries.length }}
-              </span>
+                                Institution ID: {{ ask.institutionId }} | Exam
+                                ID: {{ ask.examId }} | Connections:
+                                {{ ask.entries.length }}
+                            </span>
                         </div>
                     </v-expansion-panel-title>
 
                     <v-expansion-panel-text>
                         <v-list density="compact">
-                            <v-list-item v-for="entry in ask.entries" :key="entry.id">
+                            <v-list-item
+                                v-for="entry in ask.entries"
+                                :key="entry.id"
+                            >
                                 <v-list-item-content>
                                     <v-list-item-title class="font-weight-bold">
                                         Connection ID: {{ entry.id }}
@@ -36,12 +44,25 @@
 
                                     <!-- Extra details from SebClientConnection -->
                                     <div v-if="entry.conn" class="mt-1">
-                                        <div>Status: {{ entry.conn.status }}</div>
+                                        <div>
+                                            Status: {{ entry.conn.status }}
+                                        </div>
 
-                                        <div>SEB Info: {{ entry.conn.seb_info }}</div>
-                                        <div>Client Address: {{ entry.conn.clientAddress }}</div>
-                                        <div>Client OS: {{ entry.conn.clientOsName }}</div>
-                                        <div>Client Version: {{ entry.conn.clientVersion }}</div>
+                                        <div>
+                                            SEB Info: {{ entry.conn.seb_info }}
+                                        </div>
+                                        <div>
+                                            Client Address:
+                                            {{ entry.conn.clientAddress }}
+                                        </div>
+                                        <div>
+                                            Client OS:
+                                            {{ entry.conn.clientOsName }}
+                                        </div>
+                                        <div>
+                                            Client Version:
+                                            {{ entry.conn.clientVersion }}
+                                        </div>
                                     </div>
                                     <div v-else class="mt-1 text-grey">
                                         (No connection details found)
@@ -55,7 +76,12 @@
         </v-card-text>
 
         <v-card-actions class="justify-end">
-            <v-btn rounded="sm" color="black" variant="outlined" @click="emit('closeAskDialog')">
+            <v-btn
+                color="black"
+                rounded="sm"
+                variant="outlined"
+                @click="emit('closeAskDialog')"
+            >
                 {{ translate("general.closeButton") }}
             </v-btn>
         </v-card-actions>
@@ -75,10 +101,12 @@ const askEnriched = computed(() => {
     const byId = store.clientConnectionsById;
 
     return keys.map((ask) => {
-        const entries = Object.entries(ask.connectionIds ?? {}).map(([idStr, name]) => {
-            const id = Number(idStr);
-            return { id, name, conn: byId[id] };
-        });
+        const entries = Object.entries(ask.connectionIds ?? {}).map(
+            ([idStr, name]) => {
+                const id = Number(idStr);
+                return { id, name, conn: byId[id] };
+            },
+        );
         return { ...ask, entries };
     });
 });

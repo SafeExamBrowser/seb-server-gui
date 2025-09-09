@@ -6,7 +6,11 @@
                     {{ translate("quizImportWizard.supervisorsMain.title") }}
                 </div>
                 <div class="mb-3 text-body-2">
-                    {{ translate("quizImportWizard.supervisorsMain.description") }}
+                    {{
+                        translate(
+                            "quizImportWizard.supervisorsMain.description",
+                        )
+                    }}
                 </div>
             </v-col>
         </v-row>
@@ -15,12 +19,14 @@
             <v-col cols="6">
                 <v-text-field
                     v-model="searchInput"
-                    :label="translate('quizImportWizard.supervisorsMain.search')"
-                    prepend-inner-icon="mdi-magnify"
-                    variant="outlined"
                     density="compact"
                     hide-details
+                    :label="
+                        translate('quizImportWizard.supervisorsMain.search')
+                    "
+                    prepend-inner-icon="mdi-magnify"
                     single-line
+                    variant="outlined"
                     @keydown.enter="search = searchInput"
                     @keydown.esc="clearSearch"
                 />
@@ -29,21 +35,20 @@
             <v-col cols="2">
                 <v-btn
                     block
+                    class="rounded"
                     color="primary"
                     variant="flat"
-                    class="rounded"
                     @click="search = searchInput"
                 >
                     {{ translate("general.searchButton") }}
                 </v-btn>
             </v-col>
             <v-col cols="2">
-
                 <v-btn
                     block
+                    class="rounded ml-0"
                     color="black"
                     variant="outlined"
-                    class="rounded ml-0"
                     @click="clearSearch"
                 >
                     {{ translate("general.cancelButton") }}
@@ -51,40 +56,44 @@
             </v-col>
         </v-row>
 
-
         <v-row>
             <!-- Available Supervisors -->
             <v-col cols="6">
                 <div class="text-subtitle-1 font-weight-medium">
-                    {{ translate("quizImportWizard.supervisorsMain.availableSupervisors") }}
+                    {{
+                        translate(
+                            "quizImportWizard.supervisorsMain.availableSupervisors",
+                        )
+                    }}
                 </div>
 
                 <div class="supervisor-table-wrapper">
                     <v-data-table
-                        item-value="quiz_id"
+                        class="bordered-table no-header-table"
+                        :footer-props="{ itemsPerPageOptions: [] }"
+                        :headers="[]"
                         :hover="true"
+                        item-value="quiz_id"
                         :items="filteredAvailableSupervisors"
                         :items-length="filteredAvailableSupervisors.length"
                         :items-per-page="10"
-                        :headers="[]"
-                        :footer-props="{ itemsPerPageOptions: [] }"
-                        class="bordered-table no-header-table"
                     >
-
-                    <template v-slot:item="{ item }">
+                        <template #item="{ item }">
                             <tr class="supervisor-row">
                                 <td class="supervisor-cell">
-                                    <div class="supervisor-row-content clickable"
-                                         @click="onTableRowClick(item)"
+                                    <div
+                                        class="supervisor-row-content clickable"
+                                        @click="onTableRowClick(item)"
                                     >
                                         <div>
-                                            <div class="font-weight-medium">{{ getUsername(item.name) }}</div>
-                                            <div class="text-caption">{{ getFullName(item.name) }}</div>
-
+                                            <div class="font-weight-medium">
+                                                {{ getUsername(item.name) }}
+                                            </div>
+                                            <div class="text-caption">
+                                                {{ getFullName(item.name) }}
+                                            </div>
                                         </div>
-                                        <v-icon
-                                            color="primary"
-                                        >
+                                        <v-icon color="primary">
                                             mdi-plus
                                         </v-icon>
                                     </div>
@@ -95,11 +104,14 @@
                 </div>
             </v-col>
 
-
             <!-- Selected Supervisors -->
             <v-col cols="6">
                 <div class="text-subtitle-1 font-weight-medium">
-                    {{ translate("quizImportWizard.supervisorsMain.selectedSupervisors") }}
+                    {{
+                        translate(
+                            "quizImportWizard.supervisorsMain.selectedSupervisors",
+                        )
+                    }}
                 </div>
 
                 <div class="supervisor-table-wrapper">
@@ -113,61 +125,66 @@
                         >
                             <div class="supervisor-row-content">
                                 <div>
-                                    <div class="font-weight-medium">{{ getUsername(supervisor.name) }}</div>
-                                    <div class="text-caption">{{ getFullName(supervisor.name) }}</div>
+                                    <div class="font-weight-medium">
+                                        {{ getUsername(supervisor.name) }}
+                                    </div>
+                                    <div class="text-caption">
+                                        {{ getFullName(supervisor.name) }}
+                                    </div>
                                 </div>
 
-                                <v-icon
-                                    color="error"
-                                >
-                                    mdi-minus
-                                </v-icon>
+                                <v-icon color="error"> mdi-minus </v-icon>
                             </div>
                         </div>
                     </div>
                 </div>
             </v-col>
-
-
         </v-row>
     </div>
 </template>
 
-
 <script setup lang="ts">
 import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
-import {useQuizImportStore} from "@/stores/seb-server/quizImportStore";
+import { useQuizImportStore } from "@/stores/seb-server/quizImportStore";
 import * as tableUtils from "@/utils/table/tableUtils";
-import {translate} from "@/utils/generalUtils";
+import { translate } from "@/utils/generalUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
-import {useUserAccountStore} from "@/stores/authentication/authenticationStore";
+import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
 
-//stores
+// stores
 const quizImportStore = useQuizImportStore();
 const userAccountStore = useUserAccountStore();
 
-//items
+// items
 const userAccountNames = ref<UserAccountName[]>([]);
 
 const searchInput = ref<string>();
 const search = ref<string>();
 
-
-
 const filteredAvailableSupervisors = computed(() => {
     return userAccountNames.value
-        .filter(u => !quizImportStore.selectedExamSupervisors.some(s => s.modelId === u.modelId))
-        .filter(u => {
+        .filter(
+            (u) =>
+                !quizImportStore.selectedExamSupervisors.some(
+                    (s) => s.modelId === u.modelId,
+                ),
+        )
+        .filter((u) => {
             if (!search.value) return true;
             const searchLower = search.value.toLowerCase();
-            return getUsername(u.name).toLowerCase().includes(searchLower) ||
-                getFullName(u.name).toLowerCase().includes(searchLower);
+            return (
+                getUsername(u.name).toLowerCase().includes(searchLower) ||
+                getFullName(u.name).toLowerCase().includes(searchLower)
+            );
         });
 });
 
-//=======================events & watchers=======================
+//= ======================events & watchers=======================
 onBeforeMount(async () => {
-    const userAccountNamesResponse: UserAccountName[] | null = await userAccountViewService.getSupervisorNames({institutionId: userAccountStore.userAccount?.institutionId});
+    const userAccountNamesResponse: UserAccountName[] | null =
+        await userAccountViewService.getSupervisorNames({
+            institutionId: userAccountStore.userAccount?.institutionId,
+        });
 
     if (userAccountNamesResponse == null) {
         return;
@@ -175,9 +192,11 @@ onBeforeMount(async () => {
     userAccountNames.value = userAccountNamesResponse;
 });
 
-//add exam supervisor
+// add exam supervisor
 function onTableRowClick(selectedUserAccountName: UserAccountName) {
-    const index: number = quizImportStore.selectedExamSupervisors.findIndex(userAccount => userAccount.modelId == selectedUserAccountName.modelId);
+    const index: number = quizImportStore.selectedExamSupervisors.findIndex(
+        (userAccount) => userAccount.modelId == selectedUserAccountName.modelId,
+    );
 
     if (index != -1) {
         quizImportStore.selectedExamSupervisors.splice(index, 1);
@@ -188,7 +207,9 @@ function onTableRowClick(selectedUserAccountName: UserAccountName) {
 }
 
 function removeExamSupervisor(supervisorId: string) {
-    const index: number = quizImportStore.selectedExamSupervisors.findIndex(userAccount => userAccount.modelId == supervisorId);
+    const index: number = quizImportStore.selectedExamSupervisors.findIndex(
+        (userAccount) => userAccount.modelId == supervisorId,
+    );
     quizImportStore.selectedExamSupervisors.splice(index, 1);
 }
 
@@ -205,13 +226,9 @@ function clearSearch() {
     searchInput.value = "";
     search.value = "";
 }
-
 </script>
 
 <style scoped>
-
-
-
 .supervisor-row-content {
     display: flex;
     justify-content: space-between;
@@ -258,7 +275,6 @@ function clearSearch() {
     display: none;
 }
 
-
 .clickable {
     cursor: pointer;
 }
@@ -280,12 +296,7 @@ function clearSearch() {
     color: #6b6b6b;
 }
 
-
-
-.supervisor-row-content:hover{
-    background-color: #D8D8D8;
+.supervisor-row-content:hover {
+    background-color: #d8d8d8;
 }
-
-
-
 </style>

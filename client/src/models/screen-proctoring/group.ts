@@ -1,9 +1,9 @@
-type GroupObject  = {
+type GroupObject = {
     numberOfPages: number;
     pageNumber: number;
     pageSize: number;
     content: Group[];
-}
+};
 
 type Group = {
     id: number;
@@ -17,8 +17,7 @@ type Group = {
     entityPrivileges: EntityPrivilege[];
     active: boolean;
     exam: SPExamView;
-}
-
+};
 
 type EntityPrivilege = {
     id: number;
@@ -26,7 +25,7 @@ type EntityPrivilege = {
     entityId: number;
     userUuid: string;
     privileges: string;
-}
+};
 
 type GroupUuid = {
     uuid: string;
@@ -40,4 +39,4 @@ type GroupUuid = {
     sortOrder: string;
     screenshots: ScreenshotData[];
     exam: SPExamView;
-}
+};
