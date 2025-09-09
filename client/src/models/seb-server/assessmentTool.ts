@@ -16,10 +16,10 @@ type AssessmentTool = {
     lmsClientname: string;
     lmsClientsecret: string;
     lmsRestApiToken: string;
-    lmsProxyHost: string;
-    lmsProxyPort: number;
-    lmsProxyAuthUsername: string;
-    lmsProxyAuthSecret: string;
+    lmsProxyHost?: string;
+    lmsProxyPort?: number;
+    lmsProxyAuthUsername?: string;
+    lmsProxyAuthSecret?: string;
     active: boolean;
     updateTime: number;
     connectionId: string;

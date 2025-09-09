@@ -455,10 +455,10 @@
                 "accessTokenLabel": "Access Token *",
                 "withProxyLabel": "With Proxy",
                 "withProxyArea": "Toggle proxy settings",
-                "proxyHostLabel": "Proxy Host",
-                "proxyPortLabel": "Proxy Port",
-                "proxyUsernameLabel": "Proxy Username",
-                "proxyPasswordLabel": "Proxy Password",
+                "proxyHostLabel": "Proxy Host *",
+                "proxyPortLabel": "Proxy Port *",
+                "proxyUsernameLabel": "Proxy Username *",
+                "proxyPasswordLabel": "Proxy Password *",
                 "authenticationMode" : "Authentication Mode",
                 "clientCredentials" : "Credentials",
                 "restApiToken" : "Access Token"
@@ -485,7 +485,8 @@
             "validation" : {
                 "required" : "This field is required",
                 "assessmentToolServerAddressLabel" : "Must start with http://",
-                "invalidPort" : "Invalid port, ex. 8080"
+                "invalidPort" : "Invalid port, ex. 8080",
+                "mustBeWithUrl" : "Must start with http:// or https://",
             }
         },
         "lmsTypes": {
@@ -1031,7 +1032,7 @@
         "profile": "Profile Settings",
         "assessmentToolConnections": "Assessment Tool Connections",
         "createAssessmentTool": "Assessment Tool Setup",
-        "assessmentToolViewAndEdit": "Assessment Tool",
+        "assessmentTool": "Assessment Tool",
         "assessmentToolEdit" : "Edit Assessment Tool Connection",
         "connectionConfigurationViewAndEdit": "Edit Connection Configuration",
         "createConnectionConfiguration" : "Add Connection Configuration",

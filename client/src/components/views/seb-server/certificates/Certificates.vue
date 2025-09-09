@@ -236,7 +236,7 @@ const certificateTableHeadersRef = ref<any[]>();
 
 
 onMounted(async () => {
-    appBarStore.title = translate("titles.certificate");
+    appBarStore.title = translate("titles.certificates");
     layoutStore.setBlueBackground(true);
     await loadItems(options.value);
 });
