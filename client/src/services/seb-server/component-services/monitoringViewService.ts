@@ -4,7 +4,6 @@ import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum";
 import {translate} from "@/utils/generalUtils";
 import * as examViewService from "@/services/seb-server/component-services/examViewService";
-import * as examService from "@/services/seb-server/api-services/examService";
 import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums";
 import {navigateTo} from "@/router/navigation";
 import * as constants from "@/utils/constants";

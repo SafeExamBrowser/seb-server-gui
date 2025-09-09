@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
-import {LOG} from "../../logging/logger";
 import * as examSEBSettingsService from "../../services/seb-server/exam-sebsettings.service";
 import * as apiService from "../../services/seb-server/api.service";
+
 
 export async function getExamConfigMapping(req: Request, res: Response){
     try{
@@ -13,19 +13,9 @@ export async function getExamConfigMapping(req: Request, res: Response){
     }
 }
 
-export async function getApplicationView(req: Request, res: Response){
+export async function getView(req: Request, res: Response){
     try{
-        const [exams, status] = await examSEBSettingsService.getApplicationView(req.headers.authorization, req.params.id);
-        return res.status(status).json(exams);
-
-    }catch(error){
-        apiService.handleGenericApiError(error, res);
-    }
-}
-
-export async function getNetworkView(req: Request, res: Response){
-    try{
-        const [exams, status] = await examSEBSettingsService.getNetworkView(req.headers.authorization, req.params.id);
+        const [exams, status] = await examSEBSettingsService.getView(req.headers.authorization, req.params.id, req.params.viewType);
         return res.status(status).json(exams);
 
     }catch(error){

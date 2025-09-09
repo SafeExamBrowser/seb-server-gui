@@ -30,8 +30,14 @@
 </template>
 
 <script setup lang="ts">
+    import {stringToBoolean, translate} from "@/utils/generalUtils";
     import SebSettingsApplications from "@/components/views/seb-server/settings/SebSettingsApplications.vue";
     import SebSettingsNetwork from "@/components/views/seb-server/settings/SebSettingsNetwork.vue";
+    import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
+    import { useExamStore } from "@/stores/seb-server/examStore";
+
+    const sebSettingsStore = useSEBSettingsStore();
+    const examStore = useExamStore();
 
     const emit = defineEmits<{
         closeSebSettingsDialog: any,
@@ -41,16 +47,26 @@
 
     const tabs: {title: string, value: number, component: Component}[] = [
         {
-            title: "Applications",
+            title: translate("sebSettings.views.apps"),
             value: 1,
             component: markRaw(SebSettingsApplications)
         },
         {
-            title: "Network",
+            title: translate("sebSettings.views.network"),
             value: 2,
             component: markRaw(SebSettingsNetwork)
         },
     ];
+
+    onBeforeMount(async () => {
+
+        // TODO this is just for now, later we should be able to distinguish if SEB Settings are for Exam or Template
+         if(examStore.selectedExam == null){
+            return;
+        }
+        sebSettingsStore.isExam = true;
+        sebSettingsStore.selectedContainerId = examStore.selectedExam.id;
+    });
 
 
 </script>

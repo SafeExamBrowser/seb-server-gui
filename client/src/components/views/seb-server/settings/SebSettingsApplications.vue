@@ -4,22 +4,15 @@
             <v-checkbox-btn 
                 v-model="allowSwitchToApplicationsVal"
                 @update:modelValue="saveSingleValue(allowSwitchToApplications.id, allowSwitchToApplicationsVal ? 'true' : 'false')"
-                :label="translate('examDetail.sebSettings.applicationView.allowSwitchToApplications')"
+                :label="translate('sebSettings.applicationView.allowSwitchToApplications')"
                 :disabled="readOnly"></v-checkbox-btn> 
-        </v-col>
-        <v-col>
-            <v-checkbox-btn 
-                v-model="allowFlashFullscreenVal"
-                @update:modelValue="saveSingleValue(allowFlashFullscreen.id, allowFlashFullscreenVal ? 'true' : 'false')"
-                :label="translate('examDetail.sebSettings.applicationView.allowFlashFullscreen')"
-                :disabled="readOnly"></v-checkbox-btn>
         </v-col>
     </v-row>
 
     <v-row>
         <v-col class="text-subtitle-1">
             <v-row >
-                <v-col>{{translate("examDetail.sebSettings.applicationView.permittedProcess.settingName")}}</v-col>
+                <v-col>{{translate("sebSettings.applicationView.permittedProcess.settingName")}}</v-col>
                 <v-col  align="right">
                     <v-btn
                         color="primary"
@@ -63,7 +56,7 @@
 
                 <!-------OS hook------->
                 <template v-slot:item.os="{ item }">
-                    {{ translate("examDetail.sebSettings.applicationView.prohibitedProcess.os_" + item.os, i18n) }}
+                    {{ translate("sebSettings.applicationView.prohibitedProcess.os_" + item.os, i18n) }}
                 </template>
 
                  <!-------edit button------->      
@@ -100,7 +93,7 @@
     <v-row class="text-subtitle-1">
         <v-col class="text-subtitle-1">
             <v-row>
-                <v-col>{{translate("examDetail.sebSettings.applicationView.prohibitedProcess.settingName")}}</v-col>
+                <v-col>{{translate("sebSettings.applicationView.prohibitedProcess.settingName")}}</v-col>
                 <v-col  align="right">
                     <v-btn
                         color="primary"
@@ -141,7 +134,7 @@
 
                 <!-------OS hook------->
                 <template v-slot:item.os="{ item }">
-                    {{ translate("examDetail.sebSettings.applicationView.permittedProcess.os_" + item.os, i18n) }}
+                    {{ translate("sebSettings.applicationView.permittedProcess.os_" + item.os, i18n) }}
                 </template>
 
                 <!-------edit button------->      
@@ -178,23 +171,19 @@
 </template>
 
 <script setup lang="ts">
-    import { useExamStore } from '@/stores/seb-server/examStore';
+    import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
     import * as tableUtils from "@/utils/table/tableUtils";
     import TableHeaders from "@/utils/table/TableHeaders.vue";
-    import * as examViewService from "@/services/seb-server/component-services/examViewService";
+    import * as sebSettingsService from "@/services/seb-server/component-services/sebSettingsService";
     import { useI18n } from "vue-i18n";
     import {translate} from "@/utils/generalUtils";
-    import {useUserAccountStore} from "@/stores/authentication/authenticationStore";
+    import { ViewType } from "@/models/seb-server/sebSettingsEnums";
 
     const i18n = useI18n();
-    const examStore = useExamStore();
-    const userAccountStore = useUserAccountStore();
-    const userAccount = computed(() => userAccountStore.userAccount);
-    const userRoles = computed(() => userAccount.value?.userRoles || []);
+    const sebSettingsStore = useSEBSettingsStore();
 
     // single attributes
     const allowSwitchToApplicationsVal = ref<boolean>(false);
-    const allowFlashFullscreenVal = ref<boolean>(false);
 
     // permittted processes 
     const editPermittedProcessDialog = ref<boolean>(false);
@@ -202,10 +191,10 @@
     const permittedProcessHeadersRef = ref<any[]>();
     const permittedProcessTable = ref<PermittedProcess[]>([]);
     const permittedProcessHeaders = ref([
-        {title: translate("examDetail.sebSettings.applicationView.permittedProcess.active"), key: "active", sortable: true, width: "10%"},
-        {title: translate("examDetail.sebSettings.applicationView.permittedProcess.os"), key: "os", sortable: true, width: "10%"},
-        {title: translate("examDetail.sebSettings.applicationView.permittedProcess.executable"), key: "executable", sortable: true, width: "30%"},
-        {title: translate("examDetail.sebSettings.applicationView.permittedProcess.title"), key: "title", sortable: true, width: "50%"},
+        {title: translate("sebSettings.applicationView.permittedProcess.active"), key: "active", sortable: true, width: "10%"},
+        {title: translate("sebSettings.applicationView.permittedProcess.os"), key: "os", sortable: true, width: "10%"},
+        {title: translate("sebSettings.applicationView.permittedProcess.executable"), key: "executable", sortable: true, width: "30%"},
+        {title: translate("sebSettings.applicationView.permittedProcess.title"), key: "title", sortable: true, width: "50%"},
         {title: translate("general.editButton"), key: "edit", sortable: false, width: "5%", center: true},
         {title: translate("general.deleteButton"), key: "delete", sortable: false, width: "5%", center: true}
     ]);
@@ -216,16 +205,16 @@
     const prohibitedProcessHeadersRef = ref<any[]>();
     const prohibitedProcessTable = ref<ProhibitedProcess[]>([]);
     const prohibitedProcessHeaders = ref([
-        {title: translate("examDetail.sebSettings.applicationView.prohibitedProcess.active"), key: "active", sortable: true, width: "10%"},
-        {title: translate("examDetail.sebSettings.applicationView.prohibitedProcess.os"), key: "os", sortable: true, width: "10%"},
-        {title: translate("examDetail.sebSettings.applicationView.prohibitedProcess.executable"), key: "executable", sortable: true, width: "30%"},
-        {title: translate("examDetail.sebSettings.applicationView.prohibitedProcess.description"), key: "description", sortable: true, width: "50%"},
+        {title: translate("sebSettings.applicationView.prohibitedProcess.active"), key: "active", sortable: true, width: "10%"},
+        {title: translate("sebSettings.applicationView.prohibitedProcess.os"), key: "os", sortable: true, width: "10%"},
+        {title: translate("sebSettings.applicationView.prohibitedProcess.executable"), key: "executable", sortable: true, width: "30%"},
+        {title: translate("sebSettings.applicationView.prohibitedProcess.description"), key: "description", sortable: true, width: "50%"},
         {title: translate("general.editButton"), key: "edit", sortable: false, width: "5%", center: true},
         {title: translate("general.deleteButton"), key: "delete", sortable: false, width: "5%", center: true}
     ]);
     
     let readOnly: boolean = false;
-    let examId: string;
+    let componentId: string;
     let allowSwitchToApplications: SEBSettingsValue;
     let allowFlashFullscreen: SEBSettingsValue;
 
@@ -233,12 +222,13 @@
         // TODO apply readonly according to user privileges
         readOnly = false;
         
-
-        if(examStore.selectedExam == null){
+        if(sebSettingsStore.selectedContainerId == null){
             return;
         }
 
-        const applicationSettings: SEBSettingsView | null = await examViewService.getApplicationViewSettings(examStore.selectedExam.id.toString())
+        componentId = sebSettingsStore.selectedContainerId.toString();
+
+        const applicationSettings: SEBSettingsView | null = await sebSettingsService.getViewSettings(ViewType.APPLICATION, componentId, sebSettingsStore.isExam);
         if(applicationSettings == null){
             return;
         }
@@ -248,14 +238,12 @@
             prohibitedProcessHeaders.value[4].title = translate("general.viewButton", i18n);
         }
 
-        examId = examStore.selectedExam.id.toString();
         const settingsView: SEBSettingsView = applicationSettings;
         const tableValues: Map<string, SEBSettingsTableRowValues[]> = new Map<string, SEBSettingsTableRowValues[]>(Object.entries(settingsView.tableValues));
         const singleValues: Map<String, SEBSettingsValue> = new Map<String, SEBSettingsValue>(Object.entries(settingsView.singleValues));
         allowSwitchToApplications = singleValues.get("allowSwitchToApplications")!;
         allowFlashFullscreen = singleValues.get("allowFlashFullscreen")!;
         allowSwitchToApplicationsVal.value = allowSwitchToApplications.value == "true";
-        allowFlashFullscreenVal.value = allowFlashFullscreen.value == "true";
 
         // Permitted Processes
         const permittedProcesses = tableValues.get("permittedProcesses");
@@ -338,7 +326,7 @@
     }
 
     async function permittedProcessDelete(index: number){
-        const resp: SEBSettingsTableRowValues[] | null = await examViewService.deleteSEBSettingTableRow(examId, "permittedProcesses", index);
+        const resp: SEBSettingsTableRowValues[] | null = await sebSettingsService.deleteSEBSettingTableRow(componentId, "permittedProcesses", index, sebSettingsStore.isExam);
         if (resp == null) {
             return;
         }
@@ -359,7 +347,7 @@
         }
 
         if (selectedPermittedProcess.value?.index == -1) {
-            const resp: SEBSettingsTableRowValues | null = await examViewService.newSEBSettingTableRow(examId, "permittedProcesses");
+            const resp: SEBSettingsTableRowValues | null = await sebSettingsService.newSEBSettingTableRow(componentId, "permittedProcesses", sebSettingsStore.isExam);
             if (resp == null) {
                 return;
             }
@@ -371,82 +359,82 @@
             selectedPermittedProcess.value.ids = permittedProcessTable.value[resp.listIndex].ids;
         } 
 
-        await examViewService.updateSEBSettingValue(
-            examId, 
+        await sebSettingsService.updateSEBSettingValue(
+            componentId, 
             selectedPermittedProcess.value.ids.active.toString(), 
-            selectedPermittedProcess.value.active ? "true" : "false");
-        await examViewService.updateSEBSettingValue(
-            examId, 
+            selectedPermittedProcess.value.active ? "true" : "false", sebSettingsStore.isExam);
+        await sebSettingsService.updateSEBSettingValue(
+            componentId, 
             selectedPermittedProcess.value.ids.os.toString(), 
-            selectedPermittedProcess.value.os);
-        await examViewService.updateSEBSettingValue(
-            examId, 
+            selectedPermittedProcess.value.os, sebSettingsStore.isExam);
+        await sebSettingsService.updateSEBSettingValue(
+            componentId, 
             selectedPermittedProcess.value.ids.executable.toString(), 
-            selectedPermittedProcess.value.executable);
-        await examViewService.updateSEBSettingValue(
-            examId, 
+            selectedPermittedProcess.value.executable, sebSettingsStore.isExam);
+        await sebSettingsService.updateSEBSettingValue(
+            componentId, 
             selectedPermittedProcess.value.ids.title.toString(), 
-            selectedPermittedProcess.value.title);
-        await examViewService.updateSEBSettingValue(
-            examId, 
+            selectedPermittedProcess.value.title, sebSettingsStore.isExam);
+        await sebSettingsService.updateSEBSettingValue(
+            componentId, 
             selectedPermittedProcess.value.ids.originalName.toString(), 
-            selectedPermittedProcess.value.originalName);
-        await examViewService.updateSEBSettingValue(
-            examId, 
+            selectedPermittedProcess.value.originalName, sebSettingsStore.isExam);
+        await sebSettingsService.updateSEBSettingValue(
+            componentId, 
             selectedPermittedProcess.value.ids.signature.toString(), 
-            selectedPermittedProcess.value.signature);
-        await examViewService.updateSEBSettingValue(
-            examId, 
+            selectedPermittedProcess.value.signature, sebSettingsStore.isExam);
+        await sebSettingsService.updateSEBSettingValue(
+            componentId, 
             selectedPermittedProcess.value.ids.path.toString(), 
-            selectedPermittedProcess.value.path);
-        await examViewService.updateSEBSettingValue(
-            examId, 
+            selectedPermittedProcess.value.path, sebSettingsStore.isExam);
+        await sebSettingsService.updateSEBSettingValue(
+            componentId, 
             selectedPermittedProcess.value.ids.iconInTaskbar.toString(), 
-            selectedPermittedProcess.value.iconInTaskbar? "true" : "false");
-        await examViewService.updateSEBSettingValue(
-            examId, 
+            selectedPermittedProcess.value.iconInTaskbar? "true" : "false", sebSettingsStore.isExam);
+        await sebSettingsService.updateSEBSettingValue(
+            componentId, 
             selectedPermittedProcess.value.ids.arguments.toString(), 
-            argumentsToString(selectedPermittedProcess.value.arguments));
-        await examViewService.updateSEBSettingValue(
-            examId, 
+            argumentsToString(selectedPermittedProcess.value.arguments), sebSettingsStore.isExam);
+        await sebSettingsService.updateSEBSettingValue(
+            componentId, 
             selectedPermittedProcess.value.ids.allowOpenAndSavePanel.toString(), 
-            selectedPermittedProcess.value.allowOpenAndSavePanel? "true" : "false");
-        await examViewService.updateSEBSettingValue(
-            examId, 
+            selectedPermittedProcess.value.allowOpenAndSavePanel? "true" : "false", sebSettingsStore.isExam);
+        await sebSettingsService.updateSEBSettingValue(
+            componentId, 
             selectedPermittedProcess.value.ids.autostart.toString(), 
-            selectedPermittedProcess.value.autostart? "true" : "false");
-        await examViewService.updateSEBSettingValue(
-            examId, 
+            selectedPermittedProcess.value.autostart? "true" : "false", sebSettingsStore.isExam);
+        await sebSettingsService.updateSEBSettingValue(
+            componentId, 
             selectedPermittedProcess.value.ids.allowShareSheet.toString(), 
-            selectedPermittedProcess.value.allowShareSheet? "true" : "false");
-        await examViewService.updateSEBSettingValue(
-            examId, 
+            selectedPermittedProcess.value.allowShareSheet? "true" : "false", sebSettingsStore.isExam);
+        await sebSettingsService.updateSEBSettingValue(
+            componentId, 
             selectedPermittedProcess.value.ids.runInBackground.toString(), 
-            selectedPermittedProcess.value.runInBackground? "true" : "false");
-        await examViewService.updateSEBSettingValue(
-            examId, 
+            selectedPermittedProcess.value.runInBackground? "true" : "false", sebSettingsStore.isExam);
+        await sebSettingsService.updateSEBSettingValue(
+            componentId, 
             selectedPermittedProcess.value.ids.allowManualStart.toString(), 
-            selectedPermittedProcess.value.allowManualStart? "true" : "false");
-        await examViewService.updateSEBSettingValue(
-            examId, 
+            selectedPermittedProcess.value.allowManualStart? "true" : "false", sebSettingsStore.isExam);
+        await sebSettingsService.updateSEBSettingValue(
+            componentId, 
             selectedPermittedProcess.value.ids.allowUserToChooseApp.toString(), 
-            selectedPermittedProcess.value.allowUserToChooseApp? "true" : "false");
-        await examViewService.updateSEBSettingValue(
-            examId, 
+            selectedPermittedProcess.value.allowUserToChooseApp? "true" : "false", sebSettingsStore.isExam);
+        await sebSettingsService.updateSEBSettingValue(
+            componentId, 
             selectedPermittedProcess.value.ids.allowUserToChooseApp.toString(), 
-            selectedPermittedProcess.value.allowUserToChooseApp? "true" : "false");
-        await examViewService.updateSEBSettingValue(
-            examId, 
+            selectedPermittedProcess.value.allowUserToChooseApp? "true" : "false", sebSettingsStore.isExam);
+        await sebSettingsService.updateSEBSettingValue(
+            componentId, 
             selectedPermittedProcess.value.ids.allowNetworkAccess.toString(), 
-            selectedPermittedProcess.value.allowNetworkAccess? "true" : "false");
-        await examViewService.updateSEBSettingValue(
-            examId, 
+            selectedPermittedProcess.value.allowNetworkAccess? "true" : "false", sebSettingsStore.isExam);
+        await sebSettingsService.updateSEBSettingValue(
+            componentId, 
             selectedPermittedProcess.value.ids.strongKill.toString(), 
-            selectedPermittedProcess.value.strongKill? "true" : "false");
-        await examViewService.updateSEBSettingValue(
-            examId, 
+            selectedPermittedProcess.value.strongKill? "true" : "false", sebSettingsStore.isExam);
+        await sebSettingsService.updateSEBSettingValue(
+            componentId, 
             selectedPermittedProcess.value.ids.teamIdentifier.toString(), 
-            selectedPermittedProcess.value.teamIdentifier);
+            selectedPermittedProcess.value.teamIdentifier, sebSettingsStore.isExam);
 
         permittedProcessTable.value[selectedPermittedProcess.value.index] = selectedPermittedProcess.value;
     }
@@ -504,7 +492,7 @@
     }
 
     async function prohibitedProcessDelete(index: number){
-        const resp: SEBSettingsTableRowValues[] | null = await examViewService.deleteSEBSettingTableRow(examId, "prohibitedProcesses", index);
+        const resp: SEBSettingsTableRowValues[] | null = await sebSettingsService.deleteSEBSettingTableRow(componentId, "prohibitedProcesses", index, sebSettingsStore.isExam);
         if (resp == null) {
             return;
         }
@@ -526,7 +514,7 @@
 
         // If this is a new row, create new with default values on backend first
         if (selectedProhibitedProcess.value.index == -1) {
-            const resp: SEBSettingsTableRowValues | null = await examViewService.newSEBSettingTableRow(examId, "prohibitedProcesses");
+            const resp: SEBSettingsTableRowValues | null = await sebSettingsService.newSEBSettingTableRow(componentId, "prohibitedProcesses", sebSettingsStore.isExam);
             if (resp == null) {
                 return;
             }
@@ -538,52 +526,52 @@
             selectedProhibitedProcess.value.ids = prohibitedProcessTable.value[resp.listIndex].ids;
         }
 
-        await examViewService.updateSEBSettingValue(
-            examId, 
+        await sebSettingsService.updateSEBSettingValue(
+            componentId, 
             selectedProhibitedProcess.value.ids.active.toString(), 
-            selectedProhibitedProcess.value.active ? "true" : "false");
+            selectedProhibitedProcess.value.active ? "true" : "false", sebSettingsStore.isExam);
 
-        await examViewService.updateSEBSettingValue(
-            examId, 
+        await sebSettingsService.updateSEBSettingValue(
+            componentId, 
             selectedProhibitedProcess.value.ids.os.toString(), 
-            selectedProhibitedProcess.value.os);
+            selectedProhibitedProcess.value.os, sebSettingsStore.isExam);
 
-        await examViewService.updateSEBSettingValue(
-            examId, 
+        await sebSettingsService.updateSEBSettingValue(
+            componentId, 
             selectedProhibitedProcess.value.ids.executable.toString(), 
-            selectedProhibitedProcess.value.executable);
+            selectedProhibitedProcess.value.executable, sebSettingsStore.isExam);
 
-        await examViewService.updateSEBSettingValue(
-            examId, 
+        await sebSettingsService.updateSEBSettingValue(
+            componentId, 
             selectedProhibitedProcess.value.ids.description.toString(), 
-            selectedProhibitedProcess.value.description);
+            selectedProhibitedProcess.value.description, sebSettingsStore.isExam);
 
-        await examViewService.updateSEBSettingValue(
-            examId, 
+        await sebSettingsService.updateSEBSettingValue(
+            componentId, 
             selectedProhibitedProcess.value.ids.originalName.toString(), 
-            selectedProhibitedProcess.value.originalName);
+            selectedProhibitedProcess.value.originalName, sebSettingsStore.isExam);
 
-        await examViewService.updateSEBSettingValue(
-            examId, 
+        await sebSettingsService.updateSEBSettingValue(
+            componentId, 
             selectedProhibitedProcess.value.ids.identifier.toString(), 
-            selectedProhibitedProcess.value.identifier);
+            selectedProhibitedProcess.value.identifier, sebSettingsStore.isExam);
 
-        await examViewService.updateSEBSettingValue(
-            examId, 
+        await sebSettingsService.updateSEBSettingValue(
+            componentId, 
             selectedProhibitedProcess.value.ids.strongKill.toString(), 
-            selectedProhibitedProcess.value.strongKill ? "true" : "false");
+            selectedProhibitedProcess.value.strongKill ? "true" : "false", sebSettingsStore.isExam);
 
-        await examViewService.updateSEBSettingValue(
-            examId, 
+        await sebSettingsService.updateSEBSettingValue(
+            componentId, 
             selectedProhibitedProcess.value.ids.ignoreInAAC.toString(), 
-            selectedProhibitedProcess.value.ignoreInAAC ? "true" : "false");
+            selectedProhibitedProcess.value.ignoreInAAC ? "true" : "false", sebSettingsStore.isExam);
 
         prohibitedProcessTable.value[selectedProhibitedProcess.value.index] = selectedProhibitedProcess.value;
 
     }
 
     async function saveSingleValue(valId: number, value: string) {
-        await examViewService.updateSEBSettingValue(examId, valId.toString(), value );
+        await sebSettingsService.updateSEBSettingValue(componentId, valId.toString(), value, sebSettingsStore.isExam);
     }
 
     function argumentsToString(args: PermittedProcessArgument[]): string {

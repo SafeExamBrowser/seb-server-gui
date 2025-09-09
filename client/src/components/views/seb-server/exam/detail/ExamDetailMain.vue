@@ -554,6 +554,7 @@
     import { useExamStore } from '@/stores/seb-server/examStore';
     import * as constants from "@/utils/constants";
     import * as examViewService from "@/services/seb-server/component-services/examViewService";
+    import * as sebSettingsService from "@/services/seb-server/component-services/sebSettingsService";
     import * as assessmentToolViewService from "@/services/seb-server/component-services/assessmentToolViewService";
     import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
     import * as clientGroupViewService from "@/services/seb-server/component-services/clientGroupViewService";
@@ -998,7 +999,7 @@
 
     //===============settings logic====================
     async function getSEBSettings() {
-        const configs: ExamConfigMapping[] | null = await examViewService.getExamConfigMapping(examId);
+        const configs: ExamConfigMapping[] | null = await sebSettingsService.getExamConfigMapping(examId);
         if (configs == null) {
             hasSEBSettings.value = false;
         } else {
