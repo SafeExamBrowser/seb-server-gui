@@ -260,7 +260,7 @@
                                                 density="compact"
                                                 color="primary"
                                                 class="ml-4"
-                                                :aria-label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.withProxyAria')"
+                                                :aria-label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.withProxyArea')"
                                                 data-testid="assessmentToolsEdit-proxy-switch"
                                             />
                                         </div>
@@ -418,16 +418,16 @@ const authenticatedUserAccountStore = useAuthenticatedUserAccountStore();
 const institution = ref<string | null>(null);
 const name = ref<string>("");
 const lmsType = ref<LMSTypeEnum | null>(null);
-const assessmentToolServerAddress = ref<string>("");
-const assessmentToolServerUsername = ref<string>("");
-const assessmentToolServerPassword = ref<string>("");
-const accessToken = ref<string>("");
+const assessmentToolServerAddress = ref<string >("");
+const assessmentToolServerUsername = ref<string | null>("");
+const assessmentToolServerPassword = ref<string | null>("");
+const accessToken = ref<string | null>("");
 const withProxy = ref<boolean>(false);
 
-const proxyHost = ref<string>('');
-const proxyPort = ref<string>('');
-const proxyUsername = ref<string>('');
-const proxyPassword = ref<string>('');
+const proxyHost = ref<string | null>(null);
+const proxyPort = ref<string | null>(null);
+const proxyUsername = ref<string | null>(null);
+const proxyPassword = ref<string | null>(null);
 const proxyPasswordVisible = ref<boolean>(false);
 
 const formRef = ref();
@@ -451,20 +451,19 @@ const authMode = ref<AuthMode>('token');
 // Validation rules
 const requiredMessage = translate("assessmentToolConnections.assessmentToolDetailAndEditPage.validation.required");
 const invalidPortMessage = translate("assessmentToolConnections.assessmentToolDetailAndEditPage.validation.invalidPort") || "Invalid port";
-const httpPrefixMessage = translate("assessmentToolConnections.assessmentToolDetailAndEditPage.validation.httpPrefix") || "Must start with http://";
+const httpPrefixMessage = translate("assessmentToolConnections.assessmentToolDetailAndEditPage.validation.mustBeWithUrl") || "Must start with http://";
 
 const requiredRule = (v: string) => !!v || requiredMessage;
-const requiredIfProxyRule = (v: string) => {
+const requiredIfProxyRule = (v: string | null) => {
     if (!withProxy.value) return true;
-    return (!!v && v.toString().trim().length > 0) || requiredMessage;
+    return safeTrim(v) !== '' || requiredMessage;
 };
-
-
-const portNumberRule = (v: string) => {
+const portNumberRule = (v: string | null) => {
     if (!withProxy.value) return true;
-    const n = Number(v);
+    const n = Number(safeTrim(v));
     return (Number.isInteger(n) && n >= 1 && n <= 65535) || invalidPortMessage;
 };
+
 const httpPrefixRule = (v: string) => /^https?:\/\//i.test(v) || httpPrefixMessage;
 
 
@@ -535,38 +534,42 @@ function populateFromDto(dto: AssessmentTool) {
     lmsType.value = (dto.lmsType as LMSTypeEnum) ?? null;
     assessmentToolServerAddress.value = dto.lmsUrl ?? '';
 
-    // decide auth mode from DTO
-    const hasToken = !!(dto.lmsRestApiToken && dto.lmsRestApiToken.trim());
-    const hasClient = !!(dto.lmsClientname && dto.lmsClientsecret &&
-        dto.lmsClientname.trim() && dto.lmsClientsecret.trim());
+    // auth mode
+    const hasToken = !!safeTrim(dto.lmsRestApiToken);
+    const hasClient = !!safeTrim(dto.lmsClientname) && !!safeTrim(dto.lmsClientsecret);
 
-    if (hasToken && !hasClient) {
+    if (hasToken) {
         authMode.value = 'token';
         accessToken.value = dto.lmsRestApiToken ?? '';
-        assessmentToolServerUsername.value = '';
-        assessmentToolServerPassword.value = '';
-    } else {
+        assessmentToolServerUsername.value = null;
+        assessmentToolServerPassword.value = null;
+    } else if (hasClient) {
         authMode.value = 'client';
         assessmentToolServerUsername.value = dto.lmsClientname ?? '';
         assessmentToolServerPassword.value = dto.lmsClientsecret ?? '';
-        accessToken.value = '';
+        accessToken.value = null;
+    } else {
+        authMode.value = 'token';
+        accessToken.value = null;
+        assessmentToolServerUsername.value = null;
+        assessmentToolServerPassword.value = null;
     }
 
-    // Proxy
-    proxyHost.value = dto.lmsProxyHost ?? '';
-    proxyPort.value = dto.lmsProxyPort != null ? String(dto.lmsProxyPort) : '';
-    proxyUsername.value = dto.lmsProxyAuthUsername ?? '';
-    proxyPassword.value = dto.lmsProxyAuthSecret ?? '';
+    // proxy (leave null if backend omitted)
+    proxyHost.value = dto.lmsProxyHost ?? null;
+    proxyPort.value = dto.lmsProxyPort != null ? String(dto.lmsProxyPort) : null;
+    proxyUsername.value = dto.lmsProxyAuthUsername ?? null;
+    proxyPassword.value = dto.lmsProxyAuthSecret ?? null;
+
+    withProxy.value = !!(
+        safeTrim(dto.lmsProxyHost) ||
+        (dto.lmsProxyPort != null && String(dto.lmsProxyPort).trim() !== '') ||
+        safeTrim(dto.lmsProxyAuthUsername) ||
+        safeTrim(dto.lmsProxyAuthSecret)
+    );
 
     active.value = !!dto.active;
     initialActiveStatus.value = !!dto.active;
-
-    withProxy.value = !!(
-        (dto.lmsProxyHost && dto.lmsProxyHost.trim()) ||
-        (dto.lmsProxyPort != null && String(dto.lmsProxyPort).trim()) ||
-        (dto.lmsProxyAuthUsername && dto.lmsProxyAuthUsername.trim()) ||
-        (dto.lmsProxyAuthSecret && dto.lmsProxyAuthSecret.trim())
-    );
 }
 
 
@@ -613,29 +616,29 @@ const isDirty = computed(() => {
 const isSaveDisabled = computed(() => {
     const baseMissing =
         !institution.value ||
-        !name.value.trim() ||
+        safeTrim(name.value) === '' ||
         !lmsType.value ||
-        !assessmentToolServerAddress.value.trim();
+        safeTrim(assessmentToolServerAddress.value) === '';
 
     if (baseMissing) return true;
-
-    if (!/^https?:\/\//i.test(assessmentToolServerAddress.value)) return true;
-
+    if (!/^https?:\/\//i.test(assessmentToolServerAddress.value ?? '')) return true;
     if (!isAuthValid.value) return true;
 
     if (!withProxy.value) return false;
 
     const proxyMissing =
-        !proxyHost.value.trim() ||
-        !proxyPort.value.trim() ||
-        !proxyUsername.value.trim() ||
-        !proxyPassword.value.trim();
+        safeTrim(proxyHost.value) === '' ||
+        safeTrim(proxyPort.value) === '' ||
+        safeTrim(proxyUsername.value) === '' ||
+        safeTrim(proxyPassword.value) === '';
 
-    const n = Number(proxyPort.value);
+    const n = Number(safeTrim(proxyPort.value));
     const badPort = !(Number.isInteger(n) && n >= 1 && n <= 65535);
 
     return proxyMissing || badPort;
 });
+
+const safeTrim = (v: string | null | undefined) => (v ?? '').trim();
 
 
 function onBack() {
@@ -695,19 +698,14 @@ async function editAssessmentToolOnly() {
         name: name.value,
         lmsType: lmsType.value as string,
         lmsUrl: assessmentToolServerAddress.value,
-        ...(withProxy.value
-            ? {
-                lmsProxyHost: proxyHost.value,
-                lmsProxyPort: Number(proxyPort.value.trim()),
-                lmsProxyAuthUsername: proxyUsername.value,
-                lmsProxyAuthSecret: proxyPassword.value,
-            }
-            : {
-                lmsProxyHost: '',
-                lmsProxyPort: 0,
-                lmsProxyAuthUsername: '',
-                lmsProxyAuthSecret: '',
-            })
+        ...(withProxy.value && {
+            lmsProxyHost: proxyHost.value ?? undefined,
+            lmsProxyPort: proxyPort.value != null && String(proxyPort.value).trim() !== ''
+                ? Number(String(proxyPort.value).trim())
+                : undefined,
+            lmsProxyAuthUsername: proxyUsername.value ?? undefined,
+            lmsProxyAuthSecret: proxyPassword.value ?? undefined,
+        }),
     };
 
     const authPart =
