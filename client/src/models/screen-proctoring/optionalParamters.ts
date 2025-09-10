@@ -1,10 +1,4 @@
-// type OptionalParGeneric = {
-//     pageNumber?: number;
-//     pageSize?: number;
-//     sort?: string;
-//     filterCriteria?: string;
-// }
-
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type OptionalParGroups = {
     pageNumber?: number;
     pageSize?: number;
@@ -13,6 +7,7 @@ type OptionalParGroups = {
     includeUpcomingExams?: boolean | null;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type OptionalParGroupByUuid = {
     pageNumber?: number;
     pageSize?: number;
@@ -21,6 +16,7 @@ type OptionalParGroupByUuid = {
     filterCriteria?: string;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type OptionalParSearchSessions = {
     examName?: string | null;
     groupUUID?: string;
@@ -45,6 +41,7 @@ type OptionalParSearchSessions = {
     sort?: string;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type OptionalParSearchScreenshots = {
     groupUUID?: string;
     groupName?: string;
@@ -68,6 +65,7 @@ type OptionalParSearchScreenshots = {
     sort?: string;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type OptionalParSearchTimeline = {
     screenProctoringMetadataApplication?: string | null;
     screenProctoringMetadataBrowser?: string | null;
@@ -76,6 +74,7 @@ type OptionalParSearchTimeline = {
     screenProctoringMetadataWindowTitle?: string | null;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type OptionalParGetExamsStarted = {
     fromTime?: string;
     toTime?: string;

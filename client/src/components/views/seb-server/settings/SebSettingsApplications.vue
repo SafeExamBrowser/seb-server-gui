@@ -247,7 +247,7 @@ const i18n = useI18n();
 const examStore = useExamStore();
 const userAccountStore = useUserAccountStore();
 const userAccount = computed(() => userAccountStore.userAccount);
-const userRoles = computed(() => userAccount.value?.userRoles || []);
+computed(() => userAccount.value?.userRoles || []);
 
 // single attributes
 const allowSwitchToApplicationsVal = ref<boolean>(false);

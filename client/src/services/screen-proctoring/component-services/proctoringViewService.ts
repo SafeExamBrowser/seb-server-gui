@@ -1,7 +1,6 @@
 import * as screenshotDataService from "@/services/screen-proctoring/api-services/screenshotDataService";
 import * as timeUtils from "@/utils/timeUtils";
 import { SortOrder } from "@/models/screen-proctoring/sortOrderEnum";
-import * as metadataUtils from "@/utils/metadataUtils";
 import * as spConstants from "@/utils/sp-constants";
 
 //= ============api==================

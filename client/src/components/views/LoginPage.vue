@@ -124,7 +124,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { ref } from "vue";
 import * as authenticationService from "@/services/authenticationService";
 import { navigateTo } from "@/router/navigation";
 import { useLoadingStore } from "@/stores/store";
@@ -149,7 +149,9 @@ const theme = useTheme();
 const localStorageTheme: string | null = localStorage.getItem("theme");
 theme.global.name.value =
     localStorageTheme ?? theme.global.name.value ?? "light";
-const isDark = computed<boolean>(() => theme.global.current.value.dark);
+
+// ToDo dark mode??
+// const isDark = computed<boolean>(() => theme.global.current.value.dark);
 
 async function signIn() {
     loginError.value = false;
@@ -189,8 +191,8 @@ async function signIn() {
 }
 
 function handleTabKeyEvent(event: any, action: string) {
-    if (event.key == "Enter" || event.key == " ") {
-        if (action == "navigate") {
+    if (event.key === "Enter" || event.key === " ") {
+        if (action === "navigate") {
             navigateTo(constants.REGISTER_ROUTE);
         }
     }

@@ -468,7 +468,7 @@ const CERT_TYPE_LABELS: Record<CertificateTypeEnum, string> = {
     ),
 };
 
-async function onCertificateImported(cert: { id: string; name: string }) {
+async function onCertificateImported() {
     await loadItems(options.value);
 }
 </script>

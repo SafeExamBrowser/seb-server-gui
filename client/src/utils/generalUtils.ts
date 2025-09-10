@@ -1,11 +1,5 @@
-import {
-    ClientGroupEnum,
-    ClientOSEnum,
-} from "@/models/seb-server/clientGroupEnum";
-import {
-    ExamStatusEnum,
-    ExamTypeEnum,
-} from "@/models/seb-server/examFiltersEnum";
+import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
+import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum";
 import {
     LMSFeatureEnum,
     LMSTypeEnum,

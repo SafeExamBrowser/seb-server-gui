@@ -217,7 +217,7 @@ const quizzesTableHeaders = ref([
 ]);
 
 // emits - call loadExamItemsCaller in parent
-const emit = defineEmits<{
+defineEmits<{
     loadExamItemsCaller: any;
 }>();
 

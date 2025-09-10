@@ -1,9 +1,8 @@
 import * as groupService from "@/services/screen-proctoring/api-services/groupService";
 import * as screenshotDataService from "@/services/screen-proctoring/api-services/screenshotDataService";
 import { SortOrder } from "@/models/screen-proctoring/sortOrderEnum";
-import { navigateTo, openUrlInNewTab } from "@/router/navigation";
+import { openUrlInNewTab } from "@/router/navigation";
 import * as spConstants from "@/utils/sp-constants";
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import * as constants from "@/utils/constants";
 
 //= ============api==============

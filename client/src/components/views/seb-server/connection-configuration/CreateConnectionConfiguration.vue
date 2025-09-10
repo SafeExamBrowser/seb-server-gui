@@ -844,6 +844,8 @@ const urlIfFallbackRule = (v: any) => {
     );
 };
 
+// ToDo SEBSERV-771 This will be removed in an issue following in a couple days, for now suppressing this ESLint error is ok since the function will be completely removed anyway.
+// eslint-disable-next-line complexity
 const isCreateDisabled = computed(() => {
     if (!name.value.trim()) return true;
     if (!configurationPurpose.value) return true;
@@ -896,7 +898,7 @@ const isCreateDisabled = computed(() => {
 });
 
 // must match pwd rules
-const configPwdMustMatchRule = (v: any) => {
+const configPwdMustMatchRule = () => {
     const a = (configurationPassword.value ?? "").trim();
     const b = (confirmConfigurationPassword.value ?? "").trim();
 
@@ -905,7 +907,7 @@ const configPwdMustMatchRule = (v: any) => {
     return a === b || mustMatchMessage;
 };
 
-const fallbackPwdMustMatchRule = (_v: any) => {
+const fallbackPwdMustMatchRule = () => {
     const a = (fallbackPassword.value ?? "").trim();
     const b = (confirmFallbackPassword.value ?? "").trim();
     if (!a && !b) return true;
@@ -913,7 +915,7 @@ const fallbackPwdMustMatchRule = (_v: any) => {
     return a === b || mustMatchMessage;
 };
 
-const quitPwdMustMatchRule = (_v: any) => {
+const quitPwdMustMatchRule = () => {
     const a = (quitPassword.value ?? "").trim();
     const b = (confirmQuitPassword.value ?? "").trim();
     if (!a && !b) return true;

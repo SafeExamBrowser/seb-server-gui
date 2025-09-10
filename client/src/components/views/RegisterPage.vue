@@ -386,15 +386,6 @@ async function register() {
         registerError.value = true;
     }
 }
-
-// todo: extract this function into a global file
-function handleTabKeyEvent(event: any, action: string) {
-    if (event.key == "Enter" || event.key == " ") {
-        if (action == "navigate") {
-            navigateTo(constants.DEFAULT_ROUTE);
-        }
-    }
-}
 </script>
 
 <style scoped>

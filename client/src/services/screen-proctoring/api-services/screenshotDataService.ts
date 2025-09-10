@@ -1,4 +1,3 @@
-import axios, { AxiosResponse } from "axios";
 import * as apiService from "@/services/apiService";
 import { SortOrder } from "@/models/screen-proctoring/sortOrderEnum";
 import { StorageItemEnum } from "@/models/StorageItemEnum";

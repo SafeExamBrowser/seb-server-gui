@@ -1,3 +1,14 @@
+enum SebClientConnectionStatusEnum {
+    UNDEFINED = "UNDEFINED",
+    CONNECTION_REQUESTED = "CONNECTION_REQUESTED",
+    READY = "READY",
+    ACTIVE = "ACTIVE",
+    DISABLED = "DISABLED",
+    MISSING = "MISSING",
+    CLOSED = "CLOSED",
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type SebClientConnection = {
     id: number;
     institutionId: number;
@@ -12,13 +23,3 @@ type SebClientConnection = {
     securityCheckGranted: boolean;
     clientVersionGranted?: boolean;
 };
-
-enum SebClientConnectionStatusEnum {
-    UNDEFINED = "UNDEFINED",
-    CONNECTION_REQUESTED = "CONNECTION_REQUESTED",
-    READY = "READY",
-    ACTIVE = "ACTIVE",
-    DISABLED = "DISABLED",
-    MISSING = "MISSING",
-    CLOSED = "CLOSED",
-}

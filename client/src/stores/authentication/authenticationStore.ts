@@ -2,7 +2,6 @@ import { defineStore } from "pinia";
 import { navigateTo } from "@/router/navigation";
 import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
 import * as constants from "@/utils/constants";
-import * as authenticationService from "@/services/authenticationService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
 
 // ----------------------authentication---------------------------//

@@ -1,8 +1,21 @@
-type ExamTemplates = {
-    number_of_pages: number;
-    page_number: number;
-    page_size: number;
-    content: ExamTemplate[];
+type Threshold = {
+    value: number;
+    color: string;
+    icon: string;
+};
+
+type IndicatorTemplate = {
+    id: number;
+    examTemplateId: number;
+    name: string;
+    type: string;
+    thresholds: Threshold[];
+};
+
+type ExamAttribute = {
+    enableScreenProctoring: string;
+    SCREEN_PROCTORING_SETTINGS: string;
+    quitPassword: string;
 };
 
 type ExamTemplate = {
@@ -22,22 +35,10 @@ type ExamTemplate = {
     complete: boolean;
 };
 
-type IndicatorTemplate = {
-    id: number;
-    examTemplateId: number;
-    name: string;
-    type: string;
-    thresholds: Threshold[];
-};
-
-type Threshold = {
-    value: number;
-    color: string;
-    icon: string;
-};
-
-type ExamAttribute = {
-    enableScreenProctoring: string;
-    SCREEN_PROCTORING_SETTINGS: string;
-    quitPassword: string;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+type ExamTemplates = {
+    number_of_pages: number;
+    page_number: number;
+    page_size: number;
+    content: ExamTemplate[];
 };

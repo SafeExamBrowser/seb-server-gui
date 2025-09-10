@@ -75,7 +75,7 @@
                     </td>
                 </template>
 
-                <template #item.name="{ item, index, internalItem }">
+                <template #item.name="{ item, internalItem }">
                     <td>
                         <div
                             role="button"
@@ -109,19 +109,16 @@
 <script setup lang="ts">
 import { onBeforeMount, onUnmounted, ref, watch } from "vue";
 import * as examsOverviewViewService from "@/services/screen-proctoring/component-services/examsOverviewViewService";
-import { useAppBarStore, useTableStore } from "@/stores/store";
+import { useAppBarStore } from "@/stores/store";
 import * as timeUtils from "@/utils/timeUtils";
 import * as tableUtils from "@/utils/table/tableUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import { storeToRefs } from "pinia";
 import * as linkService from "@/services/screen-proctoring/component-services/linkService";
-import * as spConstants from "@/utils/sp-constants";
-import * as authenticationService from "@/services/authenticationService";
 
 // stores
 const appBarStore = useAppBarStore();
 const appBarStoreRef = storeToRefs(appBarStore);
-const tableStore = useTableStore();
 
 // table
 const groups = ref<Group[]>();

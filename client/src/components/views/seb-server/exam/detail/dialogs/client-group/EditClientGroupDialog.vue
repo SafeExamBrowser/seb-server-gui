@@ -179,7 +179,7 @@
                                     color="black"
                                     rounded="sm"
                                     variant="outlined"
-                                    @click="clearFields(true)"
+                                    @click="clearFields()"
                                 >
                                     Cancel
                                 </v-btn>
@@ -381,7 +381,7 @@ function isSaveButtonDisabled(): boolean {
     return false;
 }
 
-function clearFields(clearType: boolean) {
+function clearFields() {
     emit("closeEditClientGroupDialog");
 }
 

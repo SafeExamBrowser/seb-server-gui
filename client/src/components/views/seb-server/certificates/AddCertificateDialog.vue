@@ -179,13 +179,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { ref } from "vue";
 import { translate } from "@/utils/generalUtils";
 import * as certificateViewService from "@/services/seb-server/component-services/certificateViewService";
 import { useI18n } from "vue-i18n";
 
 const password = ref<string>("");
 const passwordVisible = ref<boolean>(false);
+
+type UploadedCert = { id: string; name: string };
 
 const props = defineProps<{
     modelValue: boolean;
@@ -196,8 +198,6 @@ const emit = defineEmits<{
     (e: "update:modelValue", v: boolean): void;
     (e: "imported", cert: UploadedCert): void;
 }>();
-
-type UploadedCert = { id: string; name: string };
 
 // UI state
 const dragActive = ref(false);

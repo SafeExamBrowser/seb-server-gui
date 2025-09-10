@@ -591,7 +591,6 @@ import { translate } from "@/utils/generalUtils";
 import * as constants from "@/utils/constants";
 import { getInstitutions } from "@/services/seb-server/component-services/registerAccountViewService";
 import { navigateTo } from "@/router/navigation";
-import { useI18n } from "vue-i18n";
 import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/authenticationStore";
 import { createAssessmentTool } from "@/services/seb-server/component-services/assessmentToolViewService";
 import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums";
@@ -614,8 +613,6 @@ const proxyPort = ref<string>("");
 const proxyUsername = ref<string>("");
 const proxyPassword = ref<string>("");
 const proxyPasswordVisible = ref<boolean>(false);
-
-const i18n = useI18n();
 
 const formRef = ref();
 

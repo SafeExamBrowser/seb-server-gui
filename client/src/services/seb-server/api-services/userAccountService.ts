@@ -26,7 +26,7 @@ export async function changePassword(
 ): Promise<UserAccount | any> {
     const url: string = userAccountUrl + "/password";
 
-    const { data, status }: AxiosResponse = await apiService.api.put(
+    const { data }: AxiosResponse = await apiService.api.put(
         url,
         {
             uuid,

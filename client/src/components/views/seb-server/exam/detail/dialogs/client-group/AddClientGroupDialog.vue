@@ -282,7 +282,7 @@
                             color="black"
                             rounded="sm"
                             variant="outlined"
-                            @click="clearFields(true)"
+                            @click="clearFields()"
                         >
                             Cancel
                         </v-btn>
@@ -327,7 +327,6 @@ const examStore = useExamStore();
 const isGroupNameDuplicate = ref<boolean>(false);
 
 // table
-const isTableSelection = ref<boolean>(false);
 const templateClientGroups = ref<ClientGroup[]>([]);
 const templateClientGroupsHeadersRef = ref<any[]>();
 const templateClientGroupsHeaders = ref([
@@ -512,6 +511,8 @@ function loadClientGroupIntoForm(clientGroup: ClientGroup) {
 }
 
 //= =======check if screen proctoring enabled for exam========
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function toggleScreenProctoring() {
     const isEnabled = generalUtils.stringToBoolean(
         examStore.selectedExam?.additionalAttributes.enableScreenProctoring ??
@@ -561,7 +562,7 @@ const isCreateButtonDisabled = computed<boolean>(() => {
     return false;
 });
 
-function clearFields(clearType: boolean) {
+function clearFields() {
     emit("closeAddClientGroupDialog");
     // groupNameField.value = "";
 

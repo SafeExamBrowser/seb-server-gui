@@ -217,15 +217,11 @@
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import * as generalUtils from "@/utils/generalUtils";
 import { translate } from "@/utils/generalUtils";
-import { useI18n } from "vue-i18n";
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum";
 import { InstructionEnum } from "@/models/seb-server/instructionEnum";
 import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants";
 import { IndicatorEnum } from "@/models/seb-server/monitoringEnums";
-
-// i18n
-const i18n = useI18n();
 
 // route params
 const examId = useRoute().params.examId.toString();

@@ -134,7 +134,7 @@
 <script setup lang="ts">
 import { onBeforeMount, onBeforeUnmount, ref } from "vue";
 import * as tableUtils from "@/utils/table/tableUtils";
-import { useAppBarStore, useTableStore } from "@/stores/store";
+import { useTableStore } from "@/stores/store";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 
 // stores

@@ -187,12 +187,10 @@
 
 <script setup lang="ts">
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
-import { useAppBarStore, useTableStore } from "@/stores/store";
+import { useTableStore } from "@/stores/store";
 import { translate } from "@/utils/generalUtils";
 import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
 import * as generalUtils from "@/utils/generalUtils";
-import * as examViewService from "@/services/seb-server/component-services/examViewService";
-import * as indicatorViewService from "@/services/seb-server/component-services/indicatorViewService";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import {
     IndicatorEnum,
@@ -200,7 +198,6 @@ import {
     MonitoringHeaderEnum,
 } from "@/models/seb-server/monitoringEnums";
 import { MonitoringRow } from "@/models/seb-server/monitoringClients";
-import * as tableUtils from "@/utils/table/tableUtils";
 import { storeToRefs } from "pinia";
 import { useI18n } from "vue-i18n";
 
@@ -216,7 +213,6 @@ const i18n = useI18n();
 // stores
 const monitoringStore = useMonitoringStore();
 const monitoringStoreRef = storeToRefs(monitoringStore);
-const appBarStore = useAppBarStore();
 const tableStore = useTableStore();
 
 // items
@@ -516,23 +512,18 @@ function initalizeTableData() {
         ),
     );
 
-    connections.value.monitoringConnectionData.cons.forEach(
-        (dynamicData, index) => {
-            const staticClientData: StaticClientConnectionData | undefined =
-                staticDataMap.get(dynamicData.id);
+    connections.value.monitoringConnectionData.cons.forEach((dynamicData) => {
+        const staticClientData: StaticClientConnectionData | undefined =
+            staticDataMap.get(dynamicData.id);
 
-            if (staticClientData != null) {
-                const monitoringRow: MonitoringRow = createMonitoringRowData(
-                    dynamicData,
-                    staticClientData,
-                );
-                monitoringStore.monitoringData.set(
-                    monitoringRow.id,
-                    monitoringRow,
-                );
-            }
-        },
-    );
+        if (staticClientData != null) {
+            const monitoringRow: MonitoringRow = createMonitoringRowData(
+                dynamicData,
+                staticClientData,
+            );
+            monitoringStore.monitoringData.set(monitoringRow.id, monitoringRow);
+        }
+    });
 
     updateTableData();
 }

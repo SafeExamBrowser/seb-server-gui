@@ -338,7 +338,7 @@ const searchTimestamp: string | undefined =
 
 // fullscreen
 const videoPlayer = ref<HTMLDivElement | null>(null);
-const { isFullscreen, enter, exit, toggle } = useFullscreen(videoPlayer);
+const { isFullscreen, toggle } = useFullscreen(videoPlayer);
 
 // metadata
 const isMetadataInfo = ref<boolean>(true);
@@ -720,13 +720,6 @@ function stopIntervalRefresh() {
 
 //= =============================
 
-//= =====video intercation=======
-function updateSliderManually() {
-    if (isLive.value) {
-        pause();
-    }
-}
-
 function changePlaybackSpeed(id: number) {
     stopIntervalScreenshots();
     selectedSpeedId.value = id;
@@ -850,32 +843,30 @@ const screenshotMetadata = computed<object>(() => {
 const additionalMetadataInfo = computed<string>(() => {
     let result: string = "";
 
-    searchTimeline.value?.timelineGroupDataList.forEach(
-        (timelineGroupData, firstIndex) => {
-            const screenshotsGrouped: ScreenshotsGrouped[] | null =
-                groupingUtils.groupScreenshotsByMetadata(
-                    timelineGroupData.timelineScreenshotDataList,
-                    false,
+    searchTimeline.value?.timelineGroupDataList.forEach((timelineGroupData) => {
+        const screenshotsGrouped: ScreenshotsGrouped[] | null =
+            groupingUtils.groupScreenshotsByMetadata(
+                timelineGroupData.timelineScreenshotDataList,
+                false,
+            );
+
+        if (screenshotsGrouped != null) {
+            for (let i = 0; i < screenshotsGrouped.length; i++) {
+                const index: number = screenshotsGrouped[
+                    i
+                ].timelineScreenshotDataList.findIndex(
+                    (group) =>
+                        timeUtils.toTimeString(group.timestamp) ==
+                        timeUtils.toTimeString(sliderTime.value!),
                 );
 
-            if (screenshotsGrouped != null) {
-                for (let i = 0; i < screenshotsGrouped.length; i++) {
-                    const index: number = screenshotsGrouped[
-                        i
-                    ].timelineScreenshotDataList.findIndex(
-                        (group) =>
-                            timeUtils.toTimeString(group.timestamp) ==
-                            timeUtils.toTimeString(sliderTime.value!),
-                    );
-
-                    if (index !== -1) {
-                        result = `(${index + 1}/${screenshotsGrouped[i].timelineScreenshotDataList?.length})`;
-                        break;
-                    }
+                if (index !== -1) {
+                    result = `(${index + 1}/${screenshotsGrouped[i].timelineScreenshotDataList?.length})`;
+                    break;
                 }
             }
-        },
-    );
+        }
+    });
 
     return result;
 });

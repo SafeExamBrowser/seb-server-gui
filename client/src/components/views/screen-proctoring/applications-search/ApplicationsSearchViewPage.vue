@@ -159,8 +159,8 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, ref, watch } from "vue";
-import { useAppBarStore, useLoadingStore, useTableStore } from "@/stores/store";
+import { onBeforeMount, ref } from "vue";
+import { useAppBarStore, useLoadingStore } from "@/stores/store";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import * as applicationsSearchViewService from "@/services/screen-proctoring/component-services/applicationsSearchViewService";
 import ApplicationsExamList from "./ApplicationsSearchExamList.vue";
@@ -170,7 +170,6 @@ import * as generalUtils from "@/utils/generalUtils";
 
 // store
 const appBarStore = useAppBarStore();
-const tableStore = useTableStore();
 const loadingStore = useLoadingStore();
 
 // form fields

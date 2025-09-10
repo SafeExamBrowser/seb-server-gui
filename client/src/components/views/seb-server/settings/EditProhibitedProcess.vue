@@ -283,11 +283,7 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
 import { translate, translateWithBR } from "@/utils/generalUtils";
-
-// i18n
-const i18n = useI18n();
 
 // emits
 const emit = defineEmits<{

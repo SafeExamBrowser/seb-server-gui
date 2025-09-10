@@ -1,5 +1,14 @@
 // todo: change name
 
+type MetaData = {
+    screenProctoringMetadataApplication?: string;
+    screenProctoringMetadataBrowser?: string;
+    screenProctoringMetadataUserAction?: string;
+    screenProctoringMetadataURL?: string;
+    screenProctoringMetadataWindowTitle?: string;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type ScreenshotData = {
     startTime: number;
     timestamp: number;
@@ -17,6 +26,7 @@ type ScreenshotData = {
     metaData: MetaData;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type Session = {
     groupUUID: string;
     groupName: string;
@@ -32,12 +42,4 @@ type Session = {
     imageFormat: string;
     nrOfScreenshots: number;
     exam: SPExamView;
-};
-
-type MetaData = {
-    screenProctoringMetadataApplication?: string;
-    screenProctoringMetadataBrowser?: string;
-    screenProctoringMetadataUserAction?: string;
-    screenProctoringMetadataURL?: string;
-    screenProctoringMetadataWindowTitle?: string;
 };

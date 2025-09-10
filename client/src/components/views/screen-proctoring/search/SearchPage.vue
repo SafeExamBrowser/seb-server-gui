@@ -119,7 +119,6 @@ import { useAppBarStore, useLoadingStore, useTableStore } from "@/stores/store";
 import * as searchViewService from "@/services/screen-proctoring/component-services/searchViewService";
 import SearchForm from "./SearchForm.vue";
 import SearchSessionTable from "./SearchSessionTable.vue";
-import * as groupingUtils from "@/utils/groupingUtils";
 import * as timeUtils from "@/utils/timeUtils";
 
 // error handling

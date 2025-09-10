@@ -6,7 +6,6 @@ import {
     openUrlInNewTabApplicationView,
 } from "@/router/navigation";
 import * as spConstants from "@/utils/sp-constants";
-import { useRoute } from "vue-router";
 
 //= ============api==============
 export async function searchSessionsDay(

@@ -200,12 +200,8 @@ import {
 import * as generalUtils from "@/utils/generalUtils";
 import { VDateInput } from "vuetify/labs/VDateInput";
 import { translate } from "@/utils/generalUtils";
-import { useI18n } from "vue-i18n";
 import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants";
-
-// i18n
-const i18n = useI18n();
 
 // stores
 const examStore = useExamStore();

@@ -4,7 +4,6 @@ import {
     ExamTypeEnum,
 } from "@/models/seb-server/examFiltersEnum";
 import { MonitoringRow } from "@/models/seb-server/monitoringClients";
-import { LocationQuery } from "vue-router";
 
 export const useMonitoringStore = defineStore("monitoring", () => {
     // exam table

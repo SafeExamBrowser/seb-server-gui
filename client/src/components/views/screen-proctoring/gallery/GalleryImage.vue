@@ -14,7 +14,7 @@
             "
             tabindex="0"
             @dblclick="openDialog()"
-            @focus="setTabFocus($event)"
+            @focus="setTabFocus()"
             @keydown="registerKeyPress($event)"
             @mousedown="registerKeyPress($event)"
         >
@@ -254,8 +254,6 @@ import * as galleryViewService from "@/services/screen-proctoring/component-serv
 import * as linkService from "@/services/screen-proctoring/component-services/linkService";
 import { useAppBarStore, useGalleryStore } from "@/stores/store";
 import { useI18n } from "vue-i18n";
-import { useExamStore } from "@/stores/seb-server/examStore";
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 
 // props
 const props = defineProps<{
@@ -280,7 +278,6 @@ const i18n = useI18n();
 const dialog = ref(false);
 
 // accessibility
-const isTabFocused = ref<boolean>(false);
 const lastKeyPressed = ref<string | null>("Tab");
 
 onBeforeMount(() => {
@@ -302,7 +299,7 @@ const expandedScreenshotLink = computed<string>(() => {
     );
 });
 
-function setTabFocus(event: any) {
+function setTabFocus() {
     if (lastKeyPressed.value != "Tab" || lastKeyPressed.value == null) {
         return;
     }

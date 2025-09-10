@@ -1,5 +1,3 @@
-import * as timeUtils from "@/utils/timeUtils";
-
 // todo: improve this function
 export function groupScreenshotsByMetadata(
     screenshotGroupList: ScreenshotGroup[],

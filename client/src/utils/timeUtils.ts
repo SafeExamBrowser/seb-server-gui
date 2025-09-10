@@ -1,6 +1,4 @@
 import { toZonedTime } from "date-fns-tz";
-import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
-import { DateTime } from "luxon";
 import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
 
 // display dates according to the user's timezone
@@ -229,7 +227,6 @@ export function calcTimeSelection(timeSelectionPicker: any): [string, string] {
         return ["", ""];
     }
 
-    // @ts-ignore
     return [
         timeSelectionPicker.value[0].getTime(),
         timeSelectionPicker.value[1].getTime(),

@@ -1,39 +1,3 @@
-type UserAccountResponse = {
-    number_of_pages: number;
-    page_number: number;
-    page_size: number;
-    content: UserAccount[];
-};
-type SingleUserAccountResponse = {
-    uuid: string;
-    institutionId: number;
-    creationDate: string;
-    name: string;
-    surname: string;
-    username: string;
-    email: string;
-    active: boolean;
-    directLogin: boolean;
-    localAccount: boolean;
-    language: string;
-    timezone: string;
-    userRoles: string[];
-};
-
-type EditUserAccountParameters = {
-    uuid: string;
-    institutionId: number;
-    creationDate: string;
-    name: string;
-    surname: string;
-    username: string;
-    email: string;
-    active: boolean;
-    language: string;
-    timezone: string;
-    userRoles: string[];
-};
-
 type UserAccount = {
     id: number;
     institutionId: number;
@@ -52,11 +16,54 @@ type UserAccount = {
     creationDate: string;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+type UserAccountResponse = {
+    number_of_pages: number;
+    page_number: number;
+    page_size: number;
+    content: UserAccount[];
+};
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+type SingleUserAccountResponse = {
+    uuid: string;
+    institutionId: number;
+    creationDate: string;
+    name: string;
+    surname: string;
+    username: string;
+    email: string;
+    active: boolean;
+    directLogin: boolean;
+    localAccount: boolean;
+    language: string;
+    timezone: string;
+    userRoles: string[];
+};
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+type EditUserAccountParameters = {
+    uuid: string;
+    institutionId: number;
+    creationDate: string;
+    name: string;
+    surname: string;
+    username: string;
+    email: string;
+    active: boolean;
+    language: string;
+    timezone: string;
+    userRoles: string[];
+};
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type UserAccountName = {
     modelId: string;
-    entitiyType: string;
+    entityType: string;
     name: string;
 };
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type CreateUserPar = {
     institutionId: string;
     name: string;
@@ -70,6 +77,7 @@ type CreateUserPar = {
     confirmNewPassword: string;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type OptionalParGetUserAccounts = {
     page_size?: number;
     page_number?: number;

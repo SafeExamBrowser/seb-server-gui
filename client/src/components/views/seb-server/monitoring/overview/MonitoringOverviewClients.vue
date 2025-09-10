@@ -126,7 +126,6 @@
 import { Doughnut } from "vue-chartjs";
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
-import { storeToRefs } from "pinia";
 import { translate } from "@/utils/generalUtils";
 import * as generalUtils from "@/utils/generalUtils";
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum";
@@ -139,7 +138,6 @@ const i18n = useI18n();
 
 // stores
 const monitoringStore = useMonitoringStore();
-const monitoringStoreRef = storeToRefs(monitoringStore);
 
 // exam
 const examId = useRoute().params.examId.toString();

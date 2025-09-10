@@ -212,15 +212,7 @@
 
 <script setup lang="ts">
 import { useRoute } from "vue-router";
-import {
-    computed,
-    onBeforeMount,
-    onBeforeUnmount,
-    onMounted,
-    onUpdated,
-    ref,
-    watch,
-} from "vue";
+import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from "vue";
 import * as proctoringViewService from "@/services/screen-proctoring/component-services/proctoringViewService";
 import * as timeUtils from "@/utils/timeUtils";
 import { useAppBarStore } from "@/stores/store";
@@ -443,7 +435,7 @@ function stopIntervalScreenshots() {
 }
 //= =============================
 
-//= =====video intercation=======
+//= =====video interaction=======
 function changePlaybackSpeed(id: number) {
     stopIntervalScreenshots();
     selectedSpeedId.value = id;

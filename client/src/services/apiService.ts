@@ -73,7 +73,7 @@ export function createApiInterceptor() {
                 // try to refresh token
                 // ok --> refresh token, retries api call and returns data
                 // not ok --> redirected to login page
-                return await handleAuthenticationError(originalRequest);
+                return handleAuthenticationError(originalRequest);
             } else {
                 // generic error msg
                 const errorProps: ErrorProps = {

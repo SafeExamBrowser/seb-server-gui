@@ -1,3 +1,20 @@
+type MonitoringClientConnection = {
+    id: number;
+    nf: number;
+    st: string;
+    iv: Record<string, string>;
+};
+
+type OverviewClientGroup = {
+    id: number;
+    name: string;
+    clientAmount: number;
+    spsGroupUUID?: string;
+    type: string;
+    typeValue: string;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type MonitoringOverview = {
     clientStates: {
         total: number;
@@ -31,19 +48,10 @@ type MonitoringOverview = {
     };
 };
 
-type OverviewClientGroup = {
-    id: number;
+type ScreenProctoringData = {
+    uuid: string;
     name: string;
-    clientAmount: number;
-    spsGroupUUID?: string;
-    type: string;
-    typeValue: string;
-};
-
-type MonitoringConnections = {
-    examId: number;
-    monitoringConnectionData: MonitoringConnectionData;
-    screenProctoringData: ScreenProctoringData[];
+    size: number;
 };
 
 type MonitoringConnectionData = {
@@ -53,22 +61,11 @@ type MonitoringConnectionData = {
     im: number[];
 };
 
-type MonitoringClientConnection = {
-    id: number;
-    nf: number;
-    st: string;
-    iv: Record<string, string>;
-};
-
-type ScreenProctoringData = {
-    uuid: string;
-    name: string;
-    size: number;
-};
-
-type MonitoringStaticClientData = {
-    staticClientConnectionData: StaticClientConnectionData[];
-    duplications: Set<number>;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+type MonitoringConnections = {
+    examId: number;
+    monitoringConnectionData: MonitoringConnectionData;
+    screenProctoringData: ScreenProctoringData[];
 };
 
 type StaticClientConnectionData = {
@@ -80,6 +77,13 @@ type StaticClientConnectionData = {
     cg: number[];
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+type MonitoringStaticClientData = {
+    staticClientConnectionData: StaticClientConnectionData[];
+    duplications: Set<number>;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type SingleConnection = {
     miss: boolean;
     pnot: boolean;
@@ -100,6 +104,7 @@ type SingleConnection = {
     };
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type ClientNotification = {
     id: number;
     clientConnectionId: number;
@@ -126,6 +131,7 @@ type ClientEvent = {
     notificationType: string;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type ClientEventResponse = {
     number_of_pages: number;
     page_number: number;
@@ -133,15 +139,3 @@ type ClientEventResponse = {
     content: ClientEvent[];
     complete: boolean;
 };
-
-// {
-//     "id": 10551,
-//     "clientConnectionId": 267,
-//     "type": "NOTIFICATION",
-//     "timestamp": 0,
-//     "serverTime": 1749641309209,
-//     "numericValue": 0,
-//     "text": " Auto Generated Lock Screen Notification ",
-//     "notificationType": "LOCK_SCREEN",
-//     "value": 0
-//   }

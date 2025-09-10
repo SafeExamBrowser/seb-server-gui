@@ -1,3 +1,9 @@
+type PermittedProcessArgument = {
+    active: boolean;
+    argument: string;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type ExamConfigMapping = {
     id: number;
     examId: number;
@@ -6,57 +12,6 @@ type ExamConfigMapping = {
     configurationNodeId: number;
     configName: string;
     configStatus: string;
-};
-
-type SEBSettingsValue = {
-    id: number;
-    value: string;
-};
-
-type SEBSettingsTableRowValues = {
-    name: string;
-    listIndex: number;
-    rowValues: Map<string, SEBSettingsValue>;
-};
-
-type SEBSettingAttribute = {
-    id: number;
-    parentId: number;
-    name: string;
-    type: string;
-    resources: string;
-    validator: string;
-    dependencies: string;
-    defaultValue: string;
-};
-
-type SEBSettingsView = {
-    viewType: string;
-    configurationNodeId: number;
-    configurationId: number;
-    attributes: Map<string, SEBSettingAttribute>;
-    singleValues: Map<string, SEBSettingsValue>;
-    tableValues: Map<string, SEBSettingsTableRowValues[]>;
-};
-
-type ApplicationView = {
-    configurationNodeId: number;
-    configurationId: number;
-    allowSwitchToApplications: {
-        id: number;
-        value: string;
-    };
-    allowFlashFullscreen: {
-        id: number;
-        value: string;
-    };
-    prohibitedProcesses: ProhibitedProcess[];
-    permittedProcesses: PermittedProcess[];
-};
-
-type PermittedProcessArgument = {
-    active: boolean;
-    argument: string;
 };
 
 type PermittedProcess = {
@@ -123,6 +78,55 @@ type ProhibitedProcess = {
     };
 };
 
+type SEBSettingsValue = {
+    id: number;
+    value: string;
+};
+
+type SEBSettingsTableRowValues = {
+    name: string;
+    listIndex: number;
+    rowValues: Map<string, SEBSettingsValue>;
+};
+
+type SEBSettingAttribute = {
+    id: number;
+    parentId: number;
+    name: string;
+    type: string;
+    resources: string;
+    validator: string;
+    dependencies: string;
+    defaultValue: string;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+type SEBSettingsView = {
+    viewType: string;
+    configurationNodeId: number;
+    configurationId: number;
+    attributes: Map<string, SEBSettingAttribute>;
+    singleValues: Map<string, SEBSettingsValue>;
+    tableValues: Map<string, SEBSettingsTableRowValues[]>;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+type ApplicationView = {
+    configurationNodeId: number;
+    configurationId: number;
+    allowSwitchToApplications: {
+        id: number;
+        value: string;
+    };
+    allowFlashFullscreen: {
+        id: number;
+        value: string;
+    };
+    prohibitedProcesses: ProhibitedProcess[];
+    permittedProcesses: PermittedProcess[];
+};
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type URLFilterRule = {
     index: number;
     active: boolean;

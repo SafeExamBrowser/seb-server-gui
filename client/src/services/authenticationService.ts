@@ -104,7 +104,7 @@ export async function verifyJwt(token: string): Promise<string | any> {
 export async function logLogout() {
     try {
         const url: string = "useraccount/logLogout";
-        const { data, status }: AxiosResponse = await apiService.api.post(url, {
+        await apiService.api.post(url, {
             headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
         });
     } catch (error) {

@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from "vue";
+import { onBeforeMount, onBeforeUnmount, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import * as galleryViewService from "@/services/screen-proctoring/component-services/galleryViewService";
 import { useAppBarStore, useLoadingStore } from "@/stores/store";
