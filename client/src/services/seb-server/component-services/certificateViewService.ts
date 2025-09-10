@@ -1,18 +1,21 @@
 import * as certificateService from "@/services/seb-server/api-services/certificateService";
 
-
-export async function getCertificates(optionalParameters?: OptionalParGetCertificates): Promise<CertificatesResponse | null>{
-    try{
+export async function getCertificates(
+    optionalParameters?: OptionalParGetCertificates,
+): Promise<CertificatesResponse | null> {
+    try {
         return await certificateService.getCertificates(optionalParameters);
-    }catch(error){
+    } catch (error) {
         return null;
     }
 }
 
-export async function deleteCertificate(certificateId: string): Promise<any | null>{
-    try{
-        return await certificateService.deleteCertificate(certificateId)
-    }catch(error){
+export async function deleteCertificate(
+    certificateId: string,
+): Promise<any | null> {
+    try {
+        return await certificateService.deleteCertificate(certificateId);
+    } catch (error) {
         return null;
     }
 }
@@ -26,7 +29,7 @@ export async function createCertificate(params: CreateCertificatePar) {
             password: params.password,
         });
     } catch (e) {
-        (e as any).__where = 'component-services.createCertificate';
+        (e as any).__where = "component-services.createCertificate";
         throw e;
     }
 }
@@ -34,10 +37,10 @@ export async function createCertificate(params: CreateCertificatePar) {
 function blobToBase64(blob: Blob): Promise<string> {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
-        reader.onerror = () => reject(new Error('Failed to read file'));
+        reader.onerror = () => reject(new Error("Failed to read file"));
         reader.onload = () => {
-            const result = String(reader.result ?? '');
-            const comma = result.indexOf(',');
+            const result = String(reader.result ?? "");
+            const comma = result.indexOf(",");
             resolve(comma >= 0 ? result.slice(comma + 1) : result);
         };
         reader.readAsDataURL(blob);

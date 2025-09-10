@@ -6,7 +6,10 @@
         "dev-win": "env.sh && vite",
         "build": "vue-tsc --noEmit && vite build",
         "preview": "vite preview",
-        "lint": "eslint . --fix --ignore-path .gitignore"
+        "lint": "eslint . --fix --ignore-path .gitignore",
+        "prettier": "prettier --write . --ignore-path .gitignore",
+        "format": "npm run prettier && npm run lint",
+        "format:check": "prettier --check . --ignore-path .gitignore && eslint . --ignore-path .gitignore"
     },
     "dependencies": {
         "@intlify/unplugin-vue-i18n": "^4.0.0",
@@ -40,6 +43,7 @@
         "@vue/eslint-config-typescript": "^13.0.0",
         "autoprefixer": "^10.4.19",
         "eslint": "^8.57.0",
+        "eslint-config-prettier": "^10.1.8",
         "eslint-config-standard": "^17.1.0",
         "eslint-config-vuetify": "^1.0.0",
         "eslint-plugin-import": "^2.29.1",
@@ -47,6 +51,7 @@
         "eslint-plugin-node": "^11.1.0",
         "eslint-plugin-promise": "^6.4.0",
         "eslint-plugin-vue": "^9.27.0",
+        "prettier": "^3.6.2",
         "sass": "1.77.6",
         "typescript": "^5.4.5",
         "unplugin-auto-import": "^0.17.6",

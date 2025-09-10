@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type CreateExamPar = {
     institutionId?: number;
     lmsSetupId: number;
@@ -8,32 +9,19 @@ type CreateExamPar = {
     type?: string;
     quitPassword?: string;
     supporter: string[];
-    clientGroupIds: string
-}
+    clientGroupIds: string;
+};
 
-type UpdateExamPar = {
-    institutionId: number;
-    lmsSetupId?: number;
-    lms_setup_id?: number;
-    externalId: string;
-    quiz_id?: string;
-    examTemplateId?: number;
-    type: string;
-    quitPassword?: string;
-    supporter?: string[]
-    id: number;
-    quizStartTime: string;
-    quizEndTime: string;
-    quizName: string;
+type ExamAdditionalAttributes = {
+    SIGNATURE_KEY_SALT: string;
+    ADDITIONAL_QUIZ_ATTRIBUTES: string;
     quiz_start_url: string;
-}
-
-type Exams = {
-    number_of_pages: number;
-    page_number: number;
-    page_size: number;
-    content: Exam[];
-}
+    quiz_description: string;
+    SCREEN_PROCTORING_SETTINGS: string;
+    enableScreenProctoring: string;
+    SIGNATURE_KEY_CHECK_ENABLED: string;
+    NUMERICAL_TRUST_THRESHOLD: string;
+};
 
 type Exam = {
     id: number;
@@ -58,13 +46,10 @@ type Exam = {
     quitPassword: string;
 };
 
-type ExamAdditionalAttributes = {
-    SIGNATURE_KEY_SALT: string;
-    ADDITIONAL_QUIZ_ATTRIBUTES: string;
-    quiz_start_url: string;
-    quiz_description: string;
-    SCREEN_PROCTORING_SETTINGS: string;
-    enableScreenProctoring: string;
-    SIGNATURE_KEY_CHECK_ENABLED: string;
-    NUMERICAL_TRUST_THRESHOLD: string;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+type Exams = {
+    number_of_pages: number;
+    page_number: number;
+    page_size: number;
+    content: Exam[];
 };

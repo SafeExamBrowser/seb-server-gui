@@ -13,10 +13,12 @@
         </v-row>
 
         <!-- Password Field -->
-        <v-row dense class="mt-6">
+        <v-row class="mt-6" dense>
             <v-col cols="12" md="6">
                 <div class="text-subtitle-1 font-weight-medium mb-2">
-                    {{ translate("quizImportWizard.passwordMain.quitPassword") }}
+                    {{
+                        translate("quizImportWizard.passwordMain.quitPassword")
+                    }}
                 </div>
             </v-col>
         </v-row>
@@ -25,38 +27,45 @@
             <v-col cols="6">
                 <v-text-field
                     v-model="quizImportStore.selectedQuitPassword"
-                    :type="passwordVisible ? 'text' : 'password'"
-                    prepend-inner-icon="mdi-lock-outline"
-                    :placeholder="translate('quizImportWizard.passwordMain.password')"
-                    variant="outlined"
                     density="comfortable"
+                    :placeholder="
+                        translate('quizImportWizard.passwordMain.password')
+                    "
+                    prepend-inner-icon="mdi-lock-outline"
+                    :type="passwordVisible ? 'text' : 'password'"
+                    variant="outlined"
                 >
-                    <template v-slot:append-inner>
+                    <template #append-inner>
                         <v-btn
+                            density="compact"
                             icon
                             variant="text"
-                            density="compact"
                             @click="passwordVisible = !passwordVisible"
                         >
-                            <v-icon>{{ passwordVisible ? 'mdi-eye-off' : 'mdi-eye' }}</v-icon>
+                            <v-icon>{{
+                                passwordVisible ? "mdi-eye-off" : "mdi-eye"
+                            }}</v-icon>
                         </v-btn>
                     </template>
                 </v-text-field>
 
                 <!-- Imported Info Text -->
-                <div v-if="showImportedHint" class="text-caption text-grey mt-1">
+                <div
+                    v-if="showImportedHint"
+                    class="text-caption text-grey mt-1"
+                >
                     Password imported from selected Exam Template
                 </div>
 
                 <!-- Warning Box -->
                 <v-alert
-                    type="warning"
-                    variant="outlined"
-                    density="comfortable"
                     border="start"
                     class="mt-4"
+                    density="comfortable"
+                    type="warning"
+                    variant="outlined"
                 >
-                    <template v-slot:prepend>
+                    <template #prepend>
                         <v-icon>mdi-alert</v-icon>
                     </template>
                     {{ translate("quizImportWizard.passwordMain.warning") }}
@@ -66,28 +75,26 @@
     </div>
 </template>
 
-
-
 <script setup lang="ts">
-import { useQuizImportStore } from '@/stores/seb-server/quizImportStore';
+import { useQuizImportStore } from "@/stores/seb-server/quizImportStore";
 import { storeToRefs } from "pinia";
 import { translate } from "@/utils/generalUtils";
-import { ref, computed } from 'vue';
+import { computed, ref } from "vue";
 
 // stores
 const quizImportStore = useQuizImportStore();
-const { templateQuitPassword, selectedQuitPassword } = storeToRefs(quizImportStore);
+const { templateQuitPassword, selectedQuitPassword } =
+    storeToRefs(quizImportStore);
 
 // pw visibility toggle
 const passwordVisible = ref(false);
 
-//show a hint in case password is imported from template
-const showImportedHint = computed(() =>
-    !!templateQuitPassword.value && selectedQuitPassword.value === templateQuitPassword.value
+// show a hint in case password is imported from template
+const showImportedHint = computed(
+    () =>
+        !!templateQuitPassword.value &&
+        selectedQuitPassword.value === templateQuitPassword.value,
 );
 </script>
 
-<style scoped>
-
-
-</style>
+<style scoped></style>

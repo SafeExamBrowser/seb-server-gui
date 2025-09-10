@@ -1,26 +1,42 @@
 <template>
-    <v-col cols="3" class="pt-0 h-100">
-        <v-sheet  class="rounded-lg ml-6 w-100 h-100 bg-primary">
+    <v-col class="pt-0 h-100" cols="3">
+        <v-sheet class="rounded-lg ml-6 w-100 h-100 bg-primary">
             <v-col class="pt-0">
                 <v-divider class="section-divider" />
 
                 <v-list-item class="px-0 nav-hover">
-                    <router-link class="link-color nav-link" :to="constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE" data-testid="settingsNavigation-assessmentToolConnections-link">
+                    <router-link
+                        class="link-color nav-link"
+                        data-testid="settingsNavigation-assessmentToolConnections-link"
+                        :to="constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE"
+                    >
                         {{ translate("titles.assessmentToolConnections") }}
                     </router-link>
                 </v-list-item>
 
                 <v-divider class="section-divider" />
                 <v-list-item class="px-0 nav-hover">
-                    <router-link class="link-color nav-link" :to="constants.CONNECTION_CONFIGURATIONS_ROUTE" data-testid="settingsNavigation-connectionConfigurations-link">
-                        {{ translate("navigation.routeNames.connectionConfiguration") }}
+                    <router-link
+                        class="link-color nav-link"
+                        data-testid="settingsNavigation-connectionConfigurations-link"
+                        :to="constants.CONNECTION_CONFIGURATIONS_ROUTE"
+                    >
+                        {{
+                            translate(
+                                "navigation.routeNames.connectionConfiguration",
+                            )
+                        }}
                     </router-link>
                 </v-list-item>
 
                 <v-divider class="section-divider" />
 
                 <v-list-item class="px-0 nav-hover">
-                    <router-link class="link-color nav-link" :to="constants.CERTIFICATES_ROUTE" data-testid="settingsNavigation-certificates-link">
+                    <router-link
+                        class="link-color nav-link"
+                        data-testid="settingsNavigation-certificates-link"
+                        :to="constants.CERTIFICATES_ROUTE"
+                    >
                         {{ translate("navigation.routeNames.certificates") }}
                     </router-link>
                 </v-list-item>
@@ -28,20 +44,25 @@
                 <v-divider class="section-divider" />
 
                 <v-list-item class="px-0 nav-hover">
-                    <router-link class="link-color nav-link" :to="constants.USER_ACCOUNTS_ROUTE"
-                                 data-testid="settingsNavigation-userAccounts-link">
-                        {{ translate("navigation.routeNames.userAccounts") }}</router-link>
+                    <router-link
+                        class="link-color nav-link"
+                        data-testid="settingsNavigation-userAccounts-link"
+                        :to="constants.USER_ACCOUNTS_ROUTE"
+                    >
+                        {{
+                            translate("navigation.routeNames.userAccounts")
+                        }}</router-link
+                    >
                 </v-list-item>
 
                 <v-divider class="section-divider mb-10" />
             </v-col>
-
         </v-sheet>
     </v-col>
 </template>
 <script setup lang="ts">
 import * as constants from "@/utils/constants";
-import {translate} from "@/utils/generalUtils";
+import { translate } from "@/utils/generalUtils";
 </script>
 
 <style scoped>
@@ -69,13 +90,13 @@ import {translate} from "@/utils/generalUtils";
         rgba(255, 255, 255, 0.98) 10%,
         rgba(255, 255, 255, 0.96) 20%,
         rgba(255, 255, 255, 0.93) 25%,
-        rgba(255, 255, 255, 0.90) 30%,
+        rgba(255, 255, 255, 0.9) 30%,
         rgba(255, 255, 255, 0.86) 40%,
-        rgba(255, 255, 255, 0.80) 60%,
-        rgba(255, 255, 255, 0.70) 68%,
-        rgba(255, 255, 255, 0.60) 75%,
+        rgba(255, 255, 255, 0.8) 60%,
+        rgba(255, 255, 255, 0.7) 68%,
+        rgba(255, 255, 255, 0.6) 75%,
         rgba(255, 255, 255, 0.45) 82%,
-        rgba(33, 92, 175, 0.20) 88%,
+        rgba(33, 92, 175, 0.2) 88%,
         rgba(33, 92, 175, 0.12) 92%,
         rgba(33, 92, 175, 0.08) 96%,
         rgba(33, 92, 175, 0.04) 98%,
@@ -101,7 +122,7 @@ import {translate} from "@/utils/generalUtils";
 }
 
 .custom-divider {
-    background-color: #DCDCDC !important;
+    background-color: #dcdcdc !important;
     height: 1px;
     width: 100%;
 }
@@ -119,14 +140,14 @@ import {translate} from "@/utils/generalUtils";
 .custom-role-checkbox {
     display: flex;
     align-items: center;
-    gap: 0.0rem;
+    gap: 0rem;
 }
 
 .custom-role-checkbox input[type="checkbox"] {
     appearance: none;
     width: 20px;
     height: 20px;
-    border: 2px solid #215CAE;
+    border: 2px solid #215cae;
     border-radius: 50%;
     background-color: white;
     cursor: pointer;

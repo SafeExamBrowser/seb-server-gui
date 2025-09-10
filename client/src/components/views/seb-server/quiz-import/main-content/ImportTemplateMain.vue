@@ -11,20 +11,25 @@
             </v-col>
         </v-row>
 
-
         <!-- SCROLLABLE CONTAINER -->
         <div class="template-scroll-wrapper">
             <v-card
                 v-for="examTemplate in examTemplates?.content"
                 :key="examTemplate.id"
+                :aria-label="
+                    translate('quizImportWizard.templateMain.templateSelect')
+                "
                 class="exam-template-card"
-                :class="{ selected: quizImportStore.selectedExamTemplate?.id === examTemplate.id }"
+                :class="{
+                    selected:
+                        quizImportStore.selectedExamTemplate?.id ===
+                        examTemplate.id,
+                }"
                 :ripple="false"
-                variant="outlined"
-                :aria-label="translate('quizImportWizard.templateMain.templateSelect')"
                 tabindex="0"
-                @keyup.enter="onTemplateCardClick(examTemplate)"
+                variant="outlined"
                 @click="onTemplateCardClick(examTemplate)"
+                @keyup.enter="onTemplateCardClick(examTemplate)"
             >
                 <div class="card-content">
                     <div class="card-text">
@@ -37,56 +42,57 @@
                     </div>
 
                     <v-btn
+                        :aria-label="
+                            translate(
+                                'quizImportWizard.templateMain.templateInfo',
+                            )
+                        "
+                        class="info-button"
+                        color="grey-darken-1"
                         icon="mdi-information"
                         variant="text"
-                        color="grey-darken-1"
-                        class="info-button"
                         @click.stop="openExamTemplateDialog(examTemplate)"
-                        :aria-label="translate('quizImportWizard.templateMain.templateInfo')"
                     />
                 </div>
             </v-card>
         </div>
-
-
     </div>
-
 
     <!-----------description popup---------->
     <v-dialog v-model="dialog" max-width="600">
         <ExamTemplateDialog
             :exam-template="selectedTemplate"
-            @close-exam-template-dialog="closeExamTemplateDialog()">
+            @close-exam-template-dialog="closeExamTemplateDialog()"
+        >
         </ExamTemplateDialog>
     </v-dialog>
-
 </template>
-
 
 <script setup lang="ts">
 import ExamTemplateDialog from "@/components/widgets/ExamTemplateDialog.vue";
 import * as quizImportWizardViewService from "@/services/seb-server/component-services/quizImportWizardViewService";
 import * as examViewService from "@/services/seb-server/component-services/examViewService";
-import {useQuizImportStore} from "@/stores/seb-server/quizImportStore";
-import {translate} from "@/utils/generalUtils";
+import { useQuizImportStore } from "@/stores/seb-server/quizImportStore";
+import { translate } from "@/utils/generalUtils";
 import * as generalUtils from "@/utils/generalUtils";
 import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
-import {useUserAccountStore} from "@/stores/authentication/authenticationStore";
+import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
 
-//stores
+// stores
 const quizImportStore = useQuizImportStore();
 const userAccountStore = useUserAccountStore();
 
-//items
+// items
 const examTemplates = ref<ExamTemplates>();
 
-//dialog - description popup
+// dialog - description popup
 const dialog = ref(false);
 const selectedTemplate = ref<ExamTemplate | null>(null);
 
-//=======================events & watchers=======================
+//= ======================events & watchers=======================
 onBeforeMount(async () => {
-    const examTemplatesResponse: ExamTemplates | null = await quizImportWizardViewService.getExamTemplates();
+    const examTemplatesResponse: ExamTemplates | null =
+        await quizImportWizardViewService.getExamTemplates();
     if (examTemplatesResponse == null) {
         return;
     }
@@ -94,9 +100,7 @@ onBeforeMount(async () => {
     examTemplates.value = examTemplatesResponse;
 });
 
-
 async function onTemplateCardClick(examTemplate: ExamTemplate) {
-
     // if the same is selected just leave
     if (examTemplate.id == quizImportStore.selectedExamTemplate?.id) {
         return;
@@ -109,29 +113,42 @@ async function onTemplateCardClick(examTemplate: ExamTemplate) {
     quizImportStore.selectedExamTemplate = examTemplate;
     if (examTemplate.EXAM_ATTRIBUTES.quitPassword) {
         // get single template to get plain quit-password
-        const examTemplateResponse: ExamTemplate | null = await quizImportWizardViewService.getExamTemplate(examTemplate.id.toString());
+        const examTemplateResponse: ExamTemplate | null =
+            await quizImportWizardViewService.getExamTemplate(
+                examTemplate.id.toString(),
+            );
         if (examTemplateResponse != null) {
-            quizImportStore.selectedQuitPassword = examTemplateResponse.EXAM_ATTRIBUTES.quitPassword || "";
-            quizImportStore.templateQuitPassword = examTemplateResponse.EXAM_ATTRIBUTES.quitPassword || "";
+            quizImportStore.selectedQuitPassword =
+                examTemplateResponse.EXAM_ATTRIBUTES.quitPassword || "";
+            quizImportStore.templateQuitPassword =
+                examTemplateResponse.EXAM_ATTRIBUTES.quitPassword || "";
         }
     }
-    await getExamTemplateSpGroups()
+    await getExamTemplateSpGroups();
 
     // select supervisors from template
-    const userAccountNamesResponse: UserAccountName[] | null = await userAccountViewService.getSupervisorNames({institutionId: userAccountStore.userAccount?.institutionId});
+    const userAccountNamesResponse: UserAccountName[] | null =
+        await userAccountViewService.getSupervisorNames({
+            institutionId: userAccountStore.userAccount?.institutionId,
+        });
     if (userAccountNamesResponse != null) {
-
-        //add supervisors from template to list
+        // add supervisors from template to list
         if (quizImportStore.selectedExamTemplate?.supporter != null) {
             quizImportStore.selectedExamSupervisors.push(
-                ...userAccountNamesResponse.filter(user =>
-                    quizImportStore.selectedExamTemplate?.supporter.includes(user.modelId))
+                ...userAccountNamesResponse.filter((user) =>
+                    quizImportStore.selectedExamTemplate?.supporter.includes(
+                        user.modelId,
+                    ),
+                ),
             );
         }
     }
 
     // apply client groups
-    if (quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES != null && quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES.length > 1) {
+    if (
+        quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES != null &&
+        quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES.length > 1
+    ) {
         quizImportStore.addGroupSelectionComponents();
 
         // TODO why is this necessary?
@@ -142,8 +159,13 @@ async function onTemplateCardClick(examTemplate: ExamTemplate) {
         return;
     }
 
-    if (quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES != null && quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES.length == 1) {
-        quizImportStore.selectedClientGroups.push(quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES[0]);
+    if (
+        quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES != null &&
+        quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES.length == 1
+    ) {
+        quizImportStore.selectedClientGroups.push(
+            quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES[0],
+        );
         return;
     }
 
@@ -159,22 +181,23 @@ function closeExamTemplateDialog() {
     dialog.value = false;
 }
 
-
 async function getExamTemplateSpGroups() {
-    const examTemplateSp: ScreenProctoringSettings | null = await examViewService.getExamTemplateSp(quizImportStore.selectedExamTemplate!.id.toString());
+    const examTemplateSp: ScreenProctoringSettings | null =
+        await examViewService.getExamTemplateSp(
+            quizImportStore.selectedExamTemplate!.id.toString(),
+        );
 
     if (examTemplateSp == null) {
         return;
     }
 
-    quizImportStore.availableSpClientGroupIds = generalUtils.createNumberIdList(examTemplateSp.spsSEBGroupsSelection);
+    quizImportStore.availableSpClientGroupIds = generalUtils.createNumberIdList(
+        examTemplateSp.spsSEBGroupsSelection,
+    );
 }
-
 </script>
 
 <style scoped>
-
-
 .template-scroll-wrapper {
     overflow-y: auto;
     max-height: 100%;
@@ -191,9 +214,11 @@ async function getExamTemplateSpGroups() {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: 1px solid #E0E0E0;
+    border: 1px solid #e0e0e0;
     background-color: #ffffff;
-    transition: border-color 0.2s ease, background-color 0.2s ease;
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease;
 }
 
 /* Selected style */
@@ -225,5 +250,4 @@ async function getExamTemplateSpGroups() {
 .info-button:hover {
     opacity: 1;
 }
-
 </style>

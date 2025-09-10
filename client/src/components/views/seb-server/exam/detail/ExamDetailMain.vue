@@ -1,66 +1,98 @@
 <template>
     <v-row>
         <v-col>
-            <v-sheet
-                elevation="4"
-                class="rounded-lg pa-8">
-
+            <v-sheet class="rounded-lg pa-8" elevation="4">
                 <!----------title--------->
                 <v-row>
                     <v-col>
-                        <div class="primary-text-color text-h5 font-weight-bold">
-                            {{translate("titles.examDetails")}}
+                        <div
+                            class="primary-text-color text-h5 font-weight-bold"
+                        >
+                            {{ translate("titles.examDetails") }}
                         </div>
-                        <v-divider class="border-opacity-25" :thickness="2"></v-divider>
+                        <v-divider
+                            class="border-opacity-25"
+                            :thickness="2"
+                        ></v-divider>
                     </v-col>
                 </v-row>
 
                 <!----------infos and actions--------->
                 <v-row class="mt-10">
-
                     <v-spacer></v-spacer>
                     <!----------left side--------->
                     <v-col cols="6" xl="4">
-
                         <!----------test run--------->
                         <v-row>
                             <v-col>
-                                <v-sheet
-                                    elevation="4"
-                                    class="rounded-lg pa-4">
-
+                                <v-sheet class="rounded-lg pa-4" elevation="4">
                                     <v-row align="center">
                                         <v-col>
-                                            {{translate("examDetail.main.testExam")}}
+                                            {{
+                                                translate(
+                                                    "examDetail.main.testExam",
+                                                )
+                                            }}
                                         </v-col>
                                         <v-col align="right" cols="4" xl="3">
                                             <v-btn
-                                                v-if="generalUtils.findEnumValue(ExamStatusEnum, examStore.selectedExam?.status) == ExamStatusEnum.TEST_RUN"
+                                                v-if="
+                                                    generalUtils.findEnumValue(
+                                                        ExamStatusEnum,
+                                                        examStore.selectedExam
+                                                            ?.status,
+                                                    ) == ExamStatusEnum.TEST_RUN
+                                                "
                                                 block
-                                                rounded="sm"
                                                 color="primary"
+                                                :disabled="
+                                                    !ability.canDoExamAction(
+                                                        GUIAction.DisableTestRun,
+                                                        examStore.selectedExam
+                                                            ?.status,
+                                                    )
+                                                "
+                                                rounded="sm"
                                                 variant="flat"
-                                                :disabled="!ability.canDoExamAction(GUIAction.DisableTestRun, examStore.selectedExam?.status)"
-                                                @click="applyTestRun()">
-                                                {{translate("examDetail.main.testRunDisable")}}
+                                                @click="applyTestRun()"
+                                            >
+                                                {{
+                                                    translate(
+                                                        "examDetail.main.testRunDisable",
+                                                    )
+                                                }}
                                             </v-btn>
                                             <v-btn
                                                 v-else
                                                 block
-                                                rounded="sm"
                                                 color="primary"
+                                                :disabled="
+                                                    !ability.canDoExamAction(
+                                                        GUIAction.ApplyTestRun,
+                                                        examStore.selectedExam
+                                                            ?.status,
+                                                    )
+                                                "
+                                                rounded="sm"
                                                 variant="flat"
-                                                :disabled="!ability.canDoExamAction(GUIAction.ApplyTestRun, examStore.selectedExam?.status)"
-                                                @click="applyTestRun()">
-                                                {{translate("examDetail.main.testRunApply")}}
+                                                @click="applyTestRun()"
+                                            >
+                                                {{
+                                                    translate(
+                                                        "examDetail.main.testRunApply",
+                                                    )
+                                                }}
                                             </v-btn>
                                         </v-col>
                                     </v-row>
 
                                     <v-tooltip activator="parent">
-                                        {{translate("examDetail.main.testTooltip")}}
+                                        {{
+                                            translate(
+                                                "examDetail.main.testTooltip",
+                                            )
+                                        }}
                                     </v-tooltip>
-
                                 </v-sheet>
                             </v-col>
                         </v-row>
@@ -68,31 +100,60 @@
                         <!----------monitor exam--------->
                         <v-row class="mt-6">
                             <v-col>
-                                <v-card
-                                    elevation="4"
-                                    class="rounded-lg pa-4">
-
+                                <v-card class="rounded-lg pa-4" elevation="4">
                                     <v-row align="center">
                                         <v-col>
-                                            {{translate("examDetail.main.monitorExam")}}
+                                            {{
+                                                translate(
+                                                    "examDetail.main.monitorExam",
+                                                )
+                                            }}
                                         </v-col>
                                         <v-col align="right" cols="4" xl="3">
                                             <v-btn
                                                 block
-                                                rounded="sm"
                                                 color="primary"
+                                                :disabled="
+                                                    !ability.canDoExamAction(
+                                                        GUIAction.ShowMonitoring,
+                                                        examStore.selectedExam
+                                                            ?.status,
+                                                    )
+                                                "
+                                                rounded="sm"
                                                 variant="flat"
-                                                :disabled="!ability.canDoExamAction(GUIAction.ShowMonitoring, examStore.selectedExam?.status)"
-                                                @click="navigateTo(constants.MONITORING_OVERVIEW_ROUTE + '/' + examId)">
-                                                {{translate("examDetail.main.monitorStart")}}
+                                                @click="
+                                                    navigateTo(
+                                                        constants.MONITORING_OVERVIEW_ROUTE +
+                                                            '/' +
+                                                            examId,
+                                                    )
+                                                "
+                                            >
+                                                {{
+                                                    translate(
+                                                        "examDetail.main.monitorStart",
+                                                    )
+                                                }}
                                             </v-btn>
                                         </v-col>
                                     </v-row>
 
-                                    <v-tooltip v-if="!ability.canDoExamAction(GUIAction.ShowMonitoring, examStore.selectedExam?.status)" activator="parent">
-                                        {{translate("examDetail.main.monitorTooltip")}}
+                                    <v-tooltip
+                                        v-if="
+                                            !ability.canDoExamAction(
+                                                GUIAction.ShowMonitoring,
+                                                examStore.selectedExam?.status,
+                                            )
+                                        "
+                                        activator="parent"
+                                    >
+                                        {{
+                                            translate(
+                                                "examDetail.main.monitorTooltip",
+                                            )
+                                        }}
                                     </v-tooltip>
-
                                 </v-card>
                             </v-col>
                         </v-row>
@@ -100,30 +161,41 @@
                         <!----------template--------->
                         <v-row class="mt-10">
                             <v-col class="primary-text-color text-h6">
-                                {{translate("examDetail.main.examTemplate")}}
+                                {{ translate("examDetail.main.examTemplate") }}
                             </v-col>
                             <v-col align="right">
                                 <v-btn
                                     color="primary"
                                     density="compact"
-                                    variant="text"
+                                    :disabled="
+                                        examStore.selectedExamTemplate == null
+                                    "
                                     icon="mdi-information-outline"
-                                    :disabled="examStore.selectedExamTemplate == null"
-                                    @click="openExamTemplateDialog()">
+                                    variant="text"
+                                    @click="openExamTemplateDialog()"
+                                >
                                 </v-btn>
                             </v-col>
                         </v-row>
-                        <v-divider class="border-opacity-25" :thickness="2"></v-divider>
+                        <v-divider
+                            class="border-opacity-25"
+                            :thickness="2"
+                        ></v-divider>
 
                         <v-row class="mt-1">
                             <v-col>
                                 <div class="text-subtitle-1">
-                                    <template v-if="examStore.selectedExamTemplate != null">
-                                        {{ examStore.selectedExamTemplate?.name }}
+                                    <template
+                                        v-if="
+                                            examStore.selectedExamTemplate !=
+                                            null
+                                        "
+                                    >
+                                        {{
+                                            examStore.selectedExamTemplate?.name
+                                        }}
                                     </template>
-                                    <template v-else>
-                                        -
-                                    </template>
+                                    <template v-else> - </template>
                                 </div>
                             </v-col>
                         </v-row>
@@ -132,40 +204,55 @@
                         <!-------supervisors------>
                         <v-row class="mt-10">
                             <v-col class="primary-text-color text-h6">
-                                {{translate("examDetail.main.examSupervisors")}}
+                                {{
+                                    translate("examDetail.main.examSupervisors")
+                                }}
                             </v-col>
 
                             <v-col align="right">
                                 <v-btn
                                     color="primary"
                                     density="compact"
-                                    variant="text"
                                     icon="mdi-pencil-circle-outline"
-                                    @click="openSupervisorsDialog()">
+                                    variant="text"
+                                    @click="openSupervisorsDialog()"
+                                >
                                 </v-btn>
                             </v-col>
                         </v-row>
-                        <v-divider class="border-opacity-25" :thickness="2"></v-divider>
+                        <v-divider
+                            class="border-opacity-25"
+                            :thickness="2"
+                        ></v-divider>
 
                         <v-row>
                             <v-col>
                                 <v-data-table
-                                    hide-default-footer
-                                    item-value="id"
                                     class="rounded-lg elevation-2 mt-4"
                                     :headers="supervisorsTableHeaders"
-                                    :items="examStore.selectedExamSupervisors">
-
-                                    <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort}">
+                                    hide-default-footer
+                                    item-value="id"
+                                    :items="examStore.selectedExamSupervisors"
+                                >
+                                    <template
+                                        #headers="{
+                                            columns,
+                                            isSorted,
+                                            getSortIcon,
+                                            toggleSort,
+                                        }"
+                                    >
                                         <TableHeaders
                                             :columns="columns"
-                                            :is-sorted="isSorted"
                                             :get-sort-icon="getSortIcon"
+                                            :header-refs-prop="
+                                                supervisorsTableHeadersRef
+                                            "
+                                            :is-sorted="isSorted"
                                             :toggle-sort="toggleSort"
-                                            :header-refs-prop="supervisorsTableHeadersRef">
+                                        >
                                         </TableHeaders>
                                     </template>
-
                                 </v-data-table>
                             </v-col>
                         </v-row>
@@ -174,58 +261,95 @@
                         <!-------Groups------>
                         <v-row class="mt-10">
                             <v-col class="primary-text-color text-h6">
-                                {{translate("examDetail.main.groups")}}
+                                {{ translate("examDetail.main.groups") }}
                             </v-col>
 
                             <v-col align="right">
                                 <v-btn
                                     color="primary"
                                     density="compact"
-                                    variant="text"
+                                    :disabled="
+                                        !ability.canDoExamAction(
+                                            GUIAction.EditClientGroups,
+                                            examStore.selectedExam?.status,
+                                        )
+                                    "
                                     icon="mdi-plus-circle-outline"
-                                    :disabled="!ability.canDoExamAction(GUIAction.EditClientGroups, examStore.selectedExam?.status)"
-                                    @click="openAddClientGroupDialog()">
+                                    variant="text"
+                                    @click="openAddClientGroupDialog()"
+                                >
                                 </v-btn>
                                 <v-btn
                                     color="primary"
                                     density="compact"
-                                    variant="text"
+                                    :disabled="
+                                        !ability.canDoExamAction(
+                                            GUIAction.EditClientGroups,
+                                            examStore.selectedExam?.status,
+                                        )
+                                    "
                                     icon="mdi-pencil-circle-outline"
-                                    :disabled="!ability.canDoExamAction(GUIAction.EditClientGroups, examStore.selectedExam?.status)"
-                                    @click="openClientGroupDialog()">
+                                    variant="text"
+                                    @click="openClientGroupDialog()"
+                                >
                                 </v-btn>
                             </v-col>
                         </v-row>
-                        <v-divider class="border-opacity-25" :thickness="2"></v-divider>
+                        <v-divider
+                            class="border-opacity-25"
+                            :thickness="2"
+                        ></v-divider>
 
                         <v-row>
                             <v-col>
                                 <!--@vue-ignore-->
                                 <v-data-table
-                                    hide-default-footer
-                                    item-value="id"
                                     class="rounded-lg elevation-2 mt-4"
                                     :headers="clientGroupTableHeaders"
-                                    :items="examStore.selectedClientGroups">
-
-                                    <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort}">
+                                    hide-default-footer
+                                    item-value="id"
+                                    :items="examStore.selectedClientGroups"
+                                >
+                                    <template
+                                        #headers="{
+                                            columns,
+                                            isSorted,
+                                            getSortIcon,
+                                            toggleSort,
+                                        }"
+                                    >
                                         <TableHeaders
                                             :columns="columns"
-                                            :is-sorted="isSorted"
                                             :get-sort-icon="getSortIcon"
+                                            :header-refs-prop="
+                                                clientGroupTableHeadersRef
+                                            "
+                                            :is-sorted="isSorted"
                                             :toggle-sort="toggleSort"
-                                            :header-refs-prop="clientGroupTableHeadersRef">
+                                        >
                                         </TableHeaders>
                                     </template>
 
-                                    <template v-slot:item.type="{ item }">
-                                        {{ translate(generalUtils.findEnumValue(ClientGroupEnum, item.type)) }}
+                                    <template #item.type="{ item }">
+                                        {{
+                                            translate(
+                                                generalUtils.findEnumValue(
+                                                    ClientGroupEnum,
+                                                    item.type,
+                                                ),
+                                            )
+                                        }}
                                     </template>
 
-                                    <template v-slot:item.sp="{ item }">
-                                        <v-icon :icon="item.isSPSGroup ? 'mdi-check' : ''"></v-icon>
+                                    <template #item.sp="{ item }">
+                                        <v-icon
+                                            :icon="
+                                                item.isSPSGroup
+                                                    ? 'mdi-check'
+                                                    : ''
+                                            "
+                                        ></v-icon>
                                     </template>
-
                                 </v-data-table>
                             </v-col>
                         </v-row>
@@ -235,37 +359,57 @@
                         <v-row class="mt-10">
                             <v-col>
                                 <div class="primary-text-color text-h6">
-                                    {{translate("examDetail.main.quitPassword")}}
+                                    {{
+                                        translate(
+                                            "examDetail.main.quitPassword",
+                                        )
+                                    }}
                                 </div>
-                                <v-divider class="border-opacity-25" :thickness="2"></v-divider>
+                                <v-divider
+                                    class="border-opacity-25"
+                                    :thickness="2"
+                                ></v-divider>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col>
                                 <v-text-field
-                                    :type="passwordVisible ? 'text' : 'password'"
-                                    prepend-inner-icon="mdi-lock-outline"
-                                    density="compact"
-                                    placeholder="Password"
-                                    variant="outlined"
-                                    :disabled="!ability.canDoExamAction(GUIAction.EditExamSettings, examStore.selectedExam?.status)"
                                     v-model="quitPassword"
-                                    @update:focused="saveNewPassword($event)">
-
-                                    <template v-slot:append-inner>
+                                    density="compact"
+                                    :disabled="
+                                        !ability.canDoExamAction(
+                                            GUIAction.EditExamSettings,
+                                            examStore.selectedExam?.status,
+                                        )
+                                    "
+                                    placeholder="Password"
+                                    prepend-inner-icon="mdi-lock-outline"
+                                    :type="
+                                        passwordVisible ? 'text' : 'password'
+                                    "
+                                    variant="outlined"
+                                    @update:focused="saveNewPassword($event)"
+                                >
+                                    <template #append-inner>
                                         <v-btn
                                             density="compact"
+                                            :icon="
+                                                passwordVisible
+                                                    ? 'mdi-eye-off'
+                                                    : 'mdi-eye'
+                                            "
                                             variant="text"
-                                            :icon="passwordVisible ? 'mdi-eye-off' : 'mdi-eye'"
-                                            @click="passwordVisible = !passwordVisible">
+                                            @click="
+                                                passwordVisible =
+                                                    !passwordVisible
+                                            "
+                                        >
                                         </v-btn>
                                     </template>
-
                                 </v-text-field>
                             </v-col>
                         </v-row>
                         <!------------------->
-
                     </v-col>
                     <!----------------------->
 
@@ -274,36 +418,51 @@
 
                     <!----------right side--------->
                     <v-col cols="6" xl="4">
-
                         <!----------edit seb settings--------->
                         <v-row>
                             <v-col>
-                                <v-sheet
-                                    elevation="4"
-                                    class="rounded-lg pa-4">
-
+                                <v-sheet class="rounded-lg pa-4" elevation="4">
                                     <v-row align="center">
                                         <v-col>
-                                            {{translate("examDetail.main.appNetworkSettings")}}
+                                            {{
+                                                translate(
+                                                    "examDetail.main.appNetworkSettings",
+                                                )
+                                            }}
                                         </v-col>
 
                                         <v-col align="right" cols="4" xl="3">
-
                                             <v-btn
                                                 block
-                                                rounded="sm"
                                                 color="primary"
+                                                :disabled="
+                                                    !hasSEBSettings ||
+                                                    !editableSEBSettings
+                                                "
+                                                rounded="sm"
                                                 variant="flat"
-                                                :disabled="!hasSEBSettings || !editableSEBSettings"
-                                                @click="openSebSettingsDialog()">
-                                                {{translate("general.editButton")}}
+                                                @click="openSebSettingsDialog()"
+                                            >
+                                                {{
+                                                    translate(
+                                                        "general.editButton",
+                                                    )
+                                                }}
                                             </v-btn>
-                                            <v-tooltip v-if="!hasSEBSettings" activator="parent">
-                                                <p v-html="generalUtils.translateWithBR('examDetail.main.noSEBSettings')" />
+                                            <v-tooltip
+                                                v-if="!hasSEBSettings"
+                                                activator="parent"
+                                            >
+                                                <p
+                                                    v-html="
+                                                        generalUtils.translateWithBR(
+                                                            'examDetail.main.noSEBSettings',
+                                                        )
+                                                    "
+                                                />
                                             </v-tooltip>
                                         </v-col>
                                     </v-row>
-
                                 </v-sheet>
                             </v-col>
                         </v-row>
@@ -311,27 +470,40 @@
                         <!----------exam config--------->
                         <v-row class="mt-6">
                             <v-col>
-                                <v-sheet
-                                    elevation="4"
-                                    class="rounded-lg pa-4">
-
+                                <v-sheet class="rounded-lg pa-4" elevation="4">
                                     <v-row align="center">
                                         <v-col>
-                                            {{translate("examDetail.main.downloadExamConfig")}}
+                                            {{
+                                                translate(
+                                                    "examDetail.main.downloadExamConfig",
+                                                )
+                                            }}
                                         </v-col>
                                         <v-col align="right" cols="4" xl="3">
                                             <v-btn
                                                 block
-                                                rounded="sm"
                                                 color="primary"
+                                                :disabled="
+                                                    !ability.canDoExamAction(
+                                                        GUIAction.EditSEBSettings,
+                                                        examStore.selectedExam
+                                                            ?.status,
+                                                    )
+                                                "
+                                                rounded="sm"
                                                 variant="flat"
-                                                :disabled="!ability.canDoExamAction(GUIAction.EditSEBSettings, examStore.selectedExam?.status)"
-                                                @click="startExamConfigDownloadProcess()">
-                                                {{translate("general.downloadButton")}}
+                                                @click="
+                                                    startExamConfigDownloadProcess()
+                                                "
+                                            >
+                                                {{
+                                                    translate(
+                                                        "general.downloadButton",
+                                                    )
+                                                }}
                                             </v-btn>
                                         </v-col>
                                     </v-row>
-
                                 </v-sheet>
                             </v-col>
                         </v-row>
@@ -340,130 +512,305 @@
                         <v-row class="mt-6">
                             <v-col>
                                 <v-card
+                                    class="rounded-lg pa-4"
                                     color="primary"
                                     variant="outlined"
-                                    class="rounded-lg pa-4">
-
+                                >
                                     <v-row align="center">
                                         <v-col>
                                             <div>
-                                                {{translate("examDetail.main.moreExamOptions")}}
+                                                {{
+                                                    translate(
+                                                        "examDetail.main.moreExamOptions",
+                                                    )
+                                                }}
                                             </div>
 
-                                            <v-list class="mt-4" select-strategy="leaf">
-
+                                            <v-list
+                                                class="mt-4"
+                                                select-strategy="leaf"
+                                            >
                                                 <!----------Apply Screen Proctoring--------->
                                                 <v-list-item>
-                                                    <v-list-item-title :class="[!ability.canDoExamAction(GUIAction.EditScreenProctoring, examStore.selectedExam?.status) ? 'disabled-text-color' : '']">
-                                                        {{translate("examDetail.main.applySP")}}
+                                                    <v-list-item-title
+                                                        :class="[
+                                                            !ability.canDoExamAction(
+                                                                GUIAction.EditScreenProctoring,
+                                                                examStore
+                                                                    .selectedExam
+                                                                    ?.status,
+                                                            )
+                                                                ? 'disabled-text-color'
+                                                                : '',
+                                                        ]"
+                                                    >
+                                                        {{
+                                                            translate(
+                                                                "examDetail.main.applySP",
+                                                            )
+                                                        }}
                                                     </v-list-item-title>
-                                                    <template v-slot:append="{ isSelected }" >
-                                                        <v-list-item-action class="flex-column align-right">
+                                                    <template
+                                                        #append="{ isSelected }"
+                                                    >
+                                                        <v-list-item-action
+                                                            class="flex-column align-right"
+                                                        >
                                                             <v-switch
-                                                                v-model="isScreenProctoringActive"
-                                                                v-on:update:model-value="applyScreenProctoring()"
+                                                                v-model="
+                                                                    isScreenProctoringActive
+                                                                "
+                                                                color="primary"
+                                                                :disabled="
+                                                                    !ability.canDoExamAction(
+                                                                        GUIAction.EditScreenProctoring,
+                                                                        examStore
+                                                                            .selectedExam
+                                                                            ?.status,
+                                                                    )
+                                                                "
                                                                 hide-details
-                                                                :disabled="!ability.canDoExamAction(GUIAction.EditScreenProctoring, examStore.selectedExam?.status)"
-                                                                color="primary">
+                                                                @update:model-value="
+                                                                    applyScreenProctoring()
+                                                                "
+                                                            >
                                                             </v-switch>
                                                         </v-list-item-action>
                                                     </template>
                                                 </v-list-item>
-                                                <v-divider class="border-opacity-25" :thickness="2"></v-divider>
+                                                <v-divider
+                                                    class="border-opacity-25"
+                                                    :thickness="2"
+                                                ></v-divider>
 
                                                 <!----------Apply SEB Lock--------->
                                                 <v-list-item>
-                                                    <v-list-item-title :class="[hasSEBRestrictionFeature() && ability.canDoExamAction(GUIAction.ApplySEBRestriction, examStore.selectedExam?.status) ? '' : 'disabled-text-color']">
-                                                        {{translate("examDetail.main.applySebLock")}}
+                                                    <v-list-item-title
+                                                        :class="[
+                                                            hasSEBRestrictionFeature() &&
+                                                            ability.canDoExamAction(
+                                                                GUIAction.ApplySEBRestriction,
+                                                                examStore
+                                                                    .selectedExam
+                                                                    ?.status,
+                                                            )
+                                                                ? ''
+                                                                : 'disabled-text-color',
+                                                        ]"
+                                                    >
+                                                        {{
+                                                            translate(
+                                                                "examDetail.main.applySebLock",
+                                                            )
+                                                        }}
                                                     </v-list-item-title>
-                                                    <template v-slot:append="{ isSelected }" >
-                                                        <v-list-item-action class="flex-column align-right">
+                                                    <template
+                                                        #append="{ isSelected }"
+                                                    >
+                                                        <v-list-item-action
+                                                            class="flex-column align-right"
+                                                        >
                                                             <v-switch
-                                                                v-model="isSEBLockActive"
-                                                                v-on:update:model-value="applySEBLock()"
+                                                                v-model="
+                                                                    isSEBLockActive
+                                                                "
+                                                                color="primary"
+                                                                :disabled="
+                                                                    !hasSEBRestrictionFeature() ||
+                                                                    !ability.canDoExamAction(
+                                                                        GUIAction.ApplySEBRestriction,
+                                                                        examStore
+                                                                            .selectedExam
+                                                                            ?.status,
+                                                                    )
+                                                                "
                                                                 hide-details
-                                                                :disabled="!hasSEBRestrictionFeature() || !ability.canDoExamAction(GUIAction.ApplySEBRestriction, examStore.selectedExam?.status)"
-                                                                color="primary">
+                                                                @update:model-value="
+                                                                    applySEBLock()
+                                                                "
+                                                            >
                                                             </v-switch>
                                                         </v-list-item-action>
                                                     </template>
                                                 </v-list-item>
-                                                <v-divider class="border-opacity-25" :thickness="2"></v-divider>
+                                                <v-divider
+                                                    class="border-opacity-25"
+                                                    :thickness="2"
+                                                ></v-divider>
 
                                                 <!----------SEB Keys--------->
                                                 <v-list-item>
-                                                    <v-list-item-title :class="[hasSEBRestrictionFeature() && ability.canDoExamAction(GUIAction.ApplySEBRestriction, examStore.selectedExam?.status) ? '' : 'disabled-text-color']">
-                                                        {{translate("examDetail.main.sebKeys")}}
+                                                    <v-list-item-title
+                                                        :class="[
+                                                            hasSEBRestrictionFeature() &&
+                                                            ability.canDoExamAction(
+                                                                GUIAction.ApplySEBRestriction,
+                                                                examStore
+                                                                    .selectedExam
+                                                                    ?.status,
+                                                            )
+                                                                ? ''
+                                                                : 'disabled-text-color',
+                                                        ]"
+                                                    >
+                                                        {{
+                                                            translate(
+                                                                "examDetail.main.sebKeys",
+                                                            )
+                                                        }}
                                                     </v-list-item-title>
-                                                    <template v-slot:append="{ isSelected }" >
-                                                        <v-list-item-action class="flex-column align-right">
+                                                    <template
+                                                        #append="{ isSelected }"
+                                                    >
+                                                        <v-list-item-action
+                                                            class="flex-column align-right"
+                                                        >
                                                             <v-icon
+                                                                :disabled="
+                                                                    !hasSEBRestrictionFeature() ||
+                                                                    !ability.canDoExamAction(
+                                                                        GUIAction.ApplySEBRestriction,
+                                                                        examStore
+                                                                            .selectedExam
+                                                                            ?.status,
+                                                                    )
+                                                                "
                                                                 icon="mdi-key-outline"
-                                                                style="font-size: 30px;"
-                                                                :disabled="!hasSEBRestrictionFeature() || !ability.canDoExamAction(GUIAction.ApplySEBRestriction, examStore.selectedExam?.status)"
-                                                                @click="">
+                                                                style="
+                                                                    font-size: 30px;
+                                                                "
+                                                                @click=""
+                                                            >
                                                             </v-icon>
                                                         </v-list-item-action>
                                                     </template>
                                                 </v-list-item>
-                                                <v-divider class="border-opacity-25" :thickness="2"></v-divider>
+                                                <v-divider
+                                                    class="border-opacity-25"
+                                                    :thickness="2"
+                                                ></v-divider>
 
                                                 <!----------Archive Exam--------->
-                                                <v-list-item v-if="ability.canDo(GUIAction.ArchiveExam)">
-                                                    <v-list-item-title :class="[!ability.canDoExamAction(GUIAction.ArchiveExam, examStore.selectedExam?.status) ? 'disabled-text-color' : '']">
-                                                        {{translate("examDetail.main.archiveExam")}}
+                                                <v-list-item
+                                                    v-if="
+                                                        ability.canDo(
+                                                            GUIAction.ArchiveExam,
+                                                        )
+                                                    "
+                                                >
+                                                    <v-list-item-title
+                                                        :class="[
+                                                            !ability.canDoExamAction(
+                                                                GUIAction.ArchiveExam,
+                                                                examStore
+                                                                    .selectedExam
+                                                                    ?.status,
+                                                            )
+                                                                ? 'disabled-text-color'
+                                                                : '',
+                                                        ]"
+                                                    >
+                                                        {{
+                                                            translate(
+                                                                "examDetail.main.archiveExam",
+                                                            )
+                                                        }}
                                                     </v-list-item-title>
-                                                    <template v-slot:append="{ isSelected }" >
-                                                        <v-list-item-action class="flex-column align-right">
+                                                    <template
+                                                        #append="{ isSelected }"
+                                                    >
+                                                        <v-list-item-action
+                                                            class="flex-column align-right"
+                                                        >
                                                             <v-icon
+                                                                :disabled="
+                                                                    !ability.canDoExamAction(
+                                                                        GUIAction.ArchiveExam,
+                                                                        examStore
+                                                                            .selectedExam
+                                                                            ?.status,
+                                                                    )
+                                                                "
                                                                 icon="mdi-archive-outline"
-                                                                style="font-size: 30px;"
-                                                                :disabled="!ability.canDoExamAction(GUIAction.ArchiveExam, examStore.selectedExam?.status)"
-                                                                @click="openArchiveDialog()">
+                                                                style="
+                                                                    font-size: 30px;
+                                                                "
+                                                                @click="
+                                                                    openArchiveDialog()
+                                                                "
+                                                            >
                                                             </v-icon>
                                                         </v-list-item-action>
                                                     </template>
 
-                                                    <v-tooltip v-if="!ability.canDoExamAction(GUIAction.ApplySEBRestriction, examStore.selectedExam?.status)" activator="parent">
-                                                        {{translate("examDetail.main.archiveTooltip")}}
+                                                    <v-tooltip
+                                                        v-if="
+                                                            !ability.canDoExamAction(
+                                                                GUIAction.ApplySEBRestriction,
+                                                                examStore
+                                                                    .selectedExam
+                                                                    ?.status,
+                                                            )
+                                                        "
+                                                        activator="parent"
+                                                    >
+                                                        {{
+                                                            translate(
+                                                                "examDetail.main.archiveTooltip",
+                                                            )
+                                                        }}
                                                     </v-tooltip>
-
                                                 </v-list-item>
-                                                <v-divider v-if="ability.canDo(GUIAction.ArchiveExam)" class="border-opacity-25" :thickness="2"></v-divider>
+                                                <v-divider
+                                                    v-if="
+                                                        ability.canDo(
+                                                            GUIAction.ArchiveExam,
+                                                        )
+                                                    "
+                                                    class="border-opacity-25"
+                                                    :thickness="2"
+                                                ></v-divider>
 
                                                 <!----------Delete Exam--------->
                                                 <v-list-item>
                                                     <v-list-item-title>
-                                                        {{translate("examDetail.main.deleteExam")}}
+                                                        {{
+                                                            translate(
+                                                                "examDetail.main.deleteExam",
+                                                            )
+                                                        }}
                                                     </v-list-item-title>
-                                                    <template v-slot:append="{ isSelected }" >
-                                                        <v-list-item-action class="flex-column align-right">
+                                                    <template
+                                                        #append="{ isSelected }"
+                                                    >
+                                                        <v-list-item-action
+                                                            class="flex-column align-right"
+                                                        >
                                                             <v-icon
                                                                 icon="mdi-delete-outline"
-                                                                style="font-size: 30px;"
-                                                                @click="openDeleteDialog()">
+                                                                style="
+                                                                    font-size: 30px;
+                                                                "
+                                                                @click="
+                                                                    openDeleteDialog()
+                                                                "
+                                                            >
                                                             </v-icon>
                                                         </v-list-item-action>
                                                     </template>
                                                 </v-list-item>
-
                                             </v-list>
                                         </v-col>
                                     </v-row>
-
                                 </v-card>
                             </v-col>
                         </v-row>
                         <!----------------------->
-
                     </v-col>
                     <!----------end right side--------->
                     <v-spacer></v-spacer>
-
-
                 </v-row>
                 <!--------end info and action row------>
-
             </v-sheet>
         </v-col>
     </v-row>
@@ -471,37 +818,44 @@
     <!-----------supervisor dialog---------->
     <v-dialog v-model="supervisorsDialog" max-width="1200">
         <ExamDetailSupervisorsDialog
-            :initalSupervisors="examStore.selectedExamSupervisors"
-            @closeSupervisorsDialog="closeSupervisorsDialog"
-            @updateExamSupervisors="updateExamSupervisors">
+            :inital-supervisors="examStore.selectedExamSupervisors"
+            @close-supervisors-dialog="closeSupervisorsDialog"
+            @update-exam-supervisors="updateExamSupervisors"
+        >
         </ExamDetailSupervisorsDialog>
     </v-dialog>
 
     <!-----------connection configuration dialog---------->
-    <v-dialog v-model="configDialog" v-if="connectionConfigurationsPar" max-width="800">
+    <v-dialog
+        v-if="connectionConfigurationsPar"
+        v-model="configDialog"
+        max-width="800"
+    >
         <ExamDetailConfigDialog
             :connection-configurations="connectionConfigurationsPar"
-            @closeConfigDialog="closeConfigDialog"
-            @downloadExamConfig="downloadExamConfig">
+            @close-config-dialog="closeConfigDialog"
+            @download-exam-config="downloadExamConfig"
+        >
         </ExamDetailConfigDialog>
     </v-dialog>
 
     <!-----------archive dialog---------->
     <v-dialog v-model="archiveDialog" max-width="800">
         <ExamDetailArchiveDialog
+            @archive-exam="archiveExam"
             @close-archive-dialog="closeArchiveDialog"
-            @archive-exam="archiveExam">
+        >
         </ExamDetailArchiveDialog>
     </v-dialog>
 
     <!-----------delete exam dialog---------->
     <v-dialog v-model="deleteDialog" max-width="800">
         <DeleteConfirmDialog
-            @close-delete-dialog="closeDeleteDialog"
-            @delete-function="deleteExam"
-            title="Delete Exam"
             info-text="This deletes the exam and the local import of a course or quiz in SEB Server."
             question-text="Are you sure you want to delete the exam?"
+            title="Delete Exam"
+            @close-delete-dialog="closeDeleteDialog"
+            @delete-function="deleteExam"
         >
         </DeleteConfirmDialog>
     </v-dialog>
@@ -510,555 +864,606 @@
     <v-dialog v-model="examTemplateDialog" max-width="600">
         <ExamTemplateDialog
             :exam-template="examStore.selectedExamTemplate"
-            @close-exam-template-dialog="closeExamTemplateDialog()">
+            @close-exam-template-dialog="closeExamTemplateDialog()"
+        >
         </ExamTemplateDialog>
     </v-dialog>
 
     <!-----------seb settings dialog---------->
     <v-dialog v-model="sebSettingsDialog" max-width="1200">
         <SebSettingsDialog
-            @close-seb-settings-dialog="closeSebSettingsDialog()">
+            @close-seb-settings-dialog="closeSebSettingsDialog()"
+        >
         </SebSettingsDialog>
     </v-dialog>
 
     <!-----------group dialog---------->
     <v-dialog v-model="clientGroupDialog" max-width="1200">
         <ClienGroupListDialog
-            @closeClientGroupDialog="closeClientGroupDialog">
+            @close-client-group-dialog="closeClientGroupDialog"
+        >
         </ClienGroupListDialog>
     </v-dialog>
 
     <!-----------add groups dialog---------->
     <v-dialog v-model="addclientGroupDialog" max-width="800">
         <AddClientGroupDialog
-            @closeAddClientGroupDialog="closeAddClientGroupDialog">
+            @close-add-client-group-dialog="closeAddClientGroupDialog"
+        >
         </AddClientGroupDialog>
     </v-dialog>
 
     <!--alert msg-->
     <AlertMsg
         v-if="alertAvailable"
-        :alertProps="{
+        :alert-props="{
             title: '',
             color: alertColor,
             type: 'snackbar',
             textKey: alertKey,
-            timeout: 5000
-        }">
+            timeout: 5000,
+        }"
+    >
     </AlertMsg>
-
-
 </template>
 
 <script setup lang="ts">
-    import { useExamStore } from '@/stores/seb-server/examStore';
-    import * as constants from "@/utils/constants";
-    import * as examViewService from "@/services/seb-server/component-services/examViewService";
-    import * as assessmentToolViewService from "@/services/seb-server/component-services/assessmentToolViewService";
-    import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
-    import * as clientGroupViewService from "@/services/seb-server/component-services/clientGroupViewService";
-    import * as generalUtils from "@/utils/generalUtils";
-    import { navigateTo } from '@/router/navigation';
-    import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum";
-    import DeleteConfirmDialog from "@/components/widgets/DeleteConfirmDialog.vue";
-    import { ClientGroupEnum, ClientOSEnum } from "@/models/seb-server/clientGroupEnum";
-    import TableHeaders from "@/utils/table/TableHeaders.vue";
-    import { useI18n } from "vue-i18n";
-    import {translate} from "@/utils/generalUtils";
-    import { LMSFeatureEnum } from '@/models/seb-server/assessmentToolEnums';
-    import { useAbilities, GUIAction } from '@/services/ability';
+import { useExamStore } from "@/stores/seb-server/examStore";
+import * as constants from "@/utils/constants";
+import * as examViewService from "@/services/seb-server/component-services/examViewService";
+import * as assessmentToolViewService from "@/services/seb-server/component-services/assessmentToolViewService";
+import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
+import * as clientGroupViewService from "@/services/seb-server/component-services/clientGroupViewService";
+import * as generalUtils from "@/utils/generalUtils";
+import { navigateTo } from "@/router/navigation";
+import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum";
+import DeleteConfirmDialog from "@/components/widgets/DeleteConfirmDialog.vue";
+import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
+import TableHeaders from "@/utils/table/TableHeaders.vue";
+import { translate } from "@/utils/generalUtils";
+import { LMSFeatureEnum } from "@/models/seb-server/assessmentToolEnums";
+import { GUIAction, useAbilities } from "@/services/ability";
 
-    //i18n
-    const i18n = useI18n();
+// general
+const isPageInitalizing = ref<boolean>(true);
 
-    //general
-    const isPageInitalizing = ref<boolean>(true);
+// stores
+const examStore = useExamStore();
+const ability = useAbilities();
 
-    //stores
-    const examStore = useExamStore();
-    const ability = useAbilities()
+// exam
+const examId = useRoute().params.examId.toString();
 
-    //exam
-    const examId = useRoute().params.examId.toString();
+// pw field
+const passwordVisible = ref<boolean>(false);
+const quitPassword = ref<string>("");
 
-    //pw field
-    const passwordVisible = ref<boolean>(false);
-    const quitPassword = ref<string>("");
+// supervisors table
+const supervisorsTableHeadersRef = ref<any[]>();
+const supervisorsTableHeaders = ref([
+    { title: translate("examDetail.main.supervisorUsername"), key: "username" },
+    { title: translate("examDetail.main.supervisorName"), key: "name" },
+    { title: translate("examDetail.main.supervisorSurname"), key: "surname" },
+]);
 
-    //supervisors table
-    const supervisorsTableHeadersRef = ref<any[]>();
-    const supervisorsTableHeaders = ref([
-        {title: translate("examDetail.main.supervisorUsername"), key: "username"},
-        {title: translate("examDetail.main.supervisorName"), key: "name"},
-        {title: translate("examDetail.main.supervisorSurname"), key: "surname"}
-    ]);
+// supervisors dialog
+const supervisorsDialog = ref<boolean>(false);
+let initialSupervisorsIds: string[] = [];
 
-    //supervisors dialog
-    const supervisorsDialog = ref<boolean>(false);
-    let initialSupervisorsIds: string[] = []
+// exam config dialog
+const configDialog = ref<boolean>(false);
+const connectionConfigurationsPar = ref<ConnectionConfigurations | null>(null);
 
-    //exam config dialog
-    const configDialog = ref<boolean>(false);
-    const connectionConfigurationsPar = ref<ConnectionConfigurations | null>(null);
+// archive dialog
+const archiveDialog = ref<boolean>(false);
 
-    //archive dialog
-    const archiveDialog = ref<boolean>(false);
+// exam template dialog
+const examTemplateDialog = ref<boolean>(false);
 
-    //exam template dialog
-    const examTemplateDialog = ref<boolean>(false);
+// delete exam
+const deleteDialog = ref<boolean>(false);
 
-    //delete exam
-    const deleteDialog = ref<boolean>(false);
+// alert
+const alertAvailable = ref<boolean>();
+const alertColor = ref<string>("");
+const alertKey = ref<string>("");
 
-    //alert
-    const alertAvailable = ref<boolean>();
-    const alertColor = ref<string>("");
-    const alertKey = ref<string>("");
+// SEB lock
+const isSEBLockActive = ref<boolean>(false);
 
-    // SEB lock
-    const isSEBLockActive = ref<boolean>(false);
+// screen proctoring
+const isScreenProctoringActive = ref<boolean>(false);
 
-    //screen proctoring
-    const isScreenProctoringActive = ref<boolean>(false);
+// seb settings
+const hasSEBSettings = ref<boolean>(false);
+const editableSEBSettings = ref<boolean>(false);
+const sebSettingsDialog = ref<boolean>(false);
 
-    //seb settings
-    const hasSEBSettings = ref<boolean>(false);
-    const editableSEBSettings = ref<boolean>(false);
-    const sebSettingsDialog = ref<boolean>(false);
+// client groups
+const clientGroupDialog = ref<boolean>(false);
+const clientGroupTableHeadersRef = ref<any[]>();
+const clientGroupTableHeaders = ref([
+    {
+        title: translate("examDetail.main.tableHeadersGroupName"),
+        key: "name",
+        width: "45%",
+    },
+    {
+        title: translate("examDetail.main.tableHeadersGroupType"),
+        key: "type",
+        width: "45%",
+    },
+    {
+        title: translate("examDetail.main.tableHeadersScreenProctoring"),
+        key: "sp",
+        width: "10%",
+        center: true,
+        align: "center",
+    },
+]);
 
+// add client groups
+const addclientGroupDialog = ref<boolean>(false);
 
-    //client groups
-    const clientGroupDialog = ref<boolean>(false);
-    const clientGroupTableHeadersRef = ref<any[]>();
-    const clientGroupTableHeaders = ref([
-        {title: translate("examDetail.main.tableHeadersGroupName"), key: "name", width: "45%"},
-        {title: translate("examDetail.main.tableHeadersGroupType"), key: "type", width: "45%"},
-        {title: translate("examDetail.main.tableHeadersScreenProctoring"), key: "sp", width: "10%", center: true, align: "center"}
-    ]);
+onBeforeMount(async () => {
+    examStore.clearSelectedValues();
 
-    //add client groups
-    const addclientGroupDialog = ref<boolean>(false);
+    await getExam();
+    await getExamTemplate();
+    await getTemplateGroupsWithSp();
+    await getAssessmentTool();
+    await getExamSupervisors();
+    await getClientGroups();
+    await getSEBSettings();
 
-    onBeforeMount(async () => {
-        examStore.clearSelectedValues();
+    setQuitPassword();
+    setScreenProctoring();
+    isPageInitalizing.value = false;
+});
 
-        await getExam();
-        await getExamTemplate();
-        await getTemplateGroupsWithSp();
-        await getAssessmentTool();
-        await getExamSupervisors();
-        await getClientGroups();
-        await getSEBSettings();
+//= =======exam api===========
+async function getExam() {
+    const examResponse: Exam | null = await examViewService.getExam(examId);
 
-        setQuitPassword();
-        setScreenProctoring();
-        isPageInitalizing.value = false;
-    });
-
-    //========exam api===========
-    async function getExam(){
-        const examResponse: Exam | null = await examViewService.getExam(examId);
-
-        if(examResponse == null){
-            return;
-        }
-
-        examStore.selectedExam = examResponse;
-        isSEBLockActive.value = await examViewService.hasSEBLock(examId);
+    if (examResponse == null) {
+        return;
     }
 
-    async function updateExam(isSupervisorsManualUpdate?: boolean){
-        alertAvailable.value = false;
+    examStore.selectedExam = examResponse;
+    isSEBLockActive.value = await examViewService.hasSEBLock(examId);
+}
 
-        if(examStore.selectedExam == null){
-            return;
-        }
+async function updateExam(isSupervisorsManualUpdate?: boolean) {
+    alertAvailable.value = false;
 
-        const updateExamResponse: Exam | null = await examViewService.updateExam(examId, examStore.selectedExam);
-
-        if(updateExamResponse == null){
-            return;
-        }
-
-        if(isSupervisorsManualUpdate){
-            getExamSupervisors();
-        }
-
-        alertAvailable.value = true;
-        alertColor.value = "success";
-        alertKey.value = "exam-update-successful";
-
-        examStore.selectedExam = updateExamResponse;
+    if (examStore.selectedExam == null) {
+        return;
     }
 
+    const updateExamResponse: Exam | null = await examViewService.updateExam(
+        examId,
+        examStore.selectedExam,
+    );
 
-    //==============seb lock logic=================
-    async function getAssessmentTool() {
-        const lmsId: number | undefined = examStore.selectedExam?.lmsSetupId;
-
-        if(lmsId == null){
-            return;
-        }
-
-        const assessmentToolResponse: AssessmentTool | null = await assessmentToolViewService.getAssessmentTool(lmsId);
-        if(assessmentToolResponse == null){
-            return;
-        }
-
-        examStore.relatedAssessmentTool = assessmentToolResponse;
+    if (updateExamResponse == null) {
+        return;
     }
 
-    function hasSEBRestrictionFeature(): boolean {
-        if (examStore.relatedAssessmentTool) {
-            return generalUtils.hasLMSFeature(examStore.relatedAssessmentTool.lmsType, LMSFeatureEnum.SEB_RESTRICTION);
-        }
-        return false;
+    if (isSupervisorsManualUpdate) {
+        getExamSupervisors();
     }
 
-    async function applySEBLock(){
-        if(isSEBLockActive.value){
-            changeSEBLock(true);
-            return;
-        }
+    alertAvailable.value = true;
+    alertColor.value = "success";
+    alertKey.value = "exam-update-successful";
 
-        changeSEBLock(false);
+    examStore.selectedExam = updateExamResponse;
+}
+
+//= =============seb lock logic=================
+async function getAssessmentTool() {
+    const lmsId: number | undefined = examStore.selectedExam?.lmsSetupId;
+
+    if (lmsId == null) {
+        return;
     }
 
-    async function changeSEBLock(enable: boolean){
-        if(examStore.selectedExam == null){
-            return;
-        }
+    const assessmentToolResponse: AssessmentTool | null =
+        await assessmentToolViewService.getAssessmentTool(lmsId);
+    if (assessmentToolResponse == null) {
+        return;
+    }
 
-        const applySEBLockResponse: Exam | null = await examViewService.applySEBLock(
+    examStore.relatedAssessmentTool = assessmentToolResponse;
+}
+
+function hasSEBRestrictionFeature(): boolean {
+    if (examStore.relatedAssessmentTool) {
+        return generalUtils.hasLMSFeature(
+            examStore.relatedAssessmentTool.lmsType,
+            LMSFeatureEnum.SEB_RESTRICTION,
+        );
+    }
+    return false;
+}
+
+async function applySEBLock() {
+    if (isSEBLockActive.value) {
+        changeSEBLock(true);
+        return;
+    }
+
+    changeSEBLock(false);
+}
+
+async function changeSEBLock(enable: boolean) {
+    if (examStore.selectedExam == null) {
+        return;
+    }
+
+    const applySEBLockResponse: Exam | null =
+        await examViewService.applySEBLock(
             examStore.selectedExam.id.toString(),
-            enable
+            enable,
         );
 
-        if(applySEBLockResponse == null){
-            isSEBLockActive.value = !enable;
-            return;
-        }
-
-        examStore.selectedExam = applySEBLockResponse;
+    if (applySEBLockResponse == null) {
+        isSEBLockActive.value = !enable;
+        return;
     }
 
+    examStore.selectedExam = applySEBLockResponse;
+}
 
-    //===============supervisors logic====================
-    async function getExamSupervisors(){
-        if(examStore.selectedExam?.supporter == null){
-            return;
-        }
+//= ==============supervisors logic====================
+async function getExamSupervisors() {
+    if (examStore.selectedExam?.supporter == null) {
+        return;
+    }
 
-        if(examStore.selectedExam.supporter.length == 0){
-            examStore.selectedExamSupervisors = [];
-            return;
-        }
-
+    if (examStore.selectedExam.supporter.length == 0) {
         examStore.selectedExamSupervisors = [];
-        for(let i = 0; i < examStore.selectedExam.supporter.length; i++){
-            const userAccount: UserAccount | any = await userAccountViewService.getUserAccountByIdOptional(examStore.selectedExam.supporter[i]);
-
-            if(userAccount == null || userAccount == undefined || userAccount == ""){
-                continue;
-            }
-
-            examStore.selectedExamSupervisors.push(userAccount);
-        }
+        return;
     }
 
-    function openSupervisorsDialog(){
-        //add supervisors id to list to determine change
-        fillAlreadySelectedSupervisors();
-        supervisorsDialog.value = true;
+    examStore.selectedExamSupervisors = [];
+    for (let i = 0; i < examStore.selectedExam.supporter.length; i++) {
+        const userAccount: UserAccount | any =
+            await userAccountViewService.getUserAccountByIdOptional(
+                examStore.selectedExam.supporter[i],
+            );
+
+        if (
+            userAccount === null ||
+            userAccount === undefined ||
+            userAccount === ""
+        ) {
+            continue;
+        }
+
+        examStore.selectedExamSupervisors.push(userAccount);
+    }
+}
+
+function openSupervisorsDialog() {
+    // add supervisors id to list to determine change
+    fillAlreadySelectedSupervisors();
+    supervisorsDialog.value = true;
+}
+
+function closeSupervisorsDialog() {
+    supervisorsDialog.value = false;
+}
+
+async function updateExamSupervisors(selectedExamSupervisors: UserAccount[]) {
+    if (examStore.selectedExam == null) {
+        return;
     }
 
-    function closeSupervisorsDialog(){
-        supervisorsDialog.value = false;
+    examStore.selectedExam.supporter = selectedExamSupervisors.map(
+        (supervisor) => supervisor.uuid,
+    );
+    await updateExam(true);
+    closeSupervisorsDialog();
+}
+
+function fillAlreadySelectedSupervisors() {
+    initialSupervisorsIds = [];
+    for (let i = 0; i < examStore.selectedExamSupervisors.length; i++) {
+        initialSupervisorsIds.push(examStore.selectedExamSupervisors[i].uuid);
+    }
+}
+
+//= ==============password logic====================
+function setQuitPassword() {
+    if (
+        examStore.selectedExam?.quitPassword == null ||
+        examStore.selectedExam?.quitPassword == ""
+    ) {
+        return;
     }
 
-    async function updateExamSupervisors(selectedExamSupervisors: UserAccount[]){
-        if(examStore.selectedExam == null){
-            return;
-        }
+    quitPassword.value = examStore.selectedExam?.quitPassword;
+}
 
-        examStore.selectedExam.supporter = selectedExamSupervisors.map(supervisor => supervisor.uuid);
-        await updateExam(true);
-        closeSupervisorsDialog();
+async function saveNewPassword(focusIn: boolean) {
+    if (!focusIn) {
+        updateQuitPassword();
+    }
+}
+
+async function updateQuitPassword() {
+    if (
+        examStore.selectedExam == null ||
+        quitPassword.value == examStore.selectedExam?.quitPassword
+    ) {
+        return;
     }
 
-    function fillAlreadySelectedSupervisors(){
-        initialSupervisorsIds = [];
-        for(let i = 0; i < examStore.selectedExamSupervisors.length; i++){
-            initialSupervisorsIds.push(examStore.selectedExamSupervisors[i].uuid);
-        }
+    examStore.selectedExam.quitPassword = quitPassword.value;
+    updateExam();
+}
+
+//= ==============exam config logic====================
+function openConfigDialog(connectionConfigurations: ConnectionConfigurations) {
+    connectionConfigurationsPar.value = connectionConfigurations;
+    configDialog.value = true;
+}
+
+function closeConfigDialog() {
+    configDialog.value = false;
+}
+
+async function startExamConfigDownloadProcess() {
+    const connectionConfigurations: ConnectionConfigurations | null =
+        await examViewService.getConnectionConfigurations();
+
+    if (connectionConfigurations == null) {
+        return;
     }
 
-    //===============password logic====================
-    function setQuitPassword(){
-        if(examStore.selectedExam?.quitPassword == null || examStore.selectedExam?.quitPassword == ""){
-            return;
-        }
-
-        quitPassword.value = examStore.selectedExam?.quitPassword;
+    if (connectionConfigurations.content.length == 1) {
+        downloadExamConfig(connectionConfigurations.content[0].id.toString());
+        return;
     }
 
-    async function saveNewPassword(focusIn: boolean) {
-        if (!focusIn) {
-            updateQuitPassword();
-        }
-    }   
+    openConfigDialog(connectionConfigurations);
+}
 
-    async function updateQuitPassword(){
-        if(examStore.selectedExam == null || quitPassword.value == examStore.selectedExam?.quitPassword){
-            return;
-        }
-
-        examStore.selectedExam.quitPassword = quitPassword.value;
-        updateExam();
+async function downloadExamConfig(connectionId: string) {
+    if (configDialog.value) {
+        closeConfigDialog();
     }
 
-    //===============exam config logic====================
-    function openConfigDialog(connectionConfigurations: ConnectionConfigurations){
-        connectionConfigurationsPar.value = connectionConfigurations;
-        configDialog.value = true;
+    if (examStore.selectedExam == null) {
+        return;
     }
 
-    function closeConfigDialog(){
-        configDialog.value = false;
+    const blobResponse = await examViewService.downloadExamConfig(
+        examStore.selectedExam.id.toString(),
+        connectionId,
+    );
+
+    if (blobResponse == null) {
+        return;
     }
 
-    async function startExamConfigDownloadProcess(){
-        const connectionConfigurations: ConnectionConfigurations | null = await examViewService.getConnectionConfigurations();
+    examViewService.createDownloadLink(
+        examStore.selectedExam.quizName,
+        blobResponse,
+    );
+}
 
-        if(connectionConfigurations == null){
-            return;
-        }
+//= ==============monitor & archive exam logic====================
+function openArchiveDialog() {
+    archiveDialog.value = true;
+}
 
-        if(connectionConfigurations.content.length == 1){
-            downloadExamConfig(connectionConfigurations.content[0].id.toString());
-            return;
-        }
+function closeArchiveDialog() {
+    archiveDialog.value = false;
+}
 
-        openConfigDialog(connectionConfigurations);
+async function archiveExam() {
+    closeArchiveDialog();
+
+    if (examStore.selectedExam == null) {
+        return;
     }
 
-    async function downloadExamConfig(connectionId: string){
-        if(configDialog.value){
-            closeConfigDialog();
-        }
+    const archiveExamResponse: Exam | null = await examViewService.archiveExam(
+        examStore.selectedExam.id.toString(),
+    );
 
-        if(examStore.selectedExam == null){
-            return;
-        }
-
-        const blobResponse = await examViewService.downloadExamConfig(examStore.selectedExam.id.toString(), connectionId);
-
-        if(blobResponse == null){
-            return;
-        }
-
-        examViewService.createDownloadLink(examStore.selectedExam.quizName, blobResponse);
+    if (archiveExamResponse == null) {
+        return;
     }
 
-    //===============monitor & archive exam logic====================
-    function openArchiveDialog(){
-        archiveDialog.value = true;
+    updateExam();
+}
+
+//= ==============screen proctoring logic====================
+function setScreenProctoring() {
+    if (examStore.selectedExam == null) {
+        return;
     }
 
-    function closeArchiveDialog(){
-        archiveDialog.value = false;
+    if (
+        examStore.selectedExam.additionalAttributes.enableScreenProctoring ==
+        "true"
+    ) {
+        isScreenProctoringActive.value = true;
+    }
+}
+
+async function applyScreenProctoring() {
+    if (isScreenProctoringActive.value) {
+        changeScreenProctoringSettings(true);
+        return;
     }
 
-    async function archiveExam(){
-        closeArchiveDialog();
+    changeScreenProctoringSettings(false);
+}
 
-        if(examStore.selectedExam == null){
-            return;
-        }
-
-        const archiveExamResponse: Exam | null = await examViewService.archiveExam(examStore.selectedExam.id.toString());
-
-        if(archiveExamResponse == null){
-            return;
-        }
-
-        updateExam();
+async function changeScreenProctoringSettings(enable: boolean) {
+    if (examStore.selectedExam == null) {
+        return;
     }
 
-    //===============screen proctoring logic====================
-    function setScreenProctoring(){
-        if(examStore.selectedExam == null){
-            return;
-        }
-
-        if(examStore.selectedExam.additionalAttributes.enableScreenProctoring == "true"){
-            isScreenProctoringActive.value = true;
-        }
-    }
-
-    async function applyScreenProctoring(){
-        if(isScreenProctoringActive.value){
-            changeScreenProctoringSettings(true);
-            return;
-        }
-
-        changeScreenProctoringSettings(false);
-    }
-
-    async function changeScreenProctoringSettings(enable: boolean){
-        if(examStore.selectedExam == null){
-            return;
-        }
-
-        const saveScreenProcResponse: Exam | null = await examViewService.activateScreenProctoring(
+    const saveScreenProcResponse: Exam | null =
+        await examViewService.activateScreenProctoring(
             examStore.selectedExam.id.toString(),
-            enable
+            enable,
         );
 
-        if(saveScreenProcResponse == null){
-            isScreenProctoringActive.value = !enable;
-            return;
-        }
-
-        examStore.selectedExam = saveScreenProcResponse;
+    if (saveScreenProcResponse == null) {
+        isScreenProctoringActive.value = !enable;
+        return;
     }
 
+    examStore.selectedExam = saveScreenProcResponse;
+}
 
-    //===============delete exam logic====================
-    function openDeleteDialog(){
-        deleteDialog.value = true;
+//= ==============delete exam logic====================
+function openDeleteDialog() {
+    deleteDialog.value = true;
+}
+
+function closeDeleteDialog() {
+    deleteDialog.value = false;
+}
+
+async function deleteExam() {
+    const deleteExamResponse: any | null =
+        await examViewService.deleteExam(examId);
+
+    if (deleteExamResponse == null) {
+        return;
     }
 
-    function closeDeleteDialog(){
-        deleteDialog.value = false;
+    navigateTo(constants.EXAM_ROUTE);
+}
+
+//= ==============exam template logic====================
+async function getExamTemplate() {
+    if (examStore.selectedExam?.examTemplateId == null) {
+        return;
     }
 
-    async function deleteExam(){
-        const deleteExamResponse: any | null = await examViewService.deleteExam(examId);
+    const examTemplateResponse: ExamTemplate | null =
+        await examViewService.getExamTemplate(
+            examStore.selectedExam?.examTemplateId.toString(),
+        );
 
-        if(deleteExamResponse == null){
-            return;
-        }
-
-        navigateTo(constants.EXAM_ROUTE);
+    if (examTemplateResponse == null) {
+        return;
     }
 
+    examStore.selectedExamTemplate = examTemplateResponse;
+}
 
-    //===============exam template logic====================
-    async function getExamTemplate(){
-        if(examStore.selectedExam?.examTemplateId == null){
-            return;
-        }
-
-        const examTemplateResponse: ExamTemplate | null = await examViewService.getExamTemplate(examStore.selectedExam?.examTemplateId.toString());
-
-        if(examTemplateResponse == null){
-            return;
-        }
-
-        examStore.selectedExamTemplate = examTemplateResponse;
+async function getTemplateGroupsWithSp() {
+    if (examStore.selectedExamTemplate == null) {
+        return;
     }
 
-    async function getTemplateGroupsWithSp(){
-        if(examStore.selectedExamTemplate == null){
-            return;
-        }
+    const examTemplateSp: ScreenProctoringSettings | null =
+        await examViewService.getExamTemplateSp(
+            examStore.selectedExamTemplate!.id.toString(),
+        );
 
-        const examTemplateSp: ScreenProctoringSettings | null = await examViewService.getExamTemplateSp(examStore.selectedExamTemplate!.id.toString());
-
-        if(examTemplateSp == null){
-            return;
-        }
-
-        examStore.templateGroupsWithSp = generalUtils.createNumberIdList(examTemplateSp.spsSEBGroupsSelection);
+    if (examTemplateSp == null) {
+        return;
     }
 
+    examStore.templateGroupsWithSp = generalUtils.createNumberIdList(
+        examTemplateSp.spsSEBGroupsSelection,
+    );
+}
 
-    function openExamTemplateDialog(){
-        examTemplateDialog.value = true;
+function openExamTemplateDialog() {
+    examTemplateDialog.value = true;
+}
+
+function closeExamTemplateDialog() {
+    examTemplateDialog.value = false;
+}
+
+//= ==============test run logic====================
+// calling this function again after test run has been applied disables the test run
+async function applyTestRun() {
+    const applyTestRunResponse: Exam | null =
+        await examViewService.applyTestRun(examId);
+
+    if (applyTestRunResponse == null) {
+        return;
     }
 
-    function closeExamTemplateDialog(){
-        examTemplateDialog.value = false;
+    updateExam();
+}
+
+//= ==============settings logic====================
+async function getSEBSettings() {
+    const configs: ExamConfigMapping[] | null =
+        await examViewService.getExamConfigMapping(examId);
+    if (configs == null) {
+        hasSEBSettings.value = false;
+    } else {
+        hasSEBSettings.value = configs.length > 0;
+    }
+    editableSEBSettings.value = ability.canDoExamAction(
+        GUIAction.EditSEBSettings,
+        examStore.selectedExam?.status,
+    );
+}
+
+function openSebSettingsDialog() {
+    sebSettingsDialog.value = true;
+}
+
+function closeSebSettingsDialog() {
+    sebSettingsDialog.value = false;
+}
+
+//= ==============groups logic====================
+function openClientGroupDialog() {
+    clientGroupDialog.value = true;
+}
+
+function closeClientGroupDialog(isChange?: boolean) {
+    clientGroupDialog.value = false;
+
+    if (isChange) {
+        getClientGroups();
+    }
+}
+
+async function getClientGroups() {
+    if (examStore.selectedExam == null) {
+        return;
     }
 
+    const clientGroupResponse: ClientGroups | null =
+        await clientGroupViewService.getClientGroups(examId);
 
-    //===============test run logic====================
-    //calling this function again after test run has been applied disables the test run
-    async function applyTestRun(){
-        const applyTestRunResponse: Exam | null = await examViewService.applyTestRun(examId);
-
-        if(applyTestRunResponse == null){
-            return;
-        }
-
-        updateExam();
+    if (clientGroupResponse == null) {
+        return;
     }
 
+    examStore.selectedClientGroups = clientGroupResponse.content;
+}
 
-    //===============settings logic====================
-    async function getSEBSettings() {
-        const configs: ExamConfigMapping[] | null = await examViewService.getExamConfigMapping(examId);
-        if (configs == null) {
-            hasSEBSettings.value = false;
-        } else {
-            hasSEBSettings.value = configs.length > 0;
-        }
-        editableSEBSettings.value = ability.canDoExamAction(GUIAction.EditSEBSettings, examStore.selectedExam?.status);
+//= ==============add groups logic====================
+function openAddClientGroupDialog() {
+    addclientGroupDialog.value = true;
+}
+
+function closeAddClientGroupDialog(isChange?: boolean) {
+    addclientGroupDialog.value = false;
+
+    if (isChange) {
+        getClientGroups();
     }
-
-    function openSebSettingsDialog(){
-        sebSettingsDialog.value = true;
-    }
-
-    function closeSebSettingsDialog(){
-        sebSettingsDialog.value = false;
-    }
-
-
-    //===============groups logic====================
-    function openClientGroupDialog(){
-        clientGroupDialog.value = true;
-    }
-
-    function closeClientGroupDialog(isChange?: boolean){
-        clientGroupDialog.value = false;
-
-        if(isChange){
-            getClientGroups();
-        }
-    }
-
-    async function getClientGroups(){
-        if(examStore.selectedExam == null){
-            return;
-        }
-
-        const clientGroupResponse: ClientGroups | null = await clientGroupViewService.getClientGroups(examId);
-
-        if(clientGroupResponse == null){
-            return;
-        }
-
-        examStore.selectedClientGroups = clientGroupResponse.content;
-    }
-
-
-    //===============add groups logic====================
-    function openAddClientGroupDialog(){
-        addclientGroupDialog.value = true;
-    }
-
-    function closeAddClientGroupDialog(isChange?: boolean){
-        addclientGroupDialog.value = false;
-
-        if(isChange){
-            getClientGroups();
-        }
-    }
-
+}
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
