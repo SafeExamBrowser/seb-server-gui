@@ -10,6 +10,14 @@ export async function getExamConfigMapping(examId: string): Promise<ExamConfigMa
     }
 }
 
+export async function getActiveSEBClients(examId: string): Promise<number | null>{
+    try{
+        return await sebSettingService.getActiveSEBClients(examId);
+    }catch(error){
+        return null;
+    }
+}
+
 export async function getViewSettings(viewType: ViewType, id: string, forExam: boolean): Promise<SEBSettingsView | null>{
     try{
         return await sebSettingService.getView(viewType, id, forExam);
@@ -37,6 +45,22 @@ export async function newSEBSettingTableRow(id: string, settingName: string, for
 export async function deleteSEBSettingTableRow(id: string, settingName: string, rowIndex: number, forExam: boolean): Promise<SEBSettingsTableRowValues[] | null>{
     try{
         return await sebSettingService.deleteTableRow(id, settingName, rowIndex, forExam);
+    }catch(error){
+        return null;
+    }
+}
+
+export async function publish(id: string, forExam: boolean): Promise<SEBSettingsValue | null>{
+    try{
+        return await sebSettingService.publish(id, forExam);
+    }catch(error){
+        return null;
+    }
+}
+
+export async function undoChanges(id: string, forExam: boolean): Promise<SEBSettingsValue | null>{
+    try{
+        return await sebSettingService.undoChanges(id, forExam);
     }catch(error){
         return null;
     }

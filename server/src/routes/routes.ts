@@ -45,11 +45,15 @@ router.delete(constants.EXAM_ROUTE + "/:id" + "/apply-seb-restriction", examCont
 router.get(constants.EXAM_ROUTE + "/:id" + "/check-seb-restriction", examController.checkSEBLock)
 
 // SEB Settings Exam
-router.get(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id" + "/examConfigMapping", examSEBSettingsController.getExamConfigMapping);
-router.get(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id" + "/:viewType", examSEBSettingsController.getView);
-router.post(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id" + "/table/:name/row", examSEBSettingsController.addTableRow);
-router.delete(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id" + "/table/:name/row/:listIndex", examSEBSettingsController.deleteTableRow);
+router.get(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id/examConfigMapping", examSEBSettingsController.getExamConfigMapping);
+
+router.post(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id/table/:name/row", examSEBSettingsController.addTableRow);
+router.delete(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id/table/:name/row/:listIndex", examSEBSettingsController.deleteTableRow);
 router.post(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id", examSEBSettingsController.updateSEBSetting);
+router.get(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id/active-seb-clients", examSEBSettingsController.getActiveSEBClients);
+router.post(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id/publish", examSEBSettingsController.publishSettings);
+router.post(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id/undo-changes", examSEBSettingsController.undoChanges);
+router.get(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id/:viewType", examSEBSettingsController.getView);
 
 // SEB Settings Template
 router.get(constants.TEMPLATE_SEB_SETTINGS_ROUTE + "/:id" + "/:viewType", templateSEBSettingsController.getView);

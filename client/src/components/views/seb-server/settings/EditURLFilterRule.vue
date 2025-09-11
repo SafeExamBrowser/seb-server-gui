@@ -2,7 +2,7 @@
     <v-card>
 
         <v-toolbar color="transparent">
-            <v-toolbar-title class="text-h6" :text="translate('examDetail.sebSettings.networkView.URLFilterRules.editDialogTitle')"></v-toolbar-title>
+            <v-toolbar-title class="text-h6" :text="translate('sebSettings.networkView.URLFilterRules.editDialogTitle')"></v-toolbar-title>
             <template v-slot:append>
                 <v-btn @click="emit('closeEditURLFilterRule', false)" icon="mdi-close"></v-btn>
             </template>
@@ -16,21 +16,21 @@
                         <!------------ active ------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">
-                                {{translate("examDetail.sebSettings.networkView.URLFilterRules.active")}}
+                                {{translate("sebSettings.networkView.URLFilterRules.active")}}
                             </v-col>
                             <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.urlFilterRule!.active" :disabled="props.readOnly"></v-checkbox-btn> </v-col>
                         </v-row>
                         <!------------regex------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">
-                                {{translate("examDetail.sebSettings.networkView.URLFilterRules.regex")}}
+                                {{translate("sebSettings.networkView.URLFilterRules.regex")}}
                             </v-col>
                             <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.urlFilterRule!.regex" :disabled="props.readOnly"></v-checkbox-btn> </v-col>
                         </v-row>
                         <!------------Expression------------->
                         <v-row>
                             <v-col>
-                                {{translate("examDetail.sebSettings.networkView.URLFilterRules.expression")}}
+                                {{translate("sebSettings.networkView.URLFilterRules.expression")}}
                             </v-col>
                             <v-col>
                                 <v-text-field
@@ -46,7 +46,7 @@
                          <!------------Action------------->
                          <v-row align="center">
                             <v-col>
-                                {{translate("examDetail.sebSettings.networkView.URLFilterRules.action")}}
+                                {{translate("sebSettings.networkView.URLFilterRules.action")}}
                             </v-col>
                             <v-col>
                                 <v-select
@@ -110,8 +110,8 @@
     }>();
 
     const actionItems = [ 
-        {title: translate("examDetail.sebSettings.networkView.URLFilterRules.action_0"), value: "0" }, 
-        {title: translate("examDetail.sebSettings.networkView.URLFilterRules.action_1"), value: "1" } ];
+        {title: translate("sebSettings.networkView.URLFilterRules.action_0"), value: "0" }, 
+        {title: translate("sebSettings.networkView.URLFilterRules.action_1"), value: "1" } ];
 
 
 </script>

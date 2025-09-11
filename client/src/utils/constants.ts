@@ -35,6 +35,8 @@ export const MONITORING_OVERVIEW_ROUTE: string = MONITORING_ROUTE + "/overview";
 export const MONITORING_CLIENTS_ROUTE: string = MONITORING_ROUTE + "/clients";
 export const MONITORING_DETAILS_ROUTE: string = MONITORING_ROUTE + "/:examId" + "/details"
 
+export const FINISHED_EXAM_DATA_ROUTE: string = "/finished-exam-data";
+
 
 export const ASSESSMENT_TOOL_CONNECTIONS_ROUTE: string =  "/assessment-tool-connections";
 export const CREATE_ASSESSMENT_TOOL_CONNECTION_ROUTE: string = ASSESSMENT_TOOL_CONNECTIONS_ROUTE + "/create";

@@ -31,10 +31,13 @@ export enum GUIAction  {
     EditASKSettings = "EditASKSettings",
     EditScreenProctoring = "EditScreenProctoring",
     EditSEBSettings = "EditSEBSettings",
+    EditFullSEBSettings = "EditFullSEBSettings",
     EditIndicators = "EditIndicators",
     EditClientGroups = "EditClientGroups",
     ApplySEBRestriction = "ApplySEBRestriction",
     ShowMonitoring = "ShowMonitoring",
+    ShowFinishedExamData = "ShowFinishedExamData",
+    
 };
 
 export const useAbilities = defineStore("ability", () => {
@@ -82,6 +85,7 @@ export const useAbilities = defineStore("ability", () => {
             // Exam actions
             GUIAction.ArchiveExam,
             GUIAction.DeleteExam,
+            GUIAction.EditFullSEBSettings, // TODO just for testing yet
             GUIAction.ViewASKSettings]));
 
     // --- EXAM_ADMIN action privileges
@@ -103,7 +107,8 @@ export const useAbilities = defineStore("ability", () => {
             GUIAction.EditIndicators,
             GUIAction.EditClientGroups,
             GUIAction.ApplySEBRestriction,
-            GUIAction.ShowMonitoring]));
+            GUIAction.ShowMonitoring,
+            GUIAction.ShowFinishedExamData]));
 
     // --- EXAM_SUPPORTER action privileges
     guiActions.value.set(
@@ -122,7 +127,8 @@ export const useAbilities = defineStore("ability", () => {
             GUIAction.EditIndicators,
             GUIAction.EditClientGroups,
             GUIAction.ApplySEBRestriction,
-            GUIAction.ShowMonitoring]));
+            GUIAction.ShowMonitoring,
+            GUIAction.ShowFinishedExamData]));
 
     // --- TEACHER action privileges
     guiActions.value.set(
@@ -147,9 +153,9 @@ export const useAbilities = defineStore("ability", () => {
             GUIAction.ExportExamClientConfig,
             GUIAction.ViewASKSettings,
             GUIAction.EditASKSettings,
-            GUIAction.EditScreenProctoring ,
-            GUIAction.EditSEBSettings ,
-            GUIAction.EditIndicators ,
+            GUIAction.EditScreenProctoring,
+            GUIAction.EditSEBSettings,
+            GUIAction.EditIndicators,
             GUIAction.EditClientGroups,
             GUIAction.ApplySEBRestriction,
         ]));
@@ -164,9 +170,9 @@ export const useAbilities = defineStore("ability", () => {
             GUIAction.ExportExamClientConfig,
             GUIAction.ViewASKSettings,
             GUIAction.EditASKSettings,
-            GUIAction.EditScreenProctoring ,
-            GUIAction.EditSEBSettings ,
-            GUIAction.EditIndicators ,
+            GUIAction.EditScreenProctoring,
+            GUIAction.EditSEBSettings,
+            GUIAction.EditIndicators,
             GUIAction.EditClientGroups,
             GUIAction.ApplySEBRestriction,
             GUIAction.ShowMonitoring,
@@ -181,9 +187,9 @@ export const useAbilities = defineStore("ability", () => {
             GUIAction.ExportExamClientConfig,
             GUIAction.ViewASKSettings,
             GUIAction.EditASKSettings,
-            GUIAction.EditScreenProctoring ,
-            GUIAction.EditSEBSettings ,
-            GUIAction.EditIndicators ,
+            GUIAction.EditScreenProctoring,
+            GUIAction.EditSEBSettings,
+            GUIAction.EditIndicators,
             GUIAction.EditClientGroups,
             GUIAction.ApplySEBRestriction,
             GUIAction.ShowMonitoring,
@@ -198,7 +204,7 @@ export const useAbilities = defineStore("ability", () => {
             GUIAction.ExportExamClientConfig,
             GUIAction.ViewASKSettings,
             GUIAction.ApplySEBRestriction,
-            GUIAction.ShowMonitoring
+            GUIAction.ShowFinishedExamData
         ]));
 
     // ExamStatusEnum.ARCHIVED
@@ -207,7 +213,7 @@ export const useAbilities = defineStore("ability", () => {
         new Set<GUIAction>([ 
             GUIAction.DeleteExam,
             GUIAction.ViewASKSettings,
-            GUIAction.ShowMonitoring
+            GUIAction.ShowFinishedExamData
         ]));
 
     function canView(view: GUIComponent): boolean {

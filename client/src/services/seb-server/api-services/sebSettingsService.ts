@@ -11,24 +11,37 @@ export async function getExamConfigMapping(examId: string): Promise<ExamConfigMa
     return (await apiService.api.get(url, {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
 }
 
+export async function getActiveSEBClients(examId: string): Promise<number | any>{
+    const url: string = examUrlPrefix + examId + "/active-seb-clients";
+    return (await apiService.api.get(url, {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
+}
+
 export async function getView(viewType: ViewType, id: string, forExam: boolean): Promise<SEBSettingsView | any>{
-    console.info("************ viewType: " + viewType);
     const url: string = (forExam ? examUrlPrefix : templateUrlPrefix) + id + "/" + viewType;
-    console.info("************ getView: " + url);
     return (await apiService.api.get(url, {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
 }
 
 export async function addTableRow(id: string, settingName: string, forExam: boolean): Promise<SEBSettingsTableRowValues | any>{
-    const url: string = forExam ? examUrlPrefix : templateUrlPrefix + id + "/table/" + settingName + "/row";
+    const url: string = (forExam ? examUrlPrefix : templateUrlPrefix) + id + "/table/" + settingName + "/row";
     return (await apiService.api.post(url, { settingName: settingName }, {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
 }
 
 export async function deleteTableRow(id: string, settingName: string, rowIndex: number, forExam: boolean): Promise<SEBSettingsTableRowValues[] | any>{
-    const url: string = forExam ? examUrlPrefix : templateUrlPrefix + id + "/table/" + settingName + "/row/" + rowIndex;
+    const url: string = (forExam ? examUrlPrefix : templateUrlPrefix) + id + "/table/" + settingName + "/row/" + rowIndex;
     return (await apiService.api.delete(url, {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
 }
 
 export async function updateSEBSettingValue(id: string, valueId: String, value: string, forExam: boolean): Promise<SEBSettingsValue | any>{
-    const url: string = forExam ? examUrlPrefix : templateUrlPrefix + id + "/";
+    const url: string = (forExam ? examUrlPrefix : templateUrlPrefix) + id + "/";
     return (await apiService.api.post(url, { valueId: valueId, value: value }, {headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
+}
+
+export async function publish(id: string, forExam: boolean): Promise<Exam | any>{
+    const url: string = (forExam ? examUrlPrefix : templateUrlPrefix) + id + "/publish";
+    return (await apiService.api.post(url, {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
+}
+
+export async function undoChanges(id: string, forExam: boolean): Promise<Exam | any>{
+    const url: string = (forExam ? examUrlPrefix : templateUrlPrefix) + id + "/undo-changes";
+    return (await apiService.api.post(url, {headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN)})).data;
 }

@@ -6,14 +6,14 @@
                 v-model="urlFilterEnableVal"
                 @update:modelValue="saveSingleValue(urlFilterEnable.id, urlFilterEnableVal ? 'true' : 'false')"
                 :label="translate('sebSettings.networkView.URLFilterEnable')"
-                :disabled="readOnly"></v-checkbox-btn> 
+                :disabled="sebSettingsStore.readonly"></v-checkbox-btn> 
         </v-col>
         <v-col>
             <v-checkbox-btn 
                 v-model="urlFilterEnableContentFilterVal"
                 @update:modelValue="saveSingleValue(urlFilterEnableContentFilter.id, urlFilterEnableContentFilterVal ? 'true' : 'false')"
                 :label="translate('sebSettings.networkView.URLFilterEnableContentFilter')"
-                :disabled="readOnly"></v-checkbox-btn>
+                :disabled="sebSettingsStore.readonly"></v-checkbox-btn>
         </v-col>
     </v-row>
 
@@ -28,7 +28,7 @@
                         variant="text"
                         icon="mdi-plus-circle-outline"
                         @click="newURLFilterRule()"
-                        :disabled="readOnly">
+                        :disabled="sebSettingsStore.readonly">
                     </v-btn>
                 </v-col>
             </v-row>
@@ -87,7 +87,7 @@
                         variant="text" 
                         icon="mdi-delete-outline"
                         @click="urlFilterRuleDelete(item.index!)"
-                        :disabled="readOnly">
+                        :disabled="sebSettingsStore.readonly">
                     </v-btn>
                 </template>
             </v-data-table>
@@ -99,7 +99,7 @@
         <EditURLFilterRule
             @close-edit-URL-filter-rule="closeEditURLFilterRuleDialog"
             :url-filter-rule="selectedURLFilterRule"
-            :read-only="readOnly">
+            :read-only="sebSettingsStore.readonly">
         </EditURLFilterRule>
     </v-dialog>
 
@@ -119,7 +119,7 @@
                 <v-radio-group
                     v-model="proxySettingsPolicyVal"
                     @update:modelValue="saveSingleValue(proxySettingsPolicy.id, proxySettingsPolicyVal)"
-                    :disabled="readOnly">
+                    :disabled="sebSettingsStore.readonly">
                     <v-radio :label="translate('sebSettings.networkView.proxySettingsPolicy.0')" value="0"></v-radio>
                     <v-radio :label="translate('sebSettings.networkView.proxySettingsPolicy.1')" value="1"></v-radio>
                 </v-radio-group>
@@ -129,7 +129,7 @@
                     v-model="ExcludeSimpleHostnamesVal"
                     @update:modelValue="saveSingleValue(ExcludeSimpleHostnames.id, ExcludeSimpleHostnamesVal ? 'true' : 'false')"
                     :label="translate('sebSettings.networkView.ExcludeSimpleHostnames')"
-                    :disabled="readOnly"></v-checkbox-btn> 
+                    :disabled="sebSettingsStore.readonly"></v-checkbox-btn> 
             </v-row>
 
             <v-row>
@@ -142,7 +142,7 @@
                     @update:focused="saveOnFocusLost($event, ExceptionsList.id, ExceptionsListVal)"
                     density="compact"
                     variant="outlined"
-                    :disabled="readOnly">
+                    :disabled="sebSettingsStore.readonly">
                 </v-text-field>
                 </v-col>
             </v-row>
@@ -151,7 +151,7 @@
                     v-model="FTPPassiveVal"
                     @update:modelValue="saveSingleValue(FTPPassive.id, FTPPassiveVal ? 'true' : 'false')"
                     :label="translate('sebSettings.networkView.FTPPassive')"
-                    :disabled="readOnly"></v-checkbox-btn> 
+                    :disabled="sebSettingsStore.readonly"></v-checkbox-btn> 
             </v-row>
         </v-col>
         <v-col>
@@ -206,7 +206,6 @@
     ]);
 
     // TODO apply readonly according to user privileges
-    let readOnly: boolean = false;
     let componentId: string;
     let urlFilterEnable: SEBSettingsValue;
     let urlFilterEnableContentFilter: SEBSettingsValue;
@@ -217,9 +216,6 @@
     let FTPPassive: SEBSettingsValue;
 
     onBeforeMount(async () => {
-        // TODO apply readonly according to user privileges
-        readOnly = false;
-
         if(sebSettingsStore.selectedContainerId == null){
             return;
         }
@@ -231,7 +227,7 @@
             return;
         }
 
-        if (readOnly) {
+        if (sebSettingsStore.readonly) {
             urlFilterHeaders.value[4].title = translate("general.viewButton", i18n);
         }
         

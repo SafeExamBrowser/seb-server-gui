@@ -486,7 +486,7 @@
                 "required" : "This field is required",
                 "assessmentToolServerAddressLabel" : "Must start with http://",
                 "invalidPort" : "Invalid port, ex. 8080",
-                "mustBeWithUrl" : "Must start with http:// or https://",
+                "mustBeWithUrl" : "Must start with http:// or https://"
             }
         },
         "lmsTypes": {
@@ -692,6 +692,7 @@
 
     "sebSettings": {
         "views": {
+            "general": "General",
             "apps": "Applications",
             "network": "Network"
         },
@@ -810,6 +811,8 @@
             "monitorExam": "Monitor Exam",
             "monitorStart": "Monitor",
             "monitorTooltip": "Monitoring is only activated when exam is running",
+            "showFinishedExamData": "Show Finished Exam Data",
+            "show": "Show Data",
 
             "examTemplate": "Exam Template",
 
@@ -825,8 +828,12 @@
 
             "quitPassword": "Quit Password",
 
+            "sebSettings": "SEB Settings",
             "appNetworkSettings": "Application and Network Settings",
+            "editSEBSettings": "Edit SEB Settings",
+            "editAppNetworkSettings": "Edit Application and Network Settings",
             "noSEBSettings": "This Exam has no SEB settings attached yet.\nPlease attach an Exam Configuration with SEB settings first.",
+            "activeSEBClientsNote": "There are currently active SEB clients connected to this exam. Therefore it is not possible to change the SEB Settings. Please make sure there are no active SEB clients connected to the Exam before edit the SEB Setting.",
 
             "downloadExamConfig": "Exam Connection Configuration",
 

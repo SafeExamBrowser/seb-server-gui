@@ -2,7 +2,7 @@
     <v-card>
 
         <v-toolbar color="transparent">
-            <v-toolbar-title class="text-h6" :text="translate('examDetail.sebSettings.applicationView.permittedProcess.editDialogTitle')"></v-toolbar-title>
+            <v-toolbar-title class="text-h6" :text="translate('sebSettings.applicationView.permittedProcess.editDialogTitle')"></v-toolbar-title>
             <template v-slot:append>
                 <v-btn @click="emit('closeEditPermittedProcess', false)" icon="mdi-close"></v-btn>
             </template>
@@ -16,15 +16,15 @@
                         <!------------ active ------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">
-                                <v-tooltip activator="parent"><p v-html="translateWithBR('examDetail.sebSettings.applicationView.permittedProcess.active_tooltip')" /></v-tooltip>
-                                {{translate("examDetail.sebSettings.applicationView.permittedProcess.active")}}
+                                <v-tooltip activator="parent"><p v-html="translateWithBR('sebSettings.applicationView.permittedProcess.active_tooltip')" /></v-tooltip>
+                                {{translate("sebSettings.applicationView.permittedProcess.active")}}
                             </v-col>
                             <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.permittedProcess!.active" :disabled="props.readOnly"></v-checkbox-btn> </v-col>
                         </v-row>
                         <!------------OS Type------------->
                         <v-row align="center">
                             <v-col>
-                                {{translate("examDetail.sebSettings.applicationView.permittedProcess.os")}}
+                                {{translate("sebSettings.applicationView.permittedProcess.os")}}
                             </v-col>
                             <v-col>
                                 <v-select
@@ -40,8 +40,8 @@
                         <!------------Executable------------->
                         <v-row>
                             <v-col>
-                                <v-tooltip activator="parent"><p v-html="translateWithBR('examDetail.sebSettings.applicationView.permittedProcess.executable_tooltip')" /></v-tooltip>
-                                {{translate("examDetail.sebSettings.applicationView.permittedProcess.executable")}}
+                                <v-tooltip activator="parent"><p v-html="translateWithBR('sebSettings.applicationView.permittedProcess.executable_tooltip')" /></v-tooltip>
+                                {{translate("sebSettings.applicationView.permittedProcess.executable")}}
                             </v-col>
                             <v-col>
                                 <v-text-field
@@ -57,8 +57,8 @@
                         <!------------Title------------->
                         <v-row>
                             <v-col>
-                                <v-tooltip activator="parent"><p v-html="translateWithBR('examDetail.sebSettings.applicationView.permittedProcess.title_tooltip')" /></v-tooltip>
-                                {{translate("examDetail.sebSettings.applicationView.permittedProcess.title")}}
+                                <v-tooltip activator="parent"><p v-html="translateWithBR('sebSettings.applicationView.permittedProcess.title_tooltip')" /></v-tooltip>
+                                {{translate("sebSettings.applicationView.permittedProcess.title")}}
                             </v-col>
                             <v-col>
                                 <v-text-field
@@ -73,7 +73,7 @@
                         </v-row>
                         <!------------Original Name------------->
                         <v-row>
-                            <v-col> {{translate("examDetail.sebSettings.applicationView.permittedProcess.originalName")}}</v-col>
+                            <v-col> {{translate("sebSettings.applicationView.permittedProcess.originalName")}}</v-col>
                             <v-col>
                                 <v-text-field
                                     single-line
@@ -87,7 +87,7 @@
                         </v-row>
                         <!------------Signature------------->
                         <v-row>
-                            <v-col>{{translate("examDetail.sebSettings.applicationView.permittedProcess.signature")}}</v-col>
+                            <v-col>{{translate("sebSettings.applicationView.permittedProcess.signature")}}</v-col>
                             <v-col>
                                 <v-text-field
                                     single-line
@@ -101,7 +101,7 @@
                         </v-row>
                         <!------------Path------------->
                         <v-row>
-                            <v-col> {{translate("examDetail.sebSettings.applicationView.permittedProcess.path")}}</v-col>
+                            <v-col> {{translate("sebSettings.applicationView.permittedProcess.path")}}</v-col>
                             <v-col>
                                 <v-text-field
                                     single-line
@@ -116,8 +116,8 @@
                         <!------------teamIdentifier------------->
                         <v-row>
                             <v-col>
-                                <v-tooltip activator="parent"><p v-html="translateWithBR('examDetail.sebSettings.applicationView.permittedProcess.teamIdentifier_tooltip')" /></v-tooltip>
-                                {{translate("examDetail.sebSettings.applicationView.permittedProcess.teamIdentifier")}}
+                                <v-tooltip activator="parent"><p v-html="translateWithBR('sebSettings.applicationView.permittedProcess.teamIdentifier_tooltip')" /></v-tooltip>
+                                {{translate("sebSettings.applicationView.permittedProcess.teamIdentifier")}}
                             </v-col>
                             <v-col>
                                 <v-text-field
@@ -132,7 +132,7 @@
                         </v-row>
                         <!------------Arguments------------->
                         <v-row>
-                            <v-col class="pt-0 pb-0">{{translate("examDetail.sebSettings.applicationView.permittedProcess.arguments")}}</v-col>
+                            <v-col class="pt-0 pb-0">{{translate("sebSettings.applicationView.permittedProcess.arguments")}}</v-col>
                             <v-col class="pt-0 pb-0">
                            
                                 <v-col  align="right" class="pt-0 pb-0"><v-btn
@@ -193,69 +193,69 @@
                         <!------------ iconInTaskbar ------------->
                         <v-row align="center">
                             <v-col class="pb-0">
-                                <v-tooltip activator="parent"><p v-html="translateWithBR('examDetail.sebSettings.applicationView.permittedProcess.iconInTaskbar_tooltip')" /></v-tooltip>
-                                {{translate("examDetail.sebSettings.applicationView.permittedProcess.iconInTaskbar")}}
+                                <v-tooltip activator="parent"><p v-html="translateWithBR('sebSettings.applicationView.permittedProcess.iconInTaskbar_tooltip')" /></v-tooltip>
+                                {{translate("sebSettings.applicationView.permittedProcess.iconInTaskbar")}}
                             </v-col>
                             <v-col class="pb-0"><v-checkbox-btn v-model="props.permittedProcess!.iconInTaskbar" :disabled="props.readOnly"></v-checkbox-btn> </v-col>
                         </v-row>
                         <!------------ allowOpenAndSavePanel ------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">
-                                <v-tooltip activator="parent"><p v-html="translateWithBR('examDetail.sebSettings.applicationView.permittedProcess.allowOpenAndSavePanel_tooltip')" /></v-tooltip>
-                                {{translate("examDetail.sebSettings.applicationView.permittedProcess.allowOpenAndSavePanel")}}
+                                <v-tooltip activator="parent"><p v-html="translateWithBR('sebSettings.applicationView.permittedProcess.allowOpenAndSavePanel_tooltip')" /></v-tooltip>
+                                {{translate("sebSettings.applicationView.permittedProcess.allowOpenAndSavePanel")}}
                             </v-col>
                             <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.permittedProcess!.allowOpenAndSavePanel" :disabled="props.readOnly"></v-checkbox-btn> </v-col>
                         </v-row>
                         <!------------ autostart ------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">
-                                <v-tooltip activator="parent"><p v-html="translateWithBR('examDetail.sebSettings.applicationView.permittedProcess.autostart_tooltip')" /></v-tooltip>
-                                {{translate("examDetail.sebSettings.applicationView.permittedProcess.autostart")}}
+                                <v-tooltip activator="parent"><p v-html="translateWithBR('sebSettings.applicationView.permittedProcess.autostart_tooltip')" /></v-tooltip>
+                                {{translate("sebSettings.applicationView.permittedProcess.autostart")}}
                             </v-col>
                             <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.permittedProcess!.autostart" :disabled="props.readOnly"></v-checkbox-btn> </v-col>
                         </v-row>
                         <!------------ allowShareSheet ------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">
-                                <v-tooltip activator="parent"><p v-html="translateWithBR('examDetail.sebSettings.applicationView.permittedProcess.allowShareSheet_tooltip')" /></v-tooltip>
-                                {{translate("examDetail.sebSettings.applicationView.permittedProcess.allowShareSheet")}}
+                                <v-tooltip activator="parent"><p v-html="translateWithBR('sebSettings.applicationView.permittedProcess.allowShareSheet_tooltip')" /></v-tooltip>
+                                {{translate("sebSettings.applicationView.permittedProcess.allowShareSheet")}}
                             </v-col>
                             <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.permittedProcess!.allowShareSheet" :disabled="props.readOnly"></v-checkbox-btn> </v-col>
                         </v-row>
                         <!------------ runInBackground ------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">
-                                <v-tooltip activator="parent"><p v-html="translateWithBR('examDetail.sebSettings.applicationView.permittedProcess.runInBackground_tooltip')" /></v-tooltip>
-                                {{translate("examDetail.sebSettings.applicationView.permittedProcess.runInBackground")}}
+                                <v-tooltip activator="parent"><p v-html="translateWithBR('sebSettings.applicationView.permittedProcess.runInBackground_tooltip')" /></v-tooltip>
+                                {{translate("sebSettings.applicationView.permittedProcess.runInBackground")}}
                             </v-col>
                             <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.permittedProcess!.runInBackground" :disabled="props.readOnly"></v-checkbox-btn> </v-col>
                         </v-row>
                         <!------------ allowManualStart ------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">
-                                <v-tooltip activator="parent"><p v-html="translateWithBR('examDetail.sebSettings.applicationView.permittedProcess.allowManualStart_tooltip')" /></v-tooltip>
-                                {{translate("examDetail.sebSettings.applicationView.permittedProcess.allowManualStart")}}
+                                <v-tooltip activator="parent"><p v-html="translateWithBR('sebSettings.applicationView.permittedProcess.allowManualStart_tooltip')" /></v-tooltip>
+                                {{translate("sebSettings.applicationView.permittedProcess.allowManualStart")}}
                             </v-col>
                             <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.permittedProcess!.allowManualStart" :disabled="props.readOnly"></v-checkbox-btn> </v-col>
                         </v-row>
                         <!------------ allowUserToChooseApp ------------->
                         <v-row align="center">
-                            <v-col class="pt-0 pb-0">{{translate("examDetail.sebSettings.applicationView.permittedProcess.allowUserToChooseApp")}}</v-col>
+                            <v-col class="pt-0 pb-0">{{translate("sebSettings.applicationView.permittedProcess.allowUserToChooseApp")}}</v-col>
                             <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.permittedProcess!.allowUserToChooseApp" :disabled="props.readOnly"></v-checkbox-btn> </v-col>
                         </v-row>
                         <!------------ allowNetworkAccess ------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">
-                                <v-tooltip activator="parent"><p v-html="translateWithBR('examDetail.sebSettings.applicationView.permittedProcess.allowNetworkAccess_tooltip')" /></v-tooltip>
-                                {{translate("examDetail.sebSettings.applicationView.permittedProcess.allowNetworkAccess")}}
+                                <v-tooltip activator="parent"><p v-html="translateWithBR('sebSettings.applicationView.permittedProcess.allowNetworkAccess_tooltip')" /></v-tooltip>
+                                {{translate("sebSettings.applicationView.permittedProcess.allowNetworkAccess")}}
                             </v-col>
                             <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.permittedProcess!.allowNetworkAccess" :disabled="props.readOnly"></v-checkbox-btn> </v-col>
                         </v-row>
                         <!------------ strongKill ------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">
-                                <v-tooltip activator="parent"><p v-html="translateWithBR('examDetail.sebSettings.applicationView.permittedProcess.strongKill_tooltip')" /></v-tooltip>
-                                {{translate("examDetail.sebSettings.applicationView.permittedProcess.strongKill")}}
+                                <v-tooltip activator="parent"><p v-html="translateWithBR('sebSettings.applicationView.permittedProcess.strongKill_tooltip')" /></v-tooltip>
+                                {{translate("sebSettings.applicationView.permittedProcess.strongKill")}}
                             </v-col>
                             <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.permittedProcess!.strongKill" :disabled="props.readOnly"></v-checkbox-btn> </v-col>
                         </v-row>
@@ -298,8 +298,8 @@
     const argumentsHeadersRef = ref<any[]>();
     const argumentsTable = ref<PermittedProcessArgument[]>([]);
     const argumentsHeaders = ref([
-        {title: translate("examDetail.sebSettings.applicationView.permittedProcess.arguments_active"), key: "active", sortable: false, width: "10%"},
-        {title: translate("examDetail.sebSettings.applicationView.permittedProcess.arguments_argument"), key: "argument", sortable: false, width: "10%"},
+        {title: translate("sebSettings.applicationView.permittedProcess.arguments_active"), key: "active", sortable: false, width: "10%"},
+        {title: translate("sebSettings.applicationView.permittedProcess.arguments_argument"), key: "argument", sortable: false, width: "10%"},
         {title: translate("general.deleteButton"), key: "delete", sortable: false, width: "5%", center: true}
     ]);
 
@@ -318,8 +318,8 @@
     }>();
 
     const osItems = [ 
-        {title: translate("examDetail.sebSettings.applicationView.permittedProcess.os_0"), value: "0" }, 
-        {title: translate("examDetail.sebSettings.applicationView.permittedProcess.os_1"), value: "1" } ];
+        {title: translate("sebSettings.applicationView.permittedProcess.os_0"), value: "0" }, 
+        {title: translate("sebSettings.applicationView.permittedProcess.os_1"), value: "1" } ];
 
     onBeforeMount(async () => {
         argumentsTable.value.splice(0);

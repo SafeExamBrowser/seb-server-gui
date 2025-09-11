@@ -5,7 +5,7 @@
                 v-model="allowSwitchToApplicationsVal"
                 @update:modelValue="saveSingleValue(allowSwitchToApplications.id, allowSwitchToApplicationsVal ? 'true' : 'false')"
                 :label="translate('sebSettings.applicationView.allowSwitchToApplications')"
-                :disabled="readOnly"></v-checkbox-btn> 
+                :disabled="sebSettingsStore.readonly"></v-checkbox-btn> 
         </v-col>
     </v-row>
 
@@ -20,7 +20,7 @@
                         variant="text"
                         icon="mdi-plus-circle-outline"
                         @click="newPermittedProcess()"
-                        :disabled="readOnly">
+                        :disabled="sebSettingsStore.readonly">
                     </v-btn>
                 </v-col>
             </v-row>
@@ -74,7 +74,7 @@
                         variant="text" 
                         icon="mdi-delete-outline"
                         @click="permittedProcessDelete(item.index!)"
-                        :disabled="readOnly">
+                        :disabled="sebSettingsStore.readonly">
                     </v-btn>
                 </template>
             </v-data-table>
@@ -86,7 +86,7 @@
         <EditPermittedProcess
             @close-edit-permitted-process="closeEditPermittedProcessDialog"
             :permitted-process="selectedPermittedProcess"
-            :read-only="readOnly">
+            :read-only="sebSettingsStore.readonly">
         </EditPermittedProcess>
     </v-dialog>
 
@@ -101,7 +101,7 @@
                         variant="text"
                         icon="mdi-plus-circle-outline"
                         @click="newProhibitedProcess()"
-                        :disabled="readOnly">
+                        :disabled="sebSettingsStore.readonly">
                     </v-btn>
                 </v-col>
             </v-row>
@@ -152,7 +152,7 @@
                         variant="text" 
                         icon="mdi-delete-outline"
                         @click="prohibitedProcessDelete(item.index!)"
-                        :disabled="readOnly">
+                        :disabled="sebSettingsStore.readonly">
                     </v-btn>
                 </template>
             </v-data-table>
@@ -164,7 +164,7 @@
         <EditProhibitedProcess
             @close-edit-prohibited-process="closeEditProhibitedProcessDialog"
             :prohibited-process="selectedProhibitedProcess"
-            :read-only="readOnly">
+            :read-only="sebSettingsStore.readonly">
         </EditProhibitedProcess>
     </v-dialog>
 
@@ -213,15 +213,12 @@
         {title: translate("general.deleteButton"), key: "delete", sortable: false, width: "5%", center: true}
     ]);
     
-    let readOnly: boolean = false;
     let componentId: string;
     let allowSwitchToApplications: SEBSettingsValue;
     let allowFlashFullscreen: SEBSettingsValue;
 
     onBeforeMount(async () => { 
-        // TODO apply readonly according to user privileges
-        readOnly = false;
-        
+
         if(sebSettingsStore.selectedContainerId == null){
             return;
         }
@@ -233,7 +230,7 @@
             return;
         }
 
-        if (readOnly) {
+        if (sebSettingsStore.readonly) {
             permittedProcessHeaders.value[4].title = translate("general.viewButton", i18n);
             prohibitedProcessHeaders.value[4].title = translate("general.viewButton", i18n);
         }
