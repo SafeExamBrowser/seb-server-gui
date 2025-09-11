@@ -1,5 +1,3 @@
 <template>
-    <v-row>
-        TODO
-    </v-row>
+    <v-row> TODO </v-row>
 </template>

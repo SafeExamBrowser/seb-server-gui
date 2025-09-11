@@ -22,7 +22,8 @@ export const USER_ACCOUNTS_ROUTE: string = "/user-accounts";
 export const EDIT_USER_ACCOUNT: string = USER_ACCOUNTS_ROUTE + "/edit-account";
 export const PROFILE_ROUTE = "/profile-settings";
 
-export const CREATE_USER_ACCOUNTS_ROUTE: string = USER_ACCOUNTS_ROUTE + "/create";
+export const CREATE_USER_ACCOUNTS_ROUTE: string =
+    USER_ACCOUNTS_ROUTE + "/create";
 export const EXAM_ROUTE: string = "/exam";
 export const EXAM_DETAILS_ROUTE: string = EXAM_ROUTE;
 
@@ -32,19 +33,21 @@ export const ACCOUNT_VIEW_ROUTE: string = "/account";
 export const MONITORING_ROUTE: string = "/monitoring";
 export const MONITORING_OVERVIEW_ROUTE: string = MONITORING_ROUTE + "/overview";
 export const MONITORING_CLIENTS_ROUTE: string = MONITORING_ROUTE + "/clients";
-export const MONITORING_DETAILS_ROUTE: string = MONITORING_ROUTE + "/:examId" + "/details";
-
+export const MONITORING_DETAILS_ROUTE: string =
+    MONITORING_ROUTE + "/:examId" + "/details";
 
 export const FINISHED_EXAM_DATA_ROUTE: string = "/finished-exam-data";
 
-
-export const ASSESSMENT_TOOL_CONNECTIONS_ROUTE: string = "/assessment-tool-connections";
-export const CREATE_ASSESSMENT_TOOL_CONNECTION_ROUTE: string = ASSESSMENT_TOOL_CONNECTIONS_ROUTE + "/create";
-
+export const ASSESSMENT_TOOL_CONNECTIONS_ROUTE: string =
+    "/assessment-tool-connections";
+export const CREATE_ASSESSMENT_TOOL_CONNECTION_ROUTE: string =
+    ASSESSMENT_TOOL_CONNECTIONS_ROUTE + "/create";
 
 // seb client configs
-export const CONNECTION_CONFIGURATIONS_ROUTE: string = "/connection-configurations";
-export const CREATE_CONNECTION_CONFIGURATION_ROUTE: string = CONNECTION_CONFIGURATIONS_ROUTE + "/create";
+export const CONNECTION_CONFIGURATIONS_ROUTE: string =
+    "/connection-configurations";
+export const CREATE_CONNECTION_CONFIGURATION_ROUTE: string =
+    CONNECTION_CONFIGURATIONS_ROUTE + "/create";
 
 // certificates
 export const CERTIFICATES_ROUTE: string = "/certificates";

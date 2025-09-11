@@ -10,7 +10,7 @@ export enum ViewType {
     SECURITY = "SECURITY",
     REGISTRY = "REGISTRY",
     HOOKED_KEYS = "HOOKED_KEYS",
-    PROCTORING = "PROCTORING"
+    PROCTORING = "PROCTORING",
 }
 
 export enum SettingsType {
@@ -46,12 +46,12 @@ export enum SettingsType {
     /** Table type is a list of a composite of single types */
     TABLE = "TABLE",
     INLINE_TABLE = "INLINE_TABLE",
-    COMPOSITE_TABLE = "COMPOSITE_TABLE"
+    COMPOSITE_TABLE = "COMPOSITE_TABLE",
 }
 
 export enum ExamConfigStatus {
     CONSTRUCTION = "CONSTRUCTION",
     READY_TO_USE = "READY_TO_USE",
     IN_USE = "IN_USE",
-    ARCHIVE = "ARCHIVE"
+    ARCHIVE = "ARCHIVE",
 }

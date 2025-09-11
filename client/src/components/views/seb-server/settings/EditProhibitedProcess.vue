@@ -1,9 +1,19 @@
 <template>
     <v-card>
         <v-toolbar color="transparent">
-            <v-toolbar-title class="text-h6" :text="translate('examDetail.sebSettings.applicationView.prohibitedProcess.editDialogTitle')"></v-toolbar-title>
-            <template v-slot:append>
-                <v-btn @click="emit('closeEditProhibitedProcess', false)" icon="mdi-close"></v-btn>
+            <v-toolbar-title
+                class="text-h6"
+                :text="
+                    translate(
+                        'examDetail.sebSettings.applicationView.prohibitedProcess.editDialogTitle',
+                    )
+                "
+            ></v-toolbar-title>
+            <template #append>
+                <v-btn
+                    icon="mdi-close"
+                    @click="emit('closeEditProhibitedProcess', false)"
+                ></v-btn>
             </template>
         </v-toolbar>
 
@@ -15,14 +25,29 @@
                         <!------------ active ------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">
-                                <v-tooltip activator="parent"><p v-html="translateWithBR('examDetail.sebSettings.applicationView.prohibitedProcess.active_tooltip')" /></v-tooltip>
-                                {{translate("examDetail.sebSettings.applicationView.prohibitedProcess.active")}}
+                                <v-tooltip activator="parent"
+                                    ><p
+                                        v-html="
+                                            translateWithBR(
+                                                'examDetail.sebSettings.applicationView.prohibitedProcess.active_tooltip',
+                                            )
+                                        "
+                                /></v-tooltip>
+                                {{
+                                    translate(
+                                        "examDetail.sebSettings.applicationView.prohibitedProcess.active",
+                                    )
+                                }}
                             </v-col>
                         </v-row>
                         <!------------OS Type------------->
                         <v-row align="center">
                             <v-col>
-                                {{translate("examDetail.sebSettings.applicationView.prohibitedProcess.os")}}
+                                {{
+                                    translate(
+                                        "examDetail.sebSettings.applicationView.prohibitedProcess.os",
+                                    )
+                                }}
                             </v-col>
                             <v-col>
                                 <v-select
@@ -39,8 +64,19 @@
                         <!------------Executable------------->
                         <v-row>
                             <v-col>
-                                <v-tooltip activator="parent"><p v-html="translateWithBR('examDetail.sebSettings.applicationView.prohibitedProcess.executable_tooltip')" /></v-tooltip>
-                                {{translate("examDetail.sebSettings.applicationView.prohibitedProcess.executable")}}
+                                <v-tooltip activator="parent"
+                                    ><p
+                                        v-html="
+                                            translateWithBR(
+                                                'examDetail.sebSettings.applicationView.prohibitedProcess.executable_tooltip',
+                                            )
+                                        "
+                                /></v-tooltip>
+                                {{
+                                    translate(
+                                        "examDetail.sebSettings.applicationView.prohibitedProcess.executable",
+                                    )
+                                }}
                             </v-col>
                             <v-col>
                                 <v-text-field
@@ -59,8 +95,19 @@
                         <!------------Original Name------------->
                         <v-row>
                             <v-col>
-                                <v-tooltip activator="parent"><p v-html="translateWithBR('examDetail.sebSettings.applicationView.prohibitedProcess.originalName_tooltip')" /></v-tooltip>
-                                {{translate("examDetail.sebSettings.applicationView.prohibitedProcess.originalName")}}
+                                <v-tooltip activator="parent"
+                                    ><p
+                                        v-html="
+                                            translateWithBR(
+                                                'examDetail.sebSettings.applicationView.prohibitedProcess.originalName_tooltip',
+                                            )
+                                        "
+                                /></v-tooltip>
+                                {{
+                                    translate(
+                                        "examDetail.sebSettings.applicationView.prohibitedProcess.originalName",
+                                    )
+                                }}
                             </v-col>
                             <v-col>
                                 <v-text-field
@@ -79,8 +126,19 @@
                         <!------------Description------------->
                         <v-row>
                             <v-col>
-                                <v-tooltip activator="parent"><p v-html="translateWithBR('examDetail.sebSettings.applicationView.prohibitedProcess.description_tooltip')" /></v-tooltip>
-                                {{translate("examDetail.sebSettings.applicationView.prohibitedProcess.description")}}
+                                <v-tooltip activator="parent"
+                                    ><p
+                                        v-html="
+                                            translateWithBR(
+                                                'examDetail.sebSettings.applicationView.prohibitedProcess.description_tooltip',
+                                            )
+                                        "
+                                /></v-tooltip>
+                                {{
+                                    translate(
+                                        "examDetail.sebSettings.applicationView.prohibitedProcess.description",
+                                    )
+                                }}
                             </v-col>
                             <v-col>
                                 <v-text-field
@@ -99,8 +157,19 @@
                         <!------------Identifier------------->
                         <v-row>
                             <v-col>
-                                <v-tooltip activator="parent"><p v-html="translateWithBR('examDetail.sebSettings.applicationView.prohibitedProcess.identifier_tooltip')" /></v-tooltip>
-                                {{translate("examDetail.sebSettings.applicationView.prohibitedProcess.identifier")}}
+                                <v-tooltip activator="parent"
+                                    ><p
+                                        v-html="
+                                            translateWithBR(
+                                                'examDetail.sebSettings.applicationView.prohibitedProcess.identifier_tooltip',
+                                            )
+                                        "
+                                /></v-tooltip>
+                                {{
+                                    translate(
+                                        "examDetail.sebSettings.applicationView.prohibitedProcess.identifier",
+                                    )
+                                }}
                             </v-col>
                             <v-col>
                                 <v-text-field
@@ -119,15 +188,37 @@
                         <!------------ force quit ------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">
-                                <v-tooltip activator="parent"><p v-html="translateWithBR('examDetail.sebSettings.applicationView.prohibitedProcess.strongKill_tooltip')" /></v-tooltip>
-                                {{translate("examDetail.sebSettings.applicationView.prohibitedProcess.strongKill")}}
+                                <v-tooltip activator="parent"
+                                    ><p
+                                        v-html="
+                                            translateWithBR(
+                                                'examDetail.sebSettings.applicationView.prohibitedProcess.strongKill_tooltip',
+                                            )
+                                        "
+                                /></v-tooltip>
+                                {{
+                                    translate(
+                                        "examDetail.sebSettings.applicationView.prohibitedProcess.strongKill",
+                                    )
+                                }}
                             </v-col>
                         </v-row>
                         <!------------ ignore AAC------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">
-                                <v-tooltip activator="parent"><p v-html="translateWithBR('examDetail.sebSettings.applicationView.prohibitedProcess.ignoreAAC_tooltip')" /></v-tooltip>
-                                {{translate("examDetail.sebSettings.applicationView.prohibitedProcess.ignoreAAC")}}
+                                <v-tooltip activator="parent"
+                                    ><p
+                                        v-html="
+                                            translateWithBR(
+                                                'examDetail.sebSettings.applicationView.prohibitedProcess.ignoreAAC_tooltip',
+                                            )
+                                        "
+                                /></v-tooltip>
+                                {{
+                                    translate(
+                                        "examDetail.sebSettings.applicationView.prohibitedProcess.ignoreAAC",
+                                    )
+                                }}
                             </v-col>
                         </v-row>
 
@@ -183,9 +274,20 @@ const props = defineProps<{
     readOnly: boolean;
 }>();
 
-    const osItems = [ 
-        {title: translate("examDetail.sebSettings.applicationView.prohibitedProcess.os_0"), value: "0" }, 
-        {title: translate("examDetail.sebSettings.applicationView.prohibitedProcess.os_1"), value: "1" } ];
+const osItems = [
+    {
+        title: translate(
+            "examDetail.sebSettings.applicationView.prohibitedProcess.os_0",
+        ),
+        value: "0",
+    },
+    {
+        title: translate(
+            "examDetail.sebSettings.applicationView.prohibitedProcess.os_1",
+        ),
+        value: "1",
+    },
+];
 
 function isSaveButtonDisabled() {
     return props.readOnly;

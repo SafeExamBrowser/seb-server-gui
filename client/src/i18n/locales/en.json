@@ -473,12 +473,11 @@
                 "saveChanges": "Save Changes",
                 "revertChanges": "Revert Changes"
             },
-            "validation" : {
-                "required" : "This field is required",
-                "assessmentToolServerAddressLabel" : "Must start with http://",
-                "invalidPort" : "Invalid port, ex. 8080",
-                "mustBeWithUrl" : "Must start with http:// or https://"
-
+            "validation": {
+                "required": "This field is required",
+                "assessmentToolServerAddressLabel": "Must start with http://",
+                "invalidPort": "Invalid port, ex. 8080",
+                "mustBeWithUrl": "Must start with http:// or https://"
             }
         },
         "lmsTypes": {
@@ -758,7 +757,6 @@
                 "ignoreAAC": "Ignore in AAC",
                 "ignoreAAC_tooltip": "When using the AAC kiosk mode\n(which prevents network and screen access for other processes),\nignore this prohibited process"
             }
-
         },
         "networkView": {
             "filterGroupTitle": "URL Filter",
@@ -835,7 +833,6 @@
             "archiveExam": "Archiv Exam",
             "archiveTooltip": "Archiving is only activated when exam is finished",
             "deleteExam": "Delete Exam"
-
         },
         "sebSettings": {
             "applicationView": {
