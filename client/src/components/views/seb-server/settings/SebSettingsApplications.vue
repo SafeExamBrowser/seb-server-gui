@@ -344,7 +344,7 @@ const prohibitedProcessHeaders = ref([
 
 let componentId: string;
 let allowSwitchToApplications: SEBSettingsValue;
-let allowFlashFullscreen: SEBSettingsValue;
+
 
 onBeforeMount(async () => {
     if (sebSettingsStore.selectedContainerId == null) {
@@ -384,7 +384,6 @@ onBeforeMount(async () => {
         SEBSettingsValue
     >(Object.entries(settingsView.singleValues));
     allowSwitchToApplications = singleValues.get("allowSwitchToApplications")!;
-    allowFlashFullscreen = singleValues.get("allowFlashFullscreen")!;
     allowSwitchToApplicationsVal.value =
         allowSwitchToApplications.value === "true";
 

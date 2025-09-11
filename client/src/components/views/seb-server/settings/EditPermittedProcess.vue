@@ -564,10 +564,8 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
 import { translate , translateWithBR } from "@/utils/generalUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
-import * as tableUtils from "@/utils/table/tableUtils";
 
 const argumentsHeadersRef = ref<any[]>();
 const argumentsTable = ref<PermittedProcessArgument[]>([]);
@@ -596,9 +594,6 @@ const argumentsHeaders = ref([
         center: true,
     },
 ]);
-
-// i18n
-const i18n = useI18n();
 
 // emits
 const emit = defineEmits<{

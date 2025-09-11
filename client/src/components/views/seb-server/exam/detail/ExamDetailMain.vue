@@ -941,19 +941,12 @@ import * as generalUtils from "@/utils/generalUtils";
 import { navigateTo } from "@/router/navigation";
 import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum";
 import DeleteConfirmDialog from "@/components/widgets/DeleteConfirmDialog.vue";
-import {
-    ClientGroupEnum,
-    ClientOSEnum,
-} from "@/models/seb-server/clientGroupEnum";
+import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
-import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
 import { LMSFeatureEnum } from "@/models/seb-server/assessmentToolEnums";
 import { GUIAction, useAbilities } from "@/services/ability";
 import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
-
-// i18n
-const i18n = useI18n();
 
 // general
 const isPageInitalizing = ref<boolean>(true);
