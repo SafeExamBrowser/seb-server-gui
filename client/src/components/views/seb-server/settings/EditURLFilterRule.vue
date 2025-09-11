@@ -16,7 +16,7 @@
                         <!------------ active ------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">
-                                {{translate("sebSettings.networkView.URLFilterRules.active")}}
+                                {{translate("examDetail.sebSettings.networkView.URLFilterRules.active")}}
                             </v-col>
                             <v-col class="pt-0 pb-0"><v-checkbox-btn v-model="props.urlFilterRule!.active" :disabled="props.readOnly"></v-checkbox-btn> </v-col>
                         </v-row>

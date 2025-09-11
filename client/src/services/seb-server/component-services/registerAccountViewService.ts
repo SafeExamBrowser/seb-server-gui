@@ -1,7 +1,6 @@
 import * as userAccountService from "@/services/seb-server/api-services/userAccountService";
 import * as institutionService from "@/services/seb-server/api-services/institutionService";
 
-
 export async function registerUserAccount(
     institutionId: string,
     name: string,
@@ -13,7 +12,7 @@ export async function registerUserAccount(
     email?: string,
 ): Promise<UserAccount | null> {
     try {
-        const language = navigator.language?.split('-')[0] || 'gr';
+        const language = navigator.language?.split("-")[0] || "gr";
 
         const payload: Record<string, string> = {
             institutionId,
@@ -23,7 +22,7 @@ export async function registerUserAccount(
             newPassword,
             confirmNewPassword,
             timezone,
-            language
+            language,
         };
 
         if (email) {
@@ -36,13 +35,10 @@ export async function registerUserAccount(
     }
 }
 
-
-
-export async function getInstitutions(): Promise<Institution[] | null>{
-    try{
-        return await institutionService.getInstitutions()
-
-    }catch(error){
+export async function getInstitutions(): Promise<Institution[] | null> {
+    try {
+        return await institutionService.getInstitutions();
+    } catch (error) {
         return null;
     }
 }

@@ -46,7 +46,6 @@
     "LOCK_SCREEN": "Lock screen",
     "RAISE_HAND": "Raise hand",
 
-
     "general": {
         "loadingText": "Loading... Please wait",
         "cancelButton": "Cancel",
@@ -76,7 +75,6 @@
         "logo": "SEB Logo"
     },
 
-
     "clientGroups": {
         "description": {
             "ip": [
@@ -105,7 +103,7 @@
 
     "loginPage": {
         "title": "SEB Server",
-        "signIn": "Sign in" ,
+        "signIn": "Sign in",
         "description": "Please fill the form to sign in to your SEB Server Account.",
         "usernamePlaceholder": "Username *",
         "passwordPlaceholder": "Password *",
@@ -119,10 +117,9 @@
         "createTemplates": "Create\n  Template",
         "prepareExam": "Prepare\n Exam",
 
-
         "monitorExams": "Monitor\n Exam",
 
-        "something" : "Something",
+        "something": "Something",
         "startNow": "Start now",
 
         "screenProctoring": "Screen Proctoring",
@@ -130,7 +127,6 @@
     },
 
     "quizImportWizard": {
-
         "warning": {
             "title": "No Assessment Tool"
         },
@@ -155,68 +151,67 @@
 
         "assessmentTool": {
             "title": "Select Assessment Tool",
-            "description" : "Please select an assessment tool to continue."
+            "description": "Please select an assessment tool to continue."
         },
 
-        "examInfo":{
+        "examInfo": {
             "title": "Select Exam",
             "search": "Search:",
             "searchPlaceholder": "Search Exams",
             "start": "Start:"
-
         },
 
         "examMain": {
-            "title" : "Select Exam",
-            "description" : "Search and select the exam you want to prepare.",
+            "title": "Select Exam",
+            "description": "Search and select the exam you want to prepare.",
             "tableHeaderName": "Name",
             "tableHeaderStart": "Start",
             "tableHeaderEnd": "End",
-            "examName" : "Exam Name",
-            "filterDate" : "Filter By Date",
-            "searchName" : "Search by Name"
+            "examName": "Exam Name",
+            "filterDate": "Filter By Date",
+            "searchName": "Search by Name"
         },
 
         "templateMain": {
-            "title" : "Select Exam Template",
+            "title": "Select Exam Template",
             "description": "Click on the Exam Template you want to use for the exam.",
             "templateInfo": "Open template info",
             "templateSelect": "Select template"
         },
 
         "groupMain": {
-            "title" : "Add Groups",
+            "title": "Add Groups",
             "search": "Search",
             "selectedGroups": "Selected Groups",
             "availableGroups": "Available Groups",
-            "description" : "Select or Remove Groups",
+            "description": "Select or Remove Groups",
             "tableHeaderName": "Name",
             "tableHeaderScreenProctoring": "Screen Proctoring",
             "spAvailable": "Screen Proctoring enabled"
         },
 
         "supervisorsMain": {
-            "searchButton" : "Search",
-            "cancelButton" : "Cancel",
-            "title" : "Add Exam Supervisors",
+            "searchButton": "Search",
+            "cancelButton": "Cancel",
+            "title": "Add Exam Supervisors",
             "description": "Select or remove Exam Supervisors",
             "search": "Search",
-            "availableSupervisors" : "Available Supervisors",
+            "availableSupervisors": "Available Supervisors",
             "selectedSupervisors": "Selected Supervisors",
             "tableHeaderName": "Name"
         },
 
         "passwordMain": {
             "password": "Password",
-            "title" : "Set Quit Password",
-            "quitPassword" : "Quit Password",
-            "description" : "Set the quit password, otherwise a student can easily quit SEB.",
-            "warning" : "This password should be kept confidential and shared only with exam supervisors"
+            "title": "Set Quit Password",
+            "quitPassword": "Quit Password",
+            "description": "Set the quit password, otherwise a student can easily quit SEB.",
+            "warning": "This password should be kept confidential and shared only with exam supervisors"
         },
 
         "summaryMain": {
-            "title" : "Configuration Summary",
-            "description" : "Review your configuration before saving.",
+            "title": "Configuration Summary",
+            "description": "Review your configuration before saving.",
             "configurationSummary": "Configuration Summary",
             "examTemplate": "Exam Template",
             "templateName": "Template Name:",
@@ -224,12 +219,11 @@
             "supervisors": "Exam Supervisors",
             "password": "Quit Password",
             "clientGroup": "Client Group"
-
         },
         "buttons": {
-            "back" : "back",
-            "next" : "next",
-            "save" : "save"
+            "back": "back",
+            "next": "next",
+            "save": "save"
         }
     },
 
@@ -263,11 +257,10 @@
             "searchPlaceholder": "Search Exams",
             "start": "Exam Start:",
             "filter": "Filter",
-            "examType" : "Exam Type",
-            "examState" : "Exam State",
+            "examType": "Exam Type",
+            "examState": "Exam State",
             "examName": "Exam Name",
             "examStart": "Exam Start"
-
         },
         "main": {
             "tableHeaderName": "Name",
@@ -280,15 +273,15 @@
     "userAccount": {
         "general": {
             "validation": {
-              "required": "This field is required",
-              "passwordTooShort": "Password must be at least 8 characters",
-              "passwordsDontMatch": "Passwords must match",
-              "invalidEmail": "Invalid email format",
-              "invalidRoleSelection": "Please select at least one Role"
+                "required": "This field is required",
+                "passwordTooShort": "Password must be at least 8 characters",
+                "passwordsDontMatch": "Passwords must match",
+                "invalidEmail": "Invalid email format",
+                "invalidRoleSelection": "Please select at least one Role"
             },
-            "status":{
-                "active" : "Active",
-                "inactive" : "Inactive"
+            "status": {
+                "active": "Active",
+                "inactive": "Inactive"
             }
         },
         "registerPage": {
@@ -303,11 +296,11 @@
                 "confirmPasswordLabel": "Confirm Password *",
                 "selectRolesLabel": "Roles *"
             },
-            "info" : {
+            "info": {
                 "alreadyHaveAccount": "Already have an account?",
                 "accountRegistrationInfo": "Please fill the form to register for a SEB Server account."
             },
-            "buttons" : {
+            "buttons": {
                 "login": "Login",
                 "register": "Register"
             }
@@ -364,58 +357,57 @@
                 "passwordLabel": "Password *",
                 "confirmPasswordLabel": "Confirm Password *",
                 "selectRolesLabel": "Roles *"
-              },
-            "info" : {
+            },
+            "info": {
                 "rolesSelectionInfo": "Please select at least one Role",
                 "accountCreationInfo": "Fill out the required * fields to create a new User Account"
             },
             "buttons": {
-                "createNewUser" : "Create"
-              }
-          },
-      "userAccountDetailAndEditPage": {
-          "changePasswordTitle": "Change User Password",
-          "labels": {
-              "institutionLabel": "Institution *",
-              "usernameLabel": "Username *",
-              "nameLabel": "Name *",
-              "surnameLabel": "Last Name*",
-              "emailLabel": "Email",
-              "timeZoneLabel": "Time Zone *",
-              "passwordLabel": "Password *",
-              "confirmPasswordLabel": "Confirm Password *",
-              "selectRolesLabel": "Roles *",
-              "adminPassword": "Personal Password",
-              "newPassword": "New Password",
-              "confirmNewPassword": "Repeat Password"
-          },
-          "info" : {
-              "rolesSelectionInfo": "Must have at least one Role",
-              "accountEditInfo": "Change the values of the fields to edit the user",
-              "changePasswordInfo": "Change \"{username}\"'s password",
-              "createdAtInfo": "Created at: "
-          },
-          "buttons": {
-              "saveChanges" : "Save Changes"
-          },
-          "warnings": {
-              "edit-success": "Edited User: \"{username}\".",
-              "no-edit-rights": "You do not have rights to edit this user."
+                "createNewUser": "Create"
+            }
+        },
+        "userAccountDetailAndEditPage": {
+            "changePasswordTitle": "Change User Password",
+            "labels": {
+                "institutionLabel": "Institution *",
+                "usernameLabel": "Username *",
+                "nameLabel": "Name *",
+                "surnameLabel": "Last Name*",
+                "emailLabel": "Email",
+                "timeZoneLabel": "Time Zone *",
+                "passwordLabel": "Password *",
+                "confirmPasswordLabel": "Confirm Password *",
+                "selectRolesLabel": "Roles *",
+                "adminPassword": "Personal Password",
+                "newPassword": "New Password",
+                "confirmNewPassword": "Repeat Password"
+            },
+            "info": {
+                "rolesSelectionInfo": "Must have at least one Role",
+                "accountEditInfo": "Change the values of the fields to edit the user",
+                "changePasswordInfo": "Change \"{username}\"'s password",
+                "createdAtInfo": "Created at: "
+            },
+            "buttons": {
+                "saveChanges": "Save Changes"
+            },
+            "warnings": {
+                "edit-success": "Edited User: \"{username}\".",
+                "no-edit-rights": "You do not have rights to edit this user."
             }
         }
     },
-    "assessmentToolConnections" : {
-
-        "assessmentToolsPage":{
+    "assessmentToolConnections": {
+        "assessmentToolsPage": {
             "addAssessmentTool": "Add Assessment Tool Connection",
-            "filters" : {
-                "searchTitle" : "Search",
-                "searchField" : "Search for Assessment Tool Connections",
-                "institutionFilter" : "Institution",
-                "statusFilter" : "Status",
+            "filters": {
+                "searchTitle": "Search",
+                "searchField": "Search for Assessment Tool Connections",
+                "institutionFilter": "Institution",
+                "statusFilter": "Status",
                 "activeSelector": "Active",
                 "inactiveSelector": "Inactive",
-                "typeFilter" : "Assessment Tool Type"
+                "typeFilter": "Assessment Tool Type"
             },
             "assessmentToolTableHeaders": {
                 "tableHeaderInstitution": "Institution",
@@ -441,9 +433,9 @@
             }
         },
 
-        "createAssessmentToolConnectionsPage" : {
+        "createAssessmentToolConnectionsPage": {
             "info": {
-                "assessmentToolConnectionsCreationInfo" : "Fill out the required * fields to create a new Assessment Tool Connection"
+                "assessmentToolConnectionsCreationInfo": "Fill out the required * fields to create a new Assessment Tool Connection"
             },
             "labels": {
                 "institutionLabel": "Institution *",
@@ -459,9 +451,9 @@
                 "proxyPortLabel": "Proxy Port *",
                 "proxyUsernameLabel": "Proxy Username *",
                 "proxyPasswordLabel": "Proxy Password *",
-                "authenticationMode" : "Authentication Mode",
-                "clientCredentials" : "Credentials",
-                "restApiToken" : "Access Token"
+                "authenticationMode": "Authentication Mode",
+                "clientCredentials": "Credentials",
+                "restApiToken": "Access Token"
             },
             "placeholders": {
                 "proxyHost": "Enter proxy host",
@@ -469,16 +461,15 @@
                 "proxyUsername": "Enter proxy username",
                 "proxyPassword": "Enter proxy password"
             },
-            "validation" : {
-                "required" : "This field is required",
-                "assessmentToolServerAddressLabel" : "Must start with http://",
-                "invalidPort" : "Invalid port, ex. 8080"
+            "validation": {
+                "required": "This field is required",
+                "assessmentToolServerAddressLabel": "Must start with http://",
+                "invalidPort": "Invalid port, ex. 8080"
             }
-
         },
 
-        "assessmentToolDetailAndEditPage" : {
-            "buttons" : {
+        "assessmentToolDetailAndEditPage": {
+            "buttons": {
                 "saveChanges": "Save Changes",
                 "revertChanges": "Revert Changes"
             },
@@ -487,6 +478,7 @@
                 "assessmentToolServerAddressLabel" : "Must start with http://",
                 "invalidPort" : "Invalid port, ex. 8080",
                 "mustBeWithUrl" : "Must start with http:// or https://"
+
             }
         },
         "lmsTypes": {
@@ -499,14 +491,14 @@
         }
     },
 
-    "connectionConfigurations" : {
-        "connectionConfigurationsPage":{
+    "connectionConfigurations": {
+        "connectionConfigurationsPage": {
             "addConnectionConfiguration": "Add Connection Configuration",
-            "filters" : {
-                "searchTitle" : "Search",
-                "searchField" : "Search for Connection Configuration",
-                "institutionFilter" : "Institution",
-                "statusFilter" : "Status",
+            "filters": {
+                "searchTitle": "Search",
+                "searchField": "Search for Connection Configuration",
+                "institutionFilter": "Institution",
+                "statusFilter": "Status",
                 "activeSelector": "Active",
                 "inactiveSelector": "Inactive"
             },
@@ -533,9 +525,9 @@
             }
         },
 
-        "createConnectionConfigurationPage" : {
+        "createConnectionConfigurationPage": {
             "info": {
-                "createConnectionConfigurationInfo" : "Fill out the required * fields to create a new Connection Configuration"
+                "createConnectionConfigurationInfo": "Fill out the required * fields to create a new Connection Configuration"
             },
             "labels": {
                 "configurationPurpose": "Configuration Purpose *",
@@ -558,7 +550,7 @@
                 "confirmFallbackPassword": "Confirm Fallback Password",
                 "quitPassword": "Quit Password",
                 "confirmQuitPassword": "Confirm Quit Password",
-                "noCertificatesUploadedYet" : "No certificates uploaded yet"
+                "noCertificatesUploadedYet": "No certificates uploaded yet"
             },
             "placeholders": {
                 "proxyHost": "Enter proxy host",
@@ -566,12 +558,12 @@
                 "proxyUsername": "Enter proxy username",
                 "proxyPassword": "Enter proxy password"
             },
-            "validation" : {
-                "required" : "This field is required",
-                "mustBeWithUrl" : "Must start with http:// or https://",
-                "invalidPort" : "Invalid port, ex. 8080",
-                "noMatch" : "Passwords don't match",
-                "mustBeNumber" : "The value can only consist of numbers"
+            "validation": {
+                "required": "This field is required",
+                "mustBeWithUrl": "Must start with http:// or https://",
+                "invalidPort": "Invalid port, ex. 8080",
+                "noMatch": "Passwords don't match",
+                "mustBeNumber": "The value can only consist of numbers"
             },
             "selectValues": {
                 "start_exam": "Starting an Exam",
@@ -579,18 +571,18 @@
             }
         },
 
-        "connectionConfigurationViewAndEditPage" : {
-            "title" : "Edit Connection Configuration",
-            "buttons" : {
+        "connectionConfigurationViewAndEditPage": {
+            "title": "Edit Connection Configuration",
+            "buttons": {
                 "saveChanges": "Save Changes",
                 "revertChanges": "Revert Changes"
             },
-            "validation" : {
-                "required" : "This field is required",
-                "mustBeWithUrl" : "Must start with http:// or https://",
-                "invalidPort" : "Invalid port, ex. 8080",
-                "noMatch" : "Passwords don't match",
-                "mustBeNumber" : "The value can only consist of numbers"
+            "validation": {
+                "required": "This field is required",
+                "mustBeWithUrl": "Must start with http:// or https://",
+                "invalidPort": "Invalid port, ex. 8080",
+                "noMatch": "Passwords don't match",
+                "mustBeNumber": "The value can only consist of numbers"
             },
             "labels": {
                 "configurationPurpose": "Configuration Purpose *",
@@ -613,16 +605,16 @@
                 "confirmFallbackPassword": "Confirm Fallback Password",
                 "quitPassword": "Quit Password",
                 "confirmQuitPassword": "Confirm Quit Password",
-                "noCertificatesUploadedYet" : "No certificates uploaded yet"
+                "noCertificatesUploadedYet": "No certificates uploaded yet"
             },
-            "filters" : {
+            "filters": {
                 "activeSelector": "Active",
                 "inactiveSelector": "Inactive"
             },
-            "info" : {
-                "createdAt" : "Created at: ",
-                "lastUpdatedAt" : "Last Updated at ",
-                "by" : " by "
+            "info": {
+                "createdAt": "Created at: ",
+                "lastUpdatedAt": "Last Updated at ",
+                "by": " by "
             },
             "selectValues": {
                 "start_exam": "Starting an Exam",
@@ -640,11 +632,11 @@
         }
     },
 
-    "certificates" : {
-        "addCertificate" : "Add Certificate",
-        "filters" : {
-            "searchTitle" : "Search",
-            "searchField" : "Search for Certificates"
+    "certificates": {
+        "addCertificate": "Add Certificate",
+        "filters": {
+            "searchTitle": "Search",
+            "searchField": "Search for Certificates"
         },
 
         "certificateTableHeaders": {
@@ -658,17 +650,17 @@
             "informationPart1": "Delete Certificate: ",
             "informationPart3": " ?"
         },
-        "certificateDialog" : {
-            "uploadCertificate" : "Upload Certificate",
-            "selectFromFolder" : "Select From File Explorer",
-            "uploadCertificateHelp" : "Drag and Drop or Search through File Explorer",
-            "addCertificate" : "Add Certificate",
-            "onlyAllowed" : "File Type not allowed",
-            "allowed" : "Allowed File Types",
-            "dropHere" : "Drop a certificate file here",
-            "password" : "Password",
-            "uploadFailed" : "Failed to upload certificate, please contact a system administrator",
-            "keystorePasswordIncorrect" : "The password was incorrect. Please try again or contact a system administrator"
+        "certificateDialog": {
+            "uploadCertificate": "Upload Certificate",
+            "selectFromFolder": "Select From File Explorer",
+            "uploadCertificateHelp": "Drag and Drop or Search through File Explorer",
+            "addCertificate": "Add Certificate",
+            "onlyAllowed": "File Type not allowed",
+            "allowed": "Allowed File Types",
+            "dropHere": "Drop a certificate file here",
+            "password": "Password",
+            "uploadFailed": "Failed to upload certificate, please contact a system administrator",
+            "keystorePasswordIncorrect": "The password was incorrect. Please try again or contact a system administrator"
         },
         "types": {
             "UNKNOWN": "Unknown",
@@ -677,16 +669,15 @@
             "DATA_ENCIPHERMENT_PRIVATE_KEY": "Identity",
             "KEY_CERT_SIGN": "CA"
         }
-
     },
 
-    "templates" : {
-        "createTemplate" : {
-            "info" : "What kind of template do you want to create?",
-            "sebClientTemplate" : "SEB Client Template",
-            "examTemplate" : "Exam Template",
-            "sebClientTemplateInfo" : "To create an exam template you need a configuration template. If there is no configuration template in place please create new configuration template first.",
-            "examTemplateInfo" : "To create an exam template you need a configuration template. If there is no configuration template in place please create new configuration template first."
+    "templates": {
+        "createTemplate": {
+            "info": "What kind of template do you want to create?",
+            "sebClientTemplate": "SEB Client Template",
+            "examTemplate": "Exam Template",
+            "sebClientTemplateInfo": "To create an exam template you need a configuration template. If there is no configuration template in place please create new configuration template first.",
+            "examTemplateInfo": "To create an exam template you need a configuration template. If there is no configuration template in place please create new configuration template first."
         }
     },
 
@@ -796,7 +787,7 @@
 
     "examDetail": {
         "info": {
-            "url" : "Url",
+            "url": "Url",
             "start": "Start",
             "end": "End",
             "description": "Description",
@@ -844,11 +835,109 @@
             "archiveExam": "Archiv Exam",
             "archiveTooltip": "Archiving is only activated when exam is finished",
             "deleteExam": "Delete Exam"
+
+        },
+        "sebSettings": {
+            "applicationView": {
+                "allowSwitchToApplications": "Allow switching to third party application (Mac)",
+                "allowFlashFullscreen": "Allow Flash to switch to fullscreen mode (Mac)",
+                "permittedProcess": {
+                    "settingName": "Permitted Processes",
+                    "editDialogTitle": "Permitted Process",
+                    "active": "Active",
+                    "active_tooltip": "This permitted process item is active",
+                    "os": "OS",
+                    "os_tooltip": "Indicates on which operating system the permitted process runs",
+                    "os_0": "macOS",
+                    "os_1": "Win",
+                    "title": "Title",
+                    "title_tooltip": "Application title which is displayed in the application chooser.\n Background processes don't have a title, because they can't be selected by users.",
+                    "description": "Description",
+                    "description_tooltip": "Optional, should explain what kind of process this is,\n because this might not be obvious only from the executable's name.",
+                    "executable": "Executable",
+                    "executable_tooltip": "File name of the executable, which should not contain any parts of a file system path,\n only the filename of the exe file (like calc.exe).",
+                    "originalName": "Original Name",
+                    "signature": "Signature",
+                    "allowedExecutables": "Window handling process",
+                    "path": "Path",
+                    "arguments": "Arguments",
+                    "arguments_active": "Active",
+                    "arguments_argument": "Argument",
+                    "arguments_addAction": "Add new argument",
+                    "arguments:removeAction": "Remove this argument",
+                    "identifier": "Identifier",
+                    "identifier_tooltip": "(Sub) string in the title of the main window of a tricky third party application (Java, Acrobat etc.).\n Mac OS X: Bundle identifier of the process in reverse domain notation.",
+                    "iconInTaskbar": "Icon in taskbar",
+                    "iconInTaskbar_tooltip": "Show icon of permitted application in task bar\n (not possible when 'run in background' is enabled).",
+                    "autostart": "Autostart",
+                    "autostart_tooltip": "Start the process automatically together with SEB",
+                    "runInBackground": "Allow running in background",
+                    "runInBackground_tooltip": "Allow the permitted process to already be running when SEB starts.\n Such a process can't have an icon in the task bar.",
+                    "allowUserToChooseApp": "Allow user to select location of application",
+                    "strongKill": "Force quit (risk of data loss)",
+                    "strongKill_tooltip": "Terminate process in a not-nice way, which may cause data loss if the application had unsaved data",
+                    "allowOpenAndSavePanel": "Allow open/save panel",
+                    "allowShareSheet": "Allow share sheet",
+                    "allowManualStart": "Allow manual start",
+                    "allowNetworkAccess": "Allow network access",
+                    "teamIdentifier": "Team Identifier",
+                    "allowOpenAndSavePanel_tooltip": "When using AAC Assessment Mode, SEB blocks the macOS Open File and Save As panel. Users cannot browse the file system and open files manually in most permitted apps with AAC Multi App Mode.",
+                    "allowShareSheet_tooltip": "When using AAC Assessment Mode, SEB blocks the macOS share sheet. Users cannot share documents in permitted apps with AAC Multi App Mode.",
+                    "allowManualStart_tooltip": "Allow user to start the additional application with its Dock icon. Otherwise the app can be started by downloading and opening its documents",
+                    "allowNetworkAccess_tooltip": "Allow the permitted app in AAC Multi App Mode to access the network/internet",
+                    "teamIdentifier_tooltip": "Team identifier of the app's code signature"
+                },
+                "prohibitedProcess": {
+                    "settingName": "Prohibited Processes",
+                    "editDialogTitle": "Prohibited Process",
+                    "active": "Active",
+                    "active_tooltip": "Indicates if this prohibited process item is active",
+                    "os": "OS",
+                    "os_0": "macOS",
+                    "os_1": "Win",
+                    "os_tooltip": "",
+                    "description": "Description",
+                    "description_tooltip": "Optional, to explain what kind of process this is,\n because this might not be obvious only from the executable's name.",
+                    "executable": "Executable",
+                    "executable_tooltip": "File name of the executable, which should not contain any parts of a file system path,\n only the filename of the exe file (like calc.exe).",
+                    "originalName": "Original Name",
+                    "originalName_tooltip": "Original file name (optional)",
+                    "identifier": "Identifier",
+                    "identifier_tooltip": "Title of the main window of a Java third party application.\n Mac OS X: Bundle identifier of the process in reverse domain notation.",
+                    "strongKill": "Force quit (risk of data loss)",
+                    "strongKill_tooltip": "Terminate process in a not-nice way,\nwhich may cause data loss if the application had unsaved data",
+                    "ignoreAAC": "Ignore in AAC",
+                    "ignoreAAC_tooltip": "When using the AAC kiosk mode\n(which prevents network and screen access for other processes),\nignore this prohibited process"
+                }
+            },
+            "networkView": {
+                "filterGroupTitle": "URL Filter",
+                "URLFilterEnable": "Activate URL Filtering",
+                "URLFilterEnableContentFilter": "Filter also embedded content",
+                "URLFilterRules": {
+                    "settingName": "Filter",
+                    "editDialogTitle": "URL Filter Rule",
+                    "active": "Active",
+                    "regex": "Regex",
+                    "expression": "Expression",
+                    "action": "Action",
+                    "action_0": "Block",
+                    "action_1": "Allow"
+                },
+                "proxySettingsPolicy": {
+                    "0": "Use system proxy settings",
+                    "1": "Use SEB proxy settings"
+                },
+                "ExcludeSimpleHostnames": "Exclude simple hostnames",
+                "ExceptionsList": "Bypass proxy settings for these hosts and domains",
+                "FTPPassive": "Use Passive FTP Mode (PASV)",
+                "proxies": "Proxies"
+            }
         }
     },
 
     "monitoringExams": {
-        "title" : "Monitor Exams",
+        "title": "Monitor Exams",
         "info": {
             "runningExams": "Running Exams",
             "search": "Search:",
@@ -857,8 +946,8 @@
             "examNameSearchPlaceholder": "Search",
 
             "filter": "Filter",
-            "examType" : "Exam Type",
-            "examState" : "Exam State",
+            "examType": "Exam Type",
+            "examState": "Exam State",
             "examName": "Exam Name",
             "examStart": "Exam Start"
         },
@@ -924,7 +1013,7 @@
             "range": "Range:",
             "noGroupClients": "Clients not in any group",
             "clients": " Clients",
-            "buttons" : {
+            "buttons": {
                 "proctor": "Proctor",
                 "viewList": "View List"
             }
@@ -934,7 +1023,7 @@
             "notifications": "Notifications"
         },
         "clientStates": {
-            "clientStates" : "Client States"
+            "clientStates": "Client States"
         },
         "indicators": {
             "indicators": "Indicators",
@@ -942,12 +1031,11 @@
             "wlanStatusInfo": "Clients with weak Wifi signal"
         },
         "ask": {
-            "askKey" : "App Signature Keys",
-            "askKeyInfo" : "Number of connected ASK",
+            "askKey": "App Signature Keys",
+            "askKeyInfo": "Number of connected ASK",
 
-
-            "askKeyDescription" : "The following App Signature Keys (ASK) have connected to this exam:",
-            "askKeyConnected" : " Connected"
+            "askKeyDescription": "The following App Signature Keys (ASK) have connected to this exam:",
+            "askKeyConnected": " Connected"
         }
     },
 
@@ -987,7 +1075,7 @@
             "actions": "Actions",
             "lock": "Lock Screen",
             "quit": "Quit Client",
-            "group" : "Group:",
+            "group": "Group:",
             "mark-cancelled": "Mark as cancelled"
         },
         "main": {
@@ -999,24 +1087,22 @@
             "screenProctoring": "Screen Proctoring",
             "clientLogs": "Client Logs"
         },
-        "logContainer" : {
-            "tableHeaders" : {
-                "eventType" : "Event Type",
-                "sebClientTime" : "Seb Client Time",
-                "sebServerTime" : "Seb Server Time",
-                "value" : "Value",
-                "message" : "Message"
+        "logContainer": {
+            "tableHeaders": {
+                "eventType": "Event Type",
+                "sebClientTime": "Seb Client Time",
+                "sebServerTime": "Seb Server Time",
+                "value": "Value",
+                "message": "Message"
             },
-            "sortingAndFilter" : {
-                "all" : "All",
-                "info" : "Info",
-                "warning" : "Warning",
-                "error" : "Error",
-                "searchForLogs" : "Search For Logs"
-
+            "sortingAndFilter": {
+                "all": "All",
+                "info": "Info",
+                "warning": "Warning",
+                "error": "Error",
+                "searchForLogs": "Search For Logs"
             }
         }
-
     },
     "titles": {
         "home": "Home",
@@ -1028,8 +1114,8 @@
         "quizImport": "Prepare Exam",
         "createTemplate": "Create Template",
         "addExamWithURL": "Add Exam With URL",
-        "followUp" : "Follow Up",
-        "archiveExams" : "Archive Exams",
+        "followUp": "Follow Up",
+        "archiveExams": "Archive Exams",
         "preparation": "Preparation",
         "recentExams": "Last Edited Exams",
         "settings": "Settings",
@@ -1045,11 +1131,11 @@
         "assessmentToolConnections": "Assessment Tool Connections",
         "createAssessmentTool": "Assessment Tool Setup",
         "assessmentTool": "Assessment Tool",
-        "assessmentToolEdit" : "Edit Assessment Tool Connection",
+        "assessmentToolEdit": "Edit Assessment Tool Connection",
         "connectionConfigurationViewAndEdit": "Edit Connection Configuration",
-        "createConnectionConfiguration" : "Add Connection Configuration",
-        "connectionConfigurations" : "Connection Configurations",
-        "certificates" : "Certificates"
+        "createConnectionConfiguration": "Add Connection Configuration",
+        "connectionConfigurations": "Connection Configurations",
+        "certificates": "Certificates"
     },
 
     "warnings": {
@@ -1088,7 +1174,6 @@
             "certificates": "Certificates",
             "userAccounts": "User Accounts",
             "createUserAccount": "New User Account"
-
         },
 
         "screenReader": {
@@ -1138,8 +1223,8 @@
 
     "$vuetify": {
         "dataIterator": {
-          "rowsPerPageText": "Items per page:",
-          "pageText": "{0}-{1} of {2}"
+            "rowsPerPageText": "Items per page:",
+            "pageText": "{0}-{1} of {2}"
         }
     }
 }

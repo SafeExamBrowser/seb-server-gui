@@ -1,10 +1,13 @@
-type GroupObject  = {
-    numberOfPages: number;
-    pageNumber: number;
-    pageSize: number;
-    content: Group[];
-}
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+type EntityPrivilege = {
+    id: number;
+    entityType: string;
+    entityId: number;
+    userUuid: string;
+    privileges: string;
+};
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type Group = {
     id: number;
     uuid: string;
@@ -17,17 +20,17 @@ type Group = {
     entityPrivileges: EntityPrivilege[];
     active: boolean;
     exam: SPExamView;
-}
+};
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+type GroupObject = {
+    numberOfPages: number;
+    pageNumber: number;
+    pageSize: number;
+    content: Group[];
+};
 
-type EntityPrivilege = {
-    id: number;
-    entityType: string;
-    entityId: number;
-    userUuid: string;
-    privileges: string;
-}
-
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type GroupUuid = {
     uuid: string;
     name: string;
@@ -40,4 +43,4 @@ type GroupUuid = {
     sortOrder: string;
     screenshots: ScreenshotData[];
     exam: SPExamView;
-}
+};

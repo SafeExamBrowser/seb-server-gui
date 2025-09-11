@@ -1,7 +1,7 @@
-import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { defineStore } from "pinia";
+import { ref } from "vue";
 
-export const useAssessmentToolStore = defineStore('assessmentTool', () => {
+export const useAssessmentToolStore = defineStore("assessmentTool", () => {
     const searchField = ref<string | null>(null);
     const currentPagingOptions = ref<ServerTablePaging>();
 

@@ -3,12 +3,12 @@ export enum ExamStatusEnum {
     TEST_RUN = "TEST_RUN",
     RUNNING = "RUNNING",
     FINISHED = "FINISHED",
-    ARCHIVED = "ARCHIVED"
+    ARCHIVED = "ARCHIVED",
 }
 
 export enum ExamTypeEnum {
     UNDEFINED = "UNDEFINED",
     MANAGED = "MANAGED",
     BYOD = "BYOD",
-    VDI = "VDI"
+    VDI = "VDI",
 }

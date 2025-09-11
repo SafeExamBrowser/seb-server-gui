@@ -1,10 +1,3 @@
-type ClientGroups = {
-    number_of_pages: number;
-    page_number: number;
-    page_size: number;
-    content: ClientGroup[];
-}
-
 type ClientGroup = {
     id?: number;
     examId: number;
@@ -17,5 +10,13 @@ type ClientGroup = {
     clientOS?: string;
     nameRangeStartLetter?: string;
     nameRangeEndLetter?: string;
-    isSPSGroup?: boolean
+    isSPSGroup?: boolean;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+type ClientGroups = {
+    number_of_pages: number;
+    page_number: number;
+    page_size: number;
+    content: ClientGroup[];
 };

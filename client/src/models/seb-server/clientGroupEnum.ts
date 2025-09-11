@@ -3,7 +3,7 @@ export enum ClientGroupEnum {
     IP_V4_RANGE = "IP_V4_RANGE",
     CLIENT_OS = "CLIENT_OS",
     NAME_ALPHABETICAL_RANGE = "NAME_ALPHABETICAL_RANGE",
-    SP_FALLBACK_GROUP = "SP_FALLBACK_GROUP"
+    SP_FALLBACK_GROUP = "SP_FALLBACK_GROUP",
 }
 
 export enum ClientOSEnum {
@@ -12,5 +12,5 @@ export enum ClientOSEnum {
     MAC_OS = "MAC_OS",
     I_OS = "I_OS",
     IPAD_OS = "IPAD_OS",
-    I_OS_OR_IPAD_OS = "I_OS_OR_IPAD_OS"
+    I_OS_OR_IPAD_OS = "I_OS_OR_IPAD_OS",
 }

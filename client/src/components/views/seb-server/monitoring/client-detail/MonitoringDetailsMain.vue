@@ -1,26 +1,31 @@
 <template>
-
     <!-- Raised Hand Popup  -->
     <v-row
         v-if="raiseHandNotification != null"
-        elevation="4"
         class="rounded-lg pa-4 raise-hand-row mb-1"
-        style="background-color: #FFFFFE; border: 2px solid #215caf;"
+        elevation="4"
+        style="background-color: #fffffe; border: 2px solid #215caf"
     >
         <v-row align="center" justify="center">
             <v-col cols="1">
-                <v-icon class="ml-5" icon="mdi-hand-back-right" style="color: #215caf;"></v-icon>
+                <v-icon
+                    class="ml-5"
+                    icon="mdi-hand-back-right"
+                    style="color: #215caf"
+                ></v-icon>
             </v-col>
             <v-col>
                 {{ raiseHandNotification.text }}
             </v-col>
             <v-col align="right">
                 <v-btn
+                    color="primary"
                     :loading="resolveRaiseHandSent"
                     rounded="sm"
-                    color="primary"
                     variant="flat"
-                    @click="confirmNotification(raiseHandNotification.id.toString())"
+                    @click="
+                        confirmNotification(raiseHandNotification.id.toString())
+                    "
                 >
                     {{ translate("monitoringDetails.main.resolveRaiseHand") }}
                 </v-btn>
@@ -30,31 +35,40 @@
 
     <!-- Messages -->
     <v-row>
-        <v-col cols="12" class="mb-1">
+        <v-col class="mb-1" cols="12">
             <template v-if="messages != null">
                 <v-row
                     v-for="message in messages"
                     :key="message.id"
-                    elevation="4"
                     class="rounded-lg pa-4 message-card"
-                    style="background-color: #FFFFFE; border: 2px solid #215caf;"
+                    elevation="4"
+                    style="background-color: #fffffe; border: 2px solid #215caf"
                 >
                     <v-row align="center" justify="center">
                         <v-col cols="1">
-                            <v-icon icon="ml-5 mdi-monitor-lock" style="color: #215caf;"></v-icon>
+                            <v-icon
+                                icon="ml-5 mdi-monitor-lock"
+                                style="color: #215caf"
+                            ></v-icon>
                         </v-col>
                         <v-col>
                             {{ message.text }}
                         </v-col>
                         <v-col align="right">
                             <v-btn
+                                color="primary"
                                 :loading="resolveLockScreenSent"
                                 rounded="sm"
-                                color="primary"
                                 variant="flat"
-                                @click="confirmNotification(message.id.toString())"
+                                @click="
+                                    confirmNotification(message.id.toString())
+                                "
                             >
-                                {{ translate("monitoringDetails.main.unlockScreen") }}
+                                {{
+                                    translate(
+                                        "monitoringDetails.main.unlockScreen",
+                                    )
+                                }}
                             </v-btn>
                         </v-col>
                     </v-row>
@@ -69,20 +83,29 @@
 
     <v-row>
         <v-col>
-            <div elevation="4" class="rounded-lg pr-4 pl-4" style="position: relative;">
-
+            <div
+                class="rounded-lg pr-4 pl-4"
+                elevation="4"
+                style="position: relative"
+            >
                 <!-- Top-right toggle, shown only if screen proctoring is enabled -->
-                <div v-if="screenProctoringEnabled" class="d-flex justify-end mb-2">
+                <div
+                    v-if="screenProctoringEnabled"
+                    class="d-flex justify-end mb-2"
+                >
                     <v-btn-toggle v-model="currentView" mandatory>
-                        <v-btn value="proctoring" color="primary" size="small">
-                            {{ translate("monitoringDetails.main.screenProctoring") }}
+                        <v-btn color="primary" size="small" value="proctoring">
+                            {{
+                                translate(
+                                    "monitoringDetails.main.screenProctoring",
+                                )
+                            }}
                         </v-btn>
-                        <v-btn value="logs" color="primary" size="small">
+                        <v-btn color="primary" size="small" value="logs">
                             {{ translate("monitoringDetails.main.clientLogs") }}
                         </v-btn>
                     </v-btn-toggle>
                 </div>
-
 
                 <!-- Proctoring view -->
                 <div v-if="currentView === 'proctoring'" class="view-container">
@@ -92,113 +115,116 @@
                 <!-- Logs view -->
                 <div v-else class="view-container">
                     <MonitoringClientLogsContainer>
-
                     </MonitoringClientLogsContainer>
                 </div>
-
             </div>
         </v-col>
     </v-row>
-
-
-
 </template>
 
 <script setup lang="ts">
-    import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
-    import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
-    import { NotificationEnum } from "@/models/seb-server/monitoringEnums";
-    import { useDisplay } from "vuetify";
-    import { InstructionEnum } from "@/models/seb-server/instructionEnum";
-    import {translate} from "@/utils/generalUtils";
-    import { nextTick } from "vue";
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
+import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
+import { NotificationEnum } from "@/models/seb-server/monitoringEnums";
+import { useDisplay } from "vuetify";
+import { translate } from "@/utils/generalUtils";
+import { nextTick } from "vue";
 
-    //route params
-    const examId = useRoute().params.examId.toString();
-    const connectionToken = useRoute().params.connectionToken.toString();
+// route params
+const examId = useRoute().params.examId.toString();
+const connectionToken = useRoute().params.connectionToken.toString();
 
-    //ui control
-    const panels = ref([0, 1]);
-    const resolveRaiseHandSent = ref<boolean>(false);
-    const resolveLockScreenSent = ref<boolean>(false);
+// ui control
+const panels = ref([0, 1]);
+const resolveRaiseHandSent = ref<boolean>(false);
+const resolveLockScreenSent = ref<boolean>(false);
 
+// stores
+const monitoringStore = useMonitoringStore();
 
-    //stores
-    const monitoringStore = useMonitoringStore();
+// attributes for switch between logs and screen proctor view
+const screenProctoringEnabled = computed(() => {
+    return (
+        monitoringStore.selectedExam?.additionalAttributes
+            .enableScreenProctoring === "true"
+    );
+});
+const currentView = ref<"proctoring" | "logs">(
+    screenProctoringEnabled.value ? "proctoring" : "logs",
+);
 
-    //attributes for switch between logs and screen proctor view
-    const screenProctoringEnabled = computed(() => {
-        return monitoringStore.selectedExam?.additionalAttributes.enableScreenProctoring === "true";
-    });
-    const currentView = ref<'proctoring' | 'logs'>(screenProctoringEnabled.value ? 'proctoring' : 'logs');
+// display
+const { lg } = useDisplay();
 
-    //display
-    const {lg} = useDisplay();
+onMounted(() => {
+    console.log(lg.value);
+});
 
-    onMounted(() => {
-        console.log(lg.value)
-    });
-
-    const raiseHandNotification: ComputedRef<ClientNotification | null> = computed(() => {
-        const raiseHand: ClientNotification | undefined = monitoringStore.pendingNotifications.find(item => item.notificationType == NotificationEnum.RAISE_HAND);
-        if(raiseHand != null){
+const raiseHandNotification: ComputedRef<ClientNotification | null> = computed(
+    () => {
+        const raiseHand: ClientNotification | undefined =
+            monitoringStore.pendingNotifications.find(
+                (item) => item.notificationType == NotificationEnum.RAISE_HAND,
+            );
+        if (raiseHand != null) {
             resolveRaiseHandSent.value = false;
             return raiseHand;
         }
 
         return null;
-    });
+    },
+);
 
-    const messages: ComputedRef<ClientNotification[] | null> = computed(() => {
-        const messages: ClientNotification[] | undefined = monitoringStore.pendingNotifications.filter(item => item.notificationType != NotificationEnum.RAISE_HAND);
-        if(messages != null){
-            // notificationSent.value = false;
-            return messages;
-        }
+const messages: ComputedRef<ClientNotification[] | null> = computed(() => {
+    const messages: ClientNotification[] | undefined =
+        monitoringStore.pendingNotifications.filter(
+            (item) => item.notificationType != NotificationEnum.RAISE_HAND,
+        );
+    if (messages != null) {
+        // notificationSent.value = false;
+        return messages;
+    }
 
-        return null;
-    });
+    return null;
+});
 
-    watch(raiseHandNotification, (newVal) => {
-        if (newVal !== null) {
-            scrollToTop();
-        }
-    });
+watch(raiseHandNotification, (newVal) => {
+    if (newVal !== null) {
+        scrollToTop();
+    }
+});
 
-    // Watch messages
-    watch(messages, (newVal) => {
-        if (newVal !== null && newVal.length > 0) {
-            scrollToTop();
-        }
-    });
+// Watch messages
+watch(messages, (newVal) => {
+    if (newVal !== null && newVal.length > 0) {
+        scrollToTop();
+    }
+});
 
-    watch(lg, () => {
-        console.log(lg.value)
-    })
+watch(lg, () => {
+    console.log(lg.value);
+});
 
+watch(screenProctoringEnabled, (enabled) => {
+    currentView.value = enabled ? "proctoring" : "logs";
+});
 
-    watch(screenProctoringEnabled, (enabled) => {
-        currentView.value = enabled ? 'proctoring' : 'logs';
-    });
-
-
-    function scrollToTop() {
-        nextTick(() => {
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
+function scrollToTop() {
+    nextTick(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth",
         });
-    }
+    });
+}
 
-    async function confirmNotification(notificationId: string){
-        await monitoringViewService.confirmNotification(examId, notificationId, connectionToken);
-    }
-
-
-
+async function confirmNotification(notificationId: string) {
+    await monitoringViewService.confirmNotification(
+        examId,
+        notificationId,
+        connectionToken,
+    );
+}
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

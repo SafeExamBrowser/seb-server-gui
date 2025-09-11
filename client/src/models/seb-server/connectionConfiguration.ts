@@ -28,6 +28,7 @@ type ConnectionConfiguration = {
     exam_selection: Set<number>;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type ConnectionConfigurations = {
     number_of_pages: number;
     page_number: number;
@@ -35,7 +36,7 @@ type ConnectionConfigurations = {
     content: ConnectionConfiguration[];
 };
 
-
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type OptionalParGetConnectionConfiguration = {
     page_size?: number;
     page_number?: number;
@@ -46,64 +47,64 @@ type OptionalParGetConnectionConfiguration = {
     institutionId?: string | null;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type CreateConnectionConfigurationPar = {
     name: string;
-    sebConfigPurpose : string;
+    sebConfigPurpose: string;
     sebServerPingTime: number;
-    exam_selection? : Number[];
+    exam_selection?: Number[];
 
-    cert_alias? :string;
-    encryptSecret? : string;
-    confirm_encrypt_secret? : string;
-    cert_encryption_asym? : boolean;
+    cert_alias?: string;
+    encryptSecret?: string;
+    confirm_encrypt_secret?: string;
+    cert_encryption_asym?: boolean;
 
-    configurationPassword? : string;
-    confirmConfigurationPassword? : string;
+    configurationPassword?: string;
+    confirmConfigurationPassword?: string;
 
-    sebServerFallback : boolean;
-    startURL? : string;
-    sebServerFallbackTimeout? : number;
-    sebServerFallbackAttempts? : number;
-    sebServerFallbackAttemptInterval? : number;
+    sebServerFallback: boolean;
+    startURL?: string;
+    sebServerFallbackTimeout?: number;
+    sebServerFallbackAttempts?: number;
+    sebServerFallbackAttemptInterval?: number;
 
     sebServerFallbackPasswordHash?: string;
-    sebServerFallbackPasswordHashConfirm? : string;
+    sebServerFallbackPasswordHashConfirm?: string;
 
-    hashedQuitPassword? : string;
-    hashedQuitPasswordConfirm? : string;
+    hashedQuitPassword?: string;
+    hashedQuitPasswordConfirm?: string;
 
-    "vdiSetup": "NO"
-}
+    vdiSetup: "NO";
+};
 
-
-
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type UpdateConnectionConfigurationPar = {
     id: string;
     institutionId: string;
     name: string;
-    sebConfigPurpose : string;
+    sebConfigPurpose: string;
     sebServerPingTime: number;
-    exam_selection? : Number[];
+    exam_selection?: Number[];
 
-    encryptSecret? : string;
-    confirm_encrypt_secret? : string;
-    cert_encryption_asym? : boolean;
-    cert_alias? :string;
+    encryptSecret?: string;
+    confirm_encrypt_secret?: string;
+    cert_encryption_asym?: boolean;
+    cert_alias?: string;
 
-    configurationPassword? : string;
-    confirmConfigurationPassword? : string;
+    configurationPassword?: string;
+    confirmConfigurationPassword?: string;
 
-    sebServerFallback : boolean;
-    startURL? : string;
-    sebServerFallbackTimeout? : number;
-    sebServerFallbackAttempts? : number;
-    sebServerFallbackAttemptInterval? : number;
+    sebServerFallback: boolean;
+    startURL?: string;
+    sebServerFallbackTimeout?: number;
+    sebServerFallbackAttempts?: number;
+    sebServerFallbackAttemptInterval?: number;
 
     sebServerFallbackPasswordHash?: string;
-    sebServerFallbackPasswordHashConfirm? : string;
+    sebServerFallbackPasswordHashConfirm?: string;
 
-    hashedQuitPassword? : string;
-    hashedQuitPasswordConfirm? : string;
+    hashedQuitPassword?: string;
+    hashedQuitPasswordConfirm?: string;
 
-    "vdiSetup": "NO"
-}
+    vdiSetup: "NO";
+};

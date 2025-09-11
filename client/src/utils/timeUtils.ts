@@ -1,11 +1,10 @@
 import { toZonedTime } from "date-fns-tz";
-import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
-import {DateTime} from "luxon";
 import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
 
-
-//display dates according to the user's timezone
-export function formatIsoDateToFullDate(dateString: string | null | undefined): string {
+// display dates according to the user's timezone
+export function formatIsoDateToFullDate(
+    dateString: string | null | undefined,
+): string {
     const userAccountStore = useUserAccountStore();
     const timeZone: string = userAccountStore.getUserTimeZone();
 
@@ -22,15 +21,15 @@ export function formatIsoDateToFullDate(dateString: string | null | undefined): 
     }
 
     // Format the date using Intl.DateTimeFormat with the specified timezone
-    const formatter = new Intl.DateTimeFormat('de-DE', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        timeZone: timeZone,
-        hour12: false
+    const formatter = new Intl.DateTimeFormat("de-DE", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        timeZone,
+        hour12: false,
     });
 
     // Get formatted parts
@@ -38,7 +37,7 @@ export function formatIsoDateToFullDate(dateString: string | null | undefined): 
 
     // Build the formatted string
     const formattedParts: Record<string, string> = {};
-    parts.forEach(part => {
+    parts.forEach((part) => {
         formattedParts[part.type] = part.value;
     });
 
@@ -46,7 +45,7 @@ export function formatIsoDateToFullDate(dateString: string | null | undefined): 
     return `${formattedParts.day}.${formattedParts.month}.${formattedParts.year} ${formattedParts.hour}:${formattedParts.minute}:${formattedParts.second}`;
 }
 
-export function getCurrentDateString(): string{
+export function getCurrentDateString(): string {
     const date = new Date();
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
@@ -55,8 +54,8 @@ export function getCurrentDateString(): string{
     return `${year}-${month}-${day}`;
 }
 
-export function formatDate(dateString: string): string{
-    const [year, month, day] = dateString.split('-');
+export function formatDate(dateString: string): string {
+    const [year, month, day] = dateString.split("-");
     return `${day}.${month}.${year}`;
 }
 
@@ -80,9 +79,8 @@ export function formatIsoToReadableDateTime(dateStr?: string | null): string {
     return `${datePart} • ${timePart}`; // e.g., August 7, 2025 • 11:18
 }
 
-
-export function formatTimestampToFullDate(timestamp: string | any): string{
-    if(timestamp == "0" || timestamp == null){
+export function formatTimestampToFullDate(timestamp: string | any): string {
+    if (timestamp == "0" || timestamp == null) {
         return "";
     }
 
@@ -97,11 +95,23 @@ export function formatTimestampToFullDate(timestamp: string | any): string{
     const minutes = ("0" + date.getMinutes()).slice(-2);
     const seconds = ("0" + date.getSeconds()).slice(-2);
 
-    return day + "." + month + "." + year + " " + hours + ":" + minutes + ":" + seconds;
+    return (
+        day +
+        "." +
+        month +
+        "." +
+        year +
+        " " +
+        hours +
+        ":" +
+        minutes +
+        ":" +
+        seconds
+    );
 }
 
-export function formatTimestampToDate(timestamp: number): string{
-    if(timestamp == 0){
+export function formatTimestampToDate(timestamp: number): string {
+    if (timestamp == 0) {
         return "";
     }
 
@@ -115,8 +125,8 @@ export function formatTimestampToDate(timestamp: number): string{
     return day + "." + month + "." + year;
 }
 
-export function formatTimestampToTime(timestamp: number): string{
-    if(timestamp == 0){
+export function formatTimestampToTime(timestamp: number): string {
+    if (timestamp == 0) {
         return "";
     }
 
@@ -138,9 +148,9 @@ export function toTimeString(milliseconds: number): string {
     const minutes: number = Math.floor(totalSeconds / 60);
     const seconds: number = totalSeconds % 60;
 
-    const hoursString: string = hours.toString().padStart(2, '0');
-    const minutesString: string = minutes.toString().padStart(2, '0');
-    const secondsString: string = seconds.toString().padStart(2, '0');
+    const hoursString: string = hours.toString().padStart(2, "0");
+    const minutesString: string = minutes.toString().padStart(2, "0");
+    const secondsString: string = seconds.toString().padStart(2, "0");
 
     return hoursString + ":" + minutesString + ":" + secondsString;
 }
@@ -149,40 +159,43 @@ export function toSeconds(milliseconds: number): number {
     return Math.floor(milliseconds / 1000);
 }
 
-export function secondsToTimeString(seconds: number): string{
+export function secondsToTimeString(seconds: number): string {
     const hours = Math.floor(seconds / 3600);
     seconds %= 3600;
     const minutes = Math.floor(seconds / 60);
     seconds %= 60;
 
-    const hoursStr = String(hours).padStart(2, '0');
-    const minutesStr = String(minutes).padStart(2, '0');
-    const secondsStr = String(seconds).padStart(2, '0');
+    const hoursStr = String(hours).padStart(2, "0");
+    const minutesStr = String(minutes).padStart(2, "0");
+    const secondsStr = String(seconds).padStart(2, "0");
 
     return `${hoursStr}:${minutesStr}:${secondsStr}`;
 }
 
-export function formatSqlDateToString(sqlDate: string): string{
-    if(sqlDate.length == 0){
+export function formatSqlDateToString(sqlDate: string): string {
+    if (sqlDate.length == 0) {
         return "";
     }
 
-    if(!sqlDate.includes("-")){
+    if (!sqlDate.includes("-")) {
         return "";
     }
 
-    const [year, month, day] = sqlDate.split('-');
+    const [year, month, day] = sqlDate.split("-");
     return `${day}.${month}.${year}`;
 }
 
-export function getStartAndEndTimestampOfDay(sqlDate: string): {start: string, end: string}{
+export function getStartAndEndTimestampOfDay(sqlDate: string): {
+    start: string;
+    end: string;
+} {
     const startTime = new Date(`${sqlDate}T00:01:00.000Z`).getTime();
     const endTime = new Date(`${sqlDate}T23:59:59.999Z`).getTime();
 
     return {
         start: startTime.toString(),
-        end: endTime.toString()
-    }
+        end: endTime.toString(),
+    };
 }
 
 function convertUTCToTimeZone(utcDate: number): Date {
@@ -190,7 +203,7 @@ function convertUTCToTimeZone(utcDate: number): Date {
 
     const utcDateObject = new Date(utcDate);
     const timezone: string | undefined = userAccountStore.userAccount?.timezone;
-    if(timezone == null){
+    if (timezone == null) {
         return utcDateObject;
     }
 
@@ -199,39 +212,49 @@ function convertUTCToTimeZone(utcDate: number): Date {
     return dateInTimezone;
 }
 
-export function calcTimePeriod(timePeriodSelect: number, timePeriodField: number): [string, string]{
-    return [getTimestampFromPeriodSelection(timePeriodSelect, timePeriodField), Date.now().toString()];
+export function calcTimePeriod(
+    timePeriodSelect: number,
+    timePeriodField: number,
+): [string, string] {
+    return [
+        getTimestampFromPeriodSelection(timePeriodSelect, timePeriodField),
+        Date.now().toString(),
+    ];
 }
 
-export function calcTimeSelection(timeSelectionPicker: any): [string, string]{
-    if(timeSelectionPicker.value == null){
+export function calcTimeSelection(timeSelectionPicker: any): [string, string] {
+    if (timeSelectionPicker.value == null) {
         return ["", ""];
     }
 
-    //@ts-ignore
-    return [timeSelectionPicker.value[0].getTime(), timeSelectionPicker.value[1].getTime()];
+    return [
+        timeSelectionPicker.value[0].getTime(),
+        timeSelectionPicker.value[1].getTime(),
+    ];
 }
 
-
-export function getTimestampFromPeriodSelection(timePeriod: number, amount: number): string{
+export function getTimestampFromPeriodSelection(
+    timePeriod: number,
+    amount: number,
+): string {
     const now = new Date();
 
-    switch (timePeriod){
-        case 1: //days
+    switch (timePeriod) {
+        case 1: // days
             now.setDate(now.getDate() - amount);
-        break;
+            break;
 
-        case 2: //weeks
+        case 2: // weeks
             now.setDate(now.getDate() - 7 * amount);
-        break;
+            break;
 
-        case 3: //months
+        case 3: // months
             now.setMonth(now.getMonth() - amount);
-        break;
+            break;
 
-        case 4: //years
+        case 4: // years
             now.setFullYear(now.getFullYear() - amount);
-        break;
+            break;
     }
 
     return now.getTime().toString();

@@ -1,81 +1,136 @@
 <template>
-    <div class="text-white text-h5 font-weight-black ml-10 mt-5" data-testid="assessmentTools-page-title">
+    <div
+        class="text-white text-h5 font-weight-black ml-10 mt-5"
+        data-testid="assessmentTools-page-title"
+    >
         {{ translate("titles.settings") }}
     </div>
 
     <v-row class="mt-10 w-98 h-100">
-        <SettingsNavigation data-testid="assessmentTools-settingsNavigation-component" />
+        <SettingsNavigation
+            data-testid="assessmentTools-settingsNavigation-component"
+        />
 
         <!-- Main Component -->
-        <v-col elevation="4" cols="9" class="bg-white rounded-lg mb-3" data-testid="assessmentTools-list-container">
+        <v-col
+            class="bg-white rounded-lg mb-3"
+            cols="9"
+            data-testid="assessmentTools-list-container"
+            elevation="4"
+        >
             <!-- Title and Add Button -->
-            <v-row class="d-flex align-center justify-space-between px-6 pt-6" data-testid="assessmentTools-header-row">
-                <div class="text-primary text-h5 font-weight-bold" data-testid="assessmentTools-title-text">
+            <v-row
+                class="d-flex align-center justify-space-between px-6 pt-6"
+                data-testid="assessmentTools-header-row"
+            >
+                <div
+                    class="text-primary text-h5 font-weight-bold"
+                    data-testid="assessmentTools-title-text"
+                >
                     {{ translate("titles.assessmentToolConnections") }}
                 </div>
 
                 <div
                     class="d-flex align-center cursor-pointer add-user-container"
-                    @click="navigateTo(constants.CREATE_ASSESSMENT_TOOL_CONNECTION_ROUTE)"
                     data-testid="assessmentTools-addAssessmentTool-button"
+                    @click="
+                        navigateTo(
+                            constants.CREATE_ASSESSMENT_TOOL_CONNECTION_ROUTE,
+                        )
+                    "
                 >
-          <span class="text-primary font-weight-medium mr-2">
-              {{ translate("assessmentToolConnections.assessmentToolsPage.addAssessmentTool") }}
-          </span>
+                    <span class="text-primary font-weight-medium mr-2">
+                        {{
+                            translate(
+                                "assessmentToolConnections.assessmentToolsPage.addAssessmentTool",
+                            )
+                        }}
+                    </span>
 
-                    <div class="add-user-icon d-flex align-center justify-center">
+                    <div
+                        class="add-user-icon d-flex align-center justify-center"
+                    >
                         <v-icon size="28">mdi-plus</v-icon>
                     </div>
                 </div>
             </v-row>
 
-            <v-divider class="custom-divider mx-6 my-4 mt-7" data-testid="assessmentTools-divider-top" />
+            <v-divider
+                class="custom-divider mx-6 my-4 mt-7"
+                data-testid="assessmentTools-divider-top"
+            />
 
             <v-sheet data-testid="assessmentTools-filters-and-table">
                 <!-- Search and filters row -->
-                <v-row class="px-6 pt-4 d-flex flex-wrap align-start" data-testid="assessmentTools-filters-row">
+                <v-row
+                    class="px-6 pt-4 d-flex flex-wrap align-start"
+                    data-testid="assessmentTools-filters-row"
+                >
                     <!-- Search field -->
-                    <v-col cols="5" md="5" class="pa-0 mb-4" data-testid="assessmentTools-search-section">
-                        <div class="text-caption text-grey-darken-1 mt-1 mb-1" data-testid="assessmentTools-search-label">
-                            {{ translate("assessmentToolConnections.assessmentToolsPage.filters.searchTitle") }}
+                    <v-col
+                        class="pa-0 mb-4"
+                        cols="5"
+                        data-testid="assessmentTools-search-section"
+                        md="5"
+                    >
+                        <div
+                            class="text-caption text-grey-darken-1 mt-1 mb-1"
+                            data-testid="assessmentTools-search-label"
+                        >
+                            {{
+                                translate(
+                                    "assessmentToolConnections.assessmentToolsPage.filters.searchTitle",
+                                )
+                            }}
                         </div>
                         <v-text-field
                             v-model="assessmentToolStore.searchField"
-                            :placeholder="translate('assessmentToolConnections.assessmentToolsPage.filters.searchField')"
-                            variant="outlined"
-                            density="comfortable"
-                            type="text"
                             class="search-input"
+                            data-testid="assessmentTools-search-input"
+                            density="comfortable"
                             hide-details
+                            :placeholder="
+                                translate(
+                                    'assessmentToolConnections.assessmentToolsPage.filters.searchField',
+                                )
+                            "
+                            type="text"
+                            variant="outlined"
                             @keydown.enter="onSearch"
                             @keydown.esc="onClearSearch"
-                            data-testid="assessmentTools-search-input"
                         >
                             <template #append-inner>
-                                <v-icon class="search-icon" @click="onSearch" data-testid="assessmentTools-searchIcon-button">
+                                <v-icon
+                                    class="search-icon"
+                                    data-testid="assessmentTools-searchIcon-button"
+                                    @click="onSearch"
+                                >
                                     mdi-magnify
                                 </v-icon>
                             </template>
                         </v-text-field>
 
-                        <div class="d-flex justify-end w-90 mt-5" data-testid="assessmentTools-search-actions">
+                        <div
+                            class="d-flex justify-end w-90 mt-5"
+                            data-testid="assessmentTools-search-actions"
+                        >
                             <v-btn
-                                rounded="sm"
                                 color="black"
+                                data-testid="assessmentTools-cancel-button"
+                                rounded="sm"
                                 variant="outlined"
                                 @click="onClearSearch()"
-                                data-testid="assessmentTools-cancel-button"
                             >
                                 {{ translate("general.cancelButton") }}
                             </v-btn>
 
                             <v-btn
-                                rounded="sm"
-                                color="primary"
-                                variant="flat"
                                 class="ml-2"
-                                @click="onSearch()"
+                                color="primary"
                                 data-testid="assessmentTools-search-button"
+                                rounded="sm"
+                                variant="flat"
+                                @click="onSearch()"
                             >
                                 {{ translate("general.searchButton") }}
                             </v-btn>
@@ -86,19 +141,42 @@
                     <v-col cols="7" data-testid="assessmentTools-filters-right">
                         <v-row dense>
                             <!-- Status -->
-                            <v-col cols="3" class="pa-0 mb-2" data-testid="assessmentTools-statusFilter-section">
-                                <div class="text-caption text-grey-darken-1 mb-1" data-testid="assessmentTools-statusFilter-label">
-                                    {{ translate("assessmentToolConnections.assessmentToolsPage.filters.statusFilter") }}
+                            <v-col
+                                class="pa-0 mb-2"
+                                cols="3"
+                                data-testid="assessmentTools-statusFilter-section"
+                            >
+                                <div
+                                    class="text-caption text-grey-darken-1 mb-1"
+                                    data-testid="assessmentTools-statusFilter-label"
+                                >
+                                    {{
+                                        translate(
+                                            "assessmentToolConnections.assessmentToolsPage.filters.statusFilter",
+                                        )
+                                    }}
                                 </div>
-                                <div class="d-flex flex-wrap gap-2" data-testid="assessmentTools-statusFilter-chips">
+                                <div
+                                    class="d-flex flex-wrap gap-2"
+                                    data-testid="assessmentTools-statusFilter-chips"
+                                >
                                     <v-chip
                                         v-for="status in statuses"
                                         :key="status.value"
-                                        size="small"
                                         class="mr-2 mt-2"
-                                        :class="['filter-chip', selectedStatus === status.value && 'filter-chip-selected']"
-                                        @click="selectedStatus = selectedStatus === status.value ? null : status.value"
+                                        :class="[
+                                            'filter-chip',
+                                            selectedStatus === status.value &&
+                                                'filter-chip-selected',
+                                        ]"
                                         :data-testid="`assessmentTools-statusFilter-chip-${status.value}`"
+                                        size="small"
+                                        @click="
+                                            selectedStatus =
+                                                selectedStatus === status.value
+                                                    ? null
+                                                    : status.value
+                                        "
                                     >
                                         {{ status.label }}
                                     </v-chip>
@@ -108,22 +186,43 @@
                             <!-- Institution -->
                             <v-col
                                 v-if="institutions.length > 0"
-                                cols="4"
                                 class="pa-0 mb-2"
+                                cols="4"
                                 data-testid="assessmentTools-institutionFilter-section"
                             >
-                                <div class="text-caption text-grey-darken-1 mb-1" data-testid="assessmentTools-institutionFilter-label">
-                                    {{ translate("assessmentToolConnections.assessmentToolsPage.filters.institutionFilter") }}
+                                <div
+                                    class="text-caption text-grey-darken-1 mb-1"
+                                    data-testid="assessmentTools-institutionFilter-label"
+                                >
+                                    {{
+                                        translate(
+                                            "assessmentToolConnections.assessmentToolsPage.filters.institutionFilter",
+                                        )
+                                    }}
                                 </div>
-                                <div class="d-flex flex-wrap gap-2" data-testid="assessmentTools-institutionFilter-chips">
+                                <div
+                                    class="d-flex flex-wrap gap-2"
+                                    data-testid="assessmentTools-institutionFilter-chips"
+                                >
                                     <v-chip
                                         v-for="institution in institutions"
                                         :key="institution.modelId"
-                                        size="small"
                                         class="mr-2 mt-2"
-                                        :class="['filter-chip', selectedInstitutionId === institution.modelId && 'filter-chip-selected']"
-                                        @click="selectedInstitutionId = selectedInstitutionId === institution.modelId ? null : institution.modelId"
+                                        :class="[
+                                            'filter-chip',
+                                            selectedInstitutionId ===
+                                                institution.modelId &&
+                                                'filter-chip-selected',
+                                        ]"
                                         :data-testid="`assessmentTools-institutionFilter-chip-${institution.modelId}`"
+                                        size="small"
+                                        @click="
+                                            selectedInstitutionId =
+                                                selectedInstitutionId ===
+                                                institution.modelId
+                                                    ? null
+                                                    : institution.modelId
+                                        "
                                     >
                                         {{ institution.name }}
                                     </v-chip>
@@ -131,19 +230,42 @@
                             </v-col>
 
                             <!-- Type -->
-                            <v-col cols="4" class="pa-0 mb-2 ml-3" data-testid="assessmentTools-typeFilter-section">
-                                <div class="text-caption text-grey-darken-1 mb-1" data-testid="assessmentTools-typeFilter-label">
-                                    {{ translate("assessmentToolConnections.assessmentToolsPage.filters.typeFilter") }}
+                            <v-col
+                                class="pa-0 mb-2 ml-3"
+                                cols="4"
+                                data-testid="assessmentTools-typeFilter-section"
+                            >
+                                <div
+                                    class="text-caption text-grey-darken-1 mb-1"
+                                    data-testid="assessmentTools-typeFilter-label"
+                                >
+                                    {{
+                                        translate(
+                                            "assessmentToolConnections.assessmentToolsPage.filters.typeFilter",
+                                        )
+                                    }}
                                 </div>
-                                <div class="d-flex flex-wrap gap-2" data-testid="assessmentTools-typeFilter-chips">
+                                <div
+                                    class="d-flex flex-wrap gap-2"
+                                    data-testid="assessmentTools-typeFilter-chips"
+                                >
                                     <v-chip
                                         v-for="t in typeOptions"
                                         :key="t.value"
-                                        size="small"
                                         class="mr-2 mt-2"
-                                        :class="['filter-chip', selectedType === t.value && 'filter-chip-selected']"
-                                        @click="selectedType = selectedType === t.value ? null : t.value"
+                                        :class="[
+                                            'filter-chip',
+                                            selectedType === t.value &&
+                                                'filter-chip-selected',
+                                        ]"
                                         :data-testid="`assessmentTools-typeFilter-chip-${t.value}`"
+                                        size="small"
+                                        @click="
+                                            selectedType =
+                                                selectedType === t.value
+                                                    ? null
+                                                    : t.value
+                                        "
                                     >
                                         {{ t.label }}
                                     </v-chip>
@@ -154,81 +276,123 @@
                 </v-row>
 
                 <!-- Data Table -->
-                <v-sheet class="rounded-lg mt-10" data-testid="assessmentTools-table-section">
+                <v-sheet
+                    class="rounded-lg mt-10"
+                    data-testid="assessmentTools-table-section"
+                >
                     <v-data-table-server
                         v-model:options="options"
-                        @update:options="loadItems"
+                        data-testid="assessmentTools-table"
+                        :headers="assessmentToolTableHeaders"
                         :hover="true"
-                        :loading="isLoading"
-                        :loading-text="translate('general.loading')"
                         :items="assessmentTools?.content"
                         :items-length="totalItems"
                         :items-per-page="5"
-                        :items-per-page-options="tableUtils.calcItemsPerPage(totalItems)"
-                        :headers="assessmentToolTableHeaders"
-                        style="min-height:35vh"
-                        data-testid="assessmentTools-table"
+                        :items-per-page-options="
+                            tableUtils.calcItemsPerPage(totalItems)
+                        "
+                        :loading="isLoading"
+                        :loading-text="translate('general.loading')"
+                        style="min-height: 35vh"
+                        @update:options="loadItems"
                     >
-                        <template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort }">
+                        <template
+                            #headers="{
+                                columns,
+                                isSorted,
+                                getSortIcon,
+                                toggleSort,
+                            }"
+                        >
                             <TableHeaders
                                 :columns="columns"
-                                :is-sorted="isSorted"
-                                :get-sort-icon="getSortIcon"
-                                :toggle-sort="toggleSort"
-                                :header-refs-prop="assessmentToolTableHeadersRef"
                                 data-testid="assessmentTools-tableHeaders-component"
+                                :get-sort-icon="getSortIcon"
+                                :header-refs-prop="
+                                    assessmentToolTableHeadersRef
+                                "
+                                :is-sorted="isSorted"
+                                :toggle-sort="toggleSort"
                             />
                         </template>
 
-                        <template v-slot:item="{ item }">
+                        <template #item="{ item }">
                             <tr
                                 :class="[
-                                    selectedAssessmentTool?.id === item.id ? 'selected-row' : '',
-                                    'row-clickable'
-                                    ]"
-                                @click="goToDetails(item)"
+                                    selectedAssessmentTool?.id === item.id
+                                        ? 'selected-row'
+                                        : '',
+                                    'row-clickable',
+                                ]"
                                 :data-testid="`assessmentTools-row-${item.id}`"
+                                @click="goToDetails(item)"
                             >
                                 <!-- Columns -->
-                                <td class="text-primary" :data-testid="`assessmentTools-cell-institution-${item.id}`">
-                                    {{ getInstitutionName(item.institutionId) || item.institutionId }}
+                                <td
+                                    class="text-primary"
+                                    :data-testid="`assessmentTools-cell-institution-${item.id}`"
+                                >
+                                    {{
+                                        getInstitutionName(
+                                            item.institutionId,
+                                        ) || item.institutionId
+                                    }}
                                 </td>
-                                <td class="text-primary" :data-testid="`assessmentTools-cell-name-${item.id}`">{{ item.name }}</td>
-                                <td class="text-primary" :data-testid="`assessmentTools-cell-type-${item.id}`">
+                                <td
+                                    class="text-primary"
+                                    :data-testid="`assessmentTools-cell-name-${item.id}`"
+                                >
+                                    {{ item.name }}
+                                </td>
+                                <td
+                                    class="text-primary"
+                                    :data-testid="`assessmentTools-cell-type-${item.id}`"
+                                >
                                     {{ translateLmsType(item.lmsType) }}
                                 </td>
 
-                                <td :data-testid="`assessmentTools-cell-status-${item.id}`">
+                                <td
+                                    :data-testid="`assessmentTools-cell-status-${item.id}`"
+                                >
                                     <v-chip
+                                        class="text-white font-weight-medium status-chip cursor-pointer"
                                         :color="item.active ? 'green' : 'red'"
                                         dark
-                                        small
-                                        class="text-white font-weight-medium status-chip cursor-pointer"
-                                        @click.stop="openStatusDialog(item)"
                                         :data-testid="`assessmentTools-status-chip-${item.id}`"
+                                        small
+                                        @click.stop="openStatusDialog(item)"
                                     >
                                         {{
                                             item.active
-                                                ? translate("assessmentToolConnections.assessmentToolsPage.filters.activeSelector")
-                                                : translate("assessmentToolConnections.assessmentToolsPage.filters.inactiveSelector")
+                                                ? translate(
+                                                      "assessmentToolConnections.assessmentToolsPage.filters.activeSelector",
+                                                  )
+                                                : translate(
+                                                      "assessmentToolConnections.assessmentToolsPage.filters.inactiveSelector",
+                                                  )
                                         }}
                                     </v-chip>
                                 </td>
 
-                                <td class="icon-cell" :data-testid="`assessmentTools-cell-actions-${item.id}`">
-                                    <div class="d-flex align-center justify-end h-100">
+                                <td
+                                    class="icon-cell"
+                                    :data-testid="`assessmentTools-cell-actions-${item.id}`"
+                                >
+                                    <div
+                                        class="d-flex align-center justify-end h-100"
+                                    >
                                         <v-icon
-                                            :icon="'mdi-pencil'"
                                             class="action-icon mr-2 cursor-pointer"
-                                            @click.stop="goToDetails(item)"
                                             :data-testid="`assessmentTools-edit-icon-${item.id}`"
+                                            :icon="'mdi-pencil'"
+                                            @click.stop="goToDetails(item)"
                                         ></v-icon>
 
                                         <v-icon
-                                            icon="mdi-delete"
                                             class="action-icon"
-                                            @click.stop="openDeleteDialog(item)"
                                             :data-testid="`assessmentTools-delete-icon-${item.id}`"
+                                            icon="mdi-delete"
+                                            @click.stop="openDeleteDialog(item)"
                                         />
                                     </div>
                                 </td>
@@ -237,22 +401,60 @@
                     </v-data-table-server>
 
                     <!-- Delete Assessment Tool Dialog -->
-                    <v-dialog v-model="deleteDialog" max-width="500" data-testid="assessmentTools-delete-dialog">
+                    <v-dialog
+                        v-model="deleteDialog"
+                        data-testid="assessmentTools-delete-dialog"
+                        max-width="500"
+                    >
                         <v-card>
-                            <v-card-title class="text-h6 font-weight-bold" data-testid="assessmentTools-delete-dialog-title">
-                                {{ translate("assessmentToolConnections.assessmentToolsPage.deleteAssessmentToolContext.title") }}
+                            <v-card-title
+                                class="text-h6 font-weight-bold"
+                                data-testid="assessmentTools-delete-dialog-title"
+                            >
+                                {{
+                                    translate(
+                                        "assessmentToolConnections.assessmentToolsPage.deleteAssessmentToolContext.title",
+                                    )
+                                }}
                             </v-card-title>
-                            <v-card-text data-testid="assessmentTools-delete-dialog-text">
-                                {{ translate("assessmentToolConnections.assessmentToolsPage.deleteAssessmentToolContext.informationPart1") }}
-                                <strong>{{ assessmentToolToDelete?.name }} {{ assessmentToolToDelete?.name }}</strong>
-                                <strong>{{ assessmentToolToDelete?.name }}</strong>
-                                {{ translate("assessmentToolConnections.assessmentToolsPage.deleteAssessmentToolContext.informationPart3") }}
+                            <v-card-text
+                                data-testid="assessmentTools-delete-dialog-text"
+                            >
+                                {{
+                                    translate(
+                                        "assessmentToolConnections.assessmentToolsPage.deleteAssessmentToolContext.informationPart1",
+                                    )
+                                }}
+                                <strong
+                                    >{{ assessmentToolToDelete?.name }}
+                                    {{ assessmentToolToDelete?.name }}</strong
+                                >
+                                <strong>{{
+                                    assessmentToolToDelete?.name
+                                }}</strong>
+                                {{
+                                    translate(
+                                        "assessmentToolConnections.assessmentToolsPage.deleteAssessmentToolContext.informationPart3",
+                                    )
+                                }}
                             </v-card-text>
-                            <v-card-actions class="justify-end" data-testid="assessmentTools-delete-dialog-actions">
-                                <v-btn text @click="deleteDialog = false" data-testid="assessmentTools-delete-cancel-button">
+                            <v-card-actions
+                                class="justify-end"
+                                data-testid="assessmentTools-delete-dialog-actions"
+                            >
+                                <v-btn
+                                    data-testid="assessmentTools-delete-cancel-button"
+                                    text
+                                    @click="deleteDialog = false"
+                                >
                                     {{ translate("general.cancelButton") }}
                                 </v-btn>
-                                <v-btn color="red" text @click="confirmDelete" data-testid="assessmentTools-delete-confirm-button">
+                                <v-btn
+                                    color="red"
+                                    data-testid="assessmentTools-delete-confirm-button"
+                                    text
+                                    @click="confirmDelete"
+                                >
                                     {{ translate("general.deleteButton") }}
                                 </v-btn>
                             </v-card-actions>
@@ -260,23 +462,43 @@
                     </v-dialog>
 
                     <!-- Change Status Dialog -->
-                    <v-dialog v-model="statusDialog" max-width="500" data-testid="assessmentTools-status-dialog">
+                    <v-dialog
+                        v-model="statusDialog"
+                        data-testid="assessmentTools-status-dialog"
+                        max-width="500"
+                    >
                         <v-card>
-                            <v-card-title class="text-h6 font-weight-bold" data-testid="assessmentTools-status-dialog-title">
+                            <v-card-title
+                                class="text-h6 font-weight-bold"
+                                data-testid="assessmentTools-status-dialog-title"
+                            >
                                 {{ statusDialogTitle }}
                             </v-card-title>
-                            <v-card-text data-testid="assessmentTools-status-dialog-text">
+                            <v-card-text
+                                data-testid="assessmentTools-status-dialog-text"
+                            >
                                 {{ statusDialogMessage }}
                             </v-card-text>
-                            <v-card-actions class="justify-end" data-testid="assessmentTools-status-dialog-actions">
-                                <v-btn text @click="statusDialog = false" data-testid="assessmentTools-status-cancel-button">
+                            <v-card-actions
+                                class="justify-end"
+                                data-testid="assessmentTools-status-dialog-actions"
+                            >
+                                <v-btn
+                                    data-testid="assessmentTools-status-cancel-button"
+                                    text
+                                    @click="statusDialog = false"
+                                >
                                     {{ translate("general.cancelButton") }}
                                 </v-btn>
                                 <v-btn
-                                    :color="statusDialogAssessmentTool?.active ? 'red' : 'green'"
+                                    :color="
+                                        statusDialogAssessmentTool?.active
+                                            ? 'red'
+                                            : 'green'
+                                    "
+                                    data-testid="assessmentTools-status-confirm-button"
                                     text
                                     @click="confirmStatusChange"
-                                    data-testid="assessmentTools-status-confirm-button"
                                 >
                                     {{ statusDialogButtonLabel }}
                                 </v-btn>
@@ -289,27 +511,25 @@
     </v-row>
 </template>
 
-
 <script setup lang="ts">
-import {ref, computed, onMounted, onBeforeUnmount} from "vue";
-import {useAppBarStore, useLayoutStore} from "@/stores/store";
-import {useI18n} from "vue-i18n";
-import {translate} from "@/utils/generalUtils";
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
+import { useAppBarStore, useLayoutStore } from "@/stores/store";
+import { useI18n } from "vue-i18n";
+import { translate } from "@/utils/generalUtils";
 import * as tableUtils from "@/utils/table/tableUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import * as assessmentToolViewService from "@/services/seb-server/component-services/assessmentToolViewService";
 
-import {navigateTo} from "@/router/navigation";
+import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants";
-import {getInstitutions} from "@/services/seb-server/component-services/registerAccountViewService";
-import {useAssessmentToolStore} from "@/stores/seb-server/asessmentToolStore";
-import {LMSTypeEnum} from "@/models/seb-server/assessmentToolEnums";
+import { getInstitutions } from "@/services/seb-server/component-services/registerAccountViewService";
+import { useAssessmentToolStore } from "@/stores/seb-server/asessmentToolStore";
+import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums";
 
 const appBarStore = useAppBarStore();
 const layoutStore = useLayoutStore();
 const assessmentToolStore = useAssessmentToolStore();
 const i18n = useI18n();
-
 
 // UI State
 const selectedStatus = ref<string | null>(null);
@@ -330,16 +550,25 @@ const options = ref({
 });
 
 const statuses = [
-    {value: "Active", label: translate("assessmentToolConnections.assessmentToolsPage.filters.activeSelector")},
-    {value: "Inactive", label: translate("assessmentToolConnections.assessmentToolsPage.filters.inactiveSelector")}
+    {
+        value: "Active",
+        label: translate(
+            "assessmentToolConnections.assessmentToolsPage.filters.activeSelector",
+        ),
+    },
+    {
+        value: "Inactive",
+        label: translate(
+            "assessmentToolConnections.assessmentToolsPage.filters.inactiveSelector",
+        ),
+    },
 ];
 const institutions = ref<Institution[]>([]);
 
 const statusDialog = ref(false);
 const statusDialogAssessmentTool = ref<AssessmentTool | null>(null);
 
-
-//search string
+// search string
 const searchQuery = ref("");
 // API response
 const assessmentTools = ref<AssessmentToolsResponse>();
@@ -357,10 +586,11 @@ const typeOptions = computed(() =>
             label: i18n.t(`assessmentToolConnections.lmsTypes.${v}`) as string,
         }))
         .sort((a, b) =>
-            a.label.localeCompare(b.label, i18n.locale?.value ?? undefined, { sensitivity: "base" })
-        )
+            a.label.localeCompare(b.label, i18n.locale?.value ?? undefined, {
+                sensitivity: "base",
+            }),
+        ),
 );
-
 
 onMounted(async () => {
     appBarStore.title = translate("titles.assessmentToolConnections");
@@ -374,10 +604,9 @@ onMounted(async () => {
     await loadItems(options.value);
 });
 
-
 const institutionIdToNameMap = computed(() => {
     const map = new Map<string, string>();
-    institutions.value.forEach(inst => {
+    institutions.value.forEach((inst) => {
         map.set(inst.modelId, inst.name);
     });
     return map;
@@ -387,8 +616,7 @@ onBeforeUnmount(() => {
     layoutStore.setBlueBackground(false);
 });
 
-defineExpose({loadItems});
-
+defineExpose({ loadItems });
 
 // Table header config
 const assessmentToolTableHeaders = computed(() => {
@@ -396,45 +624,58 @@ const assessmentToolTableHeaders = computed(() => {
 
     headers.push(
         {
-            title: translate("assessmentToolConnections.assessmentToolsPage.assessmentToolTableHeaders.tableHeaderInstitution"),
+            title: translate(
+                "assessmentToolConnections.assessmentToolsPage.assessmentToolTableHeaders.tableHeaderInstitution",
+            ),
             key: "institutionName",
             width: "20%",
-            sortable: true
+            sortable: true,
         },
         {
-            title: translate("assessmentToolConnections.assessmentToolsPage.assessmentToolTableHeaders.tableHeaderName"),
+            title: translate(
+                "assessmentToolConnections.assessmentToolsPage.assessmentToolTableHeaders.tableHeaderName",
+            ),
             key: "name",
             width: "20%",
-            sortable: true
+            sortable: true,
         },
         {
-            title: translate("assessmentToolConnections.assessmentToolsPage.assessmentToolTableHeaders.tableHeaderAssessmentToolType"),
+            title: translate(
+                "assessmentToolConnections.assessmentToolsPage.assessmentToolTableHeaders.tableHeaderAssessmentToolType",
+            ),
             key: "assessmentToolType",
             width: "20%",
-            sortable: false
+            sortable: false,
         },
         {
-            title: translate("assessmentToolConnections.assessmentToolsPage.assessmentToolTableHeaders.tableHeaderStatus"),
+            title: translate(
+                "assessmentToolConnections.assessmentToolsPage.assessmentToolTableHeaders.tableHeaderStatus",
+            ),
             key: "active",
             width: "15%",
-            sortable: false
+            sortable: false,
         },
-        {title: "", key: "assessmentToolLink", width: "1%"}
+        { title: "", key: "assessmentToolLink", width: "1%" },
     );
 
     return headers;
 });
 
-
-//update status
-async function onStatusChange(assessmentTool: AssessmentTool, newStatus: string) {
+// update status
+async function onStatusChange(
+    assessmentTool: AssessmentTool,
+    newStatus: string,
+) {
     if (newStatus === "Active" && !assessmentTool.active) {
-        await assessmentToolViewService.activateAssessmentTool(assessmentTool.id.toString());
+        await assessmentToolViewService.activateAssessmentTool(
+            assessmentTool.id.toString(),
+        );
     } else if (newStatus === "Inactive" && assessmentTool.active) {
-        await assessmentToolViewService.deactivateAssessmentTool(assessmentTool.id.toString());
+        await assessmentToolViewService.deactivateAssessmentTool(
+            assessmentTool.id.toString(),
+        );
     }
     await loadItems(options.value);
-
 }
 
 const statusDialogTitle = computed(() => {
@@ -442,7 +683,7 @@ const statusDialogTitle = computed(() => {
     return i18n.t(
         statusDialogAssessmentTool.value.active
             ? "assessmentToolConnections.assessmentToolsPage.changeAssessmentToolStatusContext.deactivateTitle"
-            : "assessmentToolConnections.assessmentToolsPage.changeAssessmentToolStatusContext.activateTitle"
+            : "assessmentToolConnections.assessmentToolsPage.changeAssessmentToolStatusContext.activateTitle",
     );
 });
 
@@ -454,7 +695,7 @@ const statusDialogMessage = computed(() => {
             : "assessmentToolConnections.assessmentToolsPage.changeAssessmentToolStatusContext.activateMessage",
         {
             name: statusDialogAssessmentTool.value.name,
-        }
+        },
     );
 });
 
@@ -463,7 +704,7 @@ const statusDialogButtonLabel = computed(() => {
     return translate(
         statusDialogAssessmentTool.value.active
             ? "assessmentToolConnections.assessmentToolsPage.changeAssessmentToolStatusContext.buttons.deactivate"
-            : "assessmentToolConnections.assessmentToolsPage.changeAssessmentToolStatusContext.buttons.activate"
+            : "assessmentToolConnections.assessmentToolsPage.changeAssessmentToolStatusContext.buttons.activate",
     );
 });
 
@@ -476,29 +717,31 @@ async function loadItems(serverTablePaging: ServerTablePaging) {
         selectedStatus.value,
         selectedType.value ?? null,
         selectedInstitutionId.value,
-        assessmentToolStore.searchField && assessmentToolStore.searchField.trim() !== ""
+        assessmentToolStore.searchField &&
+            assessmentToolStore.searchField.trim() !== ""
             ? assessmentToolStore.searchField.trim()
-            : null
+            : null,
     );
 
-
-    const response = await assessmentToolViewService.getAssessmentTools(optionalParams);
+    const response =
+        await assessmentToolViewService.getAssessmentTools(optionalParams);
 
     isLoading.value = false;
     if (!response) return;
 
-    totalItems.value = (response.number_of_pages ?? 1) * (response.page_size ?? (response.content?.length ?? 0));
+    totalItems.value =
+        (response.number_of_pages ?? 1) *
+        (response.page_size ?? response.content?.length ?? 0);
     assessmentTools.value = response;
-
 }
 
 const getInstitutionName = (id: string | number | null | undefined) =>
     (id != null ? institutionIdToNameMap.value.get(String(id)) : "") ?? "";
 
-
 // Search + clear search
 function onSearch() {
-    searchQuery.value = assessmentToolStore.searchField?.trim().toLowerCase() ?? "";
+    searchQuery.value =
+        assessmentToolStore.searchField?.trim().toLowerCase() ?? "";
     options.value.page = 1;
     loadItems(options.value);
 }
@@ -512,9 +755,8 @@ function onClearSearch() {
     loadItems(options.value);
 }
 
-
-//dialogs and logic
-//delete
+// dialogs and logic
+// delete
 function openDeleteDialog(assessmentTool: AssessmentTool) {
     assessmentToolToDelete.value = assessmentTool;
     deleteDialog.value = true;
@@ -522,8 +764,9 @@ function openDeleteDialog(assessmentTool: AssessmentTool) {
 
 async function confirmDelete() {
     if (assessmentToolToDelete.value) {
-
-        const response = await assessmentToolViewService.deleteAssessmentTool(assessmentToolToDelete.value.id.toString());
+        const response = await assessmentToolViewService.deleteAssessmentTool(
+            assessmentToolToDelete.value.id.toString(),
+        );
         if (response !== null) {
             deletedName.value = assessmentToolToDelete.value.name;
             deleteSuccess.value = true;
@@ -537,7 +780,7 @@ async function confirmDelete() {
     assessmentToolToDelete.value = null;
 }
 
-//status
+// status
 function openStatusDialog(assessmentTool: AssessmentTool) {
     statusDialogAssessmentTool.value = assessmentTool;
     statusDialog.value = true;
@@ -546,7 +789,9 @@ function openStatusDialog(assessmentTool: AssessmentTool) {
 async function confirmStatusChange() {
     if (!statusDialogAssessmentTool.value) return;
 
-    const newStatus = statusDialogAssessmentTool.value.active ? "Inactive" : "Active";
+    const newStatus = statusDialogAssessmentTool.value.active
+        ? "Inactive"
+        : "Active";
     await onStatusChange(statusDialogAssessmentTool.value, newStatus);
 
     statusDialog.value = false;
@@ -557,16 +802,13 @@ function goToDetails(item: AssessmentTool) {
     navigateTo(`${constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE}/${item.id}`);
 }
 
-
 watch([selectedType, selectedStatus, selectedInstitutionId], () => {
     options.value.page = 1;
     loadItems(options.value);
 });
-
 </script>
 
 <style scoped>
-
 .status-chip {
     min-width: 4.7rem;
     max-width: 6.5rem;
@@ -579,7 +821,6 @@ watch([selectedType, selectedStatus, selectedInstitutionId], () => {
     color: #215caf;
 }
 
-
 .w-98 {
     width: 98% !important;
 }
@@ -589,7 +830,7 @@ watch([selectedType, selectedStatus, selectedInstitutionId], () => {
 }
 
 .custom-divider {
-    background-color: #DCDCDC !important;
+    background-color: #dcdcdc !important;
     height: 1px;
     width: 100%;
 }
@@ -647,7 +888,6 @@ watch([selectedType, selectedStatus, selectedInstitutionId], () => {
     margin: 0.1em;
 }
 
-
 .icon-cell {
     vertical-align: middle !important;
     padding-top: 0 !important;
@@ -658,7 +898,9 @@ watch([selectedType, selectedStatus, selectedInstitutionId], () => {
 .action-icon {
     color: #757575;
     cursor: pointer;
-    transition: color 0.2s ease, background-color 0.2s ease;
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease;
     padding: 0.5rem;
     display: inline-flex;
     align-items: center;
@@ -695,7 +937,4 @@ watch([selectedType, selectedStatus, selectedInstitutionId], () => {
     background-color: #215caf !important;
     color: white !important;
 }
-
-
-
 </style>

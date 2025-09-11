@@ -10,7 +10,6 @@ import { fileURLToPath, URL } from "node:url";
 import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite";
 import { createHtmlPlugin } from "vite-plugin-html";
 
-
 export default ({ mode }) => {
     process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
 
@@ -27,7 +26,7 @@ export default ({ mode }) => {
                     "vue",
                     {
                         "vue-router/auto": ["useRoute", "useRouter"],
-                    }
+                    },
                 ],
                 dts: "src/auto-imports.d.ts",
                 eslintrc: {
@@ -53,22 +52,29 @@ export default ({ mode }) => {
 
             Fonts({
                 google: {
-                    families: [{
-                        name: "Roboto",
-                        styles: "wght@100;300;400;500;700;900",
-                    }],
+                    families: [
+                        {
+                            name: "Roboto",
+                            styles: "wght@100;300;400;500;700;900",
+                        },
+                    ],
                 },
             }),
 
             VueI18nPlugin({
-                include: fileURLToPath(new URL("./src/i18n/locales/**", import.meta.url)),
+                include: fileURLToPath(
+                    new URL("./src/i18n/locales/**", import.meta.url),
+                ),
             }),
 
             createHtmlPlugin({
                 inject: {
-                  data: {
-                    VITE_SUB_PATH: mode === "development" ? "" : process.env.VITE_SUB_PATH,
-                  },
+                    data: {
+                        VITE_SUB_PATH:
+                            mode === "development"
+                                ? ""
+                                : process.env.VITE_SUB_PATH,
+                    },
                 },
             }),
         ],
@@ -80,30 +86,24 @@ export default ({ mode }) => {
                 "@": fileURLToPath(new URL("./src", import.meta.url)),
             },
 
-            extensions: [
-                ".js",
-                ".json",
-                ".jsx",
-                ".mjs",
-                ".ts",
-                ".tsx",
-                ".vue",
-            ],
+            extensions: [".js", ".json", ".jsx", ".mjs", ".ts", ".tsx", ".vue"],
         },
 
         server: {
             port: 8082,
         },
 
-        base: getSubPath()
-
+        base: getSubPath(),
     });
 
-    function getSubPath(){
-        if(process.env.VITE_SUB_PATH == null || process.env.VITE_SUB_PATH == ""){
+    function getSubPath() {
+        if (
+            process.env.VITE_SUB_PATH == null ||
+            process.env.VITE_SUB_PATH === ""
+        ) {
             return "/";
         }
 
         return process.env.VITE_SUB_PATH;
     }
-}
+};

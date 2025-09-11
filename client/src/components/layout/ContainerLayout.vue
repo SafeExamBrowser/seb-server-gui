@@ -1,13 +1,16 @@
 <template>
-
     <v-app-bar app data-testid="layout-app-bar">
         <!--seb logo-->
-        <template v-slot:prepend>
-            <a :href="getHomePageRoute()" class="text-decoration-none text-black"
-               data-testid="layout-appLogo-link"
+        <template #prepend>
+            <a
+                class="text-decoration-none text-black"
+                data-testid="layout-appLogo-link"
+                :href="getHomePageRoute()"
             >
-                <v-img :width=50 src="/img/seb-logo-no-border.png"
+                <v-img
                     :alt="translate('navigation.screenReader.titleImage')"
+                    src="/img/seb-logo-no-border.png"
+                    :width="50"
                 ></v-img>
             </a>
         </template>
@@ -17,47 +20,56 @@
             <div class="title-center">
                 <img
                     v-if="institutionLogo"
-                    :src="institutionLogo"
                     alt="Institution Logo"
                     class="title-logo"
+                    :src="institutionLogo"
                 />
-                <h1 class="title-inherit-styling mb-0" data-testid="layout-institutionTitle-text">{{ effectiveTitle }}</h1>
+                <h1
+                    class="title-inherit-styling mb-0"
+                    data-testid="layout-institutionTitle-text"
+                >
+                    {{ effectiveTitle }}
+                </h1>
             </div>
         </v-app-bar-title>
 
-
-
-        <template v-slot:append>
-
+        <template #append>
             <!--exams overview specfic items-->
             <template v-if="useRoute().name == 'ExamsOverview'">
                 <div class="mr-4">
                     <v-menu :close-on-content-click="false">
-                        <template v-slot:activator="{ props }">
+                        <template #activator="{ props }">
                             <v-btn
                                 aria-label="Running Exams Settings"
-                                icon="mdi-cog"
                                 v-bind="props"
-                                color="primary">
+                                color="primary"
+                                icon="mdi-cog"
+                            >
                             </v-btn>
                         </template>
                         <v-list>
                             <v-list-item>
                                 <v-switch
-                                    hide-details
+                                    v-model="
+                                        appBarStore.examOverviewShowPastExams
+                                    "
                                     class="mx-auto"
-                                    label="Show past exams"
                                     color="primary"
-                                    v-model="appBarStore.examOverviewShowPastExams">
+                                    hide-details
+                                    label="Show past exams"
+                                >
                                 </v-switch>
                             </v-list-item>
                             <v-list-item>
                                 <v-switch
-                                    hide-details
+                                    v-model="
+                                        appBarStore.examOverviewShowUpcomingExams
+                                    "
                                     class="mx-auto"
-                                    label="Show upcoming exams"
                                     color="primary"
-                                    v-model="appBarStore.examOverviewShowUpcomingExams">
+                                    hide-details
+                                    label="Show upcoming exams"
+                                >
                                 </v-switch>
                             </v-list-item>
                         </v-list>
@@ -68,34 +80,60 @@
 
             <!--gallery view specfic items-->
             <template v-if="useRoute().name == 'GalleryViewPage'">
-
                 <!--session infos-->
                 <v-chip class="mr-4" role="none">
-                    {{ translate("galleryView.generalInfo.page") }}: {{ appBarStore.galleryCurrentPage }} / {{ appBarStore.galleryMaxPages }}
+                    {{ translate("galleryView.generalInfo.page") }}:
+                    {{ appBarStore.galleryCurrentPage }} /
+                    {{ appBarStore.galleryMaxPages }}
                 </v-chip>
                 <v-chip class="mr-4" role="none">
-                    {{ translate("galleryView.generalInfo.sessions") }}: {{ appBarStore.galleryLiveSessions }} / {{ appBarStore.galleryAmountOfSessions }}
+                    {{ translate("galleryView.generalInfo.sessions") }}:
+                    {{ appBarStore.galleryLiveSessions }} /
+                    {{ appBarStore.galleryAmountOfSessions }}
                     <v-tooltip
-                        role="none"
                         activator="parent"
+                        :aria-label="
+                            translate('galleryView.generalInfo.sessionsTooltip')
+                        "
                         location="bottom"
-                        :aria-label="translate('galleryView.generalInfo.sessionsTooltip')">
-                        {{ translate("galleryView.generalInfo.sessionsTooltip") }}
+                        role="none"
+                    >
+                        {{
+                            translate("galleryView.generalInfo.sessionsTooltip")
+                        }}
                     </v-tooltip>
                 </v-chip>
 
                 <!--change grid size-->
                 <div class="mr-4">
                     <v-menu>
-                        <template v-slot:activator="{ props }">
-                            <v-btn v-bind="props" rounded="sm" color="primary" variant="flat">
-                                <v-icon start icon="mdi-chevron-down" size="x-large"></v-icon>
-                                {{ translate("galleryView.gridSize") }}: {{ appBarStore.galleryGridSize.title }}
+                        <template #activator="{ props }">
+                            <v-btn
+                                v-bind="props"
+                                color="primary"
+                                rounded="sm"
+                                variant="flat"
+                            >
+                                <v-icon
+                                    icon="mdi-chevron-down"
+                                    size="x-large"
+                                    start
+                                ></v-icon>
+                                {{ translate("galleryView.gridSize") }}:
+                                {{ appBarStore.galleryGridSize.title }}
                             </v-btn>
                         </template>
                         <v-list>
-                            <v-list-item class="d-flex justify-center align-center" v-for="(gridSize, index) in gridSizes" :key="index" :value="index" @click="changeGridSize(gridSize)">
-                                <v-list-item-title>{{ gridSize.title }}</v-list-item-title>
+                            <v-list-item
+                                v-for="(gridSize, index) in gridSizes"
+                                :key="index"
+                                class="d-flex justify-center align-center"
+                                :value="index"
+                                @click="changeGridSize(gridSize)"
+                            >
+                                <v-list-item-title>{{
+                                    gridSize.title
+                                }}</v-list-item-title>
                             </v-list-item>
                         </v-list>
                     </v-menu>
@@ -104,18 +142,35 @@
                 <!--settings-->
                 <div>
                     <v-menu :close-on-content-click="false">
-                        <template v-slot:activator="{ props }">
+                        <template #activator="{ props }">
                             <v-btn
-                                :aria-label="translate('galleryView.screenReader.settings')"
-                                icon="mdi-cog"
+                                :aria-label="
+                                    translate(
+                                        'galleryView.screenReader.settings',
+                                    )
+                                "
                                 v-bind="props"
-                                color="primary">
+                                color="primary"
+                                icon="mdi-cog"
+                            >
                             </v-btn>
                         </template>
                         <v-list>
                             <v-list-item>
-                                <v-switch class="mx-auto" :label="translate('galleryView.showName')" color="primary" v-model="appBarStore.galleryIsNameEnabled" hide-details></v-switch>
-                                <v-switch class="mx-auto" :label="translate('galleryView.showIp')" color="primary" v-model="appBarStore.galleryIsIpEnabled" hide-details></v-switch>
+                                <v-switch
+                                    v-model="appBarStore.galleryIsNameEnabled"
+                                    class="mx-auto"
+                                    color="primary"
+                                    hide-details
+                                    :label="translate('galleryView.showName')"
+                                ></v-switch>
+                                <v-switch
+                                    v-model="appBarStore.galleryIsIpEnabled"
+                                    class="mx-auto"
+                                    color="primary"
+                                    hide-details
+                                    :label="translate('galleryView.showIp')"
+                                ></v-switch>
                             </v-list-item>
 
                             <v-divider></v-divider>
@@ -123,43 +178,62 @@
                             <v-list-item>
                                 <v-btn
                                     variant="outlined"
-                                    @click="appBarStore.galleryIsNameSortAsc = !appBarStore.galleryIsNameSortAsc">
+                                    @click="
+                                        appBarStore.galleryIsNameSortAsc =
+                                            !appBarStore.galleryIsNameSortAsc
+                                    "
+                                >
                                     {{ translate("galleryView.sortByName") }}
-                                    <template v-slot:append>
-                                        <v-icon size="x-large" :icon="appBarStore.galleryIsNameSortAsc ? 'mdi-chevron-up' : 'mdi-chevron-down'"></v-icon>
+                                    <template #append>
+                                        <v-icon
+                                            :icon="
+                                                appBarStore.galleryIsNameSortAsc
+                                                    ? 'mdi-chevron-up'
+                                                    : 'mdi-chevron-down'
+                                            "
+                                            size="x-large"
+                                        ></v-icon>
                                     </template>
                                 </v-btn>
                             </v-list-item>
                         </v-list>
                     </v-menu>
                 </div>
-
             </template>
             <!----------------------------->
 
             <!--profile icon menu-->
-            <div class="profile-icon-container d-flex align-center" aria-label="Profile">
-                <div class="user-header-container d-flex flex-column align-center mr-2">
-                    <span class="user-name">{{ userAccountStore.userAccount?.username }}</span>
+            <div
+                aria-label="Profile"
+                class="profile-icon-container d-flex align-center"
+            >
+                <div
+                    class="user-header-container d-flex flex-column align-center mr-2"
+                >
+                    <span class="user-name">{{
+                        userAccountStore.userAccount?.username
+                    }}</span>
                     <v-menu
                         v-if="userRoles.length > 1"
-                        open-on-hover
-                        offset-y
-                        transition="slide-y-transition"
-                        open-delay="0"
                         close-delay="100"
+                        offset-y
+                        open-delay="0"
+                        open-on-hover
+                        transition="slide-y-transition"
                     >
-                        <template v-slot:activator="{ props, isActive }">
+                        <template #activator="{ props, isActive }">
                             <span
                                 v-bind="props"
                                 class="user-role-badge text-white bg-primary d-flex align-center justify-center px-3 py-1 role-badge-wrappe"
                             >
-                            <span class="mx-auto">{{ translateRole(sortedUserRoles[0]) }}</span>
+                                <span class="mx-auto">{{
+                                    translateRole(sortedUserRoles[0])
+                                }}</span>
                                 <v-icon
-                                    size="small"
                                     class="fade-in-arrow"
                                     :class="{ 'fade-in-visible': isActive }"
-                                    style="position: absolute; right: 8px;"
+                                    size="small"
+                                    style="position: absolute; right: 8px"
                                 >
                                     mdi-chevron-down
                                 </v-icon>
@@ -170,7 +244,7 @@
                             <v-list-item
                                 v-for="role in sortedUserRoles"
                                 :key="role"
-                                class="text-body-2 px-4 "
+                                class="text-body-2 px-4"
                             >
                                 {{ translateRole(role) }}
                             </v-list-item>
@@ -180,93 +254,117 @@
                         v-if="userRoles.length === 1"
                         :class="[
                             'user-role-badge text-white px-3 py-1',
-                            userRoles[0] === 'INSTITUTIONAL_ADMIN' ? 'bg-is-institutional-admin' : 'bg-primary'
-                          ]"
+                            userRoles[0] === 'INSTITUTIONAL_ADMIN'
+                                ? 'bg-is-institutional-admin'
+                                : 'bg-primary',
+                        ]"
                     >
                         {{ translateRole(userRoles[0]) }}
                     </span>
-
                 </div>
                 <!--profile icon-->
                 <v-menu
+                    activator="parent"
                     attach="body"
                     :close-on-content-click="false"
-                    activator="parent"
-                    offset-y
                     content-class="profile-menu-override "
+                    offset-y
                 >
-                <template v-slot:activator="{ props }">
+                    <template #activator="{ props }">
                         <div class="d-flex align-center ml-1 mr-6">
                             <v-btn
                                 v-bind="props"
-                                @click="userMenuOpened()"
-                                elevation="0"
                                 class="rounded-circle text-primary d-flex align-center justify-center"
+                                data-testid="layout-profile-button"
+                                elevation="0"
                                 style="
-                                background-color: transparent;
-                                border: 0.15rem solid #215CAF;
-                                width: 3rem;
-                                height: 3rem;
-                                min-width: 3rem;
-                                padding: 0;"
-                                data-testid="layout-profile-button">
-                                <span style="font-weight: 500; font-size: 1.1rem;">
+                                    background-color: transparent;
+                                    border: 0.15rem solid #215caf;
+                                    width: 3rem;
+                                    height: 3rem;
+                                    min-width: 3rem;
+                                    padding: 0;
+                                "
+                                @click="userMenuOpened()"
+                            >
+                                <span
+                                    style="font-weight: 500; font-size: 1.1rem"
+                                >
                                     {{
-                                        (userAccountStore.userAccount?.name?.[0] || '') +
-                                        (userAccountStore.userAccount?.surname?.[0] || '')
+                                        (userAccountStore.userAccount
+                                            ?.name?.[0] || "") +
+                                        (userAccountStore.userAccount
+                                            ?.surname?.[0] || "")
                                     }}
                                 </span>
                             </v-btn>
                             <v-icon
-                                size="18"
-                                color="#777"
                                 class="ml-1"
-                                style="margin-top: 1px;"
+                                color="#777"
+                                size="18"
+                                style="margin-top: 1px"
                             >
-                            mdi-chevron-down
+                                mdi-chevron-down
                             </v-icon>
                         </div>
                     </template>
 
                     <!--profile menu-->
-                    <v-list class="profile-list-popup bg-primary text-white px-4 py-3" data-testid="layout-profile-menu">
-
-                        <div class="d-flex justify-space-between align-center w-100 ">
-                            <span class="text-caption font-weight-light text-grey-lighten-2">
-                                {{ translate('navigation.loggedInAs') }}
+                    <v-list
+                        class="profile-list-popup bg-primary text-white px-4 py-3"
+                        data-testid="layout-profile-menu"
+                    >
+                        <div
+                            class="d-flex justify-space-between align-center w-100"
+                        >
+                            <span
+                                class="text-caption font-weight-light text-grey-lighten-2"
+                            >
+                                {{ translate("navigation.loggedInAs") }}
                             </span>
 
                             <v-btn
-                                @click="authStore.logout()"
-                                variant="text"
                                 class="logout-wrap text-caption font-weight-light d-flex align-center"
                                 data-testid="layout-logout-button"
+                                variant="text"
+                                @click="authStore.logout()"
                             >
-                                <span class="text-grey-lighten-2 mr-1">Log out</span>
+                                <span class="text-grey-lighten-2 mr-1"
+                                    >Log out</span
+                                >
                                 <v-icon class="logout-icon">mdi-logout</v-icon>
                             </v-btn>
-
                         </div>
 
-
-                        <div class="text-h6 font-weight-bold leading-tight mt-0" style="line-height: 1.2;">
+                        <div
+                            class="text-h6 font-weight-bold leading-tight mt-0"
+                            style="line-height: 1.2"
+                        >
                             {{ userAccountStore.userAccount?.name }}<br />
                             {{ userAccountStore.userAccount?.surname }}
                         </div>
 
-
-                        <div class="text-caption font-weight-light text-grey-lighten-2 mt-12 mb-0">
+                        <div
+                            class="text-caption font-weight-light text-grey-lighten-2 mt-12 mb-0"
+                        >
                             Personal
                         </div>
 
                         <div class="custom-white-divider my-0"></div>
 
                         <v-list-item class="pt-0 pb-1 px-4">
-                            <router-link class="link-color text-decoration-none nav-link text-white text-body-2" :to="`${constants.PROFILE_ROUTE}`">{{ translate("titles.profileSettings") }}</router-link>
+                            <router-link
+                                class="link-color text-decoration-none nav-link text-white text-body-2"
+                                :to="`${constants.PROFILE_ROUTE}`"
+                                >{{
+                                    translate("titles.profileSettings")
+                                }}</router-link
+                            >
                         </v-list-item>
 
-
-                        <div class="text-caption font-weight-light text-grey-lighten-2 mt-3 mb-0">
+                        <div
+                            class="text-caption font-weight-light text-grey-lighten-2 mt-3 mb-0"
+                        >
                             User Guide
                         </div>
 
@@ -284,47 +382,61 @@
     </v-app-bar>
 
     <!---------------main navigation drawer----------------->
-    <v-navigation-drawer app v-model="navigationDrawer" :permanent="true" width="70" class="mt-0" data-testid="layout-nav-drawer">
-        <v-list lines="two" class="pt-0">
-            <v-list-item v-if="ability.canView(GUIComponent.NavigationOverview)" link elevation="0" :to="getNavigationOverviewRoute()"
-                variant="elevated" class="d-flex flex-column justify-center text-center"
-                :class="[navigationStore.isNavigationOverviewOpen ? 'navigation-overview-background' : '']" data-testid="layout-navOverview-toggle"
+    <v-navigation-drawer
+        v-model="navigationDrawer"
+        app
+        class="mt-0"
+        data-testid="layout-nav-drawer"
+        :permanent="true"
+        width="70"
+    >
+        <v-list class="pt-0" lines="two">
+            <v-list-item
+                v-if="ability.canView(GUIComponent.NavigationOverview)"
+                class="d-flex flex-column justify-center text-center"
+                :class="[
+                    navigationStore.isNavigationOverviewOpen
+                        ? 'navigation-overview-background'
+                        : '',
+                ]"
+                data-testid="layout-navOverview-toggle"
+                elevation="0"
+                link
+                :to="getNavigationOverviewRoute()"
+                variant="elevated"
             >
-
                 <template v-if="navigationStore.isNavigationOverviewOpen">
-                    <v-icon icon="mdi-close" color="white"></v-icon>
+                    <v-icon color="white" icon="mdi-close"></v-icon>
                 </template>
 
                 <template v-else>
-                    <v-icon icon="mdi-menu" color="#797979"></v-icon>
+                    <v-icon color="#797979" icon="mdi-menu"></v-icon>
                 </template>
-
             </v-list-item>
             <v-divider></v-divider>
 
             <!--------navigation items---------->
-            <template v-for="{ title, route, icon } in mainNavigationLinks" :key="title">
+            <template
+                v-for="{ title, route, icon } in mainNavigationLinks"
+                :key="title"
+            >
                 <v-list-item
+                    class="d-flex flex-column justify-center text-center"
+                    color="#215caf"
+                    :data-testid="`layout-${route.replace('/', '') || 'home'}-button`"
                     link
                     :to="route"
-                    color="#215caf"
-                    class="d-flex flex-column justify-center text-center"
-                    :data-testid="`layout-${route.replace('/', '') || 'home'}-button`"
                 >
-
-                    <template v-slot:default="{ isActive }">
-                        <v-icon :icon="icon" :color="isActive ? '' : '#797979'">
+                    <template #default="{ isActive }">
+                        <v-icon :color="isActive ? '' : '#797979'" :icon="icon">
                         </v-icon>
 
                         <span class="text-caption">{{ title }}</span>
-
                     </template>
                 </v-list-item>
 
                 <v-divider></v-divider>
-
             </template>
-
         </v-list>
     </v-navigation-drawer>
 
@@ -332,428 +444,454 @@
     <v-main class="d-flex flex-column fill-height">
         <div
             :class="[
-      isNavOverviewRoute || layoutStore.isBlueBackground
-        ? 'full-page-blue'
-        : 'full-page-default'
-    ]"
-            style="min-height: 100%; width: 100%;"
+                isNavOverviewRoute || layoutStore.isBlueBackground
+                    ? 'full-page-blue'
+                    : 'full-page-default',
+            ]"
             data-testid="layout-content"
+            style="min-height: 100%; width: 100%"
         >
-            <v-container fluid class="flex-grow-1"
-                         :data-testid="`${(useRoute().name || 'unknown').toString().toLowerCase()}-page-container`"
+            <v-container
+                class="flex-grow-1"
+                :data-testid="`${(useRoute().name || 'unknown').toString().toLowerCase()}-page-container`"
+                fluid
             >
                 <router-view />
             </v-container>
         </div>
     </v-main>
-
 </template>
 
 <script setup lang="ts">
-    import {ref,onMounted,  watch} from "vue"
-    import {useAppBarStore, useLayoutStore, useNavigationStore} from "@/stores/store";
-    import {
-        useAuthStore,
-        useUserAccountStore as useAuthenticatedUserAccountStore,
-        useUserAccountStore
-    } from "@/stores/authentication/authenticationStore";
-    import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
-    import {useTheme} from "vuetify";
-    import {useI18n} from "vue-i18n";
-    import * as constants from "@/utils/constants";
-    import router from "@/router/router";
-    import {translate} from "@/utils/generalUtils";
-    import {getInstitutions} from "@/services/seb-server/component-services/registerAccountViewService";
-    import {getInstitutionLogo} from "@/services/seb-server/api-services/institutionService";
-    import { useAbilities, GUIComponent } from '@/services/ability';
+import { onMounted, ref, watch } from "vue";
+import {
+    useAppBarStore,
+    useLayoutStore,
+    useNavigationStore,
+} from "@/stores/store";
+import {
+    useUserAccountStore as useAuthenticatedUserAccountStore,
+    useAuthStore,
+    useUserAccountStore,
+} from "@/stores/authentication/authenticationStore";
+import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
+import { useTheme } from "vuetify";
+import { useI18n } from "vue-i18n";
+import * as constants from "@/utils/constants";
+import router from "@/router/router";
+import { translate } from "@/utils/generalUtils";
+import { getInstitutions } from "@/services/seb-server/component-services/registerAccountViewService";
+import { getInstitutionLogo } from "@/services/seb-server/api-services/institutionService";
+import { GUIComponent, useAbilities } from "@/services/ability";
 
-    //i18n
-    const {locale} = useI18n();
-    const localStorageLocale: string | null = localStorage.getItem("locale");
-    const languageToggle = ref<number>(locale.value === "en" ? 0 : 1);
-    const layoutStore = useLayoutStore();
-    const authenticatedUserAccountStore = useAuthenticatedUserAccountStore();
-    const isNavOverviewRoute = computed(() => {
-        return router.currentRoute.value.path === constants.NAVIGATION_OVERVIEW_ROUTE;
-    });
+// i18n
+const { locale } = useI18n();
+const localStorageLocale: string | null = localStorage.getItem("locale");
+const languageToggle = ref<number>(locale.value === "en" ? 0 : 1);
+const layoutStore = useLayoutStore();
+const authenticatedUserAccountStore = useAuthenticatedUserAccountStore();
+const isNavOverviewRoute = computed(() => {
+    return (
+        router.currentRoute.value.path === constants.NAVIGATION_OVERVIEW_ROUTE
+    );
+});
 
-    locale.value = localStorageLocale ?? "en";
+locale.value = localStorageLocale ?? "en";
 
-    //main navigation
-    const navigationDrawer = ref();
-    const mainNavigationLinks: NavigationItem[] = [
-        {title: translate("titles.home"), route: constants.HOME_PAGE_ROUTE, icon: "mdi-home"},
-        {title: translate("titles.exams"), route: constants.EXAM_ROUTE, icon: "mdi-file-document"},
-        {title: translate("titles.monitoring"), route: constants.MONITORING_ROUTE, icon: "mdi-eye"},
-        // {title: "Screen Proctoring", route: spConstants.RUNNING_EXAMS_ROUTE, icon: "mdi-video"},
-    ];
-    const institutions = ref<Institution[]>([]);
-    const institutionName = ref<string>();
-    const ability = useAbilities()
+// main navigation
+const navigationDrawer = ref();
+const mainNavigationLinks: NavigationItem[] = [
+    {
+        title: translate("titles.home"),
+        route: constants.HOME_PAGE_ROUTE,
+        icon: "mdi-home",
+    },
+    {
+        title: translate("titles.exams"),
+        route: constants.EXAM_ROUTE,
+        icon: "mdi-file-document",
+    },
+    {
+        title: translate("titles.monitoring"),
+        route: constants.MONITORING_ROUTE,
+        icon: "mdi-eye",
+    },
+    // {title: "Screen Proctoring", route: spConstants.RUNNING_EXAMS_ROUTE, icon: "mdi-video"},
+];
+const institutions = ref<Institution[]>([]);
+const institutionName = ref<string>();
+const ability = useAbilities();
 
-    //gallery view
-    const gridSizes: GridSize[] = [
-        {title: "2x2", value: 2},
-        {title: "3x3", value: 3},
-        {title: "4x4", value: 4}
-    ];
+// gallery view
+const gridSizes: GridSize[] = [
+    { title: "2x2", value: 2 },
+    { title: "3x3", value: 3 },
+    { title: "4x4", value: 4 },
+];
 
+// stores
+const authStore = useAuthStore();
+const appBarStore = useAppBarStore();
+const userAccountStore = useUserAccountStore();
+const navigationStore = useNavigationStore();
 
-    //stores
-    const authStore = useAuthStore();
-    const appBarStore = useAppBarStore();
-    const userAccountStore = useUserAccountStore();
-    const navigationStore = useNavigationStore();
+const effectiveTitle = computed(() => {
+    return institutionName.value?.length
+        ? institutionName.value
+        : appBarStore.title || "...";
+});
 
-    const effectiveTitle = computed(() => {
-        return institutionName.value?.length ? institutionName.value : (appBarStore.title || '...');
-    });
+const userAccount = computed(() => userAccountStore.userAccount);
+const userRoles = computed(() => userAccount.value?.userRoles || []);
 
-    const userAccount = computed(() => userAccountStore.userAccount);
-    const userRoles = computed(() => userAccount.value?.userRoles || []);
+// theme
+const theme = useTheme();
+const localstorageTheme: string | null = localStorage.getItem("theme");
+theme.global.name.value =
+    localstorageTheme ?? theme.global.name.value ?? "light";
+const themeToggle = ref<number>(theme.global.name.value === "dark" ? 1 : 0);
 
-    //theme
-    const theme = useTheme();
-    const localstorageTheme: string | null = localStorage.getItem("theme");
-    theme.global.name.value = localstorageTheme ?? theme.global.name.value ?? "light";
-    const themeToggle = ref<number>(theme.global.name.value === "dark" ? 1 : 0);
+const institutionLogo = ref<string | null>(null);
 
-    const institutionLogo = ref<string | null>(null);
+onMounted(async () => {
+    const user = authenticatedUserAccountStore.userAccount;
+    const userInstitutionId = String(user?.institutionId);
 
+    const result: Institution[] | null = await getInstitutions();
+    institutions.value = result ?? [];
 
-    onMounted(async () => {
-        const user = authenticatedUserAccountStore.userAccount;
-        const userInstitutionId = String(user?.institutionId);
+    const matchedInstitution = institutions.value.find(
+        (inst) => inst.modelId === userInstitutionId,
+    );
+    if (matchedInstitution) {
+        institutionName.value = matchedInstitution.name;
 
-        const result: Institution[] | null = await getInstitutions();
-        institutions.value = result ?? [];
-
-        const matchedInstitution = institutions.value.find(inst => inst.modelId === userInstitutionId);
-        if (matchedInstitution) {
-            institutionName.value = matchedInstitution.name;
-
-            const logoBase64: string = await getInstitutionLogo(matchedInstitution.name);
-            if (logoBase64) {
-                institutionLogo.value = `data:image/png;base64,${logoBase64}`;
-            }
-        }
-    });
-
-    // watch(userRoles, (roles) => {
-    //     ability.update(defineRulesForRoles(roles).rules)
-    //     console.log("user roles: ", userRoles.value)
-    // }, { immediate: true })
-
-    watch(languageToggle, () => {
-        locale.value = languageToggle.value === 0 ? "en" : "de";
-        localStorage.setItem("locale", locale.value);
-    });
-
-    watch(themeToggle, () => {
-        theme.global.name.value = themeToggle.value === 0 ? "light" : "dark";
-        localStorage.setItem("theme", theme.global.name.value);
-    });
-
-    function translateRole(role: string): string {
-        switch (role) {
-            case "EXAM_ADMIN": return "Exam Admin";
-            case "EXAM_SUPPORTER": return "Exam Supervisor";
-            case "SEB_SERVER_ADMIN": return "SEB Server Admin";
-            case "INSTITUTIONAL_ADMIN": return "Institutional Admin";
-            case "TEACHER": return "Teacher";
-
-            default: return role;
+        const logoBase64: string = await getInstitutionLogo(
+            matchedInstitution.name,
+        );
+        if (logoBase64) {
+            institutionLogo.value = `data:image/png;base64,${logoBase64}`;
         }
     }
+});
 
+// watch(userRoles, (roles) => {
+//     ability.update(defineRulesForRoles(roles).rules)
+//     console.log("user roles: ", userRoles.value)
+// }, { immediate: true })
 
-    const rolePriority = [
-        "SEB_SERVER_ADMIN",
-        "INSTITUTIONAL_ADMIN",
-        "EXAM_ADMIN",
-        "EXAM_SUPPORTER",
-        "TEACHER"
-    ];
+watch(languageToggle, () => {
+    locale.value = languageToggle.value === 0 ? "en" : "de";
+    localStorage.setItem("locale", locale.value);
+});
 
-    const sortedUserRoles = computed(() => {
-        return [...userRoles.value].sort((a, b) => {
-            const indexA = rolePriority.indexOf(a);
-            const indexB = rolePriority.indexOf(b);
-            return indexA - indexB;
-        });
+watch(themeToggle, () => {
+    theme.global.name.value = themeToggle.value === 0 ? "light" : "dark";
+    localStorage.setItem("theme", theme.global.name.value);
+});
+
+function translateRole(role: string): string {
+    switch (role) {
+        case "EXAM_ADMIN":
+            return "Exam Admin";
+        case "EXAM_SUPPORTER":
+            return "Exam Supervisor";
+        case "SEB_SERVER_ADMIN":
+            return "SEB Server Admin";
+        case "INSTITUTIONAL_ADMIN":
+            return "Institutional Admin";
+        case "TEACHER":
+            return "Teacher";
+
+        default:
+            return role;
+    }
+}
+
+const rolePriority = [
+    "SEB_SERVER_ADMIN",
+    "INSTITUTIONAL_ADMIN",
+    "EXAM_ADMIN",
+    "EXAM_SUPPORTER",
+    "TEACHER",
+];
+
+const sortedUserRoles = computed(() => {
+    return [...userRoles.value].sort((a, b) => {
+        const indexA = rolePriority.indexOf(a);
+        const indexB = rolePriority.indexOf(b);
+        return indexA - indexB;
     });
+});
 
-    async function userMenuOpened() {
-        await userAccountViewService.setPersonalUserAccount();
+async function userMenuOpened() {
+    await userAccountViewService.setPersonalUserAccount();
+}
+
+function getNavigationOverviewRoute(): string {
+    if (
+        navigationStore.isNavigationOverviewOpen &&
+        router.options.history.state.back != null
+    ) {
+        return router.options.history.state.back.toString();
     }
 
-    function getNavigationOverviewRoute(): string {
-        if (navigationStore.isNavigationOverviewOpen && router.options.history.state.back != null) {
-            return router.options.history.state.back.toString();
-        }
+    if (!navigationStore.isNavigationOverviewOpen) {
+        return constants.NAVIGATION_OVERVIEW_ROUTE;
+    }
+    return constants.HOME_PAGE_ROUTE;
+}
 
-        if (!navigationStore.isNavigationOverviewOpen) {
-            return constants.NAVIGATION_OVERVIEW_ROUTE;
-        }
+function getHomePageRoute() {
+    if (import.meta.env.VITE_SUB_PATH == null) {
         return constants.HOME_PAGE_ROUTE;
     }
+    return import.meta.env.VITE_SUB_PATH + constants.HOME_PAGE_ROUTE;
+}
 
-    function getHomePageRoute() {
-        if (import.meta.env.VITE_SUB_PATH == null) {
-            return constants.HOME_PAGE_ROUTE;
-        }
-        return import.meta.env.VITE_SUB_PATH + constants.HOME_PAGE_ROUTE;
-    }
-
-    //gallery view
-    function changeGridSize(gridSize: GridSize){
-        appBarStore.galleryGridSize = gridSize;
-    }
-
+// gallery view
+function changeGridSize(gridSize: GridSize) {
+    appBarStore.galleryGridSize = gridSize;
+}
 </script>
 
 <style scoped>
-    .user-name {
-        font-size: 0.9rem;
-    }
+.user-name {
+    font-size: 0.9rem;
+}
 
-    .user-role-badge {
-        font-size: 0.9rem;
-        border-radius: 4px;
-        font-weight: 500;
-        line-height: 1;
-        min-width: 120px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        cursor: pointer;
-    }
+.user-role-badge {
+    font-size: 0.9rem;
+    border-radius: 4px;
+    font-weight: 500;
+    line-height: 1;
+    min-width: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+}
 
-    .navigation-overview-background {
-        background-color: #215caf;
-    }
+.navigation-overview-background {
+    background-color: #215caf;
+}
 
-    .generic-background {
-        background-color: #f6f6f6;
-    }
+.generic-background {
+    background-color: #f6f6f6;
+}
 
-    .blue-background {
-        background-color: #215caf;
-    }
+.blue-background {
+    background-color: #215caf;
+}
 
-    .fade-in-arrow {
-        opacity: 0;
-        transition: opacity 0.2s ease;
-        margin-left: auto;
-    }
+.fade-in-arrow {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    margin-left: auto;
+}
 
-    .fade-in-visible {
-        opacity: 1;
-    }
+.fade-in-visible {
+    opacity: 1;
+}
 
-    .roles-list-popup {
-        margin-top: 0.62rem !important;
-        border-radius: 0 !important;
-    }
+.roles-list-popup {
+    margin-top: 0.62rem !important;
+    border-radius: 0 !important;
+}
 
-    .profile-list-popup {
-        margin-top: 0.50rem !important;
-        border-radius: 0 !important;
-        width: 20vw;
-        min-width: 16rem;
-        max-width: 90vw;
-        left: 1vw !important;
-        right: 0 !important;
-    }
+.profile-list-popup {
+    margin-top: 0.5rem !important;
+    border-radius: 0 !important;
+    width: 20vw;
+    min-width: 16rem;
+    max-width: 90vw;
+    left: 1vw !important;
+    right: 0 !important;
+}
 
-    .leading-tight {
-        line-height: 1.2;
-    }
+.leading-tight {
+    line-height: 1.2;
+}
 
+.logout-icon {
+    font-size: 1.3rem;
+    font-weight: 300;
+    line-height: 1;
+    vertical-align: middle;
+    color: #b0bec5;
+}
+
+@media (min-width: 960px) {
     .logout-icon {
-        font-size: 1.3rem;
-        font-weight: 300;
-        line-height: 1;
-        vertical-align: middle;
-        color: #b0bec5;
+        font-size: 1.5rem;
     }
+}
 
-    @media (min-width: 960px) {
-        .logout-icon {
-            font-size: 1.5rem;
-        }
-    }
+.custom-white-divider {
+    height: 1px;
+    width: 100%;
+    background-color: white;
+    opacity: 1;
+}
 
-    .custom-white-divider {
-        height: 1px;
-        width: 100%;
-        background-color: white;
-        opacity: 1;
-    }
+.bg-is-institutional-admin {
+    background-color: #a30774 !important;
+}
 
-    .bg-is-institutional-admin {
-        background-color: #A30774 !important;
-    }
+.blue-background {
+    background-color: #215caf;
+}
 
+.bg-is-institutional-admin {
+    background-color: #a30774 !important;
+}
 
-    .blue-background {
-        background-color: #215caf;
-    }
+.fade-in-arrow {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    margin-left: auto;
+}
 
-    .bg-is-institutional-admin {
-        background-color: #A30774 !important;
-    }
+.fade-in-visible {
+    opacity: 1;
+}
 
+.roles-list-popup {
+    margin-top: 0.6rem !important;
+    border-radius: 0 !important;
+}
 
+.profile-list-popup {
+    margin-top: 0.47rem !important;
+    border-radius: 0 !important;
+    width: 20vw;
+    min-width: 16rem;
+    max-width: 90vw;
+    left: 1vw !important;
+    right: 0 !important;
+}
 
-    .fade-in-arrow {
-        opacity: 0;
-        transition: opacity 0.2s ease;
-        margin-left: auto;
-    }
+.leading-tight {
+    line-height: 1.2;
+}
 
-    .fade-in-visible {
-        opacity: 1;
-    }
+.logout-icon {
+    font-size: 1.3rem;
+    font-weight: 300;
+    line-height: 1;
+    vertical-align: middle;
+    color: #b0bec5;
+}
 
-    .roles-list-popup {
-        margin-top: 0.6rem !important;
-        border-radius: 0 !important;
-    }
-
-    .profile-list-popup {
-        margin-top: 0.47rem !important;
-        border-radius: 0 !important;
-        width: 20vw;
-        min-width: 16rem;
-        max-width: 90vw;
-        left: 1vw !important;
-        right: 0 !important;
-    }
-
-    .leading-tight {
-        line-height: 1.2;
-    }
-
+@media (min-width: 960px) {
     .logout-icon {
-        font-size: 1.3rem;
-        font-weight: 300;
-        line-height: 1;
-        vertical-align: middle;
-        color: #b0bec5;
+        font-size: 1.5rem;
     }
+}
 
-    @media (min-width: 960px) {
-        .logout-icon {
-            font-size: 1.5rem;
-        }
-    }
+.custom-white-divider {
+    height: 1px;
+    width: 100%;
+    background-color: white;
+    opacity: 1;
+}
 
-    .custom-white-divider {
-        height: 1px;
-        width: 100%;
-        background-color: white;
-        opacity: 1;
-    }
+.bg-is-institutional-admin {
+    background-color: #a30774 !important;
+}
 
-    .bg-is-institutional-admin {
-        background-color: #A30774 !important;
-    }
+.fade-in-arrow {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    margin-left: auto;
+}
 
-    .fade-in-arrow {
-        opacity: 0;
-        transition: opacity 0.2s ease;
-        margin-left: auto;
-    }
+.fade-in-visible {
+    opacity: 1;
+}
 
-    .fade-in-visible {
-        opacity: 1;
-    }
+.roles-list-popup {
+    margin-top: 0.62rem !important;
+    border-radius: 0 !important;
+}
 
-    .roles-list-popup {
-        margin-top: 0.62rem !important;
-        border-radius: 0 !important;
-    }
+.profile-list-popup {
+    margin-top: 0.5rem !important;
+    border-radius: 0 !important;
+    width: 20vw;
+    min-width: 16rem;
+    max-width: 90vw;
+    left: 1vw !important;
+    right: 0 !important;
+}
 
-    .profile-list-popup {
-        margin-top: 0.50rem !important;
-        border-radius: 0 !important;
-        width: 20vw;
-        min-width: 16rem;
-        max-width: 90vw;
-        left: 1vw !important;
-        right: 0 !important;
-    }
+.leading-tight {
+    line-height: 1.2;
+}
 
-    .leading-tight {
-        line-height: 1.2;
-    }
+.logout-icon {
+    font-size: 1.3rem;
+    font-weight: 300;
+    line-height: 1;
+    vertical-align: middle;
+    color: #b0bec5;
+}
 
-
+@media (min-width: 960px) {
     .logout-icon {
-        font-size: 1.3rem;
-        font-weight: 300;
-        line-height: 1;
-        vertical-align: middle;
-        color: #b0bec5;
+        font-size: 1.5rem;
     }
+}
 
-    @media (min-width: 960px) {
-        .logout-icon {
-            font-size: 1.5rem;
-        }
-    }
+.custom-white-divider {
+    height: 1px;
+    width: 100%;
+    background-color: white;
+    opacity: 1;
+}
 
-    .custom-white-divider {
-        height: 1px;
-        width: 100%;
-        background-color: white;
-        opacity: 1;
-    }
+.v-app-bar-title h1 {
+    white-space: nowrap;
+}
 
-    .v-app-bar-title h1 {
-        white-space: nowrap;
-    }
+.full-page-blue {
+    background-color: #215caf;
+    min-height: 100%;
+    width: 100%;
+}
 
-     .full-page-blue {
-         background-color: #215caf;
-         min-height: 100%;
-         width: 100%;
-     }
+.full-page-default {
+    background-color: #f6f6f6;
+    min-height: 100%;
+    width: 100%;
+}
 
-    .full-page-default {
-        background-color: #f6f6f6;
-        min-height: 100%;
-        width: 100%;
-    }
+.v-app-bar-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+}
 
-    .v-app-bar-title {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: .5rem;
-        white-space: nowrap;
-    }
+.title-logo {
+    display: inline-block;
+    max-height: 55px;
+    height: 55px;
+    width: auto;
+    flex: 0 0 auto;
+}
 
-    .title-logo {
-        display: inline-block;
-        max-height: 55px;
-        height: 55px;
-        width: auto;
-        flex: 0 0 auto;
-    }
+.title-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+}
 
-    .title-center {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: .5rem;
-        white-space: nowrap;
-    }
-
-    .title-center .v-img {
-        flex: 0 0 auto;
-    }
-
+.title-center .v-img {
+    flex: 0 0 auto;
+}
 </style>

@@ -8,99 +8,173 @@
 
     <v-row class="mt-10 w-98 h-100">
         <!-- settings navigation -->
-        <SettingsNavigation data-testid="assessmentToolsCreate-settingsNavigation-component" />
+        <SettingsNavigation
+            data-testid="assessmentToolsCreate-settingsNavigation-component"
+        />
 
         <v-col
-            elevation="4"
-            cols="9"
             class="bg-white rounded-lg"
+            cols="9"
             data-testid="assessmentToolsCreate-form-container"
+            elevation="4"
         >
-            <v-row class="d-flex align-center justify-space-between px-6 pt-6" data-testid="assessmentToolsCreate-header-row">
-                <div class="text-primary text-h5 font-weight-bold" data-testid="assessmentToolsCreate-title-text">
+            <v-row
+                class="d-flex align-center justify-space-between px-6 pt-6"
+                data-testid="assessmentToolsCreate-header-row"
+            >
+                <div
+                    class="text-primary text-h5 font-weight-bold"
+                    data-testid="assessmentToolsCreate-title-text"
+                >
                     {{ translate("titles.createAssessmentTool") }}
                 </div>
             </v-row>
 
-            <v-divider class="custom-divider mx-6 my-4 mt-7" data-testid="assessmentToolsCreate-divider-top" />
+            <v-divider
+                class="custom-divider mx-6 my-4 mt-7"
+                data-testid="assessmentToolsCreate-divider-top"
+            />
 
-            <v-row class="px-8 mt-2" data-testid="assessmentToolsCreate-intro-row">
-                <div class="text-body-2 text-grey-darken-1" data-testid="assessmentToolsCreate-intro-text">
+            <v-row
+                class="px-8 mt-2"
+                data-testid="assessmentToolsCreate-intro-row"
+            >
+                <div
+                    class="text-body-2 text-grey-darken-1"
+                    data-testid="assessmentToolsCreate-intro-text"
+                >
                     {{
-                        translate("assessmentToolConnections.createAssessmentToolConnectionsPage.info.assessmentToolConnectionsCreationInfo")
+                        translate(
+                            "assessmentToolConnections.createAssessmentToolConnectionsPage.info.assessmentToolConnectionsCreationInfo",
+                        )
                     }}
                 </div>
             </v-row>
 
             <!-- Form -->
-            <v-sheet class="rounded-lg mt-4" style="min-height: 46.9vh" data-testid="assessmentToolsCreate-form-sheet">
-                <v-form ref="formRef" @keyup.enter="submit()" data-testid="assessmentToolsCreate-form">
-                    <v-col cols="12" md="12" class="pa-0 mb-4 h-100">
+            <v-sheet
+                class="rounded-lg mt-4"
+                data-testid="assessmentToolsCreate-form-sheet"
+                style="min-height: 46.9vh"
+            >
+                <v-form
+                    ref="formRef"
+                    data-testid="assessmentToolsCreate-form"
+                    @keyup.enter="submit()"
+                >
+                    <v-col class="pa-0 mb-4 h-100" cols="12" md="12">
                         <v-card-text>
                             <!-- First Section -->
-                            <v-row dense data-testid="assessmentToolsCreate-form-row-1">
-                                <v-col cols="8" data-testid="assessmentToolsCreate-form-left-col">
+                            <v-row
+                                data-testid="assessmentToolsCreate-form-row-1"
+                                dense
+                            >
+                                <v-col
+                                    cols="8"
+                                    data-testid="assessmentToolsCreate-form-left-col"
+                                >
                                     <!-- Institution -->
-                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                    <v-col
+                                        class="custom-padding-textbox"
+                                        cols="12"
+                                        md="12"
+                                    >
                                         <v-select
-                                            required
-                                            density="compact"
-                                            :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.institutionLabel')"
-                                            variant="outlined"
                                             v-model="institution"
-                                            :items="institutions"
+                                            data-testid="assessmentToolsCreate-institution-select"
+                                            density="compact"
+                                            disabled
                                             item-title="name"
                                             item-value="modelId"
+                                            :items="institutions"
+                                            :label="
+                                                translate(
+                                                    'assessmentToolConnections.createAssessmentToolConnectionsPage.labels.institutionLabel',
+                                                )
+                                            "
+                                            required
                                             :rules="[requiredRule]"
-                                            disabled
-                                            data-testid="assessmentToolsCreate-institution-select"
+                                            variant="outlined"
                                         />
                                     </v-col>
 
                                     <!-- Name -->
-                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                    <v-col
+                                        class="custom-padding-textbox"
+                                        cols="12"
+                                        md="12"
+                                    >
                                         <v-text-field
-                                            required
-                                            density="compact"
-                                            :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.nameLabel')"
-                                            variant="outlined"
                                             v-model="name"
-                                            :rules="[requiredRule]"
                                             data-testid="assessmentToolsCreate-name-input"
+                                            density="compact"
+                                            :label="
+                                                translate(
+                                                    'assessmentToolConnections.createAssessmentToolConnectionsPage.labels.nameLabel',
+                                                )
+                                            "
+                                            required
+                                            :rules="[requiredRule]"
+                                            variant="outlined"
                                         />
                                     </v-col>
 
                                     <!-- Type -->
-                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                    <v-col
+                                        class="custom-padding-textbox"
+                                        cols="12"
+                                        md="12"
+                                    >
                                         <v-select
-                                            required
-                                            density="compact"
-                                            :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.typeLabel')"
-                                            variant="outlined"
                                             v-model="lmsType"
-                                            :items="lmsTypeItems"
+                                            data-testid="assessmentToolsCreate-type-select"
+                                            density="compact"
                                             item-title="label"
                                             item-value="value"
+                                            :items="lmsTypeItems"
+                                            :label="
+                                                translate(
+                                                    'assessmentToolConnections.createAssessmentToolConnectionsPage.labels.typeLabel',
+                                                )
+                                            "
+                                            required
                                             :rules="[requiredRule]"
-                                            data-testid="assessmentToolsCreate-type-select"
+                                            variant="outlined"
                                         />
                                     </v-col>
 
                                     <!-- Assessment Tool Server Address -->
-                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                    <v-col
+                                        class="custom-padding-textbox"
+                                        cols="12"
+                                        md="12"
+                                    >
                                         <v-text-field
-                                            density="compact"
-                                            :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.assessmentToolServerAddressLabel')"
-                                            variant="outlined"
-                                            v-model="assessmentToolServerAddress"
-                                            :rules="[requiredRule, httpPrefixRule]"
-                                            validate-on="blur"
+                                            v-model="
+                                                assessmentToolServerAddress
+                                            "
                                             data-testid="assessmentToolsCreate-serverAddress-input"
+                                            density="compact"
+                                            :label="
+                                                translate(
+                                                    'assessmentToolConnections.createAssessmentToolConnectionsPage.labels.assessmentToolServerAddressLabel',
+                                                )
+                                            "
+                                            :rules="[
+                                                requiredRule,
+                                                httpPrefixRule,
+                                            ]"
+                                            validate-on="blur"
+                                            variant="outlined"
                                         />
                                     </v-col>
 
                                     <!-- Auth Mode -->
-                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                    <v-col
+                                        class="custom-padding-textbox"
+                                        cols="12"
+                                        md="12"
+                                    >
                                         <div
                                             class="d-flex align-center justify-space-between"
                                             data-testid="assessmentToolsCreate-authMode-row"
@@ -109,20 +183,38 @@
                                                 class="text-grey-darken-1 text-body-1 ml-1 mb-6 mt-3"
                                                 data-testid="assessmentToolsCreate-authMode-label"
                                             >
-                                                {{ translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.authenticationMode') }}
+                                                {{
+                                                    translate(
+                                                        "assessmentToolConnections.createAssessmentToolConnectionsPage.labels.authenticationMode",
+                                                    )
+                                                }}
                                             </label>
                                             <v-btn-toggle
                                                 v-model="authMode"
-                                                density="comfortable"
-                                                mandatory
                                                 class="ml-4 mb-6 mt-3"
                                                 data-testid="assessmentToolsCreate-authMode-toggle"
+                                                density="comfortable"
+                                                mandatory
                                             >
-                                                <v-btn value="client" data-testid="assessmentToolsCreate-authMode-client-button">
-                                                    {{ translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.clientCredentials') }}
+                                                <v-btn
+                                                    data-testid="assessmentToolsCreate-authMode-client-button"
+                                                    value="client"
+                                                >
+                                                    {{
+                                                        translate(
+                                                            "assessmentToolConnections.createAssessmentToolConnectionsPage.labels.clientCredentials",
+                                                        )
+                                                    }}
                                                 </v-btn>
-                                                <v-btn value="token" data-testid="assessmentToolsCreate-authMode-token-button">
-                                                    {{ translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.restApiToken') }}
+                                                <v-btn
+                                                    data-testid="assessmentToolsCreate-authMode-token-button"
+                                                    value="token"
+                                                >
+                                                    {{
+                                                        translate(
+                                                            "assessmentToolConnections.createAssessmentToolConnectionsPage.labels.restApiToken",
+                                                        )
+                                                    }}
                                                 </v-btn>
                                             </v-btn-toggle>
                                         </div>
@@ -131,37 +223,68 @@
                                     <!-- Client Credentials (shown only in client mode) -->
                                     <template v-if="authMode === 'client'">
                                         <!-- Username -->
-                                        <v-col cols="12" md="12" class="custom-padding-textbox">
+                                        <v-col
+                                            class="custom-padding-textbox"
+                                            cols="12"
+                                            md="12"
+                                        >
                                             <v-text-field
+                                                v-model="
+                                                    assessmentToolServerUsername
+                                                "
+                                                data-testid="assessmentToolsCreate-client-username-input"
                                                 density="compact"
-                                                :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.assessmentToolServerUsernameLabel')"
-                                                variant="outlined"
-                                                v-model="assessmentToolServerUsername"
+                                                :label="
+                                                    translate(
+                                                        'assessmentToolConnections.createAssessmentToolConnectionsPage.labels.assessmentToolServerUsernameLabel',
+                                                    )
+                                                "
                                                 :rules="[requiredIfClientRule]"
                                                 validate-on="blur"
-                                                data-testid="assessmentToolsCreate-client-username-input"
+                                                variant="outlined"
                                             />
                                         </v-col>
 
                                         <!-- Password -->
-                                        <v-col cols="12" md="12" class="custom-padding-textbox">
+                                        <v-col
+                                            class="custom-padding-textbox"
+                                            cols="12"
+                                            md="12"
+                                        >
                                             <v-text-field
-                                                :type="passwordVisible ? 'text' : 'password'"
-                                                density="compact"
-                                                :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.assessmentToolServerPasswordLabel')"
-                                                variant="outlined"
-                                                v-model="assessmentToolServerPassword"
-                                                :rules="[requiredIfClientRule]"
-                                                validate-on="blur"
+                                                v-model="
+                                                    assessmentToolServerPassword
+                                                "
                                                 data-testid="assessmentToolsCreate-client-password-input"
+                                                density="compact"
+                                                :label="
+                                                    translate(
+                                                        'assessmentToolConnections.createAssessmentToolConnectionsPage.labels.assessmentToolServerPasswordLabel',
+                                                    )
+                                                "
+                                                :rules="[requiredIfClientRule]"
+                                                :type="
+                                                    passwordVisible
+                                                        ? 'text'
+                                                        : 'password'
+                                                "
+                                                validate-on="blur"
+                                                variant="outlined"
                                             >
-                                                <template v-slot:append-inner>
+                                                <template #append-inner>
                                                     <v-btn
-                                                        density="compact"
-                                                        variant="text"
-                                                        :icon="passwordVisible ? 'mdi-eye-off' : 'mdi-eye'"
-                                                        @click="passwordVisible = !passwordVisible"
                                                         data-testid="assessmentToolsCreate-client-password-toggle"
+                                                        density="compact"
+                                                        :icon="
+                                                            passwordVisible
+                                                                ? 'mdi-eye-off'
+                                                                : 'mdi-eye'
+                                                        "
+                                                        variant="text"
+                                                        @click="
+                                                            passwordVisible =
+                                                                !passwordVisible
+                                                        "
                                                     />
                                                 </template>
                                             </v-text-field>
@@ -170,26 +293,45 @@
 
                                     <!-- REST API Token (shown only in token mode) -->
                                     <template v-else>
-                                        <v-col cols="12" md="12" class="custom-padding-textbox">
+                                        <v-col
+                                            class="custom-padding-textbox"
+                                            cols="12"
+                                            md="12"
+                                        >
                                             <v-text-field
                                                 ref="confirmPasswordFieldRef"
-                                                :type="confirmPasswordVisible ? 'text' : 'password'"
-                                                density="compact"
-                                                :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.accessTokenLabel')"
-                                                variant="outlined"
                                                 v-model="accessToken"
-                                                :rules="[requiredIfTokenRule]"
-                                                validate-on="blur"
                                                 class="mb-2"
                                                 data-testid="assessmentToolsCreate-token-input"
+                                                density="compact"
+                                                :label="
+                                                    translate(
+                                                        'assessmentToolConnections.createAssessmentToolConnectionsPage.labels.accessTokenLabel',
+                                                    )
+                                                "
+                                                :rules="[requiredIfTokenRule]"
+                                                :type="
+                                                    confirmPasswordVisible
+                                                        ? 'text'
+                                                        : 'password'
+                                                "
+                                                validate-on="blur"
+                                                variant="outlined"
                                             >
-                                                <template v-slot:append-inner>
+                                                <template #append-inner>
                                                     <v-btn
-                                                        density="compact"
-                                                        variant="text"
-                                                        :icon="confirmPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
-                                                        @click="confirmPasswordVisible = !confirmPasswordVisible"
                                                         data-testid="assessmentToolsCreate-token-toggle"
+                                                        density="compact"
+                                                        :icon="
+                                                            confirmPasswordVisible
+                                                                ? 'mdi-eye-off'
+                                                                : 'mdi-eye'
+                                                        "
+                                                        variant="text"
+                                                        @click="
+                                                            confirmPasswordVisible =
+                                                                !confirmPasswordVisible
+                                                        "
                                                     />
                                                 </template>
                                             </v-text-field>
@@ -198,109 +340,194 @@
                                 </v-col>
 
                                 <!-- Second Column first Section (placeholder) -->
-                                <v-col cols="4" data-testid="assessmentToolsCreate-form-right-col">
+                                <v-col
+                                    cols="4"
+                                    data-testid="assessmentToolsCreate-form-right-col"
+                                >
                                 </v-col>
                             </v-row>
 
                             <!-- Proxy toggle and expansion -->
-                            <v-row dense data-testid="assessmentToolsCreate-proxy-section">
-                                <v-divider class="custom-divider mx-1 my-2" data-testid="assessmentToolsCreate-divider-proxy" />
+                            <v-row
+                                data-testid="assessmentToolsCreate-proxy-section"
+                                dense
+                            >
+                                <v-divider
+                                    class="custom-divider mx-1 my-2"
+                                    data-testid="assessmentToolsCreate-divider-proxy"
+                                />
 
                                 <v-col>
                                     <!-- With Proxy Toggle -->
-                                    <v-col cols="6" md="6" class="custom-padding-textbox">
-                                        <div class="d-flex align-center justify-space-between w-100">
+                                    <v-col
+                                        class="custom-padding-textbox"
+                                        cols="6"
+                                        md="6"
+                                    >
+                                        <div
+                                            class="d-flex align-center justify-space-between w-100"
+                                        >
                                             <label
                                                 class="text-grey-darken-1 text-body-1 ml-11"
                                                 data-testid="assessmentToolsCreate-proxy-label"
                                             >
                                                 {{
-                                                    translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.withProxyLabel')
+                                                    translate(
+                                                        "assessmentToolConnections.createAssessmentToolConnectionsPage.labels.withProxyLabel",
+                                                    )
                                                 }}
                                             </label>
 
                                             <v-switch
                                                 v-model="withProxy"
-                                                inset
-                                                hide-details
-                                                density="compact"
-                                                color="primary"
+                                                :aria-label="
+                                                    translate(
+                                                        'assessmentToolConnections.createAssessmentToolConnectionsPage.labels.withProxyAria',
+                                                    )
+                                                "
                                                 class="ml-4"
-                                                :aria-label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.withProxyAria')"
+                                                color="primary"
                                                 data-testid="assessmentToolsCreate-proxy-switch"
+                                                density="compact"
+                                                hide-details
+                                                inset
                                             />
                                         </div>
                                     </v-col>
                                 </v-col>
                             </v-row>
 
-                            <v-row dense data-testid="assessmentToolsCreate-proxy-fields-row">
+                            <v-row
+                                data-testid="assessmentToolsCreate-proxy-fields-row"
+                                dense
+                            >
                                 <v-col>
                                     <!-- Animated expansion -->
                                     <v-expand-transition>
-                                        <div v-show="withProxy" data-testid="assessmentToolsCreate-proxy-fields">
+                                        <div
+                                            v-show="withProxy"
+                                            data-testid="assessmentToolsCreate-proxy-fields"
+                                        >
                                             <v-row>
                                                 <v-col cols="8">
                                                     <!-- Proxy Host -->
-                                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                                    <v-col
+                                                        class="custom-padding-textbox"
+                                                        cols="12"
+                                                        md="12"
+                                                    >
                                                         <v-text-field
-                                                            density="compact"
-                                                            :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.proxyHostLabel')"
-                                                            variant="outlined"
                                                             v-model="proxyHost"
-                                                            :rules="[requiredIfProxyRule]"
-                                                            validate-on="blur"
                                                             data-testid="assessmentToolsCreate-proxy-host-input"
+                                                            density="compact"
+                                                            :label="
+                                                                translate(
+                                                                    'assessmentToolConnections.createAssessmentToolConnectionsPage.labels.proxyHostLabel',
+                                                                )
+                                                            "
+                                                            :rules="[
+                                                                requiredIfProxyRule,
+                                                            ]"
+                                                            validate-on="blur"
+                                                            variant="outlined"
                                                         />
                                                     </v-col>
 
                                                     <!-- Proxy Port -->
-                                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                                    <v-col
+                                                        class="custom-padding-textbox"
+                                                        cols="12"
+                                                        md="12"
+                                                    >
                                                         <v-text-field
-                                                            density="compact"
-                                                            :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.proxyPortLabel')"
-                                                            variant="outlined"
                                                             v-model="proxyPort"
-                                                            type="number"
-                                                            inputmode="numeric"
-                                                            :rules="[requiredIfProxyRule, portNumberRule]"
-                                                            validate-on="blur"
                                                             data-testid="assessmentToolsCreate-proxy-port-input"
+                                                            density="compact"
+                                                            inputmode="numeric"
+                                                            :label="
+                                                                translate(
+                                                                    'assessmentToolConnections.createAssessmentToolConnectionsPage.labels.proxyPortLabel',
+                                                                )
+                                                            "
+                                                            :rules="[
+                                                                requiredIfProxyRule,
+                                                                portNumberRule,
+                                                            ]"
+                                                            type="number"
+                                                            validate-on="blur"
+                                                            variant="outlined"
                                                         />
                                                     </v-col>
 
                                                     <!-- Proxy Username -->
-                                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                                    <v-col
+                                                        class="custom-padding-textbox"
+                                                        cols="12"
+                                                        md="12"
+                                                    >
                                                         <v-text-field
-                                                            density="compact"
-                                                            :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.proxyUsernameLabel')"
-                                                            variant="outlined"
-                                                            v-model="proxyUsername"
-                                                            :rules="[requiredIfProxyRule]"
-                                                            validate-on="blur"
+                                                            v-model="
+                                                                proxyUsername
+                                                            "
                                                             data-testid="assessmentToolsCreate-proxy-username-input"
+                                                            density="compact"
+                                                            :label="
+                                                                translate(
+                                                                    'assessmentToolConnections.createAssessmentToolConnectionsPage.labels.proxyUsernameLabel',
+                                                                )
+                                                            "
+                                                            :rules="[
+                                                                requiredIfProxyRule,
+                                                            ]"
+                                                            validate-on="blur"
+                                                            variant="outlined"
                                                         />
                                                     </v-col>
 
                                                     <!-- Proxy Password -->
-                                                    <v-col cols="12" md="12" class="custom-padding-textbox">
+                                                    <v-col
+                                                        class="custom-padding-textbox"
+                                                        cols="12"
+                                                        md="12"
+                                                    >
                                                         <v-text-field
-                                                            :type="proxyPasswordVisible ? 'text' : 'password'"
-                                                            density="compact"
-                                                            :label="translate('assessmentToolConnections.createAssessmentToolConnectionsPage.labels.proxyPasswordLabel')"
-                                                            variant="outlined"
-                                                            v-model="proxyPassword"
-                                                            :rules="[requiredIfProxyRule]"
-                                                            validate-on="blur"
+                                                            v-model="
+                                                                proxyPassword
+                                                            "
                                                             data-testid="assessmentToolsCreate-proxy-password-input"
+                                                            density="compact"
+                                                            :label="
+                                                                translate(
+                                                                    'assessmentToolConnections.createAssessmentToolConnectionsPage.labels.proxyPasswordLabel',
+                                                                )
+                                                            "
+                                                            :rules="[
+                                                                requiredIfProxyRule,
+                                                            ]"
+                                                            :type="
+                                                                proxyPasswordVisible
+                                                                    ? 'text'
+                                                                    : 'password'
+                                                            "
+                                                            validate-on="blur"
+                                                            variant="outlined"
                                                         >
-                                                            <template #append-inner>
+                                                            <template
+                                                                #append-inner
+                                                            >
                                                                 <v-btn
-                                                                    density="compact"
-                                                                    variant="text"
-                                                                    :icon="proxyPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
-                                                                    @click="proxyPasswordVisible = !proxyPasswordVisible"
                                                                     data-testid="assessmentToolsCreate-proxy-password-toggle"
+                                                                    density="compact"
+                                                                    :icon="
+                                                                        proxyPasswordVisible
+                                                                            ? 'mdi-eye-off'
+                                                                            : 'mdi-eye'
+                                                                    "
+                                                                    variant="text"
+                                                                    @click="
+                                                                        proxyPasswordVisible =
+                                                                            !proxyPasswordVisible
+                                                                    "
                                                                 />
                                                             </template>
                                                         </v-text-field>
@@ -319,27 +546,34 @@
             </v-sheet>
 
             <!-- Buttons -->
-            <v-row class="px-6 pt-0" data-testid="assessmentToolsCreate-actions-row">
-                <v-col cols="12" md="12" class="pa-0 mb-4">
+            <v-row
+                class="px-6 pt-0"
+                data-testid="assessmentToolsCreate-actions-row"
+            >
+                <v-col class="pa-0 mb-4" cols="12" md="12">
                     <div class="d-flex justify-end">
                         <v-btn
-                            rounded="sm"
                             color="black"
-                            variant="outlined"
-                            @click="navigateTo(constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE)"
                             data-testid="assessmentToolsCreate-cancel-button"
+                            rounded="sm"
+                            variant="outlined"
+                            @click="
+                                navigateTo(
+                                    constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE,
+                                )
+                            "
                         >
                             {{ translate("general.cancelButton") }}
                         </v-btn>
 
                         <v-btn
-                            rounded="sm"
-                            color="primary"
-                            variant="flat"
                             class="ml-2"
-                            @click="submit()"
-                            :disabled="isCreateDisabled"
+                            color="primary"
                             data-testid="assessmentToolsCreate-save-button"
+                            :disabled="isCreateDisabled"
+                            rounded="sm"
+                            variant="flat"
+                            @click="submit()"
                         >
                             {{ translate("general.saveButton") }}
                         </v-btn>
@@ -350,24 +584,21 @@
     </v-row>
 </template>
 
-
 <script setup lang="ts">
-import {ref, onMounted, onBeforeUnmount} from 'vue';
-import {useAppBarStore, useLayoutStore} from '@/stores/store';
-import {translate} from '@/utils/generalUtils';
-import * as constants from '@/utils/constants';
-import {getInstitutions} from "@/services/seb-server/component-services/registerAccountViewService";
-import {navigateTo} from "@/router/navigation";
-import {useI18n} from "vue-i18n";
-import {useUserAccountStore as useAuthenticatedUserAccountStore} from "@/stores/authentication/authenticationStore";
-import {createAssessmentTool} from "@/services/seb-server/component-services/assessmentToolViewService";
-import {LMSTypeEnum} from "@/models/seb-server/assessmentToolEnums";
-
+import { onBeforeUnmount, onMounted, ref } from "vue";
+import { useAppBarStore, useLayoutStore } from "@/stores/store";
+import { translate } from "@/utils/generalUtils";
+import * as constants from "@/utils/constants";
+import { getInstitutions } from "@/services/seb-server/component-services/registerAccountViewService";
+import { navigateTo } from "@/router/navigation";
+import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/authenticationStore";
+import { createAssessmentTool } from "@/services/seb-server/component-services/assessmentToolViewService";
+import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums";
 
 const appBarStore = useAppBarStore();
 const layoutStore = useLayoutStore();
 
-//fields
+// fields
 const institution = ref<string | null>(null);
 const name = ref<string>("");
 const lmsType = ref<LMSTypeEnum | null>(null);
@@ -377,13 +608,11 @@ const assessmentToolServerPassword = ref<string>("");
 const accessToken = ref<string>("");
 const withProxy = ref<boolean>(false);
 
-const proxyHost = ref<string>('');
-const proxyPort = ref<string>('');
-const proxyUsername = ref<string>('');
-const proxyPassword = ref<string>('');
+const proxyHost = ref<string>("");
+const proxyPort = ref<string>("");
+const proxyUsername = ref<string>("");
+const proxyPassword = ref<string>("");
 const proxyPasswordVisible = ref<boolean>(false);
-
-const i18n = useI18n();
 
 const formRef = ref();
 
@@ -397,19 +626,24 @@ const createdAssessmentToolName = ref<string>("");
 const institutions = ref<Institution[]>([]);
 const authenticatedUserAccountStore = useAuthenticatedUserAccountStore();
 
+type AuthMode = "client" | "token";
+const authMode = ref<AuthMode>("token");
 
-type AuthMode = 'client' | 'token';
-const authMode = ref<AuthMode>('token');
-
-//validation rules
-const requiredMessage = translate("assessmentToolConnections.createAssessmentToolConnectionsPage.validation.required");
-const invalidPortMessage = translate("assessmentToolConnections.createAssessmentToolConnectionsPage.validation.invalidPort");
-const httpPrefixMessage = translate("assessmentToolConnections.createAssessmentToolConnectionsPage.validation.httpPrefix");
+// validation rules
+const requiredMessage = translate(
+    "assessmentToolConnections.createAssessmentToolConnectionsPage.validation.required",
+);
+const invalidPortMessage = translate(
+    "assessmentToolConnections.createAssessmentToolConnectionsPage.validation.invalidPort",
+);
+const httpPrefixMessage = translate(
+    "assessmentToolConnections.createAssessmentToolConnectionsPage.validation.httpPrefix",
+);
 
 const requiredRule = (v: string) => !!v || requiredMessage;
 
-const httpPrefixRule = (v: string) => /^https?:\/\//i.test(v) || httpPrefixMessage;
-
+const httpPrefixRule = (v: string) =>
+    /^https?:\/\//i.test(v) || httpPrefixMessage;
 
 // Required only when withProxy is true
 const requiredIfProxyRule = (v: string) => {
@@ -421,32 +655,34 @@ const requiredIfProxyRule = (v: string) => {
 const portNumberRule = (v: string) => {
     if (!withProxy.value) return true;
     const n = Number(v);
-    return Number.isInteger(n) && n >= 1 && n <= 65535 || invalidPortMessage;
+    return (Number.isInteger(n) && n >= 1 && n <= 65535) || invalidPortMessage;
 };
 
 const requiredIfClientRule = (v: string) => {
-    if (authMode.value !== 'client') return true;
+    if (authMode.value !== "client") return true;
     return (!!v && v.toString().trim().length > 0) || requiredMessage;
 };
 
 const requiredIfTokenRule = (v: string) => {
-    if (authMode.value !== 'token') return true;
+    if (authMode.value !== "token") return true;
     return (!!v && v.toString().trim().length > 0) || requiredMessage;
 };
 
 const isAuthValid = computed(() => {
-    const hasClient = !!assessmentToolServerUsername.value && !!assessmentToolServerPassword.value;
+    const hasClient =
+        !!assessmentToolServerUsername.value &&
+        !!assessmentToolServerPassword.value;
     const hasToken = !!accessToken.value;
-    return (authMode.value === 'client' && hasClient && !hasToken) ||
-        (authMode.value === 'token'  && hasToken && !hasClient);
+    return (
+        (authMode.value === "client" && hasClient && !hasToken) ||
+        (authMode.value === "token" && hasToken && !hasClient)
+    );
 });
-
 
 const lmsTypeItems = Object.values(LMSTypeEnum).map((v) => ({
     label: translate(`assessmentToolConnections.lmsTypes.${v}`),
     value: v as LMSTypeEnum,
 }));
-
 
 onMounted(async () => {
     appBarStore.title = translate("titles.createAssessmentTool");
@@ -457,9 +693,10 @@ onMounted(async () => {
     const result: Institution[] | null = await getInstitutions();
     institutions.value = result ?? [];
 
-
     const userInstitutionId = String(user?.institutionId);
-    const matchedInstitution = institutions.value.find(inst => inst.modelId === userInstitutionId);
+    const matchedInstitution = institutions.value.find(
+        (inst) => inst.modelId === userInstitutionId,
+    );
 
     if (matchedInstitution) {
         institution.value = matchedInstitution.modelId;
@@ -496,7 +733,6 @@ const isCreateDisabled = computed(() => {
     return proxyMissing || badPort;
 });
 
-
 async function submit() {
     const { valid } = await formRef.value.validate();
     if (!valid) return;
@@ -506,24 +742,26 @@ async function submit() {
         name: name.value,
         lmsType: lmsType.value!,
         lmsUrl: assessmentToolServerAddress.value,
-        ...(withProxy.value ? {
-            lmsProxyHost: proxyHost.value,
-            lmsProxyPort: Number(proxyPort.value.trim()).toString(),
-            lmsProxyAuthUsername: proxyUsername.value,
-            lmsProxyAuthSecret: proxyPassword.value,
-        } : {})
+        ...(withProxy.value
+            ? {
+                  lmsProxyHost: proxyHost.value,
+                  lmsProxyPort: Number(proxyPort.value.trim()).toString(),
+                  lmsProxyAuthUsername: proxyUsername.value,
+                  lmsProxyAuthSecret: proxyPassword.value,
+              }
+            : {}),
     };
 
     // Auth mode spreads (XOR)
     const authPart =
-        authMode.value === 'client'
+        authMode.value === "client"
             ? {
-                lmsClientname: assessmentToolServerUsername.value,
-                lmsClientsecret: assessmentToolServerPassword.value,
-            }
+                  lmsClientname: assessmentToolServerUsername.value,
+                  lmsClientsecret: assessmentToolServerPassword.value,
+              }
             : {
-                lmsRestApiToken: accessToken.value,
-            };
+                  lmsRestApiToken: accessToken.value,
+              };
 
     const createAssessmentToolsParams = {
         ...common,
@@ -547,15 +785,13 @@ onBeforeUnmount(() => {
 });
 
 watch(authMode, (mode) => {
-    if (mode === 'client') {
-        accessToken.value = '';
+    if (mode === "client") {
+        accessToken.value = "";
     } else {
-        assessmentToolServerUsername.value = '';
-        assessmentToolServerPassword.value = '';
+        assessmentToolServerUsername.value = "";
+        assessmentToolServerPassword.value = "";
     }
 });
-
-
 </script>
 
 <style scoped>
@@ -563,29 +799,26 @@ watch(authMode, (mode) => {
     color: #215caf;
 }
 
-
 .w-98 {
     width: 98% !important;
 }
 
 .custom-divider {
-    background-color: #DCDCDC !important;
+    background-color: #dcdcdc !important;
     height: 1px;
     width: 100%;
 }
-
 
 .custom-padding-textbox {
     padding-top: 1px !important;
     padding-bottom: 1px !important;
 }
 
-
 .custom-role-checkbox input[type="checkbox"] {
     appearance: none;
     width: 20px;
     height: 20px;
-    border: 2px solid #215CAE;
+    border: 2px solid #215cae;
     border-radius: 50%;
     background-color: white;
     cursor: pointer;
