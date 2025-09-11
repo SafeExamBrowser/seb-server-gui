@@ -14,7 +14,7 @@ export function addQueryParam(query: {}) {
 }
 
 export function openUrlInNewTab(url: string) {
-    // @ts-ignore
+    // @ts-ignore ignore
     window.open("", "_blank").location.href = router.resolve(url).href;
 }
 

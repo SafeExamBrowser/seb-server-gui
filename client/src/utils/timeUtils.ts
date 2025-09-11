@@ -80,7 +80,7 @@ export function formatIsoToReadableDateTime(dateStr?: string | null): string {
 }
 
 export function formatTimestampToFullDate(timestamp: string | any): string {
-    if (timestamp == "0" || timestamp == null) {
+    if (timestamp === "0" || timestamp === null) {
         return "";
     }
 
@@ -111,7 +111,7 @@ export function formatTimestampToFullDate(timestamp: string | any): string {
 }
 
 export function formatTimestampToDate(timestamp: number): string {
-    if (timestamp == 0) {
+    if (timestamp === 0) {
         return "";
     }
 
@@ -126,7 +126,7 @@ export function formatTimestampToDate(timestamp: number): string {
 }
 
 export function formatTimestampToTime(timestamp: number): string {
-    if (timestamp == 0) {
+    if (timestamp === 0) {
         return "";
     }
 
@@ -173,7 +173,7 @@ export function secondsToTimeString(seconds: number): string {
 }
 
 export function formatSqlDateToString(sqlDate: string): string {
-    if (sqlDate.length == 0) {
+    if (sqlDate.length === 0) {
         return "";
     }
 
@@ -203,13 +203,11 @@ function convertUTCToTimeZone(utcDate: number): Date {
 
     const utcDateObject = new Date(utcDate);
     const timezone: string | undefined = userAccountStore.userAccount?.timezone;
-    if (timezone == null) {
+    if (timezone === null || timezone === undefined) {
         return utcDateObject;
     }
 
-    const dateInTimezone = toZonedTime(utcDateObject, timezone);
-
-    return dateInTimezone;
+    return toZonedTime(utcDateObject, timezone);
 }
 
 export function calcTimePeriod(

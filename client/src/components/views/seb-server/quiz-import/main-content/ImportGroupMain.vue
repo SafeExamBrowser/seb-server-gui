@@ -242,7 +242,7 @@ const filteredAvailableGroups = computed<ClientGroup[]>(() => {
 // interactions
 function onAvailableRowClick(selectedGroup: ClientGroup) {
     const index = quizImportStore.selectedClientGroups.findIndex(
-        (g) => g.id == selectedGroup.id,
+        (g) => g.id === selectedGroup.id,
     );
     if (index !== -1) {
         quizImportStore.selectedClientGroups.splice(index, 1);
@@ -253,7 +253,7 @@ function onAvailableRowClick(selectedGroup: ClientGroup) {
 
 function removeClientGroup(groupId: number) {
     const index = quizImportStore.selectedClientGroups.findIndex(
-        (g) => g.id == groupId,
+        (g) => g.id === groupId,
     );
     if (index !== -1) quizImportStore.selectedClientGroups.splice(index, 1);
 }

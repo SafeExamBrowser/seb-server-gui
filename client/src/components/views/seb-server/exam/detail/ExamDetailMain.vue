@@ -377,8 +377,10 @@
                                                     <v-list-item-title :class="[!ability.canDoExamAction(GUIAction.EditScreenProctoring, examStore.selectedExam?.status) ? 'disabled-text-color' : '']">
                                                         {{translate("examDetail.main.applySP")}}
                                                     </v-list-item-title>
-                                                    <template v-slot:append="{ isSelected }" >
-                                                        <v-list-item-action class="flex-column align-right">
+                                                    <template #append>
+                                                        <v-list-item-action
+                                                            class="flex-column align-right"
+                                                        >
                                                             <v-switch
                                                                 v-model="isScreenProctoringActive"
                                                                 v-on:update:model-value="applyScreenProctoring()"
@@ -396,8 +398,10 @@
                                                     <v-list-item-title :class="[hasSEBRestrictionFeature() && ability.canDoExamAction(GUIAction.ApplySEBRestriction, examStore.selectedExam?.status) ? '' : 'disabled-text-color']">
                                                         {{translate("examDetail.main.applySebLock")}}
                                                     </v-list-item-title>
-                                                    <template v-slot:append="{ isSelected }" >
-                                                        <v-list-item-action class="flex-column align-right">
+                                                    <template #append>
+                                                        <v-list-item-action
+                                                            class="flex-column align-right"
+                                                        >
                                                             <v-switch
                                                                 v-model="isSEBLockActive"
                                                                 v-on:update:model-value="applySEBLock()"
@@ -415,8 +419,10 @@
                                                     <v-list-item-title :class="[hasSEBRestrictionFeature() && ability.canDoExamAction(GUIAction.ApplySEBRestriction, examStore.selectedExam?.status) ? '' : 'disabled-text-color']">
                                                         {{translate("examDetail.main.sebKeys")}}
                                                     </v-list-item-title>
-                                                    <template v-slot:append="{ isSelected }" >
-                                                        <v-list-item-action class="flex-column align-right">
+                                                    <template #append>
+                                                        <v-list-item-action
+                                                            class="flex-column align-right"
+                                                        >
                                                             <v-icon
                                                                 icon="mdi-key-outline"
                                                                 style="font-size: 30px;"
@@ -433,8 +439,10 @@
                                                     <v-list-item-title :class="[!ability.canDoExamAction(GUIAction.ArchiveExam, examStore.selectedExam?.status) ? 'disabled-text-color' : '']">
                                                         {{translate("examDetail.main.archiveExam")}}
                                                     </v-list-item-title>
-                                                    <template v-slot:append="{ isSelected }" >
-                                                        <v-list-item-action class="flex-column align-right">
+                                                    <template #append>
+                                                        <v-list-item-action
+                                                            class="flex-column align-right"
+                                                        >
                                                             <v-icon
                                                                 icon="mdi-archive-outline"
                                                                 style="font-size: 30px;"
@@ -456,8 +464,10 @@
                                                     <v-list-item-title>
                                                         {{translate("examDetail.main.deleteExam")}}
                                                     </v-list-item-title>
-                                                    <template v-slot:append="{ isSelected }" >
-                                                        <v-list-item-action class="flex-column align-right">
+                                                    <template #append>
+                                                        <v-list-item-action
+                                                            class="flex-column align-right"
+                                                        >
                                                             <v-icon
                                                                 icon="mdi-delete-outline"
                                                                 style="font-size: 30px;"
@@ -770,10 +780,10 @@
             return;
         }
 
-        if(examStore.selectedExam.supporter.length == 0){
-            examStore.selectedExamSupervisors = [];
-            return;
-        }
+    if (examStore.selectedExam.supporter.length === 0) {
+        examStore.selectedExamSupervisors = [];
+        return;
+    }
 
         examStore.selectedExamSupervisors = [];
         for(let i = 0; i < examStore.selectedExam.supporter.length; i++){
@@ -814,11 +824,14 @@
         }
     }
 
-    //===============password logic====================
-    function setQuitPassword(){
-        if(examStore.selectedExam?.quitPassword == null || examStore.selectedExam?.quitPassword == ""){
-            return;
-        }
+//= ==============password logic====================
+function setQuitPassword() {
+    if (
+        examStore.selectedExam?.quitPassword == null ||
+        examStore.selectedExam?.quitPassword === ""
+    ) {
+        return;
+    }
 
         quitPassword.value = examStore.selectedExam?.quitPassword;
     }
@@ -829,10 +842,13 @@
         }
     }   
 
-    async function updateQuitPassword(){
-        if(examStore.selectedExam == null || quitPassword.value == examStore.selectedExam?.quitPassword){
-            return;
-        }
+async function updateQuitPassword() {
+    if (
+        examStore.selectedExam == null ||
+        quitPassword.value === examStore.selectedExam?.quitPassword
+    ) {
+        return;
+    }
 
         examStore.selectedExam.quitPassword = quitPassword.value;
         updateExam();
@@ -855,10 +871,10 @@
             return;
         }
 
-        if(connectionConfigurations.content.length == 1){
-            downloadExamConfig(connectionConfigurations.content[0].id.toString());
-            return;
-        }
+    if (connectionConfigurations.content.length === 1) {
+        downloadExamConfig(connectionConfigurations.content[0].id.toString());
+        return;
+    }
 
         openConfigDialog(connectionConfigurations);
     }
@@ -912,10 +928,12 @@
             return;
         }
 
-        if(examStore.selectedExam.additionalAttributes.enableScreenProctoring == "true"){
-            isScreenProctoringActive.value = true;
-        }
+    if (
+        examStore.selectedExam.additionalAttributes.enableScreenProctoring === "true"
+    ) {
+        isScreenProctoringActive.value = true;
     }
+}
 
     async function applyScreenProctoring(){
         if(isScreenProctoringActive.value){

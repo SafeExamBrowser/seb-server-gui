@@ -299,7 +299,7 @@ function clearForm() {
 }
 
 function setActiveTypeFilter(filter: ExamTypeEnum) {
-    if (examStore.activeTypeFilter == filter) {
+    if (examStore.activeTypeFilter === filter) {
         examStore.activeTypeFilter = null;
         loadExamItemsCaller();
         return;
@@ -310,7 +310,7 @@ function setActiveTypeFilter(filter: ExamTypeEnum) {
 }
 
 function setActiveStatusFilter(filter: ExamStatusEnum) {
-    if (examStore.activeStatusFilter == filter) {
+    if (examStore.activeStatusFilter === filter) {
         examStore.activeStatusFilter = null;
         loadExamItemsCaller();
         return;

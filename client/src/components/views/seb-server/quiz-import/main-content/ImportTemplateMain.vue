@@ -102,7 +102,7 @@ onBeforeMount(async () => {
 
 async function onTemplateCardClick(examTemplate: ExamTemplate) {
     // if the same is selected just leave
-    if (examTemplate.id == quizImportStore.selectedExamTemplate?.id) {
+    if (examTemplate.id === quizImportStore.selectedExamTemplate?.id) {
         return;
     }
 
@@ -161,7 +161,7 @@ async function onTemplateCardClick(examTemplate: ExamTemplate) {
 
     if (
         quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES != null &&
-        quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES.length == 1
+        quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES.length === 1
     ) {
         quizImportStore.selectedClientGroups.push(
             quizImportStore.selectedExamTemplate.CLIENT_GROUP_TEMPLATES[0],

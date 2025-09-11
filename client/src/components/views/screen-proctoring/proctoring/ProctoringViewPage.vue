@@ -102,9 +102,11 @@
                             <!-----------time---------->
                             <template #append>
                                 <v-menu attach="#player-wrapper">
-                                    <template #activator="{ props }">
+                                    <template
+                                        #activator="{ props: activatorProps }"
+                                    >
                                         <v-btn
-                                            v-bind="props"
+                                            v-bind="activatorProps"
                                             aria-label="Playback Speed Selection"
                                             :disabled="isLiveSelected"
                                             icon="mdi-cog"
@@ -422,7 +424,7 @@ watch(sliderTime, async () => {
         return;
     }
 
-    if (sliderTime.value != sliderMax.value && !intervalScreenshots) {
+    if (sliderTime.value !== sliderMax.value && !intervalScreenshots) {
         pause();
         isLiveButtonDisabled.value = false;
     }
@@ -689,7 +691,7 @@ function startIntervalScreenshots() {
         if (
             currentScreenshotData.value != null &&
             sliderTime.value != null &&
-            timeUtils.toSeconds(sliderTime.value) ==
+            timeUtils.toSeconds(sliderTime.value) ===
                 timeUtils.toSeconds(currentScreenshotData.value?.endTime) &&
             !isLive.value
         ) {
@@ -724,9 +726,9 @@ function changePlaybackSpeed(id: number) {
     stopIntervalScreenshots();
     selectedSpeedId.value = id;
 
-    if (id == 0) PLAYBACK_SPEED.value = SLOW_PLAYBACK_SPEED;
-    if (id == 1) PLAYBACK_SPEED.value = DEFAULT_PLAYBACK_SPEED;
-    if (id == 2) PLAYBACK_SPEED.value = FAST_PLAYBACK_SPEED;
+    if (id === 0) PLAYBACK_SPEED.value = SLOW_PLAYBACK_SPEED;
+    if (id === 1) PLAYBACK_SPEED.value = DEFAULT_PLAYBACK_SPEED;
+    if (id === 2) PLAYBACK_SPEED.value = FAST_PLAYBACK_SPEED;
 
     if (isPlaying.value) {
         startIntervalScreenshots();
@@ -749,7 +751,7 @@ async function backwards() {
     if (
         currentScreenshotData.value == null ||
         sliderTime.value == null ||
-        sliderTime.value == currentScreenshotData.value.startTime
+        sliderTime.value === currentScreenshotData.value.startTime
     ) {
         return;
     }
@@ -781,7 +783,7 @@ async function forwards() {
     if (
         currentScreenshotData.value == null ||
         sliderTime.value == null ||
-        sliderTime.value == currentScreenshotData.value.startTime
+        sliderTime.value === currentScreenshotData.value.startTime
     ) {
         return;
     }
@@ -856,7 +858,7 @@ const additionalMetadataInfo = computed<string>(() => {
                     i
                 ].timelineScreenshotDataList.findIndex(
                     (group) =>
-                        timeUtils.toTimeString(group.timestamp) ==
+                        timeUtils.toTimeString(group.timestamp) ===
                         timeUtils.toTimeString(sliderTime.value!),
                 );
 
@@ -890,7 +892,7 @@ const screenshotDisplay = computed<string>(() => {
             currentScreenshotData.value.timestamp,
         );
 
-    if (currentScreenshotIndex == -1) {
+    if (currentScreenshotIndex === -1) {
         currentScreenshotIndex = 0;
     }
 

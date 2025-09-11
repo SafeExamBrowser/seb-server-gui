@@ -99,11 +99,11 @@ const props = defineProps<{
 const lockScreenText = ref<string>("");
 
 function getTitle(): string {
-    if (props.instructionType == InstructionEnum.SEB_FORCE_LOCK_SCREEN) {
+    if (props.instructionType === InstructionEnum.SEB_FORCE_LOCK_SCREEN) {
         return translate("monitoringDialog.instructionConfirm.lockSeb");
     }
 
-    if (props.instructionType == InstructionEnum.SEB_QUIT) {
+    if (props.instructionType === InstructionEnum.SEB_QUIT) {
         return translate("monitoringDialog.instructionConfirm.quitSeb");
     }
 
@@ -115,11 +115,11 @@ function getTitle(): string {
 }
 
 function getDescription(): string {
-    if (props.instructionType == InstructionEnum.SEB_FORCE_LOCK_SCREEN) {
+    if (props.instructionType === InstructionEnum.SEB_FORCE_LOCK_SCREEN) {
         return translate("monitoringDialog.instructionConfirm.lockAction");
     }
 
-    if (props.instructionType == InstructionEnum.SEB_QUIT) {
+    if (props.instructionType === InstructionEnum.SEB_QUIT) {
         return translate("monitoringDialog.instructionConfirm.quitAction");
     }
 
@@ -131,7 +131,7 @@ function getDescription(): string {
 }
 
 function getQuestionConfirmText(): string {
-    if (props.instructionType == InstructionEnum.SEB_QUIT) {
+    if (props.instructionType === InstructionEnum.SEB_QUIT) {
         return translate("monitoringDialog.instructionConfirm.quitQuestion");
     }
 
@@ -139,11 +139,11 @@ function getQuestionConfirmText(): string {
 }
 
 function getButtonText(): string {
-    if (props.instructionType == InstructionEnum.SEB_FORCE_LOCK_SCREEN) {
+    if (props.instructionType === InstructionEnum.SEB_FORCE_LOCK_SCREEN) {
         return translate("monitoringDialog.instructionConfirm.lock");
     }
 
-    if (props.instructionType == InstructionEnum.SEB_QUIT) {
+    if (props.instructionType === InstructionEnum.SEB_QUIT) {
         return translate("monitoringDialog.instructionConfirm.quit");
     }
 
@@ -168,7 +168,7 @@ async function registerInstruction() {
     };
 
     // add optional lock msg
-    if (props.instructionType == InstructionEnum.SEB_FORCE_LOCK_SCREEN) {
+    if (props.instructionType === InstructionEnum.SEB_FORCE_LOCK_SCREEN) {
         clientInstruction.attributes = {
             message: lockScreenText.value,
         };

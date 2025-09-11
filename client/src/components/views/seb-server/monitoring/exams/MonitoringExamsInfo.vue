@@ -285,7 +285,7 @@ function clearForm() {
 }
 
 function setActiveTypeFilter(filter: ExamTypeEnum) {
-    if (monitoringStore.activeTypeFilter == filter) {
+    if (monitoringStore.activeTypeFilter === filter) {
         monitoringStore.activeTypeFilter = null;
         loadMonitoringListItemsCaller();
         return;
@@ -296,7 +296,7 @@ function setActiveTypeFilter(filter: ExamTypeEnum) {
 }
 
 function setActiveStatusFilter(filter: ExamStatusEnum) {
-    if (monitoringStore.activeStatusFilter == filter) {
+    if (monitoringStore.activeStatusFilter === filter) {
         monitoringStore.activeStatusFilter = null;
         loadMonitoringListItemsCaller();
         return;

@@ -198,7 +198,7 @@ watch(
         }[] = Object.entries(
             monitoringStore.monitoringOverviewData.clientStates,
         )
-            .filter(([key]) => key != "total")
+            .filter(([key]) => key !== "total")
             .map(([key, value]) => ({
                 clientStates: generalUtils.findEnumValue(
                     ConnectionStatusEnum,
@@ -214,7 +214,7 @@ watch(
             });
 
         clientStatesList.forEach((item) => {
-            if (item.clientAmount != 0) {
+            if (item.clientAmount !== 0) {
                 clientLabels.value.push(translate(item.clientStates, i18n));
                 clientStates.value.push(item.clientStates);
                 clientData.value.push(item.clientAmount);

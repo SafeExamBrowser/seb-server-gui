@@ -6,7 +6,7 @@ import { navigateTo } from "@/router/navigation";
 import { useTableStore } from "@/stores/store";
 
 export function calcDefaultItemsPerPage(itemList: any): number {
-    if (itemList == null || itemList.length == 0) {
+    if (itemList == null || itemList.length === 0) {
         return 0;
     }
 
@@ -27,7 +27,7 @@ export function calcDefaultItemsPerPage(itemList: any): number {
 export function calcItemsPerPage(
     itemList: any,
 ): { value: number; title: string }[] {
-    if (itemList == null || itemList.length == 0) {
+    if (itemList == null || itemList.length === 0) {
         return [{ value: 0, title: "0" }];
     }
 
@@ -70,12 +70,12 @@ export function handleTabKeyEvent(
     key: number,
     optional?: { path?: string; headerRefs?: any },
 ) {
-    if (event.key == "Enter" || event.key == " ") {
-        if (action == "sort") {
+    if (event.key === "Enter" || event.key === " ") {
+        if (action === "sort") {
             sortTable(key, optional?.headerRefs);
         }
 
-        if (action == "navigate") {
+        if (action === "navigate") {
             navigateTo(optional?.path!);
         }
     }
@@ -118,9 +118,9 @@ export function assignQuizSelectPagingOptions(
         optionalParGetQuizzes.lms_setup = assessmentToolId;
     }
 
-    if (serverTablePaging.sortBy.length != 0) {
+    if (serverTablePaging.sortBy.length !== 0) {
         let sortString: string = serverTablePaging.sortBy[0].key;
-        if (serverTablePaging.sortBy[0].order == "desc") {
+        if (serverTablePaging.sortBy[0].order === "desc") {
             sortString = "-" + sortString;
         }
 
@@ -158,9 +158,9 @@ export function assignExamSelectPagingOptions(
         optionalParGetExams.start_timestamp_millis = startTimestamp;
     }
 
-    if (serverTablePaging.sortBy.length != 0) {
+    if (serverTablePaging.sortBy.length !== 0) {
         let sortString: string = serverTablePaging.sortBy[0].key;
-        if (serverTablePaging.sortBy[0].order == "desc") {
+        if (serverTablePaging.sortBy[0].order === "desc") {
             sortString = "-" + sortString;
         }
 
@@ -172,7 +172,7 @@ export function assignExamSelectPagingOptions(
 
 export function getSessionListIndex(day: string): number {
     const tableStore = useTableStore();
-    return tableStore.isIpDisplayList.findIndex((i) => i.day == day);
+    return tableStore.isIpDisplayList.findIndex((i) => i.day === day);
 }
 
 export function assignPagingOptions(
@@ -182,9 +182,9 @@ export function assignPagingOptions(
     pagingParameters.pageSize = serverTablePaging.itemsPerPage;
     pagingParameters.pageNumber = serverTablePaging.page;
 
-    if (serverTablePaging.sortBy.length != 0) {
+    if (serverTablePaging.sortBy.length !== 0) {
         let sortString: string = serverTablePaging.sortBy[0].key;
-        if (serverTablePaging.sortBy[0].order == "desc") {
+        if (serverTablePaging.sortBy[0].order === "desc") {
             sortString = "-" + sortString;
         }
 
@@ -245,9 +245,9 @@ export function assignClientLogDetailsPagingOptions(
     if (type != null && type !== "all") {
         optionalParGetMonitoringClientLogs.type = type;
     }
-    if (serverTablePaging.sortBy.length != 0) {
+    if (serverTablePaging.sortBy.length !== 0) {
         let sortString: string = serverTablePaging.sortBy[0].key;
-        if (serverTablePaging.sortBy[0].order == "desc") {
+        if (serverTablePaging.sortBy[0].order === "desc") {
             sortString = "-" + sortString;
         }
 

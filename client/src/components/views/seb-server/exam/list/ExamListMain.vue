@@ -188,7 +188,7 @@ defineExpose({
 
 //= ======================events & watchers===============
 function onTableRowClick(exam: Exam) {
-    if (exam.id == selectedExam.value?.id) {
+    if (exam.id === selectedExam.value?.id) {
         selectedExam.value = null;
         return;
     }

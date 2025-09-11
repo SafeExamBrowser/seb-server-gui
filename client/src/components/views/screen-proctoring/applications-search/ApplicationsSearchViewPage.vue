@@ -137,15 +137,14 @@
     <template v-if="metadataAvailable">
         <v-sheet
             v-for="examObject in examObjects"
+            :key="examObject.exam.id"
             class="rounded-lg pa-4 mt-4"
             elevation="4"
             :title="examObject.exam.name"
         >
-            <ApplicationsSearchMetadata :exam-object="examObject">
-            </ApplicationsSearchMetadata>
+            <ApplicationsSearchMetadata :exam-object="examObject" />
         </v-sheet>
     </template>
-
     <AlertMsg
         v-if="loadingStore.isTimeout"
         :alert-props="{
@@ -228,7 +227,7 @@ async function getExamsStarted() {
         return;
     }
 
-    if (examList.length == 0) {
+    if (examList.length === 0) {
         noResutsFound.value = true;
         examListAvailable.value = true;
         return;
@@ -278,12 +277,12 @@ function clearForm() {
 }
 
 function radioButtonEvent(button: string) {
-    if (button == "period") {
+    if (button === "period") {
         timePeriodRadio.value = true;
         timeSelectionRadio.value = false;
     }
 
-    if (button == "selection") {
+    if (button === "selection") {
         timeSelectionRadio.value = true;
         timePeriodRadio.value = false;
     }

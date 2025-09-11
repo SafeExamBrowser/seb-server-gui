@@ -408,12 +408,12 @@ function clearForm() {
 }
 
 function radioButtonEvent(button: string) {
-    if (button == "period") {
+    if (button === "period") {
         timePeriodRadio.value = true;
         timeSelectionRadio.value = false;
     }
 
-    if (button == "selection") {
+    if (button === "selection") {
         timeSelectionRadio.value = true;
         timePeriodRadio.value = false;
     }

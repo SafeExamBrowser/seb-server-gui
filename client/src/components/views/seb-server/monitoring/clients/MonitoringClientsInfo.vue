@@ -532,7 +532,7 @@ const route = useRoute();
 
 // stores
 const monitoringStore = useMonitoringStore();
-const monitoringStoreRef = storeToRefs(monitoringStore);
+storeToRefs(monitoringStore);
 const errorStore = useErrorStore();
 
 // exam
@@ -637,7 +637,7 @@ function getConnectionTokens(): string | null {
         }
     });
 
-    if (connectionTokens.length == 0) {
+    if (connectionTokens.length === 0) {
         return null;
     }
 

@@ -158,7 +158,7 @@ onBeforeMount(async () => {
 });
 
 watch(sessionPanels, () => {
-    if (sessionPanels.value.length == 0) {
+    if (sessionPanels.value.length === 0) {
         closeAllPanelsDisabled.value = true;
         return;
     }
@@ -185,21 +185,21 @@ async function searchSessions(
     errorAvailable.value = false;
     noResutsFound.value = false;
 
-    examNameSearch = examName == "" ? null : examName;
-    groupNameSearch = groupName == "" ? null : groupName;
+    examNameSearch = examName === "" ? null : examName;
+    groupNameSearch = groupName === "" ? null : groupName;
 
     metadataSearchApplication =
-        metadataApplication == "" ? null : metadataApplication;
+        metadataApplication === "" ? null : metadataApplication;
     metadataSearchBrowserTitle =
-        metadataBrowserTitle == "" ? null : metadataBrowserTitle;
+        metadataBrowserTitle === "" ? null : metadataBrowserTitle;
     metadataSearchActivityDetails =
-        metadataActivityDetails == "" ? null : metadataActivityDetails;
+        metadataActivityDetails === "" ? null : metadataActivityDetails;
     metadataSearchWindowTitle =
-        metadataWindowTitle == "" ? null : metadataWindowTitle;
+        metadataWindowTitle === "" ? null : metadataWindowTitle;
 
-    loginNameSearch = loginName == "" ? null : loginName;
-    ipAddressSearch = ipAddress == "" ? null : ipAddress;
-    machineNameSearch = machineName == "" ? null : machineName;
+    loginNameSearch = loginName === "" ? null : loginName;
+    ipAddressSearch = ipAddress === "" ? null : ipAddress;
+    machineNameSearch = machineName === "" ? null : machineName;
 
     searchParameters.value = {
         examName: examNameSearch,
@@ -229,7 +229,7 @@ async function searchSessions(
 
     sessionsDays.value = sessionSearchResponse;
 
-    if (sessionsDays.value.length == 0) {
+    if (sessionsDays.value.length === 0) {
         noResutsFound.value = true;
         searchResultAvailable.value = true;
         return;
