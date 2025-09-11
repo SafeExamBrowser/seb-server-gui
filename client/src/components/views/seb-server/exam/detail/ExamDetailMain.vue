@@ -903,7 +903,9 @@
 
     <!-----------group dialog---------->
     <v-dialog v-model="clientGroupDialog" max-width="1200">
-        <ClienGroupListDialog @close-client-group-dialog="closeClientGroupDialog">
+        <ClienGroupListDialog
+            @close-client-group-dialog="closeClientGroupDialog"
+        >
         </ClienGroupListDialog>
     </v-dialog>
 

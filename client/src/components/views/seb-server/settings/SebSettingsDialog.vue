@@ -35,9 +35,12 @@
                     class="mb-4"
                     color="primary"
                 >
-                    <v-tab v-for="tab in tabs" :key="tab.value" :value="tab.value" >{{
-                        tab.title
-                    }}</v-tab>
+                    <v-tab
+                        v-for="tab in tabs"
+                        :key="tab.value"
+                        :value="tab.value"
+                        >{{ tab.title }}</v-tab
+                    >
                 </v-tabs>
 
                 <v-tabs-window v-model="currentTab">

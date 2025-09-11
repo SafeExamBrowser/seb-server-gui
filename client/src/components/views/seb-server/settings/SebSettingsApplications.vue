@@ -59,12 +59,7 @@
                 "
             >
                 <template
-                    #headers="{
-                        columns,
-                        isSorted,
-                        getSortIcon,
-                        toggleSort,
-                    }"
+                    #headers="{ columns, isSorted, getSortIcon, toggleSort }"
                 >
                     <TableHeaders
                         :columns="columns"
@@ -159,12 +154,7 @@
                 :items="prohibitedProcessTable"
             >
                 <template
-                    #headers="{
-                        columns,
-                        isSorted,
-                        getSortIcon,
-                        toggleSort,
-                    }"
+                    #headers="{ columns, isSorted, getSortIcon, toggleSort }"
                 >
                     <TableHeaders
                         :columns="columns"
@@ -345,7 +335,6 @@ const prohibitedProcessHeaders = ref([
 let componentId: string;
 let allowSwitchToApplications: SEBSettingsValue;
 
-
 onBeforeMount(async () => {
     if (sebSettingsStore.selectedContainerId == null) {
         return;
@@ -441,9 +430,11 @@ function insertPermittedProcess(
         autostart:
             rowVals.get("permittedProcesses.autostart")?.value! === "true",
         allowShareSheet:
-            rowVals.get("permittedProcesses.allowShareSheet")?.value! === "true",
+            rowVals.get("permittedProcesses.allowShareSheet")?.value! ===
+            "true",
         runInBackground:
-            rowVals.get("permittedProcesses.runInBackground")?.value! === "true",
+            rowVals.get("permittedProcesses.runInBackground")?.value! ===
+            "true",
         allowManualStart:
             rowVals.get("permittedProcesses.allowManualStart")?.value! ===
             "true",

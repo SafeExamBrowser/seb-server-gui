@@ -564,7 +564,7 @@
 </template>
 
 <script setup lang="ts">
-import { translate , translateWithBR } from "@/utils/generalUtils";
+import { translate, translateWithBR } from "@/utils/generalUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 
 const argumentsHeadersRef = ref<any[]>();

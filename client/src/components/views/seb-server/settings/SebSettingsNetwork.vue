@@ -70,12 +70,7 @@
                 "
             >
                 <template
-                    #headers="{
-                        columns,
-                        isSorted,
-                        getSortIcon,
-                        toggleSort,
-                    }"
+                    #headers="{ columns, isSorted, getSortIcon, toggleSort }"
                 >
                     <TableHeaders
                         :columns="columns"
@@ -397,9 +392,9 @@ onBeforeMount(async () => {
     urlFilterEnableContentFilter = singleValues.get(
         "URLFilterEnableContentFilter",
     )!;
-    urlFilterEnableVal.value = urlFilterEnable.value == "true";
+    urlFilterEnableVal.value = urlFilterEnable.value === "true";
     urlFilterEnableContentFilterVal.value =
-        urlFilterEnableContentFilter.value == "true";
+        urlFilterEnableContentFilter.value === "true";
 
     // URL Filter
     const urlFilterRules = tableValues.get("URLFilterRules");
@@ -420,7 +415,7 @@ onBeforeMount(async () => {
     ExceptionsListVal.value = ExceptionsList.value;
 
     FTPPassive = proxyValues.get("FTPPassive")!;
-    FTPPassiveVal.value = FTPPassive.value == "true";
+    FTPPassiveVal.value = FTPPassive.value === "true";
 });
 
 // ********* URL Filter Rule functions *********************
@@ -442,8 +437,8 @@ function insertURLFilter(
 ) {
     urlFilterTable.value.splice(index, 0, {
         index,
-        active: rowVals.get("URLFilterRules.active")?.value! == "true",
-        regex: rowVals.get("URLFilterRules.regex")?.value! == "true",
+        active: rowVals.get("URLFilterRules.active")?.value! === "true",
+        regex: rowVals.get("URLFilterRules.regex")?.value! === "true",
         expression: rowVals.get("URLFilterRules.expression")!.value,
         action: rowVals.get("URLFilterRules.action")!.value,
         ids: {
@@ -497,7 +492,7 @@ async function closeEditURLFilterRuleDialog(apply?: boolean) {
         return;
     }
 
-    if (selectedURLFilterRule.value?.index == -1) {
+    if (selectedURLFilterRule.value?.index === -1) {
         const resp: SEBSettingsTableRowValues | null =
             await sebSettingsService.newSEBSettingTableRow(
                 componentId,
