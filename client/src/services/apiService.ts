@@ -274,7 +274,7 @@ export function createSessionDeleteUrlSuffix(sessionUuids: string[]): string {
     for (let i = 0; i < sessionUuids.length; i++) {
         urlSuffix += sessionUuids[i];
 
-        if (i != sessionUuids.length - 1) {
+        if (i !== sessionUuids.length - 1) {
             urlSuffix += "&modelIds=";
         }
     }

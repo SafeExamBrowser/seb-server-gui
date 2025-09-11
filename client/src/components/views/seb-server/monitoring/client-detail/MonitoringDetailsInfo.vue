@@ -240,7 +240,7 @@ function openInstructionConfirmDialog(instructionType: InstructionEnum) {
     selectedInstructionType.value = instructionType;
     instructionConfirmDialog.value = true;
     isSelectedInstructionCancel.value =
-        instructionType == InstructionEnum.SEB_MARK_AS_CANCELLED;
+        instructionType === InstructionEnum.SEB_MARK_AS_CANCELLED;
 }
 
 function closeInstructionConfirmDialog() {
@@ -271,7 +271,8 @@ const currentStatus = computed(() => {
     return monitoringStore.selectedSingleConn?.cdat.status ?? null;
 });
 
-//= ==============indicators====================
+// TODO ==============indicators==================== is this still used / will be used?
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const mergedIndicators = computed(() => {
     const definitions = monitoringStore.indicators?.content || [];
     const values = monitoringStore.selectedSingleConn?.iVal || [];

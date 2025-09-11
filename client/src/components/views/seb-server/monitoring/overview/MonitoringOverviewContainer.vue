@@ -85,7 +85,7 @@ const monitoringStore = useMonitoringStore();
 
 // interval
 let intervalRefresh: any | null = null;
-const REFRESH_INTERVAL: number = 1 * 5000;
+const REFRESH_INTERVAL: number = 5000;
 
 onBeforeMount(async () => {
     appBarStore.title = translate("titles.monitoring");
@@ -93,8 +93,7 @@ onBeforeMount(async () => {
     await getIndicatorData();
     await getOverviewData();
     await monitoringViewService.getAskAndStore(examId);
-    monitoringStore.selectedExam?.additionalAttributes;
-    startIntervalRefresh();
+    await startIntervalRefresh();
 });
 
 onBeforeUnmount(() => {
@@ -116,12 +115,12 @@ async function getIndicatorData() {
     monitoringStore.indicators = indicatorResponse;
 
     for (const indicator of monitoringStore.indicators?.content) {
-        if (indicator.type == "BATTERY_STATUS") {
+        if (indicator.type === "BATTERY_STATUS") {
             if (indicator.color) {
                 monitoringStore.batteryStatusDefaultColor =
                     "#" + indicator.color;
             }
-        } else if (indicator.type == "WLAN_STATUS") {
+        } else if (indicator.type === "WLAN_STATUS") {
             if (indicator.color) {
                 monitoringStore.wlanStatusDefaultColor = "#" + indicator.color;
             }

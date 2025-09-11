@@ -1,6 +1,6 @@
 // temp solution
 export function filterOutLetters(activityDetail: string | undefined): string {
-    if (activityDetail == undefined) {
+    if (activityDetail === undefined) {
         return "-";
     }
 

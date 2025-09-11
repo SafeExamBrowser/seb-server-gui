@@ -1,10 +1,10 @@
 <template>
     <!-----------gallery image---------->
-    <v-hover v-slot="{ isHovering, props }">
+    <v-hover v-slot="{ isHovering, props: hoverProps }">
         <!--todo: add max height  -->
         <v-img
             v-if="screenshot"
-            v-bind="props"
+            v-bind="hoverProps"
             :aspect-ratio="16 / 9"
             class="img-styling"
             :class="{ 'on-hover': isHovering }"
@@ -159,10 +159,14 @@
                                                     "
                                                 >
                                                 </v-icon>
-                                                {{ $t("galleryView.metadata") }}
+                                                {{
+                                                    translate(
+                                                        "navigation.screenReader.titleImage",
+                                                    )
+                                                }}
                                             </template>
 
-                                            <template #actions="{ expanded }">
+                                            <template #actions>
                                                 <v-btn
                                                     :aria-label="
                                                         i18n.t(
@@ -254,6 +258,7 @@ import * as galleryViewService from "@/services/screen-proctoring/component-serv
 import * as linkService from "@/services/screen-proctoring/component-services/linkService";
 import { useAppBarStore, useGalleryStore } from "@/stores/store";
 import { useI18n } from "vue-i18n";
+import { translate } from "@/utils/generalUtils";
 
 // props
 const props = defineProps<{
@@ -300,14 +305,14 @@ const expandedScreenshotLink = computed<string>(() => {
 });
 
 function setTabFocus() {
-    if (lastKeyPressed.value != "Tab" || lastKeyPressed.value == null) {
+    if (lastKeyPressed.value !== "Tab" || lastKeyPressed.value == null) {
         return;
     }
 
     galleryStore.focusedImageIndexes[props.index] = true;
 
     for (let i = 0; i < galleryStore.focusedImageIndexes.length; i++) {
-        if (i != props.index) {
+        if (i !== props.index) {
             galleryStore.focusedImageIndexes[i] = false;
         }
     }

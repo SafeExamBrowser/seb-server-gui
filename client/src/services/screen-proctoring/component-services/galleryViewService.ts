@@ -71,7 +71,7 @@ export function navigateToProctoringView(
     examId: string | undefined,
 ) {
     console.log("examId" + examId);
-    if (screenshot != null && examId != undefined) {
+    if (screenshot != null && examId !== undefined) {
         openUrlInNewTab(
             constants.MONITORING_ROUTE +
                 "/" +

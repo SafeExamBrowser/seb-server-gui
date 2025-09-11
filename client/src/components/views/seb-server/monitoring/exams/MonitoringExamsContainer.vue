@@ -43,7 +43,7 @@ function loadMonitoringListItemsCaller() {
         return;
     }
 
-    if (monitoringStore.currentPagingOptions.itemsPerPage == 0) {
+    if (monitoringStore.currentPagingOptions.itemsPerPage === 0) {
         monitoringStore.currentPagingOptions.itemsPerPage = 10;
     }
 

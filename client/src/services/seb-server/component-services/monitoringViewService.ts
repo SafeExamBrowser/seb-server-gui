@@ -226,7 +226,7 @@ function removeQueryParam(
         // remove value
         const values: string[] = currentValue.split(",");
         const filteredValues = values.filter(
-            (value) => value.trim() != filterValue,
+            (value) => value.trim() !== filterValue,
         );
 
         // remove key if empty
@@ -276,7 +276,7 @@ export function getMonitoringDisabledWarningText(): string {
         generalUtils.findEnumValue(
             ExamStatusEnum,
             useMonitoringStore().selectedExam?.status,
-        ) != ExamStatusEnum.RUNNING
+        ) !== ExamStatusEnum.RUNNING
     ) {
         return translate("monitoringOverview.warning.notRunning");
     }
@@ -328,7 +328,7 @@ export function extractClientGroupNames(
     for (let i = 0; i < clientGroupIds.length; i++) {
         const clientGroup: ClientGroup | undefined =
             useMonitoringStore().clientGroups?.content.find(
-                (clientGroup) => clientGroup.id == clientGroupIds[i],
+                (clientGroup) => clientGroup.id === clientGroupIds[i],
             );
 
         if (clientGroup != null) {

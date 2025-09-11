@@ -375,7 +375,7 @@ watch(groupNameField, () => {
     isGroupNameDuplicate.value = false;
     if (
         examStore.selectedClientGroups.some(
-            (clientGroup) => clientGroup.name == groupNameField.value,
+            (clientGroup) => clientGroup.name === groupNameField.value,
         )
     ) {
         isGroupNameDuplicate.value = true;
@@ -465,7 +465,7 @@ function filterClientGroupsTableValues() {
     templateClientGroups.value = templateClientGroups.value.filter(
         (clientGroup) =>
             !examStore.selectedClientGroups.some(
-                (item) => item.name == clientGroup.name,
+                (item) => item.name === clientGroup.name,
             ),
     );
 }
@@ -490,7 +490,7 @@ function loadClientGroupIntoForm(clientGroup: ClientGroup) {
         clientGroup.id ?? -1,
     );
 
-    if (clientGroupType == ClientGroupEnum.CLIENT_OS) {
+    if (clientGroupType === ClientGroupEnum.CLIENT_OS) {
         clientOsField.value = generalUtils.findEnumValue(
             ClientOSEnum,
             clientGroup.clientOS,
@@ -498,13 +498,13 @@ function loadClientGroupIntoForm(clientGroup: ClientGroup) {
         return;
     }
 
-    if (clientGroupType == ClientGroupEnum.IP_V4_RANGE) {
+    if (clientGroupType === ClientGroupEnum.IP_V4_RANGE) {
         startIpField.value = clientGroup.ipRangeStart!;
         endIpField.value = clientGroup.ipRangeEnd!;
         return;
     }
 
-    if (clientGroupType == ClientGroupEnum.NAME_ALPHABETICAL_RANGE) {
+    if (clientGroupType === ClientGroupEnum.NAME_ALPHABETICAL_RANGE) {
         startLetterField.value = clientGroup.nameRangeStartLetter!;
         endLetterField.value = clientGroup.nameRangeEndLetter!;
     }
@@ -529,7 +529,7 @@ const isCreateButtonDisabled = computed<boolean>(() => {
         return true;
     }
 
-    if (groupNameField.value == "") {
+    if (groupNameField.value === "") {
         return true;
     }
 
@@ -538,23 +538,23 @@ const isCreateButtonDisabled = computed<boolean>(() => {
     }
 
     if (
-        clientGroupTypeSelect.value == ClientGroupEnum.CLIENT_OS &&
+        clientGroupTypeSelect.value === ClientGroupEnum.CLIENT_OS &&
         clientOsField.value == null
     ) {
         return true;
     }
 
     if (
-        clientGroupTypeSelect.value == ClientGroupEnum.IP_V4_RANGE &&
-        (startIpField.value == "" || endIpField.value == "")
+        clientGroupTypeSelect.value === ClientGroupEnum.IP_V4_RANGE &&
+        (startIpField.value === "" || endIpField.value === "")
     ) {
         return true;
     }
 
     if (
-        clientGroupTypeSelect.value ==
+        clientGroupTypeSelect.value ===
             ClientGroupEnum.NAME_ALPHABETICAL_RANGE &&
-        (startLetterField.value == "" || endLetterField.value == "")
+        (startLetterField.value === "" || endLetterField.value === "")
     ) {
         return true;
     }

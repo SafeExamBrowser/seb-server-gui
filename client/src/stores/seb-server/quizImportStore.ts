@@ -48,7 +48,7 @@ export const useQuizImportStore = defineStore("quizImport", () => {
         if (
             steps.value.some(
                 (step) =>
-                    step.type == constants.getQuizImportGroupStep(i18n).type,
+                    step.type === constants.getQuizImportGroupStep(i18n).type,
             )
         ) {
             return;
@@ -84,7 +84,7 @@ export const useQuizImportStore = defineStore("quizImport", () => {
         if (
             !steps.value.some(
                 (step) =>
-                    step.type == constants.getQuizImportGroupStep(i18n).type,
+                    step.type === constants.getQuizImportGroupStep(i18n).type,
             )
         ) {
             return;

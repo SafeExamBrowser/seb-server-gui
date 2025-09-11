@@ -193,10 +193,11 @@ onBeforeMount(async () => {
 // add exam supervisor
 function onTableRowClick(selectedUserAccountName: UserAccountName) {
     const index: number = quizImportStore.selectedExamSupervisors.findIndex(
-        (userAccount) => userAccount.modelId == selectedUserAccountName.modelId,
+        (userAccount) =>
+            userAccount.modelId === selectedUserAccountName.modelId,
     );
 
-    if (index != -1) {
+    if (index !== -1) {
         quizImportStore.selectedExamSupervisors.splice(index, 1);
         return;
     }
@@ -206,7 +207,7 @@ function onTableRowClick(selectedUserAccountName: UserAccountName) {
 
 function removeExamSupervisor(supervisorId: string) {
     const index: number = quizImportStore.selectedExamSupervisors.findIndex(
-        (userAccount) => userAccount.modelId == supervisorId,
+        (userAccount) => userAccount.modelId === supervisorId,
     );
     quizImportStore.selectedExamSupervisors.splice(index, 1);
 }

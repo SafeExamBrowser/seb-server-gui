@@ -44,7 +44,7 @@ function loadExamItemsCaller() {
         return;
     }
 
-    if (examStore.currentPagingOptions.itemsPerPage == 0) {
+    if (examStore.currentPagingOptions.itemsPerPage === 0) {
         examStore.currentPagingOptions.itemsPerPage = 10;
     }
 

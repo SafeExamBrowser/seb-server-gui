@@ -26,26 +26,14 @@
 
 <script setup lang="ts">
 import { useAppBarStore } from "@/stores/store";
-import * as constants from "@/utils/constants";
-import * as spConstants from "@/utils/sp-constants";
-import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
-import * as generalUtils from "@/utils/generalUtils";
-import {
-    useAuthStore,
-    useUserAccountStore,
-} from "@/stores/authentication/authenticationStore";
-import { StorageItemEnum } from "@/models/StorageItemEnum";
-import { navigateTo } from "@/router/navigation";
+import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
+
 import HomePageInfo from "@/components/views/seb-server/home/HomePageInfo.vue";
 import HomePageMain from "@/components/views/seb-server/home/HomePageMain.vue";
 
 // stores
 const appBarStore = useAppBarStore();
-const authStore = useAuthStore();
-
-// i18n
-const i18n = useI18n();
 
 onBeforeMount(() => {
     appBarStore.title = translate("titles.home");

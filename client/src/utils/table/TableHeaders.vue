@@ -1,6 +1,9 @@
 <template>
     <tr>
-        <template v-for="(column, index) in props.columns">
+        <template
+            v-for="(column, index) in props.columns"
+            :key="column.key ?? index"
+        >
             <th
                 :class="[
                     column.key == 'data-table-select' ? 'pl-4' : '',
@@ -39,16 +42,17 @@
                         column.key == 'data-table-select' &&
                         props.selectAll != null
                     "
-                    class="ma-0 pa-0"
                 >
                     <v-checkbox-btn
-                        v-model="props.allSelected"
-                        :indeterminate="someSelected && !allSelected"
-                        @click="
-                            props.selectAll(props.allSelected ? false : true)
+                        :indeterminate="
+                            props.someSelected && !props.allSelected
                         "
-                    >
-                    </v-checkbox-btn>
+                        :model-value="props.allSelected"
+                        @update:model-value="
+                            (val) => props.selectAll && props.selectAll(!!val)
+                        "
+                    />
+                    <div></div>
                 </template>
 
                 <!------------------------sp: session search: delete----------------------->
@@ -192,11 +196,11 @@ function getHeaderDescription(column: any, isSorted: any): any {
         return `${headerDesc} none`;
     }
 
-    if (props.getSortIcon(column) == "$sortAsc") {
+    if (props.getSortIcon(column) === "$sortAsc") {
         return `${headerDesc} ascending`;
     }
 
-    if (props.getSortIcon(column) == "$sortDesc") {
+    if (props.getSortIcon(column) === "$sortDesc") {
         return `${headerDesc} descending`;
     }
 

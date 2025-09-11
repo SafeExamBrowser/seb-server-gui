@@ -816,6 +816,9 @@ function getAvailableRolesForUser(userRoles: UserRoleEnum[]): UserRoleOption[] {
 const fieldChanges = computed(() => {
     if (!initialUserData.value) return false;
 
+    const currentRolesSorted = [...selectedRoles.value].sort();
+    const initialRolesSorted = [...initialUserData.value.userRoles].sort();
+
     return (
         name.value !== initialUserData.value.name ||
         surname.value !== initialUserData.value.surname ||
@@ -824,8 +827,8 @@ const fieldChanges = computed(() => {
         timezone.value !== initialUserData.value.timezone ||
         Number(selectedInstitution.value) !==
             initialUserData.value.institutionId ||
-        JSON.stringify(selectedRoles.value.sort()) !==
-            JSON.stringify([...initialUserData.value.userRoles].sort())
+        JSON.stringify(currentRolesSorted) !==
+            JSON.stringify(initialRolesSorted)
     );
 });
 const hasChanges = computed(() => fieldChanges.value || statusChanged.value);
