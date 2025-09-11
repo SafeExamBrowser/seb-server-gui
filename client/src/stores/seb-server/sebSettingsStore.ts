@@ -13,9 +13,11 @@ export const useSEBSettingsStore = defineStore("sebSettings", () => {
     const dialogTitle = ref<string | null>(null);
 
     function clearAll() {
-        ((isExam.value = false), (selectedContainerId.value = null));
+        isExam.value = false;
+        selectedContainerId.value = null;
         readonly.value = false;
         activeSEBClientConnection.value = null;
+        dialogTitle.value = null;
     }
 
     return {

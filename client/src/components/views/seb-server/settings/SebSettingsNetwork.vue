@@ -409,7 +409,7 @@ onBeforeMount(async () => {
     proxySettingsPolicyVal.value = proxySettingsPolicy.value;
 
     ExcludeSimpleHostnames = proxyValues.get("ExcludeSimpleHostnames")!;
-    ExcludeSimpleHostnamesVal.value = ExcludeSimpleHostnames.value == "true";
+    ExcludeSimpleHostnamesVal.value = ExcludeSimpleHostnames.value === "true";
 
     ExceptionsList = proxyValues.get("ExceptionsList")!;
     ExceptionsListVal.value = ExceptionsList.value;
