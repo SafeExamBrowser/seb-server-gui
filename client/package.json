@@ -6,10 +6,10 @@
         "dev-win": "env.sh && vite",
         "build": "vue-tsc --noEmit && vite build",
         "preview": "vite preview",
-        "lint": "eslint . --fix --ignore-path .gitignore",
-        "prettier": "prettier --write . --ignore-path .gitignore",
+        "lint": "eslint . --fix",
+        "prettier": "prettier --write .",
         "format": "npm run prettier && npm run lint",
-        "format:check": "prettier --check . --ignore-path .gitignore && eslint . --ignore-path .gitignore"
+        "format:check": "prettier --check . && eslint ."
     },
     "dependencies": {
         "@intlify/unplugin-vue-i18n": "^4.0.0",
