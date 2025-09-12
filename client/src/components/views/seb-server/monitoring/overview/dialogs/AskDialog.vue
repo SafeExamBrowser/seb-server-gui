@@ -32,23 +32,23 @@
                                     variant="outlined"
                                     @click="toggle"
                                 >
+                                    <div class="px-4 pt-3 pr-3 pl-3">
+                                        <div class="ask-key-box">
+                                            {{ ask.keyValue }}
+                                        </div>
+                                    </div>
                                     <div
-                                        class="d-flex align-center justify-space-between px-4 py-3"
+                                        class="d-flex align-center justify-space-between px-4 pb-3"
                                     >
-                                        <div class="text-transparent">.</div>
                                         <v-chip
+                                            class="chip-black-text"
                                             color="grey"
                                             size="small"
                                             variant="tonal"
                                         >
                                             {{ ask.entries.length }} connections
                                         </v-chip>
-                                    </div>
-
-                                    <div class="px-4 py-3">
-                                        <div class="ask-key-box">
-                                            {{ ask.keyValue }}
-                                        </div>
+                                        <div class="text-transparent">.</div>
                                     </div>
                                 </v-card>
                             </template>
@@ -213,7 +213,7 @@ const askEnriched = computed(() => {
 }
 
 .connections-viewport {
-    height: 760px;
+    height: 860px;
     overflow: auto;
 }
 
@@ -247,8 +247,7 @@ const askEnriched = computed(() => {
     padding: 8px 12px;
     white-space: nowrap;
     overflow: hidden;
-    font-size: 11px;
-    background: #f2f4f6;
+    font-size: 12px;
     text-overflow: ellipsis;
 }
 
@@ -259,5 +258,10 @@ const askEnriched = computed(() => {
 .col-right {
     border-top: 1px solid #e0e0e0;
     border-left: 1px solid #e0e0e0;
+}
+
+.chip-black-text {
+    color: black !important;
+    font-size: 13px;
 }
 </style>
