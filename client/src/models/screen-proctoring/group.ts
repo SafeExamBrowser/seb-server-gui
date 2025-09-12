@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type EntityPrivilege = {
     id: number;
     entityType: string;
@@ -7,7 +6,6 @@ type EntityPrivilege = {
     privileges: string;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type Group = {
     id: number;
     uuid: string;

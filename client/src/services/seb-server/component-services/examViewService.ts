@@ -262,7 +262,7 @@ export async function getNetworkViewSettings(
 
 export async function updateSEBSettingValue(
     examId: string,
-    valueId: String,
+    valueId: string,
     value: string,
 ): Promise<SEBSettingsValue | null> {
     try {

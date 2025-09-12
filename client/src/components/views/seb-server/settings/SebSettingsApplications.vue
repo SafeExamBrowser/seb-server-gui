@@ -399,8 +399,8 @@ onBeforeMount(async () => {
         string,
         SEBSettingsTableRowValues[]
     >(Object.entries(settingsView.tableValues));
-    const singleValues: Map<String, SEBSettingsValue> = new Map<
-        String,
+    const singleValues: Map<string, SEBSettingsValue> = new Map<
+        string,
         SEBSettingsValue
     >(Object.entries(settingsView.singleValues));
     allowSwitchToApplications = singleValues.get("allowSwitchToApplications")!;
