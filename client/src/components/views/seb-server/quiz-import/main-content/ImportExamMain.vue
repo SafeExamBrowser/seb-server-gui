@@ -217,7 +217,7 @@ const quizzesTableHeaders = ref([
 ]);
 
 // emits - call loadExamItemsCaller in parent
-const emit = defineEmits<{
+defineEmits<{
     loadExamItemsCaller: any;
 }>();
 
@@ -242,14 +242,14 @@ watch(quizImportStoreRef.loadExamItemsCaller, () => {
         return;
     }
 
-    if (quizImportStore.currentPagingOptions.itemsPerPage == 0) {
+    if (quizImportStore.currentPagingOptions.itemsPerPage === 0) {
         quizImportStore.currentPagingOptions.itemsPerPage = 10;
     }
     loadItems(quizImportStore.currentPagingOptions);
 });
 
 function onTableRowClick(quiz: Quiz) {
-    if (quiz.quiz_id == quizImportStore.selectedQuiz?.quiz_id) {
+    if (quiz.quiz_id === quizImportStore.selectedQuiz?.quiz_id) {
         quizImportStore.selectedQuiz = null;
         return;
     }
@@ -312,14 +312,14 @@ async function loadItems(serverTablePaging: ServerTablePaging) {
         return;
     }
 
-    // check if fetch is complete, if not ping until fetch is finished or breaker_count
+    // check if fetch is complete, if not ping until fetch is finished or breakerCount
     let allQuizzes = quizzesResponse.complete;
     quizzes.value = quizzesResponse;
     totalItems.value = quizzes.value.number_of_pages * quizzes.value.page_size;
     optionalParGetQuizzes.force_new_search = false;
-    let breaker_count = 0;
+    let breakerCount = 0;
 
-    while (!allQuizzes && breaker_count < 30) {
+    while (!allQuizzes && breakerCount < 30) {
         await wait(3000);
         quizzesResponse = await quizImportWizardViewService.getQuizzes(
             optionalParGetQuizzes,
@@ -332,7 +332,7 @@ async function loadItems(serverTablePaging: ServerTablePaging) {
         totalItems.value =
             quizzes.value.number_of_pages * quizzes.value.page_size;
         allQuizzes = quizzesResponse.complete;
-        breaker_count++;
+        breakerCount++;
     }
 
     finishFatching();

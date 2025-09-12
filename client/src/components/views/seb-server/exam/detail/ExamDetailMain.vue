@@ -550,9 +550,7 @@
                                                             )
                                                         }}
                                                     </v-list-item-title>
-                                                    <template
-                                                        #append="{ isSelected }"
-                                                    >
+                                                    <template #append>
                                                         <v-list-item-action
                                                             class="flex-column align-right"
                                                         >
@@ -604,9 +602,7 @@
                                                             )
                                                         }}
                                                     </v-list-item-title>
-                                                    <template
-                                                        #append="{ isSelected }"
-                                                    >
+                                                    <template #append>
                                                         <v-list-item-action
                                                             class="flex-column align-right"
                                                         >
@@ -659,9 +655,7 @@
                                                             )
                                                         }}
                                                     </v-list-item-title>
-                                                    <template
-                                                        #append="{ isSelected }"
-                                                    >
+                                                    <template #append>
                                                         <v-list-item-action
                                                             class="flex-column align-right"
                                                         >
@@ -716,9 +710,7 @@
                                                             )
                                                         }}
                                                     </v-list-item-title>
-                                                    <template
-                                                        #append="{ isSelected }"
-                                                    >
+                                                    <template #append>
                                                         <v-list-item-action
                                                             class="flex-column align-right"
                                                         >
@@ -780,9 +772,7 @@
                                                             )
                                                         }}
                                                     </v-list-item-title>
-                                                    <template
-                                                        #append="{ isSelected }"
-                                                    >
+                                                    <template #append>
                                                         <v-list-item-action
                                                             class="flex-column align-right"
                                                         >
@@ -918,18 +908,11 @@ import * as generalUtils from "@/utils/generalUtils";
 import { navigateTo } from "@/router/navigation";
 import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum";
 import DeleteConfirmDialog from "@/components/widgets/DeleteConfirmDialog.vue";
-import {
-    ClientGroupEnum,
-    ClientOSEnum,
-} from "@/models/seb-server/clientGroupEnum";
+import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
-import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
 import { LMSFeatureEnum } from "@/models/seb-server/assessmentToolEnums";
 import { GUIAction, useAbilities } from "@/services/ability";
-
-// i18n
-const i18n = useI18n();
 
 // general
 const isPageInitalizing = ref<boolean>(true);
@@ -1128,7 +1111,7 @@ async function getExamSupervisors() {
         return;
     }
 
-    if (examStore.selectedExam.supporter.length == 0) {
+    if (examStore.selectedExam.supporter.length === 0) {
         examStore.selectedExamSupervisors = [];
         return;
     }
@@ -1141,9 +1124,9 @@ async function getExamSupervisors() {
             );
 
         if (
-            userAccount == null ||
-            userAccount == undefined ||
-            userAccount == ""
+            userAccount === null ||
+            userAccount === undefined ||
+            userAccount === ""
         ) {
             continue;
         }
@@ -1185,7 +1168,7 @@ function fillAlreadySelectedSupervisors() {
 function setQuitPassword() {
     if (
         examStore.selectedExam?.quitPassword == null ||
-        examStore.selectedExam?.quitPassword == ""
+        examStore.selectedExam?.quitPassword === ""
     ) {
         return;
     }
@@ -1202,7 +1185,7 @@ async function saveNewPassword(focusIn: boolean) {
 async function updateQuitPassword() {
     if (
         examStore.selectedExam == null ||
-        quitPassword.value == examStore.selectedExam?.quitPassword
+        quitPassword.value === examStore.selectedExam?.quitPassword
     ) {
         return;
     }
@@ -1229,7 +1212,7 @@ async function startExamConfigDownloadProcess() {
         return;
     }
 
-    if (connectionConfigurations.content.length == 1) {
+    if (connectionConfigurations.content.length === 1) {
         downloadExamConfig(connectionConfigurations.content[0].id.toString());
         return;
     }
@@ -1295,7 +1278,7 @@ function setScreenProctoring() {
     }
 
     if (
-        examStore.selectedExam.additionalAttributes.enableScreenProctoring ==
+        examStore.selectedExam.additionalAttributes.enableScreenProctoring ===
         "true"
     ) {
         isScreenProctoringActive.value = true;

@@ -212,15 +212,7 @@
 
 <script setup lang="ts">
 import { useRoute } from "vue-router";
-import {
-    computed,
-    onBeforeMount,
-    onBeforeUnmount,
-    onMounted,
-    onUpdated,
-    ref,
-    watch,
-} from "vue";
+import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from "vue";
 import * as proctoringViewService from "@/services/screen-proctoring/component-services/proctoringViewService";
 import * as timeUtils from "@/utils/timeUtils";
 import { useAppBarStore } from "@/stores/store";
@@ -312,7 +304,7 @@ watch(sliderTime, async () => {
         return;
     }
 
-    if (sliderTime.value != sliderMax.value && !intervalScreenshots) {
+    if (sliderTime.value !== sliderMax.value && !intervalScreenshots) {
         pause();
     }
 
@@ -425,7 +417,7 @@ const sessionInfodata = computed<object>(() => {
 //= ========interval=============
 function startIntervalScreenshots() {
     intervalScreenshots = setInterval(async () => {
-        if (timestampsIndex.value == screenshotTimestamps.value.length - 1) {
+        if (timestampsIndex.value === screenshotTimestamps.value.length - 1) {
             stopIntervalScreenshots();
             isPlaying.value = false;
             return;
@@ -443,14 +435,14 @@ function stopIntervalScreenshots() {
 }
 //= =============================
 
-//= =====video intercation=======
+//= =====video interaction=======
 function changePlaybackSpeed(id: number) {
     stopIntervalScreenshots();
     selectedSpeedId.value = id;
 
-    if (id == 0) PLAYBACK_SPEED.value = SLOW_PLAYBACK_SPEED;
-    if (id == 1) PLAYBACK_SPEED.value = DEFAULT_PLAYBACK_SPEED;
-    if (id == 2) PLAYBACK_SPEED.value = FAST_PLAYBACK_SPEED;
+    if (id === 0) PLAYBACK_SPEED.value = SLOW_PLAYBACK_SPEED;
+    if (id === 1) PLAYBACK_SPEED.value = DEFAULT_PLAYBACK_SPEED;
+    if (id === 2) PLAYBACK_SPEED.value = FAST_PLAYBACK_SPEED;
 
     if (isPlaying.value) {
         startIntervalScreenshots();
@@ -467,7 +459,7 @@ async function backwards() {
     if (
         currentScreenshot.value == null ||
         sliderTime.value == null ||
-        sliderTime.value == currentScreenshot.value.startTime
+        sliderTime.value === currentScreenshot.value.startTime
     ) {
         return;
     }
@@ -482,7 +474,7 @@ async function forwards() {
     if (
         currentScreenshot.value == null ||
         sliderTime.value == null ||
-        sliderTime.value == currentScreenshot.value.startTime
+        sliderTime.value === currentScreenshot.value.startTime
     ) {
         return;
     }

@@ -11,7 +11,6 @@ import { useAppBarStore } from "@/stores/store";
 import { translate } from "@/utils/generalUtils";
 import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
 import * as indicatorViewService from "@/services/seb-server/component-services/indicatorViewService";
-import * as clientGroupViewService from "@/services/seb-server/component-services/clientGroupViewService";
 import MonitoringClientsMain from "@/components/views/seb-server/monitoring/clients/MonitoringClientsMain.vue";
 
 // exam

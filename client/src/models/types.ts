@@ -1,31 +1,24 @@
-// todo: extract small types to this file
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type ServerTablePaging = {
     page: number;
     itemsPerPage: number;
     sortBy: { key: string; order: string }[];
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type GridSize = {
     title: string;
     value: number;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type NavigationItem = {
     title: string;
     route: string;
     icon: string;
 };
 
-type DetailedNavigationLinks = {
-    [key: string]: NavigationItem[];
-};
-
-type Page = {
-    number_of_pages: number;
-    page_number: number;
-    page_size: number;
-};
-
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type ImportWizardSteps = {
     name: string;
     value: number;

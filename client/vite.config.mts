@@ -99,7 +99,7 @@ export default ({ mode }) => {
     function getSubPath() {
         if (
             process.env.VITE_SUB_PATH == null ||
-            process.env.VITE_SUB_PATH == ""
+            process.env.VITE_SUB_PATH === ""
         ) {
             return "/";
         }

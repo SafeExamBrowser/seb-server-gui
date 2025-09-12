@@ -127,7 +127,6 @@ import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
 import { NotificationEnum } from "@/models/seb-server/monitoringEnums";
 import { useDisplay } from "vuetify";
-import { InstructionEnum } from "@/models/seb-server/instructionEnum";
 import { translate } from "@/utils/generalUtils";
 import { nextTick } from "vue";
 
@@ -136,7 +135,6 @@ const examId = useRoute().params.examId.toString();
 const connectionToken = useRoute().params.connectionToken.toString();
 
 // ui control
-const panels = ref([0, 1]);
 const resolveRaiseHandSent = ref<boolean>(false);
 const resolveLockScreenSent = ref<boolean>(false);
 
@@ -162,24 +160,23 @@ onMounted(() => {
 });
 
 const raiseHandNotification: ComputedRef<ClientNotification | null> = computed(
-    () => {
-        const raiseHand: ClientNotification | undefined =
-            monitoringStore.pendingNotifications.find(
-                (item) => item.notificationType == NotificationEnum.RAISE_HAND,
-            );
-        if (raiseHand != null) {
-            resolveRaiseHandSent.value = false;
-            return raiseHand;
-        }
-
-        return null;
-    },
+    () =>
+        monitoringStore.pendingNotifications.find(
+            (item) => item.notificationType === NotificationEnum.RAISE_HAND,
+        ) ?? null,
 );
+
+watch(raiseHandNotification, (val) => {
+    if (val) {
+        resolveRaiseHandSent.value = false;
+        scrollToTop();
+    }
+});
 
 const messages: ComputedRef<ClientNotification[] | null> = computed(() => {
     const messages: ClientNotification[] | undefined =
         monitoringStore.pendingNotifications.filter(
-            (item) => item.notificationType != NotificationEnum.RAISE_HAND,
+            (item) => item.notificationType !== NotificationEnum.RAISE_HAND,
         );
     if (messages != null) {
         // notificationSent.value = false;

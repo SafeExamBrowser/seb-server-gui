@@ -417,12 +417,10 @@ import { getInstitutions } from "@/services/seb-server/component-services/regist
 import { createUserAccount } from "@/services/seb-server/component-services/userAccountViewService";
 import { navigateTo } from "@/router/navigation";
 import { UserRoleEnum } from "@/models/userRoleEnum";
-import { useI18n } from "vue-i18n";
 import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/authenticationStore";
 
 const appBarStore = useAppBarStore();
 const layoutStore = useLayoutStore();
-const i18n = useI18n();
 
 // fields
 const selectedInstitution = ref<string | null>(null);
@@ -574,6 +572,7 @@ async function submit() {
         await createUserAccount(createUserAcccountParams);
 
     if (createdUserAccountResponse == null) {
+        // ToDo display error
     } else {
         createdUserName.value = createdUserAccountResponse.name;
         createdSuccess.value = true;

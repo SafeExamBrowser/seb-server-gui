@@ -514,7 +514,6 @@
 <script setup lang="ts">
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import { translate } from "@/utils/generalUtils";
-import { useI18n } from "vue-i18n";
 import { storeToRefs } from "pinia";
 import * as generalUtils from "@/utils/generalUtils";
 import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums";
@@ -525,9 +524,6 @@ import * as constants from "@/utils/constants";
 import { InstructionEnum } from "@/models/seb-server/instructionEnum";
 import { useErrorStore } from "@/stores/seb-server/errorStore";
 
-// i18n
-const i18n = useI18n();
-
 // info panel (whole component)
 const isInfoExpanded = ref<boolean>(true);
 
@@ -536,7 +532,7 @@ const route = useRoute();
 
 // stores
 const monitoringStore = useMonitoringStore();
-const monitoringStoreRef = storeToRefs(monitoringStore);
+storeToRefs(monitoringStore);
 const errorStore = useErrorStore();
 
 // exam
@@ -633,7 +629,7 @@ function getConnectionTokens(): string | null {
 
     // get token and add it to list
     const connectionTokens: string[] = [];
-    monitoringStore.selectedMonitoringIds.forEach((id, index) => {
+    monitoringStore.selectedMonitoringIds.forEach((id) => {
         const connectionToken: string | undefined = idTokenMap.get(id);
 
         if (connectionToken != null) {
@@ -641,7 +637,7 @@ function getConnectionTokens(): string | null {
         }
     });
 
-    if (connectionTokens.length == 0) {
+    if (connectionTokens.length === 0) {
         return null;
     }
 

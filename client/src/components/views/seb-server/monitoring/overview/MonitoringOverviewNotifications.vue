@@ -102,7 +102,6 @@
 
 <script setup lang="ts">
 import {
-    IndicatorEnum,
     MonitoringHeaderEnum,
     NotificationEnum,
 } from "@/models/seb-server/monitoringEnums";

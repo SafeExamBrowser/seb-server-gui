@@ -204,12 +204,8 @@ import {
 import * as generalUtils from "@/utils/generalUtils";
 import { VDateInput } from "vuetify/labs/VDateInput";
 import { translate } from "@/utils/generalUtils";
-import { useI18n } from "vue-i18n";
 import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants";
-
-// i18n
-const i18n = useI18n();
 
 // stores
 const monitoringStore = useMonitoringStore();
@@ -289,7 +285,7 @@ function clearForm() {
 }
 
 function setActiveTypeFilter(filter: ExamTypeEnum) {
-    if (monitoringStore.activeTypeFilter == filter) {
+    if (monitoringStore.activeTypeFilter === filter) {
         monitoringStore.activeTypeFilter = null;
         loadMonitoringListItemsCaller();
         return;
@@ -300,7 +296,7 @@ function setActiveTypeFilter(filter: ExamTypeEnum) {
 }
 
 function setActiveStatusFilter(filter: ExamStatusEnum) {
-    if (monitoringStore.activeStatusFilter == filter) {
+    if (monitoringStore.activeStatusFilter === filter) {
         monitoringStore.activeStatusFilter = null;
         loadMonitoringListItemsCaller();
         return;

@@ -200,12 +200,8 @@ import {
 import * as generalUtils from "@/utils/generalUtils";
 import { VDateInput } from "vuetify/labs/VDateInput";
 import { translate } from "@/utils/generalUtils";
-import { useI18n } from "vue-i18n";
 import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants";
-
-// i18n
-const i18n = useI18n();
 
 // stores
 const examStore = useExamStore();
@@ -303,7 +299,7 @@ function clearForm() {
 }
 
 function setActiveTypeFilter(filter: ExamTypeEnum) {
-    if (examStore.activeTypeFilter == filter) {
+    if (examStore.activeTypeFilter === filter) {
         examStore.activeTypeFilter = null;
         loadExamItemsCaller();
         return;
@@ -314,7 +310,7 @@ function setActiveTypeFilter(filter: ExamTypeEnum) {
 }
 
 function setActiveStatusFilter(filter: ExamStatusEnum) {
-    if (examStore.activeStatusFilter == filter) {
+    if (examStore.activeStatusFilter === filter) {
         examStore.activeStatusFilter = null;
         loadExamItemsCaller();
         return;

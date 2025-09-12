@@ -54,8 +54,10 @@ watch(errorStoreRef.isError, () => {
 
 function getText(): string {
     if (errorStore.errorProps.textKey) {
-        messages.find((item) => item.key == errorStore.errorProps.textKey)
-            ?.value;
+        const found = messages.find(
+            (item) => item.key === errorStore.errorProps.textKey,
+        );
+        if (found) return found.value;
     }
 
     if (errorStore.errorProps.textCustom) {

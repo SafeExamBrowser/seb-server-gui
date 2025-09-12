@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type Token = {
     access_token: string;
     token_type: string;
@@ -7,6 +8,7 @@ type Token = {
     jti: string;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type JwtTokenResponse = {
     username: string;
     userUUID: string;

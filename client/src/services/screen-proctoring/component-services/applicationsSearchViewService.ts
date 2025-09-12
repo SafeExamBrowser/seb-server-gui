@@ -1,8 +1,4 @@
 import * as applicationService from "@/services/screen-proctoring/api-services/applicationsSearchService";
-import * as timeUtils from "@/utils/timeUtils";
-import * as tableUtils from "@/utils/table/tableUtils";
-import { openUrlInNewTab } from "@/router/navigation";
-import * as spConstants from "@/utils/sp-constants";
 
 //= ============api==============
 export async function getExamsStarted(

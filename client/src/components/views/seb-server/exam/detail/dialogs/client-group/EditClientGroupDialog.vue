@@ -179,7 +179,7 @@
                                     color="black"
                                     rounded="sm"
                                     variant="outlined"
-                                    @click="clearFields(true)"
+                                    @click="clearFields()"
                                 >
                                     Cancel
                                 </v-btn>
@@ -298,7 +298,7 @@ function loadClientGroupIntoForm(clientGroup: ClientGroup | null) {
     groupNameField.value = clientGroup.name;
     clientGroupTypeSelect.value = clientGroupType;
 
-    if (clientGroupType == ClientGroupEnum.CLIENT_OS) {
+    if (clientGroupType === ClientGroupEnum.CLIENT_OS) {
         clientOsField.value = generalUtils.findEnumValue(
             ClientOSEnum,
             clientGroup.clientOS,
@@ -306,13 +306,13 @@ function loadClientGroupIntoForm(clientGroup: ClientGroup | null) {
         return;
     }
 
-    if (clientGroupType == ClientGroupEnum.IP_V4_RANGE) {
+    if (clientGroupType === ClientGroupEnum.IP_V4_RANGE) {
         startIpField.value = clientGroup.ipRangeStart!;
         endIpField.value = clientGroup.ipRangeEnd!;
         return;
     }
 
-    if (clientGroupType == ClientGroupEnum.NAME_ALPHABETICAL_RANGE) {
+    if (clientGroupType === ClientGroupEnum.NAME_ALPHABETICAL_RANGE) {
         startLetterField.value = clientGroup.nameRangeStartLetter!;
         endLetterField.value = clientGroup.nameRangeEndLetter!;
     }
@@ -352,28 +352,28 @@ async function updateClientGroup() {
 
 //= =======form control========
 function isSaveButtonDisabled(): boolean {
-    if (groupNameField.value == "" || clientGroupTypeSelect.value == null) {
+    if (groupNameField.value === "" || clientGroupTypeSelect.value == null) {
         return true;
     }
 
     if (
-        clientGroupTypeSelect.value == ClientGroupEnum.CLIENT_OS &&
+        clientGroupTypeSelect.value === ClientGroupEnum.CLIENT_OS &&
         clientOsField.value == null
     ) {
         return true;
     }
 
     if (
-        clientGroupTypeSelect.value == ClientGroupEnum.IP_V4_RANGE &&
-        (startIpField.value == "" || endIpField.value == "")
+        clientGroupTypeSelect.value === ClientGroupEnum.IP_V4_RANGE &&
+        (startIpField.value === "" || endIpField.value === "")
     ) {
         return true;
     }
 
     if (
-        clientGroupTypeSelect.value ==
+        clientGroupTypeSelect.value ===
             ClientGroupEnum.NAME_ALPHABETICAL_RANGE &&
-        (startLetterField.value == "" || endLetterField.value == "")
+        (startLetterField.value === "" || endLetterField.value === "")
     ) {
         return true;
     }
@@ -381,7 +381,7 @@ function isSaveButtonDisabled(): boolean {
     return false;
 }
 
-function clearFields(clearType: boolean) {
+function clearFields() {
     emit("closeEditClientGroupDialog");
 }
 

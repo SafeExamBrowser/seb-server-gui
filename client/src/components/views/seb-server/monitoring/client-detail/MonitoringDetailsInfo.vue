@@ -217,15 +217,11 @@
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import * as generalUtils from "@/utils/generalUtils";
 import { translate } from "@/utils/generalUtils";
-import { useI18n } from "vue-i18n";
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum";
 import { InstructionEnum } from "@/models/seb-server/instructionEnum";
 import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants";
 import { IndicatorEnum } from "@/models/seb-server/monitoringEnums";
-
-// i18n
-const i18n = useI18n();
 
 // route params
 const examId = useRoute().params.examId.toString();
@@ -244,7 +240,7 @@ function openInstructionConfirmDialog(instructionType: InstructionEnum) {
     selectedInstructionType.value = instructionType;
     instructionConfirmDialog.value = true;
     isSelectedInstructionCancel.value =
-        instructionType == InstructionEnum.SEB_MARK_AS_CANCELLED;
+        instructionType === InstructionEnum.SEB_MARK_AS_CANCELLED;
 }
 
 function closeInstructionConfirmDialog() {
@@ -275,7 +271,8 @@ const currentStatus = computed(() => {
     return monitoringStore.selectedSingleConn?.cdat.status ?? null;
 });
 
-//= ==============indicators====================
+// TODO ==============indicators==================== is this still used / will be used?
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const mergedIndicators = computed(() => {
     const definitions = monitoringStore.indicators?.content || [];
     const values = monitoringStore.selectedSingleConn?.iVal || [];

@@ -570,7 +570,6 @@
                             class="ml-2"
                             color="primary"
                             data-testid="assessmentToolsCreate-save-button"
-                            :disabled="isCreateDisabled"
                             rounded="sm"
                             variant="flat"
                             @click="submit()"
@@ -591,7 +590,6 @@ import { translate } from "@/utils/generalUtils";
 import * as constants from "@/utils/constants";
 import { getInstitutions } from "@/services/seb-server/component-services/registerAccountViewService";
 import { navigateTo } from "@/router/navigation";
-import { useI18n } from "vue-i18n";
 import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/authenticationStore";
 import { createAssessmentTool } from "@/services/seb-server/component-services/assessmentToolViewService";
 import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums";
@@ -614,8 +612,6 @@ const proxyPort = ref<string>("");
 const proxyUsername = ref<string>("");
 const proxyPassword = ref<string>("");
 const proxyPasswordVisible = ref<boolean>(false);
-
-const i18n = useI18n();
 
 const formRef = ref();
 
@@ -640,7 +636,7 @@ const invalidPortMessage = translate(
     "assessmentToolConnections.createAssessmentToolConnectionsPage.validation.invalidPort",
 );
 const httpPrefixMessage = translate(
-    "assessmentToolConnections.createAssessmentToolConnectionsPage.validation.httpPrefix",
+    "assessmentToolConnections.createAssessmentToolConnectionsPage.validation.assessmentToolServerAddressLabel",
 );
 
 const requiredRule = (v: string) => !!v || requiredMessage;
@@ -671,17 +667,6 @@ const requiredIfTokenRule = (v: string) => {
     return (!!v && v.toString().trim().length > 0) || requiredMessage;
 };
 
-const isAuthValid = computed(() => {
-    const hasClient =
-        !!assessmentToolServerUsername.value &&
-        !!assessmentToolServerPassword.value;
-    const hasToken = !!accessToken.value;
-    return (
-        (authMode.value === "client" && hasClient && !hasToken) ||
-        (authMode.value === "token" && hasToken && !hasClient)
-    );
-});
-
 const lmsTypeItems = Object.values(LMSTypeEnum).map((v) => ({
     label: translate(`assessmentToolConnections.lmsTypes.${v}`),
     value: v as LMSTypeEnum,
@@ -708,32 +693,6 @@ onMounted(async () => {
     } else {
         console.warn("User's institution not found in fetched institutions.");
     }
-});
-
-// Create button disabled state
-const isCreateDisabled = computed(() => {
-    const baseMissing =
-        !institution.value ||
-        !name.value ||
-        !lmsType.value ||
-        !assessmentToolServerAddress.value;
-
-    if (baseMissing) return true;
-
-    if (!isAuthValid.value) return true;
-
-    if (!withProxy.value) return false;
-
-    const proxyMissing =
-        !proxyHost.value ||
-        !proxyPort.value ||
-        !proxyUsername.value ||
-        !proxyPassword.value;
-
-    const n = Number(proxyPort.value);
-    const badPort = !(Number.isInteger(n) && n >= 1 && n <= 65535);
-
-    return proxyMissing || badPort;
 });
 
 async function submit() {

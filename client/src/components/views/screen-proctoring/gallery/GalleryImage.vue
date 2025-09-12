@@ -1,10 +1,10 @@
 <template>
     <!-----------gallery image---------->
-    <v-hover v-slot="{ isHovering, props }">
+    <v-hover v-slot="{ isHovering, props: hoverProps }">
         <!--todo: add max height  -->
         <v-img
             v-if="screenshot"
-            v-bind="props"
+            v-bind="hoverProps"
             :aspect-ratio="16 / 9"
             class="img-styling"
             :class="{ 'on-hover': isHovering }"
@@ -14,7 +14,7 @@
             "
             tabindex="0"
             @dblclick="openDialog()"
-            @focus="setTabFocus($event)"
+            @focus="setTabFocus()"
             @keydown="registerKeyPress($event)"
             @mousedown="registerKeyPress($event)"
         >
@@ -159,10 +159,14 @@
                                                     "
                                                 >
                                                 </v-icon>
-                                                {{ $t("galleryView.metadata") }}
+                                                {{
+                                                    translate(
+                                                        "navigation.screenReader.titleImage",
+                                                    )
+                                                }}
                                             </template>
 
-                                            <template #actions="{ expanded }">
+                                            <template #actions>
                                                 <v-btn
                                                     :aria-label="
                                                         i18n.t(
@@ -254,8 +258,7 @@ import * as galleryViewService from "@/services/screen-proctoring/component-serv
 import * as linkService from "@/services/screen-proctoring/component-services/linkService";
 import { useAppBarStore, useGalleryStore } from "@/stores/store";
 import { useI18n } from "vue-i18n";
-import { useExamStore } from "@/stores/seb-server/examStore";
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
+import { translate } from "@/utils/generalUtils";
 
 // props
 const props = defineProps<{
@@ -280,7 +283,6 @@ const i18n = useI18n();
 const dialog = ref(false);
 
 // accessibility
-const isTabFocused = ref<boolean>(false);
 const lastKeyPressed = ref<string | null>("Tab");
 
 onBeforeMount(() => {
@@ -302,15 +304,15 @@ const expandedScreenshotLink = computed<string>(() => {
     );
 });
 
-function setTabFocus(event: any) {
-    if (lastKeyPressed.value != "Tab" || lastKeyPressed.value == null) {
+function setTabFocus() {
+    if (lastKeyPressed.value !== "Tab" || lastKeyPressed.value == null) {
         return;
     }
 
     galleryStore.focusedImageIndexes[props.index] = true;
 
     for (let i = 0; i < galleryStore.focusedImageIndexes.length; i++) {
-        if (i != props.index) {
+        if (i !== props.index) {
             galleryStore.focusedImageIndexes[i] = false;
         }
     }

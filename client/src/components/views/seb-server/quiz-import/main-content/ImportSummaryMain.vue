@@ -157,13 +157,8 @@
 </template>
 
 <script setup lang="ts">
-import * as quizImportWizardViewService from "@/services/seb-server/component-services/quizImportWizardViewService";
 import { useQuizImportStore } from "@/stores/seb-server/quizImportStore";
-import { useExamStore } from "@/stores/seb-server/examStore";
-import { navigateTo } from "@/router/navigation";
-import * as constants from "@/utils/constants";
 import { translate } from "@/utils/generalUtils";
-import * as generalUtils from "@/utils/generalUtils";
 
 // stores
 const quizImportStore = useQuizImportStore();

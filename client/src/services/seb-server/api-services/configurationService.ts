@@ -1,6 +1,5 @@
 import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
-import * as assessmentToolService from "@/services/seb-server/api-services/assessmentToolService";
 
 const connectionConfigurationUrl = "/client_configuration";
 const downloadExamConfigUrl = "/client_configuration/download";

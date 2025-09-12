@@ -61,7 +61,7 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: spConstants.JWT_LOGIN_ROUTE,
         meta: { requiresAuth: false },
-        beforeEnter: async (to, from) => {
+        beforeEnter: async (to) => {
             const authStore = useAuthStore();
 
             if (to.query.token != null) {

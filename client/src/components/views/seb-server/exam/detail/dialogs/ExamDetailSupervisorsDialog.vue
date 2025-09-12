@@ -88,19 +88,17 @@
                                 <template
                                     v-for="supervisor in selectedExamSupervisors"
                                     :key="supervisor.uuid"
-                                    :value="supervisor.uuid"
                                 >
-                                    <v-list-item>
+                                    <v-list-item :value="supervisor.uuid">
                                         <v-list-item-title>{{
                                             getFullUserName(supervisor)
                                         }}</v-list-item-title>
 
-                                        <template #append="{ isSelected }">
+                                        <template #append>
                                             <v-list-item-action
                                                 class="flex-column align-end"
                                             >
                                                 <v-spacer></v-spacer>
-
                                                 <v-btn
                                                     icon="mdi-close"
                                                     variant="flat"
@@ -109,8 +107,7 @@
                                                             supervisor.uuid,
                                                         )
                                                     "
-                                                >
-                                                </v-btn>
+                                                />
                                             </v-list-item-action>
                                         </template>
                                     </v-list-item>
@@ -118,7 +115,7 @@
                                     <v-divider
                                         class="border-opacity-25"
                                         :thickness="2"
-                                    ></v-divider>
+                                    />
                                 </template>
                             </v-list>
                         </v-col>
@@ -228,10 +225,10 @@ const hasDataChanged = computed<boolean>(() => {
 // add exam supervisor
 async function onTableRowClick(selectedUserAccount: UserAccountName) {
     const index: number = selectedExamSupervisors.value.findIndex(
-        (userAccount) => userAccount.uuid == selectedUserAccount.modelId,
+        (userAccount) => userAccount.uuid === selectedUserAccount.modelId,
     );
 
-    if (index != -1) {
+    if (index !== -1) {
         selectedExamSupervisors.value.splice(index, 1);
         return;
     }
@@ -250,7 +247,7 @@ async function onTableRowClick(selectedUserAccount: UserAccountName) {
 
 function removeExamSupervisor(supervisorId: string) {
     const index: number = selectedExamSupervisors.value.findIndex(
-        (userAccount) => userAccount.uuid == supervisorId,
+        (userAccount) => userAccount.uuid === supervisorId,
     );
     selectedExamSupervisors.value.splice(index, 1);
 }

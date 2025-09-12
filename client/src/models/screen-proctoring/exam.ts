@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type SPExamView = {
     uuid: string;
     name: string;
@@ -5,6 +6,7 @@ type SPExamView = {
     endTime: number;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type SPExam = {
     creationTime: number;
     description: string;

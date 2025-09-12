@@ -206,7 +206,7 @@ function isNextButtonDisabled(step: number): boolean {
     ) {
         addStepAssessment += 1;
 
-        if (step == 1) {
+        if (step === 1) {
             return !quizImportStore.selectedAssessmentTool;
         }
     }
@@ -220,19 +220,19 @@ function isNextButtonDisabled(step: number): boolean {
         addStepGroup += 1;
     }
 
-    if (step == 1 + addStepAssessment) {
+    if (step === 1 + addStepAssessment) {
         return !quizImportStore.selectedQuiz;
     }
 
-    if (step == 2 + addStepAssessment) {
+    if (step === 2 + addStepAssessment) {
         return !quizImportStore.selectedExamTemplate;
     }
 
-    if (step == 3 + addStepAssessment + addStepGroup) {
-        return quizImportStore.selectedExamSupervisors.length == 0;
+    if (step === 3 + addStepAssessment + addStepGroup) {
+        return quizImportStore.selectedExamSupervisors.length === 0;
     }
 
-    if (step == 5 + addStepAssessment + addStepGroup) {
+    if (step === 5 + addStepAssessment + addStepGroup) {
         return false;
     }
 
@@ -252,7 +252,7 @@ async function loadAssessmentToolSelection() {
     // if no assessment tools connected --> show error msg
     if (
         activeAssessmentTools == null ||
-        activeAssessmentTools.content.length == 0
+        activeAssessmentTools.content.length === 0
     ) {
         isNoAssessmentTool.value = true;
         return;
@@ -262,7 +262,7 @@ async function loadAssessmentToolSelection() {
     quizImportStore.forceNewSearch = true;
 
     // if more than one assessment tools connected --> show selection
-    if (quizImportStore.availableAssessmentTools.content.length == 1) {
+    if (quizImportStore.availableAssessmentTools.content.length === 1) {
         // if only 1 connected --> select assessment tool & remove components from wizard
         quizImportStore.selectedAssessmentTool =
             activeAssessmentTools.content[0].id;
@@ -339,7 +339,10 @@ function handleStepperNext(index: number, next: () => void) {
             return;
         }
 
-        if (createExamResponse.id == undefined) {
+        if (
+            createExamResponse.id === undefined ||
+            createExamResponse.id === null
+        ) {
             console.log(createExamResponse);
             const msg: unknown = createExamResponse;
             const message: APIMessage[] = msg as APIMessage[];

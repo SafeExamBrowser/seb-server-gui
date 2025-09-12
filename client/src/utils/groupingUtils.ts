@@ -1,5 +1,3 @@
-import * as timeUtils from "@/utils/timeUtils";
-
 // todo: improve this function
 export function groupScreenshotsByMetadata(
     screenshotGroupList: ScreenshotGroup[],
@@ -8,7 +6,7 @@ export function groupScreenshotsByMetadata(
     // todo: extract metadata from par
     // const metadataGroupPar: string = "screenProctoringMetadataUserAction"
 
-    if (screenshotGroupList == null || screenshotGroupList.length == 0) {
+    if (screenshotGroupList == null || screenshotGroupList.length === 0) {
         return null;
     }
 
@@ -31,7 +29,7 @@ export function groupScreenshotsByMetadata(
 
     for (let i = 1; i < screenshotGroupList.length; i++) {
         if (
-            currentGroup.groupName ==
+            currentGroup.groupName ===
             screenshotGroupList[i].metaData.screenProctoringMetadataUserAction
         ) {
             currentGroup.timelineScreenshotDataList.push(

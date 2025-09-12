@@ -8,15 +8,15 @@
         :expanded="expandedItems"
         :headers="screenshotTableHeaders"
         item-value="timelineScreenshotDataList[0].timestamp"
-        :items="timelineSearchResult?.timelineGroupDataList"
+        :items="timelineSearchResultRef?.timelineGroupDataList"
         :items-per-page="
             tableUtils.calcDefaultItemsPerPage(
-                timelineSearchResult?.timelineGroupDataList,
+                timelineSearchResultRef?.timelineGroupDataList,
             )
         "
         :items-per-page-options="
             tableUtils.calcItemsPerPage(
-                timelineSearchResult?.timelineGroupDataList,
+                timelineSearchResultRef?.timelineGroupDataList,
             )
         "
         show-expand
@@ -63,7 +63,7 @@
                 variant="text"
                 @click="
                     searchViewService.openProctoringView(
-                        timelineSearchResult!.sessionUUID,
+                        timelineSearchResultRef!.sessionUUID,
                         internalItem.columns.timestamp,
                     )
                 "
@@ -91,69 +91,67 @@
                 tabindex="0"
                 variant="text"
                 @click="toggleExpand(internalItem)"
-                @keydown.native.enter="toggleExpand(internalItem)"
-                @keydown.native.space="toggleExpand(internalItem)"
+                @keydown.enter="toggleExpand(internalItem)"
+                @keydown.space="toggleExpand(internalItem)"
             >
             </v-btn>
         </template>
 
-        <template #expanded-row="{ columns, item, index }">
-            <template
+        <template #expanded-row="{ item }">
+            <tr
                 v-for="screenshot in groupingUtils.groupScreenshotsByMetadata(
                     item.timelineScreenshotDataList,
                     true,
                 )!"
+                :key="screenshot.timelineScreenshotDataList[0].timestamp"
             >
-                <tr>
-                    <td>
-                        {{
-                            timeUtils.formatTimestampToTime(
-                                screenshot.timelineScreenshotDataList[0]
-                                    .timestamp,
+                <td>
+                    {{
+                        timeUtils.formatTimestampToTime(
+                            screenshot.timelineScreenshotDataList[0].timestamp,
+                        )
+                    }}
+                </td>
+
+                <td></td>
+
+                <td>
+                    {{
+                        screenshot.timelineScreenshotDataList[0].metaData
+                            .screenProctoringMetadataBrowser
+                    }}
+                </td>
+
+                <td>
+                    {{
+                        screenshot.timelineScreenshotDataList[0].metaData
+                            .screenProctoringMetadataUserAction
+                    }}
+                </td>
+
+                <td>
+                    {{
+                        screenshot.timelineScreenshotDataList[0].metaData
+                            .screenProctoringMetadataWindowTitle
+                    }}
+                </td>
+
+                <td>
+                    <v-btn
+                        icon="mdi-video"
+                        variant="text"
+                        @click="
+                            searchViewService.openProctoringView(
+                                timelineSearchResultRef!.sessionUUID,
+                                screenshot.timelineScreenshotDataList[0].timestamp.toString(),
                             )
-                        }}
-                    </td>
+                        "
+                    >
+                    </v-btn>
+                </td>
 
-                    <td></td>
-
-                    <td>
-                        {{
-                            screenshot.timelineScreenshotDataList[0].metaData
-                                .screenProctoringMetadataBrowser
-                        }}
-                    </td>
-
-                    <td>
-                        {{
-                            screenshot.timelineScreenshotDataList[0].metaData
-                                .screenProctoringMetadataUserAction
-                        }}
-                    </td>
-
-                    <td>
-                        {{
-                            screenshot.timelineScreenshotDataList[0].metaData
-                                .screenProctoringMetadataWindowTitle
-                        }}
-                    </td>
-
-                    <td>
-                        <v-btn
-                            icon="mdi-video"
-                            variant="text"
-                            @click="
-                                searchViewService.openProctoringView(
-                                    timelineSearchResult!.sessionUUID,
-                                    screenshot.timelineScreenshotDataList[0].timestamp.toString(),
-                                )
-                            "
-                        >
-                        </v-btn>
-                    </td>
-
-                    <td></td>
-                </tr>
-            </template>
+                <td></td>
+            </tr>
             <tr class="last-border"></tr>
         </template>
         <!-------------------------------->
@@ -173,7 +171,7 @@ const props = defineProps<{
     timelineSearchResult: any;
 }>();
 
-const timelineSearchResult = ref<SearchTimeline>();
+const timelineSearchResultRef = ref<SearchTimeline>();
 
 // table
 const expandedItems = ref<string[]>([]);
@@ -208,10 +206,10 @@ const screenshotTableHeaders = ref([
 ]);
 
 onBeforeMount(() => {
-    timelineSearchResult.value = props.timelineSearchResult;
+    timelineSearchResultRef.value = props.timelineSearchResult;
 });
 
-watch(timelineSearchResult, (newList) => {
+watch(timelineSearchResultRef, (newList) => {
     if (newList == null) {
         return;
     }

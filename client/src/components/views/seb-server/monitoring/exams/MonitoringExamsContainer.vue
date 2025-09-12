@@ -20,7 +20,6 @@
 </template>
 <script setup lang="ts">
 import { useAppBarStore } from "@/stores/store";
-import * as constants from "@/utils/constants";
 import MonitoringExamsMain from "@/components/views/seb-server/monitoring/exams/MonitoringExamsMain.vue";
 import { translate } from "@/utils/generalUtils";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
@@ -44,7 +43,7 @@ function loadMonitoringListItemsCaller() {
         return;
     }
 
-    if (monitoringStore.currentPagingOptions.itemsPerPage == 0) {
+    if (monitoringStore.currentPagingOptions.itemsPerPage === 0) {
         monitoringStore.currentPagingOptions.itemsPerPage = 10;
     }
 

@@ -164,13 +164,9 @@
 
 <script setup lang="ts">
 import { useExamStore } from "@/stores/seb-server/examStore";
-import * as tableUtils from "@/utils/table/tableUtils";
 import * as clientGroupViewService from "@/services/seb-server/component-services/clientGroupViewService";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
-import {
-    ClientGroupEnum,
-    ClientOSEnum,
-} from "@/models/seb-server/clientGroupEnum";
+import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
 import * as generalUtils from "@/utils/generalUtils";
 import * as examViewService from "@/services/seb-server/component-services/examViewService";
 import { useI18n } from "vue-i18n";
@@ -272,20 +268,14 @@ async function saveScreenProctoringGroups() {
 
 const hasSpDataChanged = computed<boolean>(() => {
     return clientGroups.value.some((item, index) => {
-        return item.isSPSGroup != initialClientGroups.value[index].isSPSGroup;
+        return item.isSPSGroup !== initialClientGroups.value[index].isSPSGroup;
     });
 });
 
 function getGroupsWithSelectedSp(): number[] {
-    const groupIds: number[] = [];
-
-    clientGroups.value.some((item, index) => {
-        if (item.isSPSGroup) {
-            groupIds.push(item.id!);
-        }
-    });
-
-    return groupIds;
+    return clientGroups.value
+        .filter((item) => item.isSPSGroup)
+        .map((item) => item.id!);
 }
 
 //= =======delete========

@@ -4,8 +4,6 @@ import * as configurationService from "@/services/seb-server/api-services/config
 import * as screenProctoringService from "@/services/seb-server/api-services/screenProctoringService";
 import * as monitoringService from "@/services/seb-server/api-services/monitoringService";
 import * as examSEBSettingService from "@/services/seb-server/api-services/examSEBSettingService";
-import * as generalUtils from "@/utils/generalUtils";
-import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum";
 import * as timeUtils from "@/utils/timeUtils";
 
 //= ============api==============

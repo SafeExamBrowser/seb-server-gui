@@ -1,11 +1,5 @@
-import {
-    ClientGroupEnum,
-    ClientOSEnum,
-} from "@/models/seb-server/clientGroupEnum";
-import {
-    ExamStatusEnum,
-    ExamTypeEnum,
-} from "@/models/seb-server/examFiltersEnum";
+import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
+import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum";
 import {
     LMSFeatureEnum,
     LMSTypeEnum,
@@ -17,7 +11,7 @@ export function translate(
     key: string | null | undefined,
     i18nParam?: any | null,
 ): string {
-    if (key == null || key == "") {
+    if (key == null || key === "") {
         return "";
     }
 
@@ -52,19 +46,19 @@ export function findEnumValue<T extends Record<string, string | number>>(
 export function getExamStatusFilterColor(
     status: ExamStatusEnum | null,
 ): string {
-    if (status == ExamStatusEnum.RUNNING) {
+    if (status === ExamStatusEnum.RUNNING) {
         return "green";
     }
 
-    if (status == ExamStatusEnum.FINISHED) {
+    if (status === ExamStatusEnum.FINISHED) {
         return "red";
     }
 
-    if (status == ExamStatusEnum.UP_COMING) {
+    if (status === ExamStatusEnum.UP_COMING) {
         return "orange";
     }
 
-    if (status == ExamStatusEnum.TEST_RUN) {
+    if (status === ExamStatusEnum.TEST_RUN) {
         return "blue";
     }
 
@@ -76,15 +70,15 @@ export function getClientGroupDescription(
     clientGroup: ClientGroupEnum | null,
     i18nParam: any | null,
 ): string {
-    if (clientGroup == ClientGroupEnum.IP_V4_RANGE) {
+    if (clientGroup === ClientGroupEnum.IP_V4_RANGE) {
         return translate("clientGroups.description.ip[0]", i18nParam);
     }
 
-    if (clientGroup == ClientGroupEnum.CLIENT_OS) {
+    if (clientGroup === ClientGroupEnum.CLIENT_OS) {
         return translate("clientGroups.description.os[0]", i18nParam);
     }
 
-    if (clientGroup == ClientGroupEnum.NAME_ALPHABETICAL_RANGE) {
+    if (clientGroup === ClientGroupEnum.NAME_ALPHABETICAL_RANGE) {
         return translate("clientGroups.description.alphabetical[0]", i18nParam);
     }
 
@@ -93,7 +87,7 @@ export function getClientGroupDescription(
 
 export function createStringCommaList(values: number[] | string[]): string {
     let stringIdList = "";
-    if (values.length == 0) {
+    if (values.length === 0) {
         return stringIdList;
     }
 
@@ -134,11 +128,11 @@ export function hasLMSFeature(
 }
 
 export function stringToBoolean(booleanValue: string): boolean {
-    if (booleanValue == "true") {
+    if (booleanValue === "true") {
         return true;
     }
 
-    if (booleanValue == "false") {
+    if (booleanValue === "false") {
         return false;
     }
 

@@ -146,9 +146,7 @@
 <script setup lang="ts">
 import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
 import { useQuizImportStore } from "@/stores/seb-server/quizImportStore";
-import * as tableUtils from "@/utils/table/tableUtils";
 import { translate } from "@/utils/generalUtils";
-import TableHeaders from "@/utils/table/TableHeaders.vue";
 import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
 
 // stores
@@ -195,10 +193,11 @@ onBeforeMount(async () => {
 // add exam supervisor
 function onTableRowClick(selectedUserAccountName: UserAccountName) {
     const index: number = quizImportStore.selectedExamSupervisors.findIndex(
-        (userAccount) => userAccount.modelId == selectedUserAccountName.modelId,
+        (userAccount) =>
+            userAccount.modelId === selectedUserAccountName.modelId,
     );
 
-    if (index != -1) {
+    if (index !== -1) {
         quizImportStore.selectedExamSupervisors.splice(index, 1);
         return;
     }
@@ -208,7 +207,7 @@ function onTableRowClick(selectedUserAccountName: UserAccountName) {
 
 function removeExamSupervisor(supervisorId: string) {
     const index: number = quizImportStore.selectedExamSupervisors.findIndex(
-        (userAccount) => userAccount.modelId == supervisorId,
+        (userAccount) => userAccount.modelId === supervisorId,
     );
     quizImportStore.selectedExamSupervisors.splice(index, 1);
 }

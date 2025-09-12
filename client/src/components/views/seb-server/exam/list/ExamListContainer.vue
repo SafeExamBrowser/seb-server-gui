@@ -26,7 +26,6 @@ import { useAppBarStore } from "@/stores/store";
 import ExamListMain from "@/components/views/seb-server/exam/list/ExamListMain.vue";
 import { useExamStore } from "@/stores/seb-server/examStore";
 import { translate } from "@/utils/generalUtils";
-import MonitoringExamsMain from "@/components/views/seb-server/monitoring/exams/MonitoringExamsMain.vue";
 
 // stores
 const appBarStore = useAppBarStore();
@@ -45,7 +44,7 @@ function loadExamItemsCaller() {
         return;
     }
 
-    if (examStore.currentPagingOptions.itemsPerPage == 0) {
+    if (examStore.currentPagingOptions.itemsPerPage === 0) {
         examStore.currentPagingOptions.itemsPerPage = 10;
     }
 

@@ -143,10 +143,7 @@
 <script setup lang="ts">
 import { translate } from "@/utils/generalUtils";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
-import {
-    ExamStatusEnum,
-    ExamTypeEnum,
-} from "@/models/seb-server/examFiltersEnum";
+import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum";
 import * as generalUtils from "@/utils/generalUtils";
 import * as timeUtils from "@/utils/timeUtils";
 import { navigateTo } from "@/router/navigation";

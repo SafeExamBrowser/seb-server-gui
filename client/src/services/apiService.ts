@@ -73,7 +73,7 @@ export function createApiInterceptor() {
                 // try to refresh token
                 // ok --> refresh token, retries api call and returns data
                 // not ok --> redirected to login page
-                return await handleAuthenticationError(originalRequest);
+                return handleAuthenticationError(originalRequest);
             } else {
                 // generic error msg
                 const errorProps: ErrorProps = {
@@ -274,7 +274,7 @@ export function createSessionDeleteUrlSuffix(sessionUuids: string[]): string {
     for (let i = 0; i < sessionUuids.length; i++) {
         urlSuffix += sessionUuids[i];
 
-        if (i != sessionUuids.length - 1) {
+        if (i !== sessionUuids.length - 1) {
             urlSuffix += "&modelIds=";
         }
     }

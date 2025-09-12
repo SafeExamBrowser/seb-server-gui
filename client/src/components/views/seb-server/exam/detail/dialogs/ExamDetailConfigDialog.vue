@@ -64,10 +64,6 @@
 </template>
 
 <script setup lang="ts">
-import { useExamStore } from "@/stores/seb-server/examStore";
-import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
-import * as tableUtils from "@/utils/table/tableUtils";
-
 // emits
 const emit = defineEmits<{
     closeConfigDialog: [];

@@ -187,12 +187,10 @@
 
 <script setup lang="ts">
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
-import { useAppBarStore, useTableStore } from "@/stores/store";
+import { useTableStore } from "@/stores/store";
 import { translate } from "@/utils/generalUtils";
 import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
 import * as generalUtils from "@/utils/generalUtils";
-import * as examViewService from "@/services/seb-server/component-services/examViewService";
-import * as indicatorViewService from "@/services/seb-server/component-services/indicatorViewService";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import {
     IndicatorEnum,
@@ -200,7 +198,6 @@ import {
     MonitoringHeaderEnum,
 } from "@/models/seb-server/monitoringEnums";
 import { MonitoringRow } from "@/models/seb-server/monitoringClients";
-import * as tableUtils from "@/utils/table/tableUtils";
 import { storeToRefs } from "pinia";
 import { useI18n } from "vue-i18n";
 
@@ -216,7 +213,6 @@ const i18n = useI18n();
 // stores
 const monitoringStore = useMonitoringStore();
 const monitoringStoreRef = storeToRefs(monitoringStore);
-const appBarStore = useAppBarStore();
 const tableStore = useTableStore();
 
 // items
@@ -342,7 +338,7 @@ watch(connections, async () => {
 async function getAndSetConnections() {
     // add show all filter if no filter is selected
     if (
-        Object.keys(route.query).length == 0 ||
+        Object.keys(route.query).length === 0 ||
         route.query[MonitoringHeaderEnum.SHOW_ALL]
     ) {
         monitoringStore.isNoFilterSelected = true;
@@ -389,7 +385,7 @@ async function getAndSetStaticClientData(modelIds: number[]) {
 async function getStaticClientData(
     modelIds: number[],
 ): Promise<MonitoringStaticClientData | null> {
-    return await monitoringViewService.getStaticClientData(
+    return monitoringViewService.getStaticClientData(
         examId,
         generalUtils.createStringCommaList(modelIds),
     );
@@ -412,7 +408,7 @@ async function updateConnections() {
                 monitoringStore.monitoringData.get(dynamicData.id);
 
             if (monitoringRowData != null) {
-                if (dynamicData.st != monitoringRowData.status) {
+                if (dynamicData.st !== monitoringRowData.status) {
                     idsToUpdateMap.set(monitoringRowData.id, index);
                 } else {
                     updateConnectionRow(monitoringRowData, dynamicData);
@@ -421,7 +417,7 @@ async function updateConnections() {
         },
     );
 
-    if (idsToUpdateMap.size != 0) {
+    if (idsToUpdateMap.size !== 0) {
         // await addFreshData(idsToUpdateMap);
         addFreshData(idsToUpdateMap);
     }
@@ -516,23 +512,18 @@ function initalizeTableData() {
         ),
     );
 
-    connections.value.monitoringConnectionData.cons.forEach(
-        (dynamicData, index) => {
-            const staticClientData: StaticClientConnectionData | undefined =
-                staticDataMap.get(dynamicData.id);
+    connections.value.monitoringConnectionData.cons.forEach((dynamicData) => {
+        const staticClientData: StaticClientConnectionData | undefined =
+            staticDataMap.get(dynamicData.id);
 
-            if (staticClientData != null) {
-                const monitoringRow: MonitoringRow = createMonitoringRowData(
-                    dynamicData,
-                    staticClientData,
-                );
-                monitoringStore.monitoringData.set(
-                    monitoringRow.id,
-                    monitoringRow,
-                );
-            }
-        },
-    );
+        if (staticClientData != null) {
+            const monitoringRow: MonitoringRow = createMonitoringRowData(
+                dynamicData,
+                staticClientData,
+            );
+            monitoringStore.monitoringData.set(monitoringRow.id, monitoringRow);
+        }
+    });
 
     updateTableData();
 }
@@ -582,7 +573,7 @@ function extractIndicators(
     for (const [key, value] of Object.entries(indicatorValues)) {
         const indicator: Indicator | undefined =
             monitoringStore.indicators?.content.find(
-                (indicator) => indicator.id == parseInt(key),
+                (indicator) => indicator.id === parseInt(key),
             );
 
         if (indicator != null) {
@@ -596,14 +587,14 @@ function extractIndicators(
             };
 
             if (
-                indicatorFullObject.indicatorType ==
+                indicatorFullObject.indicatorType ===
                 IndicatorEnum.BATTERY_STATUS
             ) {
                 monitoringStore.batteryIndicatorId = indicator.id;
             }
 
             if (
-                indicatorFullObject.indicatorType == IndicatorEnum.WLAN_STATUS
+                indicatorFullObject.indicatorType === IndicatorEnum.WLAN_STATUS
             ) {
                 monitoringStore.wlanIndicatorId = indicator.id;
             }
@@ -664,7 +655,7 @@ function modifyIndicatorHeaders(indicatorString: any | null) {
     }
 
     // at least 1 filter is selected
-    if (indicatorString != "") {
+    if (indicatorString !== "") {
         if (tableStore.isIndicatorsExpanded) {
             removeIndicatorHeaders();
         }
@@ -788,15 +779,7 @@ function getIndicatorColor(indicatorObj: IndicatorObject | undefined): string {
 
 //= ================interval===================
 async function startIntervalRefresh() {
-    // console.log("before call")
-    const start = performance.now();
-
     await getAndSetConnections();
-
-    // console.log("after call")
-    const end = performance.now();
-    // console.log(`Execution time: ${(end - start)/1000} ms`);
-
     intervalRefresh = setTimeout(startIntervalRefresh, REFRESH_INTERVAL);
 }
 

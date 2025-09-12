@@ -61,7 +61,7 @@
             </td>
         </template>
 
-        <template #item.clientName="{ item, index }">
+        <template #item.clientName="{ item }">
             <td>
                 <div>
                     <template
@@ -100,10 +100,10 @@
                 tabindex="0"
                 variant="text"
                 @click="searchTimeline(internalItem, isExpanded, toggleExpand)"
-                @keydown.native.enter="
+                @keydown.enter="
                     searchTimeline(internalItem, isExpanded, toggleExpand)
                 "
-                @keydown.native.space="
+                @keydown.space="
                     searchTimeline(internalItem, isExpanded, toggleExpand)
                 "
             >
@@ -139,6 +139,7 @@
                     <v-list>
                         <v-list-item
                             v-for="sessionUuid in selectedSessionUuids"
+                            :key="sessionUuid"
                             :subtitle="
                                 timeUtils.formatTimestampToTime(
                                     sessions?.content.find(
@@ -185,7 +186,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, ref } from "vue";
+import { ref } from "vue";
 import * as timeUtils from "@/utils/timeUtils";
 import * as tableUtils from "@/utils/table/tableUtils";
 import SearchScreenshotsTable from "./SearchScreenshotsTable.vue";
@@ -313,14 +314,14 @@ async function deleteSessions() {
     const response = await searchViewService.deleteSessions(
         selectedSessionUuids.value,
     );
-    if (response.data == null || response.status == 207) {
+    if (response.data == null || response.status === 207) {
         errorAvailable.value = true;
         return;
     }
 
     for (let i = 0; i < selectedSessionUuids.value.length; i++) {
         const index: number | any = sessions.value?.content.findIndex(
-            (y) => y.sessionUUID == selectedSessionUuids.value![i],
+            (y) => y.sessionUUID === selectedSessionUuids.value![i],
         );
         sessions.value?.content.splice(index, 1);
     }
@@ -355,7 +356,7 @@ function removeTableItemFromRefs(
     if (isExpanded(item)) {
         toggleExpand(item);
         const index: number = timelineSearchResults.value.findIndex(
-            (i) => i.sessionUUID == item.sessionUUID,
+            (i) => i.sessionUUID === item.sessionUUID,
         );
 
         if (index !== -1) {

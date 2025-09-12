@@ -194,13 +194,11 @@
 </template>
 
 <script setup lang="ts">
-import { useExamStore } from "@/stores/seb-server/examStore";
 import {
     ClientGroupEnum,
     ClientOSEnum,
 } from "@/models/seb-server/clientGroupEnum";
 import * as generalUtils from "@/utils/generalUtils";
-import * as clientGroupViewService from "@/services/seb-server/component-services/clientGroupViewService";
 import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
 
@@ -211,12 +209,6 @@ const props = defineProps<{
 
 // i18n
 const i18n = useI18n();
-
-// stores
-const examStore = useExamStore();
-
-// error handling / validation
-const isGroupNameDuplicate = ref<boolean>(false);
 
 // form fields
 const groupNameField = ref<string | undefined>(props.clientGroup?.name);

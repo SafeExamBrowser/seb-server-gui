@@ -160,12 +160,8 @@ import {
     ExamStatusEnum,
     ExamTypeEnum,
 } from "@/models/seb-server/examFiltersEnum";
-import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
 import { navigateTo } from "@/router/navigation";
-
-// i18n
-const i18n = useI18n();
 
 // stores
 const examStore = useExamStore();

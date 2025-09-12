@@ -1,4 +1,3 @@
-import { AxiosResponse } from "axios";
 import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
 
@@ -57,7 +56,7 @@ export async function deleteSessions(
     const url: string =
         "/sp/search/sessions/delete" +
         apiService.createSessionDeleteUrlSuffix(sessionUuids);
-    return await apiService.api.delete(url, {
+    return apiService.api.delete(url, {
         headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN),
     });
 }

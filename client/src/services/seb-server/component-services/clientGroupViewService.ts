@@ -62,7 +62,7 @@ export function getCreateClientGroupParams(
     nameRangeStartLetter?: string,
     nameRangeEndLetter?: string,
 ): ClientGroup | null {
-    if (type == ClientGroupEnum.CLIENT_OS) {
+    if (type === ClientGroupEnum.CLIENT_OS) {
         if (clientOS == null) {
             return null;
         }
@@ -75,7 +75,7 @@ export function getCreateClientGroupParams(
         };
     }
 
-    if (type == ClientGroupEnum.IP_V4_RANGE) {
+    if (type === ClientGroupEnum.IP_V4_RANGE) {
         return {
             examId,
             name,
@@ -85,7 +85,7 @@ export function getCreateClientGroupParams(
         };
     }
 
-    if (type == ClientGroupEnum.NAME_ALPHABETICAL_RANGE) {
+    if (type === ClientGroupEnum.NAME_ALPHABETICAL_RANGE) {
         return {
             examId,
             name,

@@ -702,7 +702,6 @@
                             class="ml-2"
                             color="primary"
                             data-testid="connectionConfigurationCreation-save-button"
-                            :disabled="isCreateDisabled"
                             rounded="sm"
                             variant="flat"
                             @click="submit()"
@@ -844,59 +843,8 @@ const urlIfFallbackRule = (v: any) => {
     );
 };
 
-const isCreateDisabled = computed(() => {
-    if (!name.value.trim()) return true;
-    if (!configurationPurpose.value) return true;
-    if (pingInterval.value === null || isNaN(Number(pingInterval.value)))
-        return true;
-
-    if (withFallback.value) {
-        if (!fallbackStartUrl.value.trim()) return true;
-        if (interval.value === null || isNaN(Number(interval.value)))
-            return true;
-        if (
-            connectionAttempts.value === null ||
-            isNaN(Number(connectionAttempts.value))
-        )
-            return true;
-        if (
-            connectionTimeout.value === null ||
-            isNaN(Number(connectionTimeout.value))
-        )
-            return true;
-
-        // fallback pair
-        {
-            const fp = (fallbackPassword.value ?? "").trim();
-            const fpc = (confirmFallbackPassword.value ?? "").trim();
-            if (fp || fpc) {
-                if (!fp || !fpc) return true;
-                if (fp !== fpc) return true;
-            }
-        }
-        // quit pair
-        {
-            const qp = (quitPassword.value ?? "").trim();
-            const qpc = (confirmQuitPassword.value ?? "").trim();
-            if (qp || qpc) {
-                if (!qp || !qpc) return true;
-                if (qp !== qpc) return true;
-            }
-        }
-    }
-    // config pwd pair
-    const a = (configurationPassword.value ?? "").trim();
-    const b = (confirmConfigurationPassword.value ?? "").trim();
-    if (a || b) {
-        if (!a || !b) return true;
-        if (a !== b) return true;
-    }
-
-    return false;
-});
-
 // must match pwd rules
-const configPwdMustMatchRule = (v: any) => {
+const configPwdMustMatchRule = () => {
     const a = (configurationPassword.value ?? "").trim();
     const b = (confirmConfigurationPassword.value ?? "").trim();
 
@@ -905,7 +853,7 @@ const configPwdMustMatchRule = (v: any) => {
     return a === b || mustMatchMessage;
 };
 
-const fallbackPwdMustMatchRule = (_v: any) => {
+const fallbackPwdMustMatchRule = () => {
     const a = (fallbackPassword.value ?? "").trim();
     const b = (confirmFallbackPassword.value ?? "").trim();
     if (!a && !b) return true;
@@ -913,7 +861,7 @@ const fallbackPwdMustMatchRule = (_v: any) => {
     return a === b || mustMatchMessage;
 };
 
-const quitPwdMustMatchRule = (_v: any) => {
+const quitPwdMustMatchRule = () => {
     const a = (quitPassword.value ?? "").trim();
     const b = (confirmQuitPassword.value ?? "").trim();
     if (!a && !b) return true;

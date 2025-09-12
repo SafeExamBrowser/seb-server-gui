@@ -132,11 +132,7 @@ import {
     ExamStatusEnum,
     ExamTypeEnum,
 } from "@/models/seb-server/examFiltersEnum";
-import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
-
-// i18n
-const i18n = useI18n();
 
 // stores
 const examStore = useExamStore();
@@ -192,7 +188,7 @@ defineExpose({
 
 //= ======================events & watchers===============
 function onTableRowClick(exam: Exam) {
-    if (exam.id == selectedExam.value?.id) {
+    if (exam.id === selectedExam.value?.id) {
         selectedExam.value = null;
         return;
     }

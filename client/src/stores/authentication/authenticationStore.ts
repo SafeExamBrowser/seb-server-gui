@@ -2,7 +2,6 @@ import { defineStore } from "pinia";
 import { navigateTo } from "@/router/navigation";
 import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
 import * as constants from "@/utils/constants";
-import * as authenticationService from "@/services/authenticationService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
 
 // ----------------------authentication---------------------------//
@@ -18,7 +17,7 @@ export const useAuthStore = defineStore("auth", () => {
 
         await userAccountViewService.setPersonalUserAccount();
 
-        if (useAuthStore().redirectRoute == "") {
+        if (useAuthStore().redirectRoute === "") {
             navigateTo(constants.HOME_PAGE_ROUTE);
         } else {
             let route: string = useAuthStore().redirectRoute;

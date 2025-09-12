@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from "vue";
+import { onBeforeMount, onBeforeUnmount, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import * as galleryViewService from "@/services/screen-proctoring/component-services/galleryViewService";
 import { useAppBarStore, useLoadingStore } from "@/stores/store";
@@ -157,7 +157,7 @@ watch(appBarStoreRef.galleryIsNameSortAsc, async () => {
 });
 
 function assignData() {
-    // @ts-ignore
+    // @ts-ignore ingore
     if (typeof group.value.message === "string") {
         noScreenshotData.value = true;
         stopIntervalGroup();
@@ -170,7 +170,7 @@ function assignData() {
 
     if (
         group.value?.screenshots == null ||
-        group.value?.screenshots.length == 0
+        group.value?.screenshots.length === 0
     ) {
         noScreenshotData.value = true;
         updateInfoData();
@@ -184,7 +184,7 @@ function assignData() {
 
     updateInfoData();
 
-    if (group.value.screenshots.length == 0) {
+    if (group.value.screenshots.length === 0) {
         noScreenshotData.value = true;
     }
 }
@@ -216,7 +216,7 @@ async function windowChange() {
 function calcAmountOfWindows() {
     if (
         group.value?.numberOfSessions == null ||
-        group.value?.numberOfSessions == 0
+        group.value?.numberOfSessions === 0
     ) {
         maxPages.value = 1;
         return;

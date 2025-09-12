@@ -42,7 +42,7 @@ import * as timeUtils from "@/utils/timeUtils";
 import ApplicationsSearchWindowTitle from "./ApplicationsSearchWindowTitle.vue";
 
 // props
-const props = defineProps<{
+defineProps<{
     examObject: {
         exam: SPExam;
         metadataAppList: string[];

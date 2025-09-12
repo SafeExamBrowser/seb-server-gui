@@ -1,8 +1,4 @@
 import { defineStore } from "pinia";
-import { navigateTo } from "@/router/navigation";
-import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
-import * as constants from "@/utils/constants";
-import * as authenticationService from "@/services/authenticationService";
 
 // --------------------app bar-----------------------------//
 export const useAppBarStore = defineStore("appBar", () => {

@@ -12,7 +12,7 @@
     <!-- Redesigned Group Cards -->
     <v-row>
         <template
-            v-for="(clientGroupItem, index) in overViewClientGroups"
+            v-for="clientGroupItem in overViewClientGroups"
             :key="clientGroupItem.id"
         >
             <v-col cols="12" md="4">
@@ -386,13 +386,13 @@ const overViewClientGroups: ComputedRef<OverviewClientGroup[] | null> =
 
         const normalGroups =
             monitoringStore.monitoringOverviewData?.clientGroups.filter(
-                (item) => item.type != ClientGroupEnum.SP_FALLBACK_GROUP,
+                (item) => item.type !== ClientGroupEnum.SP_FALLBACK_GROUP,
             );
 
         if (isSPGroupAvailable.value) {
             const fallBackGroup =
                 monitoringStore.monitoringOverviewData?.clientGroups.filter(
-                    (item) => item.type == ClientGroupEnum.SP_FALLBACK_GROUP,
+                    (item) => item.type === ClientGroupEnum.SP_FALLBACK_GROUP,
                 );
             return [...normalGroups, ...fallBackGroup];
         }
@@ -403,7 +403,7 @@ const overViewClientGroups: ComputedRef<OverviewClientGroup[] | null> =
 const isSPGroupAvailable: ComputedRef<boolean> = computed(() => {
     const normalGroups =
         monitoringStore.monitoringOverviewData?.clientGroups.filter(
-            (item) => item.type != ClientGroupEnum.SP_FALLBACK_GROUP,
+            (item) => item.type !== ClientGroupEnum.SP_FALLBACK_GROUP,
         );
 
     if (normalGroups == null) {
@@ -413,7 +413,7 @@ const isSPGroupAvailable: ComputedRef<boolean> = computed(() => {
     for (let i = 0; i < normalGroups.length; i++) {
         if (
             normalGroups[i].spsGroupUUID != null &&
-            normalGroups[i].spsGroupUUID != ""
+            normalGroups[i].spsGroupUUID !== ""
         ) {
             return true;
         }

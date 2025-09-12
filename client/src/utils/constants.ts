@@ -11,7 +11,6 @@ import ImportPasswordMain from "@/components/views/seb-server/quiz-import/main-c
 import ImportSummaryInfo from "@/components/views/seb-server/quiz-import/info-box-content/ImportSummaryInfo.vue";
 import ImportSummaryMain from "@/components/views/seb-server/quiz-import/main-content/ImportSummaryMain.vue";
 import { translate } from "@/utils/generalUtils";
-import { id } from "vuetify/locale";
 
 // navigation routes
 export const DEFAULT_ROUTE: string = "/";
