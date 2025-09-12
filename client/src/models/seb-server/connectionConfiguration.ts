@@ -52,7 +52,7 @@ type CreateConnectionConfigurationPar = {
     name: string;
     sebConfigPurpose: string;
     sebServerPingTime: number;
-    exam_selection?: Number[];
+    exam_selection?: number[];
 
     cert_alias?: string;
     encryptSecret?: string;
@@ -84,7 +84,7 @@ type UpdateConnectionConfigurationPar = {
     name: string;
     sebConfigPurpose: string;
     sebServerPingTime: number;
-    exam_selection?: Number[];
+    exam_selection?: number[];
 
     encryptSecret?: string;
     confirm_encrypt_secret?: string;
