@@ -6,6 +6,7 @@
 
 module.exports = {
     root: true,
+    ignorePatterns: ["**/*.d.ts"],
     env: {
         node: true,
     },
