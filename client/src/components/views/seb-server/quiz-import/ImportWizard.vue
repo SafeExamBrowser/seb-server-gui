@@ -22,6 +22,7 @@
 
         <v-col class="pl-10" cols="12" md="2"></v-col>
     </v-row>
+
     <!------------top info box or alert------------->
     <template v-if="isNoAssessmentTool">
         <AlertMsg
