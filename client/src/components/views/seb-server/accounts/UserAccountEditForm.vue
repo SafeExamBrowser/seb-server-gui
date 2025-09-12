@@ -425,11 +425,7 @@
                             variant="flat"
                             @click="saveChanges()"
                         >
-                            {{
-                                translate(
-                                    "userAccount.userAccountDetailAndEditPage.buttons.saveChanges",
-                                )
-                            }}
+                            {{ translate("general.saveButton") }}
                         </v-btn>
                     </div>
                 </v-col>

@@ -597,11 +597,7 @@
                                     variant="flat"
                                     @click="onSave()"
                                 >
-                                    {{
-                                        translate(
-                                            "assessmentToolConnections.assessmentToolDetailAndEditPage.buttons.saveChanges",
-                                        )
-                                    }}
+                                    {{ translate("general.saveButton") }}
                                 </v-btn>
                             </div>
                         </v-col>

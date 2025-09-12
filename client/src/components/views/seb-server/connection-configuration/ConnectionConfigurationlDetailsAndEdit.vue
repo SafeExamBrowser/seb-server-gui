@@ -749,11 +749,7 @@
                                     variant="flat"
                                     @click="onSave()"
                                 >
-                                    {{
-                                        translate(
-                                            "connectionConfigurations.connectionConfigurationViewAndEditPage.buttons.saveChanges",
-                                        )
-                                    }}
+                                    {{ translate("general.saveButton") }}
                                 </v-btn>
                             </div>
                         </v-col>

@@ -285,6 +285,7 @@
             }
         },
         "registerPage": {
+            "title": "SEB Server",
             "labels": {
                 "institutionLabel": "Institution *",
                 "usernameLabel": "Username *",
@@ -297,7 +298,7 @@
                 "selectRolesLabel": "Roles *"
             },
             "info": {
-                "alreadyHaveAccount": "Already have an account?",
+                "alreadyHaveAccount": "Already have an account? ",
                 "accountRegistrationInfo": "Please fill the form to register for a SEB Server account."
             },
             "buttons": {
@@ -402,7 +403,7 @@
             "addAssessmentTool": "Add Assessment Tool Connection",
             "filters": {
                 "searchTitle": "Search",
-                "searchField": "Search for Assessment Tool Connections",
+                "searchField": "Search by Name",
                 "institutionFilter": "Institution",
                 "statusFilter": "Status",
                 "activeSelector": "Active",
@@ -495,7 +496,7 @@
             "addConnectionConfiguration": "Add Connection Configuration",
             "filters": {
                 "searchTitle": "Search",
-                "searchField": "Search for Connection Configuration",
+                "searchField": "Search by Name",
                 "institutionFilter": "Institution",
                 "statusFilter": "Status",
                 "activeSelector": "Active",
@@ -635,7 +636,7 @@
         "addCertificate": "Add Certificate",
         "filters": {
             "searchTitle": "Search",
-            "searchField": "Search for Certificates"
+            "searchField": "Search by Alias"
         },
 
         "certificateTableHeaders": {
@@ -653,7 +654,6 @@
             "uploadCertificate": "Upload Certificate",
             "selectFromFolder": "Select From File Explorer",
             "uploadCertificateHelp": "Drag and Drop or Search through File Explorer",
-            "addCertificate": "Add Certificate",
             "onlyAllowed": "File Type not allowed",
             "allowed": "Allowed File Types",
             "dropHere": "Drop a certificate file here",

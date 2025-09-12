@@ -167,11 +167,7 @@
                     text
                     @click="doUpload"
                 >
-                    {{
-                        translate(
-                            "certificates.certificateDialog.addCertificate",
-                        )
-                    }}
+                    {{ translate("general.saveButton") }}
                 </v-btn>
             </v-card-actions>
         </v-card>
