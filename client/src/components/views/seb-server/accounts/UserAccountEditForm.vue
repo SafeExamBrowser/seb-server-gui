@@ -412,7 +412,7 @@
                             variant="outlined"
                             @click="navigateTo(constants.USER_ACCOUNTS_ROUTE)"
                         >
-                            {{ translate("general.backButton") }}
+                            {{ translate("general.cancelButton") }}
                         </v-btn>
 
                         <v-btn

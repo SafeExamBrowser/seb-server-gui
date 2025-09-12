@@ -736,7 +736,7 @@
                                     variant="outlined"
                                     @click="onBack()"
                                 >
-                                    {{ translate("general.backButton") }}
+                                    {{ translate("general.cancelButton") }}
                                 </v-btn>
 
                                 <v-btn
