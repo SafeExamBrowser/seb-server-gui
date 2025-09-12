@@ -48,8 +48,8 @@
                                     <v-row>
                                         <v-col align="left"
                                             >{{ clientData[index] }}
-                                            {{ translate(state) }}</v-col
-                                        >
+                                            {{ translate(state) }}
+                                        </v-col>
                                         <v-col align="right">
                                             <v-icon
                                                 :icon="
@@ -296,6 +296,7 @@ function getConnectionStatusIcon(
     justify-content: center;
     max-width: 230px;
 }
+
 .chart-container canvas {
     width: 100% !important;
     height: auto !important;
