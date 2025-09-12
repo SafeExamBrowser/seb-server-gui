@@ -6,12 +6,17 @@ import globals from "globals";
 import { defineConfig } from "eslint/config";
 import tseslint from "typescript-eslint";
 import { readFileSync } from "fs";
+import { includeIgnoreFile } from "@eslint/compat";
+import { fileURLToPath } from "node:url";
 
 const autoImportGlobals = JSON.parse(
     readFileSync("./.eslintrc-auto-import.json", "utf8"),
 );
 
+const gitignorePath = fileURLToPath(new URL(".gitignore", import.meta.url));
+
 export default defineConfig([
+    includeIgnoreFile(gitignorePath),
     eslint.configs.recommended,
     tseslint.configs.strict,
     eslintPluginVue.configs["flat/recommended"],
