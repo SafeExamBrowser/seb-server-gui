@@ -83,7 +83,7 @@ export async function deleteTableRow(
 
 export async function updateSEBSettingValue(
     id: string,
-    valueId: String,
+    valueId: string,
     value: string,
     forExam: boolean,
 ): Promise<SEBSettingsValue | any> {

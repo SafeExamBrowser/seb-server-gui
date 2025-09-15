@@ -34,40 +34,36 @@
                                 v-for="entry in ask.entries"
                                 :key="entry.id"
                             >
-                                <v-list-item-content>
-                                    <v-list-item-title class="font-weight-bold">
-                                        Connection ID: {{ entry.id }}
-                                    </v-list-item-title>
-                                    <v-list-item-subtitle>
-                                        Name: {{ entry.name }}
-                                    </v-list-item-subtitle>
+                                <v-list-item-title class="font-weight-bold">
+                                    Connection ID: {{ entry.id }}
+                                </v-list-item-title>
+                                <v-list-item-subtitle>
+                                    Name: {{ entry.name }}
+                                </v-list-item-subtitle>
 
-                                    <!-- Extra details from SebClientConnection -->
-                                    <div v-if="entry.conn" class="mt-1">
-                                        <div>
-                                            Status: {{ entry.conn.status }}
-                                        </div>
+                                <!-- Extra details from SebClientConnection -->
+                                <div v-if="entry.conn" class="mt-1">
+                                    <div>Status: {{ entry.conn.status }}</div>
 
-                                        <div>
-                                            SEB Info: {{ entry.conn.seb_info }}
-                                        </div>
-                                        <div>
-                                            Client Address:
-                                            {{ entry.conn.clientAddress }}
-                                        </div>
-                                        <div>
-                                            Client OS:
-                                            {{ entry.conn.clientOsName }}
-                                        </div>
-                                        <div>
-                                            Client Version:
-                                            {{ entry.conn.clientVersion }}
-                                        </div>
+                                    <div>
+                                        SEB Info: {{ entry.conn.seb_info }}
                                     </div>
-                                    <div v-else class="mt-1 text-grey">
-                                        (No connection details found)
+                                    <div>
+                                        Client Address:
+                                        {{ entry.conn.clientAddress }}
                                     </div>
-                                </v-list-item-content>
+                                    <div>
+                                        Client OS:
+                                        {{ entry.conn.clientOsName }}
+                                    </div>
+                                    <div>
+                                        Client Version:
+                                        {{ entry.conn.clientVersion }}
+                                    </div>
+                                </div>
+                                <div v-else class="mt-1 text-grey">
+                                    (No connection details found)
+                                </div>
                             </v-list-item>
                         </v-list>
                     </v-expansion-panel-text>

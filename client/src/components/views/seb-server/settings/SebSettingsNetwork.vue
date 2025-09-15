@@ -379,12 +379,12 @@ onBeforeMount(async () => {
         string,
         SEBSettingsTableRowValues[]
     >(Object.entries(settingsView.tableValues));
-    const singleValues: Map<String, SEBSettingsValue> = new Map<
-        String,
+    const singleValues: Map<string, SEBSettingsValue> = new Map<
+        string,
         SEBSettingsValue
     >(Object.entries(settingsView.singleValues));
-    const proxyValues: Map<String, SEBSettingsValue> = new Map<
-        String,
+    const proxyValues: Map<string, SEBSettingsValue> = new Map<
+        string,
         SEBSettingsValue
     >(Object.entries(tableValues.get("proxies")![0].rowValues));
 
