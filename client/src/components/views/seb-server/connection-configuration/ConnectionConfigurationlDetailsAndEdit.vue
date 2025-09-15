@@ -942,7 +942,7 @@ const statusChanged = computed(
 const hasRealCerts = computed(() => certificateItems.value.length > 1);
 
 // ToDo SEBSERV-771 This will be removed in an issue following in a couple days, for now suppressing this ESLint error is ok since the function will be completely removed anyway.
-// eslint-disable-next-line complexity
+
 const isSaveDisabled = computed(() => {
     if (!name.value.trim()) return true;
     if (!configurationPurpose.value) return true;
