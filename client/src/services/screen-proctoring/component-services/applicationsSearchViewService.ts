@@ -6,7 +6,7 @@ export async function getExamsStarted(
 ): Promise<SPExam[] | null> {
     try {
         return await applicationService.getExamsStarted(optionalParameters);
-    } catch (error) {
+    } catch {
         console.error(error);
         return null;
     }
@@ -17,7 +17,7 @@ export async function getGroupIdsForExam(
 ): Promise<number[] | null> {
     try {
         return await applicationService.getGroupIdsForExam(examId);
-    } catch (error) {
+    } catch {
         console.error(error);
         return null;
     }
@@ -28,7 +28,7 @@ export async function getDistinctMetadataAppForExam(
 ): Promise<string[] | null> {
     try {
         return await applicationService.getDistinctMetadataAppForExam(groupIds);
-    } catch (error) {
+    } catch {
         console.error(error);
         return null;
     }
@@ -43,7 +43,7 @@ export async function getDistinctMetadataWindowForExam(
             groupIds,
             screenProctoringMetadataApplication,
         );
-    } catch (error) {
+    } catch {
         console.error(error);
         return null;
     }
@@ -60,7 +60,7 @@ export async function getUserListForApplicationSearch(
             screenProctoringMetadataApplication,
             screenProctoringMetadataWindowTitle,
         );
-    } catch (error) {
+    } catch {
         console.error(error);
         return null;
     }
@@ -77,7 +77,7 @@ export async function getTimestampListForApplicationSearch(
             screenProctoringMetadataApplication,
             screenProctoringMetadataWindowTitle,
         );
-    } catch (error) {
+    } catch {
         console.error(error);
         return null;
     }

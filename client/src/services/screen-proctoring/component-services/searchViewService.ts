@@ -13,7 +13,7 @@ export async function searchSessionsDay(
 ): Promise<string[] | null> {
     try {
         return await searchService.searchSessionsDay(optionalParameters);
-    } catch (error) {
+    } catch {
         console.error(error);
         return null;
     }
@@ -24,7 +24,7 @@ export async function searchSessions(
 ): Promise<SearchSessions | null> {
     try {
         return await searchService.searchSessions(optionalParameters);
-    } catch (error) {
+    } catch {
         console.error(error);
         return null;
     }
@@ -35,7 +35,7 @@ export async function searchScreenshots(
 ): Promise<SearchScreenshots | null> {
     try {
         return await searchService.searchScreenshots(optionalParameters);
-    } catch (error) {
+    } catch {
         console.error(error);
         return null;
     }
@@ -50,7 +50,7 @@ export async function searchTimeline(
             sessionId,
             optionalParameters,
         );
-    } catch (error) {
+    } catch {
         console.error(error);
         return null;
     }
@@ -61,7 +61,7 @@ export async function deleteSessions(
 ): Promise<object | any> {
     try {
         return await searchService.deleteSessions(sessionUuids);
-    } catch (error) {
+    } catch {
         console.error(error);
         return null;
     }

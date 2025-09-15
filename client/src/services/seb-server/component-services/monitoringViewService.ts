@@ -18,7 +18,7 @@ export async function getOverview(
 ): Promise<MonitoringOverview | null> {
     try {
         return await monitoringService.getOverview(examId);
-    } catch (error) {
+    } catch {
         return null;
     }
 }
@@ -29,7 +29,7 @@ export async function getConnections(
 ): Promise<MonitoringConnections | null> {
     try {
         return await monitoringService.getConnections(examId, optionalHeaders);
-    } catch (error) {
+    } catch {
         return null;
     }
 }
@@ -43,7 +43,7 @@ export async function getSingleConnection(
             examId,
             connectionToken,
         );
-    } catch (error) {
+    } catch {
         return null;
     }
 }
@@ -57,7 +57,7 @@ export async function getSingleConnectionEvents(
             clientConnectionId,
             optionalParameters,
         );
-    } catch (error) {
+    } catch {
         return null;
     }
 }
@@ -68,7 +68,7 @@ export async function getStaticClientData(
 ): Promise<MonitoringStaticClientData | null> {
     try {
         return await monitoringService.getStaticClientData(examId, modelIds);
-    } catch (error) {
+    } catch {
         return null;
     }
 }
@@ -115,7 +115,7 @@ export async function registerInstruction(
             examId,
             clientInstruction,
         );
-    } catch (error) {
+    } catch {
         return null;
     }
 }
@@ -129,7 +129,7 @@ export async function getPendingNotifcations(
             examId,
             connectionToken,
         );
-    } catch (error) {
+    } catch {
         return null;
     }
 }
@@ -145,7 +145,7 @@ export async function confirmNotification(
             notificationId,
             connectionToken,
         );
-    } catch (error) {
+    } catch {
         return null;
     }
 }
@@ -159,7 +159,7 @@ export async function disableConnections(
             examId,
             connectionToken,
         );
-    } catch (error) {
+    } catch {
         return null;
     }
 }
