@@ -66,6 +66,14 @@ const appBarStore = useAppBarStore();
 onBeforeMount(() => {
     appBarStore.title = translate("titles.home");
 
+
+
+
+
+
+    
+
+
     console.log(useUserAccountStore().userAccount);
 });
 </script>
