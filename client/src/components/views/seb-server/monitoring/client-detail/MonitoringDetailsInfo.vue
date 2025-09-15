@@ -299,7 +299,7 @@ const mergedIndicators = computed(() => {
     });
 });
 
-function getConnectionStatusColor(connectionStatus: String | null): string {
+function getConnectionStatusColor(connectionStatus: string | null): string {
     if (connectionStatus == null) return "#000000";
 
     switch (connectionStatus) {
@@ -413,7 +413,7 @@ const filteredIndicators = computed(() => {
         });
 });
 
-function getConnectionStatusIcon(connectionStatus: String | null): string {
+function getConnectionStatusIcon(connectionStatus: string | null): string {
     if (connectionStatus == null) return "mdi-chevron-right";
 
     switch (connectionStatus) {

@@ -3,7 +3,6 @@ import * as examTemplateService from "@/services/seb-server/api-services/examTem
 import * as configurationService from "@/services/seb-server/api-services/configurationService";
 import * as screenProctoringService from "@/services/seb-server/api-services/screenProctoringService";
 import * as monitoringService from "@/services/seb-server/api-services/monitoringService";
-import * as examSEBSettingService from "@/services/seb-server/api-services/examSEBSettingService";
 import * as timeUtils from "@/utils/timeUtils";
 
 //= ============api==============
@@ -227,78 +226,4 @@ function getExamConfigFileName(examName: string | undefined): string {
     examName = examName?.replaceAll(" ", "_");
 
     return `${examName}_${timeUtils.getCurrentDateString()}.seb`;
-}
-
-//= =====SEB Settings=======
-export async function getExamConfigMapping(
-    examId: string,
-): Promise<ExamConfigMapping[] | null> {
-    try {
-        return await examSEBSettingService.getExamConfigMapping(examId);
-    } catch (error) {
-        return null;
-    }
-}
-
-export async function getApplicationViewSettings(
-    examId: string,
-): Promise<SEBSettingsView | null> {
-    try {
-        return await examSEBSettingService.getApplicationView(examId);
-    } catch (error) {
-        return null;
-    }
-}
-
-export async function getNetworkViewSettings(
-    examId: string,
-): Promise<SEBSettingsView | null> {
-    try {
-        return await examSEBSettingService.getNetworkView(examId);
-    } catch (error) {
-        return null;
-    }
-}
-
-export async function updateSEBSettingValue(
-    examId: string,
-    valueId: String,
-    value: string,
-): Promise<SEBSettingsValue | null> {
-    try {
-        return await examSEBSettingService.updateSEBSettingValue(
-            examId,
-            valueId,
-            value,
-        );
-    } catch (error) {
-        return null;
-    }
-}
-
-export async function newSEBSettingTableRow(
-    examId: string,
-    settingName: string,
-): Promise<SEBSettingsTableRowValues | null> {
-    try {
-        return await examSEBSettingService.addTableRow(examId, settingName);
-    } catch (error) {
-        return null;
-    }
-}
-
-export async function deleteSEBSettingTableRow(
-    examId: string,
-    settingName: string,
-    rowIndex: number,
-): Promise<SEBSettingsTableRowValues[] | null> {
-    try {
-        return await examSEBSettingService.deleteTableRow(
-            examId,
-            settingName,
-            rowIndex,
-        );
-    } catch (error) {
-        return null;
-    }
 }

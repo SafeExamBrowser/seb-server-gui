@@ -1,12 +1,14 @@
 import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
+import { ViewType } from "@/models/seb-server/sebSettingsEnums";
 
-const urlPrefix: string = "/exam/seb-settings/";
+const examUrlPrefix: string = "/exam/seb-settings/";
+const templateUrlPrefix: string = "/exam/seb-settings/";
 
 export async function getExamConfigMapping(
     examId: string,
 ): Promise<ExamConfigMapping[] | any> {
-    const url: string = urlPrefix + examId + "/examConfigMapping";
+    const url: string = examUrlPrefix + examId + "/examConfigMapping";
     return (
         await apiService.api.get(url, {
             headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
@@ -14,10 +16,10 @@ export async function getExamConfigMapping(
     ).data;
 }
 
-export async function getApplicationView(
-    id: string,
-): Promise<SEBSettingsView | any> {
-    const url: string = urlPrefix + id + "/APPLICATION";
+export async function getActiveSEBClients(
+    examId: string,
+): Promise<number | any> {
+    const url: string = examUrlPrefix + examId + "/active-seb-clients";
     return (
         await apiService.api.get(url, {
             headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
@@ -25,10 +27,13 @@ export async function getApplicationView(
     ).data;
 }
 
-export async function getNetworkView(
+export async function getView(
+    viewType: ViewType,
     id: string,
+    forExam: boolean,
 ): Promise<SEBSettingsView | any> {
-    const url: string = urlPrefix + id + "/NETWORK";
+    const url: string =
+        (forExam ? examUrlPrefix : templateUrlPrefix) + id + "/" + viewType;
     return (
         await apiService.api.get(url, {
             headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
@@ -39,8 +44,14 @@ export async function getNetworkView(
 export async function addTableRow(
     id: string,
     settingName: string,
+    forExam: boolean,
 ): Promise<SEBSettingsTableRowValues | any> {
-    const url: string = urlPrefix + id + "/table/" + settingName + "/row";
+    const url: string =
+        (forExam ? examUrlPrefix : templateUrlPrefix) +
+        id +
+        "/table/" +
+        settingName +
+        "/row";
     return (
         await apiService.api.post(
             url,
@@ -54,9 +65,15 @@ export async function deleteTableRow(
     id: string,
     settingName: string,
     rowIndex: number,
+    forExam: boolean,
 ): Promise<SEBSettingsTableRowValues[] | any> {
     const url: string =
-        urlPrefix + id + "/table/" + settingName + "/row/" + rowIndex;
+        (forExam ? examUrlPrefix : templateUrlPrefix) +
+        id +
+        "/table/" +
+        settingName +
+        "/row/" +
+        rowIndex;
     return (
         await apiService.api.delete(url, {
             headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
@@ -66,10 +83,12 @@ export async function deleteTableRow(
 
 export async function updateSEBSettingValue(
     id: string,
-    valueId: String,
+    valueId: string,
     value: string,
+    forExam: boolean,
 ): Promise<SEBSettingsValue | any> {
-    const url: string = urlPrefix + id + "/";
+    const url: string =
+        (forExam ? examUrlPrefix : templateUrlPrefix) + id + "/";
     return (
         await apiService.api.post(
             url,
@@ -80,5 +99,31 @@ export async function updateSEBSettingValue(
                 ),
             },
         )
+    ).data;
+}
+
+export async function publish(
+    id: string,
+    forExam: boolean,
+): Promise<Exam | any> {
+    const url: string =
+        (forExam ? examUrlPrefix : templateUrlPrefix) + id + "/publish";
+    return (
+        await apiService.api.post(url, {
+            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+        })
+    ).data;
+}
+
+export async function undoChanges(
+    id: string,
+    forExam: boolean,
+): Promise<Exam | any> {
+    const url: string =
+        (forExam ? examUrlPrefix : templateUrlPrefix) + id + "/undo-changes";
+    return (
+        await apiService.api.post(url, {
+            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+        })
     ).data;
 }

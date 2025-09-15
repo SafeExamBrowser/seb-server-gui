@@ -39,12 +39,6 @@
                                     )
                                 }}
                             </v-col>
-                            <v-col class="pt-0 pb-0"
-                                ><v-checkbox-btn
-                                    v-model="props.prohibitedProcess!.active"
-                                    :disabled="props.readOnly"
-                                ></v-checkbox-btn>
-                            </v-col>
                         </v-row>
                         <!------------OS Type------------->
                         <v-row align="center">
@@ -208,14 +202,6 @@
                                     )
                                 }}
                             </v-col>
-                            <v-col class="pt-0 pb-0"
-                                ><v-checkbox-btn
-                                    v-model="
-                                        props.prohibitedProcess!.strongKill
-                                    "
-                                    :disabled="props.readOnly"
-                                ></v-checkbox-btn>
-                            </v-col>
                         </v-row>
                         <!------------ ignore AAC------------->
                         <v-row align="center">
@@ -233,14 +219,6 @@
                                         "examDetail.sebSettings.applicationView.prohibitedProcess.ignoreAAC",
                                     )
                                 }}
-                            </v-col>
-                            <v-col class="pt-0 pb-0"
-                                ><v-checkbox-btn
-                                    v-model="
-                                        props.prohibitedProcess!.ignoreInAAC
-                                    "
-                                    :disabled="props.readOnly"
-                                ></v-checkbox-btn>
                             </v-col>
                         </v-row>
 
