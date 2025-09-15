@@ -96,7 +96,6 @@ declare module 'vue' {
     SearchPage: typeof import('./components/views/screen-proctoring/search/SearchPage.vue')['default']
     SearchScreenshotsTable: typeof import('./components/views/screen-proctoring/search/SearchScreenshotsTable.vue')['default']
     SearchSessionTable: typeof import('./components/views/screen-proctoring/search/SearchSessionTable.vue')['default']
-    SebGeneral: typeof import('./components/views/seb-server/settings/SebGeneral.vue')['default']
     SebSettingsApplications: typeof import('./components/views/seb-server/settings/SebSettingsApplications.vue')['default']
     SebSettingsDialog: typeof import('./components/views/seb-server/settings/SebSettingsDialog.vue')['default']
     SebSettingsGeneral: typeof import('./components/views/seb-server/settings/SebSettingsGeneral.vue')['default']

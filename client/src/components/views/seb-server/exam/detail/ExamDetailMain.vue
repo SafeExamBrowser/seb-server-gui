@@ -1467,6 +1467,7 @@ async function getSEBSettings() {
                   ? "examDetail.main.editSEBSettings"
                   : "examDetail.main.editAppNetworkSettings";
         }
+        // TODO this is only for testing, remove it when done
         sebSettingsStore.activeSEBClientConnection = 2;
     }
 }
