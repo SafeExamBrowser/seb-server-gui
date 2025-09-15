@@ -18,7 +18,7 @@
         "format:check:all": "npm run lint:check:all && npm run prettier:check:all",
         "format:fix:all": "npm run lint:fix:all && npm run prettier:fix:all",
         "check:precommit": "lint-staged",
-        "prepare": "husky"
+        "prepare": "cd .. && husky ./client/.husky"
     },
     "lint-staged": {
         "*.{vue,js,jsx,ts,tsx}": [

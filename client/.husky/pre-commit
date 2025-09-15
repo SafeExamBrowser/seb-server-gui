@@ -1,1 +1,1 @@
-npm run check:precommit
+cd client && npm run check:precommit
