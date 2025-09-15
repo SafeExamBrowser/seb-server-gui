@@ -41,7 +41,7 @@ import ConnectionConfigurationlDetailsAndEdit from "@/components/views/seb-serve
 import Certificates from "@/components/views/seb-server/certificates/Certificates.vue";
 
 import CreateTemplate from "@/components/views/seb-server/template/CreateTemplate.vue";
-import CreateTemplateExam from "@/components/views/seb-server/template/exam/CreateTemplateExam.vue";
+import CreateTemplateExamWizard from "@/components/views/seb-server/template/exam/Wizard.vue";
 
 const defaultPageTitle: string = " | SEB Server";
 
@@ -286,8 +286,8 @@ const routes: Array<RouteRecordRaw> = [
             },
             {
                 path: constants.CREATE_EXAM_TEMPLATE_ROUTE,
-                name: "CreateTemplateExam",
-                component: CreateTemplateExam,
+                name: "CreateTemplateExamWizard",
+                component: CreateTemplateExamWizard,
                 meta: {
                     titleKey: "titles.createTemplateExam",
                 },
