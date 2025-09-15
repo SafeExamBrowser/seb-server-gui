@@ -12,7 +12,11 @@
                             />
                         </div>
                         <div class="d-flex ml-15 mr-15 mt-5 justify-center">
-                            <div class="text-h6">SEB Server</div>
+                            <div class="text-h6">
+                                {{
+                                    translate("userAccount.registerPage.title")
+                                }}
+                            </div>
                         </div>
 
                         <div class="mt-10">
@@ -54,7 +58,7 @@
                         <v-card-text>
                             <v-form ref="formRef" @keyup.enter="register()">
                                 <v-row dense>
-                                    <v-col cols="12" md="6">
+                                    <v-col cols="12">
                                         <v-select
                                             v-model="selectedInstitution"
                                             data-testid="register-institution-select"
@@ -77,7 +81,7 @@
                                         />
                                     </v-col>
 
-                                    <v-col cols="12" md="6">
+                                    <v-col cols="12">
                                         <v-text-field
                                             v-model="username"
                                             data-testid="register-username-input"
@@ -94,7 +98,7 @@
                                         />
                                     </v-col>
 
-                                    <v-col cols="12" md="6">
+                                    <v-col cols="12">
                                         <v-text-field
                                             v-model="name"
                                             data-testid="register-name-input"
@@ -111,7 +115,7 @@
                                         />
                                     </v-col>
 
-                                    <v-col cols="12" md="6">
+                                    <v-col cols="12">
                                         <v-text-field
                                             v-model="surname"
                                             data-testid="register-surname-input"
@@ -128,7 +132,7 @@
                                         />
                                     </v-col>
 
-                                    <v-col cols="12" md="6">
+                                    <v-col cols="12">
                                         <v-text-field
                                             v-model="email"
                                             data-testid="register-email-input"
@@ -145,7 +149,7 @@
                                         />
                                     </v-col>
 
-                                    <v-col cols="12" md="6">
+                                    <v-col cols="12">
                                         <v-select
                                             v-model="timezone"
                                             data-testid="register-timezone-select"
@@ -164,7 +168,7 @@
                                         />
                                     </v-col>
 
-                                    <v-col cols="12" md="6">
+                                    <v-col cols="12">
                                         <v-text-field
                                             v-model="password"
                                             data-testid="register-password-input"
@@ -207,7 +211,7 @@
                                         </v-text-field>
                                     </v-col>
 
-                                    <v-col cols="12" md="6">
+                                    <v-col cols="12">
                                         <v-text-field
                                             v-model="confirmPassword"
                                             class="mb-2"
@@ -264,17 +268,27 @@
                                     </v-col>
                                 </v-row>
 
-                                <!--                                <div class="text-center mt-7">-->
-                                <!--                                    <span>{{translate('userAccount.registerPage.info.alreadyHaveAccount')}}</span>-->
-                                <!--                                    <span-->
-                                <!--                                        class="text-decoration-underline"-->
-                                <!--                                        role="button"-->
-                                <!--                                        tabindex="0"-->
-                                <!--                                        @keydown="handleTabKeyEvent($event, 'navigate')"-->
-                                <!--                                    >-->
-                                <!--                                        <router-link :to="constants.DEFAULT_ROUTE">{{translate('userAccount.registerPage.buttons.login')}}</router-link>-->
-                                <!--                                    </span>-->
-                                <!--                                </div>-->
+                                <div class="text-center mt-7">
+                                    <span>{{
+                                        translate(
+                                            "userAccount.registerPage.info.alreadyHaveAccount",
+                                        )
+                                    }}</span>
+                                    <span
+                                        class="text-decoration-underline"
+                                        role="button"
+                                        tabindex="0"
+                                    >
+                                        <router-link
+                                            :to="constants.DEFAULT_ROUTE"
+                                            >{{
+                                                translate(
+                                                    "userAccount.registerPage.buttons.login",
+                                                )
+                                            }}</router-link
+                                        >
+                                    </span>
+                                </div>
                             </v-form>
                         </v-card-text>
                     </v-card>

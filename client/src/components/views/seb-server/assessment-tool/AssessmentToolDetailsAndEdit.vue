@@ -584,7 +584,7 @@
                                     variant="outlined"
                                     @click="onBack()"
                                 >
-                                    {{ translate("general.backButton") }}
+                                    {{ translate("general.cancelButton") }}
                                 </v-btn>
 
                                 <v-btn
@@ -597,11 +597,7 @@
                                     variant="flat"
                                     @click="onSave()"
                                 >
-                                    {{
-                                        translate(
-                                            "assessmentToolConnections.assessmentToolDetailAndEditPage.buttons.saveChanges",
-                                        )
-                                    }}
+                                    {{ translate("general.saveButton") }}
                                 </v-btn>
                             </div>
                         </v-col>

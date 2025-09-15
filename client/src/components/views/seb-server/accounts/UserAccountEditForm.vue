@@ -412,7 +412,7 @@
                             variant="outlined"
                             @click="navigateTo(constants.USER_ACCOUNTS_ROUTE)"
                         >
-                            {{ translate("general.backButton") }}
+                            {{ translate("general.cancelButton") }}
                         </v-btn>
 
                         <v-btn
@@ -425,11 +425,7 @@
                             variant="flat"
                             @click="saveChanges()"
                         >
-                            {{
-                                translate(
-                                    "userAccount.userAccountDetailAndEditPage.buttons.saveChanges",
-                                )
-                            }}
+                            {{ translate("general.saveButton") }}
                         </v-btn>
                     </div>
                 </v-col>
