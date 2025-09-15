@@ -43,7 +43,7 @@ export async function getLatestScreenshotData(
             sessionUuid,
             timestamp.toString(),
         );
-    } catch (error) {
+    } catch {
         console.error(error);
         return null;
     }

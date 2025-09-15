@@ -11,7 +11,7 @@ export async function getScreenshotDataBySessionId(
         return await screenshotDataService.getScreenshotDataBySessionId(
             sessionId,
         );
-    } catch (error) {
+    } catch {
         console.error(error);
         return null;
     }
@@ -26,7 +26,7 @@ export async function getScreenshotDataByTimestamp(
             sessionId,
             timestamp,
         );
-    } catch (error) {
+    } catch {
         console.error(error);
         return null;
     }
@@ -43,7 +43,7 @@ export async function getScreenshotTimestamps(
             timestamp,
             direction,
         );
-    } catch (error) {
+    } catch {
         console.error(error);
         return null;
     }
