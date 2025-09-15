@@ -35,7 +35,7 @@ export async function getViewSettings(
 
 export async function updateSEBSettingValue(
     id: string,
-    valueId: String,
+    valueId: string,
     value: string,
     forExam: boolean,
 ): Promise<SEBSettingsValue | null> {
