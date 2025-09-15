@@ -1110,6 +1110,7 @@
         "monitoring": "Monitoring",
         "quizImport": "Prepare Exam",
         "createTemplate": "Create Template",
+        "createTemplateExam": "Create Exam Template",
         "addExamWithURL": "Add Exam With URL",
         "followUp": "Follow Up",
         "archiveExams": "Archive Exams",

@@ -1,5 +1,13 @@
 <template>
-    <v-container class="px-md-10 px-5 mt-4">
-        Create Exam Template Wizard
-    </v-container>
+    <!-- TODO: 63vh here is arbitrary (inspired by the ImportWizard). Shouldn't the container in the main layout grow to fill the height so we could do "fill-height" here? -->
+    <div style="height: 63vh">
+        <Layout step-name="First step">
+            <template #PanelMain> Panel Main content </template>
+            <template #PanelAside> Panel Aside content </template>
+        </Layout>
+    </div>
 </template>
+
+<script setup lang="ts">
+import Layout from "./components/Layout.vue";
+</script>
