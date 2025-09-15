@@ -7,10 +7,25 @@
         "dev-win": "env.sh && vite",
         "build": "vue-tsc --noEmit && vite build",
         "preview": "vite preview",
-        "lint": "eslint . --fix",
-        "prettier": "prettier --write .",
-        "format": "npm run prettier && npm run lint",
-        "format:check": "prettier --check . && eslint ."
+        "lint:check:file": "eslint",
+        "lint:check:all": "eslint .",
+        "lint:fix:file": "eslint --fix",
+        "lint:fix:all": "eslint --fix .",
+        "prettier:check:file": "prettier --check",
+        "prettier:check:all": "prettier --check .",
+        "prettier:fix:file": "prettier --write",
+        "prettier:fix:all": "prettier --write .",
+        "format:check:all": "npm run lint:check:all && npm run prettier:check:all",
+        "format:fix:all": "npm run lint:fix:all && npm run prettier:fix:all",
+        "check:precommit": "lint-staged",
+        "prepare": "husky"
+    },
+    "lint-staged": {
+        "*.{vue,js,jsx,ts,tsx}": [
+            "npm run lint:check:file",
+            "npm run prettier:fix:file"
+        ],
+        "*.{json,md,mdx,css,scss,html,yml,yaml}": "npm run prettier:fix:file"
     },
     "dependencies": {
         "@intlify/unplugin-vue-i18n": "^4.0.0",
@@ -50,6 +65,8 @@
         "eslint-plugin-vue": "^10.4.0",
         "eslint-plugin-vuetify": "^2.5.3",
         "globals": "^16.4.0",
+        "husky": "^9.1.7",
+        "lint-staged": "^16.1.6",
         "prettier": "^3.6.2",
         "sass": "1.77.6",
         "typescript": "^5.4.5",
