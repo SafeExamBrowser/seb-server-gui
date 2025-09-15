@@ -60,12 +60,6 @@ import { translate } from "@/utils/generalUtils";
 import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
 import { navigateTo } from "@/router/navigation";
 
-const foo = 1; //test
-
-if (foo == 1) {
-    console.log("this is bad");
-}
-
 // stores
 const appBarStore = useAppBarStore();
 
