@@ -63,6 +63,19 @@ import { navigateTo } from "@/router/navigation";
 // stores
 const appBarStore = useAppBarStore();
 
+
+let foo = 1; //test
+
+
+if (bar == 1) {
+  console.log("this is bad");
+}
+
+
+
+
+
+
 onBeforeMount(() => {
     appBarStore.title = translate("titles.home");
 
