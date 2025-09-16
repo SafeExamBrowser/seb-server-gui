@@ -1,3 +1,3 @@
 <template>
-    <v-row> TODO Test pre commit hook </v-row>
+    <v-row> TODO </v-row>
 </template>
