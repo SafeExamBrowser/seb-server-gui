@@ -10,7 +10,7 @@ export async function createClientGroup(
 ): Promise<ClientGroup | null> {
     try {
         return await clientGroupService.createClientGroup(clientGroup);
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -18,7 +18,7 @@ export async function createClientGroup(
 export async function getClientGroup(id: string): Promise<ClientGroup | null> {
     try {
         return await clientGroupService.getClientGroup(id);
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -28,7 +28,7 @@ export async function updateClientGroup(
 ): Promise<ClientGroup | null> {
     try {
         return await clientGroupService.updateClientGroup(clientGroup);
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -36,7 +36,7 @@ export async function updateClientGroup(
 export async function deleteClientGroup(id: string): Promise<any | null> {
     try {
         return await clientGroupService.deleteClientGroup(id);
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -46,7 +46,7 @@ export async function getClientGroups(
 ): Promise<ClientGroups | null> {
     try {
         return await clientGroupService.getClientGroups(id);
-    } catch {
+    } catch (error) {
         return null;
     }
 }

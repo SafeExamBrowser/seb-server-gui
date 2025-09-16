@@ -5,7 +5,7 @@ export async function getCertificates(
 ): Promise<CertificatesResponse | null> {
     try {
         return await certificateService.getCertificates(optionalParameters);
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -15,7 +15,7 @@ export async function deleteCertificate(
 ): Promise<any | null> {
     try {
         return await certificateService.deleteCertificate(certificateId);
-    } catch {
+    } catch (error) {
         return null;
     }
 }

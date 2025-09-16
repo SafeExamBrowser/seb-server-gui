@@ -9,7 +9,7 @@ import * as timeUtils from "@/utils/timeUtils";
 export async function getExam(id: string): Promise<Exam | null> {
     try {
         return await examService.getExam(id);
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -19,7 +19,7 @@ export async function getExamAppSignatureKeys(
 ): Promise<AppSignatureKey[] | null> {
     try {
         return await examService.getExamAppSignatureKeys(id);
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -27,7 +27,7 @@ export async function getExamAppSignatureKeys(
 export async function hasSEBLock(id: string): Promise<boolean> {
     try {
         return await examService.checkSEBLock(id);
-    } catch {
+    } catch (error) {
         return false;
     }
 }
@@ -37,7 +37,7 @@ export async function getExamTemplate(
 ): Promise<ExamTemplate | null> {
     try {
         return await examTemplateService.getExamTemplate(id);
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -45,7 +45,7 @@ export async function getExamTemplate(
 export async function deleteExam(id: string): Promise<any | null> {
     try {
         return await examService.deleteExam(id);
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -55,7 +55,7 @@ export async function getExams(
 ): Promise<Exams | null> {
     try {
         return await examService.getExams(optionalParGetExams);
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -65,7 +65,7 @@ export async function getExamsForMonitoring(
 ): Promise<Exams | null> {
     try {
         return await examService.getExamsForMonitoring(optionalParGetExams);
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -76,7 +76,7 @@ export async function updateExam(
 ): Promise<Exam | null> {
     try {
         return await examService.updateExam(examId, exam);
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -86,7 +86,7 @@ export async function getConnectionConfigurations(): Promise<ConnectionConfigura
         return await configurationService.getConnectionConfigurationsActive(
             "true",
         );
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -100,7 +100,7 @@ export async function downloadExamConfig(
             examId,
             connectionId,
         );
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -108,7 +108,7 @@ export async function downloadExamConfig(
 export async function archiveExam(id: string): Promise<Exam | null> {
     try {
         return await examService.archiveExam(id);
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -122,7 +122,7 @@ export async function saveScreenProctoringSettings(
             id,
             screenProctoringSettings,
         );
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -130,7 +130,7 @@ export async function saveScreenProctoringSettings(
 export async function applyTestRun(id: string): Promise<Exam | null> {
     try {
         return await monitoringService.applyTestRun(id);
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -144,7 +144,7 @@ export async function applyScreenProctoringGroups(
             id,
             spsSEBGroupsSelection,
         );
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -158,7 +158,7 @@ export async function activateScreenProctoring(
             id,
             enableScreenProctoring,
         );
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -168,7 +168,7 @@ export async function getExamTemplateSp(
 ): Promise<ScreenProctoringSettings | null> {
     try {
         return await examTemplateService.getExamTemplateSp(id);
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -181,7 +181,7 @@ export async function applySEBLock(
 ): Promise<Exam | null> {
     try {
         return await examService.applySEBLock(id, enableSEBLock);
-    } catch {
+    } catch (error) {
         return null;
     }
 }

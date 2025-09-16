@@ -7,7 +7,7 @@ export async function getConnectionConfiguration(
         return await connectionConfigurationService.getConnectionConfiguration(
             id,
         );
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -19,7 +19,7 @@ export async function getConnectionConfigurations(
         return await connectionConfigurationService.getConnectionConfigurations(
             optionalParameters,
         );
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -31,7 +31,7 @@ export async function activateConnectionConfiguration(
         return await connectionConfigurationService.activateConnectionConfiguration(
             id,
         );
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -43,7 +43,7 @@ export async function deactivateConnectionConfiguration(
         return await connectionConfigurationService.deactivateConnectionConfiguration(
             id,
         );
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -55,7 +55,7 @@ export async function deleteConnectionConfiguration(
         return await connectionConfigurationService.deleteConnectionConfiguration(
             id,
         );
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -67,7 +67,7 @@ export async function createConnectionConfiguration(
         return await connectionConfigurationService.createConnectionConfiguration(
             connectionConfigurationPar,
         );
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -79,7 +79,7 @@ export async function editConnectionConfiguration(
         return await connectionConfigurationService.editConnectionConfiguration(
             connectionConfiguration,
         );
-    } catch {
+    } catch (error) {
         return null;
     }
 }

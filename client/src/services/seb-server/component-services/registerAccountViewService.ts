@@ -30,7 +30,7 @@ export async function registerUserAccount(
         }
 
         return await userAccountService.registerUserAccount(payload);
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -38,7 +38,7 @@ export async function registerUserAccount(
 export async function getInstitutions(): Promise<Institution[] | null> {
     try {
         return await institutionService.getInstitutions();
-    } catch {
+    } catch (error) {
         return null;
     }
 }

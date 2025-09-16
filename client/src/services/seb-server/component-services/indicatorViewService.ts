@@ -5,7 +5,7 @@ export async function getIndicators(
 ): Promise<Indicators | null> {
     try {
         return await indicatorService.getIndicators(examId);
-    } catch {
+    } catch (error) {
         return null;
     }
 }

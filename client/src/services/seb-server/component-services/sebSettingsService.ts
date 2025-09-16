@@ -6,7 +6,7 @@ export async function getExamConfigMapping(
 ): Promise<ExamConfigMapping[] | null> {
     try {
         return await sebSettingService.getExamConfigMapping(examId);
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -16,7 +16,7 @@ export async function getActiveSEBClients(
 ): Promise<number | null> {
     try {
         return await sebSettingService.getActiveSEBClients(examId);
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -28,7 +28,7 @@ export async function getViewSettings(
 ): Promise<SEBSettingsView | null> {
     try {
         return await sebSettingService.getView(viewType, id, forExam);
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -46,7 +46,7 @@ export async function updateSEBSettingValue(
             value,
             forExam,
         );
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -58,7 +58,7 @@ export async function newSEBSettingTableRow(
 ): Promise<SEBSettingsTableRowValues | null> {
     try {
         return await sebSettingService.addTableRow(id, settingName, forExam);
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -76,7 +76,7 @@ export async function deleteSEBSettingTableRow(
             rowIndex,
             forExam,
         );
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -87,7 +87,7 @@ export async function publish(
 ): Promise<SEBSettingsValue | null> {
     try {
         return await sebSettingService.publish(id, forExam);
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -98,7 +98,7 @@ export async function undoChanges(
 ): Promise<SEBSettingsValue | null> {
     try {
         return await sebSettingService.undoChanges(id, forExam);
-    } catch {
+    } catch (error) {
         return null;
     }
 }

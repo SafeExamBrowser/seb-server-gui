@@ -3,7 +3,7 @@ import * as assessmentToolService from "@/services/seb-server/api-services/asses
 export async function getAssessmentToolsActive(): Promise<AssessmentToolsResponse | null> {
     try {
         return await assessmentToolService.getAssessmentToolsActive();
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -13,7 +13,7 @@ export async function getAssessmentTool(
 ): Promise<AssessmentTool | null> {
     try {
         return await assessmentToolService.getAssessmentTool(id);
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -25,7 +25,7 @@ export async function getAssessmentTools(
         return await assessmentToolService.getAssessmentTools(
             optionalParameters,
         );
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -37,7 +37,7 @@ export async function activateAssessmentTool(
         return await assessmentToolService.activateAssessmentTool(
             assessmentToolId,
         );
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -49,7 +49,7 @@ export async function deactivateAssessmentTool(
         return await assessmentToolService.deactivateAssessmentTool(
             assessmentToolId,
         );
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -61,7 +61,7 @@ export async function deleteAssessmentTool(
         return await assessmentToolService.deleteAssessmentTool(
             assessmentToolId,
         );
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -73,7 +73,7 @@ export async function createAssessmentTool(
         return await assessmentToolService.createAssessmentTool(
             createAssessmentToolReqPar,
         );
-    } catch {
+    } catch (error) {
         return null;
     }
 }
@@ -85,7 +85,7 @@ export async function editAssessmentTool(
         return await assessmentToolService.editAssessmentTool(
             assessmentToolPar,
         );
-    } catch {
+    } catch (error) {
         return null;
     }
 }

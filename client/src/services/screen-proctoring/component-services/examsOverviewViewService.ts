@@ -6,7 +6,7 @@ export async function getGroups(
 ): Promise<GroupObject | null> {
     try {
         return await groupService.getGroups(optionalParameters);
-    } catch {
+    } catch (error) {
         return null;
     }
 }
