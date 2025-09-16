@@ -16,7 +16,7 @@
         </v-row>
         <v-row class="flex-grow-0">
             <v-col>
-                <PageTitle :title="translate('titles.createTemplateExam')" />
+                <PageTitle :title="$t('titles.createTemplateExam')" />
             </v-col>
         </v-row>
         <v-row class="flex-grow-1">
@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { translate } from "@/utils/generalUtils";
+import * as constants from "@/utils/constants";
 
 defineProps<{
     stepName: string;
