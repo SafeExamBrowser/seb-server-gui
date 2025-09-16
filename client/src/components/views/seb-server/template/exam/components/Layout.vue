@@ -3,8 +3,15 @@
     <div class="fill-height d-flex flex-column">
         <v-row class="flex-grow-0">
             <v-col>
-                <!-- TODO: create a reusable breadcrumb component -->
-                Home > Create Exam > {{ stepName }}
+                <Breadcrumb
+                    :items="[
+                        {
+                            label: $t('titles.createTemplate'),
+                            link: constants.CREATE_EXAM_TEMPLATE_ROUTE,
+                        },
+                        { label: stepName },
+                    ]"
+                />
             </v-col>
         </v-row>
         <v-row class="flex-grow-0">
