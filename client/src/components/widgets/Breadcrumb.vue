@@ -29,12 +29,10 @@
 
 <script setup lang="ts">
 import { HOME_PAGE_ROUTE } from "@/utils/constants";
+import { BreadcrumbItem } from "@/models/components";
 
 defineProps<{
-    items: {
-        label: string;
-        link?: string;
-    }[];
+    items: BreadcrumbItem[];
 }>();
 </script>
 

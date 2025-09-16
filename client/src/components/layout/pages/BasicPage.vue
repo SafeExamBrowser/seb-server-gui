@@ -1,22 +1,13 @@
-<!-- TODO: consider moving this somewhere up in the component hierarchy so it can be reused on other pages -->
 <template>
     <div class="fill-height d-flex flex-column">
         <v-row class="flex-grow-0">
             <v-col>
-                <Breadcrumb
-                    :items="[
-                        {
-                            label: $t('titles.createTemplate'),
-                            link: constants.CREATE_EXAM_TEMPLATE_ROUTE,
-                        },
-                        { label: stepName },
-                    ]"
-                />
+                <Breadcrumb :items="breadcrumb" />
             </v-col>
         </v-row>
         <v-row class="flex-grow-0">
             <v-col>
-                <PageTitle :title="$t('titles.createTemplateExam')" />
+                <PageTitle :title="title" />
             </v-col>
         </v-row>
         <v-row class="flex-grow-1">
@@ -35,9 +26,12 @@
 </template>
 
 <script setup lang="ts">
-import * as constants from "@/utils/constants";
+import Breadcrumb from "@/components/widgets/Breadcrumb.vue";
+import PageTitle from "@/components/widgets/PageTitle.vue";
+import { BreadcrumbItem } from "@/models/components";
 
 defineProps<{
-    stepName: string;
+    title: string;
+    breadcrumb: BreadcrumbItem[];
 }>();
 </script>
