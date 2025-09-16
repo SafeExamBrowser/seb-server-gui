@@ -12,7 +12,10 @@
             ]"
         >
             <template #PanelMain>
-                <component :is="stepComponents[currentStep.componentName]" />
+                <component
+                    :is="stepComponents[currentStep.componentName]"
+                    @ready="handleStepReady"
+                />
             </template>
             <template #PanelAside>
                 <Stepper
@@ -37,34 +40,41 @@ import {
     stepComponents,
 } from "@/components/views/seb-server/template/exam/types";
 
-const steps: StepItemCreateTemplateExam[] = [
+// TODO @alain: move to store
+const superVisorsReady = ref(false);
+
+const steps: ComputedRef<StepItemCreateTemplateExam[]> = computed(() => [
     {
         componentName: "StepNaming",
         title: "Step: Naming", // TODO @alain: i18n
+        nextStepEnabled: true,
     },
     {
         componentName: "StepSupervisors",
         title: "Step: Supervisors", // TODO @alain: i18n
+        nextStepEnabled: superVisorsReady.value,
     },
     {
         componentName: "StepIndicators",
         title: "Step: Indicators", // TODO @alain: i18n
+        nextStepEnabled: true,
     },
     {
         componentName: "StepClientGroup",
         title: "Step: Client Group", // TODO @alain: i18n
+        nextStepEnabled: true,
     },
     {
         componentName: "StepSummary",
         title: "Step: Summary", // TODO @alain: i18n
+        nextStepEnabled: true,
     },
-];
+]);
 
-// TODO @alain: move to store
 const currentStepIndex = ref(0);
 
 const currentStep = computed(() => {
-    const step = steps.at(currentStepIndex.value);
+    const step = steps.value.at(currentStepIndex.value);
 
     if (!step) {
         throw new Error("Step not found");
@@ -74,14 +84,15 @@ const currentStep = computed(() => {
 });
 
 const stepperSteps = computed(() => {
-    return steps.map((step, index) => ({
+    return steps.value.map((step, index) => ({
         title: step.title,
+        nextStepEnabled: step.nextStepEnabled,
         value: index,
     }));
 });
 
 const handleStepperNext = () => {
-    if (currentStepIndex.value < steps.length - 1) {
+    if (currentStepIndex.value < steps.value.length - 1) {
         currentStepIndex.value++;
     }
 };
@@ -94,5 +105,9 @@ const handleStepperPrev = () => {
 
 const handleStepperFinish = () => {
     console.log("Wizard finished!");
+};
+
+const handleStepReady = () => {
+    superVisorsReady.value = true;
 };
 </script>

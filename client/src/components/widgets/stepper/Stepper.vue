@@ -10,7 +10,11 @@
             color="primary"
         >
             <template #next>
-                <v-btn color="primary" @click="handleNextClick">
+                <v-btn
+                    color="primary"
+                    :disabled="!stepItem.nextStepEnabled"
+                    @click="handleNextClick"
+                >
                     {{
                         stepItem.value === steps.length - 1
                             ? $t("general.saveButton")
