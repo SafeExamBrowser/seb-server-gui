@@ -9,10 +9,7 @@
         </v-row>
         <v-row class="flex-grow-0">
             <v-col>
-                <!-- TODO: create a reusable title component -->
-                <h2 class="primary-text-color text-h4 font-weight-bold">
-                    {{ translate("titles.createTemplateExam") }}
-                </h2>
+                <PageTitle :title="translate('titles.createTemplateExam')" />
             </v-col>
         </v-row>
         <v-row class="flex-grow-1">
