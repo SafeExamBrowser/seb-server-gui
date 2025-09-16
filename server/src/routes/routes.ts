@@ -22,6 +22,7 @@ import * as applicationSearchController from "../controllers/screen-proctoring/s
 import * as institutionsController from "../controllers/seb-server/institution.controller";
 import * as certificateController from "../controllers/seb-server/certificate.controller";
 import * as clientConnectionController from "../controllers/seb-server/client-connection.controller";
+import {grantExamAppSignatureKey} from "../controllers/seb-server/exam.controller";
 
 const router: Router = express.Router();
 
@@ -36,6 +37,11 @@ router.put(constants.EXAM_ROUTE + "/:id", examController.updateExam);
 router.patch(constants.EXAM_ARCHIVE_ROUTE, examController.archiveExam)
 router.get(constants.EXAM_GET_ROUTE + "/:id", examController.getExam);
 router.get(constants.EXAM_ROUTE + "/:id" + constants.KEY_INFO_ROUTE, examController.getExamAppSignatureKeys);
+router.post(constants.EXAM_ROUTE + "/:parentId" + constants.GRANT_ROUTE + "/:id", examController.grantExamAppSignatureKey);
+router.delete(constants.EXAM_ROUTE + "/:parentId" + constants.GRANT_ROUTE + "/:id", examController.removeGrantExamAppSignatureKey);
+router.get(constants.EXAM_ROUTE + "/:id" + constants.GRANT_ROUTE, examController.getGrantedExamAppSignatureKeys);
+
+
 router.get(constants.EXAM_CONFIGURATION_MAP_ROUTE + "/:id", examController.getExamConfigurationMap);
 router.get(constants.EXAMS_ROUTE + "/monitoring", examController.getExamsForMonitoring);
 

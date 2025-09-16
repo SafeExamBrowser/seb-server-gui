@@ -22,6 +22,35 @@ export async function getExamAppSignatureKeys(req: Request, res: Response){
         apiService.handleGenericApiError(error, res);
     }
 }
+export async function getGrantedExamAppSignatureKeys(req: Request, res: Response){
+    try{
+        const [AppSignatureKeys, status] = await examService.getGrantedExamAppSignatureKeys(req.headers.authorization, req.params.id);
+        return res.status(status).json(AppSignatureKeys);
+
+    }catch(error){
+        apiService.handleGenericApiError(error, res);
+    }
+}
+
+
+export async function grantExamAppSignatureKey(req: Request, res: Response){
+    try{
+        const [AppSignatureKey, status] = await examService.grantExamAppSignatureKey(req.headers.authorization, req.params.parentId, req.params.id);
+        return res.status(status).json(AppSignatureKey);
+
+    }catch(error){
+        apiService.handleGenericApiError(error, res);
+    }
+}
+export async function removeGrantExamAppSignatureKey(req: Request, res: Response){
+    try{
+        const [AppSignatureKey, status] = await examService.removeGrantExamAppSignatureKey(req.headers.authorization, req.params.parentId, req.params.id);
+        return res.status(status).json(AppSignatureKey);
+
+    }catch(error){
+        apiService.handleGenericApiError(error, res);
+    }
+}
 
 export async function getExamConfigurationMap(req: Request, res: Response){
     try{
