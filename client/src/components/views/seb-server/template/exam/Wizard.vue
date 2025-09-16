@@ -8,17 +8,16 @@
                     label: $t('titles.createTemplate'),
                     link: constants.CREATE_EXAM_TEMPLATE_ROUTE,
                 },
-                { label: currentStepTitle },
+                { label: currentStep.title },
             ]"
         >
             <template #PanelMain>
-                <!-- TODO @alain: replace with the respective content -->
-                Current step: {{ currentStepTitle }}
+                <component :is="stepComponents[currentStep.componentName]" />
             </template>
             <template #PanelAside>
                 <Stepper
-                    :steps="steps"
-                    :current-step="currentStep"
+                    :steps="stepperSteps"
+                    :current-step="currentStepIndex"
                     @next="handleStepperNext"
                     @prev="handleStepperPrev"
                     @finish="handleStepperFinish"
@@ -32,47 +31,64 @@
 import { ref, computed } from "vue";
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import Stepper from "@/components/widgets/stepper/Stepper.vue";
-import { StepItem } from "@/components/widgets/stepper/types";
 import * as constants from "@/utils/constants";
+import {
+    StepItemCreateTemplateExam,
+    stepComponents,
+} from "@/components/views/seb-server/template/exam/types";
 
-// TODO @alain: use correct values, i18n
-const steps: StepItem[] = [
+const steps: StepItemCreateTemplateExam[] = [
     {
-        value: 0,
-        title: "Step One",
+        componentName: "StepNaming",
+        title: "Step: Naming", // TODO @alain: i18n
     },
     {
-        value: 1,
-        title: "Step Two",
+        componentName: "StepSupervisors",
+        title: "Step: Supervisors", // TODO @alain: i18n
     },
     {
-        value: 2,
-        title: "Step Three",
+        componentName: "StepIndicators",
+        title: "Step: Indicators", // TODO @alain: i18n
+    },
+    {
+        componentName: "StepClientGroup",
+        title: "Step: Client Group", // TODO @alain: i18n
+    },
+    {
+        componentName: "StepSummary",
+        title: "Step: Summary", // TODO @alain: i18n
     },
 ];
 
 // TODO @alain: move to store
-const currentStep = ref(0);
+const currentStepIndex = ref(0);
 
-const currentStepTitle = computed(() => {
-    const step = steps.find((s) => s.value === currentStep.value);
+const currentStep = computed(() => {
+    const step = steps.at(currentStepIndex.value);
 
     if (!step) {
         throw new Error("Step not found");
     }
 
-    return step.title;
+    return step;
+});
+
+const stepperSteps = computed(() => {
+    return steps.map((step, index) => ({
+        title: step.title,
+        value: index,
+    }));
 });
 
 const handleStepperNext = () => {
-    if (currentStep.value < steps.length - 1) {
-        currentStep.value++;
+    if (currentStepIndex.value < steps.length - 1) {
+        currentStepIndex.value++;
     }
 };
 
 const handleStepperPrev = () => {
-    if (currentStep.value > 0) {
-        currentStep.value--;
+    if (currentStepIndex.value > 0) {
+        currentStepIndex.value--;
     }
 };
 
