@@ -1448,8 +1448,7 @@ async function getSEBSettings() {
                         await sebSettingsService.getActiveSEBClients(examId);
                     if (numActiveClients != null && numActiveClients > 0) {
                         sebSettingsStore.readonly = true;
-                        sebSettingsStore.activeSEBClientConnection =
-                            numActiveClients;
+                        sebSettingsStore.activeSEBClientConnection = numActiveClients;
                     }
                 }
             } else {
@@ -1468,7 +1467,7 @@ async function getSEBSettings() {
                   : "examDetail.main.editAppNetworkSettings";
         }
         // TODO this is only for testing, remove it when done
-        sebSettingsStore.activeSEBClientConnection = 2;
+        //sebSettingsStore.activeSEBClientConnection = 2;
     }
 }
 

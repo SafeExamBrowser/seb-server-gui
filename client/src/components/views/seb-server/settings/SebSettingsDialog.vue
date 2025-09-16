@@ -64,9 +64,9 @@
                     :disabled="sebSettingsStore.readonly"
                     rounded="sm"
                     variant="outlined"
-                    @click="emit('closeSebSettingsDialog', true)"
+                    @click="emit('closeSebSettingsDialog', false)"
                 >
-                    Save Settings
+                    {{ translate("general.cancelButton") }}
                 </v-btn>
 
                 <v-btn
@@ -74,9 +74,9 @@
                     color="primary"
                     rounded="sm"
                     variant="flat"
-                    @click="emit('closeSebSettingsDialog', false)"
+                    @click="emit('closeSebSettingsDialog', true)"
                 >
-                    Cancel Changes
+                     {{ translate("general.saveButton") }}
                 </v-btn>
             </v-col>
         </v-row>
