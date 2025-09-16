@@ -75,7 +75,7 @@ const routes: Array<RouteRecordRaw> = [
                         tokenObject.redirect,
                     );
                     return;
-                } catch (error) {
+                } catch {
                     return true;
                 }
             }

@@ -8,7 +8,7 @@ export async function getQuizzes(
 ): Promise<Quizzes | null> {
     try {
         return await quizService.getQuizzes(optionalParameters);
-    } catch (error) {
+    } catch {
         return null;
     }
 }
@@ -18,7 +18,7 @@ export async function getExamTemplates(
 ): Promise<ExamTemplates | null> {
     try {
         return await examTemplateService.getExamTemplates(optionalParameters);
-    } catch (error) {
+    } catch {
         return null;
     }
 }
@@ -28,7 +28,7 @@ export async function getExamTemplate(
 ): Promise<ExamTemplate | null> {
     try {
         return await examTemplateService.getExamTemplate(id);
-    } catch (error) {
+    } catch {
         return null;
     }
 }
@@ -38,7 +38,7 @@ export async function createExam(
 ): Promise<Exam | null> {
     try {
         return await examService.createExam(createExamPar);
-    } catch (error) {
+    } catch {
         return null;
     }
 }
