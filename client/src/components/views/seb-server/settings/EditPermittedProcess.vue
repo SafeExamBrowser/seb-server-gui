@@ -5,7 +5,7 @@
                 class="text-h6"
                 :text="
                     translate(
-                        'examDetail.sebSettings.applicationView.permittedProcess.editDialogTitle',
+                        'sebSettings.applicationView.permittedProcess.editDialogTitle',
                     )
                 "
             ></v-toolbar-title>
@@ -29,13 +29,13 @@
                                     ><p
                                         v-html="
                                             translateWithBR(
-                                                'examDetail.sebSettings.applicationView.permittedProcess.active_tooltip',
+                                                'sebSettings.applicationView.permittedProcess.active_tooltip',
                                             )
                                         "
                                 /></v-tooltip>
                                 {{
                                     translate(
-                                        "examDetail.sebSettings.applicationView.permittedProcess.active",
+                                        "sebSettings.applicationView.permittedProcess.active",
                                     )
                                 }}
                             </v-col>
@@ -51,7 +51,7 @@
                             <v-col>
                                 {{
                                     translate(
-                                        "examDetail.sebSettings.applicationView.permittedProcess.os",
+                                        "sebSettings.applicationView.permittedProcess.os",
                                     )
                                 }}
                             </v-col>
@@ -74,13 +74,13 @@
                                     ><p
                                         v-html="
                                             translateWithBR(
-                                                'examDetail.sebSettings.applicationView.permittedProcess.executable_tooltip',
+                                                'sebSettings.applicationView.permittedProcess.executable_tooltip',
                                             )
                                         "
                                 /></v-tooltip>
                                 {{
                                     translate(
-                                        "examDetail.sebSettings.applicationView.permittedProcess.executable",
+                                        "sebSettings.applicationView.permittedProcess.executable",
                                     )
                                 }}
                             </v-col>
@@ -103,13 +103,13 @@
                                     ><p
                                         v-html="
                                             translateWithBR(
-                                                'examDetail.sebSettings.applicationView.permittedProcess.title_tooltip',
+                                                'sebSettings.applicationView.permittedProcess.title_tooltip',
                                             )
                                         "
                                 /></v-tooltip>
                                 {{
                                     translate(
-                                        "examDetail.sebSettings.applicationView.permittedProcess.title",
+                                        "sebSettings.applicationView.permittedProcess.title",
                                     )
                                 }}
                             </v-col>
@@ -130,7 +130,7 @@
                             <v-col>
                                 {{
                                     translate(
-                                        "examDetail.sebSettings.applicationView.permittedProcess.originalName",
+                                        "sebSettings.applicationView.permittedProcess.originalName",
                                     )
                                 }}</v-col
                             >
@@ -152,7 +152,7 @@
                         <v-row>
                             <v-col>{{
                                 translate(
-                                    "examDetail.sebSettings.applicationView.permittedProcess.signature",
+                                    "sebSettings.applicationView.permittedProcess.signature",
                                 )
                             }}</v-col>
                             <v-col>
@@ -172,7 +172,7 @@
                             <v-col>
                                 {{
                                     translate(
-                                        "examDetail.sebSettings.applicationView.permittedProcess.path",
+                                        "sebSettings.applicationView.permittedProcess.path",
                                     )
                                 }}</v-col
                             >
@@ -195,13 +195,13 @@
                                     ><p
                                         v-html="
                                             translateWithBR(
-                                                'examDetail.sebSettings.applicationView.permittedProcess.teamIdentifier_tooltip',
+                                                'sebSettings.applicationView.permittedProcess.teamIdentifier_tooltip',
                                             )
                                         "
                                 /></v-tooltip>
                                 {{
                                     translate(
-                                        "examDetail.sebSettings.applicationView.permittedProcess.teamIdentifier",
+                                        "sebSettings.applicationView.permittedProcess.teamIdentifier",
                                     )
                                 }}
                             </v-col>
@@ -223,7 +223,7 @@
                         <v-row>
                             <v-col class="pt-0 pb-0">{{
                                 translate(
-                                    "examDetail.sebSettings.applicationView.permittedProcess.arguments",
+                                    "sebSettings.applicationView.permittedProcess.arguments",
                                 )
                             }}</v-col>
                             <v-col class="pt-0 pb-0">
@@ -312,13 +312,13 @@
                                     ><p
                                         v-html="
                                             translateWithBR(
-                                                'examDetail.sebSettings.applicationView.permittedProcess.iconInTaskbar_tooltip',
+                                                'sebSettings.applicationView.permittedProcess.iconInTaskbar_tooltip',
                                             )
                                         "
                                 /></v-tooltip>
                                 {{
                                     translate(
-                                        "examDetail.sebSettings.applicationView.permittedProcess.iconInTaskbar",
+                                        "sebSettings.applicationView.permittedProcess.iconInTaskbar",
                                     )
                                 }}
                             </v-col>
@@ -338,13 +338,13 @@
                                     ><p
                                         v-html="
                                             translateWithBR(
-                                                'examDetail.sebSettings.applicationView.permittedProcess.allowOpenAndSavePanel_tooltip',
+                                                'sebSettings.applicationView.permittedProcess.allowOpenAndSavePanel_tooltip',
                                             )
                                         "
                                 /></v-tooltip>
                                 {{
                                     translate(
-                                        "examDetail.sebSettings.applicationView.permittedProcess.allowOpenAndSavePanel",
+                                        "sebSettings.applicationView.permittedProcess.allowOpenAndSavePanel",
                                     )
                                 }}
                             </v-col>
@@ -365,13 +365,13 @@
                                     ><p
                                         v-html="
                                             translateWithBR(
-                                                'examDetail.sebSettings.applicationView.permittedProcess.autostart_tooltip',
+                                                'sebSettings.applicationView.permittedProcess.autostart_tooltip',
                                             )
                                         "
                                 /></v-tooltip>
                                 {{
                                     translate(
-                                        "examDetail.sebSettings.applicationView.permittedProcess.autostart",
+                                        "sebSettings.applicationView.permittedProcess.autostart",
                                     )
                                 }}
                             </v-col>
@@ -389,13 +389,13 @@
                                     ><p
                                         v-html="
                                             translateWithBR(
-                                                'examDetail.sebSettings.applicationView.permittedProcess.allowShareSheet_tooltip',
+                                                'sebSettings.applicationView.permittedProcess.allowShareSheet_tooltip',
                                             )
                                         "
                                 /></v-tooltip>
                                 {{
                                     translate(
-                                        "examDetail.sebSettings.applicationView.permittedProcess.allowShareSheet",
+                                        "sebSettings.applicationView.permittedProcess.allowShareSheet",
                                     )
                                 }}
                             </v-col>
@@ -415,13 +415,13 @@
                                     ><p
                                         v-html="
                                             translateWithBR(
-                                                'examDetail.sebSettings.applicationView.permittedProcess.runInBackground_tooltip',
+                                                'sebSettings.applicationView.permittedProcess.runInBackground_tooltip',
                                             )
                                         "
                                 /></v-tooltip>
                                 {{
                                     translate(
-                                        "examDetail.sebSettings.applicationView.permittedProcess.runInBackground",
+                                        "sebSettings.applicationView.permittedProcess.runInBackground",
                                     )
                                 }}
                             </v-col>
@@ -441,13 +441,13 @@
                                     ><p
                                         v-html="
                                             translateWithBR(
-                                                'examDetail.sebSettings.applicationView.permittedProcess.allowManualStart_tooltip',
+                                                'sebSettings.applicationView.permittedProcess.allowManualStart_tooltip',
                                             )
                                         "
                                 /></v-tooltip>
                                 {{
                                     translate(
-                                        "examDetail.sebSettings.applicationView.permittedProcess.allowManualStart",
+                                        "sebSettings.applicationView.permittedProcess.allowManualStart",
                                     )
                                 }}
                             </v-col>
@@ -464,7 +464,7 @@
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">{{
                                 translate(
-                                    "examDetail.sebSettings.applicationView.permittedProcess.allowUserToChooseApp",
+                                    "sebSettings.applicationView.permittedProcess.allowUserToChooseApp",
                                 )
                             }}</v-col>
                             <v-col class="pt-0 pb-0"
@@ -484,13 +484,13 @@
                                     ><p
                                         v-html="
                                             translateWithBR(
-                                                'examDetail.sebSettings.applicationView.permittedProcess.allowNetworkAccess_tooltip',
+                                                'sebSettings.applicationView.permittedProcess.allowNetworkAccess_tooltip',
                                             )
                                         "
                                 /></v-tooltip>
                                 {{
                                     translate(
-                                        "examDetail.sebSettings.applicationView.permittedProcess.allowNetworkAccess",
+                                        "sebSettings.applicationView.permittedProcess.allowNetworkAccess",
                                     )
                                 }}
                             </v-col>
@@ -511,13 +511,13 @@
                                     ><p
                                         v-html="
                                             translateWithBR(
-                                                'examDetail.sebSettings.applicationView.permittedProcess.strongKill_tooltip',
+                                                'sebSettings.applicationView.permittedProcess.strongKill_tooltip',
                                             )
                                         "
                                 /></v-tooltip>
                                 {{
                                     translate(
-                                        "examDetail.sebSettings.applicationView.permittedProcess.strongKill",
+                                        "sebSettings.applicationView.permittedProcess.strongKill",
                                     )
                                 }}
                             </v-col>
@@ -572,7 +572,7 @@ const argumentsTable = ref<PermittedProcessArgument[]>([]);
 const argumentsHeaders = ref([
     {
         title: translate(
-            "examDetail.sebSettings.applicationView.permittedProcess.arguments_active",
+            "sebSettings.applicationView.permittedProcess.arguments_active",
         ),
         key: "active",
         sortable: false,
@@ -580,7 +580,7 @@ const argumentsHeaders = ref([
     },
     {
         title: translate(
-            "examDetail.sebSettings.applicationView.permittedProcess.arguments_argument",
+            "sebSettings.applicationView.permittedProcess.arguments_argument",
         ),
         key: "argument",
         sortable: false,
@@ -608,15 +608,11 @@ const props = defineProps<{
 
 const osItems = [
     {
-        title: translate(
-            "examDetail.sebSettings.applicationView.permittedProcess.os_0",
-        ),
+        title: translate("sebSettings.applicationView.permittedProcess.os_0"),
         value: "0",
     },
     {
-        title: translate(
-            "examDetail.sebSettings.applicationView.permittedProcess.os_1",
-        ),
+        title: translate("sebSettings.applicationView.permittedProcess.os_1"),
         value: "1",
     },
 ];
@@ -626,7 +622,6 @@ onBeforeMount(async () => {
     props.permittedProcess!.arguments.forEach((item) => {
         argumentsTable.value.push(item);
     });
-    console.info(argumentsTable.value);
 });
 
 function deleteArgument(index: number) {

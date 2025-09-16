@@ -3,12 +3,8 @@
         <v-col>
             <v-checkbox-btn
                 v-model="urlFilterEnableVal"
-                :disabled="readOnly"
-                :label="
-                    translate(
-                        'examDetail.sebSettings.networkView.URLFilterEnable',
-                    )
-                "
+                :disabled="sebSettingsStore.readonly"
+                :label="translate('sebSettings.networkView.URLFilterEnable')"
                 @update:model-value="
                     saveSingleValue(
                         urlFilterEnable.id,
@@ -20,10 +16,10 @@
         <v-col>
             <v-checkbox-btn
                 v-model="urlFilterEnableContentFilterVal"
-                :disabled="readOnly"
+                :disabled="sebSettingsStore.readonly"
                 :label="
                     translate(
-                        'examDetail.sebSettings.networkView.URLFilterEnableContentFilter',
+                        'sebSettings.networkView.URLFilterEnableContentFilter',
                     )
                 "
                 @update:model-value="
@@ -40,15 +36,13 @@
         <v-col class="text-subtitle-1">
             <v-row>
                 <v-col>{{
-                    translate(
-                        "examDetail.sebSettings.networkView.filterGroupTitle",
-                    )
+                    translate("sebSettings.networkView.filterGroupTitle")
                 }}</v-col>
                 <v-col align="right">
                     <v-btn
                         color="primary"
                         density="compact"
-                        :disabled="readOnly"
+                        :disabled="sebSettingsStore.readonly"
                         icon="mdi-plus-circle-outline"
                         variant="text"
                         @click="newURLFilterRule()"
@@ -102,7 +96,7 @@
                 <template #item.action="{ item }">
                     {{
                         translate(
-                            "examDetail.sebSettings.networkView.URLFilterRules.action_" +
+                            "sebSettings.networkView.URLFilterRules.action_" +
                                 item.action,
                             i18n,
                         )
@@ -122,7 +116,7 @@
                 <!-------delete button------->
                 <template #item.delete="{ item }">
                     <v-btn
-                        :disabled="readOnly"
+                        :disabled="sebSettingsStore.readonly"
                         icon="mdi-delete-outline"
                         variant="text"
                         @click="urlFilterRuleDelete(item.index!)"
@@ -136,7 +130,7 @@
     <!-----------edit url filter dialog---------->
     <v-dialog v-model="editURLFilterRuleDialog" max-width="800">
         <EditURLFilterRule
-            :read-only="readOnly"
+            :read-only="sebSettingsStore.readonly"
             :url-filter-rule="selectedURLFilterRule"
             @close-edit-u-r-l-filter-rule="closeEditURLFilterRuleDialog"
         >
@@ -147,7 +141,7 @@
         <v-col class="text-subtitle-1">
             <v-row>
                 <v-col>{{
-                    translate("examDetail.sebSettings.networkView.proxies")
+                    translate("sebSettings.networkView.proxies")
                 }}</v-col>
             </v-row>
             <v-divider class="border-opacity-25" :thickness="2"></v-divider>
@@ -160,7 +154,7 @@
             <v-row>
                 <v-radio-group
                     v-model="proxySettingsPolicyVal"
-                    :disabled="readOnly"
+                    :disabled="sebSettingsStore.readonly"
                     @update:model-value="
                         saveSingleValue(
                             proxySettingsPolicy.id,
@@ -171,7 +165,7 @@
                     <v-radio
                         :label="
                             translate(
-                                'examDetail.sebSettings.networkView.proxySettingsPolicy.0',
+                                'sebSettings.networkView.proxySettingsPolicy.0',
                             )
                         "
                         value="0"
@@ -179,7 +173,7 @@
                     <v-radio
                         :label="
                             translate(
-                                'examDetail.sebSettings.networkView.proxySettingsPolicy.1',
+                                'sebSettings.networkView.proxySettingsPolicy.1',
                             )
                         "
                         value="1"
@@ -189,10 +183,10 @@
             <v-row>
                 <v-checkbox-btn
                     v-model="ExcludeSimpleHostnamesVal"
-                    :disabled="readOnly"
+                    :disabled="sebSettingsStore.readonly"
                     :label="
                         translate(
-                            'examDetail.sebSettings.networkView.ExcludeSimpleHostnames',
+                            'sebSettings.networkView.ExcludeSimpleHostnames',
                         )
                     "
                     @update:model-value="
@@ -206,15 +200,11 @@
 
             <v-row>
                 <v-col>
-                    {{
-                        translate(
-                            "examDetail.sebSettings.networkView.ExceptionsList",
-                        )
-                    }}
+                    {{ translate("sebSettings.networkView.ExceptionsList") }}
                     <v-text-field
                         v-model="ExceptionsListVal"
                         density="compact"
-                        :disabled="readOnly"
+                        :disabled="sebSettingsStore.readonly"
                         hide-details
                         single-line
                         variant="outlined"
@@ -232,12 +222,8 @@
             <v-row>
                 <v-checkbox-btn
                     v-model="FTPPassiveVal"
-                    :disabled="readOnly"
-                    :label="
-                        translate(
-                            'examDetail.sebSettings.networkView.FTPPassive',
-                        )
-                    "
+                    :disabled="sebSettingsStore.readonly"
+                    :label="translate('sebSettings.networkView.FTPPassive')"
                     @update:model-value="
                         saveSingleValue(
                             FTPPassive.id,
@@ -292,13 +278,14 @@
 <script setup lang="ts">
 import * as tableUtils from "@/utils/table/tableUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
-import * as examViewService from "@/services/seb-server/component-services/examViewService";
+import * as sebSettingsService from "@/services/seb-server/component-services/sebSettingsService";
 import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
-import { useExamStore } from "@/stores/seb-server/examStore";
+import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
+import { ViewType } from "@/models/seb-server/sebSettingsEnums";
 
 const i18n = useI18n();
-const examStore = useExamStore();
+const sebSettingsStore = useSEBSettingsStore();
 
 // single attributes
 const urlFilterEnableVal = ref<boolean>(false);
@@ -317,33 +304,25 @@ const urlFilterHeadersRef = ref<any[]>();
 const urlFilterTable = ref<URLFilterRule[]>([]);
 const urlFilterHeaders = ref([
     {
-        title: translate(
-            "examDetail.sebSettings.networkView.URLFilterRules.active",
-        ),
+        title: translate("sebSettings.networkView.URLFilterRules.active"),
         key: "active",
         sortable: true,
         width: "10%",
     },
     {
-        title: translate(
-            "examDetail.sebSettings.networkView.URLFilterRules.regex",
-        ),
+        title: translate("sebSettings.networkView.URLFilterRules.regex"),
         key: "regex",
         sortable: true,
         width: "10%",
     },
     {
-        title: translate(
-            "examDetail.sebSettings.networkView.URLFilterRules.expression",
-        ),
+        title: translate("sebSettings.networkView.URLFilterRules.expression"),
         key: "expression",
         sortable: true,
         width: "50%",
     },
     {
-        title: translate(
-            "examDetail.sebSettings.networkView.URLFilterRules.action",
-        ),
+        title: translate("sebSettings.networkView.URLFilterRules.action"),
         key: "action",
         sortable: true,
         width: "30%",
@@ -365,8 +344,7 @@ const urlFilterHeaders = ref([
 ]);
 
 // TODO apply readonly according to user privileges
-let readOnly: boolean = false;
-let examId: string;
+let componentId: string;
 let urlFilterEnable: SEBSettingsValue;
 let urlFilterEnableContentFilter: SEBSettingsValue;
 
@@ -376,37 +354,37 @@ let ExceptionsList: SEBSettingsValue;
 let FTPPassive: SEBSettingsValue;
 
 onBeforeMount(async () => {
-    // TODO apply readonly according to user privileges
-    readOnly = false;
-
-    if (examStore.selectedExam == null) {
+    if (sebSettingsStore.selectedContainerId == null) {
         return;
     }
 
+    componentId = sebSettingsStore.selectedContainerId.toString();
+
     const applicationSettings: SEBSettingsView | null =
-        await examViewService.getNetworkViewSettings(
-            examStore.selectedExam.id.toString(),
+        await sebSettingsService.getViewSettings(
+            ViewType.NETWORK,
+            componentId,
+            sebSettingsStore.isExam,
         );
     if (applicationSettings == null) {
         return;
     }
 
-    if (readOnly) {
+    if (sebSettingsStore.readonly) {
         urlFilterHeaders.value[4].title = translate("general.viewButton", i18n);
     }
 
-    examId = examStore.selectedExam.id.toString();
     const settingsView: SEBSettingsView = applicationSettings;
     const tableValues: Map<string, SEBSettingsTableRowValues[]> = new Map<
         string,
         SEBSettingsTableRowValues[]
     >(Object.entries(settingsView.tableValues));
-    const singleValues: Map<String, SEBSettingsValue> = new Map<
-        String,
+    const singleValues: Map<string, SEBSettingsValue> = new Map<
+        string,
         SEBSettingsValue
     >(Object.entries(settingsView.singleValues));
-    const proxyValues: Map<String, SEBSettingsValue> = new Map<
-        String,
+    const proxyValues: Map<string, SEBSettingsValue> = new Map<
+        string,
         SEBSettingsValue
     >(Object.entries(tableValues.get("proxies")![0].rowValues));
 
@@ -414,9 +392,9 @@ onBeforeMount(async () => {
     urlFilterEnableContentFilter = singleValues.get(
         "URLFilterEnableContentFilter",
     )!;
-    urlFilterEnableVal.value = urlFilterEnable.value == "true";
+    urlFilterEnableVal.value = urlFilterEnable.value === "true";
     urlFilterEnableContentFilterVal.value =
-        urlFilterEnableContentFilter.value == "true";
+        urlFilterEnableContentFilter.value === "true";
 
     // URL Filter
     const urlFilterRules = tableValues.get("URLFilterRules");
@@ -431,13 +409,13 @@ onBeforeMount(async () => {
     proxySettingsPolicyVal.value = proxySettingsPolicy.value;
 
     ExcludeSimpleHostnames = proxyValues.get("ExcludeSimpleHostnames")!;
-    ExcludeSimpleHostnamesVal.value = ExcludeSimpleHostnames.value == "true";
+    ExcludeSimpleHostnamesVal.value = ExcludeSimpleHostnames.value === "true";
 
     ExceptionsList = proxyValues.get("ExceptionsList")!;
     ExceptionsListVal.value = ExceptionsList.value;
 
     FTPPassive = proxyValues.get("FTPPassive")!;
-    FTPPassiveVal.value = FTPPassive.value == "true";
+    FTPPassiveVal.value = FTPPassive.value === "true";
 });
 
 // ********* URL Filter Rule functions *********************
@@ -459,8 +437,8 @@ function insertURLFilter(
 ) {
     urlFilterTable.value.splice(index, 0, {
         index,
-        active: rowVals.get("URLFilterRules.active")?.value! == "true",
-        regex: rowVals.get("URLFilterRules.regex")?.value! == "true",
+        active: rowVals.get("URLFilterRules.active")?.value! === "true",
+        regex: rowVals.get("URLFilterRules.regex")?.value! === "true",
         expression: rowVals.get("URLFilterRules.expression")!.value,
         action: rowVals.get("URLFilterRules.action")!.value,
         ids: {
@@ -486,10 +464,11 @@ function newURLFilterRule() {
 
 async function urlFilterRuleDelete(index: number) {
     const resp: SEBSettingsTableRowValues[] | null =
-        await examViewService.deleteSEBSettingTableRow(
-            examId,
+        await sebSettingsService.deleteSEBSettingTableRow(
+            componentId,
             "URLFilterRules",
             index,
+            sebSettingsStore.isExam,
         );
     if (resp == null) {
         return;
@@ -513,11 +492,12 @@ async function closeEditURLFilterRuleDialog(apply?: boolean) {
         return;
     }
 
-    if (selectedURLFilterRule.value?.index == -1) {
+    if (selectedURLFilterRule.value?.index === -1) {
         const resp: SEBSettingsTableRowValues | null =
-            await examViewService.newSEBSettingTableRow(
-                examId,
+            await sebSettingsService.newSEBSettingTableRow(
+                componentId,
                 "URLFilterRules",
+                sebSettingsStore.isExam,
             );
         if (resp == null) {
             return;
@@ -533,25 +513,29 @@ async function closeEditURLFilterRuleDialog(apply?: boolean) {
             urlFilterTable.value[resp.listIndex].ids;
     }
 
-    await examViewService.updateSEBSettingValue(
-        examId,
+    await sebSettingsService.updateSEBSettingValue(
+        componentId,
         selectedURLFilterRule.value.ids.active.toString(),
         selectedURLFilterRule.value.active ? "true" : "false",
+        sebSettingsStore.isExam,
     );
-    await examViewService.updateSEBSettingValue(
-        examId,
+    await sebSettingsService.updateSEBSettingValue(
+        componentId,
         selectedURLFilterRule.value.ids.regex.toString(),
         selectedURLFilterRule.value.regex ? "true" : "false",
+        sebSettingsStore.isExam,
     );
-    await examViewService.updateSEBSettingValue(
-        examId,
+    await sebSettingsService.updateSEBSettingValue(
+        componentId,
         selectedURLFilterRule.value.ids.expression.toString(),
         selectedURLFilterRule.value.expression,
+        sebSettingsStore.isExam,
     );
-    await examViewService.updateSEBSettingValue(
-        examId,
+    await sebSettingsService.updateSEBSettingValue(
+        componentId,
         selectedURLFilterRule.value.ids.action.toString(),
         selectedURLFilterRule.value.action,
+        sebSettingsStore.isExam,
     );
 
     urlFilterTable.value[selectedURLFilterRule.value.index] =
@@ -559,10 +543,11 @@ async function closeEditURLFilterRuleDialog(apply?: boolean) {
 }
 
 async function saveSingleValue(valId: number, value: string) {
-    await examViewService.updateSEBSettingValue(
-        examId,
+    await sebSettingsService.updateSEBSettingValue(
+        componentId,
         valId.toString(),
         value,
+        sebSettingsStore.isExam,
     );
 }
 

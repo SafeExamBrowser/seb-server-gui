@@ -98,7 +98,15 @@
                         </v-row>
 
                         <!----------monitor exam--------->
-                        <v-row class="mt-6">
+                        <v-row
+                            v-if="
+                                ability.canDoExamAction(
+                                    GUIAction.ShowMonitoring,
+                                    examStore.selectedExam?.status,
+                                )
+                            "
+                            class="mt-6"
+                        >
                             <v-col>
                                 <v-card class="rounded-lg pa-4" elevation="4">
                                     <v-row align="center">
@@ -113,13 +121,6 @@
                                             <v-btn
                                                 block
                                                 color="primary"
-                                                :disabled="
-                                                    !ability.canDoExamAction(
-                                                        GUIAction.ShowMonitoring,
-                                                        examStore.selectedExam
-                                                            ?.status,
-                                                    )
-                                                "
                                                 rounded="sm"
                                                 variant="flat"
                                                 @click="
@@ -138,22 +139,52 @@
                                             </v-btn>
                                         </v-col>
                                     </v-row>
+                                </v-card>
+                            </v-col>
+                        </v-row>
 
-                                    <v-tooltip
-                                        v-if="
-                                            !ability.canDoExamAction(
-                                                GUIAction.ShowMonitoring,
-                                                examStore.selectedExam?.status,
-                                            )
-                                        "
-                                        activator="parent"
-                                    >
-                                        {{
-                                            translate(
-                                                "examDetail.main.monitorTooltip",
-                                            )
-                                        }}
-                                    </v-tooltip>
+                        <!----------show finished exam data--------->
+                        <v-row
+                            v-if="
+                                ability.canDoExamAction(
+                                    GUIAction.ShowFinishedExamData,
+                                    examStore.selectedExam?.status,
+                                )
+                            "
+                            class="mt-6"
+                        >
+                            <v-col>
+                                <v-card class="rounded-lg pa-4" elevation="4">
+                                    <v-row align="center">
+                                        <v-col>
+                                            {{
+                                                translate(
+                                                    "examDetail.main.showFinishedExamData",
+                                                )
+                                            }}
+                                        </v-col>
+                                        <v-col align="right" cols="4" xl="3">
+                                            <v-btn
+                                                block
+                                                color="primary"
+                                                rounded="sm"
+                                                variant="flat"
+                                                @click="
+                                                    navigateTo(
+                                                        constants.FINISHED_EXAM_DATA_ROUTE +
+                                                            '/' +
+                                                            examId,
+                                                    )
+                                                "
+                                            >
+                                                {{
+                                                    translate(
+                                                        "examDetail.main.show",
+                                                    )
+                                                }}
+                                            </v-btn>
+                                        </v-col>
+                                    </v-row>
                                 </v-card>
                             </v-col>
                         </v-row>
@@ -418,7 +449,7 @@
 
                     <!----------right side--------->
                     <v-col cols="6" xl="4">
-                        <!----------edit seb settings--------->
+                        <!----------edit/view seb settings--------->
                         <v-row>
                             <v-col>
                                 <v-sheet class="rounded-lg pa-4" elevation="4">
@@ -426,7 +457,7 @@
                                         <v-col>
                                             {{
                                                 translate(
-                                                    "examDetail.main.appNetworkSettings",
+                                                    getSEBSettingsNameKey(),
                                                 )
                                             }}
                                         </v-col>
@@ -436,8 +467,8 @@
                                                 block
                                                 color="primary"
                                                 :disabled="
-                                                    !hasSEBSettings ||
-                                                    !editableSEBSettings
+                                                    sebSettingsStore.selectedContainerId ==
+                                                    null
                                                 "
                                                 rounded="sm"
                                                 variant="flat"
@@ -445,12 +476,17 @@
                                             >
                                                 {{
                                                     translate(
-                                                        "general.editButton",
+                                                        sebSettingsStore.readonly
+                                                            ? "general.viewButton"
+                                                            : "general.editButton",
                                                     )
                                                 }}
                                             </v-btn>
                                             <v-tooltip
-                                                v-if="!hasSEBSettings"
+                                                v-if="
+                                                    sebSettingsStore.selectedContainerId ==
+                                                    null
+                                                "
                                                 activator="parent"
                                             >
                                                 <p
@@ -854,16 +890,14 @@
     <v-dialog v-model="examTemplateDialog" max-width="600">
         <ExamTemplateDialog
             :exam-template="examStore.selectedExamTemplate"
-            @close-exam-template-dialog="closeExamTemplateDialog()"
+            @close-exam-template-dialog="closeExamTemplateDialog"
         >
         </ExamTemplateDialog>
     </v-dialog>
 
     <!-----------seb settings dialog---------->
-    <v-dialog v-model="sebSettingsDialog" max-width="1200">
-        <SebSettingsDialog
-            @close-seb-settings-dialog="closeSebSettingsDialog()"
-        >
+    <v-dialog v-model="sebSettingsDialog" max-width="1200" persistent>
+        <SebSettingsDialog @close-seb-settings-dialog="closeSebSettingsDialog">
         </SebSettingsDialog>
     </v-dialog>
 
@@ -901,6 +935,7 @@
 import { useExamStore } from "@/stores/seb-server/examStore";
 import * as constants from "@/utils/constants";
 import * as examViewService from "@/services/seb-server/component-services/examViewService";
+import * as sebSettingsService from "@/services/seb-server/component-services/sebSettingsService";
 import * as assessmentToolViewService from "@/services/seb-server/component-services/assessmentToolViewService";
 import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
 import * as clientGroupViewService from "@/services/seb-server/component-services/clientGroupViewService";
@@ -913,12 +948,14 @@ import TableHeaders from "@/utils/table/TableHeaders.vue";
 import { translate } from "@/utils/generalUtils";
 import { LMSFeatureEnum } from "@/models/seb-server/assessmentToolEnums";
 import { GUIAction, useAbilities } from "@/services/ability";
+import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 
 // general
 const isPageInitalizing = ref<boolean>(true);
 
 // stores
 const examStore = useExamStore();
+const sebSettingsStore = useSEBSettingsStore();
 const ability = useAbilities();
 
 // exam
@@ -965,8 +1002,6 @@ const isSEBLockActive = ref<boolean>(false);
 const isScreenProctoringActive = ref<boolean>(false);
 
 // seb settings
-const hasSEBSettings = ref<boolean>(false);
-const editableSEBSettings = ref<boolean>(false);
 const sebSettingsDialog = ref<boolean>(false);
 
 // client groups
@@ -1008,6 +1043,7 @@ onBeforeMount(async () => {
 
     setQuitPassword();
     setScreenProctoring();
+
     isPageInitalizing.value = false;
 });
 
@@ -1393,25 +1429,67 @@ async function applyTestRun() {
 
 //= ==============settings logic====================
 async function getSEBSettings() {
+    sebSettingsStore.clearAll();
     const configs: ExamConfigMapping[] | null =
-        await examViewService.getExamConfigMapping(examId);
-    if (configs == null) {
-        hasSEBSettings.value = false;
-    } else {
-        hasSEBSettings.value = configs.length > 0;
+        await sebSettingsService.getExamConfigMapping(examId);
+    if (configs != null && configs.length > 0) {
+        // init sebSettingsStore to work with Exam SEB Settings context
+        sebSettingsStore.isExam = true;
+        if (examStore.selectedExam != null) {
+            sebSettingsStore.selectedContainerId = examStore.selectedExam.id;
+            if (examStore.selectedExam != null) {
+                sebSettingsStore.readonly = !ability.canDoExamAction(
+                    GUIAction.EditSEBSettings,
+                    examStore.selectedExam?.status,
+                );
+                if (!sebSettingsStore.readonly) {
+                    // check also if there are no active SEB clients, otherwise set so on storage
+                    const numActiveClients =
+                        await sebSettingsService.getActiveSEBClients(examId);
+                    if (numActiveClients != null && numActiveClients > 0) {
+                        sebSettingsStore.readonly = true;
+                        sebSettingsStore.activeSEBClientConnection =
+                            numActiveClients;
+                    }
+                }
+            } else {
+                sebSettingsStore.readonly = true;
+            }
+
+            const fullSEBSettings = ability.canDo(
+                GUIAction.EditFullSEBSettings,
+            );
+            sebSettingsStore.dialogTitle = sebSettingsStore.readonly
+                ? fullSEBSettings
+                    ? "examDetail.main.sebSettings"
+                    : "examDetail.main.appNetworkSettings"
+                : fullSEBSettings
+                  ? "examDetail.main.editSEBSettings"
+                  : "examDetail.main.editAppNetworkSettings";
+        }
+        // TODO this is only for testing, remove it when done
+        sebSettingsStore.activeSEBClientConnection = 2;
     }
-    editableSEBSettings.value = ability.canDoExamAction(
-        GUIAction.EditSEBSettings,
-        examStore.selectedExam?.status,
-    );
+}
+
+function getSEBSettingsNameKey() {
+    const fullSEBSettings = ability.canDo(GUIAction.EditFullSEBSettings);
+    return fullSEBSettings
+        ? "examDetail.main.sebSettings"
+        : "examDetail.main.appNetworkSettings";
 }
 
 function openSebSettingsDialog() {
     sebSettingsDialog.value = true;
 }
 
-function closeSebSettingsDialog() {
+async function closeSebSettingsDialog(apply?: boolean) {
     sebSettingsDialog.value = false;
+    if (apply) {
+        await sebSettingsService.publish(examId, true);
+    } else {
+        await sebSettingsService.undoChanges(examId, true);
+    }
 }
 
 //= ==============groups logic====================

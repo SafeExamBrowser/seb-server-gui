@@ -5,7 +5,7 @@
                 class="text-h6"
                 :text="
                     translate(
-                        'examDetail.sebSettings.networkView.URLFilterRules.editDialogTitle',
+                        'sebSettings.networkView.URLFilterRules.editDialogTitle',
                     )
                 "
             ></v-toolbar-title>
@@ -43,7 +43,7 @@
                             <v-col class="pt-0 pb-0">
                                 {{
                                     translate(
-                                        "examDetail.sebSettings.networkView.URLFilterRules.regex",
+                                        "sebSettings.networkView.URLFilterRules.regex",
                                     )
                                 }}
                             </v-col>
@@ -59,7 +59,7 @@
                             <v-col>
                                 {{
                                     translate(
-                                        "examDetail.sebSettings.networkView.URLFilterRules.expression",
+                                        "sebSettings.networkView.URLFilterRules.expression",
                                     )
                                 }}
                             </v-col>
@@ -80,7 +80,7 @@
                             <v-col>
                                 {{
                                     translate(
-                                        "examDetail.sebSettings.networkView.URLFilterRules.action",
+                                        "sebSettings.networkView.URLFilterRules.action",
                                     )
                                 }}
                             </v-col>
@@ -148,15 +148,11 @@ const props = defineProps<{
 
 const actionItems = [
     {
-        title: translate(
-            "examDetail.sebSettings.networkView.URLFilterRules.action_0",
-        ),
+        title: translate("sebSettings.networkView.URLFilterRules.action_0"),
         value: "0",
     },
     {
-        title: translate(
-            "examDetail.sebSettings.networkView.URLFilterRules.action_1",
-        ),
+        title: translate("sebSettings.networkView.URLFilterRules.action_1"),
         value: "1",
     },
 ];
