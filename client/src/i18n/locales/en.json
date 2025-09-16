@@ -1099,8 +1099,26 @@
                 "error": "Error",
                 "searchForLogs": "Search For Logs"
             }
+        },
+        "monitoringASKDialog": {
+            "title": "App Signature Keys",
+            "connectionsTitle" : "Connections",
+            "connections" : "connections",
+            "selectAskKey" : "Select an ASK to view its connections",
+            "searchText" : "Search",
+            "statuses" : {
+                "ALL" : "All",
+                "ACTIVE" : "Active",
+                "READY" : "Ready",
+                "DISABLED" : "Disabled",
+                "MISSING" : "Missing",
+                "CLOSED" : "Closed",
+                "CONNECTION_REQUESTED" : "Connection Requested",
+                "UNDEFINED" : "Undefined"
+            }
         }
-    },
+
+        },
     "titles": {
         "home": "Home",
         "navigationOverview": "Navigation Overview",

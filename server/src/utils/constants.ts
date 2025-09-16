@@ -11,6 +11,8 @@ export const EXAMS_ROUTE = "/exams";
 export const EXAM_CONFIGURATION_MAP_ROUTE = "/exam-configuration-map";
 export const EXAM_SCREEN_PROCTORING_ROUTE = "/exam/:id/screen-proctoring"
 export const KEY_INFO_ROUTE = "/sebkeyinfo"
+export const GRANT_KEY = "/grant"
+
 //exam template
 export const EXAM_TEMPLATE_ROUTE = "/exam-template";
 export const EXAM_TEMPLATE_SCREEN_PROCTORING_ROUTE = "/exam-template/:id/screen-proctoring";
