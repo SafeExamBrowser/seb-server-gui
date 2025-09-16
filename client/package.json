@@ -18,6 +18,7 @@
         "format:check:all": "npm run lint:check:all && npm run prettier:check:all",
         "format:fix:all": "npm run lint:fix:all && npm run prettier:fix:all",
         "check:precommit": "lint-staged",
+        "quality:fix:all": "npm run lint:fix:all && npm run prettier:fix:all && vue-tsc --noEmit",
         "prepare": "cd .. && husky ./client/.husky"
     },
     "lint-staged": {
@@ -78,6 +79,6 @@
         "vite": "^5.3.3",
         "vite-plugin-vue-layouts": "^0.11.0",
         "vite-plugin-vuetify": "^2.0.3",
-        "vue-tsc": "^2.0.26"
+        "vue-tsc": "^2.2.12"
     }
 }
