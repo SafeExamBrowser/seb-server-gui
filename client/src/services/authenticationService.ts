@@ -34,7 +34,7 @@ export async function login(
             resetLoadingState();
             return response.data;
         }
-    } catch {
+    } catch (error) {
         resetLoadingState();
         throw error;
     }
@@ -81,7 +81,7 @@ export async function refresh(isSpRefresh: boolean): Promise<string | any> {
         );
 
         return response.data;
-    } catch {
+    } catch (error) {
         throw error;
     }
 }
@@ -96,7 +96,7 @@ export async function verifyJwt(token: string): Promise<string | any> {
         if (response.status === 200) {
             return response.data;
         }
-    } catch {
+    } catch (error) {
         throw error;
     }
 }
@@ -107,7 +107,7 @@ export async function logLogout() {
         await apiService.api.post(url, {
             headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
         });
-    } catch {
+    } catch (error) {
         throw error;
     }
 }

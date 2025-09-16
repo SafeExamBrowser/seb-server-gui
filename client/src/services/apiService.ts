@@ -150,7 +150,7 @@ export function createApiInterceptor() {
             }
 
             return api(originalRequest);
-        } catch {
+        } catch (error) {
             let redirectRoute: string = "/";
             if (window.location.pathname != null) {
                 redirectRoute = window.location.pathname;

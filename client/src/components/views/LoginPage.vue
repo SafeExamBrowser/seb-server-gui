@@ -176,7 +176,7 @@ async function signIn() {
                 spTokenObject.access_token,
                 spTokenObject.refresh_token,
             );
-        } catch {
+        } catch (error) {
             console.error("SP login failed:", error);
             authStore.setStorageItem(StorageItemEnum.IS_SP_AVAILABLE, "false");
         } finally {

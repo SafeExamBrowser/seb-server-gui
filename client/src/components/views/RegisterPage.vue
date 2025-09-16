@@ -394,7 +394,7 @@ async function register() {
         } else {
             registerError.value = true;
         }
-    } catch {
+    } catch (error) {
         console.error(error);
         // todo error handle
         registerError.value = true;
