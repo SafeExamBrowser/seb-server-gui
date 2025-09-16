@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import { HOME_PAGE_ROUTE } from "@/utils/constants";
-import { BreadcrumbItem } from "@/models/components";
+import { BreadcrumbItem } from "@/components/widgets/breadcrumb/types";
 
 defineProps<{
     items: BreadcrumbItem[];

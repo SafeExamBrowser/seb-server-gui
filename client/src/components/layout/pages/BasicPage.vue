@@ -26,9 +26,9 @@
 </template>
 
 <script setup lang="ts">
-import Breadcrumb from "@/components/widgets/Breadcrumb.vue";
+import Breadcrumb from "@/components/widgets/breadcrumb/Breadcrumb.vue";
 import PageTitle from "@/components/widgets/PageTitle.vue";
-import { BreadcrumbItem } from "@/models/components";
+import { BreadcrumbItem } from "@/components/widgets/breadcrumb/types";
 
 defineProps<{
     title: string;
