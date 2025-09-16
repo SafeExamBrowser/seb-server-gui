@@ -5,7 +5,7 @@ export async function getLmsList(
 ): Promise<Exams | null> {
     try {
         return await examService.getExams(optionalParGetExams);
-    } catch (error) {
+    } catch {
         return null;
     }
 }
