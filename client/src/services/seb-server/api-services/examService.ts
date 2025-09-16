@@ -3,6 +3,8 @@ import { StorageItemEnum } from "@/models/StorageItemEnum";
 
 const examUrl: string = "/exam";
 const examsUrl: string = "/exams";
+const grantUrl: string = "/grant";
+const askUrl: string = "/sebkeyinfo";
 
 export async function getExam(id: string): Promise<Exam | any> {
     const url: string = "/get-exam/" + id;
@@ -16,7 +18,30 @@ export async function getExam(id: string): Promise<Exam | any> {
 export async function getExamAppSignatureKeys(
     id: string,
 ): Promise<AppSignatureKey[] | any> {
-    const url: string = examUrl + "/" + id + "/sebkeyinfo";
+    const url: string = examUrl + "/" + id + askUrl;
+    return (
+        await apiService.api.get(url, {
+            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+        })
+    ).data;
+}
+
+export async function removeGrantExamAppSignatureKeys(
+    parentId: string,
+    id: string,
+): Promise<AppSignatureKey[] | any> {
+    const url: string = examUrl + "/" + parentId + grantUrl + "/" + id;
+    return (
+        await apiService.api.delete(url, {
+            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+        })
+    ).data;
+}
+
+export async function getGrantedExamAppSignatureKeys(
+    parentId: string,
+): Promise<GrantedAppSignatureKey[] | any> {
+    const url: string = examUrl + "/" + parentId + grantUrl;
     return (
         await apiService.api.get(url, {
             headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),

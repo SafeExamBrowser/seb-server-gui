@@ -1,7 +1,6 @@
 import * as apiService from "./api.service";
 import * as constants from "../../utils/constants";
 import * as ENV from "../../config/envConfig";
-import {KEY_INFO_ROUTE} from "../../utils/constants";
 
 
 export async function getExamConfigurationMap(token: string, id: string, options?: {}): Promise<[object, number]>{

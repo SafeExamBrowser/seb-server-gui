@@ -3,9 +3,16 @@
         <v-toolbar color="transparent  ma-3">
             <v-toolbar-title class="text-h5 mb-2 title-styling">
                 {{ translate("monitoringDetails.monitoringASKDialog.title") }}
+                <v-btn
+                    icon="mdi-refresh"
+                    class="mr-2"
+                    color="primary"
+                    @click="refreshAsk"
+                />
             </v-toolbar-title>
+
             <template #append>
-                <v-btn icon="mdi-close" @click="closeDialog" />
+                <v-btn icon="mdi-close" class="mr-8" @click="closeDialog" />
             </template>
         </v-toolbar>
 
@@ -55,6 +62,35 @@
                             </template>
                         </v-item>
                     </v-item-group>
+                    <div class="ask-footer px-6 py-2">
+                        <v-text-field
+                            v-model="grantKeyInput"
+                            class="mr-2 ask-footer-input"
+                            variant="outlined"
+                            density="compact"
+                            hide-details
+                            :placeholder="
+                                i18n.t(
+                                    'monitoringDetails.monitoringASKDialog.grantKeyPlaceholder',
+                                )
+                            "
+                            data-testid="aks-grantKey-input"
+                            style="max-width: 280px"
+                        />
+                        <v-btn
+                            color="primary"
+                            variant="flat"
+                            size="small"
+                            data-testid="aks-grantKey-button"
+                            @click="onGrantKey"
+                        >
+                            {{
+                                i18n.t(
+                                    "monitoringDetails.monitoringASKDialog.grantKeyButton",
+                                )
+                            }}
+                        </v-btn>
+                    </div>
                 </v-col>
 
                 <!-- RIGHT: connections -->
@@ -105,7 +141,7 @@
                                         :items="statusItems"
                                         item-title="label"
                                         item-value="value"
-                                        density="comfortable"
+                                        density="compact"
                                         variant="outlined"
                                         hide-details
                                         data-testid="aks-status-filter"
@@ -214,7 +250,7 @@
                     <div v-else class="placeholder-viewport px-3">
                         <div class="placeholder-content">
                             <v-icon size="96" class="placeholder-icon"
-                                >mdi-cursor-default-click
+                                >mdi-cursor-default-click-outline
                             </v-icon>
                             <div
                                 class="text-subtitle-1 text-grey-darken-1 mt-3 text-center"
@@ -239,9 +275,15 @@ import { useI18n } from "vue-i18n";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import { translate } from "@/utils/generalUtils";
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum";
+import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
 
 const store = useMonitoringStore();
-const emit = defineEmits<{ closeAskDialog: [] }>();
+const emit = defineEmits<{
+    closeAskDialog: [];
+    refresh: [];
+    grantKey: [string];
+}>();
+
 const i18n = useI18n();
 
 const selectedAskIdx = ref<number>(-1);
@@ -251,6 +293,7 @@ const searchQuery = ref("");
 const statusFilter = ref<"ALL" | ConnectionStatusEnum>(
     ConnectionStatusEnum.ACTIVE,
 );
+const grantKeyInput = ref("");
 
 const isKeySelected = computed(
     () =>
@@ -262,6 +305,20 @@ const normalizeStatus = (s?: string): ConnectionStatusEnum => {
     const up = (s ?? ConnectionStatusEnum.UNDEFINED).toUpperCase();
     return (ConnectionStatusEnum as any)[up] ?? ConnectionStatusEnum.UNDEFINED;
 };
+
+async function refreshAsk() {
+    const examId = useMonitoringStore().selectedExam?.id.toString();
+    if (!examId) {
+        return;
+    }
+    await monitoringViewService.getAskAndStore(examId);
+}
+
+function onGrantKey() {
+    const val = grantKeyInput.value;
+    if (!val) return;
+    //todo Implement Grant Key
+}
 
 function trStatus(value: "ALL" | ConnectionStatusEnum) {
     return i18n.t(`monitoringDetails.monitoringASKDialog.statuses.${value}`);
@@ -422,7 +479,7 @@ function statusColor(status?: string) {
 }
 
 .connections-viewport {
-    height: 855px;
+    height: 600px;
     display: flex;
     flex-direction: column;
 }
@@ -439,7 +496,7 @@ function statusColor(status?: string) {
 }
 
 .placeholder-viewport {
-    height: 855px;
+    height: 600px;
     display: flex;
     align-items: center;
     justify-content: center;

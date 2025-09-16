@@ -24,6 +24,27 @@ export async function getExamAppSignatureKeys(
     }
 }
 
+export async function getGrantedExamAppSignatureKeys(
+    parentId: string,
+): Promise<GrantedAppSignatureKey[] | null> {
+    try {
+        return await examService.getGrantedExamAppSignatureKeys(parentId);
+    } catch {
+        return null;
+    }
+}
+
+export async function removeGrantExamAppSignatureKeys(
+    parentId: string,
+    id: string,
+): Promise<GrantedAppSignatureKey[] | null> {
+    try {
+        return await examService.removeGrantExamAppSignatureKeys(parentId, id);
+    } catch {
+        return null;
+    }
+}
+
 export async function hasSEBLock(id: string): Promise<boolean> {
     try {
         return await examService.checkSEBLock(id);
