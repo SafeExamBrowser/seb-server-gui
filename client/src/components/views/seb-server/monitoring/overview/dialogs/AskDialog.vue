@@ -1,5 +1,5 @@
 <template>
-    <v-card class="">
+    <v-card>
         <v-toolbar color="transparent  ma-3">
             <v-toolbar-title class="text-h5 mb-2 title-styling">
                 {{ translate("monitoringDetails.monitoringASKDialog.title") }}
@@ -114,34 +114,52 @@
                     </div>
 
                     <!-- Footer: grant input -->
+                    <!-- Footer -->
                     <div class="ask-footer px-6 py-2 mt-3">
-                        <v-text-field
-                            v-model="grantKeyInput"
-                            class="mr-2 ask-footer-input"
-                            variant="outlined"
-                            density="compact"
-                            hide-details
-                            :placeholder="
-                                i18n.t(
-                                    'monitoringDetails.monitoringASKDialog.grantKeyPlaceholder',
-                                )
-                            "
-                            data-testid="aks-grantKey-input"
-                        />
-                        <v-btn
-                            class="ask-footer-btn"
-                            color="primary"
-                            variant="flat"
-                            size="small"
-                            data-testid="aks-grantKey-button"
-                            @click="onGrantKey"
-                        >
-                            {{
-                                i18n.t(
-                                    "monitoringDetails.monitoringASKDialog.grantKeyButton",
-                                )
-                            }}
-                        </v-btn>
+                        <!-- If NOT granted: show input + grant -->
+                        <template v-if="!selectedAsk?.tag">
+                            <v-text-field
+                                v-model="grantKeyInput"
+                                class="mr-2 ask-footer-input"
+                                variant="outlined"
+                                density="compact"
+                                hide-details
+                                :placeholder="
+                                    i18n.t(
+                                        'monitoringDetails.monitoringASKDialog.grantKeyPlaceholder',
+                                    )
+                                "
+                                data-testid="aks-grantKey-input"
+                            />
+                            <v-btn
+                                class="ask-footer-btn"
+                                color="primary"
+                                variant="flat"
+                                size="small"
+                                data-testid="aks-grantKey-button"
+                                @click="onGrantKey"
+                            >
+                                {{
+                                    i18n.t(
+                                        "monitoringDetails.monitoringASKDialog.grantKeyButton",
+                                    )
+                                }}
+                            </v-btn>
+                        </template>
+
+                        <!-- If granted: show 'Remove grant' -->
+                        <template v-else>
+                            <v-btn
+                                class="ask-footer-btn"
+                                color="error"
+                                variant="outlined"
+                                size="small"
+                                data-testid="aks-removeGrant-button"
+                                @click="onRemoveGrant"
+                            >
+                                Remove Grant
+                            </v-btn>
+                        </template>
                     </div>
                 </v-col>
 
@@ -328,6 +346,7 @@ import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import { translate } from "@/utils/generalUtils";
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum";
 import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
+import * as examViewService from "@/services/seb-server/component-services/examViewService";
 
 const store = useMonitoringStore();
 const emit = defineEmits<{
@@ -335,6 +354,12 @@ const emit = defineEmits<{
     refresh: [];
     grantKey: [string];
 }>();
+const examId = useMonitoringStore().selectedExam?.id.toString();
+
+const selectedAsk = computed(() =>
+    isKeySelected.value ? askEnriched.value[selectedAskIdx.value] : undefined,
+);
+const selectedConnections = computed(() => selectedAsk.value?.entries ?? []);
 
 const i18n = useI18n();
 
@@ -346,6 +371,10 @@ const statusFilter = ref<"ALL" | ConnectionStatusEnum>(
     ConnectionStatusEnum.ACTIVE,
 );
 const grantKeyInput = ref("");
+
+const firstConnId = computed<number | undefined>(
+    () => selectedConnections.value?.[0]?.id,
+);
 
 const isKeySelected = computed(
     () =>
@@ -359,7 +388,6 @@ const normalizeStatus = (s?: string): ConnectionStatusEnum => {
 };
 
 async function refreshAsk() {
-    const examId = useMonitoringStore().selectedExam?.id.toString();
     if (!examId) {
         return;
     }
@@ -368,8 +396,18 @@ async function refreshAsk() {
 
 function onGrantKey() {
     const val = grantKeyInput.value;
-    if (!val) return;
-    //todo Implement Grant Key
+
+    if (!examId || !firstConnId.value || !val) {
+        console.log("failed");
+        console.log(examId, selectedAsk.value?.keyValue, val);
+        return;
+    }
+    examViewService.grantExamAppSignatureKeys(
+        val,
+        examId,
+        String(firstConnId.value),
+    );
+    monitoringViewService.getAskAndStore(examId);
 }
 
 function trStatus(value: "ALL" | ConnectionStatusEnum) {
@@ -415,11 +453,6 @@ const askEnriched = computed(() => {
         return { ...ask, entries };
     });
 });
-
-const selectedAsk = computed(() =>
-    isKeySelected.value ? askEnriched.value[selectedAskIdx.value] : undefined,
-);
-const selectedConnections = computed(() => selectedAsk.value?.entries ?? []);
 
 const statusFiltered = computed(() => {
     if (!isKeySelected.value) return [];
@@ -467,6 +500,40 @@ function statusColor(status?: string) {
             return "grey";
     }
 }
+
+const firstConnInfo = computed(() => {
+    const first = selectedConnections.value[0]?.conn;
+    const os = first?.clientOsName || "";
+    const ver = first?.clientVersion || "";
+    return os || ver ? `${os}${os && ver ? " " : ""}${ver}` : "";
+});
+
+watch(selectedAsk, (ask) => {
+    if (!ask) {
+        grantKeyInput.value = "";
+        return;
+    }
+    if (!ask.tag) {
+        grantKeyInput.value = firstConnInfo.value || "";
+    }
+});
+
+watch(firstConnInfo, (val) => {
+    if (selectedAsk.value && !selectedAsk.value.tag) {
+        grantKeyInput.value = val || "";
+    }
+});
+
+function onRemoveGrant() {
+    if (!examId || !selectedAsk.value?.id) {
+        return;
+    }
+    examViewService.removeGrantExamAppSignatureKeys(
+        examId,
+        selectedAsk.value?.id.toString(),
+    );
+    monitoringViewService.getAskAndStore(examId);
+}
 </script>
 <style scoped>
 .conn-card {
@@ -492,12 +559,14 @@ function statusColor(status?: string) {
         box-shadow 0.15s ease;
     cursor: pointer;
 }
+
 .ask-card:hover {
     border-color: #b8c4d4;
     box-shadow:
         0 1px 0 rgba(0, 0, 0, 0.02),
         0 2px 6px rgba(0, 0, 0, 0.04);
 }
+
 .ask-card--selected {
     border-color: #215caf;
     background: #edf5ff;
@@ -506,22 +575,26 @@ function statusColor(status?: string) {
 .ask-row {
     padding: 10px 14px;
 }
+
 .ask-row-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding-top: 14px;
 }
+
 .ask-row-tag {
     padding: 2px 14px 3px;
     display: flex;
     align-items: center;
     gap: 6px;
 }
+
 .ask-row-tag .text-caption,
 .ask-row-tag .text-body-2 {
     line-height: 1.1;
 }
+
 .ask-row-key {
     padding-top: 4px;
     padding-bottom: 12px;
@@ -538,8 +611,9 @@ function statusColor(status?: string) {
     flex: 1 1 auto;
     min-width: 0;
 }
+
 .ask-key--compact {
-    font-size: 11.5px;
+    font-size: 11px;
     font-weight: 700;
     white-space: normal;
     word-break: break-all;
@@ -552,6 +626,7 @@ function statusColor(status?: string) {
     display: flex;
     flex-direction: column;
 }
+
 .col-right {
     border-top: 1px solid #e0e0e0;
     border-left: 1px solid #e0e0e0;
@@ -564,21 +639,12 @@ function statusColor(status?: string) {
 }
 
 .connections-viewport {
-    height: 600px;
+    height: 620px;
     display: flex;
     flex-direction: column;
     position: relative;
 }
-.connections-viewport::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 24px;
-    pointer-events: none;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff);
-}
+
 .connections-list {
     flex: 1 1 auto;
     min-height: 0;
@@ -592,11 +658,13 @@ function statusColor(status?: string) {
     align-items: center;
     justify-content: center;
 }
+
 .placeholder-content {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
+
 .placeholder-icon {
     opacity: 0.5;
 }
@@ -609,11 +677,13 @@ function statusColor(status?: string) {
     color: black !important;
     font-size: 13px;
 }
+
 .chip-granted {
     background-color: #c8e6c9 !important;
     color: #1b5e20 !important;
     border: 1px solid #a5d6a7 !important;
 }
+
 .chip-not-granted {
     background-color: #eeeeee !important;
     color: #424242 !important;
@@ -647,29 +717,33 @@ function statusColor(status?: string) {
     padding: 8px 24px;
     z-index: 1;
 }
+
 .ask-footer-input {
     flex: 1 1 auto;
 }
+
 .ask-footer-input .v-field,
 .ask-footer-input .v-field__input,
 .ask-footer-btn {
     height: 40px !important;
     min-height: 40px !important;
 }
+
 .ask-footer-btn {
     padding: 0 16px;
 }
 
-/* Subtle scrollbar styling */
 .ask-list::-webkit-scrollbar,
 .connections-list::-webkit-scrollbar {
     width: 10px;
 }
+
 .ask-list::-webkit-scrollbar-thumb,
 .connections-list::-webkit-scrollbar-thumb {
     background: #d1d5db;
     border-radius: 8px;
 }
+
 .ask-list::-webkit-scrollbar-track,
 .connections-list::-webkit-scrollbar-track {
     background: #f3f4f6;

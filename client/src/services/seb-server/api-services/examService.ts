@@ -38,6 +38,20 @@ export async function removeGrantExamAppSignatureKeys(
     ).data;
 }
 
+export async function grantExamAppSignatureKeys(
+    tagName: string,
+    parentId: string,
+    id: string,
+): Promise<Exam | any> {
+    const url = `${examUrl}/${parentId}${grantUrl}/${id}`;
+    return (
+        await apiService.api.post(url, null, {
+            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+            params: { tag: tagName },
+        })
+    ).data;
+}
+
 export async function getGrantedExamAppSignatureKeys(
     parentId: string,
 ): Promise<GrantedAppSignatureKey[] | any> {

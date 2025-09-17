@@ -33,15 +33,23 @@ export async function getGrantedExamAppSignatureKeys(req: Request, res: Response
 }
 
 
-export async function grantExamAppSignatureKey(req: Request, res: Response){
-    try{
-        const [AppSignatureKey, status] = await examService.grantExamAppSignatureKey(req.headers.authorization, req.params.parentId, req.params.id);
-        return res.status(status).json(AppSignatureKey);
+export async function grantExamAppSignatureKey(req: Request, res: Response) {
+    try {
+        const { parentId, id } = req.params;
+        const tag = typeof req.query.tag === "string" ? req.query.tag : undefined;
 
-    }catch(error){
+        const [AppSignatureKey, status] = await examService.grantExamAppSignatureKey(
+            req.headers.authorization as string,
+            parentId,
+            id,
+            tag
+        );
+        return res.status(status).json(AppSignatureKey);
+    } catch (error) {
         apiService.handleGenericApiError(error, res);
     }
 }
+
 export async function removeGrantExamAppSignatureKey(req: Request, res: Response){
     try{
         const [AppSignatureKey, status] = await examService.removeGrantExamAppSignatureKey(req.headers.authorization, req.params.parentId, req.params.id);
