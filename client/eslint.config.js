@@ -81,6 +81,7 @@ export default defineConfig([
             "@typescript-eslint/no-unused-expressions": "off",
             "@typescript-eslint/no-non-null-assertion": "off",
             "@typescript-eslint/no-dynamic-delete": "off",
+            "@typescript-eslint/no-unused-vars": "off",
         },
     },
 

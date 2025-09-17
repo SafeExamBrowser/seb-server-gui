@@ -1448,7 +1448,8 @@ async function getSEBSettings() {
                         await sebSettingsService.getActiveSEBClients(examId);
                     if (numActiveClients != null && numActiveClients > 0) {
                         sebSettingsStore.readonly = true;
-                        sebSettingsStore.activeSEBClientConnection = numActiveClients;
+                        sebSettingsStore.activeSEBClientConnection =
+                            numActiveClients;
                     }
                 }
             } else {

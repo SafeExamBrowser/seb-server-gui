@@ -61,7 +61,6 @@
             <v-col align="right">
                 <v-btn
                     color="black"
-                    :disabled="sebSettingsStore.readonly"
                     rounded="sm"
                     variant="outlined"
                     @click="emit('closeSebSettingsDialog', false)"
@@ -72,11 +71,12 @@
                 <v-btn
                     class="ml-2"
                     color="primary"
+                    :disabled="sebSettingsStore.readonly"
                     rounded="sm"
                     variant="flat"
                     @click="emit('closeSebSettingsDialog', true)"
                 >
-                     {{ translate("general.saveButton") }}
+                    {{ translate("general.saveButton") }}
                 </v-btn>
             </v-col>
         </v-row>
