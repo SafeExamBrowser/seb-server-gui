@@ -18,7 +18,7 @@ export async function setPersonalUserAccount() {
 
         userAccountStore.userAccount = personalUserAccountResonse;
         userAccountStore.setUserTimeZone(userAccountStore.userAccount.timezone);
-    } catch (error) {
+    } catch {
         return null;
     }
 }
@@ -26,7 +26,7 @@ export async function setPersonalUserAccount() {
 export async function getPersonalUserAccountFeatures(): Promise<any | null> {
     try {
         return await userAccountService.getPersonalUserAccountFeatures();
-    } catch (error) {
+    } catch {
         return null;
     }
 }
@@ -37,7 +37,7 @@ export async function getUserAccountById(
 ): Promise<UserAccount | null> {
     try {
         return await userAccountService.getUserAccountById(accountId);
-    } catch (error) {
+    } catch {
         return null;
     }
 }
@@ -47,7 +47,7 @@ export async function getUserAccountByIdOptional(
 ): Promise<UserAccount | null> {
     try {
         return await userAccountService.getUserAccountByIdOptional(accountId);
-    } catch (error) {
+    } catch {
         return null;
     }
 }
@@ -57,7 +57,7 @@ export async function getUserAccounts(
 ): Promise<UserAccountResponse | null> {
     try {
         return await userAccountService.getUserAccounts(optionalParameters);
-    } catch (error) {
+    } catch {
         return null;
     }
 }
@@ -69,7 +69,7 @@ export async function createUserAccount(
         return await userAccountService.createUserAccount(
             createUserAccountReqPar,
         );
-    } catch (error) {
+    } catch {
         return null;
     }
 }
@@ -79,14 +79,14 @@ export async function editUserAccount(
 ): Promise<SingleUserAccountResponse | null> {
     try {
         return await userAccountService.editUserAccount(userAccountPar);
-    } catch (error) {
+    } catch {
         return null;
     }
 }
 export async function getInstitutions(): Promise<Institution[] | null> {
     try {
         return await institutionService.getInstitutions();
-    } catch (error) {
+    } catch {
         return null;
     }
 }
@@ -96,7 +96,7 @@ export async function getUserAccountNames(
 ): Promise<UserAccountName[] | null> {
     try {
         return await userAccountService.getUserAccountNames(optionalParameters);
-    } catch (error) {
+    } catch {
         return null;
     }
 }
@@ -106,7 +106,7 @@ export async function getSupervisorNames(
 ): Promise<UserAccountName[] | null> {
     try {
         return await userAccountService.getSupervisorNames(optionalParameters);
-    } catch (error) {
+    } catch {
         return null;
     }
 }
@@ -116,7 +116,7 @@ export async function activateUserAccount(
 ): Promise<UserAccount | null> {
     try {
         return await userAccountService.activateUserAccount(accountId);
-    } catch (error) {
+    } catch {
         return null;
     }
 }
@@ -126,7 +126,7 @@ export async function deactivateUserAccount(
 ): Promise<UserAccount | null> {
     try {
         return await userAccountService.deactivateUserAccount(accountId);
-    } catch (error) {
+    } catch {
         return null;
     }
 }
@@ -136,7 +136,7 @@ export async function deleteUserAccount(
 ): Promise<any | null> {
     try {
         return await userAccountService.deleteUserAccount(accountId);
-    } catch (error) {
+    } catch {
         return null;
     }
 }
@@ -154,7 +154,7 @@ export async function changePassword(
             newPassword,
             confirmNewPassword,
         );
-    } catch (error) {
+    } catch {
         return null;
     }
 }

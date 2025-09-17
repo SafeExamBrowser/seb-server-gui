@@ -185,7 +185,7 @@ async function signIn() {
                 tokenObject.refresh_token,
             );
         }
-    } catch (error) {
+    } catch {
         loginError.value = true;
     }
 }
