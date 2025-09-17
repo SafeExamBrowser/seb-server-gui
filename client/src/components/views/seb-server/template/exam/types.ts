@@ -14,6 +14,5 @@ export const stepComponents = {
 
 export interface StepItemCreateTemplateExam {
     title: string;
-    nextStepEnabled: boolean;
     componentName: keyof typeof stepComponents;
 }

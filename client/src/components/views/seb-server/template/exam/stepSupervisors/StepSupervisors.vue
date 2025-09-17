@@ -2,14 +2,16 @@
     <!-- TODO @alain: implement -->
     <div>
         <div>Step Supervisors</div>
-        <v-btn @click="handleReadyClick">Ready!</v-btn>
+        <v-btn @click="handleButtonReadyClick">Ready!</v-btn>
     </div>
 </template>
 
 <script setup lang="ts">
-const emit = defineEmits(["ready"]);
+import { useStepSupervisorsStore } from "./store";
 
-const handleReadyClick = () => {
-    emit("ready");
+const store = useStepSupervisorsStore();
+
+const handleButtonReadyClick = () => {
+    store.markAsReady();
 };
 </script>
