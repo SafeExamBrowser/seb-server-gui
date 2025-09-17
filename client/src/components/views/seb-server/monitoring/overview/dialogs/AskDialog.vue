@@ -19,50 +19,102 @@
         <v-card-text class="pt-0">
             <v-row>
                 <v-col class="col-left" cols="6">
-                    <!-- ask keys go here -->
-                    <v-item-group v-model="selectedAskIdx" class="ml-3">
-                        <v-item
-                            v-for="(ask, index) in askEnriched"
-                            :key="ask.keyValue"
-                            :value="index"
+                    <div class="ask-viewport ml-3">
+                        <v-item-group
+                            v-model="selectedAskIdx"
+                            class="ml-3 ask-list"
                         >
-                            <template #default="{ isSelected, toggle }">
-                                <v-card
-                                    class="ask-card mb-3"
-                                    :class="{
-                                        'ask-card--selected': isSelected,
-                                    }"
-                                    variant="outlined"
-                                    @click="toggle"
-                                >
-                                    <div class="px-4 pt-3 pr-3 pl-3">
-                                        <div class="ask-key-box">
-                                            {{ ask.keyValue }}
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="d-flex align-center justify-space-between px-4 pb-3"
+                            <v-item
+                                v-for="(ask, index) in askEnriched"
+                                :key="ask.keyValue"
+                                :value="index"
+                            >
+                                <template #default="{ isSelected, toggle }">
+                                    <v-card
+                                        class="ask-card mb-3"
+                                        :class="{
+                                            'ask-card--selected': isSelected,
+                                        }"
+                                        variant="outlined"
+                                        @click="toggle"
                                     >
-                                        <v-chip
-                                            class="chip-black-text"
-                                            color="grey"
-                                            size="small"
-                                            variant="tonal"
+                                        <!-- ROW 1: status (far left) + title … connections (far right) -->
+                                        <div class="ask-row ask-row-top">
+                                            <div
+                                                class="d-flex align-center gap-2"
+                                            >
+                                                <!-- Status (forced green when granted) -->
+                                                <v-chip
+                                                    :class="
+                                                        ask.tag
+                                                            ? 'chip-granted'
+                                                            : 'chip-not-granted'
+                                                    "
+                                                    size="small"
+                                                    variant="flat"
+                                                >
+                                                    {{
+                                                        ask.tag
+                                                            ? i18n.t(
+                                                                  "monitoringDetails.monitoringASKDialog.granted",
+                                                              )
+                                                            : i18n.t(
+                                                                  "monitoringDetails.monitoringASKDialog.notGranted",
+                                                              )
+                                                    }}
+                                                </v-chip>
+                                            </div>
+
+                                            <v-chip
+                                                class="chip-count"
+                                                size="small"
+                                                variant="tonal"
+                                            >
+                                                {{ ask.entries.length }}
+                                                {{
+                                                    i18n.t(
+                                                        "monitoringDetails.monitoringASKDialog.connections",
+                                                    )
+                                                }}
+                                            </v-chip>
+                                        </div>
+
+                                        <!-- ROW 2: optional tag line -->
+                                        <div
+                                            v-if="ask.tag"
+                                            class="ask-row ask-row-tag"
                                         >
-                                            {{ ask.entries.length }}
-                                            {{
-                                                translate(
-                                                    "monitoringDetails.monitoringASKDialog.connections",
-                                                )
-                                            }}
-                                        </v-chip>
-                                        <div class="text-transparent">.</div>
-                                    </div>
-                                </v-card>
-                            </template>
-                        </v-item>
-                    </v-item-group>
-                    <div class="ask-footer px-6 py-2">
+                                            <span
+                                                class="text-caption text-grey-darken-1 mr-1"
+                                            >
+                                                {{
+                                                    i18n.t(
+                                                        "monitoringDetails.monitoringASKDialog.tag",
+                                                    )
+                                                }}
+                                            </span>
+                                            <span class="text-body-2">{{
+                                                ask.tag
+                                            }}</span>
+                                        </div>
+
+                                        <!-- ROW 3: key value (smaller, bold, fully visible) -->
+                                        <div class="ask-row ask-row-key">
+                                            <div
+                                                class="ask-key-box ask-key--compact"
+                                                :title="ask.keyValue"
+                                            >
+                                                {{ ask.keyValue }}
+                                            </div>
+                                        </div>
+                                    </v-card>
+                                </template>
+                            </v-item>
+                        </v-item-group>
+                    </div>
+
+                    <!-- Footer: grant input -->
+                    <div class="ask-footer px-6 py-2 mt-3">
                         <v-text-field
                             v-model="grantKeyInput"
                             class="mr-2 ask-footer-input"
@@ -75,9 +127,9 @@
                                 )
                             "
                             data-testid="aks-grantKey-input"
-                            style="max-width: 280px"
                         />
                         <v-btn
+                            class="ask-footer-btn"
                             color="primary"
                             variant="flat"
                             size="small"
@@ -416,11 +468,7 @@ function statusColor(status?: string) {
     }
 }
 </script>
-
 <style scoped>
-:root {
-}
-
 .conn-card {
     border: 2px solid #d1d5db;
     border-radius: 10px !important;
@@ -436,40 +484,77 @@ function statusColor(status?: string) {
 }
 
 .ask-card {
-    border-radius: 10px;
+    border-radius: 12px;
     border: 2px solid #d1d5db;
+    transition:
+        border-color 0.15s ease,
+        background 0.15s ease,
+        box-shadow 0.15s ease;
+    cursor: pointer;
 }
-
+.ask-card:hover {
+    border-color: #b8c4d4;
+    box-shadow:
+        0 1px 0 rgba(0, 0, 0, 0.02),
+        0 2px 6px rgba(0, 0, 0, 0.04);
+}
 .ask-card--selected {
     border-color: #215caf;
     background: #edf5ff;
+}
+
+.ask-row {
+    padding: 10px 14px;
+}
+.ask-row-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 14px;
+}
+.ask-row-tag {
+    padding: 2px 14px 3px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.ask-row-tag .text-caption,
+.ask-row-tag .text-body-2 {
+    line-height: 1.1;
+}
+.ask-row-key {
+    padding-top: 4px;
+    padding-bottom: 12px;
 }
 
 .ask-key-box {
     font-family:
         ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
         "Liberation Mono", "Courier New", monospace;
-    border-radius: 4px;
+    border-radius: 6px;
     padding: 8px 12px;
-    white-space: nowrap;
-    overflow: hidden;
-    font-size: 12px;
-    text-overflow: ellipsis;
+    background: #f7f7f7;
+    border: 1px solid #e5e7eb;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+.ask-key--compact {
+    font-size: 11.5px;
+    font-weight: 700;
+    white-space: normal;
+    word-break: break-all;
+    line-height: 1.3;
 }
 
 .col-left {
     border-top: 1px solid #e0e0e0;
     border-right: 1px solid #e0e0e0;
+    display: flex;
+    flex-direction: column;
 }
-
 .col-right {
     border-top: 1px solid #e0e0e0;
     border-left: 1px solid #e0e0e0;
-}
-
-.chip-black-text {
-    color: black !important;
-    font-size: 13px;
 }
 
 .title-styling {
@@ -482,17 +567,23 @@ function statusColor(status?: string) {
     height: 600px;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
-
+.connections-viewport::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 24px;
+    pointer-events: none;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff);
+}
 .connections-list {
     flex: 1 1 auto;
     min-height: 0;
-    overflow: auto;
-}
-
-.connections-viewport > .d-flex.align-center.justify-space-between {
-    border-top: 1px solid #e5e7eb;
-    padding-top: 8px;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
 }
 
 .placeholder-viewport {
@@ -501,18 +592,86 @@ function statusColor(status?: string) {
     align-items: center;
     justify-content: center;
 }
-
 .placeholder-content {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-
 .placeholder-icon {
     opacity: 0.5;
 }
 
 .invisible {
     visibility: hidden;
+}
+
+.chip-count {
+    color: black !important;
+    font-size: 13px;
+}
+.chip-granted {
+    background-color: #c8e6c9 !important;
+    color: #1b5e20 !important;
+    border: 1px solid #a5d6a7 !important;
+}
+.chip-not-granted {
+    background-color: #eeeeee !important;
+    color: #424242 !important;
+    border: 1px solid #e0e0e0 !important;
+}
+
+.ask-viewport {
+    height: 700px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.ask-list {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+    padding-right: 6px;
+}
+
+.ask-footer {
+    margin-top: auto;
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+    border-top: 1px solid #e5e7eb;
+    padding: 8px 24px;
+    z-index: 1;
+}
+.ask-footer-input {
+    flex: 1 1 auto;
+}
+.ask-footer-input .v-field,
+.ask-footer-input .v-field__input,
+.ask-footer-btn {
+    height: 40px !important;
+    min-height: 40px !important;
+}
+.ask-footer-btn {
+    padding: 0 16px;
+}
+
+/* Subtle scrollbar styling */
+.ask-list::-webkit-scrollbar,
+.connections-list::-webkit-scrollbar {
+    width: 10px;
+}
+.ask-list::-webkit-scrollbar-thumb,
+.connections-list::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 8px;
+}
+.ask-list::-webkit-scrollbar-track,
+.connections-list::-webkit-scrollbar-track {
+    background: #f3f4f6;
 }
 </style>

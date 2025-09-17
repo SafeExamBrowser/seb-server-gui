@@ -1107,6 +1107,10 @@
             "selectAskKey": "Select an ASK to view its connections",
             "searchText": "Search",
             "grantKeyPlaceholder": "Tag Name",
+            "tag": "Tag: ",
+            "granted": "Granted",
+            "notGranted": "Not Granted",
+
             "grantKeyButton": "Grant Key",
             "statuses": {
                 "ALL": "All",
