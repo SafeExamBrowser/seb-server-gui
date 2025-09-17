@@ -240,8 +240,17 @@
                         <v-checkbox-btn
                             v-model="AutoDiscoveryEnabledVal"
                             :disabled="sebSettingsStore.readonly"
-                            :label="translate('sebSettings.networkView.AutoDiscoveryEnabled')"
-                            @update:model-value="saveSingleValue(AutoDiscoveryEnabled.id, AutoDiscoveryEnabledVal ? 'true' : 'false')"
+                            :label="
+                                translate(
+                                    'sebSettings.networkView.AutoDiscoveryEnabled',
+                                )
+                            "
+                            @update:model-value="
+                                saveSingleValue(
+                                    AutoDiscoveryEnabled.id,
+                                    AutoDiscoveryEnabledVal ? 'true' : 'false',
+                                )
+                            "
                         ></v-checkbox-btn>
                     </v-expansion-panel-text>
                 </v-expansion-panel>
@@ -252,14 +261,29 @@
                                 <v-checkbox-btn
                                     v-model="AutoConfigurationEnabledVal"
                                     :disabled="sebSettingsStore.readonly"
-                                    :label="translate('sebSettings.networkView.AutoConfigurationEnabled')"
-                                    @update:model-value="saveSingleValue(AutoConfigurationEnabled.id, AutoConfigurationEnabledVal ? 'true' : 'false')"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.AutoConfigurationEnabled',
+                                        )
+                                    "
+                                    @update:model-value="
+                                        saveSingleValue(
+                                            AutoConfigurationEnabled.id,
+                                            AutoConfigurationEnabledVal
+                                                ? 'true'
+                                                : 'false',
+                                        )
+                                    "
                                 ></v-checkbox-btn>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col>
-                                 {{ translate("sebSettings.networkView.AutoConfigurationURL") }}
+                                {{
+                                    translate(
+                                        "sebSettings.networkView.AutoConfigurationURL",
+                                    )
+                                }}
                                 <v-text-field
                                     v-model="AutoConfigurationURLVal"
                                     density="compact"
@@ -267,14 +291,24 @@
                                     hide-details
                                     single-line
                                     variant="outlined"
-                                    @update:focused="saveOnFocusLost($event, AutoConfigurationURL.id, AutoConfigurationURLVal)"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            AutoConfigurationURL.id,
+                                            AutoConfigurationURLVal,
+                                        )
+                                    "
                                 >
                                 </v-text-field>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col>
-                                {{ translate("sebSettings.networkView.AutoConfigurationJavaScript") }}
+                                {{
+                                    translate(
+                                        "sebSettings.networkView.AutoConfigurationJavaScript",
+                                    )
+                                }}
                                 <v-text-field
                                     v-model="AutoConfigurationJavaScriptVal"
                                     density="compact"
@@ -282,7 +316,13 @@
                                     hide-details
                                     single-line
                                     variant="outlined"
-                                    @update:focused="saveOnFocusLost($event, AutoConfigurationJavaScript.id, AutoConfigurationJavaScriptVal)"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            AutoConfigurationJavaScript.id,
+                                            AutoConfigurationJavaScriptVal,
+                                        )
+                                    "
                                 >
                                 </v-text-field>
                             </v-col>
@@ -291,19 +331,32 @@
                 </v-expansion-panel>
                 <v-expansion-panel title="Web Proxy (HTTP)">
                     <v-expansion-panel-text>
-                         <v-row>
+                        <v-row>
                             <v-col>
                                 <v-checkbox-btn
                                     v-model="HTTPEnableVal"
                                     :disabled="sebSettingsStore.readonly"
-                                    :label="translate('sebSettings.networkView.HTTPEnable')"
-                                    @update:model-value="saveSingleValue(HTTPEnable.id, HTTPEnableVal ? 'true' : 'false')"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.HTTPEnable',
+                                        )
+                                    "
+                                    @update:model-value="
+                                        saveSingleValue(
+                                            HTTPEnable.id,
+                                            HTTPEnableVal ? 'true' : 'false',
+                                        )
+                                    "
                                 ></v-checkbox-btn>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col>
-                                 {{ translate("sebSettings.networkView.HTTPProxy") }}
+                                {{
+                                    translate(
+                                        "sebSettings.networkView.HTTPProxy",
+                                    )
+                                }}
                                 <v-text-field
                                     v-model="HTTPProxyVal"
                                     density="compact"
@@ -311,14 +364,24 @@
                                     hide-details
                                     single-line
                                     variant="outlined"
-                                    @update:focused="saveOnFocusLost($event, HTTPProxy.id, HTTPProxyVal)"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            HTTPProxy.id,
+                                            HTTPProxyVal,
+                                        )
+                                    "
                                 >
                                 </v-text-field>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col>
-                                {{ translate("sebSettings.networkView.HTTPPort") }}
+                                {{
+                                    translate(
+                                        "sebSettings.networkView.HTTPPort",
+                                    )
+                                }}
                                 <v-number-input
                                     v-model="HTTPPortVal"
                                     density="compact"
@@ -326,7 +389,13 @@
                                     hide-details
                                     single-line
                                     variant="outlined"
-                                    @update:focused="saveOnFocusLost($event, HTTPPort.id, HTTPPortVal?.toString())"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            HTTPPort.id,
+                                            HTTPPortVal?.toString(),
+                                        )
+                                    "
                                 >
                                 </v-number-input>
                             </v-col>
@@ -336,14 +405,29 @@
                                 <v-checkbox-btn
                                     v-model="HTTPRequiresPasswordVal"
                                     :disabled="sebSettingsStore.readonly"
-                                    :label="translate('sebSettings.networkView.HTTPRequiresPassword')"
-                                    @update:model-value="saveSingleValue(HTTPRequiresPassword.id, HTTPRequiresPasswordVal ? 'true' : 'false')"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.HTTPRequiresPassword',
+                                        )
+                                    "
+                                    @update:model-value="
+                                        saveSingleValue(
+                                            HTTPRequiresPassword.id,
+                                            HTTPRequiresPasswordVal
+                                                ? 'true'
+                                                : 'false',
+                                        )
+                                    "
                                 ></v-checkbox-btn>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col>
-                                 {{ translate("sebSettings.networkView.HTTPUsername") }}
+                                {{
+                                    translate(
+                                        "sebSettings.networkView.HTTPUsername",
+                                    )
+                                }}
                                 <v-text-field
                                     v-model="HTTPUsernameVal"
                                     density="compact"
@@ -351,14 +435,24 @@
                                     hide-details
                                     single-line
                                     variant="outlined"
-                                    @update:focused="saveOnFocusLost($event, HTTPUsername.id, HTTPUsernameVal)"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            HTTPUsername.id,
+                                            HTTPUsernameVal,
+                                        )
+                                    "
                                 >
                                 </v-text-field>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col>
-                                {{ translate("sebSettings.networkView.HTTPPassword") }}
+                                {{
+                                    translate(
+                                        "sebSettings.networkView.HTTPPassword",
+                                    )
+                                }}
                                 <v-text-field
                                     v-model="HTTPPasswordVal"
                                     density="compact"
@@ -366,7 +460,13 @@
                                     hide-details
                                     single-line
                                     variant="outlined"
-                                    @update:focused="saveOnFocusLost($event, HTTPPassword.id, HTTPPasswordVal)"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            HTTPPassword.id,
+                                            HTTPPasswordVal,
+                                        )
+                                    "
                                 >
                                 </v-text-field>
                             </v-col>
@@ -380,14 +480,27 @@
                                 <v-checkbox-btn
                                     v-model="HTTPSEnableVal"
                                     :disabled="sebSettingsStore.readonly"
-                                    :label="translate('sebSettings.networkView.HTTPSEnable')"
-                                    @update:model-value="saveSingleValue(HTTPSEnable.id, HTTPSEnableVal ? 'true' : 'false')"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.HTTPSEnable',
+                                        )
+                                    "
+                                    @update:model-value="
+                                        saveSingleValue(
+                                            HTTPSEnable.id,
+                                            HTTPSEnableVal ? 'true' : 'false',
+                                        )
+                                    "
                                 ></v-checkbox-btn>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col>
-                                 {{ translate("sebSettings.networkView.HTTPSProxy") }}
+                                {{
+                                    translate(
+                                        "sebSettings.networkView.HTTPSProxy",
+                                    )
+                                }}
                                 <v-text-field
                                     v-model="HTTPSProxyVal"
                                     density="compact"
@@ -395,14 +508,24 @@
                                     hide-details
                                     single-line
                                     variant="outlined"
-                                    @update:focused="saveOnFocusLost($event, HTTPSProxy.id, HTTPSProxyVal)"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            HTTPSProxy.id,
+                                            HTTPSProxyVal,
+                                        )
+                                    "
                                 >
                                 </v-text-field>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col>
-                                {{ translate("sebSettings.networkView.HTTPSPort") }}
+                                {{
+                                    translate(
+                                        "sebSettings.networkView.HTTPSPort",
+                                    )
+                                }}
                                 <v-number-input
                                     v-model="HTTPSPortVal"
                                     density="compact"
@@ -410,7 +533,13 @@
                                     hide-details
                                     single-line
                                     variant="outlined"
-                                    @update:focused="saveOnFocusLost($event, HTTPSPort.id, HTTPSPortVal?.toString())"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            HTTPSPort.id,
+                                            HTTPSPortVal?.toString(),
+                                        )
+                                    "
                                 >
                                 </v-number-input>
                             </v-col>
@@ -420,14 +549,29 @@
                                 <v-checkbox-btn
                                     v-model="HTTPSRequiresPasswordVal"
                                     :disabled="sebSettingsStore.readonly"
-                                    :label="translate('sebSettings.networkView.HTTPSRequiresPassword')"
-                                    @update:model-value="saveSingleValue(HTTPSRequiresPassword.id, HTTPSRequiresPasswordVal ? 'true' : 'false')"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.HTTPSRequiresPassword',
+                                        )
+                                    "
+                                    @update:model-value="
+                                        saveSingleValue(
+                                            HTTPSRequiresPassword.id,
+                                            HTTPSRequiresPasswordVal
+                                                ? 'true'
+                                                : 'false',
+                                        )
+                                    "
                                 ></v-checkbox-btn>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col>
-                                 {{ translate("sebSettings.networkView.HTTPSUsername") }}
+                                {{
+                                    translate(
+                                        "sebSettings.networkView.HTTPSUsername",
+                                    )
+                                }}
                                 <v-text-field
                                     v-model="HTTPSUsernameVal"
                                     density="compact"
@@ -435,14 +579,24 @@
                                     hide-details
                                     single-line
                                     variant="outlined"
-                                    @update:focused="saveOnFocusLost($event, HTTPSUsername.id, HTTPSUsernameVal)"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            HTTPSUsername.id,
+                                            HTTPSUsernameVal,
+                                        )
+                                    "
                                 >
                                 </v-text-field>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col>
-                                {{ translate("sebSettings.networkView.HTTPSPassword") }}
+                                {{
+                                    translate(
+                                        "sebSettings.networkView.HTTPSPassword",
+                                    )
+                                }}
                                 <v-text-field
                                     v-model="HTTPSPasswordVal"
                                     density="compact"
@@ -450,7 +604,13 @@
                                     hide-details
                                     single-line
                                     variant="outlined"
-                                    @update:focused="saveOnFocusLost($event, HTTPSPassword.id, HTTPSPasswordVal)"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            HTTPSPassword.id,
+                                            HTTPSPasswordVal,
+                                        )
+                                    "
                                 >
                                 </v-text-field>
                             </v-col>
@@ -464,14 +624,27 @@
                                 <v-checkbox-btn
                                     v-model="FTPEnableVal"
                                     :disabled="sebSettingsStore.readonly"
-                                    :label="translate('sebSettings.networkView.FTPEnable')"
-                                    @update:model-value="saveSingleValue(FTPEnable.id, FTPEnableVal ? 'true' : 'false')"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.FTPEnable',
+                                        )
+                                    "
+                                    @update:model-value="
+                                        saveSingleValue(
+                                            FTPEnable.id,
+                                            FTPEnableVal ? 'true' : 'false',
+                                        )
+                                    "
                                 ></v-checkbox-btn>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col>
-                                 {{ translate("sebSettings.networkView.FTPProxy") }}
+                                {{
+                                    translate(
+                                        "sebSettings.networkView.FTPProxy",
+                                    )
+                                }}
                                 <v-text-field
                                     v-model="FTPProxyVal"
                                     density="compact"
@@ -479,14 +652,22 @@
                                     hide-details
                                     single-line
                                     variant="outlined"
-                                    @update:focused="saveOnFocusLost($event, FTPProxy.id, FTPProxyVal)"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            FTPProxy.id,
+                                            FTPProxyVal,
+                                        )
+                                    "
                                 >
                                 </v-text-field>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col>
-                                {{ translate("sebSettings.networkView.FTPPort") }}
+                                {{
+                                    translate("sebSettings.networkView.FTPPort")
+                                }}
                                 <v-number-input
                                     v-model="FTPPortVal"
                                     density="compact"
@@ -494,7 +675,13 @@
                                     hide-details
                                     single-line
                                     variant="outlined"
-                                    @update:focused="saveOnFocusLost($event, FTPPort.id, FTPPortVal?.toString())"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            FTPPort.id,
+                                            FTPPortVal?.toString(),
+                                        )
+                                    "
                                 >
                                 </v-number-input>
                             </v-col>
@@ -504,14 +691,29 @@
                                 <v-checkbox-btn
                                     v-model="FTPRequiresPasswordVal"
                                     :disabled="sebSettingsStore.readonly"
-                                    :label="translate('sebSettings.networkView.FTPRequiresPassword')"
-                                    @update:model-value="saveSingleValue(FTPRequiresPassword.id, FTPRequiresPasswordVal ? 'true' : 'false')"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.FTPRequiresPassword',
+                                        )
+                                    "
+                                    @update:model-value="
+                                        saveSingleValue(
+                                            FTPRequiresPassword.id,
+                                            FTPRequiresPasswordVal
+                                                ? 'true'
+                                                : 'false',
+                                        )
+                                    "
                                 ></v-checkbox-btn>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col>
-                                 {{ translate("sebSettings.networkView.FTPUsername") }}
+                                {{
+                                    translate(
+                                        "sebSettings.networkView.FTPUsername",
+                                    )
+                                }}
                                 <v-text-field
                                     v-model="FTPUsernameVal"
                                     density="compact"
@@ -519,14 +721,24 @@
                                     hide-details
                                     single-line
                                     variant="outlined"
-                                    @update:focused="saveOnFocusLost($event, FTPUsername.id, FTPUsernameVal)"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            FTPUsername.id,
+                                            FTPUsernameVal,
+                                        )
+                                    "
                                 >
                                 </v-text-field>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col>
-                                {{ translate("sebSettings.networkView.FTPPassword") }}
+                                {{
+                                    translate(
+                                        "sebSettings.networkView.FTPPassword",
+                                    )
+                                }}
                                 <v-text-field
                                     v-model="FTPPasswordVal"
                                     density="compact"
@@ -534,7 +746,13 @@
                                     hide-details
                                     single-line
                                     variant="outlined"
-                                    @update:focused="saveOnFocusLost($event, FTPPassword.id, FTPPasswordVal)"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            FTPPassword.id,
+                                            FTPPasswordVal,
+                                        )
+                                    "
                                 >
                                 </v-text-field>
                             </v-col>
@@ -548,14 +766,27 @@
                                 <v-checkbox-btn
                                     v-model="SOCKSEnableVal"
                                     :disabled="sebSettingsStore.readonly"
-                                    :label="translate('sebSettings.networkView.SOCKSEnable')"
-                                    @update:model-value="saveSingleValue(SOCKSEnable.id, SOCKSEnableVal ? 'true' : 'false')"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.SOCKSEnable',
+                                        )
+                                    "
+                                    @update:model-value="
+                                        saveSingleValue(
+                                            SOCKSEnable.id,
+                                            SOCKSEnableVal ? 'true' : 'false',
+                                        )
+                                    "
                                 ></v-checkbox-btn>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col>
-                                 {{ translate("sebSettings.networkView.SOCKSProxy") }}
+                                {{
+                                    translate(
+                                        "sebSettings.networkView.SOCKSProxy",
+                                    )
+                                }}
                                 <v-text-field
                                     v-model="SOCKSProxyVal"
                                     density="compact"
@@ -563,14 +794,24 @@
                                     hide-details
                                     single-line
                                     variant="outlined"
-                                    @update:focused="saveOnFocusLost($event, SOCKSProxy.id, SOCKSProxyVal)"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            SOCKSProxy.id,
+                                            SOCKSProxyVal,
+                                        )
+                                    "
                                 >
                                 </v-text-field>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col>
-                                {{ translate("sebSettings.networkView.SOCKSPort") }}
+                                {{
+                                    translate(
+                                        "sebSettings.networkView.SOCKSPort",
+                                    )
+                                }}
                                 <v-number-input
                                     v-model="SOCKSPortVal"
                                     density="compact"
@@ -578,7 +819,13 @@
                                     hide-details
                                     single-line
                                     variant="outlined"
-                                    @update:focused="saveOnFocusLost($event, SOCKSPort.id, SOCKSPortVal?.toString())"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            SOCKSPort.id,
+                                            SOCKSPortVal?.toString(),
+                                        )
+                                    "
                                 >
                                 </v-number-input>
                             </v-col>
@@ -588,14 +835,29 @@
                                 <v-checkbox-btn
                                     v-model="SOCKSRequiresPasswordVal"
                                     :disabled="sebSettingsStore.readonly"
-                                    :label="translate('sebSettings.networkView.SOCKSRequiresPassword')"
-                                    @update:model-value="saveSingleValue(SOCKSRequiresPassword.id, SOCKSRequiresPasswordVal ? 'true' : 'false')"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.SOCKSRequiresPassword',
+                                        )
+                                    "
+                                    @update:model-value="
+                                        saveSingleValue(
+                                            SOCKSRequiresPassword.id,
+                                            SOCKSRequiresPasswordVal
+                                                ? 'true'
+                                                : 'false',
+                                        )
+                                    "
                                 ></v-checkbox-btn>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col>
-                                 {{ translate("sebSettings.networkView.SOCKSUsername") }}
+                                {{
+                                    translate(
+                                        "sebSettings.networkView.SOCKSUsername",
+                                    )
+                                }}
                                 <v-text-field
                                     v-model="SOCKSUsernameVal"
                                     density="compact"
@@ -603,14 +865,24 @@
                                     hide-details
                                     single-line
                                     variant="outlined"
-                                    @update:focused="saveOnFocusLost($event, SOCKSUsername.id, SOCKSUsernameVal)"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            SOCKSUsername.id,
+                                            SOCKSUsernameVal,
+                                        )
+                                    "
                                 >
                                 </v-text-field>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col>
-                                {{ translate("sebSettings.networkView.SOCKSPassword") }}
+                                {{
+                                    translate(
+                                        "sebSettings.networkView.SOCKSPassword",
+                                    )
+                                }}
                                 <v-text-field
                                     v-model="SOCKSPasswordVal"
                                     density="compact"
@@ -618,7 +890,13 @@
                                     hide-details
                                     single-line
                                     variant="outlined"
-                                    @update:focused="saveOnFocusLost($event, SOCKSPassword.id, SOCKSPasswordVal)"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            SOCKSPassword.id,
+                                            SOCKSPasswordVal,
+                                        )
+                                    "
                                 >
                                 </v-text-field>
                             </v-col>
@@ -632,14 +910,27 @@
                                 <v-checkbox-btn
                                     v-model="RTSPEnableVal"
                                     :disabled="sebSettingsStore.readonly"
-                                    :label="translate('sebSettings.networkView.RTSPEnable')"
-                                    @update:model-value="saveSingleValue(RTSPEnable.id, RTSPEnableVal ? 'true' : 'false')"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.RTSPEnable',
+                                        )
+                                    "
+                                    @update:model-value="
+                                        saveSingleValue(
+                                            RTSPEnable.id,
+                                            RTSPEnableVal ? 'true' : 'false',
+                                        )
+                                    "
                                 ></v-checkbox-btn>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col>
-                                 {{ translate("sebSettings.networkView.RTSPProxy") }}
+                                {{
+                                    translate(
+                                        "sebSettings.networkView.RTSPProxy",
+                                    )
+                                }}
                                 <v-text-field
                                     v-model="RTSPProxyVal"
                                     density="compact"
@@ -647,14 +938,24 @@
                                     hide-details
                                     single-line
                                     variant="outlined"
-                                    @update:focused="saveOnFocusLost($event, RTSPProxy.id, RTSPProxyVal)"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            RTSPProxy.id,
+                                            RTSPProxyVal,
+                                        )
+                                    "
                                 >
                                 </v-text-field>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col>
-                                {{ translate("sebSettings.networkView.RTSPPort") }}
+                                {{
+                                    translate(
+                                        "sebSettings.networkView.RTSPPort",
+                                    )
+                                }}
                                 <v-number-input
                                     v-model="RTSPPortVal"
                                     density="compact"
@@ -662,7 +963,13 @@
                                     hide-details
                                     single-line
                                     variant="outlined"
-                                    @update:focused="saveOnFocusLost($event, RTSPPort.id, RTSPPortVal?.toString())"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            RTSPPort.id,
+                                            RTSPPortVal?.toString(),
+                                        )
+                                    "
                                 >
                                 </v-number-input>
                             </v-col>
@@ -672,14 +979,29 @@
                                 <v-checkbox-btn
                                     v-model="RTSPRequiresPasswordVal"
                                     :disabled="sebSettingsStore.readonly"
-                                    :label="translate('sebSettings.networkView.RTSPRequiresPassword')"
-                                    @update:model-value="saveSingleValue(RTSPRequiresPassword.id, RTSPRequiresPasswordVal ? 'true' : 'false')"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.RTSPRequiresPassword',
+                                        )
+                                    "
+                                    @update:model-value="
+                                        saveSingleValue(
+                                            RTSPRequiresPassword.id,
+                                            RTSPRequiresPasswordVal
+                                                ? 'true'
+                                                : 'false',
+                                        )
+                                    "
                                 ></v-checkbox-btn>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col>
-                                 {{ translate("sebSettings.networkView.RTSPUsername") }}
+                                {{
+                                    translate(
+                                        "sebSettings.networkView.RTSPUsername",
+                                    )
+                                }}
                                 <v-text-field
                                     v-model="RTSPUsernameVal"
                                     density="compact"
@@ -687,14 +1009,24 @@
                                     hide-details
                                     single-line
                                     variant="outlined"
-                                    @update:focused="saveOnFocusLost($event, RTSPUsername.id, RTSPUsernameVal)"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            RTSPUsername.id,
+                                            RTSPUsernameVal,
+                                        )
+                                    "
                                 >
                                 </v-text-field>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col>
-                                {{ translate("sebSettings.networkView.RTSPPassword") }}
+                                {{
+                                    translate(
+                                        "sebSettings.networkView.RTSPPassword",
+                                    )
+                                }}
                                 <v-text-field
                                     v-model="RTSPPasswordVal"
                                     density="compact"
@@ -702,7 +1034,13 @@
                                     hide-details
                                     single-line
                                     variant="outlined"
-                                    @update:focused="saveOnFocusLost($event, RTSPPassword.id, RTSPPasswordVal)"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            RTSPPassword.id,
+                                            RTSPPasswordVal,
+                                        )
+                                    "
                                 >
                                 </v-text-field>
                             </v-col>
@@ -731,6 +1069,7 @@ const urlFilterEnableVal = ref<boolean>(false);
 const urlFilterEnableContentFilterVal = ref<boolean>(false);
 
 // url filter
+// test commit
 const editURLFilterRuleDialog = ref<boolean>(false);
 const selectedURLFilterRule = ref<URLFilterRule | null>(null);
 const urlFilterHeadersRef = ref<any[]>();
@@ -786,7 +1125,7 @@ const AutoDiscoveryEnabledVal = ref<boolean>(false);
 
 const AutoConfigurationEnabledVal = ref<boolean>(false);
 const AutoConfigurationURLVal = ref<string>("");
-const AutoConfigurationJavaScriptVal= ref<string>("");
+const AutoConfigurationJavaScriptVal = ref<string>("");
 
 const HTTPEnableVal = ref<boolean>(false);
 const HTTPProxyVal = ref<string>("");
@@ -823,10 +1162,8 @@ const RTSPRequiresPasswordVal = ref<boolean>(false);
 const RTSPUsernameVal = ref<string>("");
 const RTSPPasswordVal = ref<string>("");
 
-
 // the parent component identifier
 let componentId: string;
-
 
 let urlFilterEnable: SEBSettingsValue;
 let urlFilterEnableContentFilter: SEBSettingsValue;
@@ -904,7 +1241,7 @@ onBeforeMount(async () => {
         SEBSettingsTableRowValues[]
     >(Object.entries(settingsView.tableValues));
 
-    const singleValues:  Map<string, SEBSettingsValue> = new Map<
+    const singleValues: Map<string, SEBSettingsValue> = new Map<
         string,
         SEBSettingsValue
     >(Object.entries(settingsView.singleValues));
@@ -915,9 +1252,13 @@ onBeforeMount(async () => {
     >(Object.entries(tableValues.get("proxies")![0].rowValues));
 
     urlFilterEnable = singleValues.get("URLFilterEnable")!;
-    urlFilterEnableContentFilter = singleValues.get("URLFilterEnableContentFilter")!;
+    urlFilterEnableContentFilter = singleValues.get(
+        "URLFilterEnableContentFilter",
+    )!;
     urlFilterEnableVal.value = stringToBoolean(urlFilterEnable.value);
-    urlFilterEnableContentFilterVal.value = stringToBoolean(urlFilterEnableContentFilter.value);
+    urlFilterEnableContentFilterVal.value = stringToBoolean(
+        urlFilterEnableContentFilter.value,
+    );
 
     // URL Filter
     const urlFilterRules = tableValues.get("URLFilterRules");
@@ -932,7 +1273,9 @@ onBeforeMount(async () => {
     proxySettingsPolicyVal.value = proxySettingsPolicy.value;
 
     ExcludeSimpleHostnames = proxyValues.get("ExcludeSimpleHostnames")!;
-    ExcludeSimpleHostnamesVal.value = stringToBoolean(ExcludeSimpleHostnames.value);
+    ExcludeSimpleHostnamesVal.value = stringToBoolean(
+        ExcludeSimpleHostnames.value,
+    );
 
     ExceptionsList = proxyValues.get("ExceptionsList")!;
     ExceptionsListVal.value = ExceptionsList.value;
@@ -946,8 +1289,12 @@ onBeforeMount(async () => {
 
     AutoConfigurationEnabled = proxyValues.get("AutoConfigurationEnabled")!;
     AutoConfigurationURL = proxyValues.get("AutoConfigurationURL")!;
-    AutoConfigurationJavaScript = proxyValues.get("AutoConfigurationJavaScript")!;
-    AutoConfigurationEnabledVal.value = stringToBoolean(AutoConfigurationEnabled.value);
+    AutoConfigurationJavaScript = proxyValues.get(
+        "AutoConfigurationJavaScript",
+    )!;
+    AutoConfigurationEnabledVal.value = stringToBoolean(
+        AutoConfigurationEnabled.value,
+    );
     AutoConfigurationURLVal.value = AutoConfigurationURL.value;
     AutoConfigurationJavaScriptVal.value = AutoConfigurationJavaScript.value;
 
@@ -973,7 +1320,9 @@ onBeforeMount(async () => {
     HTTPSEnableVal.value = stringToBoolean(HTTPSEnable.value);
     HTTPSProxyVal.value = HTTPSProxy.value;
     HTTPSPortVal.value = parseInt(HTTPSPort.value);
-    HTTPSRequiresPasswordVal.value = stringToBoolean(HTTPSRequiresPassword.value);
+    HTTPSRequiresPasswordVal.value = stringToBoolean(
+        HTTPSRequiresPassword.value,
+    );
     HTTPSUsernameVal.value = HTTPSUsername.value;
     HTTPSPasswordVal.value = HTTPSPassword.value;
 
@@ -999,7 +1348,9 @@ onBeforeMount(async () => {
     SOCKSEnableVal.value = stringToBoolean(SOCKSEnable.value);
     SOCKSProxyVal.value = SOCKSProxy.value;
     SOCKSPortVal.value = parseInt(SOCKSPort.value);
-    SOCKSRequiresPasswordVal.value = stringToBoolean(SOCKSRequiresPassword.value);
+    SOCKSRequiresPasswordVal.value = stringToBoolean(
+        SOCKSRequiresPassword.value,
+    );
     SOCKSUsernameVal.value = SOCKSUsername.value;
     SOCKSPasswordVal.value = SOCKSPassword.value;
 
@@ -1015,7 +1366,6 @@ onBeforeMount(async () => {
     RTSPRequiresPasswordVal.value = stringToBoolean(RTSPRequiresPassword.value);
     RTSPUsernameVal.value = RTSPUsername.value;
     RTSPPasswordVal.value = RTSPPassword.value;
-
 });
 
 // ********* URL Filter Rule functions *********************
