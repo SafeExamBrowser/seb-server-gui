@@ -443,7 +443,8 @@ watch([searchQuery, statusFilter], () => {
 const askEnriched = computed(() => {
     const keys = store.appSignatureKeys ?? [];
     const byId = store.clientConnectionsById;
-    return keys.map((ask) => {
+
+    const enriched = keys.map((ask) => {
         const entries = Object.entries(ask.connectionIds ?? {}).map(
             ([idStr, name]) => {
                 const id = Number(idStr);
@@ -451,6 +452,13 @@ const askEnriched = computed(() => {
             },
         );
         return { ...ask, entries };
+    });
+
+    return enriched.sort((a, b) => {
+        const ac = a.entries.length;
+        const bc = b.entries.length;
+        if (ac !== bc) return ac - bc;
+        return String(a.keyValue ?? "").localeCompare(String(b.keyValue ?? ""));
     });
 });
 
