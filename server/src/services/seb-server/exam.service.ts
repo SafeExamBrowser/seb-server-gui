@@ -1,7 +1,6 @@
 import * as apiService from "./api.service";
 import * as constants from "../../utils/constants";
 import * as ENV from "../../config/envConfig";
-import {KEY_INFO_ROUTE} from "../../utils/constants";
 
 
 export async function getExamConfigurationMap(token: string, id: string, options?: {}): Promise<[object, number]>{
@@ -23,6 +22,33 @@ export async function getExamAppSignatureKeys(token: string, id: string): Promis
     const {data, status} = await apiService.api.get(url, {headers: apiService.getHeaders(token)});
     return [data, status];
 }
+
+export async function getGrantedExamAppSignatureKeys(token: string, id: string): Promise<[object, number]>{
+    const url: string =  constants.EXAM_ROUTE + "/" + id + constants.GRANT_ROUTE;
+    const {data, status} = await apiService.api.get(url, {headers: apiService.getHeaders(token)});
+    return [data, status];
+}
+
+export async function grantExamAppSignatureKey(token: string, parentId: string,  id: string, tag: string): Promise<[object, number]>{
+    const url: string =  constants.EXAM_ROUTE + "/" + parentId + constants.GRANT_ROUTE + "/" + id;
+    const { data, status } = await apiService.api.post(
+        url,
+        null,
+        {
+            headers: apiService.getPutHeaders(token),
+            params: {
+                ...(tag ? { tag } : {})
+            },
+        }
+    );    return [data, status];
+}
+
+export async function removeGrantExamAppSignatureKey(token: string, parentId: string,  id: string): Promise<[object, number]>{
+    const url: string =  constants.EXAM_ROUTE + "/" + parentId + constants.GRANT_ROUTE + "/" + id;
+    const {data, status} = await apiService.api.delete(url, {headers: apiService.getHeaders(token)});
+    return [data, status];
+}
+
 
 export async function createExam(token: string, newExam: {}): Promise<[object, number]>{
     const url: string =  constants.EXAM_ROUTE;
