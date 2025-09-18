@@ -34,6 +34,9 @@
                                         class="ask-card mb-3"
                                         :class="{
                                             'ask-card--selected': isSelected,
+                                            'ask-card--warning':
+                                                !ask.tag &&
+                                                ask.entries.length <= 3,
                                         }"
                                         variant="outlined"
                                         @click="toggle"
@@ -98,7 +101,6 @@
                                             }}</span>
                                         </div>
 
-                                        <!-- ROW 3: key value (smaller, bold, fully visible) -->
                                         <div class="ask-row ask-row-key">
                                             <div
                                                 class="ask-key-box ask-key--compact"
@@ -107,13 +109,23 @@
                                                 {{ ask.keyValue }}
                                             </div>
                                         </div>
+
+                                        <v-tooltip
+                                            v-if="isWarning(ask)"
+                                            activator="parent"
+                                            location="start"
+                                            :text="
+                                                i18n.t(
+                                                    'monitoringDetails.monitoringASKDialog.lowConnectionsTooltip',
+                                                )
+                                            "
+                                        />
                                     </v-card>
                                 </template>
                             </v-item>
                         </v-item-group>
                     </div>
 
-                    <!-- Footer: grant input -->
                     <!-- Footer -->
                     <div class="ask-footer px-6 py-2 mt-3">
                         <!-- If NOT granted: show input + grant -->
@@ -413,6 +425,7 @@ function onGrantKey() {
 function trStatus(value: "ALL" | ConnectionStatusEnum) {
     return i18n.t(`monitoringDetails.monitoringASKDialog.statuses.${value}`);
 }
+const isWarning = (ask: any) => !ask.tag && (ask.entries?.length ?? 0) <= 3;
 
 const statusItems = computed(() => {
     const values = Object.values(
@@ -755,5 +768,32 @@ function onRemoveGrant() {
 .ask-list::-webkit-scrollbar-track,
 .connections-list::-webkit-scrollbar-track {
     background: #f3f4f6;
+}
+
+.ask-card--selected {
+    border-color: #215caf;
+    background: #edf5ff;
+    border-width: 3px;
+}
+
+.ask-card--warning {
+    background: #fff8e1;
+    box-shadow:
+        0 1px 0 rgba(0, 0, 0, 0.02),
+        0 2px 6px rgba(246, 195, 68, 0.25);
+}
+
+.ask-card--selected.ask-card--warning {
+    border-color: #215caf;
+    background: #fff8e1;
+    border-width: 3px;
+    box-shadow:
+        0 1px 0 rgba(0, 0, 0, 0.02),
+        0 2px 6px rgba(246, 195, 68, 0.25);
+}
+
+.ask-card--selected.ask-card--warning:hover {
+    border-color: #215caf;
+    background: #fff3c4;
 }
 </style>

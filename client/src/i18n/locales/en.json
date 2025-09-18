@@ -1110,6 +1110,7 @@
             "tag": "Tag: ",
             "granted": "Granted",
             "notGranted": "Not Granted",
+            "lowConnectionsTooltip": "This key has 3 connections or less and is not granted",
 
             "grantKeyButton": "Grant Key",
             "statuses": {
