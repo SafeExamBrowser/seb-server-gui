@@ -25,21 +25,24 @@
                         <!------------ active ------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">
-                                <v-tooltip activator="parent"
-                                    ><p
-                                        v-html="
-                                            translateWithBR(
-                                                'sebSettings.applicationView.permittedProcess.active_tooltip',
-                                            )
-                                        "
-                                /></v-tooltip>
+                                <v-tooltip
+                                    activator="parent"
+                                    location="top left"
+                                    max-width="400"
+                                >
+                                    {{
+                                        translate(
+                                            "sebSettings.applicationView.permittedProcess.active_tooltip",
+                                        )
+                                    }}
+                                </v-tooltip>
                                 {{
                                     translate(
                                         "sebSettings.applicationView.permittedProcess.active",
                                     )
                                 }}
                             </v-col>
-                            <v-col class="pt-0 pb-0"
+                            <v-col class="pt-0 pb-0 pl-0"
                                 ><v-checkbox-btn
                                     v-model="props.permittedProcess!.active"
                                     :disabled="props.readOnly"
@@ -70,14 +73,17 @@
                         <!------------Executable------------->
                         <v-row>
                             <v-col>
-                                <v-tooltip activator="parent"
-                                    ><p
-                                        v-html="
-                                            translateWithBR(
-                                                'sebSettings.applicationView.permittedProcess.executable_tooltip',
-                                            )
-                                        "
-                                /></v-tooltip>
+                                <v-tooltip
+                                    activator="parent"
+                                    location="top left"
+                                    max-width="400"
+                                >
+                                    {{
+                                        translate(
+                                            "sebSettings.applicationView.permittedProcess.executable_tooltip",
+                                        )
+                                    }}
+                                </v-tooltip>
                                 {{
                                     translate(
                                         "sebSettings.applicationView.permittedProcess.executable",
@@ -99,14 +105,17 @@
                         <!------------Title------------->
                         <v-row>
                             <v-col>
-                                <v-tooltip activator="parent"
-                                    ><p
-                                        v-html="
-                                            translateWithBR(
-                                                'sebSettings.applicationView.permittedProcess.title_tooltip',
-                                            )
-                                        "
-                                /></v-tooltip>
+                                <v-tooltip
+                                    activator="parent"
+                                    location="top left"
+                                    max-width="400"
+                                >
+                                    {{
+                                        translate(
+                                            "sebSettings.applicationView.permittedProcess.title_tooltip",
+                                        )
+                                    }}
+                                </v-tooltip>
                                 {{
                                     translate(
                                         "sebSettings.applicationView.permittedProcess.title",
@@ -191,14 +200,17 @@
                         <!------------teamIdentifier------------->
                         <v-row>
                             <v-col>
-                                <v-tooltip activator="parent"
-                                    ><p
-                                        v-html="
-                                            translateWithBR(
-                                                'sebSettings.applicationView.permittedProcess.teamIdentifier_tooltip',
-                                            )
-                                        "
-                                /></v-tooltip>
+                                <v-tooltip
+                                    activator="parent"
+                                    location="top left"
+                                    max-width="400"
+                                >
+                                    {{
+                                        translate(
+                                            "sebSettings.applicationView.permittedProcess.teamIdentifier_tooltip",
+                                        )
+                                    }}
+                                </v-tooltip>
                                 {{
                                     translate(
                                         "sebSettings.applicationView.permittedProcess.teamIdentifier",
@@ -308,14 +320,17 @@
                         <!------------ iconInTaskbar ------------->
                         <v-row align="center">
                             <v-col class="pb-0">
-                                <v-tooltip activator="parent"
-                                    ><p
-                                        v-html="
-                                            translateWithBR(
-                                                'sebSettings.applicationView.permittedProcess.iconInTaskbar_tooltip',
-                                            )
-                                        "
-                                /></v-tooltip>
+                                <v-tooltip
+                                    activator="parent"
+                                    location="top left"
+                                    max-width="400"
+                                >
+                                    {{
+                                        translate(
+                                            "sebSettings.applicationView.permittedProcess.iconInTaskbar_tooltip",
+                                        )
+                                    }}
+                                </v-tooltip>
                                 {{
                                     translate(
                                         "sebSettings.applicationView.permittedProcess.iconInTaskbar",
@@ -334,14 +349,17 @@
                         <!------------ allowOpenAndSavePanel ------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">
-                                <v-tooltip activator="parent"
-                                    ><p
-                                        v-html="
-                                            translateWithBR(
-                                                'sebSettings.applicationView.permittedProcess.allowOpenAndSavePanel_tooltip',
-                                            )
-                                        "
-                                /></v-tooltip>
+                                <v-tooltip
+                                    activator="parent"
+                                    location="top left"
+                                    max-width="400"
+                                >
+                                    {{
+                                        translate(
+                                            "sebSettings.applicationView.permittedProcess.allowOpenAndSavePanel_tooltip",
+                                        )
+                                    }}
+                                </v-tooltip>
                                 {{
                                     translate(
                                         "sebSettings.applicationView.permittedProcess.allowOpenAndSavePanel",
@@ -361,14 +379,17 @@
                         <!------------ autostart ------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">
-                                <v-tooltip activator="parent"
-                                    ><p
-                                        v-html="
-                                            translateWithBR(
-                                                'sebSettings.applicationView.permittedProcess.autostart_tooltip',
-                                            )
-                                        "
-                                /></v-tooltip>
+                                <v-tooltip
+                                    activator="parent"
+                                    location="top left"
+                                    max-width="400"
+                                >
+                                    {{
+                                        translate(
+                                            "sebSettings.applicationView.permittedProcess.autostart_tooltip",
+                                        )
+                                    }}
+                                </v-tooltip>
                                 {{
                                     translate(
                                         "sebSettings.applicationView.permittedProcess.autostart",
@@ -385,14 +406,17 @@
                         <!------------ allowShareSheet ------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">
-                                <v-tooltip activator="parent"
-                                    ><p
-                                        v-html="
-                                            translateWithBR(
-                                                'sebSettings.applicationView.permittedProcess.allowShareSheet_tooltip',
-                                            )
-                                        "
-                                /></v-tooltip>
+                                <v-tooltip
+                                    activator="parent"
+                                    location="top left"
+                                    max-width="400"
+                                >
+                                    {{
+                                        translate(
+                                            "sebSettings.applicationView.permittedProcess.allowShareSheet_tooltip",
+                                        )
+                                    }}
+                                </v-tooltip>
                                 {{
                                     translate(
                                         "sebSettings.applicationView.permittedProcess.allowShareSheet",
@@ -411,14 +435,17 @@
                         <!------------ runInBackground ------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">
-                                <v-tooltip activator="parent"
-                                    ><p
-                                        v-html="
-                                            translateWithBR(
-                                                'sebSettings.applicationView.permittedProcess.runInBackground_tooltip',
-                                            )
-                                        "
-                                /></v-tooltip>
+                                <v-tooltip
+                                    activator="parent"
+                                    location="top left"
+                                    max-width="400"
+                                >
+                                    {{
+                                        translate(
+                                            "sebSettings.applicationView.permittedProcess.runInBackground_tooltip",
+                                        )
+                                    }}
+                                </v-tooltip>
                                 {{
                                     translate(
                                         "sebSettings.applicationView.permittedProcess.runInBackground",
@@ -437,14 +464,17 @@
                         <!------------ allowManualStart ------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">
-                                <v-tooltip activator="parent"
-                                    ><p
-                                        v-html="
-                                            translateWithBR(
-                                                'sebSettings.applicationView.permittedProcess.allowManualStart_tooltip',
-                                            )
-                                        "
-                                /></v-tooltip>
+                                <v-tooltip
+                                    activator="parent"
+                                    location="top left"
+                                    max-width="400"
+                                >
+                                    {{
+                                        translate(
+                                            "sebSettings.applicationView.permittedProcess.allowManualStart_tooltip",
+                                        )
+                                    }}
+                                </v-tooltip>
                                 {{
                                     translate(
                                         "sebSettings.applicationView.permittedProcess.allowManualStart",
@@ -480,14 +510,17 @@
                         <!------------ allowNetworkAccess ------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">
-                                <v-tooltip activator="parent"
-                                    ><p
-                                        v-html="
-                                            translateWithBR(
-                                                'sebSettings.applicationView.permittedProcess.allowNetworkAccess_tooltip',
-                                            )
-                                        "
-                                /></v-tooltip>
+                                <v-tooltip
+                                    activator="parent"
+                                    location="top left"
+                                    max-width="400"
+                                >
+                                    {{
+                                        translate(
+                                            "sebSettings.applicationView.permittedProcess.allowNetworkAccess_tooltip",
+                                        )
+                                    }}
+                                </v-tooltip>
                                 {{
                                     translate(
                                         "sebSettings.applicationView.permittedProcess.allowNetworkAccess",
@@ -507,14 +540,17 @@
                         <!------------ strongKill ------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">
-                                <v-tooltip activator="parent"
-                                    ><p
-                                        v-html="
-                                            translateWithBR(
-                                                'sebSettings.applicationView.permittedProcess.strongKill_tooltip',
-                                            )
-                                        "
-                                /></v-tooltip>
+                                <v-tooltip
+                                    activator="parent"
+                                    location="top left"
+                                    max-width="400"
+                                >
+                                    {{
+                                        translate(
+                                            "sebSettings.applicationView.permittedProcess.strongKill_tooltip",
+                                        )
+                                    }}
+                                </v-tooltip>
                                 {{
                                     translate(
                                         "sebSettings.applicationView.permittedProcess.strongKill",
@@ -564,7 +600,7 @@
 </template>
 
 <script setup lang="ts">
-import { translate, translateWithBR } from "@/utils/generalUtils";
+import { translate } from "@/utils/generalUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 
 const argumentsHeadersRef = ref<any[]>();

@@ -1,6 +1,6 @@
 <template>
     <v-row>
-        <v-col>
+        <v-col :class="sebSettingsStore.cp">
             <v-checkbox-btn
                 v-model="urlFilterEnableVal"
                 :disabled="sebSettingsStore.readonly"
@@ -13,7 +13,7 @@
                 "
             ></v-checkbox-btn>
         </v-col>
-        <v-col>
+        <v-col :class="sebSettingsStore.cp">
             <v-checkbox-btn
                 v-model="urlFilterEnableContentFilterVal"
                 :disabled="sebSettingsStore.readonly"
@@ -152,54 +152,58 @@
     <v-row>
         <v-col>
             <v-row>
-                <v-radio-group
-                    v-model="proxySettingsPolicyVal"
-                    :disabled="sebSettingsStore.readonly"
-                    @update:model-value="
-                        saveSingleValue(
-                            proxySettingsPolicy.id,
-                            proxySettingsPolicyVal,
-                        )
-                    "
-                >
-                    <v-radio
-                        :label="
-                            translate(
-                                'sebSettings.networkView.proxySettingsPolicy.0',
+                <v-col :class="sebSettingsStore.cp">
+                    <v-radio-group
+                        v-model="proxySettingsPolicyVal"
+                        :disabled="sebSettingsStore.readonly"
+                        @update:model-value="
+                            saveSingleValue(
+                                proxySettingsPolicy.id,
+                                proxySettingsPolicyVal,
                             )
                         "
-                        value="0"
-                    ></v-radio>
-                    <v-radio
-                        :label="
-                            translate(
-                                'sebSettings.networkView.proxySettingsPolicy.1',
-                            )
-                        "
-                        value="1"
-                    ></v-radio>
-                </v-radio-group>
+                    >
+                        <v-radio
+                            :label="
+                                translate(
+                                    'sebSettings.networkView.proxySettingsPolicy.0',
+                                )
+                            "
+                            value="0"
+                        ></v-radio>
+                        <v-radio
+                            :label="
+                                translate(
+                                    'sebSettings.networkView.proxySettingsPolicy.1',
+                                )
+                            "
+                            value="1"
+                        ></v-radio>
+                    </v-radio-group>
+                </v-col>
             </v-row>
             <v-row>
-                <v-checkbox-btn
-                    v-model="ExcludeSimpleHostnamesVal"
-                    :disabled="sebSettingsStore.readonly"
-                    :label="
-                        translate(
-                            'sebSettings.networkView.ExcludeSimpleHostnames',
-                        )
-                    "
-                    @update:model-value="
-                        saveSingleValue(
-                            ExcludeSimpleHostnames.id,
-                            ExcludeSimpleHostnamesVal ? 'true' : 'false',
-                        )
-                    "
-                ></v-checkbox-btn>
+                <v-col :class="sebSettingsStore.cp">
+                    <v-checkbox-btn
+                        v-model="ExcludeSimpleHostnamesVal"
+                        :disabled="sebSettingsStore.readonly"
+                        :label="
+                            translate(
+                                'sebSettings.networkView.ExcludeSimpleHostnames',
+                            )
+                        "
+                        @update:model-value="
+                            saveSingleValue(
+                                ExcludeSimpleHostnames.id,
+                                ExcludeSimpleHostnamesVal ? 'true' : 'false',
+                            )
+                        "
+                    ></v-checkbox-btn>
+                </v-col>
             </v-row>
 
             <v-row>
-                <v-col>
+                <v-col :class="sebSettingsStore.fp">
                     {{ translate("sebSettings.networkView.ExceptionsList") }}
                     <v-text-field
                         v-model="ExceptionsListVal"
@@ -220,44 +224,50 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-checkbox-btn
-                    v-model="FTPPassiveVal"
-                    :disabled="sebSettingsStore.readonly"
-                    :label="translate('sebSettings.networkView.FTPPassive')"
-                    @update:model-value="
-                        saveSingleValue(
-                            FTPPassive.id,
-                            FTPPassiveVal ? 'true' : 'false',
-                        )
-                    "
-                ></v-checkbox-btn>
+                <v-col :class="sebSettingsStore.cp">
+                    <v-checkbox-btn
+                        v-model="FTPPassiveVal"
+                        :disabled="sebSettingsStore.readonly"
+                        :label="translate('sebSettings.networkView.FTPPassive')"
+                        @update:model-value="
+                            saveSingleValue(
+                                FTPPassive.id,
+                                FTPPassiveVal ? 'true' : 'false',
+                            )
+                        "
+                    ></v-checkbox-btn>
+                </v-col>
             </v-row>
         </v-col>
         <v-col>
             <v-expansion-panels variant="accordion">
                 <v-expansion-panel title="Auto Proxy Discovers">
                     <v-expansion-panel-text>
-                        <v-checkbox-btn
-                            v-model="AutoDiscoveryEnabledVal"
-                            :disabled="sebSettingsStore.readonly"
-                            :label="
-                                translate(
-                                    'sebSettings.networkView.AutoDiscoveryEnabled',
-                                )
-                            "
-                            @update:model-value="
-                                saveSingleValue(
-                                    AutoDiscoveryEnabled.id,
-                                    AutoDiscoveryEnabledVal ? 'true' : 'false',
-                                )
-                            "
-                        ></v-checkbox-btn>
+                        <v-col :class="sebSettingsStore.cp">
+                            <v-checkbox-btn
+                                v-model="AutoDiscoveryEnabledVal"
+                                :disabled="sebSettingsStore.readonly"
+                                :label="
+                                    translate(
+                                        'sebSettings.networkView.AutoDiscoveryEnabled',
+                                    )
+                                "
+                                @update:model-value="
+                                    saveSingleValue(
+                                        AutoDiscoveryEnabled.id,
+                                        AutoDiscoveryEnabledVal
+                                            ? 'true'
+                                            : 'false',
+                                    )
+                                "
+                            ></v-checkbox-btn
+                        ></v-col>
                     </v-expansion-panel-text>
                 </v-expansion-panel>
                 <v-expansion-panel title="Automatic Proxy Configuration">
                     <v-expansion-panel-text>
                         <v-row>
-                            <v-col>
+                            <v-col :class="sebSettingsStore.cp">
                                 <v-checkbox-btn
                                     v-model="AutoConfigurationEnabledVal"
                                     :disabled="sebSettingsStore.readonly"
@@ -278,7 +288,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col>
+                            <v-col :class="sebSettingsStore.fp">
                                 {{
                                     translate(
                                         "sebSettings.networkView.AutoConfigurationURL",
@@ -303,7 +313,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col>
+                            <v-col :class="sebSettingsStore.fp">
                                 {{
                                     translate(
                                         "sebSettings.networkView.AutoConfigurationJavaScript",
@@ -332,7 +342,7 @@
                 <v-expansion-panel title="Web Proxy (HTTP)">
                     <v-expansion-panel-text>
                         <v-row>
-                            <v-col>
+                            <v-col :class="sebSettingsStore.cp">
                                 <v-checkbox-btn
                                     v-model="HTTPEnableVal"
                                     :disabled="sebSettingsStore.readonly"
@@ -351,7 +361,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col>
+                            <v-col :class="sebSettingsStore.fp">
                                 {{
                                     translate(
                                         "sebSettings.networkView.HTTPProxy",
@@ -376,7 +386,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col>
+                            <v-col :class="sebSettingsStore.fp">
                                 {{
                                     translate(
                                         "sebSettings.networkView.HTTPPort",
@@ -401,7 +411,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col>
+                            <v-col :class="sebSettingsStore.cp">
                                 <v-checkbox-btn
                                     v-model="HTTPRequiresPasswordVal"
                                     :disabled="sebSettingsStore.readonly"
@@ -422,7 +432,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col>
+                            <v-col :class="sebSettingsStore.fp">
                                 {{
                                     translate(
                                         "sebSettings.networkView.HTTPUsername",
@@ -447,7 +457,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col>
+                            <v-col :class="sebSettingsStore.fp">
                                 {{
                                     translate(
                                         "sebSettings.networkView.HTTPPassword",
@@ -476,7 +486,7 @@
                 <v-expansion-panel title="Secure Web Proxy (HTTPS)">
                     <v-expansion-panel-text>
                         <v-row>
-                            <v-col>
+                            <v-col :class="sebSettingsStore.cp">
                                 <v-checkbox-btn
                                     v-model="HTTPSEnableVal"
                                     :disabled="sebSettingsStore.readonly"
@@ -495,7 +505,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col>
+                            <v-col :class="sebSettingsStore.fp">
                                 {{
                                     translate(
                                         "sebSettings.networkView.HTTPSProxy",
@@ -520,7 +530,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col>
+                            <v-col :class="sebSettingsStore.fp">
                                 {{
                                     translate(
                                         "sebSettings.networkView.HTTPSPort",
@@ -545,7 +555,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col>
+                            <v-col :class="sebSettingsStore.cp">
                                 <v-checkbox-btn
                                     v-model="HTTPSRequiresPasswordVal"
                                     :disabled="sebSettingsStore.readonly"
@@ -566,7 +576,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col>
+                            <v-col :class="sebSettingsStore.fp">
                                 {{
                                     translate(
                                         "sebSettings.networkView.HTTPSUsername",
@@ -591,7 +601,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col>
+                            <v-col :class="sebSettingsStore.fp">
                                 {{
                                     translate(
                                         "sebSettings.networkView.HTTPSPassword",
@@ -620,7 +630,7 @@
                 <v-expansion-panel title="FTP Proxy">
                     <v-expansion-panel-text>
                         <v-row>
-                            <v-col>
+                            <v-col :class="sebSettingsStore.cp">
                                 <v-checkbox-btn
                                     v-model="FTPEnableVal"
                                     :disabled="sebSettingsStore.readonly"
@@ -639,7 +649,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col>
+                            <v-col :class="sebSettingsStore.fp">
                                 {{
                                     translate(
                                         "sebSettings.networkView.FTPProxy",
@@ -664,7 +674,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col>
+                            <v-col :class="sebSettingsStore.fp">
                                 {{
                                     translate("sebSettings.networkView.FTPPort")
                                 }}
@@ -687,7 +697,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col>
+                            <v-col :class="sebSettingsStore.cp">
                                 <v-checkbox-btn
                                     v-model="FTPRequiresPasswordVal"
                                     :disabled="sebSettingsStore.readonly"
@@ -708,7 +718,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col>
+                            <v-col :class="sebSettingsStore.fp">
                                 {{
                                     translate(
                                         "sebSettings.networkView.FTPUsername",
@@ -733,7 +743,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col>
+                            <v-col :class="sebSettingsStore.fp">
                                 {{
                                     translate(
                                         "sebSettings.networkView.FTPPassword",
@@ -762,7 +772,7 @@
                 <v-expansion-panel title="SOCKS Proxy">
                     <v-expansion-panel-text>
                         <v-row>
-                            <v-col>
+                            <v-col :class="sebSettingsStore.cp">
                                 <v-checkbox-btn
                                     v-model="SOCKSEnableVal"
                                     :disabled="sebSettingsStore.readonly"
@@ -781,7 +791,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col>
+                            <v-col :class="sebSettingsStore.fp">
                                 {{
                                     translate(
                                         "sebSettings.networkView.SOCKSProxy",
@@ -806,7 +816,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col>
+                            <v-col :class="sebSettingsStore.fp">
                                 {{
                                     translate(
                                         "sebSettings.networkView.SOCKSPort",
@@ -831,7 +841,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col>
+                            <v-col :class="sebSettingsStore.cp">
                                 <v-checkbox-btn
                                     v-model="SOCKSRequiresPasswordVal"
                                     :disabled="sebSettingsStore.readonly"
@@ -852,7 +862,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col>
+                            <v-col :class="sebSettingsStore.fp">
                                 {{
                                     translate(
                                         "sebSettings.networkView.SOCKSUsername",
@@ -877,7 +887,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col>
+                            <v-col :class="sebSettingsStore.fp">
                                 {{
                                     translate(
                                         "sebSettings.networkView.SOCKSPassword",
@@ -906,7 +916,7 @@
                 <v-expansion-panel title="Streaming Proxy (RTSP)">
                     <v-expansion-panel-text>
                         <v-row>
-                            <v-col>
+                            <v-col :class="sebSettingsStore.cp">
                                 <v-checkbox-btn
                                     v-model="RTSPEnableVal"
                                     :disabled="sebSettingsStore.readonly"
@@ -925,7 +935,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col>
+                            <v-col :class="sebSettingsStore.fp">
                                 {{
                                     translate(
                                         "sebSettings.networkView.RTSPProxy",
@@ -950,7 +960,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col>
+                            <v-col :class="sebSettingsStore.fp">
                                 {{
                                     translate(
                                         "sebSettings.networkView.RTSPPort",
@@ -975,7 +985,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col>
+                            <v-col :class="sebSettingsStore.cp">
                                 <v-checkbox-btn
                                     v-model="RTSPRequiresPasswordVal"
                                     :disabled="sebSettingsStore.readonly"
@@ -996,7 +1006,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col>
+                            <v-col :class="sebSettingsStore.fp">
                                 {{
                                     translate(
                                         "sebSettings.networkView.RTSPUsername",
@@ -1021,7 +1031,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col>
+                            <v-col :class="sebSettingsStore.fp">
                                 {{
                                     translate(
                                         "sebSettings.networkView.RTSPPassword",
@@ -1221,13 +1231,13 @@ onBeforeMount(async () => {
 
     componentId = sebSettingsStore.selectedContainerId.toString();
 
-    const applicationSettings: SEBSettingsView | null =
+    const networkSettings: SEBSettingsView | null =
         await sebSettingsService.getViewSettings(
             ViewType.NETWORK,
             componentId,
             sebSettingsStore.isExam,
         );
-    if (applicationSettings == null) {
+    if (networkSettings == null) {
         return;
     }
 
@@ -1235,16 +1245,15 @@ onBeforeMount(async () => {
         urlFilterHeaders.value[4].title = translate("general.viewButton", i18n);
     }
 
-    const settingsView: SEBSettingsView = applicationSettings;
     const tableValues: Map<string, SEBSettingsTableRowValues[]> = new Map<
         string,
         SEBSettingsTableRowValues[]
-    >(Object.entries(settingsView.tableValues));
+    >(Object.entries(networkSettings.tableValues));
 
     const singleValues: Map<string, SEBSettingsValue> = new Map<
         string,
         SEBSettingsValue
-    >(Object.entries(settingsView.singleValues));
+    >(Object.entries(networkSettings.singleValues));
 
     const proxyValues: Map<string, SEBSettingsValue> = new Map<
         string,

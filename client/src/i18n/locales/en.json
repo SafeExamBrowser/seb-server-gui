@@ -681,13 +681,31 @@
     },
 
     "sebSettings": {
+        "pwdMismatch": "The password and confirm password must match",
         "views": {
             "general": "General",
+            "userInterface": "User Interface",
+            "browser": "Browser",
+            "downUploads": "Down / Uploads",
+            "exam": "Exam",
             "apps": "Applications",
-            "network": "Network"
+            "network": "Network",
+            "security": "Security",
+            "registry": "Registry",
+            "hookedKeys": "Hooked Keys",
+            "proctoring": "Proctoring"
+        },
+        "generalView": {
+            "adminPassword": "Administrator Password",
+            "confirmAdminPassword": "Confirm Administrator Password",
+            "allowQuit": "Allow user to Quit SEB",
+            "allowQuit_tooltip": "Users can quit SEB with Control-Q, window close or quit button.\nOtherwise use a quit link in your exam system or shutdown/restart the computer.",
+            "quitPassword": "Quit Password",
+            "confirmQuitPassword": "Confirm Quit Password"
         },
         "applicationView": {
             "allowSwitchToApplications": "Allow switching to third party application (Mac)",
+            "allowSwitchToApplications_tooltip": "Decreases security of the kiosk mode by allowing process switcher (Cmd+Tab).\nThe blacked out background of SEB also doesn't cover some alerts and modal windows in this mode.",
             "allowFlashFullscreen": "Allow Flash to switch to fullscreen mode (Mac)",
             "permittedProcess": {
                 "settingName": "Permitted Processes",
@@ -723,15 +741,15 @@
                 "runInBackground_tooltip": "Allow the permitted process to already be running when SEB starts.\n Such a process can't have an icon in the task bar.",
                 "allowUserToChooseApp": "Allow user to select location of application",
                 "strongKill": "Force quit (risk of data loss)",
-                "strongKill_tooltip": "Terminate process in a not-nice way, which may cause data loss if the application had unsaved data",
+                "strongKill_tooltip": "Terminate process in a not-nice way,\nwhich may cause data loss if the application had unsaved data",
                 "allowOpenAndSavePanel": "Allow open/save panel",
                 "allowShareSheet": "Allow share sheet",
                 "allowManualStart": "Allow manual start",
                 "allowNetworkAccess": "Allow network access",
                 "teamIdentifier": "Team Identifier",
-                "allowOpenAndSavePanel_tooltip": "When using AAC Assessment Mode, SEB blocks the macOS Open File and Save As panel. Users cannot browse the file system and open files manually in most permitted apps with AAC Multi App Mode.",
-                "allowShareSheet_tooltip": "When using AAC Assessment Mode, SEB blocks the macOS share sheet. Users cannot share documents in permitted apps with AAC Multi App Mode.",
-                "allowManualStart_tooltip": "Allow user to start the additional application with its Dock icon. Otherwise the app can be started by downloading and opening its documents",
+                "allowOpenAndSavePanel_tooltip": "When using AAC Assessment Mode,\nSEB blocks the macOS Open File and Save As panel.\nUsers cannot browse the file system and open files manually\nin most permitted apps with AAC Multi App Mode.",
+                "allowShareSheet_tooltip": "When using AAC Assessment Mode, SEB blocks the macOS share sheet.\nUsers cannot share documents in permitted apps with AAC Multi App Mode.",
+                "allowManualStart_tooltip": "Allow user to start the additional application with its Dock icon.\nOtherwise the app can be started by downloading and opening its documents",
                 "allowNetworkAccess_tooltip": "Allow the permitted app in AAC Multi App Mode to access the network/internet",
                 "teamIdentifier_tooltip": "Team identifier of the app's code signature"
             },

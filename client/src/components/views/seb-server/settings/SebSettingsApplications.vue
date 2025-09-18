@@ -1,6 +1,6 @@
 <template>
-    <v-row>
-        <v-col>
+    <v-row max-width="300">
+        <v-col :class="sebSettingsStore.cp">
             <v-checkbox-btn
                 v-model="allowSwitchToApplicationsVal"
                 :disabled="sebSettingsStore.readonly"
@@ -16,6 +16,13 @@
                     )
                 "
             ></v-checkbox-btn>
+            <v-tooltip activator="parent" location="top left" max-width="400">
+                {{
+                    translate(
+                        "sebSettings.applicationView.allowSwitchToApplications_tooltip",
+                    )
+                }}
+            </v-tooltip>
         </v-col>
     </v-row>
 
@@ -121,7 +128,7 @@
         </EditPermittedProcess>
     </v-dialog>
 
-    <v-row class="text-subtitle-1">
+    <v-row>
         <v-col class="text-subtitle-1">
             <v-row>
                 <v-col>{{
@@ -363,15 +370,14 @@ onBeforeMount(async () => {
         );
     }
 
-    const settingsView: SEBSettingsView = applicationSettings;
     const tableValues: Map<string, SEBSettingsTableRowValues[]> = new Map<
         string,
         SEBSettingsTableRowValues[]
-    >(Object.entries(settingsView.tableValues));
+    >(Object.entries(applicationSettings.tableValues));
     const singleValues: Map<string, SEBSettingsValue> = new Map<
         string,
         SEBSettingsValue
-    >(Object.entries(settingsView.singleValues));
+    >(Object.entries(applicationSettings.singleValues));
     allowSwitchToApplications = singleValues.get("allowSwitchToApplications")!;
     allowSwitchToApplicationsVal.value =
         allowSwitchToApplications.value === "true";

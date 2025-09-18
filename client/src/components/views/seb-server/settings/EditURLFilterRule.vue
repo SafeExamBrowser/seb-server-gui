@@ -27,11 +27,11 @@
                             <v-col class="pt-0 pb-0">
                                 {{
                                     translate(
-                                        "examDetail.sebSettings.networkView.URLFilterRules.active",
+                                        "sebSettings.networkView.URLFilterRules.active",
                                     )
                                 }}
                             </v-col>
-                            <v-col class="pt-0 pb-0"
+                            <v-col class="pt-0 pb-0 pl-0"
                                 ><v-checkbox-btn
                                     v-model="props.urlFilterRule!.active"
                                     :disabled="props.readOnly"
@@ -47,7 +47,7 @@
                                     )
                                 }}
                             </v-col>
-                            <v-col class="pt-0 pb-0"
+                            <v-col class="pt-0 pb-0 pl-0"
                                 ><v-checkbox-btn
                                     v-model="props.urlFilterRule!.regex"
                                     :disabled="props.readOnly"

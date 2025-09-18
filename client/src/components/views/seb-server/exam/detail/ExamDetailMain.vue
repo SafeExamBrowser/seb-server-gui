@@ -896,7 +896,7 @@
     </v-dialog>
 
     <!-----------seb settings dialog---------->
-    <v-dialog v-model="sebSettingsDialog" max-width="1200" persistent>
+    <v-dialog v-model="sebSettingsDialog" persistent>
         <SebSettingsDialog @close-seb-settings-dialog="closeSebSettingsDialog">
         </SebSettingsDialog>
     </v-dialog>
