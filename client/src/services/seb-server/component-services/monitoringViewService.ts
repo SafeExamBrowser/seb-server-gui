@@ -84,14 +84,35 @@ export async function getExamAndStore(examId: string) {
 
 export async function getAskAndStore(examId: string) {
     const store = useMonitoringStore();
+
     const ask: AppSignatureKey[] | null =
         await examViewService.getExamAppSignatureKeys(examId);
 
-    store.appSignatureKeys = ask ?? [];
+    const grantedAsk: GrantedAppSignatureKey[] | null =
+        await examViewService.getGrantedExamAppSignatureKeys(examId);
+
+    const grantedByKey = new Map<string, GrantedAppSignatureKey>(
+        (grantedAsk ?? []).map((g) => [g.keyValue, g]),
+    );
+
+    const merged: AppSignatureKeysWithGrantValues[] = (ask ?? []).map((a) => {
+        const g = grantedByKey.get(a.keyValue);
+        return {
+            id: g?.id,
+            institutionId: a.institutionId,
+            examId: a.examId,
+            keyValue: a.keyValue,
+            connectionIds: a.connectionIds ?? {},
+            keyType: g?.keyType,
+            tag: g?.tag,
+        };
+    });
+
+    store.appSignatureKeys = merged;
 
     const ids: number[] = Array.from(
         new Set(
-            (ask ?? []).flatMap((k) =>
+            merged.flatMap((k) =>
                 Object.keys(k.connectionIds ?? {}).map((id) => Number(id)),
             ),
         ),
@@ -102,6 +123,7 @@ export async function getAskAndStore(examId: string) {
         return;
     }
 
+    // 6) Fetch connections for those IDs
     const list = await clientConnectionService.getClientConnectionList(ids);
     store.clientConnectionList = list ?? [];
 }

@@ -29,7 +29,9 @@ export const useMonitoringStore = defineStore("monitoring", () => {
     const currentMonitoringQuery = ref<{}>();
     const batteryIndicatorId = ref<number | null>(null);
     const wlanIndicatorId = ref<number | null>(null);
-    const appSignatureKeys = ref<AppSignatureKey[] | null>(null);
+    const appSignatureKeys = ref<AppSignatureKeysWithGrantValues[] | null>(
+        null,
+    );
     const clientConnectionList = ref<SebClientConnection[] | null>(null);
 
     // monitoring detail
