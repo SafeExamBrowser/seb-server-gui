@@ -128,7 +128,9 @@ import * as monitoringViewService from "@/services/seb-server/component-services
 import { NotificationEnum } from "@/models/seb-server/monitoringEnums";
 import { useDisplay } from "vuetify";
 import { translate } from "@/utils/generalUtils";
-import { nextTick } from "vue";
+import { ComputedRef, nextTick } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
+import { useRoute } from "vue-router";
 
 // route params
 const examId = useRoute().params.examId.toString();
