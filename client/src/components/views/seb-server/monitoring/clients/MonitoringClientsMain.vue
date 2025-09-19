@@ -200,6 +200,15 @@ import {
 import { MonitoringRow } from "@/models/seb-server/monitoringClients";
 import { storeToRefs } from "pinia";
 import { useI18n } from "vue-i18n";
+import { useRoute } from "vue-router";
+import {
+    ref,
+    onMounted,
+    watch,
+    onUnmounted,
+    onUpdated,
+    onBeforeUnmount,
+} from "vue";
 
 // exam
 const examId = useRoute().params.examId.toString();

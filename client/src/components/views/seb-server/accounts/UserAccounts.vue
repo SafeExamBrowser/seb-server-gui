@@ -548,7 +548,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useAppBarStore, useLayoutStore } from "@/stores/store";
 import { useUserAccountStore } from "@/stores/seb-server/userAccountStore";
 import { useI18n } from "vue-i18n";

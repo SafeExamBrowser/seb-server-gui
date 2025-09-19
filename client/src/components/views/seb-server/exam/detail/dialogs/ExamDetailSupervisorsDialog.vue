@@ -160,6 +160,7 @@
 import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
 import * as tableUtils from "@/utils/table/tableUtils";
 import { translate } from "@/utils/generalUtils";
+import { ref, onBeforeMount, computed } from "vue";
 
 // main item
 const selectedExamSupervisors = ref<UserAccount[]>([]);

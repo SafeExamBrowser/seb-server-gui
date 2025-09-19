@@ -12,6 +12,8 @@ import { translate } from "@/utils/generalUtils";
 import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
 import * as indicatorViewService from "@/services/seb-server/component-services/indicatorViewService";
 import MonitoringClientsMain from "@/components/views/seb-server/monitoring/clients/MonitoringClientsMain.vue";
+import { useRoute } from "vue-router";
+import { ref, onBeforeMount, onBeforeUnmount } from "vue";
 
 // exam
 const examId = useRoute().params.examId.toString();

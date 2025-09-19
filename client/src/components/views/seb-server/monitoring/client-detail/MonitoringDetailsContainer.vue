@@ -11,6 +11,8 @@ import { useAppBarStore } from "@/stores/store";
 import { translate } from "@/utils/generalUtils";
 import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
 import * as indicatorViewService from "@/services/seb-server/component-services/indicatorViewService";
+import { useRoute } from "vue-router";
+import { ref, onBeforeMount, onBeforeUnmount } from "vue";
 
 // route params
 const examId = useRoute().params.examId.toString();

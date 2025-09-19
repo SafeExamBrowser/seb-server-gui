@@ -38,6 +38,7 @@
 import { ref } from "vue";
 import { useErrorStore } from "@/stores/seb-server/errorStore";
 import { storeToRefs } from "pinia";
+import { watch } from "vue";
 
 // store
 const errorStore = useErrorStore();

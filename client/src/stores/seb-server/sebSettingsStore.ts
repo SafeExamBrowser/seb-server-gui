@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { ref } from "vue";
 
 export const useSEBSettingsStore = defineStore("sebSettings", () => {
     // indicates we currently work with Exam SEB Settings. If false we work with Configuration Template SEB Settings

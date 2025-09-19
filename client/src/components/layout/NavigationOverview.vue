@@ -270,6 +270,7 @@
 import { useAppBarStore, useNavigationStore } from "@/stores/store";
 import * as constants from "@/utils/constants";
 import * as spConstants from "@/utils/sp-constants";
+import { onBeforeMount, onMounted, onUnmounted } from "vue";
 import { translate } from "@/utils/generalUtils";
 import * as generalUtils from "@/utils/generalUtils";
 import { useAuthStore } from "@/stores/authentication/authenticationStore";

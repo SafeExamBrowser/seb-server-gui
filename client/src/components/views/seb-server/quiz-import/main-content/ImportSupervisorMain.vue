@@ -148,6 +148,7 @@ import * as userAccountViewService from "@/services/seb-server/component-service
 import { useQuizImportStore } from "@/stores/seb-server/quizImportStore";
 import { translate } from "@/utils/generalUtils";
 import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
+import { ref, computed, onBeforeMount } from "vue";
 
 // stores
 const quizImportStore = useQuizImportStore();

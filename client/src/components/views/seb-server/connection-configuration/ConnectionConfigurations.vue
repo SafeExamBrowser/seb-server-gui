@@ -401,7 +401,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useAppBarStore, useLayoutStore } from "@/stores/store";
 import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";

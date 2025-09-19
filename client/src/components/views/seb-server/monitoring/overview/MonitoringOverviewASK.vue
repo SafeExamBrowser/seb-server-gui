@@ -59,6 +59,7 @@
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import { translate } from "@/utils/generalUtils";
 import AskDialog from "@/components/views/seb-server/monitoring/overview/dialogs/AskDialog.vue";
+import { ref, computed } from "vue";
 
 // stores
 const monitoringStore = useMonitoringStore();

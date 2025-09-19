@@ -301,6 +301,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { navigateTo } from "@/router/navigation";
+import { onMounted } from "vue";
 import * as constants from "@/utils/constants";
 import * as registerAccountViewService from "@/services/seb-server/component-services/registerAccountViewService";
 

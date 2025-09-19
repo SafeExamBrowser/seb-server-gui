@@ -28,7 +28,7 @@
 import { useAppBarStore } from "@/stores/store";
 import { translate } from "@/utils/generalUtils";
 import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
-
+import { onBeforeMount } from "vue";
 import HomePageInfo from "@/components/views/seb-server/home/HomePageInfo.vue";
 import HomePageMain from "@/components/views/seb-server/home/HomePageMain.vue";
 

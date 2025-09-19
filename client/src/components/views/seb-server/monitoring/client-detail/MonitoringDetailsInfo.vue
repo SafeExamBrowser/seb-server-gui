@@ -222,6 +222,8 @@ import { InstructionEnum } from "@/models/seb-server/instructionEnum";
 import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants";
 import { IndicatorEnum } from "@/models/seb-server/monitoringEnums";
+import { useRoute } from "vue-router";
+import { computed, ref } from "vue";
 
 // route params
 const examId = useRoute().params.examId.toString();

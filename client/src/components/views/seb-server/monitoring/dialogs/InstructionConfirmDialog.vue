@@ -79,6 +79,8 @@
 import { InstructionEnum } from "@/models/seb-server/instructionEnum";
 import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
 import { translate } from "@/utils/generalUtils";
+import { useRoute } from "vue-router";
+import { ref } from "vue";
 
 // exam
 const examId = useRoute().params.examId.toString();

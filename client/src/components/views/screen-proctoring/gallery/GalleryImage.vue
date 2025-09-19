@@ -259,6 +259,7 @@ import * as linkService from "@/services/screen-proctoring/component-services/li
 import { useAppBarStore, useGalleryStore } from "@/stores/store";
 import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
+import { useRoute } from "vue-router";
 
 // props
 const props = defineProps<{

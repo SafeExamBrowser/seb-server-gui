@@ -75,6 +75,8 @@ import { translate } from "@/utils/generalUtils";
 import { useAppBarStore } from "@/stores/store";
 import MonitoringOverviewIndicators from "@/components/views/seb-server/monitoring/overview/MonitoringOverviewIndicators.vue";
 import * as indicatorService from "@/services/seb-server/component-services/indicatorViewService";
+import { useRoute } from "vue-router";
+import { onBeforeMount, onBeforeUnmount } from "vue";
 
 // exam
 const examId = useRoute().params.examId.toString();

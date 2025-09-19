@@ -202,6 +202,7 @@ import { VDateInput } from "vuetify/labs/VDateInput";
 import { translate } from "@/utils/generalUtils";
 import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants";
+import { ref } from "vue";
 
 // stores
 const examStore = useExamStore();

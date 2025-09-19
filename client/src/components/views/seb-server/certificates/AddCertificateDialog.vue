@@ -175,7 +175,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { translate } from "@/utils/generalUtils";
 import * as certificateViewService from "@/services/seb-server/component-services/certificateViewService";
 import { useI18n } from "vue-i18n";
