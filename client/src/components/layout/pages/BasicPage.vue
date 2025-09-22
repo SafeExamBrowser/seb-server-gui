@@ -1,23 +1,31 @@
 <template>
     <div class="fill-height d-flex flex-column">
-        <v-row class="flex-grow-0">
+        <v-row class="flex-grow-0 flex-shrink-0">
             <v-col>
                 <Breadcrumb :items="breadcrumb" />
             </v-col>
         </v-row>
-        <v-row class="flex-grow-0">
+        <v-row class="flex-grow-0 flex-shrink-0">
             <v-col>
                 <PageTitle :title="title" />
             </v-col>
         </v-row>
-        <v-row class="flex-grow-1">
-            <v-col cols="9">
-                <v-card elevation="4" rounded="lg" class="fill-height">
+        <v-row class="flex-grow-1 flex-shrink-1 overflow-y-auto">
+            <v-col cols="9" class="fill-height overflow-y-auto">
+                <v-card
+                    elevation="4"
+                    rounded="lg"
+                    class="fill-height overflow-y-auto"
+                >
                     <slot name="PanelMain"></slot>
                 </v-card>
             </v-col>
-            <v-col cols="3">
-                <v-card elevation="4" rounded="lg" class="fill-height">
+            <v-col cols="3" class="fill-height overflow-y-auto">
+                <v-card
+                    elevation="4"
+                    rounded="lg"
+                    class="fill-height overflow-y-auto"
+                >
                     <slot name="PanelAside"></slot>
                 </v-card>
             </v-col>
