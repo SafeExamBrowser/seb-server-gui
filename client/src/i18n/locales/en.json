@@ -232,23 +232,23 @@
         "steps": {
             "naming": {
                 "title": "Name it",
-                "subtitle": "TODO"
+                "subtitle": "TODO: translate (Kristina)"
             },
             "supervisors": {
                 "title": "Add Exam Supervisors",
-                "subtitle": "TODO"
+                "subtitle": "TODO: translate (Kristina)"
             },
             "indicators": {
                 "title": "Add Indicators",
-                "subtitle": "TODO"
+                "subtitle": "TODO: translate (Kristina)"
             },
             "clientGroup": {
                 "title": "Add Client Group",
-                "subtitle": "TODO"
+                "subtitle": "TODO: translate (Kristina)"
             },
             "summary": {
                 "title": "Overview Exam Template",
-                "subtitle": "TODO"
+                "subtitle": "TODO: translate (Kristina)"
             }
         }
     },
