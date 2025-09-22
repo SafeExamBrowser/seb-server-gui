@@ -228,6 +228,31 @@
         }
     },
 
+    "createTemplateExam": {
+        "steps": {
+            "naming": {
+                "title": "Name it",
+                "subtitle": "TODO"
+            },
+            "supervisors": {
+                "title": "Add Exam Supervisors",
+                "subtitle": "TODO"
+            },
+            "indicators": {
+                "title": "Add Indicators",
+                "subtitle": "TODO"
+            },
+            "clientGroup": {
+                "title": "Add Client Group",
+                "subtitle": "TODO"
+            },
+            "summary": {
+                "title": "Overview Exam Template",
+                "subtitle": "TODO"
+            }
+        }
+    },
+
     "galleryView": {
         "generalInfo": {
             "page": "Page",
