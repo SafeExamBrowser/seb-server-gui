@@ -36,11 +36,7 @@
         </AlertMsg>
     </template>
 
-    <div
-        v-if="!isNoAssessmentTool"
-        class="d-flex flex-column flex-grow-1"
-        style="height: 100%; min-height: 0; width: 100%"
-    >
+    <div v-if="!isNoAssessmentTool" class="d-flex flex-column flex-grow-1">
         <component
             :is="
                 quizImportStore.infoBoxComponents[

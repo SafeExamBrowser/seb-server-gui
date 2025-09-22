@@ -444,20 +444,14 @@
     <v-main class="d-flex flex-column fill-height">
         <div
             :class="[
+                'fill-height pa-4 overflow-y-auto',
                 isNavOverviewRoute || layoutStore.isBlueBackground
                     ? 'full-page-blue'
                     : 'full-page-default',
             ]"
-            data-testid="layout-content"
-            style="min-height: 100%; width: 100%"
+            :data-testid="`${(useRoute().name || 'unknown').toString().toLowerCase()}-page-container`"
         >
-            <v-container
-                class="flex-grow-1"
-                :data-testid="`${(useRoute().name || 'unknown').toString().toLowerCase()}-page-container`"
-                fluid
-            >
-                <router-view />
-            </v-container>
+            <router-view />
         </div>
     </v-main>
 </template>
@@ -857,14 +851,10 @@ function changeGridSize(gridSize: GridSize) {
 
 .full-page-blue {
     background-color: #215caf;
-    min-height: 100%;
-    width: 100%;
 }
 
 .full-page-default {
     background-color: #f6f6f6;
-    min-height: 100%;
-    width: 100%;
 }
 
 .v-app-bar-title {

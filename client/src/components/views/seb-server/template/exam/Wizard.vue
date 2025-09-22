@@ -1,32 +1,27 @@
 <template>
-    <!-- TODO: 63vh here is arbitrary (inspired by the ImportWizard). Shouldn't the container in the main layout grow to fill the height so we could do "fill-height" here? -->
-    <div style="height: 63vh">
-        <BasicPage
-            :title="$t('titles.createTemplateExam')"
-            :breadcrumb="[
-                {
-                    label: $t('titles.createTemplate'),
-                    link: constants.CREATE_EXAM_TEMPLATE_ROUTE,
-                },
-                { label: store.currentStep.title },
-            ]"
-        >
-            <template #PanelMain>
-                <component
-                    :is="stepComponents[store.currentStep.componentName]"
-                />
-            </template>
-            <template #PanelAside>
-                <Stepper
-                    :steps="store.stepperModel"
-                    :current-step="store.currentStepIndex"
-                    @next="handleStepperNext"
-                    @prev="handleStepperPrev"
-                    @finish="handleStepperFinish"
-                />
-            </template>
-        </BasicPage>
-    </div>
+    <BasicPage
+        :title="$t('titles.createTemplateExam')"
+        :breadcrumb="[
+            {
+                label: $t('titles.createTemplate'),
+                link: constants.CREATE_EXAM_TEMPLATE_ROUTE,
+            },
+            { label: store.currentStep.title },
+        ]"
+    >
+        <template #PanelMain>
+            <component :is="stepComponents[store.currentStep.componentName]" />
+        </template>
+        <template #PanelAside>
+            <Stepper
+                :steps="store.stepperModel"
+                :current-step="store.currentStepIndex"
+                @next="handleStepperNext"
+                @prev="handleStepperPrev"
+                @finish="handleStepperFinish"
+            />
+        </template>
+    </BasicPage>
 </template>
 
 <script setup lang="ts">
