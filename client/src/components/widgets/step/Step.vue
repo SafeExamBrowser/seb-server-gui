@@ -1,5 +1,5 @@
 <template>
-    <div class="pa-4">
+    <v-container class="pa-4">
         <v-row>
             <v-col>
                 <div class="mb-3">
@@ -17,7 +17,7 @@
                 <slot></slot>
             </v-col>
         </v-row>
-    </div>
+    </v-container>
 </template>
 
 <script setup lang="ts">
