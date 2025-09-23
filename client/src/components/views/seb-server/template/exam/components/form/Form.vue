@@ -15,6 +15,7 @@
                         :label="field.label"
                         :placeholder="field.placeholder"
                         variant="outlined"
+                        density="compact"
                         required
                     >
                     </v-text-field>
@@ -25,6 +26,7 @@
                         :placeholder="field.placeholder"
                         :rows="4"
                         variant="outlined"
+                        density="compact"
                         required
                     >
                     </v-textarea>
@@ -37,6 +39,7 @@
                         item-title="text"
                         item-value="value"
                         variant="outlined"
+                        density="compact"
                         required
                     >
                     </v-select>
