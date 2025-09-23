@@ -715,8 +715,7 @@
             "info": "What kind of template do you want to create?",
             "sebClientTemplate": "SEB Client Template",
             "examTemplate": "Exam Template",
-            "sebClientTemplateInfo": "To create an exam template you need a configuration template. If there is no configuration template in place please create new configuration template first.",
-            "examTemplateInfo": "To create an exam template you need a configuration template. If there is no configuration template in place please create new configuration template first."
+            "teaser": "To create an exam template, you need a configuration template and a connection configuration. If there is no configuration template, nor a connection configuration, please create these first."
         }
     },
 

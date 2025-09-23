@@ -61,7 +61,7 @@
                                     <div class="template-card__body mt-3">
                                         {{
                                             translate(
-                                                "templates.createTemplate.sebClientTemplateInfo",
+                                                "templates.createTemplate.teaser",
                                             )
                                         }}
                                     </div>
@@ -112,7 +112,7 @@
                                     <div class="template-card__body mt-3">
                                         {{
                                             translate(
-                                                "templates.createTemplate.examTemplateInfo",
+                                                "templates.createTemplate.teaser",
                                             )
                                         }}
                                     </div>
