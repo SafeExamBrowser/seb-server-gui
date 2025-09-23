@@ -42,7 +42,7 @@ import { FormField, FormFieldBaseProperties } from "./types";
 
 const getBaseProperties = (field: FormField): FormFieldBaseProperties => {
     return {
-        label: field.label,
+        label: `${field.label}${field.required ? " *" : ""}`,
         placeholder: field.placeholder,
         required: field.required ?? false,
         density: "compact" as const,
