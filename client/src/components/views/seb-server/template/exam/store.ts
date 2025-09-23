@@ -1,3 +1,4 @@
+import { useStepNamingStore } from "@/components/views/seb-server/template/exam/stepNaming/store";
 import { useStepSupervisorsStore } from "@/components/views/seb-server/template/exam/stepSupervisors/store";
 import { StepItemCreateTemplateExam } from "@/components/views/seb-server/template/exam/types";
 import { StepItem } from "@/components/widgets/stepper/types";
@@ -27,11 +28,33 @@ const staticStepData = [
     },
 ];
 
+const isStepReady = (
+    stepName: StepItemCreateTemplateExam["componentName"],
+    stepNamingStore: ReturnType<typeof useStepNamingStore>,
+    stepSupervisorsStore: ReturnType<typeof useStepSupervisorsStore>,
+) => {
+    switch (stepName) {
+        case "StepNaming":
+            return stepNamingStore.isReady;
+        case "StepSupervisors":
+            return stepSupervisorsStore.isReady;
+        case "StepIndicators":
+            return true;
+        case "StepClientGroup":
+            return true;
+        case "StepSummary":
+            return true;
+        default:
+            return stepName satisfies never;
+    }
+};
+
 export const useCreateExamTemplateStore = defineStore(
     "createExamTemplate",
     () => {
         const { t } = useI18n();
 
+        const stepNamingStore = useStepNamingStore();
         const stepSupervisorsStore = useStepSupervisorsStore();
 
         // state
@@ -41,10 +64,11 @@ export const useCreateExamTemplateStore = defineStore(
         const stepperModel = computed<StepItem[]>(() =>
             staticStepData.map((step, index) => ({
                 title: t(step.i18nKey),
-                nextStepEnabled:
-                    step.componentName === "StepSupervisors"
-                        ? stepSupervisorsStore.ready
-                        : true,
+                nextStepEnabled: isStepReady(
+                    step.componentName,
+                    stepNamingStore,
+                    stepSupervisorsStore,
+                ),
                 value: index,
             })),
         );

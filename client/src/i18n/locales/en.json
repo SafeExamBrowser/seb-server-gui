@@ -232,7 +232,17 @@
         "steps": {
             "naming": {
                 "title": "Name it",
-                "subtitle": "TODO: translate (Kristina)"
+                "subtitle": "TODO: translate (Kristina)",
+                "fields": {
+                    "name": {
+                        "label": "Name",
+                        "placeholder": "Enter the desired name of the exam template"
+                    },
+                    "description": {
+                        "label": "Description",
+                        "placeholder": "Describe the exam template"
+                    }
+                }
             },
             "supervisors": {
                 "title": "Add Exam Supervisors",
