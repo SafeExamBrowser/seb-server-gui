@@ -90,7 +90,8 @@ import SebSettingsNetwork from "@/components/views/seb-server/settings/SebSettin
 import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 import SebSettingsGeneral from "./SebSettingsGeneral.vue";
 import { GUIAction, useAbilities } from "@/services/ability";
-import { ref, markRaw, Component } from "vue";
+import { ref, markRaw } from "vue";
+import type { Component } from "vue";
 
 const sebSettingsStore = useSEBSettingsStore();
 const ability = useAbilities();
