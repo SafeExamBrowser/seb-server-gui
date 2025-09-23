@@ -15,7 +15,7 @@ export const useSebClientTemplates = () => {
 
         try {
             // TODO @alain: fetch real data here, once I figure out, which API to use
-            await new Promise((resolve) => setTimeout(resolve, 2000));
+            await new Promise((resolve) => setTimeout(resolve, 1000));
 
             data.value = [
                 { id: "id-1", name: "SEB Client Template 1" },
