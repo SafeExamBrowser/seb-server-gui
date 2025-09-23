@@ -246,6 +246,10 @@
                         "label": "Exam Type",
                         "placeholder": "Select the exam type"
                     },
+                    "connectionConfiguration": {
+                        "label": "Connection Configuration",
+                        "placeholder": "Select the connection configuration"
+                    },
                     "assesmentToolIntegration": {
                         "label": "Assesment Tool Integration"
                     },
