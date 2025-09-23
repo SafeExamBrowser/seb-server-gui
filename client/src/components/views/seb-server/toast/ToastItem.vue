@@ -45,14 +45,13 @@
                     <div v-if="alert.text" class="toast-text">
                         {{ alert.text }}
                     </div>
-                </div>
 
-                <!-- Optional action button on the right (before the close X) -->
-                <div class="ml-auto d-flex align-center">
+                    <!-- Move button here, stacked below -->
                     <v-btn
                         v-if="alert.actionLabel && alert.onAction"
                         size="small"
                         variant="text"
+                        class="toast-action"
                         @click.stop="handleAction"
                     >
                         {{ alert.actionLabel }}
@@ -166,7 +165,13 @@ onBeforeUnmount(() => {
 
 .toast-header {
     display: flex;
-    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.toast-action {
+    align-self: flex-start;
+    margin-top: 0.25rem;
 }
 
 .toast-title {
@@ -175,7 +180,7 @@ onBeforeUnmount(() => {
 }
 
 .toast-text {
-    opacity: 0.9;
+    opacity: 1;
 }
 
 .toast-progress {

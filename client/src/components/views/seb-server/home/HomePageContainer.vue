@@ -31,6 +31,24 @@ import { useUserAccountStore } from "@/stores/authentication/authenticationStore
 import { onBeforeMount } from "vue";
 import HomePageInfo from "@/components/views/seb-server/home/HomePageInfo.vue";
 import HomePageMain from "@/components/views/seb-server/home/HomePageMain.vue";
+import { useNotificationsStore } from "@/stores/seb-server/notificationstore";
+const n = useNotificationsStore();
+
+function triggerNotifications() {
+    n.warning("Low storage space", "You are running out of space", {
+        actionLabel: "Manage",
+        onAction: () => {
+            console.log("Manage clicked!");
+        },
+        duration: 1000000,
+    });
+
+    n.clientError("Validation failed", "Please check your input", {
+        dedupeKey: "validation",
+    });
+
+    n.serverError("Server not reachable", "Please try again later.");
+}
 
 // stores
 const appBarStore = useAppBarStore();
@@ -39,6 +57,8 @@ onBeforeMount(() => {
     appBarStore.title = translate("titles.home");
 
     console.log(useUserAccountStore().userAccount);
+
+    triggerNotifications();
 });
 </script>
 

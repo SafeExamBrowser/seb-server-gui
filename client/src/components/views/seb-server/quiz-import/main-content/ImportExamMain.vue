@@ -59,13 +59,13 @@
                                 v-model="datepicker"
                                 append-inner-icon="mdi-calendar"
                                 class="ml-3"
+                                label="Date picker HELLOOOOO"
                                 density="compact"
                                 display-date-format="dd.MM.yyyy"
                                 hide-details
                                 input-format="dd.MM.yyyy"
                                 placeholder="dd.MM.yyyy"
                                 prepend-icon=""
-                                single-line
                                 variant="outlined"
                             >
                             </v-date-input>
