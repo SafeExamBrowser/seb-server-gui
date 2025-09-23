@@ -1,6 +1,7 @@
 import { StepItemCreateTemplateExam } from "@/components/views/seb-server/template/exam/types";
 import { useStepSupervisorsStore } from "@/components/views/seb-server/template/exam/stepSupervisors/store";
 import { defineStore } from "pinia";
+import { computed, ref } from "vue";
 
 const staticStepData: StepItemCreateTemplateExam[] = [
     {
