@@ -8,6 +8,7 @@
                     :key="a.id"
                     :alert="a"
                     :on-remove="store.remove"
+                    class="mt-2"
                 />
             </transition-group>
 

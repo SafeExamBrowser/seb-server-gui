@@ -3,10 +3,13 @@
         <v-alert
             v-show="alive"
             :type="vuetifyType"
-            :variant="'elevated'"
+            :color="vuetifyType"
+            variant="tonal"
+            rounded="lg"
             border="start"
             class="toast-item"
             closable
+            close-icon="mdi-close"
             :close-label="closeLabel"
             :role="ariaRole"
             :aria-live="ariaLive"
@@ -14,6 +17,26 @@
             @mouseenter="pause"
             @mouseleave="resume"
         >
+            <!-- Left icon badge -->
+            <template #prepend>
+                <v-sheet
+                    class="toast-icon"
+                    :color="vuetifyType"
+                    elevation="0"
+                    rounded="md"
+                >
+                    <v-icon v-if="vuetifyType === 'success'">mdi-check</v-icon>
+                    <v-icon v-else-if="vuetifyType === 'warning'"
+                        >mdi-alert</v-icon
+                    >
+                    <v-icon v-else-if="vuetifyType === 'error'"
+                        >mdi-close</v-icon
+                    >
+                    <v-icon v-else>mdi-information</v-icon>
+                </v-sheet>
+            </template>
+
+            <!-- Content -->
             <div class="toast-header">
                 <div class="toast-header-text">
                     <div v-if="alert.title" class="toast-title">
@@ -23,6 +46,8 @@
                         {{ alert.text }}
                     </div>
                 </div>
+
+                <!-- Optional action button on the right (before the close X) -->
                 <div class="ml-auto d-flex align-center">
                     <v-btn
                         v-if="alert.actionLabel && alert.onAction"
@@ -35,7 +60,7 @@
                 </div>
             </div>
 
-            <!-- Progress bar -->
+            <!-- Duration bar at the bottom -->
             <v-progress-linear
                 class="toast-progress"
                 :model-value="progress"
@@ -170,5 +195,16 @@ onBeforeUnmount(() => {
 /* Smooth the inner bar width changes */
 .toast-progress :deep(.v-progress-linear__determinate) {
     transition: width 120ms linear;
+}
+
+.toast-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    color: white; /* ensures icon stays visible */
+    flex-shrink: 0; /* prevents shrinking in flex layout */
+    border-radius: 6px; /* adjust to your liking */
 }
 </style>
