@@ -133,6 +133,7 @@ import {
 } from "@/models/seb-server/examFiltersEnum";
 import { translate } from "@/utils/generalUtils";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
+import { ref } from "vue";
 
 // stores
 const monitoringStore = useMonitoringStore();

@@ -932,6 +932,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onBeforeMount } from "vue";
 import { useExamStore } from "@/stores/seb-server/examStore";
 import * as constants from "@/utils/constants";
 import * as examViewService from "@/services/seb-server/component-services/examViewService";
@@ -949,6 +950,7 @@ import { translate } from "@/utils/generalUtils";
 import { LMSFeatureEnum } from "@/models/seb-server/assessmentToolEnums";
 import { GUIAction, useAbilities } from "@/services/ability";
 import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
+import { useRoute } from "vue-router";
 
 // general
 const isPageInitalizing = ref<boolean>(true);

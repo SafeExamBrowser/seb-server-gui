@@ -518,12 +518,12 @@ import { storeToRefs } from "pinia";
 import * as generalUtils from "@/utils/generalUtils";
 import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums";
 import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
-import { LocationQuery } from "vue-router";
+import { LocationQuery, useRoute } from "vue-router";
 import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants";
 import { InstructionEnum } from "@/models/seb-server/instructionEnum";
 import { useErrorStore } from "@/stores/seb-server/errorStore";
-
+import { ref } from "vue";
 // info panel (whole component)
 const isInfoExpanded = ref<boolean>(true);
 

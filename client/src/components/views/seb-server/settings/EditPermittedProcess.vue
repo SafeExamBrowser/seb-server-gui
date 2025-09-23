@@ -602,6 +602,7 @@
 <script setup lang="ts">
 import { translate } from "@/utils/generalUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
+import { ref, onBeforeMount } from "vue";
 
 const argumentsHeadersRef = ref<any[]>();
 const argumentsTable = ref<PermittedProcessArgument[]>([]);

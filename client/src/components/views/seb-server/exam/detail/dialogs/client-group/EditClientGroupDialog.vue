@@ -213,6 +213,7 @@ import * as generalUtils from "@/utils/generalUtils";
 import * as clientGroupViewService from "@/services/seb-server/component-services/clientGroupViewService";
 import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
+import { ref, watch, onBeforeMount } from "vue";
 
 // i18n
 const i18n = useI18n();

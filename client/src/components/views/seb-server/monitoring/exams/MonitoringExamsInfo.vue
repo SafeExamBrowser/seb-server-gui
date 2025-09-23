@@ -197,6 +197,7 @@
 
 <script setup lang="ts">
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
+import { ref } from "vue";
 import {
     ExamStatusEnum,
     ExamTypeEnum,
