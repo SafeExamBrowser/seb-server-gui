@@ -16,12 +16,11 @@ import { storeToRefs } from "pinia";
 import { ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
 
 const { t } = useI18n();
-const store = useStepNamingStore();
 const {
     name: modelName,
     description: modelDescription,
     examType: modelExamType,
-} = storeToRefs(store);
+} = storeToRefs(useStepNamingStore());
 
 // TODO @alain: add all fields here, extend Form component
 // TODO @alain: deal with validation and proper displaying of required fields

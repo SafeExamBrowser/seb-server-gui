@@ -5,7 +5,7 @@ import { ref, computed } from "vue";
 export const useStepNamingStore = defineStore("stepNaming", () => {
     const name = ref("");
     const description = ref("");
-    const examType = ref<ExamTypeEnum>(ExamTypeEnum.UNDEFINED);
+    const examType = ref<ExamTypeEnum>();
 
     const isReady = computed(() => {
         return name.value.length > 0;

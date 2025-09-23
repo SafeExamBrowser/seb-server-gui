@@ -27,7 +27,7 @@ export type FormField = {
       }
     | {
           type: "select";
-          model: Ref<string>;
+          model: Ref<string | undefined>;
           options: { value: string; text: string }[];
       }
 );
