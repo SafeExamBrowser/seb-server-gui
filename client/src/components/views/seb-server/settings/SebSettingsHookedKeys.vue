@@ -8,6 +8,7 @@ import { useI18n } from "vue-i18n";
 import { stringToBoolean, translate } from "@/utils/generalUtils";
 import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums";
+import { ref, markRaw } from "vue";
 
 const i18n = useI18n();
 const sebSettingsStore = useSEBSettingsStore();

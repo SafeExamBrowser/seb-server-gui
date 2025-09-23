@@ -175,6 +175,7 @@ import { useI18n } from "vue-i18n";
 import { stringToBoolean, translate } from "@/utils/generalUtils";
 import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums";
+import { ref, onBeforeMount } from "vue";
 
 const i18n = useI18n();
 const sebSettingsStore = useSEBSettingsStore();
@@ -187,14 +188,22 @@ const confirmAdminPassword = ref<string>("");
 const confirmAdminPasswordVisible = ref<boolean>(false);
 const adminPasswordRule = (v: string) => {
     if (hashedAdminPasswordVal.value === confirmAdminPassword.value) {
-        confirmAdminPasswordFieldRef.value?.validate?.();
+        if (!clearValidations) {
+            clearValidations = true;
+            confirmAdminPasswordFieldRef.value?.validate?.();
+            clearValidations = false;
+        }
         return true;
     }
     return translate("sebSettings.pwdMismatch", i18n);
 };
 const confirmAdminPasswordRule = (v: string) => {
     if (hashedAdminPasswordVal.value === confirmAdminPassword.value) {
-        adminPasswordFieldRef.value?.validate?.();
+        if (!clearValidations) {
+            clearValidations = true;
+            adminPasswordFieldRef.value?.validate?.();
+            clearValidations = false;
+        }
         return true;
     }
     return translate("sebSettings.pwdMismatch", i18n);
@@ -208,14 +217,22 @@ const confirmQuitPassword = ref<string>("");
 const confirmQuitPasswordVisible = ref<boolean>(false);
 const quitPasswordRule = (v: string) => {
     if (hashedQuitPasswordVal.value === confirmQuitPassword.value) {
-        confirmQuitPasswordFieldRef.value?.validate?.();
+        if (!clearValidations) {
+            clearValidations = true;
+            confirmQuitPasswordFieldRef.value?.validate?.();
+            clearValidations = false;
+        }
         return true;
     }
     return translate("sebSettings.pwdMismatch", i18n);
 };
 const confirmQuitPasswordRule = (v: string) => {
     if (hashedQuitPasswordVal.value === confirmQuitPassword.value) {
-        quitPasswordFieldRef.value?.validate?.();
+        if (!clearValidations) {
+            clearValidations = true;
+            quitPasswordFieldRef.value?.validate?.();
+            clearValidations = false;
+        }
         return true;
     }
     return translate("sebSettings.pwdMismatch", i18n);
@@ -230,6 +247,7 @@ let componentId: string;
 let hashedAdminPassword: SEBSettingsValue;
 let allowQuit: SEBSettingsValue;
 let hashedQuitPassword: SEBSettingsValue;
+let clearValidations = false;
 
 onBeforeMount(async () => {
     if (sebSettingsStore.selectedContainerId == null) {
