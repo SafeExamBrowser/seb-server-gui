@@ -12,35 +12,23 @@
                     <v-text-field
                         v-if="field.type === 'text'"
                         v-model="field.model.value"
-                        :label="field.label"
-                        :placeholder="field.placeholder"
-                        variant="outlined"
-                        density="compact"
-                        required
+                        v-bind="getBaseProperties(field)"
                     >
                     </v-text-field>
                     <v-textarea
                         v-else-if="field.type === 'textarea'"
                         v-model="field.model.value"
-                        :label="field.label"
-                        :placeholder="field.placeholder"
+                        v-bind="getBaseProperties(field)"
                         :rows="4"
-                        variant="outlined"
-                        density="compact"
-                        required
                     >
                     </v-textarea>
                     <v-select
                         v-else-if="field.type === 'select'"
                         v-model="field.model.value"
-                        :label="field.label"
-                        :placeholder="field.placeholder"
+                        v-bind="getBaseProperties(field)"
                         :items="field.options"
                         item-title="text"
                         item-value="value"
-                        variant="outlined"
-                        density="compact"
-                        required
                     >
                     </v-select>
                 </v-col>
@@ -50,7 +38,17 @@
 </template>
 
 <script setup lang="ts">
-import { FormField } from "./types";
+import { FormField, FormFieldBaseProperties } from "./types";
+
+const getBaseProperties = (field: FormField): FormFieldBaseProperties => {
+    return {
+        label: field.label,
+        placeholder: field.placeholder,
+        required: field.required ?? false,
+        density: "compact" as const,
+        variant: "outlined" as const,
+    };
+};
 
 defineProps<{
     fields: FormField[];

@@ -35,6 +35,7 @@ const formFields = computed<FormField[]>(() => [
         placeholder: t(
             "createTemplateExam.steps.naming.fields.name.placeholder",
         ),
+        required: true,
     },
     {
         type: "textarea" as const,
@@ -57,6 +58,7 @@ const formFields = computed<FormField[]>(() => [
         placeholder: t(
             "createTemplateExam.steps.naming.fields.examType.placeholder",
         ),
+        required: true,
     },
 ]);
 </script>
