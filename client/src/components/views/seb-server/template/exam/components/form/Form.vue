@@ -1,3 +1,4 @@
+<!-- TODO @alain: this could become a generally reusable component, it's not limited to the exam template -->
 <template>
     <v-form class="w-100 w-md-50" @submit.prevent>
         <v-container fluid class="pa-0">

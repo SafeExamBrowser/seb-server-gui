@@ -19,6 +19,8 @@ const store = useStepNamingStore();
 const { name: modelName, description: modelDescription } = storeToRefs(store);
 
 // TODO @alain: add all fields here, extend Form component
+// TODO @alain: deal with validation and proper displaying of required fields
+// TODO @alain: "isReady" of the step should be based on the form being valid
 const formFields = computed<FormField[]>(() => [
     {
         type: "text" as const,
