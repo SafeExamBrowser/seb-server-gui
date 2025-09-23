@@ -6,6 +6,7 @@ export const useStepNamingStore = defineStore("stepNaming", () => {
     const name = ref("");
     const description = ref("");
     const examType = ref<ExamTypeEnum>();
+    const sebClientTemplate = ref<string>();
     const connectionConfiguration = ref<string>();
     const assesmentToolIntegration = ref<boolean>(true);
     const institutionalDefault = ref<boolean>(false);
@@ -18,6 +19,7 @@ export const useStepNamingStore = defineStore("stepNaming", () => {
         name,
         description,
         examType,
+        sebClientTemplate,
         connectionConfiguration,
         assesmentToolIntegration,
         institutionalDefault,

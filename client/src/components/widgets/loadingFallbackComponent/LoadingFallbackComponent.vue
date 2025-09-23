@@ -1,8 +1,8 @@
 <!-- TODO @alain: use Suspense for this, once it's stable https://vuejs.org/guide/built-ins/suspense.html -->
 <template>
-    <div v-if="error">
+    <div v-if="errors && errors.length > 0">
         <!-- TODO @alain: add proper error message -->
-        Something went wrong: {{ error }}
+        Something went wrong: {{ errors.join(", ") }}
     </div>
 
     <div v-else-if="loading">
@@ -16,6 +16,6 @@
 <script setup lang="ts">
 defineProps<{
     loading: boolean;
-    error?: string;
+    errors?: string[];
 }>();
 </script>

@@ -246,6 +246,10 @@
                         "label": "Exam Type",
                         "placeholder": "Select the exam type"
                     },
+                    "sebClientTemplate": {
+                        "label": "SEB Client Template",
+                        "placeholder": "Select the SEB client template"
+                    },
                     "connectionConfiguration": {
                         "label": "Connection Configuration",
                         "placeholder": "Select the connection configuration"

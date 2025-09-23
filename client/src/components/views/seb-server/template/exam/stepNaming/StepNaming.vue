@@ -1,8 +1,5 @@
 <template>
-    <LoadingFallbackComponent
-        :loading="loadingConnectionConfigurations"
-        :error="errorConnectionConfigurations"
-    >
+    <LoadingFallbackComponent :loading="loading" :errors="errors">
         <Step
             :title="$t('createTemplateExam.steps.naming.title')"
             :subtitle="$t('createTemplateExam.steps.naming.subtitle')"
@@ -20,16 +17,25 @@ import { FormField } from "../components/form/types";
 import { storeToRefs } from "pinia";
 import { ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
 import { useConnectionConfigurations } from "./composables/useConnectionConfigurations";
+import { useSebClientTemplates } from "@/components/views/seb-server/template/exam/stepNaming/composables/useSebClientTemplates";
 
 const { t } = useI18n();
+
 const {
     name: modelName,
     description: modelDescription,
     examType: modelExamType,
+    sebClientTemplate: modelSebClientTemplate,
     connectionConfiguration: modelConnectionConfiguration,
     assesmentToolIntegration: modelAssesmentToolIntegration,
     institutionalDefault: modelInstitutionalDefault,
 } = storeToRefs(useStepNamingStore());
+
+const {
+    data: sebClientTemplates,
+    loading: loadingSebClientTemplates,
+    error: errorSebClientTemplates,
+} = useSebClientTemplates();
 
 const {
     data: connectionConfigurations,
@@ -37,7 +43,18 @@ const {
     error: errorConnectionConfigurations,
 } = useConnectionConfigurations();
 
-// TODO @alain: add all fields here, extend Form component
+const loading = computed(
+    () =>
+        loadingSebClientTemplates.value ||
+        loadingConnectionConfigurations.value,
+);
+
+const errors = computed(() =>
+    [errorSebClientTemplates.value, errorConnectionConfigurations.value].filter(
+        (error) => error !== undefined,
+    ),
+);
+
 // TODO @alain: deal with validation and proper displaying of required fields
 // TODO @alain: "isReady" of the step should be based on the form being valid
 const formFields = computed<FormField[]>(() => {
@@ -80,6 +97,23 @@ const formFields = computed<FormField[]>(() => {
                 "createTemplateExam.steps.naming.fields.examType.placeholder",
             ),
             required: true,
+        },
+        {
+            type: "select" as const,
+            name: "sebClientTemplate",
+            model: modelSebClientTemplate,
+            options: Object.values(sebClientTemplates.value ?? []).map(
+                (sebClientTemplate) => ({
+                    value: sebClientTemplate.id,
+                    text: t(sebClientTemplate.name),
+                }),
+            ),
+            label: t(
+                "createTemplateExam.steps.naming.fields.sebClientTemplate.label",
+            ),
+            placeholder: t(
+                "createTemplateExam.steps.naming.fields.sebClientTemplate.placeholder",
+            ),
         },
         {
             type: "select" as const,
