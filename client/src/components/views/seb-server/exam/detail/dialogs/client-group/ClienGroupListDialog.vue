@@ -171,6 +171,8 @@ import * as generalUtils from "@/utils/generalUtils";
 import * as examViewService from "@/services/seb-server/component-services/examViewService";
 import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
+import { useRoute } from "vue-router";
+import { ref, onBeforeMount, computed } from "vue";
 
 // i18n
 const i18n = useI18n();

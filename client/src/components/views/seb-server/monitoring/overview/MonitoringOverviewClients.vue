@@ -132,6 +132,8 @@ import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum";
 import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
 import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums";
 import { useI18n } from "vue-i18n";
+import { ref, watch } from "vue";
+import { useRoute } from "vue-router";
 
 // i18n
 const i18n = useI18n();

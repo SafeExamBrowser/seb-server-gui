@@ -3,6 +3,7 @@ import * as constants from "@/utils/constants";
 import ImportGroupInfo from "@/components/views/seb-server/quiz-import/info-box-content/ImportGroupInfo.vue";
 import ImportGroupMain from "@/components/views/seb-server/quiz-import/main-content/ImportGroupMain.vue";
 import { useI18n } from "vue-i18n";
+import { ref, markRaw, Component } from "vue";
 
 export const useQuizImportStore = defineStore("quizImport", () => {
     // i18n

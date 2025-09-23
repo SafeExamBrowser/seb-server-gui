@@ -412,6 +412,7 @@ import { onBeforeUnmount, onMounted, ref } from "vue";
 import { useAppBarStore, useLayoutStore } from "@/stores/store";
 import { translate } from "@/utils/generalUtils";
 import * as constants from "@/utils/constants";
+import { watch } from "vue";
 import moment from "moment-timezone";
 import { getInstitutions } from "@/services/seb-server/component-services/registerAccountViewService";
 import { createUserAccount } from "@/services/seb-server/component-services/userAccountViewService";

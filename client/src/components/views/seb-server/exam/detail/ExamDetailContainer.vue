@@ -6,6 +6,7 @@
 <script setup lang="ts">
 import { useAppBarStore } from "@/stores/store";
 import { translate } from "@/utils/generalUtils";
+import { onBeforeMount } from "vue";
 
 // stores
 const appBarStore = useAppBarStore();
