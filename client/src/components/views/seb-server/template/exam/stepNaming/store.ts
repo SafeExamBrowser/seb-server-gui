@@ -6,6 +6,8 @@ export const useStepNamingStore = defineStore("stepNaming", () => {
     const name = ref("");
     const description = ref("");
     const examType = ref<ExamTypeEnum>();
+    const assesmentToolIntegration = ref<boolean>(true);
+    const institutionalDefault = ref<boolean>(false);
 
     const isReady = computed(() => {
         return name.value.length > 0;
@@ -15,6 +17,8 @@ export const useStepNamingStore = defineStore("stepNaming", () => {
         name,
         description,
         examType,
+        assesmentToolIntegration,
+        institutionalDefault,
         isReady,
     };
 });

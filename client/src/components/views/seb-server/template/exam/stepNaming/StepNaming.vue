@@ -20,6 +20,8 @@ const {
     name: modelName,
     description: modelDescription,
     examType: modelExamType,
+    assesmentToolIntegration: modelAssesmentToolIntegration,
+    institutionalDefault: modelInstitutionalDefault,
 } = storeToRefs(useStepNamingStore());
 
 // TODO @alain: add all fields here, extend Form component
@@ -58,6 +60,22 @@ const formFields = computed<FormField[]>(() => [
             "createTemplateExam.steps.naming.fields.examType.placeholder",
         ),
         required: true,
+    },
+    {
+        type: "switch" as const,
+        name: "assesmentToolIntegration",
+        model: modelAssesmentToolIntegration,
+        label: t(
+            "createTemplateExam.steps.naming.fields.assesmentToolIntegration.label",
+        ),
+    },
+    {
+        type: "switch" as const,
+        name: "institutionalDefault",
+        model: modelInstitutionalDefault,
+        label: t(
+            "createTemplateExam.steps.naming.fields.institutionalDefault.label",
+        ),
     },
 ]);
 </script>

@@ -245,6 +245,12 @@
                     "examType": {
                         "label": "Exam Type",
                         "placeholder": "Select the exam type"
+                    },
+                    "assesmentToolIntegration": {
+                        "label": "Assesment Tool Integration"
+                    },
+                    "institutionalDefault": {
+                        "label": "Institutional Default"
                     }
                 }
             },

@@ -12,25 +12,41 @@
                     <v-text-field
                         v-if="field.type === 'text'"
                         v-model="field.model.value"
-                        v-bind="getBaseProperties(field)"
+                        v-bind="{
+                            ...getBaseProperties(field),
+                            ...getTextualProperties(field),
+                        }"
                     >
                     </v-text-field>
                     <v-textarea
                         v-else-if="field.type === 'textarea'"
                         v-model="field.model.value"
-                        v-bind="getBaseProperties(field)"
+                        v-bind="{
+                            ...getBaseProperties(field),
+                            ...getTextualProperties(field),
+                        }"
                         :rows="4"
                     >
                     </v-textarea>
                     <v-select
                         v-else-if="field.type === 'select'"
                         v-model="field.model.value"
-                        v-bind="getBaseProperties(field)"
+                        v-bind="{
+                            ...getBaseProperties(field),
+                            ...getTextualProperties(field),
+                        }"
                         :items="field.options"
                         item-title="text"
                         item-value="value"
                     >
                     </v-select>
+                    <v-switch
+                        v-else-if="field.type === 'switch'"
+                        v-model="field.model.value"
+                        v-bind="getBaseProperties(field)"
+                        color="primary"
+                    >
+                    </v-switch>
                 </v-col>
             </v-row>
         </v-container>
@@ -38,15 +54,26 @@
 </template>
 
 <script setup lang="ts">
-import { FormField, FormFieldBaseProperties } from "./types";
+import {
+    FormField,
+    FormFieldBaseProperties,
+    FormFieldTextualProperties,
+} from "./types";
 
 const getBaseProperties = (field: FormField): FormFieldBaseProperties => {
     return {
-        label: `${field.label}${field.required ? " *" : ""}`,
-        placeholder: field.placeholder,
-        required: field.required ?? false,
+        label: `${field.label}${field.type !== "switch" && field.required ? " *" : ""}`,
         density: "compact" as const,
         variant: "outlined" as const,
+    };
+};
+
+const getTextualProperties = (
+    field: FormField & { type: "text" | "textarea" | "select" },
+): FormFieldTextualProperties => {
+    return {
+        placeholder: field.placeholder,
+        required: field.required,
     };
 };
 
