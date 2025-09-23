@@ -12,7 +12,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import { useStepNamingStore } from "./store";
+import { useStepNamingStore } from "./composables/useStepNamingStore";
 import { FormField } from "../form/types";
 import { storeToRefs } from "pinia";
 import { ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";

@@ -29,7 +29,7 @@ import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import Stepper from "@/components/widgets/stepper/Stepper.vue";
 import * as constants from "@/utils/constants";
 import { stepComponents } from "@/components/views/seb-server/template/exam/types";
-import { useCreateExamTemplateStore } from "./store";
+import { useCreateExamTemplateStore } from "./composables/useCreateExamTemplateStore";
 
 const store = useCreateExamTemplateStore();
 
