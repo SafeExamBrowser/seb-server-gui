@@ -213,6 +213,7 @@
 <script setup lang="ts">
 import { useQuizImportStore } from "@/stores/seb-server/quizImportStore";
 import { translate } from "@/utils/generalUtils";
+import { ref, computed } from "vue";
 
 // stores
 const quizImportStore = useQuizImportStore();

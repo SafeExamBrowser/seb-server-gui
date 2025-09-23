@@ -133,6 +133,7 @@ import {
     ExamTypeEnum,
 } from "@/models/seb-server/examFiltersEnum";
 import { translate } from "@/utils/generalUtils";
+import { ref } from "vue";
 
 // stores
 const examStore = useExamStore();

@@ -152,6 +152,7 @@ import {
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import { translate } from "@/utils/generalUtils";
 import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
+import { useRoute } from "vue-router";
 
 const examId = useRoute().params.examId.toString();
 const monitoringStore = useMonitoringStore();

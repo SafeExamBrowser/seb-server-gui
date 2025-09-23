@@ -3,6 +3,7 @@ import { navigateTo } from "@/router/navigation";
 import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
 import * as constants from "@/utils/constants";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
+import { ref } from "vue";
 
 // ----------------------authentication---------------------------//
 export const useAuthStore = defineStore("auth", () => {

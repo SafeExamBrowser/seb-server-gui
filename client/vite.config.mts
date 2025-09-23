@@ -1,4 +1,3 @@
-import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import Fonts from "unplugin-fonts/vite";
 import Layouts from "vite-plugin-vue-layouts";
@@ -20,20 +19,6 @@ export default ({ mode }) => {
             }),
 
             Layouts(),
-
-            AutoImport({
-                imports: [
-                    "vue",
-                    {
-                        "vue-router/auto": ["useRoute", "useRouter"],
-                    },
-                ],
-                dts: "src/auto-imports.d.ts",
-                eslintrc: {
-                    enabled: true,
-                },
-                vueTemplate: true,
-            }),
 
             Components({
                 dts: "src/components.d.ts",

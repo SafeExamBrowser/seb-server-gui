@@ -4,6 +4,7 @@ import { StepItemCreateTemplateExam } from "@/components/views/seb-server/templa
 import { StepItem } from "@/components/widgets/stepper/types";
 import { defineStore } from "pinia";
 import { useI18n } from "vue-i18n";
+import { computed, ref } from "vue";
 
 const staticStepData = [
     {

@@ -59,6 +59,7 @@ import * as constants from "@/utils/constants";
 import { translate } from "@/utils/generalUtils";
 import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
 import { navigateTo } from "@/router/navigation";
+import { onBeforeMount } from "vue";
 
 // stores
 const appBarStore = useAppBarStore();
