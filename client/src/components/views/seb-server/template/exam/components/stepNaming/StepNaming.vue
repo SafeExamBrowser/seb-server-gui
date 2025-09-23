@@ -13,11 +13,11 @@
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useStepNamingStore } from "./store";
-import { FormField } from "../components/form/types";
+import { FormField } from "../form/types";
 import { storeToRefs } from "pinia";
 import { ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
 import { useConnectionConfigurations } from "./composables/useConnectionConfigurations";
-import { useSebClientTemplates } from "@/components/views/seb-server/template/exam/stepNaming/composables/useSebClientTemplates";
+import { useSebClientTemplates } from "@/components/views/seb-server/template/exam/components/stepNaming/composables/useSebClientTemplates";
 
 const { t } = useI18n();
 
