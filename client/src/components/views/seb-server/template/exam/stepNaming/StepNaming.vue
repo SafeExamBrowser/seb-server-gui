@@ -13,10 +13,15 @@ import { useI18n } from "vue-i18n";
 import { useStepNamingStore } from "./store";
 import { FormField } from "../components/form/types";
 import { storeToRefs } from "pinia";
+import { ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
 
 const { t } = useI18n();
 const store = useStepNamingStore();
-const { name: modelName, description: modelDescription } = storeToRefs(store);
+const {
+    name: modelName,
+    description: modelDescription,
+    examType: modelExamType,
+} = storeToRefs(store);
 
 // TODO @alain: add all fields here, extend Form component
 // TODO @alain: deal with validation and proper displaying of required fields
@@ -38,6 +43,19 @@ const formFields = computed<FormField[]>(() => [
         label: t("createTemplateExam.steps.naming.fields.description.label"),
         placeholder: t(
             "createTemplateExam.steps.naming.fields.description.placeholder",
+        ),
+    },
+    {
+        type: "select" as const,
+        name: "examType",
+        model: modelExamType,
+        options: Object.values(ExamTypeEnum).map((enumValue) => ({
+            value: enumValue,
+            text: t(enumValue),
+        })),
+        label: t("createTemplateExam.steps.naming.fields.examType.label"),
+        placeholder: t(
+            "createTemplateExam.steps.naming.fields.examType.placeholder",
         ),
     },
 ]);

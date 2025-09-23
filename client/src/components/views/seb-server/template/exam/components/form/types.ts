@@ -13,4 +13,9 @@ export type FormField = {
           type: "textarea";
           model: Ref<string>;
       }
+    | {
+          type: "select";
+          model: Ref<string>;
+          options: { value: string; text: string }[];
+      }
 );

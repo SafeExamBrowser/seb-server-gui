@@ -28,6 +28,18 @@
                         required
                     >
                     </v-textarea>
+                    <v-select
+                        v-else-if="field.type === 'select'"
+                        v-model="field.model.value"
+                        :label="field.label"
+                        :placeholder="field.placeholder"
+                        :items="field.options"
+                        item-title="text"
+                        item-value="value"
+                        variant="outlined"
+                        required
+                    >
+                    </v-select>
                 </v-col>
             </v-row>
         </v-container>

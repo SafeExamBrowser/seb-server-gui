@@ -241,6 +241,10 @@
                     "description": {
                         "label": "Description",
                         "placeholder": "Describe the exam template"
+                    },
+                    "examType": {
+                        "label": "Exam Type",
+                        "placeholder": "Select the exam type"
                     }
                 }
             },
