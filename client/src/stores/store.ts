@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { ref } from "vue";
 
 // --------------------app bar-----------------------------//
 export const useAppBarStore = defineStore("appBar", () => {

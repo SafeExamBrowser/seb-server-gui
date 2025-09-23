@@ -370,6 +370,9 @@ import * as linkService from "@/services/screen-proctoring/component-services/li
 import * as navigation from "@/router/navigation";
 import { useAuthStore } from "@/stores/authentication/authenticationStore";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
+import { useRoute } from "vue-router";
+import { computed } from "vue";
+import type { ComputedRef } from "vue";
 
 // stores
 const monitoringStore = useMonitoringStore();

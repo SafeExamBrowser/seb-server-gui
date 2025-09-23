@@ -169,7 +169,7 @@ import { useI18n } from "vue-i18n";
 import * as quizImportWizardViewService from "@/services/seb-server/component-services/quizImportWizardViewService";
 import { navigateTo } from "@/router/navigation";
 import { useExamStore } from "@/stores/seb-server/examStore";
-
+import { ref, onBeforeMount, watch } from "vue";
 // i18n
 const i18n = useI18n();
 

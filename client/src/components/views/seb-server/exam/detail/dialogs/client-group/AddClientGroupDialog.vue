@@ -316,7 +316,7 @@ import TableHeaders from "@/utils/table/TableHeaders.vue";
 import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
 import * as examViewService from "@/services/seb-server/component-services/examViewService";
-
+import { computed, ref, watch, onBeforeMount } from "vue";
 // i18n
 const i18n = useI18n();
 
