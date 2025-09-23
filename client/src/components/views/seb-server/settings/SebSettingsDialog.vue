@@ -96,7 +96,8 @@ import SebSettingsSecurity from "./SebSettingsSecurity.vue";
 import SebSettingsRegistry from "./SebSettingsRegistry.vue";
 import SebSettingsHookedKeys from "./SebSettingsHookedKeys.vue";
 import SebSettingsProctoring from "./SebSettingsProctoring.vue";
-import { ref, markRaw, Component } from "vue";
+import { ref, markRaw } from "vue";
+import type { Component } from "vue";
 
 const sebSettingsStore = useSEBSettingsStore();
 const ability = useAbilities();
