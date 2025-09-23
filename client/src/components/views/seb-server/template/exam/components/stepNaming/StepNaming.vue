@@ -105,7 +105,7 @@ const formFields = computed<FormField[]>(() => {
             options: Object.values(sebClientTemplates.value ?? []).map(
                 (sebClientTemplate) => ({
                     value: sebClientTemplate.id,
-                    text: t(sebClientTemplate.name),
+                    text: sebClientTemplate.name,
                 }),
             ),
             label: t(
@@ -123,7 +123,7 @@ const formFields = computed<FormField[]>(() => {
                 connectionConfigurations.value?.content ?? [],
             ).map((connectionConfiguration) => ({
                 value: connectionConfiguration.id.toString(),
-                text: t(connectionConfiguration.name),
+                text: connectionConfiguration.name,
             })),
             label: t(
                 "createTemplateExam.steps.naming.fields.connectionConfiguration.label",
