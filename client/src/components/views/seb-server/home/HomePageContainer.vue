@@ -1,5 +1,5 @@
 <template>
-    <v-row data-testid="homepageContainer-page-container">
+    <v-row data-testid="homepageContainer-page-container" class="w-100">
         <v-col cols="12" data-testid="homepageContainer-root-col">
             <!-- Infos -->
             <v-row data-testid="homepageContainer-info-section">
