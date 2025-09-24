@@ -1,38 +1,44 @@
 <template>
     <transition name="toast-item">
+        <!-- Alert -->
         <v-alert
             v-show="alive"
-            :type="vuetifyType"
-            :color="vuetifyType"
             variant="tonal"
+            :style="{
+                backgroundColor: colors.bg,
+            }"
+            :border="'start'"
+            :color="colors.accent"
             rounded="lg"
-            border="start"
             class="toast-item"
             closable
-            close-icon="mdi-close"
-            :close-label="closeLabel"
-            :role="ariaRole"
-            :aria-live="ariaLive"
             @click:close="close"
             @mouseenter="pause"
             @mouseleave="resume"
         >
-            <!-- Left icon badge -->
+            <!-- Icon -->
             <template #prepend>
                 <v-sheet
                     class="toast-icon"
-                    :color="vuetifyType"
+                    :style="{ backgroundColor: colors.accent }"
                     elevation="0"
                     rounded="md"
                 >
-                    <v-icon v-if="vuetifyType === 'success'">mdi-check</v-icon>
+                    <v-icon v-if="vuetifyType === 'success'">
+                        mdi-check-bold
+                    </v-icon>
+
                     <v-icon v-else-if="vuetifyType === 'warning'"
-                        >mdi-alert</v-icon
-                    >
+                        >mdi-alert
+                    </v-icon>
+
                     <v-icon v-else-if="vuetifyType === 'error'"
-                        >mdi-close</v-icon
-                    >
-                    <v-icon v-else>mdi-information</v-icon>
+                        >mdi-close-thick
+                    </v-icon>
+
+                    <v-icon v-else>
+                        mdi-information-slab-circle-outline
+                    </v-icon>
                 </v-sheet>
             </template>
 
@@ -46,7 +52,7 @@
                         {{ alert.text }}
                     </div>
 
-                    <!-- Move button here, stacked below -->
+                    <!-- optional Action button with custom label -->
                     <v-btn
                         v-if="alert.actionLabel && alert.onAction"
                         size="small"
@@ -59,13 +65,12 @@
                 </div>
             </div>
 
-            <!-- Duration bar at the bottom -->
+            <!-- Duration bar / remaining time -->
             <v-progress-linear
                 class="toast-progress"
                 :model-value="progress"
-                :height="3"
-                :stream="false"
                 rounded
+                striped
             />
         </v-alert>
     </transition>
@@ -75,13 +80,13 @@
 import { computed, onMounted, onBeforeUnmount, ref } from "vue";
 import type { Alert } from "@/stores/seb-server/notificationstore";
 
+//passable props
 const props = defineProps<{
     alert: Alert;
     onRemove: (id: string) => void;
 }>();
 
-const closeLabel = "Close notification";
-
+// turning our types into types v-alert understands to use variant properties
 const vuetifyType = computed<"success" | "info" | "warning" | "error">(() => {
     switch (props.alert.type) {
         case "success":
@@ -98,18 +103,6 @@ const vuetifyType = computed<"success" | "info" | "warning" | "error">(() => {
     }
 });
 
-const ariaRole = computed(() =>
-    props.alert.type === "warning" ||
-    props.alert.type === "client-error" ||
-    props.alert.type === "server-error"
-        ? "alert"
-        : "status",
-);
-
-const ariaLive = computed(() =>
-    ariaRole.value === "alert" ? "assertive" : "polite",
-);
-
 const alive = ref(true);
 const progress = ref(100);
 
@@ -117,17 +110,20 @@ let timer: number | null = null;
 let remaining = props.alert.duration;
 const step = 50;
 
+// countdown functionality
 function tick() {
     remaining -= step;
     progress.value = Math.max((remaining / props.alert.duration) * 100, 0);
     if (remaining <= 0) close();
 }
 
+//resume the countdown for the alert to disappear
 function resume() {
     if (timer !== null) return;
     timer = window.setInterval(tick, step);
 }
 
+// used on hover, pause the countdown for the alert to disappear
 function pause() {
     if (timer !== null) {
         clearInterval(timer);
@@ -135,6 +131,7 @@ function pause() {
     }
 }
 
+//close the alert
 function close() {
     pause();
     alive.value = false;
@@ -153,14 +150,32 @@ onMounted(() => {
 onBeforeUnmount(() => {
     pause();
 });
+
+// colors
+
+const cssVarsFor = (kind: "success" | "info" | "warning" | "error") => ({
+    bg: `rgb(var(--v-theme-alert-${kind}-bg))`,
+    border: `rgb(var(--v-theme-alert-${kind}-border))`,
+    accent: `rgb(var(--v-theme-alert-${kind}-accent))`,
+});
+
+const colors = computed(() => {
+    const t = props.alert.type;
+    const kind: "success" | "info" | "warning" | "error" =
+        t === "client-error" || t === "server-error"
+            ? "error"
+            : t === "success" || t === "info" || t === "warning"
+              ? t
+              : "info";
+    return cssVarsFor(kind);
+});
 </script>
 
 <style scoped>
 .toast-item {
     position: relative;
-    width: 500px;
+    width: 23vw;
     max-width: calc(100vw - 2rem);
-    box-shadow: var(--v-theme-shadow-3);
 }
 
 .toast-header {
@@ -197,9 +212,8 @@ onBeforeUnmount(() => {
     bottom: 0.125rem;
 }
 
-/* Smooth the inner bar width changes */
 .toast-progress :deep(.v-progress-linear__determinate) {
-    transition: width 120ms linear;
+    transition: width 60ms linear;
 }
 
 .toast-icon {
@@ -208,8 +222,8 @@ onBeforeUnmount(() => {
     justify-content: center;
     width: 28px;
     height: 28px;
-    color: white; /* ensures icon stays visible */
-    flex-shrink: 0; /* prevents shrinking in flex layout */
-    border-radius: 6px; /* adjust to your liking */
+    color: white;
+    flex-shrink: 0;
+    border-radius: 6px;
 }
 </style>
