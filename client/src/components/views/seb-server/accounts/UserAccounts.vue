@@ -561,6 +561,9 @@ import * as constants from "@/utils/constants";
 import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/authenticationStore";
 import { UserRoleEnum } from "@/models/userRoleEnum";
 import { getInstitutions } from "@/services/seb-server/component-services/registerAccountViewService";
+import { GUIComponent, useAbilities } from "@/services/ability";
+
+const ability = useAbilities();
 
 const authenticatedUserAccountStore = useAuthenticatedUserAccountStore();
 const appBarStore = useAppBarStore();
@@ -604,6 +607,12 @@ const searchQuery = ref("");
 const userAccounts = ref<UserAccountResponse>();
 
 onMounted(async () => {
+    // check user rights and go back to home if not allowed to view this page
+    if (!ability.canView(GUIComponent.UserAccounts)) {
+        navigateTo(constants.HOME_PAGE_ROUTE);
+        return;
+    }
+
     appBarStore.title = translate("titles.userAccounts");
     layoutStore.setBlueBackground(true);
     if (showInstitutionColumn.value) {
