@@ -156,6 +156,7 @@
                     <v-radio-group
                         v-model="proxySettingsPolicyVal"
                         :disabled="sebSettingsStore.readonly"
+                        hide-details
                         @update:model-value="
                             saveSingleValue(
                                 proxySettingsPolicy.id,
@@ -204,14 +205,15 @@
 
             <v-row>
                 <v-col :class="sebSettingsStore.fp">
-                    {{ translate("sebSettings.networkView.ExceptionsList") }}
                     <v-text-field
                         v-model="ExceptionsListVal"
                         density="compact"
+                        :label="
+                            translate('sebSettings.networkView.ExceptionsList')
+                        "
                         :disabled="sebSettingsStore.readonly"
-                        hide-details
-                        single-line
                         variant="outlined"
+                        hide-details
                         @update:focused="
                             saveOnFocusLost(
                                 $event,
@@ -289,17 +291,16 @@
                         </v-row>
                         <v-row>
                             <v-col :class="sebSettingsStore.fp">
-                                {{
-                                    translate(
-                                        "sebSettings.networkView.AutoConfigurationURL",
-                                    )
-                                }}
                                 <v-text-field
                                     v-model="AutoConfigurationURLVal"
                                     density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.AutoConfigurationURL',
+                                        )
+                                    "
                                     :disabled="sebSettingsStore.readonly"
                                     hide-details
-                                    single-line
                                     variant="outlined"
                                     @update:focused="
                                         saveOnFocusLost(
@@ -314,14 +315,14 @@
                         </v-row>
                         <v-row>
                             <v-col :class="sebSettingsStore.fp">
-                                {{
-                                    translate(
-                                        "sebSettings.networkView.AutoConfigurationJavaScript",
-                                    )
-                                }}
                                 <v-text-field
                                     v-model="AutoConfigurationJavaScriptVal"
                                     density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.AutoConfigurationJavaScript',
+                                        )
+                                    "
                                     :disabled="sebSettingsStore.readonly"
                                     hide-details
                                     single-line
@@ -362,17 +363,16 @@
                         </v-row>
                         <v-row>
                             <v-col :class="sebSettingsStore.fp">
-                                {{
-                                    translate(
-                                        "sebSettings.networkView.HTTPProxy",
-                                    )
-                                }}
                                 <v-text-field
                                     v-model="HTTPProxyVal"
                                     density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.HTTPProxy',
+                                        )
+                                    "
                                     :disabled="sebSettingsStore.readonly"
                                     hide-details
-                                    single-line
                                     variant="outlined"
                                     @update:focused="
                                         saveOnFocusLost(
@@ -387,17 +387,16 @@
                         </v-row>
                         <v-row>
                             <v-col :class="sebSettingsStore.fp">
-                                {{
-                                    translate(
-                                        "sebSettings.networkView.HTTPPort",
-                                    )
-                                }}
                                 <v-number-input
                                     v-model="HTTPPortVal"
                                     density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.HTTPPort',
+                                        )
+                                    "
                                     :disabled="sebSettingsStore.readonly"
                                     hide-details
-                                    single-line
                                     variant="outlined"
                                     @update:focused="
                                         saveOnFocusLost(
@@ -433,17 +432,16 @@
                         </v-row>
                         <v-row>
                             <v-col :class="sebSettingsStore.fp">
-                                {{
-                                    translate(
-                                        "sebSettings.networkView.HTTPUsername",
-                                    )
-                                }}
                                 <v-text-field
                                     v-model="HTTPUsernameVal"
                                     density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.HTTPUsername',
+                                        )
+                                    "
                                     :disabled="sebSettingsStore.readonly"
                                     hide-details
-                                    single-line
                                     variant="outlined"
                                     @update:focused="
                                         saveOnFocusLost(
@@ -458,17 +456,16 @@
                         </v-row>
                         <v-row>
                             <v-col :class="sebSettingsStore.fp">
-                                {{
-                                    translate(
-                                        "sebSettings.networkView.HTTPPassword",
-                                    )
-                                }}
                                 <v-text-field
                                     v-model="HTTPPasswordVal"
                                     density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.HTTPPassword',
+                                        )
+                                    "
                                     :disabled="sebSettingsStore.readonly"
                                     hide-details
-                                    single-line
                                     variant="outlined"
                                     @update:focused="
                                         saveOnFocusLost(
@@ -506,17 +503,16 @@
                         </v-row>
                         <v-row>
                             <v-col :class="sebSettingsStore.fp">
-                                {{
-                                    translate(
-                                        "sebSettings.networkView.HTTPSProxy",
-                                    )
-                                }}
                                 <v-text-field
                                     v-model="HTTPSProxyVal"
                                     density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.HTTPSProxy',
+                                        )
+                                    "
                                     :disabled="sebSettingsStore.readonly"
                                     hide-details
-                                    single-line
                                     variant="outlined"
                                     @update:focused="
                                         saveOnFocusLost(
@@ -531,17 +527,16 @@
                         </v-row>
                         <v-row>
                             <v-col :class="sebSettingsStore.fp">
-                                {{
-                                    translate(
-                                        "sebSettings.networkView.HTTPSPort",
-                                    )
-                                }}
                                 <v-number-input
                                     v-model="HTTPSPortVal"
                                     density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.HTTPSPort',
+                                        )
+                                    "
                                     :disabled="sebSettingsStore.readonly"
                                     hide-details
-                                    single-line
                                     variant="outlined"
                                     @update:focused="
                                         saveOnFocusLost(
@@ -577,14 +572,14 @@
                         </v-row>
                         <v-row>
                             <v-col :class="sebSettingsStore.fp">
-                                {{
-                                    translate(
-                                        "sebSettings.networkView.HTTPSUsername",
-                                    )
-                                }}
                                 <v-text-field
                                     v-model="HTTPSUsernameVal"
                                     density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.HTTPSUsername',
+                                        )
+                                    "
                                     :disabled="sebSettingsStore.readonly"
                                     hide-details
                                     single-line
@@ -602,17 +597,16 @@
                         </v-row>
                         <v-row>
                             <v-col :class="sebSettingsStore.fp">
-                                {{
-                                    translate(
-                                        "sebSettings.networkView.HTTPSPassword",
-                                    )
-                                }}
                                 <v-text-field
                                     v-model="HTTPSPasswordVal"
                                     density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.HTTPSPassword',
+                                        )
+                                    "
                                     :disabled="sebSettingsStore.readonly"
                                     hide-details
-                                    single-line
                                     variant="outlined"
                                     @update:focused="
                                         saveOnFocusLost(
@@ -650,17 +644,16 @@
                         </v-row>
                         <v-row>
                             <v-col :class="sebSettingsStore.fp">
-                                {{
-                                    translate(
-                                        "sebSettings.networkView.FTPProxy",
-                                    )
-                                }}
                                 <v-text-field
                                     v-model="FTPProxyVal"
                                     density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.FTPProxy',
+                                        )
+                                    "
                                     :disabled="sebSettingsStore.readonly"
                                     hide-details
-                                    single-line
                                     variant="outlined"
                                     @update:focused="
                                         saveOnFocusLost(
@@ -675,15 +668,16 @@
                         </v-row>
                         <v-row>
                             <v-col :class="sebSettingsStore.fp">
-                                {{
-                                    translate("sebSettings.networkView.FTPPort")
-                                }}
                                 <v-number-input
                                     v-model="FTPPortVal"
                                     density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.FTPPort',
+                                        )
+                                    "
                                     :disabled="sebSettingsStore.readonly"
                                     hide-details
-                                    single-line
                                     variant="outlined"
                                     @update:focused="
                                         saveOnFocusLost(
@@ -719,17 +713,16 @@
                         </v-row>
                         <v-row>
                             <v-col :class="sebSettingsStore.fp">
-                                {{
-                                    translate(
-                                        "sebSettings.networkView.FTPUsername",
-                                    )
-                                }}
                                 <v-text-field
                                     v-model="FTPUsernameVal"
                                     density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.FTPUsername',
+                                        )
+                                    "
                                     :disabled="sebSettingsStore.readonly"
                                     hide-details
-                                    single-line
                                     variant="outlined"
                                     @update:focused="
                                         saveOnFocusLost(
@@ -744,17 +737,16 @@
                         </v-row>
                         <v-row>
                             <v-col :class="sebSettingsStore.fp">
-                                {{
-                                    translate(
-                                        "sebSettings.networkView.FTPPassword",
-                                    )
-                                }}
                                 <v-text-field
                                     v-model="FTPPasswordVal"
                                     density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.FTPPassword',
+                                        )
+                                    "
                                     :disabled="sebSettingsStore.readonly"
                                     hide-details
-                                    single-line
                                     variant="outlined"
                                     @update:focused="
                                         saveOnFocusLost(
@@ -792,17 +784,16 @@
                         </v-row>
                         <v-row>
                             <v-col :class="sebSettingsStore.fp">
-                                {{
-                                    translate(
-                                        "sebSettings.networkView.SOCKSProxy",
-                                    )
-                                }}
                                 <v-text-field
                                     v-model="SOCKSProxyVal"
                                     density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.SOCKSProxy',
+                                        )
+                                    "
                                     :disabled="sebSettingsStore.readonly"
                                     hide-details
-                                    single-line
                                     variant="outlined"
                                     @update:focused="
                                         saveOnFocusLost(
@@ -817,17 +808,16 @@
                         </v-row>
                         <v-row>
                             <v-col :class="sebSettingsStore.fp">
-                                {{
-                                    translate(
-                                        "sebSettings.networkView.SOCKSPort",
-                                    )
-                                }}
                                 <v-number-input
                                     v-model="SOCKSPortVal"
                                     density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.SOCKSPort',
+                                        )
+                                    "
                                     :disabled="sebSettingsStore.readonly"
                                     hide-details
-                                    single-line
                                     variant="outlined"
                                     @update:focused="
                                         saveOnFocusLost(
@@ -863,17 +853,16 @@
                         </v-row>
                         <v-row>
                             <v-col :class="sebSettingsStore.fp">
-                                {{
-                                    translate(
-                                        "sebSettings.networkView.SOCKSUsername",
-                                    )
-                                }}
                                 <v-text-field
                                     v-model="SOCKSUsernameVal"
                                     density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.SOCKSUsername',
+                                        )
+                                    "
                                     :disabled="sebSettingsStore.readonly"
                                     hide-details
-                                    single-line
                                     variant="outlined"
                                     @update:focused="
                                         saveOnFocusLost(
@@ -888,17 +877,16 @@
                         </v-row>
                         <v-row>
                             <v-col :class="sebSettingsStore.fp">
-                                {{
-                                    translate(
-                                        "sebSettings.networkView.SOCKSPassword",
-                                    )
-                                }}
                                 <v-text-field
                                     v-model="SOCKSPasswordVal"
                                     density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.SOCKSPassword',
+                                        )
+                                    "
                                     :disabled="sebSettingsStore.readonly"
                                     hide-details
-                                    single-line
                                     variant="outlined"
                                     @update:focused="
                                         saveOnFocusLost(
@@ -936,17 +924,16 @@
                         </v-row>
                         <v-row>
                             <v-col :class="sebSettingsStore.fp">
-                                {{
-                                    translate(
-                                        "sebSettings.networkView.RTSPProxy",
-                                    )
-                                }}
                                 <v-text-field
                                     v-model="RTSPProxyVal"
                                     density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.RTSPProxy',
+                                        )
+                                    "
                                     :disabled="sebSettingsStore.readonly"
                                     hide-details
-                                    single-line
                                     variant="outlined"
                                     @update:focused="
                                         saveOnFocusLost(
@@ -961,17 +948,16 @@
                         </v-row>
                         <v-row>
                             <v-col :class="sebSettingsStore.fp">
-                                {{
-                                    translate(
-                                        "sebSettings.networkView.RTSPPort",
-                                    )
-                                }}
                                 <v-number-input
                                     v-model="RTSPPortVal"
                                     density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.RTSPPort',
+                                        )
+                                    "
                                     :disabled="sebSettingsStore.readonly"
                                     hide-details
-                                    single-line
                                     variant="outlined"
                                     @update:focused="
                                         saveOnFocusLost(
@@ -1007,17 +993,16 @@
                         </v-row>
                         <v-row>
                             <v-col :class="sebSettingsStore.fp">
-                                {{
-                                    translate(
-                                        "sebSettings.networkView.RTSPUsername",
-                                    )
-                                }}
                                 <v-text-field
                                     v-model="RTSPUsernameVal"
                                     density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.RTSPUsername',
+                                        )
+                                    "
                                     :disabled="sebSettingsStore.readonly"
                                     hide-details
-                                    single-line
                                     variant="outlined"
                                     @update:focused="
                                         saveOnFocusLost(
@@ -1032,17 +1017,16 @@
                         </v-row>
                         <v-row>
                             <v-col :class="sebSettingsStore.fp">
-                                {{
-                                    translate(
-                                        "sebSettings.networkView.RTSPPassword",
-                                    )
-                                }}
                                 <v-text-field
                                     v-model="RTSPPasswordVal"
                                     density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.RTSPPassword',
+                                        )
+                                    "
                                     :disabled="sebSettingsStore.readonly"
                                     hide-details
-                                    single-line
                                     variant="outlined"
                                     @update:focused="
                                         saveOnFocusLost(

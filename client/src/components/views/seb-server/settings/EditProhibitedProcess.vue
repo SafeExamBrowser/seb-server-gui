@@ -24,7 +24,7 @@
                     <v-form>
                         <!------------ active ------------->
                         <v-row align="center">
-                            <v-col class="pt-0 pb-0">
+                            <v-col class="pt-0 pb-0 pl-0">
                                 <v-tooltip
                                     activator="parent"
                                     location="top left"
@@ -36,15 +36,13 @@
                                         )
                                     }}
                                 </v-tooltip>
-                                {{
-                                    translate(
-                                        "sebSettings.applicationView.prohibitedProcess.active",
-                                    )
-                                }}
-                            </v-col>
-                            <v-col class="pt-0 pb-0 pl-0"
-                                ><v-checkbox-btn
+                                <v-checkbox-btn
                                     v-model="props.prohibitedProcess!.active"
+                                    :label="
+                                        translate(
+                                            'sebSettings.applicationView.prohibitedProcess.active',
+                                        )
+                                    "
                                     :disabled="props.readOnly"
                                 ></v-checkbox-btn>
                             </v-col>
@@ -52,16 +50,14 @@
                         <!------------OS Type------------->
                         <v-row align="center">
                             <v-col>
-                                {{
-                                    translate(
-                                        "sebSettings.applicationView.prohibitedProcess.os",
-                                    )
-                                }}
-                            </v-col>
-                            <v-col>
                                 <v-select
                                     v-model="props.prohibitedProcess!.os"
                                     density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.applicationView.prohibitedProcess.os',
+                                        )
+                                    "
                                     :disabled="props.readOnly"
                                     hide-details
                                     :items="osItems"
@@ -84,21 +80,18 @@
                                         )
                                     }}
                                 </v-tooltip>
-                                {{
-                                    translate(
-                                        "sebSettings.applicationView.prohibitedProcess.executable",
-                                    )
-                                }}
-                            </v-col>
-                            <v-col>
                                 <v-text-field
                                     v-model="
                                         props.prohibitedProcess!.executable
                                     "
                                     density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.applicationView.prohibitedProcess.executable',
+                                        )
+                                    "
                                     :disabled="props.readOnly"
                                     hide-details
-                                    single-line
                                     variant="outlined"
                                 >
                                 </v-text-field>
@@ -118,21 +111,18 @@
                                         )
                                     }}
                                 </v-tooltip>
-                                {{
-                                    translate(
-                                        "sebSettings.applicationView.prohibitedProcess.originalName",
-                                    )
-                                }}
-                            </v-col>
-                            <v-col>
                                 <v-text-field
                                     v-model="
                                         props.prohibitedProcess!.originalName
                                     "
                                     density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.applicationView.prohibitedProcess.originalName',
+                                        )
+                                    "
                                     :disabled="props.readOnly"
                                     hide-details
-                                    single-line
                                     variant="outlined"
                                 >
                                 </v-text-field>
@@ -152,21 +142,18 @@
                                         )
                                     }}
                                 </v-tooltip>
-                                {{
-                                    translate(
-                                        "sebSettings.applicationView.prohibitedProcess.description",
-                                    )
-                                }}
-                            </v-col>
-                            <v-col>
                                 <v-text-field
                                     v-model="
                                         props.prohibitedProcess!.description
                                     "
                                     density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.applicationView.prohibitedProcess.description',
+                                        )
+                                    "
                                     :disabled="props.readOnly"
                                     hide-details
-                                    single-line
                                     variant="outlined"
                                 >
                                 </v-text-field>
@@ -186,21 +173,18 @@
                                         )
                                     }}
                                 </v-tooltip>
-                                {{
-                                    translate(
-                                        "sebSettings.applicationView.prohibitedProcess.identifier",
-                                    )
-                                }}
-                            </v-col>
-                            <v-col>
                                 <v-text-field
                                     v-model="
                                         props.prohibitedProcess!.identifier
                                     "
                                     density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.applicationView.prohibitedProcess.identifier',
+                                        )
+                                    "
                                     :disabled="props.readOnly"
                                     hide-details
-                                    single-line
                                     variant="outlined"
                                 >
                                 </v-text-field>
@@ -208,7 +192,7 @@
                         </v-row>
                         <!------------ force quit ------------->
                         <v-row align="center">
-                            <v-col class="pt-0 pb-0">
+                            <v-col class="pt-0 pb-0 pl-0">
                                 <v-tooltip
                                     activator="parent"
                                     location="top left"
@@ -220,16 +204,14 @@
                                         )
                                     }}
                                 </v-tooltip>
-                                {{
-                                    translate(
-                                        "sebSettings.applicationView.prohibitedProcess.strongKill",
-                                    )
-                                }}
-                            </v-col>
-                            <v-col class="pt-0 pb-0 pl-0"
-                                ><v-checkbox-btn
+                                <v-checkbox-btn
                                     v-model="
                                         props.prohibitedProcess!.strongKill
+                                    "
+                                    :label="
+                                        translate(
+                                            'sebSettings.applicationView.prohibitedProcess.strongKill',
+                                        )
                                     "
                                     :disabled="props.readOnly"
                                 ></v-checkbox-btn>
@@ -237,7 +219,7 @@
                         </v-row>
                         <!------------ ignore AAC------------->
                         <v-row align="center">
-                            <v-col class="pt-0 pb-0">
+                            <v-col class="pt-0 pb-0 pl-0">
                                 <v-tooltip
                                     activator="parent"
                                     location="top left"
@@ -249,16 +231,14 @@
                                         )
                                     }}
                                 </v-tooltip>
-                                {{
-                                    translate(
-                                        "sebSettings.applicationView.prohibitedProcess.ignoreAAC",
-                                    )
-                                }}
-                            </v-col>
-                            <v-col class="pt-0 pb-0 pl-0"
-                                ><v-checkbox-btn
+                                <v-checkbox-btn
                                     v-model="
                                         props.prohibitedProcess!.ignoreInAAC
+                                    "
+                                    :label="
+                                        translate(
+                                            'sebSettings.applicationView.prohibitedProcess.ignoreAAC',
+                                        )
                                     "
                                     :disabled="props.readOnly"
                                 ></v-checkbox-btn>

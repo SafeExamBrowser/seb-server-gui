@@ -1,13 +1,12 @@
 <template>
     <v-row>
         <!-- Administrator Password -->
-        <v-col :class="sebSettingsStore.fp">
-            {{ translate("sebSettings.generalView.adminPassword") }}
+        <v-col>
             <v-text-field
                 ref="adminPasswordFieldRef"
                 v-model="hashedAdminPasswordVal"
+                :label="translate('sebSettings.generalView.adminPassword')"
                 density="compact"
-                single-line
                 :rules="[adminPasswordRule]"
                 :type="adminPasswordVisible ? 'text' : 'password'"
                 validate-on="eager"
@@ -36,10 +35,12 @@
     <v-row>
         <!-- Confirm Administrator Password -->
         <v-col :class="sebSettingsStore.fp">
-            {{ translate("sebSettings.generalView.confirmAdminPassword") }}
             <v-text-field
                 ref="confirmAdminPasswordFieldRef"
                 v-model="confirmAdminPassword"
+                :label="
+                    translate('sebSettings.generalView.confirmAdminPassword')
+                "
                 class="mb-2"
                 density="compact"
                 required
@@ -78,6 +79,7 @@
         <v-col :class="sebSettingsStore.cp">
             <v-checkbox-btn
                 v-model="allowQuitVal"
+                max-width="600"
                 :disabled="sebSettingsStore.readonly"
                 :label="translate('sebSettings.generalView.allowQuit')"
                 @update:model-value="
@@ -94,13 +96,12 @@
     </v-row>
     <v-row>
         <!-- Quit Password -->
-        <v-col :class="sebSettingsStore.fp">
-            {{ translate("sebSettings.generalView.quitPassword") }}
+        <v-col>
             <v-text-field
                 ref="quitPasswordFieldRef"
                 v-model="hashedQuitPasswordVal"
+                :label="translate('sebSettings.generalView.quitPassword')"
                 density="compact"
-                single-line
                 :rules="[quitPasswordRule]"
                 :type="quitPasswordVisible ? 'text' : 'password'"
                 validate-on="eager"
@@ -128,11 +129,13 @@
     </v-row>
     <v-row>
         <!-- Confirm Quit Password -->
-        <v-col :class="sebSettingsStore.fp">
-            {{ translate("sebSettings.generalView.confirmQuitPassword") }}
+        <v-col>
             <v-text-field
                 ref="confirmQuitPasswordFieldRef"
                 v-model="confirmQuitPassword"
+                :label="
+                    translate('sebSettings.generalView.confirmQuitPassword')
+                "
                 class="mb-2"
                 density="compact"
                 required
