@@ -22,6 +22,7 @@
 
         <v-col class="pl-10" cols="12" md="2"></v-col>
     </v-row>
+
     <!------------top info box or alert------------->
     <template v-if="isNoAssessmentTool">
         <AlertMsg
@@ -35,11 +36,7 @@
         </AlertMsg>
     </template>
 
-    <div
-        v-if="!isNoAssessmentTool"
-        class="d-flex flex-column flex-grow-1"
-        style="height: 100%; min-height: 0; width: 100%"
-    >
+    <div v-if="!isNoAssessmentTool" class="d-flex flex-column flex-grow-1">
         <component
             :is="
                 quizImportStore.infoBoxComponents[

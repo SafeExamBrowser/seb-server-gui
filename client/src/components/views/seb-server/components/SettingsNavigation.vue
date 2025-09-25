@@ -3,8 +3,10 @@
         <v-sheet class="rounded-lg ml-6 w-100 h-100 bg-primary">
             <v-col class="pt-0">
                 <v-divider class="section-divider" />
-
-                <v-list-item class="px-0 nav-hover">
+                <v-list-item
+                    v-if="ability.canView(GUIComponent.LMSSetups)"
+                    class="px-0 nav-hover"
+                >
                     <router-link
                         class="link-color nav-link"
                         data-testid="settingsNavigation-assessmentToolConnections-link"
@@ -14,8 +16,14 @@
                     </router-link>
                 </v-list-item>
 
-                <v-divider class="section-divider" />
-                <v-list-item class="px-0 nav-hover">
+                <v-divider
+                    v-if="ability.canView(GUIComponent.ConnectionConfigs)"
+                    class="section-divider"
+                />
+                <v-list-item
+                    v-if="ability.canView(GUIComponent.ConnectionConfigs)"
+                    class="px-0 nav-hover"
+                >
                     <router-link
                         class="link-color nav-link"
                         data-testid="settingsNavigation-connectionConfigurations-link"
@@ -29,9 +37,14 @@
                     </router-link>
                 </v-list-item>
 
-                <v-divider class="section-divider" />
-
-                <v-list-item class="px-0 nav-hover">
+                <v-divider
+                    v-if="ability.canView(GUIComponent.Certificates)"
+                    class="section-divider"
+                />
+                <v-list-item
+                    v-if="ability.canView(GUIComponent.Certificates)"
+                    class="px-0 nav-hover"
+                >
                     <router-link
                         class="link-color nav-link"
                         data-testid="settingsNavigation-certificates-link"
@@ -41,9 +54,14 @@
                     </router-link>
                 </v-list-item>
 
-                <v-divider class="section-divider" />
-
-                <v-list-item class="px-0 nav-hover">
+                <v-divider
+                    v-if="ability.canView(GUIComponent.UserAccounts)"
+                    class="section-divider"
+                />
+                <v-list-item
+                    v-if="ability.canView(GUIComponent.UserAccounts)"
+                    class="px-0 nav-hover"
+                >
                     <router-link
                         class="link-color nav-link"
                         data-testid="settingsNavigation-userAccounts-link"
@@ -60,9 +78,23 @@
         </v-sheet>
     </v-col>
 </template>
+
 <script setup lang="ts">
 import * as constants from "@/utils/constants";
 import { translate } from "@/utils/generalUtils";
+import { GUIComponent, useAbilities } from "@/services/ability";
+import { navigateTo } from "@/router/navigation";
+import { onBeforeMount } from "vue";
+
+const ability = useAbilities();
+
+onBeforeMount(async () => {
+    // check user rights and go back to home if not allowed to view this page
+    if (!ability.canView(GUIComponent.UserAccounts)) {
+        navigateTo(constants.HOME_PAGE_ROUTE);
+        return;
+    }
+});
 </script>
 
 <style scoped>

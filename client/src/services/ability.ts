@@ -9,18 +9,34 @@ export enum GUIComponent {
     // Overall components
     NavigationOverview = "NavigationOverview",
 
-    // User Account Components
-    UserAccount = "UserAccount",
+    // Settings
+    Settings = "Settings",
+    UserAccounts = "UserAccounts",
+    ConnectionConfigs = "ConnectionConfigs",
+    LMSSetups = "LMSSetups",
+    Certificates = "Certificates",
+
+    // Preparation
+    ExamTemplate = "ExamTemplate",
+    SEBTemplate = "SEBTemplate",
+    PrepareExam = "PrepareExam",
+    AddExamWithURL = "AddExamWithURL",
+
+    // Exams
+    Exams = "Exams",
+
+    // Monitoring
+    RunningExams = "RunningExams",
+    ScreenProctoring = "ScreenProctoring",
+    ScreenProctoringSearch = "ScreenProctoringSearch",
+    ScreenProctoringApplicationSearch = "ScreenProctoringApplicationSearch",
+
+    // Followup
+    FinishedExams = "FinishedExams",
+    ArchivedExams = "ArchivedExams",
 }
 
 export enum GUIAction {
-    // User Account actions
-    CreateUserAccount = "CreateUserAccount",
-    EditUserAccount = "EditUserAccount",
-    DeleteUserAccount = "DeleteUserAccount",
-
-    // Exam import actions
-
     // Exam actions
     EditExamSettings = "EditExamSettings",
     ArchiveExam = "ArchiveExam",
@@ -54,40 +70,82 @@ export const useAbilities = defineStore("ability", () => {
     // -----------------------------------------------------------------------------
     // User Role based ability mapping
 
+    // --- GUI Component Privileges -----------------------
+
     guiComponents.value.set(
         UserRoleEnum.SEB_SERVER_ADMIN,
-        new Set<GUIComponent>([GUIComponent.NavigationOverview]),
+        new Set<GUIComponent>([
+            GUIComponent.NavigationOverview,
+            GUIComponent.Settings,
+            GUIComponent.UserAccounts,
+            GUIComponent.ConnectionConfigs,
+            GUIComponent.LMSSetups,
+            GUIComponent.Certificates,
+        ]),
     );
-
-    // --- GUI Component Privileges -----------------------
 
     // --- INSTITUTIONAL_ADMIN component privileges
     guiComponents.value.set(
         UserRoleEnum.INSTITUTIONAL_ADMIN,
-        new Set<GUIComponent>([GUIComponent.NavigationOverview]),
+        new Set<GUIComponent>([
+            GUIComponent.NavigationOverview,
+            GUIComponent.Settings,
+            GUIComponent.UserAccounts,
+            GUIComponent.ConnectionConfigs,
+            GUIComponent.LMSSetups,
+            GUIComponent.Certificates,
+            GUIComponent.ExamTemplate,
+            GUIComponent.SEBTemplate,
+            GUIComponent.Exams,
+        ]),
+    );
+
+    // --- EXAM_ADMIN component privileges
+    guiComponents.value.set(
+        UserRoleEnum.EXAM_ADMIN,
+        new Set<GUIComponent>([
+            GUIComponent.PrepareExam,
+            GUIComponent.AddExamWithURL,
+            GUIComponent.RunningExams,
+            GUIComponent.ScreenProctoring,
+            GUIComponent.ScreenProctoringSearch,
+            GUIComponent.ScreenProctoringApplicationSearch,
+            GUIComponent.FinishedExams,
+            GUIComponent.ArchivedExams,
+            GUIComponent.Exams,
+        ]),
+    );
+
+    // --- EXAM_SUPPORTER component privileges
+    guiComponents.value.set(
+        UserRoleEnum.EXAM_SUPPORTER,
+        new Set<GUIComponent>([
+            GUIComponent.Exams,
+            GUIComponent.RunningExams,
+            GUIComponent.ScreenProctoring,
+            GUIComponent.ScreenProctoringSearch,
+            GUIComponent.ScreenProctoringApplicationSearch,
+            GUIComponent.FinishedExams,
+            GUIComponent.ArchivedExams,
+        ]),
     );
 
     // --- GUI Action Privileges -----------------------
 
-    // --- SEB_SERVER_ADMIN action privileges
-    guiActions.value.set(
-        UserRoleEnum.SEB_SERVER_ADMIN,
-        new Set<GUIAction>([
-            GUIAction.CreateUserAccount,
-            GUIAction.EditUserAccount,
-            GUIAction.DeleteUserAccount,
-        ]),
-    );
+    // // --- SEB_SERVER_ADMIN action privileges
+    // guiActions.value.set(
+    //     UserRoleEnum.SEB_SERVER_ADMIN,
+    //     new Set<GUIAction>([
+    //         GUIAction.CreateUserAccount,
+    //         GUIAction.EditUserAccount,
+    //         GUIAction.DeleteUserAccount,
+    //     ]),
+    // );
 
     // --- INSTITUTIONAL_ADMIN action privileges
     guiActions.value.set(
         UserRoleEnum.INSTITUTIONAL_ADMIN,
         new Set<GUIAction>([
-            // User Account actions
-            GUIAction.CreateUserAccount,
-            GUIAction.EditUserAccount,
-            GUIAction.DeleteUserAccount,
-
             // Exam actions
             GUIAction.ArchiveExam,
             GUIAction.DeleteExam,
