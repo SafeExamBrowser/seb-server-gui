@@ -65,7 +65,7 @@
                 </div>
             </div>
 
-            <!-- Duration bar / remaining time -->
+            <!-- duration bar / remaining time for error to be displayed-->
             <v-progress-linear
                 class="toast-progress"
                 :model-value="progress"
@@ -151,8 +151,7 @@ onBeforeUnmount(() => {
     pause();
 });
 
-// colors
-
+// colors so that background isn't with opacity
 const cssVarsFor = (kind: "success" | "info" | "warning" | "error") => ({
     bg: `rgb(var(--v-theme-alert-${kind}-bg))`,
     border: `rgb(var(--v-theme-alert-${kind}-border))`,

@@ -71,14 +71,13 @@ export async function createUserAccount(
             createUserAccountReqPar,
         );
     } catch (err) {
-        console.log("error being sent");
-        notify.success(
-            "Create User successfully.",
-            "This user has been added succesfuly",
-        );
         notify.serverError(err, {
             contextLabel: "Create user",
             dedupeKey: "create-user",
+            onAction: () => {
+                console.log("Do something, like retry");
+            },
+            actionLabel: "Retry",
         });
 
         return null;
