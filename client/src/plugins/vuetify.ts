@@ -7,6 +7,13 @@ import {
 } from "vuetify/labs/VStepperVertical";
 import { createVuetify } from "vuetify";
 
+const alertColors = {
+    success: { bg: "#E2EDE1", border: "#AAD5AB", accent: "#4CAF50" },
+    info: { bg: "#E0EAF5", border: "#A4CAF5", accent: "#2296F3" },
+    error: { bg: "#EFDBDC", border: "#D99196", accent: "#B00020" },
+    warning: { bg: "#F7E9DC", border: "#FAC594", accent: "#FB8C00" },
+};
+
 export default createVuetify({
     components: {
         VStepperVertical,
@@ -25,6 +32,15 @@ export default createVuetify({
                     subtitle: "#000000",
                     // background: "#eef5f9",
                     // surface: "#4D7DBF"
+
+                    // flatten
+                    ...Object.fromEntries(
+                        Object.entries(alertColors).flatMap(([kind, vals]) => [
+                            [`alert-${kind}-bg`, vals.bg],
+                            [`alert-${kind}-border`, vals.border],
+                            [`alert-${kind}-accent`, vals.accent],
+                        ]),
+                    ),
                 },
             },
             dark: {
