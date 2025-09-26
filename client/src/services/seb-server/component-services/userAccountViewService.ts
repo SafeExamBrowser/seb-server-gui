@@ -1,7 +1,6 @@
 import * as userAccountService from "@/services/seb-server/api-services/userAccountService";
 import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
 import * as institutionService from "@/services/seb-server/api-services/institutionService";
-import { notify } from "@/components/views/seb-server/toast/notify";
 
 export async function setPersonalUserAccount() {
     const userAccountStore = useUserAccountStore();
@@ -70,16 +69,7 @@ export async function createUserAccount(
         return await userAccountService.createUserAccount(
             createUserAccountReqPar,
         );
-    } catch (err) {
-        notify.serverError(err, {
-            contextLabel: "Create user",
-            dedupeKey: "create-user",
-            onAction: () => {
-                console.log("Do something, like retry");
-            },
-            actionLabel: "Retry",
-        });
-
+    } catch {
         return null;
     }
 }
