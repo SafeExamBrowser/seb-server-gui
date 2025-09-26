@@ -11,12 +11,7 @@
             "@api-services": ["src/services/api-services/*"]
         },
         "resolveJsonModule": true,
-        "types": [
-            "vite/client",
-            "vite-plugin-vue-layouts/client",
-            "unplugin-vue-router/client",
-            "node"
-        ],
+        "types": ["vite/client", "node"],
         "allowJs": true,
         "strict": true,
         "strictNullChecks": true,
