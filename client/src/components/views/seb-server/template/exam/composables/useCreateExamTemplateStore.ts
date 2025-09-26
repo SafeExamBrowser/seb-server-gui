@@ -1,0 +1,116 @@
+import { useStepNamingStore } from "@/components/views/seb-server/template/exam/components/stepNaming/composables/useStepNamingStore";
+import { useStepSupervisorsStore } from "@/components/views/seb-server/template/exam/components/stepSupervisors/store";
+import { StepItemCreateTemplateExam } from "@/components/views/seb-server/template/exam/types";
+import { StepItem } from "@/components/widgets/stepper/types";
+import { defineStore } from "pinia";
+import { useI18n } from "vue-i18n";
+import { computed, ref } from "vue";
+
+const staticStepData = [
+    {
+        componentName: "StepNaming" as const,
+        i18nKey: "createTemplateExam.steps.naming.title",
+    },
+    {
+        componentName: "StepSupervisors" as const,
+        i18nKey: "createTemplateExam.steps.supervisors.title",
+    },
+    {
+        componentName: "StepIndicators" as const,
+        i18nKey: "createTemplateExam.steps.indicators.title",
+    },
+    {
+        componentName: "StepClientGroup" as const,
+        i18nKey: "createTemplateExam.steps.clientGroup.title",
+    },
+    {
+        componentName: "StepSummary" as const,
+        i18nKey: "createTemplateExam.steps.summary.title",
+    },
+];
+
+const isStepReady = (
+    stepName: StepItemCreateTemplateExam["componentName"],
+    stepNamingStore: ReturnType<typeof useStepNamingStore>,
+    stepSupervisorsStore: ReturnType<typeof useStepSupervisorsStore>,
+) => {
+    switch (stepName) {
+        case "StepNaming":
+            return stepNamingStore.isReady;
+        case "StepSupervisors":
+            return stepSupervisorsStore.isReady;
+        case "StepIndicators":
+            return true;
+        case "StepClientGroup":
+            return true;
+        case "StepSummary":
+            return true;
+        default:
+            return stepName satisfies never;
+    }
+};
+
+export const useCreateExamTemplateStore = defineStore(
+    "createExamTemplate",
+    () => {
+        const { t } = useI18n();
+
+        const stepNamingStore = useStepNamingStore();
+        const stepSupervisorsStore = useStepSupervisorsStore();
+
+        // state
+        const currentStepIndex = ref(0);
+
+        // getters
+        const stepperModel = computed<StepItem[]>(() =>
+            staticStepData.map((step, index) => ({
+                title: t(step.i18nKey),
+                nextStepEnabled: isStepReady(
+                    step.componentName,
+                    stepNamingStore,
+                    stepSupervisorsStore,
+                ),
+                value: index,
+            })),
+        );
+
+        const currentStep = computed<StepItemCreateTemplateExam>(() => {
+            const step = staticStepData.at(currentStepIndex.value);
+
+            if (!step) {
+                throw new Error("Step not found");
+            }
+
+            return {
+                componentName: step.componentName,
+                title: t(step.i18nKey),
+            };
+        });
+
+        // actions
+        const increaseCurrentStepIndex = () => {
+            if (currentStepIndex.value < stepperModel.value.length - 1) {
+                currentStepIndex.value++;
+            }
+        };
+
+        const decreaseCurrentStepIndex = () => {
+            if (currentStepIndex.value > 0) {
+                currentStepIndex.value--;
+            }
+        };
+
+        return {
+            // state
+            currentStepIndex,
+
+            // getters
+            stepperModel,
+            currentStep,
+
+            // actions
+            increaseCurrentStepIndex,
+            decreaseCurrentStepIndex,
+        };
+    },
+);

@@ -228,6 +228,59 @@
         }
     },
 
+    "createTemplateExam": {
+        "steps": {
+            "naming": {
+                "title": "Name it",
+                "subtitle": "TODO: translate (Kristina)",
+                "fields": {
+                    "name": {
+                        "label": "Name",
+                        "placeholder": "Enter the desired name of the exam template"
+                    },
+                    "description": {
+                        "label": "Description",
+                        "placeholder": "Describe the exam template"
+                    },
+                    "examType": {
+                        "label": "Exam Type",
+                        "placeholder": "Select the exam type"
+                    },
+                    "sebClientTemplate": {
+                        "label": "SEB Client Template",
+                        "placeholder": "Select the SEB client template"
+                    },
+                    "connectionConfiguration": {
+                        "label": "Connection Configuration",
+                        "placeholder": "Select the connection configuration"
+                    },
+                    "assesmentToolIntegration": {
+                        "label": "Assesment Tool Integration"
+                    },
+                    "institutionalDefault": {
+                        "label": "Institutional Default"
+                    }
+                }
+            },
+            "supervisors": {
+                "title": "Add Exam Supervisors",
+                "subtitle": "TODO: translate (Kristina)"
+            },
+            "indicators": {
+                "title": "Add Indicators",
+                "subtitle": "TODO: translate (Kristina)"
+            },
+            "clientGroup": {
+                "title": "Add Client Group",
+                "subtitle": "TODO: translate (Kristina)"
+            },
+            "summary": {
+                "title": "Overview Exam Template",
+                "subtitle": "TODO: translate (Kristina)"
+            }
+        }
+    },
+
     "galleryView": {
         "generalInfo": {
             "page": "Page",
@@ -685,8 +738,7 @@
             "info": "What kind of template do you want to create?",
             "sebClientTemplate": "SEB Client Template",
             "examTemplate": "Exam Template",
-            "sebClientTemplateInfo": "To create an exam template you need a configuration template. If there is no configuration template in place please create new configuration template first.",
-            "examTemplateInfo": "To create an exam template you need a configuration template. If there is no configuration template in place please create new configuration template first."
+            "teaser": "To create an exam template, you need a configuration template and a connection configuration. If there is no configuration template, nor a connection configuration, please create these first."
         }
     },
 

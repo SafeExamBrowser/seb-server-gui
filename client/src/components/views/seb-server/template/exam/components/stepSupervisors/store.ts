@@ -2,14 +2,14 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 
 export const useStepSupervisorsStore = defineStore("stepSupervisors", () => {
-    const ready = ref(false);
+    const isReady = ref(false);
 
     const markAsReady = () => {
-        ready.value = true;
+        isReady.value = true;
     };
 
     return {
-        ready,
+        isReady,
         markAsReady,
     };
 });
