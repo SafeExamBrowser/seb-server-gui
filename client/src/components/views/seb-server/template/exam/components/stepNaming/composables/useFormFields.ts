@@ -2,7 +2,7 @@ import { useI18n } from "vue-i18n";
 import { computed } from "vue";
 import { FormField } from "@/components/views/seb-server/template/exam/components/form/types";
 import { ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
-import { useConnectionConfigurations } from "./useConnectionConfigurations";
+import { useConnectionConfigurationNames } from "./useConnectionConfigurationNames";
 import { useSebClientTemplates } from "./useSebClientTemplates";
 import { storeToRefs } from "pinia";
 import { useStepNamingStore } from "./useStepNamingStore";
@@ -27,21 +27,21 @@ export const useFormFields = () => {
     } = useSebClientTemplates();
 
     const {
-        data: connectionConfigurations,
-        loading: loadingConnectionConfigurations,
-        error: errorConnectionConfigurations,
-    } = useConnectionConfigurations();
+        data: connectionConfigurationNames,
+        loading: loadingConnectionConfigurationNames,
+        error: errorConnectionConfigurationNames,
+    } = useConnectionConfigurationNames();
 
     const loading = computed(
         () =>
             loadingSebClientTemplates.value ||
-            loadingConnectionConfigurations.value,
+            loadingConnectionConfigurationNames.value,
     );
 
     const errors = computed(() =>
         [
             errorSebClientTemplates.value,
-            errorConnectionConfigurations.value,
+            errorConnectionConfigurationNames.value,
         ].filter((error) => error !== undefined),
     );
 
@@ -110,9 +110,9 @@ export const useFormFields = () => {
                 name: "connectionConfiguration",
                 model: modelConnectionConfiguration,
                 options: Object.values(
-                    connectionConfigurations.value?.content ?? [],
+                    connectionConfigurationNames.value ?? [],
                 ).map((connectionConfiguration) => ({
-                    value: connectionConfiguration.id.toString(),
+                    value: connectionConfiguration.modelId,
                     text: connectionConfiguration.name,
                 })),
                 label: t(

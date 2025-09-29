@@ -37,6 +37,12 @@ type ConnectionConfigurations = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
+type ConnectionConfigurationName = {
+    modelId: string;
+    name: string;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type OptionalParGetConnectionConfiguration = {
     page_size?: number;
     page_number?: number;
