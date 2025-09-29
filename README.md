@@ -51,3 +51,5 @@ The following steps have to be done on your **host machine** (not in the docker-
 
 - The setup comes with a static demo account: super-admin / admin
 - Alternatively you can run `docker-compose logs seb-server | grep "SEB Server initial admin-account"` to see the admin user and password that was generated for your instance of seb-server
+
+# TODO: debug
