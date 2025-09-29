@@ -3,7 +3,7 @@ import { computed } from "vue";
 import { FormField } from "@/components/views/seb-server/template/exam/components/form/types";
 import { ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
 import { useConnectionConfigurationNames } from "./useConnectionConfigurationNames";
-import { useSebClientTemplates } from "./useSebClientTemplates";
+import { useSebClientTemplateNames } from "./useSebClientTemplateNames";
 import { storeToRefs } from "pinia";
 import { useStepNamingStore } from "./useStepNamingStore";
 
@@ -21,10 +21,10 @@ export const useFormFields = () => {
     } = storeToRefs(useStepNamingStore());
 
     const {
-        data: sebClientTemplates,
-        loading: loadingSebClientTemplates,
-        error: errorSebClientTemplates,
-    } = useSebClientTemplates();
+        data: sebClientTemplateNames,
+        loading: loadingSebClientTemplateNames,
+        error: errorSebClientTemplateNames,
+    } = useSebClientTemplateNames();
 
     const {
         data: connectionConfigurationNames,
@@ -34,13 +34,13 @@ export const useFormFields = () => {
 
     const loading = computed(
         () =>
-            loadingSebClientTemplates.value ||
+            loadingSebClientTemplateNames.value ||
             loadingConnectionConfigurationNames.value,
     );
 
     const errors = computed(() =>
         [
-            errorSebClientTemplates.value,
+            errorSebClientTemplateNames.value,
             errorConnectionConfigurationNames.value,
         ].filter((error) => error !== undefined),
     );
@@ -92,9 +92,9 @@ export const useFormFields = () => {
                 type: "select" as const,
                 name: "sebClientTemplate",
                 model: modelSebClientTemplate,
-                options: Object.values(sebClientTemplates.value ?? []).map(
+                options: Object.values(sebClientTemplateNames.value ?? []).map(
                     (sebClientTemplate) => ({
-                        value: sebClientTemplate.id,
+                        value: sebClientTemplate.modelId,
                         text: sebClientTemplate.name,
                     }),
                 ),
