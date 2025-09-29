@@ -336,6 +336,15 @@
             "status": {
                 "active": "Active",
                 "inactive": "Inactive"
+            },
+            "role": {
+                "pleaseselect": "Please select a Role for the User Account",
+                "info": {
+                    "SEB_SERVER_ADMIN": "SEB Server Admin role info text",
+                    "INSTITUTIONAL_ADMIN": "Institutional Admin role info text",
+                    "EXAM_ADMIN": "Exam Admin role info text",
+                    "EXAM_SUPPORTER": "Exam Supervisor role info text"
+                }
             }
         },
         "registerPage": {
@@ -349,7 +358,7 @@
                 "timeZoneLabel": "Time Zone *",
                 "passwordLabel": "Password *",
                 "confirmPasswordLabel": "Confirm Password *",
-                "selectRolesLabel": "Roles *"
+                "selectRolesLabel": "User Role *"
             },
             "info": {
                 "alreadyHaveAccount": "Already have an account? ",
@@ -411,7 +420,7 @@
                 "timeZoneLabel": "Time Zone *",
                 "passwordLabel": "Password *",
                 "confirmPasswordLabel": "Confirm Password *",
-                "selectRolesLabel": "Roles *"
+                "selectRolesLabel": "User Role *"
             },
             "info": {
                 "rolesSelectionInfo": "Please select at least one Role",
@@ -432,7 +441,7 @@
                 "timeZoneLabel": "Time Zone *",
                 "passwordLabel": "Password *",
                 "confirmPasswordLabel": "Confirm Password *",
-                "selectRolesLabel": "Roles *",
+                "selectRolesLabel": "User Role *",
                 "adminPassword": "Personal Password",
                 "newPassword": "New Password",
                 "confirmNewPassword": "Repeat Password"

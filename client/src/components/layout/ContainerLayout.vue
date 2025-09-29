@@ -453,6 +453,9 @@
         >
             <router-view />
         </div>
+
+        <!-- Toasts / Alerts -->
+        <ToastContainer />
     </v-main>
 </template>
 
@@ -885,5 +888,13 @@ function changeGridSize(gridSize: GridSize) {
 
 .title-center .v-img {
     flex: 0 0 auto;
+}
+
+.floating-alert {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    max-width: 350px;
+    z-index: 9999;
 }
 </style>

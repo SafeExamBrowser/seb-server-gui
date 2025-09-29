@@ -27,7 +27,6 @@
 <script setup lang="ts">
 import { useAppBarStore } from "@/stores/store";
 import { translate } from "@/utils/generalUtils";
-import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
 import { onBeforeMount } from "vue";
 import HomePageInfo from "@/components/views/seb-server/home/HomePageInfo.vue";
 import HomePageMain from "@/components/views/seb-server/home/HomePageMain.vue";
@@ -37,8 +36,6 @@ const appBarStore = useAppBarStore();
 
 onBeforeMount(() => {
     appBarStore.title = translate("titles.home");
-
-    console.log(useUserAccountStore().userAccount);
 });
 </script>
 

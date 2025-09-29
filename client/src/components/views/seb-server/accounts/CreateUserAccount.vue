@@ -317,57 +317,31 @@
                                     </v-col>
 
                                     <!-- roles -->
-                                    <v-col class="ml-16" cols="12">
-                                        <div
-                                            class="text-subtitle-1 font-weight-medium mb-2"
-                                            data-testid="createUserAccount-roles-label"
-                                        >
-                                            {{
+                                    <v-col class="pt-16">
+                                        <v-select
+                                            v-model="selectedUserRole"
+                                            data-testid="createUserAccount-role-select"
+                                            density="compact"
+                                            :disabled="roleSelectDisabled"
+                                            item-title="label"
+                                            item-value="value"
+                                            :items="availableRoles"
+                                            :label="
                                                 translate(
-                                                    "userAccount.createUserAccountPage.labels.selectRolesLabel",
+                                                    'userAccount.createUserAccountPage.labels.selectRolesLabel',
                                                 )
-                                            }}
-                                        </div>
-                                        <div
-                                            class="text-body-2 text-grey-darken-1 mb-5"
-                                            data-testid="createUserAccount-roles-info"
-                                        >
-                                            {{
-                                                translate(
-                                                    "userAccount.createUserAccountPage.info.rolesSelectionInfo",
-                                                )
-                                            }}
-                                        </div>
-                                        <v-row dense>
-                                            <v-col
-                                                v-for="role in availableRoles"
-                                                :key="role.value"
-                                                class="py-1"
-                                                cols="12"
-                                                lg="7"
-                                                md="7"
-                                            >
-                                                <v-checkbox
-                                                    v-model="selectedRoles"
-                                                    class="custom-checkbox"
-                                                    :data-testid="`createUserAccount-role-${role.value}-checkbox`"
-                                                    density="compact"
-                                                    hide-details
-                                                    :label="role.label"
-                                                    :value="role.value"
-                                                />
-                                            </v-col>
-                                        </v-row>
-                                        <div
-                                            v-if="
-                                                rolesTouched &&
-                                                selectedRoles.length === 0
                                             "
-                                            class="text-error text-caption mt-1"
-                                            data-testid="createUserAccount-roles-error"
+                                            required
+                                            :rules="[requiredRule]"
+                                            variant="outlined"
+                                        />
+                                    </v-col>
+                                    <v-col>
+                                        <v-card
+                                            variant="tonal"
+                                            :text="selectedUserRoleDescription"
                                         >
-                                            {{ rolesRule([]) }}
-                                        </div>
+                                        </v-card>
                                     </v-col>
                                 </v-col>
                             </v-row>
@@ -410,6 +384,7 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from "vue";
 import { useAppBarStore, useLayoutStore } from "@/stores/store";
+import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
 import * as constants from "@/utils/constants";
 import { watch } from "vue";
@@ -419,9 +394,13 @@ import { createUserAccount } from "@/services/seb-server/component-services/user
 import { navigateTo } from "@/router/navigation";
 import { UserRoleEnum } from "@/models/userRoleEnum";
 import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/authenticationStore";
+import { GUIComponent, useAbilities } from "@/services/ability";
 
+const ability = useAbilities();
 const appBarStore = useAppBarStore();
 const layoutStore = useLayoutStore();
+
+const i18n = useI18n();
 
 // fields
 const selectedInstitution = ref<string | null>(null);
@@ -435,7 +414,7 @@ const confirmPassword = ref<string>("");
 const createdUserName = ref("");
 const formRef = ref();
 
-const rolesTouched = ref(false);
+//const rolesTouched = ref(false);
 const createdSuccess = ref(false);
 const passwordVisible = ref<boolean>(false);
 const confirmPasswordVisible = ref<boolean>(false);
@@ -444,7 +423,7 @@ const confirmPasswordTouched = ref(false);
 const institutionSelectDisabled = ref(false);
 
 const institutions = ref<Institution[]>([]);
-const selectedRoles = ref<string[]>([]);
+
 const timezoneOptions = moment.tz.names();
 const authenticatedUserAccountStore = useAuthenticatedUserAccountStore();
 
@@ -459,9 +438,6 @@ const passwordsDontMatchMessage = translate(
 const invalidEmailMessage = translate(
     "userAccount.general.validation.invalidEmail",
 );
-const invalidRoleSelectionMessage = translate(
-    "userAccount.general.validation.invalidRoleSelection",
-);
 
 const requiredRule = (v: string) => !!v || requiredMessage;
 const passwordRule = (v: string) =>
@@ -470,14 +446,16 @@ const confirmPasswordRule = (v: string) =>
     v === password.value || passwordsDontMatchMessage;
 const emailRule = (v: string) =>
     !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || invalidEmailMessage;
-const rolesRule = (v: string[]) => v.length > 0 || invalidRoleSelectionMessage;
 
+// user roles
+const selectedUserRole = ref<string | null>(null);
 const availableRoles = ref<{ label: string; value: string }[]>([]);
-
 const allRoles = Object.values(UserRoleEnum).map((role) => ({
     label: translate(`general.userRoles.${role}`),
     value: role,
 }));
+const selectedUserRoleDescription = ref<string>("");
+const roleSelectDisabled = ref(false);
 
 function getAvailableRolesForUser(userRoles: string[]): typeof allRoles {
     const hasSebServerAdmin = userRoles.includes(UserRoleEnum.SEB_SERVER_ADMIN);
@@ -485,7 +463,14 @@ function getAvailableRolesForUser(userRoles: string[]): typeof allRoles {
         UserRoleEnum.INSTITUTIONAL_ADMIN,
     );
     if (hasSebServerAdmin) {
-        return allRoles;
+        return allRoles.filter((role) =>
+            [
+                UserRoleEnum.SEB_SERVER_ADMIN,
+                UserRoleEnum.INSTITUTIONAL_ADMIN,
+                UserRoleEnum.EXAM_ADMIN,
+                UserRoleEnum.EXAM_SUPPORTER,
+            ].includes(role.value),
+        );
     }
     if (hasInstitutionalAdmin) {
         return allRoles.filter((role) =>
@@ -500,8 +485,19 @@ function getAvailableRolesForUser(userRoles: string[]): typeof allRoles {
 }
 
 onMounted(async () => {
+    // check user rights and go back to home if not allowed to view this page
+    if (!ability.canView(GUIComponent.UserAccounts)) {
+        navigateTo(constants.HOME_PAGE_ROUTE);
+        return;
+    }
+
     appBarStore.title = translate("titles.createUserAccount");
     layoutStore.setBlueBackground(true);
+    timezone.value = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+    selectedUserRoleDescription.value = translate(
+        "userAccount.general.role.pleaseselect",
+    );
 
     const user = authenticatedUserAccountStore.userAccount;
     const roles = user?.userRoles ?? [];
@@ -531,28 +527,42 @@ onMounted(async () => {
     }
 });
 
-watch(selectedRoles, () => {
-    rolesTouched.value = true;
-});
 watch(password, () => {
     if (confirmPasswordTouched.value) {
         confirmPasswordFieldRef.value?.validate?.();
     }
 });
 
-async function submit() {
-    rolesTouched.value = true;
+watch(selectedUserRole, () => {
+    if (selectedUserRole.value == null) {
+        selectedUserRoleDescription.value = "";
+        return;
+    }
+    selectedUserRoleDescription.value = translate(
+        `userAccount.general.role.info.${selectedUserRole.value}`,
+        i18n,
+    );
+});
 
+async function submit() {
     // Always validate the form
     const { valid } = await formRef.value.validate();
 
     // Manually check roles
-    const rolesValid = selectedRoles.value.length > 0;
+    const selectedRole = selectedUserRole.value;
 
     // If anything is invalid, stop
-    if (!valid || !rolesValid) {
+    if (!valid || selectedRole === null) {
         return;
     }
+
+    // apply role inclusion for INSTITUTIONAL_ADMIN and EXAM_ADMIN
+    const userRoles: string[] =
+        selectedRole === "INSTITUTIONAL_ADMIN"
+            ? ["INSTITUTIONAL_ADMIN", "EXAM_ADMIN", "EXAM_SUPPORTER"]
+            : selectedRole === "EXAM_ADMIN"
+              ? ["EXAM_ADMIN", "EXAM_SUPPORTER"]
+              : [selectedRole];
 
     // Prepare the request
     const createUserAcccountParams: CreateUserPar = {
@@ -565,7 +575,7 @@ async function submit() {
         timezone: timezone.value,
         language: "en",
         email: email.value || "",
-        userRoles: selectedRoles.value,
+        userRoles: userRoles,
     };
 
     // Call the service

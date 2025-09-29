@@ -1,38 +1,56 @@
 type Threshold = {
     value: number;
     color: string;
-    icon: string;
+    icon?: string;
 };
 
 type IndicatorTemplate = {
-    id: number;
-    examTemplateId: number;
+    id?: number;
+    examTemplateId?: number;
     name: string;
     type: string;
     thresholds: Threshold[];
 };
 
+type ClientGroupTemplate = {
+    id?: number;
+    name: string;
+    type: string;
+    color?: string;
+    icon?: string;
+    ipRangeStart?: string;
+    ipRangeEnd?: string;
+    clientOS?: string;
+    nameRangeStartLetter?: string;
+    nameRangeEndLetter?: string;
+};
+
 type ExamAttribute = {
     enableScreenProctoring: string;
-    SCREEN_PROCTORING_SETTINGS: string;
-    quitPassword: string;
+    SCREEN_PROCTORING_SETTINGS?: ScreenProctoringTemplate;
+    quitPassword?: string;
+};
+
+type ScreenProctoringTemplate = {
+    spsCollectingStrategy?: string;
+    spsCollectingGroupName?: string;
+    spsCollectingGroupSize?: number;
+    spsSEBGroupsSelection?: string;
 };
 
 type ExamTemplate = {
-    id: number;
-    institutionId: number;
+    id?: number;
     name: string;
-    description: string;
+    description?: string;
     examType: string;
     supporter: string[];
-    configurationTemplateId: number;
+    configurationTemplateId?: number;
     institutionalDefault: boolean;
     lmsIntegration: boolean;
-    clientConfigurationId: number;
+    clientConfigurationId?: number;
     indicatorTemplates: IndicatorTemplate[];
-    CLIENT_GROUP_TEMPLATES: ClientGroup[];
+    CLIENT_GROUP_TEMPLATES: ClientGroupTemplate[];
     EXAM_ATTRIBUTES: ExamAttribute;
-    complete: boolean;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

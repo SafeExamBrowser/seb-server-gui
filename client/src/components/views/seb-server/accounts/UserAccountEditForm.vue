@@ -1,5 +1,6 @@
 <template>
     <div
+        v-if="!isProfile"
         class="text-white text-h5 font-weight-black ml-10 mt-5"
         data-testid="editUserAccount-page-title"
     >
@@ -8,6 +9,7 @@
 
     <v-row class="mt-10 w-98 h-100">
         <SettingsNavigation
+            v-if="!isProfile"
             data-testid="editUserAccount-settingsNavigation-component"
         />
 
@@ -299,100 +301,32 @@
                                         </div>
                                     </v-col>
 
-                                    <v-col
-                                        class="ml-16"
-                                        cols="12"
-                                        data-testid="editUserAccount-roles-section"
-                                    >
-                                        <template v-if="!editingRightsRevoked">
-                                            <div
-                                                class="text-subtitle-1 font-weight-medium"
-                                                data-testid="editUserAccount-roles-label"
-                                            >
-                                                {{
-                                                    translate(
-                                                        "userAccount.userAccountDetailAndEditPage.labels.selectRolesLabel",
-                                                    )
-                                                }}
-                                            </div>
-                                            <div
-                                                class="text-body-2 text-grey-darken-1 mb-5"
-                                                data-testid="editUserAccount-roles-info"
-                                            >
-                                                {{
-                                                    translate(
-                                                        "userAccount.userAccountDetailAndEditPage.info.rolesSelectionInfo",
-                                                    )
-                                                }}
-                                            </div>
-
-                                            <v-row
-                                                data-testid="editUserAccount-roles-list"
-                                                dense
-                                            >
-                                                <v-col
-                                                    v-for="role in availableRoles"
-                                                    :key="role.value"
-                                                    class="py-1"
-                                                    cols="12"
-                                                    lg="7"
-                                                    md="7"
-                                                >
-                                                    <v-checkbox
-                                                        v-model="selectedRoles"
-                                                        class="custom-role-checkbox"
-                                                        :data-testid="`editUserAccount-role-${role.value}-checkbox`"
-                                                        density="compact"
-                                                        :disabled="
-                                                            editingRightsRevoked
-                                                        "
-                                                        hide-details
-                                                        :label="role.label"
-                                                        :value="role.value"
-                                                    />
-                                                </v-col>
-                                            </v-row>
-
-                                            <div
-                                                v-if="
-                                                    rolesTouched &&
-                                                    selectedRoles.length === 0
-                                                "
-                                                class="text-error text-caption mt-1"
-                                                data-testid="editUserAccount-roles-error"
-                                            >
-                                                {{ rolesRule([]) }}
-                                            </div>
-                                        </template>
-
-                                        <template v-else>
-                                            <div
-                                                class="no-edit-rights-div"
-                                                data-testid="editUserAccount-noEditRights-container"
-                                            >
-                                                <div
-                                                    class="custom-alert"
-                                                    data-testid="editUserAccount-noEditRights-alert"
-                                                >
-                                                    <div
-                                                        class="alert-icon-circle"
-                                                    >
-                                                        i
-                                                    </div>
-                                                    <span class="alert-text">
-                                                        {{
-                                                            i18n.t(
-                                                                "userAccount.userAccountDetailAndEditPage.warnings.no-edit-rights",
-                                                                {
-                                                                    username:
-                                                                        editedUserName,
-                                                                },
-                                                            )
-                                                        }}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </template>
+                                    <!-- roles -->
+                                    <v-col class="pt-16">
+                                        <v-select
+                                            v-model="selectedUserRole"
+                                            data-testid="createUserAccount-role-select"
+                                            density="compact"
+                                            :disabled="roleSelectDisabled"
+                                            item-title="label"
+                                            item-value="value"
+                                            :items="availableRoles"
+                                            :label="
+                                                translate(
+                                                    'userAccount.createUserAccountPage.labels.selectRolesLabel',
+                                                )
+                                            "
+                                            required
+                                            :rules="[requiredRule]"
+                                            variant="outlined"
+                                        />
+                                    </v-col>
+                                    <v-col>
+                                        <v-card
+                                            variant="tonal"
+                                            :text="selectedUserRoleDescription"
+                                        >
+                                        </v-card>
                                     </v-col>
                                 </v-col>
                             </v-row>
@@ -410,7 +344,13 @@
                             data-testid="editUserAccount-back-button"
                             rounded="sm"
                             variant="outlined"
-                            @click="navigateTo(constants.USER_ACCOUNTS_ROUTE)"
+                            @click="
+                                navigateTo(
+                                    props.isProfile
+                                        ? constants.HOME_PAGE_ROUTE
+                                        : constants.USER_ACCOUNTS_ROUTE,
+                                )
+                            "
                         >
                             {{ translate("general.cancelButton") }}
                         </v-btn>
@@ -570,6 +510,7 @@ import * as userAccountViewService from "@/services/seb-server/component-service
 const props = defineProps<{
     title: string;
     userUuid: string;
+    isProfile: boolean;
 }>();
 
 const user = ref<UserAccount | null>(null);
@@ -596,6 +537,7 @@ const newUserPassword = ref<string>("");
 const confirmNewUserPassword = ref<string>("");
 
 const initialUserData = ref<EditUserAccountParameters | null>(null);
+const initialRole = ref<string | null>(null);
 const changePasswordDialog = ref(false);
 const changePasswordForm = ref();
 const adminPwTouched = ref(false);
@@ -603,7 +545,6 @@ const newPwTouched = ref(false);
 const confirmPwTouched = ref(false);
 const initialActiveStatus = ref<boolean | null>(null);
 
-const rolesTouched = ref(false);
 const editedSuccess = ref(false);
 const passwordEditedSuccess = ref(false);
 const confirmPasswordFieldRef = ref();
@@ -611,7 +552,6 @@ const confirmPasswordTouched = ref(false);
 const institutionSelectDisabled = ref(false);
 const editingRightsRevoked = ref(false);
 
-const selectedRoles = ref<string[]>([]);
 const formRef = ref();
 
 interface UserRoleOption {
@@ -624,9 +564,6 @@ const requiredMessage = translate("userAccount.general.validation.required");
 const invalidEmailMessage = translate(
     "userAccount.general.validation.invalidEmail",
 );
-const invalidRoleSelectionMessage = translate(
-    "userAccount.general.validation.invalidRoleSelection",
-);
 const passwordTooShortMessage = translate(
     "userAccount.general.validation.passwordTooShort",
 );
@@ -638,14 +575,16 @@ const emailRule = (v: string) =>
     !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || invalidEmailMessage;
 const newPasswordRule = (v: string) =>
     (v && v.length >= 8) || passwordTooShortMessage;
-const rolesRule = (v: string[]) => v.length > 0 || invalidRoleSelectionMessage;
 
-// load available roles
+// user roles
+const selectedUserRole = ref<string | null>(null);
 const availableRoles = ref<{ label: string; value: string }[]>([]);
-const allRoles: UserRoleOption[] = Object.values(UserRoleEnum).map((role) => ({
+const allRoles = Object.values(UserRoleEnum).map((role) => ({
     label: translate(`general.userRoles.${role}`),
     value: role,
 }));
+const selectedUserRoleDescription = ref<string>("");
+const roleSelectDisabled = ref(false);
 
 onBeforeUnmount(() => {
     layoutStore.setBlueBackground(false);
@@ -657,13 +596,21 @@ onMounted(async () => {
     await loadUser();
 });
 
-watch(selectedRoles, () => {
-    rolesTouched.value = true;
-});
 watch(password, () => {
     if (confirmPasswordTouched.value) {
         confirmPasswordFieldRef.value?.validate?.();
     }
+});
+
+watch(selectedUserRole, () => {
+    if (selectedUserRole.value == null) {
+        selectedUserRoleDescription.value = "";
+        return;
+    }
+    selectedUserRoleDescription.value = translate(
+        `userAccount.general.role.info.${selectedUserRole.value}`,
+        i18n,
+    );
 });
 
 async function loadUser() {
@@ -707,6 +654,8 @@ function checkEditingRights(
     if (isAuthOnlyInstitutionalAdmin && isEditedUserSebAdmin) {
         editingRightsRevoked.value = true;
     }
+
+    roleSelectDisabled.value = editingRightsRevoked.value || props.isProfile;
 }
 
 function setupInstitutionList(result: Institution[]) {
@@ -765,7 +714,10 @@ function populateUserFields(user: UserAccount) {
     username.value = user.username;
     email.value = user.email;
     timezone.value = user.timezone;
-    selectedRoles.value = [...user.userRoles];
+    selectedUserRole.value = getHighestRole(
+        (user?.userRoles as UserRoleEnum[]) ?? [],
+    );
+    initialRole.value = selectedUserRole.value;
     initialActiveStatus.value = user.active ?? null;
 
     initialUserData.value = {
@@ -779,8 +731,22 @@ function populateUserFields(user: UserAccount) {
         active: user.active,
         language: "en",
         timezone: timezone.value,
-        userRoles: [...selectedRoles.value],
+        userRoles: user.userRoles,
     };
+}
+
+function getHighestRole(roles: UserRoleEnum[]): string {
+    if (roles.includes(UserRoleEnum.SEB_SERVER_ADMIN)) {
+        return UserRoleEnum.SEB_SERVER_ADMIN;
+    } else if (roles.includes(UserRoleEnum.INSTITUTIONAL_ADMIN)) {
+        return UserRoleEnum.INSTITUTIONAL_ADMIN;
+    } else if (roles.includes(UserRoleEnum.EXAM_ADMIN)) {
+        return UserRoleEnum.EXAM_ADMIN;
+    } else if (roles.includes(UserRoleEnum.TEACHER)) {
+        return UserRoleEnum.TEACHER;
+    } else {
+        return UserRoleEnum.EXAM_SUPPORTER;
+    }
 }
 
 function formatDisplayDate(dateString?: string): string {
@@ -794,8 +760,16 @@ function getAvailableRolesForUser(userRoles: UserRoleEnum[]): UserRoleOption[] {
         UserRoleEnum.INSTITUTIONAL_ADMIN,
     );
 
-    if (hasSebServerAdmin) return allRoles;
-
+    if (hasSebServerAdmin) {
+        return allRoles.filter((role) =>
+            [
+                UserRoleEnum.SEB_SERVER_ADMIN,
+                UserRoleEnum.INSTITUTIONAL_ADMIN,
+                UserRoleEnum.EXAM_ADMIN,
+                UserRoleEnum.EXAM_SUPPORTER,
+            ].includes(role.value),
+        );
+    }
     if (hasInstitutionalAdmin) {
         return allRoles.filter((role) =>
             [
@@ -812,9 +786,6 @@ function getAvailableRolesForUser(userRoles: UserRoleEnum[]): UserRoleOption[] {
 const fieldChanges = computed(() => {
     if (!initialUserData.value) return false;
 
-    const currentRolesSorted = [...selectedRoles.value].sort();
-    const initialRolesSorted = [...initialUserData.value.userRoles].sort();
-
     return (
         name.value !== initialUserData.value.name ||
         surname.value !== initialUserData.value.surname ||
@@ -823,8 +794,7 @@ const fieldChanges = computed(() => {
         timezone.value !== initialUserData.value.timezone ||
         Number(selectedInstitution.value) !==
             initialUserData.value.institutionId ||
-        JSON.stringify(currentRolesSorted) !==
-            JSON.stringify(initialRolesSorted)
+        initialRole.value !== selectedUserRole.value
     );
 });
 const hasChanges = computed(() => fieldChanges.value || statusChanged.value);
@@ -842,18 +812,27 @@ const isPasswordFormValid = computed(() => {
         newUserPassword.value === confirmNewUserPassword.value
     );
 });
-// todo
+
 async function saveChanges() {
-    rolesTouched.value = true;
+    //rolesTouched.value = true;
 
     const { valid } = await formRef.value.validate();
-    const rolesValid = selectedRoles.value.length > 0;
+    const selectedRole = selectedUserRole.value;
 
-    if (!valid || !rolesValid || !user.value) return;
+    if (!valid || selectedRole == null || !user.value) return;
 
     if (statusChanged.value) {
         await persistStatusChange(user.value);
     }
+
+    // apply role inclusion for INSTITUTIONAL_ADMIN and EXAM_ADMIN
+    // Manually check roles
+    const userRoles: string[] =
+        selectedRole === "INSTITUTIONAL_ADMIN"
+            ? ["INSTITUTIONAL_ADMIN", "EXAM_ADMIN", "EXAM_SUPPORTER"]
+            : selectedRole === "EXAM_ADMIN"
+              ? ["EXAM_ADMIN", "EXAM_SUPPORTER"]
+              : [selectedRole];
 
     if (fieldChanges.value) {
         const editedUserAccountParams: EditUserAccountParameters = {
@@ -867,10 +846,20 @@ async function saveChanges() {
             active: user.value.active,
             language: "en",
             timezone: timezone.value,
-            userRoles: selectedRoles.value,
+            userRoles: roleSelectDisabled.value
+                ? user.value.userRoles
+                : userRoles,
         };
 
-        await editUserAccount(editedUserAccountParams);
+        if ((await editUserAccount(editedUserAccountParams)) != null) {
+            // TODO apply success message
+
+            navigateTo(
+                props.isProfile
+                    ? constants.HOME_PAGE_ROUTE
+                    : constants.USER_ACCOUNTS_ROUTE,
+            );
+        }
     }
 
     editedUserName.value = user.value.name;
@@ -889,7 +878,7 @@ async function saveChanges() {
         active: user.value.active,
         language: "en",
         timezone: timezone.value,
-        userRoles: [...selectedRoles.value],
+        userRoles: roleSelectDisabled.value ? user.value.userRoles : userRoles,
     };
 }
 
