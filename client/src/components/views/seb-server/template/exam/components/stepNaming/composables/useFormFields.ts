@@ -2,10 +2,10 @@ import { useI18n } from "vue-i18n";
 import { computed } from "vue";
 import { FormField } from "@/components/views/seb-server/template/exam/components/form/types";
 import { ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
-import { useConnectionConfigurationNames } from "./useConnectionConfigurationNames";
-import { useSebClientTemplateNames } from "./useSebClientTemplateNames";
+import { useConnectionConfigurationNames } from "./api/useConnectionConfigurationNames";
+import { useSebClientTemplateNames } from "./api/useSebClientTemplateNames";
 import { storeToRefs } from "pinia";
-import { useStepNamingStore } from "./useStepNamingStore";
+import { useStepNamingStore } from "./store/useStepNamingStore";
 
 export const useFormFields = () => {
     const { t } = useI18n();

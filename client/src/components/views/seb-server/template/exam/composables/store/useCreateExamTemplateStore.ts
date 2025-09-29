@@ -1,4 +1,4 @@
-import { useStepNamingStore } from "@/components/views/seb-server/template/exam/components/stepNaming/composables/useStepNamingStore";
+import { useStepNamingStore } from "@/components/views/seb-server/template/exam/components/stepNaming/composables/store/useStepNamingStore";
 import { useStepSupervisorsStore } from "@/components/views/seb-server/template/exam/components/stepSupervisors/store";
 import { StepItemCreateTemplateExam } from "@/components/views/seb-server/template/exam/types";
 import { StepItem } from "@/components/widgets/stepper/types";

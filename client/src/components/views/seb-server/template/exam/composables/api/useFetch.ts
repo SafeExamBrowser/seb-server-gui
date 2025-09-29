@@ -1,6 +1,6 @@
 import { ref, onMounted } from "vue";
 
-// TODO @alain: this can become a generic composable that can be used across the project? (or at least for all steps)
+// TODO @alain: this can become a generic composable that can be used across the project?
 // TODO @alain: consider using https://tanstack.com/query/latest/docs/framework/vue/overview for this
 export const useFetch = <T>(fetchFunction: () => Promise<T | null>) => {
     const data = ref<T>();
