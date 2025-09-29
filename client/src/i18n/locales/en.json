@@ -736,9 +736,10 @@
     "templates": {
         "createTemplate": {
             "info": "What kind of template do you want to create?",
-            "sebClientTemplate": "SEB Client Template",
-            "examTemplate": "Exam Template",
-            "teaser": "To create an exam template, you need a configuration template and a connection configuration. If there is no configuration template, nor a connection configuration, please create these first."
+            "sebClientTemplateTitle": "SEB Client Template",
+            "sebClientTemplateTeaser": "In the SEB Client Template you define the SEB Settings. These are sent to the SEB clients installed on the students' devices. The SEB clients then reconfigure using these settings. The SEB Client Template is needed to set up an Exam Template.",
+            "examTemplateTitle": "Exam Template",
+            "examTemplateTeaser": "To create an exam template you need a configuration template. If there is no configuration template in place please create new configuration template first."
         }
     },
 

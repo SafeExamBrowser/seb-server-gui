@@ -54,14 +54,14 @@
                                     <div class="template-card__title">
                                         {{
                                             translate(
-                                                "templates.createTemplate.sebClientTemplate",
+                                                "templates.createTemplate.sebClientTemplateTitle",
                                             )
                                         }}
                                     </div>
                                     <div class="template-card__body mt-3">
                                         {{
                                             translate(
-                                                "templates.createTemplate.teaser",
+                                                "templates.createTemplate.sebClientTemplateTeaser",
                                             )
                                         }}
                                     </div>
@@ -105,14 +105,14 @@
                                     <div class="template-card__title">
                                         {{
                                             translate(
-                                                "templates.createTemplate.examTemplate",
+                                                "templates.createTemplate.examTemplateTitle",
                                             )
                                         }}
                                     </div>
                                     <div class="template-card__body mt-3">
                                         {{
                                             translate(
-                                                "templates.createTemplate.teaser",
+                                                "templates.createTemplate.examTemplateTeaser",
                                             )
                                         }}
                                     </div>
