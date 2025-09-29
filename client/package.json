@@ -17,7 +17,7 @@
         "prettier:fix:all": "prettier --write .",
         "format:check:all": "npm run lint:check:all && npm run prettier:check:all",
         "format:fix:all": "npm run lint:fix:all && npm run prettier:fix:all",
-        "check:precommit": "lint-staged --relative",
+        "check:precommit": "lint-staged",
         "quality:fix:all": "npm run lint:fix:all && npm run prettier:fix:all && vue-tsc --noEmit",
         "prepare": "cd .. && husky ./client/.husky"
     },
