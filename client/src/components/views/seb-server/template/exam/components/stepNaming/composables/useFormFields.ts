@@ -1,6 +1,6 @@
 import { useI18n } from "vue-i18n";
 import { computed } from "vue";
-import { FormField } from "@/components/views/seb-server/template/exam/components/form/types";
+import { FormField } from "@/components/widgets/form/types";
 import { ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
 import { useClientConfigurationNames } from "./api/useClientConfigurationNames";
 import { useConfigurationTemplateNames } from "./api/useConfigurationTemplateNames";
