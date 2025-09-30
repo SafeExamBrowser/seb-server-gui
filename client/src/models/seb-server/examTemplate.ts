@@ -19,8 +19,8 @@ type ClientGroupTemplate = {
     ipRangeStart?: string; // optional (only when type is IP_V4_RANGE), IP address, validate correct IP address format
     ipRangeEnd?: string; // optional (only when type is IP_V4_RANGE), IP address, validate correct IP address format
     clientOS?: string; // optional (only when type is CLIENT_OS), ClientOSEnum value
-    nameRangeStartLetter?: string; // optional (only when type id NAME_ALPHABETICAL_RANGE), just a string, no min, max 255
-    nameRangeEndLetter?: string; // optional (only when type id NAME_ALPHABETICAL_RANGE), just a string, no min, max 255
+    nameRangeStartLetter?: string; // optional (mandatory only when type id NAME_ALPHABETICAL_RANGE), no min, max 255, first letter must be before first letter of nameRangeEndLetter
+    nameRangeEndLetter?: string; // optional (mandatory only when type id NAME_ALPHABETICAL_RANGE), no min, max 255, first letter must be after first letter of nameRangeStartLetter
 };
 
 type ExamAttribute = {
