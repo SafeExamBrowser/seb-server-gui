@@ -254,7 +254,7 @@
                         "label": "Connection Configuration",
                         "placeholder": "Select the connection configuration"
                     },
-                    "assesmentToolIntegration": {
+                    "lmsIntegration": {
                         "label": "Assesment Tool Integration"
                     },
                     "institutionalDefault": {

@@ -103,7 +103,7 @@ export const useCreateExamTemplateStore = defineStore(
                 ? parseInt(stepNamingStore.clientConfiguration)
                 : undefined,
             institutionalDefault: stepNamingStore.institutionalDefault,
-            lmsIntegration: stepNamingStore.assesmentToolIntegration,
+            lmsIntegration: stepNamingStore.lmsIntegration,
             indicatorTemplates: [],
             CLIENT_GROUP_TEMPLATES: [],
             EXAM_ATTRIBUTES: {

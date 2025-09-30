@@ -8,7 +8,7 @@ const initialState = {
     examType: ExamTypeEnum.UNDEFINED,
     configurationTemplate: undefined,
     clientConfiguration: undefined,
-    assesmentToolIntegration: true,
+    lmsIntegration: true,
     institutionalDefault: false,
 };
 
@@ -22,9 +22,7 @@ export const useStepNamingStore = defineStore("stepNaming", () => {
     const clientConfiguration = ref<string | undefined>(
         initialState.clientConfiguration,
     );
-    const assesmentToolIntegration = ref<boolean>(
-        initialState.assesmentToolIntegration,
-    );
+    const lmsIntegration = ref<boolean>(initialState.lmsIntegration);
     const institutionalDefault = ref<boolean>(
         initialState.institutionalDefault,
     );
@@ -39,7 +37,7 @@ export const useStepNamingStore = defineStore("stepNaming", () => {
         examType.value = initialState.examType;
         configurationTemplate.value = initialState.configurationTemplate;
         clientConfiguration.value = initialState.clientConfiguration;
-        assesmentToolIntegration.value = initialState.assesmentToolIntegration;
+        lmsIntegration.value = initialState.lmsIntegration;
         institutionalDefault.value = initialState.institutionalDefault;
     };
 
@@ -49,7 +47,7 @@ export const useStepNamingStore = defineStore("stepNaming", () => {
         examType,
         configurationTemplate,
         clientConfiguration,
-        assesmentToolIntegration,
+        lmsIntegration,
         institutionalDefault,
         isReady,
         $reset,

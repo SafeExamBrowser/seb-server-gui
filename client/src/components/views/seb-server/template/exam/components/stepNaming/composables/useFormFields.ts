@@ -16,7 +16,7 @@ export const useFormFields = () => {
         examType: modelExamType,
         configurationTemplate: modelConfigurationTemplate,
         clientConfiguration: modelClientConfiguration,
-        assesmentToolIntegration: modelAssesmentToolIntegration,
+        lmsIntegration: modelLmsIntegration,
         institutionalDefault: modelInstitutionalDefault,
     } = storeToRefs(useStepNamingStore());
 
@@ -124,10 +124,10 @@ export const useFormFields = () => {
             },
             {
                 type: "switch" as const,
-                name: "assesmentToolIntegration",
-                model: modelAssesmentToolIntegration,
+                name: "lmsIntegration",
+                model: modelLmsIntegration,
                 label: t(
-                    "createTemplateExam.steps.naming.fields.assesmentToolIntegration.label",
+                    "createTemplateExam.steps.naming.fields.lmsIntegration.label",
                 ),
             },
             {
