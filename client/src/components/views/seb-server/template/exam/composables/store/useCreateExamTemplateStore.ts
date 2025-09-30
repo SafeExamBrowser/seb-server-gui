@@ -96,8 +96,8 @@ export const useCreateExamTemplateStore = defineStore(
             description: stepNamingStore.description,
             examType: stepNamingStore.examType,
             supporter: [],
-            configurationTemplateId: stepNamingStore.sebClientTemplate
-                ? parseInt(stepNamingStore.sebClientTemplate)
+            configurationTemplateId: stepNamingStore.configurationTemplate
+                ? parseInt(stepNamingStore.configurationTemplate)
                 : undefined,
             clientConfigurationId: stepNamingStore.connectionConfiguration
                 ? parseInt(stepNamingStore.connectionConfiguration)

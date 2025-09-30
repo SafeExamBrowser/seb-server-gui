@@ -6,7 +6,7 @@ const initialState = {
     name: "",
     description: "",
     examType: ExamTypeEnum.UNDEFINED,
-    sebClientTemplate: undefined,
+    configurationTemplate: undefined,
     connectionConfiguration: undefined,
     assesmentToolIntegration: true,
     institutionalDefault: false,
@@ -16,8 +16,8 @@ export const useStepNamingStore = defineStore("stepNaming", () => {
     const name = ref(initialState.name);
     const description = ref(initialState.description);
     const examType = ref<ExamTypeEnum>(initialState.examType);
-    const sebClientTemplate = ref<string | undefined>(
-        initialState.sebClientTemplate,
+    const configurationTemplate = ref<string | undefined>(
+        initialState.configurationTemplate,
     );
     const connectionConfiguration = ref<string | undefined>(
         initialState.connectionConfiguration,
@@ -37,7 +37,7 @@ export const useStepNamingStore = defineStore("stepNaming", () => {
         name.value = initialState.name;
         description.value = initialState.description;
         examType.value = initialState.examType;
-        sebClientTemplate.value = initialState.sebClientTemplate;
+        configurationTemplate.value = initialState.configurationTemplate;
         connectionConfiguration.value = initialState.connectionConfiguration;
         assesmentToolIntegration.value = initialState.assesmentToolIntegration;
         institutionalDefault.value = initialState.institutionalDefault;
@@ -47,7 +47,7 @@ export const useStepNamingStore = defineStore("stepNaming", () => {
         name,
         description,
         examType,
-        sebClientTemplate,
+        configurationTemplate,
         connectionConfiguration,
         assesmentToolIntegration,
         institutionalDefault,

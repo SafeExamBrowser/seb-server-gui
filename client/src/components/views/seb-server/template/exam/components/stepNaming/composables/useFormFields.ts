@@ -3,7 +3,7 @@ import { computed } from "vue";
 import { FormField } from "@/components/views/seb-server/template/exam/components/form/types";
 import { ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
 import { useConnectionConfigurationNames } from "./api/useConnectionConfigurationNames";
-import { useSebClientTemplateNames } from "./api/useSebClientTemplateNames";
+import { useConfigurationTemplateNames } from "./api/useConfigurationTemplateNames";
 import { storeToRefs } from "pinia";
 import { useStepNamingStore } from "./store/useStepNamingStore";
 
@@ -14,17 +14,17 @@ export const useFormFields = () => {
         name: modelName,
         description: modelDescription,
         examType: modelExamType,
-        sebClientTemplate: modelSebClientTemplate,
+        configurationTemplate: modelConfigurationTemplate,
         connectionConfiguration: modelConnectionConfiguration,
         assesmentToolIntegration: modelAssesmentToolIntegration,
         institutionalDefault: modelInstitutionalDefault,
     } = storeToRefs(useStepNamingStore());
 
     const {
-        data: sebClientTemplateNames,
-        loading: loadingSebClientTemplateNames,
-        error: errorSebClientTemplateNames,
-    } = useSebClientTemplateNames();
+        data: configurationTemplateNames,
+        loading: loadingConfigurationTemplateNames,
+        error: errorConfigurationTemplateNames,
+    } = useConfigurationTemplateNames();
 
     const {
         data: connectionConfigurationNames,
@@ -34,13 +34,13 @@ export const useFormFields = () => {
 
     const loading = computed(
         () =>
-            loadingSebClientTemplateNames.value ||
+            loadingConfigurationTemplateNames.value ||
             loadingConnectionConfigurationNames.value,
     );
 
     const errors = computed(() =>
         [
-            errorSebClientTemplateNames.value,
+            errorConfigurationTemplateNames.value,
             errorConnectionConfigurationNames.value,
         ].filter((error) => error !== undefined),
     );
@@ -90,19 +90,19 @@ export const useFormFields = () => {
             },
             {
                 type: "select" as const,
-                name: "sebClientTemplate",
-                model: modelSebClientTemplate,
-                options: Object.values(sebClientTemplateNames.value ?? []).map(
-                    (sebClientTemplate) => ({
-                        value: sebClientTemplate.modelId,
-                        text: sebClientTemplate.name,
-                    }),
-                ),
+                name: "configurationTemplate",
+                model: modelConfigurationTemplate,
+                options: Object.values(
+                    configurationTemplateNames.value ?? [],
+                ).map((configurationTemplate) => ({
+                    value: configurationTemplate.modelId,
+                    text: configurationTemplate.name,
+                })),
                 label: t(
-                    "createTemplateExam.steps.naming.fields.sebClientTemplate.label",
+                    "createTemplateExam.steps.naming.fields.configurationTemplate.label",
                 ),
                 placeholder: t(
-                    "createTemplateExam.steps.naming.fields.sebClientTemplate.placeholder",
+                    "createTemplateExam.steps.naming.fields.configurationTemplate.placeholder",
                 ),
             },
             {

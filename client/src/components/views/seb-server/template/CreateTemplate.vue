@@ -54,14 +54,14 @@
                                     <div class="template-card__title">
                                         {{
                                             translate(
-                                                "templates.createTemplate.sebClientTemplateTitle",
+                                                "templates.createTemplate.configurationTemplateTitle",
                                             )
                                         }}
                                     </div>
                                     <div class="template-card__body mt-3">
                                         {{
                                             translate(
-                                                "templates.createTemplate.sebClientTemplateTeaser",
+                                                "templates.createTemplate.configurationTemplateTeaser",
                                             )
                                         }}
                                     </div>

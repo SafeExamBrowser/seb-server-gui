@@ -246,7 +246,7 @@
                         "label": "Exam Type",
                         "placeholder": "Select the exam type"
                     },
-                    "sebClientTemplate": {
+                    "configurationTemplate": {
                         "label": "SEB Client Template",
                         "placeholder": "Select the SEB client template"
                     },
@@ -738,8 +738,8 @@
     "templates": {
         "createTemplate": {
             "info": "What kind of template do you want to create?",
-            "sebClientTemplateTitle": "SEB Client Template",
-            "sebClientTemplateTeaser": "In the SEB Client Template you define the SEB Settings. These are sent to the SEB clients installed on the students' devices. The SEB clients then reconfigure using these settings. The SEB Client Template is needed to set up an Exam Template.",
+            "configurationTemplateTitle": "SEB Client Template",
+            "configurationTemplateTeaser": "In the SEB Client Template you define the SEB Settings. These are sent to the SEB clients installed on the students' devices. The SEB clients then reconfigure using these settings. The SEB Client Template is needed to set up an Exam Template.",
             "examTemplateTitle": "Exam Template",
             "examTemplateTeaser": "To create an exam template you need a configuration template. If there is no configuration template in place please create new configuration template first."
         }
