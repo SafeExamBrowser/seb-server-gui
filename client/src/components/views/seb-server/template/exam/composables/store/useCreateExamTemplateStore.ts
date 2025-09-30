@@ -50,6 +50,10 @@ const isStepReady = (
     }
 };
 
+const initialState = {
+    currentStepIndex: 0,
+};
+
 export const useCreateExamTemplateStore = defineStore(
     "createExamTemplate",
     () => {
@@ -59,7 +63,7 @@ export const useCreateExamTemplateStore = defineStore(
         const stepSupervisorsStore = useStepSupervisorsStore();
 
         // state
-        const currentStepIndex = ref(0);
+        const currentStepIndex = ref(initialState.currentStepIndex);
 
         // getters
         const stepperModel = computed<StepItem[]>(() =>
@@ -116,6 +120,15 @@ export const useCreateExamTemplateStore = defineStore(
             }
         };
 
+        const $reset = () => {
+            // own state
+            currentStepIndex.value = initialState.currentStepIndex;
+
+            // substores
+            stepNamingStore.$reset();
+            stepSupervisorsStore.$reset();
+        };
+
         return {
             // state
             currentStepIndex,
@@ -128,6 +141,7 @@ export const useCreateExamTemplateStore = defineStore(
             // actions
             increaseCurrentStepIndex,
             decreaseCurrentStepIndex,
+            $reset,
         };
     },
 );
