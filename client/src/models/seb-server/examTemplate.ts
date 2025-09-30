@@ -1,4 +1,3 @@
-// prettier-ignore-start
 type Threshold = {
     value: number; // mandatory, the value of the threshold, range from 0 to 100 (%) for Battery and WiFi
     color: string; // mandatory, hex color value without the "#"
@@ -96,5 +95,3 @@ type ExamTemplates = {
 // 	  }
 // 	]
 // 	Use modelId and name for selection and use modelId as id of selected configurationTemplateId
-
-// prettier-ignore-end
