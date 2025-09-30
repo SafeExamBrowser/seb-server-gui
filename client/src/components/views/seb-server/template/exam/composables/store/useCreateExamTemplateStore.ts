@@ -99,8 +99,8 @@ export const useCreateExamTemplateStore = defineStore(
             configurationTemplateId: stepNamingStore.configurationTemplate
                 ? parseInt(stepNamingStore.configurationTemplate)
                 : undefined,
-            clientConfigurationId: stepNamingStore.connectionConfiguration
-                ? parseInt(stepNamingStore.connectionConfiguration)
+            clientConfigurationId: stepNamingStore.clientConfiguration
+                ? parseInt(stepNamingStore.clientConfiguration)
                 : undefined,
             institutionalDefault: stepNamingStore.institutionalDefault,
             lmsIntegration: stepNamingStore.assesmentToolIntegration,

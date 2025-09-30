@@ -2,7 +2,7 @@ import { useI18n } from "vue-i18n";
 import { computed } from "vue";
 import { FormField } from "@/components/views/seb-server/template/exam/components/form/types";
 import { ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
-import { useConnectionConfigurationNames } from "./api/useConnectionConfigurationNames";
+import { useClientConfigurationNames } from "./api/useClientConfigurationNames";
 import { useConfigurationTemplateNames } from "./api/useConfigurationTemplateNames";
 import { storeToRefs } from "pinia";
 import { useStepNamingStore } from "./store/useStepNamingStore";
@@ -15,7 +15,7 @@ export const useFormFields = () => {
         description: modelDescription,
         examType: modelExamType,
         configurationTemplate: modelConfigurationTemplate,
-        connectionConfiguration: modelConnectionConfiguration,
+        clientConfiguration: modelClientConfiguration,
         assesmentToolIntegration: modelAssesmentToolIntegration,
         institutionalDefault: modelInstitutionalDefault,
     } = storeToRefs(useStepNamingStore());
@@ -27,21 +27,21 @@ export const useFormFields = () => {
     } = useConfigurationTemplateNames();
 
     const {
-        data: connectionConfigurationNames,
-        loading: loadingConnectionConfigurationNames,
-        error: errorConnectionConfigurationNames,
-    } = useConnectionConfigurationNames();
+        data: clientConfigurationNames,
+        loading: loadingClientConfigurationNames,
+        error: errorClientConfigurationNames,
+    } = useClientConfigurationNames();
 
     const loading = computed(
         () =>
             loadingConfigurationTemplateNames.value ||
-            loadingConnectionConfigurationNames.value,
+            loadingClientConfigurationNames.value,
     );
 
     const errors = computed(() =>
         [
             errorConfigurationTemplateNames.value,
-            errorConnectionConfigurationNames.value,
+            errorClientConfigurationNames.value,
         ].filter((error) => error !== undefined),
     );
 
@@ -107,19 +107,19 @@ export const useFormFields = () => {
             },
             {
                 type: "select" as const,
-                name: "connectionConfiguration",
-                model: modelConnectionConfiguration,
+                name: "clientConfiguration",
+                model: modelClientConfiguration,
                 options: Object.values(
-                    connectionConfigurationNames.value ?? [],
-                ).map((connectionConfiguration) => ({
-                    value: connectionConfiguration.modelId,
-                    text: connectionConfiguration.name,
+                    clientConfigurationNames.value ?? [],
+                ).map((clientConfiguration) => ({
+                    value: clientConfiguration.modelId,
+                    text: clientConfiguration.name,
                 })),
                 label: t(
-                    "createTemplateExam.steps.naming.fields.connectionConfiguration.label",
+                    "createTemplateExam.steps.naming.fields.clientConfiguration.label",
                 ),
                 placeholder: t(
-                    "createTemplateExam.steps.naming.fields.connectionConfiguration.placeholder",
+                    "createTemplateExam.steps.naming.fields.clientConfiguration.placeholder",
                 ),
             },
             {
