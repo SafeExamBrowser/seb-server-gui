@@ -96,8 +96,12 @@ export const useCreateExamTemplateStore = defineStore(
             description: stepNamingStore.description,
             examType: stepNamingStore.examType,
             supporter: [],
-            configurationTemplateId: 1, // TODO @alain: bind correct value here
-            clientConfigurationId: 1, // TODO @alain: bind correct value here
+            configurationTemplateId: stepNamingStore.sebClientTemplate
+                ? parseInt(stepNamingStore.sebClientTemplate)
+                : undefined,
+            clientConfigurationId: stepNamingStore.connectionConfiguration
+                ? parseInt(stepNamingStore.connectionConfiguration)
+                : undefined,
             institutionalDefault: stepNamingStore.institutionalDefault,
             lmsIntegration: stepNamingStore.assesmentToolIntegration,
             indicatorTemplates: [],
