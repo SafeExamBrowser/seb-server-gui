@@ -34,10 +34,8 @@
                         v-bind="{
                             ...getBaseProperties(field),
                             ...getTextualProperties(field),
+                            ...getSelectProperties(field),
                         }"
-                        :items="field.options"
-                        item-title="text"
-                        item-value="value"
                     >
                     </v-select>
                     <v-switch
@@ -74,6 +72,24 @@ const getTextualProperties = (
     return {
         placeholder: field.placeholder,
         required: field.required,
+    };
+};
+
+const getSelectProperties = (field: FormField & { type: "select" }) => {
+    const optionsWithEmptyValue = field.required
+        ? field.options
+        : [
+              {
+                  value: "",
+                  text: `-- ${field.placeholder} --`,
+              },
+              ...field.options,
+          ];
+
+    return {
+        items: optionsWithEmptyValue,
+        itemTitle: "text",
+        itemValue: "value",
     };
 };
 
