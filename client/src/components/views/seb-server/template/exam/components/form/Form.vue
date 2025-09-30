@@ -76,20 +76,11 @@ const getTextualProperties = (
 };
 
 const getSelectProperties = (field: FormField & { type: "select" }) => {
-    const optionsWithEmptyValue = field.required
-        ? field.options
-        : [
-              {
-                  value: "",
-                  text: `-- ${field.placeholder} --`,
-              },
-              ...field.options,
-          ];
-
     return {
-        items: optionsWithEmptyValue,
+        items: field.options,
         itemTitle: "text",
         itemValue: "value",
+        clearable: !field.required,
     };
 };
 
