@@ -25,15 +25,11 @@ type ClientGroupTemplate = {
 
 type ExamAttribute = {
     enableScreenProctoring: string; // mandatory, screen proctoring enabled flag
-    SCREEN_PROCTORING_SETTINGS?: ScreenProctoringSettingsTemplate; // mandatory, reference to ScreenProctoringSettingsTemplate
-    quitPassword?: string; // optional, is not used yet, ignore it
-};
-
-type ScreenProctoringSettingsTemplate = {
     spsCollectingStrategy?: string; // mandatory, name of collecting strategy selection: "CollectingStrategyEnum" --> EXAM|APPLY_SEB_GROUPS
     spsCollectingGroupName?: string; // mandatory, min 3 - max 255 chars, name of the collecting of fallback room
-    spsCollectingGroupSize?: number; // not used yet, must be null or absent
+    spsCollectingGroupSize?: string; // not used yet, must be null or absent
     spsSEBGroupsSelection?: string; // optional, comma separated list of selected ClientGroupTemplate list indices that are used for screen proctoring. (1)
+    quitPassword?: string; // optional, is not used yet, ignore it
 };
 
 type ExamTemplate = {
