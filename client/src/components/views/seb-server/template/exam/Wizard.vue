@@ -59,6 +59,7 @@ watchEffect(() => {
         return;
     }
 
+    // TODO @alain: empty the store at this point
     // TODO @alain: properly handle success case (redirect?)
     console.log("Exam template was successfully created!");
     console.log(createdExamTemplate.value);
