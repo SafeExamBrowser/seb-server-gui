@@ -1,7 +1,7 @@
-// prettier-ignore
+// prettier-ignore-start
 type Threshold = {
-    value: number;                          // mandatory, the value of the threshold, range from 0 to 100 (%) for Battery and WiFi
-    color: string;                          // mandatory, hex color value without the "#" 
+    value: number; // mandatory, the value of the threshold, range from 0 to 100 (%) for Battery and WiFi
+    color: string; // mandatory, hex color value without the "#"
 };
 
 type IndicatorTemplate = {
