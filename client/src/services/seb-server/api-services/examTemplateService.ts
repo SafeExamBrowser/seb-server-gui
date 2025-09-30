@@ -31,3 +31,13 @@ export async function getExamTemplateSp(
         })
     ).data;
 }
+
+export async function createExamTemplate(
+    examTemplate: ExamTemplate,
+): Promise<ExamTemplate> {
+    return (
+        await apiService.api.post(url + "/create", examTemplate, {
+            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+        })
+    ).data;
+}

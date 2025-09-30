@@ -87,6 +87,22 @@ export const useCreateExamTemplateStore = defineStore(
             };
         });
 
+        const examTemplate = computed<ExamTemplate>(() => ({
+            name: stepNamingStore.name,
+            description: stepNamingStore.description,
+            examType: stepNamingStore.examType,
+            supporter: [],
+            configurationTemplateId: 1, // TODO @alain: bind correct value here
+            clientConfigurationId: 1, // TODO @alain: bind correct value here
+            institutionalDefault: stepNamingStore.institutionalDefault,
+            lmsIntegration: stepNamingStore.assesmentToolIntegration,
+            indicatorTemplates: [],
+            CLIENT_GROUP_TEMPLATES: [],
+            EXAM_ATTRIBUTES: {
+                enableScreenProctoring: "false",
+            },
+        }));
+
         // actions
         const increaseCurrentStepIndex = () => {
             if (currentStepIndex.value < stepperModel.value.length - 1) {
@@ -107,6 +123,7 @@ export const useCreateExamTemplateStore = defineStore(
             // getters
             stepperModel,
             currentStep,
+            examTemplate,
 
             // actions
             increaseCurrentStepIndex,
