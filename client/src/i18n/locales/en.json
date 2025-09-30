@@ -626,7 +626,8 @@
                 "mustBeWithUrl": "Must start with http:// or https://",
                 "invalidPort": "Invalid port, ex. 8080",
                 "noMatch": "Passwords don't match",
-                "mustBeNumber": "The value can only consist of numbers"
+                "mustBeNumber": "The value can only consist of numbers",
+                "mustBePositiveNumber": "The value must be a positive number"
             },
             "selectValues": {
                 "start_exam": "Starting an Exam",
@@ -645,7 +646,8 @@
                 "mustBeWithUrl": "Must start with http:// or https://",
                 "invalidPort": "Invalid port, ex. 8080",
                 "noMatch": "Passwords don't match",
-                "mustBeNumber": "The value can only consist of numbers"
+                "mustBeNumber": "The value can only consist of numbers",
+                "mustBePositiveNumber": "The value must be a positive number"
             },
             "labels": {
                 "configurationPurpose": "Configuration Purpose *",

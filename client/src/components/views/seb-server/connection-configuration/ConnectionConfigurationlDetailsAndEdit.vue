@@ -869,7 +869,7 @@ const mustMatchMessage = translate(
     "connectionConfigurations.connectionConfigurationViewAndEditPage.validation.noMatch",
 );
 const mustBeNumberMessage = translate(
-    "connectionConfigurations.connectionConfigurationViewAndEditPage.validation.mustBeNumber",
+    "connectionConfigurations.connectionConfigurationViewAndEditPage.validation.mustBePositiveNumber",
 );
 const mustBeUrlMessage = translate(
     "connectionConfigurations.connectionConfigurationViewAndEditPage.validation.mustBeWithUrl",
@@ -884,19 +884,19 @@ const requiredRule = (v: any) => {
     );
 };
 const numberRule = (v: any) =>
-    v === null || v === undefined || v === "" || isNaN(Number(v))
+    v === null || v === undefined || v === "" || isNaN(Number(v)) || v < 1
         ? mustBeNumberMessage
         : true;
 const requiredNumberRule = (v: any) =>
     (requiredRule(v) === true && numberRule(v) === true) ||
-    (isNaN(Number(v)) ? mustBeNumberMessage : requiredMessage);
+    (isNaN(Number(v)) || v < 1 ? mustBeNumberMessage : requiredMessage);
 
 const requiredIfFallbackRule = (v: any) =>
     !withFallback.value || requiredRule(v) === true || requiredMessage;
 const requiredNumberIfFallbackRule = (v: any) =>
     !withFallback.value ||
     requiredNumberRule(v) === true ||
-    (isNaN(Number(v)) ? mustBeNumberMessage : requiredMessage);
+    (isNaN(Number(v)) || v < 1 ? mustBeNumberMessage : requiredMessage);
 const urlIfFallbackRule = (v: any) => {
     if (!withFallback.value) return true; // only check when fallback enabled
     if (!v || typeof v !== "string") return mustBeUrlMessage;
