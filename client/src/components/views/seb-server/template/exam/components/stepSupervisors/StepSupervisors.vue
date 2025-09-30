@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { useStepSupervisorsStore } from "./store";
+import { useStepSupervisorsStore } from "./composables/store/useStepSupervisorsStore";
 
 const store = useStepSupervisorsStore();
 

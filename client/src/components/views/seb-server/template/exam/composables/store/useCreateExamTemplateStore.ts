@@ -1,5 +1,5 @@
 import { useStepNamingStore } from "@/components/views/seb-server/template/exam/components/stepNaming/composables/store/useStepNamingStore";
-import { useStepSupervisorsStore } from "@/components/views/seb-server/template/exam/components/stepSupervisors/store";
+import { useStepSupervisorsStore } from "@/components/views/seb-server/template/exam/components/stepSupervisors/composables/store/useStepSupervisorsStore";
 import { StepItemCreateTemplateExam } from "@/components/views/seb-server/template/exam/types";
 import { StepItem } from "@/components/widgets/stepper/types";
 import { defineStore } from "pinia";
