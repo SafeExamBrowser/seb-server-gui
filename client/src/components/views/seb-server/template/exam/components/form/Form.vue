@@ -58,31 +58,25 @@ import {
     FormFieldTextualProperties,
 } from "./types";
 
-const getBaseProperties = (field: FormField): FormFieldBaseProperties => {
-    return {
-        label: `${field.label}${field.type !== "switch" && field.required ? " *" : ""}`,
-        density: "compact" as const,
-        variant: "outlined" as const,
-    };
-};
+const getBaseProperties = (field: FormField): FormFieldBaseProperties => ({
+    label: `${field.label}${field.type !== "switch" && field.required ? " *" : ""}`,
+    density: "compact" as const,
+    variant: "outlined" as const,
+});
 
 const getTextualProperties = (
     field: FormField & { type: "text" | "textarea" | "select" },
-): FormFieldTextualProperties => {
-    return {
-        placeholder: field.placeholder,
-        required: field.required,
-    };
-};
+): FormFieldTextualProperties => ({
+    placeholder: field.placeholder,
+    required: field.required,
+});
 
-const getSelectProperties = (field: FormField & { type: "select" }) => {
-    return {
-        items: field.options,
-        itemTitle: "text",
-        itemValue: "value",
-        clearable: !field.required,
-    };
-};
+const getSelectProperties = (field: FormField & { type: "select" }) => ({
+    items: field.options,
+    itemTitle: "text",
+    itemValue: "value",
+    clearable: !field.required,
+});
 
 defineProps<{
     fields: FormField[];
