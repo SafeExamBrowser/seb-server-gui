@@ -12,7 +12,7 @@
 <script setup lang="ts">
 import { useFormFields } from "./composables/useFormFields";
 
-// TODO @alain: deal with validation and proper displaying of required fields
+// TODO @alain: deal with validation
 // TODO @alain: "isReady" of the step should be based on the form being valid
 const { formFields, loading, errors } = useFormFields();
 </script>
