@@ -57,7 +57,6 @@
 import { useAppBarStore } from "@/stores/store";
 import * as constants from "@/utils/constants";
 import { translate } from "@/utils/generalUtils";
-import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
 import { navigateTo } from "@/router/navigation";
 import { onBeforeMount } from "vue";
 
@@ -66,8 +65,6 @@ const appBarStore = useAppBarStore();
 
 onBeforeMount(() => {
     appBarStore.title = translate("titles.home");
-
-    console.log(useUserAccountStore().userAccount);
 });
 </script>
 
