@@ -1396,7 +1396,7 @@ async function getTemplateGroupsWithSp() {
 
     const examTemplateSp: ScreenProctoringSettings | null =
         await examViewService.getExamTemplateSp(
-            examStore.selectedExamTemplate!.id.toString(),
+            examStore.selectedExamTemplate!.id!.toString(),
         );
 
     if (examTemplateSp == null) {
