@@ -715,6 +715,52 @@
             "quitPassword": "Quit Password",
             "confirmQuitPassword": "Confirm Quit Password"
         },
+        "userView": {
+            "view_mode": {
+                "title": "Browser View Mode",
+                "0": "Use browser window",
+                "0_tooltip": "Use window for the SEB browser which can be scaled and moved around, also to another screen of available",
+                "1": "Use full screen mode",
+                "1_tooltip": "Display the SEB browser full screen",
+                "2": "Touch optimized",
+                "2_tooltip": "Mainly to be used on Windows tablets. Not working with the Create New Desktop kiosk mode"
+            },
+            "main_browser": {
+                "title": "Main Browser Window Size and Position",
+                "width": "Width",
+                "height": "Height",
+                "pos": "Horizontal positioning",
+                "pos_0": "Left",
+                "pos_1": "Center",
+                "pos_2": "Right"
+            },
+            "browser_window": {
+                "title": "Browser Window Toolbar",
+                "enableToolbar": "Enable browser window toolbar",
+                "addrBar": "Allow address bar for main window (Win)",
+                "newAddrBar": "Allow address bar for additional window (Win)",
+                "allowDev": "Show developer tools in window menu (Win)",
+                "hideTool": "Hide toolbar as default (Mac)",
+                "showMenuBar": "Show menu bar (Mac)"
+            },
+            "task_bar": {
+                "title": "SEB Taskbar / Dock",
+                "showTaskBar": "Show SEB taskbar",
+                "showSideMenu": "Show side menu",
+                "raiseHandButtonShow": "Show raise hand button",
+                "raiseHandButtonAlwaysPromptMessage": "Raise hand prompt message",
+                "allowWlan": "Show Wi-Fi control (Win)",
+                "showReloadButton": "Show reload button",
+                "showTime": "Show time",
+                "showInputLanguage": "Show keyboard layout"
+            },
+            "zoom": {
+                "title": "Zoom Mode",
+                "enableZoomPage": "Enable page zoom",
+                "enableZoomText": "Enable text zoom"
+            },
+            "audio": "Audio Control"
+        },
         "applicationView": {
             "allowSwitchToApplications": "Allow switching to third party application (Mac)",
             "allowSwitchToApplications_tooltip": "Decreases security of the kiosk mode by allowing process switcher (Cmd+Tab).\nThe blacked out background of SEB also doesn't cover some alerts and modal windows in this mode.",
