@@ -28,7 +28,23 @@ app.use(vuetify);
 registerPlugins(app);
 app.use(i18n);
 
-app.use(createRulesPlugin({}, vuetify.locale));
+app.use(
+    createRulesPlugin(
+        {
+            aliases: {
+                blacklisted: (blacklistedValues: Set<string>, err?: string) => {
+                    return (v: string) =>
+                        !blacklistedValues.has(v) ||
+                        err ||
+                        i18n.global.t("general.validation.blacklisted", {
+                            values: Array.from(blacklistedValues).join(", "),
+                        });
+                },
+            },
+        },
+        vuetify.locale,
+    ),
+);
 
 app.component("AlertMsg", AlertMsg);
 app.mount("#app");

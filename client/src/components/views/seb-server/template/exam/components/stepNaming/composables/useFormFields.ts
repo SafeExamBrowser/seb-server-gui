@@ -61,7 +61,16 @@ export const useFormFields = () => {
                     "createTemplateExam.steps.naming.fields.name.placeholder",
                 ),
                 required: true,
-                rules: [useRules().minLength(3), useRules().maxLength(255)],
+                rules: [
+                    useRules().minLength(3),
+                    useRules().maxLength(255),
+                    useRules().blacklisted(
+                        new Set(["Test", "Foo", "Bar"]), // TODO @alain: use values from API here
+                        t(
+                            "createTemplateExam.steps.naming.fields.name.validationErrorUniqueName",
+                        ),
+                    ),
+                ],
             },
             {
                 type: "textarea" as const,
