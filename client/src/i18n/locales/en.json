@@ -741,7 +741,7 @@
             "configurationTemplateTitle": "SEB Client Template",
             "configurationTemplateTeaser": "In the SEB Client Template you define the SEB Settings. These are sent to the SEB clients installed on the students' devices. The SEB clients then reconfigure using these settings. The SEB Client Template is needed to set up an Exam Template.",
             "examTemplateTitle": "Exam Template",
-            "examTemplateTeaser": "To create an exam template you need a configuration template. If there is no configuration template in place please create new configuration template first."
+            "examTemplateTeaser": "In the Exam Template you define everything needed to prepare an exam in SEB Server. You define which SEB Settings will be used by selecting a SEB Client Template. You also define which Connection Configuration to be used. By choosing Exam Supervisors, you decide, who shall supervise the exam. You also define which indicators and which groups shall be used, when applying this Exam Template to an exam. If there is no SEB Client Template, nor a Connection Configuration, please create these first."
         }
     },
 
