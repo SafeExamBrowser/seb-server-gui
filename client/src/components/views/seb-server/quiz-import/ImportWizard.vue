@@ -299,7 +299,8 @@ function handleStepperNext(index: number, next: () => void) {
     async function createExam() {
         if (
             quizImportStore.selectedQuiz == null ||
-            quizImportStore.selectedExamTemplate == null
+            quizImportStore.selectedExamTemplate == null ||
+            quizImportStore.selectedExamTemplate?.id == undefined
         ) {
             return;
         }
