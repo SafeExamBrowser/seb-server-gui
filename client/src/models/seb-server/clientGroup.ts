@@ -1,6 +1,6 @@
 type ClientGroup = {
     id?: number;
-    examId: number;
+    examId?: number;
     name: string;
     type: string;
     color?: string;

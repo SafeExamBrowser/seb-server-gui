@@ -299,7 +299,8 @@ function handleStepperNext(index: number, next: () => void) {
     async function createExam() {
         if (
             quizImportStore.selectedQuiz == null ||
-            quizImportStore.selectedExamTemplate == null
+            quizImportStore.selectedExamTemplate == null ||
+            quizImportStore.selectedExamTemplate?.id == undefined
         ) {
             return;
         }
@@ -316,6 +317,7 @@ function handleStepperNext(index: number, next: () => void) {
             lms_setup_id: quizImportStore.selectedQuiz.lms_setup_id,
             externalId: quizImportStore.selectedQuiz.quiz_id,
             quiz_id: quizImportStore.selectedQuiz.quiz_id,
+            //TODO - BUG possibly undefined ? add null check?
             examTemplateId: quizImportStore.selectedExamTemplate.id,
             type: quizImportStore.selectedExamTemplate.examType,
             quitPassword: quizImportStore.selectedQuitPassword,
