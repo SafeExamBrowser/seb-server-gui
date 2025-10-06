@@ -2,15 +2,11 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 
 const initialState = {
-    isReady: false,
+    isReady: true,
 };
 
 export const useStepSupervisorsStore = defineStore("stepSupervisors", () => {
     const isReady = ref(initialState.isReady);
-
-    const markAsReady = () => {
-        isReady.value = true;
-    };
 
     const $reset = () => {
         isReady.value = initialState.isReady;
@@ -18,7 +14,6 @@ export const useStepSupervisorsStore = defineStore("stepSupervisors", () => {
 
     return {
         isReady,
-        markAsReady,
         $reset,
     };
 });
