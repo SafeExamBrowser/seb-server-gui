@@ -32,12 +32,6 @@ type ExamAttribute = {
     quitPassword?: string; // optional, is not used yet, ignore it
 };
 
-export type ExamTemplateName = {
-    modelId: string;
-    entityType: "EXAM_TEMPLATE";
-    name: string;
-};
-
 type ExamTemplate = {
     id?: number; // PK of the ExamTemplate only available when the ExamTemplate exists
     name: string; // mandatory, min 3 - max 255 chars, name is unique for all ExamTemplate (2)
