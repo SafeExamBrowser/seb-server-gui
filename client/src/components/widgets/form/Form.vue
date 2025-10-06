@@ -51,23 +51,31 @@
 </template>
 
 <script setup lang="ts">
+import { useRules } from "vuetify/labs/rules";
 import {
     FormField,
     FormFieldBaseProperties,
     FormFieldTextualProperties,
 } from "./types";
 
-const getBaseProperties = (field: FormField): FormFieldBaseProperties => ({
-    label: `${field.label}${field.type !== "switch" && field.required ? " *" : ""}`,
-    density: "compact" as const,
-    variant: "outlined" as const,
-});
+const getBaseProperties = (field: FormField): FormFieldBaseProperties => {
+    const isRequired = field.type !== "switch" && field.required;
+
+    return {
+        label: `${field.label}${isRequired ? " *" : ""}`,
+        density: "compact" as const,
+        variant: "outlined" as const,
+        rules: [
+            ...(isRequired ? [useRules().required()] : []),
+            ...(field.rules ?? []),
+        ],
+    };
+};
 
 const getTextualProperties = (
     field: FormField & { type: "text" | "textarea" | "select" },
 ): FormFieldTextualProperties => ({
     placeholder: field.placeholder,
-    required: field.required,
 });
 
 const getSelectProperties = (field: FormField & { type: "select" }) => ({

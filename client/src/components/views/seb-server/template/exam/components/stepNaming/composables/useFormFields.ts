@@ -6,6 +6,7 @@ import { useClientConfigurationNames } from "./api/useClientConfigurationNames";
 import { useConfigurationTemplateNames } from "./api/useConfigurationTemplateNames";
 import { storeToRefs } from "pinia";
 import { useStepNamingStore } from "./store/useStepNamingStore";
+import { useRules } from "vuetify/labs/rules";
 
 export const useFormFields = () => {
     const { t } = useI18n();
@@ -60,6 +61,7 @@ export const useFormFields = () => {
                     "createTemplateExam.steps.naming.fields.name.placeholder",
                 ),
                 required: true,
+                rules: [useRules().minLength(3)],
             },
             {
                 type: "textarea" as const,
