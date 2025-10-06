@@ -61,7 +61,7 @@ export const useFormFields = () => {
                     "createTemplateExam.steps.naming.fields.name.placeholder",
                 ),
                 required: true,
-                rules: [useRules().minLength(3)],
+                rules: [useRules().minLength(3), useRules().maxLength(255)],
             },
             {
                 type: "textarea" as const,
@@ -73,6 +73,7 @@ export const useFormFields = () => {
                 placeholder: t(
                     "createTemplateExam.steps.naming.fields.description.placeholder",
                 ),
+                rules: [useRules().maxLength(4000)],
             },
             {
                 type: "select" as const,
