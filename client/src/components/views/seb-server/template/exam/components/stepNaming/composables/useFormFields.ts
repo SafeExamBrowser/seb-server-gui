@@ -2,6 +2,7 @@ import { useI18n } from "vue-i18n";
 import { computed } from "vue";
 import { FormField } from "@/components/widgets/form/types";
 import { ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
+import { useExamTemplateNames } from "./api/useExamTemplateNames";
 import { useClientConfigurationNames } from "./api/useClientConfigurationNames";
 import { useConfigurationTemplateNames } from "./api/useConfigurationTemplateNames";
 import { storeToRefs } from "pinia";
@@ -22,6 +23,12 @@ export const useFormFields = () => {
     } = storeToRefs(useStepNamingStore());
 
     const {
+        data: examTemplateNames,
+        loading: loadingExamTemplateNames,
+        error: errorExamTemplateNames,
+    } = useExamTemplateNames();
+
+    const {
         data: configurationTemplateNames,
         loading: loadingConfigurationTemplateNames,
         error: errorConfigurationTemplateNames,
@@ -35,12 +42,14 @@ export const useFormFields = () => {
 
     const loading = computed(
         () =>
+            loadingExamTemplateNames.value ||
             loadingConfigurationTemplateNames.value ||
             loadingClientConfigurationNames.value,
     );
 
     const errors = computed(() =>
         [
+            errorExamTemplateNames.value,
             errorConfigurationTemplateNames.value,
             errorClientConfigurationNames.value,
         ].filter((error) => error !== undefined),
@@ -65,7 +74,11 @@ export const useFormFields = () => {
                     useRules().minLength(3),
                     useRules().maxLength(255),
                     useRules().blacklisted(
-                        new Set(["Test", "Foo", "Bar"]), // TODO @alain: use values from API here
+                        new Set(
+                            examTemplateNames.value?.map(
+                                (examTemplate) => examTemplate.name,
+                            ) ?? [],
+                        ),
                         t(
                             "createTemplateExam.steps.naming.fields.name.validationErrorUniqueName",
                         ),

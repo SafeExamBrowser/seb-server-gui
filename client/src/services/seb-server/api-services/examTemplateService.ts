@@ -11,6 +11,14 @@ export async function getExamTemplate(id: string): Promise<ExamTemplate | any> {
     ).data;
 }
 
+export async function getExamTemplateNames(): Promise<ExamTemplateName[]> {
+    return (
+        await apiService.api.get(url + "/names", {
+            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+        })
+    ).data;
+}
+
 export async function getExamTemplates(
     optionalParameters?: OptionalParGeneric,
 ): Promise<ExamTemplates | any> {
