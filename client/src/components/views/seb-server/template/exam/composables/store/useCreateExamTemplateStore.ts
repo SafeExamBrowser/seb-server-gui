@@ -5,6 +5,7 @@ import { StepItem } from "@/components/widgets/stepper/types";
 import { defineStore } from "pinia";
 import { useI18n } from "vue-i18n";
 import { computed, ref } from "vue";
+import { useStepClientGroupStore } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/store/useStepClientGroupStore";
 
 const staticStepData = [
     {
@@ -33,6 +34,7 @@ const isStepReady = (
     stepName: StepItemCreateTemplateExam["componentName"],
     stepNamingStore: ReturnType<typeof useStepNamingStore>,
     stepSupervisorsStore: ReturnType<typeof useStepSupervisorsStore>,
+    stepClientGroupStore: ReturnType<typeof useStepClientGroupStore>,
 ) => {
     switch (stepName) {
         case "StepNaming":
@@ -42,7 +44,7 @@ const isStepReady = (
         case "StepIndicators":
             return true;
         case "StepClientGroup":
-            return true;
+            return stepClientGroupStore.isReady;
         case "StepSummary":
             return true;
         default:
@@ -61,6 +63,7 @@ export const useCreateExamTemplateStore = defineStore(
 
         const stepNamingStore = useStepNamingStore();
         const stepSupervisorsStore = useStepSupervisorsStore();
+        const stepClientGroupStore = useStepClientGroupStore();
 
         // state
         const currentStepIndex = ref(initialState.currentStepIndex);
@@ -73,6 +76,7 @@ export const useCreateExamTemplateStore = defineStore(
                     step.componentName,
                     stepNamingStore,
                     stepSupervisorsStore,
+                    stepClientGroupStore,
                 ),
                 value: index,
             })),
@@ -131,6 +135,7 @@ export const useCreateExamTemplateStore = defineStore(
             // substores
             stepNamingStore.$reset();
             stepSupervisorsStore.$reset();
+            stepClientGroupStore.$reset();
         };
 
         return {
