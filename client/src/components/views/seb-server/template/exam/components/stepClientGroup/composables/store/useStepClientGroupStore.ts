@@ -16,9 +16,19 @@ export const useStepClientGroupStore = defineStore("stepClientGroup", () => {
         groups.value = initialState.groups;
     };
 
+    const addGroup = (group: ClientGroup) => {
+        groups.value.push(group);
+    };
+
+    const deleteGroup = (group: ClientGroup) => {
+        groups.value = groups.value.filter((g) => g.name !== group.name);
+    };
+
     return {
         isReady,
         groups,
+        addGroup,
+        deleteGroup,
         $reset,
     };
 });

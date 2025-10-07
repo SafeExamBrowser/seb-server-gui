@@ -21,6 +21,9 @@
 import { ref } from "vue";
 import { ClientGroup } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
+import { useStepClientGroupStore } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/store/useStepClientGroupStore";
+
+const { addGroup } = useStepClientGroupStore();
 
 const dialogOpen = ref(false);
 
@@ -33,14 +36,15 @@ const handleCancel = () => {
 };
 
 const handleCreate = () => {
+    // TODO @alain: replace this, once form is implemented
     const newGroup: ClientGroup = {
-        name: "New Group",
+        name: `New Group #${Math.random().toString(36).substring(0, 10)}`,
         type: ClientGroupEnum.IP_V4_RANGE,
         ipRangeStart: "192.168.1.1",
         ipRangeEnd: "192.168.1.100",
     };
 
-    // TODO @alain: add this to store instead
-    console.log("create:", newGroup);
+    addGroup(newGroup);
+    dialogOpen.value = false;
 };
 </script>
