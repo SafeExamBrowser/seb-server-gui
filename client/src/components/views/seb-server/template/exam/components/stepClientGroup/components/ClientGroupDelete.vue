@@ -1,13 +1,12 @@
 <template>
-    <!-- TODO @alain: i18n for button label -->
     <v-btn
         icon="mdi-delete"
         color="medium-emphasis"
         variant="text"
         density="compact"
         size="small"
-        title="Delete"
-        aria-label="Delete"
+        :title="$t('general.deleteButton')"
+        :aria-label="$t('general.deleteButton')"
         @click="handleDeleteClick"
     ></v-btn>
 </template>

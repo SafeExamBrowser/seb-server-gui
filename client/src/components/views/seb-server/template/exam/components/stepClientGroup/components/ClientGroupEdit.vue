@@ -19,9 +19,14 @@
                 <div>This is the form</div>
             </template>
             <template #actions>
-                <!-- TODO @alain: i18n for button labels -->
-                <v-btn text="Cancel" @click="handleCancel"></v-btn>
-                <v-btn text="Save" @click="handleUpdate"></v-btn>
+                <v-btn
+                    :text="$t('general.cancelButton')"
+                    @click="handleCancel"
+                ></v-btn>
+                <v-btn
+                    :text="$t('general.saveButton')"
+                    @click="handleUpdate"
+                ></v-btn>
             </template>
         </v-card>
     </v-dialog>
