@@ -5,6 +5,21 @@
         item-key="name"
         hide-default-footer
     >
+        <template #top>
+            <!-- TODO @alain: i18n for label -->
+            <TableHeader label="Groups">
+                <!-- TODO @alain: i18n for button label -->
+                <v-btn
+                    icon="mdi-plus-circle-outline"
+                    color="primary"
+                    density="compact"
+                    variant="text"
+                    title="Add Group"
+                    aria-label="Add Group"
+                    @click="handleAddClick"
+                ></v-btn>
+            </TableHeader>
+        </template>
         <template #item.actions="{ item }">
             <div class="d-flex ga-2 justify-end">
                 <!-- TODO @alain: i18n for button labels -->
@@ -45,6 +60,11 @@ const headers = [
     { title: "Type", value: "type" },
     { title: "Actions", value: "actions", align: "end" as const },
 ];
+
+const handleAddClick = () => {
+    // TODO @alain: use this for add form
+    console.log("add clicked");
+};
 
 const handleEditClick = (group: ClientGroup) => {
     // TODO @alain: implement edit form
