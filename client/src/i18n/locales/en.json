@@ -69,6 +69,9 @@
             "EXAM_ADMIN": "Exam Administrator",
             "EXAM_SUPPORTER": "Exam Supervisor",
             "TEACHER": "Teacher"
+        },
+        "validation": {
+            "blacklisted": "Field must not be any of the following values: {values}"
         }
     },
 
@@ -236,7 +239,8 @@
                 "fields": {
                     "name": {
                         "label": "Name",
-                        "placeholder": "Enter the desired name of the exam template"
+                        "placeholder": "Enter the desired name of the exam template",
+                        "validationErrorUniqueName": "An exam template with this name already exists"
                     },
                     "description": {
                         "label": "Description",

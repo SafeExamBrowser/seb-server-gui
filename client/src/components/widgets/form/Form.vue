@@ -1,5 +1,9 @@
 <template>
-    <v-form class="w-100 w-md-50" @submit.prevent>
+    <v-form
+        class="w-100 w-md-50"
+        @update:model-value="handleModelValueUpdated"
+        @submit.prevent
+    >
         <v-container fluid class="pa-0">
             <v-row
                 v-for="field in fields"
@@ -51,23 +55,38 @@
 </template>
 
 <script setup lang="ts">
+import { VForm } from "vuetify/components";
+import { useRules } from "vuetify/labs/rules";
 import {
     FormField,
     FormFieldBaseProperties,
     FormFieldTextualProperties,
 } from "./types";
 
-const getBaseProperties = (field: FormField): FormFieldBaseProperties => ({
-    label: `${field.label}${field.type !== "switch" && field.required ? " *" : ""}`,
-    density: "compact" as const,
-    variant: "outlined" as const,
-});
+const isValid = defineModel<boolean | null>();
+
+defineProps<{
+    fields: FormField[];
+}>();
+
+const getBaseProperties = (field: FormField): FormFieldBaseProperties => {
+    const isRequired = field.type !== "switch" && field.required;
+
+    return {
+        label: `${field.label}${isRequired ? " *" : ""}`,
+        density: "compact" as const,
+        variant: "outlined" as const,
+        rules: [
+            ...(isRequired ? [useRules().required()] : []),
+            ...(field.rules ?? []),
+        ],
+    };
+};
 
 const getTextualProperties = (
     field: FormField & { type: "text" | "textarea" | "select" },
 ): FormFieldTextualProperties => ({
     placeholder: field.placeholder,
-    required: field.required,
 });
 
 const getSelectProperties = (field: FormField & { type: "select" }) => ({
@@ -77,7 +96,7 @@ const getSelectProperties = (field: FormField & { type: "select" }) => ({
     clearable: !field.required,
 });
 
-defineProps<{
-    fields: FormField[];
-}>();
+const handleModelValueUpdated = (value: boolean | null) => {
+    isValid.value = value;
+};
 </script>

@@ -2,10 +2,12 @@ import { useI18n } from "vue-i18n";
 import { computed } from "vue";
 import { FormField } from "@/components/widgets/form/types";
 import { ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
+import { useExamTemplateNames } from "./api/useExamTemplateNames";
 import { useClientConfigurationNames } from "./api/useClientConfigurationNames";
 import { useConfigurationTemplateNames } from "./api/useConfigurationTemplateNames";
 import { storeToRefs } from "pinia";
 import { useStepNamingStore } from "./store/useStepNamingStore";
+import { useRules } from "vuetify/labs/rules";
 
 export const useFormFields = () => {
     const { t } = useI18n();
@@ -21,6 +23,12 @@ export const useFormFields = () => {
     } = storeToRefs(useStepNamingStore());
 
     const {
+        data: examTemplateNames,
+        loading: loadingExamTemplateNames,
+        error: errorExamTemplateNames,
+    } = useExamTemplateNames();
+
+    const {
         data: configurationTemplateNames,
         loading: loadingConfigurationTemplateNames,
         error: errorConfigurationTemplateNames,
@@ -34,12 +42,14 @@ export const useFormFields = () => {
 
     const loading = computed(
         () =>
+            loadingExamTemplateNames.value ||
             loadingConfigurationTemplateNames.value ||
             loadingClientConfigurationNames.value,
     );
 
     const errors = computed(() =>
         [
+            errorExamTemplateNames.value,
             errorConfigurationTemplateNames.value,
             errorClientConfigurationNames.value,
         ].filter((error) => error !== undefined),
@@ -60,6 +70,20 @@ export const useFormFields = () => {
                     "createTemplateExam.steps.naming.fields.name.placeholder",
                 ),
                 required: true,
+                rules: [
+                    useRules().minLength(3),
+                    useRules().maxLength(255),
+                    useRules().blacklisted(
+                        new Set(
+                            examTemplateNames.value?.map(
+                                (examTemplate) => examTemplate.name,
+                            ) ?? [],
+                        ),
+                        t(
+                            "createTemplateExam.steps.naming.fields.name.validationErrorUniqueName",
+                        ),
+                    ),
+                ],
             },
             {
                 type: "textarea" as const,
@@ -71,6 +95,7 @@ export const useFormFields = () => {
                 placeholder: t(
                     "createTemplateExam.steps.naming.fields.description.placeholder",
                 ),
+                rules: [useRules().maxLength(4000)],
             },
             {
                 type: "select" as const,

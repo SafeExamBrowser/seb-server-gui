@@ -1,8 +1,9 @@
 import { ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
 import { defineStore } from "pinia";
-import { ref, computed } from "vue";
+import { ref } from "vue";
 
 const initialState = {
+    isReady: false,
     name: "",
     description: "",
     examType: ExamTypeEnum.UNDEFINED,
@@ -13,6 +14,7 @@ const initialState = {
 };
 
 export const useStepNamingStore = defineStore("stepNaming", () => {
+    const isReady = ref(initialState.isReady);
     const name = ref(initialState.name);
     const description = ref(initialState.description);
     const examType = ref<ExamTypeEnum>(initialState.examType);
@@ -27,11 +29,8 @@ export const useStepNamingStore = defineStore("stepNaming", () => {
         initialState.institutionalDefault,
     );
 
-    const isReady = computed(() => {
-        return name.value.length > 0;
-    });
-
     const $reset = () => {
+        isReady.value = initialState.isReady;
         name.value = initialState.name;
         description.value = initialState.description;
         examType.value = initialState.examType;

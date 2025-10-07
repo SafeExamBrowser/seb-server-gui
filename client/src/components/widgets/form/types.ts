@@ -5,19 +5,18 @@ type VFieldProps = InstanceType<typeof VField>["$props"];
 type VInputProps = InstanceType<typeof VInput>["$props"];
 type VTextFieldProps = InstanceType<typeof VTextField>["$props"];
 
-export type FormFieldBaseProperties = Pick<VInputProps, "label" | "density"> &
+export type FormFieldBaseProperties = Pick<
+    VInputProps,
+    "label" | "density" | "rules"
+> &
     Pick<VFieldProps, "variant">;
 
-export type FormFieldTextualProperties = Pick<
-    VTextFieldProps,
-    "placeholder"
-> & {
-    required?: boolean;
-};
+export type FormFieldTextualProperties = Pick<VTextFieldProps, "placeholder">;
 
 export type FormField = {
     name: string;
     label: string;
+    rules?: VInputProps["rules"];
 } & (
     | {
           type: "text";
