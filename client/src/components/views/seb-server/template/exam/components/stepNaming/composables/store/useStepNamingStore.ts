@@ -9,7 +9,7 @@ const initialState = {
     examType: ExamTypeEnum.UNDEFINED,
     configurationTemplate: undefined,
     clientConfiguration: undefined,
-    lmsIntegration: true,
+    lmsIntegration: false,
     institutionalDefault: false,
 };
 
