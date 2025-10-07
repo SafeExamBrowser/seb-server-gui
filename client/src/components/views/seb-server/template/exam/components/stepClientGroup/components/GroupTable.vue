@@ -21,29 +21,11 @@
             </TableHeader>
         </template>
         <template #item.actions="{ item }">
-            <div class="d-flex ga-2 justify-end">
-                <!-- TODO @alain: i18n for button labels -->
-                <v-btn
-                    icon="mdi-pencil"
-                    color="medium-emphasis"
-                    variant="text"
-                    density="compact"
-                    size="small"
-                    title="Edit"
-                    aria-label="Edit"
-                    @click="handleEditClick(item)"
-                ></v-btn>
-                <v-btn
-                    icon="mdi-delete"
-                    color="medium-emphasis"
-                    variant="text"
-                    density="compact"
-                    size="small"
-                    title="Delete"
-                    aria-label="Delete"
-                    @click="handleDeleteClick(item)"
-                ></v-btn>
-            </div>
+            <TableItemActions
+                :item="item"
+                @edit="handleItemEdit"
+                @delete="handleItemDelete"
+            />
         </template>
     </v-data-table>
 </template>
@@ -51,6 +33,7 @@
 <script setup lang="ts">
 import { useStepClientGroupStore } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/store/useStepClientGroupStore";
 import { ClientGroup } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
+import TableItemActions from "@/components/views/seb-server/template/exam/components/stepClientGroup/components/TableItemActions.vue";
 import { storeToRefs } from "pinia";
 
 const { deleteGroup } = useStepClientGroupStore();
@@ -68,12 +51,12 @@ const handleAddClick = () => {
     console.log("add clicked");
 };
 
-const handleEditClick = (group: ClientGroup) => {
+const handleItemEdit = (group: ClientGroup) => {
     // TODO @alain: implement edit form
     console.log("edit", group);
 };
 
-const handleDeleteClick = (group: ClientGroup) => {
+const handleItemDelete = (group: ClientGroup) => {
     deleteGroup(group);
 };
 </script>
