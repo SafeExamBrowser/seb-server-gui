@@ -12,14 +12,16 @@
             </TableHeader>
         </template>
         <template #item.actions="{ item }">
-            <TableItemActions :item="item" />
+            <div class="d-flex ga-2 justify-end">
+                <ClientGroupEdit :item="item" />
+                <ClientGroupDelete :item="item" />
+            </div>
         </template>
     </v-data-table>
 </template>
 
 <script setup lang="ts">
 import { useStepClientGroupStore } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/store/useStepClientGroupStore";
-import TableItemActions from "@/components/views/seb-server/template/exam/components/stepClientGroup/components/TableItemActions.vue";
 import { storeToRefs } from "pinia";
 
 const { groups } = storeToRefs(useStepClientGroupStore());
