@@ -26,21 +26,20 @@
 
 <script setup lang="ts">
 import { ClientGroup } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
+import { useStepClientGroupStore } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/store/useStepClientGroupStore";
+
+const { deleteGroup } = useStepClientGroupStore();
 
 const handleEditClick = (item: ClientGroup) => {
-    emit("edit", item);
+    // TODO @alain: implement edit form
+    console.log("edit", item);
 };
 
 const handleDeleteClick = (item: ClientGroup) => {
-    emit("delete", item);
+    deleteGroup(item);
 };
 
 defineProps<{
     item: ClientGroup;
-}>();
-
-const emit = defineEmits<{
-    edit: [item: ClientGroup];
-    delete: [item: ClientGroup];
 }>();
 </script>
