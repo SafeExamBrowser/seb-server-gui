@@ -6,8 +6,7 @@
         hide-default-footer
     >
         <template #top>
-            <!-- TODO @alain: i18n for label -->
-            <TableHeader label="Groups">
+            <TableHeader :label="$t('clientGroups.entityNamePlural')">
                 <ClientGroupAdd />
             </TableHeader>
         </template>

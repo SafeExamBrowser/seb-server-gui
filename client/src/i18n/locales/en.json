@@ -80,6 +80,7 @@
     },
 
     "clientGroups": {
+        "entityNamePlural": "Groups",
         "addDialogTitle": "Add Group",
         "editDialogTitle": "Edit Group",
         "description": {
