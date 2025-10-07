@@ -1,6 +1,14 @@
 <template>
-    <!-- TODO @alain: i18n for button label & correct styling for button -->
-    <v-btn @click="handleOpenDialog">Add new Group</v-btn>
+    <!-- TODO @alain: i18n for button label -->
+    <v-btn
+        icon="mdi-plus-circle-outline"
+        color="primary"
+        density="compact"
+        variant="text"
+        title="Add Group"
+        aria-label="Add Group"
+        @click="handleOpenDialog"
+    ></v-btn>
     <v-dialog v-model="dialogOpen" width="auto" @close="handleCancel">
         <!-- TODO @alain: i18n for title -->
         <v-card title="Add group">
