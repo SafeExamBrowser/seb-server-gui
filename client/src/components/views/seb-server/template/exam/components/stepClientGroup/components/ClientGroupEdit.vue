@@ -1,19 +1,17 @@
 <template>
-    <!-- TODO @alain: i18n for button label -->
     <v-btn
         icon="mdi-pencil"
         color="medium-emphasis"
         variant="text"
         density="compact"
         size="small"
-        title="Edit"
-        aria-label="Edit"
+        :title="$t('clientGroups.editDialogTitle')"
+        :aria-label="$t('clientGroups.editDialogTitle')"
         @click="handleOpenDialog"
     ></v-btn>
 
     <v-dialog v-model="dialogOpen" width="auto" @close="handleCancel">
-        <!-- TODO @alain: i18n for title -->
-        <v-card title="Edit group">
+        <v-card :title="$t('clientGroups.editDialogTitle')">
             <template #text>
                 <!-- TODO @alain: add form here -->
                 <div>This is the form</div>

@@ -80,6 +80,8 @@
     },
 
     "clientGroups": {
+        "addDialogTitle": "Add Group",
+        "editDialogTitle": "Edit Group",
         "description": {
             "ip": [
                 "With IP v4 range groups you can group the SEB client connections within a IP ranges.",
