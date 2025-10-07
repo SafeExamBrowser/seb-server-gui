@@ -4,6 +4,6 @@
         :subtitle="$t('createTemplateExam.steps.clientGroup.subtitle')"
     >
         <AddGroup />
-        <GroupTable />
+        <ClientGroupTable />
     </Step>
 </template>
