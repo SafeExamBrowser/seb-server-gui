@@ -1,29 +1,27 @@
 import {
-    useNotificationsStore,
     type AlertInput,
+    useNotificationsStore,
 } from "@/stores/seb-server/notificationstore";
-import type {
-    BackendErrorArray,
-    BackendError,
-} from "@/components/views/seb-server/toast/backendError";
+
+import type { BackendErrorArray } from "@/components/views/seb-server/toast/backendError";
+
 import i18n from "@/i18n";
+
+import {
+    buildBodyLines,
+    dynamicTitle,
+} from "@/components/views/seb-server/toast/backendBodyBuilder";
 
 const { t } = (i18n as any).global || i18n;
 
 type RawHttpError = unknown;
 
-// Backend error specific type
 export interface BackendNotifyOptions {
-    // Context label
     contextLabel?: string;
-    // deduplication key in case a user for example spams a button
     dedupeKey?: string;
-    // Split Toasts or not for an endpoint that might return multiple errors
     splitToasts?: boolean;
-    // forces a specific title, otherwise the title is translated based on the error code
     titleOverride?: string;
 
-    //values that normal notifications get
     actionLabel?: AlertInput["actionLabel"];
     onAction?: AlertInput["onAction"];
     duration?: AlertInput["duration"];
@@ -33,15 +31,18 @@ function extractErrorParts(err: RawHttpError): {
     status?: number;
     payload?: unknown;
     sentBody?: unknown;
+    url?: string;
+    method?: string;
 } {
     const anyErr = err as any;
 
-    // Axios
     if (anyErr?.isAxiosError) {
         return {
             status: anyErr.response?.status,
             payload: anyErr.response?.data,
             sentBody: anyErr.config?.data,
+            url: anyErr.config?.url,
+            method: anyErr.config?.method?.toUpperCase?.(),
         };
     }
 
@@ -49,7 +50,10 @@ function extractErrorParts(err: RawHttpError): {
         const status = anyErr.status ?? anyErr.code;
         const payload = anyErr.data ?? anyErr.payload ?? anyErr.response;
         const sentBody = anyErr.requestBody ?? anyErr.sentBody;
-        if (status || payload) return { status, payload, sentBody };
+        const url = anyErr.url ?? anyErr.path;
+        const method = anyErr.method?.toUpperCase?.();
+        if (status || payload)
+            return { status, payload, sentBody, url, method };
     }
 
     if (Array.isArray(err)) return { payload: err };
@@ -57,44 +61,53 @@ function extractErrorParts(err: RawHttpError): {
     return {};
 }
 
-function backendLine(item: BackendError): string {
-    const attrs = item.attributes ?? [];
-    const keyFromAttrs = attrs.length
-        ? `errors.backend.${attrs.join(".")}`
-        : "";
-
-    if (keyFromAttrs && t(keyFromAttrs) !== keyFromAttrs) {
-        return t(keyFromAttrs);
-    }
-
-    const keyFromCode = `errors.backend.code.${item.messageCode}`;
-    if (t(keyFromCode) !== keyFromCode) {
-        return t(keyFromCode);
-    }
-
-    return t("errors.backend.fallbackLine", {
-        systemMessage: item.systemMessage ?? "Error",
-        details: item.details ?? "",
-    });
-}
-
+/** Title resolver: specific i18n → dynamicTitle fallback → HTTP status text */
 function backendTitle(
     status?: number,
     contextLabel?: string,
     override?: string,
+    extras?: { method?: string; firstAttr?: string; url?: string },
 ): string {
     if (override) return override;
 
-    const statusKey = status ? `errors.backend.http.${status}` : "";
-    const statusText =
-        status && t(statusKey) !== statusKey
-            ? t(statusKey)
-            : t("errors.backend.http.500");
+    const rawPath = contextLabel || extras?.url || "";
+    const pathOnly = rawPath
+        .toString()
+        .replace(/^https?:\/\/[^/]+/i, "")
+        .split("?")[0]
+        .replace(/^\/+/, "");
 
-    return contextLabel ? `${statusText} — ${contextLabel}` : statusText;
+    const method = (extras?.method || "").toLowerCase();
+    const firstAttr = extras?.firstAttr;
+
+    const candidates = [
+        pathOnly && method ? `errors.backend.title.${pathOnly}.${method}` : "",
+        pathOnly ? `errors.backend.title.${pathOnly}` : "",
+        firstAttr && method
+            ? `errors.backend.title.${firstAttr}.${method}`
+            : "",
+        firstAttr ? `errors.backend.title.${firstAttr}` : "",
+    ].filter(Boolean);
+
+    for (const k of candidates) {
+        if (t(k) !== k) return t(k);
+    }
+
+    // dynamic fallback with "Error ..." phrasing
+    if (firstAttr) return dynamicTitle(extras?.method, firstAttr);
+    if (pathOnly) {
+        const entityFromPath = pathOnly.split("/")[0];
+        return dynamicTitle(extras?.method, entityFromPath);
+    }
+
+    // final fallback: HTTP status text
+    const statusKey = status ? `errors.backend.http.${status}` : "";
+    return status && t(statusKey) !== statusKey
+        ? t(statusKey)
+        : t("errors.backend.http.500");
 }
 
-// ---------- public facade (use same notify method for all types of alerts) ----------
+// ---------- public facade ----------
 function store() {
     return useNotificationsStore();
 }
@@ -115,7 +128,7 @@ export const notify = {
 
     serverError(err: RawHttpError, opts: BackendNotifyOptions = {}) {
         const n = store();
-        const { status, payload } = extractErrorParts(err);
+        const { status, payload, url, method } = extractErrorParts(err);
 
         const items: BackendErrorArray = Array.isArray(payload)
             ? (payload as BackendErrorArray)
@@ -125,11 +138,13 @@ export const notify = {
 
         if (items.length) {
             for (const it of items) {
-                const line = backendLine(it);
-                lines.push(line);
+                // build 2-line body: [code translation, built from attributes]
+                const built = buildBodyLines(it);
+                const text = built.join("\n");
+                lines.push(text);
 
                 const field = it.details || (it.attributes?.[1] ?? "");
-                if (field) (fieldErrors[field] ||= []).push(line);
+                if (field) (fieldErrors[field] ||= []).push(text);
             }
         } else {
             lines.push(
@@ -140,10 +155,12 @@ export const notify = {
             );
         }
 
+        const firstAttr = items[0]?.attributes?.[0];
         const title = backendTitle(
             status,
             opts.contextLabel,
             opts.titleOverride,
+            { method, url, firstAttr },
         );
 
         if (opts.splitToasts) {
@@ -158,7 +175,7 @@ export const notify = {
                 }),
             );
         } else {
-            n.serverError(title, lines.join("\n"), {
+            n.serverError(title, lines.join("\n\n"), {
                 dedupeKey: opts.dedupeKey,
                 duration: opts.duration ?? 10000,
                 actionLabel: opts.actionLabel,

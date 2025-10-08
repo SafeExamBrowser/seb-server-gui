@@ -545,10 +545,15 @@ const userRoles = computed(() => userAccount.value?.userRoles || []);
 
 // theme
 const theme = useTheme();
-const localstorageTheme: string | null = localStorage.getItem("theme");
-theme.global.name.value =
-    localstorageTheme ?? theme.global.name.value ?? "light";
-const themeToggle = ref<number>(theme.global.name.value === "dark" ? 1 : 0);
+
+const localstorageTheme = localStorage.getItem("theme");
+
+// initialize the theme
+const initialTheme = localstorageTheme ?? "light";
+theme.change(initialTheme);
+
+// initialize the toggle based on initial theme
+const themeToggle = ref<number>(initialTheme === "dark" ? 1 : 0);
 
 const institutionLogo = ref<string | null>(null);
 
@@ -585,8 +590,9 @@ watch(languageToggle, () => {
 });
 
 watch(themeToggle, () => {
-    theme.global.name.value = themeToggle.value === 0 ? "light" : "dark";
-    localStorage.setItem("theme", theme.global.name.value);
+    const next = themeToggle.value === 0 ? "light" : "dark";
+    theme.change(next);
+    localStorage.setItem("theme", next);
 });
 
 function translateRole(role: string): string {

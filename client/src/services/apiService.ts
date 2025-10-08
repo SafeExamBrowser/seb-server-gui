@@ -3,10 +3,10 @@ import * as authenticationService from "@/services/authenticationService";
 import { navigateTo } from "@/router/navigation";
 import * as ENV from "@/config/envConfig";
 import { useLoadingStore } from "@/stores/store";
-import { useErrorStore } from "@/stores/seb-server/errorStore";
 import { useAuthStore } from "@/stores/authentication/authenticationStore";
 import * as generalUtils from "@/utils/generalUtils";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
+import { notify } from "@/components/views/seb-server/toast/notify";
 
 export let api: AxiosInstance;
 
@@ -17,97 +17,86 @@ export function createApi() {
     });
 }
 
+declare module "axios" {
+    export interface AxiosRequestConfig {
+        suppressToast?: boolean;
+        toastContext?: string;
+        toastDedupeKey?: string;
+    }
+}
+
 export function createApiInterceptor() {
     const authStore = useAuthStore();
     const loadingStore = useLoadingStore();
-    const errorStore = useErrorStore();
 
     let loadingTimer: NodeJS.Timeout | null = null;
-    const loadingTimout: number = 500;
-
+    const loadingTimout = 500;
     let requests = 0;
-
     let loadingEndTimer: NodeJS.Timeout | null = null;
 
     api.interceptors.request.use(async (config) => {
-        // check if url does not need loading spinner
-        const isIgnoredUrl: boolean = isUrlIgnorable(config.url);
+        const isIgnoredUrl = isUrlIgnorable(config.url);
         if (loadingStore.skipLoading || isIgnoredUrl) {
             return config;
         }
 
         requests++;
-        // console.info("************* --> requests: " + requests);
-        if (requests > 1) {
-            return config;
+        if (requests === 1) {
+            loadingTimer = setTimeout(() => {
+                loadingStore.isLoading = true;
+            }, loadingTimout);
+
+            const loadingEndTimout = 20000;
+            loadingEndTimer = setTimeout(() => {
+                resetLoadingState();
+            }, loadingEndTimout);
         }
-
-        // when loading spinner should be displayed
-        loadingTimer = setTimeout(() => {
-            loadingStore.isLoading = true;
-        }, loadingTimout);
-
-        // until when loading spinner should be displayed (timeout)
-        const loadingEndTimout: number = 20000;
-
-        loadingEndTimer = setTimeout(() => {
-            resetLoadingState();
-        }, loadingEndTimout);
-
         return config;
     });
 
     api.interceptors.response.use(
         async (response) => {
-            // reset loading spinner and return response
             resetLoadingState();
             return response;
         },
         async (error) => {
             resetLoadingState();
-            console.error(error);
+            // console.error(error); // keep if you want
 
-            // check if error is authentication error
-            const originalRequest = error.config;
-            if (error.response.status === 401 && !originalRequest._retry) {
-                // try to refresh token
-                // ok --> refresh token, retries api call and returns data
-                // not ok --> redirected to login page
+            const originalRequest = error.config ?? {};
+
+            // ---- 401 refresh flow (unchanged) ----
+            if (error?.response?.status === 401 && !originalRequest._retry) {
                 return handleAuthenticationError(originalRequest);
-            } else {
-                // generic error msg
-                const errorProps: ErrorProps = {
-                    color: "error",
-                    textKey: "api-error",
-                    timeout: 5000,
-                };
-
-                if (
-                    error.response.data &&
-                    error.response.data[0].systemMessage
-                ) {
-                    // specific error msg
-                    errorProps.textCustom =
-                        error.response.data[0].systemMessage;
-
-                    // detailed error msg
-                    if (error.response.data[0].details) {
-                        errorProps.textCustom =
-                            error.response.data[0].systemMessage;
-                        errorProps.details = error.response.data[0].details;
-                    }
-                }
-
-                errorStore.showError(errorProps);
-
-                throw error;
             }
+
+            // ---- toast the backend error via your notify service ----
+            // allow opt-out per request
+            const suppress = originalRequest?.suppressToast === true;
+            if (!suppress) {
+                notify.serverError(error, {
+                    // show where it happened; fallback to generic if absent
+                    contextLabel:
+                        originalRequest?.toastContext ??
+                        (originalRequest?.url
+                            ? `${originalRequest.url}`
+                            : "Request"),
+                    // split multiple backend errors into separate toasts
+                    splitToasts: true,
+                    // dedupe by either provided key or url to avoid spam on rapid retries
+                    dedupeKey:
+                        originalRequest?.toastDedupeKey ??
+                        (originalRequest?.url || "request"),
+                });
+            }
+
+            // keep the rejection so callers can still handle it if needed
+            return Promise.reject(error);
         },
     );
 
     async function handleAuthenticationError(originalRequest: any) {
         try {
-            // refreh tokens for seb server
             const response: Token = await authenticationService.refresh(false);
             authStore.setStorageItem(
                 StorageItemEnum.ACCESS_TOKEN,
@@ -118,7 +107,6 @@ export function createApiInterceptor() {
                 response.refresh_token,
             );
 
-            // refreh tokens for sp-service
             if (
                 generalUtils.stringToBoolean(
                     authStore.getStorageItem(StorageItemEnum.IS_SP_AVAILABLE),
@@ -137,43 +125,34 @@ export function createApiInterceptor() {
             }
 
             originalRequest._retry = true;
-            originalRequest.headers = getHeaders(StorageItemEnum.ACCESS_TOKEN);
 
-            // set sp access token if url requested sp resource
+            // choose correct headers based on path
             const originalUrl: string | null = originalRequest.url;
-            if (originalUrl && originalUrl.startsWith("/sp/")) {
-                console.log("it got to here");
-
-                originalRequest.headers = getHeaders(
-                    StorageItemEnum.SP_ACCESS_TOKEN,
-                );
-            }
+            originalRequest.headers =
+                originalUrl && originalUrl.startsWith("/sp/")
+                    ? getHeaders(StorageItemEnum.SP_ACCESS_TOKEN)
+                    : getHeaders(StorageItemEnum.ACCESS_TOKEN);
 
             return api(originalRequest);
-        } catch (error) {
-            let redirectRoute: string = "/";
+        } catch (err) {
+            let redirectRoute = "/";
             if (window.location.pathname != null) {
                 redirectRoute = window.location.pathname;
             }
-
             authStore.redirectRoute = redirectRoute;
             navigateTo("/");
-
-            throw Promise.reject(error);
+            return Promise.reject(err);
         }
     }
 
     function resetLoadingState() {
         requests--;
-        // console.info("************* <-- requests: " + requests);
-        if (requests > 0) {
-            return;
-        }
-
+        if (requests > 0) return;
         requests = 0;
         if (loadingTimer) clearTimeout(loadingTimer);
         if (loadingEndTimer) clearTimeout(loadingEndTimer);
-
+        loadingTimer = null;
+        loadingEndTimer = null;
         loadingStore.isLoading = false;
         loadingStore.skipLoading = false;
     }

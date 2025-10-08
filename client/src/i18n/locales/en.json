@@ -1317,5 +1317,85 @@
             "rowsPerPageText": "Items per page:",
             "pageText": "{0}-{1} of {2}"
         }
+    },
+
+    "errors": {
+        "backend": {
+            "title": {
+                "useraccount": {
+                    "post": "Error Creating User",
+                    "put": "Error Updating User",
+                    "delete": "Error Deleting User"
+                }
+            },
+            "http": {
+                "400": "Bad request",
+                "401": "Unauthorized",
+                "403": "Forbidden",
+                "404": "Not found",
+                "409": "Conflict",
+                "422": "Validation error",
+                "500": "Server error"
+            },
+            "code": {
+                "0": "Generic error",
+                "1": "Bad request",
+                "1000": "Unauthorized",
+                "1001": "Forbidden",
+                "1002": "Resource not found",
+                "1010": "Illegal API argument",
+                "1100": "Unexpected server error",
+                "1101": "Integrity validation failed",
+
+                "1200": "Field validation error",
+                "1300": "Password mismatch",
+                "1301": "Missing password",
+                "1302": "LMS warnings",
+
+                "1400": "Exam consistency: no supporter",
+                "1401": "Exam consistency: no SEB configuration",
+                "1402": "Exam consistency: LMS restriction missing",
+                "1403": "Exam consistency: no indicator",
+                "1404": "Exam consistency: no LMS connection",
+                "1405": "Exam consistency: invalid exam–course reference",
+
+                "1500": "External service binding error",
+
+                "1600": "Exam import: partial success (setup issues)",
+                "1601": "Exam import: failed to create indicator(s)",
+                "1602": "Exam import: failed to create attributes",
+                "1603": "Exam import: failed to apply SEB restriction",
+
+                "1604": "Exam import: partial success",
+                "1605": "Exam import: partial success",
+
+                "1610": "Exam import: failed to create/link configuration",
+                "1611": "Exam import: failed to link auto configuration",
+
+                "1700": "Client connection integrity violation",
+
+                "1800": "Additional confirmation required"
+            },
+            "fallbackLine": "{systemMessage} — {details}"
+        },
+        "objects": {
+            "user": {
+                "_label": "User Account",
+                "username": "Username",
+                "email": "Email",
+                "password": "Password"
+            },
+            "exam": {
+                "_label": "Exam"
+            }
+        },
+        "rules": {
+            "notunique": "{field} is already being used.",
+            "required": "{field} is required.",
+            "invalid": "{field} is invalid.",
+            "minlength": "{field} is too short.",
+            "maxlength": "{field} is too long.",
+            "pattern": "{field} has an invalid format."
+        }
     }
 }

@@ -14,7 +14,7 @@ const alertColors = {
     warning: { bg: "#F7E9DC", border: "#FAC594", accent: "#FB8C00" },
 };
 
-export default createVuetify({
+export const vuetify = createVuetify({
     components: {
         VStepperVertical,
         VStepperVerticalItem,
@@ -63,3 +63,5 @@ export default createVuetify({
         // locale: "de-DE"
     },
 });
+
+export default vuetify;
