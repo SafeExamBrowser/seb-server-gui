@@ -334,7 +334,7 @@ function getTypeDetail(g: ClientGroup): string {
     border-collapse: collapse;
 }
 
-.no-header-table >>> thead {
+.no-header-table :deep(thead) {
     display: none;
 }
 

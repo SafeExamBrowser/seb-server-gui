@@ -20,7 +20,6 @@
 </template>
 
 <script setup lang="ts">
-import { withDefaults, defineProps } from "vue";
 import ToastItem from "./ToastItem.vue";
 import { useNotificationsStore } from "@/stores/seb-server/notificationstore";
 

@@ -70,7 +70,6 @@ export default defineConfig([
             "@typescript-eslint/no-unsafe-function-type": "off",
             "@typescript-eslint/no-unused-expressions": "off",
             "@typescript-eslint/no-non-null-assertion": "off",
-            "@typescript-eslint/no-dynamic-delete": "off",
         },
     },
 
