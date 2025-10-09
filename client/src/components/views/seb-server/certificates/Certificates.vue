@@ -262,7 +262,7 @@
                             >
                                 <v-btn
                                     data-testid="certificates-deleteDialog-cancel-button"
-                                    text
+                                    variant="text"
                                     @click="deleteDialog = false"
                                 >
                                     {{ translate("general.cancelButton") }}
@@ -270,7 +270,7 @@
                                 <v-btn
                                     color="red"
                                     data-testid="certificates-deleteDialog-confirm-button"
-                                    text
+                                    variant="text"
                                     @click="confirmDelete"
                                 >
                                     {{ translate("general.deleteButton") }}
