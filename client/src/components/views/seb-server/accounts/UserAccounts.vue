@@ -326,7 +326,6 @@
                                             :color="
                                                 item.active ? 'green' : 'red'
                                             "
-                                            dark
                                             :data-testid="`userAccounts-status-chip-${item.uuid}`"
                                             size="small"
                                         >
@@ -352,7 +351,6 @@
                                     v-else
                                     class="text-white font-weight-medium status-chip cursor-pointer"
                                     :color="item.active ? 'green' : 'red'"
-                                    dark
                                     :data-testid="`userAccounts-status-chip-${item.uuid}`"
                                     size="small"
                                     @click.stop="openStatusDialog(item)"

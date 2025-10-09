@@ -265,7 +265,6 @@
                                     <v-chip
                                         class="text-white font-weight-medium status-chip cursor-pointer"
                                         :color="item.active ? 'green' : 'red'"
-                                        dark
                                         :data-testid="`connectionConfigurations-status-chip-${item.id}`"
                                         size="small"
                                         @click.stop="openStatusDialog(item)"

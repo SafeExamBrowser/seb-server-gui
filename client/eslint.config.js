@@ -63,7 +63,6 @@ export default defineConfig([
             "vue/no-multiple-template-root": "off",
             "vue/valid-v-on": "off",
             "vue/valid-v-for": "off",
-            "vuetify/no-deprecated-props": "off",
             "@typescript-eslint/no-explicit-any": "off",
             "@typescript-eslint/no-non-null-asserted-optional-chain": "off",
             "@typescript-eslint/no-empty-object-type": "off",
