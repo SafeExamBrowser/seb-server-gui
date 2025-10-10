@@ -58,7 +58,6 @@ export default defineConfig([
             // new exceptions after updating eslint config. @TODO: remove these one by one and fix the respective issues in the codebase
             "no-unsafe-optional-chaining": "off",
             "vue/valid-v-slot": "off",
-            "vue/no-v-html": "off",
             "vue/multi-word-component-names": "off",
             "vue/no-multiple-template-root": "off",
             "vue/valid-v-on": "off",
