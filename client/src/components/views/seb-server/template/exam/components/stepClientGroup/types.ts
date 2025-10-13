@@ -5,7 +5,11 @@ import {
 
 export type ClientGroup = {
     name: string;
+    id: number;
 } & (
+    | {
+          type: undefined;
+      }
     | {
           type: ClientGroupEnum.IP_V4_RANGE;
           ipRangeStart: string;

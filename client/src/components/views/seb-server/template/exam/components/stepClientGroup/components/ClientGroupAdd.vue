@@ -11,8 +11,7 @@
     <v-dialog v-model="dialogOpen" width="auto" @close="handleCancel">
         <v-card :title="$t('clientGroups.addDialogTitle')">
             <template #text>
-                <!-- TODO @alain: add form here -->
-                <div>This is the form</div>
+                <ClientGroupForm v-model="newClientGroup" />
             </template>
             <template #actions>
                 <v-btn
@@ -30,13 +29,15 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { ClientGroup } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
-import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
-import { useStepClientGroupStore } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/store/useStepClientGroupStore";
+import {
+    getEmptyClientGroup,
+    useStepClientGroupStore,
+} from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/store/useStepClientGroupStore";
 
-const { addGroup } = useStepClientGroupStore();
+const { createGroup } = useStepClientGroupStore();
 
 const dialogOpen = ref(false);
+const newClientGroup = ref(getEmptyClientGroup());
 
 const handleOpenDialog = () => {
     dialogOpen.value = true;
@@ -44,18 +45,12 @@ const handleOpenDialog = () => {
 
 const handleCancel = () => {
     dialogOpen.value = false;
+    newClientGroup.value = getEmptyClientGroup();
 };
 
 const handleCreate = () => {
-    // TODO @alain: replace this, once form is implemented
-    const newGroup: ClientGroup = {
-        name: `New Group #${Math.random().toString(36).substring(0, 10)}`,
-        type: ClientGroupEnum.IP_V4_RANGE,
-        ipRangeStart: "192.168.1.1",
-        ipRangeEnd: "192.168.1.100",
-    };
-
-    addGroup(newGroup);
+    createGroup(newClientGroup.value);
     dialogOpen.value = false;
+    newClientGroup.value = getEmptyClientGroup();
 };
 </script>

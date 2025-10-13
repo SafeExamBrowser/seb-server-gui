@@ -13,8 +13,7 @@
     <v-dialog v-model="dialogOpen" width="auto" @close="handleCancel">
         <v-card :title="$t('clientGroups.editDialogTitle')">
             <template #text>
-                <!-- TODO @alain: add form here -->
-                <div>This is the form</div>
+                <ClientGroupForm v-model="editedClientGroup" />
             </template>
             <template #actions>
                 <v-btn
@@ -33,12 +32,15 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { ClientGroup } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
+import { useStepClientGroupStore } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/store/useStepClientGroupStore";
+const { updateGroup } = useStepClientGroupStore();
 
 const props = defineProps<{
     item: ClientGroup;
 }>();
 
 const dialogOpen = ref(false);
+const editedClientGroup = ref(props.item);
 
 const handleOpenDialog = () => {
     dialogOpen.value = true;
@@ -46,11 +48,12 @@ const handleOpenDialog = () => {
 
 const handleCancel = () => {
     dialogOpen.value = false;
+    editedClientGroup.value = props.item;
 };
 
 const handleUpdate = () => {
-    // TODO @alain: update group in store
-    console.log("update group:", props.item);
+    updateGroup(editedClientGroup.value);
     dialogOpen.value = false;
+    editedClientGroup.value = props.item;
 };
 </script>
