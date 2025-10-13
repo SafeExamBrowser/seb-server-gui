@@ -16,12 +16,12 @@ import { useStepClientGroupStore } from "@/components/views/seb-server/template/
 import { ClientGroup } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 
 const props = defineProps<{
-    item: ClientGroup;
+    clientGroup: ClientGroup;
 }>();
 
 const { deleteGroup } = useStepClientGroupStore();
 
 const handleDeleteClick = () => {
-    deleteGroup(props.item);
+    deleteGroup(props.clientGroup);
 };
 </script>

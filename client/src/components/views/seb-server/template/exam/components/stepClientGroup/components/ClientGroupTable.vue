@@ -12,8 +12,8 @@
         </template>
         <template #item.actions="{ item }">
             <div class="d-flex ga-2 justify-end">
-                <ClientGroupEdit :item="item" />
-                <ClientGroupDelete :item="item" />
+                <ClientGroupEdit :client-group="item" />
+                <ClientGroupDelete :client-group="item" />
             </div>
         </template>
     </v-data-table>
