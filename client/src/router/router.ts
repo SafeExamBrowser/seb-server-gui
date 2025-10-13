@@ -38,7 +38,7 @@ import AssessmentToolDetailsAndEdit from "@/components/views/seb-server/assessme
 import CreateConnectionConfiguration from "@/components/views/seb-server/connection-configuration/CreateConnectionConfiguration.vue";
 import ConnectionConfigurations from "@/components/views/seb-server/connection-configuration/ConnectionConfigurations.vue";
 import ConnectionConfigurationlDetailsAndEdit from "@/components/views/seb-server/connection-configuration/ConnectionConfigurationlDetailsAndEdit.vue";
-import Certificates from "@/components/views/seb-server/certificates/Certificates.vue";
+import CertificatesMain from "@/components/views/seb-server/certificates/CertificatesMain.vue";
 
 import CreateTemplate from "@/components/views/seb-server/template/CreateTemplate.vue";
 import CreateTemplateExamWizard from "@/components/views/seb-server/template/exam/Wizard.vue";
@@ -269,7 +269,7 @@ const routes: Array<RouteRecordRaw> = [
             {
                 path: constants.CERTIFICATES_ROUTE,
                 name: "Certificates",
-                component: Certificates,
+                component: CertificatesMain,
                 meta: {
                     titleKey: "titles.certificates",
                 },
