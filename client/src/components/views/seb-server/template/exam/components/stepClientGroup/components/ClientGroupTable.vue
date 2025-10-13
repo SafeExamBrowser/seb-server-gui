@@ -7,12 +7,12 @@
     >
         <template #top>
             <TableHeader :label="$t('clientGroups.entityNamePlural')">
-                <ClientGroupAdd />
+                <ClientGroupCreate />
             </TableHeader>
         </template>
         <template #item.actions="{ item }">
             <div class="d-flex ga-2 justify-end">
-                <ClientGroupEdit :client-group="item" />
+                <ClientGroupUpdate :client-group="item" />
                 <ClientGroupDelete :client-group="item" />
             </div>
         </template>
