@@ -153,7 +153,7 @@ function createMetadataWindowsObjectList() {
 </script>
 
 <style scoped>
-.centered-text-input >>> input {
+.centered-text-input :deep(input) {
     text-align: center;
 }
 </style>
