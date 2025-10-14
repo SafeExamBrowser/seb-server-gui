@@ -1,9 +1,9 @@
 <!-- TODO @alain: this is a reusable component, move it up to the components folder -->
 <template>
-    <v-container>
+    <v-container class="ma-0 pa-0">
         <v-row>
-            <v-col class="primary-text-color text-h6">
-                {{ label }}
+            <v-col>
+                <SectionSubtitle :name="label" />
             </v-col>
             <v-col cols="auto">
                 <slot></slot>

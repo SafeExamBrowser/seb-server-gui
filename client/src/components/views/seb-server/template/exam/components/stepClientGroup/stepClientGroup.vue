@@ -6,6 +6,7 @@
         <ClientGroupTable />
         <ScreenProctoringForm
             v-if="createExamTemplateStore.screenProctoringEnabled"
+            class="mt-8"
         />
     </Step>
 </template>
