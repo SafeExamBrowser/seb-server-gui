@@ -267,7 +267,7 @@
                     "institutionalDefault": {
                         "label": "Institutional Default"
                     },
-                    "screenProctoring": {
+                    "screenProctoringEnabled": {
                         "label": "Screen Proctoring"
                     }
                 }

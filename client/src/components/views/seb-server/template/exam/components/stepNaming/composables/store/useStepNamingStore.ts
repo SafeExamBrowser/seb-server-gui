@@ -11,7 +11,7 @@ const initialState = {
     clientConfiguration: undefined,
     lmsIntegration: false,
     institutionalDefault: false,
-    screenProctoring: false,
+    screenProctoringEnabled: false,
 };
 
 export const useStepNamingStore = defineStore("stepNaming", () => {
@@ -29,7 +29,9 @@ export const useStepNamingStore = defineStore("stepNaming", () => {
     const institutionalDefault = ref<boolean>(
         initialState.institutionalDefault,
     );
-    const screenProctoring = ref<boolean>(initialState.screenProctoring);
+    const screenProctoringEnabled = ref<boolean>(
+        initialState.screenProctoringEnabled,
+    );
 
     const $reset = () => {
         isReady.value = initialState.isReady;
@@ -40,7 +42,7 @@ export const useStepNamingStore = defineStore("stepNaming", () => {
         clientConfiguration.value = initialState.clientConfiguration;
         lmsIntegration.value = initialState.lmsIntegration;
         institutionalDefault.value = initialState.institutionalDefault;
-        screenProctoring.value = initialState.screenProctoring;
+        screenProctoringEnabled.value = initialState.screenProctoringEnabled;
     };
 
     return {
@@ -52,7 +54,7 @@ export const useStepNamingStore = defineStore("stepNaming", () => {
         clientConfiguration,
         lmsIntegration,
         institutionalDefault,
-        screenProctoring,
+        screenProctoringEnabled,
         $reset,
     };
 });
