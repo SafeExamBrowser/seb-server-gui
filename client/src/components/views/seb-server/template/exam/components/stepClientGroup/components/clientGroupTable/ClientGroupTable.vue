@@ -1,7 +1,7 @@
 <template>
     <v-data-table
         :headers="headers"
-        :items="useTableItems().value"
+        :items="items"
         item-key="name"
         hide-default-footer
     >
@@ -20,27 +20,10 @@
 </template>
 
 <script setup lang="ts">
-import { useTableItems } from "@/components/views/seb-server/template/exam/components/stepClientGroup/components/clientGroupTable/composables/useTableItems";
-import { useI18n } from "vue-i18n";
+import { useTable } from "./composables/useTable";
 import { ClientGroup } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 
-const { t } = useI18n();
-
-const headers = [
-    {
-        title: t("createTemplateExam.steps.clientGroup.fields.name.label"),
-        value: "name",
-    },
-    {
-        title: t("createTemplateExam.steps.clientGroup.fields.type.label"),
-        value: "type",
-    },
-    {
-        title: t("createTemplateExam.steps.clientGroup.fields.actions.label"),
-        value: "actions",
-        align: "end" as const,
-    },
-];
+const { headers, items } = useTable();
 
 const hasActions = (item: ClientGroup) =>
     item.type !== "SCREEN_PROCTORING_FALLBACK" &&

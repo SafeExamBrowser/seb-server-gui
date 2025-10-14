@@ -1,10 +1,31 @@
+import { useI18n } from "vue-i18n";
 import { ClientGroup } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 import { computed } from "vue";
 import { useScreenProctoringStore } from "@/components/views/seb-server/template/exam/composables/store/useScreenProctoringStore";
 import { useStepClientGroupStore } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/store/useStepClientGroupStore";
 import { storeToRefs } from "pinia";
 
-export const useTableItems = () => {
+export const useTable = () => {
+    const { t } = useI18n();
+
+    const headers = [
+        {
+            title: t("createTemplateExam.steps.clientGroup.fields.name.label"),
+            value: "name",
+        },
+        {
+            title: t("createTemplateExam.steps.clientGroup.fields.type.label"),
+            value: "type",
+        },
+        {
+            title: t(
+                "createTemplateExam.steps.clientGroup.fields.actions.label",
+            ),
+            value: "actions",
+            align: "end" as const,
+        },
+    ];
+
     const { groups: groupsFromStore } = storeToRefs(useStepClientGroupStore());
 
     const fallbackGroup = computed<ClientGroup | undefined>(() => {
@@ -35,5 +56,8 @@ export const useTableItems = () => {
         ),
     );
 
-    return items;
+    return {
+        headers,
+        items,
+    };
 };
