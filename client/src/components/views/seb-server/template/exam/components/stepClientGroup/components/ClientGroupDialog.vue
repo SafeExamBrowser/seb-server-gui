@@ -9,7 +9,12 @@
         :title="labelActivator"
         :aria-label="labelActivator"
     ></v-btn>
-    <v-dialog v-model="isDialogOpen" :activator="activatorRef" width="auto">
+    <v-dialog
+        v-model="isDialogOpen"
+        :activator="activatorRef"
+        :max-width="useDisplay().thresholds.value.sm"
+        class="w-100"
+    >
         <v-card :title="labelActivator">
             <template #text>
                 <ClientGroupForm v-model="temporaryClientGroup" />
@@ -26,6 +31,7 @@
 import { ref, watch } from "vue";
 import { IconValue } from "vuetify/lib/composables/icons.mjs";
 import { ClientGroup } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
+import { useDisplay } from "vuetify";
 
 const props = defineProps<{
     iconActivator: IconValue;
