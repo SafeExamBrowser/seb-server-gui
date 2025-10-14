@@ -235,6 +235,21 @@
     },
 
     "createTemplateExam": {
+        "general": {
+            "fields": {
+                "screenProctoringEnabled": {
+                    "label": "Screen Proctoring"
+                },
+                "screenProctoringCollectionStrategy": {
+                    "label": "Grouping Strategy",
+                    "placeholder": "Select the grouping strategy",
+                    "strategies": {
+                        "EXAM": "One Group for Exam",
+                        "APPLY_SEB_GROUPS": "Apply to SEB Client Groups"
+                    }
+                }
+            }
+        },
         "steps": {
             "naming": {
                 "title": "Name it",
@@ -266,9 +281,6 @@
                     },
                     "institutionalDefault": {
                         "label": "Institutional Default"
-                    },
-                    "screenProctoringEnabled": {
-                        "label": "Screen Proctoring"
                     }
                 }
             },
@@ -282,7 +294,21 @@
             },
             "clientGroup": {
                 "title": "Add Client Groups",
-                "subtitle": "TODO: translate (Kristina)"
+                "subtitle": "TODO: translate (Kristina)",
+                "subtitleScreenProctoring": "Screen Proctoring Settings",
+                "fields": {
+                    "actions": {
+                        "label": "Actions"
+                    },
+                    "name": {
+                        "label": "Name",
+                        "placeholder": "Enter the desired group name"
+                    },
+                    "type": {
+                        "label": "Type",
+                        "placeholder": "Select the group type"
+                    }
+                }
             },
             "summary": {
                 "title": "Overview Exam Template",

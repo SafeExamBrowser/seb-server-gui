@@ -3,10 +3,15 @@
         class="ma-0 pa-0"
         :max-width="useDisplay().thresholds.value.sm"
     >
-        <!-- TODO @alain: i18n (subtitle) -->
         <v-row>
             <v-col>
-                <SectionSubtitle name="SPS settings" />
+                <SectionSubtitle
+                    :name="
+                        $t(
+                            'createTemplateExam.steps.clientGroup.subtitleScreenProctoring',
+                        )
+                    "
+                />
             </v-col>
         </v-row>
         <v-row>

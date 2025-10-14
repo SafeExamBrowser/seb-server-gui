@@ -22,13 +22,25 @@
 <script setup lang="ts">
 import { useStepClientGroupStore } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/store/useStepClientGroupStore";
 import { storeToRefs } from "pinia";
+import { useI18n } from "vue-i18n";
 
 const { groups } = storeToRefs(useStepClientGroupStore());
 
-// TODO @alain: i18n for table headers
+const { t } = useI18n();
+
 const headers = [
-    { title: "Name", value: "name" },
-    { title: "Type", value: "type" },
-    { title: "Actions", value: "actions", align: "end" as const },
+    {
+        title: t("createTemplateExam.steps.clientGroup.fields.name.label"),
+        value: "name",
+    },
+    {
+        title: t("createTemplateExam.steps.clientGroup.fields.type.label"),
+        value: "type",
+    },
+    {
+        title: t("createTemplateExam.steps.clientGroup.fields.actions.label"),
+        value: "actions",
+        align: "end" as const,
+    },
 ];
 </script>

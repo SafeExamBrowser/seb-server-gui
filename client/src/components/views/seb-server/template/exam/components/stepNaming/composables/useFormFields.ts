@@ -172,7 +172,7 @@ export const useFormFields = () => {
                 name: "screenProctoringEnabled",
                 model: modelScreenProctoringEnabled,
                 label: t(
-                    "createTemplateExam.steps.naming.fields.screenProctoringEnabled.label",
+                    "createTemplateExam.general.fields.screenProctoringEnabled.label",
                 ),
             },
         ];

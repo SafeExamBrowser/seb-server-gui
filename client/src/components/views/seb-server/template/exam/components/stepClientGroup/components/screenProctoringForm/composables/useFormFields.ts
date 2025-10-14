@@ -23,10 +23,16 @@ export const useFormFields = () => {
                     SCREEN_PROCTORING_COLLECTION_STRATEGY,
                 ).map((enumValue) => ({
                     value: enumValue,
-                    text: t(enumValue), // TODO @alain: i18n
+                    text: t(
+                        `createTemplateExam.general.fields.screenProctoringCollectionStrategy.strategies.${enumValue}`,
+                    ),
                 })),
-                label: "screen proctoring collection strategy", // TODO @alain: i18n
-                placeholder: "select the screen proctoring collection strategy", // TODO @alain: i18n
+                label: t(
+                    "createTemplateExam.general.fields.screenProctoringCollectionStrategy.label",
+                ),
+                placeholder: t(
+                    "createTemplateExam.general.fields.screenProctoringCollectionStrategy.placeholder",
+                ),
                 required: true,
             },
         ];
