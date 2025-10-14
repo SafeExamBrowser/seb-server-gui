@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { useFormFields } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/useFormFields";
+import { useFormFields } from "./composables/useFormFields";
 import { ClientGroup } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 
 const model = defineModel<ClientGroup>({ required: true });
