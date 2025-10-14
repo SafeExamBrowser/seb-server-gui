@@ -1,11 +1,11 @@
 <template>
     <h2 class="primary-text-color text-h4 font-weight-bold">
-        {{ title }}
+        {{ name }}
     </h2>
 </template>
 
 <script setup lang="ts">
 defineProps<{
-    title: string;
+    name: string;
 }>();
 </script>
