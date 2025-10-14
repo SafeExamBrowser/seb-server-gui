@@ -42,7 +42,7 @@ const props = defineProps<{
     labelActivator: string;
     labelCancel: string;
     labelSubmit: string;
-    clientGroup: ClientGroup;
+    getClientGroup: () => ClientGroup;
 }>();
 
 const emit = defineEmits<{
@@ -50,7 +50,7 @@ const emit = defineEmits<{
 }>();
 
 const activatorRef = ref<HTMLElement>();
-const temporaryClientGroup = ref(props.clientGroup);
+const temporaryClientGroup = ref(props.getClientGroup());
 
 const handleCancel = (isActive: Ref<boolean>) => {
     isActive.value = false;
@@ -59,6 +59,6 @@ const handleCancel = (isActive: Ref<boolean>) => {
 const handleSubmit = (isActive: Ref<boolean>) => {
     emit("submit", temporaryClientGroup.value);
     isActive.value = false;
-    temporaryClientGroup.value = props.clientGroup;
+    temporaryClientGroup.value = props.getClientGroup();
 };
 </script>

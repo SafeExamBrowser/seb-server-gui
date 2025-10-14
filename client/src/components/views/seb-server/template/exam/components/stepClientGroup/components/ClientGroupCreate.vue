@@ -5,7 +5,7 @@
         :label-activator="$t('clientGroups.addDialogTitle')"
         :label-cancel="$t('general.cancelButton')"
         :label-submit="$t('general.createButton')"
-        :client-group="getEmptyClientGroup()"
+        :get-client-group="getClientGroup"
         @submit="handleCreate"
     />
 </template>
@@ -18,6 +18,10 @@ import {
 import { ClientGroup } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 
 const { createGroup } = useStepClientGroupStore();
+
+const getClientGroup = () => {
+    return getEmptyClientGroup();
+};
 
 const handleCreate = (clientGroup: ClientGroup) => {
     createGroup(clientGroup);

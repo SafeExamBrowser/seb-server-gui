@@ -6,7 +6,7 @@
         :label-activator="$t('clientGroups.editDialogTitle')"
         :label-cancel="$t('general.cancelButton')"
         :label-submit="$t('general.saveButton')"
-        :client-group="clientGroup"
+        :get-client-group="getClientGroup"
         @submit="handleUpdate"
     />
 </template>
@@ -16,9 +16,13 @@ import { ClientGroup } from "@/components/views/seb-server/template/exam/compone
 import { useStepClientGroupStore } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/store/useStepClientGroupStore";
 const { updateGroup } = useStepClientGroupStore();
 
-defineProps<{
+const props = defineProps<{
     clientGroup: ClientGroup;
 }>();
+
+const getClientGroup = () => {
+    return props.clientGroup;
+};
 
 const handleUpdate = (clientGroup: ClientGroup) => {
     updateGroup(clientGroup);
