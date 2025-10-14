@@ -271,7 +271,7 @@ function clearSearch() {
     background-color: white;
 }
 
-.no-header-table >>> thead {
+.no-header-table :deep(thead) {
     display: none;
 }
 
