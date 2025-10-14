@@ -56,7 +56,9 @@ const isStepReady = (
 };
 
 const initialState = {
-    currentStepIndex: 0,
+    currentStepIndex: 3, // TODO @alain: remove debug (should be 0)
+    screenProctoringEnabled: true, // TODO @alain: remove debug (should be false)
+    screenProctoringCollectionStrategy: undefined,
 };
 
 export const useCreateExamTemplateStore = defineStore(
@@ -98,9 +100,9 @@ export const useCreateExamTemplateStore = defineStore(
             };
         });
 
-        const screenProctoringEnabled = computed<boolean>(() => {
-            return stepNamingStore.screenProctoringEnabled;
-        });
+        const screenProctoringEnabled = ref<boolean>(
+            initialState.screenProctoringEnabled,
+        );
 
         const screenProctoringCollectionStrategy =
             ref<ScreenProctoringCollectionStrategy>();
@@ -141,6 +143,10 @@ export const useCreateExamTemplateStore = defineStore(
         const $reset = () => {
             // own state
             currentStepIndex.value = initialState.currentStepIndex;
+            screenProctoringEnabled.value =
+                initialState.screenProctoringEnabled;
+            screenProctoringCollectionStrategy.value =
+                initialState.screenProctoringCollectionStrategy;
 
             // substores
             stepNamingStore.$reset();
