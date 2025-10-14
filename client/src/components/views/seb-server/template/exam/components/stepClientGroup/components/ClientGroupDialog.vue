@@ -1,5 +1,6 @@
 <template>
     <v-btn
+        ref="activatorRef"
         :icon="iconTrigger"
         :color="colorTrigger"
         variant="text"
@@ -7,23 +8,30 @@
         :size="sizeTrigger"
         :title="labelTrigger"
         :aria-label="labelTrigger"
-        @click="handleOpenDialog"
     ></v-btn>
-    <v-dialog v-model="dialogOpen" width="auto" @close="handleCancel">
-        <v-card :title="labelTrigger">
-            <template #text>
-                <ClientGroupForm v-model="temporaryClientGroup" />
-            </template>
-            <template #actions>
-                <v-btn :text="labelCancel" @click="handleCancel"></v-btn>
-                <v-btn :text="labelSubmit" @click="handleSubmit"></v-btn>
-            </template>
-        </v-card>
+    <v-dialog :activator="activatorRef" width="auto">
+        <template #default="{ isActive }">
+            <v-card :title="labelTrigger">
+                <template #text>
+                    <ClientGroupForm v-model="temporaryClientGroup" />
+                </template>
+                <template #actions>
+                    <v-btn
+                        :text="labelCancel"
+                        @click="handleCancel(isActive)"
+                    ></v-btn>
+                    <v-btn
+                        :text="labelSubmit"
+                        @click="handleSubmit(isActive)"
+                    ></v-btn>
+                </template>
+            </v-card>
+        </template>
     </v-dialog>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, Ref } from "vue";
 import { IconValue } from "vuetify/lib/composables/icons.mjs";
 import { ClientGroup } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 
@@ -41,21 +49,16 @@ const emit = defineEmits<{
     (e: "submit", clientGroup: ClientGroup): void;
 }>();
 
-const dialogOpen = ref(false);
+const activatorRef = ref<HTMLElement>();
 const temporaryClientGroup = ref(props.clientGroup);
 
-const handleOpenDialog = () => {
-    dialogOpen.value = true;
+const handleCancel = (isActive: Ref<boolean>) => {
+    isActive.value = false;
 };
 
-const handleCancel = () => {
-    dialogOpen.value = false;
-    temporaryClientGroup.value = props.clientGroup;
-};
-
-const handleSubmit = () => {
+const handleSubmit = (isActive: Ref<boolean>) => {
     emit("submit", temporaryClientGroup.value);
-    dialogOpen.value = false;
+    isActive.value = false;
     temporaryClientGroup.value = props.clientGroup;
 };
 </script>
