@@ -12,6 +12,7 @@
         </template>
         <template #item.type="{ item }">
             {{
+                item.type &&
                 $t(
                     `createTemplateExam.steps.clientGroup.fields.type.types.${item.type}`,
                 )
