@@ -41,7 +41,6 @@
                         label
                         size="large"
                         style="cursor: pointer"
-                        text-color="white"
                         @click="toggleStatusLocally(user)"
                     >
                         {{

@@ -25,22 +25,23 @@
                         <!------------ active ------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">
-                                <v-tooltip activator="parent"
-                                    ><p
-                                        v-html="
-                                            translateWithBR(
-                                                'sebSettings.applicationView.permittedProcess.active_tooltip',
+                                <v-tooltip activator="parent">
+                                    <p class="pre-line">
+                                        {{
+                                            translate(
+                                                "sebSettings.applicationView.permittedProcess.active_tooltip",
                                             )
-                                        "
-                                /></v-tooltip>
+                                        }}
+                                    </p>
+                                </v-tooltip>
                                 {{
                                     translate(
                                         "sebSettings.applicationView.permittedProcess.active",
                                     )
                                 }}
                             </v-col>
-                            <v-col class="pt-0 pb-0"
-                                ><v-checkbox-btn
+                            <v-col class="pt-0 pb-0">
+                                <v-checkbox-btn
                                     v-model="props.permittedProcess!.active"
                                     :disabled="props.readOnly"
                                 ></v-checkbox-btn>
@@ -70,14 +71,15 @@
                         <!------------Executable------------->
                         <v-row>
                             <v-col>
-                                <v-tooltip activator="parent"
-                                    ><p
-                                        v-html="
-                                            translateWithBR(
-                                                'sebSettings.applicationView.permittedProcess.executable_tooltip',
+                                <v-tooltip activator="parent">
+                                    <p class="pre-line">
+                                        {{
+                                            translate(
+                                                "sebSettings.applicationView.permittedProcess.executable_tooltip",
                                             )
-                                        "
-                                /></v-tooltip>
+                                        }}
+                                    </p>
+                                </v-tooltip>
                                 {{
                                     translate(
                                         "sebSettings.applicationView.permittedProcess.executable",
@@ -99,14 +101,15 @@
                         <!------------Title------------->
                         <v-row>
                             <v-col>
-                                <v-tooltip activator="parent"
-                                    ><p
-                                        v-html="
-                                            translateWithBR(
-                                                'sebSettings.applicationView.permittedProcess.title_tooltip',
+                                <v-tooltip activator="parent">
+                                    <p class="pre-line">
+                                        {{
+                                            translate(
+                                                "sebSettings.applicationView.permittedProcess.title_tooltip",
                                             )
-                                        "
-                                /></v-tooltip>
+                                        }}
+                                    </p>
+                                </v-tooltip>
                                 {{
                                     translate(
                                         "sebSettings.applicationView.permittedProcess.title",
@@ -132,8 +135,8 @@
                                     translate(
                                         "sebSettings.applicationView.permittedProcess.originalName",
                                     )
-                                }}</v-col
-                            >
+                                }}
+                            </v-col>
                             <v-col>
                                 <v-text-field
                                     v-model="
@@ -150,11 +153,13 @@
                         </v-row>
                         <!------------Signature------------->
                         <v-row>
-                            <v-col>{{
-                                translate(
-                                    "sebSettings.applicationView.permittedProcess.signature",
-                                )
-                            }}</v-col>
+                            <v-col
+                                >{{
+                                    translate(
+                                        "sebSettings.applicationView.permittedProcess.signature",
+                                    )
+                                }}
+                            </v-col>
                             <v-col>
                                 <v-text-field
                                     v-model="props.permittedProcess!.signature"
@@ -174,8 +179,8 @@
                                     translate(
                                         "sebSettings.applicationView.permittedProcess.path",
                                     )
-                                }}</v-col
-                            >
+                                }}
+                            </v-col>
                             <v-col>
                                 <v-text-field
                                     v-model="props.permittedProcess!.path"
@@ -191,14 +196,15 @@
                         <!------------teamIdentifier------------->
                         <v-row>
                             <v-col>
-                                <v-tooltip activator="parent"
-                                    ><p
-                                        v-html="
-                                            translateWithBR(
-                                                'sebSettings.applicationView.permittedProcess.teamIdentifier_tooltip',
+                                <v-tooltip activator="parent">
+                                    <p class="pre-line">
+                                        {{
+                                            translate(
+                                                "sebSettings.applicationView.permittedProcess.teamIdentifier_tooltip",
                                             )
-                                        "
-                                /></v-tooltip>
+                                        }}
+                                    </p>
+                                </v-tooltip>
                                 {{
                                     translate(
                                         "sebSettings.applicationView.permittedProcess.teamIdentifier",
@@ -221,14 +227,16 @@
                         </v-row>
                         <!------------Arguments------------->
                         <v-row>
-                            <v-col class="pt-0 pb-0">{{
-                                translate(
-                                    "sebSettings.applicationView.permittedProcess.arguments",
-                                )
-                            }}</v-col>
+                            <v-col class="pt-0 pb-0"
+                                >{{
+                                    translate(
+                                        "sebSettings.applicationView.permittedProcess.arguments",
+                                    )
+                                }}
+                            </v-col>
                             <v-col class="pt-0 pb-0">
-                                <v-col align="right" class="pt-0 pb-0"
-                                    ><v-btn
+                                <v-col align="right" class="pt-0 pb-0">
+                                    <v-btn
                                         color="primary"
                                         density="compact"
                                         :disabled="props.readOnly"
@@ -236,8 +244,8 @@
                                         variant="text"
                                         @click="addArgument()"
                                     >
-                                    </v-btn
-                                ></v-col>
+                                    </v-btn>
+                                </v-col>
 
                                 <v-data-table
                                     class="rounded-lg elevation-4"
@@ -308,22 +316,23 @@
                         <!------------ iconInTaskbar ------------->
                         <v-row align="center">
                             <v-col class="pb-0">
-                                <v-tooltip activator="parent"
-                                    ><p
-                                        v-html="
-                                            translateWithBR(
-                                                'sebSettings.applicationView.permittedProcess.iconInTaskbar_tooltip',
+                                <v-tooltip activator="parent">
+                                    <p class="pre-line">
+                                        {{
+                                            translate(
+                                                "sebSettings.applicationView.permittedProcess.iconInTaskbar_tooltip",
                                             )
-                                        "
-                                /></v-tooltip>
+                                        }}
+                                    </p>
+                                </v-tooltip>
                                 {{
                                     translate(
                                         "sebSettings.applicationView.permittedProcess.iconInTaskbar",
                                     )
                                 }}
                             </v-col>
-                            <v-col class="pb-0"
-                                ><v-checkbox-btn
+                            <v-col class="pb-0">
+                                <v-checkbox-btn
                                     v-model="
                                         props.permittedProcess!.iconInTaskbar
                                     "
@@ -334,22 +343,23 @@
                         <!------------ allowOpenAndSavePanel ------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">
-                                <v-tooltip activator="parent"
-                                    ><p
-                                        v-html="
-                                            translateWithBR(
-                                                'sebSettings.applicationView.permittedProcess.allowOpenAndSavePanel_tooltip',
+                                <v-tooltip activator="parent">
+                                    <p class="pre-line">
+                                        {{
+                                            translate(
+                                                "sebSettings.applicationView.permittedProcess.allowOpenAndSavePanel_tooltip",
                                             )
-                                        "
-                                /></v-tooltip>
+                                        }}
+                                    </p>
+                                </v-tooltip>
                                 {{
                                     translate(
                                         "sebSettings.applicationView.permittedProcess.allowOpenAndSavePanel",
                                     )
                                 }}
                             </v-col>
-                            <v-col class="pt-0 pb-0"
-                                ><v-checkbox-btn
+                            <v-col class="pt-0 pb-0">
+                                <v-checkbox-btn
                                     v-model="
                                         props.permittedProcess!
                                             .allowOpenAndSavePanel
@@ -361,22 +371,23 @@
                         <!------------ autostart ------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">
-                                <v-tooltip activator="parent"
-                                    ><p
-                                        v-html="
-                                            translateWithBR(
-                                                'sebSettings.applicationView.permittedProcess.autostart_tooltip',
+                                <v-tooltip activator="parent">
+                                    <p class="pre-line">
+                                        {{
+                                            translate(
+                                                "sebSettings.applicationView.permittedProcess.autostart_tooltip",
                                             )
-                                        "
-                                /></v-tooltip>
+                                        }}
+                                    </p>
+                                </v-tooltip>
                                 {{
                                     translate(
                                         "sebSettings.applicationView.permittedProcess.autostart",
                                     )
                                 }}
                             </v-col>
-                            <v-col class="pt-0 pb-0"
-                                ><v-checkbox-btn
+                            <v-col class="pt-0 pb-0">
+                                <v-checkbox-btn
                                     v-model="props.permittedProcess!.autostart"
                                     :disabled="props.readOnly"
                                 ></v-checkbox-btn>
@@ -385,22 +396,23 @@
                         <!------------ allowShareSheet ------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">
-                                <v-tooltip activator="parent"
-                                    ><p
-                                        v-html="
-                                            translateWithBR(
-                                                'sebSettings.applicationView.permittedProcess.allowShareSheet_tooltip',
+                                <v-tooltip activator="parent">
+                                    <p class="pre-line">
+                                        {{
+                                            translate(
+                                                "sebSettings.applicationView.permittedProcess.allowShareSheet_tooltip",
                                             )
-                                        "
-                                /></v-tooltip>
+                                        }}
+                                    </p>
+                                </v-tooltip>
                                 {{
                                     translate(
                                         "sebSettings.applicationView.permittedProcess.allowShareSheet",
                                     )
                                 }}
                             </v-col>
-                            <v-col class="pt-0 pb-0"
-                                ><v-checkbox-btn
+                            <v-col class="pt-0 pb-0">
+                                <v-checkbox-btn
                                     v-model="
                                         props.permittedProcess!.allowShareSheet
                                     "
@@ -411,22 +423,23 @@
                         <!------------ runInBackground ------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">
-                                <v-tooltip activator="parent"
-                                    ><p
-                                        v-html="
-                                            translateWithBR(
-                                                'sebSettings.applicationView.permittedProcess.runInBackground_tooltip',
+                                <v-tooltip activator="parent">
+                                    <p class="pre-line">
+                                        {{
+                                            translate(
+                                                "sebSettings.applicationView.permittedProcess.runInBackground_tooltip",
                                             )
-                                        "
-                                /></v-tooltip>
+                                        }}
+                                    </p>
+                                </v-tooltip>
                                 {{
                                     translate(
                                         "sebSettings.applicationView.permittedProcess.runInBackground",
                                     )
                                 }}
                             </v-col>
-                            <v-col class="pt-0 pb-0"
-                                ><v-checkbox-btn
+                            <v-col class="pt-0 pb-0">
+                                <v-checkbox-btn
                                     v-model="
                                         props.permittedProcess!.runInBackground
                                     "
@@ -437,22 +450,23 @@
                         <!------------ allowManualStart ------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">
-                                <v-tooltip activator="parent"
-                                    ><p
-                                        v-html="
-                                            translateWithBR(
-                                                'sebSettings.applicationView.permittedProcess.allowManualStart_tooltip',
+                                <v-tooltip activator="parent">
+                                    <p class="pre-line">
+                                        {{
+                                            translate(
+                                                "sebSettings.applicationView.permittedProcess.allowManualStart_tooltip",
                                             )
-                                        "
-                                /></v-tooltip>
+                                        }}
+                                    </p>
+                                </v-tooltip>
                                 {{
                                     translate(
                                         "sebSettings.applicationView.permittedProcess.allowManualStart",
                                     )
                                 }}
                             </v-col>
-                            <v-col class="pt-0 pb-0"
-                                ><v-checkbox-btn
+                            <v-col class="pt-0 pb-0">
+                                <v-checkbox-btn
                                     v-model="
                                         props.permittedProcess!.allowManualStart
                                     "
@@ -462,13 +476,15 @@
                         </v-row>
                         <!------------ allowUserToChooseApp ------------->
                         <v-row align="center">
-                            <v-col class="pt-0 pb-0">{{
-                                translate(
-                                    "sebSettings.applicationView.permittedProcess.allowUserToChooseApp",
-                                )
-                            }}</v-col>
                             <v-col class="pt-0 pb-0"
-                                ><v-checkbox-btn
+                                >{{
+                                    translate(
+                                        "sebSettings.applicationView.permittedProcess.allowUserToChooseApp",
+                                    )
+                                }}
+                            </v-col>
+                            <v-col class="pt-0 pb-0">
+                                <v-checkbox-btn
                                     v-model="
                                         props.permittedProcess!
                                             .allowUserToChooseApp
@@ -480,22 +496,23 @@
                         <!------------ allowNetworkAccess ------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">
-                                <v-tooltip activator="parent"
-                                    ><p
-                                        v-html="
-                                            translateWithBR(
-                                                'sebSettings.applicationView.permittedProcess.allowNetworkAccess_tooltip',
+                                <v-tooltip activator="parent">
+                                    <p class="pre-line">
+                                        {{
+                                            translate(
+                                                "sebSettings.applicationView.permittedProcess.allowNetworkAccess_tooltip",
                                             )
-                                        "
-                                /></v-tooltip>
+                                        }}
+                                    </p>
+                                </v-tooltip>
                                 {{
                                     translate(
                                         "sebSettings.applicationView.permittedProcess.allowNetworkAccess",
                                     )
                                 }}
                             </v-col>
-                            <v-col class="pt-0 pb-0"
-                                ><v-checkbox-btn
+                            <v-col class="pt-0 pb-0">
+                                <v-checkbox-btn
                                     v-model="
                                         props.permittedProcess!
                                             .allowNetworkAccess
@@ -507,22 +524,23 @@
                         <!------------ strongKill ------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">
-                                <v-tooltip activator="parent"
-                                    ><p
-                                        v-html="
-                                            translateWithBR(
-                                                'sebSettings.applicationView.permittedProcess.strongKill_tooltip',
+                                <v-tooltip activator="parent">
+                                    <p class="pre-line">
+                                        {{
+                                            translate(
+                                                "sebSettings.applicationView.permittedProcess.strongKill_tooltip",
                                             )
-                                        "
-                                /></v-tooltip>
+                                        }}
+                                    </p>
+                                </v-tooltip>
                                 {{
                                     translate(
                                         "sebSettings.applicationView.permittedProcess.strongKill",
                                     )
                                 }}
                             </v-col>
-                            <v-col class="pt-0 pb-0"
-                                ><v-checkbox-btn
+                            <v-col class="pt-0 pb-0">
+                                <v-checkbox-btn
                                     v-model="props.permittedProcess!.strongKill"
                                     :disabled="props.readOnly"
                                 ></v-checkbox-btn>
@@ -564,7 +582,7 @@
 </template>
 
 <script setup lang="ts">
-import { translate, translateWithBR } from "@/utils/generalUtils";
+import { translate } from "@/utils/generalUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import { ref, onBeforeMount } from "vue";
 
@@ -641,3 +659,9 @@ function addArgument() {
     });
 }
 </script>
+
+<style scoped>
+.pre-line {
+    white-space: pre-line;
+}
+</style>

@@ -357,9 +357,8 @@
                                     <v-chip
                                         class="text-white font-weight-medium status-chip cursor-pointer"
                                         :color="item.active ? 'green' : 'red'"
-                                        dark
                                         :data-testid="`assessmentTools-status-chip-${item.id}`"
-                                        small
+                                        size="small"
                                         @click.stop="openStatusDialog(item)"
                                     >
                                         {{
@@ -444,7 +443,7 @@
                             >
                                 <v-btn
                                     data-testid="assessmentTools-delete-cancel-button"
-                                    text
+                                    variant="text"
                                     @click="deleteDialog = false"
                                 >
                                     {{ translate("general.cancelButton") }}
@@ -452,7 +451,7 @@
                                 <v-btn
                                     color="red"
                                     data-testid="assessmentTools-delete-confirm-button"
-                                    text
+                                    variant="text"
                                     @click="confirmDelete"
                                 >
                                     {{ translate("general.deleteButton") }}
@@ -485,7 +484,7 @@
                             >
                                 <v-btn
                                     data-testid="assessmentTools-status-cancel-button"
-                                    text
+                                    variant="text"
                                     @click="statusDialog = false"
                                 >
                                     {{ translate("general.cancelButton") }}
@@ -497,7 +496,7 @@
                                             : 'green'
                                     "
                                     data-testid="assessmentTools-status-confirm-button"
-                                    text
+                                    variant="text"
                                     @click="confirmStatusChange"
                                 >
                                     {{ statusDialogButtonLabel }}

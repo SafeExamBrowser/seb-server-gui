@@ -155,7 +155,7 @@
                 <v-btn
                     data-testid="certificates-addDialog-cancel-button"
                     :disabled="uploading"
-                    text
+                    variant="text"
                     @click="close()"
                 >
                     {{ translate("general.cancelButton") }}
@@ -164,7 +164,7 @@
                     color="primary"
                     data-testid="certificates-addDialog-submit-button"
                     :disabled="!selectedFile || uploading"
-                    text
+                    variant="text"
                     @click="doUpload"
                 >
                     {{ translate("general.saveButton") }}

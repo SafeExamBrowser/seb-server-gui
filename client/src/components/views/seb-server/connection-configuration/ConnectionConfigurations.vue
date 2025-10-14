@@ -265,9 +265,8 @@
                                     <v-chip
                                         class="text-white font-weight-medium status-chip cursor-pointer"
                                         :color="item.active ? 'green' : 'red'"
-                                        dark
                                         :data-testid="`connectionConfigurations-status-chip-${item.id}`"
-                                        small
+                                        size="small"
                                         @click.stop="openStatusDialog(item)"
                                     >
                                         {{
@@ -336,7 +335,7 @@
                             <v-card-actions class="justify-end">
                                 <v-btn
                                     data-testid="connectionConfigurations-deleteDialog-cancel-button"
-                                    text
+                                    variant="text"
                                     @click="deleteDialog = false"
                                 >
                                     {{ translate("general.cancelButton") }}
@@ -344,7 +343,7 @@
                                 <v-btn
                                     color="red"
                                     data-testid="connectionConfigurations-deleteDialog-confirm-button"
-                                    text
+                                    variant="text"
                                     @click="confirmDelete"
                                 >
                                     {{ translate("general.deleteButton") }}
@@ -374,7 +373,7 @@
                             <v-card-actions class="justify-end">
                                 <v-btn
                                     data-testid="connectionConfigurations-statusDialog-cancel-button"
-                                    text
+                                    variant="text"
                                     @click="statusDialog = false"
                                 >
                                     {{ translate("general.cancelButton") }}
@@ -386,7 +385,7 @@
                                             : 'green'
                                     "
                                     data-testid="connectionConfigurations-statusDialog-confirm-button"
-                                    text
+                                    variant="text"
                                     @click="confirmStatusChange"
                                 >
                                     {{ statusDialogButtonLabel }}

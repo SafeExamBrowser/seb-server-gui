@@ -305,13 +305,6 @@ function handleStepperNext(index: number, next: () => void) {
             return;
         }
 
-        const testArr: string[] = quizImportStore.selectedClientGroups.map(
-            (clientGroup) => clientGroup.id!.toString(),
-        );
-
-        console.log(quizImportStore.selectedClientGroups);
-        console.log(testArr);
-
         const createExamParams: CreateExamPar = {
             lmsSetupId: quizImportStore.selectedQuiz.lms_setup_id,
             lms_setup_id: quizImportStore.selectedQuiz.lms_setup_id,
