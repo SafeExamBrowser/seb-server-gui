@@ -1,9 +1,5 @@
 <template>
-    <v-form
-        class="w-100 w-md-50"
-        @update:model-value="handleModelValueUpdated"
-        @submit.prevent
-    >
+    <v-form @update:model-value="handleModelValueUpdated" @submit.prevent>
         <v-container fluid class="pa-0">
             <v-row
                 v-for="field in fields"

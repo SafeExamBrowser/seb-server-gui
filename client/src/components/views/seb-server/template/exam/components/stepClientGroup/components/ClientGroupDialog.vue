@@ -13,7 +13,6 @@
         v-model="isDialogOpen"
         :activator="activatorRef"
         :max-width="useDisplay().thresholds.value.sm"
-        class="w-100"
     >
         <v-card :title="labelActivator">
             <template #text>
