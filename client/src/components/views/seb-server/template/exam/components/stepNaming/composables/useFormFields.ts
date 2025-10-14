@@ -8,7 +8,7 @@ import { useConfigurationTemplateNames } from "./api/useConfigurationTemplateNam
 import { storeToRefs } from "pinia";
 import { useStepNamingStore } from "./store/useStepNamingStore";
 import { useRules } from "vuetify/labs/rules";
-import { useCreateExamTemplateStore } from "@/components/views/seb-server/template/exam/composables/store/useCreateExamTemplateStore";
+import { useScreenProctoringStore } from "@/components/views/seb-server/template/exam/composables/store/useScreenProctoringStore";
 
 export const useFormFields = () => {
     const { t } = useI18n();
@@ -23,8 +23,9 @@ export const useFormFields = () => {
         institutionalDefault: modelInstitutionalDefault,
     } = storeToRefs(useStepNamingStore());
 
-    const { screenProctoringEnabled: modelScreenProctoringEnabled } =
-        storeToRefs(useCreateExamTemplateStore());
+    const { enabled: modelScreenProctoringEnabled } = storeToRefs(
+        useScreenProctoringStore(),
+    );
 
     const {
         data: examTemplateNames,

@@ -5,14 +5,12 @@
     >
         <ClientGroupTable />
         <ScreenProctoringForm
-            v-if="createExamTemplateStore.screenProctoringEnabled"
+            v-if="useScreenProctoringStore().enabled"
             class="mt-8"
         />
     </Step>
 </template>
 
 <script setup lang="ts">
-import { useCreateExamTemplateStore } from "@/components/views/seb-server/template/exam/composables/store/useCreateExamTemplateStore";
-
-const createExamTemplateStore = useCreateExamTemplateStore();
+import { useScreenProctoringStore } from "@/components/views/seb-server/template/exam/composables/store/useScreenProctoringStore";
 </script>

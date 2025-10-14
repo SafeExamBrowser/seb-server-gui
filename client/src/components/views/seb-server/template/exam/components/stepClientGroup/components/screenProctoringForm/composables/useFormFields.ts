@@ -1,17 +1,15 @@
 import { FormField } from "@/components/widgets/form/types";
-import { useCreateExamTemplateStore } from "@/components/views/seb-server/template/exam/composables/store/useCreateExamTemplateStore";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import { SCREEN_PROCTORING_COLLECTION_STRATEGY } from "@/components/views/seb-server/template/exam/types";
 import { useI18n } from "vue-i18n";
+import { useScreenProctoringStore } from "@/components/views/seb-server/template/exam/composables/store/useScreenProctoringStore";
 
 export const useFormFields = () => {
     const { t } = useI18n();
 
-    const {
-        screenProctoringCollectionStrategy:
-            modelScreenProctoringCollectionStrategy,
-    } = storeToRefs(useCreateExamTemplateStore());
+    const { collectionStrategy: modelScreenProctoringCollectionStrategy } =
+        storeToRefs(useScreenProctoringStore());
 
     const formFields = computed<FormField[]>(() => {
         return [

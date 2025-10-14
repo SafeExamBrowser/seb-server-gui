@@ -1,14 +1,12 @@
 import { useStepNamingStore } from "@/components/views/seb-server/template/exam/components/stepNaming/composables/store/useStepNamingStore";
 import { useStepSupervisorsStore } from "@/components/views/seb-server/template/exam/components/stepSupervisors/composables/store/useStepSupervisorsStore";
-import {
-    ScreenProctoringCollectionStrategy,
-    StepItemCreateTemplateExam,
-} from "@/components/views/seb-server/template/exam/types";
+import { StepItemCreateTemplateExam } from "@/components/views/seb-server/template/exam/types";
 import { StepItem } from "@/components/widgets/stepper/types";
 import { defineStore } from "pinia";
 import { useI18n } from "vue-i18n";
 import { computed, ref } from "vue";
 import { useStepClientGroupStore } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/store/useStepClientGroupStore";
+import { useScreenProctoringStore } from "@/components/views/seb-server/template/exam/composables/store/useScreenProctoringStore";
 
 const staticStepData = [
     {
@@ -57,8 +55,6 @@ const isStepReady = (
 
 const initialState = {
     currentStepIndex: 3, // TODO @alain: remove debug (should be 0)
-    screenProctoringEnabled: true, // TODO @alain: remove debug (should be false)
-    screenProctoringCollectionStrategy: undefined,
 };
 
 export const useCreateExamTemplateStore = defineStore(
@@ -66,6 +62,7 @@ export const useCreateExamTemplateStore = defineStore(
     () => {
         const { t } = useI18n();
 
+        const screenProctoringStore = useScreenProctoringStore();
         const stepNamingStore = useStepNamingStore();
         const stepSupervisorsStore = useStepSupervisorsStore();
         const stepClientGroupStore = useStepClientGroupStore();
@@ -99,13 +96,6 @@ export const useCreateExamTemplateStore = defineStore(
                 title: t(step.i18nKey),
             };
         });
-
-        const screenProctoringEnabled = ref<boolean>(
-            initialState.screenProctoringEnabled,
-        );
-
-        const screenProctoringCollectionStrategy =
-            ref<ScreenProctoringCollectionStrategy>();
 
         const examTemplate = computed<ExamTemplate>(() => ({
             name: stepNamingStore.name,
@@ -143,12 +133,9 @@ export const useCreateExamTemplateStore = defineStore(
         const $reset = () => {
             // own state
             currentStepIndex.value = initialState.currentStepIndex;
-            screenProctoringEnabled.value =
-                initialState.screenProctoringEnabled;
-            screenProctoringCollectionStrategy.value =
-                initialState.screenProctoringCollectionStrategy;
 
             // substores
+            screenProctoringStore.$reset();
             stepNamingStore.$reset();
             stepSupervisorsStore.$reset();
             stepClientGroupStore.$reset();
@@ -161,8 +148,6 @@ export const useCreateExamTemplateStore = defineStore(
             // getters
             stepperModel,
             currentStep,
-            screenProctoringEnabled,
-            screenProctoringCollectionStrategy,
             examTemplate,
 
             // actions
