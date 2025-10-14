@@ -306,7 +306,11 @@
                     },
                     "type": {
                         "label": "Type",
-                        "placeholder": "Select the group type"
+                        "placeholder": "Select the group type",
+                        "types": {
+                            "SCREEN_PROCTORING_SINGLE": "Screen Proctoring Single Group",
+                            "SCREEN_PROCTORING_FALLBACK": "Screen Proctoring Fallback Group"
+                        }
                     }
                 }
             },

@@ -10,6 +10,13 @@
                 <ClientGroupCreate />
             </TableHeader>
         </template>
+        <template #item.type="{ item }">
+            {{
+                $t(
+                    `createTemplateExam.steps.clientGroup.fields.type.types.${item.type}`,
+                )
+            }}
+        </template>
         <template #item.actions="{ item }">
             <div v-if="hasActions(item)" class="d-flex ga-2 justify-end">
                 <ClientGroupUpdate :client-group="item" />
