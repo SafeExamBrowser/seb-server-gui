@@ -1,6 +1,9 @@
 import { useStepNamingStore } from "@/components/views/seb-server/template/exam/components/stepNaming/composables/store/useStepNamingStore";
 import { useStepSupervisorsStore } from "@/components/views/seb-server/template/exam/components/stepSupervisors/composables/store/useStepSupervisorsStore";
-import { StepItemCreateTemplateExam } from "@/components/views/seb-server/template/exam/types";
+import {
+    ScreenProctoringCollectionStrategy,
+    StepItemCreateTemplateExam,
+} from "@/components/views/seb-server/template/exam/types";
 import { StepItem } from "@/components/widgets/stepper/types";
 import { defineStore } from "pinia";
 import { useI18n } from "vue-i18n";
@@ -99,6 +102,9 @@ export const useCreateExamTemplateStore = defineStore(
             return stepNamingStore.screenProctoringEnabled;
         });
 
+        const screenProctoringCollectionStrategy =
+            ref<ScreenProctoringCollectionStrategy>();
+
         const examTemplate = computed<ExamTemplate>(() => ({
             name: stepNamingStore.name,
             description: stepNamingStore.description,
@@ -150,6 +156,7 @@ export const useCreateExamTemplateStore = defineStore(
             stepperModel,
             currentStep,
             screenProctoringEnabled,
+            screenProctoringCollectionStrategy,
             examTemplate,
 
             // actions

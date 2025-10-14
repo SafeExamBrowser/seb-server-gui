@@ -4,12 +4,9 @@
         :subtitle="$t('createTemplateExam.steps.clientGroup.subtitle')"
     >
         <ClientGroupTable />
-
-        <!-- TODO @alain: show screen proctoring settings form here instead -->
-        <div>
-            screen proctoring:
-            {{ createExamTemplateStore.screenProctoringEnabled }}
-        </div>
+        <ScreenProctoringForm
+            v-if="createExamTemplateStore.screenProctoringEnabled"
+        />
     </Step>
 </template>
 
