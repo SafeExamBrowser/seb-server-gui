@@ -39,14 +39,18 @@ export const useTable = () => {
             return {
                 id: 0,
                 type: "SCREEN_PROCTORING_SINGLE" as const,
-                name: "Screen Proctoring Single Group" as const,
+                name: t(
+                    "createTemplateExam.steps.clientGroup.screenProctoringSingleGroupName",
+                ),
             };
         }
 
         return {
             id: 0,
             type: "SCREEN_PROCTORING_FALLBACK" as const,
-            name: "Screen Proctoring Fallback Group" as const,
+            name: t(
+                "createTemplateExam.steps.clientGroup.screenProctoringFallbackGroupName",
+            ),
         };
     });
 

@@ -296,6 +296,8 @@
                 "title": "Add Client Groups",
                 "subtitle": "TODO: translate (Kristina)",
                 "subtitleScreenProctoring": "Screen Proctoring Settings",
+                "screenProctoringSingleGroupName": "Single Group",
+                "screenProctoringFallbackGroupName": "Fallback Group",
                 "fields": {
                     "actions": {
                         "label": "Actions"

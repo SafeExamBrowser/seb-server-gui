@@ -25,11 +25,9 @@ export type ClientGroup = {
           nameRangeEndLetter: string;
       }
     | {
-          type: "SCREEN_PROCTORING_SINGLE"; // TODO @alain: i18n
-          name: "Screen Proctoring Single Group"; // TODO @alain: i18n
+          type: "SCREEN_PROCTORING_SINGLE";
       }
     | {
-          type: "SCREEN_PROCTORING_FALLBACK"; // TODO @alain: i18n
-          name: "Screen Proctoring Fallback Group"; // TODO @alain: i18n
+          type: "SCREEN_PROCTORING_FALLBACK";
       }
 );
