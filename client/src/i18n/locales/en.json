@@ -266,6 +266,9 @@
                     },
                     "institutionalDefault": {
                         "label": "Institutional Default"
+                    },
+                    "screenProctoring": {
+                        "label": "Screen Proctoring"
                     }
                 }
             },

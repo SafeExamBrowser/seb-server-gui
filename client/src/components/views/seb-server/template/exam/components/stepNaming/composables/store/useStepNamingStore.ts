@@ -11,6 +11,7 @@ const initialState = {
     clientConfiguration: undefined,
     lmsIntegration: false,
     institutionalDefault: false,
+    screenProctoring: false,
 };
 
 export const useStepNamingStore = defineStore("stepNaming", () => {
@@ -28,6 +29,7 @@ export const useStepNamingStore = defineStore("stepNaming", () => {
     const institutionalDefault = ref<boolean>(
         initialState.institutionalDefault,
     );
+    const screenProctoring = ref<boolean>(initialState.screenProctoring);
 
     const $reset = () => {
         isReady.value = initialState.isReady;
@@ -38,9 +40,11 @@ export const useStepNamingStore = defineStore("stepNaming", () => {
         clientConfiguration.value = initialState.clientConfiguration;
         lmsIntegration.value = initialState.lmsIntegration;
         institutionalDefault.value = initialState.institutionalDefault;
+        screenProctoring.value = initialState.screenProctoring;
     };
 
     return {
+        isReady,
         name,
         description,
         examType,
@@ -48,7 +52,7 @@ export const useStepNamingStore = defineStore("stepNaming", () => {
         clientConfiguration,
         lmsIntegration,
         institutionalDefault,
-        isReady,
+        screenProctoring,
         $reset,
     };
 });

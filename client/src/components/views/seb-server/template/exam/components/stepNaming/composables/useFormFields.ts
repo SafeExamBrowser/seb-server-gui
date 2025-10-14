@@ -20,6 +20,7 @@ export const useFormFields = () => {
         clientConfiguration: modelClientConfiguration,
         lmsIntegration: modelLmsIntegration,
         institutionalDefault: modelInstitutionalDefault,
+        screenProctoring: modelScreenProctoring,
     } = storeToRefs(useStepNamingStore());
 
     const {
@@ -161,6 +162,14 @@ export const useFormFields = () => {
                 model: modelInstitutionalDefault,
                 label: t(
                     "createTemplateExam.steps.naming.fields.institutionalDefault.label",
+                ),
+            },
+            {
+                type: "switch" as const,
+                name: "screenProctoring",
+                model: modelScreenProctoring,
+                label: t(
+                    "createTemplateExam.steps.naming.fields.screenProctoring.label",
                 ),
             },
         ];
