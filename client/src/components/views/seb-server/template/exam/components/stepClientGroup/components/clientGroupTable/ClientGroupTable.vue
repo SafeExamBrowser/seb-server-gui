@@ -11,7 +11,7 @@
             </TableHeader>
         </template>
         <template #item.actions="{ item }">
-            <div class="d-flex ga-2 justify-end">
+            <div v-if="hasActions(item)" class="d-flex ga-2 justify-end">
                 <ClientGroupUpdate :client-group="item" />
                 <ClientGroupDelete :client-group="item" />
             </div>
@@ -22,6 +22,7 @@
 <script setup lang="ts">
 import { useTableItems } from "@/components/views/seb-server/template/exam/components/stepClientGroup/components/clientGroupTable/composables/useTableItems";
 import { useI18n } from "vue-i18n";
+import { ClientGroup } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 
 const { t } = useI18n();
 
@@ -40,4 +41,8 @@ const headers = [
         align: "end" as const,
     },
 ];
+
+const hasActions = (item: ClientGroup) =>
+    item.type !== "SCREEN_PROCTORING_FALLBACK" &&
+    item.type !== "SCREEN_PROCTORING_SINGLE";
 </script>
