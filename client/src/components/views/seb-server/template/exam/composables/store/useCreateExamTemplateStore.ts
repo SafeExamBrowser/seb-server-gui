@@ -95,6 +95,10 @@ export const useCreateExamTemplateStore = defineStore(
             };
         });
 
+        const screenProctoringEnabled = computed<boolean>(() => {
+            return stepNamingStore.screenProctoringEnabled;
+        });
+
         const examTemplate = computed<ExamTemplate>(() => ({
             name: stepNamingStore.name,
             description: stepNamingStore.description,
@@ -145,6 +149,7 @@ export const useCreateExamTemplateStore = defineStore(
             // getters
             stepperModel,
             currentStep,
+            screenProctoringEnabled,
             examTemplate,
 
             // actions
