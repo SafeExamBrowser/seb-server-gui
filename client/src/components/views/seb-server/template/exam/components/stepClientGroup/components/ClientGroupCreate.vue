@@ -1,8 +1,8 @@
 <template>
     <ClientGroupDialog
-        icon-trigger="mdi-plus-circle-outline"
-        color-trigger="primary"
-        :label-trigger="$t('clientGroups.addDialogTitle')"
+        icon-activator="mdi-plus-circle-outline"
+        color-activator="primary"
+        :label-activator="$t('clientGroups.addDialogTitle')"
         :label-cancel="$t('general.cancelButton')"
         :label-submit="$t('general.createButton')"
         :client-group="getEmptyClientGroup()"

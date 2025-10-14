@@ -1,9 +1,9 @@
 <template>
     <ClientGroupDialog
-        icon-trigger="mdi-pencil"
-        color-trigger="medium-emphasis"
-        size-trigger="small"
-        :label-trigger="$t('clientGroups.editDialogTitle')"
+        icon-activator="mdi-pencil"
+        color-activator="medium-emphasis"
+        size-activator="small"
+        :label-activator="$t('clientGroups.editDialogTitle')"
         :label-cancel="$t('general.cancelButton')"
         :label-submit="$t('general.saveButton')"
         :client-group="clientGroup"
