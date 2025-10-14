@@ -16,7 +16,10 @@
         </v-row>
         <v-row>
             <v-col>
-                <Form :fields="formFields" />
+                <Form
+                    v-model="useStepClientGroupStore().isReady"
+                    :fields="formFields"
+                />
             </v-col>
         </v-row>
     </v-container>
@@ -25,6 +28,7 @@
 <script setup lang="ts">
 import { useFormFields } from "./composables/useFormFields";
 import { useDisplay } from "vuetify";
+import { useStepClientGroupStore } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/store/useStepClientGroupStore";
 
 const { formFields } = useFormFields();
 </script>

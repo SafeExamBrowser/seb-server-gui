@@ -3,7 +3,7 @@ import { ref } from "vue";
 import { ClientGroup } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 
 const initialState = {
-    isReady: false,
+    isReady: false, // TODO @alain: this should be !screenProctoringEnabled but we can't use this yet because it creates a circular dependency
     groups: [],
 };
 
