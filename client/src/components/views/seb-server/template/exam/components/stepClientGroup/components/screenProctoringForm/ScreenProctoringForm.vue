@@ -1,5 +1,8 @@
 <template>
-    <v-container class="ma-0 pa-0">
+    <v-container
+        class="ma-0 pa-0"
+        :max-width="useDisplay().thresholds.value.sm"
+    >
         <!-- TODO @alain: i18n (subtitle) -->
         <v-row>
             <v-col>
@@ -16,6 +19,7 @@
 
 <script setup lang="ts">
 import { useFormFields } from "./composables/useFormFields";
+import { useDisplay } from "vuetify";
 
 const { formFields } = useFormFields();
 </script>
