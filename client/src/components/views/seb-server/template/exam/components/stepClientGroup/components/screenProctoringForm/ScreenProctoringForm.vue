@@ -17,7 +17,9 @@
         <v-row>
             <v-col>
                 <Form
-                    v-model="useStepClientGroupStore().isReady"
+                    v-model="
+                        useStepClientGroupStore().isScreenProctoringFormReady
+                    "
                     :fields="formFields"
                 />
             </v-col>

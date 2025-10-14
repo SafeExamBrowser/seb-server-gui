@@ -1,9 +1,10 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { ClientGroup } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
+import { useScreenProctoringStore } from "@/components/views/seb-server/template/exam/composables/store/useScreenProctoringStore";
 
 const initialState = {
-    isReady: false, // TODO @alain: this should be !screenProctoringEnabled but we can't use this yet because it creates a circular dependency
+    isScreenProctoringFormReady: false,
     groups: [],
 };
 
@@ -14,11 +15,14 @@ export const getEmptyClientGroup = (): ClientGroup => ({
 });
 
 export const useStepClientGroupStore = defineStore("stepClientGroup", () => {
-    const isReady = ref(initialState.isReady);
+    const isScreenProctoringFormReady = ref(
+        initialState.isScreenProctoringFormReady,
+    );
     const groups = ref<ClientGroup[]>(initialState.groups);
 
     const $reset = () => {
-        isReady.value = initialState.isReady;
+        isScreenProctoringFormReady.value =
+            initialState.isScreenProctoringFormReady;
         groups.value = initialState.groups;
     };
 
@@ -36,7 +40,14 @@ export const useStepClientGroupStore = defineStore("stepClientGroup", () => {
         groups.value = groups.value.filter((g) => g.id !== group.id);
     };
 
+    const isReady = computed(() => {
+        return useScreenProctoringStore().enabled
+            ? isScreenProctoringFormReady.value
+            : true;
+    });
+
     return {
+        isScreenProctoringFormReady,
         isReady,
         groups,
         createGroup,
