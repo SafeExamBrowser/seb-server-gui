@@ -9,29 +9,21 @@
         :title="labelActivator"
         :aria-label="labelActivator"
     ></v-btn>
-    <v-dialog :activator="activatorRef" width="auto">
-        <template #default="{ isActive }">
-            <v-card :title="labelActivator">
-                <template #text>
-                    <ClientGroupForm v-model="temporaryClientGroup" />
-                </template>
-                <template #actions>
-                    <v-btn
-                        :text="labelCancel"
-                        @click="handleCancel(isActive)"
-                    ></v-btn>
-                    <v-btn
-                        :text="labelSubmit"
-                        @click="handleSubmit(isActive)"
-                    ></v-btn>
-                </template>
-            </v-card>
-        </template>
+    <v-dialog v-model="isDialogOpen" :activator="activatorRef" width="auto">
+        <v-card :title="labelActivator">
+            <template #text>
+                <ClientGroupForm v-model="temporaryClientGroup" />
+            </template>
+            <template #actions>
+                <v-btn :text="labelCancel" @click="handleCancelClick"></v-btn>
+                <v-btn :text="labelSubmit" @click="handleSubmitClick"></v-btn>
+            </template>
+        </v-card>
     </v-dialog>
 </template>
 
 <script setup lang="ts">
-import { ref, Ref } from "vue";
+import { ref, watch } from "vue";
 import { IconValue } from "vuetify/lib/composables/icons.mjs";
 import { ClientGroup } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 
@@ -50,15 +42,22 @@ const emit = defineEmits<{
 }>();
 
 const activatorRef = ref<HTMLElement>();
+const isDialogOpen = ref(false);
 const temporaryClientGroup = ref(props.getClientGroup());
 
-const handleCancel = (isActive: Ref<boolean>) => {
-    isActive.value = false;
+watch(isDialogOpen, (newValue) => {
+    if (!newValue) {
+        // side effect: reset the temporary client group whenever the dialog is closed
+        temporaryClientGroup.value = props.getClientGroup();
+    }
+});
+
+const handleCancelClick = () => {
+    isDialogOpen.value = false;
 };
 
-const handleSubmit = (isActive: Ref<boolean>) => {
+const handleSubmitClick = () => {
     emit("submit", temporaryClientGroup.value);
-    isActive.value = false;
-    temporaryClientGroup.value = props.getClientGroup();
+    isDialogOpen.value = false;
 };
 </script>
