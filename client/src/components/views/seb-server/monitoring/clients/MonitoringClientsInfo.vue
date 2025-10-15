@@ -524,6 +524,7 @@ import * as constants from "@/utils/constants";
 import { InstructionEnum } from "@/models/seb-server/instructionEnum";
 import { useErrorStore } from "@/stores/seb-server/errorStore";
 import { ref } from "vue";
+import { ErrorProps } from "@/models/alertProps";
 // info panel (whole component)
 const isInfoExpanded = ref<boolean>(true);
 

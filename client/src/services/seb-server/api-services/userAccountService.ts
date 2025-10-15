@@ -2,6 +2,15 @@ import axios, { AxiosResponse } from "axios";
 import * as ENV from "@/config/envConfig";
 import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
+import {
+    CreateUserPar,
+    EditUserAccountParameters,
+    OptionalParGetUserAccounts,
+    SingleUserAccountResponse,
+    UserAccount,
+    UserAccountName,
+    UserAccountResponse,
+} from "@/models/userAccount";
 
 const userAccountUrl: string = "/useraccount";
 

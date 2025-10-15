@@ -585,6 +585,10 @@
 import { translate } from "@/utils/generalUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import { ref, onBeforeMount } from "vue";
+import {
+    PermittedProcess,
+    PermittedProcessArgument,
+} from "@/models/seb-server/sebSettings";
 
 const argumentsHeadersRef = ref<any[]>();
 const argumentsTable = ref<PermittedProcessArgument[]>([]);

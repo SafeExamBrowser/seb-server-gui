@@ -951,6 +951,8 @@ import { LMSFeatureEnum } from "@/models/seb-server/assessmentToolEnums";
 import { GUIAction, useAbilities } from "@/services/ability";
 import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 import { useRoute } from "vue-router";
+import { UserAccount } from "@/models/userAccount";
+import { ExamConfigMapping } from "@/models/seb-server/sebSettings";
 
 // general
 const isPageInitalizing = ref<boolean>(true);

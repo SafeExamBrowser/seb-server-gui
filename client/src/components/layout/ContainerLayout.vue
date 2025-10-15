@@ -479,6 +479,7 @@ import { getInstitutionLogo } from "@/services/seb-server/api-services/instituti
 import { GUIComponent, useAbilities } from "@/services/ability";
 import { useRoute } from "vue-router";
 import { computed } from "vue";
+import { GridSize, NavigationItem } from "@/models/types";
 
 // i18n
 const { locale } = useI18n();

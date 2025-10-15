@@ -181,6 +181,7 @@ import { storeToRefs } from "pinia";
 import { translate, wait } from "@/utils/generalUtils";
 import { VDateInput } from "vuetify/labs/VDateInput";
 import { ref, watch } from "vue";
+import { ServerTablePaging } from "@/models/types";
 
 // stores
 const quizImportStore = useQuizImportStore();

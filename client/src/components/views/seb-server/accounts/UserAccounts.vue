@@ -560,6 +560,8 @@ import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/store
 import { UserRoleEnum } from "@/models/userRoleEnum";
 import { getInstitutions } from "@/services/seb-server/component-services/registerAccountViewService";
 import { GUIComponent, useAbilities } from "@/services/ability";
+import { UserAccount, UserAccountResponse } from "@/models/userAccount";
+import { ServerTablePaging } from "@/models/types";
 
 const ability = useAbilities();
 

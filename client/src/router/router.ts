@@ -41,6 +41,7 @@ import ConnectionConfigurationlDetailsAndEdit from "@/components/views/seb-serve
 import CertificatesMain from "@/components/views/seb-server/certificates/CertificatesMain.vue";
 
 import CreateTemplate from "@/components/views/seb-server/template/CreateTemplate.vue";
+import { JwtTokenResponse } from "@/models/tokenModel";
 import CreateExamTemplateWizard from "@/components/views/seb-server/template/exam/CreateExamTemplateWizard.vue";
 
 const defaultPageTitle: string = " | SEB Server";

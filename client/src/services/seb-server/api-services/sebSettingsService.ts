@@ -1,6 +1,12 @@
 import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums";
+import {
+    ExamConfigMapping,
+    SEBSettingsTableRowValues,
+    SEBSettingsValue,
+    SEBSettingsView,
+} from "@/models/seb-server/sebSettings";
 
 const examUrlPrefix: string = "/exam/seb-settings/";
 const templateUrlPrefix: string = "/exam/seb-settings/";

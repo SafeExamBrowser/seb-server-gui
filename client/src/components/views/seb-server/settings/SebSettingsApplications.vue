@@ -226,6 +226,14 @@ import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums";
 import { ref, onBeforeMount } from "vue";
+import {
+    PermittedProcess,
+    PermittedProcessArgument,
+    ProhibitedProcess,
+    SEBSettingsTableRowValues,
+    SEBSettingsValue,
+    SEBSettingsView,
+} from "@/models/seb-server/sebSettings";
 
 const i18n = useI18n();
 const sebSettingsStore = useSEBSettingsStore();

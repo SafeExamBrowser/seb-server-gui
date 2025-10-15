@@ -1,8 +1,10 @@
 import axios, { AxiosResponse } from "axios";
 import * as ENV from "@/config/envConfig";
 import { useLoadingStore } from "@/stores/store";
+// import * as apiService from "@/services/apiService";
 import { useAuthStore } from "@/stores/authentication/authenticationStore";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
+import { Token } from "@/models/tokenModel";
 
 let loadingTimeout: NodeJS.Timeout | null = null;
 let loadingEndTimeout: NodeJS.Timeout | null = null;
@@ -20,6 +22,7 @@ export async function login(
         if (isSpLogin) {
             url = ENV.SERVER_URL + ENV.SERVER_PORT + "/sp-authorize";
         }
+        console.log(username, password, url);
         // this is implemented for general api-calls in apiService.ts but has to be done explicitly for login as it does not use said service
         setLoginTimeouts();
 

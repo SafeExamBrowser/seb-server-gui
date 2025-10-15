@@ -1,6 +1,15 @@
 import * as userAccountService from "@/services/seb-server/api-services/userAccountService";
 import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
 import * as institutionService from "@/services/seb-server/api-services/institutionService";
+import {
+    CreateUserPar,
+    EditUserAccountParameters,
+    OptionalParGetUserAccounts,
+    SingleUserAccountResponse,
+    UserAccount,
+    UserAccountName,
+    UserAccountResponse,
+} from "@/models/userAccount";
 
 export async function setPersonalUserAccount() {
     const userAccountStore = useUserAccountStore();

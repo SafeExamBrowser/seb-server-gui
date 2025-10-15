@@ -5,6 +5,7 @@ import {
     ExamTypeEnum,
 } from "@/models/seb-server/examFiltersEnum";
 import { MonitoringRow } from "@/models/seb-server/monitoringClients";
+import { ServerTablePaging } from "@/models/types";
 
 export const useMonitoringStore = defineStore("monitoring", () => {
     // exam table

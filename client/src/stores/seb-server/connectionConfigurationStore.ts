@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
+import { ServerTablePaging } from "@/models/types";
 
 export const useConnectionConfigurationStore = defineStore(
     "connectionConfiguration",

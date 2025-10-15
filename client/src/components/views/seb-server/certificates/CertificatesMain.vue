@@ -300,6 +300,7 @@ import * as certificateViewService from "@/services/seb-server/component-service
 import { useCertificateStore } from "@/stores/seb-server/certificateStore";
 import * as timeUtils from "@/utils/timeUtils";
 import { CertificateTypeEnum } from "@/models/seb-server/certificateTypeEnum";
+import { ServerTablePaging } from "@/models/types";
 
 const appBarStore = useAppBarStore();
 const layoutStore = useLayoutStore();

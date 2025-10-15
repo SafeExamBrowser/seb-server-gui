@@ -413,6 +413,7 @@ import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants";
 import { getInstitutions } from "@/services/seb-server/component-services/registerAccountViewService";
 import { useConnectionConfigurationStore } from "@/stores/seb-server/connectionConfigurationStore";
+import { ServerTablePaging } from "@/models/types";
 
 const appBarStore = useAppBarStore();
 const layoutStore = useLayoutStore();

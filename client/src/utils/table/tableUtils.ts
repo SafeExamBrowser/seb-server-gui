@@ -4,6 +4,8 @@ import {
 } from "@/models/seb-server/examFiltersEnum";
 import { navigateTo } from "@/router/navigation";
 import { useTableStore } from "@/stores/store";
+import { OptionalParGetUserAccounts } from "@/models/userAccount";
+import { ServerTablePaging } from "@/models/types";
 
 export function calcDefaultItemsPerPage(itemList: any): number {
     if (itemList == null || itemList.length === 0) {

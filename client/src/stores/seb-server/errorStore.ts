@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
+import { ErrorProps } from "@/models/alertProps";
 
 export const useErrorStore = defineStore("error", () => {
     const isError = ref<boolean>(false);
