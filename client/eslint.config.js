@@ -51,7 +51,6 @@ export default defineConfig([
                 "error",
                 { "ts-ignore": "allow-with-description" },
             ],
-            "no-useless-catch": "off",
             "no-undef": "off",
             "@typescript-eslint/no-inferrable-types": "off",
 
