@@ -6,6 +6,7 @@ import {
     openUrlInNewTabApplicationView,
 } from "@/router/navigation";
 import * as spConstants from "@/utils/sp-constants";
+import { ServerTablePaging } from "@/models/types";
 
 //= ============api==============
 export async function searchSessionsDay(

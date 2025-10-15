@@ -5,6 +5,8 @@ import ImportGroupMain from "@/components/views/seb-server/quiz-import/main-cont
 import { useI18n } from "vue-i18n";
 import { ref, markRaw } from "vue";
 import type { Component } from "vue";
+import { UserAccountName } from "@/models/userAccount";
+import { ImportWizardSteps, ServerTablePaging } from "@/models/types";
 
 export const useQuizImportStore = defineStore("quizImport", () => {
     // i18n

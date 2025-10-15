@@ -524,6 +524,7 @@ import * as constants from "@/utils/constants";
 import { getInstitutions } from "@/services/seb-server/component-services/registerAccountViewService";
 import { useAssessmentToolStore } from "@/stores/seb-server/asessmentToolStore";
 import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums";
+import { ServerTablePaging } from "@/models/types";
 
 const appBarStore = useAppBarStore();
 const layoutStore = useLayoutStore();

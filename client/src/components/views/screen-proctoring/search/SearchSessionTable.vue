@@ -195,6 +195,7 @@ import TableHeaders from "@/utils/table/TableHeaders.vue";
 import { useTableStore } from "@/stores/store";
 import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
 import { UserRoleEnum } from "@/models/userRoleEnum";
+import { ServerTablePaging } from "@/models/types";
 
 // store
 const tableStore = useTableStore();

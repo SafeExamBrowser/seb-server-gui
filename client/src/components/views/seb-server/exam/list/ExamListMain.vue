@@ -134,6 +134,7 @@ import {
 } from "@/models/seb-server/examFiltersEnum";
 import { translate } from "@/utils/generalUtils";
 import { ref } from "vue";
+import { ServerTablePaging } from "@/models/types";
 
 // stores
 const examStore = useExamStore();

@@ -7,6 +7,7 @@ import { useAuthStore } from "@/stores/authentication/authenticationStore";
 import * as generalUtils from "@/utils/generalUtils";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
 import { notify } from "@/components/views/seb-server/toast/notify";
+import { Token } from "@/models/tokenModel";
 
 export let api: AxiosInstance;
 

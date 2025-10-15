@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
+import { GridSize } from "@/models/types";
 
 // --------------------app bar-----------------------------//
 export const useAppBarStore = defineStore("appBar", () => {

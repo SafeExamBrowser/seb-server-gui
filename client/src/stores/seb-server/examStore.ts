@@ -4,6 +4,8 @@ import {
 } from "@/models/seb-server/examFiltersEnum";
 import { defineStore } from "pinia";
 import { ref } from "vue";
+import { UserAccount } from "@/models/userAccount";
+import { ServerTablePaging } from "@/models/types";
 
 export const useExamStore = defineStore("exam", () => {
     // exam table

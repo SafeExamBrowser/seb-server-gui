@@ -1,5 +1,6 @@
 import * as userAccountService from "@/services/seb-server/api-services/userAccountService";
 import * as institutionService from "@/services/seb-server/api-services/institutionService";
+import { UserAccount } from "@/models/userAccount";
 
 export async function registerUserAccount(
     institutionId: string,

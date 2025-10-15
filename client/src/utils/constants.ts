@@ -12,6 +12,7 @@ import ImportSummaryInfo from "@/components/views/seb-server/quiz-import/info-bo
 import ImportSummaryMain from "@/components/views/seb-server/quiz-import/main-content/ImportSummaryMain.vue";
 import { translate } from "@/utils/generalUtils";
 import type { Component } from "vue";
+import { ImportWizardSteps } from "@/models/types";
 
 // navigation routes
 export const DEFAULT_ROUTE: string = "/";
