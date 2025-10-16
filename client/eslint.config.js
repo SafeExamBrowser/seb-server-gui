@@ -59,8 +59,6 @@ export default defineConfig([
             "vue/valid-v-slot": "off",
             "vue/multi-word-component-names": "off",
             "vue/no-multiple-template-root": "off",
-            "vue/valid-v-on": "off",
-            "vue/valid-v-for": "off",
             "@typescript-eslint/no-explicit-any": "off",
             "@typescript-eslint/no-non-null-asserted-optional-chain": "off",
             "@typescript-eslint/no-empty-object-type": "off",
