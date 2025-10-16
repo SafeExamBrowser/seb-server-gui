@@ -53,12 +53,18 @@ export default defineConfig([
             ],
 
             // new exceptions after updating eslint config. @TODO: remove these one by one and fix the respective issues in the codebase
-            "vue/multi-word-component-names": "off",
-            "@typescript-eslint/no-unsafe-function-type": "off",
 
+            // TODO Alain
+            "vue/multi-word-component-names": "off",
+
+            // TODO Andreas
+            "@typescript-eslint/no-non-null-asserted-optional-chain": "off",
+
+            // TODO Andrei
             "@typescript-eslint/no-explicit-any": "off",
             "@typescript-eslint/no-empty-object-type": "off",
             "@typescript-eslint/no-non-null-assertion": "off",
+            "@typescript-eslint/no-unsafe-function-type": "off",
         },
     },
 

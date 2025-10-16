@@ -327,18 +327,18 @@ async function initalize() {
 }
 
 watch(connections, async () => {
-    // check if sessions got added / removed
+    const consLength = connections.value?.monitoringConnectionData.cons.length;
+
     if (
-        connections.value?.monitoringConnectionData.cons.length! >
-        monitoringStore.monitoringData.size
+        consLength !== undefined &&
+        consLength > monitoringStore.monitoringData.size
     ) {
-        // await addNewClients();
         addNewClients();
     }
 
     if (
-        connections.value?.monitoringConnectionData.cons.length! <
-        monitoringStore.monitoringData.size
+        consLength !== undefined &&
+        consLength < monitoringStore.monitoringData.size
     ) {
         removeClients();
     }
