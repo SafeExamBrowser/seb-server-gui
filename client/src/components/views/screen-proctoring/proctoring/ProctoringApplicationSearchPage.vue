@@ -519,9 +519,7 @@ const screenshotDisplay = computed<string>(() => {
 });
 
 function hideShowMetadataInfo() {
-    isMetadataInfo.value
-        ? (isMetadataInfo.value = false)
-        : (isMetadataInfo.value = true);
+    isMetadataInfo.value = !isMetadataInfo.value;
 }
 //= =============================
 </script>
