@@ -51,14 +51,10 @@ export default defineConfig([
                 "error",
                 { "ts-ignore": "allow-with-description" },
             ],
-            "no-undef": "off",
-            "@typescript-eslint/no-inferrable-types": "off",
 
             // new exceptions after updating eslint config. @TODO: remove these one by one and fix the respective issues in the codebase
-            "no-unsafe-optional-chaining": "off",
             "vue/valid-v-slot": "off",
             "vue/multi-word-component-names": "off",
-            "vue/no-multiple-template-root": "off",
             "@typescript-eslint/no-explicit-any": "off",
             "@typescript-eslint/no-non-null-asserted-optional-chain": "off",
             "@typescript-eslint/no-empty-object-type": "off",
