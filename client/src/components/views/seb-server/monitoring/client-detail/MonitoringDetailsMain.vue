@@ -131,6 +131,7 @@ import { translate } from "@/utils/generalUtils";
 import { ref, computed, onMounted, watch, nextTick } from "vue";
 import { useRoute } from "vue-router";
 import type { ComputedRef } from "vue";
+import { ClientNotification } from "@/models/seb-server/monitoring";
 
 // route params
 const examId = useRoute().params.examId.toString();

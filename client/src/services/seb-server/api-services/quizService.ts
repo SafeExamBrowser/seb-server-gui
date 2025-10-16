@@ -1,5 +1,7 @@
 import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
+import { Quizzes } from "@/models/seb-server/quiz";
+import { OptionalParGetQuizzes } from "@/models/seb-server/optionalParamters";
 
 export async function getQuizzes(
     optionalParameters?: OptionalParGetQuizzes,

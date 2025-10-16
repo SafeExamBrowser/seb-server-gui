@@ -506,6 +506,7 @@ import {
 } from "@/stores/authentication/authenticationStore";
 import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
 import { EditUserAccountParameters, UserAccount } from "@/models/userAccount";
+import { Institution } from "@/models/seb-server/institution";
 
 const props = defineProps<{
     title: string;

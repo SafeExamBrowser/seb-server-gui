@@ -6,6 +6,11 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import { UserAccount } from "@/models/userAccount";
 import { ServerTablePaging } from "@/models/types";
+import { Exam } from "@/models/seb-server/exam";
+import { ClientGroup } from "@/models/seb-server/clientGroup";
+import { AssessmentTool } from "@/models/seb-server/assessmentTool";
+import { APIMessage } from "@/models/seb-server/apiMessages";
+import { ExamTemplate } from "@/models/seb-server/examTemplate";
 
 export const useExamStore = defineStore("exam", () => {
     // exam table

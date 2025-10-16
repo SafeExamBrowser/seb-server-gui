@@ -79,6 +79,8 @@ import * as userAccountViewService from "@/services/seb-server/component-service
 import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
 import { ref, onBeforeMount } from "vue";
 import { UserAccountName } from "@/models/userAccount";
+import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring";
+import { ExamTemplate, ExamTemplates } from "@/models/seb-server/examTemplate";
 
 // stores
 const quizImportStore = useQuizImportStore();

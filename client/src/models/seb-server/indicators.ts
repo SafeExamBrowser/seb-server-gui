@@ -1,4 +1,6 @@
-type Indicator = {
+import { Threshold } from "@/models/seb-server/examTemplate";
+
+export type Indicator = {
     id: number;
     examId: number;
     name: string;
@@ -9,8 +11,7 @@ type Indicator = {
     thresholds?: Threshold[];
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type Indicators = {
+export type Indicators = {
     number_of_pages: number;
     page_number: number;
     page_size: number;

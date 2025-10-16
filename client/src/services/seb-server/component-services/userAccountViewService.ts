@@ -10,6 +10,8 @@ import {
     UserAccountName,
     UserAccountResponse,
 } from "@/models/userAccount";
+import { OptionalParInstitutionId } from "@/models/seb-server/optionalParamters";
+import { Institution } from "@/models/seb-server/institution";
 
 export async function setPersonalUserAccount() {
     const userAccountStore = useUserAccountStore();

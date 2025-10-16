@@ -317,6 +317,7 @@ import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
 import * as examViewService from "@/services/seb-server/component-services/examViewService";
 import { computed, ref, watch, onBeforeMount } from "vue";
+import { ClientGroup } from "@/models/seb-server/clientGroup";
 // i18n
 const i18n = useI18n();
 
@@ -507,19 +508,6 @@ function loadClientGroupIntoForm(clientGroup: ClientGroup) {
     if (clientGroupType === ClientGroupEnum.NAME_ALPHABETICAL_RANGE) {
         startLetterField.value = clientGroup.nameRangeStartLetter!;
         endLetterField.value = clientGroup.nameRangeEndLetter!;
-    }
-}
-
-//= =======check if screen proctoring enabled for exam========
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function toggleScreenProctoring() {
-    const isEnabled = generalUtils.stringToBoolean(
-        examStore.selectedExam?.additionalAttributes.enableScreenProctoring ??
-            "",
-    );
-    if (isEnabled) {
-        screenProctoringToggle.value = !screenProctoringToggle.value;
     }
 }
 

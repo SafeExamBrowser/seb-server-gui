@@ -779,6 +779,10 @@ import * as certificateViewService from "@/services/seb-server/component-service
 import moment from "moment-timezone";
 import { getUserAccountById } from "@/services/seb-server/component-services/userAccountViewService";
 import { UserAccount } from "@/models/userAccount";
+import {
+    ConnectionConfiguration,
+    UpdateConnectionConfigurationPar,
+} from "@/models/seb-server/connectionConfiguration";
 
 // Router
 const route = useRoute();

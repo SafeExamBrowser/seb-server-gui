@@ -1,6 +1,7 @@
 import * as apiService from "@/services/apiService";
 import { SortOrder } from "@/models/screen-proctoring/sortOrderEnum";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
+import { ScreenshotData } from "@/models/screen-proctoring/session";
 
 export async function getScreenshotDataBySessionId(
     sessionId: string,

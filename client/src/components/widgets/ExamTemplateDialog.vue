@@ -32,6 +32,8 @@
 </template>
 
 <script setup lang="ts">
+import { ExamTemplate } from "@/models/seb-server/examTemplate";
+
 defineProps<{
     examTemplate: ExamTemplate | null;
 }>();

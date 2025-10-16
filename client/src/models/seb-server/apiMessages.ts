@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type APIMessage = {
+export type APIMessage = {
     messageCode: string;
     systemMessage: string;
     details: string;

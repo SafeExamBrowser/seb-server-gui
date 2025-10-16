@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type ScreenProctoringSettings = {
+export type ScreenProctoringSettings = {
     id?: number;
     enableScreenProctoring?: boolean;
     spsServiceURL?: string;

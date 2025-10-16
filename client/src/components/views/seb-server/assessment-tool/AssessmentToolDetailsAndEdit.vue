@@ -619,6 +619,11 @@ import * as assessmentToolViewService from "@/services/seb-server/component-serv
 import router from "@/router/router";
 import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants";
+import { Institution } from "@/models/seb-server/institution";
+import {
+    AssessmentTool,
+    UpdateAssessmentToolPar,
+} from "@/models/seb-server/assessmentTool";
 
 // Router
 const route = useRoute();

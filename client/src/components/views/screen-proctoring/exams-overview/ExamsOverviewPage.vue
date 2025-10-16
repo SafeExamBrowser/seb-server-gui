@@ -115,6 +115,7 @@ import * as tableUtils from "@/utils/table/tableUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import { storeToRefs } from "pinia";
 import * as linkService from "@/services/screen-proctoring/component-services/linkService";
+import { Group, GroupObject } from "@/models/screen-proctoring/group";
 
 // stores
 const appBarStore = useAppBarStore();

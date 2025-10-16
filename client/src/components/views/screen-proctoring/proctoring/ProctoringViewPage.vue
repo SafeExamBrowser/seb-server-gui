@@ -277,6 +277,11 @@ import { useFullscreen } from "@vueuse/core";
 import * as linkService from "@/services/screen-proctoring/component-services/linkService";
 import { SortOrder } from "@/models/screen-proctoring/sortOrderEnum";
 import * as apiService from "@/services/apiService";
+import { ScreenshotData } from "@/models/screen-proctoring/session";
+import {
+    ScreenshotsGrouped,
+    SearchTimeline,
+} from "@/models/screen-proctoring/search";
 
 // slider
 const sliderTime = ref<number>();

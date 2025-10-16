@@ -1,4 +1,4 @@
-type AssessmentTool = {
+export type AssessmentTool = {
     id: number;
     institutionId: number;
     name: string;
@@ -17,8 +17,7 @@ type AssessmentTool = {
     integrationActive: boolean;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type AssessmentToolsResponse = {
+export type AssessmentToolsResponse = {
     number_of_pages: number;
     page_number: number;
     page_size: number;
@@ -26,7 +25,7 @@ type AssessmentToolsResponse = {
     content: AssessmentTool[];
 };
 
-enum LMSTypeEnum {
+export enum LMSTypeEnum {
     MOCKUP = "MOCKUP",
     OPEN_EDX = "OPEN_EDX",
     MOODLE = "MOODLE",
@@ -35,8 +34,7 @@ enum LMSTypeEnum {
     OPEN_OLAT = "OPEN_OLAT",
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type OptionalParGetAssessmentTool = {
+export type OptionalParGetAssessmentTool = {
     page_size?: number;
     page_number?: number;
     sort?: string;
@@ -47,7 +45,7 @@ type OptionalParGetAssessmentTool = {
     institutionId?: string | null;
 };
 
-type CommonAssessmentToolPar = {
+export type CommonAssessmentToolPar = {
     institutionId: string;
     name: string;
     lmsType: string;
@@ -59,8 +57,7 @@ type CommonAssessmentToolPar = {
     lmsProxyAuthSecret?: string;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type CreateAssessmentToolPar =
+export type CreateAssessmentToolPar =
     | (CommonAssessmentToolPar & {
           authMode: "token";
           lmsRestApiToken: string;
@@ -74,8 +71,7 @@ type CreateAssessmentToolPar =
           lmsRestApiToken?: never;
       });
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type UpdateAssessmentToolPar = {
+export type UpdateAssessmentToolPar = {
     id: string;
     institutionId: string;
     name: string;

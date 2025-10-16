@@ -1,4 +1,9 @@
 import * as certificateService from "@/services/seb-server/api-services/certificateService";
+import {
+    CertificatesResponse,
+    CreateCertificatePar,
+    OptionalParGetCertificates,
+} from "@/models/seb-server/certificate";
 
 export async function getCertificates(
     optionalParameters?: OptionalParGetCertificates,

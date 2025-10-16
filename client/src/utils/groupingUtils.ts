@@ -1,4 +1,9 @@
 // todo: improve this function
+import {
+    ScreenshotGroup,
+    ScreenshotsGrouped,
+} from "@/models/screen-proctoring/search";
+
 export function groupScreenshotsByMetadata(
     screenshotGroupList: ScreenshotGroup[],
     isSearchView: boolean,

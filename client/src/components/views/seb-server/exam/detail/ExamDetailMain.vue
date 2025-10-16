@@ -953,6 +953,12 @@ import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 import { useRoute } from "vue-router";
 import { UserAccount } from "@/models/userAccount";
 import { ExamConfigMapping } from "@/models/seb-server/sebSettings";
+import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring";
+import { Exam } from "@/models/seb-server/exam";
+import { ConnectionConfigurations } from "@/models/seb-server/connectionConfiguration";
+import { ClientGroups } from "@/models/seb-server/clientGroup";
+import { AssessmentTool } from "@/models/seb-server/assessmentTool";
+import { ExamTemplate } from "@/models/seb-server/examTemplate";
 
 // general
 const isPageInitalizing = ref<boolean>(true);

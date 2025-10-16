@@ -1,5 +1,10 @@
 import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
+import {
+    OptionalParGroupByUuid,
+    OptionalParGroups,
+} from "@/models/screen-proctoring/optionalParamters";
+import { GroupObject, GroupUuid } from "@/models/screen-proctoring/group";
 
 export async function getGroups(
     optionalParameters?: OptionalParGroups,

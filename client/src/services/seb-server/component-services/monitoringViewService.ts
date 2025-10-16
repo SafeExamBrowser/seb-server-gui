@@ -11,6 +11,23 @@ import * as navigation from "@/router/navigation";
 import { LocationQuery } from "vue-router";
 import * as clientGroupViewService from "@/services/seb-server/component-services/clientGroupViewService";
 import * as clientConnectionService from "@/services/seb-server/api-services/clientConnectionService";
+import { OptionalParGetMonitoringClientLogs } from "@/models/seb-server/optionalParamters";
+import {
+    ClientEventResponse,
+    ClientNotification,
+    MonitoringConnections,
+    MonitoringOverview,
+    MonitoringStaticClientData,
+    SingleConnection,
+} from "@/models/seb-server/monitoring";
+import { Exam } from "@/models/seb-server/exam";
+import { ClientInstruction } from "@/models/seb-server/clientInstruction";
+import { ClientGroup, ClientGroups } from "@/models/seb-server/clientGroup";
+import {
+    AppSignatureKey,
+    AppSignatureKeysWithGrantValues,
+    GrantedAppSignatureKey,
+} from "@/models/seb-server/appSignatureKey";
 
 //= ===============api===============
 export async function getOverview(

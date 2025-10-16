@@ -1,5 +1,12 @@
 import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
+import {
+    AssessmentTool,
+    AssessmentToolsResponse,
+    CreateAssessmentToolPar,
+    OptionalParGetAssessmentTool,
+    UpdateAssessmentToolPar,
+} from "@/models/seb-server/assessmentTool";
 
 const assessmentToolUrl: string = "/assessment-tools";
 

@@ -220,6 +220,7 @@ import { useFullscreen } from "@vueuse/core";
 import * as linkService from "@/services/screen-proctoring/component-services/linkService";
 import * as applicationsSearchViewService from "@/services/screen-proctoring/component-services/applicationsSearchViewService";
 import * as spConstants from "@/utils/sp-constants";
+import { ScreenshotData } from "@/models/screen-proctoring/session";
 
 // slider
 const sliderTime = ref<number>();

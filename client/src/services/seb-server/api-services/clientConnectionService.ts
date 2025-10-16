@@ -1,5 +1,6 @@
 import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
+import { SebClientConnection } from "@/models/seb-server/clientConnectionList";
 
 const url = "/seb-client-connection";
 const listEndpoint = url + "/list";

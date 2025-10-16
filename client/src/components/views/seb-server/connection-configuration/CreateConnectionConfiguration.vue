@@ -730,6 +730,7 @@ import * as constants from "@/utils/constants";
 import { navigateTo } from "@/router/navigation";
 import * as connectionConfigurationViewService from "@/services/seb-server/component-services/connectionConfigurationViewService";
 import * as certificateViewService from "@/services/seb-server/component-services/certificateViewService";
+import { CreateConnectionConfigurationPar } from "@/models/seb-server/connectionConfiguration";
 
 const name = ref<string>("");
 const configurationPassword = ref<string>("");

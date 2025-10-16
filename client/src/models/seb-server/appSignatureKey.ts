@@ -1,13 +1,11 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type AppSignatureKey = {
+export type AppSignatureKey = {
     institutionId: number;
     examId: number;
     keyValue: string;
     connectionIds: Record<string, string>;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type GrantedAppSignatureKey = {
+export type GrantedAppSignatureKey = {
     id: number;
     institutionId: number;
     keyType: string;
@@ -16,8 +14,7 @@ type GrantedAppSignatureKey = {
     examId: number;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type AppSignatureKeysWithGrantValues = {
+export type AppSignatureKeysWithGrantValues = {
     id?: number;
     institutionId: number;
     examId: number;

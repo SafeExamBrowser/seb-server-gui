@@ -1,4 +1,4 @@
-type ConnectionConfiguration = {
+export type ConnectionConfiguration = {
     id: number;
     institutionId: number;
     name: string;
@@ -28,22 +28,19 @@ type ConnectionConfiguration = {
     exam_selection: Set<number>;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type ConnectionConfigurations = {
+export type ConnectionConfigurations = {
     number_of_pages: number;
     page_number: number;
     page_size: number;
     content: ConnectionConfiguration[];
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type ConnectionConfigurationName = {
+export type ConnectionConfigurationName = {
     modelId: string;
     name: string;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type OptionalParGetConnectionConfiguration = {
+export type OptionalParGetConnectionConfiguration = {
     page_size?: number;
     page_number?: number;
     sort?: string;
@@ -53,8 +50,7 @@ type OptionalParGetConnectionConfiguration = {
     institutionId?: string | null;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type CreateConnectionConfigurationPar = {
+export type CreateConnectionConfigurationPar = {
     name: string;
     sebConfigPurpose: string;
     sebServerPingTime: number;
@@ -83,8 +79,7 @@ type CreateConnectionConfigurationPar = {
     vdiSetup: "NO";
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type UpdateConnectionConfigurationPar = {
+export type UpdateConnectionConfigurationPar = {
     id: string;
     institutionId: string;
     name: string;

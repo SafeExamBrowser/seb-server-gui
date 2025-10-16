@@ -1,5 +1,8 @@
 import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
+import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring";
+import { OptionalParGeneric } from "@/models/seb-server/optionalParamters";
+import { ExamTemplate, ExamTemplates } from "@/models/seb-server/examTemplate";
 
 const url: string = "/exam-template";
 

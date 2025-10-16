@@ -1,5 +1,15 @@
 import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
+import {
+    SearchScreenshots,
+    SearchSessions,
+    SearchTimeline,
+} from "@/models/screen-proctoring/search";
+import {
+    OptionalParSearchScreenshots,
+    OptionalParSearchSessions,
+    OptionalParSearchTimeline,
+} from "@/models/screen-proctoring/optionalParamters";
 
 export async function searchSessionsDay(
     optionalParameters?: OptionalParSearchSessions,

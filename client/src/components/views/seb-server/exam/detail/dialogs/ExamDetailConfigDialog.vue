@@ -65,6 +65,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { ConnectionConfigurations } from "@/models/seb-server/connectionConfiguration";
 
 // emits
 const emit = defineEmits<{

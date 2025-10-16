@@ -166,6 +166,7 @@ import * as searchViewService from "@/services/screen-proctoring/component-servi
 import * as groupingUtils from "@/utils/groupingUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import * as spConstants from "@/utils/sp-constants";
+import { SearchTimeline } from "@/models/screen-proctoring/search";
 
 const props = defineProps<{
     timelineSearchResult: any;

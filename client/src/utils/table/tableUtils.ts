@@ -6,6 +6,18 @@ import { navigateTo } from "@/router/navigation";
 import { useTableStore } from "@/stores/store";
 import { OptionalParGetUserAccounts } from "@/models/userAccount";
 import { ServerTablePaging } from "@/models/types";
+import {
+    OptionalParGetExams,
+    OptionalParGetMonitoringClientLogs,
+    OptionalParGetQuizzes,
+} from "@/models/seb-server/optionalParamters";
+import { OptionalParGetConnectionConfiguration } from "@/models/seb-server/connectionConfiguration";
+import { OptionalParGetCertificates } from "@/models/seb-server/certificate";
+import {
+    LMSTypeEnum,
+    OptionalParGetAssessmentTool,
+} from "@/models/seb-server/assessmentTool";
+import { OptionalParSearchSessions } from "@/models/screen-proctoring/optionalParamters";
 
 export function calcDefaultItemsPerPage(itemList: any): number {
     if (itemList == null || itemList.length === 0) {

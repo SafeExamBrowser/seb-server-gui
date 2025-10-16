@@ -196,6 +196,11 @@ import { useTableStore } from "@/stores/store";
 import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
 import { UserRoleEnum } from "@/models/userRoleEnum";
 import { ServerTablePaging } from "@/models/types";
+import {
+    SearchSessions,
+    SearchTimeline,
+} from "@/models/screen-proctoring/search";
+import { OptionalParSearchSessions } from "@/models/screen-proctoring/optionalParamters";
 
 // store
 const tableStore = useTableStore();

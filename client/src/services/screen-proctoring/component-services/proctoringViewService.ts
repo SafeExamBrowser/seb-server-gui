@@ -2,6 +2,7 @@ import * as screenshotDataService from "@/services/screen-proctoring/api-service
 import * as timeUtils from "@/utils/timeUtils";
 import { SortOrder } from "@/models/screen-proctoring/sortOrderEnum";
 import * as spConstants from "@/utils/sp-constants";
+import { MetaData, ScreenshotData } from "@/models/screen-proctoring/session";
 
 //= ============api==================
 export async function getScreenshotDataBySessionId(

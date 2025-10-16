@@ -1,5 +1,16 @@
 import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
+import { OptionalParGetMonitoringClientLogs } from "@/models/seb-server/optionalParamters";
+import {
+    ClientEventResponse,
+    ClientNotification,
+    MonitoringConnections,
+    MonitoringOverview,
+    MonitoringStaticClientData,
+    SingleConnection,
+} from "@/models/seb-server/monitoring";
+import { Exam } from "@/models/seb-server/exam";
+import { ClientInstruction } from "@/models/seb-server/clientInstruction";
 
 const monitoringUrl: string = "/monitoring";
 const clientEventUrl: string = "/seb-client-event";

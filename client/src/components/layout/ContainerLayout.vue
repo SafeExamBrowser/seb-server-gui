@@ -480,6 +480,7 @@ import { GUIComponent, useAbilities } from "@/services/ability";
 import { useRoute } from "vue-router";
 import { computed } from "vue";
 import { GridSize, NavigationItem } from "@/models/types";
+import { Institution } from "@/models/seb-server/institution";
 
 // i18n
 const { locale } = useI18n();

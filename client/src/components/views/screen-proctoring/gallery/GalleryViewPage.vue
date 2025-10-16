@@ -62,6 +62,8 @@ import { useAppBarStore, useLoadingStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
 import GalleryImage from "./GalleryImage.vue";
 import { SortOrder } from "@/models/screen-proctoring/sortOrderEnum";
+import { MetaData, ScreenshotData } from "@/models/screen-proctoring/session";
+import { GroupUuid } from "@/models/screen-proctoring/group";
 
 // reactive variables
 const group = ref<GroupUuid | null>();

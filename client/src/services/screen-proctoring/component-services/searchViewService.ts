@@ -7,6 +7,16 @@ import {
 } from "@/router/navigation";
 import * as spConstants from "@/utils/sp-constants";
 import { ServerTablePaging } from "@/models/types";
+import {
+    SearchScreenshots,
+    SearchSessions,
+    SearchTimeline,
+} from "@/models/screen-proctoring/search";
+import {
+    OptionalParSearchScreenshots,
+    OptionalParSearchSessions,
+    OptionalParSearchTimeline,
+} from "@/models/screen-proctoring/optionalParamters";
 
 //= ============api==============
 export async function searchSessionsDay(

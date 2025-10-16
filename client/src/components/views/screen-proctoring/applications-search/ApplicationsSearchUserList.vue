@@ -41,6 +41,7 @@ import { onBeforeMount, ref } from "vue";
 import * as applicationsSearchViewService from "@/services/screen-proctoring/component-services/applicationsSearchViewService";
 import * as generalUtils from "@/utils/generalUtils";
 import * as searchViewService from "@/services/screen-proctoring/component-services/searchViewService";
+import { UserListForApplicationSearchRecord } from "@/models/screen-proctoring/applicationSearch";
 
 // props
 const props = defineProps<{

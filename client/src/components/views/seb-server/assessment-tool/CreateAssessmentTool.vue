@@ -593,6 +593,8 @@ import { navigateTo } from "@/router/navigation";
 import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/authenticationStore";
 import { createAssessmentTool } from "@/services/seb-server/component-services/assessmentToolViewService";
 import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums";
+import { Institution } from "@/models/seb-server/institution";
+import { CreateAssessmentToolPar } from "@/models/seb-server/assessmentTool";
 
 const appBarStore = useAppBarStore();
 const layoutStore = useLayoutStore();

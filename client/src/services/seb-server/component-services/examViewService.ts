@@ -4,6 +4,15 @@ import * as configurationService from "@/services/seb-server/api-services/config
 import * as screenProctoringService from "@/services/seb-server/api-services/screenProctoringService";
 import * as monitoringService from "@/services/seb-server/api-services/monitoringService";
 import * as timeUtils from "@/utils/timeUtils";
+import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring";
+import { OptionalParGetExams } from "@/models/seb-server/optionalParamters";
+import { Exam, Exams } from "@/models/seb-server/exam";
+import { ConnectionConfigurations } from "@/models/seb-server/connectionConfiguration";
+import {
+    AppSignatureKey,
+    GrantedAppSignatureKey,
+} from "@/models/seb-server/appSignatureKey";
+import { ExamTemplate } from "@/models/seb-server/examTemplate";
 
 //= ============api==============
 export async function getExam(id: string): Promise<Exam | null> {
