@@ -118,15 +118,18 @@ async function getIndicatorData() {
 
     monitoringStore.indicators = indicatorResponse;
 
-    for (const indicator of monitoringStore.indicators?.content) {
-        if (indicator.type === "BATTERY_STATUS") {
-            if (indicator.color) {
-                monitoringStore.batteryStatusDefaultColor =
-                    "#" + indicator.color;
-            }
-        } else if (indicator.type === "WLAN_STATUS") {
-            if (indicator.color) {
-                monitoringStore.wlanStatusDefaultColor = "#" + indicator.color;
+    if (monitoringStore.indicators?.content) {
+        for (const indicator of monitoringStore.indicators.content) {
+            if (indicator.type === "BATTERY_STATUS") {
+                if (indicator.color) {
+                    monitoringStore.batteryStatusDefaultColor =
+                        "#" + indicator.color;
+                }
+            } else if (indicator.type === "WLAN_STATUS") {
+                if (indicator.color) {
+                    monitoringStore.wlanStatusDefaultColor =
+                        "#" + indicator.color;
+                }
             }
         }
     }
