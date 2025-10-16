@@ -709,7 +709,6 @@
                                                                 style="
                                                                     font-size: 30px;
                                                                 "
-                                                                @click=""
                                                             >
                                                             </v-icon>
                                                         </v-list-item-action>
