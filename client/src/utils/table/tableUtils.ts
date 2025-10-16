@@ -79,7 +79,7 @@ export function calcItemsPerPage(
 }
 
 export function handleTabKeyEvent(
-    event: any,
+    event: KeyboardEvent,
     action: string,
     key: number,
     optional?: { path?: string; headerRefs?: any },
@@ -89,8 +89,8 @@ export function handleTabKeyEvent(
             sortTable(key, optional?.headerRefs);
         }
 
-        if (action === "navigate") {
-            navigateTo(optional?.path!);
+        if (action === "navigate" && optional?.path) {
+            navigateTo(optional.path);
         }
     }
 }
