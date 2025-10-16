@@ -1,4 +1,11 @@
 import * as assessmentToolService from "@/services/seb-server/api-services/assessmentToolService";
+import {
+    AssessmentTool,
+    AssessmentToolsResponse,
+    CreateAssessmentToolPar,
+    OptionalParGetAssessmentTool,
+    UpdateAssessmentToolPar,
+} from "@/models/seb-server/assessmentTool";
 
 export async function getAssessmentToolsActive(): Promise<AssessmentToolsResponse | null> {
     try {

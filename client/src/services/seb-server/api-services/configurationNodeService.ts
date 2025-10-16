@@ -1,5 +1,6 @@
 import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
+import { ConfigurationTemplateName } from "@/models/seb-server/configurationNode";
 
 const baseUrl = "/configuration-node";
 

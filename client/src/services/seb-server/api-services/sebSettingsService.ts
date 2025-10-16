@@ -7,6 +7,7 @@ import {
     SEBSettingsValue,
     SEBSettingsView,
 } from "@/models/seb-server/sebSettings";
+import { Exam } from "@/models/seb-server/exam";
 
 const examUrlPrefix: string = "/exam/seb-settings/";
 const templateUrlPrefix: string = "/exam/seb-settings/";

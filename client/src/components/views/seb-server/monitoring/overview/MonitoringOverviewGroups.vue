@@ -373,6 +373,7 @@ import { StorageItemEnum } from "@/models/StorageItemEnum";
 import { useRoute } from "vue-router";
 import { computed } from "vue";
 import type { ComputedRef } from "vue";
+import { OverviewClientGroup } from "@/models/seb-server/monitoring";
 
 // stores
 const monitoringStore = useMonitoringStore();

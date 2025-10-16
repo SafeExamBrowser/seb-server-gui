@@ -1,5 +1,13 @@
 import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
+import {
+    ConnectionConfiguration,
+    ConnectionConfigurationName,
+    ConnectionConfigurations,
+    CreateConnectionConfigurationPar,
+    OptionalParGetConnectionConfiguration,
+    UpdateConnectionConfigurationPar,
+} from "@/models/seb-server/connectionConfiguration";
 
 const connectionConfigurationUrl = "/client_configuration";
 const downloadExamConfigUrl = "/client_configuration/download";

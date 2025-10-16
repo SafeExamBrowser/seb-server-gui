@@ -6,6 +6,18 @@ import {
 } from "@/models/seb-server/examFiltersEnum";
 import { MonitoringRow } from "@/models/seb-server/monitoringClients";
 import { ServerTablePaging } from "@/models/types";
+import {
+    ClientEvent,
+    ClientNotification,
+    MonitoringOverview,
+    MonitoringStaticClientData,
+    SingleConnection,
+} from "@/models/seb-server/monitoring";
+import { Indicators } from "@/models/seb-server/indicators";
+import { Exam } from "@/models/seb-server/exam";
+import { ClientGroup, ClientGroups } from "@/models/seb-server/clientGroup";
+import { SebClientConnection } from "@/models/seb-server/clientConnectionList";
+import { AppSignatureKeysWithGrantValues } from "@/models/seb-server/appSignatureKey";
 
 export const useMonitoringStore = defineStore("monitoring", () => {
     // exam table

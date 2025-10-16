@@ -7,6 +7,10 @@ import { ref, markRaw } from "vue";
 import type { Component } from "vue";
 import { UserAccountName } from "@/models/userAccount";
 import { ImportWizardSteps, ServerTablePaging } from "@/models/types";
+import { Quiz } from "@/models/seb-server/quiz";
+import { ClientGroup } from "@/models/seb-server/clientGroup";
+import { AssessmentToolsResponse } from "@/models/seb-server/assessmentTool";
+import { ExamTemplate } from "@/models/seb-server/examTemplate";
 
 export const useQuizImportStore = defineStore("quizImport", () => {
     // i18n

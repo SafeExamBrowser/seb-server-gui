@@ -135,6 +135,8 @@ import {
 import { translate } from "@/utils/generalUtils";
 import { ref } from "vue";
 import { ServerTablePaging } from "@/models/types";
+import { OptionalParGetExams } from "@/models/seb-server/optionalParamters";
+import { Exam, Exams } from "@/models/seb-server/exam";
 
 // stores
 const examStore = useExamStore();

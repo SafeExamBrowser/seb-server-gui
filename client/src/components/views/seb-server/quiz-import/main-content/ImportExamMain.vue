@@ -182,6 +182,8 @@ import { translate, wait } from "@/utils/generalUtils";
 import { VDateInput } from "vuetify/labs/VDateInput";
 import { ref, watch } from "vue";
 import { ServerTablePaging } from "@/models/types";
+import { Quiz, Quizzes } from "@/models/seb-server/quiz";
+import { OptionalParGetQuizzes } from "@/models/seb-server/optionalParamters";
 
 // stores
 const quizImportStore = useQuizImportStore();

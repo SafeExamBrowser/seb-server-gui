@@ -170,6 +170,9 @@ import * as quizImportWizardViewService from "@/services/seb-server/component-se
 import { navigateTo } from "@/router/navigation";
 import { useExamStore } from "@/stores/seb-server/examStore";
 import { ref, onBeforeMount, watch } from "vue";
+import { CreateExamPar, Exam } from "@/models/seb-server/exam";
+import { AssessmentToolsResponse } from "@/models/seb-server/assessmentTool";
+import { APIMessage } from "@/models/seb-server/apiMessages";
 // i18n
 const i18n = useI18n();
 

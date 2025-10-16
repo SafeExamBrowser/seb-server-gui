@@ -1,5 +1,10 @@
 import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
+import {
+    CertificatesResponse,
+    CreateCertificateJSON,
+    OptionalParGetCertificates,
+} from "@/models/seb-server/certificate";
 
 const certificatesURL: string = "/certificate";
 

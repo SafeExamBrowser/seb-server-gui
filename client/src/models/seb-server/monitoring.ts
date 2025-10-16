@@ -1,11 +1,11 @@
-type MonitoringClientConnection = {
+export type MonitoringClientConnection = {
     id: number;
     nf: number;
     st: string;
     iv: Record<string, string>;
 };
 
-type OverviewClientGroup = {
+export type OverviewClientGroup = {
     id: number;
     name: string;
     clientAmount: number;
@@ -14,8 +14,7 @@ type OverviewClientGroup = {
     typeValue: string;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type MonitoringOverview = {
+export type MonitoringOverview = {
     clientStates: {
         total: number;
         CONNECTION_REQUESTED?: number;
@@ -48,27 +47,26 @@ type MonitoringOverview = {
     };
 };
 
-type ScreenProctoringData = {
+export type ScreenProctoringData = {
     uuid: string;
     name: string;
     size: number;
 };
 
-type MonitoringConnectionData = {
+export type MonitoringConnectionData = {
     cons: MonitoringClientConnection[];
     sm: number[];
     cgm: Record<string, number>;
     im: number[];
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type MonitoringConnections = {
+export type MonitoringConnections = {
     examId: number;
     monitoringConnectionData: MonitoringConnectionData;
     screenProctoringData: ScreenProctoringData[];
 };
 
-type StaticClientConnectionData = {
+export type StaticClientConnectionData = {
     id: number;
     connectionToken: string;
     examUserSessionId: string;
@@ -77,14 +75,12 @@ type StaticClientConnectionData = {
     cg: number[];
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type MonitoringStaticClientData = {
+export type MonitoringStaticClientData = {
     staticClientConnectionData: StaticClientConnectionData[];
     duplications: Set<number>;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type SingleConnection = {
+export type SingleConnection = {
     miss: boolean;
     pnot: boolean;
     iVal: {
@@ -104,8 +100,7 @@ type SingleConnection = {
     };
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type ClientNotification = {
+export type ClientNotification = {
     id: number;
     clientConnectionId: number;
     type: string;
@@ -116,7 +111,7 @@ type ClientNotification = {
     notificationType: string;
 };
 
-type ClientEvent = {
+export type ClientEvent = {
     id: number;
     clientConnectionId: number;
     institutionId: number;
@@ -131,8 +126,7 @@ type ClientEvent = {
     notificationType: string;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type ClientEventResponse = {
+export type ClientEventResponse = {
     number_of_pages: number;
     page_number: number;
     page_size: number;

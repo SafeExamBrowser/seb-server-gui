@@ -1,4 +1,7 @@
-type EntityPrivilege = {
+import { ScreenshotData } from "@/models/screen-proctoring/session";
+import { SPExamView } from "@/models/screen-proctoring/exam";
+
+export type EntityPrivilege = {
     id: number;
     entityType: string;
     entityId: number;
@@ -6,7 +9,7 @@ type EntityPrivilege = {
     privileges: string;
 };
 
-type Group = {
+export type Group = {
     id: number;
     uuid: string;
     name: string;
@@ -20,16 +23,14 @@ type Group = {
     exam: SPExamView;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type GroupObject = {
+export type GroupObject = {
     numberOfPages: number;
     pageNumber: number;
     pageSize: number;
     content: Group[];
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type GroupUuid = {
+export type GroupUuid = {
     uuid: string;
     name: string;
     description: string;

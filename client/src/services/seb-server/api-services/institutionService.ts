@@ -1,4 +1,6 @@
 import * as apiService from "@/services/apiService";
+import { Institution } from "@/models/seb-server/institution";
+import { Indicators } from "@/models/seb-server/indicators";
 
 const url: string = "/institution";
 const logoUrl: string = "/info/logo";

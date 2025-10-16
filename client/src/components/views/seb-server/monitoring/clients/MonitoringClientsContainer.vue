@@ -14,6 +14,8 @@ import * as indicatorViewService from "@/services/seb-server/component-services/
 import MonitoringClientsMain from "@/components/views/seb-server/monitoring/clients/MonitoringClientsMain.vue";
 import { useRoute } from "vue-router";
 import { ref, onBeforeMount, onBeforeUnmount } from "vue";
+import { MonitoringOverview } from "@/models/seb-server/monitoring";
+import { Indicators } from "@/models/seb-server/indicators";
 
 // exam
 const examId = useRoute().params.examId.toString();

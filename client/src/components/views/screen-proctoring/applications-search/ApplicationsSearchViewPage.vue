@@ -166,6 +166,7 @@ import ApplicationsExamList from "./ApplicationsSearchExamList.vue";
 import ApplicationsSearchMetadata from "./ApplicationsSearchMetadata.vue";
 import * as timeUtils from "@/utils/timeUtils";
 import * as generalUtils from "@/utils/generalUtils";
+import { SPExam } from "@/models/screen-proctoring/exam";
 
 // store
 const appBarStore = useAppBarStore();

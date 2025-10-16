@@ -11,6 +11,7 @@ import {
     UserAccountName,
     UserAccountResponse,
 } from "@/models/userAccount";
+import { OptionalParInstitutionId } from "@/models/seb-server/optionalParamters";
 
 const userAccountUrl: string = "/useraccount";
 

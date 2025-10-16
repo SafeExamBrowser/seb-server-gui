@@ -179,6 +179,7 @@ import { ref, watch } from "vue";
 import { translate } from "@/utils/generalUtils";
 import * as certificateViewService from "@/services/seb-server/component-services/certificateViewService";
 import { useI18n } from "vue-i18n";
+import { CreateCertificatePar } from "@/models/seb-server/certificate";
 
 const password = ref<string>("");
 const passwordVisible = ref<boolean>(false);

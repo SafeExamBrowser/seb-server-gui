@@ -135,6 +135,7 @@ import { getSingleConnectionEvents } from "@/services/seb-server/component-servi
 import * as tableUtils from "@/utils/table/tableUtils";
 import { translate } from "@/utils/generalUtils";
 import { ServerTablePaging } from "@/models/types";
+import { OptionalParGetMonitoringClientLogs } from "@/models/seb-server/optionalParamters";
 
 // Store instance
 const monitoringStore = useMonitoringStore();

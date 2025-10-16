@@ -1,5 +1,6 @@
 import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
+import { ClientGroup, ClientGroups } from "@/models/seb-server/clientGroup";
 
 const url: string = "/client-group";
 

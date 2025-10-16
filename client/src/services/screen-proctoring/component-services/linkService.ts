@@ -1,6 +1,7 @@
 import { useAuthStore } from "@/stores/authentication/authenticationStore";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
 import * as spConstants from "@/utils/sp-constants";
+import { ScreenshotData } from "@/models/screen-proctoring/session";
 
 export function getLatestImageLink(
     screenshot: ScreenshotData | undefined,

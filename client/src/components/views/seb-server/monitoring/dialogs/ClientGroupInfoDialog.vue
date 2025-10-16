@@ -202,6 +202,7 @@ import * as generalUtils from "@/utils/generalUtils";
 import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
 import { ref } from "vue";
+import { ClientGroup } from "@/models/seb-server/clientGroup";
 
 // props
 const props = defineProps<{

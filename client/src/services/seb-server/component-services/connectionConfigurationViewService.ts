@@ -1,4 +1,11 @@
 import * as connectionConfigurationService from "@/services/seb-server/api-services/configurationService";
+import {
+    ConnectionConfiguration,
+    ConnectionConfigurations,
+    CreateConnectionConfigurationPar,
+    OptionalParGetConnectionConfiguration,
+    UpdateConnectionConfigurationPar,
+} from "@/models/seb-server/connectionConfiguration";
 
 export async function getConnectionConfiguration(
     id: number,

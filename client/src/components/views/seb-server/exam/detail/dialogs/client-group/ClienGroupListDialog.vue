@@ -173,6 +173,8 @@ import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
 import { useRoute } from "vue-router";
 import { ref, onBeforeMount, computed } from "vue";
+import { Exam } from "@/models/seb-server/exam";
+import { ClientGroup, ClientGroups } from "@/models/seb-server/clientGroup";
 
 // i18n
 const i18n = useI18n();

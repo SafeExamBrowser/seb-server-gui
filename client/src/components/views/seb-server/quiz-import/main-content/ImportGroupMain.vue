@@ -214,6 +214,7 @@
 import { useQuizImportStore } from "@/stores/seb-server/quizImportStore";
 import { translate } from "@/utils/generalUtils";
 import { ref, computed } from "vue";
+import { ClientGroup } from "@/models/seb-server/clientGroup";
 
 // stores
 const quizImportStore = useQuizImportStore();

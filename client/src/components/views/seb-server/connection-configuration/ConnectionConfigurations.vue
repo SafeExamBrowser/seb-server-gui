@@ -414,6 +414,11 @@ import * as constants from "@/utils/constants";
 import { getInstitutions } from "@/services/seb-server/component-services/registerAccountViewService";
 import { useConnectionConfigurationStore } from "@/stores/seb-server/connectionConfigurationStore";
 import { ServerTablePaging } from "@/models/types";
+import { Institution } from "@/models/seb-server/institution";
+import {
+    ConnectionConfiguration,
+    ConnectionConfigurations,
+} from "@/models/seb-server/connectionConfiguration";
 
 const appBarStore = useAppBarStore();
 const layoutStore = useLayoutStore();

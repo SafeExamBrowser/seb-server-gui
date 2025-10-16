@@ -4,6 +4,8 @@ import { SortOrder } from "@/models/screen-proctoring/sortOrderEnum";
 import { openUrlInNewTab } from "@/router/navigation";
 import * as spConstants from "@/utils/sp-constants";
 import * as constants from "@/utils/constants";
+import { MetaData, ScreenshotData } from "@/models/screen-proctoring/session";
+import { GroupUuid } from "@/models/screen-proctoring/group";
 
 //= ============api==============
 export async function getGroup(

@@ -1,4 +1,4 @@
-type Quiz = {
+export type Quiz = {
     quiz_id: string;
     institutionId: number;
     lms_setup_id: number;
@@ -11,8 +11,7 @@ type Quiz = {
     additionalAttributes: object;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type Quizzes = {
+export type Quizzes = {
     number_of_pages: number;
     page_number: number;
     page_size: number;

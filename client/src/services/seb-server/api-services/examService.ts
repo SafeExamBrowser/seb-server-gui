@@ -1,5 +1,11 @@
 import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
+import { OptionalParGetExams } from "@/models/seb-server/optionalParamters";
+import { CreateExamPar, Exam, Exams } from "@/models/seb-server/exam";
+import {
+    AppSignatureKey,
+    GrantedAppSignatureKey,
+} from "@/models/seb-server/appSignatureKey";
 
 const examUrl: string = "/exam";
 const examsUrl: string = "/exams";

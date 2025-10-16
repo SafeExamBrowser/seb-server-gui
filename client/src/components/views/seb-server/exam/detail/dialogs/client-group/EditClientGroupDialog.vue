@@ -214,6 +214,7 @@ import * as clientGroupViewService from "@/services/seb-server/component-service
 import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
 import { ref, watch, onBeforeMount } from "vue";
+import { ClientGroup } from "@/models/seb-server/clientGroup";
 
 // i18n
 const i18n = useI18n();

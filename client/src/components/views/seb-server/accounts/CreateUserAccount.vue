@@ -396,6 +396,7 @@ import { UserRoleEnum } from "@/models/userRoleEnum";
 import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/authenticationStore";
 import { GUIComponent, useAbilities } from "@/services/ability";
 import { CreateUserPar, SingleUserAccountResponse } from "@/models/userAccount";
+import { Institution } from "@/models/seb-server/institution";
 
 const ability = useAbilities();
 const appBarStore = useAppBarStore();

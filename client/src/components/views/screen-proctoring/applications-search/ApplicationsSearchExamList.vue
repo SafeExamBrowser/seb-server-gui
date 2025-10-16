@@ -83,6 +83,7 @@ import { ref, watchEffect } from "vue";
 import * as timeUtils from "@/utils/timeUtils";
 import * as tableUtils from "@/utils/table/tableUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
+import { SPExam } from "@/models/screen-proctoring/exam";
 
 // props
 const props = defineProps<{
@@ -106,9 +107,6 @@ const headers = ref([
 ]);
 
 watchEffect(() => {
-    // props.exam has to be accessed to make sure the panel always opens
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const placeHolderVar = props.exams;
     selectedExamIds.value = [];
     panels.value = ["panel"];
 });

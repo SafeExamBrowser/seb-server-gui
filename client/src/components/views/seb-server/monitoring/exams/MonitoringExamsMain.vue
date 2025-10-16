@@ -135,6 +135,8 @@ import { translate } from "@/utils/generalUtils";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import { ref } from "vue";
 import { ServerTablePaging } from "@/models/types";
+import { OptionalParGetExams } from "@/models/seb-server/optionalParamters";
+import { Exam, Exams } from "@/models/seb-server/exam";
 
 // stores
 const monitoringStore = useMonitoringStore();

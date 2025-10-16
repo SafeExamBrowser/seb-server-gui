@@ -3,6 +3,7 @@ import {
     ClientOSEnum,
 } from "@/models/seb-server/clientGroupEnum";
 import * as clientGroupService from "@/services/seb-server/api-services/clientGroupService";
+import { ClientGroup, ClientGroups } from "@/models/seb-server/clientGroup";
 
 //= ============api==============
 export async function createClientGroup(

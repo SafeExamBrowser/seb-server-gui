@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { ServerTablePaging } from "@/models/types";
+import { ConnectionConfiguration } from "@/models/seb-server/connectionConfiguration";
+import { APIMessage } from "@/models/seb-server/apiMessages";
 
 export const useConnectionConfigurationStore = defineStore(
     "connectionConfiguration",
