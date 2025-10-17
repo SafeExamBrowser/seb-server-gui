@@ -244,6 +244,10 @@ const dialog = ref(false);
 // error handling
 const errorAvailable = ref<boolean>();
 
+//bools toggle
+type ToggleExpand = (item: any) => void;
+type IsExpanded = (item: any) => boolean;
+
 //= ==========================data fetching=======================
 async function loadItems(serverTablePaging: ServerTablePaging) {
     isUserAdmin.value = userAccountStore.userAccount?.userRoles.includes(
@@ -280,8 +284,8 @@ async function loadItems(serverTablePaging: ServerTablePaging) {
 
 async function searchTimeline(
     item: any,
-    isExpanded: Function,
-    toggleExpand: Function,
+    isExpanded: IsExpanded,
+    toggleExpand: ToggleExpand,
 ) {
     if (removeTableItemFromRefs(item, isExpanded, toggleExpand)) {
         return;
@@ -347,7 +351,7 @@ function closeDialog() {
 //= ==========================table=======================
 function addTableItemToRefs(
     timelineSearchResponse: SearchTimeline,
-    toggleExpand: Function,
+    toggleExpand: ToggleExpand,
     item: any,
 ) {
     timelineSearchResults.value.push(timelineSearchResponse);
@@ -356,8 +360,8 @@ function addTableItemToRefs(
 
 function removeTableItemFromRefs(
     item: any,
-    isExpanded: Function,
-    toggleExpand: Function,
+    isExpanded: IsExpanded,
+    toggleExpand: ToggleExpand,
 ): boolean {
     if (isExpanded(item)) {
         toggleExpand(item);

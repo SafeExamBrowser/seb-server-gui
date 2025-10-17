@@ -61,10 +61,9 @@ export default defineConfig([
             "@typescript-eslint/no-non-null-asserted-optional-chain": "off",
 
             // TODO Andrei
-            "@typescript-eslint/no-explicit-any": "off",
-            "@typescript-eslint/no-empty-object-type": "off",
-            "@typescript-eslint/no-non-null-assertion": "off",
-            "@typescript-eslint/no-unsafe-function-type": "off",
+            "@typescript-eslint/no-explicit-any": "off", //245
+            "@typescript-eslint/no-empty-object-type": "off", //9
+            "@typescript-eslint/no-non-null-assertion": "off", //114
         },
     },
 
