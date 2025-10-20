@@ -1,4 +1,4 @@
-import { FormField } from "@/components/widgets/form/types";
+import { FormField } from "@/components/widgets/formBuilder/types";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import { SCREEN_PROCTORING_COLLECTION_STRATEGY } from "@/components/views/seb-server/template/exam/types";

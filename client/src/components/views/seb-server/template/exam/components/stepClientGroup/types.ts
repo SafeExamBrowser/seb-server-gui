@@ -6,12 +6,6 @@ import {
 export type ClientGroup = {
     name: string;
     id: number;
-    type?:
-        | ClientGroupEnum.IP_V4_RANGE
-        | ClientGroupEnum.CLIENT_OS
-        | ClientGroupEnum.NAME_ALPHABETICAL_RANGE
-        | "SCREEN_PROCTORING_SINGLE"
-        | "SCREEN_PROCTORING_FALLBACK";
 } & (
     | {
           type: ClientGroupEnum.IP_V4_RANGE;
@@ -26,5 +20,14 @@ export type ClientGroup = {
           type: ClientGroupEnum.NAME_ALPHABETICAL_RANGE;
           nameRangeStartLetter: string;
           nameRangeEndLetter: string;
+      }
+    | {
+          type: "SCREEN_PROCTORING_SINGLE";
+      }
+    | {
+          type: "SCREEN_PROCTORING_FALLBACK";
+      }
+    | {
+          type: undefined;
       }
 );
