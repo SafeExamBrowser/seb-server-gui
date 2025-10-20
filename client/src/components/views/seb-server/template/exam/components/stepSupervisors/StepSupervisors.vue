@@ -1,5 +1,5 @@
 <template>
-    <Step
+    <StepItem
         :title="$t('createTemplateExam.steps.supervisors.title')"
         :subtitle="$t('createTemplateExam.steps.supervisors.subtitle')"
     >
@@ -8,7 +8,7 @@
         <div style="height: 2000px; background: salmon">
             Demo: Very long content
         </div>
-    </Step>
+    </StepItem>
 </template>
 
 <script setup lang="ts"></script>

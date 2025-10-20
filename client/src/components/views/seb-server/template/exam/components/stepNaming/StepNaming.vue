@@ -1,6 +1,6 @@
 <template>
     <LoadingFallbackComponent :loading="loading" :errors="errors">
-        <Step
+        <StepItem
             :title="$t('createTemplateExam.steps.naming.title')"
             :subtitle="$t('createTemplateExam.steps.naming.subtitle')"
         >
@@ -8,7 +8,7 @@
                 v-model="useStepNamingStore().isReady"
                 :fields="formFields"
             />
-        </Step>
+        </StepItem>
     </LoadingFallbackComponent>
 </template>
 
