@@ -8,7 +8,7 @@
                 class="ma-0 pa-0"
                 :max-width="useDisplay().thresholds.value.sm"
             >
-                <Form
+                <FormBuilder
                     v-model="useStepNamingStore().isReady"
                     :fields="formFields"
                 />
@@ -21,6 +21,7 @@
 import { useFormFields } from "./composables/useFormFields";
 import { useStepNamingStore } from "./composables/store/useStepNamingStore";
 import { useDisplay } from "vuetify";
+import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 
 const { formFields, loading, errors } = useFormFields();
 </script>
