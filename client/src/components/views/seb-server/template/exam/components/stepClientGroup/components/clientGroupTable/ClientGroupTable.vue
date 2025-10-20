@@ -28,12 +28,14 @@
 </template>
 
 <script setup lang="ts">
+import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
 import { useTable } from "./composables/useTable";
 import { ClientGroup } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 
 const { headers, items } = useTable();
 
 const hasActions = (item: ClientGroup) =>
-    item.type !== "SCREEN_PROCTORING_FALLBACK" &&
-    item.type !== "SCREEN_PROCTORING_SINGLE";
+    item.type === ClientGroupEnum.IP_V4_RANGE ||
+    item.type === ClientGroupEnum.CLIENT_OS ||
+    item.type === ClientGroupEnum.NAME_ALPHABETICAL_RANGE;
 </script>
