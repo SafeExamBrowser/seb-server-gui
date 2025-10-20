@@ -19,20 +19,7 @@
             }}
         </template>
         <template #item.screenProctoringEnabled="{ item }">
-            <v-icon
-                :icon="
-                    item.screenProctoringEnabled
-                        ? 'mdi-checkbox-marked-outline'
-                        : 'mdi-checkbox-blank-outline'
-                "
-            />
-            <span class="d-sr-only">
-                {{
-                    item.screenProctoringEnabled
-                        ? $t("general.true")
-                        : $t("general.false")
-                }}
-            </span>
+            <FieldScreenProctoringEnabled :item="item" />
         </template>
         <template #item.actions="{ item }">
             <div v-if="hasActions(item)" class="d-flex ga-2 justify-end">
@@ -46,7 +33,6 @@
 <script setup lang="ts">
 import { useTable } from "./composables/useTable";
 import { ClientGroupForTable } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
-
 const { headers, items } = useTable();
 
 const hasActions = (item: ClientGroupForTable) =>
