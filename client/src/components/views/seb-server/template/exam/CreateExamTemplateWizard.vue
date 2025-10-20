@@ -1,7 +1,7 @@
 <template>
     <BasicPage
         :title="$t('titles.createTemplateExam')"
-        :breadcrumb="[
+        :bread-crumb="[
             {
                 label: $t('titles.createTemplate'),
                 link: constants.CREATE_EXAM_TEMPLATE_ROUTE,
