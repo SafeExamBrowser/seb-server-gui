@@ -36,7 +36,7 @@ import { IconValue } from "vuetify/lib/composables/icons.mjs";
 import {
     ClientGroup,
     ClientGroupTransient,
-    isClientGroup,
+    clientGroupTransientToClientGroup,
 } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 import { useDisplay } from "vuetify";
 
@@ -70,11 +70,10 @@ const handleCancelClick = () => {
 };
 
 const handleSubmitClick = () => {
-    if (!isClientGroup(temporaryClientGroup.value)) {
-        throw new Error("Not a valid client group!");
-    }
-
-    emit("submit", temporaryClientGroup.value);
+    const clientGroup = clientGroupTransientToClientGroup(
+        temporaryClientGroup.value,
+    );
+    emit("submit", clientGroup);
     isDialogOpen.value = false;
 };
 </script>

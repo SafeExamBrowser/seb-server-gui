@@ -47,32 +47,16 @@ export type ClientGroupForTable =
           type: "SCREEN_PROCTORING_FALLBACK";
       };
 
-// TODO @alain: consider using https://github.com/colinhacks/zod for this
-export const isClientGroup = (
-    group: ClientGroupTransient,
-): group is ClientGroup => {
-    if (group.type === undefined) {
-        return false;
+export const clientGroupTransientToClientGroup = (
+    clientGroupTransient: ClientGroupTransient,
+): ClientGroup => {
+    const { isValid, ...clientGroup } = clientGroupTransient;
+
+    if (isValid === false) {
+        throw new Error("Client group transient is not a valid client group!");
     }
 
-    return true;
-
-    // TODO @alain: uncomment this when the full ClientGroup form is implemented
-    // switch (group.type) {
-    //     case ClientGroupEnum.IP_V4_RANGE:
-    //         return (
-    //             group.ipRangeStart !== undefined &&
-    //             group.ipRangeEnd !== undefined
-    //         );
-    //     case ClientGroupEnum.CLIENT_OS:
-    //         return group.clientOS !== undefined;
-    //     case ClientGroupEnum.NAME_ALPHABETICAL_RANGE:
-    //         return (
-    //             group.nameRangeStartLetter !== undefined &&
-    //             group.nameRangeEndLetter !== undefined
-    //         );
-    //     case undefined:
-    //     default:
-    //         return false;
-    // }
+    // we trust the validation flag as this passed through the form validation rules
+    // TODO @alain: consider using https://github.com/colinhacks/zod for this for more safety
+    return clientGroup as ClientGroup;
 };
