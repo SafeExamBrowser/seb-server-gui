@@ -306,6 +306,9 @@
                         "label": "Name",
                         "placeholder": "Enter the desired group name"
                     },
+                    "screenProctoringEnabled": {
+                        "label": "Screen Proctoring"
+                    },
                     "type": {
                         "label": "Type",
                         "placeholder": "Select the group type",

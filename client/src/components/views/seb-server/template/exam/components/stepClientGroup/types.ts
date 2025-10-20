@@ -4,9 +4,10 @@ import {
 } from "@/models/seb-server/clientGroupEnum";
 
 export type ClientGroupTransient = {
+    isValid: boolean;
     id: number;
     name: string;
-    isValid: boolean;
+    screenProctoringEnabled: boolean;
     type?:
         | ClientGroupEnum.IP_V4_RANGE
         | ClientGroupEnum.CLIENT_OS
@@ -21,6 +22,7 @@ export type ClientGroupTransient = {
 export type ClientGroup = {
     id: number;
     name: string;
+    screenProctoringEnabled: boolean;
 } & (
     | {
           type: ClientGroupEnum.IP_V4_RANGE;

@@ -31,6 +31,19 @@ export const useFormFields = (clientGroup: ModelRef<ClientGroupTransient>) => {
         },
     });
 
+    const screenProctoringEnabled = computed<
+        ClientGroupTransient["screenProctoringEnabled"]
+    >({
+        get: (): ClientGroupTransient["screenProctoringEnabled"] =>
+            clientGroup.value.screenProctoringEnabled,
+        set: (value: ClientGroupTransient["screenProctoringEnabled"]) => {
+            clientGroup.value = {
+                ...clientGroup.value,
+                screenProctoringEnabled: value,
+            };
+        },
+    });
+
     const formFields: FormField[] = [
         {
             type: "text" as const,
@@ -61,6 +74,14 @@ export const useFormFields = (clientGroup: ModelRef<ClientGroupTransient>) => {
                 "createTemplateExam.steps.clientGroup.fields.type.placeholder",
             ),
             required: true,
+        },
+        {
+            type: "switch" as const,
+            name: "screenProctoringEnabled",
+            model: screenProctoringEnabled,
+            label: t(
+                "createTemplateExam.steps.clientGroup.fields.screenProctoringEnabled.label",
+            ),
         },
     ];
 
