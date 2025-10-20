@@ -16,13 +16,13 @@
     >
         <v-card :title="labelActivator">
             <template #text>
-                <ClientGroupForm v-model="temporaryClientGroup" />
+                <ClientGroupForm v-model="clientGroupTransient" />
             </template>
             <template #actions>
                 <v-btn :text="labelCancel" @click="handleCancelClick"></v-btn>
                 <v-btn
                     :text="labelSubmit"
-                    :disabled="!temporaryClientGroup.isValid"
+                    :disabled="!clientGroupTransient.isValid"
                     @click="handleSubmitClick"
                 ></v-btn>
             </template>
@@ -56,12 +56,12 @@ const emit = defineEmits<{
 
 const activatorRef = ref<HTMLElement>();
 const isDialogOpen = ref(false);
-const temporaryClientGroup = ref(props.getClientGroup());
+const clientGroupTransient = ref(props.getClientGroup());
 
 watch(isDialogOpen, (newValue) => {
     if (!newValue) {
         // side effect: reset the temporary client group whenever the dialog is closed
-        temporaryClientGroup.value = props.getClientGroup();
+        clientGroupTransient.value = props.getClientGroup();
     }
 });
 
@@ -71,7 +71,7 @@ const handleCancelClick = () => {
 
 const handleSubmitClick = () => {
     const clientGroup = clientGroupTransientToClientGroup(
-        temporaryClientGroup.value,
+        clientGroupTransient.value,
     );
     emit("submit", clientGroup);
     isDialogOpen.value = false;
