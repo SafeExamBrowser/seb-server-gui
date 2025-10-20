@@ -1,7 +1,7 @@
 import { useStepNamingStore } from "@/components/views/seb-server/template/exam/components/stepNaming/composables/store/useStepNamingStore";
 import { useStepSupervisorsStore } from "@/components/views/seb-server/template/exam/components/stepSupervisors/composables/store/useStepSupervisorsStore";
 import { StepItemCreateTemplateExam } from "@/components/views/seb-server/template/exam/types";
-import { StepItem } from "@/components/widgets/stepper/types";
+import { StepItem } from "@/components/widgets/stepperVertical/types";
 import { defineStore } from "pinia";
 import { useI18n } from "vue-i18n";
 import { computed, ref } from "vue";
