@@ -320,11 +320,11 @@
                             "NAME_ALPHABETICAL_RANGE": "Alphabetical User Name Range"
                         }
                     },
-                    "ip4RangeStart": {
+                    "ipRangeStart": {
                         "label": "Start of IP range",
                         "placeholder": "Enter the start of the IP range"
                     },
-                    "ip4RangeEnd": {
+                    "ipRangeEnd": {
                         "label": "End of IP range",
                         "placeholder": "Enter the end of the IP range"
                     }

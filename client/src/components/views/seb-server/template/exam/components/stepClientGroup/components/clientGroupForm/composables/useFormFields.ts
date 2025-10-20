@@ -116,10 +116,10 @@ export const useFormFields = (clientGroup: ModelRef<ClientGroupTransient>) => {
                       name: "ip4RangeStart",
                       model: ipRangeStart,
                       label: t(
-                          "createTemplateExam.steps.clientGroup.fields.ip4RangeStart.label",
+                          "createTemplateExam.steps.clientGroup.fields.ipRangeStart.label",
                       ),
                       placeholder: t(
-                          "createTemplateExam.steps.clientGroup.fields.ip4RangeStart.placeholder",
+                          "createTemplateExam.steps.clientGroup.fields.ipRangeStart.placeholder",
                       ),
                       required: true,
                   }
@@ -130,10 +130,10 @@ export const useFormFields = (clientGroup: ModelRef<ClientGroupTransient>) => {
                       name: "ip4RangeEnd",
                       model: ipRangeEnd,
                       label: t(
-                          "createTemplateExam.steps.clientGroup.fields.ip4RangeEnd.label",
+                          "createTemplateExam.steps.clientGroup.fields.ipRangeEnd.label",
                       ),
                       placeholder: t(
-                          "createTemplateExam.steps.clientGroup.fields.ip4RangeEnd.placeholder",
+                          "createTemplateExam.steps.clientGroup.fields.ipRangeEnd.placeholder",
                       ),
                       required: true,
                   }
