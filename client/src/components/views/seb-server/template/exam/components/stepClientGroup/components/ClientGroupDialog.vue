@@ -20,7 +20,11 @@
             </template>
             <template #actions>
                 <v-btn :text="labelCancel" @click="handleCancelClick"></v-btn>
-                <v-btn :text="labelSubmit" @click="handleSubmitClick"></v-btn>
+                <v-btn
+                    :text="labelSubmit"
+                    :disabled="!temporaryClientGroup.isValid"
+                    @click="handleSubmitClick"
+                ></v-btn>
             </template>
         </v-card>
     </v-dialog>

@@ -6,6 +6,7 @@ import {
 export type ClientGroupTransient = {
     id: number;
     name: string;
+    isValid: boolean;
     type?:
         | ClientGroupEnum.IP_V4_RANGE
         | ClientGroupEnum.CLIENT_OS

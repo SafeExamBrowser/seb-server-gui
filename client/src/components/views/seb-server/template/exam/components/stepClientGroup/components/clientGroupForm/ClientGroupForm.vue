@@ -1,5 +1,5 @@
 <template>
-    <FormBuilder :fields="formFields" />
+    <FormBuilder v-model="isValid" :fields="formFields" />
 </template>
 
 <script setup lang="ts">
@@ -9,5 +9,5 @@ import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 
 const model = defineModel<ClientGroupTransient>({ required: true });
 
-const { formFields } = useFormFields(model);
+const { isValid, formFields } = useFormFields(model);
 </script>

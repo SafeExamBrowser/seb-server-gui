@@ -21,7 +21,10 @@ const props = defineProps<{
 }>();
 
 const getClientGroup = () => {
-    return props.clientGroup;
+    return {
+        ...props.clientGroup,
+        isValid: true,
+    };
 };
 
 const handleUpdate = (clientGroup: ClientGroup) => {

@@ -7,6 +7,13 @@ import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
 export const useFormFields = (clientGroup: ModelRef<ClientGroupTransient>) => {
     const { t } = useI18n();
 
+    const isValid = computed<boolean>({
+        get: (): boolean => clientGroup.value.isValid,
+        set: (value: boolean) => {
+            clientGroup.value = { ...clientGroup.value, isValid: value };
+        },
+    });
+
     const name = computed<ClientGroupTransient["name"]>({
         get: (): ClientGroupTransient["name"] => clientGroup.value.name,
         set: (value: ClientGroupTransient["name"]) => {
@@ -58,6 +65,7 @@ export const useFormFields = (clientGroup: ModelRef<ClientGroupTransient>) => {
     ];
 
     return {
+        isValid,
         formFields,
     };
 };
