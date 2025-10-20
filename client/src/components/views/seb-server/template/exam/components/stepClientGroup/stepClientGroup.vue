@@ -1,5 +1,5 @@
 <template>
-    <Step
+    <StepItem
         :title="$t('createTemplateExam.steps.clientGroup.title')"
         :subtitle="$t('createTemplateExam.steps.clientGroup.subtitle')"
     >
@@ -8,7 +8,7 @@
             v-if="useScreenProctoringStore().enabled"
             class="mt-8"
         />
-    </Step>
+    </StepItem>
 </template>
 
 <script setup lang="ts">

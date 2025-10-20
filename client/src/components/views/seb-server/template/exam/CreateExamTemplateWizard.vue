@@ -1,7 +1,7 @@
 <template>
     <BasicPage
         :title="$t('titles.createTemplateExam')"
-        :breadcrumb="[
+        :bread-crumb="[
             {
                 label: $t('titles.createTemplate'),
                 link: constants.CREATE_EXAM_TEMPLATE_ROUTE,
@@ -24,7 +24,7 @@
             </LoadingFallbackComponent>
         </template>
         <template #PanelAside>
-            <Stepper
+            <StepperVertical
                 :steps="store.stepperModel"
                 :current-step="store.currentStepIndex"
                 @next="handleStepperNext"
@@ -37,7 +37,7 @@
 
 <script setup lang="ts">
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
-import Stepper from "@/components/widgets/stepper/Stepper.vue";
+import StepperVertical from "@/components/widgets/stepperVertical/StepperVertical.vue";
 import * as constants from "@/utils/constants";
 import { stepComponents } from "@/components/views/seb-server/template/exam/types";
 import { useCreateExamTemplateStore } from "./composables/store/useCreateExamTemplateStore";

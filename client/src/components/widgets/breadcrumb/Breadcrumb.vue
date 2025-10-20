@@ -28,11 +28,11 @@
 </template>
 
 <script setup lang="ts">
+import { BreadCrumbItem } from "./types";
 import { HOME_PAGE_ROUTE } from "@/utils/constants";
-import { BreadcrumbItem } from "./types";
 
 defineProps<{
-    items: BreadcrumbItem[];
+    items: BreadCrumbItem[];
 }>();
 </script>
 
