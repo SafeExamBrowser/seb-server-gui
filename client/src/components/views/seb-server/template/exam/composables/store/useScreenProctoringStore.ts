@@ -1,6 +1,6 @@
 import { ScreenProctoringCollectionStrategy } from "@/components/views/seb-server/template/exam/types";
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
 const initialState = {
     enabled: true, // TODO @alain: remove debug (should be false)
@@ -12,6 +12,10 @@ export const useScreenProctoringStore = defineStore("screenProctoring", () => {
 
     const collectionStrategy = ref<ScreenProctoringCollectionStrategy>();
 
+    const screenProctoringAllowedForGroups = computed<boolean>(
+        () => enabled.value && collectionStrategy.value !== "EXAM",
+    );
+
     const $reset = () => {
         enabled.value = initialState.enabled;
         collectionStrategy.value = initialState.collectionStrategy;
@@ -20,6 +24,7 @@ export const useScreenProctoringStore = defineStore("screenProctoring", () => {
     return {
         enabled,
         collectionStrategy,
+        screenProctoringAllowedForGroups,
         $reset,
     };
 });
