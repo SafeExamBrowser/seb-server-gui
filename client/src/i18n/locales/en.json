@@ -319,6 +319,14 @@
                             "CLIENT_OS": "SEB Client OS",
                             "NAME_ALPHABETICAL_RANGE": "Alphabetical User Name Range"
                         }
+                    },
+                    "ip4RangeStart": {
+                        "label": "Start of IP range",
+                        "placeholder": "Enter the start of the IP range"
+                    },
+                    "ip4RangeEnd": {
+                        "label": "End of IP range",
+                        "placeholder": "Enter the end of the IP range"
                     }
                 }
             },
