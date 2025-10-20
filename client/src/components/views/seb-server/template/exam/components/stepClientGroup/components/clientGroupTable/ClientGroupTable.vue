@@ -18,6 +18,22 @@
                 )
             }}
         </template>
+        <template #item.screenProctoringEnabled="{ item }">
+            <v-icon
+                :icon="
+                    item.screenProctoringEnabled
+                        ? 'mdi-checkbox-marked-outline'
+                        : 'mdi-checkbox-blank-outline'
+                "
+            />
+            <span class="d-sr-only">
+                {{
+                    item.screenProctoringEnabled
+                        ? $t("general.true")
+                        : $t("general.false")
+                }}
+            </span>
+        </template>
         <template #item.actions="{ item }">
             <div v-if="hasActions(item)" class="d-flex ga-2 justify-end">
                 <ClientGroupUpdate :client-group="item" />

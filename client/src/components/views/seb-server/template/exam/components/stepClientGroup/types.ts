@@ -44,9 +44,11 @@ export type ClientGroupForTable =
     | ClientGroup
     | {
           type: "SCREEN_PROCTORING_SINGLE";
+          screenProctoringEnabled: true;
       }
     | {
           type: "SCREEN_PROCTORING_FALLBACK";
+          screenProctoringEnabled: true;
       };
 
 export const clientGroupTransientToClientGroup = (

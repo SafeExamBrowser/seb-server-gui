@@ -19,6 +19,12 @@ export const useTable = () => {
         },
         {
             title: t(
+                "createTemplateExam.steps.clientGroup.fields.screenProctoringEnabled.label",
+            ),
+            value: "screenProctoringEnabled",
+        },
+        {
+            title: t(
                 "createTemplateExam.steps.clientGroup.fields.actions.label",
             ),
             value: "actions",
@@ -39,6 +45,7 @@ export const useTable = () => {
             return {
                 id: 0,
                 type: "SCREEN_PROCTORING_SINGLE" as const,
+                screenProctoringEnabled: true,
                 name: t(
                     "createTemplateExam.steps.clientGroup.screenProctoringSingleGroupName",
                 ),
@@ -48,6 +55,7 @@ export const useTable = () => {
         return {
             id: 0,
             type: "SCREEN_PROCTORING_FALLBACK" as const,
+            screenProctoringEnabled: true,
             name: t(
                 "createTemplateExam.steps.clientGroup.screenProctoringFallbackGroupName",
             ),
