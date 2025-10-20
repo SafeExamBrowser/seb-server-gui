@@ -1,5 +1,5 @@
 import { computed, ModelRef } from "vue";
-import { FormField } from "@/components/widgets/form/types";
+import { FormField } from "@/components/widgets/formBuilder/types";
 import { ClientGroup } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 import { useI18n } from "vue-i18n";
 import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
