@@ -35,9 +35,10 @@ export const useTable = () => {
     const { groups: groupsFromStore } = storeToRefs(useStepClientGroupStore());
 
     const fallbackGroup = computed<ClientGroupForTable | undefined>(() => {
-        const { collectionStrategy } = useScreenProctoringStore();
+        const { collectionStrategy, enabled: screenProctoringEnabled } =
+            useScreenProctoringStore();
 
-        if (!collectionStrategy) {
+        if (!screenProctoringEnabled) {
             return undefined;
         }
 
@@ -52,14 +53,18 @@ export const useTable = () => {
             };
         }
 
-        return {
-            id: 0,
-            type: "SCREEN_PROCTORING_FALLBACK" as const,
-            screenProctoringEnabled: true,
-            name: t(
-                "createTemplateExam.steps.clientGroup.screenProctoringFallbackGroupName",
-            ),
-        };
+        if (collectionStrategy === "APPLY_SEB_GROUPS") {
+            return {
+                id: 0,
+                type: "SCREEN_PROCTORING_FALLBACK" as const,
+                screenProctoringEnabled: true,
+                name: t(
+                    "createTemplateExam.steps.clientGroup.screenProctoringFallbackGroupName",
+                ),
+            };
+        }
+
+        return undefined;
     });
 
     const items = computed<ClientGroupForTable[]>(() =>
