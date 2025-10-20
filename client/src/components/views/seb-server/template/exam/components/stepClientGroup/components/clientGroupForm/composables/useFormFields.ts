@@ -3,6 +3,7 @@ import { FormField } from "@/components/widgets/formBuilder/types";
 import { ClientGroupTransient } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 import { useI18n } from "vue-i18n";
 import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
+import { useScreenProctoringStore } from "@/components/views/seb-server/template/exam/composables/store/useScreenProctoringStore";
 
 export const useFormFields = (clientGroup: ModelRef<ClientGroupTransient>) => {
     const { t } = useI18n();
@@ -75,15 +76,17 @@ export const useFormFields = (clientGroup: ModelRef<ClientGroupTransient>) => {
             ),
             required: true,
         },
-        {
-            type: "switch" as const,
-            name: "screenProctoringEnabled",
-            model: screenProctoringEnabled,
-            label: t(
-                "createTemplateExam.steps.clientGroup.fields.screenProctoringEnabled.label",
-            ),
-        },
-    ];
+        useScreenProctoringStore().enabled
+            ? {
+                  type: "switch" as const,
+                  name: "screenProctoringEnabled",
+                  model: screenProctoringEnabled,
+                  label: t(
+                      "createTemplateExam.steps.clientGroup.fields.screenProctoringEnabled.label",
+                  ),
+              }
+            : undefined,
+    ].filter((field) => field !== undefined);
 
     return {
         isValid,
