@@ -4,9 +4,14 @@ import { ClientGroupTransient } from "@/components/views/seb-server/template/exa
 import { useI18n } from "vue-i18n";
 import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
 import { useScreenProctoringStore } from "@/components/views/seb-server/template/exam/composables/store/useScreenProctoringStore";
+import { storeToRefs } from "pinia";
 
 export const useFormFields = (clientGroup: ModelRef<ClientGroupTransient>) => {
     const { t } = useI18n();
+
+    const { screenProctoringAllowedForGroups } = storeToRefs(
+        useScreenProctoringStore(),
+    );
 
     const isValid = computed<boolean>({
         get: (): boolean => clientGroup.value.isValid,
@@ -76,7 +81,7 @@ export const useFormFields = (clientGroup: ModelRef<ClientGroupTransient>) => {
             ),
             required: true,
         },
-        useScreenProctoringStore().enabled
+        screenProctoringAllowedForGroups.value
             ? {
                   type: "switch" as const,
                   name: "screenProctoringEnabled",
