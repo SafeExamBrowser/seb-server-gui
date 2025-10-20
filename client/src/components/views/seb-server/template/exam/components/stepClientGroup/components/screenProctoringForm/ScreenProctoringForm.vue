@@ -16,7 +16,7 @@
         </v-row>
         <v-row>
             <v-col>
-                <Form
+                <FormBuilder
                     v-model="
                         useStepClientGroupStore().isScreenProctoringFormReady
                     "
@@ -31,6 +31,7 @@
 import { useFormFields } from "./composables/useFormFields";
 import { useDisplay } from "vuetify";
 import { useStepClientGroupStore } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/store/useStepClientGroupStore";
+import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 
 const { formFields } = useFormFields();
 </script>
