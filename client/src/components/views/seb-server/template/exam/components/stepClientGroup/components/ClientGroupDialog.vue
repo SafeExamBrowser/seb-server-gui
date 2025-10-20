@@ -29,7 +29,11 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import { IconValue } from "vuetify/lib/composables/icons.mjs";
-import { ClientGroup } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
+import {
+    ClientGroup,
+    ClientGroupTransient,
+    isClientGroup,
+} from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 import { useDisplay } from "vuetify";
 
 const props = defineProps<{
@@ -39,7 +43,7 @@ const props = defineProps<{
     labelActivator: string;
     labelCancel: string;
     labelSubmit: string;
-    getClientGroup: () => ClientGroup;
+    getClientGroup: () => ClientGroupTransient;
 }>();
 
 const emit = defineEmits<{
@@ -62,6 +66,10 @@ const handleCancelClick = () => {
 };
 
 const handleSubmitClick = () => {
+    if (!isClientGroup(temporaryClientGroup.value)) {
+        throw new Error("Not a valid client group!");
+    }
+
     emit("submit", temporaryClientGroup.value);
     isDialogOpen.value = false;
 };

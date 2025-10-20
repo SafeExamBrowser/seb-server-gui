@@ -1,6 +1,9 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
-import { ClientGroup } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
+import {
+    ClientGroup,
+    ClientGroupTransient,
+} from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 import { useScreenProctoringStore } from "@/components/views/seb-server/template/exam/composables/store/useScreenProctoringStore";
 
 const initialState = {
@@ -8,10 +11,9 @@ const initialState = {
     groups: [],
 };
 
-export const getEmptyClientGroup = (): ClientGroup => ({
-    name: "",
+export const getEmptyClientGroup = (): ClientGroupTransient => ({
     id: crypto.getRandomValues(new Uint32Array(1))[0], // random ID, for FE use only (when submitting to BE, the BE will generate the real ID)
-    type: undefined,
+    name: "",
 });
 
 export const useStepClientGroupStore = defineStore("stepClientGroup", () => {

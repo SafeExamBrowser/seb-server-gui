@@ -1,26 +1,26 @@
 import { computed, ModelRef } from "vue";
 import { FormField } from "@/components/widgets/formBuilder/types";
-import { ClientGroup } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
+import { ClientGroupTransient } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 import { useI18n } from "vue-i18n";
 import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
 
-export const useFormFields = (clientGroup: ModelRef<ClientGroup>) => {
+export const useFormFields = (clientGroup: ModelRef<ClientGroupTransient>) => {
     const { t } = useI18n();
 
-    const name = computed<ClientGroup["name"]>({
-        get: (): ClientGroup["name"] => clientGroup.value.name,
-        set: (value: ClientGroup["name"]) => {
+    const name = computed<ClientGroupTransient["name"]>({
+        get: (): ClientGroupTransient["name"] => clientGroup.value.name,
+        set: (value: ClientGroupTransient["name"]) => {
             clientGroup.value = { ...clientGroup.value, name: value };
         },
     });
 
-    const type = computed<ClientGroup["type"]>({
-        get: (): ClientGroup["type"] => clientGroup.value.type,
-        set: (value: ClientGroup["type"]) => {
+    const type = computed<ClientGroupTransient["type"]>({
+        get: (): ClientGroupTransient["type"] => clientGroup.value.type,
+        set: (value: ClientGroupTransient["type"]) => {
             clientGroup.value = {
                 ...clientGroup.value,
                 type: value,
-            } as ClientGroup; // TODO @alain: fix this. Create a second type "ClientGroupTransient" that is losely typed (most things optional, no discriminated union). Use this type in the form fields and then convert to ClientGroup when submitting.
+            };
         },
     });
 

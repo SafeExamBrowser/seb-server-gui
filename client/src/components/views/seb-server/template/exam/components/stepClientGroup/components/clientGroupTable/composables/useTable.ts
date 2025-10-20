@@ -1,5 +1,5 @@
 import { useI18n } from "vue-i18n";
-import { ClientGroup } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
+import { ClientGroupForTable } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 import { computed } from "vue";
 import { useScreenProctoringStore } from "@/components/views/seb-server/template/exam/composables/store/useScreenProctoringStore";
 import { useStepClientGroupStore } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/store/useStepClientGroupStore";
@@ -28,7 +28,7 @@ export const useTable = () => {
 
     const { groups: groupsFromStore } = storeToRefs(useStepClientGroupStore());
 
-    const fallbackGroup = computed<ClientGroup | undefined>(() => {
+    const fallbackGroup = computed<ClientGroupForTable | undefined>(() => {
         const { collectionStrategy } = useScreenProctoringStore();
 
         if (!collectionStrategy) {
@@ -54,7 +54,7 @@ export const useTable = () => {
         };
     });
 
-    const items = computed<ClientGroup[]>(() =>
+    const items = computed<ClientGroupForTable[]>(() =>
         [...groupsFromStore.value, fallbackGroup.value].filter(
             (item) => item !== undefined,
         ),
