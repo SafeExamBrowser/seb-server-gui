@@ -4,7 +4,6 @@ import {
 } from "@/models/seb-server/clientGroupEnum";
 
 export type ClientGroupTransient = {
-    isValid: boolean;
     id: number;
     name: string;
     screenProctoringEnabled: boolean;
@@ -53,8 +52,9 @@ export type ClientGroupForTable =
 
 export const clientGroupTransientToClientGroup = (
     clientGroupTransient: ClientGroupTransient,
+    isValid: boolean,
 ): ClientGroup => {
-    const { isValid, ...clientGroup } = clientGroupTransient;
+    const { ...clientGroup } = clientGroupTransient;
 
     if (isValid === false) {
         throw new Error("Client group transient is not a valid client group!");

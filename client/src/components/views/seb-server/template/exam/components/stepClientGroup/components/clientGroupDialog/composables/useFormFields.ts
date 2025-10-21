@@ -1,4 +1,4 @@
-import { computed, ComputedRef, Ref } from "vue";
+import { computed, Ref } from "vue";
 import { FormField } from "@/components/widgets/formBuilder/types";
 import { ClientGroupTransient } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
@@ -8,16 +8,7 @@ import { useFormFieldsTypeIPRange } from "./useFormFieldsTypeIPRange";
 import { useFormFieldsTypeClientOS } from "./useFormFieldsTypeClientOS";
 import { useFormFieldsTypeNameAlphabeticalRange } from "./useFormFieldsTypeNameAlphabeticalRange";
 
-export const useFormFields = (
-    clientGroup: Ref<ClientGroupTransient>,
-): { isValid: ComputedRef<boolean>; formFields: ComputedRef<FormField[]> } => {
-    const isValid = computed<boolean>({
-        get: (): boolean => clientGroup.value.isValid,
-        set: (value: boolean) => {
-            clientGroup.value = { ...clientGroup.value, isValid: value };
-        },
-    });
-
+export const useFormFields = (clientGroup: Ref<ClientGroupTransient>) => {
     const formFields = computed<FormField[]>(() =>
         [
             useFormFieldsBasic(clientGroup),
@@ -34,8 +25,5 @@ export const useFormFields = (
         ].flat(),
     );
 
-    return {
-        isValid,
-        formFields,
-    };
+    return formFields;
 };

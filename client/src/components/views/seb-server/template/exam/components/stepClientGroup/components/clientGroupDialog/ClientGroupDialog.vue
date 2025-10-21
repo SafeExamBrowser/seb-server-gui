@@ -30,7 +30,7 @@
                     type="submit"
                     :form="formId"
                     :text="labelSubmit"
-                    :disabled="!clientGroupTransient.isValid"
+                    :disabled="!isValid"
                 ></v-btn>
             </template>
         </v-card>
@@ -73,12 +73,16 @@ const activatorRef = ref<HTMLElement>();
 const isDialogOpen = ref(false);
 const clientGroupTransient = ref(props.getClientGroup());
 const formId = "client-group-form";
-const { isValid, formFields } = useFormFields(clientGroupTransient);
+const isValid = ref<boolean>(false);
+const formFields = useFormFields(clientGroupTransient);
 
 watch(isDialogOpen, (newValue) => {
     if (!newValue) {
         // side effect: reset the temporary client group whenever the dialog is closed
         clientGroupTransient.value = props.getClientGroup();
+
+        // side effect: reset the validation flag whenever the dialog is closed
+        isValid.value = false;
     }
 });
 
@@ -87,10 +91,13 @@ const handleCancelClick = () => {
 };
 
 const handleFormSubmit = () => {
-    const clientGroup = clientGroupTransientToClientGroup(
-        clientGroupTransient.value,
+    emit(
+        "submit",
+        clientGroupTransientToClientGroup(
+            clientGroupTransient.value,
+            isValid.value,
+        ),
     );
-    emit("submit", clientGroup);
     isDialogOpen.value = false;
 };
 </script>

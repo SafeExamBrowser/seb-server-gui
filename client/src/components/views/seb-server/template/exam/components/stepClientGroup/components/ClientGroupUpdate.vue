@@ -24,7 +24,6 @@ const props = defineProps<{
 const getClientGroup = () => {
     return {
         ...props.clientGroup,
-        isValid: true,
     };
 };
 
