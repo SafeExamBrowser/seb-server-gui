@@ -36,7 +36,7 @@ type ExamTemplate = {
     id?: number; // PK of the ExamTemplate only available when the ExamTemplate exists
     name: string; // mandatory, min 3 - max 255 chars, name is unique for all ExamTemplate (2)
     description?: string; // optional, max 4000 chars, description text
-    examType: string; // optional exam type selection "ExamTypeEnum"
+    examType?: string; // optional exam type selection "ExamTypeEnum"
     supporter: string[]; // optional selection of Exam Supporter users (see Exam Wizard on how to fetch the possible users for selection)
     configurationTemplateId?: number; // mandatory, identifier of the the selected configuration template.  (3)
     institutionalDefault: boolean; // mandatory, institutional default flag
