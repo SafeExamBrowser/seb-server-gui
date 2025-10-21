@@ -1,4 +1,4 @@
-import { computed, ModelRef } from "vue";
+import { computed, ComputedRef, ModelRef } from "vue";
 import { FormField } from "@/components/widgets/formBuilder/types";
 import { ClientGroupTransient } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 import { useI18n } from "vue-i18n";
@@ -8,7 +8,9 @@ import { storeToRefs } from "pinia";
 import { useFormFieldsTypeIpRange } from "@/components/views/seb-server/template/exam/components/stepClientGroup/components/clientGroupForm/composables/useFormFieldsTypeIpRange";
 import { useFormFieldsBasic } from "@/components/views/seb-server/template/exam/components/stepClientGroup/components/clientGroupForm/composables/useFormFieldsBasic";
 
-export const useFormFields = (clientGroup: ModelRef<ClientGroupTransient>) => {
+export const useFormFields = (
+    clientGroup: ModelRef<ClientGroupTransient>,
+): { isValid: ComputedRef<boolean>; formFields: ComputedRef<FormField[]> } => {
     const { t } = useI18n();
 
     const { screenProctoringAllowedForGroups } = storeToRefs(
