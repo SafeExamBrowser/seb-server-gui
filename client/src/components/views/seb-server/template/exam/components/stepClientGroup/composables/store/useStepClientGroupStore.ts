@@ -19,6 +19,8 @@ export const getEmptyClientGroup = (): ClientGroupTransient => ({
 });
 
 export const useStepClientGroupStore = defineStore("stepClientGroup", () => {
+    const screenProctoringStore = useScreenProctoringStore();
+
     const isScreenProctoringFormReady = ref(
         initialState.isScreenProctoringFormReady,
     );
@@ -45,9 +47,18 @@ export const useStepClientGroupStore = defineStore("stepClientGroup", () => {
     };
 
     const isReady = computed(() => {
-        return useScreenProctoringStore().enabled
-            ? isScreenProctoringFormReady.value
-            : true;
+        if (!screenProctoringStore.enabled) {
+            // without screen proctoring being enabled on the examTemplate, there are no restrictions (groups are optional)
+            return true;
+        }
+
+        if (screenProctoringStore.collectionStrategy === "APPLY_SEB_GROUPS") {
+            // if the collection strategy is APPLY_SEB_GROUPS, there must be at least one group with screen proctoring enabled
+            return groups.value.some((group) => group.screenProctoringEnabled);
+        }
+
+        // in any other case, it depends on the form being ready
+        return isScreenProctoringFormReady.value;
     });
 
     return {
