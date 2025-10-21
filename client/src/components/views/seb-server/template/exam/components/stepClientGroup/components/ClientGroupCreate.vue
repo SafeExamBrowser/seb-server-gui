@@ -20,6 +20,7 @@ import { ClientGroup } from "@/components/views/seb-server/template/exam/compone
 import { storeToRefs } from "pinia";
 import { useScreenProctoringStore } from "@/components/views/seb-server/template/exam/composables/store/useScreenProctoringStore";
 import { computed } from "vue";
+import ClientGroupDialog from "@/components/views/seb-server/template/exam/components/stepClientGroup/components/clientGroupDialog/ClientGroupDialog.vue";
 
 const { createGroup } = useStepClientGroupStore();
 
