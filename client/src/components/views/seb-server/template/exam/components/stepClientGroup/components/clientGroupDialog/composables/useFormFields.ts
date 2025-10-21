@@ -25,5 +25,7 @@ export const useFormFields = (clientGroup: Ref<ClientGroupTransient>) => {
         ].flat(),
     );
 
-    return formFields;
+    return {
+        formFields,
+    };
 };

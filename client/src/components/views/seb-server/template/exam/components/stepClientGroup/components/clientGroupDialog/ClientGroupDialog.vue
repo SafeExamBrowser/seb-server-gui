@@ -74,7 +74,7 @@ const isDialogOpen = ref(false);
 const clientGroupTransient = ref(props.getClientGroup());
 const formId = "client-group-form";
 const isValid = ref<boolean>(false);
-const formFields = useFormFields(clientGroupTransient);
+const { formFields } = useFormFields(clientGroupTransient);
 
 watch(isDialogOpen, (newValue) => {
     if (!newValue) {
