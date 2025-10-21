@@ -2,12 +2,10 @@ import { FormField } from "@/components/widgets/formBuilder/types";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import { SCREEN_PROCTORING_COLLECTION_STRATEGY } from "@/components/views/seb-server/template/exam/types";
-import { useI18n } from "vue-i18n";
 import { useScreenProctoringStore } from "@/components/views/seb-server/template/exam/composables/store/useScreenProctoringStore";
+import i18n from "@/i18n";
 
 export const useFormFields = () => {
-    const { t } = useI18n();
-
     const { collectionStrategy: modelScreenProctoringCollectionStrategy } =
         storeToRefs(useScreenProctoringStore());
 
@@ -16,7 +14,7 @@ export const useFormFields = () => {
             return undefined;
         }
 
-        return t(
+        return i18n.global.t(
             `createTemplateExam.general.fields.screenProctoringCollectionStrategy.info.${modelScreenProctoringCollectionStrategy.value}`,
         );
     });
@@ -31,14 +29,14 @@ export const useFormFields = () => {
                     SCREEN_PROCTORING_COLLECTION_STRATEGY,
                 ).map((enumValue) => ({
                     value: enumValue,
-                    text: t(
+                    text: i18n.global.t(
                         `createTemplateExam.general.fields.screenProctoringCollectionStrategy.strategies.${enumValue}`,
                     ),
                 })),
-                label: t(
+                label: i18n.global.t(
                     "createTemplateExam.general.fields.screenProctoringCollectionStrategy.label",
                 ),
-                placeholder: t(
+                placeholder: i18n.global.t(
                     "createTemplateExam.general.fields.screenProctoringCollectionStrategy.placeholder",
                 ),
                 required: true,
