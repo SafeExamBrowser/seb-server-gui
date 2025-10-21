@@ -138,7 +138,7 @@
         "steps": {
             "selectAssessmentTool": "Select Assessment Tool",
             "selectExam": "Select Exam",
-            "chooseTemplate": "Choose Template",
+            "chooseTemplate": "Choose Exam Template",
             "selectGroup": "Select Groups",
             "addSupervisors": "Add Exam Supervisor",
             "quitPassword": "Set Quit Password",
@@ -177,7 +177,7 @@
         },
 
         "templateMain": {
-            "title": "Select Exam Template",
+            "title": "Choose Exam Template",
             "description": "Click on the Exam Template you want to use for the exam.",
             "templateInfo": "Open template info",
             "templateSelect": "Select template"
