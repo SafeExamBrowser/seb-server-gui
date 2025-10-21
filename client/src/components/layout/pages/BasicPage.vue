@@ -2,7 +2,7 @@
     <div class="fill-height d-flex flex-column">
         <v-row class="flex-grow-0 flex-shrink-0">
             <v-col>
-                <BreadCrumb :items="breadCrumb" />
+                <BreadCrumbTest :items="breadCrumb" />
             </v-col>
         </v-row>
         <v-row class="flex-grow-0 flex-shrink-0">
@@ -35,7 +35,8 @@
 
 <script setup lang="ts">
 import PageTitle from "@/components/widgets/PageTitle.vue";
-import { BreadCrumbItem } from "@/components/widgets/breadCrumb/types";
+import { BreadCrumbItem } from "@/components/widgets/breadCrumbTest/types";
+import BreadCrumbTest from "@/components/widgets/breadCrumbTest/BreadCrumbTest.vue";
 
 defineProps<{
     title: string;
