@@ -17,14 +17,19 @@
     >
         <v-card :title="labelActivator">
             <template #text>
-                <ClientGroupForm v-model="clientGroupTransient" />
+                <ClientGroupForm
+                    v-model="clientGroupTransient"
+                    :form-id="formId"
+                    @submit="handleFormSubmit"
+                />
             </template>
             <template #actions>
                 <v-btn :text="labelCancel" @click="handleCancelClick"></v-btn>
                 <v-btn
+                    type="submit"
+                    :form="formId"
                     :text="labelSubmit"
                     :disabled="!clientGroupTransient.isValid"
-                    @click="handleSubmitClick"
                 ></v-btn>
             </template>
         </v-card>
@@ -65,6 +70,7 @@ const emit = defineEmits<{
 const activatorRef = ref<HTMLElement>();
 const isDialogOpen = ref(false);
 const clientGroupTransient = ref(props.getClientGroup());
+const formId = "client-group-form";
 
 watch(isDialogOpen, (newValue) => {
     if (!newValue) {
@@ -77,7 +83,7 @@ const handleCancelClick = () => {
     isDialogOpen.value = false;
 };
 
-const handleSubmitClick = () => {
+const handleFormSubmit = () => {
     const clientGroup = clientGroupTransientToClientGroup(
         clientGroupTransient.value,
     );
