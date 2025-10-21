@@ -4,7 +4,6 @@ import { OptionalParGetMonitoringClientLogs } from "@/models/seb-server/optional
 import {
     ClientEventResponse,
     ClientNotification,
-    MonitoringConnections,
     MonitoringOverview,
     MonitoringStaticClientData,
     SingleConnection,
@@ -44,8 +43,8 @@ export async function getOverview(
 
 export async function getConnections(
     examId: string,
-    optionalHeaders: {},
-): Promise<MonitoringConnections | any> {
+    optionalHeaders: unknown,
+): Promise<any> {
     const url: string = monitoringUrl + "/connections/" + examId;
     return (
         await apiService.api.get(url, {

@@ -52,8 +52,6 @@ export default defineConfig([
                 { "ts-ignore": "allow-with-description" },
             ],
 
-            // new exceptions after updating eslint config. @TODO: remove these one by one and fix the respective issues in the codebase
-
             // TODO Alain
             "vue/multi-word-component-names": "off",
 
@@ -62,7 +60,6 @@ export default defineConfig([
 
             // TODO Andrei
             "@typescript-eslint/no-explicit-any": "off", //245
-            "@typescript-eslint/no-empty-object-type": "off", //9
             "@typescript-eslint/no-non-null-assertion": "off", //114
         },
     },
