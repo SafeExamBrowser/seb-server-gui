@@ -76,6 +76,8 @@ const getBaseProperties = (field: FormField): FormFieldBaseProperties => {
             ...(isRequired ? [useRules().required()] : []),
             ...(field.rules ?? []),
         ],
+        hint: field.info || undefined,
+        persistentHint: field.info !== undefined,
     };
 };
 
