@@ -106,7 +106,11 @@ export const useFormFields = () => {
                 type: "select" as const,
                 name: "examType",
                 model: modelExamType,
-                options: Object.values(ExamTypeEnum).map((enumValue) => ({
+                options: [
+                    ExamTypeEnum.MANAGED,
+                    ExamTypeEnum.BYOD,
+                    ExamTypeEnum.VDI,
+                ].map((enumValue) => ({
                     value: enumValue,
                     text: t(enumValue),
                 })),
@@ -116,7 +120,6 @@ export const useFormFields = () => {
                 placeholder: t(
                     "createTemplateExam.steps.naming.fields.examType.placeholder",
                 ),
-                required: true,
             },
             {
                 type: "select" as const,

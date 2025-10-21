@@ -6,7 +6,7 @@ const initialState = {
     isReady: false,
     name: "",
     description: "",
-    examType: ExamTypeEnum.UNDEFINED,
+    examType: undefined,
     configurationTemplate: undefined,
     clientConfiguration: undefined,
     lmsIntegration: false,
@@ -17,7 +17,7 @@ export const useStepNamingStore = defineStore("stepNaming", () => {
     const isReady = ref(initialState.isReady);
     const name = ref(initialState.name);
     const description = ref(initialState.description);
-    const examType = ref<ExamTypeEnum>(initialState.examType);
+    const examType = ref<ExamTypeEnum | undefined>(initialState.examType);
     const configurationTemplate = ref<string | undefined>(
         initialState.configurationTemplate,
     );
