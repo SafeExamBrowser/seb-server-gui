@@ -2,10 +2,9 @@ import { computed, ComputedRef, ModelRef } from "vue";
 import { FormField } from "@/components/widgets/formBuilder/types";
 import { ClientGroupTransient } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
-
-import { useFormFieldsTypeIpRange } from "@/components/views/seb-server/template/exam/components/stepClientGroup/components/clientGroupForm/composables/useFormFieldsTypeIpRange";
 import { useFormFieldsBasic } from "@/components/views/seb-server/template/exam/components/stepClientGroup/components/clientGroupForm/composables/useFormFieldsBasic";
 import { useFormFieldsScreenProctoring } from "@/components/views/seb-server/template/exam/components/stepClientGroup/components/clientGroupForm/composables/useFormFieldsScreenProctoring";
+import { useFormFieldsTypeIPRange } from "@/components/views/seb-server/template/exam/components/stepClientGroup/components/clientGroupForm/composables/useFormFieldsTypeIPRange";
 
 export const useFormFields = (
     clientGroup: ModelRef<ClientGroupTransient>,
@@ -22,7 +21,7 @@ export const useFormFields = (
             useFormFieldsBasic(clientGroup),
             useFormFieldsScreenProctoring(clientGroup),
             clientGroup.value.type === ClientGroupEnum.IP_V4_RANGE
-                ? useFormFieldsTypeIpRange(clientGroup)
+                ? useFormFieldsTypeIPRange(clientGroup)
                 : [],
         ].flat(),
     );

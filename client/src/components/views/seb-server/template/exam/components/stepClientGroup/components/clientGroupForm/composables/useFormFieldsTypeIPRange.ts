@@ -3,7 +3,7 @@ import { computed, ModelRef } from "vue";
 import { useI18n } from "vue-i18n";
 import { FormField } from "@/components/widgets/formBuilder/types";
 
-export const useFormFieldsTypeIpRange = (
+export const useFormFieldsTypeIPRange = (
     clientGroup: ModelRef<ClientGroupTransient>,
 ): FormField[] => {
     const { t } = useI18n();
