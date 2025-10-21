@@ -1,33 +1,36 @@
-import { useI18n } from "vue-i18n";
 import { ClientGroupForTable } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 import { computed } from "vue";
 import { useScreenProctoringStore } from "@/components/views/seb-server/template/exam/composables/store/useScreenProctoringStore";
 import { useStepClientGroupStore } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/store/useStepClientGroupStore";
 import { storeToRefs } from "pinia";
+import i18n from "@/i18n";
 
 export const useTable = () => {
-    const { t } = useI18n();
     const screenProctoringStore = useScreenProctoringStore();
 
     const headers = [
         {
-            title: t("createTemplateExam.steps.clientGroup.fields.name.label"),
+            title: i18n.global.t(
+                "createTemplateExam.steps.clientGroup.fields.name.label",
+            ),
             value: "name",
         },
         {
-            title: t("createTemplateExam.steps.clientGroup.fields.type.label"),
+            title: i18n.global.t(
+                "createTemplateExam.steps.clientGroup.fields.type.label",
+            ),
             value: "type",
         },
         screenProctoringStore.enabled
             ? {
-                  title: t(
+                  title: i18n.global.t(
                       "createTemplateExam.steps.clientGroup.fields.screenProctoringEnabled.label",
                   ),
                   value: "screenProctoringEnabled",
               }
             : undefined,
         {
-            title: t(
+            title: i18n.global.t(
                 "createTemplateExam.steps.clientGroup.fields.actions.label",
             ),
             value: "actions",
@@ -47,7 +50,7 @@ export const useTable = () => {
                 id: 0,
                 type: "SCREEN_PROCTORING_SINGLE" as const,
                 screenProctoringEnabled: true,
-                name: t(
+                name: i18n.global.t(
                     "createTemplateExam.steps.clientGroup.screenProctoringSingleGroupName",
                 ),
             };
@@ -58,7 +61,7 @@ export const useTable = () => {
                 id: 0,
                 type: "SCREEN_PROCTORING_FALLBACK" as const,
                 screenProctoringEnabled: true,
-                name: t(
+                name: i18n.global.t(
                     "createTemplateExam.steps.clientGroup.screenProctoringFallbackGroupName",
                 ),
             };
