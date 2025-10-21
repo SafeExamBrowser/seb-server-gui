@@ -1,5 +1,9 @@
 <template>
-    <v-form @update:model-value="handleModelValueUpdated" @submit.prevent>
+    <v-form
+        :id="formId"
+        @update:model-value="handleModelValueUpdated"
+        @submit.prevent="handleSubmit"
+    >
         <v-container fluid class="pa-0">
             <v-row
                 v-for="field in fields"
@@ -62,7 +66,12 @@ import {
 const isValid = defineModel<boolean | null>();
 
 defineProps<{
+    formId?: string;
     fields: FormField[];
+}>();
+
+const emit = defineEmits<{
+    (e: "submit"): void;
 }>();
 
 const getBaseProperties = (field: FormField): FormFieldBaseProperties => {
@@ -96,5 +105,9 @@ const getSelectProperties = (field: FormField & { type: "select" }) => ({
 
 const handleModelValueUpdated = (value: boolean | null) => {
     isValid.value = value;
+};
+
+const handleSubmit = async () => {
+    emit("submit");
 };
 </script>
