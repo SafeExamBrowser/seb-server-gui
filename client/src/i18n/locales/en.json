@@ -338,6 +338,14 @@
                             "IPAD_OS": "iPadOS",
                             "I_OS_OR_IPAD_OS": "iOS/iPadOS"
                         }
+                    },
+                    "nameRangeStartLetter": {
+                        "label": "Start Letter",
+                        "placeholder": "Enter the start letter of the name range"
+                    },
+                    "nameRangeEndLetter": {
+                        "label": "End Letter",
+                        "placeholder": "Enter the end letter of the name range"
                     }
                 }
             },
