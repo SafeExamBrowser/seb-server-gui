@@ -3,8 +3,10 @@ import { useStepSupervisorsStore } from "@/components/views/seb-server/template/
 import { StepItemCreateTemplateExam } from "@/components/views/seb-server/template/exam/types";
 import { StepItem } from "@/components/widgets/stepperVertical/types";
 import { defineStore } from "pinia";
-import { useI18n } from "vue-i18n";
 import { computed, ref } from "vue";
+import { useStepClientGroupStore } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/store/useStepClientGroupStore";
+import { useScreenProctoringStore } from "@/components/views/seb-server/template/exam/composables/store/useScreenProctoringStore";
+import i18n from "@/i18n";
 
 const staticStepData = [
     {
@@ -33,6 +35,7 @@ const isStepReady = (
     stepName: StepItemCreateTemplateExam["componentName"],
     stepNamingStore: ReturnType<typeof useStepNamingStore>,
     stepSupervisorsStore: ReturnType<typeof useStepSupervisorsStore>,
+    stepClientGroupStore: ReturnType<typeof useStepClientGroupStore>,
 ) => {
     switch (stepName) {
         case "StepNaming":
@@ -42,7 +45,7 @@ const isStepReady = (
         case "StepIndicators":
             return true;
         case "StepClientGroup":
-            return true;
+            return stepClientGroupStore.isReady;
         case "StepSummary":
             return true;
         default:
@@ -51,16 +54,16 @@ const isStepReady = (
 };
 
 const initialState = {
-    currentStepIndex: 0,
+    currentStepIndex: 3, // TODO @alain: remove debug (should be 0)
 };
 
 export const useCreateExamTemplateStore = defineStore(
     "createExamTemplate",
     () => {
-        const { t } = useI18n();
-
+        const screenProctoringStore = useScreenProctoringStore();
         const stepNamingStore = useStepNamingStore();
         const stepSupervisorsStore = useStepSupervisorsStore();
+        const stepClientGroupStore = useStepClientGroupStore();
 
         // state
         const currentStepIndex = ref(initialState.currentStepIndex);
@@ -68,11 +71,12 @@ export const useCreateExamTemplateStore = defineStore(
         // getters
         const stepperModel = computed<StepItem[]>(() =>
             staticStepData.map((step, index) => ({
-                title: t(step.i18nKey),
+                title: i18n.global.t(step.i18nKey),
                 nextStepEnabled: isStepReady(
                     step.componentName,
                     stepNamingStore,
                     stepSupervisorsStore,
+                    stepClientGroupStore,
                 ),
                 value: index,
             })),
@@ -87,7 +91,7 @@ export const useCreateExamTemplateStore = defineStore(
 
             return {
                 componentName: step.componentName,
-                title: t(step.i18nKey),
+                title: i18n.global.t(step.i18nKey),
             };
         });
 
@@ -129,8 +133,10 @@ export const useCreateExamTemplateStore = defineStore(
             currentStepIndex.value = initialState.currentStepIndex;
 
             // substores
+            screenProctoringStore.$reset();
             stepNamingStore.$reset();
             stepSupervisorsStore.$reset();
+            stepClientGroupStore.$reset();
         };
 
         return {

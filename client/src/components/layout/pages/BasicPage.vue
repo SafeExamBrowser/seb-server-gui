@@ -7,7 +7,7 @@
         </v-row>
         <v-row class="flex-grow-0 flex-shrink-0">
             <v-col>
-                <PageTitle :title="title" />
+                <PageTitle :name="title" />
             </v-col>
         </v-row>
         <v-row class="flex-grow-1 flex-shrink-1 overflow-y-auto">

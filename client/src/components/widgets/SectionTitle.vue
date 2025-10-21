@@ -1,7 +1,7 @@
 <template>
-    <h2 class="primary-text-color text-h4 font-weight-bold">
+    <h3 class="text-h6 font-weight-bold">
         {{ name }}
-    </h2>
+    </h3>
 </template>
 
 <script setup lang="ts">

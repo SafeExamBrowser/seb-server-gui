@@ -1,8 +1,8 @@
 <template>
     <v-form
-        class="w-100 w-md-50"
+        :id="formId"
         @update:model-value="handleModelValueUpdated"
-        @submit.prevent
+        @submit.prevent="handleSubmit"
     >
         <v-container fluid class="pa-0">
             <v-row
@@ -66,7 +66,12 @@ import {
 const isValid = defineModel<boolean | null>();
 
 defineProps<{
+    formId?: string;
     fields: FormField[];
+}>();
+
+const emit = defineEmits<{
+    (e: "submit"): void;
 }>();
 
 const getBaseProperties = (field: FormField): FormFieldBaseProperties => {
@@ -80,6 +85,8 @@ const getBaseProperties = (field: FormField): FormFieldBaseProperties => {
             ...(isRequired ? [useRules().required()] : []),
             ...(field.rules ?? []),
         ],
+        hint: field.info || undefined,
+        persistentHint: field.info !== undefined,
     };
 };
 
@@ -98,5 +105,9 @@ const getSelectProperties = (field: FormField & { type: "select" }) => ({
 
 const handleModelValueUpdated = (value: boolean | null) => {
     isValid.value = value;
+};
+
+const handleSubmit = async () => {
+    emit("submit");
 };
 </script>

@@ -4,10 +4,15 @@
             :title="$t('createTemplateExam.steps.naming.title')"
             :subtitle="$t('createTemplateExam.steps.naming.subtitle')"
         >
-            <FormBuilder
-                v-model="useStepNamingStore().isReady"
-                :fields="formFields"
-            />
+            <v-container
+                class="ma-0 pa-0"
+                :max-width="useDisplay().thresholds.value.sm"
+            >
+                <FormBuilder
+                    v-model="useStepNamingStore().isReady"
+                    :fields="formFields"
+                />
+            </v-container>
         </StepItem>
     </LoadingFallbackComponent>
 </template>
@@ -15,6 +20,7 @@
 <script setup lang="ts">
 import { useFormFields } from "./composables/useFormFields";
 import { useStepNamingStore } from "./composables/store/useStepNamingStore";
+import { useDisplay } from "vuetify";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 
 const { formFields, loading, errors } = useFormFields();

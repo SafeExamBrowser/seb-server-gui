@@ -16,3 +16,11 @@ export interface StepItemCreateTemplateExam {
     title: string;
     componentName: keyof typeof stepComponents;
 }
+
+export const SCREEN_PROCTORING_COLLECTION_STRATEGY = [
+    "EXAM",
+    "APPLY_SEB_GROUPS",
+] as const;
+
+export type ScreenProctoringCollectionStrategy =
+    (typeof SCREEN_PROCTORING_COLLECTION_STRATEGY)[number];
