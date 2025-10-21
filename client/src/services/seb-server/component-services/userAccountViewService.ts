@@ -34,14 +34,6 @@ export async function setPersonalUserAccount() {
     }
 }
 
-export async function getPersonalUserAccountFeatures(): Promise<any | null> {
-    try {
-        return await userAccountService.getPersonalUserAccountFeatures();
-    } catch {
-        return null;
-    }
-}
-
 //= ============api==================
 export async function getUserAccountById(
     accountId: string,
@@ -144,7 +136,7 @@ export async function deactivateUserAccount(
 
 export async function deleteUserAccount(
     accountId: string,
-): Promise<any | null> {
+): Promise<unknown | null> {
     try {
         return await userAccountService.deleteUserAccount(accountId);
     } catch {

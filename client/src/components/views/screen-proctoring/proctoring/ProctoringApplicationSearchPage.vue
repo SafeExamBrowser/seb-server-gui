@@ -250,7 +250,7 @@ const playbackSpeeds: { title: string; id: number }[] = [
 ];
 
 // intervals
-let intervalScreenshots: any | null = null;
+let intervalScreenshots: ReturnType<typeof setInterval> | null = null;
 
 // store
 const appBarStore = useAppBarStore();

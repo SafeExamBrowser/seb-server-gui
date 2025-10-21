@@ -100,7 +100,7 @@ const panels = ref<string[]>(["panel"]);
 
 // table
 const selectedExamIds = ref<number[]>([]);
-const headerRefs = ref<any[]>();
+const headerRefs = ref<unknown[]>([]);
 const headers = ref([
     { title: "Exam", key: "name", width: "50%" },
     { title: "Exam Start-Time", key: "startTime", width: "50%" },

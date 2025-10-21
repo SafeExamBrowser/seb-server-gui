@@ -87,8 +87,8 @@ const loadingStore = useLoadingStore();
 
 // remaining
 const groupUuid: string = useRoute().params.uuid.toString();
-let intervalGroup: any | null = null;
-let intervalImageUrl: any | null = null;
+let intervalGroup: ReturnType<typeof setInterval> | null = null;
+let intervalImageUrl: ReturnType<typeof setInterval> | null = null;
 
 //= ============lifecycle and watchers==================
 onBeforeMount(async () => {

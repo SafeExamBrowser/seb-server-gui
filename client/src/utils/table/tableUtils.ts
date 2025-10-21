@@ -19,58 +19,58 @@ import {
 } from "@/models/seb-server/assessmentTool";
 import { OptionalParSearchSessions } from "@/models/screen-proctoring/optionalParamters";
 
-export function calcDefaultItemsPerPage(itemList: any): number {
-    if (itemList == null || itemList.length === 0) {
+type ItemsLike = number | { length: number } | null | undefined;
+type ItemsPerPageOption = { value: number; title: string };
+
+type Clickable = { click: () => void };
+type HeaderRefs =
+    | { value?: Clickable[] | null }
+    | Clickable[]
+    | null
+    | undefined;
+
+export function calcDefaultItemsPerPage(itemList: ItemsLike): number {
+    if (
+        itemList == null ||
+        (typeof itemList !== "number" && itemList.length === 0)
+    ) {
         return 0;
     }
 
-    let maxLength: number = 0;
-    if (typeof itemList === "number") {
-        maxLength = itemList;
-    } else {
-        maxLength = itemList.length;
-    }
+    const maxLength = typeof itemList === "number" ? itemList : itemList.length;
 
     if (maxLength < 5) return maxLength;
     if (maxLength < 10) return 5;
     if (maxLength < 15) return 10;
-
     return 15;
 }
 
-export function calcItemsPerPage(
-    itemList: any,
-): { value: number; title: string }[] {
-    if (itemList == null || itemList.length === 0) {
+export function calcItemsPerPage(itemList: ItemsLike): ItemsPerPageOption[] {
+    if (
+        itemList == null ||
+        (typeof itemList !== "number" && itemList.length === 0)
+    ) {
         return [{ value: 0, title: "0" }];
     }
 
-    let maxLength: number = 0;
-    if (typeof itemList === "number") {
-        maxLength = itemList;
-    } else {
-        maxLength = itemList.length;
-    }
+    const maxLength = typeof itemList === "number" ? itemList : itemList.length;
 
     if (maxLength <= 5) {
-        return [{ value: maxLength, title: maxLength.toString() }];
+        return [{ value: maxLength, title: String(maxLength) }];
     }
-
     if (maxLength <= 10) {
         return [
             { value: 5, title: "5" },
-            { value: maxLength, title: maxLength.toString() },
+            { value: maxLength, title: String(maxLength) },
         ];
     }
-
     if (maxLength <= 15) {
         return [
             { value: 5, title: "5" },
             { value: 10, title: "10" },
-            { value: maxLength, title: maxLength.toString() },
+            { value: maxLength, title: String(maxLength) },
         ];
     }
-
     return [
         { value: 5, title: "5" },
         { value: 10, title: "10" },
@@ -80,28 +80,29 @@ export function calcItemsPerPage(
 
 export function handleTabKeyEvent(
     event: KeyboardEvent,
-    action: string,
+    action: "sort" | "navigate",
     key: number,
-    optional?: { path?: string; headerRefs?: any },
+    optional?: { path?: string; headerRefs?: HeaderRefs },
 ) {
     if (event.key === "Enter" || event.key === " ") {
         if (action === "sort") {
             sortTable(key, optional?.headerRefs);
         }
-
         if (action === "navigate" && optional?.path) {
             navigateTo(optional.path);
         }
     }
 }
 
-export function sortTable(key: number, headerRefs: any) {
-    if (headerRefs.value != null) {
-        headerRefs.value[key].click();
+export function sortTable(key: number, headerRefs: HeaderRefs) {
+    if (headerRefs && typeof headerRefs === "object" && "value" in headerRefs) {
+        const arr = headerRefs.value;
+        if (arr && arr[key]) arr[key].click();
         return;
     }
 
-    if (headerRefs != null) {
+    // plain array
+    if (Array.isArray(headerRefs) && headerRefs[key]) {
         headerRefs[key].click();
     }
 }

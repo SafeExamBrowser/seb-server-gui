@@ -322,7 +322,7 @@ function setTabFocus() {
     lastKeyPressed.value = null;
 }
 
-function registerKeyPress(event: any) {
+function registerKeyPress(event: KeyboardEvent) {
     lastKeyPressed.value = event.key;
 }
 </script>

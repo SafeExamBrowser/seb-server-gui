@@ -134,28 +134,37 @@
         </template>
     </tr>
 </template>
-
 <script setup lang="ts">
 import { onBeforeMount, onBeforeUnmount, ref } from "vue";
 import * as tableUtils from "@/utils/table/tableUtils";
 import { useTableStore } from "@/stores/store";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 
-// stores
-// const appBarStore = useAppBarStore();
+type ColumnLike = {
+    key?: string;
+    title: string;
+    width?: string;
+    center?: boolean;
+    sortable?: boolean;
+};
+
+type SortIcon = string;
+
+type Clickable = { click: () => void };
+
 const tableStore = useTableStore();
 const monitoringStore = useMonitoringStore();
 
-// header reactivity
-const headerRefs = ref<any[] | null>();
+// header refs
+const headerRefs = ref<Clickable[] | null>(null);
 
 // props
 const props = defineProps<{
-    columns: any[];
-    isSorted: (column: any) => boolean;
-    getSortIcon: any;
-    toggleSort: (column: any) => void;
-    headerRefsProp: any;
+    columns: ColumnLike[];
+    isSorted: (column: ColumnLike) => boolean;
+    getSortIcon: (column: ColumnLike) => SortIcon;
+    toggleSort: (column: ColumnLike) => void;
+    headerRefsProp: Clickable[] | null;
     day?: string;
     selectAll?: (value: boolean) => void;
     allSelected?: boolean;
@@ -163,11 +172,11 @@ const props = defineProps<{
     tableKey?: string;
 }>();
 
-// custom: start page
+// emits
 const emit = defineEmits<{
-    addIndicatorHeaders: any;
-    removeIndicatorHeaders: any;
-    openDeleteSessionsDialog: any;
+    addIndicatorHeaders: [];
+    removeIndicatorHeaders: [];
+    openDeleteSessionsDialog: [];
 }>();
 
 onBeforeMount(() => {
@@ -186,21 +195,17 @@ function toggleNameIpSwitch() {
     entry.isIp = !entry.isIp;
 }
 
-function getHeaderDescription(column: any, isSorted: any): any {
-    const headerDesc: string = `Header: ${column.title}, sort order: `;
+function getHeaderDescription(
+    column: ColumnLike,
+    isSortedFn: (c: ColumnLike) => boolean,
+): string {
+    const headerDesc = `Header: ${column.title}, sort order: `;
 
-    if (!isSorted(column)) {
-        return `${headerDesc} none`;
-    }
+    if (!isSortedFn(column)) return `${headerDesc} none`;
 
-    if (props.getSortIcon(column) === "$sortAsc") {
-        return `${headerDesc} ascending`;
-    }
-
-    if (props.getSortIcon(column) === "$sortDesc") {
-        return `${headerDesc} descending`;
-    }
-
+    const icon = props.getSortIcon(column);
+    if (icon === "$sortAsc") return `${headerDesc} ascending`;
+    if (icon === "$sortDesc") return `${headerDesc} descending`;
     return `${headerDesc} none`;
 }
 </script>

@@ -123,7 +123,7 @@ const appBarStoreRef = storeToRefs(appBarStore);
 
 // table
 const groups = ref<Group[]>();
-const headerRefs = ref<any[]>();
+const headerRefs = ref<unknown[]>([]);
 const headers = ref([
     { title: "Exam", key: "exam.name", width: "25%" },
     { title: "Exam Start-Time", key: "exam.startTime", width: "25%" },
