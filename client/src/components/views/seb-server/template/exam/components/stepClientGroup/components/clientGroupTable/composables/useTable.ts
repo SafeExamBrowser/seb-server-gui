@@ -7,6 +7,10 @@ import { storeToRefs } from "pinia";
 
 export const useTable = () => {
     const { t } = useI18n();
+    const {
+        collectionStrategy: screenProctoringCollectionStrategy,
+        enabled: screenProctoringEnabled,
+    } = useScreenProctoringStore();
 
     const headers = [
         {
@@ -17,12 +21,14 @@ export const useTable = () => {
             title: t("createTemplateExam.steps.clientGroup.fields.type.label"),
             value: "type",
         },
-        {
-            title: t(
-                "createTemplateExam.steps.clientGroup.fields.screenProctoringEnabled.label",
-            ),
-            value: "screenProctoringEnabled",
-        },
+        screenProctoringEnabled
+            ? {
+                  title: t(
+                      "createTemplateExam.steps.clientGroup.fields.screenProctoringEnabled.label",
+                  ),
+                  value: "screenProctoringEnabled",
+              }
+            : undefined,
         {
             title: t(
                 "createTemplateExam.steps.clientGroup.fields.actions.label",
@@ -30,19 +36,16 @@ export const useTable = () => {
             value: "actions",
             align: "end" as const,
         },
-    ];
+    ].filter((header) => header !== undefined);
 
     const { groups: groupsFromStore } = storeToRefs(useStepClientGroupStore());
 
     const fallbackGroup = computed<ClientGroupForTable | undefined>(() => {
-        const { collectionStrategy, enabled: screenProctoringEnabled } =
-            useScreenProctoringStore();
-
         if (!screenProctoringEnabled) {
             return undefined;
         }
 
-        if (collectionStrategy === "EXAM") {
+        if (screenProctoringCollectionStrategy === "EXAM") {
             return {
                 id: 0,
                 type: "SCREEN_PROCTORING_SINGLE" as const,
@@ -53,7 +56,7 @@ export const useTable = () => {
             };
         }
 
-        if (collectionStrategy === "APPLY_SEB_GROUPS") {
+        if (screenProctoringCollectionStrategy === "APPLY_SEB_GROUPS") {
             return {
                 id: 0,
                 type: "SCREEN_PROCTORING_FALLBACK" as const,
