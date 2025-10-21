@@ -3,11 +3,10 @@
         :title="$t('createTemplateExam.steps.clientGroup.title')"
         :subtitle="$t('createTemplateExam.steps.clientGroup.subtitle')"
     >
-        <ScreenProctoringForm
-            v-if="useScreenProctoringStore().enabled"
-            class="mt-8"
-        />
-        <ClientGroupTable />
+        <div class="d-flex flex-column ga-8">
+            <ScreenProctoringForm v-if="useScreenProctoringStore().enabled" />
+            <ClientGroupTable />
+        </div>
     </StepItem>
 </template>
 
