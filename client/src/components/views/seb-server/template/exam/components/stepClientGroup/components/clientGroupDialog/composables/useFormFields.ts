@@ -1,15 +1,15 @@
-import { computed, ComputedRef, ModelRef } from "vue";
+import { computed, ComputedRef, Ref } from "vue";
 import { FormField } from "@/components/widgets/formBuilder/types";
 import { ClientGroupTransient } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
-import { useFormFieldsBasic } from "@/components/views/seb-server/template/exam/components/stepClientGroup/components/clientGroupForm/composables/useFormFieldsBasic";
-import { useFormFieldsScreenProctoring } from "@/components/views/seb-server/template/exam/components/stepClientGroup/components/clientGroupForm/composables/useFormFieldsScreenProctoring";
-import { useFormFieldsTypeIPRange } from "@/components/views/seb-server/template/exam/components/stepClientGroup/components/clientGroupForm/composables/useFormFieldsTypeIPRange";
-import { useFormFieldsTypeClientOS } from "@/components/views/seb-server/template/exam/components/stepClientGroup/components/clientGroupForm/composables/useFormFieldsTypeClientOS";
-import { useFormFieldsTypeNameAlphabeticalRange } from "@/components/views/seb-server/template/exam/components/stepClientGroup/components/clientGroupForm/composables/useFormFieldsTypeNameAlphabeticalRange";
+import { useFormFieldsBasic } from "./useFormFieldsBasic";
+import { useFormFieldsScreenProctoring } from "./useFormFieldsScreenProctoring";
+import { useFormFieldsTypeIPRange } from "./useFormFieldsTypeIPRange";
+import { useFormFieldsTypeClientOS } from "./useFormFieldsTypeClientOS";
+import { useFormFieldsTypeNameAlphabeticalRange } from "./useFormFieldsTypeNameAlphabeticalRange";
 
 export const useFormFields = (
-    clientGroup: ModelRef<ClientGroupTransient>,
+    clientGroup: Ref<ClientGroupTransient>,
 ): { isValid: ComputedRef<boolean>; formFields: ComputedRef<FormField[]> } => {
     const isValid = computed<boolean>({
         get: (): boolean => clientGroup.value.isValid,

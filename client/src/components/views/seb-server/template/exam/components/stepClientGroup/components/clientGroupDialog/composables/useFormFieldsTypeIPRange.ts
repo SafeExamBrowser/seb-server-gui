@@ -1,13 +1,11 @@
 import { ClientGroupTransient } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
-import { computed, ModelRef } from "vue";
-import { useI18n } from "vue-i18n";
+import { computed, Ref } from "vue";
 import { FormField } from "@/components/widgets/formBuilder/types";
+import i18n from "@/i18n";
 
 export const useFormFieldsTypeIPRange = (
-    clientGroup: ModelRef<ClientGroupTransient>,
+    clientGroup: Ref<ClientGroupTransient>,
 ): FormField[] => {
-    const { t } = useI18n();
-
     const ipRangeStart = computed<string>({
         get: (): string => clientGroup.value.ipRangeStart || "",
         set: (value: string) => {
@@ -27,10 +25,10 @@ export const useFormFieldsTypeIPRange = (
             type: "text" as const,
             name: "ip4RangeStart",
             model: ipRangeStart,
-            label: t(
+            label: i18n.global.t(
                 "createTemplateExam.steps.clientGroup.fields.ipRangeStart.label",
             ),
-            placeholder: t(
+            placeholder: i18n.global.t(
                 "createTemplateExam.steps.clientGroup.fields.ipRangeStart.placeholder",
             ),
             required: true,
@@ -39,10 +37,10 @@ export const useFormFieldsTypeIPRange = (
             type: "text" as const,
             name: "ip4RangeEnd",
             model: ipRangeEnd,
-            label: t(
+            label: i18n.global.t(
                 "createTemplateExam.steps.clientGroup.fields.ipRangeEnd.label",
             ),
-            placeholder: t(
+            placeholder: i18n.global.t(
                 "createTemplateExam.steps.clientGroup.fields.ipRangeEnd.placeholder",
             ),
             required: true,

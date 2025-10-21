@@ -1,13 +1,11 @@
 import { ClientGroupTransient } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
-import { computed, ModelRef } from "vue";
-import { useI18n } from "vue-i18n";
+import { computed, Ref } from "vue";
+import i18n from "@/i18n";
 import { FormField } from "@/components/widgets/formBuilder/types";
 
 export const useFormFieldsTypeNameAlphabeticalRange = (
-    clientGroup: ModelRef<ClientGroupTransient>,
+    clientGroup: Ref<ClientGroupTransient>,
 ): FormField[] => {
-    const { t } = useI18n();
-
     const nameRangeStartLetter = computed<string>({
         get: (): string => clientGroup.value.nameRangeStartLetter || "",
         set: (value: string) => {
@@ -33,10 +31,10 @@ export const useFormFieldsTypeNameAlphabeticalRange = (
             type: "text" as const,
             name: "nameRangeStartLetter",
             model: nameRangeStartLetter,
-            label: t(
+            label: i18n.global.t(
                 "createTemplateExam.steps.clientGroup.fields.nameRangeStartLetter.label",
             ),
-            placeholder: t(
+            placeholder: i18n.global.t(
                 "createTemplateExam.steps.clientGroup.fields.nameRangeStartLetter.placeholder",
             ),
             required: true,
@@ -45,10 +43,10 @@ export const useFormFieldsTypeNameAlphabeticalRange = (
             type: "text" as const,
             name: "nameRangeEndLetter",
             model: nameRangeEndLetter,
-            label: t(
+            label: i18n.global.t(
                 "createTemplateExam.steps.clientGroup.fields.nameRangeEndLetter.label",
             ),
-            placeholder: t(
+            placeholder: i18n.global.t(
                 "createTemplateExam.steps.clientGroup.fields.nameRangeEndLetter.placeholder",
             ),
             required: true,

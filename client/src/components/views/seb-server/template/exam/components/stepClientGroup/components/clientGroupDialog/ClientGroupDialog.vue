@@ -17,8 +17,9 @@
     >
         <v-card :title="labelActivator">
             <template #text>
-                <ClientGroupForm
-                    v-model="clientGroupTransient"
+                <FormBuilder
+                    v-model="isValid"
+                    :fields="formFields"
                     :form-id="formId"
                     @submit="handleFormSubmit"
                 />
@@ -45,6 +46,7 @@ import {
     clientGroupTransientToClientGroup,
 } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 import { useDisplay } from "vuetify";
+import { useFormFields } from "./composables/useFormFields";
 
 const props = withDefaults(
     defineProps<{
@@ -71,6 +73,7 @@ const activatorRef = ref<HTMLElement>();
 const isDialogOpen = ref(false);
 const clientGroupTransient = ref(props.getClientGroup());
 const formId = "client-group-form";
+const { isValid, formFields } = useFormFields(clientGroupTransient);
 
 watch(isDialogOpen, (newValue) => {
     if (!newValue) {

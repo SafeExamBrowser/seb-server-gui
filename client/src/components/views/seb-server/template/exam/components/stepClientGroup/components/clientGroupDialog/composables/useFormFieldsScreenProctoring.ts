@@ -1,14 +1,12 @@
 import { ClientGroupTransient } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
-import { computed, ModelRef } from "vue";
-import { useI18n } from "vue-i18n";
+import { computed, Ref } from "vue";
+import i18n from "@/i18n";
 import { FormField } from "@/components/widgets/formBuilder/types";
 import { useScreenProctoringStore } from "@/components/views/seb-server/template/exam/composables/store/useScreenProctoringStore";
 import { storeToRefs } from "pinia";
 export const useFormFieldsScreenProctoring = (
-    clientGroup: ModelRef<ClientGroupTransient>,
+    clientGroup: Ref<ClientGroupTransient>,
 ): FormField[] => {
-    const { t } = useI18n();
-
     const { screenProctoringAllowedForGroups } = storeToRefs(
         useScreenProctoringStore(),
     );
@@ -35,7 +33,7 @@ export const useFormFieldsScreenProctoring = (
             type: "switch" as const,
             name: "screenProctoringEnabled",
             model: screenProctoringEnabled,
-            label: t(
+            label: i18n.global.t(
                 "createTemplateExam.steps.clientGroup.fields.screenProctoringEnabled.label",
             ),
         },

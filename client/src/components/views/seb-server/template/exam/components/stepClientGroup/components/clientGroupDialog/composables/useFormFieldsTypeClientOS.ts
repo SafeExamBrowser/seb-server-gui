@@ -1,14 +1,12 @@
 import { ClientGroupTransient } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
-import { computed, ModelRef } from "vue";
-import { useI18n } from "vue-i18n";
+import { computed, Ref } from "vue";
+import i18n from "@/i18n";
 import { FormField } from "@/components/widgets/formBuilder/types";
 import { ClientOSEnum } from "@/models/seb-server/clientGroupEnum";
 
 export const useFormFieldsTypeClientOS = (
-    clientGroup: ModelRef<ClientGroupTransient>,
+    clientGroup: Ref<ClientGroupTransient>,
 ): FormField[] => {
-    const { t } = useI18n();
-
     const clientOS = computed<ClientGroupTransient["clientOS"]>({
         get: (): ClientGroupTransient["clientOS"] => clientGroup.value.clientOS,
         set: (value: ClientGroupTransient["clientOS"]) => {
@@ -32,14 +30,14 @@ export const useFormFieldsTypeClientOS = (
                 ClientOSEnum.I_OS_OR_IPAD_OS,
             ].map((value) => ({
                 value,
-                text: t(
+                text: i18n.global.t(
                     `createTemplateExam.steps.clientGroup.fields.clientOS.types.${value}`,
                 ),
             })),
-            label: t(
+            label: i18n.global.t(
                 "createTemplateExam.steps.clientGroup.fields.clientOS.label",
             ),
-            placeholder: t(
+            placeholder: i18n.global.t(
                 "createTemplateExam.steps.clientGroup.fields.clientOS.placeholder",
             ),
             required: true,

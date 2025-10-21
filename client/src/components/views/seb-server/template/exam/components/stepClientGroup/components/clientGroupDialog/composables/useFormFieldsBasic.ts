@@ -1,14 +1,12 @@
 import { ClientGroupTransient } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
-import { computed, ModelRef } from "vue";
-import { useI18n } from "vue-i18n";
+import { computed, Ref } from "vue";
 import { FormField } from "@/components/widgets/formBuilder/types";
 import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
+import i18n from "@/i18n";
 
 export const useFormFieldsBasic = (
-    clientGroup: ModelRef<ClientGroupTransient>,
+    clientGroup: Ref<ClientGroupTransient>,
 ): FormField[] => {
-    const { t } = useI18n();
-
     const name = computed<ClientGroupTransient["name"]>({
         get: (): ClientGroupTransient["name"] => clientGroup.value.name,
         set: (value: ClientGroupTransient["name"]) => {
@@ -31,8 +29,10 @@ export const useFormFieldsBasic = (
             type: "text" as const,
             name: "name",
             model: name,
-            label: t("createTemplateExam.steps.clientGroup.fields.name.label"),
-            placeholder: t(
+            label: i18n.global.t(
+                "createTemplateExam.steps.clientGroup.fields.name.label",
+            ),
+            placeholder: i18n.global.t(
                 "createTemplateExam.steps.clientGroup.fields.name.placeholder",
             ),
             required: true,
@@ -47,12 +47,14 @@ export const useFormFieldsBasic = (
                 ClientGroupEnum.NAME_ALPHABETICAL_RANGE,
             ].map((value) => ({
                 value,
-                text: t(
+                text: i18n.global.t(
                     `createTemplateExam.steps.clientGroup.fields.type.types.${value}`,
                 ),
             })),
-            label: t("createTemplateExam.steps.clientGroup.fields.type.label"),
-            placeholder: t(
+            label: i18n.global.t(
+                "createTemplateExam.steps.clientGroup.fields.type.label",
+            ),
+            placeholder: i18n.global.t(
                 "createTemplateExam.steps.clientGroup.fields.type.placeholder",
             ),
             required: true,
