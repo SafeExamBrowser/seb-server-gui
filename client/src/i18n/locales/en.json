@@ -327,6 +327,17 @@
                     "ipRangeEnd": {
                         "label": "End of IP range",
                         "placeholder": "Enter the end of the IP range"
+                    },
+                    "clientOS": {
+                        "label": "Client OS Type",
+                        "placeholder": "Select client OS Type",
+                        "types": {
+                            "WINDOWS": "Windows",
+                            "MAC_OS": "macOS",
+                            "I_OS": "iOS",
+                            "IPAD_OS": "iPadOS",
+                            "I_OS_OR_IPAD_OS": "iOS/iPadOS"
+                        }
                     }
                 }
             },

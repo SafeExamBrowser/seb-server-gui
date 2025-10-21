@@ -5,6 +5,7 @@ import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
 import { useFormFieldsBasic } from "@/components/views/seb-server/template/exam/components/stepClientGroup/components/clientGroupForm/composables/useFormFieldsBasic";
 import { useFormFieldsScreenProctoring } from "@/components/views/seb-server/template/exam/components/stepClientGroup/components/clientGroupForm/composables/useFormFieldsScreenProctoring";
 import { useFormFieldsTypeIPRange } from "@/components/views/seb-server/template/exam/components/stepClientGroup/components/clientGroupForm/composables/useFormFieldsTypeIPRange";
+import { useFormFieldsTypeClientOS } from "@/components/views/seb-server/template/exam/components/stepClientGroup/components/clientGroupForm/composables/useFormFieldsTypeClientOS";
 
 export const useFormFields = (
     clientGroup: ModelRef<ClientGroupTransient>,
@@ -22,6 +23,9 @@ export const useFormFields = (
             useFormFieldsScreenProctoring(clientGroup),
             clientGroup.value.type === ClientGroupEnum.IP_V4_RANGE
                 ? useFormFieldsTypeIPRange(clientGroup)
+                : [],
+            clientGroup.value.type === ClientGroupEnum.CLIENT_OS
+                ? useFormFieldsTypeClientOS(clientGroup)
                 : [],
         ].flat(),
     );
