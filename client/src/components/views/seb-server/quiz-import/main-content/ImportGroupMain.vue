@@ -231,9 +231,14 @@ const allGroups = computed<ClientGroup[]>(
 // filter
 const filteredAvailableGroups = computed<ClientGroup[]>(() => {
     const selectedIds = new Set(
-        quizImportStore.selectedClientGroups.map((g) => g.id),
+        quizImportStore.selectedClientGroups
+            .map((g) => g.id)
+            .filter((id): id is number => typeof id === "number"),
     );
-    const base = allGroups.value.filter((g) => !selectedIds.has(g.id!));
+
+    const base = allGroups.value.filter(
+        (g) => !(typeof g.id === "number" && selectedIds.has(g.id)),
+    );
 
     if (!search.value) return base;
 

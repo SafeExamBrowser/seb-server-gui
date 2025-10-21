@@ -57,10 +57,10 @@ export default defineConfig([
 
             // TODO Andreas
             "@typescript-eslint/no-non-null-asserted-optional-chain": "off",
+            "@typescript-eslint/no-non-null-assertion": "off",
 
             // TODO Andrei
             "@typescript-eslint/no-explicit-any": "off", //245
-            "@typescript-eslint/no-non-null-assertion": "off", //114
         },
     },
 

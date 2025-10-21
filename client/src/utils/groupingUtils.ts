@@ -1,4 +1,3 @@
-// todo: improve this function
 import {
     ScreenshotGroup,
     ScreenshotsGrouped,
@@ -8,18 +7,17 @@ export function groupScreenshotsByMetadata(
     screenshotGroupList: ScreenshotGroup[],
     isSearchView: boolean,
 ): ScreenshotsGrouped[] | null {
-    // todo: extract metadata from par
-    // const metadataGroupPar: string = "screenProctoringMetadataUserAction"
-
-    if (screenshotGroupList == null || screenshotGroupList.length === 0) {
+    if (!screenshotGroupList || screenshotGroupList.length === 0) {
         return null;
     }
 
     const groups: ScreenshotsGrouped[] = [];
 
+    const getAction = (g: ScreenshotGroup): string =>
+        g.metaData?.screenProctoringMetadataUserAction ?? "Unknown";
+
     let currentGroup: ScreenshotsGrouped = {
-        groupName:
-            screenshotGroupList[0].metaData.screenProctoringMetadataUserAction!,
+        groupName: getAction(screenshotGroupList[0]),
         timelineScreenshotDataList: [
             {
                 timestamp: screenshotGroupList[0].timestamp,
@@ -28,42 +26,34 @@ export function groupScreenshotsByMetadata(
         ],
     };
 
-    if (screenshotGroupList.length! < 0) {
-        return null;
-    }
-
     for (let i = 1; i < screenshotGroupList.length; i++) {
-        if (
-            currentGroup.groupName ===
-            screenshotGroupList[i].metaData.screenProctoringMetadataUserAction
-        ) {
-            currentGroup.timelineScreenshotDataList.push(
-                screenshotGroupList[i],
-            );
+        const item = screenshotGroupList[i];
+        const action = getAction(item);
+
+        if (currentGroup.groupName === action) {
+            currentGroup.timelineScreenshotDataList.push({
+                timestamp: item.timestamp,
+                metaData: item.metaData,
+            });
         } else {
             groups.push(currentGroup);
-
             currentGroup = {
-                groupName:
-                    screenshotGroupList[i].metaData
-                        .screenProctoringMetadataUserAction!,
+                groupName: action,
                 timelineScreenshotDataList: [
-                    {
-                        timestamp: screenshotGroupList[i].timestamp,
-                        metaData: screenshotGroupList[i].metaData,
-                    },
+                    { timestamp: item.timestamp, metaData: item.metaData },
                 ],
             };
         }
     }
 
-    if (!groups.includes(currentGroup)) {
-        groups.push(currentGroup);
-    }
+    groups.push(currentGroup);
 
     if (isSearchView) {
-        // remove first element, because first item is already shown in group header
-        groups.shift();
+        for (const g of groups) {
+            if (g.timelineScreenshotDataList.length > 0) {
+                g.timelineScreenshotDataList.shift();
+            }
+        }
     }
 
     return groups;

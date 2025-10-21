@@ -284,9 +284,9 @@ import {
 } from "@/models/screen-proctoring/search";
 
 // slider
-const sliderTime = ref<number>();
-const sliderMin = ref<number>();
-const sliderMax = ref<number>();
+const sliderTime = ref<number>(0);
+const sliderMin = ref<number>(0);
+const sliderMax = ref<number>(0);
 
 // screenshots
 const isPlaying = ref<boolean>(false);
@@ -313,13 +313,13 @@ const backwardsFirstTime = ref<boolean>(true);
 const forwardsFirstTime = ref<boolean>(true);
 
 // time constants
-const LIVE_INTERVAL: number = 1 * 1000;
-const REFRESH_INTERVAL: number = 1 * 1000;
+const LIVE_INTERVAL: number = 1000;
+const REFRESH_INTERVAL: number = 1000;
 
 // playback speed
-const SLOW_PLAYBACK_SPEED: number = 1 * 2000;
-const DEFAULT_PLAYBACK_SPEED: number = 1 * 1000;
-const FAST_PLAYBACK_SPEED: number = 1 * 500;
+const SLOW_PLAYBACK_SPEED: number = 2000;
+const DEFAULT_PLAYBACK_SPEED: number = 1000;
+const FAST_PLAYBACK_SPEED: number = 500;
 const PLAYBACK_SPEED = ref<number>(DEFAULT_PLAYBACK_SPEED);
 const selectedSpeedId = ref<number>(1);
 const playbackSpeeds: { title: string; id: number }[] = [
@@ -864,7 +864,7 @@ const additionalMetadataInfo = computed<string>(() => {
                 ].timelineScreenshotDataList.findIndex(
                     (group) =>
                         timeUtils.toTimeString(group.timestamp) ===
-                        timeUtils.toTimeString(sliderTime.value!),
+                        timeUtils.toTimeString(sliderTime.value),
                 );
 
                 if (index !== -1) {

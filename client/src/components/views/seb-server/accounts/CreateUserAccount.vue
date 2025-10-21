@@ -405,7 +405,7 @@ const layoutStore = useLayoutStore();
 const i18n = useI18n();
 
 // fields
-const selectedInstitution = ref<string | null>(null);
+const selectedInstitution = ref<string>("");
 const name = ref<string>("");
 const surname = ref<string>("");
 const username = ref<string>("");
@@ -568,7 +568,7 @@ async function submit() {
 
     // Prepare the request
     const createUserAcccountParams: CreateUserPar = {
-        institutionId: selectedInstitution.value!,
+        institutionId: selectedInstitution.value,
         name: name.value,
         surname: surname.value,
         username: username.value,

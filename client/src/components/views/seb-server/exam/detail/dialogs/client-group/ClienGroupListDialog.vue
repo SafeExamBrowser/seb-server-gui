@@ -278,8 +278,11 @@ const hasSpDataChanged = computed<boolean>(() => {
 
 function getGroupsWithSelectedSp(): number[] {
     return clientGroups.value
-        .filter((item) => item.isSPSGroup)
-        .map((item) => item.id!);
+        .filter(
+            (item): item is ClientGroup & { id: number } =>
+                !!item.isSPSGroup && typeof item.id === "number",
+        )
+        .map((item) => item.id);
 }
 
 //= =======delete========

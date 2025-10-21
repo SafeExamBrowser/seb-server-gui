@@ -186,12 +186,12 @@ function closeExamTemplateDialog() {
 }
 
 async function getExamTemplateSpGroups() {
-    if (quizImportStore.selectedExamTemplate!.id == null) {
+    if (quizImportStore.selectedExamTemplate?.id == null) {
         return;
     }
     const examTemplateSp: ScreenProctoringSettings | null =
         await examViewService.getExamTemplateSp(
-            quizImportStore.selectedExamTemplate!.id.toString(),
+            quizImportStore.selectedExamTemplate?.id.toString(),
         );
 
     if (examTemplateSp == null) {

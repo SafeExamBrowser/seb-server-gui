@@ -194,20 +194,25 @@ watch(
         clientData.value = [];
         clientColors.value = [];
 
-        const clientStatesList: {
+        type StateCount = {
             clientStates: ConnectionStatusEnum;
             clientAmount: number;
-        }[] = Object.entries(
+        };
+
+        const clientStatesList: StateCount[] = Object.entries(
             monitoringStore.monitoringOverviewData.clientStates,
         )
             .filter(([key]) => key !== "total")
-            .map(([key, value]) => ({
-                clientStates: generalUtils.findEnumValue(
+            .map(([key, value]) => {
+                const parsed = generalUtils.findEnumValue(
                     ConnectionStatusEnum,
                     key,
-                )!,
-                clientAmount: value,
-            }))
+                );
+                return parsed
+                    ? { clientStates: parsed, clientAmount: Number(value) }
+                    : null;
+            })
+            .filter((x): x is StateCount => x !== null)
             .sort((a, b) => {
                 return (
                     clientStatesListSortOrder[a.clientStates] -

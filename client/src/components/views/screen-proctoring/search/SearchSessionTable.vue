@@ -222,7 +222,7 @@ const isLoading = ref<boolean>(true);
 const totalItems = ref<number>(15);
 
 // table
-const selectedSessionUuids = ref<string[]>();
+const selectedSessionUuids = ref<string[]>([]);
 const isOnLoad = ref<boolean>(true);
 const defaultSort: { key: string; order: string }[] = [
     { key: "startTime", order: "desc" },
@@ -317,9 +317,7 @@ function openDeleteSessionsDialog() {
 
 async function deleteSessions() {
     errorAvailable.value = false;
-    if (selectedSessionUuids.value == null) {
-        return;
-    }
+    if (!selectedSessionUuids.value.length) return;
 
     const response = await searchViewService.deleteSessions(
         selectedSessionUuids.value,
@@ -328,12 +326,12 @@ async function deleteSessions() {
         errorAvailable.value = true;
         return;
     }
-
     for (let i = 0; i < selectedSessionUuids.value.length; i++) {
-        const index: number | any = sessions.value?.content.findIndex(
-            (y) => y.sessionUUID === selectedSessionUuids.value![i],
-        );
-        sessions.value?.content.splice(index, 1);
+        const uuid = selectedSessionUuids.value[i];
+        const content = sessions.value?.content;
+        if (!content) continue;
+        const index = content.findIndex((y) => y.sessionUUID === uuid);
+        if (index >= 0) content.splice(index, 1);
     }
 
     selectedSessionUuids.value = [];

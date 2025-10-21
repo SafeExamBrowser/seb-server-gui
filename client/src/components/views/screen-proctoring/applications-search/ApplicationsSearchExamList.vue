@@ -99,7 +99,7 @@ const emit = defineEmits<{
 const panels = ref<string[]>(["panel"]);
 
 // table
-const selectedExamIds = ref<number[]>();
+const selectedExamIds = ref<number[]>([]);
 const headerRefs = ref<any[]>();
 const headers = ref([
     { title: "Exam", key: "name", width: "50%" },
@@ -112,14 +112,13 @@ watchEffect(() => {
 });
 
 async function getGroupIdsForExam() {
-    if (selectedExamIds.value == null) return;
+    if (!selectedExamIds.value.length) return;
 
     panels.value = [];
 
     const selectedExams: SPExam[] = props.exams.filter((exam) =>
-        selectedExamIds.value!.includes(exam.id),
+        selectedExamIds.value.includes(exam.id),
     );
-
     emit("getGroupIdsForExam", selectedExams);
 }
 </script>

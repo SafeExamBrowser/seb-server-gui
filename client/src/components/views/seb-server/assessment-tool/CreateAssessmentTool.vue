@@ -702,9 +702,9 @@ async function submit() {
     if (!valid) return;
 
     const common: any = {
-        institutionId: institution.value!,
+        institutionId: institution.value,
         name: name.value,
-        lmsType: lmsType.value!,
+        lmsType: lmsType.value,
         lmsUrl: assessmentToolServerAddress.value,
         ...(withProxy.value
             ? {
