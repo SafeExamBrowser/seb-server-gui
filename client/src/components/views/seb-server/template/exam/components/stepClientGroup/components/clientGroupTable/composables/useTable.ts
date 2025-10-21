@@ -7,10 +7,7 @@ import { storeToRefs } from "pinia";
 
 export const useTable = () => {
     const { t } = useI18n();
-    const {
-        collectionStrategy: screenProctoringCollectionStrategy,
-        enabled: screenProctoringEnabled,
-    } = useScreenProctoringStore();
+    const screenProctoringStore = useScreenProctoringStore();
 
     const headers = [
         {
@@ -21,7 +18,7 @@ export const useTable = () => {
             title: t("createTemplateExam.steps.clientGroup.fields.type.label"),
             value: "type",
         },
-        screenProctoringEnabled
+        screenProctoringStore.enabled
             ? {
                   title: t(
                       "createTemplateExam.steps.clientGroup.fields.screenProctoringEnabled.label",
@@ -41,11 +38,11 @@ export const useTable = () => {
     const { groups: groupsFromStore } = storeToRefs(useStepClientGroupStore());
 
     const fallbackGroup = computed<ClientGroupForTable | undefined>(() => {
-        if (!screenProctoringEnabled) {
+        if (!screenProctoringStore.enabled) {
             return undefined;
         }
 
-        if (screenProctoringCollectionStrategy === "EXAM") {
+        if (screenProctoringStore.collectionStrategy === "EXAM") {
             return {
                 id: 0,
                 type: "SCREEN_PROCTORING_SINGLE" as const,
@@ -56,7 +53,7 @@ export const useTable = () => {
             };
         }
 
-        if (screenProctoringCollectionStrategy === "APPLY_SEB_GROUPS") {
+        if (screenProctoringStore.collectionStrategy === "APPLY_SEB_GROUPS") {
             return {
                 id: 0,
                 type: "SCREEN_PROCTORING_FALLBACK" as const,
