@@ -11,6 +11,16 @@ export const useFormFields = () => {
     const { collectionStrategy: modelScreenProctoringCollectionStrategy } =
         storeToRefs(useScreenProctoringStore());
 
+    const info = computed<string | undefined>(() => {
+        if (modelScreenProctoringCollectionStrategy.value === undefined) {
+            return undefined;
+        }
+
+        return t(
+            `createTemplateExam.general.fields.screenProctoringCollectionStrategy.info.${modelScreenProctoringCollectionStrategy.value}`,
+        );
+    });
+
     const formFields = computed<FormField[]>(() => {
         return [
             {
@@ -32,6 +42,7 @@ export const useFormFields = () => {
                     "createTemplateExam.general.fields.screenProctoringCollectionStrategy.placeholder",
                 ),
                 required: true,
+                info: info.value,
             },
         ];
     });

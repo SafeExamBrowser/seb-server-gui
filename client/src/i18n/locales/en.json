@@ -243,6 +243,10 @@
                 "screenProctoringCollectionStrategy": {
                     "label": "Grouping Strategy",
                     "placeholder": "Select the grouping strategy",
+                    "info": {
+                        "EXAM": "This strategy does not allow you to toggle the screen proctoring per group.",
+                        "APPLY_SEB_GROUPS": "With this strategy, you must create at least one group with screen proctoring enabled."
+                    },
                     "strategies": {
                         "EXAM": "One Group for Exam",
                         "APPLY_SEB_GROUPS": "Apply to SEB Client Groups"
