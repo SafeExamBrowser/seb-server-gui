@@ -879,7 +879,6 @@ onMounted(async () => {
 onBeforeUnmount(() => {
     layoutStore.setBlueBackground(false);
 });
-
 async function submit() {
     const { valid } = await formRef.value.validate();
     if (!valid) return;
@@ -887,40 +886,61 @@ async function submit() {
     const toMs = (s: number | null) =>
         s == null ? null : Math.round(Number(s) * 1000);
 
+    // ---- Narrow required base fields ----
+    if (!configurationPurpose.value) return;
+    if (pingInterval.value == null) return;
+    const pingMs = toMs(pingInterval.value);
+    if (pingMs == null) return;
+
+    // Build base params
     const connectionConfigParams: CreateConnectionConfigurationPar = {
         name: name.value,
-        sebServerPingTime: Number(toMs(pingInterval.value)!),
-        sebConfigPurpose: configurationPurpose.value!,
-        cert_alias: encryptWithCertificate.value!,
+        sebServerPingTime: pingMs,
+        sebConfigPurpose: configurationPurpose.value,
+        cert_alias: encryptWithCertificate.value || undefined,
         exam_selection: undefined,
-        encryptSecret: configurationPassword.value ?? undefined,
-        confirm_encrypt_secret: confirmConfigurationPassword.value || undefined,
+        encryptSecret: (configurationPassword.value ?? "").trim() || undefined,
+        confirm_encrypt_secret:
+            (confirmConfigurationPassword.value ?? "").trim() || undefined,
         cert_encryption_asym: !!asymmetricOnlyEncryption.value,
         sebServerFallback: !!withFallback.value,
-
-        ...(withFallback.value
-            ? {
-                  startURL: fallbackStartUrl.value,
-                  sebServerFallbackAttemptInterval: Number(
-                      toMs(interval.value)!,
-                  ),
-                  sebServerFallbackAttempts: Number(connectionAttempts.value!),
-                  sebServerFallbackTimeout: Number(
-                      toMs(connectionTimeout.value)!,
-                  ),
-                  sebServerFallbackPasswordHash:
-                      fallbackPassword.value || undefined,
-                  sebServerFallbackPasswordHashConfirm:
-                      confirmFallbackPassword.value || undefined,
-                  hashedQuitPassword: quitPassword.value?.trim() || undefined,
-                  hashedQuitPasswordConfirm:
-                      confirmQuitPassword.value || undefined,
-              }
-            : {}),
         vdiSetup: "NO",
+        ...(withFallback.value
+            ? (() => {
+                  // ---- fallback-only fields ----
+                  if (!fallbackStartUrl.value) return {};
+                  if (interval.value == null) return {};
+                  if (connectionAttempts.value == null) return {};
+                  if (connectionTimeout.value == null) return {};
+
+                  const fbIntervalMs = toMs(interval.value);
+                  const fbTimeoutMs = toMs(connectionTimeout.value);
+                  const attemptsNum = Number(connectionAttempts.value);
+
+                  if (fbIntervalMs == null) return {};
+                  if (!Number.isFinite(attemptsNum)) return {};
+                  if (fbTimeoutMs == null) return {};
+
+                  return {
+                      startURL: fallbackStartUrl.value.trim(),
+                      sebServerFallbackAttemptInterval: fbIntervalMs,
+                      sebServerFallbackAttempts: attemptsNum,
+                      sebServerFallbackTimeout: fbTimeoutMs,
+                      sebServerFallbackPasswordHash:
+                          (fallbackPassword.value ?? "").trim() || undefined,
+                      sebServerFallbackPasswordHashConfirm:
+                          (confirmFallbackPassword.value ?? "").trim() ||
+                          undefined,
+                      hashedQuitPassword:
+                          (quitPassword.value ?? "").trim() || undefined,
+                      hashedQuitPasswordConfirm:
+                          (confirmQuitPassword.value ?? "").trim() || undefined,
+                  };
+              })()
+            : {}),
     };
 
-    // todo : wait on backend to remove the space after the key
+    // Backend quirk: duplicate key with trailing space
     const payload: any = {
         ...connectionConfigParams,
         "sebServerFallback ": connectionConfigParams.sebServerFallback,
@@ -931,6 +951,7 @@ async function submit() {
             payload,
         );
     if (!created) return;
+
     navigateTo(constants.CONNECTION_CONFIGURATIONS_ROUTE);
 }
 

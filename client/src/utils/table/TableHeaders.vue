@@ -179,14 +179,11 @@ onBeforeUnmount(() => {
 });
 
 function toggleNameIpSwitch() {
-    const index: number = tableUtils.getSessionListIndex(props.day!);
-
-    if (tableStore.isIpDisplayList[index].isIp) {
-        tableStore.isIpDisplayList[index].isIp = false;
-        return;
-    }
-
-    tableStore.isIpDisplayList[index].isIp = true;
+    if (!props.day) return;
+    const index = tableUtils.getSessionListIndex(props.day);
+    const entry = tableStore.isIpDisplayList[index];
+    if (!entry) return;
+    entry.isIp = !entry.isIp;
 }
 
 function getHeaderDescription(column: any, isSorted: any): any {

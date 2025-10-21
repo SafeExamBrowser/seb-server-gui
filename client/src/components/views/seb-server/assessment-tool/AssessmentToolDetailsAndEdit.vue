@@ -634,7 +634,7 @@ const layoutStore = useLayoutStore();
 const authenticatedUserAccountStore = useAuthenticatedUserAccountStore();
 
 // Fields
-const institution = ref<string | null>(null);
+const institution = ref<string>("");
 const name = ref<string>("");
 const lmsType = ref<LMSTypeEnum | null>(null);
 const assessmentToolServerAddress = ref<string>("");
@@ -754,7 +754,7 @@ onMounted(async () => {
     if (!institution.value) {
         institution.value =
             authenticatedUserAccountStore.userAccount?.institutionId?.toString() ??
-            null;
+            "";
     }
 
     takeSnapshot();
@@ -766,7 +766,7 @@ onBeforeUnmount(() => {
 
 function populateFromDto(dto: AssessmentTool) {
     institution.value =
-        dto.institutionId != null ? String(dto.institutionId) : null;
+        dto.institutionId != null ? String(dto.institutionId) : "";
     name.value = dto.name ?? "";
     lmsType.value = (dto.lmsType as LMSTypeEnum) ?? null;
     assessmentToolServerAddress.value = dto.lmsUrl ?? "";
@@ -934,7 +934,7 @@ async function editAssessmentToolOnly() {
 
     const common: any = {
         id: idToSend,
-        institutionId: institution.value!,
+        institutionId: institution.value,
         name: name.value,
         lmsType: lmsType.value as string,
         lmsUrl: assessmentToolServerAddress.value,

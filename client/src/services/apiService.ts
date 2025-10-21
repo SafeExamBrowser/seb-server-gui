@@ -193,27 +193,27 @@ export function throttle<T extends (...args: any[]) => void>(
     func: T,
     limit: number,
 ): (...args: Parameters<T>) => void {
-    let lastFunc: ReturnType<typeof setTimeout>;
+    let lastFunc: ReturnType<typeof setTimeout> | undefined;
     let lastRan: number | undefined;
 
     return function (...args: Parameters<T>) {
         const now = Date.now();
 
-        if (!lastRan) {
+        if (lastRan === undefined) {
             func(...args);
             lastRan = now;
         } else {
-            clearTimeout(lastFunc);
+            if (lastFunc) clearTimeout(lastFunc);
 
-            lastFunc = setTimeout(
-                () => {
-                    if (now - lastRan! >= limit) {
-                        func(...args);
-                        lastRan = Date.now();
-                    }
-                },
-                limit - (now - lastRan),
-            );
+            const remaining = Math.max(limit - (now - lastRan), 0);
+
+            lastFunc = setTimeout(() => {
+                const elapsed = Date.now() - (lastRan ?? 0);
+                if (elapsed >= limit) {
+                    func(...args);
+                    lastRan = Date.now();
+                }
+            }, remaining);
         }
     };
 }

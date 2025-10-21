@@ -1397,18 +1397,13 @@ async function getExamTemplate() {
 }
 
 async function getTemplateGroupsWithSp() {
-    if (examStore.selectedExamTemplate == null) {
-        return;
-    }
+    const tmpl = examStore.selectedExamTemplate;
+    if (!tmpl || tmpl.id == null) return;
 
     const examTemplateSp: ScreenProctoringSettings | null =
-        await examViewService.getExamTemplateSp(
-            examStore.selectedExamTemplate!.id!.toString(),
-        );
+        await examViewService.getExamTemplateSp(String(tmpl.id));
 
-    if (examTemplateSp == null) {
-        return;
-    }
+    if (!examTemplateSp) return;
 
     examStore.templateGroupsWithSp = generalUtils.createNumberIdList(
         examTemplateSp.spsSEBGroupsSelection,

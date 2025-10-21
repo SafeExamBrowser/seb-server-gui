@@ -223,9 +223,9 @@ import * as spConstants from "@/utils/sp-constants";
 import { ScreenshotData } from "@/models/screen-proctoring/session";
 
 // slider
-const sliderTime = ref<number>();
-const sliderMin = ref<number>();
-const sliderMax = ref<number>();
+const sliderTime = ref<number>(0);
+const sliderMin = ref<number>(0);
+const sliderMax = ref<number>(0);
 
 // screenshots
 const isPlaying = ref<boolean>(false);
@@ -424,7 +424,7 @@ function startIntervalScreenshots() {
             return;
         }
 
-        sliderTime.value! += DEFAULT_PLAYBACK_SPEED;
+        sliderTime.value += DEFAULT_PLAYBACK_SPEED;
         // timestampsIndex.value += 1;
     }, PLAYBACK_SPEED.value);
 }

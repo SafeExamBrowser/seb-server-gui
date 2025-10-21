@@ -1200,15 +1200,23 @@ async function editConnectionConfigurationOnly() {
         console.warn("Skipping save: institutionId is not set");
         return;
     }
+
+    // helper that converts seconds -> ms when not null
     const toMs = (s: number | null) =>
         s == null ? null : Math.round(Number(s) * 1000);
+
+    if (!configurationPurpose.value) return;
+    if (pingInterval.value == null) return;
+
+    const pingMs = toMs(pingInterval.value);
+    if (pingMs == null) return;
 
     const basePayload: UpdateConnectionConfigurationPar = {
         id: idToSend,
         institutionId: institutionId.value.toString(),
         name: name.value.trim(),
-        sebConfigPurpose: configurationPurpose.value!,
-        sebServerPingTime: toMs(pingInterval.value)!,
+        sebConfigPurpose: configurationPurpose.value,
+        sebServerPingTime: pingMs,
         exam_selection: exams.value?.length ? exams.value : undefined,
         cert_alias: encryptWithCertificate.value || undefined,
 
@@ -1223,37 +1231,54 @@ async function editConnectionConfigurationOnly() {
         vdiSetup: "NO",
     };
 
+    // ---- Fallback section only when enabled, with its own narrows ----
+    let fallbackPart = {};
+    if (withFallback.value) {
+        if (!fallbackStartUrl.value) return;
+        if (fallbackInterval.value == null) return;
+        if (connectionAttempts.value == null) return;
+        if (connectionTimeout.value == null) return;
+
+        const fbIntervalMs = toMs(fallbackInterval.value);
+        const fbTimeoutMs = toMs(connectionTimeout.value);
+        const attemptsNum = Number(connectionAttempts.value);
+
+        if (fbIntervalMs == null) return;
+        if (!Number.isFinite(attemptsNum)) return;
+        if (fbTimeoutMs == null) return;
+
+        fallbackPart = {
+            startURL: fallbackStartUrl.value.trim(),
+            sebServerFallbackAttemptInterval: fbIntervalMs,
+            sebServerFallbackAttempts: attemptsNum,
+            sebServerFallbackTimeout: fbTimeoutMs,
+            sebServerFallbackPasswordHash:
+                fallbackPassword.value?.trim() || undefined,
+            sebServerFallbackPasswordHashConfirm:
+                confirmFallbackPassword.value?.trim() || undefined,
+            hashedQuitPassword: quitPassword.value?.trim() || undefined,
+            hashedQuitPasswordConfirm:
+                confirmQuitPassword.value?.trim() || undefined,
+        };
+    } else {
+        fallbackPart = {
+            startURL: undefined,
+            sebServerFallbackAttemptInterval: undefined,
+            sebServerFallbackAttempts: undefined,
+            sebServerFallbackTimeout: undefined,
+            sebServerFallbackPasswordHash: undefined,
+            sebServerFallbackPasswordHashConfirm: undefined,
+            hashedQuitPassword: undefined,
+            hashedQuitPasswordConfirm: undefined,
+        };
+    }
+
     const payload = {
         ...basePayload,
-        ...(withFallback.value
-            ? {
-                  startURL: fallbackStartUrl.value.trim(),
-                  sebServerFallbackAttemptInterval: toMs(
-                      fallbackInterval.value,
-                  )!,
-                  sebServerFallbackAttempts: Number(connectionAttempts.value!),
-                  sebServerFallbackTimeout: toMs(connectionTimeout.value)!,
-                  sebServerFallbackPasswordHash:
-                      fallbackPassword.value?.trim() || undefined,
-                  sebServerFallbackPasswordHashConfirm:
-                      confirmFallbackPassword.value?.trim() || undefined,
-                  hashedQuitPassword: quitPassword.value?.trim() || undefined,
-                  hashedQuitPasswordConfirm:
-                      confirmQuitPassword.value?.trim() || undefined,
-              }
-            : {
-                  startURL: undefined,
-                  sebServerFallbackAttemptInterval: undefined,
-                  sebServerFallbackAttempts: undefined,
-                  sebServerFallbackTimeout: undefined,
-                  sebServerFallbackPasswordHash: undefined,
-                  sebServerFallbackPasswordHashConfirm: undefined,
-                  hashedQuitPassword: undefined,
-                  hashedQuitPasswordConfirm: undefined,
-              }),
+        ...fallbackPart,
     };
 
-    // todo this removes the default key and replaces it with sebserverfallback with a space at the end to satisfy backend bug
+    // backend quirk: rename key with trailing space
     const { sebServerFallback, ...rest } = payload as any;
     const toSend = {
         ...rest,

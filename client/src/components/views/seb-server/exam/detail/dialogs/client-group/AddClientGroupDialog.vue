@@ -440,8 +440,8 @@ async function createClientGroup() {
 
     if (screenProctoringToggle.value && createClientGroupResponse.id != null) {
         const existingSpGroupIds = examStore.selectedClientGroups
-            .filter((group) => group.isSPSGroup)
-            .map((group) => group.id!);
+            .filter((group) => group.isSPSGroup && group.id != null)
+            .map((group) => group.id as number);
 
         const updatedSpGroupIds = [
             ...new Set([...existingSpGroupIds, createClientGroupResponse.id]),
@@ -500,14 +500,14 @@ function loadClientGroupIntoForm(clientGroup: ClientGroup) {
     }
 
     if (clientGroupType === ClientGroupEnum.IP_V4_RANGE) {
-        startIpField.value = clientGroup.ipRangeStart!;
-        endIpField.value = clientGroup.ipRangeEnd!;
+        startIpField.value = clientGroup.ipRangeStart ?? "";
+        endIpField.value = clientGroup.ipRangeEnd ?? "";
         return;
     }
 
     if (clientGroupType === ClientGroupEnum.NAME_ALPHABETICAL_RANGE) {
-        startLetterField.value = clientGroup.nameRangeStartLetter!;
-        endLetterField.value = clientGroup.nameRangeEndLetter!;
+        startLetterField.value = clientGroup.nameRangeStartLetter ?? "";
+        endLetterField.value = clientGroup.nameRangeEndLetter ?? "";
     }
 }
 
