@@ -1,6 +1,7 @@
 <template>
     <v-btn
         ref="activatorRef"
+        :disabled="disabled"
         :icon="iconActivator"
         :color="colorActivator"
         variant="text"
@@ -40,15 +41,22 @@ import {
 } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 import { useDisplay } from "vuetify";
 
-const props = defineProps<{
-    iconActivator: IconValue;
-    colorActivator: string;
-    sizeActivator?: string;
-    labelActivator: string;
-    labelCancel: string;
-    labelSubmit: string;
-    getClientGroup: () => ClientGroupTransient;
-}>();
+const props = withDefaults(
+    defineProps<{
+        disabled?: boolean;
+        iconActivator: IconValue;
+        colorActivator: string;
+        sizeActivator?: string;
+        labelActivator: string;
+        labelCancel: string;
+        labelSubmit: string;
+        getClientGroup: () => ClientGroupTransient;
+    }>(),
+    {
+        disabled: false,
+        sizeActivator: undefined,
+    },
+);
 
 const emit = defineEmits<{
     (e: "submit", clientGroup: ClientGroup): void;
