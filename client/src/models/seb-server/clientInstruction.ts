@@ -3,5 +3,5 @@ export type ClientInstruction = {
     examId: number;
     type: string;
     connectionToken: string;
-    attributes?: {};
+    attributes?: Record<string, unknown>;
 };
