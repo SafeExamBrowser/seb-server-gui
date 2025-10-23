@@ -307,7 +307,7 @@ const FTPPassiveVal = ref<boolean>(false);
 // url filter
 const editURLFilterRuleDialog = ref<boolean>(false);
 const selectedURLFilterRule = ref<URLFilterRule | null>(null);
-const urlFilterHeadersRef = ref<any[]>();
+const urlFilterHeadersRef = ref<(HTMLElement | null)[]>([]);
 const urlFilterTable = ref<URLFilterRule[]>([]);
 const urlFilterHeaders = ref([
     {

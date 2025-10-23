@@ -640,7 +640,7 @@ onBeforeUnmount(() => {
 defineExpose({ loadItems });
 
 // Table header config
-const userAccountsTableHeadersRef = ref<any[]>();
+const userAccountsTableHeadersRef = ref<[]>();
 
 const userAccountsTableHeaders = computed(() => {
     const headers = [];

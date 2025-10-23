@@ -243,15 +243,15 @@ const isBatteryIndicator = ref<boolean>(false);
 const isWlanIndicator = ref<boolean>(false);
 
 // interval
-let intervalRefresh: any | null = null;
-const REFRESH_INTERVAL: number = 1 * 2000;
+let intervalRefresh: ReturnType<typeof setTimeout> | null = null;
+const REFRESH_INTERVAL: number = 2000;
 
 // dialogs
 const clientGroupDialog = ref<boolean>(false);
 const clientGroupToView = ref<ClientGroup | null>(null);
 
 // table
-const clientsTableHeadersRef = ref<any[]>();
+const clientsTableHeadersRef = ref<(HTMLElement | null)[] | null>(null);
 const clientsTableHeaders = ref([
     {
         title: translate("monitoringClients.main.tableHeaderNameSession"),

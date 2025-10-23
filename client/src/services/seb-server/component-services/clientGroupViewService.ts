@@ -34,7 +34,7 @@ export async function updateClientGroup(
     }
 }
 
-export async function deleteClientGroup(id: string): Promise<any | null> {
+export async function deleteClientGroup(id: string): Promise<undefined | null> {
     try {
         return await clientGroupService.deleteClientGroup(id);
     } catch {

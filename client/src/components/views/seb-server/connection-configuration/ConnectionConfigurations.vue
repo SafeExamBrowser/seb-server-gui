@@ -472,7 +472,7 @@ const searchQuery = ref("");
 // API response
 const connectionConfigurations = ref<ConnectionConfigurations>();
 
-const connectionConfigurationTableHeadersRef = ref<any[]>();
+const connectionConfigurationTableHeadersRef = ref<(HTMLElement | null)[]>([]);
 
 onMounted(async () => {
     appBarStore.title = translate("titles.connectionConfigurations");

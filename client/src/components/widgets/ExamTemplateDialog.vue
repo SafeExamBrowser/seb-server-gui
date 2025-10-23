@@ -39,6 +39,6 @@ defineProps<{
 }>();
 
 const emit = defineEmits<{
-    closeExamTemplateDialog: any;
+    closeExamTemplateDialog: [];
 }>();
 </script>

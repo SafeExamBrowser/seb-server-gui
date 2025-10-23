@@ -88,7 +88,7 @@ const examId = useRoute().params.examId.toString();
 
 // emits
 const emit = defineEmits<{
-    closeInstructionConfirmDialog: any;
+    (e: "closeInstructionConfirmDialog"): void;
 }>();
 
 // props

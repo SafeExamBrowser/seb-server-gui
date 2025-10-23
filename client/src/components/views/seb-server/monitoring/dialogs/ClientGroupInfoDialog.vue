@@ -238,7 +238,7 @@ const clientGroupDescription = ref<string>(
 
 // emits
 const emit = defineEmits<{
-    closeClientGroupDialog: any;
+    (e: "closeClientGroupDialog"): void;
 }>();
 
 // client group select items

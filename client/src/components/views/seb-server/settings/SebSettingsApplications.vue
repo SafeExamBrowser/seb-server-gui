@@ -244,7 +244,7 @@ const allowSwitchToApplicationsVal = ref<boolean>(false);
 // permittted processes
 const editPermittedProcessDialog = ref<boolean>(false);
 const selectedPermittedProcess = ref<PermittedProcess | null>(null);
-const permittedProcessHeadersRef = ref<any[]>();
+const permittedProcessHeadersRef = ref<(HTMLElement | null)[]>([]);
 const permittedProcessTable = ref<PermittedProcess[]>([]);
 const permittedProcessHeaders = ref([
     {
@@ -292,7 +292,7 @@ const permittedProcessHeaders = ref([
 // prohibited processes
 const editProhibitedProcessDialog = ref<boolean>(false);
 const selectedProhibitedProcess = ref<ProhibitedProcess | null>(null);
-const prohibitedProcessHeadersRef = ref<any[]>();
+const prohibitedProcessHeadersRef = ref<(HTMLElement | null)[]>([]);
 const prohibitedProcessTable = ref<ProhibitedProcess[]>([]);
 const prohibitedProcessHeaders = ref([
     {

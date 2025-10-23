@@ -57,7 +57,7 @@ export async function deactivateConnectionConfiguration(
 
 export async function deleteConnectionConfiguration(
     id: string,
-): Promise<any | null> {
+): Promise<undefined | null> {
     try {
         return await connectionConfigurationService.deleteConnectionConfiguration(
             id,

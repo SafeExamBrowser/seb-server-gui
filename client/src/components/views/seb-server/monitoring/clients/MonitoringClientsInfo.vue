@@ -550,11 +550,11 @@ const selectedConnectionTokens = ref<string>("");
 
 // emits - call loadMonitoringListItemsCaller in parent
 const emit = defineEmits<{
-    loadMonitoringListItemsCaller: any;
+    loadMonitoringListItemsCaller: [];
 }>();
 
 function loadMonitoringListItemsCaller() {
-    if (datepicker.value != null && datepicker.value != null) {
+    if (datepicker.value != null) {
         monitoringStore.startDate = datepicker.value.getTime();
     }
 

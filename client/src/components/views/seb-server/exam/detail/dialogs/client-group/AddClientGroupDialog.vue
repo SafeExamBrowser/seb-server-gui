@@ -329,7 +329,7 @@ const isGroupNameDuplicate = ref<boolean>(false);
 
 // table
 const templateClientGroups = ref<ClientGroup[]>([]);
-const templateClientGroupsHeadersRef = ref<any[]>();
+const templateClientGroupsHeadersRef = ref<(HTMLElement | null)[]>([]);
 const templateClientGroupsHeaders = ref([
     { title: "Name", key: "name" },
     { title: "Type", key: "type" },

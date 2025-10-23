@@ -17,9 +17,10 @@ export async function getCertificates(
 
 export async function deleteCertificate(
     certificateId: string,
-): Promise<any | null> {
+): Promise<undefined | null> {
     try {
-        return await certificateService.deleteCertificate(certificateId);
+        await certificateService.deleteCertificate(certificateId);
+        return undefined;
     } catch {
         return null;
     }
@@ -33,9 +34,8 @@ export async function createCertificate(params: CreateCertificatePar) {
             fileName: params.fileName,
             password: params.password,
         });
-    } catch (e) {
-        (e as any).__where = "component-services.createCertificate";
-        throw e;
+    } catch {
+        return null;
     }
 }
 

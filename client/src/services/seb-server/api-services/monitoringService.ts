@@ -4,6 +4,7 @@ import { OptionalParGetMonitoringClientLogs } from "@/models/seb-server/optional
 import {
     ClientEventResponse,
     ClientNotification,
+    MonitoringConnections,
     MonitoringOverview,
     MonitoringStaticClientData,
     SingleConnection,
@@ -14,7 +15,7 @@ import { ClientInstruction } from "@/models/seb-server/clientInstruction";
 const monitoringUrl: string = "/monitoring";
 const clientEventUrl: string = "/seb-client-event";
 
-export async function applyTestRun(id: string): Promise<Exam | any> {
+export async function applyTestRun(id: string): Promise<Exam> {
     return (
         await apiService.api.post(
             monitoringUrl + "/testrun/" + id,
@@ -28,9 +29,7 @@ export async function applyTestRun(id: string): Promise<Exam | any> {
     ).data;
 }
 
-export async function getOverview(
-    examId: string,
-): Promise<MonitoringOverview | any> {
+export async function getOverview(examId: string): Promise<MonitoringOverview> {
     const response = await apiService.api.get(
         monitoringUrl + "/get-overview/" + examId,
         { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN) },
@@ -44,7 +43,7 @@ export async function getOverview(
 export async function getConnections(
     examId: string,
     optionalHeaders: unknown,
-): Promise<any> {
+): Promise<MonitoringConnections> {
     const url: string = monitoringUrl + "/connections/" + examId;
     return (
         await apiService.api.get(url, {
@@ -57,7 +56,7 @@ export async function getConnections(
 export async function getSingleConnection(
     examId: string,
     connectionToken: string,
-): Promise<SingleConnection | any> {
+): Promise<SingleConnection> {
     const url: string = "/get-monitoring/" + examId + "/" + connectionToken;
     return (
         await apiService.api.get(url, {
@@ -82,7 +81,7 @@ export async function getSingleConnectionEvents(
 export async function getStaticClientData(
     examId: string,
     modelIds: string,
-): Promise<MonitoringStaticClientData | any> {
+): Promise<MonitoringStaticClientData> {
     const url: string = monitoringUrl + "/" + examId + "/static-client-data";
     return (
         await apiService.api.post(
@@ -100,7 +99,7 @@ export async function getStaticClientData(
 export async function registerInstruction(
     examId: string,
     clientInstruction: ClientInstruction,
-): Promise<any> {
+): Promise<unknown> {
     const url: string = monitoringUrl + "/" + examId + "/instruction";
     return (
         await apiService.api.post(url, clientInstruction, {
@@ -112,7 +111,7 @@ export async function registerInstruction(
 export async function getPendingNotifcations(
     examId: string,
     connectionToken: string,
-): Promise<ClientNotification[] | any> {
+): Promise<ClientNotification[]> {
     const url: string =
         monitoringUrl + "/" + examId + "/notification/" + connectionToken;
     return (
@@ -126,7 +125,7 @@ export async function confirmNotification(
     examId: string,
     notificationId: string,
     connectionToken: string,
-): Promise<any> {
+): Promise<unknown> {
     const url: string =
         monitoringUrl +
         "/" +
@@ -145,7 +144,7 @@ export async function confirmNotification(
 export async function disableConnections(
     examId: string,
     connectionToken: string,
-): Promise<any> {
+): Promise<unknown> {
     const url: string = monitoringUrl + "/" + examId + "/disable-connection";
     return (
         await apiService.api.post(

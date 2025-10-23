@@ -35,7 +35,7 @@
 
 <script setup lang="ts">
 import PageTitle from "@/components/widgets/PageTitle.vue";
-import { BreadCrumbItem } from "@/components/widgets/breadCrumb/types";
+import { BreadCrumbItem } from "@/components/widgets/breadcrumb/types";
 
 defineProps<{
     title: string;

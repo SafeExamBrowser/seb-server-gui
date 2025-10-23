@@ -329,9 +329,9 @@ const playbackSpeeds: { title: string; id: number }[] = [
 ];
 
 // intervals
-let intervalScreenshots: any | null = null;
-let intervalLiveImage: any | null = null;
-let intervalRefresh: any | null = null;
+let intervalScreenshots: ReturnType<typeof setInterval> | null = null;
+let intervalLiveImage: ReturnType<typeof setInterval> | null = null;
+let intervalRefresh: ReturnType<typeof setInterval> | null = null;
 
 // store
 const appBarStore = useAppBarStore();
@@ -669,6 +669,7 @@ function startIntervalLiveImage() {
 function stopIntervalLiveImage() {
     if (intervalLiveImage) {
         clearInterval(intervalLiveImage);
+        intervalLiveImage = null;
     }
 }
 
@@ -716,12 +717,14 @@ function startIntervalScreenshots() {
 function stopIntervalScreenshots() {
     if (intervalScreenshots) {
         clearInterval(intervalScreenshots);
+        intervalScreenshots = null;
     }
 }
 
 function stopIntervalRefresh() {
     if (intervalRefresh) {
         clearInterval(intervalRefresh);
+        intervalRefresh = null;
     }
 }
 

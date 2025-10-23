@@ -201,7 +201,7 @@ const isOnLoad = ref<boolean>(true);
 const defaultSort: { key: string; order: string }[] = [
     { key: "quiz_start_time", order: "desc" },
 ];
-const quizzesTableHeadersRef = ref<any[]>();
+const quizzesTableHeadersRef = ref<(HTMLElement | null)[]>([]);
 const quizzesTableHeaders = ref([
     {
         title: translate("quizImportWizard.examMain.tableHeaderName"),

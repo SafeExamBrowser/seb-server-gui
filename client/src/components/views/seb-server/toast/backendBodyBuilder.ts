@@ -1,7 +1,19 @@
 import i18n from "@/i18n";
 import type { BackendError } from "@/components/views/seb-server/toast/backendError";
 
-const { t } = (i18n as any).global || i18n;
+type TranslateFn = (key: string, params?: Record<string, unknown>) => string;
+
+function getT(inst: unknown): TranslateFn {
+    const withGlobal = inst as { global?: { t?: TranslateFn } };
+    if (withGlobal.global?.t) return withGlobal.global.t;
+
+    const composerLike = inst as { t?: TranslateFn };
+    if (composerLike.t) return composerLike.t;
+
+    return ((key: string) => key) as TranslateFn;
+}
+
+const t = getT(i18n);
 
 function humanize(id?: string) {
     if (!id) return "";

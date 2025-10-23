@@ -6,7 +6,7 @@ const url: string = "/client-group";
 
 export async function createClientGroup(
     clientGroup: ClientGroup,
-): Promise<ClientGroup | any> {
+): Promise<ClientGroup> {
     return (
         await apiService.api.post(url, clientGroup, {
             headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),
@@ -16,7 +16,7 @@ export async function createClientGroup(
 
 export async function updateClientGroup(
     clientGroup: ClientGroup,
-): Promise<ClientGroup | any> {
+): Promise<ClientGroup> {
     return (
         await apiService.api.put(url, clientGroup, {
             headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),
@@ -24,7 +24,7 @@ export async function updateClientGroup(
     ).data;
 }
 
-export async function deleteClientGroup(id: string): Promise<any | null> {
+export async function deleteClientGroup(id: string): Promise<undefined | null> {
     return (
         await apiService.api.delete(url + "/" + id, {
             headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
@@ -32,7 +32,7 @@ export async function deleteClientGroup(id: string): Promise<any | null> {
     ).data;
 }
 
-export async function getClientGroup(id: string): Promise<ClientGroup | any> {
+export async function getClientGroup(id: string): Promise<ClientGroup> {
     return (
         await apiService.api.get(url + "/" + id, {
             headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
@@ -40,9 +40,7 @@ export async function getClientGroup(id: string): Promise<ClientGroup | any> {
     ).data;
 }
 
-export async function getClientGroups(
-    id?: string,
-): Promise<ClientGroups | any> {
+export async function getClientGroups(id?: string): Promise<ClientGroups> {
     return (
         await apiService.api.get(url, {
             headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),

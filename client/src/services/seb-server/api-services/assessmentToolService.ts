@@ -10,9 +10,7 @@ import {
 
 const assessmentToolUrl: string = "/assessment-tools";
 
-export async function getAssessmentToolsActive(): Promise<
-    AssessmentToolsResponse | any
-> {
+export async function getAssessmentToolsActive(): Promise<AssessmentToolsResponse> {
     const url: string = assessmentToolUrl + "/active";
     return (
         await apiService.api.get(url, {
@@ -21,9 +19,7 @@ export async function getAssessmentToolsActive(): Promise<
     ).data;
 }
 
-export async function getAssessmentTool(
-    id: number,
-): Promise<AssessmentTool | any> {
+export async function getAssessmentTool(id: number): Promise<AssessmentTool> {
     const url: string = "/get-assessment-tool/" + id;
     return (
         await apiService.api.get(url, {
@@ -34,7 +30,7 @@ export async function getAssessmentTool(
 
 export async function getAssessmentTools(
     optionalParameters?: OptionalParGetAssessmentTool,
-): Promise<AssessmentToolsResponse | any> {
+): Promise<AssessmentToolsResponse> {
     const url: string = assessmentToolUrl;
     return (
         await apiService.api.get(url, {
@@ -46,7 +42,7 @@ export async function getAssessmentTools(
 
 export async function activateAssessmentTool(
     assessmentToolId: string,
-): Promise<AssessmentTool | any> {
+): Promise<AssessmentTool> {
     const url: string = assessmentToolUrl + "/" + assessmentToolId + "/active";
     return (
         await apiService.api.post(url, {
@@ -57,7 +53,7 @@ export async function activateAssessmentTool(
 
 export async function deactivateAssessmentTool(
     assessmentToolId: string,
-): Promise<AssessmentTool | any> {
+): Promise<AssessmentTool> {
     const url: string =
         assessmentToolUrl + "/" + assessmentToolId + "/inactive";
     return (
@@ -69,7 +65,7 @@ export async function deactivateAssessmentTool(
 
 export async function deleteAssessmentTool(
     assessmentToolId: string,
-): Promise<any | any> {
+): Promise<undefined | null> {
     return (
         await apiService.api.delete(
             assessmentToolUrl + "/" + assessmentToolId,
@@ -80,7 +76,7 @@ export async function deleteAssessmentTool(
 
 export async function createAssessmentTool(
     assessmentTool: CreateAssessmentToolPar,
-): Promise<any | any> {
+): Promise<AssessmentTool> {
     return (
         await apiService.api.post(assessmentToolUrl, assessmentTool, {
             headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),
@@ -90,7 +86,7 @@ export async function createAssessmentTool(
 
 export async function editAssessmentTool(
     assessmentTool: UpdateAssessmentToolPar,
-): Promise<AssessmentTool | any> {
+): Promise<AssessmentTool> {
     return (
         await apiService.api.put(assessmentToolUrl, assessmentTool, {
             headers: apiService.getPutHeaders(StorageItemEnum.ACCESS_TOKEN),

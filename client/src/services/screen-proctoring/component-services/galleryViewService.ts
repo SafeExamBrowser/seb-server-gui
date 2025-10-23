@@ -15,23 +15,13 @@ export async function getGroup(
     sortOrder: SortOrder,
 ): Promise<GroupUuid | null> {
     try {
-        const groupUuidResponse: GroupUuid = await groupService.getGroupByUuid(
-            groupUuid,
-            {
-                pageNumber: (currentWindow += 1),
-                pageSize: Math.pow(pageSize, 2),
-                sortOrder,
-                // sortBy: "clientName",
-            },
-        );
-
-        return groupUuidResponse;
-    } catch (error: any) {
-        console.error(error);
-        if (error.response) {
-            return error.response.data;
-        }
-
+        return await groupService.getGroupByUuid(groupUuid, {
+            pageNumber: (currentWindow += 1),
+            pageSize: Math.pow(pageSize, 2),
+            sortOrder,
+            // sortBy: "clientName",
+        });
+    } catch {
         return null;
     }
 }
@@ -45,8 +35,7 @@ export async function getLatestScreenshotData(
             sessionUuid,
             timestamp.toString(),
         );
-    } catch (error) {
-        console.error(error);
+    } catch {
         return null;
     }
 }

@@ -5,7 +5,7 @@ import { ScreenshotData } from "@/models/screen-proctoring/session";
 
 export async function getScreenshotDataBySessionId(
     sessionId: string,
-): Promise<ScreenshotData | any> {
+): Promise<ScreenshotData> {
     const url: string = "/sp/screenshot-data/" + sessionId;
     return (
         await apiService.api.get(url, {
@@ -17,7 +17,7 @@ export async function getScreenshotDataBySessionId(
 export async function getScreenshotDataByTimestamp(
     sessionId: string,
     timestamp: string,
-): Promise<ScreenshotData | any> {
+): Promise<ScreenshotData> {
     const url: string = "/sp/screenshot-data/" + sessionId + "/" + timestamp;
     return (
         await apiService.api.get(url, {

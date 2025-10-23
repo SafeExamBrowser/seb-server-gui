@@ -148,8 +148,6 @@ type ColumnLike = {
     sortable?: boolean;
 };
 
-type SortIcon = string;
-
 type Clickable = { click: () => void };
 
 const tableStore = useTableStore();
@@ -160,11 +158,11 @@ const headerRefs = ref<Clickable[] | null>(null);
 
 // props
 const props = defineProps<{
-    columns: ColumnLike[];
-    isSorted: (column: ColumnLike) => boolean;
-    getSortIcon: (column: ColumnLike) => SortIcon;
-    toggleSort: (column: ColumnLike) => void;
-    headerRefsProp: Clickable[] | null;
+    columns: any[];
+    isSorted: (column: any) => boolean;
+    getSortIcon: any;
+    toggleSort: (column: any) => void;
+    headerRefsProp: any;
     day?: string;
     selectAll?: (value: boolean) => void;
     allSelected?: boolean;

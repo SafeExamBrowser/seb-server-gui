@@ -61,7 +61,6 @@ function extractErrorParts(err: RawHttpError): {
     return {};
 }
 
-/** Title resolver: specific i18n → dynamicTitle fallback → HTTP status text */
 function backendTitle(
     status?: number,
     contextLabel?: string,
@@ -93,7 +92,6 @@ function backendTitle(
         if (t(k) !== k) return t(k);
     }
 
-    // dynamic fallback with "Error ..." phrasing
     if (firstAttr) return dynamicTitle(extras?.method, firstAttr);
     if (pathOnly) {
         const entityFromPath = pathOnly.split("/")[0];
@@ -138,7 +136,6 @@ export const notify = {
 
         if (items.length) {
             for (const it of items) {
-                // build 2-line body: [code translation, built from attributes]
                 const built = buildBodyLines(it);
                 const text = built.join("\n");
                 lines.push(text);

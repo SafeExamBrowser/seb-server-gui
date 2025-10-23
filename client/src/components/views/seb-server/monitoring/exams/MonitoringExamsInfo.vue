@@ -216,7 +216,7 @@ const datepicker = ref();
 
 // emits - call loadMonitoringListItemsCaller in parent
 const emit = defineEmits<{
-    loadMonitoringListItemsCaller: any;
+    (e: "loadMonitoringListItemsCaller"): void;
 }>();
 
 // filters exam type

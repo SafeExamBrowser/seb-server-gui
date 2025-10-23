@@ -63,7 +63,7 @@ export async function deactivateAssessmentTool(
 
 export async function deleteAssessmentTool(
     assessmentToolId: string,
-): Promise<any | null> {
+): Promise<undefined | null> {
     try {
         return await assessmentToolService.deleteAssessmentTool(
             assessmentToolId,
@@ -75,7 +75,7 @@ export async function deleteAssessmentTool(
 
 export async function createAssessmentTool(
     createAssessmentToolReqPar: CreateAssessmentToolPar,
-): Promise<any | null> {
+): Promise<AssessmentTool | null> {
     try {
         return await assessmentToolService.createAssessmentTool(
             createAssessmentToolReqPar,

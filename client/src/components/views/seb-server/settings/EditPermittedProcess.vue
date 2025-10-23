@@ -590,7 +590,7 @@ import {
     PermittedProcessArgument,
 } from "@/models/seb-server/sebSettings";
 
-const argumentsHeadersRef = ref<any[]>();
+const argumentsHeadersRef = ref<(HTMLElement | null)[]>([]);
 const argumentsTable = ref<PermittedProcessArgument[]>([]);
 const argumentsHeaders = ref([
     {
@@ -620,7 +620,7 @@ const argumentsHeaders = ref([
 
 // emits
 const emit = defineEmits<{
-    closeEditPermittedProcess: any;
+    (e: "closeEditPermittedProcess", shouldSave: boolean): void;
 }>();
 
 // props

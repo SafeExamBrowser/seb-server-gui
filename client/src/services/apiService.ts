@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import * as authenticationService from "@/services/authenticationService";
 import { navigateTo } from "@/router/navigation";
 import * as ENV from "@/config/envConfig";
@@ -23,6 +23,7 @@ declare module "axios" {
         suppressToast?: boolean;
         toastContext?: string;
         toastDedupeKey?: string;
+        _retry?: boolean;
     }
 }
 
@@ -62,43 +63,42 @@ export function createApiInterceptor() {
         },
         async (error) => {
             resetLoadingState();
-            // console.error(error); // keep if you want
 
-            const originalRequest = error.config ?? {};
+            const originalRequest = (error.config ?? {}) as AxiosRequestConfig;
 
-            // ---- 401 refresh flow (unchanged) ----
             if (error?.response?.status === 401 && !originalRequest._retry) {
                 return handleAuthenticationError(originalRequest);
             }
 
-            // ---- toast the backend error via your notify service ----
-            // allow opt-out per request
             const suppress = originalRequest?.suppressToast === true;
             if (!suppress) {
                 notify.serverError(error, {
-                    // show where it happened; fallback to generic if absent
                     contextLabel:
                         originalRequest?.toastContext ??
                         (originalRequest?.url
                             ? `${originalRequest.url}`
                             : "Request"),
-                    // split multiple backend errors into separate toasts
                     splitToasts: true,
-                    // dedupe by either provided key or url to avoid spam on rapid retries
                     dedupeKey:
                         originalRequest?.toastDedupeKey ??
                         (originalRequest?.url || "request"),
                 });
             }
 
-            // keep the rejection so callers can still handle it if needed
             return Promise.reject(error);
         },
     );
 
-    async function handleAuthenticationError(originalRequest: any) {
+    async function handleAuthenticationError(
+        originalRequest: AxiosRequestConfig,
+    ) {
         try {
-            const response: Token = await authenticationService.refresh(false);
+            const response: Token | null =
+                await authenticationService.refresh(false);
+            if (!response) {
+                return;
+            }
+
             authStore.setStorageItem(
                 StorageItemEnum.ACCESS_TOKEN,
                 response.access_token,
@@ -113,8 +113,12 @@ export function createApiInterceptor() {
                     authStore.getStorageItem(StorageItemEnum.IS_SP_AVAILABLE),
                 )
             ) {
-                const spResponse: Token =
+                const spResponse: Token | null =
                     await authenticationService.refresh(true);
+                if (!spResponse) {
+                    return;
+                }
+
                 authStore.setStorageItem(
                     StorageItemEnum.SP_ACCESS_TOKEN,
                     spResponse.access_token,
@@ -127,8 +131,7 @@ export function createApiInterceptor() {
 
             originalRequest._retry = true;
 
-            // choose correct headers based on path
-            const originalUrl: string | null = originalRequest.url;
+            const originalUrl = originalRequest.url;
             originalRequest.headers =
                 originalUrl && originalUrl.startsWith("/sp/")
                     ? getHeaders(StorageItemEnum.SP_ACCESS_TOKEN)
@@ -189,14 +192,14 @@ export function getPutHeaders(type: string): object {
     };
 }
 
-export function throttle<T extends (...args: any[]) => void>(
-    func: T,
+export function throttle<TArgs extends unknown[]>(
+    func: (...args: TArgs) => void,
     limit: number,
-): (...args: Parameters<T>) => void {
+): (...args: TArgs) => void {
     let lastFunc: ReturnType<typeof setTimeout> | undefined;
     let lastRan: number | undefined;
 
-    return function (...args: Parameters<T>) {
+    return function (...args: TArgs) {
         const now = Date.now();
 
         if (lastRan === undefined) {

@@ -5,7 +5,7 @@ import { OptionalParGetQuizzes } from "@/models/seb-server/optionalParamters";
 
 export async function getQuizzes(
     optionalParameters?: OptionalParGetQuizzes,
-): Promise<Quizzes | any> {
+): Promise<Quizzes> {
     const url: string = "/quiz";
     return (
         await apiService.api.get(url, {

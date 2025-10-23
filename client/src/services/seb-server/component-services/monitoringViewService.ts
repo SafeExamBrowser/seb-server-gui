@@ -152,7 +152,7 @@ export async function getAskAndStore(examId: string) {
 export async function registerInstruction(
     examId: string,
     clientInstruction: ClientInstruction,
-): Promise<any | null> {
+): Promise<unknown | null> {
     try {
         return await monitoringService.registerInstruction(
             examId,
@@ -176,12 +176,11 @@ export async function getPendingNotifcations(
         return null;
     }
 }
-
 export async function confirmNotification(
     examId: string,
     notificationId: string,
     connectionToken: string,
-): Promise<any | null> {
+): Promise<unknown | null> {
     try {
         return await monitoringService.confirmNotification(
             examId,
@@ -196,7 +195,7 @@ export async function confirmNotification(
 export async function disableConnections(
     examId: string,
     connectionToken: string,
-): Promise<any | null> {
+): Promise<unknown | null> {
     try {
         return await monitoringService.disableConnections(
             examId,
@@ -206,6 +205,7 @@ export async function disableConnections(
         return null;
     }
 }
+
 export function applyFilter(
     query: LocationQuery,
     filterType: MonitoringHeaderEnum,

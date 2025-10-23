@@ -154,7 +154,7 @@ const isOnLoad = ref<boolean>(true);
 const defaultSort: { key: string; order: string }[] = [
     { key: "quizStartTime", order: "desc" },
 ];
-const examsTableHeadersRef = ref<any[]>();
+const examsTableHeadersRef = ref<(HTMLElement | null)[]>([]);
 const examsTableHeaders = ref([
     {
         title: translate("examList.main.tableHeaderName"),

@@ -578,7 +578,7 @@ const searchQuery = ref("");
 // API response
 const assessmentTools = ref<AssessmentToolsResponse>();
 
-const assessmentToolTableHeadersRef = ref<any[]>();
+const assessmentToolTableHeadersRef = ref<(HTMLElement | null)[]>([]);
 
 const translateLmsType = (value: string | LMSTypeEnum) => {
     return translate(`assessmentToolConnections.lmsTypes.${value}`);

@@ -331,7 +331,7 @@ const searchQuery = ref("");
 // API response
 
 const certificates = ref<CertificatesResponse>();
-const certificateTableHeadersRef = ref<any[]>();
+const certificateTableHeadersRef = ref<(HTMLElement | null)[]>([]);
 
 onMounted(async () => {
     appBarStore.title = translate("titles.certificates");

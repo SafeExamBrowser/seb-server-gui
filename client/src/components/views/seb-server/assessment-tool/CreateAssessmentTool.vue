@@ -594,7 +594,10 @@ import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/store
 import { createAssessmentTool } from "@/services/seb-server/component-services/assessmentToolViewService";
 import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums";
 import { Institution } from "@/models/seb-server/institution";
-import { CreateAssessmentToolPar } from "@/models/seb-server/assessmentTool";
+import {
+    AssessmentTool,
+    CreateAssessmentToolPar,
+} from "@/models/seb-server/assessmentTool";
 
 const appBarStore = useAppBarStore();
 const layoutStore = useLayoutStore();
@@ -732,7 +735,7 @@ async function submit() {
         ...authPart,
     } as CreateAssessmentToolPar;
 
-    const createdAssessmentToolResponse: any | null =
+    const createdAssessmentToolResponse: AssessmentTool | null =
         await createAssessmentTool(createAssessmentToolsParams);
 
     if (!createdAssessmentToolResponse) return;

@@ -72,8 +72,7 @@ export async function deleteSessions(
 ): Promise<object | any> {
     try {
         return await searchService.deleteSessions(sessionUuids);
-    } catch (error) {
-        console.error(error);
+    } catch {
         return null;
     }
 }

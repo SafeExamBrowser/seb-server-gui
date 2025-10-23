@@ -79,7 +79,7 @@ export async function createUserAccount(
 
 export async function editUserAccount(
     userAccountPar: EditUserAccountParameters,
-): Promise<SingleUserAccountResponse | null> {
+): Promise<UserAccountResponse | null> {
     try {
         return await userAccountService.editUserAccount(userAccountPar);
     } catch {

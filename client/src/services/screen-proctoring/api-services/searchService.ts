@@ -13,7 +13,7 @@ import {
 
 export async function searchSessionsDay(
     optionalParameters?: OptionalParSearchSessions,
-): Promise<string[] | any> {
+): Promise<string[]> {
     const url: string = "/sp/search/sessions/day";
     return (
         await apiService.api.get(url, {
@@ -25,7 +25,7 @@ export async function searchSessionsDay(
 
 export async function searchSessions(
     optionalParameters?: OptionalParSearchSessions,
-): Promise<SearchSessions | any> {
+): Promise<SearchSessions> {
     const url: string = "/sp/search/sessions";
     return (
         await apiService.api.get(url, {
@@ -37,7 +37,7 @@ export async function searchSessions(
 
 export async function searchScreenshots(
     optionalParameters?: OptionalParSearchScreenshots,
-): Promise<SearchScreenshots | any> {
+): Promise<SearchScreenshots> {
     const url: string = "/sp/search/screenshots";
     return (
         await apiService.api.get(url, {
@@ -50,7 +50,7 @@ export async function searchScreenshots(
 export async function searchTimeline(
     sessionId: string,
     optionalParameters?: OptionalParSearchTimeline,
-): Promise<SearchTimeline | any> {
+): Promise<SearchTimeline> {
     const url: string = "/sp/search/timeline/" + sessionId;
     return (
         await apiService.api.get(url, {

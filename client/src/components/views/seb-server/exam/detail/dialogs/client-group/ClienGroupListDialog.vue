@@ -198,7 +198,7 @@ const initialClientGroups = ref<ClientGroup[]>([]);
 const clientGroups = ref<ClientGroup[]>([]);
 
 // table
-const tableHeadersRef = ref<any[]>();
+const tableHeadersRef = ref<(HTMLElement | null)[]>([]);
 const tableHeaders = ref([
     { title: "Name", key: "name", width: "50%" },
     { title: "Type", key: "type", width: "30%" },
@@ -291,7 +291,7 @@ async function deleteClientGroup(clientGroupId?: string) {
         return;
     }
 
-    const deleteClientGroupResponse: any | null =
+    const deleteClientGroupResponse: undefined | null =
         await clientGroupViewService.deleteClientGroup(clientGroupId);
 
     if (deleteClientGroupResponse == null) {

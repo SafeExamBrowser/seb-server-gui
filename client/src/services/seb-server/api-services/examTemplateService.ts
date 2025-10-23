@@ -6,7 +6,7 @@ import { ExamTemplate, ExamTemplates } from "@/models/seb-server/examTemplate";
 
 const url: string = "/exam-template";
 
-export async function getExamTemplate(id: string): Promise<ExamTemplate | any> {
+export async function getExamTemplate(id: string): Promise<ExamTemplate> {
     return (
         await apiService.api.get(url + "/" + id, {
             headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
@@ -29,7 +29,7 @@ export async function getExamTemplateNames(): Promise<
 }
 export async function getExamTemplates(
     optionalParameters?: OptionalParGeneric,
-): Promise<ExamTemplates | any> {
+): Promise<ExamTemplates> {
     return (
         await apiService.api.get(url, {
             headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
@@ -40,7 +40,7 @@ export async function getExamTemplates(
 
 export async function getExamTemplateSp(
     id: string,
-): Promise<ScreenProctoringSettings | any> {
+): Promise<ScreenProctoringSettings> {
     return (
         await apiService.api.get(url + "/" + id + "/screen-proctoring", {
             headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),

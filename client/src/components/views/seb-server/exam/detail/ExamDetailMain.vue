@@ -975,7 +975,7 @@ const passwordVisible = ref<boolean>(false);
 const quitPassword = ref<string>("");
 
 // supervisors table
-const supervisorsTableHeadersRef = ref<any[]>();
+const supervisorsTableHeadersRef = ref<(HTMLElement | null)[]>([]);
 const supervisorsTableHeaders = ref([
     { title: translate("examDetail.main.supervisorUsername"), key: "username" },
     { title: translate("examDetail.main.supervisorName"), key: "name" },
@@ -1015,7 +1015,7 @@ const sebSettingsDialog = ref<boolean>(false);
 
 // client groups
 const clientGroupDialog = ref<boolean>(false);
-const clientGroupTableHeadersRef = ref<any[]>();
+const clientGroupTableHeadersRef = ref<(HTMLElement | null)[]>([]);
 const clientGroupTableHeaders = ref([
     {
         title: translate("examDetail.main.tableHeadersGroupName"),
@@ -1368,7 +1368,7 @@ function closeDeleteDialog() {
 }
 
 async function deleteExam() {
-    const deleteExamResponse: any | null =
+    const deleteExamResponse: undefined | null =
         await examViewService.deleteExam(examId);
 
     if (deleteExamResponse == null) {

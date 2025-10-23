@@ -1,6 +1,5 @@
 import * as apiService from "@/services/apiService";
 import { Institution } from "@/models/seb-server/institution";
-import { Indicators } from "@/models/seb-server/indicators";
 
 const url: string = "/institution";
 const logoUrl: string = "/info/logo";
@@ -11,13 +10,13 @@ export async function getInstitutions(): Promise<Institution[]> {
 
 export async function getInstitution(
     institutionId: string,
-): Promise<Institution | any> {
+): Promise<Institution | unknown> {
     return (await apiService.api.get(url, { params: { institutionId } })).data;
 }
 
 export async function getInstitutionLogo(
     institutionSuffix: string,
-): Promise<Indicators | any> {
+): Promise<string> {
     const url = logoUrl + "/" + institutionSuffix;
     return (await apiService.api.get(url)).data;
 }

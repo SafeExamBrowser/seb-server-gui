@@ -117,9 +117,9 @@
                         :timeline-search-result="
                             timelineSearchResults.find(
                                 (i) => i.sessionUUID == item.sessionUUID,
-                            )
+                            ) || null
                         "
-                    ></SearchScreenshotsTable>
+                    />
                 </td>
             </tr>
         </template>
@@ -213,6 +213,9 @@ const props = defineProps<{
     searchParameters: OptionalParSearchSessions;
 }>();
 
+type ToggleExpand = (item: any) => void;
+type IsExpanded = (item: any) => boolean;
+
 // items
 const sessions = ref<SearchSessions>();
 const timelineSearchResults = ref<SearchTimeline[]>([]);
@@ -227,7 +230,7 @@ const isOnLoad = ref<boolean>(true);
 const defaultSort: { key: string; order: string }[] = [
     { key: "startTime", order: "desc" },
 ];
-const sessionTableHeadersRef = ref<any[]>();
+const sessionTableHeadersRef = ref<(HTMLElement | null)[]>([]);
 const sessionTableHeaders = ref([
     { title: "Start-Time", key: "startTime", width: "10%" },
     { title: "Login Name / IP", key: "clientName", width: "30%" },
@@ -243,10 +246,6 @@ const dialog = ref(false);
 
 // error handling
 const errorAvailable = ref<boolean>();
-
-//bools toggle
-type ToggleExpand = (item: any) => void;
-type IsExpanded = (item: any) => boolean;
 
 //= ==========================data fetching=======================
 async function loadItems(serverTablePaging: ServerTablePaging) {
@@ -322,6 +321,9 @@ async function deleteSessions() {
     const response = await searchViewService.deleteSessions(
         selectedSessionUuids.value,
     );
+    if (response == null) {
+        return;
+    }
     if (response.data == null || response.status === 207) {
         errorAvailable.value = true;
         return;
@@ -364,7 +366,7 @@ function removeTableItemFromRefs(
     if (isExpanded(item)) {
         toggleExpand(item);
         const index: number = timelineSearchResults.value.findIndex(
-            (i) => i.sessionUUID === item.sessionUUID,
+            (i) => i.sessionUUID === item.raw.sessionUUID,
         );
 
         if (index !== -1) {

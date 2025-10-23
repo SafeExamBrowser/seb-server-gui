@@ -88,8 +88,8 @@ const appBarStore = useAppBarStore();
 const monitoringStore = useMonitoringStore();
 
 // interval
-let intervalRefresh: any | null = null;
-const REFRESH_INTERVAL: number = 5000;
+let intervalRefresh: ReturnType<typeof setInterval> | null = null;
+const REFRESH_INTERVAL = 5000;
 
 onBeforeMount(async () => {
     appBarStore.title = translate("titles.monitoring");
@@ -144,6 +144,7 @@ async function startIntervalRefresh() {
 function stopIntervalRefresh() {
     if (intervalRefresh) {
         clearInterval(intervalRefresh);
+        intervalRefresh = null;
     }
 }
 </script>
