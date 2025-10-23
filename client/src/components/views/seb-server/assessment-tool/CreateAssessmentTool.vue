@@ -704,7 +704,7 @@ async function submit() {
     const { valid } = await formRef.value.validate();
     if (!valid) return;
 
-    const common: any = {
+    const common = {
         institutionId: institution.value,
         name: name.value,
         lmsType: lmsType.value,

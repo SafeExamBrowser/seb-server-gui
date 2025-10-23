@@ -97,7 +97,7 @@ const sebSettingsStore = useSEBSettingsStore();
 const ability = useAbilities();
 
 const emit = defineEmits<{
-    closeSebSettingsDialog: any;
+    (e: "closeSebSettingsDialog", value: boolean): void;
 }>();
 
 const currentTab = ref<number>(1);

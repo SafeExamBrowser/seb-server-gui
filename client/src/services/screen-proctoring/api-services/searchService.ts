@@ -10,6 +10,7 @@ import {
     OptionalParSearchSessions,
     OptionalParSearchTimeline,
 } from "@/models/screen-proctoring/optionalParamters";
+import { AxiosResponse } from "axios";
 
 export async function searchSessionsDay(
     optionalParameters?: OptionalParSearchSessions,
@@ -62,11 +63,12 @@ export async function searchTimeline(
 
 export async function deleteSessions(
     sessionUuids: string[],
-): Promise<object | any> {
+): Promise<AxiosResponse<object>> {
     const url: string =
         "/sp/search/sessions/delete" +
         apiService.createSessionDeleteUrlSuffix(sessionUuids);
-    return apiService.api.delete(url, {
+
+    return apiService.api.delete<object>(url, {
         headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN),
     });
 }

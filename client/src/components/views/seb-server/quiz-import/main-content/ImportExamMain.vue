@@ -220,11 +220,6 @@ const quizzesTableHeaders = ref([
     },
 ]);
 
-// emits - call loadExamItemsCaller in parent
-defineEmits<{
-    loadExamItemsCaller: any;
-}>();
-
 // datepicker
 const datepicker = ref();
 

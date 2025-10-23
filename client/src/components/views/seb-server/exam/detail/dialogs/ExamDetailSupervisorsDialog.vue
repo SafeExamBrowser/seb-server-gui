@@ -185,10 +185,12 @@ const initalSupervisorsUuids: string[] = props.initalSupervisors.map(
 );
 
 // emits
-const emit = defineEmits<{
-    closeSupervisorsDialog: any;
-    updateExamSupervisors: [selectedExamSupervisors: UserAccount[]];
-}>();
+type ExamDetailSupervisorsDialogEmits = {
+    (e: "closeSupervisorsDialog"): void;
+    (e: "updateExamSupervisors", selectedExamSupervisors: UserAccount[]): void;
+};
+
+const emit = defineEmits<ExamDetailSupervisorsDialogEmits>();
 
 //= ======================events & watchers=======================
 onBeforeMount(async () => {

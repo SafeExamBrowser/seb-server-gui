@@ -230,7 +230,7 @@ const tableHeaders = ref([
 
 // emits
 const emit = defineEmits<{
-    closeClientGroupDialog: any;
+    (e: "closeClientGroupDialog", value?: boolean): void;
 }>();
 
 //= ========events & watchers================

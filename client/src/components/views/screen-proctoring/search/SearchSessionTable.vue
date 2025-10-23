@@ -213,8 +213,9 @@ const props = defineProps<{
     searchParameters: OptionalParSearchSessions;
 }>();
 
-type ToggleExpand = (item: any) => void;
-type IsExpanded = (item: any) => boolean;
+type InternalItem = { raw: { sessionUUID: string } };
+type ToggleExpand<T> = (item: T) => void;
+type IsExpanded<T> = (item: T) => boolean;
 
 // items
 const sessions = ref<SearchSessions>();
@@ -253,8 +254,6 @@ async function loadItems(serverTablePaging: ServerTablePaging) {
         UserRoleEnum.SEB_SERVER_ADMIN,
     );
     isLoading.value = true;
-    // current solution to default sort the table
-    // sort-by in data-table-server tag breaks the sorting as the headers are in a seperate component
     if (isOnLoad.value) {
         serverTablePaging.sortBy = defaultSort;
     }
@@ -280,15 +279,12 @@ async function loadItems(serverTablePaging: ServerTablePaging) {
     isOnLoad.value = false;
     isLoading.value = false;
 }
-
-async function searchTimeline(
-    item: any,
-    isExpanded: IsExpanded,
-    toggleExpand: ToggleExpand,
+async function searchTimeline<T>(
+    item: InternalItem,
+    isExpanded: IsExpanded<T>,
+    toggleExpand: ToggleExpand<T>,
 ) {
-    if (removeTableItemFromRefs(item, isExpanded, toggleExpand)) {
-        return;
-    }
+    if (removeTableItemFromRefs<T>(item, isExpanded, toggleExpand)) return;
 
     const timelineSearchResponse: SearchTimeline | null =
         await searchViewService.searchTimeline(item.raw.sessionUUID, {
@@ -302,11 +298,9 @@ async function searchTimeline(
                 props.searchParameters.screenProctoringMetadataWindowTitle,
         });
 
-    if (timelineSearchResponse == null) {
-        return;
-    }
+    if (!timelineSearchResponse) return;
 
-    addTableItemToRefs(timelineSearchResponse, toggleExpand, item);
+    addTableItemToRefs<T>(timelineSearchResponse, toggleExpand, item);
 }
 
 //= ==========================session deletion=======================
@@ -349,32 +343,28 @@ function closeDialog() {
 }
 
 //= ==========================table=======================
-function addTableItemToRefs(
+function addTableItemToRefs<T>(
     timelineSearchResponse: SearchTimeline,
-    toggleExpand: ToggleExpand,
-    item: any,
+    toggleExpand: ToggleExpand<T>,
+    item: InternalItem,
 ) {
     timelineSearchResults.value.push(timelineSearchResponse);
-    toggleExpand(item);
+    toggleExpand(item as unknown as T);
 }
 
-function removeTableItemFromRefs(
-    item: any,
-    isExpanded: IsExpanded,
-    toggleExpand: ToggleExpand,
+function removeTableItemFromRefs<T>(
+    item: InternalItem,
+    isExpanded: IsExpanded<T>,
+    toggleExpand: ToggleExpand<T>,
 ): boolean {
-    if (isExpanded(item)) {
-        toggleExpand(item);
-        const index: number = timelineSearchResults.value.findIndex(
+    if (isExpanded(item as unknown as T)) {
+        toggleExpand(item as unknown as T);
+        const index = timelineSearchResults.value.findIndex(
             (i) => i.sessionUUID === item.raw.sessionUUID,
         );
-
-        if (index !== -1) {
-            timelineSearchResults.value.splice(index, 1);
-        }
+        if (index !== -1) timelineSearchResults.value.splice(index, 1);
         return true;
     }
-
     return false;
 }
 </script>

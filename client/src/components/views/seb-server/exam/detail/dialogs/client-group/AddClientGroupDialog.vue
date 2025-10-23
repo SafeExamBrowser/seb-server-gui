@@ -385,7 +385,7 @@ watch(groupNameField, () => {
 
 // emits
 const emit = defineEmits<{
-    closeAddClientGroupDialog: any;
+    (e: "closeAddClientGroupDialog"): void;
 }>();
 
 // client group select items
@@ -453,7 +453,7 @@ async function createClientGroup() {
         );
     }
 
-    emit("closeAddClientGroupDialog", true);
+    emit("closeAddClientGroupDialog");
 }
 
 //= =======table loading========

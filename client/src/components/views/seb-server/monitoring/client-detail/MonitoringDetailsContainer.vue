@@ -32,8 +32,8 @@ const appBarStore = useAppBarStore();
 const isDataLoaded = ref<boolean>(false);
 
 // interval
-let intervalRefresh: any | null = null;
-// todo set interval
+let intervalRefresh: ReturnType<typeof setInterval> | null = null;
+
 const REFRESH_INTERVAL: number = 5000;
 
 onBeforeMount(async () => {

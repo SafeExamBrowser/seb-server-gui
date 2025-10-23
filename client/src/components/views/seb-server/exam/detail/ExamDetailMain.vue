@@ -1163,16 +1163,12 @@ async function getExamSupervisors() {
 
     examStore.selectedExamSupervisors = [];
     for (let i = 0; i < examStore.selectedExam.supporter.length; i++) {
-        const userAccount: UserAccount | any =
+        const userAccount: UserAccount | null =
             await userAccountViewService.getUserAccountByIdOptional(
                 examStore.selectedExam.supporter[i],
             );
 
-        if (
-            userAccount === null ||
-            userAccount === undefined ||
-            userAccount === ""
-        ) {
+        if (userAccount === null || userAccount === undefined) {
             continue;
         }
 

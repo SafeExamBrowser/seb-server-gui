@@ -254,7 +254,7 @@ watch(clientGroupTypeSelect, () => {
 
 // emits
 const emit = defineEmits<{
-    closeEditClientGroupDialog: any;
+    (e: "closeEditClientGroupDialog", value?: boolean): void;
 }>();
 
 // props
