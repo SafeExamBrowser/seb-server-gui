@@ -2,6 +2,7 @@ import {Request, Response} from "express";
 import {LOG} from "../../logging/logger";
 import * as examTemplateService from "../../services/seb-server/exam-template.service";
 import * as apiService from "../../services/seb-server/api.service";
+import * as constants from "../../utils/constants";
 
 export async function getExamTemplate(req: Request, res: Response){
     try{
@@ -35,3 +36,21 @@ export async function getExamTemplateSp(req: Request, res: Response){
         apiService.handleGenericApiError(error, res);
     }
 }
+
+export async function createExamTemplate(req: Request, res: Response) {
+    try {
+      const { data, status } = await apiService.api.post(
+        constants.EXAM_TEMPLATE_ROUTE + "/create",
+        req.body,
+        {
+          headers: apiService.getApplicationJsonHeaders(
+            req.headers.authorization
+          ),
+        }
+      );
+
+      return res.status(status).json(data);
+    } catch (error) {
+      apiService.handleGenericApiError(error, res);
+    }
+  }

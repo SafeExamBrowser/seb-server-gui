@@ -1,5 +1,5 @@
 <template>
-    <v-app-bar app data-testid="layout-app-bar">
+    <v-app-bar data-testid="layout-app-bar">
         <!--seb logo-->
         <template #prepend>
             <a
@@ -216,7 +216,6 @@
                     <v-menu
                         v-if="userRoles.length > 1"
                         close-delay="100"
-                        offset-y
                         open-delay="0"
                         open-on-hover
                         transition="slide-y-transition"
@@ -268,7 +267,6 @@
                     attach="body"
                     :close-on-content-click="false"
                     content-class="profile-menu-override "
-                    offset-y
                 >
                     <template #activator="{ props }">
                         <div class="d-flex align-center ml-1 mr-6">
@@ -384,7 +382,6 @@
     <!---------------main navigation drawer----------------->
     <v-navigation-drawer
         v-model="navigationDrawer"
-        app
         class="mt-0"
         data-testid="layout-nav-drawer"
         :permanent="true"
@@ -545,10 +542,15 @@ const userRoles = computed(() => userAccount.value?.userRoles || []);
 
 // theme
 const theme = useTheme();
-const localstorageTheme: string | null = localStorage.getItem("theme");
-theme.global.name.value =
-    localstorageTheme ?? theme.global.name.value ?? "light";
-const themeToggle = ref<number>(theme.global.name.value === "dark" ? 1 : 0);
+
+const localstorageTheme = localStorage.getItem("theme");
+
+// initialize the theme
+const initialTheme = localstorageTheme ?? "light";
+theme.change(initialTheme);
+
+// initialize the toggle based on initial theme
+const themeToggle = ref<number>(initialTheme === "dark" ? 1 : 0);
 
 const institutionLogo = ref<string | null>(null);
 
@@ -585,8 +587,9 @@ watch(languageToggle, () => {
 });
 
 watch(themeToggle, () => {
-    theme.global.name.value = themeToggle.value === 0 ? "light" : "dark";
-    localStorage.setItem("theme", theme.global.name.value);
+    const next = themeToggle.value === 0 ? "light" : "dark";
+    theme.change(next);
+    localStorage.setItem("theme", next);
 });
 
 function translateRole(role: string): string {

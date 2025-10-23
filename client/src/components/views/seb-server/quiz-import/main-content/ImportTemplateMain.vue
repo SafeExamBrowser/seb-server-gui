@@ -112,7 +112,7 @@ async function onTemplateCardClick(examTemplate: ExamTemplate) {
 
     // select template and set quit password from template
     quizImportStore.selectedExamTemplate = examTemplate;
-    if (examTemplate.EXAM_ATTRIBUTES.quitPassword) {
+    if (examTemplate.EXAM_ATTRIBUTES.quitPassword && examTemplate.id) {
         // get single template to get plain quit-password
         const examTemplateResponse: ExamTemplate | null =
             await quizImportWizardViewService.getExamTemplate(
@@ -183,6 +183,9 @@ function closeExamTemplateDialog() {
 }
 
 async function getExamTemplateSpGroups() {
+    if (quizImportStore.selectedExamTemplate!.id == null) {
+        return;
+    }
     const examTemplateSp: ScreenProctoringSettings | null =
         await examViewService.getExamTemplateSp(
             quizImportStore.selectedExamTemplate!.id.toString(),

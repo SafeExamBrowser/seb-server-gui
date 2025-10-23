@@ -2,7 +2,7 @@
     <div class="fill-height d-flex flex-column">
         <v-row class="flex-grow-0 flex-shrink-0">
             <v-col>
-                <Breadcrumb :items="breadcrumb" />
+                <BreadCrumb :items="breadCrumb" />
             </v-col>
         </v-row>
         <v-row class="flex-grow-0 flex-shrink-0">
@@ -34,12 +34,12 @@
 </template>
 
 <script setup lang="ts">
-import Breadcrumb from "@/components/widgets/breadcrumb/Breadcrumb.vue";
 import PageTitle from "@/components/widgets/PageTitle.vue";
-import { BreadcrumbItem } from "@/components/widgets/breadcrumb/types";
+import { BreadCrumbItem } from "@/components/widgets/breadCrumb/types";
+import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
 
 defineProps<{
     title: string;
-    breadcrumb: BreadcrumbItem[];
+    breadCrumb: BreadCrumbItem[];
 }>();
 </script>

@@ -40,6 +40,9 @@ export const CHANGE_PASSWORD_ROUTE = "/password";
 export const CONNECTION_CONFIG_ROUTE = "/client_configuration";
 export const DOWNLOAD_EXAM_CONFIG_ROUTE = "/client_configuration/download";
 
+// configuration node
+export const CONFIGURATION_NODE_ROUTE = "/configuration-node";
+
 //lms
 export const LMS_SETUP_ROUTE = "/lms-setup";
 export const ASSESSMENT_TOOL_ROUTE = "/assessment-tools";

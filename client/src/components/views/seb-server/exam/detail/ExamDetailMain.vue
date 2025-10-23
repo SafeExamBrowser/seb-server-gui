@@ -489,13 +489,13 @@
                                                 "
                                                 activator="parent"
                                             >
-                                                <p
-                                                    v-html="
-                                                        generalUtils.translateWithBR(
-                                                            'examDetail.main.noSEBSettings',
+                                                <p class="pre-line">
+                                                    {{
+                                                        translate(
+                                                            "examDetail.main.noSEBSettings",
                                                         )
-                                                    "
-                                                />
+                                                    }}
+                                                </p>
                                             </v-tooltip>
                                         </v-col>
                                     </v-row>
@@ -1536,4 +1536,8 @@ function closeAddClientGroupDialog(isChange?: boolean) {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.pre-line {
+    white-space: pre-line;
+}
+</style>

@@ -473,7 +473,14 @@
                         <!------------ allowUserToChooseApp ------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0"
-                                ><v-checkbox-btn
+                                >{{
+                                    translate(
+                                        "sebSettings.applicationView.permittedProcess.allowUserToChooseApp",
+                                    )
+                                }}
+                            </v-col>
+                            <v-col class="pt-0 pb-0">
+                                <v-checkbox-btn
                                     v-model="
                                         props.permittedProcess!
                                             .allowUserToChooseApp
@@ -653,3 +660,9 @@ function addArgument() {
     });
 }
 </script>
+
+<style scoped>
+.pre-line {
+    white-space: pre-line;
+}
+</style>

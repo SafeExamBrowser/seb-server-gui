@@ -185,8 +185,6 @@ export async function disableConnections(
         return null;
     }
 }
-
-//= ===============url query handling===============
 export function applyFilter(
     query: LocationQuery,
     filterType: MonitoringHeaderEnum,
@@ -195,25 +193,30 @@ export function applyFilter(
     // removes all selected clients (checkbox in table)
     removeAllSelectedClients();
 
-    // remove show all filter if exisits
-    if (query[MonitoringHeaderEnum.SHOW_ALL]) {
-        delete query[MonitoringHeaderEnum.SHOW_ALL];
-    }
+    // make a copy without SHOW_ALL (no dynamic delete, no unused var)
+    const workingQuery = Object.fromEntries(
+        Object.entries(query as Record<string, unknown>).filter(
+            ([k]) => k !== MonitoringHeaderEnum.SHOW_ALL,
+        ),
+    ) as LocationQuery;
 
     // if filter type & value exists in url --> remove value
-    if (query[filterType]?.includes(filterValue)) {
-        removeQueryParam(query, filterType, filterValue);
+    if (
+        typeof workingQuery[filterType] === "string" &&
+        (workingQuery[filterType] as string).includes(filterValue)
+    ) {
+        removeQueryParam(workingQuery, filterType, filterValue);
         return;
     }
 
     // if filter type exists in url --> add value
-    if (query[filterType]) {
-        filterValue = query[filterType] + "," + filterValue;
+    if (typeof workingQuery[filterType] === "string") {
+        filterValue = (workingQuery[filterType] as string) + "," + filterValue;
     }
 
     // if neither type or value exists  --> add value and type
     navigation.addQueryParam({
-        ...query,
+        ...workingQuery,
         [filterType]: filterValue,
     });
 }
@@ -226,7 +229,6 @@ export function applyShowAllFilter() {
         [MonitoringHeaderEnum.SHOW_ALL]: true,
     });
 }
-
 function removeQueryParam(
     query: LocationQuery,
     filterType: MonitoringHeaderEnum,
@@ -234,33 +236,37 @@ function removeQueryParam(
 ) {
     const record: Record<string, string> = {};
 
-    // create object
+    // create object with only string values
     Object.entries(query).forEach(([k, v]) => {
         if (typeof v === "string") {
             record[k] = v;
         }
     });
 
-    // check if key exists
-    if (filterType in record) {
-        const currentValue: string = record[filterType];
+    // if key doesn't exist, just forward what we have
+    if (!(filterType in record)) {
+        navigation.addQueryParam({ ...record });
+        return;
+    }
 
-        // remove value
-        const values: string[] = currentValue.split(",");
-        const filteredValues = values.filter(
-            (value) => value.trim() !== filterValue,
+    const currentValue = record[filterType];
+    const values = currentValue.split(",");
+    const filteredValues = values.filter(
+        (value) => value.trim() !== filterValue,
+    );
+
+    // build next object without using delete or unused bindings
+    if (filteredValues.length === 0) {
+        const rest = Object.fromEntries(
+            Object.entries(record).filter(([k]) => k !== filterType),
         );
-
-        // remove key if empty
-        if (filteredValues.length === 0) {
-            delete record[filterType];
-        } else {
-            record[filterType] = filteredValues.join(",");
-        }
+        navigation.addQueryParam({ ...rest });
+        return;
     }
 
     navigation.addQueryParam({
         ...record,
+        [filterType]: filteredValues.join(","),
     });
 }
 

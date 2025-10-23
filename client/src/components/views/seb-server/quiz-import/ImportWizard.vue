@@ -299,17 +299,11 @@ function handleStepperNext(index: number, next: () => void) {
     async function createExam() {
         if (
             quizImportStore.selectedQuiz == null ||
-            quizImportStore.selectedExamTemplate == null
+            quizImportStore.selectedExamTemplate == null ||
+            quizImportStore.selectedExamTemplate?.id == undefined
         ) {
             return;
         }
-
-        const testArr: string[] = quizImportStore.selectedClientGroups.map(
-            (clientGroup) => clientGroup.id!.toString(),
-        );
-
-        console.log(quizImportStore.selectedClientGroups);
-        console.log(testArr);
 
         const createExamParams: CreateExamPar = {
             lmsSetupId: quizImportStore.selectedQuiz.lms_setup_id,

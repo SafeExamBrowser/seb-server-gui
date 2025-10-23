@@ -44,7 +44,7 @@ If you're just working on the frontend part (SEB Server GUI), this is the easies
 
 The following steps have to be done on your **host machine** (not in the docker-container)
 
-1. Run `cd client && npm run prepare`
+1. Run `cd client && nvm use && npm run prepare`
 1. Run `git config core.hooksPath` and verify, that the `hooksPath` was correctly set to `./client/.husky/_`
 
 ## Find Login info

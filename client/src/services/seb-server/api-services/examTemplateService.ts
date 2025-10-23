@@ -11,6 +11,19 @@ export async function getExamTemplate(id: string): Promise<ExamTemplate | any> {
     ).data;
 }
 
+export async function getExamTemplateNames(): Promise<
+    {
+        modelId: string;
+        entityType: "EXAM_TEMPLATE";
+        name: string;
+    }[]
+> {
+    return (
+        await apiService.api.get(url + "/names", {
+            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+        })
+    ).data;
+}
 export async function getExamTemplates(
     optionalParameters?: OptionalParGeneric,
 ): Promise<ExamTemplates | any> {
@@ -28,6 +41,16 @@ export async function getExamTemplateSp(
     return (
         await apiService.api.get(url + "/" + id + "/screen-proctoring", {
             headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+        })
+    ).data;
+}
+
+export async function createExamTemplate(
+    examTemplate: ExamTemplate,
+): Promise<ExamTemplate> {
+    return (
+        await apiService.api.post(url + "/create", examTemplate, {
+            headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),
         })
     ).data;
 }

@@ -146,9 +146,8 @@ const loadingStore = useLoadingStore();
 
 // theme
 const theme = useTheme();
-const localStorageTheme: string | null = localStorage.getItem("theme");
-theme.global.name.value =
-    localStorageTheme ?? theme.global.name.value ?? "light";
+const initialTheme = localStorage.getItem("theme") ?? "light";
+theme.change(initialTheme);
 
 // ToDo dark mode??
 // const isDark = computed<boolean>(() => theme.global.current.value.dark);

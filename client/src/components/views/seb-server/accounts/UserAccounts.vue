@@ -326,9 +326,8 @@
                                             :color="
                                                 item.active ? 'green' : 'red'
                                             "
-                                            dark
                                             :data-testid="`userAccounts-status-chip-${item.uuid}`"
-                                            small
+                                            size="small"
                                         >
                                             {{
                                                 item.active
@@ -352,9 +351,8 @@
                                     v-else
                                     class="text-white font-weight-medium status-chip cursor-pointer"
                                     :color="item.active ? 'green' : 'red'"
-                                    dark
                                     :data-testid="`userAccounts-status-chip-${item.uuid}`"
-                                    small
+                                    size="small"
                                     @click.stop="openStatusDialog(item)"
                                 >
                                     {{
@@ -483,7 +481,7 @@
                         >
                             <v-btn
                                 data-testid="userAccounts-delete-cancel-button"
-                                text
+                                variant="text"
                                 @click="deleteDialog = false"
                             >
                                 {{ translate("general.cancelButton") }}
@@ -491,7 +489,7 @@
                             <v-btn
                                 color="red"
                                 data-testid="userAccounts-delete-confirm-button"
-                                text
+                                variant="text"
                                 @click="confirmDelete"
                             >
                                 {{ translate("general.deleteButton") }}
@@ -524,7 +522,7 @@
                         >
                             <v-btn
                                 data-testid="userAccounts-status-cancel-button"
-                                text
+                                variant="text"
                                 @click="statusDialog = false"
                             >
                                 {{ translate("general.cancelButton") }}
@@ -534,7 +532,7 @@
                                     statusDialogUser?.active ? 'red' : 'green'
                                 "
                                 data-testid="userAccounts-status-confirm-button"
-                                text
+                                variant="text"
                                 @click="confirmStatusChange"
                             >
                                 {{ statusDialogButtonLabel }}
