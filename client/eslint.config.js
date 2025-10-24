@@ -52,9 +52,6 @@ export default defineConfig([
                 { "ts-ignore": "allow-with-description" },
             ],
 
-            // TODO Alain
-            "vue/multi-word-component-names": "off",
-
             // TODO Andreas
             "@typescript-eslint/no-non-null-asserted-optional-chain": "off",
             "@typescript-eslint/no-non-null-assertion": "off",
