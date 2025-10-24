@@ -17,6 +17,7 @@ import {
     OptionalParSearchSessions,
     OptionalParSearchTimeline,
 } from "@/models/screen-proctoring/optionalParamters";
+import { AxiosResponse } from "axios";
 
 //= ============api==============
 export async function searchSessionsDay(
@@ -69,7 +70,7 @@ export async function searchTimeline(
 
 export async function deleteSessions(
     sessionUuids: string[],
-): Promise<object | any> {
+): Promise<AxiosResponse<object> | null> {
     try {
         return await searchService.deleteSessions(sessionUuids);
     } catch {

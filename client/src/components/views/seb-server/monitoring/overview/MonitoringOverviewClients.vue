@@ -167,13 +167,14 @@ const chartData = ref<{
     ];
 }>();
 
-const clientStatesListSortOrder: any = {
+const clientStatesListSortOrder: Record<ConnectionStatusEnum, number> = {
     [ConnectionStatusEnum.CONNECTION_REQUESTED]: 0,
     [ConnectionStatusEnum.READY]: 1,
     [ConnectionStatusEnum.ACTIVE]: 2,
     [ConnectionStatusEnum.CLOSED]: 3,
     [ConnectionStatusEnum.DISABLED]: 4,
     [ConnectionStatusEnum.MISSING]: 5,
+    [ConnectionStatusEnum.UNDEFINED]: 6,
 };
 
 // chart data

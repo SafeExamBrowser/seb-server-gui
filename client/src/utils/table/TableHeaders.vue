@@ -156,12 +156,18 @@ const monitoringStore = useMonitoringStore();
 // header refs
 const headerRefs = ref<Clickable[] | null>(null);
 
+//todo @Rad14nt take a look with alain potentially remove ignores on refactor
 // props
 const props = defineProps<{
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     columns: any[];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     isSorted: (column: any) => boolean;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     getSortIcon: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     toggleSort: (column: any) => void;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     headerRefsProp: any;
     day?: string;
     selectAll?: (value: boolean) => void;

@@ -815,7 +815,7 @@ const creationDate = ref<string | undefined>(undefined);
 const updateDate = ref<string | undefined>(undefined);
 
 // UI state
-const formRef = ref();
+const formRef = ref<VuetifyFormLike | null>(null);
 const configurationPasswordVisible = ref<boolean>(false);
 const confirmConfigurationPasswordVisible = ref<boolean>(false);
 const fallbackPasswordVisible = ref<boolean>(false);
@@ -831,17 +831,49 @@ const active = ref<boolean>(false);
 const initialActiveStatus = ref<boolean | null>(null);
 const isSaving = ref<boolean>(false);
 const fetchedId = ref<number | null>(null);
-const originalSnapshot = ref<Record<string, any> | null>(null);
+const originalSnapshot = ref<FormState | null>(null);
 
 // Refs for validation control
-const configPwdRef = ref<any>(null);
-const confirmConfigPwdRef = ref<any>(null);
-const fallbackPwdRef = ref<any>(null);
-const confirmFallbackPwdRef = ref<any>(null);
-const quitPwdRef = ref<any>(null);
-const confirmQuitPwdRef = ref<any>(null);
+const configPwdRef = ref<InputLike | null>(null);
+const confirmConfigPwdRef = ref<InputLike | null>(null);
+const fallbackPwdRef = ref<InputLike | null>(null);
+const confirmFallbackPwdRef = ref<InputLike | null>(null);
+const quitPwdRef = ref<InputLike | null>(null);
+const confirmQuitPwdRef = ref<InputLike | null>(null);
 const userToLastUpdate = ref<UserAccount | null>(null);
 const userNamesOfLastUserToUpdate = ref<string | undefined>(undefined);
+
+type VuetifyFormLike = {
+    validate: () => Promise<{ valid: boolean }>;
+    resetValidation?: () => void;
+};
+
+type FormState = {
+    name: string;
+    configurationPurpose: string | null;
+    encryptWithCertificate: string | undefined;
+    pingInterval: number | null;
+    exams: number[];
+    asymmetricOnlyEncryption: boolean;
+
+    withFallback: boolean;
+    fallbackStartUrl: string;
+    interval: number | null;
+    connectionAttempts: number | null;
+    connectionTimeout: number | null;
+
+    encryptSecret: string;
+    confirm_encrypt_secret: string;
+    sebServerFallbackPasswordHash: string;
+    sebServerFallbackPasswordHashConfirm: string;
+    hashedQuitPassword: string;
+    hashedQuitPasswordConfirm: string;
+};
+
+type InputLike = {
+    validate?: () => void;
+    resetValidation?: () => void;
+};
 
 const configurationPurposeItems = [
     {
@@ -880,35 +912,47 @@ const mustBeUrlMessage = translate(
 );
 
 // Rules (same as create)
-const requiredRule = (v: any) => {
-    if (v === null || v === undefined) return requiredMessage;
+const isNil = (v: unknown): v is null | undefined =>
+    v === null || v === undefined;
+const isBlank = (v: unknown) =>
+    typeof v === "string" ? v.trim().length === 0 : false;
+const toNum = (v: unknown) => (typeof v === "number" ? v : Number(v));
+
+// replace your rules that use (v: any) with (v: unknown)
+const requiredRule = (v: unknown) => {
+    if (isNil(v)) return requiredMessage;
+    if (typeof v === "number") return true;
+    return !isBlank(v) || requiredMessage;
+};
+
+const numberRule = (v: unknown) => {
+    if (isNil(v) || v === "") return mustBeNumberMessage;
+    const n = toNum(v);
+    return !Number.isNaN(n) && n >= 1 ? true : mustBeNumberMessage;
+};
+
+const requiredNumberRule = (v: unknown) => {
+    const req = requiredRule(v) === true;
+    const num = numberRule(v) === true;
     return (
-        (typeof v === "number" ? true : String(v).trim().length > 0) ||
-        requiredMessage
+        (req && num) || (toNum(v) < 1 ? mustBeNumberMessage : requiredMessage)
     );
 };
-const numberRule = (v: any) =>
-    v === null || v === undefined || v === "" || isNaN(Number(v)) || v < 1
-        ? mustBeNumberMessage
-        : true;
-const requiredNumberRule = (v: any) =>
-    (requiredRule(v) === true && numberRule(v) === true) ||
-    (isNaN(Number(v)) || v < 1 ? mustBeNumberMessage : requiredMessage);
 
-const requiredIfFallbackRule = (v: any) =>
+const requiredIfFallbackRule = (v: unknown) =>
     !withFallback.value || requiredRule(v) === true || requiredMessage;
-const requiredNumberIfFallbackRule = (v: any) =>
+
+const requiredNumberIfFallbackRule = (v: unknown) =>
     !withFallback.value ||
     requiredNumberRule(v) === true ||
-    (isNaN(Number(v)) || v < 1 ? mustBeNumberMessage : requiredMessage);
-const urlIfFallbackRule = (v: any) => {
-    if (!withFallback.value) return true; // only check when fallback enabled
-    if (!v || typeof v !== "string") return mustBeUrlMessage;
-    const trimmed = v.trim().toLowerCase();
+    (toNum(v) < 1 ? mustBeNumberMessage : requiredMessage);
+
+const urlIfFallbackRule = (v: unknown) => {
+    if (!withFallback.value) return true;
+    if (typeof v !== "string") return mustBeUrlMessage;
+    const t = v.trim().toLowerCase();
     return (
-        trimmed.startsWith("http://") ||
-        trimmed.startsWith("https://") ||
-        mustBeUrlMessage
+        t.startsWith("http://") || t.startsWith("https://") || mustBeUrlMessage
     );
 };
 
@@ -1044,13 +1088,19 @@ function populateFromDto(dto: ConnectionConfiguration) {
     institutionId.value = dto.institutionId;
     configurationPurpose.value = dto.sebConfigPurpose ?? null;
 
+    const r = dto as unknown as Record<string, unknown>;
     const aliasFromBackend =
-        (dto as any).cert_alias ??
-        (dto as any).certificateAlias ??
-        (dto as any).certificate?.alias ??
+        (typeof r.cert_alias === "string" && r.cert_alias) ||
+        (typeof r.certificateAlias === "string" && r.certificateAlias) ||
+        (r.certificate &&
+            typeof (r.certificate as Record<string, unknown>).alias ===
+                "string" &&
+            (r.certificate as Record<string, unknown>).alias) ||
         undefined;
 
-    encryptWithCertificate.value = aliasFromBackend || undefined;
+    encryptWithCertificate.value =
+        (aliasFromBackend as string | undefined) || undefined;
+
     // Convert ms → s
     pingInterval.value =
         dto.sebServerPingTime != null
@@ -1091,7 +1141,7 @@ function populateFromDto(dto: ConnectionConfiguration) {
         ")";
 }
 
-function currentFormState() {
+function currentFormState(): FormState {
     return {
         name: name.value,
         configurationPurpose: configurationPurpose.value,
@@ -1099,6 +1149,7 @@ function currentFormState() {
         pingInterval: pingInterval.value,
         exams: exams.value,
         asymmetricOnlyEncryption: asymmetricOnlyEncryption.value,
+
         withFallback: withFallback.value,
         fallbackStartUrl: fallbackStartUrl.value,
         interval: fallbackInterval.value,
@@ -1159,7 +1210,7 @@ async function onSave() {
     const statusWasChanged = statusChanged.value;
 
     if (fieldsChanged) {
-        const { valid } = await (formRef.value as any).validate();
+        const { valid } = await formRef.value!.validate();
         if (!valid || isSaveDisabled.value) return;
     }
 
@@ -1278,14 +1329,17 @@ async function editConnectionConfigurationOnly() {
         ...fallbackPart,
     };
 
-    // backend quirk: rename key with trailing space
-    const { sebServerFallback, ...rest } = payload as any;
-    const toSend = {
-        ...rest,
-        "sebServerFallback ": sebServerFallback,
+    const payloadRecord: Record<string, unknown> = { ...payload };
+    const sebServerFallbackVal = payloadRecord["sebServerFallback"];
+    delete payloadRecord["sebServerFallback"];
+
+    const toSend: Record<string, unknown> = {
+        ...payloadRecord,
+        "sebServerFallback ": sebServerFallbackVal,
     };
+
     await connectionConfigurationViewService.editConnectionConfiguration(
-        toSend as any,
+        toSend as unknown as UpdateConnectionConfigurationPar,
     );
 }
 

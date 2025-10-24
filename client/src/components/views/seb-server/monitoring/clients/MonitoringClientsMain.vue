@@ -200,7 +200,7 @@ import {
 import { MonitoringRow } from "@/models/seb-server/monitoringClients";
 import { storeToRefs } from "pinia";
 import { useI18n } from "vue-i18n";
-import { useRoute } from "vue-router";
+import { LocationQueryValue, useRoute } from "vue-router";
 import {
     ref,
     onMounted,
@@ -666,7 +666,9 @@ function removeIndicatorHeaders() {
     clientsTableHeaders.value.splice(4, 1);
 }
 
-function modifyIndicatorHeaders(indicatorString: any | null) {
+function modifyIndicatorHeaders(
+    indicatorString: LocationQueryValue | LocationQueryValue[],
+) {
     if (indicatorString == null) {
         indicatorString = "";
     }
