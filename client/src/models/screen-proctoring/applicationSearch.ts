@@ -1,11 +1,9 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type DistinctMetadataWindowForExamRecord = {
+export type DistinctMetadataWindowForExamRecord = {
     totalAmount: number;
     distinctWindowTitles: string[];
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type UserListForApplicationSearchRecord = {
+export type UserListForApplicationSearchRecord = {
     username: string;
     sessionUuid: string;
     firstScreenshotCaptureTime: number;

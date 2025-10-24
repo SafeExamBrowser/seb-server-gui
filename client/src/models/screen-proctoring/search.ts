@@ -1,10 +1,11 @@
-type ScreenshotGroup = {
+import { MetaData, Session } from "@/models/screen-proctoring/session";
+
+export type ScreenshotGroup = {
     timestamp: number;
     metaData: MetaData;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type SearchSessions = {
+export type SearchSessions = {
     numberOfPages: number;
     pageNumber: number;
     pageSize: number;
@@ -12,8 +13,7 @@ type SearchSessions = {
     content: Session[];
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type SearchScreenshots = {
+export type SearchScreenshots = {
     numberOfPages: number;
     pageNumber: number;
     pageSize: number;
@@ -39,8 +39,7 @@ type SearchScreenshots = {
     ];
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type SearchTimeline = {
+export type SearchTimeline = {
     sessionUUID: string;
     timelineGroupDataList: [
         {
@@ -51,8 +50,7 @@ type SearchTimeline = {
     ];
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type ScreenshotsGrouped = {
+export type ScreenshotsGrouped = {
     groupName: string;
     timelineScreenshotDataList: ScreenshotGroup[];
 };

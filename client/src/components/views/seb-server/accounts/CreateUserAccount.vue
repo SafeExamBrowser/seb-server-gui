@@ -395,6 +395,8 @@ import { navigateTo } from "@/router/navigation";
 import { UserRoleEnum } from "@/models/userRoleEnum";
 import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/authenticationStore";
 import { GUIComponent, useAbilities } from "@/services/ability";
+import { CreateUserPar, SingleUserAccountResponse } from "@/models/userAccount";
+import { Institution } from "@/models/seb-server/institution";
 
 const ability = useAbilities();
 const appBarStore = useAppBarStore();
@@ -403,7 +405,7 @@ const layoutStore = useLayoutStore();
 const i18n = useI18n();
 
 // fields
-const selectedInstitution = ref<string | null>(null);
+const selectedInstitution = ref<string>("");
 const name = ref<string>("");
 const surname = ref<string>("");
 const username = ref<string>("");
@@ -566,7 +568,7 @@ async function submit() {
 
     // Prepare the request
     const createUserAcccountParams: CreateUserPar = {
-        institutionId: selectedInstitution.value!,
+        institutionId: selectedInstitution.value,
         name: name.value,
         surname: surname.value,
         username: username.value,

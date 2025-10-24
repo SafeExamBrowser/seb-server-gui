@@ -329,7 +329,7 @@ const emit = defineEmits<{
         toTime: string,
         pageNumber: number,
     ];
-    closeAllPanels: any;
+    closeAllPanels: [];
 }>();
 
 // form fields

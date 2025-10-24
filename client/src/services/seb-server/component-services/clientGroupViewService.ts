@@ -3,6 +3,7 @@ import {
     ClientOSEnum,
 } from "@/models/seb-server/clientGroupEnum";
 import * as clientGroupService from "@/services/seb-server/api-services/clientGroupService";
+import { ClientGroup, ClientGroups } from "@/models/seb-server/clientGroup";
 
 //= ============api==============
 export async function createClientGroup(
@@ -33,7 +34,7 @@ export async function updateClientGroup(
     }
 }
 
-export async function deleteClientGroup(id: string): Promise<any | null> {
+export async function deleteClientGroup(id: string): Promise<undefined | null> {
     try {
         return await clientGroupService.deleteClientGroup(id);
     } catch {

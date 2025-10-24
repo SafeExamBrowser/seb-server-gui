@@ -161,6 +161,7 @@ import * as userAccountViewService from "@/services/seb-server/component-service
 import * as tableUtils from "@/utils/table/tableUtils";
 import { translate } from "@/utils/generalUtils";
 import { ref, onBeforeMount, computed } from "vue";
+import { UserAccount, UserAccountName } from "@/models/userAccount";
 
 // main item
 const selectedExamSupervisors = ref<UserAccount[]>([]);
@@ -184,10 +185,12 @@ const initalSupervisorsUuids: string[] = props.initalSupervisors.map(
 );
 
 // emits
-const emit = defineEmits<{
-    closeSupervisorsDialog: any;
-    updateExamSupervisors: [selectedExamSupervisors: UserAccount[]];
-}>();
+type ExamDetailSupervisorsDialogEmits = {
+    (e: "closeSupervisorsDialog"): void;
+    (e: "updateExamSupervisors", selectedExamSupervisors: UserAccount[]): void;
+};
+
+const emit = defineEmits<ExamDetailSupervisorsDialogEmits>();
 
 //= ======================events & watchers=======================
 onBeforeMount(async () => {

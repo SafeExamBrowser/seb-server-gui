@@ -524,6 +524,12 @@ import * as constants from "@/utils/constants";
 import { getInstitutions } from "@/services/seb-server/component-services/registerAccountViewService";
 import { useAssessmentToolStore } from "@/stores/seb-server/asessmentToolStore";
 import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums";
+import { ServerTablePaging } from "@/models/types";
+import { Institution } from "@/models/seb-server/institution";
+import {
+    AssessmentTool,
+    AssessmentToolsResponse,
+} from "@/models/seb-server/assessmentTool";
 
 const appBarStore = useAppBarStore();
 const layoutStore = useLayoutStore();
@@ -572,7 +578,7 @@ const searchQuery = ref("");
 // API response
 const assessmentTools = ref<AssessmentToolsResponse>();
 
-const assessmentToolTableHeadersRef = ref<any[]>();
+const assessmentToolTableHeadersRef = ref<(HTMLElement | null)[]>([]);
 
 const translateLmsType = (value: string | LMSTypeEnum) => {
     return translate(`assessmentToolConnections.lmsTypes.${value}`);

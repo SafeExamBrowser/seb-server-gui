@@ -1,4 +1,4 @@
-enum CertificateTypeEnum {
+export enum CertificateTypeEnum {
     UNKNOWN = "UNKNOWN",
     DIGITAL_SIGNATURE = "DIGITAL_SIGNATURE",
     DATA_ENCIPHERMENT = "DATA_ENCIPHERMENT",
@@ -6,15 +6,14 @@ enum CertificateTypeEnum {
     KEY_CERT_SIGN = "KEY_CERT_SIGN",
 }
 
-type Certificate = {
+export type Certificate = {
     alias: string;
     validityFrom: string;
     validityTo: string;
     certType: CertificateTypeEnum[];
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type CertificatesResponse = {
+export type CertificatesResponse = {
     number_of_pages: number;
     page_number: number;
     page_size: number;
@@ -22,23 +21,20 @@ type CertificatesResponse = {
     content: Certificate[];
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type OptionalParGetCertificates = {
+export type OptionalParGetCertificates = {
     page_size?: number;
     page_number?: number;
     sort?: string;
     alias?: string;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type CreateCertificatePar = {
+export type CreateCertificatePar = {
     file: Blob;
     fileName: string;
     password?: string;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type CreateCertificateJSON = {
+export type CreateCertificateJSON = {
     fileBase64: string;
     fileName: string;
     password?: string;

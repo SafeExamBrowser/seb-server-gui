@@ -1,12 +1,18 @@
 import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
+import { OptionalParGetExams } from "@/models/seb-server/optionalParamters";
+import { CreateExamPar, Exam, Exams } from "@/models/seb-server/exam";
+import {
+    AppSignatureKey,
+    GrantedAppSignatureKey,
+} from "@/models/seb-server/appSignatureKey";
 
 const examUrl: string = "/exam";
 const examsUrl: string = "/exams";
 const grantUrl: string = "/grant";
 const askUrl: string = "/sebkeyinfo";
 
-export async function getExam(id: string): Promise<Exam | any> {
+export async function getExam(id: string): Promise<Exam> {
     const url: string = "/get-exam/" + id;
     return (
         await apiService.api.get(url, {
@@ -17,7 +23,7 @@ export async function getExam(id: string): Promise<Exam | any> {
 
 export async function getExamAppSignatureKeys(
     id: string,
-): Promise<AppSignatureKey[] | any> {
+): Promise<AppSignatureKey[]> {
     const url: string = examUrl + "/" + id + askUrl;
     return (
         await apiService.api.get(url, {
@@ -29,7 +35,7 @@ export async function getExamAppSignatureKeys(
 export async function removeGrantExamAppSignatureKeys(
     parentId: string,
     id: string,
-): Promise<AppSignatureKey[] | any> {
+): Promise<AppSignatureKey[]> {
     const url: string = examUrl + "/" + parentId + grantUrl + "/" + id;
     return (
         await apiService.api.delete(url, {
@@ -42,7 +48,7 @@ export async function grantExamAppSignatureKeys(
     tagName: string,
     parentId: string,
     id: string,
-): Promise<Exam | any> {
+): Promise<GrantedAppSignatureKey> {
     const url = `${examUrl}/${parentId}${grantUrl}/${id}`;
     return (
         await apiService.api.post(url, null, {
@@ -54,7 +60,7 @@ export async function grantExamAppSignatureKeys(
 
 export async function getGrantedExamAppSignatureKeys(
     parentId: string,
-): Promise<GrantedAppSignatureKey[] | any> {
+): Promise<GrantedAppSignatureKey[]> {
     const url: string = examUrl + "/" + parentId + grantUrl;
     return (
         await apiService.api.get(url, {
@@ -63,9 +69,7 @@ export async function getGrantedExamAppSignatureKeys(
     ).data;
 }
 
-export async function createExam(
-    createExamPar: CreateExamPar,
-): Promise<Exam | any> {
+export async function createExam(createExamPar: CreateExamPar): Promise<Exam> {
     return (
         await apiService.api.post(examUrl, createExamPar, {
             headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),
@@ -73,7 +77,7 @@ export async function createExam(
     ).data;
 }
 
-export async function deleteExam(id: string): Promise<any | null> {
+export async function deleteExam(id: string): Promise<unknown | null> {
     return (
         await apiService.api.delete(examUrl + "/" + id, {
             headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
@@ -81,7 +85,7 @@ export async function deleteExam(id: string): Promise<any | null> {
     ).data;
 }
 
-export async function updateExam(id: string, exam: Exam): Promise<Exam | any> {
+export async function updateExam(id: string, exam: Exam): Promise<Exam> {
     return (
         await apiService.api.put(examUrl + "/" + id, exam, {
             headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),
@@ -91,7 +95,7 @@ export async function updateExam(id: string, exam: Exam): Promise<Exam | any> {
 
 export async function getExams(
     optionalParameters?: OptionalParGetExams,
-): Promise<Exams | any> {
+): Promise<Exams> {
     return (
         await apiService.api.get(examsUrl, {
             headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
@@ -102,7 +106,7 @@ export async function getExams(
 
 export async function getExamsForMonitoring(
     optionalParameters?: OptionalParGetExams,
-): Promise<Exams | any> {
+): Promise<Exams> {
     return (
         await apiService.api.get(examsUrl + "/monitoring", {
             headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
@@ -111,7 +115,7 @@ export async function getExamsForMonitoring(
     ).data;
 }
 
-export async function archiveExam(id: string): Promise<Exam | any> {
+export async function archiveExam(id: string): Promise<Exam> {
     return (
         await apiService.api.patch(examUrl + "/" + id + "/archive", {
             headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),

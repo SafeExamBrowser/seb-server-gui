@@ -181,6 +181,9 @@ import { storeToRefs } from "pinia";
 import { translate, wait } from "@/utils/generalUtils";
 import { VDateInput } from "vuetify/labs/VDateInput";
 import { ref, watch } from "vue";
+import { ServerTablePaging } from "@/models/types";
+import { Quiz, Quizzes } from "@/models/seb-server/quiz";
+import { OptionalParGetQuizzes } from "@/models/seb-server/optionalParamters";
 
 // stores
 const quizImportStore = useQuizImportStore();
@@ -198,7 +201,7 @@ const isOnLoad = ref<boolean>(true);
 const defaultSort: { key: string; order: string }[] = [
     { key: "quiz_start_time", order: "desc" },
 ];
-const quizzesTableHeadersRef = ref<any[]>();
+const quizzesTableHeadersRef = ref<(HTMLElement | null)[]>([]);
 const quizzesTableHeaders = ref([
     {
         title: translate("quizImportWizard.examMain.tableHeaderName"),
@@ -216,11 +219,6 @@ const quizzesTableHeaders = ref([
         width: "20%",
     },
 ]);
-
-// emits - call loadExamItemsCaller in parent
-defineEmits<{
-    loadExamItemsCaller: any;
-}>();
 
 // datepicker
 const datepicker = ref();

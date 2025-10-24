@@ -1,5 +1,7 @@
 import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
+import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring";
+import { Exam } from "@/models/seb-server/exam";
 
 export async function saveScreenProctoringSettings(
     id: string,

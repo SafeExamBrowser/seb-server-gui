@@ -220,11 +220,12 @@ import { useFullscreen } from "@vueuse/core";
 import * as linkService from "@/services/screen-proctoring/component-services/linkService";
 import * as applicationsSearchViewService from "@/services/screen-proctoring/component-services/applicationsSearchViewService";
 import * as spConstants from "@/utils/sp-constants";
+import { ScreenshotData } from "@/models/screen-proctoring/session";
 
 // slider
-const sliderTime = ref<number>();
-const sliderMin = ref<number>();
-const sliderMax = ref<number>();
+const sliderTime = ref<number>(0);
+const sliderMin = ref<number>(0);
+const sliderMax = ref<number>(0);
 
 // screenshots
 const isPlaying = ref<boolean>(false);
@@ -249,7 +250,7 @@ const playbackSpeeds: { title: string; id: number }[] = [
 ];
 
 // intervals
-let intervalScreenshots: any | null = null;
+let intervalScreenshots: ReturnType<typeof setInterval> | null = null;
 
 // store
 const appBarStore = useAppBarStore();
@@ -423,7 +424,7 @@ function startIntervalScreenshots() {
             return;
         }
 
-        sliderTime.value! += DEFAULT_PLAYBACK_SPEED;
+        sliderTime.value += DEFAULT_PLAYBACK_SPEED;
         // timestampsIndex.value += 1;
     }, PLAYBACK_SPEED.value);
 }
@@ -518,9 +519,7 @@ const screenshotDisplay = computed<string>(() => {
 });
 
 function hideShowMetadataInfo() {
-    isMetadataInfo.value
-        ? (isMetadataInfo.value = false)
-        : (isMetadataInfo.value = true);
+    isMetadataInfo.value = !isMetadataInfo.value;
 }
 //= =============================
 </script>

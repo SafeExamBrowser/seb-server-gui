@@ -273,34 +273,6 @@ const currentStatus = computed(() => {
     return monitoringStore.selectedSingleConn?.cdat.status ?? null;
 });
 
-// TODO ==============indicators==================== is this still used / will be used?
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const mergedIndicators = computed(() => {
-    const definitions = monitoringStore.indicators?.content || [];
-    const values = monitoringStore.selectedSingleConn?.iVal || [];
-
-    return definitions.map((def) => {
-        const valObj = values.find((v) => v.id === def.id);
-        let displayValue: string | number | null = valObj ? valObj.val : null;
-
-        if (
-            def.type === IndicatorEnum.LAST_PING &&
-            typeof displayValue === "number"
-        ) {
-            displayValue = generalUtils.formatPing(displayValue);
-        } else if (displayValue !== null) {
-            displayValue = `${displayValue}${indicatorTypeConfig[def.type]?.unit || ""}`;
-        }
-
-        return {
-            ...def,
-            rawValue: valObj ? valObj.val : null,
-            displayValue,
-            ...indicatorTypeConfig[def.type],
-        };
-    });
-});
-
 function getConnectionStatusColor(connectionStatus: string | null): string {
     if (connectionStatus == null) return "#000000";
 
@@ -387,9 +359,8 @@ const filteredIndicators = computed(() => {
         .filter((def) => {
             if (def.type === IndicatorEnum.BATTERY_STATUS && !behavior.battery)
                 return false;
-            if (def.type === IndicatorEnum.WLAN_STATUS && !behavior.wlan)
-                return false;
-            return true; // always show other indicators
+            return !(def.type === IndicatorEnum.WLAN_STATUS && !behavior.wlan);
+            // always show other indicators
         })
         .map((def) => {
             const valObj = values.find((v) => v.id === def.id);

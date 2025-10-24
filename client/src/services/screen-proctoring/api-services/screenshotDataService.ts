@@ -1,10 +1,11 @@
 import * as apiService from "@/services/apiService";
 import { SortOrder } from "@/models/screen-proctoring/sortOrderEnum";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
+import { ScreenshotData } from "@/models/screen-proctoring/session";
 
 export async function getScreenshotDataBySessionId(
     sessionId: string,
-): Promise<ScreenshotData | any> {
+): Promise<ScreenshotData> {
     const url: string = "/sp/screenshot-data/" + sessionId;
     return (
         await apiService.api.get(url, {
@@ -16,7 +17,7 @@ export async function getScreenshotDataBySessionId(
 export async function getScreenshotDataByTimestamp(
     sessionId: string,
     timestamp: string,
-): Promise<ScreenshotData | any> {
+): Promise<ScreenshotData> {
     const url: string = "/sp/screenshot-data/" + sessionId + "/" + timestamp;
     return (
         await apiService.api.get(url, {

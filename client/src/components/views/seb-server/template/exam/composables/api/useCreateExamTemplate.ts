@@ -1,5 +1,6 @@
 import { createExamTemplate } from "@/services/seb-server/api-services/examTemplateService";
 import { ref } from "vue";
+import { ExamTemplate } from "@/models/seb-server/examTemplate";
 
 export const useCreateExamTemplate = () => {
     const loading = ref(false);

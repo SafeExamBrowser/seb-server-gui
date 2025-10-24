@@ -79,13 +79,16 @@ export function formatIsoToReadableDateTime(dateStr?: string | null): string {
     return `${datePart} • ${timePart}`; // e.g., August 7, 2025 • 11:18
 }
 
-export function formatTimestampToFullDate(timestamp: string | any): string {
-    if (timestamp === "0" || timestamp === null) {
-        return "";
-    }
+export function formatTimestampToFullDate(
+    timestamp: number | string | null,
+): string {
+    if (timestamp === "0" || timestamp == null) return "";
 
-    let date = new Date(timestamp);
-    date = convertUTCToTimeZone(timestamp);
+    const tsNum = typeof timestamp === "string" ? Number(timestamp) : timestamp;
+    if (!Number.isFinite(tsNum)) return "";
+
+    let date = new Date(tsNum);
+    date = convertUTCToTimeZone(tsNum);
 
     const day = ("0" + date.getDate()).slice(-2);
     const month = ("0" + (date.getMonth() + 1)).slice(-2);
@@ -95,19 +98,7 @@ export function formatTimestampToFullDate(timestamp: string | any): string {
     const minutes = ("0" + date.getMinutes()).slice(-2);
     const seconds = ("0" + date.getSeconds()).slice(-2);
 
-    return (
-        day +
-        "." +
-        month +
-        "." +
-        year +
-        " " +
-        hours +
-        ":" +
-        minutes +
-        ":" +
-        seconds
-    );
+    return `${day}.${month}.${year} ${hours}:${minutes}:${seconds}`;
 }
 
 export function formatTimestampToDate(timestamp: number): string {
@@ -220,15 +211,14 @@ export function calcTimePeriod(
     ];
 }
 
-export function calcTimeSelection(timeSelectionPicker: any): [string, string] {
+export function calcTimeSelection(timeSelectionPicker: {
+    value: [Date, Date] | null;
+}): [string, string] {
     if (timeSelectionPicker.value == null) {
         return ["", ""];
     }
-
-    return [
-        timeSelectionPicker.value[0].getTime(),
-        timeSelectionPicker.value[1].getTime(),
-    ];
+    const [start, end] = timeSelectionPicker.value;
+    return [start.getTime().toString(), end.getTime().toString()];
 }
 
 export function getTimestampFromPeriodSelection(

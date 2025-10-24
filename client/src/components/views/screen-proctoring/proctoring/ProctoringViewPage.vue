@@ -277,11 +277,16 @@ import { useFullscreen } from "@vueuse/core";
 import * as linkService from "@/services/screen-proctoring/component-services/linkService";
 import { SortOrder } from "@/models/screen-proctoring/sortOrderEnum";
 import * as apiService from "@/services/apiService";
+import { ScreenshotData } from "@/models/screen-proctoring/session";
+import {
+    ScreenshotsGrouped,
+    SearchTimeline,
+} from "@/models/screen-proctoring/search";
 
 // slider
-const sliderTime = ref<number>();
-const sliderMin = ref<number>();
-const sliderMax = ref<number>();
+const sliderTime = ref<number>(0);
+const sliderMin = ref<number>(0);
+const sliderMax = ref<number>(0);
 
 // screenshots
 const isPlaying = ref<boolean>(false);
@@ -308,13 +313,13 @@ const backwardsFirstTime = ref<boolean>(true);
 const forwardsFirstTime = ref<boolean>(true);
 
 // time constants
-const LIVE_INTERVAL: number = 1 * 1000;
-const REFRESH_INTERVAL: number = 1 * 1000;
+const LIVE_INTERVAL: number = 1000;
+const REFRESH_INTERVAL: number = 1000;
 
 // playback speed
-const SLOW_PLAYBACK_SPEED: number = 1 * 2000;
-const DEFAULT_PLAYBACK_SPEED: number = 1 * 1000;
-const FAST_PLAYBACK_SPEED: number = 1 * 500;
+const SLOW_PLAYBACK_SPEED: number = 2000;
+const DEFAULT_PLAYBACK_SPEED: number = 1000;
+const FAST_PLAYBACK_SPEED: number = 500;
 const PLAYBACK_SPEED = ref<number>(DEFAULT_PLAYBACK_SPEED);
 const selectedSpeedId = ref<number>(1);
 const playbackSpeeds: { title: string; id: number }[] = [
@@ -324,9 +329,9 @@ const playbackSpeeds: { title: string; id: number }[] = [
 ];
 
 // intervals
-let intervalScreenshots: any | null = null;
-let intervalLiveImage: any | null = null;
-let intervalRefresh: any | null = null;
+let intervalScreenshots: ReturnType<typeof setInterval> | null = null;
+let intervalLiveImage: ReturnType<typeof setInterval> | null = null;
+let intervalRefresh: ReturnType<typeof setInterval> | null = null;
 
 // store
 const appBarStore = useAppBarStore();
@@ -664,6 +669,7 @@ function startIntervalLiveImage() {
 function stopIntervalLiveImage() {
     if (intervalLiveImage) {
         clearInterval(intervalLiveImage);
+        intervalLiveImage = null;
     }
 }
 
@@ -711,12 +717,14 @@ function startIntervalScreenshots() {
 function stopIntervalScreenshots() {
     if (intervalScreenshots) {
         clearInterval(intervalScreenshots);
+        intervalScreenshots = null;
     }
 }
 
 function stopIntervalRefresh() {
     if (intervalRefresh) {
         clearInterval(intervalRefresh);
+        intervalRefresh = null;
     }
 }
 
@@ -859,7 +867,7 @@ const additionalMetadataInfo = computed<string>(() => {
                 ].timelineScreenshotDataList.findIndex(
                     (group) =>
                         timeUtils.toTimeString(group.timestamp) ===
-                        timeUtils.toTimeString(sliderTime.value!),
+                        timeUtils.toTimeString(sliderTime.value),
                 );
 
                 if (index !== -1) {
@@ -902,9 +910,7 @@ const screenshotDisplay = computed<string>(() => {
 });
 
 function hideShowMetadataInfo() {
-    isMetadataInfo.value
-        ? (isMetadataInfo.value = false)
-        : (isMetadataInfo.value = true);
+    isMetadataInfo.value = !isMetadataInfo.value;
 }
 
 async function calcTotalNrOfScreenshots(): Promise<number> {

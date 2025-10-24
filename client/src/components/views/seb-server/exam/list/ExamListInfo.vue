@@ -212,7 +212,7 @@ const datepicker = ref();
 
 // emits - call loadExamItemsCaller in parent
 const emit = defineEmits<{
-    loadExamItemsCaller: any;
+    (e: "loadExamItemsCaller"): void;
 }>();
 
 // filters exam type

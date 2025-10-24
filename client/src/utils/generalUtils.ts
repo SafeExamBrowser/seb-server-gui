@@ -7,19 +7,17 @@ import {
 } from "@/models/seb-server/assessmentToolEnums";
 import { useI18n } from "vue-i18n";
 
+type I18nLike = { t: (key: string, ...args: unknown[]) => string };
+
 export function translate(
     key: string | null | undefined,
-    i18nParam?: any | null,
+    i18nParam?: I18nLike | null,
 ): string {
-    if (key == null || key === "") {
-        return "";
-    }
+    if (key == null || key === "") return "";
 
-    // if called outside of a setup context the i18n instance must be passed manually
     if (i18nParam != null) {
         return i18nParam.t(key);
     }
-
     return useI18n().t(key);
 }
 
@@ -61,20 +59,17 @@ export function getExamStatusFilterColor(
 
 export function getClientGroupDescription(
     clientGroup: ClientGroupEnum | null,
-    i18nParam: any | null,
+    i18nParam: I18nLike | null,
 ): string {
     if (clientGroup === ClientGroupEnum.IP_V4_RANGE) {
         return translate("clientGroups.description.ip[0]", i18nParam);
     }
-
     if (clientGroup === ClientGroupEnum.CLIENT_OS) {
         return translate("clientGroups.description.os[0]", i18nParam);
     }
-
     if (clientGroup === ClientGroupEnum.NAME_ALPHABETICAL_RANGE) {
         return translate("clientGroups.description.alphabetical[0]", i18nParam);
     }
-
     return "";
 }
 

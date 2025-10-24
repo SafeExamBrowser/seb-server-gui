@@ -1,4 +1,6 @@
 import * as groupService from "@/services/screen-proctoring/api-services/groupService";
+import { OptionalParGroups } from "@/models/screen-proctoring/optionalParamters";
+import { GroupObject } from "@/models/screen-proctoring/group";
 
 //= ============api==============
 export async function getGroups(

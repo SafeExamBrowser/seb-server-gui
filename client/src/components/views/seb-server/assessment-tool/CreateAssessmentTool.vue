@@ -593,6 +593,11 @@ import { navigateTo } from "@/router/navigation";
 import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/authenticationStore";
 import { createAssessmentTool } from "@/services/seb-server/component-services/assessmentToolViewService";
 import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums";
+import { Institution } from "@/models/seb-server/institution";
+import {
+    AssessmentTool,
+    CreateAssessmentToolPar,
+} from "@/models/seb-server/assessmentTool";
 
 const appBarStore = useAppBarStore();
 const layoutStore = useLayoutStore();
@@ -699,10 +704,10 @@ async function submit() {
     const { valid } = await formRef.value.validate();
     if (!valid) return;
 
-    const common: any = {
-        institutionId: institution.value!,
+    const common = {
+        institutionId: institution.value,
         name: name.value,
-        lmsType: lmsType.value!,
+        lmsType: lmsType.value,
         lmsUrl: assessmentToolServerAddress.value,
         ...(withProxy.value
             ? {
@@ -730,7 +735,7 @@ async function submit() {
         ...authPart,
     } as CreateAssessmentToolPar;
 
-    const createdAssessmentToolResponse: any | null =
+    const createdAssessmentToolResponse: AssessmentTool | null =
         await createAssessmentTool(createAssessmentToolsParams);
 
     if (!createdAssessmentToolResponse) return;

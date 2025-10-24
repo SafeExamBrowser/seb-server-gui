@@ -200,7 +200,7 @@ import {
 import { MonitoringRow } from "@/models/seb-server/monitoringClients";
 import { storeToRefs } from "pinia";
 import { useI18n } from "vue-i18n";
-import { useRoute } from "vue-router";
+import { LocationQueryValue, useRoute } from "vue-router";
 import {
     ref,
     onMounted,
@@ -209,6 +209,14 @@ import {
     onUpdated,
     onBeforeUnmount,
 } from "vue";
+import {
+    MonitoringClientConnection,
+    MonitoringConnections,
+    MonitoringStaticClientData,
+    StaticClientConnectionData,
+} from "@/models/seb-server/monitoring";
+import { Indicator } from "@/models/seb-server/indicators";
+import { ClientGroup } from "@/models/seb-server/clientGroup";
 
 // exam
 const examId = useRoute().params.examId.toString();
@@ -235,15 +243,15 @@ const isBatteryIndicator = ref<boolean>(false);
 const isWlanIndicator = ref<boolean>(false);
 
 // interval
-let intervalRefresh: any | null = null;
-const REFRESH_INTERVAL: number = 1 * 2000;
+let intervalRefresh: ReturnType<typeof setTimeout> | null = null;
+const REFRESH_INTERVAL: number = 2000;
 
 // dialogs
 const clientGroupDialog = ref<boolean>(false);
 const clientGroupToView = ref<ClientGroup | null>(null);
 
 // table
-const clientsTableHeadersRef = ref<any[]>();
+const clientsTableHeadersRef = ref<(HTMLElement | null)[] | null>(null);
 const clientsTableHeaders = ref([
     {
         title: translate("monitoringClients.main.tableHeaderNameSession"),
@@ -319,18 +327,18 @@ async function initalize() {
 }
 
 watch(connections, async () => {
-    // check if sessions got added / removed
+    const consLength = connections.value?.monitoringConnectionData.cons.length;
+
     if (
-        connections.value?.monitoringConnectionData.cons.length! >
-        monitoringStore.monitoringData.size
+        consLength !== undefined &&
+        consLength > monitoringStore.monitoringData.size
     ) {
-        // await addNewClients();
         addNewClients();
     }
 
     if (
-        connections.value?.monitoringConnectionData.cons.length! <
-        monitoringStore.monitoringData.size
+        consLength !== undefined &&
+        consLength < monitoringStore.monitoringData.size
     ) {
         removeClients();
     }
@@ -658,7 +666,9 @@ function removeIndicatorHeaders() {
     clientsTableHeaders.value.splice(4, 1);
 }
 
-function modifyIndicatorHeaders(indicatorString: any | null) {
+function modifyIndicatorHeaders(
+    indicatorString: LocationQueryValue | LocationQueryValue[],
+) {
     if (indicatorString == null) {
         indicatorString = "";
     }

@@ -1,10 +1,9 @@
-type PermittedProcessArgument = {
+export type PermittedProcessArgument = {
     active: boolean;
     argument: string;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type ExamConfigMapping = {
+export type ExamConfigMapping = {
     id: number;
     examId: number;
     examName: string;
@@ -14,7 +13,7 @@ type ExamConfigMapping = {
     configStatus: string;
 };
 
-type PermittedProcess = {
+export type PermittedProcess = {
     index: number;
     active: boolean;
     os: string;
@@ -56,7 +55,7 @@ type PermittedProcess = {
     };
 };
 
-type ProhibitedProcess = {
+export type ProhibitedProcess = {
     index: number;
     active: boolean;
     os: string;
@@ -78,18 +77,18 @@ type ProhibitedProcess = {
     };
 };
 
-type SEBSettingsValue = {
+export type SEBSettingsValue = {
     id: number;
     value: string;
 };
 
-type SEBSettingsTableRowValues = {
+export type SEBSettingsTableRowValues = {
     name: string;
     listIndex: number;
     rowValues: Map<string, SEBSettingsValue>;
 };
 
-type SEBSettingAttribute = {
+export type SEBSettingAttribute = {
     id: number;
     parentId: number;
     name: string;
@@ -100,8 +99,7 @@ type SEBSettingAttribute = {
     defaultValue: string;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type SEBSettingsView = {
+export type SEBSettingsView = {
     viewType: string;
     configurationNodeId: number;
     configurationId: number;
@@ -110,8 +108,7 @@ type SEBSettingsView = {
     tableValues: Map<string, SEBSettingsTableRowValues[]>;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type ApplicationView = {
+export type ApplicationView = {
     configurationNodeId: number;
     configurationId: number;
     allowSwitchToApplications: {
@@ -126,8 +123,7 @@ type ApplicationView = {
     permittedProcesses: PermittedProcess[];
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type URLFilterRule = {
+export type URLFilterRule = {
     index: number;
     active: boolean;
     regex: boolean;

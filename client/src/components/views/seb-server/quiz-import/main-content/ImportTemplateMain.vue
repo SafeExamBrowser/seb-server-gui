@@ -78,6 +78,9 @@ import * as generalUtils from "@/utils/generalUtils";
 import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
 import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
 import { ref, onBeforeMount } from "vue";
+import { UserAccountName } from "@/models/userAccount";
+import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring";
+import { ExamTemplate, ExamTemplates } from "@/models/seb-server/examTemplate";
 
 // stores
 const quizImportStore = useQuizImportStore();
@@ -183,12 +186,12 @@ function closeExamTemplateDialog() {
 }
 
 async function getExamTemplateSpGroups() {
-    if (quizImportStore.selectedExamTemplate!.id == null) {
+    if (quizImportStore.selectedExamTemplate?.id == null) {
         return;
     }
     const examTemplateSp: ScreenProctoringSettings | null =
         await examViewService.getExamTemplateSp(
-            quizImportStore.selectedExamTemplate!.id.toString(),
+            quizImportStore.selectedExamTemplate?.id.toString(),
         );
 
     if (examTemplateSp == null) {

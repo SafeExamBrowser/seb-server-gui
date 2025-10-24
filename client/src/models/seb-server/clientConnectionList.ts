@@ -8,8 +8,7 @@ enum SebClientConnectionStatusEnum {
     CLOSED = "CLOSED",
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type SebClientConnection = {
+export type SebClientConnection = {
     id: number;
     institutionId: number;
     examId: number;

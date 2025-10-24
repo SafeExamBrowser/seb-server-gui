@@ -83,6 +83,7 @@ import { ref, watchEffect } from "vue";
 import * as timeUtils from "@/utils/timeUtils";
 import * as tableUtils from "@/utils/table/tableUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
+import { SPExam } from "@/models/screen-proctoring/exam";
 
 // props
 const props = defineProps<{
@@ -98,30 +99,26 @@ const emit = defineEmits<{
 const panels = ref<string[]>(["panel"]);
 
 // table
-const selectedExamIds = ref<number[]>();
-const headerRefs = ref<any[]>();
+const selectedExamIds = ref<number[]>([]);
+const headerRefs = ref<unknown[]>([]);
 const headers = ref([
     { title: "Exam", key: "name", width: "50%" },
     { title: "Exam Start-Time", key: "startTime", width: "50%" },
 ]);
 
 watchEffect(() => {
-    // props.exam has to be accessed to make sure the panel always opens
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const placeHolderVar = props.exams;
     selectedExamIds.value = [];
     panels.value = ["panel"];
 });
 
 async function getGroupIdsForExam() {
-    if (selectedExamIds.value == null) return;
+    if (!selectedExamIds.value.length) return;
 
     panels.value = [];
 
     const selectedExams: SPExam[] = props.exams.filter((exam) =>
-        selectedExamIds.value!.includes(exam.id),
+        selectedExamIds.value.includes(exam.id),
     );
-
     emit("getGroupIdsForExam", selectedExams);
 }
 </script>

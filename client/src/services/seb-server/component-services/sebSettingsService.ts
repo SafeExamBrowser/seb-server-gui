@@ -1,5 +1,11 @@
 import * as sebSettingService from "@/services/seb-server/api-services/sebSettingsService";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums";
+import {
+    ExamConfigMapping,
+    SEBSettingsTableRowValues,
+    SEBSettingsValue,
+    SEBSettingsView,
+} from "@/models/seb-server/sebSettings";
 
 export async function getExamConfigMapping(
     examId: string,

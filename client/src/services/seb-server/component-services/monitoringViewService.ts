@@ -8,9 +8,30 @@ import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums";
 import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants";
 import * as navigation from "@/router/navigation";
-import { LocationQuery } from "vue-router";
+import {
+    LocationQuery,
+    LocationQueryRaw,
+    LocationQueryValueRaw,
+} from "vue-router";
 import * as clientGroupViewService from "@/services/seb-server/component-services/clientGroupViewService";
 import * as clientConnectionService from "@/services/seb-server/api-services/clientConnectionService";
+import { OptionalParGetMonitoringClientLogs } from "@/models/seb-server/optionalParamters";
+import {
+    ClientEventResponse,
+    ClientNotification,
+    MonitoringConnections,
+    MonitoringOverview,
+    MonitoringStaticClientData,
+    SingleConnection,
+} from "@/models/seb-server/monitoring";
+import { Exam } from "@/models/seb-server/exam";
+import { ClientInstruction } from "@/models/seb-server/clientInstruction";
+import { ClientGroup, ClientGroups } from "@/models/seb-server/clientGroup";
+import {
+    AppSignatureKey,
+    AppSignatureKeysWithGrantValues,
+    GrantedAppSignatureKey,
+} from "@/models/seb-server/appSignatureKey";
 
 //= ===============api===============
 export async function getOverview(
@@ -25,7 +46,7 @@ export async function getOverview(
 
 export async function getConnections(
     examId: string,
-    optionalHeaders: {},
+    optionalHeaders: object,
 ): Promise<MonitoringConnections | null> {
     try {
         return await monitoringService.getConnections(examId, optionalHeaders);
@@ -131,7 +152,7 @@ export async function getAskAndStore(examId: string) {
 export async function registerInstruction(
     examId: string,
     clientInstruction: ClientInstruction,
-): Promise<any | null> {
+): Promise<unknown | null> {
     try {
         return await monitoringService.registerInstruction(
             examId,
@@ -155,12 +176,11 @@ export async function getPendingNotifcations(
         return null;
     }
 }
-
 export async function confirmNotification(
     examId: string,
     notificationId: string,
     connectionToken: string,
-): Promise<any | null> {
+): Promise<unknown | null> {
     try {
         return await monitoringService.confirmNotification(
             examId,
@@ -175,7 +195,7 @@ export async function confirmNotification(
 export async function disableConnections(
     examId: string,
     connectionToken: string,
-): Promise<any | null> {
+): Promise<unknown | null> {
     try {
         return await monitoringService.disableConnections(
             examId,
@@ -185,6 +205,7 @@ export async function disableConnections(
         return null;
     }
 }
+
 export function applyFilter(
     query: LocationQuery,
     filterType: MonitoringHeaderEnum,
@@ -222,13 +243,13 @@ export function applyFilter(
 }
 
 export function applyShowAllFilter() {
-    // removes all selected clients (checkbox in table)
     removeAllSelectedClients();
 
     navigation.addQueryParam({
-        [MonitoringHeaderEnum.SHOW_ALL]: true,
+        [String(MonitoringHeaderEnum.SHOW_ALL)]: "true",
     });
 }
+
 function removeQueryParam(
     query: LocationQuery,
     filterType: MonitoringHeaderEnum,
@@ -318,15 +339,17 @@ export function goToMonitoring(
     value: string | boolean,
     examId: string,
 ) {
-    navigateTo(constants.MONITORING_CLIENTS_ROUTE + "/" + examId, {
-        [header]: value,
-    });
+    const query: LocationQueryRaw = {
+        [String(header)]: value as LocationQueryValueRaw,
+    };
+
+    navigateTo(`${constants.MONITORING_CLIENTS_ROUTE}/${examId}`, query);
 }
 
 export function goToMonitoringDetails(
     examId: string,
     connectionToken: string,
-    query: {},
+    query: LocationQueryRaw,
 ) {
     useMonitoringStore().currentMonitoringQuery = query;
     navigateTo(

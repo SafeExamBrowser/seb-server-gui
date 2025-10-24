@@ -260,6 +260,7 @@ import { useAppBarStore, useGalleryStore } from "@/stores/store";
 import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
 import { useRoute } from "vue-router";
+import { ScreenshotData } from "@/models/screen-proctoring/session";
 
 // props
 const props = defineProps<{
@@ -321,7 +322,7 @@ function setTabFocus() {
     lastKeyPressed.value = null;
 }
 
-function registerKeyPress(event: any) {
+function registerKeyPress(event: KeyboardEvent) {
     lastKeyPressed.value = event.key;
 }
 </script>
