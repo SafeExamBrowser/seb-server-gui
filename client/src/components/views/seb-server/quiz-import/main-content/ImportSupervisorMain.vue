@@ -149,6 +149,7 @@ import { useQuizImportStore } from "@/stores/seb-server/quizImportStore";
 import { translate } from "@/utils/generalUtils";
 import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
 import { ref, computed, onBeforeMount } from "vue";
+import { UserAccountName } from "@/models/userAccount";
 
 // stores
 const quizImportStore = useQuizImportStore();

@@ -51,8 +51,8 @@
 <script setup lang="ts">
 // emits
 const emit = defineEmits<{
-    closeDeleteDialog: any;
-    deleteFunction: any;
+    closeDeleteDialog: [];
+    deleteFunction: [entityId?: string];
 }>();
 
 // props

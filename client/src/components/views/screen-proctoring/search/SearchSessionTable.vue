@@ -117,9 +117,9 @@
                         :timeline-search-result="
                             timelineSearchResults.find(
                                 (i) => i.sessionUUID == item.sessionUUID,
-                            )
+                            ) || null
                         "
-                    ></SearchScreenshotsTable>
+                    />
                 </td>
             </tr>
         </template>
@@ -195,6 +195,12 @@ import TableHeaders from "@/utils/table/TableHeaders.vue";
 import { useTableStore } from "@/stores/store";
 import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
 import { UserRoleEnum } from "@/models/userRoleEnum";
+import { ServerTablePaging } from "@/models/types";
+import {
+    SearchSessions,
+    SearchTimeline,
+} from "@/models/screen-proctoring/search";
+import { OptionalParSearchSessions } from "@/models/screen-proctoring/optionalParamters";
 
 // store
 const tableStore = useTableStore();
@@ -207,6 +213,10 @@ const props = defineProps<{
     searchParameters: OptionalParSearchSessions;
 }>();
 
+type InternalItem = { raw: { sessionUUID: string } };
+type ToggleExpand<T> = (item: T) => void;
+type IsExpanded<T> = (item: T) => boolean;
+
 // items
 const sessions = ref<SearchSessions>();
 const timelineSearchResults = ref<SearchTimeline[]>([]);
@@ -216,12 +226,12 @@ const isLoading = ref<boolean>(true);
 const totalItems = ref<number>(15);
 
 // table
-const selectedSessionUuids = ref<string[]>();
+const selectedSessionUuids = ref<string[]>([]);
 const isOnLoad = ref<boolean>(true);
 const defaultSort: { key: string; order: string }[] = [
     { key: "startTime", order: "desc" },
 ];
-const sessionTableHeadersRef = ref<any[]>();
+const sessionTableHeadersRef = ref<(HTMLElement | null)[]>([]);
 const sessionTableHeaders = ref([
     { title: "Start-Time", key: "startTime", width: "10%" },
     { title: "Login Name / IP", key: "clientName", width: "30%" },
@@ -244,8 +254,6 @@ async function loadItems(serverTablePaging: ServerTablePaging) {
         UserRoleEnum.SEB_SERVER_ADMIN,
     );
     isLoading.value = true;
-    // current solution to default sort the table
-    // sort-by in data-table-server tag breaks the sorting as the headers are in a seperate component
     if (isOnLoad.value) {
         serverTablePaging.sortBy = defaultSort;
     }
@@ -271,15 +279,12 @@ async function loadItems(serverTablePaging: ServerTablePaging) {
     isOnLoad.value = false;
     isLoading.value = false;
 }
-
-async function searchTimeline(
-    item: any,
-    isExpanded: Function,
-    toggleExpand: Function,
+async function searchTimeline<T>(
+    item: InternalItem,
+    isExpanded: IsExpanded<T>,
+    toggleExpand: ToggleExpand<T>,
 ) {
-    if (removeTableItemFromRefs(item, isExpanded, toggleExpand)) {
-        return;
-    }
+    if (removeTableItemFromRefs<T>(item, isExpanded, toggleExpand)) return;
 
     const timelineSearchResponse: SearchTimeline | null =
         await searchViewService.searchTimeline(item.raw.sessionUUID, {
@@ -293,11 +298,9 @@ async function searchTimeline(
                 props.searchParameters.screenProctoringMetadataWindowTitle,
         });
 
-    if (timelineSearchResponse == null) {
-        return;
-    }
+    if (!timelineSearchResponse) return;
 
-    addTableItemToRefs(timelineSearchResponse, toggleExpand, item);
+    addTableItemToRefs<T>(timelineSearchResponse, toggleExpand, item);
 }
 
 //= ==========================session deletion=======================
@@ -307,23 +310,24 @@ function openDeleteSessionsDialog() {
 
 async function deleteSessions() {
     errorAvailable.value = false;
-    if (selectedSessionUuids.value == null) {
-        return;
-    }
+    if (!selectedSessionUuids.value.length) return;
 
     const response = await searchViewService.deleteSessions(
         selectedSessionUuids.value,
     );
+    if (response == null) {
+        return;
+    }
     if (response.data == null || response.status === 207) {
         errorAvailable.value = true;
         return;
     }
-
     for (let i = 0; i < selectedSessionUuids.value.length; i++) {
-        const index: number | any = sessions.value?.content.findIndex(
-            (y) => y.sessionUUID === selectedSessionUuids.value![i],
-        );
-        sessions.value?.content.splice(index, 1);
+        const uuid = selectedSessionUuids.value[i];
+        const content = sessions.value?.content;
+        if (!content) continue;
+        const index = content.findIndex((y) => y.sessionUUID === uuid);
+        if (index >= 0) content.splice(index, 1);
     }
 
     selectedSessionUuids.value = [];
@@ -339,32 +343,28 @@ function closeDialog() {
 }
 
 //= ==========================table=======================
-function addTableItemToRefs(
+function addTableItemToRefs<T>(
     timelineSearchResponse: SearchTimeline,
-    toggleExpand: Function,
-    item: any,
+    toggleExpand: ToggleExpand<T>,
+    item: InternalItem,
 ) {
     timelineSearchResults.value.push(timelineSearchResponse);
-    toggleExpand(item);
+    toggleExpand(item as unknown as T);
 }
 
-function removeTableItemFromRefs(
-    item: any,
-    isExpanded: Function,
-    toggleExpand: Function,
+function removeTableItemFromRefs<T>(
+    item: InternalItem,
+    isExpanded: IsExpanded<T>,
+    toggleExpand: ToggleExpand<T>,
 ): boolean {
-    if (isExpanded(item)) {
-        toggleExpand(item);
-        const index: number = timelineSearchResults.value.findIndex(
-            (i) => i.sessionUUID === item.sessionUUID,
+    if (isExpanded(item as unknown as T)) {
+        toggleExpand(item as unknown as T);
+        const index = timelineSearchResults.value.findIndex(
+            (i) => i.sessionUUID === item.raw.sessionUUID,
         );
-
-        if (index !== -1) {
-            timelineSearchResults.value.splice(index, 1);
-        }
+        if (index !== -1) timelineSearchResults.value.splice(index, 1);
         return true;
     }
-
     return false;
 }
 </script>

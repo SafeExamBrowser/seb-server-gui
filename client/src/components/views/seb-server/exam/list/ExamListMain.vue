@@ -134,6 +134,9 @@ import {
 } from "@/models/seb-server/examFiltersEnum";
 import { translate } from "@/utils/generalUtils";
 import { ref } from "vue";
+import { ServerTablePaging } from "@/models/types";
+import { OptionalParGetExams } from "@/models/seb-server/optionalParamters";
+import { Exam, Exams } from "@/models/seb-server/exam";
 
 // stores
 const examStore = useExamStore();
@@ -151,7 +154,7 @@ const isOnLoad = ref<boolean>(true);
 const defaultSort: { key: string; order: string }[] = [
     { key: "quizStartTime", order: "desc" },
 ];
-const examsTableHeadersRef = ref<any[]>();
+const examsTableHeadersRef = ref<(HTMLElement | null)[]>([]);
 const examsTableHeaders = ref([
     {
         title: translate("examList.main.tableHeaderName"),

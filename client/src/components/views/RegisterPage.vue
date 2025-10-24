@@ -308,6 +308,7 @@ import * as registerAccountViewService from "@/services/seb-server/component-ser
 import moment from "moment-timezone";
 import { translate } from "@/utils/generalUtils";
 import { useI18n } from "vue-i18n";
+import { Institution } from "@/models/seb-server/institution";
 
 // form fields
 const selectedInstitution = ref<string>("");

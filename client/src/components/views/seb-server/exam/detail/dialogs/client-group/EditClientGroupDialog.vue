@@ -214,6 +214,7 @@ import * as clientGroupViewService from "@/services/seb-server/component-service
 import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
 import { ref, watch, onBeforeMount } from "vue";
+import { ClientGroup } from "@/models/seb-server/clientGroup";
 
 // i18n
 const i18n = useI18n();
@@ -253,7 +254,7 @@ watch(clientGroupTypeSelect, () => {
 
 // emits
 const emit = defineEmits<{
-    closeEditClientGroupDialog: any;
+    (e: "closeEditClientGroupDialog", value?: boolean): void;
 }>();
 
 // props
@@ -283,18 +284,13 @@ onBeforeMount(() => {
 });
 
 function loadClientGroupIntoForm(clientGroup: ClientGroup | null) {
-    if (clientGroup == null) {
-        return;
-    }
+    if (!clientGroup) return;
 
-    const clientGroupType: ClientGroupEnum | null = generalUtils.findEnumValue(
+    const clientGroupType = generalUtils.findEnumValue(
         ClientGroupEnum,
         clientGroup.type,
     );
-
-    if (clientGroupType == null) {
-        return;
-    }
+    if (!clientGroupType) return;
 
     groupNameField.value = clientGroup.name;
     clientGroupTypeSelect.value = clientGroupType;
@@ -308,14 +304,14 @@ function loadClientGroupIntoForm(clientGroup: ClientGroup | null) {
     }
 
     if (clientGroupType === ClientGroupEnum.IP_V4_RANGE) {
-        startIpField.value = clientGroup.ipRangeStart!;
-        endIpField.value = clientGroup.ipRangeEnd!;
+        startIpField.value = clientGroup.ipRangeStart ?? "";
+        endIpField.value = clientGroup.ipRangeEnd ?? "";
         return;
     }
 
     if (clientGroupType === ClientGroupEnum.NAME_ALPHABETICAL_RANGE) {
-        startLetterField.value = clientGroup.nameRangeStartLetter!;
-        endLetterField.value = clientGroup.nameRangeEndLetter!;
+        startLetterField.value = clientGroup.nameRangeStartLetter ?? "";
+        endLetterField.value = clientGroup.nameRangeEndLetter ?? "";
     }
 }
 

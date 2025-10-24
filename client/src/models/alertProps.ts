@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type AlertProps = {
+export type AlertProps = {
     title: string;
     textKey?: string;
     color: string;
@@ -8,8 +7,7 @@ type AlertProps = {
     customText?: string;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type ErrorProps = {
+export type ErrorProps = {
     color: string;
     textKey?: string;
     textCustom?: string;

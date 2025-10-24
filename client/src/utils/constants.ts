@@ -12,6 +12,7 @@ import ImportSummaryInfo from "@/components/views/seb-server/quiz-import/info-bo
 import ImportSummaryMain from "@/components/views/seb-server/quiz-import/main-content/ImportSummaryMain.vue";
 import { translate } from "@/utils/generalUtils";
 import type { Component } from "vue";
+import { ImportWizardSteps } from "@/models/types";
 
 // navigation routes
 export const DEFAULT_ROUTE: string = "/";
@@ -65,83 +66,66 @@ export const CREATE_EXAM_TEMPLATE_ROUTE =
 
 export const QUIZ_IMPORT_ROUTE: string = "/quiz-import";
 
+type I18nLike = { t: (key: string, ...args: unknown[]) => string };
+
 // quiz import wizard steps & components
 export function getQuizImportGroupStep(
-    i18nParam?: any | null,
+    i18nParam?: I18nLike | null,
 ): ImportWizardSteps {
-    if (i18nParam != null) {
-        return {
-            name: translate("quizImportWizard.steps.selectGroup", i18nParam),
-            value: 4,
-            type: "group",
-        };
-    }
-
     return {
-        name: translate("quizImportWizard.steps.selectGroup"),
+        name: translate(
+            "quizImportWizard.steps.selectGroup",
+            i18nParam ?? undefined,
+        ),
         value: 4,
         type: "group",
     };
 }
 
 export function getQuizImportSteps(
-    i18nParam?: any | null,
+    i18nParam?: I18nLike | null,
 ): ImportWizardSteps[] {
-    if (i18nParam != null) {
-        return [
-            {
-                name: translate(
-                    "quizImportWizard.steps.selectAssessmentTool",
-                    i18nParam,
-                ),
-                value: 1,
-            },
-            {
-                name: translate("quizImportWizard.steps.selectExam", i18nParam),
-                value: 2,
-            },
-            {
-                name: translate(
-                    "quizImportWizard.steps.chooseTemplate",
-                    i18nParam,
-                ),
-                value: 3,
-            },
-            {
-                name: translate(
-                    "quizImportWizard.steps.addSupervisors",
-                    i18nParam,
-                ),
-                value: 4,
-            },
-            {
-                name: translate(
-                    "quizImportWizard.steps.quitPassword",
-                    i18nParam,
-                ),
-                value: 5,
-            },
-            {
-                name: translate(
-                    "quizImportWizard.steps.configurationSummary",
-                    i18nParam,
-                ),
-                value: 6,
-            },
-        ];
-    }
-
     return [
         {
-            name: translate("quizImportWizard.steps.selectAssessmentTool"),
+            name: translate(
+                "quizImportWizard.steps.selectAssessmentTool",
+                i18nParam ?? undefined,
+            ),
             value: 1,
         },
-        { name: translate("quizImportWizard.steps.selectExam"), value: 2 },
-        { name: translate("quizImportWizard.steps.chooseTemplate"), value: 3 },
-        { name: translate("quizImportWizard.steps.addSupervisors"), value: 4 },
-        { name: translate("quizImportWizard.steps.quitPassword"), value: 5 },
         {
-            name: translate("quizImportWizard.steps.configurationSummary"),
+            name: translate(
+                "quizImportWizard.steps.selectExam",
+                i18nParam ?? undefined,
+            ),
+            value: 2,
+        },
+        {
+            name: translate(
+                "quizImportWizard.steps.chooseTemplate",
+                i18nParam ?? undefined,
+            ),
+            value: 3,
+        },
+        {
+            name: translate(
+                "quizImportWizard.steps.addSupervisors",
+                i18nParam ?? undefined,
+            ),
+            value: 4,
+        },
+        {
+            name: translate(
+                "quizImportWizard.steps.quitPassword",
+                i18nParam ?? undefined,
+            ),
+            value: 5,
+        },
+        {
+            name: translate(
+                "quizImportWizard.steps.configurationSummary",
+                i18nParam ?? undefined,
+            ),
             value: 6,
         },
     ];

@@ -359,6 +359,7 @@ import { translate } from "@/utils/generalUtils";
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum";
 import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
 import * as examViewService from "@/services/seb-server/component-services/examViewService";
+import { AppSignatureKeysWithGrantValues } from "@/models/seb-server/appSignatureKey";
 
 const store = useMonitoringStore();
 const emit = defineEmits<{
@@ -366,6 +367,18 @@ const emit = defineEmits<{
     refresh: [];
     grantKey: [string];
 }>();
+
+type ConnectionInfo = {
+    status?: string;
+    clientVersion?: string;
+    clientOsName?: string;
+    clientAddress?: string;
+};
+
+type EnrichedASK = AppSignatureKeysWithGrantValues & {
+    entries: Array<{ id: number; name?: string; conn?: ConnectionInfo }>;
+};
+
 const examId = useMonitoringStore().selectedExam?.id.toString();
 
 const selectedAsk = computed(() =>
@@ -396,8 +409,14 @@ const isKeySelected = computed(
 
 const normalizeStatus = (s?: string): ConnectionStatusEnum => {
     const up = (s ?? ConnectionStatusEnum.UNDEFINED).toUpperCase();
-    return (ConnectionStatusEnum as any)[up] ?? ConnectionStatusEnum.UNDEFINED;
+    return isStatusKey(up)
+        ? ConnectionStatusEnum[up]
+        : ConnectionStatusEnum.UNDEFINED;
 };
+
+function isStatusKey(k: string): k is keyof typeof ConnectionStatusEnum {
+    return k in ConnectionStatusEnum;
+}
 
 async function refreshAsk() {
     if (!examId) {
@@ -425,7 +444,8 @@ function onGrantKey() {
 function trStatus(value: "ALL" | ConnectionStatusEnum) {
     return i18n.t(`monitoringDetails.monitoringASKDialog.statuses.${value}`);
 }
-const isWarning = (ask: any) => !ask.tag && (ask.entries?.length ?? 0) <= 3;
+const isWarning = (ask: EnrichedASK) =>
+    !ask.tag && (ask.entries?.length ?? 0) <= 3;
 
 const statusItems = computed(() => {
     const values = Object.values(

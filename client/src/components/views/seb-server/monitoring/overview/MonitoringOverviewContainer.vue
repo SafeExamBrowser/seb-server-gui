@@ -77,6 +77,8 @@ import MonitoringOverviewIndicators from "@/components/views/seb-server/monitori
 import * as indicatorService from "@/services/seb-server/component-services/indicatorViewService";
 import { useRoute } from "vue-router";
 import { onBeforeMount, onBeforeUnmount } from "vue";
+import { MonitoringOverview } from "@/models/seb-server/monitoring";
+import { Indicators } from "@/models/seb-server/indicators";
 
 // exam
 const examId = useRoute().params.examId.toString();
@@ -86,8 +88,8 @@ const appBarStore = useAppBarStore();
 const monitoringStore = useMonitoringStore();
 
 // interval
-let intervalRefresh: any | null = null;
-const REFRESH_INTERVAL: number = 5000;
+let intervalRefresh: ReturnType<typeof setInterval> | null = null;
+const REFRESH_INTERVAL = 5000;
 
 onBeforeMount(async () => {
     appBarStore.title = translate("titles.monitoring");
@@ -116,15 +118,18 @@ async function getIndicatorData() {
 
     monitoringStore.indicators = indicatorResponse;
 
-    for (const indicator of monitoringStore.indicators?.content) {
-        if (indicator.type === "BATTERY_STATUS") {
-            if (indicator.color) {
-                monitoringStore.batteryStatusDefaultColor =
-                    "#" + indicator.color;
-            }
-        } else if (indicator.type === "WLAN_STATUS") {
-            if (indicator.color) {
-                monitoringStore.wlanStatusDefaultColor = "#" + indicator.color;
+    if (monitoringStore.indicators?.content) {
+        for (const indicator of monitoringStore.indicators.content) {
+            if (indicator.type === "BATTERY_STATUS") {
+                if (indicator.color) {
+                    monitoringStore.batteryStatusDefaultColor =
+                        "#" + indicator.color;
+                }
+            } else if (indicator.type === "WLAN_STATUS") {
+                if (indicator.color) {
+                    monitoringStore.wlanStatusDefaultColor =
+                        "#" + indicator.color;
+                }
             }
         }
     }
@@ -139,6 +144,7 @@ async function startIntervalRefresh() {
 function stopIntervalRefresh() {
     if (intervalRefresh) {
         clearInterval(intervalRefresh);
+        intervalRefresh = null;
     }
 }
 </script>

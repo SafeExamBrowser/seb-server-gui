@@ -11,8 +11,9 @@ import {
     buildBodyLines,
     dynamicTitle,
 } from "@/components/views/seb-server/toast/backendBodyBuilder";
+import { Composer } from "vue-i18n";
 
-const { t } = (i18n as any).global || i18n;
+const { t } = ("global" in i18n ? i18n.global : i18n) as Composer;
 
 type RawHttpError = unknown;
 
@@ -27,6 +28,21 @@ export interface BackendNotifyOptions {
     duration?: AlertInput["duration"];
 }
 
+type PossibleHttpError = {
+    isAxiosError?: boolean;
+    response?: { status?: number; data?: unknown };
+    config?: { data?: unknown; url?: string; method?: string };
+    status?: number;
+    code?: number;
+    data?: unknown;
+    payload?: unknown;
+    requestBody?: unknown;
+    sentBody?: unknown;
+    url?: string;
+    path?: string;
+    method?: string;
+};
+
 function extractErrorParts(err: RawHttpError): {
     status?: number;
     payload?: unknown;
@@ -34,7 +50,7 @@ function extractErrorParts(err: RawHttpError): {
     url?: string;
     method?: string;
 } {
-    const anyErr = err as any;
+    const anyErr = err as PossibleHttpError;
 
     if (anyErr?.isAxiosError) {
         return {
@@ -61,7 +77,6 @@ function extractErrorParts(err: RawHttpError): {
     return {};
 }
 
-/** Title resolver: specific i18n → dynamicTitle fallback → HTTP status text */
 function backendTitle(
     status?: number,
     contextLabel?: string,
@@ -93,7 +108,6 @@ function backendTitle(
         if (t(k) !== k) return t(k);
     }
 
-    // dynamic fallback with "Error ..." phrasing
     if (firstAttr) return dynamicTitle(extras?.method, firstAttr);
     if (pathOnly) {
         const entityFromPath = pathOnly.split("/")[0];
@@ -138,7 +152,6 @@ export const notify = {
 
         if (items.length) {
             for (const it of items) {
-                // build 2-line body: [code translation, built from attributes]
                 const built = buildBodyLines(it);
                 const text = built.join("\n");
                 lines.push(text);

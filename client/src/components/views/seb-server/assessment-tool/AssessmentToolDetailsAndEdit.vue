@@ -619,6 +619,11 @@ import * as assessmentToolViewService from "@/services/seb-server/component-serv
 import router from "@/router/router";
 import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants";
+import { Institution } from "@/models/seb-server/institution";
+import {
+    AssessmentTool,
+    UpdateAssessmentToolPar,
+} from "@/models/seb-server/assessmentTool";
 
 // Router
 const route = useRoute();
@@ -629,7 +634,7 @@ const layoutStore = useLayoutStore();
 const authenticatedUserAccountStore = useAuthenticatedUserAccountStore();
 
 // Fields
-const institution = ref<string | null>(null);
+const institution = ref<string>("");
 const name = ref<string>("");
 const lmsType = ref<LMSTypeEnum | null>(null);
 const assessmentToolServerAddress = ref<string>("");
@@ -644,7 +649,8 @@ const proxyUsername = ref<string | null>(null);
 const proxyPassword = ref<string | null>(null);
 const proxyPasswordVisible = ref<boolean>(false);
 
-const formRef = ref();
+const formRef = ref<VuetifyFormLike | null>(null);
+
 const passwordVisible = ref<boolean>(false);
 const confirmPasswordVisible = ref<boolean>(false);
 const confirmPasswordFieldRef = ref();
@@ -652,7 +658,6 @@ const confirmPasswordFieldRef = ref();
 const institutions = ref<Institution[]>([]);
 
 // Internal state
-const originalSnapshot = ref<Record<string, any> | null>(null);
 const fetchedId = ref<number | null>(null);
 const active = ref<boolean>(false);
 const initialActiveStatus = ref<boolean | null>(null);
@@ -660,6 +665,24 @@ const isSaving = ref(false);
 
 type AuthMode = "client" | "token";
 const authMode = ref<AuthMode>("token");
+
+type FormState = {
+    institution: string;
+    name: string;
+    lmsType: LMSTypeEnum | null;
+    assessmentToolServerAddress: string;
+    assessmentToolServerUsername: string | null;
+    assessmentToolServerPassword: string | null;
+    accessToken: string | null;
+    withProxy: boolean;
+    proxyHost: string | null;
+    proxyPort: string | null;
+    proxyUsername: string | null;
+    proxyPassword: string | null;
+};
+
+// ⬇️ replace originalSnapshot with:
+const originalSnapshot = ref<FormState | null>(null);
 
 // Validation rules
 const requiredMessage = translate(
@@ -691,6 +714,11 @@ const httpPrefixRule = (v: string) =>
 const requiredIfClientRule = (v: string) => {
     if (authMode.value !== "client") return true;
     return (!!v && v.toString().trim().length > 0) || requiredMessage;
+};
+
+type VuetifyFormLike = {
+    validate: () => Promise<{ valid: boolean }>;
+    resetValidation?: () => void;
 };
 
 const requiredIfTokenRule = (v: string) => {
@@ -749,7 +777,7 @@ onMounted(async () => {
     if (!institution.value) {
         institution.value =
             authenticatedUserAccountStore.userAccount?.institutionId?.toString() ??
-            null;
+            "";
     }
 
     takeSnapshot();
@@ -761,7 +789,7 @@ onBeforeUnmount(() => {
 
 function populateFromDto(dto: AssessmentTool) {
     institution.value =
-        dto.institutionId != null ? String(dto.institutionId) : null;
+        dto.institutionId != null ? String(dto.institutionId) : "";
     name.value = dto.name ?? "";
     lmsType.value = (dto.lmsType as LMSTypeEnum) ?? null;
     assessmentToolServerAddress.value = dto.lmsUrl ?? "";
@@ -819,7 +847,7 @@ async function persistStatusChange() {
     }
 }
 
-function currentFormState() {
+function currentFormState(): FormState {
     return {
         institution: institution.value,
         name: name.value,
@@ -892,7 +920,7 @@ async function onSave() {
 
     // If fields changed, validate; status-only skips validation
     if (fieldsChanged) {
-        const { valid } = await (formRef.value as any).validate();
+        const { valid } = await formRef.value!.validate();
         if (!valid || isSaveDisabled.value) return;
     }
 
@@ -923,15 +951,32 @@ async function onSave() {
         isSaving.value = false;
     }
 }
+const nz = (v: string | null | undefined) => v ?? "";
+
+type AuthPart = Pick<
+    UpdateAssessmentToolPar,
+    "lmsClientname" | "lmsClientsecret" | "lmsRestApiToken"
+>;
 
 async function editAssessmentToolOnly() {
     const idToSend = String(fetchedId.value ?? route.params.lmsId);
 
-    const common: any = {
+    const common: Pick<
+        UpdateAssessmentToolPar,
+        | "id"
+        | "institutionId"
+        | "name"
+        | "lmsType"
+        | "lmsUrl"
+        | "lmsProxyHost"
+        | "lmsProxyPort"
+        | "lmsProxyAuthUsername"
+        | "lmsProxyAuthSecret"
+    > = {
         id: idToSend,
-        institutionId: institution.value!,
+        institutionId: institution.value,
         name: name.value,
-        lmsType: lmsType.value as string,
+        lmsType: String(lmsType.value ?? ""), // ensure string
         lmsUrl: assessmentToolServerAddress.value,
         ...(withProxy.value && {
             lmsProxyHost: proxyHost.value ?? undefined,
@@ -944,17 +989,17 @@ async function editAssessmentToolOnly() {
         }),
     };
 
-    const authPart =
+    const authPart: AuthPart =
         authMode.value === "client"
             ? {
-                  lmsClientname: assessmentToolServerUsername.value,
-                  lmsClientsecret: assessmentToolServerPassword.value,
+                  lmsClientname: nz(assessmentToolServerUsername.value),
+                  lmsClientsecret: nz(assessmentToolServerPassword.value),
                   lmsRestApiToken: "",
               }
             : {
-                  lmsRestApiToken: accessToken.value,
                   lmsClientname: "",
                   lmsClientsecret: "",
+                  lmsRestApiToken: nz(accessToken.value),
               };
 
     const payload: UpdateAssessmentToolPar = {

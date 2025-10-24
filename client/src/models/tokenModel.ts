@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type Token = {
+export type Token = {
     access_token: string;
     token_type: string;
     refresh_token: string;
@@ -8,8 +7,7 @@ type Token = {
     jti: string;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type JwtTokenResponse = {
+export type JwtTokenResponse = {
     username: string;
     userUUID: string;
     redirect: string;

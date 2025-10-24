@@ -134,27 +134,40 @@
         </template>
     </tr>
 </template>
-
 <script setup lang="ts">
 import { onBeforeMount, onBeforeUnmount, ref } from "vue";
 import * as tableUtils from "@/utils/table/tableUtils";
 import { useTableStore } from "@/stores/store";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 
-// stores
-// const appBarStore = useAppBarStore();
+type ColumnLike = {
+    key?: string;
+    title: string;
+    width?: string;
+    center?: boolean;
+    sortable?: boolean;
+};
+
+type Clickable = { click: () => void };
+
 const tableStore = useTableStore();
 const monitoringStore = useMonitoringStore();
 
-// header reactivity
-const headerRefs = ref<any[] | null>();
+// header refs
+const headerRefs = ref<Clickable[] | null>(null);
 
+//todo @Rad14nt take a look with alain potentially remove ignores on refactor
 // props
 const props = defineProps<{
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     columns: any[];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     isSorted: (column: any) => boolean;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     getSortIcon: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     toggleSort: (column: any) => void;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     headerRefsProp: any;
     day?: string;
     selectAll?: (value: boolean) => void;
@@ -163,11 +176,11 @@ const props = defineProps<{
     tableKey?: string;
 }>();
 
-// custom: start page
+// emits
 const emit = defineEmits<{
-    addIndicatorHeaders: any;
-    removeIndicatorHeaders: any;
-    openDeleteSessionsDialog: any;
+    addIndicatorHeaders: [];
+    removeIndicatorHeaders: [];
+    openDeleteSessionsDialog: [];
 }>();
 
 onBeforeMount(() => {
@@ -179,31 +192,24 @@ onBeforeUnmount(() => {
 });
 
 function toggleNameIpSwitch() {
-    const index: number = tableUtils.getSessionListIndex(props.day!);
-
-    if (tableStore.isIpDisplayList[index].isIp) {
-        tableStore.isIpDisplayList[index].isIp = false;
-        return;
-    }
-
-    tableStore.isIpDisplayList[index].isIp = true;
+    if (!props.day) return;
+    const index = tableUtils.getSessionListIndex(props.day);
+    const entry = tableStore.isIpDisplayList[index];
+    if (!entry) return;
+    entry.isIp = !entry.isIp;
 }
 
-function getHeaderDescription(column: any, isSorted: any): any {
-    const headerDesc: string = `Header: ${column.title}, sort order: `;
+function getHeaderDescription(
+    column: ColumnLike,
+    isSortedFn: (c: ColumnLike) => boolean,
+): string {
+    const headerDesc = `Header: ${column.title}, sort order: `;
 
-    if (!isSorted(column)) {
-        return `${headerDesc} none`;
-    }
+    if (!isSortedFn(column)) return `${headerDesc} none`;
 
-    if (props.getSortIcon(column) === "$sortAsc") {
-        return `${headerDesc} ascending`;
-    }
-
-    if (props.getSortIcon(column) === "$sortDesc") {
-        return `${headerDesc} descending`;
-    }
-
+    const icon = props.getSortIcon(column);
+    if (icon === "$sortAsc") return `${headerDesc} ascending`;
+    if (icon === "$sortDesc") return `${headerDesc} descending`;
     return `${headerDesc} none`;
 }
 </script>

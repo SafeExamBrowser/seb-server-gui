@@ -1,9 +1,9 @@
-type Threshold = {
+export type Threshold = {
     value: number; // mandatory, the value of the threshold, range from 0 to 100 (%) for Battery and WiFi
     color: string; // mandatory, hex color value without the "#"
 };
 
-type IndicatorTemplate = {
+export type IndicatorTemplate = {
     id?: number; // PK of the IndicatorTemplate only available when the IndicatorTemplate exists
     examTemplateId?: number; // PK reference to the ExamTemplate, only available when the IndicatorTemplate exists
     name: string; // mandatory, min 3 - max 255 chars, name is unique within indicatorTemplates of ExamTemplate
@@ -11,7 +11,7 @@ type IndicatorTemplate = {
     thresholds: Threshold[]; // mandatory, list of thresholds, must not be empty
 };
 
-type ClientGroupTemplate = {
+export type ClientGroupTemplate = {
     id?: number; // PK of the ClientGroupTemplate only available when the ClientGroupTemplate exists
     name: string; // mandatory, min 3 - max 255 chars, name is unique within CLIENT_GROUP_TEMPLATES of ExamTemplate
     type: string; // mandatory, type of client group: "ClientGroupEnum" (do not use SP_FALLBACK_GROUP in selection)
@@ -23,7 +23,7 @@ type ClientGroupTemplate = {
     nameRangeEndLetter?: string; // optional (mandatory only when type id NAME_ALPHABETICAL_RANGE), no min, max 255, first letter must be after first letter of nameRangeStartLetter
 };
 
-type ExamAttribute = {
+export type ExamAttribute = {
     enableScreenProctoring: string; // mandatory, screen proctoring enabled flag
     spsCollectingStrategy?: string; // mandatory, name of collecting strategy selection: "CollectingStrategyEnum" --> EXAM|APPLY_SEB_GROUPS
     spsCollectingGroupName?: string; // mandatory, min 3 - max 255 chars, name of the collecting of fallback room
@@ -32,7 +32,7 @@ type ExamAttribute = {
     quitPassword?: string; // optional, is not used yet, ignore it
 };
 
-type ExamTemplate = {
+export type ExamTemplate = {
     id?: number; // PK of the ExamTemplate only available when the ExamTemplate exists
     name: string; // mandatory, min 3 - max 255 chars, name is unique for all ExamTemplate (2)
     description?: string; // optional, max 4000 chars, description text
@@ -47,8 +47,7 @@ type ExamTemplate = {
     EXAM_ATTRIBUTES: ExamAttribute; // additional exam attributes see ExamAttribute
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type ExamTemplates = {
+export type ExamTemplates = {
     number_of_pages: number;
     page_number: number;
     page_size: number;

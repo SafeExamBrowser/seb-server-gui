@@ -5,6 +5,20 @@ import {
     ExamTypeEnum,
 } from "@/models/seb-server/examFiltersEnum";
 import { MonitoringRow } from "@/models/seb-server/monitoringClients";
+import { ServerTablePaging } from "@/models/types";
+import {
+    ClientEvent,
+    ClientNotification,
+    MonitoringOverview,
+    MonitoringStaticClientData,
+    SingleConnection,
+} from "@/models/seb-server/monitoring";
+import { Indicators } from "@/models/seb-server/indicators";
+import { Exam } from "@/models/seb-server/exam";
+import { ClientGroup, ClientGroups } from "@/models/seb-server/clientGroup";
+import { SebClientConnection } from "@/models/seb-server/clientConnectionList";
+import { AppSignatureKeysWithGrantValues } from "@/models/seb-server/appSignatureKey";
+import { LocationQueryRaw } from "vue-router";
 
 export const useMonitoringStore = defineStore("monitoring", () => {
     // exam table
@@ -27,7 +41,7 @@ export const useMonitoringStore = defineStore("monitoring", () => {
     const clientGroups = ref<ClientGroups | null>(null);
     const monitoringData = ref<Map<number, MonitoringRow>>(new Map());
     const staticClientDataList = ref<MonitoringStaticClientData | null>(null);
-    const currentMonitoringQuery = ref<{}>();
+    const currentMonitoringQuery = ref<LocationQueryRaw>();
     const batteryIndicatorId = ref<number | null>(null);
     const wlanIndicatorId = ref<number | null>(null);
     const appSignatureKeys = ref<AppSignatureKeysWithGrantValues[] | null>(

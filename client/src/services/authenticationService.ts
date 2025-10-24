@@ -1,31 +1,62 @@
 import axios, { AxiosResponse } from "axios";
 import * as ENV from "@/config/envConfig";
 import { useLoadingStore } from "@/stores/store";
-import * as apiService from "@/services/apiService";
+// import * as apiService from "@/services/apiService";
 import { useAuthStore } from "@/stores/authentication/authenticationStore";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
+import { JwtTokenResponse, Token } from "@/models/tokenModel";
 
-let loadingTimeout: NodeJS.Timeout | null = null;
-let loadingEndTimeout: NodeJS.Timeout | null = null;
+let loadingTimeout: ReturnType<typeof setTimeout> | null = null;
+let loadingEndTimeout: ReturnType<typeof setTimeout> | null = null;
+
+export interface AuthResponse {
+    access_token: string;
+    refresh_token: string;
+    token_type?: string;
+    expires_in?: number;
+}
+function setLoginTimeouts() {
+    const loadingStore = useLoadingStore();
+
+    loadingTimeout = setTimeout(() => {
+        loadingStore.isLoading = true;
+    }, 500);
+
+    loadingEndTimeout = setTimeout(() => {
+        resetLoadingState();
+        loadingStore.isTimeout = true;
+    }, 10000);
+}
+
+function resetLoadingState() {
+    const loadingStore = useLoadingStore();
+
+    if (loadingTimeout) clearTimeout(loadingTimeout);
+    if (loadingEndTimeout) clearTimeout(loadingEndTimeout);
+
+    loadingTimeout = null;
+    loadingEndTimeout = null;
+
+    loadingStore.isLoading = false;
+}
+
+// ---- API ------------------------------------------------------
 
 export async function login(
     username: string,
     password: string,
     isSpLogin: boolean,
-): Promise<string | any> {
+): Promise<AuthResponse> {
     const loadingStore = useLoadingStore();
 
     try {
-        let url: string = ENV.SERVER_URL + ENV.SERVER_PORT + "/authorize";
+        const base = ENV.SERVER_URL + ENV.SERVER_PORT;
+        const url = isSpLogin ? `${base}/sp-authorize` : `${base}/authorize`;
 
-        if (isSpLogin) {
-            url = ENV.SERVER_URL + ENV.SERVER_PORT + "/sp-authorize";
-        }
-        console.log(username, password, url);
-        // this is implemented for general api-calls in apiService.ts but has to be done explicitly for login as it does not use said service
+        loadingStore.isTimeout = false;
         setLoginTimeouts();
 
-        const response = await axios.post(url, {
+        const response: AxiosResponse<AuthResponse> = await axios.post(url, {
             username,
             password,
         });
@@ -34,80 +65,58 @@ export async function login(
             resetLoadingState();
             return response.data;
         }
+        resetLoadingState();
+        throw new Error(`Login failed with status ${response.status}`);
     } catch (error) {
         resetLoadingState();
         throw error;
     }
-
-    function setLoginTimeouts() {
-        loadingTimeout = setTimeout(() => {
-            loadingStore.isLoading = true;
-        }, 500);
-        loadingEndTimeout = setTimeout(() => {
-            resetLoadingState();
-            loadingStore.isTimeout = true;
-        }, 10000);
-    }
-
-    function resetLoadingState() {
-        if (loadingTimeout) clearTimeout(loadingTimeout);
-        if (loadingEndTimeout) clearTimeout(loadingEndTimeout);
-
-        loadingStore.isLoading = false;
-    }
 }
 
-export async function refresh(isSpRefresh: boolean): Promise<string | any> {
+export async function refresh(isSpRefresh: boolean): Promise<Token | null> {
     const authStore = useAuthStore();
 
-    try {
-        let url: string = ENV.SERVER_URL + ENV.SERVER_PORT + "/refresh";
-        let refreshTokenString: string = StorageItemEnum.REFRESH_TOKEN;
+    let url: string = ENV.SERVER_URL + ENV.SERVER_PORT + "/refresh";
+    let refreshTokenString: string = StorageItemEnum.REFRESH_TOKEN;
 
-        if (isSpRefresh) {
-            url = ENV.SERVER_URL + ENV.SERVER_PORT + "/sp-refresh";
-            refreshTokenString = StorageItemEnum.SP_REFRESH_TOKEN;
-        }
+    if (isSpRefresh) {
+        url = ENV.SERVER_URL + ENV.SERVER_PORT + "/sp-refresh";
+        refreshTokenString = StorageItemEnum.SP_REFRESH_TOKEN;
+    }
 
-        const headers = {
-            Authorization:
-                "Bearer " + authStore.getStorageItem(refreshTokenString),
-        };
+    const headers = {
+        Authorization: "Bearer " + authStore.getStorageItem(refreshTokenString),
+    };
 
-        const response: AxiosResponse<Token> = await axios.post(
-            url,
-            {},
-            { headers },
-        );
+    const response: AxiosResponse<Token> = await axios.post(
+        url,
+        {},
+        { headers },
+    );
 
+    return response.data;
+}
+
+export async function verifyJwt(token: string): Promise<JwtTokenResponse> {
+    const url: string = ENV.SERVER_URL + ENV.SERVER_PORT + "/jwttoken/verify";
+
+    const response = await axios.post(url, { token });
+
+    if (response.status === 200) {
         return response.data;
-    } catch (error) {
-        throw error;
+    } else {
+        return response.data;
     }
 }
 
-export async function verifyJwt(token: string): Promise<string | any> {
-    try {
-        const url: string =
-            ENV.SERVER_URL + ENV.SERVER_PORT + "/jwttoken/verify";
-
-        const response = await axios.post(url, { token });
-
-        if (response.status === 200) {
-            return response.data;
-        }
-    } catch (error) {
-        throw error;
-    }
-}
-
-export async function logLogout() {
-    try {
-        const url: string = "useraccount/logLogout";
-        await apiService.api.post(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        });
-    } catch (error) {
-        throw error;
-    }
-}
+// TODO integrate log out -> backend provides endpoint?
+// export async function logLogout() {
+//     try {
+//         const url: string = "useraccount/logLogout";
+//         await apiService.api.post(url, {
+//             headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+//         });
+//     } catch (error) {
+//         throw error;
+//     }
+// }

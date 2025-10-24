@@ -1,13 +1,14 @@
 import router from "@/router/router";
+import { LocationQueryRaw } from "vue-router";
 
-export function navigateTo(navPath: string, query?: {}) {
+export function navigateTo(navPath: string, query?: LocationQueryRaw) {
     router.push({
         path: navPath,
         query,
     });
 }
 
-export function addQueryParam(query: {}) {
+export function addQueryParam(query: LocationQueryRaw) {
     router.push({
         query,
     });
