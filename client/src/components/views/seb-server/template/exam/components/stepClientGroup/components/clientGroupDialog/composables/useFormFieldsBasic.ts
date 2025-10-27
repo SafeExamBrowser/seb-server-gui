@@ -1,12 +1,20 @@
-import { ClientGroupTransient } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
+import {
+    ClientGroup,
+    ClientGroupTransient,
+} from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 import { computed, Ref } from "vue";
 import { FormField } from "@/components/widgets/formBuilder/types";
 import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
 import i18n from "@/i18n";
+import { RuleAliases } from "vuetify/labs/rules";
+import { useStepClientGroupStore } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/store/useStepClientGroupStore";
 
 export const useFormFieldsBasic = (
     clientGroup: Ref<ClientGroupTransient>,
+    rules: RuleAliases,
 ): FormField[] => {
+    const stepClientGroupStore = useStepClientGroupStore();
+
     const name = computed<ClientGroupTransient["name"]>({
         get: (): ClientGroupTransient["name"] => clientGroup.value.name,
         set: (value: ClientGroupTransient["name"]) => {
@@ -36,6 +44,20 @@ export const useFormFieldsBasic = (
                 "createTemplateExam.steps.clientGroup.fields.name.placeholder",
             ),
             required: true,
+            rules: [
+                rules.minLength(3),
+                rules.maxLength(255),
+                rules.blacklisted(
+                    new Set(
+                        stepClientGroupStore.groups.map(
+                            (group: ClientGroup) => group.name,
+                        ),
+                    ),
+                    i18n.global.t(
+                        "createTemplateExam.steps.clientGroup.fields.name.validationErrorUniqueName",
+                    ),
+                ),
+            ],
         },
         {
             type: "select" as const,

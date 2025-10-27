@@ -7,11 +7,13 @@ import { useFormFieldsScreenProctoring } from "./useFormFieldsScreenProctoring";
 import { useFormFieldsTypeIPRange } from "./useFormFieldsTypeIPRange";
 import { useFormFieldsTypeClientOS } from "./useFormFieldsTypeClientOS";
 import { useFormFieldsTypeNameAlphabeticalRange } from "./useFormFieldsTypeNameAlphabeticalRange";
+import { useRules } from "vuetify/labs/rules";
 
 export const useFormFields = (clientGroup: Ref<ClientGroupTransient>) => {
+    const rules = useRules();
     const formFields = computed<FormField[]>(() =>
         [
-            useFormFieldsBasic(clientGroup),
+            useFormFieldsBasic(clientGroup, rules),
             useFormFieldsScreenProctoring(clientGroup),
             clientGroup.value.type === ClientGroupEnum.IP_V4_RANGE
                 ? useFormFieldsTypeIPRange(clientGroup)

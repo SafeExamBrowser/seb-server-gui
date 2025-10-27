@@ -308,7 +308,8 @@
                     },
                     "name": {
                         "label": "Name",
-                        "placeholder": "Enter the desired group name"
+                        "placeholder": "Enter the desired group name",
+                        "validationErrorUniqueName": "A group with this name already exists on this exam template"
                     },
                     "screenProctoringEnabled": {
                         "label": "Screen Proctoring"
