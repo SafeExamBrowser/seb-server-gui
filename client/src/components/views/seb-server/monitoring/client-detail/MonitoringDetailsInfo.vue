@@ -27,12 +27,14 @@
     <v-row style="background-color: #fffffe">
         <!-- User Name -->
         <v-col cols="12" md="3">
-            <!-- Name split across lines -->
-            <div v-if="nameParts.length" class="top-container ml-10">
+            <div
+                v-if="nameParts.length"
+                class="top-container ml-10 d-flex align-center flex-nowrap"
+            >
                 <div
                     v-for="(part, index) in nameParts"
                     :key="index"
-                    class="name-part"
+                    class="name-part mr-2"
                 >
                     {{ part }}
                 </div>
@@ -451,7 +453,7 @@ const indicatorTypeConfig: Record<
 }
 
 .name-part {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: bold;
     color: #215caf;
 }
