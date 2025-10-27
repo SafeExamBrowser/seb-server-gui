@@ -1,4 +1,6 @@
 import * as examService from "@/services/seb-server/api-services/examService";
+import { OptionalParGetExams } from "@/models/seb-server/optionalParamters";
+import { Exams } from "@/models/seb-server/exam";
 
 export async function getLmsList(
     optionalParGetExams?: OptionalParGetExams,

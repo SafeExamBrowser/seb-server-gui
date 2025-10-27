@@ -560,6 +560,9 @@ import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/store
 import { UserRoleEnum } from "@/models/userRoleEnum";
 import { getInstitutions } from "@/services/seb-server/component-services/registerAccountViewService";
 import { GUIComponent, useAbilities } from "@/services/ability";
+import { UserAccount, UserAccountResponse } from "@/models/userAccount";
+import { ServerTablePaging } from "@/models/types";
+import { Institution } from "@/models/seb-server/institution";
 
 const ability = useAbilities();
 
@@ -637,7 +640,7 @@ onBeforeUnmount(() => {
 defineExpose({ loadItems });
 
 // Table header config
-const userAccountsTableHeadersRef = ref<any[]>();
+const userAccountsTableHeadersRef = ref<[]>();
 
 const userAccountsTableHeaders = computed(() => {
     const headers = [];

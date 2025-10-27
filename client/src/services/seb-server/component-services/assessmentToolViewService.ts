@@ -1,4 +1,11 @@
 import * as assessmentToolService from "@/services/seb-server/api-services/assessmentToolService";
+import {
+    AssessmentTool,
+    AssessmentToolsResponse,
+    CreateAssessmentToolPar,
+    OptionalParGetAssessmentTool,
+    UpdateAssessmentToolPar,
+} from "@/models/seb-server/assessmentTool";
 
 export async function getAssessmentToolsActive(): Promise<AssessmentToolsResponse | null> {
     try {
@@ -56,7 +63,7 @@ export async function deactivateAssessmentTool(
 
 export async function deleteAssessmentTool(
     assessmentToolId: string,
-): Promise<any | null> {
+): Promise<undefined | null> {
     try {
         return await assessmentToolService.deleteAssessmentTool(
             assessmentToolId,
@@ -68,7 +75,7 @@ export async function deleteAssessmentTool(
 
 export async function createAssessmentTool(
     createAssessmentToolReqPar: CreateAssessmentToolPar,
-): Promise<any | null> {
+): Promise<AssessmentTool | null> {
     try {
         return await assessmentToolService.createAssessmentTool(
             createAssessmentToolReqPar,

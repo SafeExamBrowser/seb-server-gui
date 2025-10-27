@@ -4,6 +4,15 @@ import * as configurationService from "@/services/seb-server/api-services/config
 import * as screenProctoringService from "@/services/seb-server/api-services/screenProctoringService";
 import * as monitoringService from "@/services/seb-server/api-services/monitoringService";
 import * as timeUtils from "@/utils/timeUtils";
+import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring";
+import { OptionalParGetExams } from "@/models/seb-server/optionalParamters";
+import { Exam, Exams } from "@/models/seb-server/exam";
+import { ConnectionConfigurations } from "@/models/seb-server/connectionConfiguration";
+import {
+    AppSignatureKey,
+    GrantedAppSignatureKey,
+} from "@/models/seb-server/appSignatureKey";
+import { ExamTemplate } from "@/models/seb-server/examTemplate";
 
 //= ============api==============
 export async function getExam(id: string): Promise<Exam | null> {
@@ -37,7 +46,7 @@ export async function getGrantedExamAppSignatureKeys(
 export async function removeGrantExamAppSignatureKeys(
     parentId: string,
     id: string,
-): Promise<GrantedAppSignatureKey[] | null> {
+): Promise<AppSignatureKey[] | null> {
     try {
         return await examService.removeGrantExamAppSignatureKeys(parentId, id);
     } catch {
@@ -79,9 +88,10 @@ export async function getExamTemplate(
     }
 }
 
-export async function deleteExam(id: string): Promise<any | null> {
+export async function deleteExam(id: string): Promise<undefined | null> {
     try {
-        return await examService.deleteExam(id);
+        await examService.deleteExam(id);
+        return undefined;
     } catch {
         return null;
     }
@@ -131,12 +141,13 @@ export async function getConnectionConfigurations(): Promise<ConnectionConfigura
 export async function downloadExamConfig(
     examId: string,
     connectionId: string,
-): Promise<any> {
+): Promise<Blob | null> {
     try {
-        return await configurationService.downloadExamConfig(
+        const blob = await configurationService.downloadExamConfig(
             examId,
             connectionId,
         );
+        return blob as Blob;
     } catch {
         return null;
     }
@@ -240,17 +251,14 @@ export function createDefaultScreenProctoringSettings(
 }
 
 //= ==============exam connection config logic====================
-export function createDownloadLink(examName: string | undefined, blob: any) {
-    // Create a link element
+export function createDownloadLink(examName: string | undefined, blob: Blob) {
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
     link.setAttribute("download", getExamConfigFileName(examName));
     document.body.appendChild(link);
 
-    // Trigger the download
     link.click();
 
-    // Clean up
     document.body.removeChild(link);
     URL.revokeObjectURL(link.href);
 }

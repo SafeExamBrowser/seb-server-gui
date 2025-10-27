@@ -1,6 +1,17 @@
 import * as userAccountService from "@/services/seb-server/api-services/userAccountService";
 import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
 import * as institutionService from "@/services/seb-server/api-services/institutionService";
+import {
+    CreateUserPar,
+    EditUserAccountParameters,
+    OptionalParGetUserAccounts,
+    SingleUserAccountResponse,
+    UserAccount,
+    UserAccountName,
+    UserAccountResponse,
+} from "@/models/userAccount";
+import { OptionalParInstitutionId } from "@/models/seb-server/optionalParamters";
+import { Institution } from "@/models/seb-server/institution";
 
 export async function setPersonalUserAccount() {
     const userAccountStore = useUserAccountStore();
@@ -18,14 +29,6 @@ export async function setPersonalUserAccount() {
 
         userAccountStore.userAccount = personalUserAccountResonse;
         userAccountStore.setUserTimeZone(userAccountStore.userAccount.timezone);
-    } catch {
-        return null;
-    }
-}
-
-export async function getPersonalUserAccountFeatures(): Promise<any | null> {
-    try {
-        return await userAccountService.getPersonalUserAccountFeatures();
     } catch {
         return null;
     }
@@ -76,7 +79,7 @@ export async function createUserAccount(
 
 export async function editUserAccount(
     userAccountPar: EditUserAccountParameters,
-): Promise<SingleUserAccountResponse | null> {
+): Promise<UserAccountResponse | null> {
     try {
         return await userAccountService.editUserAccount(userAccountPar);
     } catch {
@@ -133,7 +136,7 @@ export async function deactivateUserAccount(
 
 export async function deleteUserAccount(
     accountId: string,
-): Promise<any | null> {
+): Promise<unknown | null> {
     try {
         return await userAccountService.deleteUserAccount(accountId);
     } catch {

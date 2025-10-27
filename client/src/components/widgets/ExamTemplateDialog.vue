@@ -32,11 +32,13 @@
 </template>
 
 <script setup lang="ts">
+import { ExamTemplate } from "@/models/seb-server/examTemplate";
+
 defineProps<{
     examTemplate: ExamTemplate | null;
 }>();
 
 const emit = defineEmits<{
-    closeExamTemplateDialog: any;
+    closeExamTemplateDialog: [];
 }>();
 </script>

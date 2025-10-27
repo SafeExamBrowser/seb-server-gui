@@ -173,6 +173,8 @@ import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
 import { useRoute } from "vue-router";
 import { ref, onBeforeMount, computed } from "vue";
+import { Exam } from "@/models/seb-server/exam";
+import { ClientGroup, ClientGroups } from "@/models/seb-server/clientGroup";
 
 // i18n
 const i18n = useI18n();
@@ -196,7 +198,7 @@ const initialClientGroups = ref<ClientGroup[]>([]);
 const clientGroups = ref<ClientGroup[]>([]);
 
 // table
-const tableHeadersRef = ref<any[]>();
+const tableHeadersRef = ref<(HTMLElement | null)[]>([]);
 const tableHeaders = ref([
     { title: "Name", key: "name", width: "50%" },
     { title: "Type", key: "type", width: "30%" },
@@ -228,7 +230,7 @@ const tableHeaders = ref([
 
 // emits
 const emit = defineEmits<{
-    closeClientGroupDialog: any;
+    (e: "closeClientGroupDialog", value?: boolean): void;
 }>();
 
 //= ========events & watchers================
@@ -276,8 +278,11 @@ const hasSpDataChanged = computed<boolean>(() => {
 
 function getGroupsWithSelectedSp(): number[] {
     return clientGroups.value
-        .filter((item) => item.isSPSGroup)
-        .map((item) => item.id!);
+        .filter(
+            (item): item is ClientGroup & { id: number } =>
+                !!item.isSPSGroup && typeof item.id === "number",
+        )
+        .map((item) => item.id);
 }
 
 //= =======delete========
@@ -286,7 +291,7 @@ async function deleteClientGroup(clientGroupId?: string) {
         return;
     }
 
-    const deleteClientGroupResponse: any | null =
+    const deleteClientGroupResponse: undefined | null =
         await clientGroupViewService.deleteClientGroup(clientGroupId);
 
     if (deleteClientGroupResponse == null) {

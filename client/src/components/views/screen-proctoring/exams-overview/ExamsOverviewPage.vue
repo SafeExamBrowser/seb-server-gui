@@ -115,6 +115,7 @@ import * as tableUtils from "@/utils/table/tableUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import { storeToRefs } from "pinia";
 import * as linkService from "@/services/screen-proctoring/component-services/linkService";
+import { Group, GroupObject } from "@/models/screen-proctoring/group";
 
 // stores
 const appBarStore = useAppBarStore();
@@ -122,7 +123,7 @@ const appBarStoreRef = storeToRefs(appBarStore);
 
 // table
 const groups = ref<Group[]>();
-const headerRefs = ref<any[]>();
+const headerRefs = ref<unknown[]>([]);
 const headers = ref([
     { title: "Exam", key: "exam.name", width: "25%" },
     { title: "Exam Start-Time", key: "exam.startTime", width: "25%" },

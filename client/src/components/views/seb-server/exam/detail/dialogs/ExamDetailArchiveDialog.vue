@@ -55,8 +55,7 @@
 <script setup lang="ts">
 // emits
 const emit = defineEmits<{
-    closeArchiveDialog: any;
-    archiveExam: any;
+    (e: "closeArchiveDialog" | "archiveExam"): void;
 }>();
 </script>
 

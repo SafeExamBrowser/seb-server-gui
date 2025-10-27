@@ -179,6 +179,7 @@ import { ref, watch } from "vue";
 import { translate } from "@/utils/generalUtils";
 import * as certificateViewService from "@/services/seb-server/component-services/certificateViewService";
 import { useI18n } from "vue-i18n";
+import { CreateCertificatePar } from "@/models/seb-server/certificate";
 
 const password = ref<string>("");
 const passwordVisible = ref<boolean>(false);
@@ -303,13 +304,22 @@ async function doUpload() {
         emit("imported", { id: createdId, name: createdName });
         uploadProgress.value = 100;
         close();
-    } catch (e: any) {
-        // dispaly password incorrect text conditionally
-        const data = e?.response?.data;
+    } catch (e: unknown) {
+        const respData = (e as { response?: { data?: unknown } }).response
+            ?.data;
+        type DataObj = Record<string, unknown>;
+        const errObj: DataObj | undefined = Array.isArray(respData)
+            ? (respData[0] as DataObj)
+            : (respData as DataObj | undefined);
 
-        const errObj = Array.isArray(data) ? data[0] : data;
-
-        const details = errObj?.details || errObj?.systemMessage || e?.message;
+        const details =
+            (typeof errObj?.details === "string"
+                ? errObj.details
+                : undefined) ??
+            (typeof errObj?.systemMessage === "string"
+                ? errObj.systemMessage
+                : undefined) ??
+            (e instanceof Error ? e.message : undefined);
 
         if (
             typeof details === "string" &&
@@ -319,7 +329,13 @@ async function doUpload() {
                 "certificates.certificateDialog.keystorePasswordIncorrect",
             );
         } else {
-            const serverMsg = errObj?.systemMessage || errObj?.message;
+            const serverMsg =
+                (typeof errObj?.systemMessage === "string"
+                    ? errObj.systemMessage
+                    : undefined) ??
+                (typeof errObj?.message === "string"
+                    ? errObj.message
+                    : undefined);
             uploadError.value =
                 serverMsg ||
                 details ||

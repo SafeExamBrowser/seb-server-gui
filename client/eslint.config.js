@@ -51,22 +51,12 @@ export default defineConfig([
                 "error",
                 { "ts-ignore": "allow-with-description" },
             ],
-            "no-useless-catch": "off",
-            "no-undef": "off",
-            "@typescript-eslint/no-inferrable-types": "off",
 
-            // new exceptions after updating eslint config. @TODO: remove these one by one and fix the respective issues in the codebase
-            "no-unsafe-optional-chaining": "off",
-            "vue/valid-v-slot": "off",
+            // TODO Alain
             "vue/multi-word-component-names": "off",
-            "vue/no-multiple-template-root": "off",
-            "vue/valid-v-on": "off",
-            "vue/valid-v-for": "off",
-            "@typescript-eslint/no-explicit-any": "off",
+
+            // TODO Andreas
             "@typescript-eslint/no-non-null-asserted-optional-chain": "off",
-            "@typescript-eslint/no-empty-object-type": "off",
-            "@typescript-eslint/no-unsafe-function-type": "off",
-            "@typescript-eslint/no-unused-expressions": "off",
             "@typescript-eslint/no-non-null-assertion": "off",
         },
     },

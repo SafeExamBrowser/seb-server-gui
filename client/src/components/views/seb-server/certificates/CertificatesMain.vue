@@ -300,6 +300,11 @@ import * as certificateViewService from "@/services/seb-server/component-service
 import { useCertificateStore } from "@/stores/seb-server/certificateStore";
 import * as timeUtils from "@/utils/timeUtils";
 import { CertificateTypeEnum } from "@/models/seb-server/certificateTypeEnum";
+import { ServerTablePaging } from "@/models/types";
+import {
+    Certificate,
+    CertificatesResponse,
+} from "@/models/seb-server/certificate";
 
 const appBarStore = useAppBarStore();
 const layoutStore = useLayoutStore();
@@ -326,7 +331,7 @@ const searchQuery = ref("");
 // API response
 
 const certificates = ref<CertificatesResponse>();
-const certificateTableHeadersRef = ref<any[]>();
+const certificateTableHeadersRef = ref<(HTMLElement | null)[]>([]);
 
 onMounted(async () => {
     appBarStore.title = translate("titles.certificates");

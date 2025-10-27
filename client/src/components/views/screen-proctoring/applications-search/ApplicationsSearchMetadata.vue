@@ -40,6 +40,7 @@
 import { ref } from "vue";
 import * as timeUtils from "@/utils/timeUtils";
 import ApplicationsSearchWindowTitle from "./ApplicationsSearchWindowTitle.vue";
+import { SPExam } from "@/models/screen-proctoring/exam";
 
 // props
 defineProps<{

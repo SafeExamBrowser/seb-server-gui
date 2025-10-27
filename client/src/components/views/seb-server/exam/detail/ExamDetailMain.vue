@@ -709,7 +709,6 @@
                                                                 style="
                                                                     font-size: 30px;
                                                                 "
-                                                                @click=""
                                                             >
                                                             </v-icon>
                                                         </v-list-item-action>
@@ -951,6 +950,14 @@ import { LMSFeatureEnum } from "@/models/seb-server/assessmentToolEnums";
 import { GUIAction, useAbilities } from "@/services/ability";
 import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 import { useRoute } from "vue-router";
+import { UserAccount } from "@/models/userAccount";
+import { ExamConfigMapping } from "@/models/seb-server/sebSettings";
+import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring";
+import { Exam } from "@/models/seb-server/exam";
+import { ConnectionConfigurations } from "@/models/seb-server/connectionConfiguration";
+import { ClientGroups } from "@/models/seb-server/clientGroup";
+import { AssessmentTool } from "@/models/seb-server/assessmentTool";
+import { ExamTemplate } from "@/models/seb-server/examTemplate";
 
 // general
 const isPageInitalizing = ref<boolean>(true);
@@ -968,7 +975,7 @@ const passwordVisible = ref<boolean>(false);
 const quitPassword = ref<string>("");
 
 // supervisors table
-const supervisorsTableHeadersRef = ref<any[]>();
+const supervisorsTableHeadersRef = ref<(HTMLElement | null)[]>([]);
 const supervisorsTableHeaders = ref([
     { title: translate("examDetail.main.supervisorUsername"), key: "username" },
     { title: translate("examDetail.main.supervisorName"), key: "name" },
@@ -1008,7 +1015,7 @@ const sebSettingsDialog = ref<boolean>(false);
 
 // client groups
 const clientGroupDialog = ref<boolean>(false);
-const clientGroupTableHeadersRef = ref<any[]>();
+const clientGroupTableHeadersRef = ref<(HTMLElement | null)[]>([]);
 const clientGroupTableHeaders = ref([
     {
         title: translate("examDetail.main.tableHeadersGroupName"),
@@ -1156,16 +1163,12 @@ async function getExamSupervisors() {
 
     examStore.selectedExamSupervisors = [];
     for (let i = 0; i < examStore.selectedExam.supporter.length; i++) {
-        const userAccount: UserAccount | any =
+        const userAccount: UserAccount | null =
             await userAccountViewService.getUserAccountByIdOptional(
                 examStore.selectedExam.supporter[i],
             );
 
-        if (
-            userAccount === null ||
-            userAccount === undefined ||
-            userAccount === ""
-        ) {
+        if (userAccount === null || userAccount === undefined) {
             continue;
         }
 
@@ -1361,7 +1364,7 @@ function closeDeleteDialog() {
 }
 
 async function deleteExam() {
-    const deleteExamResponse: any | null =
+    const deleteExamResponse: undefined | null =
         await examViewService.deleteExam(examId);
 
     if (deleteExamResponse == null) {
@@ -1390,18 +1393,13 @@ async function getExamTemplate() {
 }
 
 async function getTemplateGroupsWithSp() {
-    if (examStore.selectedExamTemplate == null) {
-        return;
-    }
+    const tmpl = examStore.selectedExamTemplate;
+    if (!tmpl || tmpl.id == null) return;
 
     const examTemplateSp: ScreenProctoringSettings | null =
-        await examViewService.getExamTemplateSp(
-            examStore.selectedExamTemplate!.id!.toString(),
-        );
+        await examViewService.getExamTemplateSp(String(tmpl.id));
 
-    if (examTemplateSp == null) {
-        return;
-    }
+    if (!examTemplateSp) return;
 
     examStore.templateGroupsWithSp = generalUtils.createNumberIdList(
         examTemplateSp.spsSEBGroupsSelection,

@@ -524,6 +524,7 @@ import * as constants from "@/utils/constants";
 import { InstructionEnum } from "@/models/seb-server/instructionEnum";
 import { useErrorStore } from "@/stores/seb-server/errorStore";
 import { ref } from "vue";
+import { ErrorProps } from "@/models/alertProps";
 // info panel (whole component)
 const isInfoExpanded = ref<boolean>(true);
 
@@ -549,11 +550,11 @@ const selectedConnectionTokens = ref<string>("");
 
 // emits - call loadMonitoringListItemsCaller in parent
 const emit = defineEmits<{
-    loadMonitoringListItemsCaller: any;
+    loadMonitoringListItemsCaller: [];
 }>();
 
 function loadMonitoringListItemsCaller() {
-    if (datepicker.value != null && datepicker.value != null) {
+    if (datepicker.value != null) {
         monitoringStore.startDate = datepicker.value.getTime();
     }
 

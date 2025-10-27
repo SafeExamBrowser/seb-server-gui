@@ -81,13 +81,14 @@ import * as monitoringViewService from "@/services/seb-server/component-services
 import { translate } from "@/utils/generalUtils";
 import { useRoute } from "vue-router";
 import { ref } from "vue";
+import { ClientInstruction } from "@/models/seb-server/clientInstruction";
 
 // exam
 const examId = useRoute().params.examId.toString();
 
 // emits
 const emit = defineEmits<{
-    closeInstructionConfirmDialog: any;
+    (e: "closeInstructionConfirmDialog"): void;
 }>();
 
 // props

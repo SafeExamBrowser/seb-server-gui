@@ -125,10 +125,11 @@
 
 <script setup lang="ts">
 import { translate } from "@/utils/generalUtils";
+import { URLFilterRule } from "@/models/seb-server/sebSettings";
 
 // emits
 const emit = defineEmits<{
-    closeEditURLFilterRule: any;
+    (e: "closeEditURLFilterRule", value: boolean): void;
 }>();
 
 // props

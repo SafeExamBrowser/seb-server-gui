@@ -730,6 +730,7 @@ import * as constants from "@/utils/constants";
 import { navigateTo } from "@/router/navigation";
 import * as connectionConfigurationViewService from "@/services/seb-server/component-services/connectionConfigurationViewService";
 import * as certificateViewService from "@/services/seb-server/component-services/certificateViewService";
+import { CreateConnectionConfigurationPar } from "@/models/seb-server/connectionConfiguration";
 
 const name = ref<string>("");
 const configurationPassword = ref<string>("");
@@ -750,7 +751,7 @@ const confirmQuitPassword = ref<string>("");
 const configurationPurpose = ref<string | null>(null);
 
 // UI state
-const formRef = ref();
+const formRef = ref<VuetifyFormLike | null>(null);
 const configurationPasswordVisible = ref<boolean>(false);
 const confirmConfigurationPasswordVisible = ref<boolean>(false);
 const fallbackPasswordVisible = ref<boolean>(false);
@@ -765,14 +766,12 @@ const appBarStore = useAppBarStore();
 const layoutStore = useLayoutStore();
 
 // pwd refs
-const configPwdRef = ref<any>(null);
-const confirmConfigPwdRef = ref<any>(null);
-
-const fallbackPwdRef = ref<any>(null);
-const confirmFallbackPwdRef = ref<any>(null);
-
-const quitPwdRef = ref<any>(null);
-const confirmQuitPwdRef = ref<any>(null);
+const configPwdRef = ref<InputLike | null>(null);
+const confirmConfigPwdRef = ref<InputLike | null>(null);
+const fallbackPwdRef = ref<InputLike | null>(null);
+const confirmFallbackPwdRef = ref<InputLike | null>(null);
+const quitPwdRef = ref<InputLike | null>(null);
+const confirmQuitPwdRef = ref<InputLike | null>(null);
 
 const configurationPurposeItems = [
     {
@@ -796,6 +795,15 @@ const certificateItems = ref<{ label: string; value: string }[]>([
     },
 ]);
 
+type VuetifyFormLike = {
+    validate: () => Promise<{ valid: boolean }>;
+    resetValidation?: () => void;
+};
+type InputLike = {
+    validate?: () => void;
+    resetValidation?: () => void;
+};
+
 // Validation messages
 const requiredMessage = translate(
     "connectionConfigurations.createConnectionConfigurationPage.validation.required",
@@ -810,36 +818,44 @@ const mustBeUrlMessage = translate(
     "connectionConfigurations.createConnectionConfigurationPage.validation.mustBeWithUrl",
 );
 
-// Rules
-const requiredRule = (v: any) => {
-    if (v === null || v === undefined) return requiredMessage;
-    return (
-        (typeof v === "number" ? true : String(v).trim().length > 0) ||
-        requiredMessage
-    );
-};
-const numberRule = (v: any) =>
-    v === null || v === undefined || v === "" || isNaN(Number(v))
-        ? mustBeNumberMessage
-        : true;
-const requiredNumberRule = (v: any) =>
-    (requiredRule(v) === true && numberRule(v) === true) ||
-    (isNaN(Number(v)) ? mustBeNumberMessage : requiredMessage);
+// Rules helpers
+const isNil = (v: unknown): v is null | undefined =>
+    v === null || v === undefined;
+const isBlank = (v: unknown) =>
+    typeof v === "string" ? v.trim().length === 0 : false;
+const toNum = (v: unknown) => (typeof v === "number" ? v : Number(v));
 
-const requiredIfFallbackRule = (v: any) =>
+// Rules
+const requiredRule = (v: unknown) => {
+    if (isNil(v)) return requiredMessage;
+    if (typeof v === "number") return true;
+    return !isBlank(v) || requiredMessage;
+};
+
+const numberRule = (v: unknown) => {
+    if (isNil(v) || v === "") return mustBeNumberMessage;
+    const n = toNum(v);
+    return !Number.isNaN(n) ? true : mustBeNumberMessage;
+};
+
+const requiredNumberRule = (v: unknown) =>
+    (requiredRule(v) === true && numberRule(v) === true) ||
+    (Number.isNaN(toNum(v)) ? mustBeNumberMessage : requiredMessage);
+
+const requiredIfFallbackRule = (v: unknown) =>
     !withFallback.value || requiredRule(v) === true || requiredMessage;
-const requiredNumberIfFallbackRule = (v: any) =>
+
+const requiredNumberIfFallbackRule = (v: unknown) =>
     !withFallback.value ||
     requiredNumberRule(v) === true ||
-    (isNaN(Number(v)) ? mustBeNumberMessage : requiredMessage);
-const urlIfFallbackRule = (v: any) => {
+    (Number.isNaN(toNum(v)) ? mustBeNumberMessage : requiredMessage);
+
+const urlIfFallbackRule = (v: unknown) => {
     if (!withFallback.value) return true;
-    if (!v || typeof v !== "string") return mustBeUrlMessage;
-    const trimmed = v.trim().toLowerCase();
+    if (typeof v !== "string") return mustBeUrlMessage;
+    const t = v.trim().toLowerCase();
     return (
-        trimmed.startsWith("http://") ||
-        trimmed.startsWith("https://") ||
-        mustBeUrlMessage
+        t.startsWith("http://") || t.startsWith("https://") || mustBeUrlMessage
     );
 };
 
@@ -878,58 +894,78 @@ onMounted(async () => {
 onBeforeUnmount(() => {
     layoutStore.setBlueBackground(false);
 });
-
 async function submit() {
-    const { valid } = await formRef.value.validate();
+    const { valid } = await formRef.value!.validate();
     if (!valid) return;
 
     const toMs = (s: number | null) =>
         s == null ? null : Math.round(Number(s) * 1000);
 
+    // ---- Narrow required base fields ----
+    if (!configurationPurpose.value) return;
+    if (pingInterval.value == null) return;
+    const pingMs = toMs(pingInterval.value);
+    if (pingMs == null) return;
+
+    // Build base params
     const connectionConfigParams: CreateConnectionConfigurationPar = {
         name: name.value,
-        sebServerPingTime: Number(toMs(pingInterval.value)!),
-        sebConfigPurpose: configurationPurpose.value!,
-        cert_alias: encryptWithCertificate.value!,
+        sebServerPingTime: pingMs,
+        sebConfigPurpose: configurationPurpose.value,
+        cert_alias: encryptWithCertificate.value || undefined,
         exam_selection: undefined,
-        encryptSecret: configurationPassword.value ?? undefined,
-        confirm_encrypt_secret: confirmConfigurationPassword.value || undefined,
+        encryptSecret: (configurationPassword.value ?? "").trim() || undefined,
+        confirm_encrypt_secret:
+            (confirmConfigurationPassword.value ?? "").trim() || undefined,
         cert_encryption_asym: !!asymmetricOnlyEncryption.value,
         sebServerFallback: !!withFallback.value,
-
-        ...(withFallback.value
-            ? {
-                  startURL: fallbackStartUrl.value,
-                  sebServerFallbackAttemptInterval: Number(
-                      toMs(interval.value)!,
-                  ),
-                  sebServerFallbackAttempts: Number(connectionAttempts.value!),
-                  sebServerFallbackTimeout: Number(
-                      toMs(connectionTimeout.value)!,
-                  ),
-                  sebServerFallbackPasswordHash:
-                      fallbackPassword.value || undefined,
-                  sebServerFallbackPasswordHashConfirm:
-                      confirmFallbackPassword.value || undefined,
-                  hashedQuitPassword: quitPassword.value?.trim() || undefined,
-                  hashedQuitPasswordConfirm:
-                      confirmQuitPassword.value || undefined,
-              }
-            : {}),
         vdiSetup: "NO",
+        ...(withFallback.value
+            ? (() => {
+                  // ---- fallback-only fields ----
+                  if (!fallbackStartUrl.value) return {};
+                  if (interval.value == null) return {};
+                  if (connectionAttempts.value == null) return {};
+                  if (connectionTimeout.value == null) return {};
+
+                  const fbIntervalMs = toMs(interval.value);
+                  const fbTimeoutMs = toMs(connectionTimeout.value);
+                  const attemptsNum = Number(connectionAttempts.value);
+
+                  if (fbIntervalMs == null) return {};
+                  if (!Number.isFinite(attemptsNum)) return {};
+                  if (fbTimeoutMs == null) return {};
+
+                  return {
+                      startURL: fallbackStartUrl.value.trim(),
+                      sebServerFallbackAttemptInterval: fbIntervalMs,
+                      sebServerFallbackAttempts: attemptsNum,
+                      sebServerFallbackTimeout: fbTimeoutMs,
+                      sebServerFallbackPasswordHash:
+                          (fallbackPassword.value ?? "").trim() || undefined,
+                      sebServerFallbackPasswordHashConfirm:
+                          (confirmFallbackPassword.value ?? "").trim() ||
+                          undefined,
+                      hashedQuitPassword:
+                          (quitPassword.value ?? "").trim() || undefined,
+                      hashedQuitPasswordConfirm:
+                          (confirmQuitPassword.value ?? "").trim() || undefined,
+                  };
+              })()
+            : {}),
     };
 
-    // todo : wait on backend to remove the space after the key
-    const payload: any = {
+    const payloadRecord: Record<string, unknown> = {
         ...connectionConfigParams,
         "sebServerFallback ": connectionConfigParams.sebServerFallback,
     };
 
     const created =
         await connectionConfigurationViewService.createConnectionConfiguration(
-            payload,
+            payloadRecord as unknown as CreateConnectionConfigurationPar,
         );
     if (!created) return;
+
     navigateTo(constants.CONNECTION_CONFIGURATIONS_ROUTE);
 }
 

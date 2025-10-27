@@ -4,6 +4,7 @@ import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum";
 import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
 import * as generalUtils from "@/utils/generalUtils";
 import { ref } from "vue";
+import { Exam } from "@/models/seb-server/exam";
 
 export enum GUIComponent {
     // Overall components

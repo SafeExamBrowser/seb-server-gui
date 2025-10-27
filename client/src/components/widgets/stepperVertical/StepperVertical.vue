@@ -51,7 +51,11 @@ const emit = defineEmits<{
 }>();
 
 const handleNextClick = () => {
-    props.currentStep >= props.steps.length - 1 ? emit("finish") : emit("next");
+    if (props.currentStep >= props.steps.length - 1) {
+        emit("finish");
+    } else {
+        emit("next");
+    }
 };
 
 const handlePrevClick = () => {

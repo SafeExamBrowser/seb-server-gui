@@ -317,6 +317,7 @@ import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
 import * as examViewService from "@/services/seb-server/component-services/examViewService";
 import { computed, ref, watch, onBeforeMount } from "vue";
+import { ClientGroup } from "@/models/seb-server/clientGroup";
 // i18n
 const i18n = useI18n();
 
@@ -328,7 +329,7 @@ const isGroupNameDuplicate = ref<boolean>(false);
 
 // table
 const templateClientGroups = ref<ClientGroup[]>([]);
-const templateClientGroupsHeadersRef = ref<any[]>();
+const templateClientGroupsHeadersRef = ref<(HTMLElement | null)[]>([]);
 const templateClientGroupsHeaders = ref([
     { title: "Name", key: "name" },
     { title: "Type", key: "type" },
@@ -384,7 +385,7 @@ watch(groupNameField, () => {
 
 // emits
 const emit = defineEmits<{
-    closeAddClientGroupDialog: any;
+    (e: "closeAddClientGroupDialog"): void;
 }>();
 
 // client group select items
@@ -439,8 +440,8 @@ async function createClientGroup() {
 
     if (screenProctoringToggle.value && createClientGroupResponse.id != null) {
         const existingSpGroupIds = examStore.selectedClientGroups
-            .filter((group) => group.isSPSGroup)
-            .map((group) => group.id!);
+            .filter((group) => group.isSPSGroup && group.id != null)
+            .map((group) => group.id as number);
 
         const updatedSpGroupIds = [
             ...new Set([...existingSpGroupIds, createClientGroupResponse.id]),
@@ -452,7 +453,7 @@ async function createClientGroup() {
         );
     }
 
-    emit("closeAddClientGroupDialog", true);
+    emit("closeAddClientGroupDialog");
 }
 
 //= =======table loading========
@@ -499,27 +500,14 @@ function loadClientGroupIntoForm(clientGroup: ClientGroup) {
     }
 
     if (clientGroupType === ClientGroupEnum.IP_V4_RANGE) {
-        startIpField.value = clientGroup.ipRangeStart!;
-        endIpField.value = clientGroup.ipRangeEnd!;
+        startIpField.value = clientGroup.ipRangeStart ?? "";
+        endIpField.value = clientGroup.ipRangeEnd ?? "";
         return;
     }
 
     if (clientGroupType === ClientGroupEnum.NAME_ALPHABETICAL_RANGE) {
-        startLetterField.value = clientGroup.nameRangeStartLetter!;
-        endLetterField.value = clientGroup.nameRangeEndLetter!;
-    }
-}
-
-//= =======check if screen proctoring enabled for exam========
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function toggleScreenProctoring() {
-    const isEnabled = generalUtils.stringToBoolean(
-        examStore.selectedExam?.additionalAttributes.enableScreenProctoring ??
-            "",
-    );
-    if (isEnabled) {
-        screenProctoringToggle.value = !screenProctoringToggle.value;
+        startLetterField.value = clientGroup.nameRangeStartLetter ?? "";
+        endLetterField.value = clientGroup.nameRangeEndLetter ?? "";
     }
 }
 

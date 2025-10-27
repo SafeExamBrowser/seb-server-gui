@@ -1055,6 +1055,12 @@ import { stringToBoolean, translate } from "@/utils/generalUtils";
 import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums";
 import { ref, onBeforeMount } from "vue";
+import {
+    SEBSettingsTableRowValues,
+    SEBSettingsValue,
+    SEBSettingsView,
+    URLFilterRule,
+} from "@/models/seb-server/sebSettings";
 
 const i18n = useI18n();
 const sebSettingsStore = useSEBSettingsStore();
@@ -1067,7 +1073,7 @@ const urlFilterEnableContentFilterVal = ref<boolean>(false);
 // test commit
 const editURLFilterRuleDialog = ref<boolean>(false);
 const selectedURLFilterRule = ref<URLFilterRule | null>(null);
-const urlFilterHeadersRef = ref<any[]>();
+const urlFilterHeadersRef = ref<(HTMLElement | null)[]>([]);
 const urlFilterTable = ref<URLFilterRule[]>([]);
 const urlFilterHeaders = ref([
     {

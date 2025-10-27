@@ -166,16 +166,20 @@ import * as searchViewService from "@/services/screen-proctoring/component-servi
 import * as groupingUtils from "@/utils/groupingUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import * as spConstants from "@/utils/sp-constants";
+import { SearchTimeline } from "@/models/screen-proctoring/search";
+
+// simple "clickable" for header refs (matches what TableHeaders expects)
+type Clickable = { click: () => void };
 
 const props = defineProps<{
-    timelineSearchResult: any;
+    timelineSearchResult: SearchTimeline | null; // ← was any
 }>();
 
-const timelineSearchResultRef = ref<SearchTimeline>();
+const timelineSearchResultRef = ref<SearchTimeline | null>(null);
 
 // table
 const expandedItems = ref<string[]>([]);
-const screenshotTableHeadersRef = ref<any[]>();
+const screenshotTableHeadersRef = ref<Clickable[] | null>(null); // ← was any[]
 const screenshotTableHeaders = ref([
     {
         title: "Capture-Time",
@@ -184,7 +188,6 @@ const screenshotTableHeaders = ref([
         width: "10%",
     },
     { title: spConstants.APPLICATION_METADATA, key: "groupName", width: "15%" },
-
     {
         title: spConstants.SEB_BROWSER_TITLE_METADATA,
         key: "browserTitle",
@@ -200,7 +203,6 @@ const screenshotTableHeaders = ref([
         key: "windowTitle",
         value: "timelineScreenshotDataList[0].metaData.screenProctoringMetadataWindowTitle",
     },
-
     { title: "Video", key: "proctoringViewLink", width: "1%" },
     { title: "", key: "data-table-expand" },
 ]);
@@ -210,11 +212,8 @@ onBeforeMount(() => {
 });
 
 watch(timelineSearchResultRef, (newList) => {
-    if (newList == null) {
-        return;
-    }
-
-    expandedItems.value = newList?.timelineGroupDataList.map((item) =>
+    if (!newList) return;
+    expandedItems.value = newList.timelineGroupDataList.map((item) =>
         item.timelineScreenshotDataList[0].timestamp.toString(),
     );
 });

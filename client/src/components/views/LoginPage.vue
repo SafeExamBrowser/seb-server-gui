@@ -189,7 +189,7 @@ async function signIn() {
     }
 }
 
-function handleTabKeyEvent(event: any, action: string) {
+function handleTabKeyEvent(event: KeyboardEvent, action: string) {
     if (event.key === "Enter" || event.key === " ") {
         if (action === "navigate") {
             navigateTo(constants.REGISTER_ROUTE);

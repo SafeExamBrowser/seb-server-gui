@@ -170,6 +170,9 @@ import * as quizImportWizardViewService from "@/services/seb-server/component-se
 import { navigateTo } from "@/router/navigation";
 import { useExamStore } from "@/stores/seb-server/examStore";
 import { ref, onBeforeMount, watch } from "vue";
+import { CreateExamPar, Exam } from "@/models/seb-server/exam";
+import { AssessmentToolsResponse } from "@/models/seb-server/assessmentTool";
+import { APIMessage } from "@/models/seb-server/apiMessages";
 // i18n
 const i18n = useI18n();
 
@@ -305,6 +308,10 @@ function handleStepperNext(index: number, next: () => void) {
             return;
         }
 
+        const clientGroupIds = quizImportStore.selectedClientGroups
+            .map((g) => g.id)
+            .filter((id): id is number => typeof id === "number");
+
         const createExamParams: CreateExamPar = {
             lmsSetupId: quizImportStore.selectedQuiz.lms_setup_id,
             lms_setup_id: quizImportStore.selectedQuiz.lms_setup_id,
@@ -316,11 +323,7 @@ function handleStepperNext(index: number, next: () => void) {
             supporter: quizImportStore.selectedExamSupervisors.map(
                 (userAccountName) => userAccountName.modelId,
             ),
-            clientGroupIds: generalUtils.createStringCommaList(
-                quizImportStore.selectedClientGroups.map(
-                    (clientGroup) => clientGroup.id!,
-                ),
-            ),
+            clientGroupIds: generalUtils.createStringCommaList(clientGroupIds),
         };
 
         const createExamResponse: Exam | null =

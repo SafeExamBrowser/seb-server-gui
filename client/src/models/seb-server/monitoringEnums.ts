@@ -1,3 +1,5 @@
+import { Indicator } from "@/models/seb-server/indicators";
+
 export enum MonitoringHeaderEnum {
     SHOW_ALL = "show-all",
     SHOW_STATES = "show-states",

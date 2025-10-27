@@ -100,6 +100,7 @@ import { onBeforeMount, ref } from "vue";
 import * as applicationsSearchViewService from "@/services/screen-proctoring/component-services/applicationsSearchViewService";
 import * as generalUtils from "@/utils/generalUtils";
 import ApplicationsSearchUserList from "./ApplicationsSearchUserList.vue";
+import { DistinctMetadataWindowForExamRecord } from "@/models/screen-proctoring/applicationSearch";
 
 // props
 const props = defineProps<{
