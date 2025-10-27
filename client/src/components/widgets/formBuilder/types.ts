@@ -7,7 +7,13 @@ type VTextFieldProps = InstanceType<typeof VTextField>["$props"];
 
 export type FormFieldBaseProperties = Pick<
     VInputProps,
-    "ref" | "label" | "density" | "rules" | "hint" | "persistentHint"
+    | "ref"
+    | "label"
+    | "density"
+    | "rules"
+    | "hint"
+    | "persistentHint"
+    | "onUpdate:modelValue"
 > &
     Pick<VFieldProps, "variant">;
 

@@ -19,9 +19,6 @@
                             ...getBaseProperties(field),
                             ...getTextualProperties(field),
                         }"
-                        @update:model-value="
-                            handleFieldValueUpdated(field.name)
-                        "
                     >
                     </v-text-field>
                     <v-textarea
@@ -32,9 +29,6 @@
                             ...getTextualProperties(field),
                         }"
                         :rows="4"
-                        @update:model-value="
-                            handleFieldValueUpdated(field.name)
-                        "
                     >
                     </v-textarea>
                     <v-select
@@ -45,9 +39,6 @@
                             ...getTextualProperties(field),
                             ...getSelectProperties(field),
                         }"
-                        @update:model-value="
-                            handleFieldValueUpdated(field.name)
-                        "
                     >
                     </v-select>
                     <v-switch
@@ -55,9 +46,6 @@
                         v-model="field.model.value"
                         v-bind="getBaseProperties(field)"
                         color="primary"
-                        @update:model-value="
-                            handleFieldValueUpdated(field.name)
-                        "
                     >
                     </v-switch>
                 </v-col>
@@ -126,6 +114,7 @@ const getBaseProperties = (field: FormField): FormFieldBaseProperties => {
         ],
         hint: field.info || undefined,
         persistentHint: field.info !== undefined,
+        "onUpdate:modelValue": () => handleFieldValueUpdated(field.name),
     };
 };
 
