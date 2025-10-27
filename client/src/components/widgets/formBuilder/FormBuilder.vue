@@ -78,6 +78,7 @@ const getBaseProperties = (field: FormField): FormFieldBaseProperties => {
     const isRequired = field.type !== "switch" && field.required;
 
     return {
+        ref: field.ref,
         label: `${field.label}${isRequired ? " *" : ""}`,
         density: "compact" as const,
         variant: "outlined" as const,
