@@ -22,7 +22,7 @@ export const useFormFields = (clientGroup: Ref<ClientGroupTransient>) => {
                 ? useFormFieldsTypeClientOS(clientGroup)
                 : [],
             clientGroup.value.type === ClientGroupEnum.NAME_ALPHABETICAL_RANGE
-                ? useFormFieldsTypeNameAlphabeticalRange(clientGroup)
+                ? useFormFieldsTypeNameAlphabeticalRange(clientGroup, rules)
                 : [],
         ].flat(),
     );
