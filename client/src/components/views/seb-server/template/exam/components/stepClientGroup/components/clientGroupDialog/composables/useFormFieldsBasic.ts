@@ -49,9 +49,13 @@ export const useFormFieldsBasic = (
                 rules.maxLength(255),
                 rules.blacklisted(
                     new Set(
-                        stepClientGroupStore.groups.map(
-                            (group: ClientGroup) => group.name,
-                        ),
+                        stepClientGroupStore.groups
+                            // Blacklist names of all other groups in the store.
+                            // Exclude current clientGroup, as it can already be in the store in case of editing.
+                            .filter(
+                                (group) => group.id !== clientGroup.value.id,
+                            )
+                            .map((group: ClientGroup) => group.name),
                     ),
                     i18n.global.t(
                         "createTemplateExam.steps.clientGroup.fields.name.validationErrorUniqueName",
