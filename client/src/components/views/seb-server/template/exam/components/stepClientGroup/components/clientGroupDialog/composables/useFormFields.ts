@@ -16,7 +16,7 @@ export const useFormFields = (clientGroup: Ref<ClientGroupTransient>) => {
             useFormFieldsBasic(clientGroup, rules),
             useFormFieldsScreenProctoring(clientGroup),
             clientGroup.value.type === ClientGroupEnum.IP_V4_RANGE
-                ? useFormFieldsTypeIPRange(clientGroup)
+                ? useFormFieldsTypeIPRange(clientGroup, rules)
                 : [],
             clientGroup.value.type === ClientGroupEnum.CLIENT_OS
                 ? useFormFieldsTypeClientOS(clientGroup)

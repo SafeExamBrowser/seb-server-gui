@@ -10,7 +10,8 @@ import "@mdi/font/css/materialdesignicons.css";
 import { createRulesPlugin } from "vuetify/labs/rules";
 
 import vuetify from "@/plugins/vuetify";
-import { blacklisted } from "./utils/validation/blacklisted";
+import { blacklisted } from "@/utils/validation/blacklisted";
+import { ipAddress } from "@/utils/validation/ipAddress";
 
 const app = createApp(App);
 app.use(vuetify);
@@ -22,6 +23,7 @@ app.use(
         {
             aliases: {
                 blacklisted: blacklisted,
+                ipAddress: ipAddress,
             },
         },
         vuetify.locale,

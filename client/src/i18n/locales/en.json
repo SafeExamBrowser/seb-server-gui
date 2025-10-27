@@ -71,7 +71,8 @@
             "TEACHER": "Teacher"
         },
         "validation": {
-            "blacklisted": "Field must not be any of the following values: {values}"
+            "blacklisted": "Field must not be any of the following values: {values}",
+            "ipAddress": "Field must be a valid IP address"
         }
     },
 
