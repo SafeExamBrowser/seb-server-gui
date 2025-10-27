@@ -26,10 +26,10 @@ app.use(
     createRulesPlugin(
         {
             aliases: {
-                blacklisted: blacklisted,
-                ipAddress: ipAddress,
-                alphabeticalBefore: alphabeticalBefore,
-                alphabeticalAfter: alphabeticalAfter,
+                blacklisted,
+                ipAddress,
+                alphabeticalBefore,
+                alphabeticalAfter,
             },
         },
         vuetify.locale,
