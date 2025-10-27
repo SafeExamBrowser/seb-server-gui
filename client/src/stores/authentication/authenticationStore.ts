@@ -4,6 +4,7 @@ import * as userAccountViewService from "@/services/seb-server/component-service
 import * as constants from "@/utils/constants";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
 import { ref } from "vue";
+import { UserAccount } from "@/models/userAccount";
 
 // ----------------------authentication---------------------------//
 export const useAuthStore = defineStore("auth", () => {

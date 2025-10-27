@@ -1,4 +1,4 @@
-type ClientGroup = {
+export type ClientGroup = {
     id?: number;
     examId?: number;
     name: string;
@@ -13,8 +13,7 @@ type ClientGroup = {
     isSPSGroup?: boolean;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type ClientGroups = {
+export type ClientGroups = {
     number_of_pages: number;
     page_number: number;
     page_size: number;

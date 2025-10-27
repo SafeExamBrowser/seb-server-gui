@@ -1,9 +1,14 @@
 import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
+import {
+    OptionalParGroupByUuid,
+    OptionalParGroups,
+} from "@/models/screen-proctoring/optionalParamters";
+import { GroupObject, GroupUuid } from "@/models/screen-proctoring/group";
 
 export async function getGroups(
     optionalParameters?: OptionalParGroups,
-): Promise<GroupObject | any> {
+): Promise<GroupObject> {
     const url: string = "/sp/group";
     return (
         await apiService.api.get(url, {
@@ -16,7 +21,7 @@ export async function getGroups(
 export async function getGroupByUuid(
     uuid: string,
     optionalParameters?: OptionalParGroupByUuid,
-): Promise<GroupUuid | any> {
+): Promise<GroupUuid> {
     const url: string = "/sp/group/" + uuid;
     return (
         await apiService.api.get(url, {

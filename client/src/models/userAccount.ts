@@ -1,4 +1,4 @@
-type UserAccount = {
+export type UserAccount = {
     id: number;
     institutionId: number;
     uuid: string;
@@ -16,16 +16,14 @@ type UserAccount = {
     creationDate: string;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type UserAccountResponse = {
+export type UserAccountResponse = {
     number_of_pages: number;
     page_number: number;
     page_size: number;
     content: UserAccount[];
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type SingleUserAccountResponse = {
+export type SingleUserAccountResponse = {
     uuid: string;
     institutionId: number;
     creationDate: string;
@@ -41,8 +39,7 @@ type SingleUserAccountResponse = {
     userRoles: string[];
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type EditUserAccountParameters = {
+export type EditUserAccountParameters = {
     uuid: string;
     institutionId: number;
     creationDate: string;
@@ -56,15 +53,13 @@ type EditUserAccountParameters = {
     userRoles: string[];
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type UserAccountName = {
+export type UserAccountName = {
     modelId: string;
     entityType: string;
     name: string;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type CreateUserPar = {
+export type CreateUserPar = {
     institutionId: string;
     name: string;
     surname: string;
@@ -77,8 +72,7 @@ type CreateUserPar = {
     confirmNewPassword: string;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type OptionalParGetUserAccounts = {
+export type OptionalParGetUserAccounts = {
     page_size?: number;
     page_number?: number;
     surname?: string;

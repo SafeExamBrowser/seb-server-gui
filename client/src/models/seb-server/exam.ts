@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type CreateExamPar = {
+export type CreateExamPar = {
     institutionId?: number;
     lmsSetupId: number;
     lms_setup_id: number;
@@ -12,7 +11,7 @@ type CreateExamPar = {
     clientGroupIds: string;
 };
 
-type ExamAdditionalAttributes = {
+export type ExamAdditionalAttributes = {
     SIGNATURE_KEY_SALT: string;
     ADDITIONAL_QUIZ_ATTRIBUTES: string;
     quiz_start_url: string;
@@ -23,7 +22,7 @@ type ExamAdditionalAttributes = {
     NUMERICAL_TRUST_THRESHOLD: string;
 };
 
-type Exam = {
+export type Exam = {
     id: number;
     institutionId: number;
     lmsSetupId: number;
@@ -46,8 +45,7 @@ type Exam = {
     quitPassword: string;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type Exams = {
+export type Exams = {
     number_of_pages: number;
     page_number: number;
     page_size: number;

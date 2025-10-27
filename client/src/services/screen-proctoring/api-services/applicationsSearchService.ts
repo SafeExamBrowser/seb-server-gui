@@ -1,9 +1,15 @@
 import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
+import { OptionalParGetExamsStarted } from "@/models/screen-proctoring/optionalParamters";
+import { SPExam } from "@/models/screen-proctoring/exam";
+import {
+    DistinctMetadataWindowForExamRecord,
+    UserListForApplicationSearchRecord,
+} from "@/models/screen-proctoring/applicationSearch";
 
 export async function getExamsStarted(
     optionalParameters?: OptionalParGetExamsStarted,
-): Promise<SPExam[] | any> {
+): Promise<SPExam[]> {
     const url: string = "/sp/search/applications/exams";
     return (
         await apiService.api.get(url, {
@@ -13,9 +19,7 @@ export async function getExamsStarted(
     ).data;
 }
 
-export async function getGroupIdsForExam(
-    examId: number,
-): Promise<number[] | any> {
+export async function getGroupIdsForExam(examId: number): Promise<number[]> {
     const url: string = "/sp/search/applications/groupIds/" + examId;
     return (
         await apiService.api.get(url, {
@@ -26,7 +30,7 @@ export async function getGroupIdsForExam(
 
 export async function getDistinctMetadataAppForExam(
     groupIds: string,
-): Promise<string[] | any> {
+): Promise<string[]> {
     const url: string = "/sp/search/applications/metadata/app";
     return (
         await apiService.api.get(url, {
@@ -39,7 +43,7 @@ export async function getDistinctMetadataAppForExam(
 export async function getDistinctMetadataWindowForExam(
     groupIds: string,
     screenProctoringMetadataApplication: string,
-): Promise<DistinctMetadataWindowForExamRecord | any> {
+): Promise<DistinctMetadataWindowForExamRecord> {
     const url: string = "/sp/search/applications/metadata/window";
     return (
         await apiService.api.get(url, {
@@ -53,7 +57,7 @@ export async function getUserListForApplicationSearch(
     groupIds: string,
     screenProctoringMetadataApplication: string,
     screenProctoringMetadataWindowTitle: string,
-): Promise<UserListForApplicationSearchRecord[] | any> {
+): Promise<UserListForApplicationSearchRecord[]> {
     const url: string = "/sp/search/applications/users";
     return (
         await apiService.api.get(url, {
@@ -71,7 +75,7 @@ export async function getTimestampListForApplicationSearch(
     sessionUUID: string,
     screenProctoringMetadataApplication: string,
     screenProctoringMetadataWindowTitle: string,
-): Promise<number[] | any> {
+): Promise<number[]> {
     const url: string = "/sp/search/applications/timestamps";
     return (
         await apiService.api.get(url, {

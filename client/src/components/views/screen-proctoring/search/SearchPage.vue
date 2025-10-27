@@ -120,6 +120,7 @@ import * as searchViewService from "@/services/screen-proctoring/component-servi
 import SearchForm from "./SearchForm.vue";
 import SearchSessionTable from "./SearchSessionTable.vue";
 import * as timeUtils from "@/utils/timeUtils";
+import { OptionalParSearchSessions } from "@/models/screen-proctoring/optionalParamters";
 
 // error handling
 const searchResultAvailable = ref<boolean>(false);

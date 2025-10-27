@@ -1,5 +1,13 @@
 import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
+import {
+    ConnectionConfiguration,
+    ConnectionConfigurationName,
+    ConnectionConfigurations,
+    CreateConnectionConfigurationPar,
+    OptionalParGetConnectionConfiguration,
+    UpdateConnectionConfigurationPar,
+} from "@/models/seb-server/connectionConfiguration";
 
 const connectionConfigurationUrl = "/client_configuration";
 const downloadExamConfigUrl = "/client_configuration/download";
@@ -18,7 +26,7 @@ export async function getConnectionConfigurationNamesActive(): Promise<
 
 export async function getConnectionConfigurationsActive(
     isActive: string,
-): Promise<any> {
+): Promise<ConnectionConfigurations> {
     const url: string = connectionConfigurationUrl + "/active";
     return (
         await apiService.api.get(url, {
@@ -31,7 +39,7 @@ export async function getConnectionConfigurationsActive(
 export async function downloadExamConfig(
     examId: string,
     connectionId: string,
-): Promise<ConnectionConfigurations | any> {
+): Promise<Blob> {
     const url: string = downloadExamConfigUrl + "/" + connectionId;
     return (
         await apiService.api.get(url, {
@@ -44,7 +52,7 @@ export async function downloadExamConfig(
 
 export async function getConnectionConfiguration(
     id: number,
-): Promise<ConnectionConfiguration | any> {
+): Promise<ConnectionConfiguration> {
     const url: string = connectionConfigurationUrl + "/" + id;
     return (
         await apiService.api.get(url, {
@@ -55,7 +63,7 @@ export async function getConnectionConfiguration(
 
 export async function getConnectionConfigurations(
     optionalParameters?: OptionalParGetConnectionConfiguration,
-): Promise<ConnectionConfigurations | any> {
+): Promise<ConnectionConfigurations> {
     const url: string = connectionConfigurationUrl;
     return (
         await apiService.api.get(url, {
@@ -67,7 +75,7 @@ export async function getConnectionConfigurations(
 
 export async function activateConnectionConfiguration(
     id: string,
-): Promise<ConnectionConfiguration | any> {
+): Promise<ConnectionConfiguration> {
     const url: string = connectionConfigurationUrl + "/" + id + "/active";
     return (
         await apiService.api.post(url, {
@@ -78,7 +86,7 @@ export async function activateConnectionConfiguration(
 
 export async function deactivateConnectionConfiguration(
     id: string,
-): Promise<ConnectionConfiguration | any> {
+): Promise<ConnectionConfiguration> {
     const url: string = connectionConfigurationUrl + "/" + id + "/inactive";
     return (
         await apiService.api.post(url, {
@@ -89,7 +97,7 @@ export async function deactivateConnectionConfiguration(
 
 export async function deleteConnectionConfiguration(
     id: string,
-): Promise<any | any> {
+): Promise<undefined | null> {
     return (
         await apiService.api.delete(connectionConfigurationUrl + "/" + id, {
             headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
@@ -99,7 +107,7 @@ export async function deleteConnectionConfiguration(
 
 export async function createConnectionConfiguration(
     connectionConfigurationPar: CreateConnectionConfigurationPar,
-): Promise<any | any> {
+): Promise<ConnectionConfiguration> {
     return (
         await apiService.api.post(
             connectionConfigurationUrl,
@@ -115,7 +123,7 @@ export async function createConnectionConfiguration(
 
 export async function editConnectionConfiguration(
     connectionConfiguration: UpdateConnectionConfigurationPar,
-): Promise<ConnectionConfiguration | any> {
+): Promise<ConnectionConfiguration> {
     return (
         await apiService.api.put(
             connectionConfigurationUrl,

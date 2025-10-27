@@ -1,6 +1,8 @@
 // todo: change name
 
-type MetaData = {
+import { SPExamView } from "@/models/screen-proctoring/exam";
+
+export type MetaData = {
     screenProctoringMetadataApplication?: string;
     screenProctoringMetadataBrowser?: string;
     screenProctoringMetadataUserAction?: string;
@@ -8,8 +10,7 @@ type MetaData = {
     screenProctoringMetadataWindowTitle?: string;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type ScreenshotData = {
+export type ScreenshotData = {
     startTime: number;
     timestamp: number;
     endTime: number;
@@ -26,8 +27,7 @@ type ScreenshotData = {
     metaData: MetaData;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type Session = {
+export type Session = {
     groupUUID: string;
     groupName: string;
     groupCreationTime: number;

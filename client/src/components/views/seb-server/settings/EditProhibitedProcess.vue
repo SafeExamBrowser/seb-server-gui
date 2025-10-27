@@ -269,10 +269,11 @@
 
 <script setup lang="ts">
 import { translate } from "@/utils/generalUtils";
+import { ProhibitedProcess } from "@/models/seb-server/sebSettings";
 
 // emits
 const emit = defineEmits<{
-    closeEditProhibitedProcess: any;
+    (e: "closeEditProhibitedProcess", shouldSave: boolean): void;
 }>();
 
 // props

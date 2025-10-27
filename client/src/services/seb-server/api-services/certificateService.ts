@@ -1,14 +1,19 @@
 import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
+import {
+    Certificate,
+    CertificatesResponse,
+    CreateCertificateJSON,
+    OptionalParGetCertificates,
+} from "@/models/seb-server/certificate";
 
 const certificatesURL: string = "/certificate";
 
 export async function getCertificates(
     optionalParameters?: OptionalParGetCertificates,
-): Promise<CertificatesResponse[] | any> {
-    const url: string = certificatesURL;
+): Promise<CertificatesResponse> {
     return (
-        await apiService.api.get(url, {
+        await apiService.api.get(certificatesURL, {
             headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
             params: { optionalParameters },
         })
@@ -17,7 +22,7 @@ export async function getCertificates(
 
 export async function deleteCertificate(
     certificateId: string,
-): Promise<any | any> {
+): Promise<unknown | unknown> {
     return (
         await apiService.api.delete(certificatesURL + "/" + certificateId, {
             headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
@@ -27,7 +32,7 @@ export async function deleteCertificate(
 
 export async function createCertificate(
     payload: CreateCertificateJSON,
-): Promise<any> {
+): Promise<Certificate> {
     const { data } = await apiService.api.post(certificatesURL, payload, {
         headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),
     });

@@ -585,8 +585,12 @@
 import { translate } from "@/utils/generalUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import { ref, onBeforeMount } from "vue";
+import {
+    PermittedProcess,
+    PermittedProcessArgument,
+} from "@/models/seb-server/sebSettings";
 
-const argumentsHeadersRef = ref<any[]>();
+const argumentsHeadersRef = ref<(HTMLElement | null)[]>([]);
 const argumentsTable = ref<PermittedProcessArgument[]>([]);
 const argumentsHeaders = ref([
     {
@@ -616,7 +620,7 @@ const argumentsHeaders = ref([
 
 // emits
 const emit = defineEmits<{
-    closeEditPermittedProcess: any;
+    (e: "closeEditPermittedProcess", shouldSave: boolean): void;
 }>();
 
 // props

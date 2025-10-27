@@ -1,13 +1,19 @@
 import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums";
+import {
+    ExamConfigMapping,
+    SEBSettingsTableRowValues,
+    SEBSettingsValue,
+    SEBSettingsView,
+} from "@/models/seb-server/sebSettings";
 
 const examUrlPrefix: string = "/exam/seb-settings/";
 const templateUrlPrefix: string = "/exam/seb-settings/";
 
 export async function getExamConfigMapping(
     examId: string,
-): Promise<ExamConfigMapping[] | any> {
+): Promise<ExamConfigMapping[]> {
     const url: string = examUrlPrefix + examId + "/examConfigMapping";
     return (
         await apiService.api.get(url, {
@@ -18,7 +24,7 @@ export async function getExamConfigMapping(
 
 export async function getActiveSEBClients(
     examId: string,
-): Promise<number | any> {
+): Promise<number | null> {
     const url: string = examUrlPrefix + examId + "/active-seb-clients";
     return (
         await apiService.api.get(url, {
@@ -31,7 +37,7 @@ export async function getView(
     viewType: ViewType,
     id: string,
     forExam: boolean,
-): Promise<SEBSettingsView | any> {
+): Promise<SEBSettingsView> {
     const url: string =
         (forExam ? examUrlPrefix : templateUrlPrefix) + id + "/" + viewType;
     return (
@@ -45,7 +51,7 @@ export async function addTableRow(
     id: string,
     settingName: string,
     forExam: boolean,
-): Promise<SEBSettingsTableRowValues | any> {
+): Promise<SEBSettingsTableRowValues> {
     const url: string =
         (forExam ? examUrlPrefix : templateUrlPrefix) +
         id +
@@ -66,7 +72,7 @@ export async function deleteTableRow(
     settingName: string,
     rowIndex: number,
     forExam: boolean,
-): Promise<SEBSettingsTableRowValues[] | any> {
+): Promise<SEBSettingsTableRowValues[]> {
     const url: string =
         (forExam ? examUrlPrefix : templateUrlPrefix) +
         id +
@@ -86,7 +92,7 @@ export async function updateSEBSettingValue(
     valueId: string,
     value: string,
     forExam: boolean,
-): Promise<SEBSettingsValue | any> {
+): Promise<SEBSettingsValue> {
     const url: string =
         (forExam ? examUrlPrefix : templateUrlPrefix) + id + "/";
     return (
@@ -105,7 +111,7 @@ export async function updateSEBSettingValue(
 export async function publish(
     id: string,
     forExam: boolean,
-): Promise<Exam | any> {
+): Promise<SEBSettingsValue> {
     const url: string =
         (forExam ? examUrlPrefix : templateUrlPrefix) + id + "/publish";
     return (
@@ -118,7 +124,7 @@ export async function publish(
 export async function undoChanges(
     id: string,
     forExam: boolean,
-): Promise<Exam | any> {
+): Promise<SEBSettingsValue> {
     const url: string =
         (forExam ? examUrlPrefix : templateUrlPrefix) + id + "/undo-changes";
     return (

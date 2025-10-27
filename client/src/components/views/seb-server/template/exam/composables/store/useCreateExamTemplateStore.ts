@@ -7,6 +7,7 @@ import { computed, ref } from "vue";
 import { useStepClientGroupStore } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/store/useStepClientGroupStore";
 import { useScreenProctoringStore } from "@/components/views/seb-server/template/exam/composables/store/useScreenProctoringStore";
 import i18n from "@/i18n";
+import { ExamTemplate } from "@/models/seb-server/examTemplate";
 
 const staticStepData = [
     {

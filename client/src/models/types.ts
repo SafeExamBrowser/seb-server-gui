@@ -1,25 +1,21 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type ServerTablePaging = {
+export type ServerTablePaging = {
     page: number;
     itemsPerPage: number;
     sortBy: { key: string; order: string }[];
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type GridSize = {
+export type GridSize = {
     title: string;
     value: number;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type NavigationItem = {
+export type NavigationItem = {
     title: string;
     route: string;
     icon: string;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type ImportWizardSteps = {
+export type ImportWizardSteps = {
     name: string;
     value: number;
     type?: string;

@@ -13,6 +13,11 @@ import * as monitoringViewService from "@/services/seb-server/component-services
 import * as indicatorViewService from "@/services/seb-server/component-services/indicatorViewService";
 import { useRoute } from "vue-router";
 import { ref, onBeforeMount, onBeforeUnmount } from "vue";
+import {
+    ClientNotification,
+    SingleConnection,
+} from "@/models/seb-server/monitoring";
+import { Indicators } from "@/models/seb-server/indicators";
 
 // route params
 const examId = useRoute().params.examId.toString();
@@ -27,9 +32,9 @@ const appBarStore = useAppBarStore();
 const isDataLoaded = ref<boolean>(false);
 
 // interval
-let intervalRefresh: any | null = null;
-// todo set interval
-const REFRESH_INTERVAL: number = 1 * 5000;
+let intervalRefresh: ReturnType<typeof setInterval> | null = null;
+
+const REFRESH_INTERVAL: number = 5000;
 
 onBeforeMount(async () => {
     appBarStore.title = translate("titles.monitoring");

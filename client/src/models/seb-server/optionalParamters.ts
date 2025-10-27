@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type OptionalParGeneric = {
+export type OptionalParGeneric = {
     institutionId?: number;
     page_number?: number;
     page_size?: number;
@@ -7,13 +6,11 @@ type OptionalParGeneric = {
     filterCriteria?: string;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type OptionalParInstitutionId = {
+export type OptionalParInstitutionId = {
     institutionId?: number;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type OptionalParGetQuizzes = {
+export type OptionalParGetQuizzes = {
     institutionId?: number;
     page_number?: number;
     page_size?: number;
@@ -26,8 +23,7 @@ type OptionalParGetQuizzes = {
     force_new_search: boolean;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type OptionalParGetExams = {
+export type OptionalParGetExams = {
     institutionId?: number;
     page_number?: number;
     page_size?: number;
@@ -41,8 +37,7 @@ type OptionalParGetExams = {
     start_timestamp_millis?: number;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type OptionalParGetMonitoringClientLogs = {
+export type OptionalParGetMonitoringClientLogs = {
     page_number?: number;
     page_size?: number;
     sort?: string;

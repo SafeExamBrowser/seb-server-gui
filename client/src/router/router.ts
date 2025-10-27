@@ -42,6 +42,7 @@ import CertificatesMain from "@/components/views/seb-server/certificates/Certifi
 
 import CreateTemplate from "@/components/views/seb-server/template/CreateTemplate.vue";
 import CreateExamTemplateWizard from "@/components/views/seb-server/template/exam/CreateExamTemplateWizard.vue";
+import { JwtTokenResponse } from "@/models/tokenModel";
 
 const defaultPageTitle: string = " | SEB Server";
 

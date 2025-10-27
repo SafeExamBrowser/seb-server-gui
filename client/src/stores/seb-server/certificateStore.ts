@@ -1,5 +1,8 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
+import { ServerTablePaging } from "@/models/types";
+import { AssessmentTool } from "@/models/seb-server/assessmentTool";
+import { APIMessage } from "@/models/seb-server/apiMessages";
 
 // todo
 export const useCertificateStore = defineStore("certificate", () => {
