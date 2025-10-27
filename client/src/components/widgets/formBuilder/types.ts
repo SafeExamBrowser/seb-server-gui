@@ -14,11 +14,11 @@ export type FormFieldBaseProperties = Pick<
 export type FormFieldTextualProperties = Pick<VTextFieldProps, "placeholder">;
 
 export type FormField = {
-    ref?: Ref<VInput | undefined>;
     name: string;
     label: string;
     rules?: VInputProps["rules"];
     info?: string;
+    validationDependsOn?: string[];
 } & (
     | {
           type: "text";
