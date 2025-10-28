@@ -30,7 +30,7 @@ export type FormField = {
           type: "text";
           placeholder?: string;
           required?: boolean;
-          model: Ref<string>;
+          model: Ref<string | undefined>;
       }
     | {
           type: "textarea";
