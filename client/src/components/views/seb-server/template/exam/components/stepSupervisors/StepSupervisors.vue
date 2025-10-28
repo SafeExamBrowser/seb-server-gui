@@ -11,16 +11,12 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { useSupervisorNames } from "./composables/api/useSupervisorNames";
+import { useSupervisors } from "./composables/api/useSupervisors";
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 
-const {
-    data: supervisors,
-    loading,
-    error: errorLoading,
-} = useSupervisorNames();
+const { data: supervisors, loading, error: errorLoading } = useSupervisors();
 
 const errors = computed(() => {
     if (loading.value) {
