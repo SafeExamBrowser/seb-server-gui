@@ -4,10 +4,10 @@
         :subtitle="$t('createTemplateExam.steps.supervisors.subtitle')"
     >
         <LoadingFallbackComponent :loading="loading" :errors="errors">
-            <SupervisorsAvailable
-                v-if="availableSupervisors"
-                :supervisors="availableSupervisors"
-                @select="handleSupervisorSelected"
+            <SupervisorPicker
+                v-if="supervisors"
+                v-model="stepSupervisorsStore.selectedSupervisorIds"
+                :supervisors="supervisors"
             />
         </LoadingFallbackComponent>
     </StepItem>
@@ -18,7 +18,7 @@ import { computed } from "vue";
 import { useSupervisors } from "./composables/api/useSupervisors";
 import { useI18n } from "vue-i18n";
 import { useStepSupervisorsStore } from "./composables/store/useStepSupervisorsStore";
-import SupervisorsAvailable from "./components/SupervisorsAvailable.vue";
+import SupervisorPicker from "./components/SupervisorPicker.vue";
 
 const { t } = useI18n();
 const stepSupervisorsStore = useStepSupervisorsStore();
@@ -36,17 +36,4 @@ const errors = computed(() => {
             : undefined,
     ].filter((error) => error !== undefined);
 });
-
-const availableSupervisors = computed(() =>
-    supervisors.value?.filter(
-        (supervisor) =>
-            !stepSupervisorsStore.selectedSupervisorIds.includes(
-                supervisor.modelId,
-            ),
-    ),
-);
-
-const handleSupervisorSelected = (supervisorId: string) => {
-    stepSupervisorsStore.addSelectedSupervisorId(supervisorId);
-};
 </script>

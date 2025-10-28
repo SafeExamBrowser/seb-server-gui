@@ -14,20 +14,8 @@ export const useStepSupervisorsStore = defineStore("stepSupervisors", () => {
         () => selectedSupervisorIds.value.length > 0,
     );
 
-    const addSelectedSupervisorId = (supervisorId: string) => {
-        if (selectedSupervisorIds.value.includes(supervisorId)) {
-            throw new Error("Supervisor already selected");
-        }
-
-        selectedSupervisorIds.value = [
-            ...selectedSupervisorIds.value,
-            supervisorId,
-        ];
-    };
-
     return {
         isReady,
         selectedSupervisorIds,
-        addSelectedSupervisorId,
     };
 });
