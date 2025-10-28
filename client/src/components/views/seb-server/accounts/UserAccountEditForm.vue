@@ -1,17 +1,29 @@
 <template>
-    <div
-        v-if="!isProfile"
-        class="text-white text-h5 font-weight-black ml-10 mt-5"
-        data-testid="editUserAccount-page-title"
-    >
-        {{ translate("titles.settings") }}
-    </div>
+    <template v-if="!isProfile">
+        <div
+            class="text-white text-h5 font-weight-black ml-10 mt-5"
+            data-testid="editUserAccount-page-title"
+        >
+            {{ translate("titles.settings") }}
+        </div>
+    </template>
+    <template v-else>
+        <div class="text-white text-h5 font-weight-black ml-10 mt-5 invisible">
+            {{ translate("titles.profileSettings") }}
+        </div>
+    </template>
 
     <v-row class="mt-10 w-98 h-100">
-        <SettingsNavigation
-            v-if="!isProfile"
-            data-testid="editUserAccount-settingsNavigation-component"
-        />
+        <template v-if="!isProfile">
+            <SettingsNavigation
+                data-testid="editUserAccount-settingsNavigation-component"
+            />
+        </template>
+
+        <!-- Show empty v-col instead when isProfile -->
+        <template v-else>
+            <v-col class="pt-0 h-100" cols="3"></v-col>
+        </template>
 
         <v-col
             class="bg-white rounded-lg"
@@ -1083,5 +1095,9 @@ async function changeUserPassword() {
 
 .no-pointer-events {
     pointer-events: none;
+}
+
+.invisible {
+    visibility: hidden;
 }
 </style>
