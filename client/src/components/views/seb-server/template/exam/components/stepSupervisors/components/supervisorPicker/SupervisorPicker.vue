@@ -23,10 +23,7 @@
 import ListTitle from "./components/ListTitle.vue";
 import List from "./components/List.vue";
 import { UserAccountName } from "@/models/userAccount";
-import { computed } from "vue";
-import { useI18n } from "vue-i18n";
-
-const { t } = useI18n();
+import { usePicker } from "@/components/views/seb-server/template/exam/components/stepSupervisors/components/supervisorPicker/composables/usePicker";
 
 const props = defineProps<{
     supervisors: UserAccountName[];
@@ -36,45 +33,12 @@ const supervisorIdsSelected = defineModel<string[]>({
     required: true,
 });
 
-const titleSupervisorsAvailable = computed(() =>
-    t("createTemplateExam.steps.supervisors.labelSupervisorsAvailable"),
-);
-
-const titleSupervisorsSelected = computed(() =>
-    t("createTemplateExam.steps.supervisors.labelSupervisorsSelected"),
-);
-
-const supervisorsAvailable = computed(() =>
-    props.supervisors.filter(
-        (supervisor) =>
-            !supervisorIdsSelected.value.includes(supervisor.modelId),
-    ),
-);
-
-const supervisorsSelected = computed(() =>
-    props.supervisors.filter((supervisor) =>
-        supervisorIdsSelected.value.includes(supervisor.modelId),
-    ),
-);
-
-const handleSupervisorSelected = (supervisorId: string) => {
-    if (supervisorIdsSelected.value.includes(supervisorId)) {
-        throw new Error("Supervisor already selected");
-    }
-
-    supervisorIdsSelected.value = [
-        ...supervisorIdsSelected.value,
-        supervisorId,
-    ];
-};
-
-const handleSupervisorUnselected = (supervisorId: string) => {
-    if (!supervisorIdsSelected.value.includes(supervisorId)) {
-        throw new Error("Supervisor not selected");
-    }
-
-    supervisorIdsSelected.value = [
-        ...supervisorIdsSelected.value.filter((id) => id !== supervisorId),
-    ];
-};
+const {
+    titleSupervisorsAvailable,
+    titleSupervisorsSelected,
+    supervisorsAvailable,
+    supervisorsSelected,
+    handleSupervisorSelected,
+    handleSupervisorUnselected,
+} = usePicker(props.supervisors, supervisorIdsSelected);
 </script>
