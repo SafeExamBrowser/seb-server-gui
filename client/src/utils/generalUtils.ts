@@ -116,15 +116,7 @@ export function hasLMSFeature(
 }
 
 export function stringToBoolean(booleanValue: string): boolean {
-    if (booleanValue === "true") {
-        return true;
-    }
-
-    if (booleanValue === "false") {
-        return false;
-    }
-
-    return false;
+    return booleanValue === "true" || booleanValue === "True" || booleanValue === "TRUE";
 }
 
 export function wait(ms: number) {

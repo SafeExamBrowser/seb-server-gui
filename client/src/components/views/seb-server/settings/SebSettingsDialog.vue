@@ -28,13 +28,8 @@
         </v-row>
 
         <v-row>
-            <v-card-text>
-                <v-tabs
-                    v-model="currentTab"
-                    align-tabs="center"
-                    class="mb-4"
-                    color="primary"
-                >
+            <v-col>
+                <v-tabs v-model="currentTab" show-arrows="always" center-active>
                     <v-tab
                         v-for="tab in tabs"
                         :key="tab.value"
@@ -42,7 +37,10 @@
                         >{{ tab.title }}</v-tab
                     >
                 </v-tabs>
-
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col>
                 <v-tabs-window v-model="currentTab">
                     <v-tabs-window-item
                         v-for="tab in tabs"
@@ -54,29 +52,29 @@
                         </v-card>
                     </v-tabs-window-item>
                 </v-tabs-window>
-            </v-card-text>
+            </v-col>
         </v-row>
 
         <v-row align="center">
             <v-col align="right">
                 <v-btn
                     color="black"
-                    :disabled="sebSettingsStore.readonly"
                     rounded="sm"
                     variant="outlined"
-                    @click="emit('closeSebSettingsDialog', true)"
+                    @click="emit('closeSebSettingsDialog', false)"
                 >
-                    Save Settings
+                    {{ translate("general.cancelButton") }}
                 </v-btn>
 
                 <v-btn
                     class="ml-2"
                     color="primary"
+                    :disabled="sebSettingsStore.readonly"
                     rounded="sm"
                     variant="flat"
-                    @click="emit('closeSebSettingsDialog', false)"
+                    @click="emit('closeSebSettingsDialog', true)"
                 >
-                    Cancel Changes
+                    {{ translate("general.saveButton") }}
                 </v-btn>
             </v-col>
         </v-row>
@@ -90,6 +88,14 @@ import SebSettingsNetwork from "@/components/views/seb-server/settings/SebSettin
 import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 import SebSettingsGeneral from "./SebSettingsGeneral.vue";
 import { GUIAction, useAbilities } from "@/services/ability";
+import SebSettingsUserInterface from "./SebSettingsUserInterface.vue";
+import SebSettingsBrowser from "./SebSettingsBrowser.vue";
+import SebSettingsDownUploads from "./SebSettingsDownUploads.vue";
+import SebSettingsExam from "./SebSettingsExam.vue";
+import SebSettingsSecurity from "./SebSettingsSecurity.vue";
+import SebSettingsRegistry from "./SebSettingsRegistry.vue";
+import SebSettingsHookedKeys from "./SebSettingsHookedKeys.vue";
+import SebSettingsProctoring from "./SebSettingsProctoring.vue";
 import { ref, markRaw } from "vue";
 import type { Component } from "vue";
 
@@ -111,14 +117,54 @@ const tabs: { title: string; value: number; component: Component }[] =
                   component: markRaw(SebSettingsGeneral),
               },
               {
-                  title: translate("sebSettings.views.apps"),
+                  title: translate("sebSettings.views.userInterface"),
                   value: 2,
+                  component: markRaw(SebSettingsUserInterface),
+              },
+              {
+                  title: translate("sebSettings.views.browser"),
+                  value: 3,
+                  component: markRaw(SebSettingsBrowser),
+              },
+              {
+                  title: translate("sebSettings.views.downUploads"),
+                  value: 4,
+                  component: markRaw(SebSettingsDownUploads),
+              },
+              {
+                  title: translate("sebSettings.views.exam"),
+                  value: 5,
+                  component: markRaw(SebSettingsExam),
+              },
+              {
+                  title: translate("sebSettings.views.apps"),
+                  value: 6,
                   component: markRaw(SebSettingsApplications),
               },
               {
                   title: translate("sebSettings.views.network"),
-                  value: 3,
+                  value: 7,
                   component: markRaw(SebSettingsNetwork),
+              },
+              {
+                  title: translate("sebSettings.views.security"),
+                  value: 8,
+                  component: markRaw(SebSettingsSecurity),
+              },
+              {
+                  title: translate("sebSettings.views.registry"),
+                  value: 9,
+                  component: markRaw(SebSettingsRegistry),
+              },
+              {
+                  title: translate("sebSettings.views.hookedKeys"),
+                  value: 10,
+                  component: markRaw(SebSettingsHookedKeys),
+              },
+              {
+                  title: translate("sebSettings.views.proctoring"),
+                  value: 11,
+                  component: markRaw(SebSettingsProctoring),
               },
           ]
         : [

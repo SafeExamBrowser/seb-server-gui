@@ -24,32 +24,28 @@
                     <v-form>
                         <!------------ active ------------->
                         <v-row align="center">
-                            <v-col class="pt-0 pb-0">
-                                {{
-                                    translate(
-                                        "examDetail.sebSettings.networkView.URLFilterRules.active",
-                                    )
-                                }}
-                            </v-col>
-                            <v-col class="pt-0 pb-0"
+                            <v-col class="pt-0 pb-0 pl-0"
                                 ><v-checkbox-btn
                                     v-model="props.urlFilterRule!.active"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.URLFilterRules.active',
+                                        )
+                                    "
                                     :disabled="props.readOnly"
                                 ></v-checkbox-btn>
                             </v-col>
                         </v-row>
                         <!------------regex------------->
                         <v-row align="center">
-                            <v-col class="pt-0 pb-0">
-                                {{
-                                    translate(
-                                        "sebSettings.networkView.URLFilterRules.regex",
-                                    )
-                                }}
-                            </v-col>
-                            <v-col class="pt-0 pb-0"
+                            <v-col class="pt-0 pb-0 pl-0"
                                 ><v-checkbox-btn
                                     v-model="props.urlFilterRule!.regex"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.URLFilterRules.regex',
+                                        )
+                                    "
                                     :disabled="props.readOnly"
                                 ></v-checkbox-btn>
                             </v-col>
@@ -57,19 +53,16 @@
                         <!------------Expression------------->
                         <v-row>
                             <v-col>
-                                {{
-                                    translate(
-                                        "sebSettings.networkView.URLFilterRules.expression",
-                                    )
-                                }}
-                            </v-col>
-                            <v-col>
                                 <v-text-field
                                     v-model="props.urlFilterRule!.expression"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.URLFilterRules.expression',
+                                        )
+                                    "
                                     density="compact"
                                     :disabled="props.readOnly"
                                     hide-details
-                                    single-line
                                     variant="outlined"
                                 >
                                 </v-text-field>
@@ -78,16 +71,14 @@
                         <!------------Action------------->
                         <v-row align="center">
                             <v-col>
-                                {{
-                                    translate(
-                                        "sebSettings.networkView.URLFilterRules.action",
-                                    )
-                                }}
-                            </v-col>
-                            <v-col>
                                 <v-select
                                     v-model="props.urlFilterRule!.action"
                                     density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.URLFilterRules.action',
+                                        )
+                                    "
                                     :disabled="props.readOnly"
                                     hide-details
                                     :items="actionItems"

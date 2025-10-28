@@ -153,6 +153,7 @@
                                             density="compact"
                                             item-title="label"
                                             item-value="value"
+                                            disabled
                                             :items="lmsTypeItems"
                                             :label="
                                                 translate(
@@ -920,8 +921,10 @@ async function onSave() {
 
     // If fields changed, validate; status-only skips validation
     if (fieldsChanged) {
-        const { valid } = await formRef.value!.validate();
-        if (!valid || isSaveDisabled.value) return;
+        if (formRef.value != null) {
+            const { valid } = await formRef.value.validate();
+            if (!valid || isSaveDisabled.value) return;
+        }
     }
 
     isSaving.value = true;
