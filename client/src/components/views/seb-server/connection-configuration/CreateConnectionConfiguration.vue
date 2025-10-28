@@ -895,7 +895,6 @@ onBeforeUnmount(() => {
     layoutStore.setBlueBackground(false);
 });
 async function submit() {
-
     const _formRef = formRef.value;
     if (_formRef != null) {
         const { valid } = await _formRef.validate();

@@ -54,7 +54,6 @@ export default defineConfig([
 
             // TODO Alain
             "vue/multi-word-component-names": "off",
-
         },
     },
 

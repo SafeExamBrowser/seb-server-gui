@@ -569,11 +569,15 @@ const browserViewModeVal = ref<string>("0");
 const touchOptimizedVal = ref<boolean>(false);
 
 const mainBrowserWindowWidthVal = ref<string>("100%");
-const mainBrowserWindowWidthItems = ref<{ title: string, value: string}[]>([]);
+const mainBrowserWindowWidthItems = ref<{ title: string; value: string }[]>([]);
 const mainBrowserWindowHeightVal = ref<string>("100%");
-const mainBrowserWindowHeightItems = ref<{ title: string, value: string}[]>([]);
+const mainBrowserWindowHeightItems = ref<{ title: string; value: string }[]>(
+    [],
+);
 const mainBrowserWindowPositioningVal = ref<string>("Center");
-const mainBrowserWindowPositioningItems = ref<{ title: string, value: string}[]>([]);
+const mainBrowserWindowPositioningItems = ref<
+    { title: string; value: string }[]
+>([]);
 
 const enableBrowserWindowToolbarVal = ref<boolean>(false);
 const browserWindowAllowAddressBarVal = ref<boolean>(false);
@@ -655,7 +659,10 @@ onBeforeMount(async () => {
     touchOptimized = getSingleValue(singleValues, "touchOptimized");
     touchOptimizedVal.value = stringToBoolean(touchOptimized.value);
 
-    mainBrowserWindowWidth = getSingleValue(singleValues, "mainBrowserWindowWidth");
+    mainBrowserWindowWidth = getSingleValue(
+        singleValues,
+        "mainBrowserWindowWidth",
+    );
     mainBrowserWindowWidthVal.value = mainBrowserWindowWidth.value;
     attributes
         .get("mainBrowserWindowWidth")
@@ -666,7 +673,10 @@ onBeforeMount(async () => {
                 value: item,
             });
         });
-    mainBrowserWindowHeight = getSingleValue(singleValues, "mainBrowserWindowHeight");
+    mainBrowserWindowHeight = getSingleValue(
+        singleValues,
+        "mainBrowserWindowHeight",
+    );
     mainBrowserWindowHeightVal.value = mainBrowserWindowHeight.value;
     attributes
         .get("mainBrowserWindowHeight")
@@ -677,7 +687,8 @@ onBeforeMount(async () => {
                 value: item,
             });
         });
-    mainBrowserWindowPositioning = getSingleValue(singleValues, 
+    mainBrowserWindowPositioning = getSingleValue(
+        singleValues,
         "mainBrowserWindowPositioning",
     );
     mainBrowserWindowPositioningVal.value = mainBrowserWindowPositioning.value;
@@ -694,29 +705,38 @@ onBeforeMount(async () => {
             });
         });
 
-    enableBrowserWindowToolbar = getSingleValue(singleValues, 
+    enableBrowserWindowToolbar = getSingleValue(
+        singleValues,
         "enableBrowserWindowToolbar",
     );
     enableBrowserWindowToolbarVal.value = stringToBoolean(
         enableBrowserWindowToolbar.value,
     );
-    browserWindowAllowAddressBar = getSingleValue(singleValues, 
+    browserWindowAllowAddressBar = getSingleValue(
+        singleValues,
         "browserWindowAllowAddressBar",
     );
     browserWindowAllowAddressBarVal.value = stringToBoolean(
         browserWindowAllowAddressBar.value,
     );
-    newBrowserWindowAllowAddressBar = getSingleValue(singleValues, 
+    newBrowserWindowAllowAddressBar = getSingleValue(
+        singleValues,
         "newBrowserWindowAllowAddressBar",
     );
     newBrowserWindowAllowAddressBarVal.value = stringToBoolean(
         newBrowserWindowAllowAddressBar.value,
     );
-    allowDeveloperConsole = getSingleValue(singleValues, "allowDeveloperConsole");
+    allowDeveloperConsole = getSingleValue(
+        singleValues,
+        "allowDeveloperConsole",
+    );
     allowDeveloperConsoleVal.value = stringToBoolean(
         allowDeveloperConsole.value,
     );
-    hideBrowserWindowToolbar = getSingleValue(singleValues, "hideBrowserWindowToolbar");
+    hideBrowserWindowToolbar = getSingleValue(
+        singleValues,
+        "hideBrowserWindowToolbar",
+    );
     hideBrowserWindowToolbarVal.value = stringToBoolean(
         hideBrowserWindowToolbar.value,
     );
@@ -729,7 +749,8 @@ onBeforeMount(async () => {
     showSideMenuVal.value = stringToBoolean(showSideMenu.value);
     raiseHandButtonShow = getSingleValue(singleValues, "raiseHandButtonShow");
     raiseHandButtonShowVal.value = stringToBoolean(raiseHandButtonShow.value);
-    raiseHandButtonAlwaysPromptMessage = getSingleValue(singleValues, 
+    raiseHandButtonAlwaysPromptMessage = getSingleValue(
+        singleValues,
         "raiseHandButtonAlwaysPromptMessage",
     );
     raiseHandButtonAlwaysPromptMessageVal.value = stringToBoolean(
@@ -770,10 +791,13 @@ async function saveSingleValue(valId: number, value: string) {
 //     }
 // }
 
-function getSingleValue(singleValues: Map<string, SEBSettingsValue>, name: string): SEBSettingsValue {
+function getSingleValue(
+    singleValues: Map<string, SEBSettingsValue>,
+    name: string,
+): SEBSettingsValue {
     const value = singleValues.get(name);
     if (!value) {
-        throw new Error ("No Single Value" + name + " found");
+        throw new Error("No Single Value" + name + " found");
     }
 
     return value;
