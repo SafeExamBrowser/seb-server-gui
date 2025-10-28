@@ -16,7 +16,7 @@ type ClientOSLimited = (typeof clientOSLimitedValues)[number];
 
 export type ClientGroupTransient = {
     id: number;
-    name: string;
+    name?: string;
     screenProctoringEnabled: boolean;
     type?:
         | ClientGroupEnum.IP_V4_RANGE
