@@ -20,8 +20,8 @@
 </template>
 
 <script setup lang="ts">
-import ListTitle from "./ListTitle.vue";
-import List from "./List.vue";
+import ListTitle from "./components/ListTitle.vue";
+import List from "./components/List.vue";
 import { UserAccountName } from "@/models/userAccount";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
