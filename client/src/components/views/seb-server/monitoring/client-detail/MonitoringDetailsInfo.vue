@@ -27,19 +27,20 @@
     <v-row style="background-color: #fffffe">
         <!-- User Name -->
         <v-col cols="12" md="3">
-            <!-- Name split across lines -->
-            <div v-if="nameParts.length" class="top-container ml-10">
+            <div
+                v-if="nameParts.length"
+                class="top-container ml-10 d-flex align-center flex-nowrap"
+            >
                 <div
                     v-for="(part, index) in nameParts"
                     :key="index"
-                    class="name-part"
+                    class="name-part mr-2"
                 >
                     {{ part }}
                 </div>
             </div>
         </v-col>
 
-        <!--TODO check with christina on design -->
         <v-col class="user-info-col" cols="12" md="3">
             <div class="top-container">
                 <!-- Status -->
@@ -50,18 +51,15 @@
                         max-width="130"
                         variant="flat"
                     >
-                        <v-row>
-                            <v-col class="text-body-3">
+                        <div class="status-row">
+                            <span class="status-label text-body-3">
                                 {{ translate(currentStatus) }}
-                            </v-col>
-                            <v-col align="right">
-                                <v-icon
-                                    :icon="
-                                        getConnectionStatusIcon(currentStatus)
-                                    "
-                                ></v-icon>
-                            </v-col>
-                        </v-row>
+                            </span>
+                            <v-icon
+                                :icon="getConnectionStatusIcon(currentStatus)"
+                                size="18"
+                            />
+                        </div>
                     </v-card>
                 </div>
 
@@ -84,9 +82,9 @@
                     <v-chip
                         v-for="(info, index) in sebInfoParts"
                         :key="index"
-                        class="mr-1 mb-1 text-body-3"
+                        class="mr-1 mb-1 text-body-3 info-chip"
                         size="default"
-                        variant="outlined"
+                        variant="text"
                     >
                         {{ info }}
                     </v-chip>
@@ -451,7 +449,7 @@ const indicatorTypeConfig: Record<
 }
 
 .name-part {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: bold;
     color: #215caf;
 }
@@ -461,8 +459,26 @@ const indicatorTypeConfig: Record<
     font-size: 0.95rem;
 }
 
+.status-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+.status-label {
+    line-height: 1;
+}
+
 /* indicators */
 .indicator-item span {
     font-size: 1.1rem;
+}
+
+.info-chip {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 0.25rem;
+    --v-theme-overlay-multiplier: 0;
 }
 </style>

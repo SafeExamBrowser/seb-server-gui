@@ -153,6 +153,7 @@
                                             density="compact"
                                             item-title="label"
                                             item-value="value"
+                                            disabled
                                             :items="lmsTypeItems"
                                             :label="
                                                 translate(
