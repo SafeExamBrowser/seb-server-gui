@@ -14,12 +14,14 @@ export const useTable = () => {
                 "createTemplateExam.steps.clientGroup.fields.name.label",
             ),
             value: "name",
+            width: "40%",
         },
         {
             title: i18n.global.t(
                 "createTemplateExam.steps.clientGroup.fields.type.label",
             ),
             value: "type",
+            width: "40%",
         },
         screenProctoringStore.enabled
             ? {
@@ -27,6 +29,7 @@ export const useTable = () => {
                       "createTemplateExam.steps.clientGroup.fields.screenProctoringEnabled.label",
                   ),
                   value: "screenProctoringEnabled",
+                  width: "10%",
               }
             : undefined,
         {
@@ -35,6 +38,7 @@ export const useTable = () => {
             ),
             value: "actions",
             align: "end" as const,
+            width: "10%",
         },
     ].filter((header) => header !== undefined);
 
