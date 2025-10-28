@@ -293,7 +293,7 @@
             },
             "supervisors": {
                 "title": "Add Exam Supervisors",
-                "subtitle": "TODO: translate (Kristina)"
+                "subtitle": "Select or remove Exam Supervisors"
             },
             "indicators": {
                 "title": "Add Indicators",
