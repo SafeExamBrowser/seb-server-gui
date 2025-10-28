@@ -4,7 +4,7 @@
         :subtitle="$t('createTemplateExam.steps.supervisors.subtitle')"
     >
         <LoadingFallbackComponent :loading="loading" :errors="errors">
-            <SupervisorsPicker
+            <SupervisorsAvailable
                 v-if="availableSupervisors"
                 :supervisors="availableSupervisors"
                 @select="handleSupervisorSelected"
@@ -18,6 +18,7 @@ import { computed } from "vue";
 import { useSupervisors } from "./composables/api/useSupervisors";
 import { useI18n } from "vue-i18n";
 import { useStepSupervisorsStore } from "./composables/store/useStepSupervisorsStore";
+import SupervisorsAvailable from "./components/SupervisorsAvailable.vue";
 
 const { t } = useI18n();
 const stepSupervisorsStore = useStepSupervisorsStore();
