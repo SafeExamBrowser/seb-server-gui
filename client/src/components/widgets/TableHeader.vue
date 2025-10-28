@@ -1,4 +1,3 @@
-<!-- TODO @alain: this is a reusable component, move it up to the components folder -->
 <template>
     <v-container class="ma-0 pa-0 pb-6">
         <v-row>
