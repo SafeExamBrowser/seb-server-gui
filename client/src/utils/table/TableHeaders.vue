@@ -152,7 +152,7 @@ const monitoringStore = useMonitoringStore();
 // header refs
 const headerRefs = ref<Clickable[] | null>(null);
 
-//todo @Rad14nt take a look with alain potentially remove ignores on refactor
+// TODO @Rad14nt: properly type the props (use HeadersSlotProps), then remove eslint-disable comments
 // props
 const props = defineProps<{
     columns: HeadersSlotProps["columns"];
