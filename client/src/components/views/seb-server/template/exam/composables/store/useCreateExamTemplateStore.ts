@@ -8,6 +8,7 @@ import { useStepClientGroupStore } from "@/components/views/seb-server/template/
 import { useScreenProctoringStore } from "@/components/views/seb-server/template/exam/composables/store/useScreenProctoringStore";
 import i18n from "@/i18n";
 import { ExamTemplate } from "@/models/seb-server/examTemplate";
+import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
 
 const staticStepData = [
     {
@@ -110,9 +111,57 @@ export const useCreateExamTemplateStore = defineStore(
             institutionalDefault: stepNamingStore.institutionalDefault,
             lmsIntegration: stepNamingStore.lmsIntegration,
             indicatorTemplates: [],
-            CLIENT_GROUP_TEMPLATES: [],
+            CLIENT_GROUP_TEMPLATES: stepClientGroupStore.groups.map(
+                (group) => ({
+                    name: group.name,
+                    type: group.type,
+                    ipRangeStart:
+                        group.type === ClientGroupEnum.IP_V4_RANGE
+                            ? group.ipRangeStart
+                            : undefined,
+                    ipRangeEnd:
+                        group.type === ClientGroupEnum.IP_V4_RANGE
+                            ? group.ipRangeEnd
+                            : undefined,
+                    clientOS:
+                        group.type === ClientGroupEnum.CLIENT_OS
+                            ? group.clientOS
+                            : undefined,
+                    nameRangeStartLetter:
+                        group.type === ClientGroupEnum.NAME_ALPHABETICAL_RANGE
+                            ? group.nameRangeStartLetter
+                            : undefined,
+                    nameRangeEndLetter:
+                        group.type === ClientGroupEnum.NAME_ALPHABETICAL_RANGE
+                            ? group.nameRangeEndLetter
+                            : undefined,
+                }),
+            ),
             EXAM_ATTRIBUTES: {
-                enableScreenProctoring: "false",
+                enableScreenProctoring: screenProctoringStore.enabled
+                    ? "true"
+                    : "false",
+                spsCollectingStrategy: screenProctoringStore.collectionStrategy,
+                spsCollectingGroupName: screenProctoringStore.enabled
+                    ? screenProctoringStore.collectionStrategy === "EXAM"
+                        ? i18n.global.t(
+                              "createTemplateExam.steps.clientGroup.screenProctoringSingleGroupName",
+                          )
+                        : i18n.global.t(
+                              "createTemplateExam.steps.clientGroup.screenProctoringFallbackGroupName",
+                          )
+                    : undefined,
+                spsSEBGroupsSelection:
+                    screenProctoringStore.screenProctoringAllowedForGroups
+                        ? stepClientGroupStore.groups
+                              .map((group, index) =>
+                                  group.screenProctoringEnabled
+                                      ? index.toString()
+                                      : undefined,
+                              )
+                              .filter(Boolean)
+                              .join(",")
+                        : undefined,
             },
         }));
 
