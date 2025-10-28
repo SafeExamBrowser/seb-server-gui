@@ -3,25 +3,35 @@
         :title="$t('createTemplateExam.steps.supervisors.title')"
         :subtitle="$t('createTemplateExam.steps.supervisors.subtitle')"
     >
-        <LoadingFallbackComponent
-            :loading="loading"
-            :errors="error ? [error] : []"
-        >
-            <!-- TODO @alain: do this properly -->
-            <ul>
-                <li
-                    v-for="supervisor in supervisorNames"
-                    :key="supervisor.modelId"
-                >
-                    {{ supervisor.name }}
-                </li>
-            </ul>
+        <LoadingFallbackComponent :loading="loading" :errors="errors">
+            <SupervisorsPicker v-if="supervisors" :supervisors="supervisors" />
         </LoadingFallbackComponent>
     </StepItem>
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import { useSupervisorNames } from "./composables/api/useSupervisorNames";
+import { useI18n } from "vue-i18n";
 
-const { data: supervisorNames, loading, error } = useSupervisorNames();
+const { t } = useI18n();
+
+const {
+    data: supervisors,
+    loading,
+    error: errorLoading,
+} = useSupervisorNames();
+
+const errors = computed(() => {
+    if (loading.value) {
+        return undefined;
+    }
+
+    return [
+        errorLoading.value ? errorLoading.value : undefined,
+        supervisors.value && supervisors.value.length <= 1
+            ? t("general.noData")
+            : undefined,
+    ].filter((error) => error !== undefined);
+});
 </script>
