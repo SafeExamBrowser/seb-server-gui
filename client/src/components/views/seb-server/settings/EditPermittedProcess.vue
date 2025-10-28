@@ -642,8 +642,7 @@ const osItems = [
 ];
 
 onBeforeMount(async () => {
-    if (props.permittedProcess == null) 
-        return;
+    if (props.permittedProcess == null) return;
 
     argumentsTable.value.splice(0);
     props.permittedProcess.arguments.forEach((item) => {
@@ -652,8 +651,7 @@ onBeforeMount(async () => {
 });
 
 function deleteArgument(index: number) {
-    if (props.permittedProcess == null) 
-        return;
+    if (props.permittedProcess == null) return;
 
     let args = props.permittedProcess.arguments;
     args.splice(index, 1);
@@ -664,8 +662,7 @@ function deleteArgument(index: number) {
 }
 
 function addArgument() {
-    if (props.permittedProcess == null) 
-        return;
+    if (props.permittedProcess == null) return;
 
     let args = props.permittedProcess.arguments;
     args.push({ active: false, argument: "" });

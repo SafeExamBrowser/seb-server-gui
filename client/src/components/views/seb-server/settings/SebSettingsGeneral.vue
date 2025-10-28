@@ -180,10 +180,8 @@ import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums";
 import { ref, onBeforeMount } from "vue";
 import {
-
     SEBSettingsValue,
     SEBSettingsView,
-
 } from "@/models/seb-server/sebSettings";
 
 const i18n = useI18n();
@@ -324,10 +322,13 @@ async function saveQuitPassword(
     }
 }
 
-function getSingleValue(singleValues: Map<string, SEBSettingsValue>, name: string): SEBSettingsValue {
+function getSingleValue(
+    singleValues: Map<string, SEBSettingsValue>,
+    name: string,
+): SEBSettingsValue {
     const value = singleValues.get(name);
     if (!value) {
-        throw new Error ("No Single Value" + name + " found");
+        throw new Error("No Single Value" + name + " found");
     }
 
     return value;
