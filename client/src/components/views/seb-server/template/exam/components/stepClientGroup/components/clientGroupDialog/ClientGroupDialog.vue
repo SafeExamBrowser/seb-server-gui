@@ -93,10 +93,7 @@ const handleCancelClick = () => {
 const handleFormSubmit = () => {
     emit(
         "submit",
-        clientGroupTransientToClientGroup(
-            clientGroupTransient.value,
-            isValid.value,
-        ),
+        clientGroupTransientToClientGroup(clientGroupTransient.value),
     );
     isDialogOpen.value = false;
 };

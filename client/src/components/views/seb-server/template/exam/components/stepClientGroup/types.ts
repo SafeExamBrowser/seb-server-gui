@@ -1,7 +1,18 @@
+import { z } from "zod";
 import {
     ClientGroupEnum,
     ClientOSEnum,
 } from "@/models/seb-server/clientGroupEnum";
+
+export const clientOSLimitedValues = [
+    ClientOSEnum.WINDOWS,
+    ClientOSEnum.MAC_OS,
+    ClientOSEnum.I_OS,
+    ClientOSEnum.IPAD_OS,
+    ClientOSEnum.I_OS_OR_IPAD_OS,
+] as const;
+
+type ClientOSLimited = (typeof clientOSLimitedValues)[number];
 
 export type ClientGroupTransient = {
     id: number;
@@ -13,31 +24,35 @@ export type ClientGroupTransient = {
         | ClientGroupEnum.NAME_ALPHABETICAL_RANGE;
     ipRangeStart?: string;
     ipRangeEnd?: string;
-    clientOS?: ClientOSEnum;
+    clientOS?: ClientOSLimited;
     nameRangeStartLetter?: string;
     nameRangeEndLetter?: string;
 };
 
-export type ClientGroup = {
-    id: number;
-    name: string;
-    screenProctoringEnabled: boolean;
-} & (
-    | {
-          type: ClientGroupEnum.IP_V4_RANGE;
-          ipRangeStart: string;
-          ipRangeEnd: string;
-      }
-    | {
-          type: ClientGroupEnum.CLIENT_OS;
-          clientOS: ClientOSEnum;
-      }
-    | {
-          type: ClientGroupEnum.NAME_ALPHABETICAL_RANGE;
-          nameRangeStartLetter: string;
-          nameRangeEndLetter: string;
-      }
-);
+const clientGroupSchemaBase = z.object({
+    id: z.number(),
+    name: z.string(),
+    screenProctoringEnabled: z.boolean(),
+});
+
+const clientGroupSchema = z.discriminatedUnion("type", [
+    clientGroupSchemaBase.extend({
+        type: z.literal(ClientGroupEnum.IP_V4_RANGE),
+        ipRangeStart: z.string(),
+        ipRangeEnd: z.string(),
+    }),
+    clientGroupSchemaBase.extend({
+        type: z.literal(ClientGroupEnum.CLIENT_OS),
+        clientOS: z.enum(clientOSLimitedValues),
+    }),
+    clientGroupSchemaBase.extend({
+        type: z.literal(ClientGroupEnum.NAME_ALPHABETICAL_RANGE),
+        nameRangeStartLetter: z.string(),
+        nameRangeEndLetter: z.string(),
+    }),
+]);
+
+export type ClientGroup = z.infer<typeof clientGroupSchema>;
 
 export type ClientGroupForTable =
     | ClientGroup
@@ -52,15 +67,13 @@ export type ClientGroupForTable =
 
 export const clientGroupTransientToClientGroup = (
     clientGroupTransient: ClientGroupTransient,
-    isValid: boolean,
 ): ClientGroup => {
-    const { ...clientGroup } = clientGroupTransient;
-
-    if (isValid === false) {
-        throw new Error("Client group transient is not a valid client group!");
-    }
-
-    // we trust the validation flag as this passed through the form validation rules
-    // TODO @alain: consider using https://github.com/colinhacks/zod for this for more safety
-    return clientGroup as ClientGroup;
+    // zod.parse does two things here:
+    // 1. validate the schema:
+    //    - throws an error if clientGroupTransient is not a valid clientGroup
+    //    - this should never happen in practice, because of the form validation
+    //    - this will catch errors in the form validation
+    // 2. strip superfluous properties:
+    //    - e.g. remove `clientOS` if `type` is not `ClientGroupEnum.CLIENT_OS`
+    return clientGroupSchema.parse(clientGroupTransient);
 };
