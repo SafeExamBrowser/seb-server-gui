@@ -293,7 +293,9 @@
             },
             "supervisors": {
                 "title": "Add Exam Supervisors",
-                "subtitle": "Select or remove Exam Supervisors"
+                "subtitle": "Select or remove Exam Supervisors",
+                "labelSupervisorsAvailable": "Available Supervisors",
+                "labelSupervisorsSelected": "Selected Supervisors"
             },
             "indicators": {
                 "title": "Add Indicators",

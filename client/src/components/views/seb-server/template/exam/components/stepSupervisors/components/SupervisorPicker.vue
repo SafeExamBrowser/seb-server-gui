@@ -1,17 +1,34 @@
 <template>
-    <!-- TODO @alain: proper layout -->
-    <div>
-        <h3>Available supervisors:</h3>
-        <SupervisorList
-            :supervisors="supervisorsAvailable"
-            @select="handleSupervisorSelected"
-        />
-        <h3>Selected supervisors:</h3>
-        <SupervisorList
-            :supervisors="supervisorsSelected"
-            @select="handleSupervisorUnselected"
-        />
-    </div>
+    <v-container clas="ma-0 pa-0">
+        <v-row>
+            <v-col cols="6">
+                <h4 class="text-subtitle-1 font-weight-medium">
+                    {{
+                        $t(
+                            "createTemplateExam.steps.supervisors.labelSupervisorsAvailable",
+                        )
+                    }}
+                </h4>
+                <SupervisorList
+                    :supervisors="supervisorsAvailable"
+                    @select="handleSupervisorSelected"
+                />
+            </v-col>
+            <v-col cols="6">
+                <h4 class="text-subtitle-1 font-weight-medium">
+                    {{
+                        $t(
+                            "createTemplateExam.steps.supervisors.labelSupervisorsSelected",
+                        )
+                    }}
+                </h4>
+                <SupervisorList
+                    :supervisors="supervisorsSelected"
+                    @select="handleSupervisorUnselected"
+                />
+            </v-col>
+        </v-row>
+    </v-container>
 </template>
 
 <script setup lang="ts">
