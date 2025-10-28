@@ -642,24 +642,35 @@ const osItems = [
 ];
 
 onBeforeMount(async () => {
+    if (props.permittedProcess == null) 
+        return;
+
     argumentsTable.value.splice(0);
-    props.permittedProcess!.arguments.forEach((item) => {
+    props.permittedProcess.arguments.forEach((item) => {
         argumentsTable.value.push(item);
     });
 });
 
 function deleteArgument(index: number) {
-    props.permittedProcess!.arguments.splice(index, 1);
+    if (props.permittedProcess == null) 
+        return;
+
+    let args = props.permittedProcess.arguments;
+    args.splice(index, 1);
     argumentsTable.value.splice(0);
-    props.permittedProcess!.arguments.forEach((item) => {
+    props.permittedProcess.arguments.forEach((item) => {
         argumentsTable.value.push(item);
     });
 }
 
 function addArgument() {
-    props.permittedProcess!.arguments.push({ active: false, argument: "" });
+    if (props.permittedProcess == null) 
+        return;
+
+    let args = props.permittedProcess.arguments;
+    args.push({ active: false, argument: "" });
     argumentsTable.value.splice(0);
-    props.permittedProcess!.arguments.forEach((item) => {
+    props.permittedProcess.arguments.forEach((item) => {
         argumentsTable.value.push(item);
     });
 }

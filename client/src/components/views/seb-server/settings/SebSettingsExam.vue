@@ -3,49 +3,49 @@
 </template>
 
 <script setup lang="ts">
-import * as sebSettingsService from "@/services/seb-server/component-services/sebSettingsService";
-import { useI18n } from "vue-i18n";
-import { stringToBoolean, translate } from "@/utils/generalUtils";
-import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
-import { ViewType } from "@/models/seb-server/sebSettingsEnums";
-import { ref, onBeforeMount } from "vue";
+// import * as sebSettingsService from "@/services/seb-server/component-services/sebSettingsService";
+// import { useI18n } from "vue-i18n";
+// import { stringToBoolean, translate } from "@/utils/generalUtils";
+// import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
+// import { ViewType } from "@/models/seb-server/sebSettingsEnums";
+// import { ref, onBeforeMount } from "vue";
 
-const i18n = useI18n();
-const sebSettingsStore = useSEBSettingsStore();
+// const i18n = useI18n();
+// const sebSettingsStore = useSEBSettingsStore();
 
-// the parent component identifier
-let componentId: string;
+// // the parent component identifier
+// let componentId: string;
 
-onBeforeMount(async () => {
-    if (sebSettingsStore.selectedContainerId == null) {
-        return;
-    }
+// onBeforeMount(async () => {
+//     if (sebSettingsStore.selectedContainerId == null) {
+//         return;
+//     }
 
-    componentId = sebSettingsStore.selectedContainerId.toString();
+//     componentId = sebSettingsStore.selectedContainerId.toString();
 
-    const examSettings: SEBSettingsView | null =
-        await sebSettingsService.getViewSettings(
-            ViewType.EXAM,
-            componentId,
-            sebSettingsStore.isExam,
-        );
-    if (examSettings == null) {
-        return;
-    }
-});
+//     const examSettings: SEBSettingsView | null =
+//         await sebSettingsService.getViewSettings(
+//             ViewType.EXAM,
+//             componentId,
+//             sebSettingsStore.isExam,
+//         );
+//     if (examSettings == null) {
+//         return;
+//     }
+// });
 
-async function saveSingleValue(valId: number, value: string) {
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        valId.toString(),
-        value,
-        sebSettingsStore.isExam,
-    );
-}
+// async function saveSingleValue(valId: number, value: string) {
+//     await sebSettingsService.updateSEBSettingValue(
+//         componentId,
+//         valId.toString(),
+//         value,
+//         sebSettingsStore.isExam,
+//     );
+// }
 
-async function saveOnFocusLost(focusIn: boolean, valId: number, value: string) {
-    if (!focusIn) {
-        saveSingleValue(valId, value);
-    }
-}
+// async function saveOnFocusLost(focusIn: boolean, valId: number, value: string) {
+//     if (!focusIn) {
+//         saveSingleValue(valId, value);
+//     }
+// }
 </script>

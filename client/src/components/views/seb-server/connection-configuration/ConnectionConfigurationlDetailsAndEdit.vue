@@ -1209,8 +1209,9 @@ async function onSave() {
     const fieldsChanged = isDirty.value;
     const statusWasChanged = statusChanged.value;
 
-    if (fieldsChanged) {
-        const { valid } = await formRef.value!.validate();
+    const _formRef = formRef.value;
+    if (_formRef != null && fieldsChanged) {
+        const { valid } = await _formRef.validate();
         if (!valid || isSaveDisabled.value) return;
     }
 

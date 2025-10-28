@@ -179,6 +179,12 @@ import { stringToBoolean, translate } from "@/utils/generalUtils";
 import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums";
 import { ref, onBeforeMount } from "vue";
+import {
+
+    SEBSettingsValue,
+    SEBSettingsView,
+
+} from "@/models/seb-server/sebSettings";
 
 const i18n = useI18n();
 const sebSettingsStore = useSEBSettingsStore();
@@ -189,7 +195,7 @@ const hashedAdminPasswordVal = ref<string>("");
 const adminPasswordVisible = ref<boolean>(false);
 const confirmAdminPassword = ref<string>("");
 const confirmAdminPasswordVisible = ref<boolean>(false);
-const adminPasswordRule = (v: string) => {
+const adminPasswordRule = () => {
     if (hashedAdminPasswordVal.value === confirmAdminPassword.value) {
         if (!clearValidations) {
             clearValidations = true;
@@ -200,7 +206,7 @@ const adminPasswordRule = (v: string) => {
     }
     return translate("sebSettings.pwdMismatch", i18n);
 };
-const confirmAdminPasswordRule = (v: string) => {
+const confirmAdminPasswordRule = () => {
     if (hashedAdminPasswordVal.value === confirmAdminPassword.value) {
         if (!clearValidations) {
             clearValidations = true;
@@ -218,7 +224,7 @@ const hashedQuitPasswordVal = ref<string>("");
 const quitPasswordVisible = ref<boolean>(false);
 const confirmQuitPassword = ref<string>("");
 const confirmQuitPasswordVisible = ref<boolean>(false);
-const quitPasswordRule = (v: string) => {
+const quitPasswordRule = () => {
     if (hashedQuitPasswordVal.value === confirmQuitPassword.value) {
         if (!clearValidations) {
             clearValidations = true;
@@ -229,7 +235,7 @@ const quitPasswordRule = (v: string) => {
     }
     return translate("sebSettings.pwdMismatch", i18n);
 };
-const confirmQuitPasswordRule = (v: string) => {
+const confirmQuitPasswordRule = () => {
     if (hashedQuitPasswordVal.value === confirmQuitPassword.value) {
         if (!clearValidations) {
             clearValidations = true;
@@ -274,14 +280,14 @@ onBeforeMount(async () => {
         SEBSettingsValue
     >(Object.entries(generalSettings.singleValues));
 
-    allowQuit = singleValues.get("allowQuit")!;
+    allowQuit = getSingleValue(singleValues, "allowQuit");
     allowQuitVal.value = stringToBoolean(allowQuit.value);
 
-    hashedAdminPassword = singleValues.get("hashedAdminPassword")!;
+    hashedAdminPassword = getSingleValue(singleValues, "hashedAdminPassword");
     hashedAdminPasswordVal.value = hashedAdminPassword.value;
     confirmAdminPassword.value = hashedAdminPassword.value;
 
-    hashedQuitPassword = singleValues.get("hashedQuitPassword")!;
+    hashedQuitPassword = getSingleValue(singleValues, "hashedQuitPassword");
     hashedQuitPasswordVal.value = hashedQuitPassword.value;
     confirmQuitPassword.value = hashedQuitPassword.value;
 });
@@ -316,5 +322,14 @@ async function saveQuitPassword(
     if (!focusIn && hashedQuitPasswordVal.value === confirmQuitPassword.value) {
         saveSingleValue(valId, value);
     }
+}
+
+function getSingleValue(singleValues: Map<string, SEBSettingsValue>, name: string): SEBSettingsValue {
+    const value = singleValues.get(name);
+    if (!value) {
+        throw new Error ("No Single Value" + name + " found");
+    }
+
+    return value;
 }
 </script>

@@ -895,8 +895,12 @@ onBeforeUnmount(() => {
     layoutStore.setBlueBackground(false);
 });
 async function submit() {
-    const { valid } = await formRef.value!.validate();
-    if (!valid) return;
+
+    const _formRef = formRef.value;
+    if (_formRef != null) {
+        const { valid } = await _formRef.validate();
+        if (!valid) return;
+    }
 
     const toMs = (s: number | null) =>
         s == null ? null : Math.round(Number(s) * 1000);

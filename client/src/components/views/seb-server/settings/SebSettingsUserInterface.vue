@@ -555,6 +555,11 @@ import { stringToBoolean, translate } from "@/utils/generalUtils";
 import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums";
 import { ref, onBeforeMount } from "vue";
+import {
+    SEBSettingsValue,
+    SEBSettingsView,
+    SEBSettingAttribute,
+} from "@/models/seb-server/sebSettings";
 
 const i18n = useI18n();
 const sebSettingsStore = useSEBSettingsStore();
@@ -564,11 +569,11 @@ const browserViewModeVal = ref<string>("0");
 const touchOptimizedVal = ref<boolean>(false);
 
 const mainBrowserWindowWidthVal = ref<string>("100%");
-const mainBrowserWindowWidthItems = ref<any[]>([]);
+const mainBrowserWindowWidthItems = ref<{ title: string, value: string}[]>([]);
 const mainBrowserWindowHeightVal = ref<string>("100%");
-const mainBrowserWindowHeightItems = ref<any[]>([]);
+const mainBrowserWindowHeightItems = ref<{ title: string, value: string}[]>([]);
 const mainBrowserWindowPositioningVal = ref<string>("Center");
-const mainBrowserWindowPositioningItems = ref<any[]>([]);
+const mainBrowserWindowPositioningItems = ref<{ title: string, value: string}[]>([]);
 
 const enableBrowserWindowToolbarVal = ref<boolean>(false);
 const browserWindowAllowAddressBarVal = ref<boolean>(false);
@@ -644,13 +649,13 @@ onBeforeMount(async () => {
         SEBSettingAttribute
     >(Object.entries(userSettings.attributes));
 
-    browserViewMode = singleValues.get("browserViewMode")!;
+    browserViewMode = getSingleValue(singleValues, "browserViewMode");
     browserViewModeVal.value = browserViewMode.value;
 
-    touchOptimized = singleValues.get("touchOptimized")!;
+    touchOptimized = getSingleValue(singleValues, "touchOptimized");
     touchOptimizedVal.value = stringToBoolean(touchOptimized.value);
 
-    mainBrowserWindowWidth = singleValues.get("mainBrowserWindowWidth")!;
+    mainBrowserWindowWidth = getSingleValue(singleValues, "mainBrowserWindowWidth");
     mainBrowserWindowWidthVal.value = mainBrowserWindowWidth.value;
     attributes
         .get("mainBrowserWindowWidth")
@@ -661,7 +666,7 @@ onBeforeMount(async () => {
                 value: item,
             });
         });
-    mainBrowserWindowHeight = singleValues.get("mainBrowserWindowHeight")!;
+    mainBrowserWindowHeight = getSingleValue(singleValues, "mainBrowserWindowHeight");
     mainBrowserWindowHeightVal.value = mainBrowserWindowHeight.value;
     attributes
         .get("mainBrowserWindowHeight")
@@ -672,9 +677,9 @@ onBeforeMount(async () => {
                 value: item,
             });
         });
-    mainBrowserWindowPositioning = singleValues.get(
+    mainBrowserWindowPositioning = getSingleValue(singleValues, 
         "mainBrowserWindowPositioning",
-    )!;
+    );
     mainBrowserWindowPositioningVal.value = mainBrowserWindowPositioning.value;
     attributes
         .get("mainBrowserWindowPositioning")
@@ -689,59 +694,59 @@ onBeforeMount(async () => {
             });
         });
 
-    enableBrowserWindowToolbar = singleValues.get(
+    enableBrowserWindowToolbar = getSingleValue(singleValues, 
         "enableBrowserWindowToolbar",
-    )!;
+    );
     enableBrowserWindowToolbarVal.value = stringToBoolean(
         enableBrowserWindowToolbar.value,
     );
-    browserWindowAllowAddressBar = singleValues.get(
+    browserWindowAllowAddressBar = getSingleValue(singleValues, 
         "browserWindowAllowAddressBar",
-    )!;
+    );
     browserWindowAllowAddressBarVal.value = stringToBoolean(
         browserWindowAllowAddressBar.value,
     );
-    newBrowserWindowAllowAddressBar = singleValues.get(
+    newBrowserWindowAllowAddressBar = getSingleValue(singleValues, 
         "newBrowserWindowAllowAddressBar",
-    )!;
+    );
     newBrowserWindowAllowAddressBarVal.value = stringToBoolean(
         newBrowserWindowAllowAddressBar.value,
     );
-    allowDeveloperConsole = singleValues.get("allowDeveloperConsole")!;
+    allowDeveloperConsole = getSingleValue(singleValues, "allowDeveloperConsole");
     allowDeveloperConsoleVal.value = stringToBoolean(
         allowDeveloperConsole.value,
     );
-    hideBrowserWindowToolbar = singleValues.get("hideBrowserWindowToolbar")!;
+    hideBrowserWindowToolbar = getSingleValue(singleValues, "hideBrowserWindowToolbar");
     hideBrowserWindowToolbarVal.value = stringToBoolean(
         hideBrowserWindowToolbar.value,
     );
-    showMenuBar = singleValues.get("showMenuBar")!;
+    showMenuBar = getSingleValue(singleValues, "showMenuBar");
     showMenuBarVal.value = stringToBoolean(showMenuBar.value);
 
-    showTaskBar = singleValues.get("showTaskBar")!;
+    showTaskBar = getSingleValue(singleValues, "showTaskBar");
     showTaskBarVal.value = stringToBoolean(showTaskBar.value);
-    showSideMenu = singleValues.get("showSideMenu")!;
+    showSideMenu = getSingleValue(singleValues, "showSideMenu");
     showSideMenuVal.value = stringToBoolean(showSideMenu.value);
-    raiseHandButtonShow = singleValues.get("raiseHandButtonShow")!;
+    raiseHandButtonShow = getSingleValue(singleValues, "raiseHandButtonShow");
     raiseHandButtonShowVal.value = stringToBoolean(raiseHandButtonShow.value);
-    raiseHandButtonAlwaysPromptMessage = singleValues.get(
+    raiseHandButtonAlwaysPromptMessage = getSingleValue(singleValues, 
         "raiseHandButtonAlwaysPromptMessage",
-    )!;
+    );
     raiseHandButtonAlwaysPromptMessageVal.value = stringToBoolean(
         raiseHandButtonAlwaysPromptMessage.value,
     );
-    allowWlan = singleValues.get("allowWlan")!;
+    allowWlan = getSingleValue(singleValues, "allowWlan");
     allowWlanVal.value = stringToBoolean(allowWlan.value);
-    showReloadButton = singleValues.get("showReloadButton")!;
+    showReloadButton = getSingleValue(singleValues, "showReloadButton");
     showReloadButtonVal.value = stringToBoolean(showReloadButton.value);
-    showTime = singleValues.get("showTime")!;
+    showTime = getSingleValue(singleValues, "showTime");
     showTimeVal.value = stringToBoolean(showTime.value);
-    showInputLanguage = singleValues.get("showInputLanguage")!;
+    showInputLanguage = getSingleValue(singleValues, "showInputLanguage");
     showInputLanguageVal.value = stringToBoolean(showInputLanguage.value);
 
-    enableZoomPage = singleValues.get("enableZoomPage")!;
+    enableZoomPage = getSingleValue(singleValues, "enableZoomPage");
     enableZoomPageVal.value = stringToBoolean(enableZoomPage.value);
-    enableZoomText = singleValues.get("enableZoomText")!;
+    enableZoomText = getSingleValue(singleValues, "enableZoomText");
     enableZoomTextVal.value = stringToBoolean(enableZoomText.value);
 });
 
@@ -759,9 +764,18 @@ async function saveSingleValue(valId: number, value: string) {
     );
 }
 
-async function saveOnFocusLost(focusIn: boolean, valId: number, value: string) {
-    if (!focusIn) {
-        saveSingleValue(valId, value);
+// async function saveOnFocusLost(focusIn: boolean, valId: number, value: string) {
+//     if (!focusIn) {
+//         saveSingleValue(valId, value);
+//     }
+// }
+
+function getSingleValue(singleValues: Map<string, SEBSettingsValue>, name: string): SEBSettingsValue {
+    const value = singleValues.get(name);
+    if (!value) {
+        throw new Error ("No Single Value" + name + " found");
     }
+
+    return value;
 }
 </script>
