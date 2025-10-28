@@ -1,6 +1,6 @@
 <template>
     <v-row>
-        <v-col>
+        <v-col :class="sebSettingsStore.cp">
             <v-checkbox-btn
                 v-model="urlFilterEnableVal"
                 :disabled="sebSettingsStore.readonly"
@@ -13,7 +13,7 @@
                 "
             ></v-checkbox-btn>
         </v-col>
-        <v-col>
+        <v-col :class="sebSettingsStore.cp">
             <v-checkbox-btn
                 v-model="urlFilterEnableContentFilterVal"
                 :disabled="sebSettingsStore.readonly"
@@ -152,62 +152,68 @@
     <v-row>
         <v-col>
             <v-row>
-                <v-radio-group
-                    v-model="proxySettingsPolicyVal"
-                    :disabled="sebSettingsStore.readonly"
-                    @update:model-value="
-                        saveSingleValue(
-                            proxySettingsPolicy.id,
-                            proxySettingsPolicyVal,
-                        )
-                    "
-                >
-                    <v-radio
-                        :label="
-                            translate(
-                                'sebSettings.networkView.proxySettingsPolicy.0',
+                <v-col :class="sebSettingsStore.cp">
+                    <v-radio-group
+                        v-model="proxySettingsPolicyVal"
+                        :disabled="sebSettingsStore.readonly"
+                        hide-details
+                        @update:model-value="
+                            saveSingleValue(
+                                proxySettingsPolicy.id,
+                                proxySettingsPolicyVal,
                             )
                         "
-                        value="0"
-                    ></v-radio>
-                    <v-radio
-                        :label="
-                            translate(
-                                'sebSettings.networkView.proxySettingsPolicy.1',
-                            )
-                        "
-                        value="1"
-                    ></v-radio>
-                </v-radio-group>
+                    >
+                        <v-radio
+                            :label="
+                                translate(
+                                    'sebSettings.networkView.proxySettingsPolicy.0',
+                                )
+                            "
+                            value="0"
+                        ></v-radio>
+                        <v-radio
+                            :label="
+                                translate(
+                                    'sebSettings.networkView.proxySettingsPolicy.1',
+                                )
+                            "
+                            value="1"
+                        ></v-radio>
+                    </v-radio-group>
+                </v-col>
             </v-row>
             <v-row>
-                <v-checkbox-btn
-                    v-model="ExcludeSimpleHostnamesVal"
-                    :disabled="sebSettingsStore.readonly"
-                    :label="
-                        translate(
-                            'sebSettings.networkView.ExcludeSimpleHostnames',
-                        )
-                    "
-                    @update:model-value="
-                        saveSingleValue(
-                            ExcludeSimpleHostnames.id,
-                            ExcludeSimpleHostnamesVal ? 'true' : 'false',
-                        )
-                    "
-                ></v-checkbox-btn>
+                <v-col :class="sebSettingsStore.cp">
+                    <v-checkbox-btn
+                        v-model="ExcludeSimpleHostnamesVal"
+                        :disabled="sebSettingsStore.readonly"
+                        :label="
+                            translate(
+                                'sebSettings.networkView.ExcludeSimpleHostnames',
+                            )
+                        "
+                        @update:model-value="
+                            saveSingleValue(
+                                ExcludeSimpleHostnames.id,
+                                ExcludeSimpleHostnamesVal ? 'true' : 'false',
+                            )
+                        "
+                    ></v-checkbox-btn>
+                </v-col>
             </v-row>
 
             <v-row>
-                <v-col>
-                    {{ translate("sebSettings.networkView.ExceptionsList") }}
+                <v-col :class="sebSettingsStore.fp">
                     <v-text-field
                         v-model="ExceptionsListVal"
                         density="compact"
+                        :label="
+                            translate('sebSettings.networkView.ExceptionsList')
+                        "
                         :disabled="sebSettingsStore.readonly"
-                        hide-details
-                        single-line
                         variant="outlined"
+                        hide-details
                         @update:focused="
                             saveOnFocusLost(
                                 $event,
@@ -220,56 +226,821 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-checkbox-btn
-                    v-model="FTPPassiveVal"
-                    :disabled="sebSettingsStore.readonly"
-                    :label="translate('sebSettings.networkView.FTPPassive')"
-                    @update:model-value="
-                        saveSingleValue(
-                            FTPPassive.id,
-                            FTPPassiveVal ? 'true' : 'false',
-                        )
-                    "
-                ></v-checkbox-btn>
+                <v-col :class="sebSettingsStore.cp">
+                    <v-checkbox-btn
+                        v-model="FTPPassiveVal"
+                        :disabled="sebSettingsStore.readonly"
+                        :label="translate('sebSettings.networkView.FTPPassive')"
+                        @update:model-value="
+                            saveSingleValue(
+                                FTPPassive.id,
+                                FTPPassiveVal ? 'true' : 'false',
+                            )
+                        "
+                    ></v-checkbox-btn>
+                </v-col>
             </v-row>
         </v-col>
         <v-col>
             <v-expansion-panels variant="accordion">
-                <v-expansion-panel title="Auto Proxy Discovers"
-                    ><v-expansion-panel-text
-                        >Some Form</v-expansion-panel-text
-                    ></v-expansion-panel
-                >
-                <v-expansion-panel title="Automatic Proxy Configuration"
-                    ><v-expansion-panel-text
-                        >Some Form</v-expansion-panel-text
-                    ></v-expansion-panel
-                >
-                <v-expansion-panel title="Web Proxy (HTTP)"
-                    ><v-expansion-panel-text
-                        >Some Form</v-expansion-panel-text
-                    ></v-expansion-panel
-                >
-                <v-expansion-panel title="Secure Web Proxy (HTTPS)"
-                    ><v-expansion-panel-text
-                        >Some Form</v-expansion-panel-text
-                    ></v-expansion-panel
-                >
-                <v-expansion-panel title="FTP Proxy"
-                    ><v-expansion-panel-text
-                        >Some Form</v-expansion-panel-text
-                    ></v-expansion-panel
-                >
-                <v-expansion-panel title="SOCKS Proxy"
-                    ><v-expansion-panel-text
-                        >Some Form</v-expansion-panel-text
-                    ></v-expansion-panel
-                >
-                <v-expansion-panel title="Streaming Proxy (RTSP)"
-                    ><v-expansion-panel-text
-                        >Some Form</v-expansion-panel-text
-                    ></v-expansion-panel
-                >
+                <v-expansion-panel title="Auto Proxy Discovers">
+                    <v-expansion-panel-text>
+                        <v-col :class="sebSettingsStore.cp">
+                            <v-checkbox-btn
+                                v-model="AutoDiscoveryEnabledVal"
+                                :disabled="sebSettingsStore.readonly"
+                                :label="
+                                    translate(
+                                        'sebSettings.networkView.AutoDiscoveryEnabled',
+                                    )
+                                "
+                                @update:model-value="
+                                    saveSingleValue(
+                                        AutoDiscoveryEnabled.id,
+                                        AutoDiscoveryEnabledVal
+                                            ? 'true'
+                                            : 'false',
+                                    )
+                                "
+                            ></v-checkbox-btn
+                        ></v-col>
+                    </v-expansion-panel-text>
+                </v-expansion-panel>
+                <v-expansion-panel title="Automatic Proxy Configuration">
+                    <v-expansion-panel-text>
+                        <v-row>
+                            <v-col :class="sebSettingsStore.cp">
+                                <v-checkbox-btn
+                                    v-model="AutoConfigurationEnabledVal"
+                                    :disabled="sebSettingsStore.readonly"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.AutoConfigurationEnabled',
+                                        )
+                                    "
+                                    @update:model-value="
+                                        saveSingleValue(
+                                            AutoConfigurationEnabled.id,
+                                            AutoConfigurationEnabledVal
+                                                ? 'true'
+                                                : 'false',
+                                        )
+                                    "
+                                ></v-checkbox-btn>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col :class="sebSettingsStore.fp">
+                                <v-text-field
+                                    v-model="AutoConfigurationURLVal"
+                                    density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.AutoConfigurationURL',
+                                        )
+                                    "
+                                    :disabled="sebSettingsStore.readonly"
+                                    hide-details
+                                    variant="outlined"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            AutoConfigurationURL.id,
+                                            AutoConfigurationURLVal,
+                                        )
+                                    "
+                                >
+                                </v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col :class="sebSettingsStore.fp">
+                                <v-text-field
+                                    v-model="AutoConfigurationJavaScriptVal"
+                                    density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.AutoConfigurationJavaScript',
+                                        )
+                                    "
+                                    :disabled="sebSettingsStore.readonly"
+                                    hide-details
+                                    single-line
+                                    variant="outlined"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            AutoConfigurationJavaScript.id,
+                                            AutoConfigurationJavaScriptVal,
+                                        )
+                                    "
+                                >
+                                </v-text-field>
+                            </v-col>
+                        </v-row>
+                    </v-expansion-panel-text>
+                </v-expansion-panel>
+                <v-expansion-panel title="Web Proxy (HTTP)">
+                    <v-expansion-panel-text>
+                        <v-row>
+                            <v-col :class="sebSettingsStore.cp">
+                                <v-checkbox-btn
+                                    v-model="HTTPEnableVal"
+                                    :disabled="sebSettingsStore.readonly"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.HTTPEnable',
+                                        )
+                                    "
+                                    @update:model-value="
+                                        saveSingleValue(
+                                            HTTPEnable.id,
+                                            HTTPEnableVal ? 'true' : 'false',
+                                        )
+                                    "
+                                ></v-checkbox-btn>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col :class="sebSettingsStore.fp">
+                                <v-text-field
+                                    v-model="HTTPProxyVal"
+                                    density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.HTTPProxy',
+                                        )
+                                    "
+                                    :disabled="sebSettingsStore.readonly"
+                                    hide-details
+                                    variant="outlined"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            HTTPProxy.id,
+                                            HTTPProxyVal,
+                                        )
+                                    "
+                                >
+                                </v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col :class="sebSettingsStore.fp">
+                                <v-number-input
+                                    v-model="HTTPPortVal"
+                                    density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.HTTPPort',
+                                        )
+                                    "
+                                    :disabled="sebSettingsStore.readonly"
+                                    hide-details
+                                    variant="outlined"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            HTTPPort.id,
+                                            HTTPPortVal?.toString(),
+                                        )
+                                    "
+                                >
+                                </v-number-input>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col :class="sebSettingsStore.cp">
+                                <v-checkbox-btn
+                                    v-model="HTTPRequiresPasswordVal"
+                                    :disabled="sebSettingsStore.readonly"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.HTTPRequiresPassword',
+                                        )
+                                    "
+                                    @update:model-value="
+                                        saveSingleValue(
+                                            HTTPRequiresPassword.id,
+                                            HTTPRequiresPasswordVal
+                                                ? 'true'
+                                                : 'false',
+                                        )
+                                    "
+                                ></v-checkbox-btn>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col :class="sebSettingsStore.fp">
+                                <v-text-field
+                                    v-model="HTTPUsernameVal"
+                                    density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.HTTPUsername',
+                                        )
+                                    "
+                                    :disabled="sebSettingsStore.readonly"
+                                    hide-details
+                                    variant="outlined"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            HTTPUsername.id,
+                                            HTTPUsernameVal,
+                                        )
+                                    "
+                                >
+                                </v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col :class="sebSettingsStore.fp">
+                                <v-text-field
+                                    v-model="HTTPPasswordVal"
+                                    density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.HTTPPassword',
+                                        )
+                                    "
+                                    :disabled="sebSettingsStore.readonly"
+                                    hide-details
+                                    variant="outlined"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            HTTPPassword.id,
+                                            HTTPPasswordVal,
+                                        )
+                                    "
+                                >
+                                </v-text-field>
+                            </v-col>
+                        </v-row>
+                    </v-expansion-panel-text>
+                </v-expansion-panel>
+                <v-expansion-panel title="Secure Web Proxy (HTTPS)">
+                    <v-expansion-panel-text>
+                        <v-row>
+                            <v-col :class="sebSettingsStore.cp">
+                                <v-checkbox-btn
+                                    v-model="HTTPSEnableVal"
+                                    :disabled="sebSettingsStore.readonly"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.HTTPSEnable',
+                                        )
+                                    "
+                                    @update:model-value="
+                                        saveSingleValue(
+                                            HTTPSEnable.id,
+                                            HTTPSEnableVal ? 'true' : 'false',
+                                        )
+                                    "
+                                ></v-checkbox-btn>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col :class="sebSettingsStore.fp">
+                                <v-text-field
+                                    v-model="HTTPSProxyVal"
+                                    density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.HTTPSProxy',
+                                        )
+                                    "
+                                    :disabled="sebSettingsStore.readonly"
+                                    hide-details
+                                    variant="outlined"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            HTTPSProxy.id,
+                                            HTTPSProxyVal,
+                                        )
+                                    "
+                                >
+                                </v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col :class="sebSettingsStore.fp">
+                                <v-number-input
+                                    v-model="HTTPSPortVal"
+                                    density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.HTTPSPort',
+                                        )
+                                    "
+                                    :disabled="sebSettingsStore.readonly"
+                                    hide-details
+                                    variant="outlined"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            HTTPSPort.id,
+                                            HTTPSPortVal?.toString(),
+                                        )
+                                    "
+                                >
+                                </v-number-input>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col :class="sebSettingsStore.cp">
+                                <v-checkbox-btn
+                                    v-model="HTTPSRequiresPasswordVal"
+                                    :disabled="sebSettingsStore.readonly"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.HTTPSRequiresPassword',
+                                        )
+                                    "
+                                    @update:model-value="
+                                        saveSingleValue(
+                                            HTTPSRequiresPassword.id,
+                                            HTTPSRequiresPasswordVal
+                                                ? 'true'
+                                                : 'false',
+                                        )
+                                    "
+                                ></v-checkbox-btn>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col :class="sebSettingsStore.fp">
+                                <v-text-field
+                                    v-model="HTTPSUsernameVal"
+                                    density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.HTTPSUsername',
+                                        )
+                                    "
+                                    :disabled="sebSettingsStore.readonly"
+                                    hide-details
+                                    single-line
+                                    variant="outlined"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            HTTPSUsername.id,
+                                            HTTPSUsernameVal,
+                                        )
+                                    "
+                                >
+                                </v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col :class="sebSettingsStore.fp">
+                                <v-text-field
+                                    v-model="HTTPSPasswordVal"
+                                    density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.HTTPSPassword',
+                                        )
+                                    "
+                                    :disabled="sebSettingsStore.readonly"
+                                    hide-details
+                                    variant="outlined"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            HTTPSPassword.id,
+                                            HTTPSPasswordVal,
+                                        )
+                                    "
+                                >
+                                </v-text-field>
+                            </v-col>
+                        </v-row>
+                    </v-expansion-panel-text>
+                </v-expansion-panel>
+                <v-expansion-panel title="FTP Proxy">
+                    <v-expansion-panel-text>
+                        <v-row>
+                            <v-col :class="sebSettingsStore.cp">
+                                <v-checkbox-btn
+                                    v-model="FTPEnableVal"
+                                    :disabled="sebSettingsStore.readonly"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.FTPEnable',
+                                        )
+                                    "
+                                    @update:model-value="
+                                        saveSingleValue(
+                                            FTPEnable.id,
+                                            FTPEnableVal ? 'true' : 'false',
+                                        )
+                                    "
+                                ></v-checkbox-btn>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col :class="sebSettingsStore.fp">
+                                <v-text-field
+                                    v-model="FTPProxyVal"
+                                    density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.FTPProxy',
+                                        )
+                                    "
+                                    :disabled="sebSettingsStore.readonly"
+                                    hide-details
+                                    variant="outlined"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            FTPProxy.id,
+                                            FTPProxyVal,
+                                        )
+                                    "
+                                >
+                                </v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col :class="sebSettingsStore.fp">
+                                <v-number-input
+                                    v-model="FTPPortVal"
+                                    density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.FTPPort',
+                                        )
+                                    "
+                                    :disabled="sebSettingsStore.readonly"
+                                    hide-details
+                                    variant="outlined"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            FTPPort.id,
+                                            FTPPortVal?.toString(),
+                                        )
+                                    "
+                                >
+                                </v-number-input>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col :class="sebSettingsStore.cp">
+                                <v-checkbox-btn
+                                    v-model="FTPRequiresPasswordVal"
+                                    :disabled="sebSettingsStore.readonly"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.FTPRequiresPassword',
+                                        )
+                                    "
+                                    @update:model-value="
+                                        saveSingleValue(
+                                            FTPRequiresPassword.id,
+                                            FTPRequiresPasswordVal
+                                                ? 'true'
+                                                : 'false',
+                                        )
+                                    "
+                                ></v-checkbox-btn>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col :class="sebSettingsStore.fp">
+                                <v-text-field
+                                    v-model="FTPUsernameVal"
+                                    density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.FTPUsername',
+                                        )
+                                    "
+                                    :disabled="sebSettingsStore.readonly"
+                                    hide-details
+                                    variant="outlined"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            FTPUsername.id,
+                                            FTPUsernameVal,
+                                        )
+                                    "
+                                >
+                                </v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col :class="sebSettingsStore.fp">
+                                <v-text-field
+                                    v-model="FTPPasswordVal"
+                                    density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.FTPPassword',
+                                        )
+                                    "
+                                    :disabled="sebSettingsStore.readonly"
+                                    hide-details
+                                    variant="outlined"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            FTPPassword.id,
+                                            FTPPasswordVal,
+                                        )
+                                    "
+                                >
+                                </v-text-field>
+                            </v-col>
+                        </v-row>
+                    </v-expansion-panel-text>
+                </v-expansion-panel>
+                <v-expansion-panel title="SOCKS Proxy">
+                    <v-expansion-panel-text>
+                        <v-row>
+                            <v-col :class="sebSettingsStore.cp">
+                                <v-checkbox-btn
+                                    v-model="SOCKSEnableVal"
+                                    :disabled="sebSettingsStore.readonly"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.SOCKSEnable',
+                                        )
+                                    "
+                                    @update:model-value="
+                                        saveSingleValue(
+                                            SOCKSEnable.id,
+                                            SOCKSEnableVal ? 'true' : 'false',
+                                        )
+                                    "
+                                ></v-checkbox-btn>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col :class="sebSettingsStore.fp">
+                                <v-text-field
+                                    v-model="SOCKSProxyVal"
+                                    density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.SOCKSProxy',
+                                        )
+                                    "
+                                    :disabled="sebSettingsStore.readonly"
+                                    hide-details
+                                    variant="outlined"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            SOCKSProxy.id,
+                                            SOCKSProxyVal,
+                                        )
+                                    "
+                                >
+                                </v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col :class="sebSettingsStore.fp">
+                                <v-number-input
+                                    v-model="SOCKSPortVal"
+                                    density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.SOCKSPort',
+                                        )
+                                    "
+                                    :disabled="sebSettingsStore.readonly"
+                                    hide-details
+                                    variant="outlined"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            SOCKSPort.id,
+                                            SOCKSPortVal?.toString(),
+                                        )
+                                    "
+                                >
+                                </v-number-input>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col :class="sebSettingsStore.cp">
+                                <v-checkbox-btn
+                                    v-model="SOCKSRequiresPasswordVal"
+                                    :disabled="sebSettingsStore.readonly"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.SOCKSRequiresPassword',
+                                        )
+                                    "
+                                    @update:model-value="
+                                        saveSingleValue(
+                                            SOCKSRequiresPassword.id,
+                                            SOCKSRequiresPasswordVal
+                                                ? 'true'
+                                                : 'false',
+                                        )
+                                    "
+                                ></v-checkbox-btn>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col :class="sebSettingsStore.fp">
+                                <v-text-field
+                                    v-model="SOCKSUsernameVal"
+                                    density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.SOCKSUsername',
+                                        )
+                                    "
+                                    :disabled="sebSettingsStore.readonly"
+                                    hide-details
+                                    variant="outlined"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            SOCKSUsername.id,
+                                            SOCKSUsernameVal,
+                                        )
+                                    "
+                                >
+                                </v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col :class="sebSettingsStore.fp">
+                                <v-text-field
+                                    v-model="SOCKSPasswordVal"
+                                    density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.SOCKSPassword',
+                                        )
+                                    "
+                                    :disabled="sebSettingsStore.readonly"
+                                    hide-details
+                                    variant="outlined"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            SOCKSPassword.id,
+                                            SOCKSPasswordVal,
+                                        )
+                                    "
+                                >
+                                </v-text-field>
+                            </v-col>
+                        </v-row>
+                    </v-expansion-panel-text>
+                </v-expansion-panel>
+                <v-expansion-panel title="Streaming Proxy (RTSP)">
+                    <v-expansion-panel-text>
+                        <v-row>
+                            <v-col :class="sebSettingsStore.cp">
+                                <v-checkbox-btn
+                                    v-model="RTSPEnableVal"
+                                    :disabled="sebSettingsStore.readonly"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.RTSPEnable',
+                                        )
+                                    "
+                                    @update:model-value="
+                                        saveSingleValue(
+                                            RTSPEnable.id,
+                                            RTSPEnableVal ? 'true' : 'false',
+                                        )
+                                    "
+                                ></v-checkbox-btn>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col :class="sebSettingsStore.fp">
+                                <v-text-field
+                                    v-model="RTSPProxyVal"
+                                    density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.RTSPProxy',
+                                        )
+                                    "
+                                    :disabled="sebSettingsStore.readonly"
+                                    hide-details
+                                    variant="outlined"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            RTSPProxy.id,
+                                            RTSPProxyVal,
+                                        )
+                                    "
+                                >
+                                </v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col :class="sebSettingsStore.fp">
+                                <v-number-input
+                                    v-model="RTSPPortVal"
+                                    density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.RTSPPort',
+                                        )
+                                    "
+                                    :disabled="sebSettingsStore.readonly"
+                                    hide-details
+                                    variant="outlined"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            RTSPPort.id,
+                                            RTSPPortVal?.toString(),
+                                        )
+                                    "
+                                >
+                                </v-number-input>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col :class="sebSettingsStore.cp">
+                                <v-checkbox-btn
+                                    v-model="RTSPRequiresPasswordVal"
+                                    :disabled="sebSettingsStore.readonly"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.RTSPRequiresPassword',
+                                        )
+                                    "
+                                    @update:model-value="
+                                        saveSingleValue(
+                                            RTSPRequiresPassword.id,
+                                            RTSPRequiresPasswordVal
+                                                ? 'true'
+                                                : 'false',
+                                        )
+                                    "
+                                ></v-checkbox-btn>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col :class="sebSettingsStore.fp">
+                                <v-text-field
+                                    v-model="RTSPUsernameVal"
+                                    density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.RTSPUsername',
+                                        )
+                                    "
+                                    :disabled="sebSettingsStore.readonly"
+                                    hide-details
+                                    variant="outlined"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            RTSPUsername.id,
+                                            RTSPUsernameVal,
+                                        )
+                                    "
+                                >
+                                </v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col :class="sebSettingsStore.fp">
+                                <v-text-field
+                                    v-model="RTSPPasswordVal"
+                                    density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.networkView.RTSPPassword',
+                                        )
+                                    "
+                                    :disabled="sebSettingsStore.readonly"
+                                    hide-details
+                                    variant="outlined"
+                                    @update:focused="
+                                        saveOnFocusLost(
+                                            $event,
+                                            RTSPPassword.id,
+                                            RTSPPasswordVal,
+                                        )
+                                    "
+                                >
+                                </v-text-field>
+                            </v-col>
+                        </v-row>
+                    </v-expansion-panel-text>
+                </v-expansion-panel>
             </v-expansion-panels>
         </v-col>
     </v-row>
@@ -280,7 +1051,7 @@ import * as tableUtils from "@/utils/table/tableUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import * as sebSettingsService from "@/services/seb-server/component-services/sebSettingsService";
 import { useI18n } from "vue-i18n";
-import { translate } from "@/utils/generalUtils";
+import { stringToBoolean, translate } from "@/utils/generalUtils";
 import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums";
 import { ref, onBeforeMount } from "vue";
@@ -289,22 +1060,18 @@ import {
     SEBSettingsValue,
     SEBSettingsView,
     URLFilterRule,
+    SEBSettingAttribute,
 } from "@/models/seb-server/sebSettings";
 
 const i18n = useI18n();
 const sebSettingsStore = useSEBSettingsStore();
 
-// single attributes
+// ur filter single attributes
 const urlFilterEnableVal = ref<boolean>(false);
 const urlFilterEnableContentFilterVal = ref<boolean>(false);
 
-// single selection or radio button
-const proxySettingsPolicyVal = ref<string>("0");
-const ExcludeSimpleHostnamesVal = ref<boolean>(false);
-const ExceptionsListVal = ref<string>("");
-const FTPPassiveVal = ref<boolean>(false);
-
 // url filter
+// test commit
 const editURLFilterRuleDialog = ref<boolean>(false);
 const selectedURLFilterRule = ref<URLFilterRule | null>(null);
 const urlFilterHeadersRef = ref<(HTMLElement | null)[]>([]);
@@ -350,8 +1117,56 @@ const urlFilterHeaders = ref([
     },
 ]);
 
-// TODO apply readonly according to user privileges
+// Proxy single settings
+const proxySettingsPolicyVal = ref<string>("0");
+const ExcludeSimpleHostnamesVal = ref<boolean>(false);
+const ExceptionsListVal = ref<string>("");
+const FTPPassiveVal = ref<boolean>(false);
+
+const AutoDiscoveryEnabledVal = ref<boolean>(false);
+
+const AutoConfigurationEnabledVal = ref<boolean>(false);
+const AutoConfigurationURLVal = ref<string>("");
+const AutoConfigurationJavaScriptVal = ref<string>("");
+
+const HTTPEnableVal = ref<boolean>(false);
+const HTTPProxyVal = ref<string>("");
+const HTTPPortVal = ref<number>(80);
+const HTTPRequiresPasswordVal = ref<boolean>(false);
+const HTTPUsernameVal = ref<string>("");
+const HTTPPasswordVal = ref<string>("");
+
+const HTTPSEnableVal = ref<boolean>(false);
+const HTTPSProxyVal = ref<string>("");
+const HTTPSPortVal = ref<number>(443);
+const HTTPSRequiresPasswordVal = ref<boolean>(false);
+const HTTPSUsernameVal = ref<string>("");
+const HTTPSPasswordVal = ref<string>("");
+
+const FTPEnableVal = ref<boolean>(false);
+const FTPProxyVal = ref<string>("");
+const FTPPortVal = ref<number>(21);
+const FTPRequiresPasswordVal = ref<boolean>(false);
+const FTPUsernameVal = ref<string>("");
+const FTPPasswordVal = ref<string>("");
+
+const SOCKSEnableVal = ref<boolean>(false);
+const SOCKSProxyVal = ref<string>("");
+const SOCKSPortVal = ref<number>(1080);
+const SOCKSRequiresPasswordVal = ref<boolean>(false);
+const SOCKSUsernameVal = ref<string>("");
+const SOCKSPasswordVal = ref<string>("");
+
+const RTSPEnableVal = ref<boolean>(false);
+const RTSPProxyVal = ref<string>("");
+const RTSPPortVal = ref<number>(554);
+const RTSPRequiresPasswordVal = ref<boolean>(false);
+const RTSPUsernameVal = ref<string>("");
+const RTSPPasswordVal = ref<string>("");
+
+// the parent component identifier
 let componentId: string;
+
 let urlFilterEnable: SEBSettingsValue;
 let urlFilterEnableContentFilter: SEBSettingsValue;
 
@@ -360,6 +1175,49 @@ let ExcludeSimpleHostnames: SEBSettingsValue;
 let ExceptionsList: SEBSettingsValue;
 let FTPPassive: SEBSettingsValue;
 
+let AutoDiscoveryEnabled: SEBSettingsValue;
+
+let AutoConfigurationEnabled: SEBSettingsValue;
+let AutoConfigurationURL: SEBSettingsValue;
+let AutoConfigurationJavaScript: SEBSettingsValue;
+
+let HTTPEnable: SEBSettingsValue;
+let HTTPProxy: SEBSettingsValue;
+let HTTPPort: SEBSettingsValue;
+let HTTPRequiresPassword: SEBSettingsValue;
+let HTTPUsername: SEBSettingsValue;
+let HTTPPassword: SEBSettingsValue;
+
+let HTTPSEnable: SEBSettingsValue;
+let HTTPSProxy: SEBSettingsValue;
+let HTTPSPort: SEBSettingsValue;
+let HTTPSRequiresPassword: SEBSettingsValue;
+let HTTPSUsername: SEBSettingsValue;
+let HTTPSPassword: SEBSettingsValue;
+
+let FTPEnable: SEBSettingsValue;
+let FTPProxy: SEBSettingsValue;
+let FTPPort: SEBSettingsValue;
+let FTPRequiresPassword: SEBSettingsValue;
+let FTPUsername: SEBSettingsValue;
+let FTPPassword: SEBSettingsValue;
+
+let SOCKSEnable: SEBSettingsValue;
+let SOCKSProxy: SEBSettingsValue;
+let SOCKSPort: SEBSettingsValue;
+let SOCKSRequiresPassword: SEBSettingsValue;
+let SOCKSUsername: SEBSettingsValue;
+let SOCKSPassword: SEBSettingsValue;
+
+let RTSPEnable: SEBSettingsValue;
+let RTSPProxy: SEBSettingsValue;
+let RTSPPort: SEBSettingsValue;
+let RTSPRequiresPassword: SEBSettingsValue;
+let RTSPUsername: SEBSettingsValue;
+let RTSPPassword: SEBSettingsValue;
+
+let attributes: Map<string, SEBSettingAttribute>;
+
 onBeforeMount(async () => {
     if (sebSettingsStore.selectedContainerId == null) {
         return;
@@ -367,41 +1225,51 @@ onBeforeMount(async () => {
 
     componentId = sebSettingsStore.selectedContainerId.toString();
 
-    const applicationSettings: SEBSettingsView | null =
+    const networkSettings: SEBSettingsView | null =
         await sebSettingsService.getViewSettings(
             ViewType.NETWORK,
             componentId,
             sebSettingsStore.isExam,
         );
-    if (applicationSettings == null) {
+    if (networkSettings == null) {
         return;
     }
+
+     attributes = new Map<
+        string,
+        SEBSettingAttribute
+    >(Object.entries(networkSettings.attributes)); 
 
     if (sebSettingsStore.readonly) {
         urlFilterHeaders.value[4].title = translate("general.viewButton", i18n);
     }
 
-    const settingsView: SEBSettingsView = applicationSettings;
     const tableValues: Map<string, SEBSettingsTableRowValues[]> = new Map<
         string,
         SEBSettingsTableRowValues[]
-    >(Object.entries(settingsView.tableValues));
+    >(Object.entries(networkSettings.tableValues));
+
     const singleValues: Map<string, SEBSettingsValue> = new Map<
         string,
         SEBSettingsValue
-    >(Object.entries(settingsView.singleValues));
+    >(Object.entries(networkSettings.singleValues));
+
+
+    const proxyVals = tableValues.get("proxies");
+    if (!proxyVals) {
+        throw new Error ("No Proxy Values found");
+    }
     const proxyValues: Map<string, SEBSettingsValue> = new Map<
         string,
         SEBSettingsValue
-    >(Object.entries(tableValues.get("proxies")![0].rowValues));
+    >(Object.entries(proxyVals[0].rowValues));
 
-    urlFilterEnable = singleValues.get("URLFilterEnable")!;
-    urlFilterEnableContentFilter = singleValues.get(
-        "URLFilterEnableContentFilter",
-    )!;
-    urlFilterEnableVal.value = urlFilterEnable.value === "true";
-    urlFilterEnableContentFilterVal.value =
-        urlFilterEnableContentFilter.value === "true";
+    urlFilterEnable = getSingleValue( singleValues, "URLFilterEnable");
+    urlFilterEnableContentFilter =getSingleValue( singleValues, "URLFilterEnableContentFilter");
+    urlFilterEnableVal.value = stringToBoolean(urlFilterEnable.value);
+    urlFilterEnableContentFilterVal.value = stringToBoolean(
+        urlFilterEnableContentFilter.value,
+    );
 
     // URL Filter
     const urlFilterRules = tableValues.get("URLFilterRules");
@@ -412,17 +1280,103 @@ onBeforeMount(async () => {
     updateURLFilterRulesTable(urlFilterRules);
 
     // Proxy single settings
-    proxySettingsPolicy = singleValues.get("proxySettingsPolicy")!;
+    proxySettingsPolicy = getSingleValue(singleValues, "proxySettingsPolicy");
     proxySettingsPolicyVal.value = proxySettingsPolicy.value;
 
-    ExcludeSimpleHostnames = proxyValues.get("ExcludeSimpleHostnames")!;
-    ExcludeSimpleHostnamesVal.value = ExcludeSimpleHostnames.value === "true";
+    ExcludeSimpleHostnames = getSingleValue(proxyValues, "ExcludeSimpleHostnames");
+    ExcludeSimpleHostnamesVal.value = stringToBoolean(
+        ExcludeSimpleHostnames.value,
+    );
 
-    ExceptionsList = proxyValues.get("ExceptionsList")!;
+    ExceptionsList = getSingleValue(proxyValues, "ExceptionsList");
     ExceptionsListVal.value = ExceptionsList.value;
 
-    FTPPassive = proxyValues.get("FTPPassive")!;
-    FTPPassiveVal.value = FTPPassive.value === "true";
+    FTPPassive = getSingleValue(proxyValues, "FTPPassive");
+    FTPPassiveVal.value = stringToBoolean(FTPPassive.value);
+
+    // Proxy realm settings -- auto discovery
+    AutoDiscoveryEnabled =getSingleValue(proxyValues, "ExceptionsList");
+    AutoDiscoveryEnabledVal.value = stringToBoolean(AutoDiscoveryEnabled.value);
+
+    AutoConfigurationEnabled = getSingleValue(proxyValues, "AutoConfigurationEnabled");
+    AutoConfigurationURL =getSingleValue(proxyValues, "AutoConfigurationURL");
+    AutoConfigurationJavaScript =getSingleValue(proxyValues, 
+        "AutoConfigurationJavaScript",
+    );
+    AutoConfigurationEnabledVal.value = stringToBoolean(
+        AutoConfigurationEnabled.value,
+    );
+    AutoConfigurationURLVal.value = AutoConfigurationURL.value;
+    AutoConfigurationJavaScriptVal.value = AutoConfigurationJavaScript.value;
+
+    HTTPEnable =getSingleValue(proxyValues, "HTTPEnable");
+    HTTPProxy =getSingleValue(proxyValues, "HTTPProxy");
+    HTTPPort =getSingleValue(proxyValues, "HTTPPort");
+    HTTPRequiresPassword =getSingleValue(proxyValues, "HTTPRequiresPassword");
+    HTTPUsername =getSingleValue(proxyValues, "HTTPUsername");
+    HTTPPassword =getSingleValue(proxyValues, "HTTPPassword");
+    HTTPEnableVal.value = stringToBoolean(HTTPEnable.value);
+    HTTPProxyVal.value = HTTPProxy.value;
+    HTTPPortVal.value = parseInt(HTTPPort.value);
+    HTTPRequiresPasswordVal.value = stringToBoolean(HTTPRequiresPassword.value);
+    HTTPUsernameVal.value = HTTPUsername.value;
+    HTTPPasswordVal.value = HTTPPassword.value;
+
+    HTTPSEnable =getSingleValue(proxyValues, "HTTPSEnable");
+    HTTPSProxy =getSingleValue(proxyValues, "HTTPSProxy");
+    HTTPSPort =getSingleValue(proxyValues, "HTTPSPort");
+    HTTPSRequiresPassword =getSingleValue(proxyValues, "HTTPSRequiresPassword");
+    HTTPSUsername =getSingleValue(proxyValues, "HTTPSUsername");
+    HTTPSPassword =getSingleValue(proxyValues, "HTTPSPassword");
+    HTTPSEnableVal.value = stringToBoolean(HTTPSEnable.value);
+    HTTPSProxyVal.value = HTTPSProxy.value;
+    HTTPSPortVal.value = parseInt(HTTPSPort.value);
+    HTTPSRequiresPasswordVal.value = stringToBoolean(
+        HTTPSRequiresPassword.value,
+    );
+    HTTPSUsernameVal.value = HTTPSUsername.value;
+    HTTPSPasswordVal.value = HTTPSPassword.value;
+
+    FTPEnable =getSingleValue(proxyValues, "FTPEnable");
+    FTPProxy =getSingleValue(proxyValues, "FTPProxy");
+    FTPPort =getSingleValue(proxyValues, "FTPPort");
+    FTPRequiresPassword =getSingleValue(proxyValues, "FTPRequiresPassword");
+    FTPUsername =getSingleValue(proxyValues, "FTPUsername");
+    FTPPassword =getSingleValue(proxyValues, "FTPPassword");
+    FTPEnableVal.value = stringToBoolean(FTPEnable.value);
+    FTPProxyVal.value = FTPProxy.value;
+    FTPPortVal.value = parseInt(FTPPort.value);
+    FTPRequiresPasswordVal.value = stringToBoolean(FTPRequiresPassword.value);
+    FTPUsernameVal.value = FTPUsername.value;
+    FTPPasswordVal.value = FTPPassword.value;
+
+    SOCKSEnable =getSingleValue(proxyValues, "SOCKSEnable");
+    SOCKSProxy =getSingleValue(proxyValues, "SOCKSProxy");
+    SOCKSPort =getSingleValue(proxyValues, "SOCKSPort");
+    SOCKSRequiresPassword =getSingleValue(proxyValues, "SOCKSRequiresPassword");
+    SOCKSUsername =getSingleValue(proxyValues, "SOCKSUsername");
+    SOCKSPassword =getSingleValue(proxyValues, "SOCKSPassword");
+    SOCKSEnableVal.value = stringToBoolean(SOCKSEnable.value);
+    SOCKSProxyVal.value = SOCKSProxy.value;
+    SOCKSPortVal.value = parseInt(SOCKSPort.value);
+    SOCKSRequiresPasswordVal.value = stringToBoolean(
+        SOCKSRequiresPassword.value,
+    );
+    SOCKSUsernameVal.value = SOCKSUsername.value;
+    SOCKSPasswordVal.value = SOCKSPassword.value;
+
+    RTSPEnable =getSingleValue(proxyValues, "RTSPEnable");
+    RTSPProxy =getSingleValue(proxyValues, "RTSPProxy");
+    RTSPPort =getSingleValue(proxyValues, "RTSPPort");
+    RTSPRequiresPassword =getSingleValue(proxyValues, "RTSPRequiresPassword");
+    RTSPUsername =getSingleValue(proxyValues, "RTSPUsername");
+    RTSPPassword =getSingleValue(proxyValues, "RTSPPassword");
+    RTSPEnableVal.value = stringToBoolean(RTSPEnable.value);
+    RTSPProxyVal.value = RTSPProxy.value;
+    RTSPPortVal.value = parseInt(RTSPPort.value);
+    RTSPRequiresPasswordVal.value = stringToBoolean(RTSPRequiresPassword.value);
+    RTSPUsernameVal.value = RTSPUsername.value;
+    RTSPPasswordVal.value = RTSPPassword.value;
 });
 
 // ********* URL Filter Rule functions *********************
@@ -444,15 +1398,15 @@ function insertURLFilter(
 ) {
     urlFilterTable.value.splice(index, 0, {
         index,
-        active: rowVals.get("URLFilterRules.active")?.value! === "true",
-        regex: rowVals.get("URLFilterRules.regex")?.value! === "true",
-        expression: rowVals.get("URLFilterRules.expression")!.value,
-        action: rowVals.get("URLFilterRules.action")!.value,
+        active: getBooleanValue(rowVals, "URLFilterRules.active"),
+        regex: getBooleanValue(rowVals, "URLFilterRules.regex"),
+        expression: getStringValue(rowVals, "URLFilterRules.expression"),
+        action: getStringValue(rowVals, "URLFilterRules.action"),
         ids: {
-            active: rowVals.get("URLFilterRules.active")!.id,
-            regex: rowVals.get("URLFilterRules.regex")!.id,
-            expression: rowVals.get("URLFilterRules.expression")!.id,
-            action: rowVals.get("URLFilterRules.action")!.id,
+            active: getSettingId( rowVals, "URLFilterRules.active"),
+            regex: getSettingId( rowVals, "URLFilterRules.regex"),
+            expression: getSettingId( rowVals, "URLFilterRules.expression"),
+            action: getSettingId( rowVals, "URLFilterRules.action"),
         },
     });
 }
@@ -562,5 +1516,51 @@ async function saveOnFocusLost(focusIn: boolean, valId: number, value: string) {
     if (!focusIn) {
         saveSingleValue(valId, value);
     }
+}
+
+function getStringValue(rowVals: Map<string, SEBSettingsValue>, name: string): string {
+    const prop =  rowVals.get(name);
+    if (!prop) {
+        const def = attributes.get(name);
+        if (!def) {
+            throw new Error ("No SEB Setting" + name + " found");
+        } else {
+            return def.defaultValue;
+        }
+    } else {
+        return prop.value;
+    }
+}
+
+function getBooleanValue(rowVals: Map<string, SEBSettingsValue>, name: string): boolean {
+    const prop =  rowVals.get(name);
+    if (!prop) {
+        const def = attributes.get(name);
+        if (!def) {
+            throw new Error ("No SEB Setting" + name + " found");
+        } else {
+            return stringToBoolean(def.defaultValue);
+        }
+    } else {
+       return stringToBoolean(prop.value);
+    }
+}
+
+function getSettingId(rowVals: Map<string, SEBSettingsValue>, name: string): number {
+    const prop =  rowVals.get(name);
+    if (!prop) {
+        throw new Error ("No SEB Setting" + name + " found");
+    }
+
+    return prop?.id;
+}
+
+function getSingleValue(singleValues: Map<string, SEBSettingsValue>, name: string): SEBSettingsValue {
+    const value = singleValues.get(name);
+    if (!value) {
+        throw new Error ("No Single Value" + name + " found");
+    }
+
+    return value;
 }
 </script>

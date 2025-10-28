@@ -895,7 +895,7 @@
     </v-dialog>
 
     <!-----------seb settings dialog---------->
-    <v-dialog v-model="sebSettingsDialog" max-width="1200" persistent>
+    <v-dialog v-model="sebSettingsDialog" persistent>
         <SebSettingsDialog @close-seb-settings-dialog="closeSebSettingsDialog">
         </SebSettingsDialog>
     </v-dialog>
@@ -1468,7 +1468,7 @@ async function getSEBSettings() {
                   : "examDetail.main.editAppNetworkSettings";
         }
         // TODO this is only for testing, remove it when done
-        sebSettingsStore.activeSEBClientConnection = 2;
+        //sebSettingsStore.activeSEBClientConnection = 2;
     }
 }
 
