@@ -1,6 +1,10 @@
 <template>
     <ul>
-        <li v-for="supervisor in supervisors" :key="supervisor.modelId">
+        <li
+            v-for="supervisor in supervisors"
+            :key="supervisor.modelId"
+            @click="emit('select', supervisor.modelId)"
+        >
             {{ supervisor.name }}
         </li>
     </ul>
@@ -11,5 +15,9 @@ import { UserAccountName } from "@/models/userAccount";
 
 defineProps<{
     supervisors: UserAccountName[];
+}>();
+
+const emit = defineEmits<{
+    (e: "select", supervisorId: string): void;
 }>();
 </script>
