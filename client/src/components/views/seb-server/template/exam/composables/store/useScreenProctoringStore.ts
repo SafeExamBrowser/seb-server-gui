@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 
 const initialState = {
-    enabled: true, // TODO @alain: remove debug (should be false)
+    enabled: false,
     collectionStrategy: undefined,
 };
 
