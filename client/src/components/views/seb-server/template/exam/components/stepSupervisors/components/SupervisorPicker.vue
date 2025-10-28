@@ -1,5 +1,5 @@
 <template>
-    <SupervisorsAvailable
+    <SupervisorList
         v-if="supervisorsAvailable"
         :supervisors="supervisorsAvailable"
         @select="handleSupervisorSelected"
