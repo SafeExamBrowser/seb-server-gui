@@ -1,4 +1,6 @@
 <template>
+    <!-- TODO @alain: proper layout -->
+
     <ul>
         <li
             v-for="supervisor in supervisors"
