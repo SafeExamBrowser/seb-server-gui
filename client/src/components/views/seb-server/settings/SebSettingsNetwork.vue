@@ -1235,10 +1235,9 @@ onBeforeMount(async () => {
         return;
     }
 
-     attributes = new Map<
-        string,
-        SEBSettingAttribute
-    >(Object.entries(networkSettings.attributes)); 
+    attributes = new Map<string, SEBSettingAttribute>(
+        Object.entries(networkSettings.attributes),
+    );
 
     if (sebSettingsStore.readonly) {
         urlFilterHeaders.value[4].title = translate("general.viewButton", i18n);
@@ -1254,18 +1253,20 @@ onBeforeMount(async () => {
         SEBSettingsValue
     >(Object.entries(networkSettings.singleValues));
 
-
     const proxyVals = tableValues.get("proxies");
     if (!proxyVals) {
-        throw new Error ("No Proxy Values found");
+        throw new Error("No Proxy Values found");
     }
     const proxyValues: Map<string, SEBSettingsValue> = new Map<
         string,
         SEBSettingsValue
     >(Object.entries(proxyVals[0].rowValues));
 
-    urlFilterEnable = getSingleValue( singleValues, "URLFilterEnable");
-    urlFilterEnableContentFilter =getSingleValue( singleValues, "URLFilterEnableContentFilter");
+    urlFilterEnable = getSingleValue(singleValues, "URLFilterEnable");
+    urlFilterEnableContentFilter = getSingleValue(
+        singleValues,
+        "URLFilterEnableContentFilter",
+    );
     urlFilterEnableVal.value = stringToBoolean(urlFilterEnable.value);
     urlFilterEnableContentFilterVal.value = stringToBoolean(
         urlFilterEnableContentFilter.value,
@@ -1283,7 +1284,10 @@ onBeforeMount(async () => {
     proxySettingsPolicy = getSingleValue(singleValues, "proxySettingsPolicy");
     proxySettingsPolicyVal.value = proxySettingsPolicy.value;
 
-    ExcludeSimpleHostnames = getSingleValue(proxyValues, "ExcludeSimpleHostnames");
+    ExcludeSimpleHostnames = getSingleValue(
+        proxyValues,
+        "ExcludeSimpleHostnames",
+    );
     ExcludeSimpleHostnamesVal.value = stringToBoolean(
         ExcludeSimpleHostnames.value,
     );
@@ -1295,12 +1299,16 @@ onBeforeMount(async () => {
     FTPPassiveVal.value = stringToBoolean(FTPPassive.value);
 
     // Proxy realm settings -- auto discovery
-    AutoDiscoveryEnabled =getSingleValue(proxyValues, "ExceptionsList");
+    AutoDiscoveryEnabled = getSingleValue(proxyValues, "ExceptionsList");
     AutoDiscoveryEnabledVal.value = stringToBoolean(AutoDiscoveryEnabled.value);
 
-    AutoConfigurationEnabled = getSingleValue(proxyValues, "AutoConfigurationEnabled");
-    AutoConfigurationURL =getSingleValue(proxyValues, "AutoConfigurationURL");
-    AutoConfigurationJavaScript =getSingleValue(proxyValues, 
+    AutoConfigurationEnabled = getSingleValue(
+        proxyValues,
+        "AutoConfigurationEnabled",
+    );
+    AutoConfigurationURL = getSingleValue(proxyValues, "AutoConfigurationURL");
+    AutoConfigurationJavaScript = getSingleValue(
+        proxyValues,
         "AutoConfigurationJavaScript",
     );
     AutoConfigurationEnabledVal.value = stringToBoolean(
@@ -1309,12 +1317,12 @@ onBeforeMount(async () => {
     AutoConfigurationURLVal.value = AutoConfigurationURL.value;
     AutoConfigurationJavaScriptVal.value = AutoConfigurationJavaScript.value;
 
-    HTTPEnable =getSingleValue(proxyValues, "HTTPEnable");
-    HTTPProxy =getSingleValue(proxyValues, "HTTPProxy");
-    HTTPPort =getSingleValue(proxyValues, "HTTPPort");
-    HTTPRequiresPassword =getSingleValue(proxyValues, "HTTPRequiresPassword");
-    HTTPUsername =getSingleValue(proxyValues, "HTTPUsername");
-    HTTPPassword =getSingleValue(proxyValues, "HTTPPassword");
+    HTTPEnable = getSingleValue(proxyValues, "HTTPEnable");
+    HTTPProxy = getSingleValue(proxyValues, "HTTPProxy");
+    HTTPPort = getSingleValue(proxyValues, "HTTPPort");
+    HTTPRequiresPassword = getSingleValue(proxyValues, "HTTPRequiresPassword");
+    HTTPUsername = getSingleValue(proxyValues, "HTTPUsername");
+    HTTPPassword = getSingleValue(proxyValues, "HTTPPassword");
     HTTPEnableVal.value = stringToBoolean(HTTPEnable.value);
     HTTPProxyVal.value = HTTPProxy.value;
     HTTPPortVal.value = parseInt(HTTPPort.value);
@@ -1322,12 +1330,15 @@ onBeforeMount(async () => {
     HTTPUsernameVal.value = HTTPUsername.value;
     HTTPPasswordVal.value = HTTPPassword.value;
 
-    HTTPSEnable =getSingleValue(proxyValues, "HTTPSEnable");
-    HTTPSProxy =getSingleValue(proxyValues, "HTTPSProxy");
-    HTTPSPort =getSingleValue(proxyValues, "HTTPSPort");
-    HTTPSRequiresPassword =getSingleValue(proxyValues, "HTTPSRequiresPassword");
-    HTTPSUsername =getSingleValue(proxyValues, "HTTPSUsername");
-    HTTPSPassword =getSingleValue(proxyValues, "HTTPSPassword");
+    HTTPSEnable = getSingleValue(proxyValues, "HTTPSEnable");
+    HTTPSProxy = getSingleValue(proxyValues, "HTTPSProxy");
+    HTTPSPort = getSingleValue(proxyValues, "HTTPSPort");
+    HTTPSRequiresPassword = getSingleValue(
+        proxyValues,
+        "HTTPSRequiresPassword",
+    );
+    HTTPSUsername = getSingleValue(proxyValues, "HTTPSUsername");
+    HTTPSPassword = getSingleValue(proxyValues, "HTTPSPassword");
     HTTPSEnableVal.value = stringToBoolean(HTTPSEnable.value);
     HTTPSProxyVal.value = HTTPSProxy.value;
     HTTPSPortVal.value = parseInt(HTTPSPort.value);
@@ -1337,12 +1348,12 @@ onBeforeMount(async () => {
     HTTPSUsernameVal.value = HTTPSUsername.value;
     HTTPSPasswordVal.value = HTTPSPassword.value;
 
-    FTPEnable =getSingleValue(proxyValues, "FTPEnable");
-    FTPProxy =getSingleValue(proxyValues, "FTPProxy");
-    FTPPort =getSingleValue(proxyValues, "FTPPort");
-    FTPRequiresPassword =getSingleValue(proxyValues, "FTPRequiresPassword");
-    FTPUsername =getSingleValue(proxyValues, "FTPUsername");
-    FTPPassword =getSingleValue(proxyValues, "FTPPassword");
+    FTPEnable = getSingleValue(proxyValues, "FTPEnable");
+    FTPProxy = getSingleValue(proxyValues, "FTPProxy");
+    FTPPort = getSingleValue(proxyValues, "FTPPort");
+    FTPRequiresPassword = getSingleValue(proxyValues, "FTPRequiresPassword");
+    FTPUsername = getSingleValue(proxyValues, "FTPUsername");
+    FTPPassword = getSingleValue(proxyValues, "FTPPassword");
     FTPEnableVal.value = stringToBoolean(FTPEnable.value);
     FTPProxyVal.value = FTPProxy.value;
     FTPPortVal.value = parseInt(FTPPort.value);
@@ -1350,12 +1361,15 @@ onBeforeMount(async () => {
     FTPUsernameVal.value = FTPUsername.value;
     FTPPasswordVal.value = FTPPassword.value;
 
-    SOCKSEnable =getSingleValue(proxyValues, "SOCKSEnable");
-    SOCKSProxy =getSingleValue(proxyValues, "SOCKSProxy");
-    SOCKSPort =getSingleValue(proxyValues, "SOCKSPort");
-    SOCKSRequiresPassword =getSingleValue(proxyValues, "SOCKSRequiresPassword");
-    SOCKSUsername =getSingleValue(proxyValues, "SOCKSUsername");
-    SOCKSPassword =getSingleValue(proxyValues, "SOCKSPassword");
+    SOCKSEnable = getSingleValue(proxyValues, "SOCKSEnable");
+    SOCKSProxy = getSingleValue(proxyValues, "SOCKSProxy");
+    SOCKSPort = getSingleValue(proxyValues, "SOCKSPort");
+    SOCKSRequiresPassword = getSingleValue(
+        proxyValues,
+        "SOCKSRequiresPassword",
+    );
+    SOCKSUsername = getSingleValue(proxyValues, "SOCKSUsername");
+    SOCKSPassword = getSingleValue(proxyValues, "SOCKSPassword");
     SOCKSEnableVal.value = stringToBoolean(SOCKSEnable.value);
     SOCKSProxyVal.value = SOCKSProxy.value;
     SOCKSPortVal.value = parseInt(SOCKSPort.value);
@@ -1365,12 +1379,12 @@ onBeforeMount(async () => {
     SOCKSUsernameVal.value = SOCKSUsername.value;
     SOCKSPasswordVal.value = SOCKSPassword.value;
 
-    RTSPEnable =getSingleValue(proxyValues, "RTSPEnable");
-    RTSPProxy =getSingleValue(proxyValues, "RTSPProxy");
-    RTSPPort =getSingleValue(proxyValues, "RTSPPort");
-    RTSPRequiresPassword =getSingleValue(proxyValues, "RTSPRequiresPassword");
-    RTSPUsername =getSingleValue(proxyValues, "RTSPUsername");
-    RTSPPassword =getSingleValue(proxyValues, "RTSPPassword");
+    RTSPEnable = getSingleValue(proxyValues, "RTSPEnable");
+    RTSPProxy = getSingleValue(proxyValues, "RTSPProxy");
+    RTSPPort = getSingleValue(proxyValues, "RTSPPort");
+    RTSPRequiresPassword = getSingleValue(proxyValues, "RTSPRequiresPassword");
+    RTSPUsername = getSingleValue(proxyValues, "RTSPUsername");
+    RTSPPassword = getSingleValue(proxyValues, "RTSPPassword");
     RTSPEnableVal.value = stringToBoolean(RTSPEnable.value);
     RTSPProxyVal.value = RTSPProxy.value;
     RTSPPortVal.value = parseInt(RTSPPort.value);
@@ -1403,10 +1417,10 @@ function insertURLFilter(
         expression: getStringValue(rowVals, "URLFilterRules.expression"),
         action: getStringValue(rowVals, "URLFilterRules.action"),
         ids: {
-            active: getSettingId( rowVals, "URLFilterRules.active"),
-            regex: getSettingId( rowVals, "URLFilterRules.regex"),
-            expression: getSettingId( rowVals, "URLFilterRules.expression"),
-            action: getSettingId( rowVals, "URLFilterRules.action"),
+            active: getSettingId(rowVals, "URLFilterRules.active"),
+            regex: getSettingId(rowVals, "URLFilterRules.regex"),
+            expression: getSettingId(rowVals, "URLFilterRules.expression"),
+            action: getSettingId(rowVals, "URLFilterRules.action"),
         },
     });
 }
@@ -1518,12 +1532,15 @@ async function saveOnFocusLost(focusIn: boolean, valId: number, value: string) {
     }
 }
 
-function getStringValue(rowVals: Map<string, SEBSettingsValue>, name: string): string {
-    const prop =  rowVals.get(name);
+function getStringValue(
+    rowVals: Map<string, SEBSettingsValue>,
+    name: string,
+): string {
+    const prop = rowVals.get(name);
     if (!prop) {
         const def = attributes.get(name);
         if (!def) {
-            throw new Error ("No SEB Setting" + name + " found");
+            throw new Error("No SEB Setting" + name + " found");
         } else {
             return def.defaultValue;
         }
@@ -1532,33 +1549,42 @@ function getStringValue(rowVals: Map<string, SEBSettingsValue>, name: string): s
     }
 }
 
-function getBooleanValue(rowVals: Map<string, SEBSettingsValue>, name: string): boolean {
-    const prop =  rowVals.get(name);
+function getBooleanValue(
+    rowVals: Map<string, SEBSettingsValue>,
+    name: string,
+): boolean {
+    const prop = rowVals.get(name);
     if (!prop) {
         const def = attributes.get(name);
         if (!def) {
-            throw new Error ("No SEB Setting" + name + " found");
+            throw new Error("No SEB Setting" + name + " found");
         } else {
             return stringToBoolean(def.defaultValue);
         }
     } else {
-       return stringToBoolean(prop.value);
+        return stringToBoolean(prop.value);
     }
 }
 
-function getSettingId(rowVals: Map<string, SEBSettingsValue>, name: string): number {
-    const prop =  rowVals.get(name);
+function getSettingId(
+    rowVals: Map<string, SEBSettingsValue>,
+    name: string,
+): number {
+    const prop = rowVals.get(name);
     if (!prop) {
-        throw new Error ("No SEB Setting" + name + " found");
+        throw new Error("No SEB Setting" + name + " found");
     }
 
     return prop?.id;
 }
 
-function getSingleValue(singleValues: Map<string, SEBSettingsValue>, name: string): SEBSettingsValue {
+function getSingleValue(
+    singleValues: Map<string, SEBSettingsValue>,
+    name: string,
+): SEBSettingsValue {
     const value = singleValues.get(name);
     if (!value) {
-        throw new Error ("No Single Value" + name + " found");
+        throw new Error("No Single Value" + name + " found");
     }
 
     return value;
