@@ -2,27 +2,15 @@
     <v-container clas="ma-0 pa-0">
         <v-row>
             <v-col cols="6">
-                <h4 class="text-subtitle-1 font-weight-medium">
-                    {{
-                        $t(
-                            "createTemplateExam.steps.supervisors.labelSupervisorsAvailable",
-                        )
-                    }}
-                </h4>
-                <SupervisorList
+                <ListTitle :label="titleSupervisorsAvailable" />
+                <List
                     :supervisors="supervisorsAvailable"
                     @select="handleSupervisorSelected"
                 />
             </v-col>
             <v-col cols="6">
-                <h4 class="text-subtitle-1 font-weight-medium">
-                    {{
-                        $t(
-                            "createTemplateExam.steps.supervisors.labelSupervisorsSelected",
-                        )
-                    }}
-                </h4>
-                <SupervisorList
+                <ListTitle :label="titleSupervisorsSelected" />
+                <List
                     :supervisors="supervisorsSelected"
                     @select="handleSupervisorUnselected"
                 />
@@ -32,8 +20,13 @@
 </template>
 
 <script setup lang="ts">
+import ListTitle from "./ListTitle.vue";
+import List from "./List.vue";
 import { UserAccountName } from "@/models/userAccount";
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const props = defineProps<{
     supervisors: UserAccountName[];
@@ -42,6 +35,14 @@ const props = defineProps<{
 const supervisorIdsSelected = defineModel<string[]>({
     required: true,
 });
+
+const titleSupervisorsAvailable = computed(() =>
+    t("createTemplateExam.steps.supervisors.labelSupervisorsAvailable"),
+);
+
+const titleSupervisorsSelected = computed(() =>
+    t("createTemplateExam.steps.supervisors.labelSupervisorsSelected"),
+);
 
 const supervisorsAvailable = computed(() =>
     props.supervisors.filter(
