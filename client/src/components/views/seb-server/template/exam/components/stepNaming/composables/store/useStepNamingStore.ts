@@ -4,8 +4,8 @@ import { ref } from "vue";
 
 const initialState = {
     isReady: false,
-    name: "",
-    description: "",
+    name: undefined,
+    description: undefined,
     examType: undefined,
     configurationTemplate: undefined,
     clientConfiguration: undefined,

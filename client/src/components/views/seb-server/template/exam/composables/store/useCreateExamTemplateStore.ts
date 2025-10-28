@@ -98,7 +98,7 @@ export const useCreateExamTemplateStore = defineStore(
         });
 
         const examTemplate = computed<ExamTemplate>(() => ({
-            name: stepNamingStore.name,
+            name: stepNamingStore.name ?? "",
             description: stepNamingStore.description,
             examType: stepNamingStore.examType,
             supporter: [],
