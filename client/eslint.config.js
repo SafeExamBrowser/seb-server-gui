@@ -51,10 +51,6 @@ export default defineConfig([
                 "error",
                 { "ts-ignore": "allow-with-description" },
             ],
-
-            // TODO Alain
-            "vue/multi-word-component-names": "off",
-
         },
     },
 

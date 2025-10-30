@@ -7,7 +7,7 @@
             <th
                 :class="[
                     column.key == 'data-table-select' ? 'pl-4' : '',
-                    column.center ? 'text-center' : '',
+                    column.align === 'center' ? 'text-center' : '',
                 ]"
                 :style="{ width: column.width }"
             >
@@ -139,14 +139,10 @@ import { onBeforeMount, onBeforeUnmount, ref } from "vue";
 import * as tableUtils from "@/utils/table/tableUtils";
 import { useTableStore } from "@/stores/store";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
-
-type ColumnLike = {
-    key?: string;
-    title: string;
-    width?: string;
-    center?: boolean;
-    sortable?: boolean;
-};
+import {
+    HeadersSlotProps,
+    VDataTableHeaderCellColumnSlotProps,
+} from "vuetify/lib/components/VDataTable/VDataTableHeaders.mjs";
 
 type Clickable = { click: () => void };
 
@@ -156,11 +152,10 @@ const monitoringStore = useMonitoringStore();
 // header refs
 const headerRefs = ref<Clickable[] | null>(null);
 
-//todo @Rad14nt take a look with alain potentially remove ignores on refactor
+// TODO @Rad14nt: properly type the props (use HeadersSlotProps), then remove eslint-disable comments
 // props
 const props = defineProps<{
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    columns: any[];
+    columns: HeadersSlotProps["columns"];
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     isSorted: (column: any) => boolean;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -200,8 +195,8 @@ function toggleNameIpSwitch() {
 }
 
 function getHeaderDescription(
-    column: ColumnLike,
-    isSortedFn: (c: ColumnLike) => boolean,
+    column: VDataTableHeaderCellColumnSlotProps["column"],
+    isSortedFn: VDataTableHeaderCellColumnSlotProps["isSorted"],
 ): string {
     const headerDesc = `Header: ${column.title}, sort order: `;
 

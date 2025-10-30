@@ -92,10 +92,21 @@ export async function getStaticClientData(token: string, id: string, modelIds: {
     return [data, status];
 }
 
-export async function registerInstruction(token: string, id: string, clientInstruction: {}): Promise<[number]>{
+export async function registerInstruction(
+    token: string,
+    id: string,
+    clientInstruction: {}
+): Promise<[number, any]> {
     const url: string = constants.MONITORING_ROUTE + "/" + id + "/instruction";
-    const {status} = await apiService.api.post(url, clientInstruction, {headers: apiService.getApplicationJsonHeaders(token)});
-    return [status];
+    try {
+        const response = await apiService.api.post(url, clientInstruction, {
+            headers: apiService.getApplicationJsonHeaders(token),
+        });
+        return [response.status, response.data];
+    }
+    catch (error: any) {
+        throw error;
+    }
 }
 
 export async function getPendingNotifications(token: string, id: string, connectionToken: string): Promise<[object, number]> {
@@ -110,8 +121,23 @@ export async function confirmNotification(token: string, id: string, notificatio
     return [status];
 }
 
-export async function disableConnections(token: string, id: string, connectionToken: {}): Promise<[number]> {
+export async function disableConnections(
+    token: string,
+    id: string,
+    connectionToken: {}
+): Promise<[number, any]> {
     const url: string = constants.MONITORING_ROUTE + "/" + id + "/disable-connection";
-    const {status} = await apiService.api.post(url, apiService.createUrlEncodedBody(connectionToken), {headers: apiService.getHeaders(token)});
-    return [status];
+
+    try {
+        const response = await apiService.api.post(
+            url,
+            apiService.createUrlEncodedBody(connectionToken),
+            { headers: apiService.getHeaders(token) }
+        );
+
+        return [response.status, response.data];
+    } catch (error: any) {
+
+        throw error;
+    }
 }

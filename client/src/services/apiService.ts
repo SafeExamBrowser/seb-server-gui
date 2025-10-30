@@ -230,8 +230,6 @@ function getIgnoredUrls(): string[] {
         "/sp/screenshot-timestamps/",
         "/sp/search/timeline",
         "/sp/search/sessions",
-        "/instruction",
-        "/disable-connection",
     ];
 }
 

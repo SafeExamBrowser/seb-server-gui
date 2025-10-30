@@ -371,10 +371,9 @@ onBeforeMount(async () => {
         return;
     }
 
-    attributes = new Map<
-        string,
-        SEBSettingAttribute
-    >(Object.entries(applicationSettings.attributes)); 
+    attributes = new Map<string, SEBSettingAttribute>(
+        Object.entries(applicationSettings.attributes),
+    );
 
     if (sebSettingsStore.readonly) {
         permittedProcessHeaders.value[4].title = translate(
@@ -396,8 +395,12 @@ onBeforeMount(async () => {
         SEBSettingsValue
     >(Object.entries(applicationSettings.singleValues));
 
-    allowSwitchToApplications = getSingleValue( singleValues, "allowSwitchToApplications");
-    allowSwitchToApplicationsVal.value = allowSwitchToApplications.value === "true";
+    allowSwitchToApplications = getSingleValue(
+        singleValues,
+        "allowSwitchToApplications",
+    );
+    allowSwitchToApplicationsVal.value =
+        allowSwitchToApplications.value === "true";
 
     // Permitted Processes
     const permittedProcesses = tableValues.get("permittedProcesses");
@@ -438,40 +441,96 @@ function insertPermittedProcess(
         active: getBooleanValue(rowVals, "permittedProcesses.active"),
         os: getStringValue(rowVals, "permittedProcesses.os"),
         executable: getStringValue(rowVals, "permittedProcesses.executable"),
-        originalName: getStringValue(rowVals, "permittedProcesses.originalName"),
+        originalName: getStringValue(
+            rowVals,
+            "permittedProcesses.originalName",
+        ),
         title: getStringValue(rowVals, "permittedProcesses.title"),
         signature: getStringValue(rowVals, "permittedProcesses.signature"),
         path: getStringValue(rowVals, "permittedProcesses.path"),
-        iconInTaskbar: getBooleanValue(rowVals, "permittedProcesses.iconInTaskbar"),
-        arguments: getPermittedProcessArguments(getStringValue(rowVals, "permittedProcesses.arguments")),
-        allowOpenAndSavePanel: getBooleanValue(rowVals, "permittedProcesses.allowOpenAndSavePanel"),
+        iconInTaskbar: getBooleanValue(
+            rowVals,
+            "permittedProcesses.iconInTaskbar",
+        ),
+        arguments: getPermittedProcessArguments(
+            getStringValue(rowVals, "permittedProcesses.arguments"),
+        ),
+        allowOpenAndSavePanel: getBooleanValue(
+            rowVals,
+            "permittedProcesses.allowOpenAndSavePanel",
+        ),
         autostart: getBooleanValue(rowVals, "permittedProcesses.autostart"),
-        allowShareSheet: getBooleanValue(rowVals, "permittedProcesses.allowShareSheet"),
-        runInBackground: getBooleanValue(rowVals, "permittedProcesses.runInBackground"),
-        allowManualStart: getBooleanValue(rowVals, "permittedProcesses.allowManualStart"),
-        allowUserToChooseApp: getBooleanValue(rowVals, "permittedProcesses.allowUserToChooseApp"),
-        allowNetworkAccess: getBooleanValue(rowVals, "permittedProcesses.allowNetworkAccess"),
+        allowShareSheet: getBooleanValue(
+            rowVals,
+            "permittedProcesses.allowShareSheet",
+        ),
+        runInBackground: getBooleanValue(
+            rowVals,
+            "permittedProcesses.runInBackground",
+        ),
+        allowManualStart: getBooleanValue(
+            rowVals,
+            "permittedProcesses.allowManualStart",
+        ),
+        allowUserToChooseApp: getBooleanValue(
+            rowVals,
+            "permittedProcesses.allowUserToChooseApp",
+        ),
+        allowNetworkAccess: getBooleanValue(
+            rowVals,
+            "permittedProcesses.allowNetworkAccess",
+        ),
         strongKill: getBooleanValue(rowVals, "permittedProcesses.strongKill"),
-        teamIdentifier: getStringValue(rowVals, "permittedProcesses.teamIdentifier"),
+        teamIdentifier: getStringValue(
+            rowVals,
+            "permittedProcesses.teamIdentifier",
+        ),
         ids: {
             active: getSettingId(rowVals, "permittedProcesses.active"),
             os: getSettingId(rowVals, "permittedProcesses.os"),
             executable: getSettingId(rowVals, "permittedProcesses.executable"),
-            originalName: getSettingId(rowVals, "permittedProcesses.originalName"),
+            originalName: getSettingId(
+                rowVals,
+                "permittedProcesses.originalName",
+            ),
             title: getSettingId(rowVals, "permittedProcesses.title"),
             signature: getSettingId(rowVals, "permittedProcesses.signature"),
             path: getSettingId(rowVals, "permittedProcesses.path"),
-            iconInTaskbar: getSettingId(rowVals, "permittedProcesses.iconInTaskbar"),
+            iconInTaskbar: getSettingId(
+                rowVals,
+                "permittedProcesses.iconInTaskbar",
+            ),
             arguments: getSettingId(rowVals, "permittedProcesses.arguments"),
-            allowOpenAndSavePanel: getSettingId(rowVals, "permittedProcesses.allowOpenAndSavePanel"),
+            allowOpenAndSavePanel: getSettingId(
+                rowVals,
+                "permittedProcesses.allowOpenAndSavePanel",
+            ),
             autostart: getSettingId(rowVals, "permittedProcesses.autostart"),
-            allowShareSheet: getSettingId(rowVals, "permittedProcesses.allowShareSheet"),
-            runInBackground: getSettingId(rowVals, "permittedProcesses.runInBackground"),
-            allowManualStart: getSettingId(rowVals, "permittedProcesses.allowManualStart"),
-            allowUserToChooseApp: getSettingId(rowVals, "permittedProcesses.allowUserToChooseApp"),
-            allowNetworkAccess: getSettingId(rowVals, "permittedProcesses.allowNetworkAccess"),
+            allowShareSheet: getSettingId(
+                rowVals,
+                "permittedProcesses.allowShareSheet",
+            ),
+            runInBackground: getSettingId(
+                rowVals,
+                "permittedProcesses.runInBackground",
+            ),
+            allowManualStart: getSettingId(
+                rowVals,
+                "permittedProcesses.allowManualStart",
+            ),
+            allowUserToChooseApp: getSettingId(
+                rowVals,
+                "permittedProcesses.allowUserToChooseApp",
+            ),
+            allowNetworkAccess: getSettingId(
+                rowVals,
+                "permittedProcesses.allowNetworkAccess",
+            ),
             strongKill: getSettingId(rowVals, "permittedProcesses.strongKill"),
-            teamIdentifier: getSettingId(rowVals, "permittedProcesses.teamIdentifier"),
+            teamIdentifier: getSettingId(
+                rowVals,
+                "permittedProcesses.teamIdentifier",
+            ),
         },
     });
 }
@@ -715,19 +774,34 @@ function insertProhibitedProcess(
         os: getStringValue(rowVals, "prohibitedProcesses.os"),
         executable: getStringValue(rowVals, "prohibitedProcesses.executable"),
         description: getStringValue(rowVals, "prohibitedProcesses.description"),
-        originalName: getStringValue(rowVals, "prohibitedProcesses.originalName"),
+        originalName: getStringValue(
+            rowVals,
+            "prohibitedProcesses.originalName",
+        ),
         identifier: getStringValue(rowVals, "prohibitedProcesses.identifier"),
         strongKill: getBooleanValue(rowVals, "prohibitedProcesses.strongKill"),
-        ignoreInAAC: getBooleanValue(rowVals, "prohibitedProcesses.ignoreInAAC"),
+        ignoreInAAC: getBooleanValue(
+            rowVals,
+            "prohibitedProcesses.ignoreInAAC",
+        ),
         ids: {
             active: getSettingId(rowVals, "prohibitedProcesses.active"),
             os: getSettingId(rowVals, "prohibitedProcesses.os"),
             executable: getSettingId(rowVals, "prohibitedProcesses.executable"),
-            description: getSettingId(rowVals, "prohibitedProcesses.description"),
-            originalName: getSettingId(rowVals, "prohibitedProcesses.originalName"),
+            description: getSettingId(
+                rowVals,
+                "prohibitedProcesses.description",
+            ),
+            originalName: getSettingId(
+                rowVals,
+                "prohibitedProcesses.originalName",
+            ),
             identifier: getSettingId(rowVals, "prohibitedProcesses.identifier"),
             strongKill: getSettingId(rowVals, "prohibitedProcesses.strongKill"),
-            ignoreInAAC: getSettingId(rowVals, "prohibitedProcesses.ignoreInAAC"),
+            ignoreInAAC: getSettingId(
+                rowVals,
+                "prohibitedProcesses.ignoreInAAC",
+            ),
         },
     });
 }
@@ -918,12 +992,15 @@ function getPermittedProcessArguments(
     return result;
 }
 
-function getStringValue(rowVals: Map<string, SEBSettingsValue>, name: string): string {
-    const prop =  rowVals.get(name);
+function getStringValue(
+    rowVals: Map<string, SEBSettingsValue>,
+    name: string,
+): string {
+    const prop = rowVals.get(name);
     if (!prop) {
         const def = attributes.get(name);
         if (!def) {
-            throw new Error ("No SEB Setting" + name + " found");
+            throw new Error("No SEB Setting" + name + " found");
         } else {
             return def.defaultValue;
         }
@@ -932,33 +1009,42 @@ function getStringValue(rowVals: Map<string, SEBSettingsValue>, name: string): s
     }
 }
 
-function getBooleanValue(rowVals: Map<string, SEBSettingsValue>, name: string): boolean {
-    const prop =  rowVals.get(name);
+function getBooleanValue(
+    rowVals: Map<string, SEBSettingsValue>,
+    name: string,
+): boolean {
+    const prop = rowVals.get(name);
     if (!prop) {
         const def = attributes.get(name);
         if (!def) {
-            throw new Error ("No SEB Setting" + name + " found");
+            throw new Error("No SEB Setting" + name + " found");
         } else {
             return stringToBoolean(def.defaultValue);
         }
     } else {
-       return stringToBoolean(prop.value);
+        return stringToBoolean(prop.value);
     }
 }
 
-function getSettingId(rowVals: Map<string, SEBSettingsValue>, name: string): number {
-    const prop =  rowVals.get(name);
+function getSettingId(
+    rowVals: Map<string, SEBSettingsValue>,
+    name: string,
+): number {
+    const prop = rowVals.get(name);
     if (!prop) {
-        throw new Error ("No SEB Setting" + name + " found");
+        throw new Error("No SEB Setting" + name + " found");
     }
 
     return prop?.id;
 }
 
-function getSingleValue(singleValues: Map<string, SEBSettingsValue>, name: string): SEBSettingsValue {
+function getSingleValue(
+    singleValues: Map<string, SEBSettingsValue>,
+    name: string,
+): SEBSettingsValue {
     const value = singleValues.get(name);
     if (!value) {
-        throw new Error ("No Single Value" + name + " found");
+        throw new Error("No Single Value" + name + " found");
     }
 
     return value;
