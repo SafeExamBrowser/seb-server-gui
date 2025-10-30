@@ -34,9 +34,6 @@ export async function getOverview(examId: string): Promise<MonitoringOverview> {
         monitoringUrl + "/get-overview/" + examId,
         { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN) },
     );
-
-    // console.log("🚀 getOverview API response:", response.data); // <-- Add this line
-
     return response.data;
 }
 
@@ -99,13 +96,10 @@ export async function getStaticClientData(
 export async function registerInstruction(
     examId: string,
     clientInstruction: ClientInstruction,
-): Promise<unknown> {
+): Promise<number> {
     const url: string = monitoringUrl + "/" + examId + "/instruction";
-    return (
-        await apiService.api.post(url, clientInstruction, {
-            headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).status;
+    const call = await apiService.api.post(url, clientInstruction, {headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN)});
+    return call.status;
 }
 
 export async function getPendingNotifcations(
@@ -126,14 +120,7 @@ export async function confirmNotification(
     notificationId: string,
     connectionToken: string,
 ): Promise<unknown> {
-    const url: string =
-        monitoringUrl +
-        "/" +
-        examId +
-        "/notification/" +
-        notificationId +
-        "/" +
-        connectionToken;
+    const url: string = monitoringUrl + "/" + examId + "/notification/" + notificationId + "/" + connectionToken;
     return (
         await apiService.api.post(url, {
             headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),

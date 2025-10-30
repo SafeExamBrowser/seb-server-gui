@@ -152,7 +152,7 @@ export async function getAskAndStore(examId: string) {
 export async function registerInstruction(
     examId: string,
     clientInstruction: ClientInstruction,
-): Promise<unknown | null> {
+): Promise<number | null> {
     try {
         return await monitoringService.registerInstruction(
             examId,
