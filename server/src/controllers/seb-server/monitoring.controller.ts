@@ -52,12 +52,15 @@ export async function getStaticClientData(req: Request, res: Response){
     }
 }
 
-export async function registerInstruction(req: Request, res: Response){
-    try{
-        const [status] = await monitoringService.registerInstruction(req.headers.authorization, req.params.id, req.body);
-        return res.status(status);
-
-    }catch(error){
+export async function registerInstruction(req: Request, res: Response) {
+    try {
+        const [status, data] = await monitoringService.registerInstruction(
+            req.headers.authorization,
+            req.params.id,
+            req.body
+        );
+        return res.status(status).json(data ?? {});
+    } catch (error) {
         apiService.handleGenericApiError(error, res);
     }
 }
@@ -84,12 +87,16 @@ export async function confirmNotification(req: Request, res: Response){
     }
 }
 
-export async function disableConnections(req: Request, res: Response){
-    try{
-        const [status] = await monitoringService.disableConnections(req.headers.authorization, req.params.id, req.body);
-        return res.status(status);
+export async function disableConnections(req: Request, res: Response) {
+    try {
+        const [status, data] = await monitoringService.disableConnections(
+            req.headers.authorization as string,
+            req.params.id,
+            req.body
+        );
 
-    }catch(error){
+        return res.status(status).json(data ?? {});
+    } catch (error) {
         apiService.handleGenericApiError(error, res);
     }
 }
