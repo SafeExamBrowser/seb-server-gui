@@ -21,7 +21,7 @@
                     <v-card
                         v-if="key !== 'total'"
                         class="rounded-lg mb-3 px-4 py-3 d-flex align-center justify-space-between"
-                        :color="getNotificationCardBackground(key)"
+                        :color="getNotificationCardBackground(key, value)"
                         :hover="true"
                         :ripple="false"
                         variant="flat"
@@ -48,11 +48,16 @@
                                 "
                                 :style="{
                                     backgroundColor:
-                                        getNotificationIconBackground(key),
+                                        getNotificationIconBackground(
+                                            key,
+                                            value,
+                                        ),
                                 }"
                             >
                                 <v-icon
-                                    :color="getNotificationIconColor(key)"
+                                    :color="
+                                        getNotificationIconColor(key, value)
+                                    "
                                     size="28"
                                 >
                                     {{
@@ -85,7 +90,7 @@
 
                         <!-- Count -->
                         <v-avatar
-                            :color="getNotificationIconColor(key)"
+                            :color="getNotificationAvatarColor(key, value)"
                             size="45"
                         >
                             <span
@@ -117,35 +122,50 @@ const examId = useRoute().params.examId.toString();
 // stores
 const monitoringStore = useMonitoringStore();
 
-function getNotificationIconColor(key: string): string {
+const NEUTRAL_BG = "#f0f0f0";
+const NEUTRAL_ICON = "#000000";
+const NEUTRAL_AVATAR = "#BDBDBD";
+
+function isActiveNotification(value: unknown): boolean {
+    return typeof value === "number" && value > 0;
+}
+
+function getNotificationIconColor(key: string, value: unknown): string {
+    if (!isActiveNotification(value)) return NEUTRAL_ICON;
     switch (key) {
         case "RAISE_HAND":
             return "#1565C0";
         case "LOCK_SCREEN":
             return "#F9A825";
         default:
-            return "#000000";
+            return NEUTRAL_ICON;
     }
 }
 
-function getNotificationIconBackground(key: string): string {
+function getNotificationIconBackground(key: string, value: unknown): string {
+    if (!isActiveNotification(value)) return NEUTRAL_BG;
     switch (key) {
         case "RAISE_HAND":
             return "#E3F2FD";
         case "LOCK_SCREEN":
             return "#FFF8E1";
         default:
-            return "#f0f0f0";
+            return NEUTRAL_BG;
     }
 }
 
-function getNotificationCardBackground(key: string): string {
-    return getNotificationIconBackground(key);
+function getNotificationCardBackground(key: string, value: unknown): string {
+    return getNotificationIconBackground(key, value);
+}
+
+function getNotificationAvatarColor(key: string, value: unknown): string {
+    return isActiveNotification(value)
+        ? getNotificationIconColor(key, value)
+        : NEUTRAL_AVATAR;
 }
 
 function getNotificationIcon(notification: NotificationEnum | null): string {
     if (notification == null) return "mdi-chevron-right";
-
     switch (notification) {
         case NotificationEnum.LOCK_SCREEN:
             return "mdi-monitor-lock";
