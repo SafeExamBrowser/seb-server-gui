@@ -7,7 +7,13 @@ type VTextFieldProps = InstanceType<typeof VTextField>["$props"];
 
 export type FormFieldBaseProperties = Pick<
     VInputProps,
-    "label" | "density" | "rules"
+    | "ref"
+    | "label"
+    | "density"
+    | "rules"
+    | "hint"
+    | "persistentHint"
+    | "onUpdate:modelValue"
 > &
     Pick<VFieldProps, "variant">;
 
@@ -17,18 +23,20 @@ export type FormField = {
     name: string;
     label: string;
     rules?: VInputProps["rules"];
+    info?: string;
+    validationDependsOn?: string[];
 } & (
     | {
           type: "text";
           placeholder?: string;
           required?: boolean;
-          model: Ref<string>;
+          model: Ref<string | undefined>;
       }
     | {
           type: "textarea";
           placeholder?: string;
           required?: boolean;
-          model: Ref<string>;
+          model: Ref<string | undefined>;
       }
     | {
           type: "select";

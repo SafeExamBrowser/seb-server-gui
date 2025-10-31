@@ -1,8 +1,8 @@
 <template>
     <v-form
-        class="w-100 w-md-50"
+        :id="formId"
         @update:model-value="handleModelValueUpdated"
-        @submit.prevent
+        @submit.prevent="handleSubmit"
     >
         <v-container fluid class="pa-0">
             <v-row
@@ -62,17 +62,49 @@ import {
     FormFieldBaseProperties,
     FormFieldTextualProperties,
 } from "./types";
+import { VInput } from "vuetify/components";
+import { ref, nextTick, watch } from "vue";
 
 const isValid = defineModel<boolean | null>();
 
-defineProps<{
+const props = defineProps<{
+    formId?: string;
     fields: FormField[];
 }>();
+
+const emit = defineEmits<{
+    (e: "submit"): void;
+}>();
+
+const fieldsRefs = new Map<
+    string,
+    ReturnType<typeof ref<VInput | undefined>>
+>();
+
+// keep fieldsRefs up to date when fields change
+watch(
+    () => props.fields.map((f) => f.name),
+    () => {
+        props.fields.forEach((field) => {
+            if (!fieldsRefs.has(field.name)) {
+                fieldsRefs.set(field.name, ref<VInput | undefined>());
+            }
+        });
+    },
+    { immediate: true },
+);
 
 const getBaseProperties = (field: FormField): FormFieldBaseProperties => {
     const isRequired = field.type !== "switch" && field.required;
 
+    const fieldRef = fieldsRefs.get(field.name);
+
+    if (!fieldRef) {
+        throw new Error(`Field ref not found for field: ${field.name}`);
+    }
+
     return {
+        ref: fieldRef,
         label: `${field.label}${isRequired ? " *" : ""}`,
         density: "compact" as const,
         variant: "outlined" as const,
@@ -80,6 +112,9 @@ const getBaseProperties = (field: FormField): FormFieldBaseProperties => {
             ...(isRequired ? [useRules().required()] : []),
             ...(field.rules ?? []),
         ],
+        hint: field.info || undefined,
+        persistentHint: field.info !== undefined,
+        "onUpdate:modelValue": () => handleFieldValueUpdated(field.name),
     };
 };
 
@@ -98,5 +133,38 @@ const getSelectProperties = (field: FormField & { type: "select" }) => ({
 
 const handleModelValueUpdated = (value: boolean | null) => {
     isValid.value = value;
+};
+
+const handleFieldValueUpdated = async (fieldName: string) => {
+    const fieldsToRevalidate = props.fields.filter((field) =>
+        field.validationDependsOn?.includes(fieldName),
+    );
+
+    nextTick(() => {
+        fieldsToRevalidate.forEach((dependentField) => {
+            const dependentFieldRef = fieldsRefs.get(dependentField.name);
+
+            if (!dependentFieldRef) {
+                throw new Error(
+                    `Dependent field ref not found for field: ${dependentField.name}`,
+                );
+            }
+
+            // `dependentFieldRef` is an array, because of the way the FormBuilder component is implemented (v-if / v-else).
+            // This could theoretically bind the same ref to several fields (which we don't do),
+            // but Vue can't know this for sure, so it gives us an array.
+            const dependentFieldComponent = Array.isArray(
+                dependentFieldRef.value,
+            )
+                ? dependentFieldRef.value[0]
+                : dependentFieldRef.value;
+
+            dependentFieldComponent?.validate(true);
+        });
+    });
+};
+
+const handleSubmit = async () => {
+    emit("submit");
 };
 </script>
