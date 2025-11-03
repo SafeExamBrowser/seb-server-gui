@@ -1,6 +1,6 @@
 <template>
-    <v-row class="fill-height">
-        <v-col cols="6">
+    <v-row class="fill-height w-100 overflow-y-auto">
+        <v-col class="fill-height overflow-y-auto d-flex flex-column" cols="6">
             <ListHeader :label="titleSupervisorsAvailable" />
             <ListBody
                 :supervisors="supervisorsAvailable"
@@ -11,7 +11,7 @@
                 </template>
             </ListBody>
         </v-col>
-        <v-col cols="6">
+        <v-col class="fill-height overflow-y-auto d-flex flex-column" cols="6">
             <ListHeader :label="titleSupervisorsSelected" />
             <ListBody
                 :supervisors="supervisorsSelected"

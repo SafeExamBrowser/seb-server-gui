@@ -1,26 +1,28 @@
 <template>
-    <v-data-table
-        :headers="[]"
-        :hover="supervisors.length > 0"
-        :items="supervisors"
-        item-key="modelId"
-        hide-default-header
-        class="fill-height border rounded-lg"
-    >
-        <template #item="{ item }">
-            <tr class="cursor-pointer" @click="handleSupervisorClick(item)">
-                <td class="d-flex align-center">
-                    <span class="flex-grow-1 flex-shrink-1">{{
-                        item.name
-                    }}</span>
-                    <span class="flex-grow-0 flex-shrink-0">
-                        <slot name="icon"></slot>
-                    </span>
-                </td>
-            </tr>
-        </template>
-        <template #no-data></template>
-    </v-data-table>
+    <div class="flex-grow-1 flex-shrink-1 overflow-y-auto">
+        <v-data-table
+            :headers="[]"
+            :hover="supervisors.length > 0"
+            :items="supervisors"
+            item-key="modelId"
+            hide-default-header
+            class="border rounded-lg fill-height"
+        >
+            <template #item="{ item }">
+                <tr class="cursor-pointer" @click="handleSupervisorClick(item)">
+                    <td class="d-flex align-center">
+                        <span class="flex-grow-1 flex-shrink-1">{{
+                            item.name
+                        }}</span>
+                        <span class="flex-grow-0 flex-shrink-0">
+                            <slot name="icon"></slot>
+                        </span>
+                    </td>
+                </tr>
+            </template>
+            <template #no-data></template>
+        </v-data-table>
+    </div>
 </template>
 
 <script setup lang="ts">

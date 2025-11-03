@@ -2,6 +2,7 @@
     <StepItem
         :title="$t('createTemplateExam.steps.supervisors.title')"
         :subtitle="$t('createTemplateExam.steps.supervisors.subtitle')"
+        :manual-scroll-management="true"
     >
         <LoadingFallbackComponent :loading="loading" :errors="errors">
             <SupervisorPicker
