@@ -1,22 +1,28 @@
 <template>
-    <v-container clas="ma-0 pa-0">
-        <v-row>
-            <v-col cols="6">
-                <ListHeader :label="titleSupervisorsAvailable" />
-                <ListBody
-                    :supervisors="supervisorsAvailable"
-                    @select="handleSupervisorSelected"
-                />
-            </v-col>
-            <v-col cols="6">
-                <ListHeader :label="titleSupervisorsSelected" />
-                <ListBody
-                    :supervisors="supervisorsSelected"
-                    @select="handleSupervisorUnselected"
-                />
-            </v-col>
-        </v-row>
-    </v-container>
+    <v-row class="fill-height">
+        <v-col cols="6">
+            <ListHeader :label="titleSupervisorsAvailable" />
+            <ListBody
+                :supervisors="supervisorsAvailable"
+                @select="handleSupervisorSelected"
+            >
+                <template #icon>
+                    <v-icon color="primary">mdi-plus</v-icon>
+                </template>
+            </ListBody>
+        </v-col>
+        <v-col cols="6">
+            <ListHeader :label="titleSupervisorsSelected" />
+            <ListBody
+                :supervisors="supervisorsSelected"
+                @select="handleSupervisorUnselected"
+            >
+                <template #icon>
+                    <v-icon color="error">mdi-minus</v-icon>
+                </template>
+            </ListBody>
+        </v-col>
+    </v-row>
 </template>
 
 <script setup lang="ts">
