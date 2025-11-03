@@ -10,6 +10,10 @@ export const useStepSupervisorsStore = defineStore("stepSupervisors", () => {
         initialState.selectedSupervisorIds,
     );
 
+    const $reset = () => {
+        selectedSupervisorIds.value = initialState.selectedSupervisorIds;
+    };
+
     const isReady = computed<boolean>(
         () => selectedSupervisorIds.value.length > 0,
     );
@@ -17,5 +21,6 @@ export const useStepSupervisorsStore = defineStore("stepSupervisors", () => {
     return {
         isReady,
         selectedSupervisorIds,
+        $reset,
     };
 });
