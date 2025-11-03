@@ -34,9 +34,6 @@
                                         class="ask-card mb-3"
                                         :class="{
                                             'ask-card--selected': isSelected,
-                                            'ask-card--warning':
-                                                !ask.tag &&
-                                                ask.entries.length <= 3,
                                         }"
                                         variant="outlined"
                                         @click="toggle"
@@ -109,17 +106,6 @@
                                                 {{ ask.keyValue }}
                                             </div>
                                         </div>
-
-                                        <v-tooltip
-                                            v-if="isWarning(ask)"
-                                            activator="parent"
-                                            location="start"
-                                            :text="
-                                                i18n.t(
-                                                    'monitoringDetails.monitoringASKDialog.lowConnectionsTooltip',
-                                                )
-                                            "
-                                        />
                                     </v-card>
                                 </template>
                             </v-item>
@@ -216,10 +202,8 @@
                             </v-col>
                             <v-col cols="3">
                                 <div class="ml-auto d-flex align-center">
-                                    <!-- Status filter -->
                                     <v-select
                                         v-model="statusFilter"
-                                        class="status-select"
                                         :items="statusItems"
                                         item-title="label"
                                         item-value="value"
@@ -227,8 +211,56 @@
                                         variant="outlined"
                                         hide-details
                                         data-testid="aks-status-filter"
-                                        style="max-width: 240px"
-                                    />
+                                        style="max-width: 350px"
+                                    >
+                                        <!-- Dropdown items -->
+                                        <template
+                                            #item="{ props, item, index }"
+                                        >
+                                            <v-list-item v-bind="props">
+                                                <template #title>
+                                                    <div class="status-option">
+                                                        <span
+                                                            class="status-count"
+                                                            >{{
+                                                                item.raw.count
+                                                            }}</span
+                                                        >
+                                                        <span
+                                                            class="status-sep"
+                                                            aria-hidden="true"
+                                                        ></span>
+                                                        <span
+                                                            class="status-label"
+                                                            >{{
+                                                                item.raw.label
+                                                            }}</span
+                                                        >
+                                                    </div>
+                                                </template>
+                                            </v-list-item>
+
+                                            <!-- Divider -->
+                                            <v-divider
+                                                v-if="
+                                                    item.raw.value === 'ALL' &&
+                                                    index <
+                                                        statusItems.length - 1
+                                                "
+                                                class="status-divider"
+                                                color="#e5e5e5"
+                                            />
+                                        </template>
+
+                                        <!-- Selected value -->
+                                        <template #selection="{ item }">
+                                            <div class="status-option">
+                                                <span class="status-label">{{
+                                                    item.raw.label
+                                                }}</span>
+                                            </div>
+                                        </template>
+                                    </v-select>
                                 </div>
                             </v-col>
                         </v-row>
@@ -258,7 +290,6 @@
                         </v-text-field>
                     </div>
 
-                    <!-- Fixed-height viewport that fits 10 rows -->
                     <div v-if="isKeySelected" class="connections-viewport px-3">
                         <v-list
                             bg-color="transparent"
@@ -300,7 +331,6 @@
                             </v-list-item>
                         </v-list>
 
-                        <!-- Pagination stays under the list inside the fixed viewport -->
                         <div
                             class="d-flex align-center justify-space-between mt-2 px-1"
                         >
@@ -359,7 +389,6 @@ import { translate } from "@/utils/generalUtils";
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum";
 import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
 import * as examViewService from "@/services/seb-server/component-services/examViewService";
-import { AppSignatureKeysWithGrantValues } from "@/models/seb-server/appSignatureKey";
 
 const store = useMonitoringStore();
 const emit = defineEmits<{
@@ -367,17 +396,6 @@ const emit = defineEmits<{
     refresh: [];
     grantKey: [string];
 }>();
-
-type ConnectionInfo = {
-    status?: string;
-    clientVersion?: string;
-    clientOsName?: string;
-    clientAddress?: string;
-};
-
-type EnrichedASK = AppSignatureKeysWithGrantValues & {
-    entries: Array<{ id: number; name?: string; conn?: ConnectionInfo }>;
-};
 
 const examId = useMonitoringStore().selectedExam?.id.toString();
 
@@ -407,6 +425,49 @@ const isKeySelected = computed(
         selectedAskIdx.value < askEnriched.value.length,
 );
 
+const allStatuses = Object.values(
+    ConnectionStatusEnum,
+) as ConnectionStatusEnum[];
+
+const statusCounts = computed<Record<"ALL" | ConnectionStatusEnum, number>>(
+    () => {
+        const counts = { ALL: 0 } as Record<
+            "ALL" | ConnectionStatusEnum,
+            number
+        >;
+
+        for (const s of allStatuses) counts[s] = 0;
+
+        const conns = selectedConnections.value ?? [];
+        counts.ALL = conns.length;
+
+        for (const c of conns) {
+            const norm = normalizeStatus(c.conn?.status);
+            counts[norm] = (counts[norm] ?? 0) + 1;
+        }
+        return counts;
+    },
+);
+
+const statusItems = computed(() => {
+    const others = allStatuses.filter(
+        (s) =>
+            s !== ConnectionStatusEnum.ACTIVE &&
+            s !== ConnectionStatusEnum.UNDEFINED,
+    );
+    const ordered: Array<"ALL" | ConnectionStatusEnum> = [
+        "ALL",
+        ConnectionStatusEnum.ACTIVE,
+        ...others,
+        ConnectionStatusEnum.UNDEFINED,
+    ];
+
+    return ordered.map((v) => ({
+        value: v,
+        label: trStatus(v),
+        count: statusCounts.value[v],
+    }));
+});
 const normalizeStatus = (s?: string): ConnectionStatusEnum => {
     const up = (s ?? ConnectionStatusEnum.UNDEFINED).toUpperCase();
     return isStatusKey(up)
@@ -419,9 +480,7 @@ function isStatusKey(k: string): k is keyof typeof ConnectionStatusEnum {
 }
 
 async function refreshAsk() {
-    if (!examId) {
-        return;
-    }
+    if (!examId) return;
     await monitoringViewService.getAskAndStore(examId);
 }
 
@@ -444,26 +503,6 @@ function onGrantKey() {
 function trStatus(value: "ALL" | ConnectionStatusEnum) {
     return i18n.t(`monitoringDetails.monitoringASKDialog.statuses.${value}`);
 }
-const isWarning = (ask: EnrichedASK) =>
-    !ask.tag && (ask.entries?.length ?? 0) <= 3;
-
-const statusItems = computed(() => {
-    const values = Object.values(
-        ConnectionStatusEnum,
-    ) as ConnectionStatusEnum[];
-    const others = values.filter(
-        (v) =>
-            v !== ConnectionStatusEnum.ACTIVE &&
-            v !== ConnectionStatusEnum.UNDEFINED,
-    );
-    const ordered: Array<"ALL" | ConnectionStatusEnum> = [
-        "ALL",
-        ConnectionStatusEnum.ACTIVE,
-        ...others,
-        ConnectionStatusEnum.UNDEFINED,
-    ];
-    return ordered.map((v) => ({ value: v, label: trStatus(v) }));
-});
 
 watch(selectedAskIdx, () => {
     page.value = 1;
@@ -473,6 +512,7 @@ watch([searchQuery, statusFilter], () => {
     page.value = 1;
 });
 
+//aks key ordering
 const askEnriched = computed(() => {
     const keys = store.appSignatureKeys ?? [];
     const byId = store.clientConnectionsById;
@@ -488,9 +528,17 @@ const askEnriched = computed(() => {
     });
 
     return enriched.sort((a, b) => {
+        // 1) not granted first
+        const aRank = a.tag ? 1 : 0;
+        const bRank = b.tag ? 1 : 0;
+        if (aRank !== bRank) return aRank - bRank;
+
+        // 2) by connection count
         const ac = a.entries.length;
         const bc = b.entries.length;
         if (ac !== bc) return ac - bc;
+
+        // finally
         return String(a.keyValue ?? "").localeCompare(String(b.keyValue ?? ""));
     });
 });
@@ -566,9 +614,7 @@ watch(firstConnInfo, (val) => {
 });
 
 function onRemoveGrant() {
-    if (!examId || !selectedAsk.value?.id) {
-        return;
-    }
+    if (!examId || !selectedAsk.value?.id) return;
     examViewService.removeGrantExamAppSignatureKeys(
         examId,
         selectedAsk.value?.id.toString(),
@@ -576,6 +622,7 @@ function onRemoveGrant() {
     monitoringViewService.getAskAndStore(examId);
 }
 </script>
+
 <style scoped>
 .conn-card {
     border: 2px solid #d1d5db;
@@ -611,6 +658,7 @@ function onRemoveGrant() {
 .ask-card--selected {
     border-color: #215caf;
     background: #edf5ff;
+    border-width: 3px;
 }
 
 .ask-row {
@@ -790,30 +838,41 @@ function onRemoveGrant() {
     background: #f3f4f6;
 }
 
-.ask-card--selected {
-    border-color: #215caf;
-    background: #edf5ff;
-    border-width: 3px;
+.status-option {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.ask-card--warning {
-    background: #fff8e1;
-    box-shadow:
-        0 1px 0 rgba(0, 0, 0, 0.02),
-        0 2px 6px rgba(246, 195, 68, 0.25);
+.status-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 20px;
+    padding: 0 8px;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 6px;
+    background: #f5f5f5;
+    border: 1px solid #ececec;
+    line-height: 1;
 }
 
-.ask-card--selected.ask-card--warning {
-    border-color: #215caf;
-    background: #fff8e1;
-    border-width: 3px;
-    box-shadow:
-        0 1px 0 rgba(0, 0, 0, 0.02),
-        0 2px 6px rgba(246, 195, 68, 0.25);
+.status-sep {
+    width: 1px;
+    height: 16px;
+    background: #dcdcdc;
 }
 
-.ask-card--selected.ask-card--warning:hover {
-    border-color: #215caf;
-    background: #fff3c4;
+.status-label {
+    line-height: 1.2;
+}
+
+.status-divider {
+    margin: 4px;
+    background: #f5f5f5 !important;
+    height: 1px !important;
+    opacity: 1;
 }
 </style>
