@@ -5,7 +5,9 @@
             :hover="supervisors.length > 0"
             :items="supervisors"
             item-key="modelId"
+            :items-per-page="withPagination ? 25 : -1"
             hide-default-header
+            :hide-default-footer="!withPagination"
             class="border rounded-lg fill-height"
         >
             <template #item="{ item }">
@@ -30,6 +32,7 @@ import { UserAccountName } from "@/models/userAccount";
 
 defineProps<{
     supervisors: UserAccountName[];
+    withPagination: boolean;
 }>();
 
 const emit = defineEmits<{

@@ -4,6 +4,7 @@
             <ListHeader :label="titleSupervisorsAvailable" />
             <ListBody
                 :supervisors="supervisorsAvailable"
+                :with-pagination="true"
                 @select="handleSupervisorSelected"
             >
                 <template #icon>
@@ -15,6 +16,7 @@
             <ListHeader :label="titleSupervisorsSelected" />
             <ListBody
                 :supervisors="supervisorsSelected"
+                :with-pagination="false"
                 @select="handleSupervisorUnselected"
             >
                 <template #icon>
