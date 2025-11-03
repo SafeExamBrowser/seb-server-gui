@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex flex-column pa-4">
+    <div class="d-flex flex-column pa-4 fill-height">
         <div class="flex-grow-0 flex-shrink-0 mb-1">
             <SectionTitle :name="title" />
         </div>
