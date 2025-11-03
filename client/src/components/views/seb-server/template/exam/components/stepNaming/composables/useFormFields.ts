@@ -1,4 +1,3 @@
-import { useI18n } from "vue-i18n";
 import { computed } from "vue";
 import { FormField } from "@/components/widgets/formBuilder/types";
 import { ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
@@ -8,10 +7,9 @@ import { useConfigurationTemplateNames } from "./api/useConfigurationTemplateNam
 import { storeToRefs } from "pinia";
 import { useStepNamingStore } from "./store/useStepNamingStore";
 import { useRules } from "vuetify/labs/rules";
-
+import { useScreenProctoringStore } from "@/components/views/seb-server/template/exam/composables/store/useScreenProctoringStore";
+import i18n from "@/i18n";
 export const useFormFields = () => {
-    const { t } = useI18n();
-
     const {
         name: modelName,
         description: modelDescription,
@@ -21,6 +19,10 @@ export const useFormFields = () => {
         lmsIntegration: modelLmsIntegration,
         institutionalDefault: modelInstitutionalDefault,
     } = storeToRefs(useStepNamingStore());
+
+    const { enabled: modelScreenProctoringEnabled } = storeToRefs(
+        useScreenProctoringStore(),
+    );
 
     const {
         data: examTemplateNames,
@@ -65,8 +67,10 @@ export const useFormFields = () => {
                 type: "text" as const,
                 name: "name",
                 model: modelName,
-                label: t("createTemplateExam.steps.naming.fields.name.label"),
-                placeholder: t(
+                label: i18n.global.t(
+                    "createTemplateExam.steps.naming.fields.name.label",
+                ),
+                placeholder: i18n.global.t(
                     "createTemplateExam.steps.naming.fields.name.placeholder",
                 ),
                 required: true,
@@ -79,7 +83,7 @@ export const useFormFields = () => {
                                 (examTemplate) => examTemplate.name,
                             ) ?? [],
                         ),
-                        t(
+                        i18n.global.t(
                             "createTemplateExam.steps.naming.fields.name.validationErrorUniqueName",
                         ),
                     ),
@@ -89,10 +93,10 @@ export const useFormFields = () => {
                 type: "textarea" as const,
                 name: "description",
                 model: modelDescription,
-                label: t(
+                label: i18n.global.t(
                     "createTemplateExam.steps.naming.fields.description.label",
                 ),
-                placeholder: t(
+                placeholder: i18n.global.t(
                     "createTemplateExam.steps.naming.fields.description.placeholder",
                 ),
                 rules: [useRules().maxLength(4000)],
@@ -101,17 +105,20 @@ export const useFormFields = () => {
                 type: "select" as const,
                 name: "examType",
                 model: modelExamType,
-                options: Object.values(ExamTypeEnum).map((enumValue) => ({
+                options: [
+                    ExamTypeEnum.MANAGED,
+                    ExamTypeEnum.BYOD,
+                    ExamTypeEnum.VDI,
+                ].map((enumValue) => ({
                     value: enumValue,
-                    text: t(enumValue),
+                    text: i18n.global.t(enumValue),
                 })),
-                label: t(
+                label: i18n.global.t(
                     "createTemplateExam.steps.naming.fields.examType.label",
                 ),
-                placeholder: t(
+                placeholder: i18n.global.t(
                     "createTemplateExam.steps.naming.fields.examType.placeholder",
                 ),
-                required: true,
             },
             {
                 type: "select" as const,
@@ -123,10 +130,10 @@ export const useFormFields = () => {
                     value: configurationTemplate.modelId,
                     text: configurationTemplate.name,
                 })),
-                label: t(
+                label: i18n.global.t(
                     "createTemplateExam.steps.naming.fields.configurationTemplate.label",
                 ),
-                placeholder: t(
+                placeholder: i18n.global.t(
                     "createTemplateExam.steps.naming.fields.configurationTemplate.placeholder",
                 ),
             },
@@ -140,10 +147,10 @@ export const useFormFields = () => {
                     value: clientConfiguration.modelId,
                     text: clientConfiguration.name,
                 })),
-                label: t(
+                label: i18n.global.t(
                     "createTemplateExam.steps.naming.fields.clientConfiguration.label",
                 ),
-                placeholder: t(
+                placeholder: i18n.global.t(
                     "createTemplateExam.steps.naming.fields.clientConfiguration.placeholder",
                 ),
             },
@@ -151,7 +158,7 @@ export const useFormFields = () => {
                 type: "switch" as const,
                 name: "lmsIntegration",
                 model: modelLmsIntegration,
-                label: t(
+                label: i18n.global.t(
                     "createTemplateExam.steps.naming.fields.lmsIntegration.label",
                 ),
             },
@@ -159,8 +166,16 @@ export const useFormFields = () => {
                 type: "switch" as const,
                 name: "institutionalDefault",
                 model: modelInstitutionalDefault,
-                label: t(
+                label: i18n.global.t(
                     "createTemplateExam.steps.naming.fields.institutionalDefault.label",
+                ),
+            },
+            {
+                type: "switch" as const,
+                name: "screenProctoringEnabled",
+                model: modelScreenProctoringEnabled,
+                label: i18n.global.t(
+                    "createTemplateExam.general.fields.screenProctoringEnabled.label",
                 ),
             },
         ];

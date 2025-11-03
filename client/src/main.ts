@@ -10,6 +10,12 @@ import "@mdi/font/css/materialdesignicons.css";
 import { createRulesPlugin } from "vuetify/labs/rules";
 
 import vuetify from "@/plugins/vuetify";
+import { blacklisted } from "@/utils/validation/blacklisted";
+import { ipAddress } from "@/utils/validation/ipAddress";
+import {
+    alphabeticalAfter,
+    alphabeticalBefore,
+} from "@/utils/validation/alphabetical";
 
 const app = createApp(App);
 app.use(vuetify);
@@ -20,14 +26,10 @@ app.use(
     createRulesPlugin(
         {
             aliases: {
-                blacklisted: (blacklistedValues: Set<string>, err?: string) => {
-                    return (v: string) =>
-                        !blacklistedValues.has(v) ||
-                        err ||
-                        i18n.global.t("general.validation.blacklisted", {
-                            values: Array.from(blacklistedValues).join(", "),
-                        });
-                },
+                blacklisted,
+                ipAddress,
+                alphabeticalBefore,
+                alphabeticalAfter,
             },
         },
         vuetify.locale,

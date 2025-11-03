@@ -4,12 +4,12 @@ import { ref } from "vue";
 
 const initialState = {
     isReady: false,
-    name: "",
-    description: "",
-    examType: ExamTypeEnum.UNDEFINED,
+    name: undefined,
+    description: undefined,
+    examType: undefined,
     configurationTemplate: undefined,
     clientConfiguration: undefined,
-    lmsIntegration: true,
+    lmsIntegration: false,
     institutionalDefault: false,
 };
 
@@ -17,7 +17,7 @@ export const useStepNamingStore = defineStore("stepNaming", () => {
     const isReady = ref(initialState.isReady);
     const name = ref(initialState.name);
     const description = ref(initialState.description);
-    const examType = ref<ExamTypeEnum>(initialState.examType);
+    const examType = ref<ExamTypeEnum | undefined>(initialState.examType);
     const configurationTemplate = ref<string | undefined>(
         initialState.configurationTemplate,
     );
@@ -41,6 +41,7 @@ export const useStepNamingStore = defineStore("stepNaming", () => {
     };
 
     return {
+        isReady,
         name,
         description,
         examType,
@@ -48,7 +49,6 @@ export const useStepNamingStore = defineStore("stepNaming", () => {
         clientConfiguration,
         lmsIntegration,
         institutionalDefault,
-        isReady,
         $reset,
     };
 });
