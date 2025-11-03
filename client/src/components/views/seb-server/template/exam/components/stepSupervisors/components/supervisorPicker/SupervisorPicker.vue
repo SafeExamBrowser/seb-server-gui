@@ -2,15 +2,15 @@
     <v-container clas="ma-0 pa-0">
         <v-row>
             <v-col cols="6">
-                <ListTitle :label="titleSupervisorsAvailable" />
-                <List
+                <ListHeader :label="titleSupervisorsAvailable" />
+                <ListBody
                     :supervisors="supervisorsAvailable"
                     @select="handleSupervisorSelected"
                 />
             </v-col>
             <v-col cols="6">
-                <ListTitle :label="titleSupervisorsSelected" />
-                <List
+                <ListHeader :label="titleSupervisorsSelected" />
+                <ListBody
                     :supervisors="supervisorsSelected"
                     @select="handleSupervisorUnselected"
                 />
@@ -20,8 +20,8 @@
 </template>
 
 <script setup lang="ts">
-import ListTitle from "./components/ListTitle.vue";
-import List from "./components/List.vue";
+import ListHeader from "./components/ListHeader.vue";
+import ListBody from "./components/ListBody.vue";
 import { UserAccountName } from "@/models/userAccount";
 import { usePicker } from "@/components/views/seb-server/template/exam/components/stepSupervisors/components/supervisorPicker/composables/usePicker";
 
