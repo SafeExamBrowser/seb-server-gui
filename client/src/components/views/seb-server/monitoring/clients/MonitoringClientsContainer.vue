@@ -1,7 +1,7 @@
 <template>
     <template v-if="isDataLoaded">
-        <MonitoringClientsInfo></MonitoringClientsInfo>
-        <MonitoringClientsMain></MonitoringClientsMain>
+        <MonitoringClientsInfo @update-page-info="updateAll"></MonitoringClientsInfo>
+        <MonitoringClientsMain ref="mainRef"></MonitoringClientsMain>
     </template>
 </template>
 
@@ -30,6 +30,8 @@ const isDataLoaded = ref<boolean>(false);
 // interval
 let intervalRefresh: ReturnType<typeof setInterval> | null = null;
 const REFRESH_INTERVAL: number = 10000;
+
+const mainRef = ref()
 
 onBeforeMount(async () => {
     appBarStore.title = translate("titles.monitoring");
@@ -60,15 +62,12 @@ async function getOverviewData() {
         return;
     }
 
-    // const randomNumber1: number = Math.floor(Math.random() * 1000) + 1;
-    // const randomNumber2: number = Math.floor(Math.random() * 1000) + 1;
-    // overviewResponse.notifications.total = 1212;
-    // overviewResponse.notifications.LOCK_SCREEN = randomNumber1;
-    // overviewResponse.notifications.RAISE_HAND = randomNumber2;
-
     monitoringStore.monitoringOverviewData = overviewResponse;
+}
 
-    // console.log(monitoringStore.monitoringOverviewData)
+async function updateAll() {
+    getOverviewData();
+    mainRef.value.updatePage();
 }
 
 async function getIndicators() {
@@ -94,6 +93,7 @@ function stopIntervalRefresh() {
         intervalRefresh = null;
     }
 }
+
 </script>
 
 <style scoped></style>

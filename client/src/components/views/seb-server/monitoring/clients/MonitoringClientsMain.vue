@@ -352,6 +352,16 @@ watch(connections, async () => {
 // );
 
 //= =============data fetching================
+defineExpose({ updatePage })
+async function updatePage() {
+    // TODO this os now called every time a filter changes and should update the table immediately
+    //      but this seems not to work by calling the functions below there seems to be needed more
+    //      to call but I do not understand the update process fully yet. 
+    console.info("*************************");
+    // getAndSetConnections();
+    // updateConnections();
+}
+
 async function getAndSetConnections() {
     // add show all filter if no filter is selected
     if (
@@ -385,6 +395,8 @@ async function getAndSetConnections() {
 
     connections.value = fullPageResponse;
 }
+
+
 
 async function getAndSetStaticClientData(modelIds: number[]) {
     const staticClientDataResponse: MonitoringStaticClientData | null =
