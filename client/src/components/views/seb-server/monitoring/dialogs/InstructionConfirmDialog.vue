@@ -177,9 +177,8 @@ async function registerInstruction() {
         };
     }
 
-    // send inctruction
-    monitoringViewService.registerInstruction(examId, clientInstruction);
-
+    // send instruction
+    await monitoringViewService.registerInstruction(examId, clientInstruction);
     emit("closeInstructionConfirmDialog");
 }
 

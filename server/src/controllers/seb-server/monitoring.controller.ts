@@ -67,6 +67,7 @@ export async function registerInstruction(req: Request, res: Response) {
 
 export async function getPendingNotifications(req: Request, res: Response){
     try{
+
         const [notifications, status] = await monitoringService.getPendingNotifications(req.headers.authorization, req.params.id, req.params.connectionToken);
         return res.status(status).json(notifications);
 
@@ -77,10 +78,10 @@ export async function getPendingNotifications(req: Request, res: Response){
 
 export async function confirmNotification(req: Request, res: Response){
     try{
-        const [status] = await monitoringService.confirmNotification(
-            req.headers.authorization, req.params.id, req.params.notificationId, req.params.connectionToken);
+        const [status, data] = await monitoringService.confirmNotification(
+            req.headers.authorization, req.params.id, req.params.notificationId, req.params.connectionToken); 
 
-            return res.status(status);
+            return res.status(status).json(data ?? {});
 
     }catch(error){
         apiService.handleGenericApiError(error, res);
@@ -100,7 +101,6 @@ export async function disableConnections(req: Request, res: Response) {
         apiService.handleGenericApiError(error, res);
     }
 }
-
 
 export async function getClientEventLogs(req: Request, res: Response){
     try{

@@ -115,10 +115,10 @@ export async function getPendingNotifications(token: string, id: string, connect
     return [data, status];
 }
 
-export async function confirmNotification(token: string, id: string, notificationId: string, connectionToken: string): Promise<[number]> {
+export async function confirmNotification(token: string, id: string, notificationId: string, connectionToken: string): Promise<[number, any]> {
     const url: string = constants.MONITORING_ROUTE + "/" + id + "/notification/" + notificationId + "/" + connectionToken;
-    const {status} = await apiService.api.post(url, {headers: apiService.getHeaders(token)});
-    return [status];
+    const {data, status} = await apiService.api.post(url, "", {headers: apiService.getHeaders(token)});
+    return [status, data];
 }
 
 export async function disableConnections(

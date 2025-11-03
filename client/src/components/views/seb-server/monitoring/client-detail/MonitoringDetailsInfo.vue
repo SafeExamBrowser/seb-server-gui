@@ -151,10 +151,7 @@
                 <v-btn
                     class="action-btn mb-2"
                     color="black"
-                    :disabled="
-                        !connectionStateBehavior[currentStatus || 'UNKNOWN']
-                            ?.lock
-                    "
+                    :disabled="!canLockScreen()"
                     prepend-icon="mdi-monitor-lock"
                     rounded="sm"
                     variant="outlined"
@@ -222,6 +219,8 @@ import * as constants from "@/utils/constants";
 import { IndicatorEnum } from "@/models/seb-server/monitoringEnums";
 import { useRoute } from "vue-router";
 import { computed, ref } from "vue";
+import { NotificationEnum } from "@/models/seb-server/monitoringEnums";
+
 
 // route params
 const examId = useRoute().params.examId.toString();
@@ -245,6 +244,7 @@ function openInstructionConfirmDialog(instructionType: InstructionEnum) {
 
 function closeInstructionConfirmDialog() {
     instructionConfirmDialog.value = false;
+    emit("updatePageInfo");
 }
 
 //= ==============split name in parts====================
@@ -270,6 +270,23 @@ const currentStatus = computed(() => {
     }
     return monitoringStore.selectedSingleConn?.cdat.status ?? null;
 });
+
+// emits
+const emit = defineEmits<{
+    (e: "updatePageInfo"): void;
+}>();
+
+function canLockScreen(): boolean {
+    const hasLS = monitoringStore.pendingNotifications.find(
+            (item) => item.notificationType === NotificationEnum.LOCK_SCREEN,
+        ) ?? null;
+    
+    if (hasLS != null) {
+        return false;
+    }
+
+    return connectionStateBehavior[currentStatus.value || 'UNKNOWN']?.lock
+}
 
 function getConnectionStatusColor(connectionStatus: string | null): string {
     if (connectionStatus == null) return "#000000";

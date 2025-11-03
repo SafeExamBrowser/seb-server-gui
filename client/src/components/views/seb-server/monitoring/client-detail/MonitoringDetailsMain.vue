@@ -126,9 +126,9 @@
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
 import { NotificationEnum } from "@/models/seb-server/monitoringEnums";
-import { useDisplay } from "vuetify";
+//import { useDisplay } from "vuetify";
 import { translate } from "@/utils/generalUtils";
-import { ref, computed, onMounted, watch, nextTick } from "vue";
+import { ref, computed, watch, nextTick } from "vue";
 import { useRoute } from "vue-router";
 import type { ComputedRef } from "vue";
 import { ClientNotification } from "@/models/seb-server/monitoring";
@@ -156,11 +156,16 @@ const currentView = ref<"proctoring" | "logs">(
 );
 
 // display
-const { lg } = useDisplay();
+//const { lg } = useDisplay();
 
-onMounted(() => {
-    console.log(lg.value);
-});
+// emits
+const emit = defineEmits<{
+    (e: "updatePageMain"): void;
+}>();
+
+// onMounted(() => {
+//     console.log(lg.value);
+// });
 
 const raiseHandNotification: ComputedRef<ClientNotification | null> = computed(
     () =>
@@ -202,9 +207,9 @@ watch(messages, (newVal) => {
     }
 });
 
-watch(lg, () => {
-    console.log(lg.value);
-});
+// watch(lg, () => {
+//     console.log(lg.value);
+// });
 
 watch(screenProctoringEnabled, (enabled) => {
     currentView.value = enabled ? "proctoring" : "logs";
@@ -225,6 +230,7 @@ async function confirmNotification(notificationId: string) {
         notificationId,
         connectionToken,
     );
+    emit("updatePageMain");
 }
 </script>
 

@@ -1,7 +1,7 @@
 <template>
     <template v-if="isDataLoaded">
-        <MonitoringDetailsInfo></MonitoringDetailsInfo>
-        <MonitoringDetailsMain></MonitoringDetailsMain>
+        <MonitoringDetailsInfo @update-page-info="updatePage"></MonitoringDetailsInfo>
+        <MonitoringDetailsMain @update-page-main="updatePage"></MonitoringDetailsMain>
     </template>
 </template>
 
@@ -90,7 +90,10 @@ async function getPendingNotifications() {
         return;
     }
 
+    
+
     monitoringStore.pendingNotifications = notificationsResponse;
+
 }
 
 //= ================data preparing===================
@@ -117,6 +120,11 @@ function stopIntervalRefresh() {
     if (intervalRefresh) {
         clearInterval(intervalRefresh);
     }
+}
+
+async function updatePage() {
+    getSingleConnection();
+    getPendingNotifications();
 }
 
 // //todo

@@ -177,13 +177,10 @@
                                                     ? 'flat'
                                                     : 'tonal'
                                             "
-                                            @click="
-                                                monitoringViewService.applyFilter(
-                                                    getCurrentRouteQueries(),
-                                                    MonitoringHeaderEnum.SHOW_CLIENT_GROUPS,
-                                                    clientGroup.id.toString(),
-                                                )
-                                            "
+                                            @click="applyFilterInternal(
+                                                MonitoringHeaderEnum.SHOW_CLIENT_GROUPS,
+                                                clientGroup.id.toString()
+                                            )"
                                         >
                                             {{ clientGroup.name }}
                                         </v-chip>
@@ -225,13 +222,7 @@
                                                     ? 'flat'
                                                     : 'tonal'
                                             "
-                                            @click="
-                                                monitoringViewService.applyFilter(
-                                                    getCurrentRouteQueries(),
-                                                    MonitoringHeaderEnum.SHOW_STATES,
-                                                    key,
-                                                )
-                                            "
+                                            @click="applyFilterInternal(MonitoringHeaderEnum.SHOW_STATES, key)"
                                         >
                                             {{ translate(key) }}
                                         </v-chip>
@@ -239,12 +230,7 @@
                                 </v-col>
 
                                 <!------------notification filters------------->
-                                <v-col
-                                    v-if="
-                                        monitoringStore.monitoringOverviewData
-                                            ?.notifications.total != 0
-                                    "
-                                >
+                                <v-col>
                                     <div
                                         class="primary-text-color text-subtitle-1"
                                     >
@@ -262,7 +248,7 @@
                                         :key="key"
                                     >
                                         <v-chip
-                                            v-if="key != 'total' && value != 0"
+                                            v-if="key != 'total'"
                                             class="mr-2 mt-2"
                                             size="small"
                                             :variant="
@@ -273,13 +259,7 @@
                                                     ? 'flat'
                                                     : 'tonal'
                                             "
-                                            @click="
-                                                monitoringViewService.applyFilter(
-                                                    getCurrentRouteQueries(),
-                                                    MonitoringHeaderEnum.SHOW_NOTIFCATION,
-                                                    key,
-                                                )
-                                            "
+                                            @click=" applyFilterInternal(MonitoringHeaderEnum.SHOW_NOTIFCATION, key)"
                                         >
                                             {{ translate(key) }}
                                         </v-chip>
@@ -548,9 +528,8 @@ const selectedInstructionType = ref<InstructionEnum | null>(null);
 const isSelectedInstructionCancel = ref<boolean>(false);
 const selectedConnectionTokens = ref<string>("");
 
-// emits - call loadMonitoringListItemsCaller in parent
 const emit = defineEmits<{
-    loadMonitoringListItemsCaller: [];
+    (e: "updatePageInfo"): void;
 }>();
 
 function loadMonitoringListItemsCaller() {
@@ -558,7 +537,7 @@ function loadMonitoringListItemsCaller() {
         monitoringStore.startDate = datepicker.value.getTime();
     }
 
-    emit("loadMonitoringListItemsCaller");
+    emit("updatePageInfo");
 }
 
 function clearForm() {
@@ -584,6 +563,18 @@ function isFilterSelected(
     }
 
     return false;
+}
+
+function applyFilterInternal(
+    filterType: MonitoringHeaderEnum,
+    filterValue: string,
+) {
+    monitoringViewService.applyFilter(
+        getCurrentRouteQueries(),
+        filterType,
+        filterValue,
+    );
+    emit("updatePageInfo");
 }
 
 //= ==============instruction confirm dialog====================
