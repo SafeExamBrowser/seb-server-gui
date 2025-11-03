@@ -21,14 +21,14 @@
             <!-- Client States, Notifications and Indicators -->
             <v-row align="stretch" class="mt-5">
                 <!-- Client States -->
-                <v-col cols="4">
+                <v-col :cols="hasIndicators ? 4 : 6">
                     <v-sheet class="pa-6 h-100" elevation="4" rounded="lg">
                         <MonitoringOverviewClients />
                     </v-sheet>
                 </v-col>
 
                 <!-- Notifications and ask -->
-                <v-col cols="4">
+                <v-col :cols="hasIndicators ? 4 : 6">
                     <v-sheet class="pa-6 h-100" elevation="4" rounded="lg">
                         <MonitoringOverviewNotifications
                             v-if="
@@ -40,14 +40,9 @@
                 </v-col>
 
                 <!-- Indicators -->
-                <v-col cols="4">
+                <v-col v-if="hasIndicators" cols="4">
                     <v-sheet class="pa-6 h-100" elevation="4" rounded="lg">
-                        <MonitoringOverviewIndicators
-                            v-if="
-                                monitoringStore.monitoringOverviewData
-                                    ?.indicators
-                            "
-                        />
+                        <MonitoringOverviewIndicators />
                     </v-sheet>
                 </v-col>
             </v-row>
@@ -76,7 +71,7 @@ import { useAppBarStore } from "@/stores/store";
 import MonitoringOverviewIndicators from "@/components/views/seb-server/monitoring/overview/MonitoringOverviewIndicators.vue";
 import * as indicatorService from "@/services/seb-server/component-services/indicatorViewService";
 import { useRoute } from "vue-router";
-import { onBeforeMount, onBeforeUnmount } from "vue";
+import { computed, onBeforeMount, onBeforeUnmount } from "vue";
 import { MonitoringOverview } from "@/models/seb-server/monitoring";
 import { Indicators } from "@/models/seb-server/indicators";
 
@@ -103,6 +98,10 @@ onBeforeMount(async () => {
 onBeforeUnmount(() => {
     stopIntervalRefresh();
 });
+
+const hasIndicators = computed(
+    () => (monitoringStore.indicators?.content?.length ?? 0) > 0,
+);
 
 async function getOverviewData() {
     const overviewResponse: MonitoringOverview | null =
