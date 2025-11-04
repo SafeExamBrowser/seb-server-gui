@@ -32,7 +32,7 @@ const errors = computed(() => {
 
     return [
         errorLoading.value ? errorLoading.value : undefined,
-        supervisors.value && supervisors.value.length <= 1
+        supervisors.value && supervisors.value.length < 1
             ? t("general.noData")
             : undefined,
     ].filter((error) => error !== undefined);
