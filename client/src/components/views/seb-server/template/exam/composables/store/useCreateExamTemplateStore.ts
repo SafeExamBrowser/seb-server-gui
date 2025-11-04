@@ -101,7 +101,7 @@ export const useCreateExamTemplateStore = defineStore(
             name: stepNamingStore.name ?? "",
             description: stepNamingStore.description,
             examType: stepNamingStore.examType,
-            supporter: [],
+            supporter: stepSupervisorsStore.selectedSupervisorIds,
             configurationTemplateId: stepNamingStore.configurationTemplate
                 ? parseInt(stepNamingStore.configurationTemplate)
                 : undefined,
