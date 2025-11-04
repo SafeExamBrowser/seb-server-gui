@@ -2,7 +2,7 @@ import { ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
-const initialState = {
+const getInitialState = () => ({
     isReady: false,
     name: undefined,
     description: undefined,
@@ -11,33 +11,33 @@ const initialState = {
     clientConfiguration: undefined,
     lmsIntegration: false,
     institutionalDefault: false,
-};
+});
 
 export const useStepNamingStore = defineStore("stepNaming", () => {
-    const isReady = ref(initialState.isReady);
-    const name = ref(initialState.name);
-    const description = ref(initialState.description);
-    const examType = ref<ExamTypeEnum | undefined>(initialState.examType);
+    const isReady = ref(getInitialState().isReady);
+    const name = ref(getInitialState().name);
+    const description = ref(getInitialState().description);
+    const examType = ref<ExamTypeEnum | undefined>(getInitialState().examType);
     const configurationTemplate = ref<string | undefined>(
-        initialState.configurationTemplate,
+        getInitialState().configurationTemplate,
     );
     const clientConfiguration = ref<string | undefined>(
-        initialState.clientConfiguration,
+        getInitialState().clientConfiguration,
     );
-    const lmsIntegration = ref<boolean>(initialState.lmsIntegration);
+    const lmsIntegration = ref<boolean>(getInitialState().lmsIntegration);
     const institutionalDefault = ref<boolean>(
-        initialState.institutionalDefault,
+        getInitialState().institutionalDefault,
     );
 
     const $reset = () => {
-        isReady.value = initialState.isReady;
-        name.value = initialState.name;
-        description.value = initialState.description;
-        examType.value = initialState.examType;
-        configurationTemplate.value = initialState.configurationTemplate;
-        clientConfiguration.value = initialState.clientConfiguration;
-        lmsIntegration.value = initialState.lmsIntegration;
-        institutionalDefault.value = initialState.institutionalDefault;
+        isReady.value = getInitialState().isReady;
+        name.value = getInitialState().name;
+        description.value = getInitialState().description;
+        examType.value = getInitialState().examType;
+        configurationTemplate.value = getInitialState().configurationTemplate;
+        clientConfiguration.value = getInitialState().clientConfiguration;
+        lmsIntegration.value = getInitialState().lmsIntegration;
+        institutionalDefault.value = getInitialState().institutionalDefault;
     };
 
     return {

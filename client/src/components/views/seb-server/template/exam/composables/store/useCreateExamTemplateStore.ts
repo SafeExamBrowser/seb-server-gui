@@ -55,9 +55,9 @@ const isStepReady = (
     }
 };
 
-const initialState = {
+const getInitialState = () => ({
     currentStepIndex: 1, // TODO @alain: reset debug value (should be 0)
-};
+});
 
 export const useCreateExamTemplateStore = defineStore(
     "createExamTemplate",
@@ -68,7 +68,7 @@ export const useCreateExamTemplateStore = defineStore(
         const stepClientGroupStore = useStepClientGroupStore();
 
         // state
-        const currentStepIndex = ref(initialState.currentStepIndex);
+        const currentStepIndex = ref(getInitialState().currentStepIndex);
 
         // getters
         const stepperModel = computed<StepItem[]>(() =>
@@ -180,7 +180,7 @@ export const useCreateExamTemplateStore = defineStore(
 
         const $reset = () => {
             // own state
-            currentStepIndex.value = initialState.currentStepIndex;
+            currentStepIndex.value = getInitialState().currentStepIndex;
 
             // substores
             screenProctoringStore.$reset();

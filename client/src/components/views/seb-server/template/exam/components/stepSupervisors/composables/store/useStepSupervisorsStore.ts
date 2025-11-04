@@ -1,17 +1,17 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 
-const initialState = {
+const getInitialState = () => ({
     selectedSupervisorIds: [],
-};
+});
 
 export const useStepSupervisorsStore = defineStore("stepSupervisors", () => {
     const selectedSupervisorIds = ref<string[]>(
-        initialState.selectedSupervisorIds,
+        getInitialState().selectedSupervisorIds,
     );
 
     const $reset = () => {
-        selectedSupervisorIds.value = initialState.selectedSupervisorIds;
+        selectedSupervisorIds.value = getInitialState().selectedSupervisorIds;
     };
 
     const isReady = computed<boolean>(
