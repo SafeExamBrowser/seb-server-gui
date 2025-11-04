@@ -140,7 +140,7 @@ export const useCreateExamTemplateStore = defineStore(
             EXAM_ATTRIBUTES: {
                 enableScreenProctoring: screenProctoringStore.enabled
                     ? "true"
-                    : undefined,
+                    : "false",
                 spsCollectingStrategy: screenProctoringStore.collectionStrategy,
                 spsCollectingGroupName: screenProctoringStore.enabled
                     ? screenProctoringStore.collectionStrategy === "EXAM"
