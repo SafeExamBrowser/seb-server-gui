@@ -38,7 +38,7 @@
 import ListHeader from "./components/ListHeader.vue";
 import ListBody from "./components/ListBody.vue";
 import { UserAccountName } from "@/models/userAccount";
-import { usePicker } from "@/components/views/seb-server/template/exam/components/stepSupervisors/components/supervisorPicker/composables/usePicker";
+import { usePicker } from "@/components/widgets/supervisorPicker/composables/usePicker";
 
 const props = defineProps<{
     supervisors: UserAccountName[];

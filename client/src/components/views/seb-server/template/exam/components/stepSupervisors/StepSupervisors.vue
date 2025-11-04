@@ -19,7 +19,7 @@ import { computed } from "vue";
 import { useSupervisors } from "./composables/api/useSupervisors";
 import { useI18n } from "vue-i18n";
 import { useStepSupervisorsStore } from "./composables/store/useStepSupervisorsStore";
-import SupervisorPicker from "./components/supervisorPicker/SupervisorPicker.vue";
+import SupervisorPicker from "@/components/widgets/supervisorPicker/SupervisorPicker.vue";
 
 const { t } = useI18n();
 const stepSupervisorsStore = useStepSupervisorsStore();
