@@ -24,3 +24,6 @@ pnpm-debug.log*
 
 # auto generated files
 src/components.d.ts
+
+*storybook.log
+storybook-static
