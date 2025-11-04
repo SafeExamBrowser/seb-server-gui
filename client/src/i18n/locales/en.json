@@ -295,7 +295,13 @@
                 "title": "Add Exam Supervisors",
                 "subtitle": "Select or remove Exam Supervisors",
                 "labelSupervisorsAvailable": "Available Supervisors",
-                "labelSupervisorsSelected": "Selected Supervisors"
+                "labelSupervisorsSelected": "Selected Supervisors",
+                "fields": {
+                    "search": {
+                        "label": "Search Supervisors",
+                        "placeholder": "Search Supervisors"
+                    }
+                }
             },
             "indicators": {
                 "title": "Add Indicators",

@@ -1,4 +1,4 @@
-import { computed, Ref } from "vue";
+import { computed, Ref, ref } from "vue";
 import i18n from "@/i18n";
 import { UserAccountName } from "@/models/userAccount";
 
@@ -18,12 +18,23 @@ export const usePicker = (
         ),
     );
 
-    const supervisorsAvailable = computed(() =>
-        supervisors.filter(
-            (supervisor) =>
-                !supervisorIdsSelected.value.includes(supervisor.modelId),
-        ),
-    );
+    const searchText = ref<string | undefined>();
+
+    const clearSearch = () => {
+        searchText.value = undefined;
+    };
+
+    const supervisorsAvailable = computed(() => {
+        const searchTextLowerCase = searchText.value?.toLowerCase() || "";
+        return supervisors
+            .filter(
+                (supervisor) =>
+                    !supervisorIdsSelected.value.includes(supervisor.modelId),
+            )
+            .filter((supervisor) =>
+                supervisor.name.toLowerCase().includes(searchTextLowerCase),
+            );
+    });
 
     const supervisorsSelected = computed(() =>
         supervisors.filter((supervisor) =>
@@ -59,5 +70,7 @@ export const usePicker = (
         supervisorsSelected,
         handleSupervisorSelected,
         handleSupervisorUnselected,
+        searchText,
+        clearSearch,
     };
 };

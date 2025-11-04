@@ -1,7 +1,31 @@
 <template>
     <v-row class="fill-height w-100 overflow-y-auto">
-        <v-col class="fill-height overflow-y-auto d-flex flex-column" cols="6">
+        <v-col
+            class="fill-height overflow-y-auto d-flex flex-column ga-2"
+            cols="6"
+        >
             <ListHeader :label="titleSupervisorsAvailable" />
+            <v-text-field
+                v-model="searchText"
+                density="compact"
+                hide-details
+                prepend-inner-icon="mdi-magnify"
+                clearable
+                single-line
+                variant="outlined"
+                class="flex-grow-0 flex-shrink-0"
+                :label="
+                    $t(
+                        'createTemplateExam.steps.supervisors.fields.search.label',
+                    )
+                "
+                :placeholder="
+                    $t(
+                        'createTemplateExam.steps.supervisors.fields.search.placeholder',
+                    )
+                "
+                @keydown.esc="clearSearch"
+            />
             <ListBody
                 :supervisors="supervisorsAvailable"
                 :with-pagination="true"
@@ -12,7 +36,10 @@
                 </template>
             </ListBody>
         </v-col>
-        <v-col class="fill-height overflow-y-auto d-flex flex-column" cols="6">
+        <v-col
+            class="fill-height overflow-y-auto d-flex flex-column ga-2"
+            cols="6"
+        >
             <ListHeader :label="titleSupervisorsSelected" />
             <ListBody
                 :supervisors="supervisorsSelected"
@@ -48,5 +75,7 @@ const {
     supervisorsSelected,
     handleSupervisorSelected,
     handleSupervisorUnselected,
+    searchText,
+    clearSearch,
 } = usePicker(props.supervisors, supervisorIdsSelected);
 </script>
