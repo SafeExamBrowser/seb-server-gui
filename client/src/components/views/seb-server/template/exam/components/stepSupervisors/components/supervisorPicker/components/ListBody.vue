@@ -11,14 +11,19 @@
             class="border rounded-lg fill-height"
         >
             <template #item="{ item }">
-                <tr class="cursor-pointer" @click="handleSupervisorClick(item)">
-                    <td class="d-flex align-center">
-                        <span class="flex-grow-1 flex-shrink-1">{{
-                            item.name
-                        }}</span>
-                        <span class="flex-grow-0 flex-shrink-0">
-                            <slot name="icon"></slot>
-                        </span>
+                <tr>
+                    <td class="px-0">
+                        <button
+                            class="d-flex w-100 h-100 align-center px-4"
+                            @click="handleSupervisorClick(item)"
+                        >
+                            <span class="flex-grow-1 flex-shrink-1 text-left">{{
+                                item.name
+                            }}</span>
+                            <span class="flex-grow-0 flex-shrink-0">
+                                <slot name="icon"></slot>
+                            </span>
+                        </button>
                     </td>
                 </tr>
             </template>
