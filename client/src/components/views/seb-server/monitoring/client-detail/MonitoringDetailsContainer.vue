@@ -1,7 +1,11 @@
 <template>
     <template v-if="isDataLoaded">
-        <MonitoringDetailsInfo @update-page-info="updatePage"></MonitoringDetailsInfo>
-        <MonitoringDetailsMain @update-page-main="updatePage"></MonitoringDetailsMain>
+        <MonitoringDetailsInfo
+            @update-page-info="updatePage"
+        ></MonitoringDetailsInfo>
+        <MonitoringDetailsMain
+            @update-page-main="updatePage"
+        ></MonitoringDetailsMain>
     </template>
 </template>
 
@@ -90,10 +94,7 @@ async function getPendingNotifications() {
         return;
     }
 
-    
-
     monitoringStore.pendingNotifications = notificationsResponse;
-
 }
 
 //= ================data preparing===================
