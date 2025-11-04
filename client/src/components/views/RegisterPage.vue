@@ -20,28 +20,34 @@
                         </div>
 
                         <div class="mt-10">
-                            <AlertMsg
+                            <div
                                 v-if="registerError"
-                                :alert-props="{
-                                    title: '',
-                                    color: 'error',
-                                    type: 'alert',
-                                    textKey: 'register-error',
-                                }"
                                 data-testid="register-error-alert"
                             >
-                            </AlertMsg>
-                            <AlertMsg
+                                <AlertMsg
+                                    :alert-props="{
+                                        title: '',
+                                        color: 'error',
+                                        type: 'alert',
+                                        textKey: 'register-error',
+                                    }"
+                                >
+                                </AlertMsg>
+                            </div>
+                            <div
                                 v-if="registerSuccess"
-                                :alert-props="{
-                                    title: '',
-                                    color: 'success',
-                                    type: 'alert',
-                                    textKey: 'register-success',
-                                }"
                                 data-testid="register-success-alert"
                             >
-                            </AlertMsg>
+                                <AlertMsg
+                                    :alert-props="{
+                                        title: '',
+                                        color: 'success',
+                                        type: 'alert',
+                                        textKey: 'register-success',
+                                    }"
+                                >
+                                </AlertMsg>
+                            </div>
                         </div>
 
                         <v-card-title class="mt-10">
@@ -278,6 +284,13 @@
                                         class="text-decoration-underline"
                                         role="button"
                                         tabindex="0"
+                                        data-testid="register-login-link"
+                                        @keydown="
+                                            handleTabKeyEvent(
+                                                $event,
+                                                'navigate',
+                                            )
+                                        "
                                     >
                                         <router-link
                                             :to="constants.DEFAULT_ROUTE"
@@ -400,6 +413,13 @@ async function register() {
         console.error(error);
         // todo error handle
         registerError.value = true;
+    }
+}
+function handleTabKeyEvent(event: KeyboardEvent, action: string) {
+    if (event.key === "Enter" || event.key === " ") {
+        if (action === "navigate") {
+            navigateTo(constants.DEFAULT_ROUTE);
+        }
     }
 }
 </script>

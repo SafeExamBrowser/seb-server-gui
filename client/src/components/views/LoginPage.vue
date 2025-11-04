@@ -16,28 +16,30 @@
                 </div>
 
                 <div class="mt-10">
-                    <AlertMsg
-                        v-if="loginError"
-                        :alert-props="{
-                            title: '',
-                            color: 'error',
-                            type: 'alert',
-                            textKey: 'login-error',
-                        }"
-                        data-testid="login-error-alert"
-                    >
-                    </AlertMsg>
-                    <AlertMsg
+                    <div v-if="loginError" data-testid="login-error-alert">
+                        <AlertMsg
+                            :alert-props="{
+                                title: '',
+                                color: 'error',
+                                type: 'alert',
+                                textKey: 'login-error',
+                            }"
+                        />
+                    </div>
+
+                    <div
                         v-if="loadingStore.isTimeout"
-                        :alert-props="{
-                            title: '',
-                            color: 'error',
-                            type: 'alert',
-                            textKey: 'timeout-error',
-                        }"
                         data-testid="timeout-error-alert"
                     >
-                    </AlertMsg>
+                        <AlertMsg
+                            :alert-props="{
+                                title: '',
+                                color: 'error',
+                                type: 'alert',
+                                textKey: 'timeout-error',
+                            }"
+                        />
+                    </div>
                 </div>
 
                 <v-card-title class="mt-10">

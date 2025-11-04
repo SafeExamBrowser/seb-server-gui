@@ -21,7 +21,11 @@
         "quality:fix:all": "npm run lint:fix:all && npm run prettier:fix:all && vue-tsc --noEmit",
         "prepare": "cd .. && husky ./client/.husky",
         "storybook": "storybook dev -p 6006",
-        "build-storybook": "storybook build"
+        "build-storybook": "storybook build",
+        "typecheck:playwright": "tsc -p tsconfig.playwright.json --noEmit",
+        "test:e2e": "npx playwright test",
+        "test:e2e:headed": "npx playwright test --headed",
+        "test:e2e:chromium": "npx playwright test --project=chromium --headed"
     },
     "lint-staged": {
         "*.{vue,js,jsx,ts,tsx}": [
@@ -57,6 +61,7 @@
         "@chromatic-com/storybook": "^4.1.2",
         "@eslint/compat": "^1.3.2",
         "@eslint/js": "^9.35.0",
+        "@playwright/test": "^1.56.1",
         "@storybook/addon-a11y": "^10.0.3",
         "@storybook/addon-docs": "^10.0.3",
         "@storybook/addon-onboarding": "^10.0.3",
@@ -64,7 +69,7 @@
         "@testing-library/dom": "^10.4.1",
         "@testing-library/vue": "^8.1.0",
         "@types/luxon": "^3.4.2",
-        "@types/node": "^20.14.10",
+        "@types/node": "^20.19.24",
         "@types/webfontloader": "^1.6.38",
         "@vitejs/plugin-vue": "^5.0.5",
         "@vue/eslint-config-typescript": "^14.6.0",
@@ -90,5 +95,10 @@
         "vue-i18n": "^11.1.12",
         "vue-tsc": "^2.2.12",
         "vuetify": "^3.10.8"
-    }
+    },
+    "main": "env.js",
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "description": ""
 }
