@@ -24,10 +24,6 @@ function sleep(ms: number): Promise<void> {
 
 
 export async function getConnections(token: string, id: string, optionalHeaders: {}): Promise<[object, number]> {
-    
-
-    // await sleep(3000);
-
     const url: string = constants.MONITORING_CONNECTIONS_ROUTE + "/" + id;
     const { data, status } = await apiService.api.get(
         url,
