@@ -17,9 +17,16 @@
                             class="d-flex w-100 h-100 align-center px-4"
                             @click="handleSupervisorClick(item)"
                         >
-                            <span class="flex-grow-1 flex-shrink-1 text-left">{{
-                                item.name
-                            }}</span>
+                            <span
+                                class="d-flex flex-column flex-grow-1 flex-shrink-1 text-left"
+                            >
+                                <span class="font-weight-medium">{{
+                                    userAccountNameToUsername(item)
+                                }}</span>
+                                <span class="text-caption">{{
+                                    userAccountNameToFullName(item)
+                                }}</span>
+                            </span>
                             <span class="flex-grow-0 flex-shrink-0">
                                 <slot name="icon"></slot>
                             </span>
@@ -34,6 +41,10 @@
 
 <script setup lang="ts">
 import { UserAccountName } from "@/models/userAccount";
+import {
+    userAccountNameToUsername,
+    userAccountNameToFullName,
+} from "@/utils/userAccount";
 
 defineProps<{
     supervisors: UserAccountName[];

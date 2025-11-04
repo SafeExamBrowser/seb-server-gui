@@ -87,10 +87,18 @@
                                     >
                                         <div>
                                             <div class="font-weight-medium">
-                                                {{ getUsername(item.name) }}
+                                                {{
+                                                    userAccountNameToUsername(
+                                                        item,
+                                                    )
+                                                }}
                                             </div>
                                             <div class="text-caption">
-                                                {{ getFullName(item.name) }}
+                                                {{
+                                                    userAccountNameToFullName(
+                                                        item,
+                                                    )
+                                                }}
                                             </div>
                                         </div>
                                         <v-icon color="primary">
@@ -126,10 +134,18 @@
                             <div class="supervisor-row-content">
                                 <div>
                                     <div class="font-weight-medium">
-                                        {{ getUsername(supervisor.name) }}
+                                        {{
+                                            userAccountNameToUsername(
+                                                supervisor,
+                                            )
+                                        }}
                                     </div>
                                     <div class="text-caption">
-                                        {{ getFullName(supervisor.name) }}
+                                        {{
+                                            userAccountNameToFullName(
+                                                supervisor,
+                                            )
+                                        }}
                                     </div>
                                 </div>
 
@@ -150,6 +166,10 @@ import { translate } from "@/utils/generalUtils";
 import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
 import { ref, computed, onBeforeMount } from "vue";
 import { UserAccountName } from "@/models/userAccount";
+import {
+    userAccountNameToFullName,
+    userAccountNameToUsername,
+} from "@/utils/userAccount";
 
 // stores
 const quizImportStore = useQuizImportStore();
@@ -173,8 +193,10 @@ const filteredAvailableSupervisors = computed(() => {
             if (!search.value) return true;
             const searchLower = search.value.toLowerCase();
             return (
-                getUsername(u.name).toLowerCase().includes(searchLower) ||
-                getFullName(u.name).toLowerCase().includes(searchLower)
+                userAccountNameToUsername(u)
+                    .toLowerCase()
+                    .includes(searchLower) ||
+                userAccountNameToFullName(u).toLowerCase().includes(searchLower)
             );
         });
 });
@@ -214,15 +236,6 @@ function removeExamSupervisor(supervisorId: string) {
     quizImportStore.selectedExamSupervisors.splice(index, 1);
 }
 
-function getUsername(fullName: string): string {
-    const match = fullName.match(/^(.+?) \(/);
-    return match?.[1] ?? fullName;
-}
-
-function getFullName(fullName: string): string {
-    const match = fullName.match(/\((.*?)\)/);
-    return match?.[1] ?? "";
-}
 function clearSearch() {
     searchInput.value = "";
     search.value = "";
