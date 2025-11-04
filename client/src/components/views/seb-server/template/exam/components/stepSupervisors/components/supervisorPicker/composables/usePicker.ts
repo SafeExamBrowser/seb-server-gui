@@ -1,4 +1,4 @@
-import { computed, Ref, ref } from "vue";
+import { computed, ref, Ref } from "vue";
 import i18n from "@/i18n";
 import { UserAccountName } from "@/models/userAccount";
 
@@ -19,10 +19,6 @@ export const usePicker = (
     );
 
     const searchText = ref<string | undefined>();
-
-    const clearSearch = () => {
-        searchText.value = undefined;
-    };
 
     const supervisorsAvailable = computed(() => {
         const searchTextLowerCase = searchText.value?.toLowerCase() || "";
@@ -71,6 +67,5 @@ export const usePicker = (
         handleSupervisorSelected,
         handleSupervisorUnselected,
         searchText,
-        clearSearch,
     };
 };

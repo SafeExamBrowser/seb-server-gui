@@ -5,27 +5,7 @@
             cols="6"
         >
             <ListHeader :label="titleSupervisorsAvailable" />
-            <v-text-field
-                v-model="searchText"
-                density="compact"
-                hide-details
-                prepend-inner-icon="mdi-magnify"
-                clearable
-                single-line
-                variant="outlined"
-                class="flex-grow-0 flex-shrink-0"
-                :label="
-                    $t(
-                        'createTemplateExam.steps.supervisors.fields.search.label',
-                    )
-                "
-                :placeholder="
-                    $t(
-                        'createTemplateExam.steps.supervisors.fields.search.placeholder',
-                    )
-                "
-                @keydown.esc="clearSearch"
-            />
+            <SearchField v-model="searchText" />
             <ListBody
                 :supervisors="supervisorsAvailable"
                 :with-pagination="true"
@@ -71,11 +51,10 @@ const supervisorIdsSelected = defineModel<string[]>({
 const {
     titleSupervisorsAvailable,
     titleSupervisorsSelected,
+    searchText,
     supervisorsAvailable,
     supervisorsSelected,
     handleSupervisorSelected,
     handleSupervisorUnselected,
-    searchText,
-    clearSearch,
 } = usePicker(props.supervisors, supervisorIdsSelected);
 </script>
