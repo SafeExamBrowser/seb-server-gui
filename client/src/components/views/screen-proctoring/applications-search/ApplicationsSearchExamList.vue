@@ -93,7 +93,6 @@ const props = defineProps<{
 // emits (parent functions)
 const emit = defineEmits<{
     getGroupIdsForExam: [selectedExams: SPExam[]];
-    
 }>();
 
 // panel

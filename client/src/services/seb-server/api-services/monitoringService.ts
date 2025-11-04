@@ -98,7 +98,9 @@ export async function registerInstruction(
     clientInstruction: ClientInstruction,
 ): Promise<number> {
     const url: string = monitoringUrl + "/" + examId + "/instruction";
-    const call = await apiService.api.post(url, clientInstruction, {headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN)});
+    const call = await apiService.api.post(url, clientInstruction, {
+        headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),
+    });
     return call.status;
 }
 
@@ -120,7 +122,14 @@ export async function confirmNotification(
     notificationId: string,
     connectionToken: string,
 ): Promise<unknown> {
-    const url: string = monitoringUrl + "/" + examId + "/notification/" + notificationId + "/" + connectionToken;
+    const url: string =
+        monitoringUrl +
+        "/" +
+        examId +
+        "/notification/" +
+        notificationId +
+        "/" +
+        connectionToken;
     return (
         await apiService.api.post(url, {
             headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),

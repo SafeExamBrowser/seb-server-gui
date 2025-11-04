@@ -1,6 +1,8 @@
 <template>
     <template v-if="isDataLoaded">
-        <MonitoringClientsInfo @update-page-info="updateAll"></MonitoringClientsInfo>
+        <MonitoringClientsInfo
+            @update-page-info="updateAll"
+        ></MonitoringClientsInfo>
         <MonitoringClientsMain ref="mainRef"></MonitoringClientsMain>
     </template>
 </template>
@@ -31,7 +33,7 @@ const isDataLoaded = ref<boolean>(false);
 let intervalRefresh: ReturnType<typeof setInterval> | null = null;
 const REFRESH_INTERVAL: number = 10000;
 
-const mainRef = ref()
+const mainRef = ref();
 
 onBeforeMount(async () => {
     appBarStore.title = translate("titles.monitoring");
@@ -93,7 +95,6 @@ function stopIntervalRefresh() {
         intervalRefresh = null;
     }
 }
-
 </script>
 
 <style scoped></style>
