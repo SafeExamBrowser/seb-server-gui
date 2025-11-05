@@ -128,13 +128,13 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import * as authenticationService from "@/services/authenticationService";
-import { navigateTo } from "@/router/navigation";
 import { useLoadingStore } from "@/stores/store";
 import { useTheme } from "vuetify";
 import * as constants from "@/utils/constants";
 import { translate } from "@/utils/generalUtils";
 import { useAuthStore } from "@/stores/authentication/authenticationStore";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
+import { useRouter } from "vue-router";
 
 const username = ref("");
 const password = ref("");
@@ -153,6 +153,8 @@ theme.change(initialTheme);
 
 // ToDo dark mode??
 // const isDark = computed<boolean>(() => theme.global.current.value.dark);
+
+const router = useRouter();
 
 async function signIn() {
     loginError.value = false;
@@ -194,7 +196,7 @@ async function signIn() {
 function handleTabKeyEvent(event: KeyboardEvent, action: string) {
     if (event.key === "Enter" || event.key === " ") {
         if (action === "navigate") {
-            navigateTo(constants.REGISTER_ROUTE);
+            router.push(constants.REGISTER_ROUTE);
         }
     }
 }

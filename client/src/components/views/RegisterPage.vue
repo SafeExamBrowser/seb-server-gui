@@ -313,7 +313,6 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { navigateTo } from "@/router/navigation";
 import { onMounted } from "vue";
 import * as constants from "@/utils/constants";
 import * as registerAccountViewService from "@/services/seb-server/component-services/registerAccountViewService";
@@ -322,6 +321,7 @@ import moment from "moment-timezone";
 import { translate } from "@/utils/generalUtils";
 import { useI18n } from "vue-i18n";
 import { Institution } from "@/models/seb-server/institution";
+import { useRouter } from "vue-router";
 
 // form fields
 const selectedInstitution = ref<string>("");
@@ -348,6 +348,8 @@ const institutionSelectDisabled = ref<boolean>(false);
 
 // load timezones
 const timezoneOptions = moment.tz.names();
+
+const router = useRouter();
 
 // fetch Institutions
 onMounted(async () => {
@@ -404,7 +406,7 @@ async function register() {
             registerSuccess.value = true;
 
             setTimeout(() => {
-                navigateTo(constants.DEFAULT_ROUTE);
+                router.push(constants.DEFAULT_ROUTE);
             }, 2500);
         } else {
             registerError.value = true;
@@ -418,7 +420,7 @@ async function register() {
 function handleTabKeyEvent(event: KeyboardEvent, action: string) {
     if (event.key === "Enter" || event.key === " ") {
         if (action === "navigate") {
-            navigateTo(constants.DEFAULT_ROUTE);
+            router.push(constants.DEFAULT_ROUTE);
         }
     }
 }
