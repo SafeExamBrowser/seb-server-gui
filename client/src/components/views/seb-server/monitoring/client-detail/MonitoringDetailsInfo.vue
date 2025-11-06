@@ -221,7 +221,6 @@ import { useRoute } from "vue-router";
 import { computed, ref } from "vue";
 import { NotificationEnum } from "@/models/seb-server/monitoringEnums";
 
-
 // route params
 const examId = useRoute().params.examId.toString();
 const connectionToken = useRoute().params.connectionToken.toString();
@@ -277,15 +276,16 @@ const emit = defineEmits<{
 }>();
 
 function canLockScreen(): boolean {
-    const hasLS = monitoringStore.pendingNotifications.find(
+    const hasLS =
+        monitoringStore.pendingNotifications.find(
             (item) => item.notificationType === NotificationEnum.LOCK_SCREEN,
         ) ?? null;
-    
+
     if (hasLS != null) {
         return false;
     }
 
-    return connectionStateBehavior[currentStatus.value || 'UNKNOWN']?.lock
+    return connectionStateBehavior[currentStatus.value || "UNKNOWN"]?.lock;
 }
 
 function getConnectionStatusColor(connectionStatus: string | null): string {
