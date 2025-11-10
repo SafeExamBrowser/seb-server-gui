@@ -8,13 +8,12 @@
         :label-submit="$t('general.saveButton')"
         form-id="client-group-form"
         :get-form-fields="getFormFields"
-        :get-item="getClientGroup"
+        :get-item="() => ({ ...props.clientGroup })"
         @submit="handleUpdate"
     />
 </template>
 
 <script setup lang="ts">
-import { ClientGroup } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 import { useStepClientGroupStore } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/store/useStepClientGroupStore";
 import { useFormFields } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/useFormFields";
 import {
@@ -25,14 +24,8 @@ const { updateGroup } = useStepClientGroupStore();
 const { getFormFields } = useFormFields();
 
 const props = defineProps<{
-    clientGroup: ClientGroup;
+    clientGroup: ClientGroupTransient;
 }>();
-
-const getClientGroup = () => {
-    return {
-        ...props.clientGroup,
-    };
-};
 
 const handleUpdate = (clientGroup: ClientGroupTransient) => {
     updateGroup(clientGroupTransientToClientGroup(clientGroup));
