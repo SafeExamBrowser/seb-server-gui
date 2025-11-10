@@ -39,7 +39,7 @@ export const useStepIndicatorsStore = defineStore("stepIndicators", () => {
     };
 
     const isReady = computed(() => {
-        // TODO @alain: implement real rules here
+        // there are no rules for this step, everything is optional
         return true;
     });
 
