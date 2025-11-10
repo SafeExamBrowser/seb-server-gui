@@ -1,16 +1,17 @@
 import { z } from "zod";
+import { IndicatorEnum } from "@/models/seb-server/monitoringEnums";
 
 export type IndicatorTransient = {
     id: number;
     name?: string;
-    type?: string; // TODO @alain: type needs to be more narrow (limited enum values)
+    type?: IndicatorEnum.BATTERY_STATUS | IndicatorEnum.WLAN_STATUS;
     // TODO @alain: thresholds
 };
 
 const indicatorSchema = z.object({
     id: z.number(),
     name: z.string(),
-    type: z.string().optional(), // TODO @alain: fix type (discriminated union based on enum)
+    type: z.enum([IndicatorEnum.BATTERY_STATUS, IndicatorEnum.WLAN_STATUS]),
     // TODO @alain: thresholds
 });
 

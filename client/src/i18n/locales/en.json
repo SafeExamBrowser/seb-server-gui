@@ -321,7 +321,12 @@
                         "validationErrorUniqueName": "An indicator with this name already exists on this exam template"
                     },
                     "type": {
-                        "label": "Type"
+                        "label": "Type",
+                        "placeholder": "Select the indicator type",
+                        "types": {
+                            "BATTERY_STATUS": "Battery Status",
+                            "WLAN_STATUS": "Wifi Status"
+                        }
                     }
                 }
             },
