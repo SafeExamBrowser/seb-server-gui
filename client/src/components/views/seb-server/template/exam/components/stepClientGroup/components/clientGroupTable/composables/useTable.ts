@@ -7,6 +7,7 @@ import i18n from "@/i18n";
 
 export const useTable = () => {
     const screenProctoringStore = useScreenProctoringStore();
+    const { deleteGroup } = useStepClientGroupStore();
 
     const headers = [
         {
@@ -83,5 +84,6 @@ export const useTable = () => {
     return {
         headers,
         items,
+        deleteItem: deleteGroup,
     };
 };

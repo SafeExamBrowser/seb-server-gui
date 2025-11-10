@@ -24,7 +24,7 @@
         <template #item.actions="{ item }">
             <div v-if="hasActions(item)" class="d-flex ga-2 justify-end">
                 <ClientGroupUpdate :client-group="item" />
-                <ClientGroupDelete :client-group="item" />
+                <CrudDelete :item="item" :delete-item="deleteItem" />
             </div>
         </template>
     </v-data-table>
@@ -33,7 +33,8 @@
 <script setup lang="ts">
 import { useTable } from "./composables/useTable";
 import { ClientGroupForTable } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
-const { headers, items } = useTable();
+import CrudDelete from "@/components/widgets/crud/CrudDelete.vue";
+const { headers, items, deleteItem } = useTable();
 
 const hasActions = (item: ClientGroupForTable) =>
     item.type !== "SCREEN_PROCTORING_SINGLE" &&
