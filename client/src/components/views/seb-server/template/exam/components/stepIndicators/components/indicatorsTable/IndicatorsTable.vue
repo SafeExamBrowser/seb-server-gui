@@ -21,7 +21,7 @@
         <template #item.actions="{ item }">
             <div class="d-flex ga-2 justify-end">
                 <IndicatorUpdate :indicator="item" />
-                <IndicatorDelete :indicator="item" />
+                <CrudDelete :item="item" :delete-item="deleteItem" />
             </div>
         </template>
     </v-data-table>
@@ -30,8 +30,7 @@
 <script setup lang="ts">
 import { useTable } from "./composables/useTable";
 import IndicatorCreate from "@/components/views/seb-server/template/exam/components/stepIndicators/components/IndicatorCreate.vue";
-import IndicatorDelete from "@/components/views/seb-server/template/exam/components/stepIndicators/components/IndicatorDelete.vue";
 import IndicatorUpdate from "@/components/views/seb-server/template/exam/components/stepIndicators/components/IndicatorUpdate.vue";
 
-const { headers, items } = useTable();
+const { headers, items, deleteItem } = useTable();
 </script>

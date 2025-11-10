@@ -4,6 +4,7 @@ import { useStepIndicatorsStore } from "@/components/views/seb-server/template/e
 
 export const useTable = () => {
     const { indicators } = storeToRefs(useStepIndicatorsStore());
+    const { deleteIndicator } = useStepIndicatorsStore();
 
     const headers = [
         {
@@ -33,5 +34,6 @@ export const useTable = () => {
     return {
         headers,
         items: indicators,
+        deleteItem: deleteIndicator,
     };
 };
