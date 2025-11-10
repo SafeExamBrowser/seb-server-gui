@@ -64,7 +64,6 @@ export const useFormFields = () => {
                     ),
                 ],
             },
-
             {
                 type: "select" as const,
                 name: "type",

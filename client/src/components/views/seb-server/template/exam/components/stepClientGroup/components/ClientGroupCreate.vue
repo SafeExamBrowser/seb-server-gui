@@ -1,12 +1,14 @@
 <template>
-    <ClientGroupDialog
+    <FormDialog
         :disabled="!allowCreateNewClientGroup"
         icon-activator="mdi-plus-circle-outline"
         color-activator="primary"
         :label-activator="$t('clientGroups.addDialogTitle')"
         :label-cancel="$t('general.cancelButton')"
         :label-submit="$t('general.createButton')"
-        :get-client-group="getClientGroup"
+        form-id="client-group-form"
+        :get-form-fields="getFormFields"
+        :get-item="getEmptyClientGroup"
         @submit="handleCreate"
     />
 </template>
@@ -16,13 +18,18 @@ import {
     getEmptyClientGroup,
     useStepClientGroupStore,
 } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/store/useStepClientGroupStore";
-import { ClientGroup } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
+import FormDialog from "@/components/widgets/crud/FormDialog.vue";
+import {
+    ClientGroupTransient,
+    clientGroupTransientToClientGroup,
+} from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 import { storeToRefs } from "pinia";
 import { useScreenProctoringStore } from "@/components/views/seb-server/template/exam/composables/store/useScreenProctoringStore";
 import { computed } from "vue";
-import ClientGroupDialog from "@/components/views/seb-server/template/exam/components/stepClientGroup/components/clientGroupDialog/ClientGroupDialog.vue";
+import { useFormFields } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/useFormFields";
 
 const { createGroup } = useStepClientGroupStore();
+const { getFormFields } = useFormFields();
 
 const {
     enabled: screenProctoringEnabled,
@@ -36,11 +43,7 @@ const allowCreateNewClientGroup = computed<boolean>(() => {
     );
 });
 
-const getClientGroup = () => {
-    return getEmptyClientGroup();
-};
-
-const handleCreate = (clientGroup: ClientGroup) => {
-    createGroup(clientGroup);
+const handleCreate = (clientGroup: ClientGroupTransient) => {
+    createGroup(clientGroupTransientToClientGroup(clientGroup));
 };
 </script>
