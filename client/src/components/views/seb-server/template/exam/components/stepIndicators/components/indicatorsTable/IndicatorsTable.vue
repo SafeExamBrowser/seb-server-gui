@@ -10,8 +10,6 @@
                 <IndicatorCreate />
             </TableHeader>
         </template>
-
-        <!-- TODO @alain: i18n as soon as there is data -->
         <template #item.type="{ item }">
             {{
                 item.type &&
