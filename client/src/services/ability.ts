@@ -5,6 +5,8 @@ import { useUserAccountStore } from "@/stores/authentication/authenticationStore
 import * as generalUtils from "@/utils/generalUtils";
 import { ref } from "vue";
 import { Exam } from "@/models/seb-server/exam";
+import { FeatureEnum, featureNameMapping } from "@/models/features";
+import * as apiService from "@/services/apiService";
 
 export enum GUIComponent {
     // Overall components
@@ -66,6 +68,11 @@ export const useAbilities = defineStore("ability", () => {
     );
     const examStatusActions = ref<Map<ExamStatusEnum, Set<GUIAction>>>(
         new Map<ExamStatusEnum, Set<GUIAction>>(),
+    );
+
+    let systemFeaturesFetched = false;
+    const systemFeatures = ref<Map<string, boolean>>(
+        new Map<string, boolean>(),
     );
 
     // -----------------------------------------------------------------------------
@@ -365,11 +372,36 @@ export const useAbilities = defineStore("ability", () => {
         return false;
     }
 
+    async function hasSystemFeature(feature: FeatureEnum): Promise<boolean> {
+        if (!systemFeaturesFetched) {
+            // fetch from server
+            const response: Map<string, boolean> | null = (
+                await apiService.api.get("/info/features")
+            ).data;
+            if (response) {
+                systemFeatures.value = response;
+                systemFeaturesFetched = true;
+            }
+        }
+
+        if (!systemFeaturesFetched) {
+            return false;
+        }
+
+        const fName = featureNameMapping.get(feature);
+        if (!fName) {
+            return false;
+        }
+
+        return systemFeatures.value.get(fName) ?? false;
+    }
+
     return {
         canView,
         canDo,
         isExamSupporter,
         canDoExamAction,
+        hasSystemFeature,
     };
 });
 
