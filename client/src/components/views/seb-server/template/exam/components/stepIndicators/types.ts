@@ -2,7 +2,6 @@ import { z } from "zod";
 
 export type IndicatorTransient = {
     id: number;
-    examTemplateId?: number; // TODO @alain: is this even needed here? I don't think so?
     name?: string;
     type?: string; // TODO @alain: type needs to be more narrow (limited enum values)
     // TODO @alain: thresholds
