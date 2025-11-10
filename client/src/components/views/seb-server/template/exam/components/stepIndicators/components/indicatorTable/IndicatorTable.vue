@@ -10,7 +10,7 @@
                 <CrudCreate
                     :label="$t('indicators.addDialogTitle')"
                     :get-form-fields="getFormFields"
-                    :get-item="getEmptyItem"
+                    :get-item="getNewItem"
                     :create-item="createItem"
                 />
             </TableHeader>
@@ -28,7 +28,7 @@
                 <CrudUpdate
                     :label="$t('indicators.editDialogTitle')"
                     :get-form-fields="getFormFields"
-                    :get-item="() => ({ ...item })"
+                    :get-item="() => getExistingItem(item)"
                     :update-item="updateItem"
                 />
                 <CrudDelete :item="item" :delete-item="deleteItem" />
@@ -46,10 +46,11 @@ import CrudCreate from "@/components/widgets/crud/CrudCreate.vue";
 const {
     headers,
     items,
-    deleteItem,
     createItem,
-    getEmptyItem,
-    getFormFields,
     updateItem,
+    deleteItem,
+    getNewItem,
+    getExistingItem,
+    getFormFields,
 } = useTable();
 </script>

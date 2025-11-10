@@ -6,6 +6,7 @@ import {
 } from "@/components/views/seb-server/template/exam/components/stepIndicators/composables/store/useStepIndicatorsStore";
 import { useFormFields } from "@/components/views/seb-server/template/exam/components/stepIndicators/composables/useFormFields";
 import {
+    Indicator,
     IndicatorTransient,
     indicatorTransientToIndicator,
 } from "@/components/views/seb-server/template/exam/components/stepIndicators/types";
@@ -49,13 +50,18 @@ export const useTable = () => {
         updateIndicator(indicatorTransientToIndicator(item));
     };
 
+    const getExistingItem = (item: Indicator): IndicatorTransient => ({
+        ...item,
+    });
+
     return {
         headers,
         items: indicators,
-        deleteItem: deleteIndicator,
         createItem,
-        getEmptyItem: getEmptyIndicator,
-        getFormFields,
         updateItem,
+        deleteItem: deleteIndicator,
+        getNewItem: getEmptyIndicator,
+        getExistingItem,
+        getFormFields,
     };
 };
