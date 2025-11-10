@@ -22,8 +22,7 @@
         </template>
         <template #item.actions="{ item }">
             <div class="d-flex ga-2 justify-end">
-                <!--  TODO @alain: implement update -->
-                <!-- <IndicatorUpdate :indicator="item" /> -->
+                <IndicatorUpdate :indicator="item" />
                 <IndicatorDelete :indicator="item" />
             </div>
         </template>
@@ -34,5 +33,7 @@
 import { useTable } from "./composables/useTable";
 import IndicatorCreate from "@/components/views/seb-server/template/exam/components/stepIndicators/components/IndicatorCreate.vue";
 import IndicatorDelete from "@/components/views/seb-server/template/exam/components/stepIndicators/components/IndicatorDelete.vue";
+import IndicatorUpdate from "@/components/views/seb-server/template/exam/components/stepIndicators/components/IndicatorUpdate.vue";
+
 const { headers, items } = useTable();
 </script>
