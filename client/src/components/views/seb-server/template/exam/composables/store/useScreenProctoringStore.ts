@@ -2,13 +2,13 @@ import { ScreenProctoringCollectionStrategy } from "@/components/views/seb-serve
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 
-const initialState = {
+const getInitialState = () => ({
     enabled: false,
     collectionStrategy: undefined,
-};
+});
 
 export const useScreenProctoringStore = defineStore("screenProctoring", () => {
-    const enabled = ref<boolean>(initialState.enabled);
+    const enabled = ref<boolean>(getInitialState().enabled);
 
     const collectionStrategy = ref<ScreenProctoringCollectionStrategy>();
 
@@ -17,8 +17,8 @@ export const useScreenProctoringStore = defineStore("screenProctoring", () => {
     );
 
     const $reset = () => {
-        enabled.value = initialState.enabled;
-        collectionStrategy.value = initialState.collectionStrategy;
+        enabled.value = getInitialState().enabled;
+        collectionStrategy.value = getInitialState().collectionStrategy;
     };
 
     return {

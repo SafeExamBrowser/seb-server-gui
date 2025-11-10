@@ -5,8 +5,15 @@ export const blacklisted = (blacklistedValues: Set<string>, err?: string) => {
         Array.from(blacklistedValues).map((v) => v.toLowerCase()),
     );
 
-    return (v: string) =>
-        !blacklistedValuesLowerCase.has(v.toLowerCase()) ||
+    const isBlacklisted = (v?: string) => {
+        if (v === undefined) {
+            return true;
+        }
+
+        return blacklistedValuesLowerCase.has(v.toLowerCase());
+    };
+    return (v?: string) =>
+        !isBlacklisted(v) ||
         err ||
         i18n.global.t("general.validation.blacklisted", {
             values: Array.from(blacklistedValues).join(", "),
