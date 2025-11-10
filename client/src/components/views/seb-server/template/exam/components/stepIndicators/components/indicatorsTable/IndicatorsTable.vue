@@ -21,11 +21,10 @@
             }}
         </template>
         <template #item.actions="{ item }">
-            <!--  TODO @alain: implement update/delete -->
             <div class="d-flex ga-2 justify-end">
-                <!-- <IndicatorUpdate :indicator="item" />
-                <IndicatorDelete :indicator="item" /> -->
-                {{ item.id }}
+                <!--  TODO @alain: implement update -->
+                <!-- <IndicatorUpdate :indicator="item" /> -->
+                <IndicatorDelete :indicator="item" />
             </div>
         </template>
     </v-data-table>
@@ -33,5 +32,7 @@
 
 <script setup lang="ts">
 import { useTable } from "./composables/useTable";
+import IndicatorCreate from "@/components/views/seb-server/template/exam/components/stepIndicators/components/IndicatorCreate.vue";
+import IndicatorDelete from "@/components/views/seb-server/template/exam/components/stepIndicators/components/IndicatorDelete.vue";
 const { headers, items } = useTable();
 </script>
