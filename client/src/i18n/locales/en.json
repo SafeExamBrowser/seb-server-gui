@@ -111,6 +111,10 @@
         }
     },
 
+    "indicators": {
+        "entityNamePlural": "Indicators"
+    },
+
     "loginPage": {
         "title": "SEB Server",
         "signIn": "Sign in",
@@ -305,7 +309,18 @@
             },
             "indicators": {
                 "title": "Add Indicators",
-                "subtitle": "TODO: translate (Kristina)"
+                "subtitle": "TODO: translate (Kristina)",
+                "fields": {
+                    "actions": {
+                        "label": "Actions"
+                    },
+                    "name": {
+                        "label": "Name"
+                    },
+                    "type": {
+                        "label": "Type"
+                    }
+                }
             },
             "clientGroup": {
                 "title": "Add Client Groups",
