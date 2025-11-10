@@ -25,7 +25,12 @@
         </template>
         <template #item.actions="{ item }">
             <div class="d-flex ga-2 justify-end">
-                <IndicatorUpdate :indicator="item" />
+                <CrudUpdate
+                    :label="$t('indicators.editDialogTitle')"
+                    :get-form-fields="getFormFields"
+                    :get-item="() => ({ ...item })"
+                    :update-item="updateItem"
+                />
                 <CrudDelete :item="item" :delete-item="deleteItem" />
             </div>
         </template>
@@ -34,8 +39,17 @@
 
 <script setup lang="ts">
 import { useTable } from "./composables/useTable";
-import IndicatorUpdate from "@/components/views/seb-server/template/exam/components/stepIndicators/components/IndicatorUpdate.vue";
+import CrudUpdate from "@/components/widgets/crud/CrudUpdate.vue";
+import CrudDelete from "@/components/widgets/crud/CrudDelete.vue";
+import CrudCreate from "@/components/widgets/crud/CrudCreate.vue";
 
-const { headers, items, deleteItem, createItem, getEmptyItem, getFormFields } =
-    useTable();
+const {
+    headers,
+    items,
+    deleteItem,
+    createItem,
+    getEmptyItem,
+    getFormFields,
+    updateItem,
+} = useTable();
 </script>

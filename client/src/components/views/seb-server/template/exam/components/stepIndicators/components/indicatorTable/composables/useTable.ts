@@ -12,7 +12,8 @@ import {
 
 export const useTable = () => {
     const { indicators } = storeToRefs(useStepIndicatorsStore());
-    const { deleteIndicator, createIndicator } = useStepIndicatorsStore();
+    const { deleteIndicator, createIndicator, updateIndicator } =
+        useStepIndicatorsStore();
     const { getFormFields } = useFormFields();
 
     const headers = [
@@ -44,6 +45,10 @@ export const useTable = () => {
         createIndicator(indicatorTransientToIndicator(item));
     };
 
+    const updateItem = (item: IndicatorTransient) => {
+        updateIndicator(indicatorTransientToIndicator(item));
+    };
+
     return {
         headers,
         items: indicators,
@@ -51,5 +56,6 @@ export const useTable = () => {
         createItem,
         getEmptyItem: getEmptyIndicator,
         getFormFields,
+        updateItem,
     };
 };
