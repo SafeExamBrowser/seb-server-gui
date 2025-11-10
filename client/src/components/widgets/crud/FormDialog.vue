@@ -54,7 +54,7 @@ const props = withDefaults(
         labelSubmit: string;
         formId: string;
         getFormFields: (item: Ref<UnwrapRef<T>> | Ref<T>) => FormField[];
-        getItem: () => T; // TODO: instead of this, maybe just pass the item directly and then keep an internal copy for the form
+        getItem: () => T;
     }>(),
     {
         disabled: false,
@@ -68,16 +68,14 @@ const emit = defineEmits<{
 
 const activatorRef = ref<HTMLElement>();
 const isDialogOpen = ref(false);
-const item = ref(props.getItem());
+const item = ref<T>(props.getItem());
 const isValid = ref<boolean>(false);
 const formFields = computed<FormField[]>(() => props.getFormFields(item));
 
 watch(isDialogOpen, (newValue) => {
-    if (!newValue) {
-        // side effect: reset the temporary item whenever the dialog is closed
+    if (newValue) {
+        // side effects when dialog opens
         item.value = props.getItem();
-
-        // side effect: reset the validation flag whenever the dialog is closed
         isValid.value = false;
     }
 });
