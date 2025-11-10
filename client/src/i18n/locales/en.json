@@ -113,7 +113,8 @@
 
     "indicators": {
         "entityNamePlural": "Indicators",
-        "addDialogTitle": "Add Indicator"
+        "addDialogTitle": "Add Indicator",
+        "editDialogTitle": "Edit Indicator"
     },
 
     "loginPage": {
