@@ -38,10 +38,11 @@
 </template>
 
 <script setup lang="ts" generic="T">
-import { Ref, UnwrapRef, computed, ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { IconValue } from "vuetify/lib/composables/icons.mjs";
 import { useDisplay } from "vuetify";
 import { FormField } from "@/components/widgets/formBuilder/types";
+import { GetFormFields, GetItem } from "./types";
 
 const props = withDefaults(
     defineProps<{
@@ -53,8 +54,8 @@ const props = withDefaults(
         labelCancel: string;
         labelSubmit: string;
         formId: string;
-        getFormFields: (item: Ref<UnwrapRef<T>> | Ref<T>) => FormField[];
-        getItem: () => T;
+        getFormFields: GetFormFields<T>;
+        getItem: GetItem<T>;
     }>(),
     {
         disabled: false,

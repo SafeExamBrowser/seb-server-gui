@@ -1,10 +1,19 @@
 import { storeToRefs } from "pinia";
 import i18n from "@/i18n";
-import { useStepIndicatorsStore } from "@/components/views/seb-server/template/exam/components/stepIndicators/composables/store/useStepIndicatorsStore";
+import {
+    getEmptyIndicator,
+    useStepIndicatorsStore,
+} from "@/components/views/seb-server/template/exam/components/stepIndicators/composables/store/useStepIndicatorsStore";
+import { useFormFields } from "@/components/views/seb-server/template/exam/components/stepIndicators/composables/useFormFields";
+import {
+    IndicatorTransient,
+    indicatorTransientToIndicator,
+} from "@/components/views/seb-server/template/exam/components/stepIndicators/types";
 
 export const useTable = () => {
     const { indicators } = storeToRefs(useStepIndicatorsStore());
-    const { deleteIndicator } = useStepIndicatorsStore();
+    const { deleteIndicator, createIndicator } = useStepIndicatorsStore();
+    const { getFormFields } = useFormFields();
 
     const headers = [
         {
@@ -31,9 +40,16 @@ export const useTable = () => {
         },
     ].filter((header) => header !== undefined);
 
+    const createItem = (item: IndicatorTransient) => {
+        createIndicator(indicatorTransientToIndicator(item));
+    };
+
     return {
         headers,
         items: indicators,
         deleteItem: deleteIndicator,
+        createItem,
+        getEmptyItem: getEmptyIndicator,
+        getFormFields,
     };
 };

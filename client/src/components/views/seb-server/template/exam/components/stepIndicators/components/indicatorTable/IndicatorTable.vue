@@ -7,7 +7,12 @@
     >
         <template #top>
             <TableHeader :label="$t('indicators.entityNamePlural')">
-                <IndicatorCreate />
+                <CrudCreate
+                    :label="$t('indicators.addDialogTitle')"
+                    :get-form-fields="getFormFields"
+                    :get-item="getEmptyItem"
+                    :create-item="createItem"
+                />
             </TableHeader>
         </template>
         <template #item.type="{ item }">
@@ -29,8 +34,8 @@
 
 <script setup lang="ts">
 import { useTable } from "./composables/useTable";
-import IndicatorCreate from "@/components/views/seb-server/template/exam/components/stepIndicators/components/IndicatorCreate.vue";
 import IndicatorUpdate from "@/components/views/seb-server/template/exam/components/stepIndicators/components/IndicatorUpdate.vue";
 
-const { headers, items, deleteItem } = useTable();
+const { headers, items, deleteItem, createItem, getEmptyItem, getFormFields } =
+    useTable();
 </script>
