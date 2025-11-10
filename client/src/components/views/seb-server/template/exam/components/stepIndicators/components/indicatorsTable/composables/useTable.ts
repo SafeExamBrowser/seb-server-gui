@@ -3,9 +3,7 @@ import i18n from "@/i18n";
 import { useStepIndicatorsStore } from "@/components/views/seb-server/template/exam/components/stepIndicators/composables/store/useStepIndicatorsStore";
 
 export const useTable = () => {
-    const { indicators: indicatorsFromStore } = storeToRefs(
-        useStepIndicatorsStore(),
-    );
+    const { indicators } = storeToRefs(useStepIndicatorsStore());
 
     const headers = [
         {
@@ -34,6 +32,6 @@ export const useTable = () => {
 
     return {
         headers,
-        items: indicatorsFromStore.value,
+        items: indicators,
     };
 };
