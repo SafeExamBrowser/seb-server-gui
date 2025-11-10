@@ -7,8 +7,7 @@
     >
         <template #top>
             <TableHeader :label="$t('indicators.entityNamePlural')">
-                <!-- TODO @alain: implement create -->
-                <!-- <IndicatorCreate /> -->
+                <IndicatorCreate />
             </TableHeader>
         </template>
 

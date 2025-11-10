@@ -112,7 +112,8 @@
     },
 
     "indicators": {
-        "entityNamePlural": "Indicators"
+        "entityNamePlural": "Indicators",
+        "addDialogTitle": "Add Indicator"
     },
 
     "loginPage": {
@@ -315,7 +316,9 @@
                         "label": "Actions"
                     },
                     "name": {
-                        "label": "Name"
+                        "label": "Name",
+                        "placeholder": "Enter the desired indicator name",
+                        "validationErrorUniqueName": "An indicator with this name already exists on this exam template"
                     },
                     "type": {
                         "label": "Type"
