@@ -1,5 +1,5 @@
 <template>
-    <FormDialog
+    <CrudDialog
         icon-activator="mdi-plus-circle-outline"
         color-activator="primary"
         :label-activator="$t('indicators.addDialogTitle')"
@@ -21,7 +21,7 @@ import {
     IndicatorTransient,
     indicatorTransientToIndicator,
 } from "@/components/views/seb-server/template/exam/components/stepIndicators/types";
-import FormDialog from "@/components/widgets/crud/FormDialog.vue";
+import CrudDialog from "@/components/widgets/crud/CrudDialog.vue";
 import { useFormFields } from "@/components/views/seb-server/template/exam/components/stepIndicators/composables/useFormFields";
 
 const { createIndicator } = useStepIndicatorsStore();

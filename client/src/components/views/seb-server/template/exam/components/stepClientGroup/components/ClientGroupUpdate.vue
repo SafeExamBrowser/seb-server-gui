@@ -1,5 +1,5 @@
 <template>
-    <FormDialog
+    <CrudDialog
         icon-activator="mdi-pencil"
         color-activator="medium-emphasis"
         size-activator="small"
@@ -20,6 +20,7 @@ import {
     ClientGroupTransient,
     clientGroupTransientToClientGroup,
 } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
+import CrudDialog from "@/components/widgets/crud/CrudDialog.vue";
 const { updateGroup } = useStepClientGroupStore();
 const { getFormFields } = useFormFields();
 

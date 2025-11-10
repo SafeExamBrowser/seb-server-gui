@@ -1,5 +1,5 @@
 <template>
-    <FormDialog
+    <CrudDialog
         :disabled="!allowCreateNewClientGroup"
         icon-activator="mdi-plus-circle-outline"
         color-activator="primary"
@@ -18,7 +18,7 @@ import {
     getEmptyClientGroup,
     useStepClientGroupStore,
 } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/store/useStepClientGroupStore";
-import FormDialog from "@/components/widgets/crud/FormDialog.vue";
+import CrudDialog from "@/components/widgets/crud/CrudDialog.vue";
 import {
     ClientGroupTransient,
     clientGroupTransientToClientGroup,

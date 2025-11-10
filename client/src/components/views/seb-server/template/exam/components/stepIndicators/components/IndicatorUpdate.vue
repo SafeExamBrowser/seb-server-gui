@@ -1,5 +1,5 @@
 <template>
-    <FormDialog
+    <CrudDialog
         icon-activator="mdi-pencil"
         color-activator="medium-emphasis"
         size-activator="small"
@@ -18,6 +18,7 @@ import { useStepIndicatorsStore } from "@/components/views/seb-server/template/e
 import { useFormFields } from "@/components/views/seb-server/template/exam/components/stepIndicators/composables/useFormFields";
 import { IndicatorTransient } from "@/components/views/seb-server/template/exam/components/stepIndicators/types";
 import { indicatorTransientToIndicator } from "@/components/views/seb-server/template/exam/components/stepIndicators/types";
+import CrudDialog from "@/components/widgets/crud/CrudDialog.vue";
 const { updateIndicator } = useStepIndicatorsStore();
 const { getFormFields } = useFormFields();
 
