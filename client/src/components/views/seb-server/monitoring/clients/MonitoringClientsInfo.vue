@@ -123,16 +123,6 @@
                                     >
                                         {{ translate("general.searchButton") }}
                                     </v-btn>
-
-                                    <!-- <v-btn
-                                        rounded="sm"
-                                        color="secondary"
-                                        variant="flat"
-                                        size="small"
-                                        class="ml-2"
-                                        @click="monitoringViewService.applyShowAllFilter()">
-                                        Show All
-                                    </v-btn> -->
                                 </v-col>
                             </v-row>
                         </v-form>
@@ -213,7 +203,7 @@
                                         :key="key"
                                     >
                                         <v-chip
-                                            v-if="key != 'total' && value != 0"
+                                            v-if="showStateFilter(key, value)"
                                             class="mr-2 mt-2"
                                             size="small"
                                             :variant="
@@ -305,8 +295,6 @@
                                             .monitoringOverviewData?.indicators"
                                         :key="key"
                                     >
-                                        <!-- v-if="key != 'total' && value != 0" -->
-
                                         <v-chip
                                             class="mr-2 mt-2"
                                             size="small"
@@ -529,6 +517,13 @@ const selectedConnectionTokens = ref<string>("");
 const emit = defineEmits<{
     (e: "updatePageInfo"): void;
 }>();
+
+function showStateFilter(key: string, value: number | undefined): boolean {
+    return (
+        key != "total" &&
+        (value != 0 || isFilterSelected(MonitoringHeaderEnum.SHOW_STATES, key))
+    );
+}
 
 function loadMonitoringListItemsCaller() {
     if (datepicker.value != null) {

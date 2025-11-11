@@ -439,14 +439,12 @@ async function updateConnections() {
 }
 
 async function addFreshData(ids: Map<number, number>) {
-    console.info("**************** addFreshData 1");
     const newStaticClients: MonitoringStaticClientData | null =
         await getStaticClientData(Array.from(ids.keys()));
     if (newStaticClients == null) {
         return;
     }
 
-    console.info("**************** addFreshData 1");
     newStaticClients?.staticClientConnectionData.forEach((staticData) => {
         const fullPageItemIndex: number | undefined = ids.get(staticData.id);
 
@@ -461,8 +459,6 @@ async function addFreshData(ids: Map<number, number>) {
                 ),
             );
         }
-
-        // update also
     });
 }
 
