@@ -10,8 +10,10 @@ import {
     IndicatorTransient,
     indicatorTransientToIndicator,
 } from "@/components/views/seb-server/template/exam/components/stepIndicators/types";
+import { CrudTableConfig } from "@/components/widgets/crud/types";
+import { ref } from "vue";
 
-export const useTable = () => {
+export const useTable = (): CrudTableConfig<Indicator, IndicatorTransient> => {
     const { indicators } = storeToRefs(useStepIndicatorsStore());
     const { deleteIndicator, createIndicator, updateIndicator } =
         useStepIndicatorsStore();
@@ -55,13 +57,25 @@ export const useTable = () => {
     });
 
     return {
+        name: "indicators",
+        title: i18n.global.t("indicators.entityNamePlural"),
         headers,
         items: indicators,
-        createItem,
-        updateItem,
-        deleteItem: deleteIndicator,
-        getNewItem: getEmptyIndicator,
-        getExistingItem,
         getFormFields,
+        hasActions: () => true, // TODO @alain: this is silly. make this optional and default to true
+        createConfig: {
+            title: i18n.global.t("indicators.addDialogTitle"),
+            allowed: ref(true), // TODO @alain: make this be a ref or not and handle both
+            getNewItem: getEmptyIndicator,
+            createItem,
+        },
+        updateConfig: {
+            title: i18n.global.t("indicators.editDialogTitle"),
+            getExistingItem,
+            updateItem,
+        },
+        deleteConfig: {
+            deleteItem: deleteIndicator,
+        },
     };
 };
