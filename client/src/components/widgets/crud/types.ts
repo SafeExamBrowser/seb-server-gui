@@ -7,7 +7,7 @@ export type CrudTableConfig<TItem, TTransient> = {
     name: string;
     title: string;
     headers: DataTableHeader<TItem>[];
-    items: Ref<TItem[]>;
+    items: MaybeRef<TItem[]>;
     getFormFields: (
         item: Ref<UnwrapRef<TTransient>> | Ref<TTransient>,
     ) => FormField[];
