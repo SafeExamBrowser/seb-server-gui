@@ -9,7 +9,7 @@
                 <CrudCreate
                     :label="config.createConfig.title"
                     :form-id="`form-${config.name}-create`"
-                    :disabled="!config.createConfig.allowed"
+                    :disabled="!unref(config.createConfig.allowed)"
                     :get-form-fields="config.getFormFields"
                     :get-item="config.createConfig.getNewItem"
                     :create-item="config.createConfig.createItem"
