@@ -48,6 +48,7 @@ import { useTable } from "./composables/useTable";
 import CrudCreate from "@/components/widgets/crud/CrudCreate.vue";
 import CrudUpdate from "@/components/widgets/crud/CrudUpdate.vue";
 import CrudDelete from "@/components/widgets/crud/CrudDelete.vue";
+import FieldScreenProctoringEnabled from "@/components/views/seb-server/template/exam/components/stepClientGroup/components/FieldScreenProctoringEnabled.vue";
 
 const {
     headers,
