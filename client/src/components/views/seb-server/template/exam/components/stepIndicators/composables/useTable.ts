@@ -62,7 +62,6 @@ export const useTable = (): CrudTableConfig<Indicator, IndicatorTransient> => {
         headers,
         items: indicators,
         getFormFields,
-        hasActions: () => true, // TODO @alain: this is silly. make this optional and default to true
         createConfig: {
             title: i18n.global.t("indicators.addDialogTitle"),
             allowed: ref(true), // TODO @alain: make this be a ref or not and handle both

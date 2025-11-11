@@ -1,5 +1,5 @@
 <template>
-    <div v-if="hasActions(item)" class="d-flex ga-2 justify-end">
+    <div v-if="renderActions" class="d-flex ga-2 justify-end">
         <CrudUpdate
             :label="updateConfig.title"
             :form-id="`form-${name}-update`"
@@ -15,8 +15,9 @@
 import CrudUpdate from "./CrudUpdate.vue";
 import CrudDelete from "./CrudDelete.vue";
 import { CrudTableConfig } from "./types";
+import { computed } from "vue";
 
-defineProps<{
+const props = defineProps<{
     name: CrudTableConfig<TItem, TTransient>["name"];
     item: TItem;
     getFormFields: CrudTableConfig<TItem, TTransient>["getFormFields"];
@@ -24,4 +25,8 @@ defineProps<{
     updateConfig: CrudTableConfig<TItem, TTransient>["updateConfig"];
     deleteConfig: CrudTableConfig<TItem, TTransient>["deleteConfig"];
 }>();
+
+const renderActions = computed(() =>
+    props.hasActions === undefined ? true : props.hasActions(props.item),
+);
 </script>
