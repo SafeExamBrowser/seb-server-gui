@@ -7,7 +7,13 @@
     >
         <template #top>
             <TableHeader :label="$t('clientGroups.entityNamePlural')">
-                <ClientGroupCreate />
+                <CrudCreate
+                    :label="$t('clientGroups.addDialogTitle')"
+                    :disabled="!allowCreate"
+                    :get-form-fields="getFormFields"
+                    :get-item="getNewItem"
+                    :create-item="createItem"
+                />
             </TableHeader>
         </template>
         <template #item.type="{ item }">
@@ -34,7 +40,17 @@
 import { useTable } from "./composables/useTable";
 import { ClientGroupForTable } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 import CrudDelete from "@/components/widgets/crud/CrudDelete.vue";
-const { headers, items, deleteItem } = useTable();
+import CrudCreate from "@/components/widgets/crud/CrudCreate.vue";
+
+const {
+    headers,
+    items,
+    allowCreate,
+    createItem,
+    deleteItem,
+    getNewItem,
+    getFormFields,
+} = useTable();
 
 const hasActions = (item: ClientGroupForTable) =>
     item.type !== "SCREEN_PROCTORING_SINGLE" &&

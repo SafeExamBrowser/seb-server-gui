@@ -1,13 +1,20 @@
-import { ClientGroupForTable } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
+import {
+    ClientGroupForTable,
+    ClientGroupTransient,
+    clientGroupTransientToClientGroup,
+} from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 import { computed } from "vue";
 import { useScreenProctoringStore } from "@/components/views/seb-server/template/exam/composables/store/useScreenProctoringStore";
 import { useStepClientGroupStore } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/store/useStepClientGroupStore";
 import { storeToRefs } from "pinia";
 import i18n from "@/i18n";
+import { useFormFields } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/useFormFields";
+import { getEmptyClientGroup } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/store/useStepClientGroupStore";
 
 export const useTable = () => {
+    const { getFormFields } = useFormFields();
     const screenProctoringStore = useScreenProctoringStore();
-    const { deleteGroup } = useStepClientGroupStore();
+    const { createGroup, deleteGroup } = useStepClientGroupStore();
 
     const headers = [
         {
@@ -81,9 +88,24 @@ export const useTable = () => {
         ),
     );
 
+    const allowCreate = computed<boolean>(() => {
+        return !(
+            screenProctoringStore.enabled &&
+            screenProctoringStore.collectionStrategy === undefined
+        );
+    });
+
+    const createItem = (item: ClientGroupTransient) => {
+        createGroup(clientGroupTransientToClientGroup(item));
+    };
+
     return {
         headers,
         items,
+        allowCreate,
+        createItem,
         deleteItem: deleteGroup,
+        getNewItem: getEmptyClientGroup,
+        getFormFields,
     };
 };
