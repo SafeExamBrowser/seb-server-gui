@@ -57,7 +57,7 @@
                             class="ml-4"
                             size="small"
                             variant="tonal"
-                            @click="monitoringViewService.applyShowAllFilter()"
+                            @click="clearFilters()"
                         >
                             {{ translate("monitoringClients.info.clearAll") }}
                         </v-chip>
@@ -123,16 +123,6 @@
                                     >
                                         {{ translate("general.searchButton") }}
                                     </v-btn>
-
-                                    <!-- <v-btn
-                                        rounded="sm"
-                                        color="secondary"
-                                        variant="flat"
-                                        size="small"
-                                        class="ml-2"
-                                        @click="monitoringViewService.applyShowAllFilter()">
-                                        Show All
-                                    </v-btn> -->
                                 </v-col>
                             </v-row>
                         </v-form>
@@ -213,7 +203,7 @@
                                         :key="key"
                                     >
                                         <v-chip
-                                            v-if="key != 'total' && value != 0"
+                                            v-if="showStateFilter(key, value)"
                                             class="mr-2 mt-2"
                                             size="small"
                                             :variant="
@@ -305,8 +295,6 @@
                                             .monitoringOverviewData?.indicators"
                                         :key="key"
                                     >
-                                        <!-- v-if="key != 'total' && value != 0" -->
-
                                         <v-chip
                                             class="mr-2 mt-2"
                                             size="small"
@@ -329,20 +317,6 @@
                                         </v-chip>
                                     </template>
                                 </v-col>
-
-                                <!-- <v-col v-if="!monitoringStore.isNoFilterSelected">
-                                    <div v-show="false" class="primary-text-color text-subtitle-1">
-                                        placeholder
-                                    </div>
-                                    <v-chip
-                                        class="mt-2"
-                                        size="small"
-                                        variant="tonal"
-                                        append-icon="mdi-close"
-                                        @click="monitoringViewService.applyShowAllFilter()">
-                                        Clear All
-                                    </v-chip>
-                                </v-col> -->
                             </v-row>
                         </v-card>
                     </v-col>
@@ -350,7 +324,7 @@
 
                     <!------------action buttons------------->
                     <v-col cols="3">
-                        <div>
+                        <div class="d-flex flex-column pr-11">
                             <v-btn
                                 class="mt-2"
                                 color="black"
@@ -376,7 +350,7 @@
                             </v-btn>
                         </div>
 
-                        <div>
+                        <div class="d-flex flex-column pr-11">
                             <v-btn
                                 class="mt-2"
                                 color="black"
@@ -402,7 +376,7 @@
                             </v-btn>
                         </div>
 
-                        <div>
+                        <div class="d-flex flex-column pr-11">
                             <v-btn
                                 class="mt-2"
                                 color="black"
@@ -544,11 +518,23 @@ const emit = defineEmits<{
     (e: "updatePageInfo"): void;
 }>();
 
+function showStateFilter(key: string, value: number | undefined): boolean {
+    return (
+        key != "total" &&
+        (value != 0 || isFilterSelected(MonitoringHeaderEnum.SHOW_STATES, key))
+    );
+}
+
 function loadMonitoringListItemsCaller() {
     if (datepicker.value != null) {
         monitoringStore.startDate = datepicker.value.getTime();
     }
 
+    emit("updatePageInfo");
+}
+
+function clearFilters() {
+    monitoringViewService.applyShowAllFilter();
     emit("updatePageInfo");
 }
 
@@ -618,21 +604,15 @@ function closeInstructionConfirmDialog() {
 }
 
 function getConnectionTokens(): string | null {
-    if (monitoringStore.staticClientDataList == null) {
+    if (monitoringStore.monitoringData == null) {
         return null;
     }
-
-    // create map from static data
-    const idTokenMap: Map<number, string> = new Map(
-        monitoringStore.staticClientDataList.staticClientConnectionData.map(
-            (data) => [data.id, data.connectionToken],
-        ),
-    );
 
     // get token and add it to list
     const connectionTokens: string[] = [];
     monitoringStore.selectedMonitoringIds.forEach((id) => {
-        const connectionToken: string | undefined = idTokenMap.get(id);
+        const connectionToken: string | undefined =
+            monitoringStore.monitoringData.get(id)?.connectionToken;
 
         if (connectionToken != null) {
             connectionTokens.push(connectionToken);
