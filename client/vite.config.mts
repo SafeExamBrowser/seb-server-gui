@@ -11,7 +11,9 @@ export default ({ mode }) => {
     process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
 
     return defineConfig({
-        resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) } },
+        resolve: {
+            alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) },
+        },
 
         plugins: [
             Components({

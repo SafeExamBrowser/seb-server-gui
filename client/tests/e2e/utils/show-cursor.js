@@ -43,12 +43,10 @@
     }
 
     function moveToEvent(e, ms = 90) {
-        // Prefer real event coordinates (Playwright sets these correctly)
         if (typeof e.clientX === "number" && typeof e.clientY === "number") {
             tweenTo(e.clientX, e.clientY, ms);
             return;
         }
-        // Fallback: center of the best-sized ancestor
         const t = boxedTarget(e.target);
         const { x, y } = centerOf(t);
         tweenTo(x, y, ms);
@@ -97,17 +95,14 @@
         el.id = "__playwright_cursor__";
         document.body.appendChild(el);
 
-        // Real pointer motion
         document.addEventListener("pointermove", (e) => moveToEvent(e, 80), {
             passive: true,
         });
 
-        // Entering new targets: glide to their center
         ["pointerover", "mouseenter"].forEach((evt) =>
             document.addEventListener(evt, (e) => moveToEvent(e, 100), true),
         );
 
-        // Clicks: move & pulse
         ["pointerdown", "click"].forEach((evt) =>
             document.addEventListener(
                 evt,
@@ -119,14 +114,12 @@
             ),
         );
 
-        // Focus from programmatic actions (e.g., .fill())
         document.addEventListener(
             "focusin",
             (e) => moveToTargetCenter(e.target, 120),
             true,
         );
 
-        // Keyboard activation (Enter/Space)
         document.addEventListener(
             "keydown",
             (e) => {
@@ -141,7 +134,6 @@
             true,
         );
 
-        // Layout shifts: keep near active element
         new MutationObserver(() => {
             const a = document.activeElement;
             if (a && a !== document.body) moveToTargetCenter(a, 70);
