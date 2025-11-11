@@ -1,6 +1,5 @@
 import {
     ClientGroupForTable,
-    ClientGroup,
     ClientGroupTransient,
     clientGroupTransientToClientGroup,
     isFallbackGroup,
@@ -12,8 +11,12 @@ import { storeToRefs } from "pinia";
 import i18n from "@/i18n";
 import { useFormFields } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/useFormFields";
 import { getEmptyClientGroup } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/store/useStepClientGroupStore";
+import { CrudTableConfig } from "@/components/widgets/crud/types";
 
-export const useTable = () => {
+export const useTable = (): CrudTableConfig<
+    ClientGroupForTable,
+    ClientGroupTransient
+> => {
     const { getFormFields } = useFormFields();
     const screenProctoringStore = useScreenProctoringStore();
     const { createGroup, updateGroup, deleteGroup } = useStepClientGroupStore();
@@ -105,22 +108,48 @@ export const useTable = () => {
         updateGroup(clientGroupTransientToClientGroup(item));
     };
 
-    const getExistingItem = (item: ClientGroup): ClientGroupTransient => ({
-        ...item,
-    });
+    const deleteItem = (item: ClientGroupForTable) => {
+        if (isFallbackGroup(item)) {
+            throw new Error("Fallback group cannot be deleted!");
+        }
+
+        deleteGroup(item);
+    };
+
+    const getExistingItem = (
+        item: ClientGroupForTable,
+    ): ClientGroupTransient => {
+        if (isFallbackGroup(item)) {
+            throw new Error("Fallback group cannot be edited!");
+        }
+
+        return {
+            ...item,
+        };
+    };
 
     const hasActions = (item: ClientGroupForTable) => !isFallbackGroup(item);
 
     return {
+        name: "client-groups",
+        title: i18n.global.t("clientGroups.entityNamePlural"),
         headers,
-        items,
-        allowCreate,
-        createItem,
-        updateItem,
-        deleteItem: deleteGroup,
-        getNewItem: getEmptyClientGroup,
-        getExistingItem,
-        hasActions,
+        items: items,
         getFormFields,
+        hasActions,
+        createConfig: {
+            title: i18n.global.t("clientGroups.addDialogTitle"),
+            allowed: allowCreate,
+            getNewItem: getEmptyClientGroup,
+            createItem,
+        },
+        updateConfig: {
+            title: i18n.global.t("clientGroups.editDialogTitle"),
+            getExistingItem,
+            updateItem,
+        },
+        deleteConfig: {
+            deleteItem,
+        },
     };
 };
