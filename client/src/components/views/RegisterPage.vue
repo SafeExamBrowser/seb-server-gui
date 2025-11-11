@@ -20,28 +20,34 @@
                         </div>
 
                         <div class="mt-10">
-                            <AlertMsg
+                            <div
                                 v-if="registerError"
-                                :alert-props="{
-                                    title: '',
-                                    color: 'error',
-                                    type: 'alert',
-                                    textKey: 'register-error',
-                                }"
                                 data-testid="register-error-alert"
                             >
-                            </AlertMsg>
-                            <AlertMsg
+                                <AlertMsg
+                                    :alert-props="{
+                                        title: '',
+                                        color: 'error',
+                                        type: 'alert',
+                                        textKey: 'register-error',
+                                    }"
+                                >
+                                </AlertMsg>
+                            </div>
+                            <div
                                 v-if="registerSuccess"
-                                :alert-props="{
-                                    title: '',
-                                    color: 'success',
-                                    type: 'alert',
-                                    textKey: 'register-success',
-                                }"
                                 data-testid="register-success-alert"
                             >
-                            </AlertMsg>
+                                <AlertMsg
+                                    :alert-props="{
+                                        title: '',
+                                        color: 'success',
+                                        type: 'alert',
+                                        textKey: 'register-success',
+                                    }"
+                                >
+                                </AlertMsg>
+                            </div>
                         </div>
 
                         <v-card-title class="mt-10">
@@ -278,6 +284,13 @@
                                         class="text-decoration-underline"
                                         role="button"
                                         tabindex="0"
+                                        data-testid="register-login-link"
+                                        @keydown="
+                                            handleTabKeyEvent(
+                                                $event,
+                                                'navigate',
+                                            )
+                                        "
                                     >
                                         <router-link
                                             :to="constants.DEFAULT_ROUTE"
@@ -300,7 +313,6 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { navigateTo } from "@/router/navigation";
 import { onMounted } from "vue";
 import * as constants from "@/utils/constants";
 import * as registerAccountViewService from "@/services/seb-server/component-services/registerAccountViewService";
@@ -309,6 +321,7 @@ import moment from "moment-timezone";
 import { translate } from "@/utils/generalUtils";
 import { useI18n } from "vue-i18n";
 import { Institution } from "@/models/seb-server/institution";
+import { useRouter } from "vue-router";
 
 // form fields
 const selectedInstitution = ref<string>("");
@@ -335,6 +348,8 @@ const institutionSelectDisabled = ref<boolean>(false);
 
 // load timezones
 const timezoneOptions = moment.tz.names();
+
+const router = useRouter();
 
 // fetch Institutions
 onMounted(async () => {
@@ -391,7 +406,7 @@ async function register() {
             registerSuccess.value = true;
 
             setTimeout(() => {
-                navigateTo(constants.DEFAULT_ROUTE);
+                router.push(constants.DEFAULT_ROUTE);
             }, 2500);
         } else {
             registerError.value = true;
@@ -400,6 +415,13 @@ async function register() {
         console.error(error);
         // todo error handle
         registerError.value = true;
+    }
+}
+function handleTabKeyEvent(event: KeyboardEvent, action: string) {
+    if (event.key === "Enter" || event.key === " ") {
+        if (action === "navigate") {
+            router.push(constants.DEFAULT_ROUTE);
+        }
     }
 }
 </script>
