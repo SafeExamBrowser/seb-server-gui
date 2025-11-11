@@ -57,7 +57,7 @@
                             class="ml-4"
                             size="small"
                             variant="tonal"
-                            @click="monitoringViewService.applyShowAllFilter()"
+                            @click="clearFilters()"
                         >
                             {{ translate("monitoringClients.info.clearAll") }}
                         </v-chip>
@@ -538,6 +538,11 @@ function loadMonitoringListItemsCaller() {
     emit("updatePageInfo");
 }
 
+function clearFilters() {
+    monitoringViewService.applyShowAllFilter();
+    emit("updatePageInfo");
+}
+
 function clearForm() {
     monitoringStore.searchField = "";
 
@@ -604,21 +609,15 @@ function closeInstructionConfirmDialog() {
 }
 
 function getConnectionTokens(): string | null {
-    if (monitoringStore.staticClientDataList == null) {
+    if (monitoringStore.monitoringData == null) {
         return null;
     }
-
-    // create map from static data
-    const idTokenMap: Map<number, string> = new Map(
-        monitoringStore.staticClientDataList.staticClientConnectionData.map(
-            (data) => [data.id, data.connectionToken],
-        ),
-    );
 
     // get token and add it to list
     const connectionTokens: string[] = [];
     monitoringStore.selectedMonitoringIds.forEach((id) => {
-        const connectionToken: string | undefined = idTokenMap.get(id);
+        const connectionToken: string | undefined =
+            monitoringStore.monitoringData.get(id)?.connectionToken;
 
         if (connectionToken != null) {
             connectionTokens.push(connectionToken);
