@@ -1,7 +1,9 @@
 import {
     ClientGroupForTable,
+    ClientGroup,
     ClientGroupTransient,
     clientGroupTransientToClientGroup,
+    isFallbackGroup,
 } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 import { computed } from "vue";
 import { useScreenProctoringStore } from "@/components/views/seb-server/template/exam/composables/store/useScreenProctoringStore";
@@ -14,7 +16,7 @@ import { getEmptyClientGroup } from "@/components/views/seb-server/template/exam
 export const useTable = () => {
     const { getFormFields } = useFormFields();
     const screenProctoringStore = useScreenProctoringStore();
-    const { createGroup, deleteGroup } = useStepClientGroupStore();
+    const { createGroup, updateGroup, deleteGroup } = useStepClientGroupStore();
 
     const headers = [
         {
@@ -99,13 +101,26 @@ export const useTable = () => {
         createGroup(clientGroupTransientToClientGroup(item));
     };
 
+    const updateItem = (item: ClientGroupTransient) => {
+        updateGroup(clientGroupTransientToClientGroup(item));
+    };
+
+    const getExistingItem = (item: ClientGroup): ClientGroupTransient => ({
+        ...item,
+    });
+
+    const hasActions = (item: ClientGroupForTable) => !isFallbackGroup(item);
+
     return {
         headers,
         items,
         allowCreate,
         createItem,
+        updateItem,
         deleteItem: deleteGroup,
         getNewItem: getEmptyClientGroup,
+        getExistingItem,
+        hasActions,
         getFormFields,
     };
 };

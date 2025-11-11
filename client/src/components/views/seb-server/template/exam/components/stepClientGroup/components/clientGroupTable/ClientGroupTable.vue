@@ -29,7 +29,12 @@
         </template>
         <template #item.actions="{ item }">
             <div v-if="hasActions(item)" class="d-flex ga-2 justify-end">
-                <ClientGroupUpdate :client-group="item" />
+                <CrudUpdate
+                    :label="$t('clientGroups.editDialogTitle')"
+                    :get-form-fields="getFormFields"
+                    :get-item="() => getExistingItem(item)"
+                    :update-item="updateItem"
+                />
                 <CrudDelete :item="item" :delete-item="deleteItem" />
             </div>
         </template>
@@ -38,21 +43,20 @@
 
 <script setup lang="ts">
 import { useTable } from "./composables/useTable";
-import { ClientGroupForTable } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
-import CrudDelete from "@/components/widgets/crud/CrudDelete.vue";
 import CrudCreate from "@/components/widgets/crud/CrudCreate.vue";
+import CrudUpdate from "@/components/widgets/crud/CrudUpdate.vue";
+import CrudDelete from "@/components/widgets/crud/CrudDelete.vue";
 
 const {
     headers,
     items,
     allowCreate,
     createItem,
+    updateItem,
     deleteItem,
     getNewItem,
+    getExistingItem,
+    hasActions,
     getFormFields,
 } = useTable();
-
-const hasActions = (item: ClientGroupForTable) =>
-    item.type !== "SCREEN_PROCTORING_SINGLE" &&
-    item.type !== "SCREEN_PROCTORING_FALLBACK";
 </script>
