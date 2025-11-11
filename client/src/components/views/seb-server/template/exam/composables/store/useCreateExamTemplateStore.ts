@@ -9,6 +9,7 @@ import { useScreenProctoringStore } from "@/components/views/seb-server/template
 import i18n from "@/i18n";
 import { ExamTemplate } from "@/models/seb-server/examTemplate";
 import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
+import { useStepIndicatorsStore } from "@/components/views/seb-server/template/exam/components/stepIndicators/composables/store/useStepIndicatorsStore";
 
 const staticStepData = [
     {
@@ -37,6 +38,7 @@ const isStepReady = (
     stepName: StepItemCreateTemplateExam["componentName"],
     stepNamingStore: ReturnType<typeof useStepNamingStore>,
     stepSupervisorsStore: ReturnType<typeof useStepSupervisorsStore>,
+    stepIndicatorsStore: ReturnType<typeof useStepIndicatorsStore>,
     stepClientGroupStore: ReturnType<typeof useStepClientGroupStore>,
 ) => {
     switch (stepName) {
@@ -45,7 +47,7 @@ const isStepReady = (
         case "StepSupervisors":
             return stepSupervisorsStore.isReady;
         case "StepIndicators":
-            return true;
+            return stepIndicatorsStore.isReady;
         case "StepClientGroup":
             return stepClientGroupStore.isReady;
         case "StepSummary":
@@ -66,6 +68,7 @@ export const useCreateExamTemplateStore = defineStore(
         const stepNamingStore = useStepNamingStore();
         const stepSupervisorsStore = useStepSupervisorsStore();
         const stepClientGroupStore = useStepClientGroupStore();
+        const stepIndicatorsStore = useStepIndicatorsStore();
 
         // state
         const currentStepIndex = ref(getInitialState().currentStepIndex);
@@ -78,6 +81,7 @@ export const useCreateExamTemplateStore = defineStore(
                     step.componentName,
                     stepNamingStore,
                     stepSupervisorsStore,
+                    stepIndicatorsStore,
                     stepClientGroupStore,
                 ),
                 value: index,
@@ -186,6 +190,7 @@ export const useCreateExamTemplateStore = defineStore(
             screenProctoringStore.$reset();
             stepNamingStore.$reset();
             stepSupervisorsStore.$reset();
+            stepIndicatorsStore.$reset();
             stepClientGroupStore.$reset();
         };
 
