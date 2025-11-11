@@ -10,7 +10,7 @@ export type CrudTableConfig<TItem, TTransient> = {
     getFormFields: (
         item: Ref<UnwrapRef<TTransient>> | Ref<TTransient>,
     ) => FormField[];
-    hasActions: ((item: TItem) => boolean) | undefined;
+    hasActions?: ((item: TItem) => boolean) | undefined;
     createConfig: {
         title: string;
         allowed: Ref<boolean>;
