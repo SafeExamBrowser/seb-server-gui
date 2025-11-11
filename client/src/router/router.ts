@@ -28,7 +28,6 @@ const routes: Array<RouteRecordRaw> = [
         path: spConstants.JWT_LOGIN_ROUTE,
         meta: { requiresAuth: false },
         beforeEnter: async (to) => {
-            // Lazy-load store and auth service to avoid circular imports at module init time
             const { useAuthStore } = await import(
                 "@/stores/authentication/authenticationStore"
             );

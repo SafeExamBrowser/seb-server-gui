@@ -6,6 +6,7 @@
         "baseUrl": ".",
         "module": "ESNext",
         "moduleResolution": "bundler",
+        "allowImportingTsExtensions": true,
         "paths": {
             "@/*": ["src/*"],
             "@api-services": ["src/services/api-services/*"]
@@ -21,7 +22,14 @@
         "isolatedModules": true,
         "skipLibCheck": true
     },
-    "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+    "include": [
+        "src/**/*.ts",
+        "src/**/*.d.ts",
+        "src/**/*.tsx",
+        "src/**/*.vue",
+        "vite.config.mts",
+        "vitest.config.ts"
+    ],
     "exclude": ["dist", "node_modules", "cypress"],
     "references": [{ "path": "./tsconfig.node.json" }]
 }
