@@ -329,20 +329,6 @@
                                         </v-chip>
                                     </template>
                                 </v-col>
-
-                                <!-- <v-col v-if="!monitoringStore.isNoFilterSelected">
-                                    <div v-show="false" class="primary-text-color text-subtitle-1">
-                                        placeholder
-                                    </div>
-                                    <v-chip
-                                        class="mt-2"
-                                        size="small"
-                                        variant="tonal"
-                                        append-icon="mdi-close"
-                                        @click="monitoringViewService.applyShowAllFilter()">
-                                        Clear All
-                                    </v-chip>
-                                </v-col> -->
                             </v-row>
                         </v-card>
                     </v-col>
@@ -350,7 +336,7 @@
 
                     <!------------action buttons------------->
                     <v-col cols="3">
-                        <div>
+                        <div class="d-flex flex-column pr-11">
                             <v-btn
                                 class="mt-2"
                                 color="black"
@@ -376,7 +362,7 @@
                             </v-btn>
                         </div>
 
-                        <div>
+                        <div class="d-flex flex-column pr-11">
                             <v-btn
                                 class="mt-2"
                                 color="black"
@@ -402,7 +388,7 @@
                             </v-btn>
                         </div>
 
-                        <div>
+                        <div class="d-flex flex-column pr-11">
                             <v-btn
                                 class="mt-2"
                                 color="black"
