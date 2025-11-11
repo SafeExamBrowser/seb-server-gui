@@ -37,12 +37,12 @@
     </v-dialog>
 </template>
 
-<script setup lang="ts" generic="T">
+<script setup lang="ts" generic="TItem, TTransient">
 import { computed, ref, watch } from "vue";
 import { IconValue } from "vuetify/lib/composables/icons.mjs";
 import { useDisplay } from "vuetify";
 import { FormField } from "@/components/widgets/formBuilder/types";
-import { GetFormFields, GetItem } from "./types";
+import { CrudTableConfig } from "./types";
 
 const props = withDefaults(
     defineProps<{
@@ -54,8 +54,8 @@ const props = withDefaults(
         labelCancel: string;
         labelSubmit: string;
         formId: string;
-        getFormFields: GetFormFields<T>;
-        getItem: GetItem<T>;
+        getFormFields: CrudTableConfig<TItem, TTransient>["getFormFields"];
+        getItem: () => TTransient;
     }>(),
     {
         disabled: false,
@@ -64,12 +64,12 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-    (e: "submit", item: T): void;
+    (e: "submit", item: TTransient): void;
 }>();
 
 const activatorRef = ref<HTMLElement>();
 const isDialogOpen = ref(false);
-const item = ref<T>(props.getItem());
+const item = ref<TTransient>(props.getItem());
 const isValid = ref<boolean>(false);
 const formFields = computed<FormField[]>(() => props.getFormFields(item));
 

@@ -8,23 +8,22 @@
         :form-id="props.formId"
         :get-form-fields="props.getFormFields"
         :get-item="props.getItem"
-        @submit="handleCreate"
+        @submit="props.createItem"
     />
 </template>
 
-<script setup lang="ts" generic="T">
-import CrudDialog from "@/components/widgets/crud/CrudDialog.vue";
-import { GetFormFields, GetItem } from "@/components/widgets/crud/types";
+<script setup lang="ts" generic="TItem, TTransient">
+import CrudDialog from "./CrudDialog.vue";
+import { CrudTableConfig } from "./types";
 
 const props = defineProps<{
     label: string;
     formId: string;
-    getFormFields: GetFormFields<T>;
-    getItem: GetItem<T>;
-    createItem: (item: T) => void;
+    getFormFields: CrudTableConfig<TItem, TTransient>["getFormFields"];
+    getItem: () => TTransient;
+    createItem: CrudTableConfig<
+        TItem,
+        TTransient
+    >["createConfig"]["createItem"];
 }>();
-
-const handleCreate = (item: T) => {
-    props.createItem(item);
-};
 </script>

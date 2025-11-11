@@ -9,24 +9,22 @@
         :form-id="props.formId"
         :get-form-fields="getFormFields"
         :get-item="props.getItem"
-        @submit="handleUpdate"
+        @submit="props.updateItem"
     />
 </template>
 
-<script setup lang="ts" generic="T">
-import CrudDialog from "@/components/widgets/crud/CrudDialog.vue";
-
-import { GetFormFields, GetItem } from "@/components/widgets/crud/types";
+<script setup lang="ts" generic="TItem, TTransient">
+import CrudDialog from "./CrudDialog.vue";
+import { CrudTableConfig } from "./types";
 
 const props = defineProps<{
     label: string;
     formId: string;
-    getFormFields: GetFormFields<T>;
-    getItem: GetItem<T>;
-    updateItem: (item: T) => void;
+    getFormFields: CrudTableConfig<TItem, TTransient>["getFormFields"];
+    getItem: () => TTransient;
+    updateItem: CrudTableConfig<
+        TItem,
+        TTransient
+    >["updateConfig"]["updateItem"];
 }>();
-
-const handleUpdate = (item: T) => {
-    props.updateItem(item);
-};
 </script>

@@ -12,9 +12,9 @@
 </template>
 
 <script setup lang="ts" generic="TItem extends Record<string, any>, TTransient">
-import CrudUpdate from "@/components/widgets/crud/CrudUpdate.vue";
-import CrudDelete from "@/components/widgets/crud/CrudDelete.vue";
-import { CrudTableConfig } from "@/components/widgets/crud/types";
+import CrudUpdate from "./CrudUpdate.vue";
+import CrudDelete from "./CrudDelete.vue";
+import { CrudTableConfig } from "./types";
 
 defineProps<{
     name: CrudTableConfig<TItem, TTransient>["name"];
