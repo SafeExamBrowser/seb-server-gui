@@ -9,6 +9,7 @@
             <TableHeader :label="$t('clientGroups.entityNamePlural')">
                 <CrudCreate
                     :label="$t('clientGroups.addDialogTitle')"
+                    form-id="form-client-group-create"
                     :disabled="!allowCreate"
                     :get-form-fields="getFormFields"
                     :get-item="getNewItem"
@@ -31,6 +32,7 @@
             <div v-if="hasActions(item)" class="d-flex ga-2 justify-end">
                 <CrudUpdate
                     :label="$t('clientGroups.editDialogTitle')"
+                    form-id="form-client-group-update"
                     :get-form-fields="getFormFields"
                     :get-item="() => getExistingItem(item)"
                     :update-item="updateItem"

@@ -9,6 +9,7 @@
             <TableHeader :label="$t('indicators.entityNamePlural')">
                 <CrudCreate
                     :label="$t('indicators.addDialogTitle')"
+                    form-id="form-indicator-create"
                     :get-form-fields="getFormFields"
                     :get-item="getNewItem"
                     :create-item="createItem"
@@ -27,6 +28,7 @@
             <div class="d-flex ga-2 justify-end">
                 <CrudUpdate
                     :label="$t('indicators.editDialogTitle')"
+                    form-id="form-indicator-update"
                     :get-form-fields="getFormFields"
                     :get-item="() => getExistingItem(item)"
                     :update-item="updateItem"

@@ -6,7 +6,7 @@
         :label-activator="props.label"
         :label-cancel="$t('general.cancelButton')"
         :label-submit="$t('general.saveButton')"
-        form-id="indicator-form"
+        :form-id="props.formId"
         :get-form-fields="getFormFields"
         :get-item="props.getItem"
         @submit="handleUpdate"
@@ -20,6 +20,7 @@ import { GetFormFields, GetItem } from "@/components/widgets/crud/types";
 
 const props = defineProps<{
     label: string;
+    formId: string;
     getFormFields: GetFormFields<T>;
     getItem: GetItem<T>;
     updateItem: (item: T) => void;

@@ -5,7 +5,7 @@
         :label-activator="props.label"
         :label-cancel="$t('general.cancelButton')"
         :label-submit="$t('general.createButton')"
-        form-id="indicator-form"
+        :form-id="props.formId"
         :get-form-fields="props.getFormFields"
         :get-item="props.getItem"
         @submit="handleCreate"
@@ -18,6 +18,7 @@ import { GetFormFields, GetItem } from "@/components/widgets/crud/types";
 
 const props = defineProps<{
     label: string;
+    formId: string;
     getFormFields: GetFormFields<T>;
     getItem: GetItem<T>;
     createItem: (item: T) => void;
