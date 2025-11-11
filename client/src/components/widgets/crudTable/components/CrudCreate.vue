@@ -1,30 +1,29 @@
 <template>
     <CrudDialog
-        icon-activator="mdi-pencil"
-        color-activator="medium-emphasis"
-        size-activator="small"
+        icon-activator="mdi-plus-circle-outline"
+        color-activator="primary"
         :label-activator="props.label"
         :label-cancel="$t('general.cancelButton')"
-        :label-submit="$t('general.saveButton')"
+        :label-submit="$t('general.createButton')"
         :form-id="props.formId"
-        :get-form-fields="getFormFields"
+        :get-form-fields="props.getFormFields"
         :get-item="props.getItem"
-        @submit="props.updateItem"
+        @submit="props.createItem"
     />
 </template>
 
 <script setup lang="ts" generic="TItem, TTransient">
-import CrudDialog from "./CrudDialog.vue";
-import { CrudTableConfig } from "./types";
+import CrudDialog from "@/components/widgets/crudTable/components/CrudDialog.vue";
+import { CrudTableConfig } from "@/components/widgets/crudTable/types";
 
 const props = defineProps<{
     label: string;
     formId: string;
     getFormFields: CrudTableConfig<TItem, TTransient>["getFormFields"];
     getItem: () => TTransient;
-    updateItem: CrudTableConfig<
+    createItem: CrudTableConfig<
         TItem,
         TTransient
-    >["updateConfig"]["updateItem"];
+    >["createConfig"]["createItem"];
 }>();
 </script>

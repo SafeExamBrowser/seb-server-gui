@@ -10,7 +10,7 @@ import {
     IndicatorTransient,
     indicatorTransientToIndicator,
 } from "@/components/views/seb-server/template/exam/components/stepIndicators/types";
-import { CrudTableConfig } from "@/components/widgets/crud/types";
+import { CrudTableConfig } from "@/components/widgets/crudTable/types";
 
 export const useTable = (): CrudTableConfig<Indicator, IndicatorTransient> => {
     const { indicators } = storeToRefs(useStepIndicatorsStore());

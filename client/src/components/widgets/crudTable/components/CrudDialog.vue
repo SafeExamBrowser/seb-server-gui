@@ -42,7 +42,7 @@ import { computed, ref, watch } from "vue";
 import { IconValue } from "vuetify/lib/composables/icons.mjs";
 import { useDisplay } from "vuetify";
 import { FormField } from "@/components/widgets/formBuilder/types";
-import { CrudTableConfig } from "./types";
+import { CrudTableConfig } from "@/components/widgets/crudTable/types";
 
 const props = withDefaults(
     defineProps<{

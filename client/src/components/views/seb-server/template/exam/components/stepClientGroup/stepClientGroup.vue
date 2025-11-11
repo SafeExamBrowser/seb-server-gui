@@ -20,9 +20,9 @@
 <script setup lang="ts">
 import { useScreenProctoringStore } from "@/components/views/seb-server/template/exam/composables/store/useScreenProctoringStore";
 import { ClientGroupForTable } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
-import CrudTable from "@/components/widgets/crud/CrudTable.vue";
+import CrudTable from "@/components/widgets/crudTable/CrudTable.vue";
 import { useI18n } from "vue-i18n";
-import { useTable } from "./composables/useTable";
+import { useTable } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/useTable";
 
 const { t } = useI18n();
 

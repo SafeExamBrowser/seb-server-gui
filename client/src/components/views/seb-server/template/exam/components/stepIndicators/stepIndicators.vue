@@ -13,8 +13,8 @@
 
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
-import CrudTable from "@/components/widgets/crud/CrudTable.vue";
-import { useTable } from "./composables/useTable";
+import CrudTable from "@/components/widgets/crudTable/CrudTable.vue";
+import { useTable } from "@/components/views/seb-server/template/exam/components/stepIndicators/composables/useTable";
 import { Indicator } from "@/components/views/seb-server/template/exam/components/stepIndicators/types";
 const { t } = useI18n();
 

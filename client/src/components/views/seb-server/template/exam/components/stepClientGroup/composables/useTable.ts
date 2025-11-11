@@ -11,7 +11,7 @@ import { storeToRefs } from "pinia";
 import i18n from "@/i18n";
 import { useFormFields } from "./useFormFields";
 import { getEmptyClientGroup } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/store/useStepClientGroupStore";
-import { CrudTableConfig } from "@/components/widgets/crud/types";
+import { CrudTableConfig } from "@/components/widgets/crudTable/types";
 
 export const useTable = (): CrudTableConfig<
     ClientGroupForTable,
