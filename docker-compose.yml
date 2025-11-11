@@ -42,7 +42,7 @@ services:
       - sebserver_webservice_autologin_url=http://localhost
 
       # Screen Proctoring settings and passwords
-      - sebserver_feature_exam_seb_screenProctoring_bundled_url=http://localhost:8090
+      - sebserver_feature_exam_seb_screenProctoring_bundled_url=http://sps-webservice:8090
       - sps_sebserver_client_secret=somePW
       - sps_sebserver_password=admin
 

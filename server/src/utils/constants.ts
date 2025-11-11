@@ -21,6 +21,7 @@ export const EXAM_TEMPLATE_SCREEN_PROCTORING_ROUTE = "/exam-template/:id/screen-
 export const ADMIN_INSTITUTION_INFO_ROUTE = "/info/institution";
 export const INSTITUTION_ROUTE = "/institution";
 export const ADMIN_INSTITUTION_LOGO_ROUTE = "/info/logo";
+export const SYSTEM_FEATURE_ROUTE = "/info/features";
 
 //user account
 export const USER_ACCOUNT_ROUTE = "/useraccount";

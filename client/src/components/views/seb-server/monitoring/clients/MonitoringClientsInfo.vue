@@ -177,10 +177,12 @@
                                                     ? 'flat'
                                                     : 'tonal'
                                             "
-                                            @click="applyFilterInternal(
-                                                MonitoringHeaderEnum.SHOW_CLIENT_GROUPS,
-                                                clientGroup.id.toString()
-                                            )"
+                                            @click="
+                                                applyFilterInternal(
+                                                    MonitoringHeaderEnum.SHOW_CLIENT_GROUPS,
+                                                    clientGroup.id.toString(),
+                                                )
+                                            "
                                         >
                                             {{ clientGroup.name }}
                                         </v-chip>
@@ -222,7 +224,12 @@
                                                     ? 'flat'
                                                     : 'tonal'
                                             "
-                                            @click="applyFilterInternal(MonitoringHeaderEnum.SHOW_STATES, key)"
+                                            @click="
+                                                applyFilterInternal(
+                                                    MonitoringHeaderEnum.SHOW_STATES,
+                                                    key,
+                                                )
+                                            "
                                         >
                                             {{ translate(key) }}
                                         </v-chip>
@@ -259,7 +266,12 @@
                                                     ? 'flat'
                                                     : 'tonal'
                                             "
-                                            @click=" applyFilterInternal(MonitoringHeaderEnum.SHOW_NOTIFCATION, key)"
+                                            @click="
+                                                applyFilterInternal(
+                                                    MonitoringHeaderEnum.SHOW_NOTIFCATION,
+                                                    key,
+                                                )
+                                            "
                                         >
                                             {{ translate(key) }}
                                         </v-chip>
@@ -307,8 +319,7 @@
                                                     : 'tonal'
                                             "
                                             @click="
-                                                monitoringViewService.applyFilter(
-                                                    getCurrentRouteQueries(),
+                                                applyFilterInternal(
                                                     MonitoringHeaderEnum.SHOW_INDICATORS,
                                                     key,
                                                 )
@@ -505,6 +516,7 @@ import { InstructionEnum } from "@/models/seb-server/instructionEnum";
 import { useErrorStore } from "@/stores/seb-server/errorStore";
 import { ref } from "vue";
 import { ErrorProps } from "@/models/alertProps";
+
 // info panel (whole component)
 const isInfoExpanded = ref<boolean>(true);
 
@@ -593,8 +605,6 @@ function openInstructionConfirmDialog(
         errorStore.showError(errorProps);
         return;
     }
-
-    console.log(connectionTokens);
 
     selectedInstructionType.value = instructionType;
     selectedConnectionTokens.value = connectionTokens;

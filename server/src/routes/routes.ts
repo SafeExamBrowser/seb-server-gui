@@ -1,4 +1,6 @@
 import express, {Router} from "express";
+
+import * as systemController from "../controllers/seb-server/system.controller";
 import * as quizController from "../controllers/seb-server/quiz.controller";
 import * as examController from "../controllers/seb-server/exam.controller";
 import * as configurationController from "../controllers/seb-server/configuration.controller";
@@ -26,6 +28,9 @@ import * as clientConnectionController from "../controllers/seb-server/client-co
 import {grantExamAppSignatureKey} from "../controllers/seb-server/exam.controller";
 
 const router: Router = express.Router();
+
+// system
+router.get(constants.SYSTEM_FEATURE_ROUTE, systemController.getSystemFeatures)
 
 //quiz
 router.get(constants.QUIZ_ROUTE, quizController.getQuizzes);
@@ -127,7 +132,6 @@ router.post(constants.CERTIFICATE_ROUTE, certificateController.createCertificate
 router.get(constants.CERTIFICATE_ROUTE, certificateController.getCertificates);
 router.delete(constants.CERTIFICATE_ROUTE + "/:alias", certificateController.deleteCertificate);
 
-
 //monitoring
 router.post(constants.MONITORING_TEST_RUN_ROUTE + "/:id", monitoringController.applyTestRun);
 router.get(constants.MONITORING_OVERVIEW_ROUTE + "/:id", monitoringController.getOverview);
@@ -140,8 +144,6 @@ router.post(constants.MONITORING_NOTIFICATIONS_ROUTE + "/:notificationId/:connec
 router.post(constants.MONITORING_DISABLE_CONNECTIONS_ROUTE, monitoringController.disableConnections);
 router.get(constants.MONITORING_LOGS_ROUTE + "/:id" , monitoringController.getClientEventLogs);
 
- 
-
 //client groups
 router.get(constants.CLIENT_GROUP_ROUTE + "/:id", clientGroupsController.getClientGroup);
 router.get(constants.CLIENT_GROUP_ROUTE, clientGroupsController.getClientGroups);
@@ -152,11 +154,8 @@ router.delete(constants.CLIENT_GROUP_ROUTE + "/:id", clientGroupsController.dele
 //client connection
 router.get(constants.CLIENT_CONNECTION_ROUTE + "/list", clientConnectionController.getClientConnectionList)
 
-
 //indicator
 router.get(constants.INDICATOR_ROUTE, indicatorController.getIndicators);
-
-
 
 //screen-proctoring
 router.get("/sp/settings", settingsController.getSettings)

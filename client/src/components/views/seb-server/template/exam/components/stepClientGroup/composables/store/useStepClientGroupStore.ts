@@ -6,10 +6,10 @@ import {
 } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 import { useScreenProctoringStore } from "@/components/views/seb-server/template/exam/composables/store/useScreenProctoringStore";
 
-const initialState = {
+const getInitialState = () => ({
     isScreenProctoringFormReady: false,
     groups: [],
-};
+});
 
 export const getEmptyClientGroup = (): ClientGroupTransient => ({
     id: crypto.getRandomValues(new Uint32Array(1))[0], // random ID, for FE use only (when submitting to BE, the BE will generate the real ID)
@@ -20,14 +20,15 @@ export const useStepClientGroupStore = defineStore("stepClientGroup", () => {
     const screenProctoringStore = useScreenProctoringStore();
 
     const isScreenProctoringFormReady = ref(
-        initialState.isScreenProctoringFormReady,
+        getInitialState().isScreenProctoringFormReady,
     );
-    const groups = ref<ClientGroup[]>(initialState.groups);
+
+    const groups = ref<ClientGroup[]>(getInitialState().groups);
 
     const $reset = () => {
         isScreenProctoringFormReady.value =
-            initialState.isScreenProctoringFormReady;
-        groups.value = initialState.groups;
+            getInitialState().isScreenProctoringFormReady;
+        groups.value = getInitialState().groups;
     };
 
     const createGroup = (group: ClientGroup) => {

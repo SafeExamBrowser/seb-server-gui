@@ -55,9 +55,9 @@ const isStepReady = (
     }
 };
 
-const initialState = {
+const getInitialState = () => ({
     currentStepIndex: 0,
-};
+});
 
 export const useCreateExamTemplateStore = defineStore(
     "createExamTemplate",
@@ -68,7 +68,7 @@ export const useCreateExamTemplateStore = defineStore(
         const stepClientGroupStore = useStepClientGroupStore();
 
         // state
-        const currentStepIndex = ref(initialState.currentStepIndex);
+        const currentStepIndex = ref(getInitialState().currentStepIndex);
 
         // getters
         const stepperModel = computed<StepItem[]>(() =>
@@ -101,7 +101,7 @@ export const useCreateExamTemplateStore = defineStore(
             name: stepNamingStore.name ?? "",
             description: stepNamingStore.description,
             examType: stepNamingStore.examType,
-            supporter: [],
+            supporter: stepSupervisorsStore.selectedSupervisorIds,
             configurationTemplateId: stepNamingStore.configurationTemplate
                 ? parseInt(stepNamingStore.configurationTemplate)
                 : undefined,
@@ -140,7 +140,7 @@ export const useCreateExamTemplateStore = defineStore(
             EXAM_ATTRIBUTES: {
                 enableScreenProctoring: screenProctoringStore.enabled
                     ? "true"
-                    : undefined,
+                    : "false",
                 spsCollectingStrategy: screenProctoringStore.collectionStrategy,
                 spsCollectingGroupName: screenProctoringStore.enabled
                     ? screenProctoringStore.collectionStrategy === "EXAM"
@@ -180,7 +180,7 @@ export const useCreateExamTemplateStore = defineStore(
 
         const $reset = () => {
             // own state
-            currentStepIndex.value = initialState.currentStepIndex;
+            currentStepIndex.value = getInitialState().currentStepIndex;
 
             // substores
             screenProctoringStore.$reset();

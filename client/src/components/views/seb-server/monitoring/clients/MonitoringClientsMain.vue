@@ -235,8 +235,6 @@ const tableStore = useTableStore();
 // items
 const connections = ref<MonitoringConnections>();
 const monitoringDataTable = ref<MonitoringRow[]>([]);
-// const staticClientDataList = ref<MonitoringStaticClientData>();
-// const monitoringData = ref<Map<number, MonitoringRow>>(new Map());
 
 // indicators
 const isBatteryIndicator = ref<boolean>(false);
@@ -244,7 +242,7 @@ const isWlanIndicator = ref<boolean>(false);
 
 // interval
 let intervalRefresh: ReturnType<typeof setTimeout> | null = null;
-const REFRESH_INTERVAL: number = 2000;
+const REFRESH_INTERVAL: number = 5000;
 
 // dialogs
 const clientGroupDialog = ref<boolean>(false);
@@ -312,22 +310,22 @@ function updateTableData() {
 }
 
 async function initalize() {
-    // const start = performance.now();
-
     await getAndSetConnections();
     await getAndSetStaticClientData(getAllConnectionIds());
 
     initalizeTableData();
-    // addIndicatorHeaders();
-
-    // const end = performance.now();
-    // console.log(`Execution time: ${(end - start)/1000} ms`);
-
     startIntervalRefresh();
 }
 
 watch(connections, async () => {
     const consLength = connections.value?.monitoringConnectionData.cons.length;
+
+    console.info(
+        "new size: " +
+            consLength +
+            "old size: " +
+            monitoringStore.monitoringData.size,
+    );
 
     if (
         consLength !== undefined &&
@@ -346,24 +344,13 @@ watch(connections, async () => {
     await updateConnections();
 });
 
-// watch(() => route.query, () => {
-//     getAndSetFullPageData();
-//   },{ deep: true }
-// );
-
 //= =============data fetching================
-defineExpose({ updatePage })
+defineExpose({ updatePage });
 async function updatePage() {
-    // TODO this os now called every time a filter changes and should update the table immediately
-    //      but this seems not to work by calling the functions below there seems to be needed more
-    //      to call but I do not understand the update process fully yet. 
-    console.info("*************************");
-    // getAndSetConnections();
-    // updateConnections();
+    setTimeout(getAndSetConnections, 100);
 }
 
 async function getAndSetConnections() {
-    // add show all filter if no filter is selected
     if (
         Object.keys(route.query).length === 0 ||
         route.query[MonitoringHeaderEnum.SHOW_ALL]
@@ -395,8 +382,6 @@ async function getAndSetConnections() {
 
     connections.value = fullPageResponse;
 }
-
-
 
 async function getAndSetStaticClientData(modelIds: number[]) {
     const staticClientDataResponse: MonitoringStaticClientData | null =
@@ -447,7 +432,6 @@ async function updateConnections() {
     );
 
     if (idsToUpdateMap.size !== 0) {
-        // await addFreshData(idsToUpdateMap);
         addFreshData(idsToUpdateMap);
     }
 
@@ -496,8 +480,7 @@ async function addNewClients() {
         }
     });
 
-    // await addFreshData(newIdsMap);
-    addFreshData(newIdsMap);
+    await addFreshData(newIdsMap);
 
     updateTableData();
 }
