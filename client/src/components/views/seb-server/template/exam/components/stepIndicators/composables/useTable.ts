@@ -64,12 +64,12 @@ export const useTable = (): CrudTableConfig<Indicator, IndicatorTransient> => {
         createConfig: {
             title: i18n.global.t("indicators.addDialogTitle"),
             allowed: true,
-            getNewItem: getEmptyIndicator,
+            getItem: getEmptyIndicator,
             createItem,
         },
         updateConfig: {
             title: i18n.global.t("indicators.editDialogTitle"),
-            getExistingItem,
+            getItem: getExistingItem,
             updateItem,
         },
         deleteConfig: {

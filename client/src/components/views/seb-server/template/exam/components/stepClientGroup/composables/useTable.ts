@@ -140,12 +140,12 @@ export const useTable = (): CrudTableConfig<
         createConfig: {
             title: i18n.global.t("clientGroups.addDialogTitle"),
             allowed: allowCreate,
-            getNewItem: getEmptyClientGroup,
+            getItem: getEmptyClientGroup,
             createItem,
         },
         updateConfig: {
             title: i18n.global.t("clientGroups.editDialogTitle"),
-            getExistingItem,
+            getItem: getExistingItem,
             updateItem,
         },
         deleteConfig: {

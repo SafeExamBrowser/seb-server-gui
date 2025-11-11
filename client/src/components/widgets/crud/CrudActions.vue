@@ -4,7 +4,7 @@
             :label="updateConfig.title"
             :form-id="`form-${name}-update`"
             :get-form-fields="getFormFields"
-            :get-item="() => updateConfig.getExistingItem(item)"
+            :get-item="() => updateConfig.getItem(item)"
             :update-item="updateConfig.updateItem"
         />
         <CrudDelete :item="item" :delete-item="deleteConfig.deleteItem" />

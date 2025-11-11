@@ -11,7 +11,7 @@
                     :form-id="`form-${config.name}-create`"
                     :disabled="!unref(config.createConfig.allowed)"
                     :get-form-fields="config.getFormFields"
-                    :get-item="config.createConfig.getNewItem"
+                    :get-item="config.createConfig.getItem"
                     :create-item="config.createConfig.createItem"
                 />
             </TableHeader>
