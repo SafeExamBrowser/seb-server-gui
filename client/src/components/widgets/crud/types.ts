@@ -1,6 +1,7 @@
 import { Ref, UnwrapRef } from "vue";
 import { FormField } from "@/components/widgets/formBuilder/types";
 import { DataTableHeader } from "vuetify";
+import { MaybeRef } from "@vueuse/core";
 
 export type CrudTableConfig<TItem, TTransient> = {
     name: string;
@@ -13,7 +14,7 @@ export type CrudTableConfig<TItem, TTransient> = {
     hasActions?: ((item: TItem) => boolean) | undefined;
     createConfig: {
         title: string;
-        allowed: Ref<boolean>;
+        allowed: MaybeRef<boolean>;
         getNewItem: () => TTransient;
         createItem: (item: TTransient) => void;
     };

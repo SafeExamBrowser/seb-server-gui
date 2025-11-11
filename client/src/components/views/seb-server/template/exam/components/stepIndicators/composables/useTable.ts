@@ -11,7 +11,6 @@ import {
     indicatorTransientToIndicator,
 } from "@/components/views/seb-server/template/exam/components/stepIndicators/types";
 import { CrudTableConfig } from "@/components/widgets/crud/types";
-import { ref } from "vue";
 
 export const useTable = (): CrudTableConfig<Indicator, IndicatorTransient> => {
     const { indicators } = storeToRefs(useStepIndicatorsStore());
@@ -64,7 +63,7 @@ export const useTable = (): CrudTableConfig<Indicator, IndicatorTransient> => {
         getFormFields,
         createConfig: {
             title: i18n.global.t("indicators.addDialogTitle"),
-            allowed: ref(true), // TODO @alain: make this be a ref or not and handle both
+            allowed: true,
             getNewItem: getEmptyIndicator,
             createItem,
         },
