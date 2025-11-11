@@ -9,7 +9,7 @@ import { useScreenProctoringStore } from "@/components/views/seb-server/template
 import { useStepClientGroupStore } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/store/useStepClientGroupStore";
 import { storeToRefs } from "pinia";
 import i18n from "@/i18n";
-import { useFormFields } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/useFormFields";
+import { useFormFields } from "./useFormFields";
 import { getEmptyClientGroup } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/store/useStepClientGroupStore";
 import { CrudTableConfig } from "@/components/widgets/crud/types";
 
