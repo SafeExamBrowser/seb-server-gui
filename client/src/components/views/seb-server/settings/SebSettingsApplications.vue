@@ -242,6 +242,8 @@ import {
     SEBSettingsView,
     SEBSettingAttribute,
 } from "@/models/seb-server/sebSettings";
+import EditPermittedProcess from "@/components/views/seb-server/settings/EditPermittedProcess.vue";
+import EditProhibitedProcess from "@/components/views/seb-server/settings/EditProhibitedProcess.vue";
 
 const i18n = useI18n();
 const sebSettingsStore = useSEBSettingsStore();

@@ -563,6 +563,7 @@ import { GUIComponent, useAbilities } from "@/services/ability";
 import { UserAccount, UserAccountResponse } from "@/models/userAccount";
 import { ServerTablePaging } from "@/models/types";
 import { Institution } from "@/models/seb-server/institution";
+import SettingsNavigation from "@/components/views/seb-server/components/SettingsNavigation.vue";
 
 const ability = useAbilities();
 

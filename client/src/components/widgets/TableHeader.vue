@@ -13,6 +13,8 @@
 </template>
 
 <script setup lang="ts">
+import SectionSubtitle from "@/components/widgets/SectionSubtitle.vue";
+
 defineProps<{
     label: string;
 }>();

@@ -74,6 +74,10 @@ import { useRoute } from "vue-router";
 import { computed, onBeforeMount, onBeforeUnmount } from "vue";
 import { MonitoringOverview } from "@/models/seb-server/monitoring";
 import { Indicators } from "@/models/seb-server/indicators";
+import MonitoringOverviewInfos from "@/components/views/seb-server/monitoring/overview/MonitoringOverviewInfos.vue";
+import MonitoringOverviewClients from "@/components/views/seb-server/monitoring/overview/MonitoringOverviewClients.vue";
+import MonitoringOverviewNotifications from "@/components/views/seb-server/monitoring/overview/MonitoringOverviewNotifications.vue";
+import MonitoringOverviewGroups from "@/components/views/seb-server/monitoring/overview/MonitoringOverviewGroups.vue";
 
 // exam
 const examId = useRoute().params.examId.toString();

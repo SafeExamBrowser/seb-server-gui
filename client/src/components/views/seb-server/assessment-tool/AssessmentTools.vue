@@ -530,6 +530,7 @@ import {
     AssessmentTool,
     AssessmentToolsResponse,
 } from "@/models/seb-server/assessmentTool";
+import SettingsNavigation from "@/components/views/seb-server/components/SettingsNavigation.vue";
 
 const appBarStore = useAppBarStore();
 const layoutStore = useLayoutStore();
