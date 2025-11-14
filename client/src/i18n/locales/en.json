@@ -234,12 +234,12 @@
     "createTemplateExam": {
         "steps": {
             "naming": {
-                "title": "Name it",
-                "subtitle": "TODO: translate (Kristina)",
+                "title": "Define basic settings",
+                "subtitle": "Fill out the form. Create a SEB Client Template and a Connection Configuration, if you haven't done so already.",
                 "fields": {
                     "name": {
                         "label": "Name",
-                        "placeholder": "Enter the desired name of the exam template",
+                        "placeholder": "Enter a name for the exam template",
                         "validationErrorUniqueName": "An exam template with this name already exists"
                     },
                     "description": {
@@ -259,7 +259,7 @@
                         "placeholder": "Select the connection configuration"
                     },
                     "lmsIntegration": {
-                        "label": "Assesment Tool Integration"
+                        "label": "Assessment Tool Integration"
                     },
                     "institutionalDefault": {
                         "label": "Institutional Default"
@@ -275,8 +275,8 @@
                 "subtitle": "TODO: translate (Kristina)"
             },
             "clientGroup": {
-                "title": "Add Client Group",
-                "subtitle": "TODO: translate (Kristina)"
+                "title": "Add Groups",
+                "subtitle": "Add the groups, you want for your exam template. You can only use Screen Proctoring for a group, if you enabled Screen Proctoring in the first step."
             },
             "summary": {
                 "title": "Overview Exam Template",
