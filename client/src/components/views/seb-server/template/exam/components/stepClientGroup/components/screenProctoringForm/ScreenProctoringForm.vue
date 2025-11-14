@@ -32,6 +32,7 @@ import { useFormFields } from "./composables/useFormFields";
 import { useDisplay } from "vuetify";
 import { useStepClientGroupStore } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/store/useStepClientGroupStore";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
+import SectionSubtitle from "@/components/widgets/SectionSubtitle.vue";
 
 const { formFields } = useFormFields();
 </script>

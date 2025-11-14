@@ -305,6 +305,8 @@ import {
     Certificate,
     CertificatesResponse,
 } from "@/models/seb-server/certificate";
+import SettingsNavigation from "@/components/views/seb-server/components/SettingsNavigation.vue";
+import AddCertificateDialog from "@/components/views/seb-server/certificates/AddCertificateDialog.vue";
 
 const appBarStore = useAppBarStore();
 const layoutStore = useLayoutStore();

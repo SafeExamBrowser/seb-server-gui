@@ -7,3 +7,6 @@
         <div>Step Summary content</div>
     </StepItem>
 </template>
+<script setup lang="ts">
+import StepItem from "@/components/widgets/stepItem/StepItem.vue";
+</script>

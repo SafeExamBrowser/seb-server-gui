@@ -47,6 +47,7 @@ import {
 } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 import { useDisplay } from "vuetify";
 import { useFormFields } from "./composables/useFormFields";
+import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 
 const props = withDefaults(
     defineProps<{

@@ -22,6 +22,8 @@ import {
     SingleConnection,
 } from "@/models/seb-server/monitoring";
 import { Indicators } from "@/models/seb-server/indicators";
+import MonitoringDetailsMain from "@/components/views/seb-server/monitoring/client-detail/MonitoringDetailsMain.vue";
+import MonitoringDetailsInfo from "@/components/views/seb-server/monitoring/client-detail/MonitoringDetailsInfo.vue";
 
 // route params
 const examId = useRoute().params.examId.toString();
