@@ -132,6 +132,8 @@ import { ref, computed, watch, nextTick } from "vue";
 import { useRoute } from "vue-router";
 import type { ComputedRef } from "vue";
 import { ClientNotification } from "@/models/seb-server/monitoring";
+import ProctoringViewPage from "@/components/views/screen-proctoring/proctoring/ProctoringViewPage.vue";
+import MonitoringClientLogsContainer from "@/components/views/seb-server/monitoring/client-detail/MonitoringClientLogsContainer.vue";
 
 // route params
 const examId = useRoute().params.examId.toString();

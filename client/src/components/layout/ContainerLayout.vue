@@ -481,6 +481,7 @@ import { useRoute } from "vue-router";
 import { computed } from "vue";
 import { GridSize, NavigationItem } from "@/models/types";
 import { Institution } from "@/models/seb-server/institution";
+import ToastContainer from "@/components/views/seb-server/toast/ToastContainer.vue";
 
 // i18n
 const { locale } = useI18n();

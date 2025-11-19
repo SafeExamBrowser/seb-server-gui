@@ -519,6 +519,7 @@ import {
 import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
 import { EditUserAccountParameters, UserAccount } from "@/models/userAccount";
 import { Institution } from "@/models/seb-server/institution";
+import SettingsNavigation from "@/components/views/seb-server/components/SettingsNavigation.vue";
 
 const props = defineProps<{
     title: string;

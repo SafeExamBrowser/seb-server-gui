@@ -33,6 +33,11 @@
 <script setup lang="ts">
 import { useTable } from "./composables/useTable";
 import { ClientGroupForTable } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
+import FieldScreenProctoringEnabled from "@/components/views/seb-server/template/exam/components/stepClientGroup/components/clientGroupTable/components/FieldScreenProctoringEnabled.vue";
+import ClientGroupUpdate from "@/components/views/seb-server/template/exam/components/stepClientGroup/components/ClientGroupUpdate.vue";
+import ClientGroupDelete from "@/components/views/seb-server/template/exam/components/stepClientGroup/components/ClientGroupDelete.vue";
+import ClientGroupCreate from "@/components/views/seb-server/template/exam/components/stepClientGroup/components/ClientGroupCreate.vue";
+import TableHeader from "@/components/widgets/TableHeader.vue";
 const { headers, items } = useTable();
 
 const hasActions = (item: ClientGroupForTable) =>

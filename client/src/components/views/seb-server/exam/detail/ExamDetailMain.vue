@@ -958,6 +958,11 @@ import { ConnectionConfigurations } from "@/models/seb-server/connectionConfigur
 import { ClientGroups } from "@/models/seb-server/clientGroup";
 import { AssessmentTool } from "@/models/seb-server/assessmentTool";
 import { ExamTemplate } from "@/models/seb-server/examTemplate";
+import ExamDetailSupervisorsDialog from "@/components/views/seb-server/exam/detail/dialogs/ExamDetailSupervisorsDialog.vue";
+import ExamDetailConfigDialog from "@/components/views/seb-server/exam/detail/dialogs/ExamDetailConfigDialog.vue";
+import ExamDetailArchiveDialog from "@/components/views/seb-server/exam/detail/dialogs/ExamDetailArchiveDialog.vue";
+import ClienGroupListDialog from "@/components/views/seb-server/exam/detail/dialogs/client-group/ClienGroupListDialog.vue";
+import AddClientGroupDialog from "@/components/views/seb-server/exam/detail/dialogs/client-group/AddClientGroupDialog.vue";
 
 // general
 const isPageInitalizing = ref<boolean>(true);

@@ -28,6 +28,7 @@ import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 const appBarStore = useAppBarStore();
 const monitoringStore = useMonitoringStore();
 import { ref, onBeforeMount } from "vue";
+import MonitoringExamsInfo from "@/components/views/seb-server/monitoring/exams/MonitoringExamsInfo.vue";
 
 // ref to ExamListMain
 const monitoringExamsMainRef = ref<InstanceType<

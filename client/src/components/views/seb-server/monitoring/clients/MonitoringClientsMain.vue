@@ -224,6 +224,7 @@ import {
 } from "@/models/seb-server/monitoring";
 import { Indicator } from "@/models/seb-server/indicators";
 import { ClientGroup } from "@/models/seb-server/clientGroup";
+import ClientGroupInfoDialog from "@/components/views/seb-server/monitoring/dialogs/ClientGroupInfoDialog.vue";
 
 // exam
 const examId = useRoute().params.examId.toString();

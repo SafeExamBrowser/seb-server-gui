@@ -175,6 +175,8 @@ import { useRoute } from "vue-router";
 import { ref, onBeforeMount, computed } from "vue";
 import { Exam } from "@/models/seb-server/exam";
 import { ClientGroup, ClientGroups } from "@/models/seb-server/clientGroup";
+import EditClientGroupDialog from "@/components/views/seb-server/exam/detail/dialogs/client-group/EditClientGroupDialog.vue";
+import DeleteConfirmDialog from "@/components/widgets/DeleteConfirmDialog.vue";
 
 // i18n
 const i18n = useI18n();

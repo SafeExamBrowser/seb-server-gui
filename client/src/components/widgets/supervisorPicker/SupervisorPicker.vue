@@ -39,6 +39,7 @@ import ListHeader from "./components/ListHeader.vue";
 import ListBody from "./components/ListBody.vue";
 import { UserAccountName } from "@/models/userAccount";
 import { usePicker } from "@/components/widgets/supervisorPicker/composables/usePicker";
+import SearchField from "@/components/widgets/supervisorPicker/components/SearchField.vue";
 
 const props = defineProps<{
     supervisors: UserAccountName[];

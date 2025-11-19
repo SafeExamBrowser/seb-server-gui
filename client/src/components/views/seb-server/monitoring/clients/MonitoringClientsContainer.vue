@@ -18,6 +18,7 @@ import { useRoute } from "vue-router";
 import { ref, onBeforeMount, onBeforeUnmount } from "vue";
 import { MonitoringOverview } from "@/models/seb-server/monitoring";
 import { Indicators } from "@/models/seb-server/indicators";
+import MonitoringClientsInfo from "@/components/views/seb-server/monitoring/clients/MonitoringClientsInfo.vue";
 
 // exam
 const examId = useRoute().params.examId.toString();
