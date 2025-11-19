@@ -1,4 +1,3 @@
-import Components from "unplugin-vue-components/vite";
 import Fonts from "unplugin-fonts/vite";
 import Vue from "@vitejs/plugin-vue";
 import Vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
@@ -16,10 +15,6 @@ export default ({ mode }) => {
         },
 
         plugins: [
-            Components({
-                dts: "src/components.d.ts",
-            }),
-
             Vue({
                 template: { transformAssetUrls },
             }),

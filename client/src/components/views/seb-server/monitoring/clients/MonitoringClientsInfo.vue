@@ -37,38 +37,41 @@
             <v-sheet class="rounded-lg pl-4 pt-3 pr-4" elevation="4">
                 <!------------title row------------->
                 <v-row>
-                    <v-col
-                        class="primary-text-color text-h5 font-weight-bold"
-                        cols="4"
-                    >
-                        {{ monitoringStore.selectedExam?.quizName }}
+                    <v-col cols="4">
+                        <div class="text-subtitle-1 font-weight-medium mt-2">
+                            {{
+                                translate(
+                                    "monitoringExams.info.examNameSearchPlaceholder",
+                                )
+                            }}
+                        </div>
                     </v-col>
 
                     <v-spacer></v-spacer>
                     <v-col cols="4">
-                        <span
-                            class="primary-text-color text-h6 font-weight-bold"
-                        >
+                        <div class="text-subtitle-1 font-weight-medium mt-2">
                             {{ translate("monitoringClients.info.filters") }}
-                        </span>
-                        <v-chip
-                            v-if="!monitoringStore.isNoFilterSelected"
-                            append-icon="mdi-close"
-                            class="ml-4"
-                            size="small"
-                            variant="tonal"
-                            @click="clearFilters()"
-                        >
-                            {{ translate("monitoringClients.info.clearAll") }}
-                        </v-chip>
+
+                            <v-chip
+                                v-if="!monitoringStore.isNoFilterSelected"
+                                append-icon="mdi-close"
+                                class="ml-4"
+                                size="small"
+                                variant="tonal"
+                                @click="clearFilters()"
+                            >
+                                {{
+                                    translate("monitoringClients.info.clearAll")
+                                }}
+                            </v-chip>
+                        </div>
                     </v-col>
                     <v-spacer></v-spacer>
 
-                    <v-col
-                        class="primary-text-color text-h6 font-weight-bold"
-                        cols="3"
-                    >
-                        {{ translate("monitoringClients.info.actions") }}
+                    <v-col cols="3">
+                        <div class="text-subtitle-1 font-weight-medium mt-2">
+                            {{ translate("monitoringClients.info.actions") }}
+                        </div>
                     </v-col>
                 </v-row>
 
@@ -82,9 +85,6 @@
                         >
                             <!------------field------------->
                             <v-row align="center">
-                                <!-- <v-col>
-                                    {{translate("monitoringExams.info.search")}}
-                                </v-col> -->
                                 <v-col>
                                     <v-text-field
                                         v-model="monitoringStore.searchField"
@@ -141,7 +141,7 @@
                                     "
                                 >
                                     <div
-                                        class="primary-text-color text-subtitle-1"
+                                        class="text-subtitle-2 font-weight-medium"
                                     >
                                         {{
                                             translate(
@@ -187,7 +187,7 @@
                                     "
                                 >
                                     <div
-                                        class="primary-text-color text-subtitle-1"
+                                        class="text-subtitle-2 font-weight-medium"
                                     >
                                         {{
                                             translate(
@@ -229,7 +229,7 @@
                                 <!------------notification filters------------->
                                 <v-col>
                                     <div
-                                        class="primary-text-color text-subtitle-1"
+                                        class="text-subtitle-2 font-weight-medium"
                                     >
                                         {{
                                             translate(
@@ -281,7 +281,7 @@
                                     "
                                 >
                                     <div
-                                        class="primary-text-color text-subtitle-1"
+                                        class="text-subtitle-2 font-weight-medium"
                                     >
                                         {{
                                             translate(

@@ -27,6 +27,7 @@ import ExamListMain from "@/components/views/seb-server/exam/list/ExamListMain.v
 import { useExamStore } from "@/stores/seb-server/examStore";
 import { translate } from "@/utils/generalUtils";
 import { onBeforeMount, ref } from "vue";
+import ExamListInfo from "@/components/views/seb-server/exam/list/ExamListInfo.vue";
 
 // stores
 const appBarStore = useAppBarStore();

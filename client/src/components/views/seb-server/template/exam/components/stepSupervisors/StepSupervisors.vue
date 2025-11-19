@@ -20,6 +20,8 @@ import { useI18n } from "vue-i18n";
 import { useStepSupervisorsStore } from "./composables/store/useStepSupervisorsStore";
 import SupervisorPicker from "@/components/widgets/supervisorPicker/SupervisorPicker.vue";
 import { useSupervisors } from "@/composables/useSupervisors";
+import StepItem from "@/components/widgets/stepItem/StepItem.vue";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 
 const { t } = useI18n();
 const stepSupervisorsStore = useStepSupervisorsStore();

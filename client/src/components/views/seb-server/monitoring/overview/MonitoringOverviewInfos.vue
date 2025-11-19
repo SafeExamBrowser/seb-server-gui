@@ -148,6 +148,7 @@ import * as generalUtils from "@/utils/generalUtils";
 import * as timeUtils from "@/utils/timeUtils";
 import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants";
+import MonitoringOverviewASK from "@/components/views/seb-server/monitoring/overview/MonitoringOverviewASK.vue";
 
 // stores
 const monitoringStore = useMonitoringStore();
