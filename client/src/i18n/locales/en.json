@@ -52,6 +52,7 @@
         "backButton": "Back",
         "nextButton": "Next",
         "searchButton": "Search",
+        "cancelSearch": "Cancel Search",
         "saveButton": "Save",
         "startButton": "Start",
         "downloadButton": "Download",
@@ -1204,7 +1205,7 @@
             "indicators": "Indicators",
             "lockClients": "Lock selected clients",
             "quitClients": "Quit selected clients",
-            "cancelClients": "Mark selected clients as canceled"
+            "cancelClients": "Cancel selected clients"
         },
 
         "main": {

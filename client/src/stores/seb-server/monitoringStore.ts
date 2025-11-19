@@ -35,6 +35,7 @@ export const useMonitoringStore = defineStore("monitoring", () => {
     const wlanStatusDefaultColor = ref<string>("#f0f0f0");
 
     // monitoring clients
+    const searchName = ref<string | null>(null);
     const isNoFilterSelected = ref<boolean>(false);
     const selectedMonitoringIds = ref<number[]>([]);
     const indicators = ref<Indicators | null>(null);
@@ -90,6 +91,7 @@ export const useMonitoringStore = defineStore("monitoring", () => {
         batteryStatusDefaultColor,
         wlanStatusDefaultColor,
 
+        searchName,
         indicators,
         appSignatureKeys,
         clientGroups,
