@@ -963,6 +963,8 @@ import ExamDetailConfigDialog from "@/components/views/seb-server/exam/detail/di
 import ExamDetailArchiveDialog from "@/components/views/seb-server/exam/detail/dialogs/ExamDetailArchiveDialog.vue";
 import ClienGroupListDialog from "@/components/views/seb-server/exam/detail/dialogs/client-group/ClienGroupListDialog.vue";
 import AddClientGroupDialog from "@/components/views/seb-server/exam/detail/dialogs/client-group/AddClientGroupDialog.vue";
+import ExamTemplateDialog from "@/components/widgets/ExamTemplateDialog.vue";
+import SebSettingsDialog from "@/components/views/seb-server/settings/SebSettingsDialog.vue";
 
 // general
 const isPageInitalizing = ref<boolean>(true);
