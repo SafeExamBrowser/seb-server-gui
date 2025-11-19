@@ -25,3 +25,11 @@ pnpm-debug.log*
 /storybook-static/
 /playwright-report/
 /test-results/
+
+*storybook.log
+storybook-static
+
+# Playwright
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
