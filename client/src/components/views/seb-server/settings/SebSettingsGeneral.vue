@@ -194,6 +194,10 @@ const adminPasswordVisible = ref<boolean>(false);
 const confirmAdminPassword = ref<string>("");
 const confirmAdminPasswordVisible = ref<boolean>(false);
 const adminPasswordRule = () => {
+    if (hashedAdminPasswordVal.value.trim() !== hashedAdminPasswordVal.value) {
+        return translate("sebSettings.pwdSpaces", i18n);
+    }
+
     if (hashedAdminPasswordVal.value === confirmAdminPassword.value) {
         if (!clearValidations) {
             clearValidations = true;
@@ -223,6 +227,10 @@ const quitPasswordVisible = ref<boolean>(false);
 const confirmQuitPassword = ref<string>("");
 const confirmQuitPasswordVisible = ref<boolean>(false);
 const quitPasswordRule = () => {
+    if (hashedQuitPasswordVal.value.trim() !== hashedQuitPasswordVal.value) {
+        return translate("sebSettings.pwdSpaces", i18n);
+    }
+
     if (hashedQuitPasswordVal.value === confirmQuitPassword.value) {
         if (!clearValidations) {
             clearValidations = true;
@@ -244,6 +252,7 @@ const confirmQuitPasswordRule = () => {
     }
     return translate("sebSettings.pwdMismatch", i18n);
 };
+
 const quitPasswordFieldRef = ref();
 const confirmQuitPasswordFieldRef = ref();
 
@@ -306,6 +315,7 @@ async function saveAdminPassword(
 ) {
     if (
         !focusIn &&
+        hashedAdminPasswordVal.value.trim() === hashedAdminPasswordVal.value &&
         hashedAdminPasswordVal.value === confirmAdminPassword.value
     ) {
         saveSingleValue(valId, value);
@@ -317,7 +327,11 @@ async function saveQuitPassword(
     valId: number,
     value: string,
 ) {
-    if (!focusIn && hashedQuitPasswordVal.value === confirmQuitPassword.value) {
+    if (
+        !focusIn &&
+        hashedQuitPasswordVal.value.trim() === hashedQuitPasswordVal.value &&
+        hashedQuitPasswordVal.value === confirmQuitPassword.value
+    ) {
         saveSingleValue(valId, value);
     }
 }

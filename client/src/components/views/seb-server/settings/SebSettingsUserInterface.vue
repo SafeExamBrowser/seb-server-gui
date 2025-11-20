@@ -111,6 +111,17 @@
                         "
                     >
                     </v-select>
+                    <v-tooltip
+                        activator="parent"
+                        location="top left"
+                        max-width="400"
+                    >
+                        {{
+                            translate(
+                                "sebSettings.userView.main_browser.width_tooltip",
+                            )
+                        }}
+                    </v-tooltip>
                 </v-col>
             </v-row>
             <v-row>
@@ -138,6 +149,17 @@
                         "
                     >
                     </v-select>
+                    <v-tooltip
+                        activator="parent"
+                        location="top left"
+                        max-width="400"
+                    >
+                        {{
+                            translate(
+                                "sebSettings.userView.main_browser.height_tooltip",
+                            )
+                        }}
+                    </v-tooltip>
                 </v-col>
             </v-row>
             <v-row>
@@ -195,6 +217,17 @@
                             )
                         "
                     ></v-checkbox-btn>
+                    <v-tooltip
+                        activator="parent"
+                        location="top left"
+                        max-width="400"
+                    >
+                        {{
+                            translate(
+                                "sebSettings.userView.browser_window.enableToolbar_tooltip",
+                            )
+                        }}
+                    </v-tooltip>
                 </v-col>
             </v-row>
             <v-row>
@@ -292,6 +325,17 @@
                             )
                         "
                     ></v-checkbox-btn>
+                    <v-tooltip
+                        activator="parent"
+                        location="top left"
+                        max-width="400"
+                    >
+                        {{
+                            translate(
+                                "sebSettings.userView.browser_window.hideTool_tooltip",
+                            )
+                        }}
+                    </v-tooltip>
                 </v-col>
             </v-row>
             <v-row>
@@ -312,6 +356,17 @@
                             )
                         "
                     ></v-checkbox-btn>
+                    <v-tooltip
+                        activator="parent"
+                        location="top left"
+                        max-width="400"
+                    >
+                        {{
+                            translate(
+                                "sebSettings.userView.browser_window.showMenuBar_tooltip",
+                            )
+                        }}
+                    </v-tooltip>
                 </v-col>
             </v-row>
 
@@ -342,6 +397,17 @@
                             )
                         "
                     ></v-checkbox-btn>
+                    <v-tooltip
+                        activator="parent"
+                        location="top left"
+                        max-width="400"
+                    >
+                        {{
+                            translate(
+                                "sebSettings.userView.task_bar.showTaskBar_tooltip",
+                            )
+                        }}
+                    </v-tooltip>
                 </v-col>
             </v-row>
             <v-row>
@@ -404,6 +470,17 @@
                             )
                         "
                     ></v-checkbox-btn>
+                    <v-tooltip
+                        activator="parent"
+                        location="top left"
+                        max-width="400"
+                    >
+                        {{
+                            translate(
+                                "sebSettings.userView.task_bar.raiseHandButtonAlwaysPromptMessage_tooltip",
+                            )
+                        }}
+                    </v-tooltip>
                 </v-col>
             </v-row>
             <v-row>
@@ -422,6 +499,17 @@
                             )
                         "
                     ></v-checkbox-btn>
+                    <v-tooltip
+                        activator="parent"
+                        location="top left"
+                        max-width="400"
+                    >
+                        {{
+                            translate(
+                                "sebSettings.userView.task_bar.allowWlan_tooltip",
+                            )
+                        }}
+                    </v-tooltip>
                 </v-col>
             </v-row>
             <v-row>
@@ -442,6 +530,17 @@
                             )
                         "
                     ></v-checkbox-btn>
+                    <v-tooltip
+                        activator="parent"
+                        location="top left"
+                        max-width="400"
+                    >
+                        {{
+                            translate(
+                                "sebSettings.userView.task_bar.showReloadButton_tooltip",
+                            )
+                        }}
+                    </v-tooltip>
                 </v-col>
             </v-row>
             <v-row>
@@ -480,6 +579,17 @@
                             )
                         "
                     ></v-checkbox-btn>
+                    <v-tooltip
+                        activator="parent"
+                        location="top left"
+                        max-width="400"
+                    >
+                        {{
+                            translate(
+                                "sebSettings.userView.task_bar.showInputLanguage_tooltip",
+                            )
+                        }}
+                    </v-tooltip>
                 </v-col>
             </v-row>
 
@@ -510,6 +620,17 @@
                             )
                         "
                     ></v-checkbox-btn>
+                    <v-tooltip
+                        activator="parent"
+                        location="top left"
+                        max-width="400"
+                    >
+                        {{
+                            translate(
+                                "sebSettings.userView.zoom.enableZoomPage_tooltip",
+                            )
+                        }}
+                    </v-tooltip>
                 </v-col>
             </v-row>
             <v-row>
@@ -530,6 +651,17 @@
                             )
                         "
                     ></v-checkbox-btn>
+                    <v-tooltip
+                        activator="parent"
+                        location="top left"
+                        max-width="400"
+                    >
+                        {{
+                            translate(
+                                "sebSettings.userView.zoom.enableZoomText_tooltip",
+                            )
+                        }}
+                    </v-tooltip>
                 </v-col>
             </v-row>
         </v-col>
@@ -537,12 +669,225 @@
         <v-col class="text-subtitle-1">
             <v-row>
                 <v-col
-                    >{{ translate("sebSettings.userView.audio")
+                    >{{ translate("sebSettings.userView.audio.title")
                     }}<v-divider
                         class="border-opacity-25"
                         :thickness="2"
                     ></v-divider
                 ></v-col>
+            </v-row>
+            <v-row>
+                <v-col class="pt-0 pb-0 pl-0">
+                    <v-checkbox-btn
+                        v-model="audioControlEnabledVal"
+                        :disabled="sebSettingsStore.readonly"
+                        hide-details
+                        :label="
+                            translate(
+                                'sebSettings.userView.audio.enableControl',
+                            )
+                        "
+                        @update:model-value="
+                            saveSingleValue(
+                                audioControlEnabled.id,
+                                audioControlEnabledVal ? 'true' : 'false',
+                            )
+                        "
+                    ></v-checkbox-btn>
+                    <v-tooltip
+                        activator="parent"
+                        location="top left"
+                        max-width="400"
+                    >
+                        {{
+                            translate(
+                                "sebSettings.userView.audio.enableControl_tooltip",
+                            )
+                        }}
+                    </v-tooltip>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col class="pt-0 pb-0 pl-0">
+                    <v-checkbox-btn
+                        v-model="audioMuteVal"
+                        :disabled="sebSettingsStore.readonly"
+                        hide-details
+                        :label="translate('sebSettings.userView.audio.mute')"
+                        @update:model-value="
+                            saveSingleValue(
+                                audioMute.id,
+                                audioMuteVal ? 'true' : 'false',
+                            )
+                        "
+                    ></v-checkbox-btn>
+                    <v-tooltip
+                        activator="parent"
+                        location="top left"
+                        max-width="400"
+                    >
+                        {{
+                            translate("sebSettings.userView.audio.mute_tooltip")
+                        }}
+                    </v-tooltip>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col class="pt-0 pb-0 pl-0">
+                    <v-checkbox-btn
+                        v-model="audioSetVolumeLevelVal"
+                        :disabled="sebSettingsStore.readonly"
+                        hide-details
+                        :label="translate('sebSettings.userView.audio.volume')"
+                        @update:model-value="
+                            saveSingleValue(
+                                audioSetVolumeLevel.id,
+                                audioSetVolumeLevelVal ? 'true' : 'false',
+                            )
+                        "
+                    ></v-checkbox-btn>
+                    <v-tooltip
+                        activator="parent"
+                        location="top left"
+                        max-width="400"
+                    >
+                        {{
+                            translate(
+                                "sebSettings.userView.audio.volume_tooltip",
+                            )
+                        }}
+                    </v-tooltip>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col class="pt-0 pb-0 pl-0">
+                    <v-slider
+                        v-model="audioVolumeLevelVal"
+                        :max="100"
+                        :min="0"
+                        :step="1"
+                        :disabled="
+                            sebSettingsStore.readonly || !audioSetVolumeLevelVal
+                        "
+                        hide-details
+                        @update:focused="
+                            saveSingleValue(
+                                audioVolumeLevel.id,
+                                audioVolumeLevelVal.toString(),
+                            )
+                        "
+                    ></v-slider>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col
+                    >{{ translate("sebSettings.userView.spellChecker.title")
+                    }}<v-divider
+                        class="border-opacity-25"
+                        :thickness="2"
+                    ></v-divider
+                ></v-col>
+            </v-row>
+            <v-row>
+                <v-col class="pt-0 pb-0 pl-0">
+                    <v-checkbox-btn
+                        v-model="allowSpellCheckVal"
+                        :disabled="sebSettingsStore.readonly"
+                        hide-details
+                        :label="
+                            translate('sebSettings.userView.spellChecker.allow')
+                        "
+                        @update:model-value="
+                            saveSingleValue(
+                                allowSpellCheck.id,
+                                allowSpellCheckVal ? 'true' : 'false',
+                            )
+                        "
+                    ></v-checkbox-btn>
+                    <v-tooltip
+                        activator="parent"
+                        location="top left"
+                        max-width="400"
+                    >
+                        {{
+                            translate(
+                                "sebSettings.userView.spellChecker.allow_tooltip",
+                            )
+                        }}
+                    </v-tooltip>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col class="pt-0 pb-0 pl-0">
+                    <v-checkbox-btn
+                        v-model="allowDictionaryLookupVal"
+                        :disabled="sebSettingsStore.readonly"
+                        hide-details
+                        :label="
+                            translate(
+                                'sebSettings.userView.spellChecker.allowDict',
+                            )
+                        "
+                        @update:model-value="
+                            saveSingleValue(
+                                allowDictionaryLookup.id,
+                                allowDictionaryLookupVal ? 'true' : 'false',
+                            )
+                        "
+                    ></v-checkbox-btn>
+                    <v-tooltip
+                        activator="parent"
+                        location="top left"
+                        max-width="400"
+                    >
+                        {{
+                            translate(
+                                "sebSettings.userView.spellChecker.allowDict_tooltip",
+                            )
+                        }}
+                    </v-tooltip>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col
+                    >{{ translate("sebSettings.userView.screenLock.title")
+                    }}<v-divider
+                        class="border-opacity-25"
+                        :thickness="2"
+                    ></v-divider
+                ></v-col>
+            </v-row>
+            <v-row>
+                <v-col class="pt-3 pb-0 pl-5">
+                    <v-row>
+                        <v-color-picker
+                            v-model="lockScreenBackgroundColorVal"
+                            :disabled="sebSettingsStore.readonly"
+                            hide-canvas
+                            hide-inputs
+                            mode="hex"
+                            :label="
+                                translate(
+                                    'sebSettings.userView.screenLock.color',
+                                )
+                            "
+                            @update:model-value="
+                                saveSingleValue(
+                                    lockScreenBackgroundColor.id,
+                                    lockScreenBackgroundColorVal,
+                                )
+                            "
+                        >
+                        </v-color-picker>
+                        <div class="pt-5 pb-0 pl-5">
+                            {{
+                                translate(
+                                    "sebSettings.userView.screenLock.color",
+                                )
+                            }}
+                        </div>
+                    </v-row>
+                </v-col>
             </v-row>
         </v-col>
     </v-row>
@@ -598,6 +943,16 @@ const showInputLanguageVal = ref<boolean>(false);
 const enableZoomPageVal = ref<boolean>(false);
 const enableZoomTextVal = ref<boolean>(false);
 
+const audioControlEnabledVal = ref<boolean>(false);
+const audioMuteVal = ref<boolean>(false);
+const audioSetVolumeLevelVal = ref<boolean>(false);
+const audioVolumeLevelVal = ref<number>(25);
+
+const allowSpellCheckVal = ref<boolean>(false);
+const allowDictionaryLookupVal = ref<boolean>(false);
+
+const lockScreenBackgroundColorVal = ref<string>("#0000");
+
 // the parent component identifier
 let componentId: string;
 
@@ -626,6 +981,16 @@ let showInputLanguage: SEBSettingsValue;
 
 let enableZoomPage: SEBSettingsValue;
 let enableZoomText: SEBSettingsValue;
+
+let audioControlEnabled: SEBSettingsValue;
+let audioMute: SEBSettingsValue;
+let audioSetVolumeLevel: SEBSettingsValue;
+let audioVolumeLevel: SEBSettingsValue;
+
+let allowSpellCheck: SEBSettingsValue;
+let allowDictionaryLookup: SEBSettingsValue;
+
+let lockScreenBackgroundColor: SEBSettingsValue;
 
 onBeforeMount(async () => {
     if (sebSettingsStore.selectedContainerId == null) {
@@ -769,6 +1134,31 @@ onBeforeMount(async () => {
     enableZoomPageVal.value = stringToBoolean(enableZoomPage.value);
     enableZoomText = getSingleValue(singleValues, "enableZoomText");
     enableZoomTextVal.value = stringToBoolean(enableZoomText.value);
+
+    audioControlEnabled = getSingleValue(singleValues, "audioControlEnabled");
+    audioControlEnabledVal.value = stringToBoolean(audioControlEnabled.value);
+    audioMute = getSingleValue(singleValues, "audioMute");
+    audioMuteVal.value = stringToBoolean(audioMute.value);
+    audioSetVolumeLevel = getSingleValue(singleValues, "audioSetVolumeLevel");
+    audioSetVolumeLevelVal.value = stringToBoolean(audioSetVolumeLevel.value);
+    audioVolumeLevel = getSingleValue(singleValues, "audioVolumeLevel");
+    audioVolumeLevelVal.value = Number(audioVolumeLevel.value);
+
+    allowSpellCheck = getSingleValue(singleValues, "allowSpellCheck");
+    allowSpellCheckVal.value = stringToBoolean(allowSpellCheck.value);
+    allowDictionaryLookup = getSingleValue(
+        singleValues,
+        "allowDictionaryLookup",
+    );
+    allowDictionaryLookupVal.value = stringToBoolean(
+        allowDictionaryLookup.value,
+    );
+
+    lockScreenBackgroundColor = getSingleValue(
+        singleValues,
+        "lockScreenBackgroundColor",
+    );
+    lockScreenBackgroundColorVal.value = lockScreenBackgroundColor.value;
 });
 
 async function saveBrowserViewMode(value: string) {
@@ -784,12 +1174,6 @@ async function saveSingleValue(valId: number, value: string) {
         sebSettingsStore.isExam,
     );
 }
-
-// async function saveOnFocusLost(focusIn: boolean, valId: number, value: string) {
-//     if (!focusIn) {
-//         saveSingleValue(valId, value);
-//     }
-// }
 
 function getSingleValue(
     singleValues: Map<string, SEBSettingsValue>,

@@ -839,6 +839,7 @@
 
     "sebSettings": {
         "pwdMismatch": "The password and confirm password must match",
+        "pwdSpaces": "The value must not start or end with a space.",
         "views": {
             "general": "General",
             "userInterface": "User Interface",
@@ -868,12 +869,14 @@
                 "1": "Use full screen mode",
                 "1_tooltip": "Display the SEB browser full screen",
                 "2": "Touch optimized",
-                "2_tooltip": "Mainly to be used on Windows tablets. Not working with the Create New Desktop kiosk mode"
+                "2_tooltip": "Mainly to be used on Windows tablets. In Windows 10, Tablet Mode needs to be activated. Not working with the Create New Desktop kiosk mode, you have to reconfigure the SEB client settings to Disable Explorer Shell."
             },
             "main_browser": {
                 "title": "Main Browser Window Size and Position",
                 "width": "Width",
+                "width_tooltip": "Window width in pixel or percentage of total screen width",
                 "height": "Height",
+                "height_tooltip": "Window height in pixel or percentage of total screen height",
                 "pos": "Horizontal positioning",
                 "pos_0": "Left",
                 "pos_1": "Center",
@@ -882,29 +885,58 @@
             "browser_window": {
                 "title": "Browser Window Toolbar",
                 "enableToolbar": "Enable browser window toolbar",
+                "enableToolbar_tooltip": "Displays a toolbar on top of the browser window which can also be hidden by the user",
                 "addrBar": "Allow address bar for main window (Win)",
                 "newAddrBar": "Allow address bar for additional window (Win)",
                 "allowDev": "Show developer tools in window menu (Win)",
                 "hideTool": "Hide toolbar as default (Mac)",
-                "showMenuBar": "Show menu bar (Mac)"
+                "hideTool_tooltip": "Hide browser window toolbar by default. It can be shown again by using the View menu or Alt-Command-T.",
+                "showMenuBar": "Show menu bar (Mac)",
+                "showMenuBar_tooltip": "Show the OS X menu bar to allow to access settings like Wi-Fi"
             },
             "task_bar": {
                 "title": "SEB Taskbar / Dock",
                 "showTaskBar": "Show SEB taskbar",
+                "showTaskBar_tooltip": "The SEB task bar shows and switches between open browser windows, allowed resources and applications and displays additional controls",
                 "showSideMenu": "Show side menu",
                 "raiseHandButtonShow": "Show raise hand button",
                 "raiseHandButtonAlwaysPromptMessage": "Raise hand prompt message",
+                "raiseHandButtonAlwaysPromptMessage_tooltip": "if this is enabled the raise hand function will always prompt the user to give a message for the raise hand action",
                 "allowWlan": "Show Wi-Fi control (Win)",
+                "allowWlan_tooltip": "Allows to reconnect to WiFi networks which have previously been connected to",
                 "showReloadButton": "Show reload button",
-                "showTime": "Show time",
-                "showInputLanguage": "Show keyboard layout"
+                "showReloadButton_tooltip": "Reloads current web page. Shows warning if enabled in Browser settings tab",
+                "showTime": "Show current time",
+                "showInputLanguage": "Show keyboard layout",
+                "showInputLanguage_tooltip": "Shows current keyboard layout and allows to switch between other active keyboard layouts"
             },
             "zoom": {
-                "title": "Zoom Mode",
+                "title": "Enable Zoom (Win/Mac)",
                 "enableZoomPage": "Enable page zoom",
-                "enableZoomText": "Enable text zoom"
+                "enableZoomPage_tooltip": "Pages can be zoomed with ctrl - cmd +/- or the commands in the view menu and browser window toolbar (Mac)",
+                "enableZoomText": "Enable text zoom",
+                "enableZoomText_tooltip": "Text in browser windows can be zoomed with cmd +/- or the commands in the view menu and browser window toolbar (Mac)"
             },
-            "audio": "Audio Control"
+            "audio": {
+                "title": "Audio Control",
+                "enableControl": "Show audio controls",
+                "enableControl_tooltip": "Displays an audio control in the SEB taskbar",
+                "mute": "Mute audio on startup",
+                "mute_tooltip": "The audio is muted when the SEB/exam starts",
+                "volume": "Set initial volume level",
+                "volume_tooltip": "The volume level after starting SEB/exam"
+            },
+            "spellChecker": {
+                "title": "Spell Checker",
+                "allow": "Allow spell checking (Win supports English only)",
+                "allow_tooltip": "Allow to use 'Check spelling' in the SEB browser",
+                "allowDict": "Allow dictionary lookup (Mac)",
+                "allowDict_tooltip": "Allow to use the OS X dictionary lookup using a 3 finger tap"
+            },
+            "screenLock": {
+                "title": "Lock Screen",
+                "color": "Choose background color"
+            }
         },
         "applicationView": {
             "allowSwitchToApplications": "Allow switching to third party application (Mac)",
