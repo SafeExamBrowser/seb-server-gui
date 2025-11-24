@@ -10,7 +10,7 @@ RUN npm install
 COPY client/ .
 
 # Build static Storybook
-RUN npm run build-storybook
+RUN npm run build-storybook -- --output-dir storybook-static --base /seb-server-gui-storybook/
 
 # Final image - serve Storybook statically
 FROM node:20.19.0-alpine
