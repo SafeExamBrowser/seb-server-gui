@@ -25,6 +25,7 @@ import ScreenProctoringForm from "@/components/views/seb-server/template/exam/co
 import StepItem from "@/components/widgets/stepItem/StepItem.vue";
 import { useI18n } from "vue-i18n";
 import { useTable } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/useTable";
+import FieldScreenProctoringEnabled from "@/components/views/seb-server/template/exam/components/stepClientGroup/components/FieldScreenProctoringEnabled.vue";
 
 const { t } = useI18n();
 

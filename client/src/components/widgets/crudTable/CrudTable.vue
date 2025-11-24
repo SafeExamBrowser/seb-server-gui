@@ -42,7 +42,10 @@
 </template>
 
 <script setup lang="ts" generic="TItem extends Record<string, any>, TTransient">
+import CrudActions from "@/components/widgets/crudTable/components/CrudActions.vue";
+import CrudCreate from "@/components/widgets/crudTable/components/CrudCreate.vue";
 import { CrudTableConfig } from "@/components/widgets/crudTable/types";
+import TableHeader from "@/components/widgets/TableHeader.vue";
 import { unref } from "vue";
 
 defineProps<{
