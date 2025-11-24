@@ -48,6 +48,11 @@
                         color="primary"
                     >
                     </v-switch>
+                    <FormFieldCollection
+                        v-else-if="field.type === 'collection'"
+                        :label="field.label"
+                        :fields="field.fields"
+                    />
                 </v-col>
             </v-row>
         </v-container>
@@ -64,6 +69,7 @@ import {
 } from "./types";
 import { VInput } from "vuetify/components";
 import { ref, nextTick, watch } from "vue";
+import FormFieldCollection from "./components/FormFieldCollection.vue";
 
 const isValid = defineModel<boolean | null>();
 

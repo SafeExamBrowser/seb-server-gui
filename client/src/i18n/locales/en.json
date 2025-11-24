@@ -329,6 +329,9 @@
                             "BATTERY_STATUS": "Battery Status",
                             "WLAN_STATUS": "Wifi Status"
                         }
+                    },
+                    "thresholds": {
+                        "label": "Thresholds"
                     }
                 }
             },

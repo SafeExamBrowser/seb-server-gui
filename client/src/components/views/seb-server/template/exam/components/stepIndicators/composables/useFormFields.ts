@@ -1,13 +1,18 @@
 import { computed, Ref } from "vue";
-import { FormField } from "@/components/widgets/formBuilder/types";
+import {
+    FormField,
+    FormFieldCollection,
+} from "@/components/widgets/formBuilder/types";
 import { useRules } from "vuetify/labs/rules";
 import {
     Indicator,
     IndicatorTransient,
+    Threshold,
 } from "@/components/views/seb-server/template/exam/components/stepIndicators/types";
 import { useStepIndicatorsStore } from "@/components/views/seb-server/template/exam/components/stepIndicators/composables/store/useStepIndicatorsStore";
 import i18n from "@/i18n";
 import { IndicatorEnum } from "@/models/seb-server/monitoringEnums";
+import { useFormFieldsThreshold } from "./useFormFieldsThreshold";
 
 export const useFormFields = () => {
     const rules = useRules();
@@ -27,6 +32,17 @@ export const useFormFields = () => {
                 indicator.value = {
                     ...indicator.value,
                     type: value,
+                };
+            },
+        });
+
+        const thresholds = computed<IndicatorTransient["thresholds"]>({
+            get: (): IndicatorTransient["thresholds"] =>
+                indicator.value.thresholds,
+            set: (value: IndicatorTransient["thresholds"]) => {
+                indicator.value = {
+                    ...indicator.value,
+                    thresholds: value,
                 };
             },
         });
@@ -85,6 +101,16 @@ export const useFormFields = () => {
                 ),
                 required: true,
             },
+            {
+                type: "collection" as const,
+                name: "thresholds",
+                label: i18n.global.t(
+                    "createTemplateExam.steps.indicators.fields.thresholds.label",
+                ),
+                required: true,
+                model: thresholds,
+                fields: useFormFieldsThreshold(),
+            } satisfies FormFieldCollection<Threshold>,
         ]);
 
         return formFields.value;

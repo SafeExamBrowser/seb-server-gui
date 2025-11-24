@@ -19,34 +19,46 @@ export type FormFieldBaseProperties = Pick<
 
 export type FormFieldTextualProperties = Pick<VTextFieldProps, "placeholder">;
 
-export type FormField = {
+type FormFieldBase = {
     name: string;
     label: string;
     rules?: VInputProps["rules"];
     info?: string;
     validationDependsOn?: string[];
-} & (
-    | {
-          type: "text";
-          placeholder?: string;
-          required?: boolean;
-          model: Ref<string | undefined>;
-      }
-    | {
-          type: "textarea";
-          placeholder?: string;
-          required?: boolean;
-          model: Ref<string | undefined>;
-      }
-    | {
-          type: "select";
-          placeholder?: string;
-          required?: boolean;
-          model: Ref<string | undefined>;
-          options: { value: string; text: string }[];
-      }
-    | {
-          type: "switch";
-          model: Ref<boolean>;
-      }
-);
+};
+
+export type FormFieldSimple = FormFieldBase &
+    (
+        | {
+              type: "text";
+              placeholder?: string;
+              required?: boolean;
+              model: Ref<string | undefined>;
+          }
+        | {
+              type: "textarea";
+              placeholder?: string;
+              required?: boolean;
+              model: Ref<string | undefined>;
+          }
+        | {
+              type: "select";
+              placeholder?: string;
+              required?: boolean;
+              model: Ref<string | undefined>;
+              options: { value: string; text: string }[];
+          }
+        | {
+              type: "switch";
+              model: Ref<boolean>;
+          }
+    );
+
+export type FormFieldCollection<TCollectionItem = unknown> = FormFieldBase & {
+    type: "collection";
+    required?: boolean;
+    model: Ref<TCollectionItem[]>;
+    fields: FormFieldSimple[];
+};
+
+export type FormField = FormFieldSimple | FormFieldCollection<unknown>;
