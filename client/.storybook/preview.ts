@@ -12,8 +12,10 @@ import "@mdi/font/css/materialdesignicons.css";
 import i18n from "@/i18n";
 
 const router = createRouter({
-    history: createWebHistory(),
-    routes: [], // add demo routes if your components navigate
+    history: createWebHistory(
+        import.meta.env.BASE_URL || "/seb-server-gui-storybook/",
+    ),
+    routes: [],
 });
 
 const vuetify = createVuetify();
