@@ -1,5 +1,5 @@
 # Build Storybook
-FROM node:22.2.0 AS storybook-builder
+FROM node:20.19.0 AS storybook-builder
 WORKDIR /app/client
 
 # Install dependencies
@@ -13,7 +13,7 @@ COPY client/ .
 RUN npm run build-storybook
 
 # Final image - serve Storybook statically
-FROM node:22.2.0-alpine
+FROM node:20.19.0-alpine
 WORKDIR /app
 
 # Use a tiny static file server
