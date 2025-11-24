@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     tags:
-      - "auto-testing:deploy"
+      - "auto-testing-deploy"
 
 jobs:
   build-and-push-admin-auto-test:
