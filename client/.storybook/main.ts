@@ -12,13 +12,6 @@ const config: StorybookConfig = {
         name: "@storybook/vue3-vite",
         options: {},
     },
-
-    staticDirs: ["../public"],
-
-    viteFinal: async (viteConfig) => {
-        viteConfig.base = "/seb-server-gui-storybook/";
-        return viteConfig;
-    },
 };
 
 export default config;
