@@ -37,17 +37,13 @@
     </v-dialog>
 </template>
 
-<script setup lang="ts">
-import { ref, watch } from "vue";
+<script setup lang="ts" generic="TItem, TTransient">
+import { computed, ref, watch } from "vue";
 import { IconValue } from "vuetify/lib/composables/icons.mjs";
-import {
-    ClientGroup,
-    ClientGroupTransient,
-    clientGroupTransientToClientGroup,
-} from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 import { useDisplay } from "vuetify";
-import { useFormFields } from "./composables/useFormFields";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
+import { FormField } from "@/components/widgets/formBuilder/types";
+import { CrudTableConfig } from "@/components/widgets/crudTable/types";
 
 const props = withDefaults(
     defineProps<{
@@ -58,7 +54,9 @@ const props = withDefaults(
         labelActivator: string;
         labelCancel: string;
         labelSubmit: string;
-        getClientGroup: () => ClientGroupTransient;
+        formId: string;
+        getFormFields: CrudTableConfig<TItem, TTransient>["getFormFields"];
+        getItem: () => TTransient;
     }>(),
     {
         disabled: false,
@@ -67,22 +65,19 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-    (e: "submit", clientGroup: ClientGroup): void;
+    (e: "submit", item: TTransient): void;
 }>();
 
 const activatorRef = ref<HTMLElement>();
 const isDialogOpen = ref(false);
-const clientGroupTransient = ref(props.getClientGroup());
-const formId = "client-group-form";
+const item = ref<TTransient>(props.getItem());
 const isValid = ref<boolean>(false);
-const { formFields } = useFormFields(clientGroupTransient);
+const formFields = computed<FormField[]>(() => props.getFormFields(item));
 
 watch(isDialogOpen, (newValue) => {
-    if (!newValue) {
-        // side effect: reset the temporary client group whenever the dialog is closed
-        clientGroupTransient.value = props.getClientGroup();
-
-        // side effect: reset the validation flag whenever the dialog is closed
+    if (newValue) {
+        // side effects when dialog opens
+        item.value = props.getItem();
         isValid.value = false;
     }
 });
@@ -92,10 +87,7 @@ const handleCancelClick = () => {
 };
 
 const handleFormSubmit = () => {
-    emit(
-        "submit",
-        clientGroupTransientToClientGroup(clientGroupTransient.value),
-    );
+    emit("submit", item.value);
     isDialogOpen.value = false;
 };
 </script>
