@@ -37,38 +37,41 @@
             <v-sheet class="rounded-lg pl-4 pt-3 pr-4" elevation="4">
                 <!------------title row------------->
                 <v-row>
-                    <v-col
-                        class="primary-text-color text-h5 font-weight-bold"
-                        cols="4"
-                    >
-                        {{ monitoringStore.selectedExam?.quizName }}
+                    <v-col cols="4">
+                        <div class="text-subtitle-1 font-weight-medium mt-2">
+                            {{
+                                translate(
+                                    "monitoringExams.info.examNameSearchPlaceholder",
+                                )
+                            }}
+                        </div>
                     </v-col>
 
                     <v-spacer></v-spacer>
                     <v-col cols="4">
-                        <span
-                            class="primary-text-color text-h6 font-weight-bold"
-                        >
+                        <div class="text-subtitle-1 font-weight-medium mt-2">
                             {{ translate("monitoringClients.info.filters") }}
-                        </span>
-                        <v-chip
-                            v-if="!monitoringStore.isNoFilterSelected"
-                            append-icon="mdi-close"
-                            class="ml-4"
-                            size="small"
-                            variant="tonal"
-                            @click="clearFilters()"
-                        >
-                            {{ translate("monitoringClients.info.clearAll") }}
-                        </v-chip>
+
+                            <v-chip
+                                v-if="!monitoringStore.isNoFilterSelected"
+                                append-icon="mdi-close"
+                                class="ml-4"
+                                size="small"
+                                variant="tonal"
+                                @click="clearFilters()"
+                            >
+                                {{
+                                    translate("monitoringClients.info.clearAll")
+                                }}
+                            </v-chip>
+                        </div>
                     </v-col>
                     <v-spacer></v-spacer>
 
-                    <v-col
-                        class="primary-text-color text-h6 font-weight-bold"
-                        cols="3"
-                    >
-                        {{ translate("monitoringClients.info.actions") }}
+                    <v-col cols="3">
+                        <div class="text-subtitle-1 font-weight-medium mt-2">
+                            {{ translate("monitoringClients.info.actions") }}
+                        </div>
                     </v-col>
                 </v-row>
 
@@ -82,12 +85,9 @@
                         >
                             <!------------field------------->
                             <v-row align="center">
-                                <!-- <v-col>
-                                    {{translate("monitoringExams.info.search")}}
-                                </v-col> -->
                                 <v-col>
                                     <v-text-field
-                                        v-model="monitoringStore.searchField"
+                                        v-model="monitoringStore.searchName"
                                         append-inner-icon="mdi-magnify"
                                         density="compact"
                                         hide-details
@@ -110,18 +110,7 @@
                                         variant="outlined"
                                         @click="clearForm()"
                                     >
-                                        {{ translate("general.cancelButton") }}
-                                    </v-btn>
-
-                                    <v-btn
-                                        class="ml-2"
-                                        color="primary"
-                                        rounded="sm"
-                                        size="small"
-                                        variant="flat"
-                                        @click="loadMonitoringListItemsCaller()"
-                                    >
-                                        {{ translate("general.searchButton") }}
+                                        {{ translate("general.cancelSearch") }}
                                     </v-btn>
                                 </v-col>
                             </v-row>
@@ -141,7 +130,7 @@
                                     "
                                 >
                                     <div
-                                        class="primary-text-color text-subtitle-1"
+                                        class="text-subtitle-2 font-weight-medium"
                                     >
                                         {{
                                             translate(
@@ -187,7 +176,7 @@
                                     "
                                 >
                                     <div
-                                        class="primary-text-color text-subtitle-1"
+                                        class="text-subtitle-2 font-weight-medium"
                                     >
                                         {{
                                             translate(
@@ -229,7 +218,7 @@
                                 <!------------notification filters------------->
                                 <v-col>
                                     <div
-                                        class="primary-text-color text-subtitle-1"
+                                        class="text-subtitle-2 font-weight-medium"
                                     >
                                         {{
                                             translate(
@@ -281,7 +270,7 @@
                                     "
                                 >
                                     <div
-                                        class="primary-text-color text-subtitle-1"
+                                        class="text-subtitle-2 font-weight-medium"
                                     >
                                         {{
                                             translate(
@@ -328,10 +317,7 @@
                             <v-btn
                                 class="mt-2"
                                 color="black"
-                                :disabled="
-                                    monitoringStore.selectedMonitoringIds
-                                        .length == 0
-                                "
+                                :disabled="isScreenLockDisabled()"
                                 prepend-icon="mdi-monitor-lock"
                                 rounded="sm"
                                 variant="outlined"
@@ -352,12 +338,9 @@
 
                         <div class="d-flex flex-column pr-11">
                             <v-btn
-                                class="mt-2"
+                                class="mt-2 text-wrap"
                                 color="black"
-                                :disabled="
-                                    monitoringStore.selectedMonitoringIds
-                                        .length == 0
-                                "
+                                :disabled="isSEBQuitDisabled()"
                                 prepend-icon="mdi-backspace-outline"
                                 rounded="sm"
                                 variant="outlined"
@@ -380,15 +363,15 @@
                             <v-btn
                                 class="mt-2"
                                 color="black"
-                                :disabled="
-                                    monitoringStore.selectedMonitoringIds
-                                        .length == 0
-                                "
+                                :disabled="isCancelConnectionDisabled()"
                                 prepend-icon="mdi-cancel"
                                 rounded="sm"
                                 variant="outlined"
                                 @click="
-                                    openInstructionConfirmDialog(null, true)
+                                    openInstructionConfirmDialog(
+                                        InstructionEnum.SEB_MARK_AS_CANCELLED,
+                                        true,
+                                    )
                                 "
                             >
                                 {{
@@ -490,6 +473,8 @@ import { InstructionEnum } from "@/models/seb-server/instructionEnum";
 import { useErrorStore } from "@/stores/seb-server/errorStore";
 import { ref } from "vue";
 import { ErrorProps } from "@/models/alertProps";
+//import { MonitoringRow } from "@/models/seb-server/monitoringClients";
+import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum";
 
 // info panel (whole component)
 const isInfoExpanded = ref<boolean>(true);
@@ -505,9 +490,6 @@ const errorStore = useErrorStore();
 // exam
 const examId = useRoute().params.examId.toString();
 
-// datepicker
-const datepicker = ref();
-
 // instruction confirm dialog
 const instructionConfirmDialog = ref<boolean>(false);
 const selectedInstructionType = ref<InstructionEnum | null>(null);
@@ -518,6 +500,27 @@ const emit = defineEmits<{
     (e: "updatePageInfo"): void;
 }>();
 
+function isScreenLockDisabled(): boolean {
+    return (
+        monitoringStore.selectedMonitoringIds.length == 0 ||
+        getConnectionTokens(InstructionEnum.SEB_FORCE_LOCK_SCREEN) == null
+    );
+}
+
+function isSEBQuitDisabled(): boolean {
+    return (
+        monitoringStore.selectedMonitoringIds.length == 0 ||
+        getConnectionTokens(InstructionEnum.SEB_QUIT) == null
+    );
+}
+
+function isCancelConnectionDisabled(): boolean {
+    return (
+        monitoringStore.selectedMonitoringIds.length == 0 ||
+        getConnectionTokens(InstructionEnum.SEB_MARK_AS_CANCELLED) == null
+    );
+}
+
 function showStateFilter(key: string, value: number | undefined): boolean {
     return (
         key != "total" &&
@@ -526,10 +529,6 @@ function showStateFilter(key: string, value: number | undefined): boolean {
 }
 
 function loadMonitoringListItemsCaller() {
-    if (datepicker.value != null) {
-        monitoringStore.startDate = datepicker.value.getTime();
-    }
-
     emit("updatePageInfo");
 }
 
@@ -539,11 +538,7 @@ function clearFilters() {
 }
 
 function clearForm() {
-    monitoringStore.searchField = "";
-
-    datepicker.value = null;
-    monitoringStore.startDate = null;
-
+    monitoringStore.searchName = null;
     loadMonitoringListItemsCaller();
 }
 
@@ -580,7 +575,12 @@ function openInstructionConfirmDialog(
     instructionType: InstructionEnum | null,
     isCancelInstruction: boolean,
 ) {
-    const connectionTokens: string | null = getConnectionTokens();
+    if (instructionType == null) {
+        return;
+    }
+
+    const connectionTokens: string | null =
+        getConnectionTokens(instructionType);
     if (connectionTokens == null) {
         const errorProps: ErrorProps = {
             color: "error",
@@ -603,7 +603,7 @@ function closeInstructionConfirmDialog() {
     instructionConfirmDialog.value = false;
 }
 
-function getConnectionTokens(): string | null {
+function getConnectionTokens(instructionType: InstructionEnum): string | null {
     if (monitoringStore.monitoringData == null) {
         return null;
     }
@@ -611,11 +611,34 @@ function getConnectionTokens(): string | null {
     // get token and add it to list
     const connectionTokens: string[] = [];
     monitoringStore.selectedMonitoringIds.forEach((id) => {
-        const connectionToken: string | undefined =
-            monitoringStore.monitoringData.get(id)?.connectionToken;
-
-        if (connectionToken != null) {
-            connectionTokens.push(connectionToken);
+        const row = monitoringStore.monitoringData.get(id);
+        if (row) {
+            switch (instructionType) {
+                case (InstructionEnum.SEB_QUIT,
+                InstructionEnum.SEB_FORCE_LOCK_SCREEN): {
+                    if (
+                        !row.missing &&
+                        (row.status == ConnectionStatusEnum.ACTIVE ||
+                            row.status ==
+                                ConnectionStatusEnum.CONNECTION_REQUESTED ||
+                            row.status == ConnectionStatusEnum.READY)
+                    ) {
+                        connectionTokens.push(row.connectionToken);
+                    }
+                    break;
+                }
+                case InstructionEnum.SEB_MARK_AS_CANCELLED: {
+                    if (
+                        row.status == ConnectionStatusEnum.CLOSED ||
+                        row.status == ConnectionStatusEnum.MISSING ||
+                        row.missing
+                    ) {
+                        connectionTokens.push(row.connectionToken);
+                    }
+                    break;
+                }
+                default:
+            }
         }
     });
 

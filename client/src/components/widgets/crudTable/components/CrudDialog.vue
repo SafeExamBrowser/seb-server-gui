@@ -41,6 +41,7 @@
 import { computed, ref, watch } from "vue";
 import { IconValue } from "vuetify/lib/composables/icons.mjs";
 import { useDisplay } from "vuetify";
+import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import { FormField } from "@/components/widgets/formBuilder/types";
 import { CrudTableConfig } from "@/components/widgets/crudTable/types";
 

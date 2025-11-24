@@ -52,6 +52,7 @@
         "backButton": "Back",
         "nextButton": "Next",
         "searchButton": "Search",
+        "cancelSearch": "Cancel Search",
         "saveButton": "Save",
         "startButton": "Start",
         "downloadButton": "Download",
@@ -150,7 +151,7 @@
         "steps": {
             "selectAssessmentTool": "Select Assessment Tool",
             "selectExam": "Select Exam",
-            "chooseTemplate": "Choose Template",
+            "chooseTemplate": "Choose Exam Template",
             "selectGroup": "Select Groups",
             "addSupervisors": "Add Exam Supervisor",
             "quitPassword": "Set Quit Password",
@@ -189,7 +190,7 @@
         },
 
         "templateMain": {
-            "title": "Select Exam Template",
+            "title": "Choose Exam Template",
             "description": "Click on the Exam Template you want to use for the exam.",
             "templateInfo": "Open template info",
             "templateSelect": "Select template"
@@ -265,12 +266,12 @@
         },
         "steps": {
             "naming": {
-                "title": "Name it",
-                "subtitle": "TODO: translate (Kristina)",
+                "title": "Define basic settings",
+                "subtitle": "Fill out the form. Create a SEB Client Template and a Connection Configuration, if you haven't done so already.",
                 "fields": {
                     "name": {
                         "label": "Name",
-                        "placeholder": "Enter the desired name of the exam template",
+                        "placeholder": "Enter a name for the exam template",
                         "validationErrorUniqueName": "An exam template with this name already exists"
                     },
                     "description": {
@@ -290,7 +291,7 @@
                         "placeholder": "Select the connection configuration"
                     },
                     "lmsIntegration": {
-                        "label": "Assesment Tool Integration"
+                        "label": "Assessment Tool Integration"
                     },
                     "institutionalDefault": {
                         "label": "Institutional Default"
@@ -332,8 +333,8 @@
                 }
             },
             "clientGroup": {
-                "title": "Add Client Groups",
-                "subtitle": "TODO: translate (Kristina)",
+                "title": "Add Groups",
+                "subtitle": "Add the groups, you want for your exam template. You can only use Screen Proctoring for a group, if you enabled Screen Proctoring in the first step.",
                 "subtitleScreenProctoring": "Screen Proctoring Settings",
                 "screenProctoringSingleGroupName": "Single Group",
                 "screenProctoringFallbackGroupName": "Fallback Group",
@@ -1228,7 +1229,7 @@
             "indicators": "Indicators",
             "lockClients": "Lock selected clients",
             "quitClients": "Quit selected clients",
-            "cancelClients": "Mark selected clients as canceled"
+            "cancelClients": "Cancel selected clients"
         },
 
         "main": {

@@ -342,23 +342,24 @@ export const useAbilities = defineStore("ability", () => {
         return false;
     }
 
-    function canDoExamAction(
-        action: GUIAction,
-        examStatusString: string | undefined,
-    ): boolean {
-        if (examStatusString == null) {
+    function canDoExamAction(action: GUIAction, exam: Exam | null): boolean {
+        if (exam == null) {
             return false;
         }
 
-        // TODO test if this works for all cases. See: SEBSERV-685. If so, remove debug output
+        const user = useUserAccountStore().userAccount;
+        if (user == null) return false;
+        if (user.institutionId != exam.institutionId) {
+            return false;
+        }
+
         if (!canDo(action)) {
-            console.info("User cannot do: " + action);
             return false;
         }
 
         const examStatus: ExamStatusEnum | null = generalUtils.findEnumValue(
             ExamStatusEnum,
-            examStatusString,
+            exam.status,
         );
         if (examStatus == null) {
             return false;

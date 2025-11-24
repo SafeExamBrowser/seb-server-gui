@@ -22,6 +22,8 @@ import { useFormFields } from "./composables/useFormFields";
 import { useStepNamingStore } from "./composables/store/useStepNamingStore";
 import { useDisplay } from "vuetify";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import StepItem from "@/components/widgets/stepItem/StepItem.vue";
 
 const { formFields, loading, errors } = useFormFields();
 </script>

@@ -397,6 +397,7 @@ import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/store
 import { GUIComponent, useAbilities } from "@/services/ability";
 import { CreateUserPar, SingleUserAccountResponse } from "@/models/userAccount";
 import { Institution } from "@/models/seb-server/institution";
+import SettingsNavigation from "@/components/views/seb-server/components/SettingsNavigation.vue";
 
 const ability = useAbilities();
 const appBarStore = useAppBarStore();

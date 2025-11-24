@@ -1,4 +1,3 @@
-import Components from "unplugin-vue-components/vite";
 import Fonts from "unplugin-fonts/vite";
 import Vue from "@vitejs/plugin-vue";
 import Vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
@@ -11,11 +10,11 @@ export default ({ mode }) => {
     process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
 
     return defineConfig({
-        plugins: [
-            Components({
-                dts: "src/components.d.ts",
-            }),
+        resolve: {
+            alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) },
+        },
 
+        plugins: [
             Vue({
                 template: { transformAssetUrls },
             }),
@@ -58,12 +57,8 @@ export default ({ mode }) => {
 
         define: { "process.env": {} },
 
-        resolve: {
-            alias: {
-                "@": fileURLToPath(new URL("./src", import.meta.url)),
-            },
-
-            extensions: [".js", ".json", ".jsx", ".mjs", ".ts", ".tsx", ".vue"],
+        ssr: {
+            noExternal: ["vuetify"],
         },
 
         server: {

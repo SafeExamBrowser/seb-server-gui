@@ -11,6 +11,5 @@ export type MonitoringRow = {
     missing: boolean;
     invalidSEBVersion: boolean;
     indicators?: Map<number, IndicatorObject>;
-
-    // indicators?: (IndicatorObject | undefined)[];
+    notification: boolean;
 };

@@ -21,6 +21,8 @@
 import { useScreenProctoringStore } from "@/components/views/seb-server/template/exam/composables/store/useScreenProctoringStore";
 import { ClientGroupForTable } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 import CrudTable from "@/components/widgets/crudTable/CrudTable.vue";
+import ScreenProctoringForm from "@/components/views/seb-server/template/exam/components/stepClientGroup/components/screenProctoringForm/ScreenProctoringForm.vue";
+import StepItem from "@/components/widgets/stepItem/StepItem.vue";
 import { useI18n } from "vue-i18n";
 import { useTable } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/useTable";
 

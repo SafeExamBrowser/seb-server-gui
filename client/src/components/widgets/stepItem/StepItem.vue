@@ -16,6 +16,8 @@
 </template>
 
 <script setup lang="ts">
+import SectionTitle from "@/components/widgets/SectionTitle.vue";
+
 withDefaults(
     defineProps<{
         title: string;

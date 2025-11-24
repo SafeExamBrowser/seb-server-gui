@@ -1,4 +1,3 @@
-```vue
 <template>
     <div class="text-white text-h5 font-weight-black ml-10 mt-5">
         {{ translate("titles.settings") }}
@@ -731,6 +730,8 @@ import { navigateTo } from "@/router/navigation";
 import * as connectionConfigurationViewService from "@/services/seb-server/component-services/connectionConfigurationViewService";
 import * as certificateViewService from "@/services/seb-server/component-services/certificateViewService";
 import { CreateConnectionConfigurationPar } from "@/models/seb-server/connectionConfiguration";
+import SettingsNavigation from "@/components/views/seb-server/components/SettingsNavigation.vue";
+import AddCertificateDialog from "@/components/views/seb-server/certificates/AddCertificateDialog.vue";
 
 const name = ref<string>("");
 const configurationPassword = ref<string>("");

@@ -132,6 +132,8 @@ import { ref, computed, watch, nextTick } from "vue";
 import { useRoute } from "vue-router";
 import type { ComputedRef } from "vue";
 import { ClientNotification } from "@/models/seb-server/monitoring";
+import ProctoringViewPage from "@/components/views/screen-proctoring/proctoring/ProctoringViewPage.vue";
+import MonitoringClientLogsContainer from "@/components/views/seb-server/monitoring/client-detail/MonitoringClientLogsContainer.vue";
 
 // route params
 const examId = useRoute().params.examId.toString();
@@ -155,17 +157,10 @@ const currentView = ref<"proctoring" | "logs">(
     screenProctoringEnabled.value ? "proctoring" : "logs",
 );
 
-// display
-//const { lg } = useDisplay();
-
 // emits
 const emit = defineEmits<{
     (e: "updatePageMain"): void;
 }>();
-
-// onMounted(() => {
-//     console.log(lg.value);
-// });
 
 const raiseHandNotification: ComputedRef<ClientNotification | null> = computed(
     () =>
@@ -206,10 +201,6 @@ watch(messages, (newVal) => {
         scrollToTop();
     }
 });
-
-// watch(lg, () => {
-//     console.log(lg.value);
-// });
 
 watch(screenProctoringEnabled, (enabled) => {
     currentView.value = enabled ? "proctoring" : "logs";
