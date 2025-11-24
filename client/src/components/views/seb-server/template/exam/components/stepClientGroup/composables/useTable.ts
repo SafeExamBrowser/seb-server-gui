@@ -1,12 +1,25 @@
-import { ClientGroupForTable } from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
+import {
+    ClientGroupForTable,
+    ClientGroupTransient,
+    clientGroupTransientToClientGroup,
+    isFallbackGroup,
+} from "@/components/views/seb-server/template/exam/components/stepClientGroup/types";
 import { computed } from "vue";
 import { useScreenProctoringStore } from "@/components/views/seb-server/template/exam/composables/store/useScreenProctoringStore";
 import { useStepClientGroupStore } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/store/useStepClientGroupStore";
 import { storeToRefs } from "pinia";
 import i18n from "@/i18n";
+import { useFormFields } from "./useFormFields";
+import { getEmptyClientGroup } from "@/components/views/seb-server/template/exam/components/stepClientGroup/composables/store/useStepClientGroupStore";
+import { CrudTableConfig } from "@/components/widgets/crudTable/types";
 
-export const useTable = () => {
+export const useTable = (): CrudTableConfig<
+    ClientGroupForTable,
+    ClientGroupTransient
+> => {
+    const { getFormFields } = useFormFields();
     const screenProctoringStore = useScreenProctoringStore();
+    const { createGroup, updateGroup, deleteGroup } = useStepClientGroupStore();
 
     const headers = [
         {
@@ -80,8 +93,63 @@ export const useTable = () => {
         ),
     );
 
+    const allowCreate = computed<boolean>(() => {
+        return !(
+            screenProctoringStore.enabled &&
+            screenProctoringStore.collectionStrategy === undefined
+        );
+    });
+
+    const createItem = (item: ClientGroupTransient) => {
+        createGroup(clientGroupTransientToClientGroup(item));
+    };
+
+    const updateItem = (item: ClientGroupTransient) => {
+        updateGroup(clientGroupTransientToClientGroup(item));
+    };
+
+    const deleteItem = (item: ClientGroupForTable) => {
+        if (isFallbackGroup(item)) {
+            throw new Error("Fallback group cannot be deleted!");
+        }
+
+        deleteGroup(item);
+    };
+
+    const getExistingItem = (
+        item: ClientGroupForTable,
+    ): ClientGroupTransient => {
+        if (isFallbackGroup(item)) {
+            throw new Error("Fallback group cannot be edited!");
+        }
+
+        return {
+            ...item,
+        };
+    };
+
+    const hasActions = (item: ClientGroupForTable) => !isFallbackGroup(item);
+
     return {
+        name: "client-groups",
+        title: i18n.global.t("clientGroups.entityNamePlural"),
         headers,
-        items,
+        items: items,
+        getFormFields,
+        hasActions,
+        createConfig: {
+            title: i18n.global.t("clientGroups.addDialogTitle"),
+            allowed: allowCreate,
+            getItem: getEmptyClientGroup,
+            createItem,
+        },
+        updateConfig: {
+            title: i18n.global.t("clientGroups.editDialogTitle"),
+            getItem: getExistingItem,
+            updateItem,
+        },
+        deleteConfig: {
+            deleteItem,
+        },
     };
 };
