@@ -2,6 +2,7 @@
     <CrudDialog
         icon-activator="mdi-plus-circle-outline"
         color-activator="primary"
+        :disabled="props.disabled"
         :label-activator="props.label"
         :label-cancel="$t('general.cancelButton')"
         :label-submit="$t('general.createButton')"
@@ -19,6 +20,7 @@ import { CrudTableConfig } from "@/components/widgets/crudTable/types";
 const props = defineProps<{
     label: string;
     formId: string;
+    disabled?: boolean;
     getFormFields: CrudTableConfig<TItem, TTransient>["getFormFields"];
     getItem: () => TTransient;
     createItem: CrudTableConfig<
