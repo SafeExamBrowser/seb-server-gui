@@ -58,7 +58,7 @@
                     >
                         <tr>
                             <!------selection checkbox------->
-                            <td>
+                            <td width="2%">
                                 <v-checkbox-btn
                                     :model-value="isSelected(internalItem)"
                                     @update:model-value="
@@ -66,6 +66,14 @@
                                     "
                                 >
                                 </v-checkbox-btn>
+                            </td>
+
+                            <!------notification icons------->
+                            <td width="2%">
+                                <v-icon
+                                    v-if="hasNotification(item)"
+                                    icon="mdi-alert-decagram"
+                                ></v-icon>
                             </td>
 
                             <!------client name------->
@@ -198,7 +206,6 @@ import {
     MonitoringHeaderEnum,
 } from "@/models/seb-server/monitoringEnums";
 import { MonitoringRow } from "@/models/seb-server/monitoringClients";
-import { storeToRefs } from "pinia";
 import { useI18n } from "vue-i18n";
 import { LocationQueryValue, useRoute } from "vue-router";
 import {
@@ -206,7 +213,7 @@ import {
     onMounted,
     watch,
     onUnmounted,
-    onUpdated,
+    //    onUpdated,
     onBeforeUnmount,
 } from "vue";
 import {
@@ -230,7 +237,7 @@ const i18n = useI18n();
 
 // stores
 const monitoringStore = useMonitoringStore();
-const monitoringStoreRef = storeToRefs(monitoringStore);
+//const monitoringStoreRef = storeToRefs(monitoringStore);
 const tableStore = useTableStore();
 
 // items
@@ -243,7 +250,7 @@ const isWlanIndicator = ref<boolean>(false);
 
 // interval
 let intervalRefresh: ReturnType<typeof setTimeout> | null = null;
-const REFRESH_INTERVAL: number = 5000;
+const REFRESH_INTERVAL: number = 2000;
 
 // dialogs
 const clientGroupDialog = ref<boolean>(false);
@@ -252,16 +259,17 @@ const clientGroupToView = ref<ClientGroup | null>(null);
 // table
 const clientsTableHeadersRef = ref<(HTMLElement | null)[] | null>(null);
 const clientsTableHeaders = ref([
+    { title: "", key: "icons", width: "2%" },
     {
         title: translate("monitoringClients.main.tableHeaderNameSession"),
         key: "nameOrSession",
-        width: "30%",
+        width: "40%",
         sortable: true,
     },
     {
         title: translate("monitoringClients.main.tableHeaderClientGroups"),
         key: "clientGroups",
-        width: "20%",
+        width: "10%",
         sortable: true,
     },
     {
@@ -279,10 +287,6 @@ const clientsTableHeaders = ref([
     { title: "", key: "link", width: "5%" },
 ]);
 
-watch(monitoringStoreRef.selectedMonitoringIds, () => {
-    // console.log(monitoringStore.selectedMonitoringIds)
-});
-
 //= ========events & watchers================
 onMounted(async () => {
     await initalize();
@@ -296,10 +300,6 @@ onUnmounted(() => {
     tableStore.isIndicatorsExpanded = false;
 });
 
-onUpdated(() => {
-    // console.log("dom got updated")
-});
-
 function updateTableData() {
     monitoringDataTable.value = Array.from(
         monitoringStore.monitoringData,
@@ -307,7 +307,12 @@ function updateTableData() {
             key,
             ...value,
         }),
-    );
+    ).filter((row) => {
+        if (monitoringStore.searchName != null) {
+            return row.nameOrSession.includes(monitoringStore.searchName);
+        }
+        return true;
+    });
 }
 
 async function initalize() {
@@ -321,12 +326,14 @@ async function initalize() {
 watch(connections, async () => {
     const consLength = connections.value?.monitoringConnectionData.cons.length;
 
-    console.info(
-        "new size: " +
-            consLength +
-            "old size: " +
-            monitoringStore.monitoringData.size,
-    );
+    // Use this only for debugging
+    //
+    // console.info(
+    //     "new size: " +
+    //         consLength +
+    //         "old size: " +
+    //         monitoringStore.monitoringData.size,
+    // );
 
     if (
         consLength !== undefined &&
@@ -557,6 +564,7 @@ function createMonitoringRowData(
         missing: (fullPageDataConnection.nf & 1) > 0,
         invalidSEBVersion: (fullPageDataConnection.nf & 16) > 0,
         indicators: extractIndicators(fullPageDataConnection.iv),
+        notification: (fullPageDataConnection.nf & 2) > 0,
     };
 }
 
@@ -575,6 +583,14 @@ function getAllConnectionIds(): number[] {
     return connections.value.monitoringConnectionData.cons.map(
         (cons: { id: number }) => cons.id,
     );
+}
+
+//= ================notifications===================
+
+function hasNotification(item: MonitoringRow): boolean {
+    // TODO if we have to divert on notification type and symbol, we can do this here
+    //      by also adding different methods or adding a notification type to the function
+    return item.notification;
 }
 
 //= ================indicators===================
@@ -753,6 +769,7 @@ function updateConnectionRow(
 ) {
     updateIndicator(row.indicators, data.iv);
     row.missing = (data.nf & 1) > 0;
+    row.notification = (data.nf & 2) > 0;
 }
 
 function updateIndicator(

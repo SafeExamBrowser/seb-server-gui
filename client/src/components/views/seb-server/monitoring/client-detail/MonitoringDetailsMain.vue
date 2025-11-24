@@ -157,17 +157,10 @@ const currentView = ref<"proctoring" | "logs">(
     screenProctoringEnabled.value ? "proctoring" : "logs",
 );
 
-// display
-//const { lg } = useDisplay();
-
 // emits
 const emit = defineEmits<{
     (e: "updatePageMain"): void;
 }>();
-
-// onMounted(() => {
-//     console.log(lg.value);
-// });
 
 const raiseHandNotification: ComputedRef<ClientNotification | null> = computed(
     () =>
@@ -208,10 +201,6 @@ watch(messages, (newVal) => {
         scrollToTop();
     }
 });
-
-// watch(lg, () => {
-//     console.log(lg.value);
-// });
 
 watch(screenProctoringEnabled, (enabled) => {
     currentView.value = enabled ? "proctoring" : "logs";

@@ -10,6 +10,10 @@ export default ({ mode }) => {
     process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
 
     return defineConfig({
+        resolve: {
+            alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) },
+        },
+
         plugins: [
             Vue({
                 template: { transformAssetUrls },
@@ -53,12 +57,8 @@ export default ({ mode }) => {
 
         define: { "process.env": {} },
 
-        resolve: {
-            alias: {
-                "@": fileURLToPath(new URL("./src", import.meta.url)),
-            },
-
-            extensions: [".js", ".json", ".jsx", ".mjs", ".ts", ".tsx", ".vue"],
+        ssr: {
+            noExternal: ["vuetify"],
         },
 
         server: {

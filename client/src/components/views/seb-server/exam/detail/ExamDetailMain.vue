@@ -48,8 +48,7 @@
                                                 :disabled="
                                                     !ability.canDoExamAction(
                                                         GUIAction.DisableTestRun,
-                                                        examStore.selectedExam
-                                                            ?.status,
+                                                        examStore.selectedExam,
                                                     )
                                                 "
                                                 rounded="sm"
@@ -69,8 +68,7 @@
                                                 :disabled="
                                                     !ability.canDoExamAction(
                                                         GUIAction.ApplyTestRun,
-                                                        examStore.selectedExam
-                                                            ?.status,
+                                                        examStore.selectedExam,
                                                     )
                                                 "
                                                 rounded="sm"
@@ -102,7 +100,7 @@
                             v-if="
                                 ability.canDoExamAction(
                                     GUIAction.ShowMonitoring,
-                                    examStore.selectedExam?.status,
+                                    examStore.selectedExam,
                                 )
                             "
                             class="mt-6"
@@ -148,7 +146,7 @@
                             v-if="
                                 ability.canDoExamAction(
                                     GUIAction.ShowFinishedExamData,
-                                    examStore.selectedExam?.status,
+                                    examStore.selectedExam,
                                 )
                             "
                             class="mt-6"
@@ -302,7 +300,7 @@
                                     :disabled="
                                         !ability.canDoExamAction(
                                             GUIAction.EditClientGroups,
-                                            examStore.selectedExam?.status,
+                                            examStore.selectedExam,
                                         )
                                     "
                                     icon="mdi-plus-circle-outline"
@@ -316,7 +314,7 @@
                                     :disabled="
                                         !ability.canDoExamAction(
                                             GUIAction.EditClientGroups,
-                                            examStore.selectedExam?.status,
+                                            examStore.selectedExam,
                                         )
                                     "
                                     icon="mdi-pencil-circle-outline"
@@ -410,7 +408,7 @@
                                     :disabled="
                                         !ability.canDoExamAction(
                                             GUIAction.EditExamSettings,
-                                            examStore.selectedExam?.status,
+                                            examStore.selectedExam,
                                         )
                                     "
                                     placeholder="Password"
@@ -522,8 +520,7 @@
                                                 :disabled="
                                                     !ability.canDoExamAction(
                                                         GUIAction.EditSEBSettings,
-                                                        examStore.selectedExam
-                                                            ?.status,
+                                                        examStore.selectedExam,
                                                     )
                                                 "
                                                 rounded="sm"
@@ -572,9 +569,7 @@
                                                         :class="[
                                                             !ability.canDoExamAction(
                                                                 GUIAction.EditScreenProctoring,
-                                                                examStore
-                                                                    .selectedExam
-                                                                    ?.status,
+                                                                examStore.selectedExam,
                                                             )
                                                                 ? 'disabled-text-color'
                                                                 : '',
@@ -598,9 +593,7 @@
                                                                 :disabled="
                                                                     !ability.canDoExamAction(
                                                                         GUIAction.EditScreenProctoring,
-                                                                        examStore
-                                                                            .selectedExam
-                                                                            ?.status,
+                                                                        examStore.selectedExam,
                                                                     )
                                                                 "
                                                                 hide-details
@@ -624,9 +617,7 @@
                                                             hasSEBRestrictionFeature() &&
                                                             ability.canDoExamAction(
                                                                 GUIAction.ApplySEBRestriction,
-                                                                examStore
-                                                                    .selectedExam
-                                                                    ?.status,
+                                                                examStore.selectedExam,
                                                             )
                                                                 ? ''
                                                                 : 'disabled-text-color',
@@ -651,9 +642,7 @@
                                                                     !hasSEBRestrictionFeature() ||
                                                                     !ability.canDoExamAction(
                                                                         GUIAction.ApplySEBRestriction,
-                                                                        examStore
-                                                                            .selectedExam
-                                                                            ?.status,
+                                                                        examStore.selectedExam,
                                                                     )
                                                                 "
                                                                 hide-details
@@ -677,9 +666,7 @@
                                                             hasSEBRestrictionFeature() &&
                                                             ability.canDoExamAction(
                                                                 GUIAction.ApplySEBRestriction,
-                                                                examStore
-                                                                    .selectedExam
-                                                                    ?.status,
+                                                                examStore.selectedExam,
                                                             )
                                                                 ? ''
                                                                 : 'disabled-text-color',
@@ -700,9 +687,7 @@
                                                                     !hasSEBRestrictionFeature() ||
                                                                     !ability.canDoExamAction(
                                                                         GUIAction.ApplySEBRestriction,
-                                                                        examStore
-                                                                            .selectedExam
-                                                                            ?.status,
+                                                                        examStore.selectedExam,
                                                                     )
                                                                 "
                                                                 icon="mdi-key-outline"
@@ -731,9 +716,7 @@
                                                         :class="[
                                                             !ability.canDoExamAction(
                                                                 GUIAction.ArchiveExam,
-                                                                examStore
-                                                                    .selectedExam
-                                                                    ?.status,
+                                                                examStore.selectedExam,
                                                             )
                                                                 ? 'disabled-text-color'
                                                                 : '',
@@ -753,9 +736,7 @@
                                                                 :disabled="
                                                                     !ability.canDoExamAction(
                                                                         GUIAction.ArchiveExam,
-                                                                        examStore
-                                                                            .selectedExam
-                                                                            ?.status,
+                                                                        examStore.selectedExam,
                                                                     )
                                                                 "
                                                                 icon="mdi-archive-outline"
@@ -774,9 +755,7 @@
                                                         v-if="
                                                             !ability.canDoExamAction(
                                                                 GUIAction.ApplySEBRestriction,
-                                                                examStore
-                                                                    .selectedExam
-                                                                    ?.status,
+                                                                examStore.selectedExam,
                                                             )
                                                         "
                                                         activator="parent"
@@ -963,6 +942,8 @@ import ExamDetailConfigDialog from "@/components/views/seb-server/exam/detail/di
 import ExamDetailArchiveDialog from "@/components/views/seb-server/exam/detail/dialogs/ExamDetailArchiveDialog.vue";
 import ClienGroupListDialog from "@/components/views/seb-server/exam/detail/dialogs/client-group/ClienGroupListDialog.vue";
 import AddClientGroupDialog from "@/components/views/seb-server/exam/detail/dialogs/client-group/AddClientGroupDialog.vue";
+import ExamTemplateDialog from "@/components/widgets/ExamTemplateDialog.vue";
+import SebSettingsDialog from "@/components/views/seb-server/settings/SebSettingsDialog.vue";
 
 // general
 const isPageInitalizing = ref<boolean>(true);
@@ -1445,7 +1426,7 @@ async function getSEBSettings() {
             if (examStore.selectedExam != null) {
                 sebSettingsStore.readonly = !ability.canDoExamAction(
                     GUIAction.EditSEBSettings,
-                    examStore.selectedExam?.status,
+                    examStore.selectedExam,
                 );
                 if (!sebSettingsStore.readonly) {
                     // check also if there are no active SEB clients, otherwise set so on storage
