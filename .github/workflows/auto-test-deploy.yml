@@ -1,9 +1,9 @@
-name: auto-test-and-document.yml
+name: Build and Deploy to Ralphina Server
 on:
   workflow_dispatch:
   push:
     tags:
-      - "auto-testing"
+      - "auto-testing:deploy"
 
 jobs:
   build-and-push-admin-auto-test:
