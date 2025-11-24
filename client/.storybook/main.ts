@@ -13,9 +13,11 @@ const config: StorybookConfig = {
         options: {},
     },
 
-    viteFinal: async (config) => {
-        config.base = "/seb-server-gui-storybook/";
-        return config;
+    staticDirs: ["../public"],
+
+    viteFinal: async (viteConfig) => {
+        viteConfig.base = "/seb-server-gui-storybook/";
+        return viteConfig;
     },
 };
 
