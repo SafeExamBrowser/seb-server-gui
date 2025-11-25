@@ -66,4 +66,7 @@ export type FormFieldCollection = FormFieldBase & {
 
 export type FormField = FormFieldSimple | FormFieldCollection;
 
-export type FormFieldGroup = FormFieldSimple[];
+export type FormFieldGroup = {
+    id: string;
+    fields: FormFieldSimple[];
+};

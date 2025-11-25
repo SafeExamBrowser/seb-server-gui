@@ -22,14 +22,14 @@
         </v-container>
         <fieldset
             v-for="(fieldGroup, index) in fieldGroups"
-            :key="index"
+            :key="fieldGroup.id"
             class="d-flex flex-row ga-2 align-center pt-6 border-0 border-t-md"
         >
             <legend class="d-sr-only">
                 {{ `${labelRow}${index + 1}` }}
             </legend>
             <div class="flex-grow-1 flex-shrink-0">
-                <FormBuilder :fields="fieldGroup" layout="horizontal" />
+                <FormBuilder :fields="fieldGroup.fields" layout="horizontal" />
             </div>
             <v-btn
                 icon="mdi-delete"
