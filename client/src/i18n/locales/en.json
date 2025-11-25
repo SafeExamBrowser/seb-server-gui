@@ -332,6 +332,7 @@
                     },
                     "thresholds": {
                         "label": "Thresholds",
+                        "labelRow": "Threshold #",
                         "labelAdd": "Add Threshold"
                     }
                 }

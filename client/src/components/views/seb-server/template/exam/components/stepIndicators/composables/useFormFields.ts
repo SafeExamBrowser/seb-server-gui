@@ -115,6 +115,9 @@ export const useFormFields = () => {
                 labelAdd: i18n.global.t(
                     "createTemplateExam.steps.indicators.fields.thresholds.labelAdd",
                 ),
+                labelRow: i18n.global.t(
+                    "createTemplateExam.steps.indicators.fields.thresholds.labelRow",
+                ),
                 onAddItem: () => {
                     thresholds.value.push({
                         value: 0,

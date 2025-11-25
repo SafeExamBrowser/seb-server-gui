@@ -53,6 +53,7 @@
                         :label="field.label"
                         :field-groups="field.fieldGroups"
                         :label-add="field.labelAdd"
+                        :label-row="field.labelRow"
                         @add-item="field.onAddItem"
                     />
                 </v-col>

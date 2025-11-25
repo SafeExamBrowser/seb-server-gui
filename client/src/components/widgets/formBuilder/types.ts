@@ -60,6 +60,7 @@ export type FormFieldCollection<TCollectionItem = unknown> = FormFieldBase & {
     model: Ref<TCollectionItem[]>;
     fieldGroups: FormFieldGroup[];
     labelAdd: string;
+    labelRow: string;
     onAddItem: () => void;
 };
 
