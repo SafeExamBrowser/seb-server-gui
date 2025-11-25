@@ -51,7 +51,7 @@
                     <FormFieldCollection
                         v-else-if="field.type === 'collection'"
                         :label="field.label"
-                        :fields="field.fields"
+                        :field-groups="field.fieldGroups"
                     />
                 </v-col>
             </v-row>

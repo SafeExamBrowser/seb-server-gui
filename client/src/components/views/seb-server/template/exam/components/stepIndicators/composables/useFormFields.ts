@@ -109,7 +109,8 @@ export const useFormFields = () => {
                 ),
                 required: true,
                 model: thresholds,
-                fields: useFormFieldsThreshold(),
+                // TODO @alain: create a fieldgroup for each threshold
+                fieldGroups: [useFormFieldsThreshold()],
             } satisfies FormFieldCollection<Threshold>,
         ]);
 

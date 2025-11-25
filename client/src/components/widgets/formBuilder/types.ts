@@ -58,7 +58,9 @@ export type FormFieldCollection<TCollectionItem = unknown> = FormFieldBase & {
     type: "collection";
     required?: boolean;
     model: Ref<TCollectionItem[]>;
-    fields: FormFieldSimple[];
+    fieldGroups: FormFieldGroup[];
 };
 
 export type FormField = FormFieldSimple | FormFieldCollection<unknown>;
+
+export type FormFieldGroup = FormFieldSimple[];
