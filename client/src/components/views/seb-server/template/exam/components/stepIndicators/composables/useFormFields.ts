@@ -124,6 +124,11 @@ export const useFormFields = () => {
                         color: "#000000",
                     });
                 },
+                onRemoveItem: (itemIndex: number) => {
+                    thresholds.value = thresholds.value.filter(
+                        (_, index) => index !== itemIndex,
+                    );
+                },
             } satisfies FormFieldCollection<Threshold>,
         ]);
 

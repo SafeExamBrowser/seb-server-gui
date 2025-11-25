@@ -59,7 +59,10 @@
                 :field-groups="field.fieldGroups"
                 :label-add="field.labelAdd"
                 :label-row="field.labelRow"
-                @add-item="field.onAddItem"
+                @add-item="field.onAddItem()"
+                @remove-item="
+                    (itemIndex: number) => field.onRemoveItem(itemIndex)
+                "
             />
         </v-container>
     </v-form>

@@ -62,6 +62,7 @@ export type FormFieldCollection<TCollectionItem = unknown> = FormFieldBase & {
     labelAdd: string;
     labelRow: string;
     onAddItem: () => void;
+    onRemoveItem: (itemIndex: number) => void;
 };
 
 export type FormField = FormFieldSimple | FormFieldCollection<unknown>;

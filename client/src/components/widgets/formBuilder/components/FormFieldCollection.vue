@@ -23,12 +23,25 @@
         <fieldset
             v-for="(fieldGroup, index) in fieldGroups"
             :key="index"
-            class="ma-0 pa-0 pt-6 border-0 border-t-md"
+            class="d-flex flex-row ga-2 align-center pt-6 border-0 border-t-md"
         >
             <legend class="d-sr-only">
                 {{ `${labelRow}${index + 1}` }}
             </legend>
-            <FormBuilder :fields="fieldGroup" layout="horizontal" />
+            <div class="flex-grow-1 flex-shrink-0">
+                <FormBuilder :fields="fieldGroup" layout="horizontal" />
+            </div>
+            <v-btn
+                icon="mdi-delete"
+                color="medium-emphasis"
+                variant="text"
+                density="compact"
+                size="small"
+                :title="$t('general.deleteButton')"
+                :aria-label="$t('general.deleteButton')"
+                class="mb-5"
+                @click="handleRemoveItemClick(index)"
+            ></v-btn>
         </fieldset>
     </fieldset>
 </template>
@@ -47,9 +60,14 @@ defineProps<{
 
 const emit = defineEmits<{
     (e: "addItem"): void;
+    (e: "removeItem", itemIndex: number): void;
 }>();
 
 const handleAddItemClick = () => {
     emit("addItem");
+};
+
+const handleRemoveItemClick = (itemIndex: number) => {
+    emit("removeItem", itemIndex);
 };
 </script>
