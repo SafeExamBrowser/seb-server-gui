@@ -4,7 +4,7 @@ import { setup } from "@storybook/vue3";
 import { createPinia } from "pinia";
 import { createVuetify } from "vuetify";
 import "vuetify/styles";
-import { createRouter, createWebHistory } from "vue-router";
+import { createMemoryHistory, createRouter } from "vue-router";
 import AlertMsg from "@/components/widgets/AlertMsg.vue";
 import { VApp, VMain } from "vuetify/components";
 import "@mdi/font/css/materialdesignicons.css";
@@ -12,10 +12,13 @@ import "@mdi/font/css/materialdesignicons.css";
 import i18n from "@/i18n";
 
 const router = createRouter({
-    history: createWebHistory(
-        import.meta.env.BASE_URL || "/seb-server-gui-storybook/",
-    ),
+    history: createMemoryHistory(),
     routes: [],
+});
+
+router.beforeEach((to, from, next) => {
+    console.warn("[Storybook] Blocked navigation to:", to.fullPath);
+    next(false);
 });
 
 const vuetify = createVuetify();
