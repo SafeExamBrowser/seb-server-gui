@@ -54,10 +54,9 @@ export type FormFieldSimple = FormFieldBase &
           }
     );
 
-export type FormFieldCollection<TCollectionItem = unknown> = FormFieldBase & {
+export type FormFieldCollection = FormFieldBase & {
     type: "collection";
     required?: boolean;
-    model: Ref<TCollectionItem[]>;
     fieldGroups: FormFieldGroup[];
     labelAdd: string;
     labelRow: string;
@@ -65,6 +64,6 @@ export type FormFieldCollection<TCollectionItem = unknown> = FormFieldBase & {
     onRemoveItem: (itemIndex: number) => void;
 };
 
-export type FormField = FormFieldSimple | FormFieldCollection<unknown>;
+export type FormField = FormFieldSimple | FormFieldCollection;
 
 export type FormFieldGroup = FormFieldSimple[];

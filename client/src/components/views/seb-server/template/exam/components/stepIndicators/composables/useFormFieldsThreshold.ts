@@ -1,22 +1,29 @@
 import { FormFieldSimple } from "@/components/widgets/formBuilder/types";
-import { computed } from "vue";
+import { computed, Ref } from "vue";
 import { Threshold } from "@/models/seb-server/examTemplate";
 
 export const useFormFieldsThreshold = (
-    threshold: Threshold,
+    thresholds: Ref<Threshold[]>,
+    thresholdIndex: number,
 ): FormFieldSimple[] => {
     // TODO @alain: casting strings and numbers like that is not good. Adapt, once a proper number form field is available in the form builder.
     const value = computed<string>({
-        get: (): string => threshold.value.toString(),
+        get: (): string => thresholds.value[thresholdIndex].value.toString(),
         set: (value: string) => {
-            threshold = { ...threshold, value: Number(value) };
+            thresholds.value[thresholdIndex] = {
+                ...thresholds.value[thresholdIndex],
+                value: Number(value),
+            };
         },
     });
 
     const color = computed<Threshold["color"]>({
-        get: (): Threshold["color"] => threshold.color,
+        get: (): Threshold["color"] => thresholds.value[thresholdIndex].color,
         set: (value: Threshold["color"]) => {
-            threshold = { ...threshold, color: value };
+            thresholds.value[thresholdIndex] = {
+                ...thresholds.value[thresholdIndex],
+                color: value,
+            };
         },
     });
 

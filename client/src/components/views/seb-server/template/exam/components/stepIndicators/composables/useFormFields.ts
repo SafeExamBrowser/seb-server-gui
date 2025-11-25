@@ -7,7 +7,6 @@ import { useRules } from "vuetify/labs/rules";
 import {
     Indicator,
     IndicatorTransient,
-    Threshold,
 } from "@/components/views/seb-server/template/exam/components/stepIndicators/types";
 import { useStepIndicatorsStore } from "@/components/views/seb-server/template/exam/components/stepIndicators/composables/store/useStepIndicatorsStore";
 import i18n from "@/i18n";
@@ -108,9 +107,8 @@ export const useFormFields = () => {
                     "createTemplateExam.steps.indicators.fields.thresholds.label",
                 ),
                 required: true,
-                model: thresholds,
-                fieldGroups: thresholds.value.map((threshold) =>
-                    useFormFieldsThreshold(threshold),
+                fieldGroups: thresholds.value.map((_, index) =>
+                    useFormFieldsThreshold(thresholds, index),
                 ),
                 labelAdd: i18n.global.t(
                     "createTemplateExam.steps.indicators.fields.thresholds.labelAdd",
@@ -129,7 +127,7 @@ export const useFormFields = () => {
                         (_, index) => index !== itemIndex,
                     );
                 },
-            } satisfies FormFieldCollection<Threshold>,
+            } satisfies FormFieldCollection,
         ]);
 
         return formFields.value;
