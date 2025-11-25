@@ -10,20 +10,22 @@ export const useFormFieldsThreshold = (
     const value = computed<string>({
         get: (): string => thresholds.value[thresholdIndex].value.toString(),
         set: (value: string) => {
-            thresholds.value[thresholdIndex] = {
-                ...thresholds.value[thresholdIndex],
-                value: Number(value),
-            };
+            thresholds.value = thresholds.value.map((threshold, index) =>
+                index === thresholdIndex
+                    ? { ...threshold, value: Number(value) }
+                    : threshold,
+            );
         },
     });
 
     const color = computed<Threshold["color"]>({
         get: (): Threshold["color"] => thresholds.value[thresholdIndex].color,
         set: (value: Threshold["color"]) => {
-            thresholds.value[thresholdIndex] = {
-                ...thresholds.value[thresholdIndex],
-                color: value,
-            };
+            thresholds.value = thresholds.value.map((threshold, index) =>
+                index === thresholdIndex
+                    ? { ...threshold, color: value }
+                    : threshold,
+            );
         },
     });
 
