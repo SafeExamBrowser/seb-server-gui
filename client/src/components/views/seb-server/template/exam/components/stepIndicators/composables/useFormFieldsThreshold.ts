@@ -6,13 +6,12 @@ export const useFormFieldsThreshold = (
     thresholds: Ref<Threshold[]>,
     thresholdIndex: number,
 ): FormFieldGroup => {
-    // TODO @alain: casting strings and numbers like that is not good. Adapt, once a proper number form field is available in the form builder.
-    const value = computed<string>({
-        get: (): string => thresholds.value[thresholdIndex].value.toString(),
-        set: (value: string) => {
+    const value = computed<Threshold["value"]>({
+        get: (): Threshold["value"] => thresholds.value[thresholdIndex].value,
+        set: (value: Threshold["value"]) => {
             thresholds.value = thresholds.value.map((threshold, index) =>
                 index === thresholdIndex
-                    ? { ...threshold, value: Number(value) }
+                    ? { ...threshold, value: value }
                     : threshold,
             );
         },
@@ -33,10 +32,13 @@ export const useFormFieldsThreshold = (
         id: `threshold-${thresholdIndex}`,
         fields: [
             {
-                type: "text" as const,
+                type: "number" as const,
                 name: "value",
                 model: value,
                 label: "Value", // TODO @alain: i18n
+                placeholder: "Value placeholder", // TODO @alain: i18n
+                min: 0,
+                max: 100,
             },
             {
                 type: "text" as const,

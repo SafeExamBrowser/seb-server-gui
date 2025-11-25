@@ -36,6 +36,16 @@
                 :rows="4"
             >
             </v-textarea>
+            <v-number-input
+                v-else-if="field.type === 'number'"
+                v-model="field.model.value"
+                v-bind="{
+                    ...getBaseProperties(field),
+                    ...getTextualProperties(field),
+                    ...getNumberProperties(field),
+                }"
+            >
+            </v-number-input>
             <v-select
                 v-else-if="field.type === 'select'"
                 v-model="field.model.value"
@@ -74,6 +84,7 @@ import { useRules } from "vuetify/labs/rules";
 import {
     FormField,
     FormFieldBaseProperties,
+    FormFieldNumberProperties,
     FormFieldTextualProperties,
 } from "./types";
 import { VInput } from "vuetify/components";
@@ -141,9 +152,16 @@ const getBaseProperties = (field: FormField): FormFieldBaseProperties => {
 };
 
 const getTextualProperties = (
-    field: FormField & { type: "text" | "textarea" | "select" },
+    field: FormField & { type: "text" | "textarea" | "select" | "number" },
 ): FormFieldTextualProperties => ({
     placeholder: field.placeholder,
+});
+
+const getNumberProperties = (
+    field: FormField & { type: "number" },
+): FormFieldNumberProperties => ({
+    min: field.min,
+    max: field.max,
 });
 
 const getSelectProperties = (field: FormField & { type: "select" }) => ({
