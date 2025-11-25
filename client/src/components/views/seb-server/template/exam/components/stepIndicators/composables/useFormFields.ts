@@ -109,8 +109,18 @@ export const useFormFields = () => {
                 ),
                 required: true,
                 model: thresholds,
-                // TODO @alain: create a fieldgroup for each threshold
-                fieldGroups: [useFormFieldsThreshold()],
+                fieldGroups: thresholds.value.map((threshold) =>
+                    useFormFieldsThreshold(threshold),
+                ),
+                labelAdd: i18n.global.t(
+                    "createTemplateExam.steps.indicators.fields.thresholds.labelAdd",
+                ),
+                onAddItem: () => {
+                    thresholds.value.push({
+                        value: 0,
+                        color: "#000000",
+                    });
+                },
             } satisfies FormFieldCollection<Threshold>,
         ]);
 

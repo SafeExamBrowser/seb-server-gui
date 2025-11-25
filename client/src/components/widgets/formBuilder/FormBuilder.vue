@@ -52,6 +52,8 @@
                         v-else-if="field.type === 'collection'"
                         :label="field.label"
                         :field-groups="field.fieldGroups"
+                        :label-add="field.labelAdd"
+                        @add-item="field.onAddItem"
                     />
                 </v-col>
             </v-row>

@@ -331,7 +331,8 @@
                         }
                     },
                     "thresholds": {
-                        "label": "Thresholds"
+                        "label": "Thresholds",
+                        "labelAdd": "Add Threshold"
                     }
                 }
             },
