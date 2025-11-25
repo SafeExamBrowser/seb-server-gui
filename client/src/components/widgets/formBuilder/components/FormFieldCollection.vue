@@ -1,6 +1,6 @@
 <template>
     <fieldset class="border-none">
-        <v-container class="ma-0 pa-0 pb-6">
+        <v-container class="ma-0 pa-0 pb-3">
             <v-row>
                 <v-col>
                     <legend>

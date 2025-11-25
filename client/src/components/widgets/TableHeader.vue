@@ -1,5 +1,5 @@
 <template>
-    <v-container class="ma-0 pa-0 pb-6 border-b-md">
+    <v-container class="ma-0 pa-0 pb-3 border-b-md">
         <v-row>
             <v-col>
                 <SectionSubtitle :name="label" />
