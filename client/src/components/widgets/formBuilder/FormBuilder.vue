@@ -46,6 +46,15 @@
                 }"
             >
             </v-number-input>
+            <v-color-input
+                v-else-if="field.type === 'color'"
+                v-model="field.model.value"
+                v-bind="{
+                    ...getBaseProperties(field),
+                    ...getTextualProperties(field),
+                }"
+            >
+            </v-color-input>
             <v-select
                 v-else-if="field.type === 'select'"
                 v-model="field.model.value"
@@ -152,7 +161,9 @@ const getBaseProperties = (field: FormField): FormFieldBaseProperties => {
 };
 
 const getTextualProperties = (
-    field: FormField & { type: "text" | "textarea" | "select" | "number" },
+    field: FormField & {
+        type: "text" | "textarea" | "select" | "number" | "color";
+    },
 ): FormFieldTextualProperties => ({
     placeholder: field.placeholder,
 });

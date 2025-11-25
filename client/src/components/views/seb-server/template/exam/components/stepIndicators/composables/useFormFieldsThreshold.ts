@@ -41,10 +41,11 @@ export const useFormFieldsThreshold = (
                 max: 100,
             },
             {
-                type: "text" as const,
+                type: "color" as const,
                 name: "color",
                 model: color,
                 label: "Color", // TODO @alain: i18n
+                placeholder: "Color placeholder", // TODO @alain: i18n
             },
         ],
     };

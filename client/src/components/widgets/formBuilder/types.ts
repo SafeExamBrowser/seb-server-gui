@@ -57,6 +57,12 @@ export type FormFieldSimple = FormFieldBase &
               model: Ref<number | undefined>;
           }
         | {
+              type: "color";
+              placeholder?: string;
+              required?: boolean;
+              model: Ref<string | undefined>;
+          }
+        | {
               type: "select";
               placeholder?: string;
               required?: boolean;
