@@ -28,7 +28,7 @@
             <legend class="d-sr-only">
                 {{ `${labelRow}${index + 1}` }}
             </legend>
-            <FormBuilder :fields="fieldGroup" />
+            <FormBuilder :fields="fieldGroup" layout="horizontal" />
         </fieldset>
     </fieldset>
 </template>

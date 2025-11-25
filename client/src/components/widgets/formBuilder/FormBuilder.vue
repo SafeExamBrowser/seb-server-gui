@@ -1,63 +1,66 @@
 <template>
     <v-form
         :id="formId"
+        :class="[
+            'd-flex',
+            layout === 'vertical' ? 'flex-column' : 'flex-row',
+            'ga-2',
+        ]"
         @update:model-value="handleModelValueUpdated"
         @submit.prevent="handleSubmit"
     >
-        <v-container fluid class="pa-0">
-            <v-row
-                v-for="field in fields"
-                :key="field.name"
-                :field="field"
-                dense
+        <v-container
+            v-for="field in fields"
+            :key="field.name"
+            fluid
+            class="ma-0 pa-0"
+            :field="field"
+            dense
+        >
+            <v-text-field
+                v-if="field.type === 'text'"
+                v-model="field.model.value"
+                v-bind="{
+                    ...getBaseProperties(field),
+                    ...getTextualProperties(field),
+                }"
             >
-                <v-col>
-                    <v-text-field
-                        v-if="field.type === 'text'"
-                        v-model="field.model.value"
-                        v-bind="{
-                            ...getBaseProperties(field),
-                            ...getTextualProperties(field),
-                        }"
-                    >
-                    </v-text-field>
-                    <v-textarea
-                        v-else-if="field.type === 'textarea'"
-                        v-model="field.model.value"
-                        v-bind="{
-                            ...getBaseProperties(field),
-                            ...getTextualProperties(field),
-                        }"
-                        :rows="4"
-                    >
-                    </v-textarea>
-                    <v-select
-                        v-else-if="field.type === 'select'"
-                        v-model="field.model.value"
-                        v-bind="{
-                            ...getBaseProperties(field),
-                            ...getTextualProperties(field),
-                            ...getSelectProperties(field),
-                        }"
-                    >
-                    </v-select>
-                    <v-switch
-                        v-else-if="field.type === 'switch'"
-                        v-model="field.model.value"
-                        v-bind="getBaseProperties(field)"
-                        color="primary"
-                    >
-                    </v-switch>
-                    <FormFieldCollection
-                        v-else-if="field.type === 'collection'"
-                        :label="field.label"
-                        :field-groups="field.fieldGroups"
-                        :label-add="field.labelAdd"
-                        :label-row="field.labelRow"
-                        @add-item="field.onAddItem"
-                    />
-                </v-col>
-            </v-row>
+            </v-text-field>
+            <v-textarea
+                v-else-if="field.type === 'textarea'"
+                v-model="field.model.value"
+                v-bind="{
+                    ...getBaseProperties(field),
+                    ...getTextualProperties(field),
+                }"
+                :rows="4"
+            >
+            </v-textarea>
+            <v-select
+                v-else-if="field.type === 'select'"
+                v-model="field.model.value"
+                v-bind="{
+                    ...getBaseProperties(field),
+                    ...getTextualProperties(field),
+                    ...getSelectProperties(field),
+                }"
+            >
+            </v-select>
+            <v-switch
+                v-else-if="field.type === 'switch'"
+                v-model="field.model.value"
+                v-bind="getBaseProperties(field)"
+                color="primary"
+            >
+            </v-switch>
+            <FormFieldCollection
+                v-else-if="field.type === 'collection'"
+                :label="field.label"
+                :field-groups="field.fieldGroups"
+                :label-add="field.labelAdd"
+                :label-row="field.labelRow"
+                @add-item="field.onAddItem"
+            />
         </v-container>
     </v-form>
 </template>
@@ -76,10 +79,17 @@ import FormFieldCollection from "./components/FormFieldCollection.vue";
 
 const isValid = defineModel<boolean | null>();
 
-const props = defineProps<{
-    formId?: string;
-    fields: FormField[];
-}>();
+const props = withDefaults(
+    defineProps<{
+        formId?: string;
+        fields: FormField[];
+        layout?: "vertical" | "horizontal";
+    }>(),
+    {
+        formId: undefined,
+        layout: "vertical" as const,
+    },
+);
 
 const emit = defineEmits<{
     (e: "submit"): void;
