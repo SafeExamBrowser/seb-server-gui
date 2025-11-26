@@ -112,6 +112,12 @@
         }
     },
 
+    "indicators": {
+        "entityNamePlural": "Indicators",
+        "addDialogTitle": "Add Indicator",
+        "editDialogTitle": "Edit Indicator"
+    },
+
     "loginPage": {
         "title": "SEB Server",
         "signIn": "Sign in",
@@ -306,7 +312,25 @@
             },
             "indicators": {
                 "title": "Add Indicators",
-                "subtitle": "TODO: translate (Kristina)"
+                "subtitle": "TODO: translate (Kristina)",
+                "fields": {
+                    "actions": {
+                        "label": "Actions"
+                    },
+                    "name": {
+                        "label": "Name",
+                        "placeholder": "Enter the desired indicator name",
+                        "validationErrorUniqueName": "An indicator with this name already exists on this exam template"
+                    },
+                    "type": {
+                        "label": "Type",
+                        "placeholder": "Select the indicator type",
+                        "types": {
+                            "BATTERY_STATUS": "Battery Status",
+                            "WLAN_STATUS": "Wifi Status"
+                        }
+                    }
+                }
             },
             "clientGroup": {
                 "title": "Add Groups",

@@ -54,8 +54,7 @@ const clientGroupSchema = z.discriminatedUnion("type", [
 
 export type ClientGroup = z.infer<typeof clientGroupSchema>;
 
-export type ClientGroupForTable =
-    | ClientGroup
+type ClientGroupFallback =
     | {
           type: "SCREEN_PROCTORING_SINGLE";
           screenProctoringEnabled: true;
@@ -64,6 +63,14 @@ export type ClientGroupForTable =
           type: "SCREEN_PROCTORING_FALLBACK";
           screenProctoringEnabled: true;
       };
+
+export type ClientGroupForTable = ClientGroup | ClientGroupFallback;
+
+export const isFallbackGroup = (
+    item: ClientGroupForTable,
+): item is ClientGroupFallback =>
+    item.type === "SCREEN_PROCTORING_FALLBACK" ||
+    item.type === "SCREEN_PROCTORING_SINGLE";
 
 export const clientGroupTransientToClientGroup = (
     clientGroupTransient: ClientGroupTransient,
