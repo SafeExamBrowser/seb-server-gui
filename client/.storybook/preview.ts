@@ -31,7 +31,7 @@ setup((app) => {
 
     app.component("AlertMsg", AlertMsg);
 
-    app.config.globalProperties.$apiBaseUrl = "";
+    app.config.globalProperties.$apiBaseUrl = window.location.origin;
 });
 
 const preview: Preview = {
