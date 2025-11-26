@@ -14,6 +14,7 @@ const config: StorybookConfig = {
     },
     viteFinal: async (config) => {
         config.base = "./";
+        delete config.define?.["import.meta.env.BASE_URL"];
         return config;
     },
 };
