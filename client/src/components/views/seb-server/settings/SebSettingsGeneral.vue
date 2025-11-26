@@ -14,11 +14,7 @@
                 :disabled="sebSettingsStore.readonly"
                 max-width="600"
                 @update:focused="
-                    saveAdminPassword(
-                        $event,
-                        hashedAdminPassword.id,
-                        hashedAdminPasswordVal,
-                    )
+                    saveAdminPassword($event, hashedAdminPasswordVal)
                 "
             >
                 <template #append-inner>
@@ -50,11 +46,7 @@
                 variant="outlined"
                 max-width="600"
                 @update:focused="
-                    saveAdminPassword(
-                        $event,
-                        hashedAdminPassword.id,
-                        hashedAdminPasswordVal,
-                    )
+                    saveAdminPassword($event, hashedAdminPasswordVal)
                 "
             >
                 <template #append-inner>
@@ -84,7 +76,7 @@
                 :label="translate('sebSettings.generalView.allowQuit')"
                 @update:model-value="
                     saveSingleValue(
-                        allowQuit.id,
+                        'allowQuit',
                         allowQuitVal ? 'true' : 'false',
                     )
                 "
@@ -109,11 +101,7 @@
                 :disabled="sebSettingsStore.readonly"
                 max-width="600"
                 @update:focused="
-                    saveQuitPassword(
-                        $event,
-                        hashedQuitPassword.id,
-                        hashedQuitPasswordVal,
-                    )
+                    saveQuitPassword($event, hashedQuitPasswordVal)
                 "
             >
                 <template #append-inner>
@@ -145,11 +133,7 @@
                 variant="outlined"
                 max-width="600"
                 @update:focused="
-                    saveQuitPassword(
-                        $event,
-                        hashedQuitPassword.id,
-                        hashedQuitPasswordVal,
-                    )
+                    saveQuitPassword($event, hashedQuitPasswordVal)
                 "
             >
                 <template #append-inner>
@@ -258,11 +242,8 @@ const confirmQuitPasswordFieldRef = ref();
 
 // the parent component identifier
 let componentId: string;
+let singleValues: Map<string, SEBSettingsValue>;
 
-// field SEBSettingsValue
-let hashedAdminPassword: SEBSettingsValue;
-let allowQuit: SEBSettingsValue;
-let hashedQuitPassword: SEBSettingsValue;
 let clearValidations = false;
 
 onBeforeMount(async () => {
@@ -282,64 +263,48 @@ onBeforeMount(async () => {
         return;
     }
 
-    const singleValues: Map<string, SEBSettingsValue> = new Map<
-        string,
-        SEBSettingsValue
-    >(Object.entries(generalSettings.singleValues));
+    singleValues = new Map<string, SEBSettingsValue>(
+        Object.entries(generalSettings.singleValues),
+    );
 
-    allowQuit = getSingleValue(singleValues, "allowQuit");
-    allowQuitVal.value = stringToBoolean(allowQuit.value);
-
-    hashedAdminPassword = getSingleValue(singleValues, "hashedAdminPassword");
-    hashedAdminPasswordVal.value = hashedAdminPassword.value;
-    confirmAdminPassword.value = hashedAdminPassword.value;
-
-    hashedQuitPassword = getSingleValue(singleValues, "hashedQuitPassword");
-    hashedQuitPasswordVal.value = hashedQuitPassword.value;
-    confirmQuitPassword.value = hashedQuitPassword.value;
+    allowQuitVal.value = stringToBoolean(getSingleValue("allowQuit").value);
+    hashedAdminPasswordVal.value = getSingleValue("hashedAdminPassword").value;
+    confirmAdminPassword.value = getSingleValue("hashedAdminPassword").value;
+    hashedQuitPasswordVal.value = getSingleValue("hashedQuitPassword").value;
+    confirmQuitPassword.value = getSingleValue("hashedQuitPassword").value;
 });
 
-async function saveSingleValue(valId: number, value: string) {
+async function saveSingleValue(name: string, value: string) {
+    const setting: SEBSettingsValue = getSingleValue(name);
     await sebSettingsService.updateSEBSettingValue(
         componentId,
-        valId.toString(),
+        setting.id.toString(),
         value,
         sebSettingsStore.isExam,
     );
 }
 
-async function saveAdminPassword(
-    focusIn: boolean,
-    valId: number,
-    value: string,
-) {
+async function saveAdminPassword(focusIn: boolean, value: string) {
     if (
         !focusIn &&
         hashedAdminPasswordVal.value.trim() === hashedAdminPasswordVal.value &&
         hashedAdminPasswordVal.value === confirmAdminPassword.value
     ) {
-        saveSingleValue(valId, value);
+        saveSingleValue("hashedAdminPassword", value);
     }
 }
 
-async function saveQuitPassword(
-    focusIn: boolean,
-    valId: number,
-    value: string,
-) {
+async function saveQuitPassword(focusIn: boolean, value: string) {
     if (
         !focusIn &&
         hashedQuitPasswordVal.value.trim() === hashedQuitPasswordVal.value &&
         hashedQuitPasswordVal.value === confirmQuitPassword.value
     ) {
-        saveSingleValue(valId, value);
+        saveSingleValue("hashedQuitPassword", value);
     }
 }
 
-function getSingleValue(
-    singleValues: Map<string, SEBSettingsValue>,
-    name: string,
-): SEBSettingsValue {
+function getSingleValue(name: string): SEBSettingsValue {
     const value = singleValues.get(name);
     if (!value) {
         throw new Error("No Single Value" + name + " found");

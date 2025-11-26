@@ -12,7 +12,7 @@
             </v-row>
 
             <v-row>
-                <v-col>
+                <v-col class="pt-0 pb-0 pl-0">
                     <v-radio-group
                         v-model="browserViewModeVal"
                         :disabled="sebSettingsStore.readonly"
@@ -105,7 +105,7 @@
                         variant="outlined"
                         @update:model-value="
                             saveSingleValue(
-                                mainBrowserWindowWidth.id,
+                                'mainBrowserWindowWidth',
                                 mainBrowserWindowWidthVal,
                             )
                         "
@@ -143,7 +143,7 @@
                         variant="outlined"
                         @update:model-value="
                             saveSingleValue(
-                                mainBrowserWindowHeight.id,
+                                'mainBrowserWindowHeight',
                                 mainBrowserWindowHeightVal,
                             )
                         "
@@ -179,7 +179,7 @@
                         variant="outlined"
                         @update:model-value="
                             saveSingleValue(
-                                mainBrowserWindowPositioning.id,
+                                'mainBrowserWindowPositioning',
                                 mainBrowserWindowPositioningVal,
                             )
                         "
@@ -210,7 +210,7 @@
                         "
                         @update:model-value="
                             saveSingleValue(
-                                enableBrowserWindowToolbar.id,
+                                'enableBrowserWindowToolbar',
                                 enableBrowserWindowToolbarVal
                                     ? 'true'
                                     : 'false',
@@ -246,7 +246,7 @@
                         "
                         @update:model-value="
                             saveSingleValue(
-                                browserWindowAllowAddressBar.id,
+                                'browserWindowAllowAddressBar',
                                 browserWindowAllowAddressBarVal
                                     ? 'true'
                                     : 'false',
@@ -271,7 +271,7 @@
                         "
                         @update:model-value="
                             saveSingleValue(
-                                newBrowserWindowAllowAddressBar.id,
+                                'newBrowserWindowAllowAddressBar',
                                 newBrowserWindowAllowAddressBarVal
                                     ? 'true'
                                     : 'false',
@@ -297,7 +297,7 @@
                         "
                         @update:model-value="
                             saveSingleValue(
-                                allowDeveloperConsole.id,
+                                'allowDeveloperConsole',
                                 allowDeveloperConsoleVal ? 'true' : 'false',
                             )
                         "
@@ -320,7 +320,7 @@
                         "
                         @update:model-value="
                             saveSingleValue(
-                                hideBrowserWindowToolbar.id,
+                                'hideBrowserWindowToolbar',
                                 hideBrowserWindowToolbarVal ? 'true' : 'false',
                             )
                         "
@@ -351,7 +351,7 @@
                         "
                         @update:model-value="
                             saveSingleValue(
-                                showMenuBar.id,
+                                'showMenuBar',
                                 showMenuBarVal ? 'true' : 'false',
                             )
                         "
@@ -392,7 +392,7 @@
                         "
                         @update:model-value="
                             saveSingleValue(
-                                showTaskBar.id,
+                                'showTaskBar',
                                 showTaskBarVal ? 'true' : 'false',
                             )
                         "
@@ -423,7 +423,7 @@
                         "
                         @update:model-value="
                             saveSingleValue(
-                                showSideMenu.id,
+                                'showSideMenu',
                                 showSideMenuVal ? 'true' : 'false',
                             )
                         "
@@ -443,7 +443,7 @@
                         "
                         @update:model-value="
                             saveSingleValue(
-                                raiseHandButtonShow.id,
+                                'raiseHandButtonShow',
                                 raiseHandButtonShowVal ? 'true' : 'false',
                             )
                         "
@@ -463,7 +463,7 @@
                         "
                         @update:model-value="
                             saveSingleValue(
-                                raiseHandButtonAlwaysPromptMessage.id,
+                                'raiseHandButtonAlwaysPromptMessage',
                                 raiseHandButtonAlwaysPromptMessageVal
                                     ? 'true'
                                     : 'false',
@@ -494,7 +494,7 @@
                         "
                         @update:model-value="
                             saveSingleValue(
-                                allowWlan.id,
+                                'allowWlan',
                                 allowWlanVal ? 'true' : 'false',
                             )
                         "
@@ -525,7 +525,7 @@
                         "
                         @update:model-value="
                             saveSingleValue(
-                                showReloadButton.id,
+                                'showReloadButton',
                                 showReloadButtonVal ? 'true' : 'false',
                             )
                         "
@@ -554,7 +554,7 @@
                         "
                         @update:model-value="
                             saveSingleValue(
-                                showTime.id,
+                                'showTime',
                                 showTimeVal ? 'true' : 'false',
                             )
                         "
@@ -574,7 +574,7 @@
                         "
                         @update:model-value="
                             saveSingleValue(
-                                showInputLanguage.id,
+                                'showInputLanguage',
                                 showInputLanguageVal ? 'true' : 'false',
                             )
                         "
@@ -615,7 +615,7 @@
                         "
                         @update:model-value="
                             saveSingleValue(
-                                enableZoomPage.id,
+                                'enableZoomPage',
                                 enableZoomPageVal ? 'true' : 'false',
                             )
                         "
@@ -646,7 +646,7 @@
                         "
                         @update:model-value="
                             saveSingleValue(
-                                enableZoomText.id,
+                                'enableZoomText',
                                 enableZoomTextVal ? 'true' : 'false',
                             )
                         "
@@ -689,7 +689,7 @@
                         "
                         @update:model-value="
                             saveSingleValue(
-                                audioControlEnabled.id,
+                                'audioControlEnabled',
                                 audioControlEnabledVal ? 'true' : 'false',
                             )
                         "
@@ -716,7 +716,7 @@
                         :label="translate('sebSettings.userView.audio.mute')"
                         @update:model-value="
                             saveSingleValue(
-                                audioMute.id,
+                                'audioMute',
                                 audioMuteVal ? 'true' : 'false',
                             )
                         "
@@ -741,7 +741,7 @@
                         :label="translate('sebSettings.userView.audio.volume')"
                         @update:model-value="
                             saveSingleValue(
-                                audioSetVolumeLevel.id,
+                                'audioSetVolumeLevel',
                                 audioSetVolumeLevelVal ? 'true' : 'false',
                             )
                         "
@@ -772,7 +772,7 @@
                         hide-details
                         @update:focused="
                             saveSingleValue(
-                                audioVolumeLevel.id,
+                                'audioVolumeLevel',
                                 audioVolumeLevelVal.toString(),
                             )
                         "
@@ -799,7 +799,7 @@
                         "
                         @update:model-value="
                             saveSingleValue(
-                                allowSpellCheck.id,
+                                'allowSpellCheck',
                                 allowSpellCheckVal ? 'true' : 'false',
                             )
                         "
@@ -830,7 +830,7 @@
                         "
                         @update:model-value="
                             saveSingleValue(
-                                allowDictionaryLookup.id,
+                                'allowDictionaryLookup',
                                 allowDictionaryLookupVal ? 'true' : 'false',
                             )
                         "
@@ -873,7 +873,7 @@
                             "
                             @update:model-value="
                                 saveSingleValue(
-                                    lockScreenBackgroundColor.id,
+                                    'lockScreenBackgroundColor',
                                     lockScreenBackgroundColorVal,
                                 )
                             "
@@ -919,7 +919,7 @@ const mainBrowserWindowHeightVal = ref<string>("100%");
 const mainBrowserWindowHeightItems = ref<{ title: string; value: string }[]>(
     [],
 );
-const mainBrowserWindowPositioningVal = ref<string>("Center");
+const mainBrowserWindowPositioningVal = ref<string>("1");
 const mainBrowserWindowPositioningItems = ref<
     { title: string; value: string }[]
 >([]);
@@ -955,42 +955,7 @@ const lockScreenBackgroundColorVal = ref<string>("#0000");
 
 // the parent component identifier
 let componentId: string;
-
-let browserViewMode: SEBSettingsValue;
-let touchOptimized: SEBSettingsValue;
-
-let mainBrowserWindowWidth: SEBSettingsValue;
-let mainBrowserWindowHeight: SEBSettingsValue;
-let mainBrowserWindowPositioning: SEBSettingsValue;
-
-let enableBrowserWindowToolbar: SEBSettingsValue;
-let browserWindowAllowAddressBar: SEBSettingsValue;
-let newBrowserWindowAllowAddressBar: SEBSettingsValue;
-let allowDeveloperConsole: SEBSettingsValue;
-let hideBrowserWindowToolbar: SEBSettingsValue;
-let showMenuBar: SEBSettingsValue;
-
-let showTaskBar: SEBSettingsValue;
-let showSideMenu: SEBSettingsValue;
-let raiseHandButtonShow: SEBSettingsValue;
-let raiseHandButtonAlwaysPromptMessage: SEBSettingsValue;
-let allowWlan: SEBSettingsValue;
-let showReloadButton: SEBSettingsValue;
-let showTime: SEBSettingsValue;
-let showInputLanguage: SEBSettingsValue;
-
-let enableZoomPage: SEBSettingsValue;
-let enableZoomText: SEBSettingsValue;
-
-let audioControlEnabled: SEBSettingsValue;
-let audioMute: SEBSettingsValue;
-let audioSetVolumeLevel: SEBSettingsValue;
-let audioVolumeLevel: SEBSettingsValue;
-
-let allowSpellCheck: SEBSettingsValue;
-let allowDictionaryLookup: SEBSettingsValue;
-
-let lockScreenBackgroundColor: SEBSettingsValue;
+let singleValues: Map<string, SEBSettingsValue>;
 
 onBeforeMount(async () => {
     if (sebSettingsStore.selectedContainerId == null) {
@@ -1009,26 +974,21 @@ onBeforeMount(async () => {
         return;
     }
 
-    const singleValues: Map<string, SEBSettingsValue> = new Map<
-        string,
-        SEBSettingsValue
-    >(Object.entries(userSettings.singleValues));
+    singleValues = new Map<string, SEBSettingsValue>(
+        Object.entries(userSettings.singleValues),
+    );
     const attributes: Map<string, SEBSettingAttribute> = new Map<
         string,
         SEBSettingAttribute
     >(Object.entries(userSettings.attributes));
 
-    browserViewMode = getSingleValue(singleValues, "browserViewMode");
-    browserViewModeVal.value = browserViewMode.value;
-
-    touchOptimized = getSingleValue(singleValues, "touchOptimized");
-    touchOptimizedVal.value = stringToBoolean(touchOptimized.value);
-
-    mainBrowserWindowWidth = getSingleValue(
-        singleValues,
-        "mainBrowserWindowWidth",
+    browserViewModeVal.value = getSingleValue("browserViewMode").value;
+    touchOptimizedVal.value = stringToBoolean(
+        getSingleValue("touchOptimized").value,
     );
-    mainBrowserWindowWidthVal.value = mainBrowserWindowWidth.value;
+    mainBrowserWindowWidthVal.value = getSingleValue(
+        "mainBrowserWindowWidth",
+    ).value;
     attributes
         .get("mainBrowserWindowWidth")
         ?.resources?.split(",")
@@ -1038,11 +998,9 @@ onBeforeMount(async () => {
                 value: item,
             });
         });
-    mainBrowserWindowHeight = getSingleValue(
-        singleValues,
+    mainBrowserWindowHeightVal.value = getSingleValue(
         "mainBrowserWindowHeight",
-    );
-    mainBrowserWindowHeightVal.value = mainBrowserWindowHeight.value;
+    ).value;
     attributes
         .get("mainBrowserWindowHeight")
         ?.resources?.split(",")
@@ -1052,11 +1010,9 @@ onBeforeMount(async () => {
                 value: item,
             });
         });
-    mainBrowserWindowPositioning = getSingleValue(
-        singleValues,
+    mainBrowserWindowPositioningVal.value = getSingleValue(
         "mainBrowserWindowPositioning",
-    );
-    mainBrowserWindowPositioningVal.value = mainBrowserWindowPositioning.value;
+    ).value;
     attributes
         .get("mainBrowserWindowPositioning")
         ?.resources?.split(",")
@@ -1070,115 +1026,86 @@ onBeforeMount(async () => {
             });
         });
 
-    enableBrowserWindowToolbar = getSingleValue(
-        singleValues,
-        "enableBrowserWindowToolbar",
-    );
     enableBrowserWindowToolbarVal.value = stringToBoolean(
-        enableBrowserWindowToolbar.value,
-    );
-    browserWindowAllowAddressBar = getSingleValue(
-        singleValues,
-        "browserWindowAllowAddressBar",
+        getSingleValue("enableBrowserWindowToolbar").value,
     );
     browserWindowAllowAddressBarVal.value = stringToBoolean(
-        browserWindowAllowAddressBar.value,
-    );
-    newBrowserWindowAllowAddressBar = getSingleValue(
-        singleValues,
-        "newBrowserWindowAllowAddressBar",
+        getSingleValue("browserWindowAllowAddressBar").value,
     );
     newBrowserWindowAllowAddressBarVal.value = stringToBoolean(
-        newBrowserWindowAllowAddressBar.value,
-    );
-    allowDeveloperConsole = getSingleValue(
-        singleValues,
-        "allowDeveloperConsole",
+        getSingleValue("newBrowserWindowAllowAddressBar").value,
     );
     allowDeveloperConsoleVal.value = stringToBoolean(
-        allowDeveloperConsole.value,
-    );
-    hideBrowserWindowToolbar = getSingleValue(
-        singleValues,
-        "hideBrowserWindowToolbar",
+        getSingleValue("allowDeveloperConsole").value,
     );
     hideBrowserWindowToolbarVal.value = stringToBoolean(
-        hideBrowserWindowToolbar.value,
+        getSingleValue("hideBrowserWindowToolbar").value,
     );
-    showMenuBar = getSingleValue(singleValues, "showMenuBar");
-    showMenuBarVal.value = stringToBoolean(showMenuBar.value);
-
-    showTaskBar = getSingleValue(singleValues, "showTaskBar");
-    showTaskBarVal.value = stringToBoolean(showTaskBar.value);
-    showSideMenu = getSingleValue(singleValues, "showSideMenu");
-    showSideMenuVal.value = stringToBoolean(showSideMenu.value);
-    raiseHandButtonShow = getSingleValue(singleValues, "raiseHandButtonShow");
-    raiseHandButtonShowVal.value = stringToBoolean(raiseHandButtonShow.value);
-    raiseHandButtonAlwaysPromptMessage = getSingleValue(
-        singleValues,
-        "raiseHandButtonAlwaysPromptMessage",
+    showMenuBarVal.value = stringToBoolean(getSingleValue("showMenuBar").value);
+    showTaskBarVal.value = stringToBoolean(getSingleValue("showTaskBar").value);
+    showSideMenuVal.value = stringToBoolean(
+        getSingleValue("showSideMenu").value,
+    );
+    raiseHandButtonShowVal.value = stringToBoolean(
+        getSingleValue("raiseHandButtonShow").value,
     );
     raiseHandButtonAlwaysPromptMessageVal.value = stringToBoolean(
-        raiseHandButtonAlwaysPromptMessage.value,
+        getSingleValue("raiseHandButtonAlwaysPromptMessage").value,
     );
-    allowWlan = getSingleValue(singleValues, "allowWlan");
-    allowWlanVal.value = stringToBoolean(allowWlan.value);
-    showReloadButton = getSingleValue(singleValues, "showReloadButton");
-    showReloadButtonVal.value = stringToBoolean(showReloadButton.value);
-    showTime = getSingleValue(singleValues, "showTime");
-    showTimeVal.value = stringToBoolean(showTime.value);
-    showInputLanguage = getSingleValue(singleValues, "showInputLanguage");
-    showInputLanguageVal.value = stringToBoolean(showInputLanguage.value);
+    allowWlanVal.value = stringToBoolean(getSingleValue("allowWlan").value);
+    showReloadButtonVal.value = stringToBoolean(
+        getSingleValue("showReloadButton").value,
+    );
+    showTimeVal.value = stringToBoolean(getSingleValue("showTime").value);
+    showInputLanguageVal.value = stringToBoolean(
+        getSingleValue("showInputLanguage").value,
+    );
 
-    enableZoomPage = getSingleValue(singleValues, "enableZoomPage");
-    enableZoomPageVal.value = stringToBoolean(enableZoomPage.value);
-    enableZoomText = getSingleValue(singleValues, "enableZoomText");
-    enableZoomTextVal.value = stringToBoolean(enableZoomText.value);
+    enableZoomPageVal.value = stringToBoolean(
+        getSingleValue("enableZoomPage").value,
+    );
+    enableZoomTextVal.value = stringToBoolean(
+        getSingleValue("enableZoomText").value,
+    );
 
-    audioControlEnabled = getSingleValue(singleValues, "audioControlEnabled");
-    audioControlEnabledVal.value = stringToBoolean(audioControlEnabled.value);
-    audioMute = getSingleValue(singleValues, "audioMute");
-    audioMuteVal.value = stringToBoolean(audioMute.value);
-    audioSetVolumeLevel = getSingleValue(singleValues, "audioSetVolumeLevel");
-    audioSetVolumeLevelVal.value = stringToBoolean(audioSetVolumeLevel.value);
-    audioVolumeLevel = getSingleValue(singleValues, "audioVolumeLevel");
-    audioVolumeLevelVal.value = Number(audioVolumeLevel.value);
+    audioControlEnabledVal.value = stringToBoolean(
+        getSingleValue("audioControlEnabled").value,
+    );
+    audioMuteVal.value = stringToBoolean(getSingleValue("audioMute").value);
+    audioSetVolumeLevelVal.value = stringToBoolean(
+        getSingleValue("audioSetVolumeLevel").value,
+    );
+    audioVolumeLevelVal.value = Number(
+        getSingleValue("audioVolumeLevel").value,
+    );
 
-    allowSpellCheck = getSingleValue(singleValues, "allowSpellCheck");
-    allowSpellCheckVal.value = stringToBoolean(allowSpellCheck.value);
-    allowDictionaryLookup = getSingleValue(
-        singleValues,
-        "allowDictionaryLookup",
+    allowSpellCheckVal.value = stringToBoolean(
+        getSingleValue("allowSpellCheck").value,
     );
     allowDictionaryLookupVal.value = stringToBoolean(
-        allowDictionaryLookup.value,
+        getSingleValue("allowDictionaryLookup").value,
     );
-
-    lockScreenBackgroundColor = getSingleValue(
-        singleValues,
+    lockScreenBackgroundColorVal.value = getSingleValue(
         "lockScreenBackgroundColor",
-    );
-    lockScreenBackgroundColorVal.value = lockScreenBackgroundColor.value;
+    ).value;
 });
 
 async function saveBrowserViewMode(value: string) {
-    await saveSingleValue(browserViewMode.id, value);
-    await saveSingleValue(touchOptimized.id, value === "2" ? "true" : "false");
+    await saveSingleValue("browserViewMode", value);
+    await saveSingleValue("touchOptimized", value === "2" ? "true" : "false");
 }
 
-async function saveSingleValue(valId: number, value: string) {
+async function saveSingleValue(name: string, value: string) {
+    const setting: SEBSettingsValue = getSingleValue(name);
     await sebSettingsService.updateSEBSettingValue(
         componentId,
-        valId.toString(),
+        setting.id.toString(),
         value,
         sebSettingsStore.isExam,
     );
 }
 
-function getSingleValue(
-    singleValues: Map<string, SEBSettingsValue>,
-    name: string,
-): SEBSettingsValue {
+function getSingleValue(name: string): SEBSettingsValue {
     const value = singleValues.get(name);
     if (!value) {
         throw new Error("No Single Value" + name + " found");
