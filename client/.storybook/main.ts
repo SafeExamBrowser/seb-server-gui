@@ -13,7 +13,7 @@ const config: StorybookConfig = {
         options: {},
     },
     viteFinal: async (config) => {
-        config.base = "./";
+        config.base = "seb-server-gui-storybook/";
         delete config.define?.["import.meta.env.BASE_URL"];
         return config;
     },
