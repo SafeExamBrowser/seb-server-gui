@@ -1,6 +1,5 @@
 import type { StorybookConfig } from "@storybook/vue3-vite";
 
-//changed to work on docker
 const config: StorybookConfig = {
     stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
     addons: [
@@ -12,6 +11,10 @@ const config: StorybookConfig = {
     framework: {
         name: "@storybook/vue3-vite",
         options: {},
+    },
+    viteFinal: async (config) => {
+        config.base = "./";
+        return config;
     },
 };
 

@@ -30,6 +30,8 @@ setup((app) => {
     app.use(i18n);
 
     app.component("AlertMsg", AlertMsg);
+
+    app.config.globalProperties.$apiBaseUrl = "";
 });
 
 const preview: Preview = {
@@ -37,6 +39,7 @@ const preview: Preview = {
         controls: {
             matchers: { color: /(background|color)$/i, date: /Date$/i },
         },
+        actions: { argTypesRegex: "^on[A-Z].*" },
     },
     decorators: [
         (story, context) => {
