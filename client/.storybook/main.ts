@@ -12,11 +12,5 @@ const config: StorybookConfig = {
         name: "@storybook/vue3-vite",
         options: {},
     },
-    viteFinal: async (config) => {
-        config.base = "seb-server-gui-storybook/";
-        delete config.define?.["import.meta.env.BASE_URL"];
-        return config;
-    },
 };
-
 export default config;

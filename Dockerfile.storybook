@@ -9,20 +9,36 @@ RUN npm install
 # Copy the rest of the client code
 COPY client/ .
 
-# Build static Storybook with base path
+# Build static Storybook
 RUN npm run build-storybook -- --output-dir storybook-static
 
-# Final image - serve Storybook statically
-FROM node:20.19.0-alpine
-WORKDIR /app
+# Final image - use NGINX
+FROM nginx:alpine
 
-# Use a tiny static file server
-RUN npm install -g serve
+# Remove default NGINX config
+RUN rm /etc/nginx/conf.d/default.conf
+
+# Create proper NGINX config file using heredoc
+RUN cat > /etc/nginx/conf.d/default.conf << 'EOF'
+server {
+    listen 6006;
+    server_name localhost;
+    root /usr/share/nginx/html;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    location ~* \.m?js$ {
+        add_header Content-Type application/javascript;
+    }
+}
+EOF
 
 # Copy built Storybook
-COPY --from=storybook-builder /app/client/storybook-static ./storybook-static
+COPY --from=storybook-builder /app/client/storybook-static /usr/share/nginx/html
 
 EXPOSE 6006
 
-# Start Storybook with base URL consideration
-CMD ["serve", "-s", "storybook-static", "-l", "6006", "--no-clipboard"]
+CMD ["nginx", "-g", "daemon off;"]
