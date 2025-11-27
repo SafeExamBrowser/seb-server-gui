@@ -1225,7 +1225,6 @@ onBeforeMount(async () => {
     if (urlFilterRules == null) {
         return;
     }
-
     updateURLFilterRulesTable(urlFilterRules);
 
     // Proxy single settings

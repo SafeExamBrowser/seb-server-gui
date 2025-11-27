@@ -1087,6 +1087,41 @@
                 "playbackPhone_tooltip": "Video content can be played inline on a web page or only in full screen. By disabling this option, HTML5 video players are forced to use the iOS user interface for controlling playback"
             }
         },
+        "updownloadView": {
+            "allow": "Allow downloading and uploading files",
+            "allow_tooltip": "Use for downloading exam results or to download/upload files for editing in permitted third party applications. Deprecated setting: start using separate settings for allowing downloads/uploads, but enable this general setting if either downloads or uploads should be enabled.",
+            "dDirWin": "Download directory (Win)",
+            "dDirMac": "Download directory (Mac)",
+            "custom": "Allow user to select custom download / upload directory (Win)",
+            "policy": "Choose file to upload (Mac)",
+            "policy_tooltip": "SEB can let users choose the file to upload or automatically use the same file which was down-loaded before. If not found, a file requester or an error is presented depending on this setting.",
+            "policy_0": "manually with file requester",
+            "policy_1": "by attempting to upload the same file downloaded before",
+            "policy_2": "by only allowing to upload the same file downloaded before",
+            "download": "Download and open PDF files instead of displaying them inline",
+            "download_tooltip": "PDF files will not be displayed by SEB but downloaded and opened (if 'Open files after downloading' is active!) by the application set in Finder (usually Preview or Adobe Acrobat).",
+            "allowPDFPlugin": "Allow using Acrobat Reader PDF plugin (insecure! Mac only)",
+            "allowPDFPlugin_tooltip": "The Adobe Acrobat Reader browser plugin should only be used on secured managed Mac computers, at it allows limited access the file system and unlimited to cloud services",
+            "andOpen": "Download and open SEB Config Files",
+            "andOpen_tooltip": "Download and open .seb config files regardless if downloading and opening other file types is allowed",
+            "files": "Allow uploading files",
+            "files_tooltip": "Allows uploading files, selected manually (or on macOS automatically). Currently also setting 'allow downloading and uploading files' needs to be enabled",
+            "allowDownload": "Allow downloading files",
+            "useTemp": "Use temporary download / upload directory (Win)",
+            "photos": "Allow Uploading Photos and Files",
+            "photos_tooltip": "Uploading allows to access camera, the full photo library and iCloud Drive and therefore is insecure!",
+            "filetypes": {
+                "title": "File types to be downloaded",
+                "tooltip": "Specify file types which will be downloaded instead of displayed by the browser. You can also indicate the associated additional app for the file type and use the option 'Open files after downloading' above. This feature might not be supported on all platforms",
+                "type": "File Type",
+                "id": "Identifier",
+                "ext": "File Extension",
+                "os": "Operating System",
+                "os_0": "Mac OS",
+                "os_1": "Windows",
+                "os_2": "iOS"
+            }
+        },
         "applicationView": {
             "allowSwitchToApplications": "Allow switching to third party application (Mac)",
             "allowSwitchToApplications_tooltip": "Decreases security of the kiosk mode by allowing process switcher (Cmd+Tab).\nThe blacked out background of SEB also doesn't cover some alerts and modal windows in this mode.",

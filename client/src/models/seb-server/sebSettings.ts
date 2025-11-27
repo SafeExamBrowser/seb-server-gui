@@ -136,3 +136,15 @@ export type URLFilterRule = {
         action: number;
     };
 };
+
+export type FileExtensionEntry = {
+    index: number;
+    os: string;
+    fileExtension: string;
+    identifier: string;
+    ids: {
+        os: number;
+        fileExtension: number;
+        identifier: number;
+    };
+};

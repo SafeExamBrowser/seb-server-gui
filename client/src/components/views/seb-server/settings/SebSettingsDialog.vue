@@ -61,7 +61,7 @@
             </v-col>
         </v-row>
 
-        <v-row align="center">
+        <v-row align="end">
             <v-col align="right">
                 <v-btn
                     color="black"
