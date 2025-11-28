@@ -10,7 +10,7 @@ RUN npm install
 COPY client/ .
 
 # Build static Storybook with base path
-RUN npm run build-storybook -- --output-dir storybook-static
+RUN npm run build-storybook
 
 # Final image - serve Storybook statically
 FROM node:20.19.0-alpine
