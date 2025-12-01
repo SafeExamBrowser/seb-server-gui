@@ -53,6 +53,9 @@
                     ...getBaseProperties(field),
                     ...getTextualProperties(field),
                 }"
+                mode="hex"
+                pip-location="append-inner"
+                color-pip
             >
             </v-color-input>
             <v-select
