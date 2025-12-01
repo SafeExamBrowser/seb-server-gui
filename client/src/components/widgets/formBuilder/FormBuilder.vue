@@ -56,6 +56,7 @@
                 mode="hex"
                 pip-location="append-inner"
                 color-pip
+                @keydown="handleColorInputKeydown"
             >
             </v-color-input>
             <v-select
@@ -220,5 +221,27 @@ const handleFieldValueUpdated = async (fieldName: string) => {
 
 const handleSubmit = async () => {
     emit("submit");
+};
+
+const allowColorInputKeydown = (e: KeyboardEvent) => {
+    // allow basic navigation
+    if (["Enter", "Escape", "Tab"].includes(e.key)) {
+        return true;
+    }
+
+    // allow copy to clipboard
+    if (["KeyC"].includes(e.code) && (e.ctrlKey || e.metaKey)) {
+        return true;
+    }
+
+    return false;
+};
+
+const handleColorInputKeydown = (e: KeyboardEvent) => {
+    // This ensures, that basic keyboard navigation & copying to the clipboard works while not allowing the user to type in the input field itself.
+    // This is not ideal, but it's the only way I found to make the color input `readonly` while still allowing the color picker to be opened.
+    if (!allowColorInputKeydown(e)) {
+        e.preventDefault();
+    }
 };
 </script>
