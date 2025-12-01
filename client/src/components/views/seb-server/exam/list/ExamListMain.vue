@@ -225,8 +225,8 @@ async function loadItems(serverTablePaging: ServerTablePaging) {
             examStore.activeStatusFilter,
         );
 
-    console.log("optionalParGetExams");
-    console.log(optionalParGetExams);
+    // Note: always filter out inactive Exams here
+    optionalParGetExams.active = "true";
 
     const examsResponse: Exams | null =
         await examViewService.getExams(optionalParGetExams);
