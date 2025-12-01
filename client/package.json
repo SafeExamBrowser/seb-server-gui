@@ -27,7 +27,7 @@
         "test:e2e:headed": "npx playwright test --headed",
         "test:e2e:chromium": "npx playwright test --project=chromium --headed",
         "build-storybook": "storybook build --disable-telemetry",
-        "postbuild-storybook": "sed -i \"s#<head>#<head><base href='/storybook/' />#\" ./storybook-static/index.html"
+        "postbuild:storybook": "perl -i -p -e 's#<head>#<head>\n\t\t<base href='/storybook/'>#' ./storybook-static/index.html"
     },
     "lint-staged": {
         "*.{vue,js,jsx,ts,tsx}": [
