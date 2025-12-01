@@ -220,6 +220,7 @@ import { IndicatorEnum } from "@/models/seb-server/monitoringEnums";
 import { useRoute } from "vue-router";
 import { computed, ref } from "vue";
 import { NotificationEnum } from "@/models/seb-server/monitoringEnums";
+import InstructionConfirmDialog from "@/components/views/seb-server/monitoring/dialogs/InstructionConfirmDialog.vue";
 
 // route params
 const examId = useRoute().params.examId.toString();
