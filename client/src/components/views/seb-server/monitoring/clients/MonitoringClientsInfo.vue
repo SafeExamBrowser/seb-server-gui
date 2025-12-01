@@ -473,8 +473,8 @@ import { InstructionEnum } from "@/models/seb-server/instructionEnum";
 import { useErrorStore } from "@/stores/seb-server/errorStore";
 import { ref } from "vue";
 import { ErrorProps } from "@/models/alertProps";
-//import { MonitoringRow } from "@/models/seb-server/monitoringClients";
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum";
+import InstructionConfirmDialog from "@/components/views/seb-server/monitoring/dialogs/InstructionConfirmDialog.vue";
 
 // info panel (whole component)
 const isInfoExpanded = ref<boolean>(true);
