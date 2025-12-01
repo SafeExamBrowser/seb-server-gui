@@ -18,6 +18,35 @@ export const useFormFields = () => {
     const stepIndicatorsStore = useStepIndicatorsStore();
 
     const getFormFields = (indicator: Ref<IndicatorTransient>) => {
+        const getDefaultThresholds = (
+            indicatorType: IndicatorTransient["type"],
+        ): IndicatorTransient["thresholds"] => {
+            switch (indicatorType) {
+                case undefined:
+                    return [];
+                case IndicatorEnum.BATTERY_STATUS:
+                    return [
+                        {
+                            value: 20,
+                            color: "#ffc20e",
+                        },
+                        {
+                            value: 10,
+                            color: "#ed1c24",
+                        },
+                    ];
+                case IndicatorEnum.WLAN_STATUS:
+                    return [
+                        {
+                            value: 40,
+                            color: "#ed1c24",
+                        },
+                    ];
+                default:
+                    return indicatorType satisfies never;
+            }
+        };
+
         const name = computed<IndicatorTransient["name"]>({
             get: (): IndicatorTransient["name"] => indicator.value.name,
             set: (value: IndicatorTransient["name"]) => {
@@ -28,6 +57,10 @@ export const useFormFields = () => {
         const type = computed<IndicatorTransient["type"]>({
             get: (): IndicatorTransient["type"] => indicator.value.type,
             set: (value: IndicatorTransient["type"]) => {
+                if (thresholds.value.length === 0) {
+                    thresholds.value = getDefaultThresholds(value);
+                }
+
                 indicator.value = {
                     ...indicator.value,
                     type: value,
