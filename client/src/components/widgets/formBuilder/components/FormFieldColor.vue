@@ -11,6 +11,7 @@
 </template>
 
 <script setup lang="ts">
+// TODO @alain: the "close" and "ok" buttons don't work with keyboard navigation. This is an issue of Vuetify itself (https://github.com/vuetifyjs/vuetify/issues/19872). Follow-up on the bug report.
 import { FormFieldBaseProperties, FormFieldTextualProperties } from "../types";
 
 const model = defineModel<string | undefined>();
