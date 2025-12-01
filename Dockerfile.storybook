@@ -25,4 +25,4 @@ COPY --from=storybook-builder /app/client/storybook-static ./storybook-static
 EXPOSE 6006
 
 # Start Storybook with base URL consideration
-CMD ["serve", "-s", "storybook-static", "-l", "6006", "--no-clipboard"]
+CMD ["serve", "storybook-static", "-l", "6006", "--no-clipboard"]
