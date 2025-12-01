@@ -90,4 +90,5 @@ export type FormField = FormFieldSimple | FormFieldCollection;
 export type FormFieldGroup = {
     id: string;
     fields: FormFieldSimple[];
+    removeDisabled: boolean;
 };

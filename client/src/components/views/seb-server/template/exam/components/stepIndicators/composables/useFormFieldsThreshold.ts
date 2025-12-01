@@ -30,6 +30,7 @@ export const useFormFieldsThreshold = (
 
     return {
         id: `threshold-${thresholdIndex}`,
+        removeDisabled: thresholds.value.length <= 1,
         fields: [
             {
                 type: "number" as const,

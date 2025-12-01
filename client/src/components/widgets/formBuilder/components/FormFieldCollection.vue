@@ -40,6 +40,7 @@
                 :title="$t('general.deleteButton')"
                 :aria-label="$t('general.deleteButton')"
                 class="mb-5"
+                :disabled="fieldGroup.removeDisabled"
                 @click="handleRemoveItemClick(index)"
             ></v-btn>
         </fieldset>
