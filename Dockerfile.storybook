@@ -2,27 +2,21 @@
 FROM node:20.19.0 AS storybook-builder
 WORKDIR /app/client
 
-# Install dependencies
 COPY client/package*.json ./
 RUN npm install
 
-# Copy the rest of the client code
 COPY client/ .
-
-# Build static Storybook with base path
 RUN npm run build-storybook
 
 # Final image - serve Storybook statically
 FROM node:20.19.0-alpine
 WORKDIR /app
 
-# Use a tiny static file server
 RUN npm install -g serve
 
-# Copy built Storybook
-COPY --from=storybook-builder /app/client/storybook-static ./storybook-static
+RUN mkdir -p public/storybook
+COPY --from=storybook-builder /app/client/storybook-static/ ./public/storybook
 
 EXPOSE 6006
 
-# Start Storybook with base URL consideration
-CMD ["serve", "storybook-static", "-l", "6006", "--no-clipboard"]
+CMD ["serve", "public", "-l", "6006", "--no-clipboard"]
