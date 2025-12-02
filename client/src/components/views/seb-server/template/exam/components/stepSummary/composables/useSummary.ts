@@ -16,24 +16,32 @@ export const useSummary = (): ComputedRef<SummarySectionData[]> => {
             ),
             items: [
                 {
+                    type: "basic",
+                    key: "name",
                     label: i18n.global.t(
                         "createTemplateExam.steps.naming.fields.name.label",
                     ),
                     value: examTemplate.name,
                 },
                 {
+                    type: "basic",
+                    key: "description",
                     label: i18n.global.t(
                         "createTemplateExam.steps.naming.fields.description.label",
                     ),
                     value: examTemplate.description ?? emptyValue,
                 },
                 {
+                    type: "basic",
+                    key: "examType",
                     label: i18n.global.t(
                         "createTemplateExam.steps.naming.fields.examType.label",
                     ),
                     value: examTemplate.examType ?? emptyValue,
                 },
                 {
+                    type: "basic",
+                    key: "clientConfiguration",
                     label: i18n.global.t(
                         "createTemplateExam.steps.naming.fields.clientConfiguration.label",
                     ),
@@ -42,6 +50,8 @@ export const useSummary = (): ComputedRef<SummarySectionData[]> => {
                         : emptyValue,
                 },
                 {
+                    type: "basic",
+                    key: "configurationTemplate",
                     label: i18n.global.t(
                         "createTemplateExam.steps.naming.fields.configurationTemplate.label",
                     ),
@@ -50,12 +60,16 @@ export const useSummary = (): ComputedRef<SummarySectionData[]> => {
                         : emptyValue,
                 },
                 {
+                    type: "basic",
+                    key: "lmsIntegration",
                     label: i18n.global.t(
                         "createTemplateExam.steps.naming.fields.lmsIntegration.label",
                     ),
                     value: examTemplate.lmsIntegration ? "Yes" : "No", // TODO @alain: bool?
                 },
                 {
+                    type: "basic",
+                    key: "institutionalDefault",
                     label: i18n.global.t(
                         "createTemplateExam.steps.naming.fields.institutionalDefault.label",
                     ),
@@ -69,6 +83,8 @@ export const useSummary = (): ComputedRef<SummarySectionData[]> => {
             ),
             items: [
                 {
+                    type: "basic",
+                    key: "supervisor-foo",
                     label: "Foo",
                     value: "Bar",
                 },
@@ -80,6 +96,8 @@ export const useSummary = (): ComputedRef<SummarySectionData[]> => {
             ),
             items: [
                 {
+                    type: "basic",
+                    key: "indicator-foo",
                     label: "Foo",
                     value: "Bar",
                 },
@@ -91,8 +109,28 @@ export const useSummary = (): ComputedRef<SummarySectionData[]> => {
             ),
             items: [
                 {
-                    label: "Foo",
-                    value: "Bar",
+                    type: "collection",
+                    key: "clientGroup-1",
+                    items: [
+                        {
+                            type: "basic",
+                            key: "someclientgroupfield",
+                            label: "Foo",
+                            value: "Bar",
+                        },
+                    ],
+                },
+                {
+                    type: "collection",
+                    key: "clientGroup-2",
+                    items: [
+                        {
+                            type: "basic",
+                            key: "someclientgroupfield",
+                            label: "Foo",
+                            value: "Bar2",
+                        },
+                    ],
                 },
             ],
         },
