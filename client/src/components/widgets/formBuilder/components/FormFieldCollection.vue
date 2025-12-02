@@ -29,7 +29,7 @@
                 {{ `${labelRow}${index + 1}` }}
             </legend>
             <div class="flex-grow-1 flex-shrink-0">
-                <FormBuilder :fields="fieldGroup.fields" layout="horizontal" />
+                <FormFields :fields="fieldGroup.fields" layout="horizontal" />
             </div>
             <v-btn
                 icon="mdi-delete"
@@ -49,7 +49,7 @@
 
 <script setup lang="ts">
 import { FormFieldGroup } from "../types";
-import FormBuilder from "../FormBuilder.vue";
+import FormFields from "./FormFields.vue";
 import SectionSubtitle from "@/components/widgets/SectionSubtitle.vue";
 
 defineProps<{
