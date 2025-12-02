@@ -21,12 +21,12 @@
         "quality:fix:all": "npm run lint:fix:all && npm run prettier:fix:all && vue-tsc --noEmit",
         "prepare": "cd .. && husky ./client/.husky",
         "storybook": "storybook dev -p 6006",
-        "build-storybook": "storybook build",
         "typecheck:playwright": "tsc -p tsconfig.playwright.json --noEmit",
         "test:e2e": "npx playwright test",
         "test:e2eui": "npx playwright test --ui",
         "test:e2e:headed": "npx playwright test --headed",
-        "test:e2e:chromium": "npx playwright test --project=chromium --headed"
+        "test:e2e:chromium": "npx playwright test --project=chromium --headed",
+        "build-storybook": "storybook build"
     },
     "lint-staged": {
         "*.{vue,js,jsx,ts,tsx}": [

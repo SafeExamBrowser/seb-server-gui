@@ -126,7 +126,6 @@
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
 import { NotificationEnum } from "@/models/seb-server/monitoringEnums";
-//import { useDisplay } from "vuetify";
 import { translate } from "@/utils/generalUtils";
 import { ref, computed, watch, nextTick } from "vue";
 import { useRoute } from "vue-router";

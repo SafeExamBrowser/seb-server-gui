@@ -1,6 +1,10 @@
 import type { StorybookConfig } from "@storybook/vue3-vite";
 
 const config: StorybookConfig = {
+    framework: {
+        name: "@storybook/vue3-vite",
+        options: {},
+    },
     stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
     addons: [
         "@chromatic-com/storybook",
@@ -8,9 +12,15 @@ const config: StorybookConfig = {
         "@storybook/addon-onboarding",
         "@storybook/addon-a11y",
     ],
-    framework: {
-        name: "@storybook/vue3-vite",
-        options: {},
+
+    core: {
+        builder: "@storybook/builder-vite",
+    },
+
+    async viteFinal(config) {
+        config.base = "/storybook/";
+        return config;
     },
 };
+
 export default config;
