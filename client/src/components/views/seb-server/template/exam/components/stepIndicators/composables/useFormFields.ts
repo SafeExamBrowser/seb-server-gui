@@ -1,5 +1,8 @@
 import { computed, Ref } from "vue";
-import { FormField } from "@/components/widgets/formBuilder/types";
+import {
+    FormField,
+    FormFieldCollection,
+} from "@/components/widgets/formBuilder/types";
 import { useRules } from "vuetify/labs/rules";
 import {
     Indicator,
@@ -8,12 +11,42 @@ import {
 import { useStepIndicatorsStore } from "@/components/views/seb-server/template/exam/components/stepIndicators/composables/store/useStepIndicatorsStore";
 import i18n from "@/i18n";
 import { IndicatorEnum } from "@/models/seb-server/monitoringEnums";
+import { useFormFieldsThreshold } from "./useFormFieldsThreshold";
 
 export const useFormFields = () => {
     const rules = useRules();
     const stepIndicatorsStore = useStepIndicatorsStore();
 
     const getFormFields = (indicator: Ref<IndicatorTransient>) => {
+        const getDefaultThresholds = (
+            indicatorType: IndicatorTransient["type"],
+        ): IndicatorTransient["thresholds"] => {
+            switch (indicatorType) {
+                case undefined:
+                    return [];
+                case IndicatorEnum.BATTERY_STATUS:
+                    return [
+                        {
+                            value: 20,
+                            color: "#ffc20e",
+                        },
+                        {
+                            value: 10,
+                            color: "#ed1c24",
+                        },
+                    ];
+                case IndicatorEnum.WLAN_STATUS:
+                    return [
+                        {
+                            value: 40,
+                            color: "#ed1c24",
+                        },
+                    ];
+                default:
+                    return indicatorType satisfies never;
+            }
+        };
+
         const name = computed<IndicatorTransient["name"]>({
             get: (): IndicatorTransient["name"] => indicator.value.name,
             set: (value: IndicatorTransient["name"]) => {
@@ -24,9 +57,24 @@ export const useFormFields = () => {
         const type = computed<IndicatorTransient["type"]>({
             get: (): IndicatorTransient["type"] => indicator.value.type,
             set: (value: IndicatorTransient["type"]) => {
+                if (thresholds.value.length === 0) {
+                    thresholds.value = getDefaultThresholds(value);
+                }
+
                 indicator.value = {
                     ...indicator.value,
                     type: value,
+                };
+            },
+        });
+
+        const thresholds = computed<IndicatorTransient["thresholds"]>({
+            get: (): IndicatorTransient["thresholds"] =>
+                indicator.value.thresholds,
+            set: (value: IndicatorTransient["thresholds"]) => {
+                indicator.value = {
+                    ...indicator.value,
+                    thresholds: value,
                 };
             },
         });
@@ -85,6 +133,34 @@ export const useFormFields = () => {
                 ),
                 required: true,
             },
+            {
+                type: "collection" as const,
+                name: "thresholds",
+                label: i18n.global.t(
+                    "createTemplateExam.steps.indicators.fields.thresholds.label",
+                ),
+                required: true,
+                fieldGroups: thresholds.value.map((_, index) =>
+                    useFormFieldsThreshold(thresholds, index),
+                ),
+                labelAdd: i18n.global.t(
+                    "createTemplateExam.steps.indicators.fields.thresholds.labelAdd",
+                ),
+                labelRow: i18n.global.t(
+                    "createTemplateExam.steps.indicators.fields.thresholds.labelRow",
+                ),
+                onAddItem: () => {
+                    thresholds.value.push({
+                        value: 0,
+                        color: "#000000",
+                    });
+                },
+                onRemoveItem: (itemIndex: number) => {
+                    thresholds.value = thresholds.value.filter(
+                        (_, index) => index !== itemIndex,
+                    );
+                },
+            } satisfies FormFieldCollection,
         ]);
 
         return formFields.value;

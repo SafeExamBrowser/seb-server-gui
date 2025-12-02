@@ -11,6 +11,7 @@ const getInitialState = () => ({
 
 export const getEmptyIndicator = (): IndicatorTransient => ({
     id: crypto.getRandomValues(new Uint32Array(1))[0], // random ID, for FE use only (when submitting to BE, the BE will generate the real ID)
+    thresholds: [],
 });
 
 export const useStepIndicatorsStore = defineStore("stepIndicators", () => {
