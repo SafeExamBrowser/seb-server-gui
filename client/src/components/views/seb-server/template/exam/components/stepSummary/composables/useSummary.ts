@@ -1,4 +1,4 @@
-import { SummaryBox } from "@/components/views/seb-server/template/exam/components/stepSummary/components/types";
+import { SummarySectionData } from "@/components/views/seb-server/template/exam/components/stepSummary/components/types";
 import { ComputedRef } from "vue";
 import { computed } from "vue";
 import { useCreateExamTemplateStore } from "@/components/views/seb-server/template/exam/composables/store/useCreateExamTemplateStore";
@@ -6,10 +6,10 @@ import i18n from "@/i18n";
 
 const emptyValue = "–" as const;
 
-export const useSummary = (): ComputedRef<SummaryBox[]> => {
+export const useSummary = (): ComputedRef<SummarySectionData[]> => {
     const examTemplate = useCreateExamTemplateStore().examTemplate;
 
-    const summary = computed<SummaryBox[]>(() => [
+    const summary = computed<SummarySectionData[]>(() => [
         {
             label: i18n.global.t(
                 "createTemplateExam.steps.summary.sections.naming.title",

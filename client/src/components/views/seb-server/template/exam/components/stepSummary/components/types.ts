@@ -1,4 +1,4 @@
-export type SummaryBox = {
+export type SummarySectionData = {
     label: string;
     items: {
         label: string;
