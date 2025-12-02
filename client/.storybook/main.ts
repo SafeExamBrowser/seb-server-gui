@@ -12,16 +12,14 @@ const config: StorybookConfig = {
         "@storybook/addon-onboarding",
         "@storybook/addon-a11y",
     ],
+
     core: {
         builder: "@storybook/builder-vite",
     },
 
     async viteFinal(config) {
-        const { mergeConfig } = await import("vite");
-
-        return mergeConfig(config, {
-            base: "/storybook/",
-        });
+        config.base = "/storybook/";
+        return config;
     },
 };
 
