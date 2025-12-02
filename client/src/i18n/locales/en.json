@@ -413,7 +413,12 @@
                         "title": "Basic Settings"
                     },
                     "supervisors": {
-                        "title": "Exam Supervisors"
+                        "title": "Exam Supervisors",
+                        "fields": {
+                            "user": {
+                                "label": "User"
+                            }
+                        }
                     },
                     "indicators": {
                         "title": "Indicators"
