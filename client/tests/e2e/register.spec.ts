@@ -100,7 +100,6 @@ test.describe("RegisterPage", () => {
         await successAlert.waitFor({ state: "attached", timeout: 10000 });
         await expect(successAlert).toBeVisible();
 
-        // Optional: ensure we didn't accidentally show the error alert
         await expect(page.getByTestId("register-error-alert")).toHaveCount(0);
     });
 
