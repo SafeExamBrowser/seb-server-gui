@@ -38,8 +38,9 @@
                 v-bind="{
                     ...getBaseProperties(field),
                     ...getTextualProperties(field),
-                    ...getNumberProperties(field),
                 }"
+                :min="field.min"
+                :max="field.max"
             >
             </v-number-input>
             <FormFieldColor
@@ -56,8 +57,11 @@
                 v-bind="{
                     ...getBaseProperties(field),
                     ...getTextualProperties(field),
-                    ...getSelectProperties(field),
                 }"
+                :items="field.options"
+                item-title="text"
+                item-value="value"
+                :clearable="!field.required"
             >
             </v-select>
             <v-switch
@@ -87,7 +91,6 @@ import { useRules } from "vuetify/labs/rules";
 import {
     FormField,
     FormFieldBaseProperties,
-    FormFieldNumberProperties,
     FormFieldTextualProperties,
     FormFieldsComponentProps,
 } from "../types";
@@ -148,20 +151,6 @@ const getTextualProperties = (
     },
 ): FormFieldTextualProperties => ({
     placeholder: field.placeholder,
-});
-
-const getNumberProperties = (
-    field: FormField & { type: "number" },
-): FormFieldNumberProperties => ({
-    min: field.min,
-    max: field.max,
-});
-
-const getSelectProperties = (field: FormField & { type: "select" }) => ({
-    items: field.options,
-    itemTitle: "text",
-    itemValue: "value",
-    clearable: !field.required,
 });
 
 const handleFieldValueUpdated = async (fieldName: string) => {

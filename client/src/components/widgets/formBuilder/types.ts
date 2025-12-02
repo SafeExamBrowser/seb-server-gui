@@ -1,15 +1,9 @@
 import { Ref } from "vue";
-import type {
-    VField,
-    VInput,
-    VNumberInput,
-    VTextField,
-} from "vuetify/components";
+import type { VField, VInput, VTextField } from "vuetify/components";
 
 type VFieldProps = InstanceType<typeof VField>["$props"];
 type VInputProps = InstanceType<typeof VInput>["$props"];
 type VTextFieldProps = InstanceType<typeof VTextField>["$props"];
-type VNumberInputProps = InstanceType<typeof VNumberInput>["$props"];
 
 export type FormFieldBaseProperties = Pick<
     VInputProps,
@@ -23,7 +17,6 @@ export type FormFieldBaseProperties = Pick<
 > &
     Pick<VFieldProps, "variant">;
 
-export type FormFieldNumberProperties = Pick<VNumberInputProps, "min" | "max">;
 export type FormFieldTextualProperties = Pick<VTextFieldProps, "placeholder">;
 
 type FormFieldBase = {
