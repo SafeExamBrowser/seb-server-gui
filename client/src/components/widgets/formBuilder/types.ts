@@ -92,3 +92,8 @@ export type FormFieldGroup = {
     fields: FormFieldSimple[];
     removeDisabled: boolean;
 };
+
+export type FormFieldsComponentProps = {
+    fields: FormField[];
+    layout?: "vertical" | "horizontal";
+};
