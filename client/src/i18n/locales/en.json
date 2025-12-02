@@ -333,7 +333,17 @@
                     "thresholds": {
                         "label": "Thresholds",
                         "labelRow": "Threshold #",
-                        "labelAdd": "Add Threshold"
+                        "labelAdd": "Add Threshold",
+                        "fields": {
+                            "value": {
+                                "label": "Value",
+                                "placeholder": "Enter 0% – 100%"
+                            },
+                            "color": {
+                                "label": "Color",
+                                "placeholder": "Enter hex color value"
+                            }
+                        }
                     }
                 }
             },

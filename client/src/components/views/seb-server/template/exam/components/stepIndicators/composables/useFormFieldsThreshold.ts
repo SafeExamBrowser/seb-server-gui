@@ -1,6 +1,7 @@
 import { FormFieldGroup } from "@/components/widgets/formBuilder/types";
 import { computed, Ref } from "vue";
 import { Threshold } from "@/models/seb-server/examTemplate";
+import i18n from "@/i18n";
 
 export const useFormFieldsThreshold = (
     thresholds: Ref<Threshold[]>,
@@ -37,8 +38,12 @@ export const useFormFieldsThreshold = (
                 name: "value",
                 model: value,
                 required: true,
-                label: "Value", // TODO @alain: i18n
-                placeholder: "Value placeholder", // TODO @alain: i18n
+                label: i18n.global.t(
+                    "createTemplateExam.steps.indicators.fields.thresholds.fields.value.label",
+                ),
+                placeholder: i18n.global.t(
+                    "createTemplateExam.steps.indicators.fields.thresholds.fields.value.placeholder",
+                ),
                 min: 0,
                 max: 100,
             },
@@ -47,8 +52,12 @@ export const useFormFieldsThreshold = (
                 name: "color",
                 model: color,
                 required: true,
-                label: "Color", // TODO @alain: i18n
-                placeholder: "Color placeholder", // TODO @alain: i18n
+                label: i18n.global.t(
+                    "createTemplateExam.steps.indicators.fields.thresholds.fields.color.label",
+                ),
+                placeholder: i18n.global.t(
+                    "createTemplateExam.steps.indicators.fields.thresholds.fields.color.placeholder",
+                ),
             },
         ],
     };
