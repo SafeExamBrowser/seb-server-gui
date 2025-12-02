@@ -407,7 +407,21 @@
             },
             "summary": {
                 "title": "Overview Exam Template",
-                "subtitle": "TODO: translate (Kristina)"
+                "subtitle": "TODO: translate (Kristina)",
+                "sections": {
+                    "naming": {
+                        "title": "Basic Settings"
+                    },
+                    "supervisors": {
+                        "title": "Exam Supervisors"
+                    },
+                    "indicators": {
+                        "title": "Indicators"
+                    },
+                    "clientGroup": {
+                        "title": "Groups"
+                    }
+                }
             }
         }
     },
