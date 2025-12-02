@@ -1,13 +1,65 @@
-import { SummarySectionData } from "@/components/views/seb-server/template/exam/components/stepSummary/components/types";
+import {
+    SummarySectionData,
+    SummarySectionItem,
+} from "@/components/views/seb-server/template/exam/components/stepSummary/components/types";
 import { ComputedRef } from "vue";
 import { computed } from "vue";
 import { useCreateExamTemplateStore } from "@/components/views/seb-server/template/exam/composables/store/useCreateExamTemplateStore";
 import i18n from "@/i18n";
+import { ClientGroupTemplate } from "@/models/seb-server/examTemplate";
+import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
 
 const emptyValue = "–" as const;
 
 export const useSummary = (): ComputedRef<SummarySectionData[]> => {
     const examTemplate = useCreateExamTemplateStore().examTemplate;
+
+    const getClientGroupItems = (
+        clientGroup: ClientGroupTemplate,
+    ): (SummarySectionItem & { type: "basic" })[] => {
+        const getTypeDetails = (clientGroup: ClientGroupTemplate): string => {
+            let typeDetails = clientGroup.type; // TODO @alain: translate type
+
+            // TODO @alain: look into this again when we have stricter API types.
+            // We work with the API types here. They are not very clean,
+            // i.e. there are no discriminated unions for the client group types.
+            // This is a source of potential bugs (e.g. an additional clientGroup.type or
+            // a missing clientGroup.clientOS would cause uncaught errors).
+            // Hopefully we can have stricter API types in the future so we can be more precise here.
+            if (clientGroup.type === ClientGroupEnum.IP_V4_RANGE) {
+                typeDetails += ` (${clientGroup.ipRangeStart} - ${clientGroup.ipRangeEnd})`;
+            }
+
+            if (clientGroup.type === ClientGroupEnum.CLIENT_OS) {
+                typeDetails += ` (${clientGroup.clientOS})`;
+            }
+
+            if (clientGroup.type === ClientGroupEnum.NAME_ALPHABETICAL_RANGE) {
+                typeDetails += ` (${clientGroup.nameRangeStartLetter} - ${clientGroup.nameRangeEndLetter})`;
+            }
+
+            return typeDetails;
+        };
+
+        return [
+            {
+                type: "basic",
+                key: "name",
+                label: i18n.global.t(
+                    "createTemplateExam.steps.clientGroup.fields.name.label",
+                ),
+                value: clientGroup.name,
+            },
+            {
+                type: "basic",
+                key: "typeDetails",
+                label: i18n.global.t(
+                    "createTemplateExam.steps.clientGroup.fields.type.label",
+                ),
+                value: getTypeDetails(clientGroup),
+            },
+        ];
+    };
 
     const summary = computed<SummarySectionData[]>(() => [
         {
@@ -37,7 +89,7 @@ export const useSummary = (): ComputedRef<SummarySectionData[]> => {
                     label: i18n.global.t(
                         "createTemplateExam.steps.naming.fields.examType.label",
                     ),
-                    value: examTemplate.examType ?? emptyValue,
+                    value: examTemplate.examType ?? emptyValue, // TODO @alain: translate type
                 },
                 {
                     type: "basic",
@@ -107,32 +159,11 @@ export const useSummary = (): ComputedRef<SummarySectionData[]> => {
             label: i18n.global.t(
                 "createTemplateExam.steps.summary.sections.clientGroup.title",
             ),
-            items: [
-                {
-                    type: "collection",
-                    key: "clientGroup-1",
-                    items: [
-                        {
-                            type: "basic",
-                            key: "someclientgroupfield",
-                            label: "Foo",
-                            value: "Bar",
-                        },
-                    ],
-                },
-                {
-                    type: "collection",
-                    key: "clientGroup-2",
-                    items: [
-                        {
-                            type: "basic",
-                            key: "someclientgroupfield",
-                            label: "Foo",
-                            value: "Bar2",
-                        },
-                    ],
-                },
-            ],
+            items: examTemplate.CLIENT_GROUP_TEMPLATES.map((clientGroup) => ({
+                type: "collection",
+                key: `clientGroup-${clientGroup.name}`,
+                items: getClientGroupItems(clientGroup),
+            })),
         },
     ]);
 
