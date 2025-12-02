@@ -58,7 +58,7 @@ const isStepReady = (
 };
 
 const getInitialState = () => ({
-    currentStepIndex: 0,
+    currentStepIndex: 4, // TODO @alain: remove debug (should be 0)
 });
 
 export const useCreateExamTemplateStore = defineStore(
