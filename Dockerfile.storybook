@@ -1,28 +1,26 @@
-# Build Storybook
-FROM node:20.19.0 AS storybook-builder
-WORKDIR /app/client
+FROM ghcr.io/storydocker/storydocker:main
 
-# Install dependencies
-COPY client/package*.json ./
-RUN npm install
+# Destination directory inside the container - one level, do not use subdirectories
+ARG WORKSPACE_DIR=application
 
-# Copy the rest of the client code
-COPY client/ .
+# Localhost port for Storybook
+ARG STORYBOOK_PORT=6006
 
-# Build static Storybook with base path
-RUN npm run build-storybook
+# Internal-to-docker variable for Storybook port
+ENV SB_PORT=$STORYBOOK_PORT
 
-# Final image - serve Storybook statically
-FROM node:20.19.0-alpine
-WORKDIR /app
+# This is optional. Sets the level of logging that you see
+ENV NPM_CONFIG_LOGLEVEL warn
 
-# Use a tiny static file server
-RUN npm install -g serve
+# Install dependencies first, as they change less often than code.
+COPY package.json ./workspaces/${WORKSPACE_DIR}/
+RUN npm i && npm cache clean --force
 
-# Copy built Storybook
-COPY --from=storybook-builder /app/client/storybook-static ./storybook-static
+# Copy entire workspace into container
+COPY . ./workspaces/${WORKSPACE_DIR}/
 
-EXPOSE 6006
+# Make storybook port available externally
+EXPOSE $STORYBOOK_PORT
 
-# Start Storybook with base URL consideration
-CMD ["serve", "storybook-static", "-l", "6006", "--no-clipboard"]
+# run storybook app
+CMD ["npm", "run", "storybook", "-workspace", "workspaces/${WORKSPACE_DIR}/"]
