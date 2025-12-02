@@ -116,9 +116,10 @@ export const useCreateExamTemplateStore = defineStore(
             lmsIntegration: stepNamingStore.lmsIntegration,
             indicatorTemplates: stepIndicatorsStore.indicators.map(
                 (indicator) => ({
-                    ...indicator,
+                    name: indicator.name,
+                    type: indicator.type,
                     thresholds: indicator.thresholds.map((threshold) => ({
-                        ...threshold,
+                        value: threshold.value,
                         color: threshold.color.slice(1), // strip the "#" from the hex color string
                     })),
                 }),
