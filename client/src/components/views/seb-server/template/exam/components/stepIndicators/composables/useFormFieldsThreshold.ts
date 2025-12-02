@@ -36,6 +36,7 @@ export const useFormFieldsThreshold = (
                 type: "number" as const,
                 name: "value",
                 model: value,
+                required: true,
                 label: "Value", // TODO @alain: i18n
                 placeholder: "Value placeholder", // TODO @alain: i18n
                 min: 0,
@@ -45,6 +46,7 @@ export const useFormFieldsThreshold = (
                 type: "color" as const,
                 name: "color",
                 model: color,
+                required: true,
                 label: "Color", // TODO @alain: i18n
                 placeholder: "Color placeholder", // TODO @alain: i18n
             },
