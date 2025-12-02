@@ -58,7 +58,7 @@ const isStepReady = (
 };
 
 const getInitialState = () => ({
-    currentStepIndex: 2, // TODO @alain: remove debug before merging (should be 0)
+    currentStepIndex: 0,
 });
 
 export const useCreateExamTemplateStore = defineStore(
