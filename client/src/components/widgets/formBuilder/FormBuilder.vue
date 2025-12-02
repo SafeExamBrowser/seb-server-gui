@@ -1,88 +1,90 @@
 <template>
     <v-form
         :id="formId"
-        :class="[
-            'd-flex',
-            layout === 'vertical' ? 'flex-column' : 'flex-row',
-            'ga-2',
-        ]"
         @update:model-value="handleModelValueUpdated"
         @submit.prevent="handleSubmit"
     >
-        <v-container
-            v-for="field in fields"
-            :key="field.name"
-            fluid
-            class="ma-0 pa-0"
-            :field="field"
-            dense
+        <div
+            :class="[
+                'w-100',
+                'd-flex',
+                layout === 'vertical' ? 'flex-column' : 'flex-row',
+                'ga-2',
+            ]"
         >
-            <v-text-field
-                v-if="field.type === 'text'"
-                v-model="field.model.value"
-                v-bind="{
-                    ...getBaseProperties(field),
-                    ...getTextualProperties(field),
-                }"
+            <div
+                v-for="field in fields"
+                :key="field.name"
+                class="w-100"
+                :field="field"
             >
-            </v-text-field>
-            <v-textarea
-                v-else-if="field.type === 'textarea'"
-                v-model="field.model.value"
-                v-bind="{
-                    ...getBaseProperties(field),
-                    ...getTextualProperties(field),
-                }"
-                :rows="4"
-            >
-            </v-textarea>
-            <v-number-input
-                v-else-if="field.type === 'number'"
-                v-model="field.model.value"
-                v-bind="{
-                    ...getBaseProperties(field),
-                    ...getTextualProperties(field),
-                    ...getNumberProperties(field),
-                }"
-            >
-            </v-number-input>
-            <FormFieldColor
-                v-else-if="field.type === 'color'"
-                v-model="field.model.value"
-                :standard-properties="{
-                    ...getBaseProperties(field),
-                    ...getTextualProperties(field),
-                }"
-            />
-            <v-select
-                v-else-if="field.type === 'select'"
-                v-model="field.model.value"
-                v-bind="{
-                    ...getBaseProperties(field),
-                    ...getTextualProperties(field),
-                    ...getSelectProperties(field),
-                }"
-            >
-            </v-select>
-            <v-switch
-                v-else-if="field.type === 'switch'"
-                v-model="field.model.value"
-                v-bind="getBaseProperties(field)"
-                color="primary"
-            >
-            </v-switch>
-            <FormFieldCollection
-                v-else-if="field.type === 'collection'"
-                :label="field.label"
-                :field-groups="field.fieldGroups"
-                :label-add="field.labelAdd"
-                :label-row="field.labelRow"
-                @add-item="field.onAddItem()"
-                @remove-item="
-                    (itemIndex: number) => field.onRemoveItem(itemIndex)
-                "
-            />
-        </v-container>
+                <v-text-field
+                    v-if="field.type === 'text'"
+                    v-model="field.model.value"
+                    v-bind="{
+                        ...getBaseProperties(field),
+                        ...getTextualProperties(field),
+                    }"
+                >
+                </v-text-field>
+                <v-textarea
+                    v-else-if="field.type === 'textarea'"
+                    v-model="field.model.value"
+                    v-bind="{
+                        ...getBaseProperties(field),
+                        ...getTextualProperties(field),
+                    }"
+                    :rows="4"
+                >
+                </v-textarea>
+                <v-number-input
+                    v-else-if="field.type === 'number'"
+                    v-model="field.model.value"
+                    v-bind="{
+                        ...getBaseProperties(field),
+                        ...getTextualProperties(field),
+                        ...getNumberProperties(field),
+                    }"
+                >
+                </v-number-input>
+                <FormFieldColor
+                    v-else-if="field.type === 'color'"
+                    v-model="field.model.value"
+                    :standard-properties="{
+                        ...getBaseProperties(field),
+                        ...getTextualProperties(field),
+                    }"
+                />
+                <v-select
+                    v-else-if="field.type === 'select'"
+                    v-model="field.model.value"
+                    v-bind="{
+                        ...getBaseProperties(field),
+                        ...getTextualProperties(field),
+                        ...getSelectProperties(field),
+                    }"
+                >
+                </v-select>
+                <v-switch
+                    v-else-if="field.type === 'switch'"
+                    v-model="field.model.value"
+                    v-bind="getBaseProperties(field)"
+                    color="primary"
+                >
+                </v-switch>
+                <FormFieldCollection
+                    v-else-if="field.type === 'collection'"
+                    :label="field.label"
+                    :field-groups="field.fieldGroups"
+                    :label-add="field.labelAdd"
+                    :label-row="field.labelRow"
+                    @add-item="field.onAddItem()"
+                    @remove-item="
+                        (itemIndex: number) => field.onRemoveItem(itemIndex)
+                    "
+                />
+            </div>
+        </div>
     </v-form>
 </template>
 
