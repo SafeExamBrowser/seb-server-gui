@@ -1,4 +1,5 @@
 import type { StorybookConfig } from "@storybook/vue3-vite";
+import { mergeConfig } from "vite";
 
 const config: StorybookConfig = {
     framework: {
@@ -17,9 +18,10 @@ const config: StorybookConfig = {
         builder: "@storybook/builder-vite",
     },
 
-    async viteFinal(config) {
-        config.base = "/storybook/";
-        return config;
+    async viteFinal(viteConfig) {
+        return mergeConfig(viteConfig, {
+            base: "/storybook/",
+        });
     },
 };
 

@@ -27,7 +27,7 @@
         "test:e2e:chromium": "npx playwright test --project=chromium --headed",
         "storybook": "storybook dev -p ${SB_PORT:-6006}",
         "build-storybook": "storybook build",
-        "test-storybook": "test-storybook --url http://localhost:${SB_PORT:-6006}  --coverage"
+        "test-storybook": "storybook test --url http://localhost:${SB_PORT:-6006} --coverage"
     },
     "lint-staged": {
         "*.{vue,js,jsx,ts,tsx}": [
@@ -68,6 +68,7 @@
         "@storybook/addon-a11y": "^10.0.6",
         "@storybook/addon-docs": "^10.0.4",
         "@storybook/addon-onboarding": "^10.0.4",
+        "@storybook/test-runner": "^0.24.2",
         "@storybook/vue3-vite": "^10.0.4",
         "@testing-library/dom": "^10.4.1",
         "@testing-library/vue": "^8.1.0",
