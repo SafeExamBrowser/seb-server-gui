@@ -25,9 +25,7 @@
         "test:e2eui": "npx playwright test --ui",
         "test:e2e:headed": "npx playwright test --headed",
         "test:e2e:chromium": "npx playwright test --project=chromium --headed",
-        "storybook": "storybook dev -p ${SB_PORT:-6006}",
-        "build-storybook": "storybook build",
-        "test-storybook": "storybook test --url http://localhost:${SB_PORT:-6006} --coverage"
+        "build-storybook": "storybook build"
     },
     "lint-staged": {
         "*.{vue,js,jsx,ts,tsx}": [
