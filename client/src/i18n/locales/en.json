@@ -1113,9 +1113,10 @@
             "filetypes": {
                 "title": "File types to be downloaded",
                 "tooltip": "Specify file types which will be downloaded instead of displayed by the browser. You can also indicate the associated additional app for the file type and use the option 'Open files after downloading' above. This feature might not be supported on all platforms",
+                "editDialogTitle": "Edit File Type",
                 "type": "File Type",
-                "id": "Identifier",
-                "ext": "File Extension",
+                "identifier": "Identifier",
+                "fileExtension": "File Extension",
                 "os": "Operating System",
                 "os_0": "Mac OS",
                 "os_1": "Windows",

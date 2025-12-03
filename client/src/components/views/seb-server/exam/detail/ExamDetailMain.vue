@@ -34,7 +34,7 @@
                                                 )
                                             }}
                                         </v-col>
-                                        <v-col align="right" cols="4" xl="3">
+                                        <v-col align="right" cols="4">
                                             <v-btn
                                                 v-if="
                                                     generalUtils.findEnumValue(
@@ -115,7 +115,7 @@
                                                 )
                                             }}
                                         </v-col>
-                                        <v-col align="right" cols="4" xl="3">
+                                        <v-col align="right" cols="4">
                                             <v-btn
                                                 block
                                                 color="primary"
@@ -161,7 +161,7 @@
                                                 )
                                             }}
                                         </v-col>
-                                        <v-col align="right" cols="4" xl="3">
+                                        <v-col align="right" cols="4">
                                             <v-btn
                                                 block
                                                 color="primary"
@@ -460,7 +460,7 @@
                                             }}
                                         </v-col>
 
-                                        <v-col align="right" cols="4" xl="3">
+                                        <v-col align="right" cols="4">
                                             <v-btn
                                                 block
                                                 color="primary"
@@ -513,7 +513,7 @@
                                                 )
                                             }}
                                         </v-col>
-                                        <v-col align="right" cols="4" xl="3">
+                                        <v-col align="right" cols="4">
                                             <v-btn
                                                 block
                                                 color="primary"
