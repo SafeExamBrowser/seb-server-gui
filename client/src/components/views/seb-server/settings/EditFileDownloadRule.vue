@@ -29,7 +29,7 @@
                                     v-model="props.fileType!.fileExtension"
                                     :label="
                                         translate(
-                                            'sebSettings.updownloadView.ext',
+                                            'sebSettings.updownloadView.filetypes.fileExtension',
                                         )
                                     "
                                     density="compact"
@@ -48,7 +48,7 @@
                                     density="compact"
                                     :label="
                                         translate(
-                                            'sebSettings.updownloadView.os',
+                                            'sebSettings.updownloadView.filetypes.os',
                                         )
                                     "
                                     :disabled="props.readOnly"
@@ -66,7 +66,7 @@
                                     v-model="props.fileType!.identifier"
                                     :label="
                                         translate(
-                                            'sebSettings.updownloadView.id',
+                                            'sebSettings.updownloadView.filetypes.identifier',
                                         )
                                     "
                                     density="compact"

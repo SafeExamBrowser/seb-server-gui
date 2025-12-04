@@ -46,17 +46,6 @@
                             )
                         "
                     ></v-checkbox-btn>
-                    <v-tooltip
-                        activator="parent"
-                        location="top left"
-                        max-width="400"
-                    >
-                        {{
-                            translate(
-                                "sebSettings.updownloadView.allowDownload_tooltip",
-                            )
-                        }}
-                    </v-tooltip>
                 </v-col>
             </v-row>
             <v-row>
@@ -447,7 +436,7 @@
         <EditFileDownloadRule
             :read-only="sebSettingsStore.readonly"
             :file-type="selectedDownloadFileType"
-            @close-edit-u-r-l-filter-rule="closeFileTypeDialog"
+            @close-file-type-dialog="closeFileTypeDialog"
         >
         </EditFileDownloadRule>
     </v-dialog>

@@ -1007,17 +1007,6 @@
                             :label="translate('sebSettings.browser.uaTouch.1')"
                             value="1"
                         >
-                            <v-tooltip
-                                activator="parent"
-                                location="top left"
-                                max-width="400"
-                            >
-                                {{
-                                    translate(
-                                        "sebSettings.browser.uaTouch.1_tooltip",
-                                    )
-                                }}
-                            </v-tooltip>
                         </v-radio>
                         <v-col :class="sebSettingsStore.fp">
                             <v-text-field
@@ -1267,13 +1256,6 @@
                             )
                         "
                     ></v-checkbox-btn>
-                    <v-tooltip
-                        activator="parent"
-                        location="top left"
-                        max-width="400"
-                    >
-                        {{ translate("sebSettings.browser.media.pic_tooltip") }}
-                    </v-tooltip>
                 </v-col>
             </v-row>
             <v-row>
