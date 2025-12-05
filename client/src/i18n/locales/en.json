@@ -344,10 +344,10 @@
             "role": {
                 "pleaseselect": "Please select a Role for the User Account",
                 "info": {
-                    "SEB_SERVER_ADMIN": "SEB Server Admin role info text",
-                    "INSTITUTIONAL_ADMIN": "Institutional Admin role info text",
-                    "EXAM_ADMIN": "Exam Admin role info text",
-                    "EXAM_SUPPORTER": "Exam Supervisor role info text"
+                    "SEB_SERVER_ADMIN": "A SEB Server Administrator can add and edit the different Institutions in SEB Server. A SEB Server Administrators can also add and edit User Accounts for all Institutions. This is all a SEB Server Administrator sees, if he wants to be able to do more, he needs to create an additional Institutional Admin for himself.",
+                    "INSTITUTIONAL_ADMIN": "An Institutional Administrator sets up SEB Server for his institution. He creates Connection Configurations and Templates, so that the Exam Administrator can easily prepare an exam using an Exam Template. An Institutional Administrator can also manage the User Accounts of his institution. He can do everything what an Exam Administrator and an Exam Supervisor can, that is prepare an exam and also monitor it.",
+                    "EXAM_ADMIN": "An Exam Administrator can prepare and monitor an exam. Preparing an exam, the  Exam Administrator can change part of the SEB Settings for an exam. He has access to the Application and Network Settings of the SEB Settings. To be able to monitor the exam, he needs to add himself as an Exam Supervisor in the exam, he wants to monitor.",
+                    "EXAM_SUPPORTER": "An Exam Supervisor has to be added to an exam as Exam Supervisor to be able to monitor the exam. If you register an account in SEB Server this account automatically receives the Exam Supervisor role. An Institutional Administrator can upgrade a registered account to either Exam Administrator or even Institutional Administrator."
                 }
             }
         },
@@ -370,7 +370,7 @@
             },
             "buttons": {
                 "login": "Login",
-                "register": "Register"
+                "register": "Register"öpäüüüüüüü
             }
         },
 
