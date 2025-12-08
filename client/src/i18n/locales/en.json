@@ -408,6 +408,7 @@
             "summary": {
                 "title": "Overview Exam Template",
                 "subtitle": "TODO: translate (Kristina)",
+                "emptyValue": "No data",
                 "sections": {
                     "naming": {
                         "title": "Basic Settings"

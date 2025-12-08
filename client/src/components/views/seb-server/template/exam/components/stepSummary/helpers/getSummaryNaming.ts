@@ -1,8 +1,6 @@
 import i18n from "@/i18n";
 import { ExamTemplate } from "@/models/seb-server/examTemplate";
 
-const emptyValue = "–" as const;
-
 export const getSummaryNaming = (examTemplate: ExamTemplate) => ({
     label: i18n.global.t(
         "createTemplateExam.steps.summary.sections.naming.title",
@@ -22,7 +20,9 @@ export const getSummaryNaming = (examTemplate: ExamTemplate) => ({
             label: i18n.global.t(
                 "createTemplateExam.steps.naming.fields.description.label",
             ),
-            value: examTemplate.description ?? emptyValue,
+            value:
+                examTemplate.description ??
+                i18n.global.t("createTemplateExam.steps.summary.emptyValue"),
         },
         {
             type: "basic" as const,
@@ -30,7 +30,9 @@ export const getSummaryNaming = (examTemplate: ExamTemplate) => ({
             label: i18n.global.t(
                 "createTemplateExam.steps.naming.fields.examType.label",
             ),
-            value: examTemplate.examType ?? emptyValue, // TODO @alain: translate type
+            value:
+                examTemplate.examType ??
+                i18n.global.t("createTemplateExam.steps.summary.emptyValue"), // TODO @alain: translate type
         },
         {
             type: "basic" as const,
@@ -40,7 +42,7 @@ export const getSummaryNaming = (examTemplate: ExamTemplate) => ({
             ),
             value: examTemplate.clientConfigurationId
                 ? `${examTemplate.clientConfigurationId}` // TODO @alain: show name instead of id
-                : emptyValue,
+                : i18n.global.t("createTemplateExam.steps.summary.emptyValue"),
         },
         {
             type: "basic" as const,
@@ -50,7 +52,7 @@ export const getSummaryNaming = (examTemplate: ExamTemplate) => ({
             ),
             value: examTemplate.configurationTemplateId
                 ? `${examTemplate.configurationTemplateId}` // TODO @alain: show name instead of id
-                : emptyValue,
+                : i18n.global.t("createTemplateExam.steps.summary.emptyValue"),
         },
         {
             type: "basic" as const,

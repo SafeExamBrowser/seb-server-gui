@@ -13,6 +13,9 @@
                     :is-first="index === 0"
                 />
             </template>
+            <template v-if="section.items.length === 0">
+                {{ $t("createTemplateExam.steps.summary.emptyValue") }}
+            </template>
         </div>
     </div>
 </template>
