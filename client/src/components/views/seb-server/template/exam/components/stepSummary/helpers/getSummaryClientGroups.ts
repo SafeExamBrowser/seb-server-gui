@@ -8,7 +8,9 @@ import { SummarySectionItem } from "@/components/views/seb-server/template/exam/
 
 export const getSummaryClientGroups = (examTemplate: ExamTemplate) => {
     const getTypeDetails = (clientGroup: ClientGroupTemplate): string => {
-        let typeDetails = clientGroup.type; // TODO @alain: translate type
+        let typeDetails = i18n.global.t(
+            `createTemplateExam.steps.clientGroup.fields.type.types.${clientGroup.type}`,
+        );
 
         // TODO @alain: look into this again when we have stricter API types.
         // We work with the API types here. They are not very clean,
@@ -21,7 +23,9 @@ export const getSummaryClientGroups = (examTemplate: ExamTemplate) => {
         }
 
         if (clientGroup.type === ClientGroupEnum.CLIENT_OS) {
-            typeDetails += ` (${clientGroup.clientOS})`;
+            typeDetails += ` (${i18n.global.t(
+                `createTemplateExam.steps.clientGroup.fields.clientOS.types.${clientGroup.clientOS}`,
+            )})`;
         }
 
         if (clientGroup.type === ClientGroupEnum.NAME_ALPHABETICAL_RANGE) {
@@ -35,7 +39,7 @@ export const getSummaryClientGroups = (examTemplate: ExamTemplate) => {
         clientGroup: ClientGroupTemplate,
         clientGroupIndex: number,
     ) => {
-        const items: SummarySectionItem[] = [
+        const items = [
             {
                 type: "basic" as const,
                 key: "name",
@@ -52,7 +56,7 @@ export const getSummaryClientGroups = (examTemplate: ExamTemplate) => {
                 ),
                 value: getTypeDetails(clientGroup),
             },
-        ];
+        ] satisfies SummarySectionItem[];
 
         if (
             examTemplate.EXAM_ATTRIBUTES.enableScreenProctoring === "true" &&

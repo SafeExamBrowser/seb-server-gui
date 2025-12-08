@@ -30,9 +30,9 @@ export const getSummaryNaming = (examTemplate: ExamTemplate) => ({
             label: i18n.global.t(
                 "createTemplateExam.steps.naming.fields.examType.label",
             ),
-            value:
-                examTemplate.examType ??
-                i18n.global.t("createTemplateExam.steps.summary.emptyValue"), // TODO @alain: translate type
+            value: examTemplate.examType
+                ? i18n.global.t(examTemplate.examType)
+                : i18n.global.t("createTemplateExam.steps.summary.emptyValue"),
         },
         {
             type: "basic" as const,

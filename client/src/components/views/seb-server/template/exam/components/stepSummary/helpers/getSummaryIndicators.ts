@@ -23,7 +23,9 @@ export const getSummaryIndicators = (examTemplate: ExamTemplate) => ({
                 label: i18n.global.t(
                     "createTemplateExam.steps.indicators.fields.type.label",
                 ),
-                value: indicator.type, // TODO @alain: translate type
+                value: i18n.global.t(
+                    `createTemplateExam.steps.indicators.fields.type.types.${indicator.type}`,
+                ),
             },
             {
                 type: "basic" as const,
