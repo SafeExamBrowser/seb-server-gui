@@ -1,7 +1,7 @@
 <template>
     <div :class="{ 'border-t mt-4 pt-4': !isFirst }">
-        <template v-for="subItem in item.items" :key="subItem.label">
-            <SummarySectionItemBasic :item="subItem" />
+        <template v-for="(subItem, index) in item.items" :key="subItem.label">
+            <SummarySectionItemBasic :item="subItem" :is-first="index === 0" />
         </template>
     </div>
 </template>

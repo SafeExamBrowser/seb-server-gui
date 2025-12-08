@@ -6,6 +6,7 @@
                 <SummarySectionItemBasic
                     v-if="item.type === 'basic'"
                     :item="item"
+                    :is-first="index === 0"
                 />
                 <SummarySectionItemCollection
                     v-if="item.type === 'collection'"
