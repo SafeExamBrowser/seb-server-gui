@@ -3,7 +3,7 @@ import { ExamTemplate } from "@/models/seb-server/examTemplate";
 
 const emptyValue = "–" as const;
 
-export const useSummaryNaming = (examTemplate: ExamTemplate) => ({
+export const getSummaryNaming = (examTemplate: ExamTemplate) => ({
     label: i18n.global.t(
         "createTemplateExam.steps.summary.sections.naming.title",
     ),

@@ -1,7 +1,7 @@
 import i18n from "@/i18n";
 import { ExamTemplate } from "@/models/seb-server/examTemplate";
 
-export const useSummaryIndicators = (examTemplate: ExamTemplate) => ({
+export const getSummaryIndicators = (examTemplate: ExamTemplate) => ({
     label: i18n.global.t(
         "createTemplateExam.steps.summary.sections.indicators.title",
     ),

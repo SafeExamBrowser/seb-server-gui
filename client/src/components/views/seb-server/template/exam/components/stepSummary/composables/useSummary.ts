@@ -2,10 +2,10 @@ import { SummarySectionData } from "@/components/views/seb-server/template/exam/
 import { ComputedRef } from "vue";
 import { computed } from "vue";
 import { useCreateExamTemplateStore } from "@/components/views/seb-server/template/exam/composables/store/useCreateExamTemplateStore";
-import { useSummaryClientGroups } from "@/components/views/seb-server/template/exam/components/stepSummary/composables/useSummaryClientGroups";
-import { useSummaryNaming } from "@/components/views/seb-server/template/exam/components/stepSummary/composables/useSummaryNaming";
-import { useSummaryIndicators } from "@/components/views/seb-server/template/exam/components/stepSummary/composables/useSummaryIndicators";
-import { useSummarySupervisors } from "@/components/views/seb-server/template/exam/components/stepSummary/composables/useSummarySupervisors";
+import { getSummaryClientGroups } from "@/components/views/seb-server/template/exam/components/stepSummary/helpers/getSummaryClientGroups";
+import { getSummaryNaming } from "@/components/views/seb-server/template/exam/components/stepSummary/helpers/getSummaryNaming";
+import { getSummaryIndicators } from "@/components/views/seb-server/template/exam/components/stepSummary/helpers/getSummaryIndicators";
+import { getSummarySupervisors } from "@/components/views/seb-server/template/exam/components/stepSummary/helpers/getSummarySupervisors";
 import { useSupervisors } from "@/composables/useSupervisors";
 
 export const useSummary = (): ComputedRef<SummarySectionData[]> => {
@@ -24,10 +24,10 @@ export const useSummary = (): ComputedRef<SummarySectionData[]> => {
                 : supervisors.value;
 
         return [
-            useSummaryNaming(examTemplate),
-            useSummarySupervisors(examTemplate, userAccounts),
-            useSummaryIndicators(examTemplate),
-            useSummaryClientGroups(examTemplate),
+            getSummaryNaming(examTemplate),
+            getSummarySupervisors(examTemplate, userAccounts),
+            getSummaryIndicators(examTemplate),
+            getSummaryClientGroups(examTemplate),
         ];
     });
 

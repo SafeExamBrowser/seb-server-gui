@@ -2,7 +2,7 @@ import i18n from "@/i18n";
 import { ExamTemplate } from "@/models/seb-server/examTemplate";
 import { UserAccountName } from "@/models/userAccount";
 
-export const useSummarySupervisors = (
+export const getSummarySupervisors = (
     examTemplate: ExamTemplate,
     userAccounts: UserAccountName[],
 ) => {

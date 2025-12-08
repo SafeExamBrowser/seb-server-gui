@@ -5,7 +5,7 @@ import {
 } from "@/models/seb-server/examTemplate";
 import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
 
-export const useSummaryClientGroups = (examTemplate: ExamTemplate) => {
+export const getSummaryClientGroups = (examTemplate: ExamTemplate) => {
     const getTypeDetails = (clientGroup: ClientGroupTemplate): string => {
         let typeDetails = clientGroup.type; // TODO @alain: translate type
 
