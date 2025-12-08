@@ -30,31 +30,63 @@ export const getSummaryClientGroups = (examTemplate: ExamTemplate) => {
         return typeDetails;
     };
 
+    const getSummaryClientGroup = (
+        clientGroup: ClientGroupTemplate,
+        clientGroupIndex: number,
+    ) => {
+        const items = [
+            {
+                type: "basic" as const,
+                key: "name",
+                label: i18n.global.t(
+                    "createTemplateExam.steps.clientGroup.fields.name.label",
+                ),
+                value: clientGroup.name,
+            },
+            {
+                type: "basic" as const,
+                key: "typeDetails",
+                label: i18n.global.t(
+                    "createTemplateExam.steps.clientGroup.fields.type.label",
+                ),
+                value: getTypeDetails(clientGroup),
+            },
+        ];
+
+        if (
+            examTemplate.EXAM_ATTRIBUTES.enableScreenProctoring === "true" &&
+            examTemplate.EXAM_ATTRIBUTES.spsCollectingStrategy ===
+                "APPLY_SEB_GROUPS" &&
+            examTemplate.EXAM_ATTRIBUTES.spsSEBGroupsSelection
+        ) {
+            items.push({
+                type: "basic" as const,
+                key: "screenProctoringEnabled",
+                label: i18n.global.t(
+                    "createTemplateExam.steps.clientGroup.fields.screenProctoringEnabled.label",
+                ),
+                value: examTemplate.EXAM_ATTRIBUTES.spsSEBGroupsSelection.includes(
+                    clientGroupIndex.toString(),
+                )
+                    ? "Yes"
+                    : "No", // TODO @alain: bool/i18n?
+            });
+        }
+
+        return {
+            type: "collection" as const,
+            key: `clientGroup-${clientGroup.name}`,
+            items,
+        };
+    };
+
     return {
         label: i18n.global.t(
             "createTemplateExam.steps.summary.sections.clientGroup.title",
         ),
-        items: examTemplate.CLIENT_GROUP_TEMPLATES.map((clientGroup) => ({
-            type: "collection" as const,
-            key: `clientGroup-${clientGroup.name}`,
-            items: [
-                {
-                    type: "basic" as const,
-                    key: "name",
-                    label: i18n.global.t(
-                        "createTemplateExam.steps.clientGroup.fields.name.label",
-                    ),
-                    value: clientGroup.name,
-                },
-                {
-                    type: "basic" as const,
-                    key: "typeDetails",
-                    label: i18n.global.t(
-                        "createTemplateExam.steps.clientGroup.fields.type.label",
-                    ),
-                    value: getTypeDetails(clientGroup),
-                },
-            ],
-        })),
+        items: examTemplate.CLIENT_GROUP_TEMPLATES.map(
+            (clientGroup, clientGroupIndex) =>
+                getSummaryClientGroup(clientGroup, clientGroupIndex),
+        ),
     };
 };

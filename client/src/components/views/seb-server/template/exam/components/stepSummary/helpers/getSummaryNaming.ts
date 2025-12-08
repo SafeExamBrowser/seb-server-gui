@@ -68,5 +68,16 @@ export const getSummaryNaming = (examTemplate: ExamTemplate) => ({
             ),
             value: examTemplate.institutionalDefault ? "Yes" : "No", // TODO @alain: bool?
         },
+        {
+            type: "basic" as const,
+            key: "screenProctoringEnabled",
+            label: i18n.global.t(
+                "createTemplateExam.general.fields.screenProctoringEnabled.label",
+            ),
+            value:
+                examTemplate.EXAM_ATTRIBUTES.enableScreenProctoring === "true"
+                    ? "Yes"
+                    : "No", // TODO @alain: bool/i18n?
+        },
     ],
 });
