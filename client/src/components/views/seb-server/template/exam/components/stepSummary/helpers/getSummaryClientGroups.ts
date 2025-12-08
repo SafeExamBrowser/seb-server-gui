@@ -19,7 +19,7 @@ export const getSummaryClientGroups = (examTemplate: ExamTemplate) => {
         // a missing clientGroup.clientOS would cause uncaught errors).
         // Hopefully we can have stricter API types in the future so we can be more precise here.
         if (clientGroup.type === ClientGroupEnum.IP_V4_RANGE) {
-            typeDetails += ` (${clientGroup.ipRangeStart} - ${clientGroup.ipRangeEnd})`;
+            typeDetails += ` (${clientGroup.ipRangeStart} – ${clientGroup.ipRangeEnd})`;
         }
 
         if (clientGroup.type === ClientGroupEnum.CLIENT_OS) {
@@ -29,7 +29,7 @@ export const getSummaryClientGroups = (examTemplate: ExamTemplate) => {
         }
 
         if (clientGroup.type === ClientGroupEnum.NAME_ALPHABETICAL_RANGE) {
-            typeDetails += ` (${clientGroup.nameRangeStartLetter} - ${clientGroup.nameRangeEndLetter})`;
+            typeDetails += ` (${clientGroup.nameRangeStartLetter} – ${clientGroup.nameRangeEndLetter})`;
         }
 
         return typeDetails;
