@@ -60,7 +60,7 @@ export const getSummaryNaming = (examTemplate: ExamTemplate) => ({
             label: i18n.global.t(
                 "createTemplateExam.steps.naming.fields.lmsIntegration.label",
             ),
-            value: examTemplate.lmsIntegration ? "Yes" : "No", // TODO @alain: bool?
+            value: examTemplate.lmsIntegration,
         },
         {
             type: "basic" as const,
@@ -68,7 +68,7 @@ export const getSummaryNaming = (examTemplate: ExamTemplate) => ({
             label: i18n.global.t(
                 "createTemplateExam.steps.naming.fields.institutionalDefault.label",
             ),
-            value: examTemplate.institutionalDefault ? "Yes" : "No", // TODO @alain: bool?
+            value: examTemplate.institutionalDefault,
         },
         {
             type: "basic" as const,
@@ -77,9 +77,7 @@ export const getSummaryNaming = (examTemplate: ExamTemplate) => ({
                 "createTemplateExam.general.fields.screenProctoringEnabled.label",
             ),
             value:
-                examTemplate.EXAM_ATTRIBUTES.enableScreenProctoring === "true"
-                    ? "Yes"
-                    : "No", // TODO @alain: bool/i18n?
+                examTemplate.EXAM_ATTRIBUTES.enableScreenProctoring === "true",
         },
     ],
 });

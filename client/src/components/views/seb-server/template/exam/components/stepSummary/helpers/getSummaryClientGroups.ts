@@ -4,6 +4,7 @@ import {
     ExamTemplate,
 } from "@/models/seb-server/examTemplate";
 import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
+import { SummarySectionItem } from "@/components/views/seb-server/template/exam/components/stepSummary/components/types";
 
 export const getSummaryClientGroups = (examTemplate: ExamTemplate) => {
     const getTypeDetails = (clientGroup: ClientGroupTemplate): string => {
@@ -34,7 +35,7 @@ export const getSummaryClientGroups = (examTemplate: ExamTemplate) => {
         clientGroup: ClientGroupTemplate,
         clientGroupIndex: number,
     ) => {
-        const items = [
+        const items: SummarySectionItem[] = [
             {
                 type: "basic" as const,
                 key: "name",
@@ -67,9 +68,7 @@ export const getSummaryClientGroups = (examTemplate: ExamTemplate) => {
                 ),
                 value: examTemplate.EXAM_ATTRIBUTES.spsSEBGroupsSelection.includes(
                     clientGroupIndex.toString(),
-                )
-                    ? "Yes"
-                    : "No", // TODO @alain: bool/i18n?
+                ),
             });
         }
 

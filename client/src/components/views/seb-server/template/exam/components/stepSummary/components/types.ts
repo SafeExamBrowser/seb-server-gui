@@ -4,7 +4,7 @@ export type SummarySectionItem = {
     | {
           type: "basic";
           label: string;
-          value: string;
+          value: string | boolean;
       }
     | {
           type: "collection";

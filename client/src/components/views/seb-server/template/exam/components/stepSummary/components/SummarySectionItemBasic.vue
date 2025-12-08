@@ -8,7 +8,19 @@
         <b class="flex-shrink-0 flex-grow-0" style="width: 170px">{{
             item.label
         }}</b>
-        <span class="flex-shrink-1 flex-grow-1">{{ item.value }}</span>
+        <span class="flex-shrink-1 flex-grow-1">
+            <template v-if="typeof item.value === 'boolean'">
+                <v-icon
+                    :icon="item.value ? 'mdi-check' : 'mdi-close'"
+                    :title="
+                        item.value ? $t('general.true') : $t('general.false')
+                    "
+                ></v-icon>
+            </template>
+            <template v-else>
+                {{ item.value }}
+            </template>
+        </span>
     </div>
 </template>
 <script setup lang="ts">
