@@ -1,4 +1,3 @@
-import { SummarySectionData } from "@/components/views/seb-server/template/exam/components/stepSummary/components/types";
 import i18n from "@/i18n";
 import {
     ClientGroupTemplate,
@@ -6,9 +5,7 @@ import {
 } from "@/models/seb-server/examTemplate";
 import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
 
-export const useSummaryClientGroups = (
-    examTemplate: ExamTemplate,
-): SummarySectionData => {
+export const useSummaryClientGroups = (examTemplate: ExamTemplate) => {
     const getTypeDetails = (clientGroup: ClientGroupTemplate): string => {
         let typeDetails = clientGroup.type; // TODO @alain: translate type
 
@@ -38,11 +35,11 @@ export const useSummaryClientGroups = (
             "createTemplateExam.steps.summary.sections.clientGroup.title",
         ),
         items: examTemplate.CLIENT_GROUP_TEMPLATES.map((clientGroup) => ({
-            type: "collection",
+            type: "collection" as const,
             key: `clientGroup-${clientGroup.name}`,
             items: [
                 {
-                    type: "basic",
+                    type: "basic" as const,
                     key: "name",
                     label: i18n.global.t(
                         "createTemplateExam.steps.clientGroup.fields.name.label",
@@ -50,7 +47,7 @@ export const useSummaryClientGroups = (
                     value: clientGroup.name,
                 },
                 {
-                    type: "basic",
+                    type: "basic" as const,
                     key: "typeDetails",
                     label: i18n.global.t(
                         "createTemplateExam.steps.clientGroup.fields.type.label",

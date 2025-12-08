@@ -1,18 +1,15 @@
-import { SummarySectionData } from "@/components/views/seb-server/template/exam/components/stepSummary/components/types";
 import i18n from "@/i18n";
 import { ExamTemplate } from "@/models/seb-server/examTemplate";
 
 const emptyValue = "–" as const;
 
-export const useSummaryNaming = (
-    examTemplate: ExamTemplate,
-): SummarySectionData => ({
+export const useSummaryNaming = (examTemplate: ExamTemplate) => ({
     label: i18n.global.t(
         "createTemplateExam.steps.summary.sections.naming.title",
     ),
     items: [
         {
-            type: "basic",
+            type: "basic" as const,
             key: "name",
             label: i18n.global.t(
                 "createTemplateExam.steps.naming.fields.name.label",
@@ -20,7 +17,7 @@ export const useSummaryNaming = (
             value: examTemplate.name,
         },
         {
-            type: "basic",
+            type: "basic" as const,
             key: "description",
             label: i18n.global.t(
                 "createTemplateExam.steps.naming.fields.description.label",
@@ -28,7 +25,7 @@ export const useSummaryNaming = (
             value: examTemplate.description ?? emptyValue,
         },
         {
-            type: "basic",
+            type: "basic" as const,
             key: "examType",
             label: i18n.global.t(
                 "createTemplateExam.steps.naming.fields.examType.label",
@@ -36,7 +33,7 @@ export const useSummaryNaming = (
             value: examTemplate.examType ?? emptyValue, // TODO @alain: translate type
         },
         {
-            type: "basic",
+            type: "basic" as const,
             key: "clientConfiguration",
             label: i18n.global.t(
                 "createTemplateExam.steps.naming.fields.clientConfiguration.label",
@@ -46,7 +43,7 @@ export const useSummaryNaming = (
                 : emptyValue,
         },
         {
-            type: "basic",
+            type: "basic" as const,
             key: "configurationTemplate",
             label: i18n.global.t(
                 "createTemplateExam.steps.naming.fields.configurationTemplate.label",
@@ -56,7 +53,7 @@ export const useSummaryNaming = (
                 : emptyValue,
         },
         {
-            type: "basic",
+            type: "basic" as const,
             key: "lmsIntegration",
             label: i18n.global.t(
                 "createTemplateExam.steps.naming.fields.lmsIntegration.label",
@@ -64,7 +61,7 @@ export const useSummaryNaming = (
             value: examTemplate.lmsIntegration ? "Yes" : "No", // TODO @alain: bool?
         },
         {
-            type: "basic",
+            type: "basic" as const,
             key: "institutionalDefault",
             label: i18n.global.t(
                 "createTemplateExam.steps.naming.fields.institutionalDefault.label",

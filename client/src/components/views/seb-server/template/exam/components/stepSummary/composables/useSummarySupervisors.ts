@@ -17,7 +17,8 @@ export const useSummarySupervisors = (
 
         return [
             {
-                type: "basic",
+                type: "basic" as const,
+                key: "name",
                 label: i18n.global.t(
                     "createTemplateExam.steps.summary.sections.supervisors.fields.user.label",
                 ),
@@ -31,7 +32,7 @@ export const useSummarySupervisors = (
             "createTemplateExam.steps.summary.sections.supervisors.title",
         ),
         items: examTemplate.supporter.map((supervisorId) => ({
-            type: "collection",
+            type: "collection" as const,
             key: `supervisor-${supervisorId}`,
             items: getSupervisorItems(supervisorId),
         })),
