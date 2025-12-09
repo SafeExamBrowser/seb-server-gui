@@ -90,19 +90,6 @@ export const getSummaryNaming = (
             },
             {
                 type: "basic" as const,
-                key: "clientConfiguration",
-                label: i18n.global.t(
-                    "createTemplateExam.steps.naming.fields.clientConfiguration.label",
-                ),
-                value: {
-                    type: "string",
-                    value: getClientConfigurationValue(
-                        examTemplate.clientConfigurationId,
-                    ),
-                },
-            },
-            {
-                type: "basic" as const,
                 key: "configurationTemplate",
                 label: i18n.global.t(
                     "createTemplateExam.steps.naming.fields.configurationTemplate.label",
@@ -111,6 +98,19 @@ export const getSummaryNaming = (
                     type: "string",
                     value: getConfigurationTemplateValue(
                         examTemplate.configurationTemplateId,
+                    ),
+                },
+            },
+            {
+                type: "basic" as const,
+                key: "clientConfiguration",
+                label: i18n.global.t(
+                    "createTemplateExam.steps.naming.fields.clientConfiguration.label",
+                ),
+                value: {
+                    type: "string",
+                    value: getClientConfigurationValue(
+                        examTemplate.clientConfigurationId,
                     ),
                 },
             },
