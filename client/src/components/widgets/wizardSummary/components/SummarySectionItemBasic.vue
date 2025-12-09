@@ -11,9 +11,11 @@
         <span class="flex-shrink-1 flex-grow-1">
             <template v-if="item.value.type === 'boolean'">
                 <v-icon
-                    :icon="item.value ? 'mdi-check' : 'mdi-close'"
+                    :icon="item.value.value ? 'mdi-check' : 'mdi-close'"
                     :title="
-                        item.value ? $t('general.true') : $t('general.false')
+                        item.value.value
+                            ? $t('general.true')
+                            : $t('general.false')
                     "
                 ></v-icon>
             </template>
