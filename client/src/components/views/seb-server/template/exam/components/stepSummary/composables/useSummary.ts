@@ -1,4 +1,4 @@
-import { SummarySectionData } from "@/components/views/seb-server/template/exam/components/stepSummary/components/types";
+import { SummarySectionData } from "@/components/widgets/wizardSummary/types";
 import { ComputedRef } from "vue";
 import { computed } from "vue";
 import { useCreateExamTemplateStore } from "@/components/views/seb-server/template/exam/composables/store/useCreateExamTemplateStore";

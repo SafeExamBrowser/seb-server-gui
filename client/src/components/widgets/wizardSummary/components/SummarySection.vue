@@ -21,9 +21,9 @@
     </div>
 </template>
 <script setup lang="ts">
-import SummarySectionItemBasic from "@/components/views/seb-server/template/exam/components/stepSummary/components/SummarySectionItemBasic.vue";
-import SummarySectionItemCollection from "@/components/views/seb-server/template/exam/components/stepSummary/components/SummarySectionItemCollection.vue";
-import { SummarySectionData } from "@/components/views/seb-server/template/exam/components/stepSummary/components/types";
+import SummarySectionItemBasic from "./SummarySectionItemBasic.vue";
+import SummarySectionItemCollection from "./SummarySectionItemCollection.vue";
+import { SummarySectionData } from "@/components/widgets/wizardSummary/types";
 import SectionSubtitle from "@/components/widgets/SectionSubtitle.vue";
 
 defineProps<{

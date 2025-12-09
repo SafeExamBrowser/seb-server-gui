@@ -9,7 +9,7 @@
 <script setup lang="ts">
 import StepItem from "@/components/widgets/stepItem/StepItem.vue";
 import { useSummary } from "@/components/views/seb-server/template/exam/components/stepSummary/composables/useSummary";
-import WizardSummary from "@/components/views/seb-server/template/exam/components/stepSummary/components/WizardSummary.vue";
+import WizardSummary from "@/components/widgets/wizardSummary/WizardSummary.vue";
 
 const summarySections = useSummary();
 </script>

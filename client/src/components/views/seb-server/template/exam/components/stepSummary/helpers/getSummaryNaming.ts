@@ -1,6 +1,6 @@
 import i18n from "@/i18n";
 import { ExamTemplate } from "@/models/seb-server/examTemplate";
-import { SummarySectionData } from "@/components/views/seb-server/template/exam/components/stepSummary/components/types";
+import { SummarySectionData } from "@/components/widgets/wizardSummary/types";
 
 export const getSummaryNaming = (
     examTemplate: ExamTemplate,

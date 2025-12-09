@@ -1,7 +1,7 @@
 import {
     SummarySectionData,
     SummarySectionItem,
-} from "@/components/views/seb-server/template/exam/components/stepSummary/components/types";
+} from "@/components/widgets/wizardSummary/types";
 import i18n from "@/i18n";
 import { ExamTemplate } from "@/models/seb-server/examTemplate";
 import { UserAccountName } from "@/models/userAccount";

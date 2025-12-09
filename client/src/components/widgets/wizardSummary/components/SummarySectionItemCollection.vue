@@ -6,8 +6,8 @@
     </div>
 </template>
 <script setup lang="ts">
-import SummarySectionItemBasic from "@/components/views/seb-server/template/exam/components/stepSummary/components/SummarySectionItemBasic.vue";
-import { SummarySectionItem } from "@/components/views/seb-server/template/exam/components/stepSummary/components/types";
+import SummarySectionItemBasic from "./SummarySectionItemBasic.vue";
+import { SummarySectionItem } from "@/components/widgets/wizardSummary/types";
 
 defineProps<{
     item: SummarySectionItem & { type: "collection" };

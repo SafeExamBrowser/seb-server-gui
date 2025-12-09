@@ -39,7 +39,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import { SummarySectionItem } from "@/components/views/seb-server/template/exam/components/stepSummary/components/types";
+import { SummarySectionItem } from "@/components/widgets/wizardSummary/types";
 
 defineProps<{
     item: SummarySectionItem & { type: "basic" };

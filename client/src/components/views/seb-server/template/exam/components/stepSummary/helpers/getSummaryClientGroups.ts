@@ -7,7 +7,7 @@ import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
 import {
     SummarySectionData,
     SummarySectionItem,
-} from "@/components/views/seb-server/template/exam/components/stepSummary/components/types";
+} from "@/components/widgets/wizardSummary/types";
 
 export const getSummaryClientGroups = (
     examTemplate: ExamTemplate,

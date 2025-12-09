@@ -8,8 +8,8 @@
     </div>
 </template>
 <script setup lang="ts">
-import SummarySection from "@/components/views/seb-server/template/exam/components/stepSummary/components/SummarySection.vue";
-import { SummarySectionData } from "@/components/views/seb-server/template/exam/components/stepSummary/components/types";
+import SummarySection from "./components/SummarySection.vue";
+import { SummarySectionData } from "./types";
 
 defineProps<{
     sections: SummarySectionData[];
