@@ -7,6 +7,7 @@
         />
     </div>
 </template>
+
 <script setup lang="ts">
 import SummarySection from "./components/SummarySection.vue";
 import { SummarySectionData } from "./types";

@@ -23,25 +23,21 @@
                 {{ item.value.value }}
             </template>
             <template v-else-if="item.value.type === 'thresholds'">
-                <template
-                    v-for="threshold in item.value.value"
-                    :key="threshold.value"
-                >
-                    <v-chip
-                        variant="flat"
-                        :color="`#${threshold.color}`"
-                        class="me-1"
-                        density="compact"
+                <div class="d-flex flex-wrap ga-1">
+                    <template
+                        v-for="threshold in item.value.value"
+                        :key="threshold.value"
                     >
-                        {{ threshold.value }}% / #{{ threshold.color }}</v-chip
-                    >
-                </template>
+                        <ChipThreshold :threshold="threshold" />
+                    </template>
+                </div>
             </template>
         </span>
     </div>
 </template>
 <script setup lang="ts">
 import { SummarySectionItem } from "@/components/widgets/wizardSummary/types";
+import ChipThreshold from "@/components/widgets/chipThreshold/ChipThreshold.vue";
 
 defineProps<{
     item: SummarySectionItem & { type: "basic" };
