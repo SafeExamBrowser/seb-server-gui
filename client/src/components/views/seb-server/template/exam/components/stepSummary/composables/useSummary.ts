@@ -1,5 +1,4 @@
 import { SummarySectionData } from "@/components/widgets/wizardSummary/types";
-import { ComputedRef } from "vue";
 import { computed } from "vue";
 import { useCreateExamTemplateStore } from "@/components/views/seb-server/template/exam/composables/store/useCreateExamTemplateStore";
 import { getSummaryClientGroups } from "@/components/views/seb-server/template/exam/components/stepSummary/helpers/getSummaryClientGroups";
@@ -10,7 +9,7 @@ import { useSupervisors } from "@/composables/useSupervisors";
 import { useConfigurationTemplateNames } from "@/composables/useConfigurationTemplateNames";
 import { useClientConfigurationNames } from "@/composables/useClientConfigurationNames";
 
-export const useSummary = (): ComputedRef<SummarySectionData[]> => {
+export const useSummary = () => {
     const examTemplate = useCreateExamTemplateStore().examTemplate;
 
     const {
@@ -31,39 +30,37 @@ export const useSummary = (): ComputedRef<SummarySectionData[]> => {
         error: errorClientConfigurationNames,
     } = useClientConfigurationNames();
 
-    const summary = computed<SummarySectionData[]>(() => {
-        const userAccounts =
+    const loading = computed(
+        () =>
             loadingSupervisors.value ||
-            errorSupervisors.value ||
-            !supervisors.value
-                ? []
-                : supervisors.value;
-
-        const configurationTemplates =
             loadingConfigurationTemplateNames.value ||
-            errorConfigurationTemplateNames.value ||
-            !configurationTemplateNames.value
-                ? []
-                : configurationTemplateNames.value;
+            loadingClientConfigurationNames.value,
+    );
 
-        const clientConfigurations =
-            loadingClientConfigurationNames.value ||
-            errorClientConfigurationNames.value ||
-            !clientConfigurationNames.value
-                ? []
-                : clientConfigurationNames.value;
+    const errors = computed(() =>
+        [
+            errorSupervisors.value,
+            errorConfigurationTemplateNames.value,
+            errorClientConfigurationNames.value,
+        ].filter((error) => error !== undefined),
+    );
+
+    const summarySections = computed<SummarySectionData[]>(() => {
+        if (loading.value || errors.value.length > 0) {
+            return [];
+        }
 
         return [
             getSummaryNaming(
                 examTemplate,
-                configurationTemplates,
-                clientConfigurations,
+                configurationTemplateNames.value ?? [],
+                clientConfigurationNames.value ?? [],
             ),
-            getSummarySupervisors(examTemplate, userAccounts),
+            getSummarySupervisors(examTemplate, supervisors.value ?? []),
             getSummaryIndicators(examTemplate),
             getSummaryClientGroups(examTemplate),
         ];
     });
 
-    return summary;
+    return { summarySections, loading, errors };
 };
