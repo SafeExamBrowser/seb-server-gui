@@ -1,10 +1,26 @@
+import { Threshold } from "@/models/seb-server/examTemplate";
+
+type SummarySectionValueType =
+    | {
+          type: "string";
+          value: string;
+      }
+    | {
+          type: "boolean";
+          value: boolean;
+      }
+    | {
+          type: "thresholds";
+          value: Threshold[];
+      };
+
 export type SummarySectionItem = {
     key: string;
 } & (
     | {
           type: "basic";
           label: string;
-          value: string | boolean;
+          value: SummarySectionValueType;
       }
     | {
           type: "collection";

@@ -1,3 +1,7 @@
+import {
+    SummarySectionData,
+    SummarySectionItem,
+} from "@/components/views/seb-server/template/exam/components/stepSummary/components/types";
 import i18n from "@/i18n";
 import { ExamTemplate } from "@/models/seb-server/examTemplate";
 import { UserAccountName } from "@/models/userAccount";
@@ -5,7 +9,7 @@ import { UserAccountName } from "@/models/userAccount";
 export const getSummarySupervisors = (
     examTemplate: ExamTemplate,
     userAccounts: UserAccountName[],
-) => {
+): SummarySectionData => {
     const getSupervisorItems = (supervisorId: string) => {
         const supervisorName = userAccounts.find(
             (userAccount) => userAccount.modelId === supervisorId,
@@ -22,9 +26,9 @@ export const getSummarySupervisors = (
                 label: i18n.global.t(
                     "createTemplateExam.steps.summary.sections.supervisors.fields.user.label",
                 ),
-                value: supervisorName,
+                value: { type: "string", value: supervisorName },
             },
-        ];
+        ] satisfies SummarySectionItem[];
     };
 
     return {

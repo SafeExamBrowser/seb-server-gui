@@ -9,7 +9,7 @@
             item.label
         }}</b>
         <span class="flex-shrink-1 flex-grow-1">
-            <template v-if="typeof item.value === 'boolean'">
+            <template v-if="item.value.type === 'boolean'">
                 <v-icon
                     :icon="item.value ? 'mdi-check' : 'mdi-close'"
                     :title="
@@ -17,8 +17,23 @@
                     "
                 ></v-icon>
             </template>
-            <template v-else>
-                {{ item.value }}
+            <template v-else-if="item.value.type === 'string'">
+                {{ item.value.value }}
+            </template>
+            <template v-else-if="item.value.type === 'thresholds'">
+                <template
+                    v-for="threshold in item.value.value"
+                    :key="threshold.value"
+                >
+                    <v-chip
+                        variant="flat"
+                        :color="`#${threshold.color}`"
+                        class="me-1"
+                        density="compact"
+                    >
+                        {{ threshold.value }}% / #{{ threshold.color }}</v-chip
+                    >
+                </template>
             </template>
         </span>
     </div>

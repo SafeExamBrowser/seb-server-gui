@@ -4,9 +4,14 @@ import {
     ExamTemplate,
 } from "@/models/seb-server/examTemplate";
 import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
-import { SummarySectionItem } from "@/components/views/seb-server/template/exam/components/stepSummary/components/types";
+import {
+    SummarySectionData,
+    SummarySectionItem,
+} from "@/components/views/seb-server/template/exam/components/stepSummary/components/types";
 
-export const getSummaryClientGroups = (examTemplate: ExamTemplate) => {
+export const getSummaryClientGroups = (
+    examTemplate: ExamTemplate,
+): SummarySectionData => {
     const getTypeDetails = (clientGroup: ClientGroupTemplate): string => {
         let typeDetails = i18n.global.t(
             `createTemplateExam.steps.clientGroup.fields.type.types.${clientGroup.type}`,
@@ -39,14 +44,14 @@ export const getSummaryClientGroups = (examTemplate: ExamTemplate) => {
         clientGroup: ClientGroupTemplate,
         clientGroupIndex: number,
     ) => {
-        const items = [
+        const items: (SummarySectionItem & { type: "basic" })[] = [
             {
                 type: "basic" as const,
                 key: "name",
                 label: i18n.global.t(
                     "createTemplateExam.steps.clientGroup.fields.name.label",
                 ),
-                value: clientGroup.name,
+                value: { type: "string", value: clientGroup.name },
             },
             {
                 type: "basic" as const,
@@ -54,9 +59,12 @@ export const getSummaryClientGroups = (examTemplate: ExamTemplate) => {
                 label: i18n.global.t(
                     "createTemplateExam.steps.clientGroup.fields.type.label",
                 ),
-                value: getTypeDetails(clientGroup),
+                value: {
+                    type: "string",
+                    value: getTypeDetails(clientGroup),
+                },
             },
-        ] satisfies SummarySectionItem[];
+        ];
 
         if (
             examTemplate.EXAM_ATTRIBUTES.enableScreenProctoring === "true" &&
@@ -70,9 +78,12 @@ export const getSummaryClientGroups = (examTemplate: ExamTemplate) => {
                 label: i18n.global.t(
                     "createTemplateExam.steps.clientGroup.fields.screenProctoringEnabled.label",
                 ),
-                value: examTemplate.EXAM_ATTRIBUTES.spsSEBGroupsSelection.includes(
-                    clientGroupIndex.toString(),
-                ),
+                value: {
+                    type: "boolean",
+                    value: examTemplate.EXAM_ATTRIBUTES.spsSEBGroupsSelection.includes(
+                        clientGroupIndex.toString(),
+                    ),
+                },
             });
         }
 

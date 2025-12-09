@@ -1,7 +1,10 @@
 import i18n from "@/i18n";
 import { ExamTemplate } from "@/models/seb-server/examTemplate";
+import { SummarySectionData } from "@/components/views/seb-server/template/exam/components/stepSummary/components/types";
 
-export const getSummaryIndicators = (examTemplate: ExamTemplate) => ({
+export const getSummaryIndicators = (
+    examTemplate: ExamTemplate,
+): SummarySectionData => ({
     label: i18n.global.t(
         "createTemplateExam.steps.summary.sections.indicators.title",
     ),
@@ -15,7 +18,7 @@ export const getSummaryIndicators = (examTemplate: ExamTemplate) => ({
                 label: i18n.global.t(
                     "createTemplateExam.steps.indicators.fields.name.label",
                 ),
-                value: indicator.name,
+                value: { type: "string", value: indicator.name },
             },
             {
                 type: "basic" as const,
@@ -23,9 +26,12 @@ export const getSummaryIndicators = (examTemplate: ExamTemplate) => ({
                 label: i18n.global.t(
                     "createTemplateExam.steps.indicators.fields.type.label",
                 ),
-                value: i18n.global.t(
-                    `createTemplateExam.steps.indicators.fields.type.types.${indicator.type}`,
-                ),
+                value: {
+                    type: "string",
+                    value: i18n.global.t(
+                        `createTemplateExam.steps.indicators.fields.type.types.${indicator.type}`,
+                    ),
+                },
             },
             {
                 type: "basic" as const,
@@ -33,12 +39,10 @@ export const getSummaryIndicators = (examTemplate: ExamTemplate) => ({
                 label: i18n.global.t(
                     "createTemplateExam.steps.indicators.fields.thresholds.label",
                 ),
-                value: indicator.thresholds
-                    .map(
-                        (threshold) =>
-                            `${threshold.value} (#${threshold.color})`,
-                    )
-                    .join(" | "), // TODO @alain: colored thresholds
+                value: {
+                    type: "thresholds",
+                    value: indicator.thresholds,
+                },
             },
         ],
     })),
