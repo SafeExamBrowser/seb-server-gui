@@ -1148,6 +1148,7 @@
             "quitLink": {
                 "title": "Link to quit SEB after exam",
                 "quitURL": "Place this quit link to the 'feedback' page displayed after an exam was successfully finished. Clicking that link will quit SEB without having to enter the quit password.",
+                "quitURL_title": "URL",
                 "quitURLConfirm": "Ask user to confirm quitting",
                 "quitURLRestart": "Restart instead of quitting"
             },
@@ -1156,22 +1157,24 @@
                 "text": "The back to start button reloads the exam's Start URL",
                 "restartExamUseStartURL": "Use Start URL",
                 "restartExamUseStartURL_tooltip": "The back to start button reloads the exam's Start URL",
-                "restartExamURL": "Enter custom URL or select 'Use Start URL' to display a back to start button in the SEB taskbar.",
-                "restartExamText": "Title/tool tip text for the back to start button (leave empty for localized standard text)",
+                "restartExamURL_text": "Enter custom URL or select 'Use Start URL' to display a back to start button in the SEB taskbar.",
+                "restartExamURL": "URL",
+                "restartExamText_text": "Title/tool tip text for the back to start button (leave empty for localized standard text)",
+                "restartExamText": "Tooltip text",
                 "restartExamPasswordProtected": "Protect back to start button with the quit/unlock password",
                 "restartExamPasswordProtected_tooltip": "The quit/restart password (if set) must be entered when the back to start button was pressed"
             },
             "reconfigure": {
                 "title": "Reconfiguring Exam Session",
-                "text": "Allow reconfiguring by loading an SEB exam config file (while using the client config or during an exam session). If the running session has a quit password set, indicate the allows URL of the new exam config in Reconfiguring URL (wildcard character '*' can be used).",
                 "examSessionReconfigureAllow": "Allow Reconfiguring",
                 "examSessionReconfigureAllow_tooltip": "Allow reconfiguring by loading an SEB exam config file (while using the client config or during an exam session). If the running session has a quit password set, indicate the allows URL of the new exam config in Reconfiguring URL (wildcard character '*' can be used).",
                 "examSessionReconfigureConfigURL": "Reconfiguring URL"
             },
-            "queryString": "Query String Parameter",
-            "text": "The seb(s):// link to the config file can contain an additional query string, separated from the main URL by '?' or '??' (if the URL itself doesn't contain a query). SEB will then append this query string to the Start URL.",
-            "startURLAppendQueryParameter": "Allow Query Parameter",
-            "startURLAppendQueryParameter_tooltip": "If a seb(s):// link contains additional query string, SEB appends it to the exam's Start URL."
+            "query": {
+                "title": "Query String Parameter",
+                "startURLAppendQueryParameter": "Allow Query Parameter",
+                "startURLAppendQueryParameter_tooltip": "If a seb(s):// link contains additional query string, SEB appends it to the exam's Start URL."
+            }
         },
         "applicationView": {
             "allowSwitchToApplications": "Allow switching to third party application (Mac)",
