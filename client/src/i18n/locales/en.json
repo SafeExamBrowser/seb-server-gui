@@ -266,7 +266,7 @@
         },
         "steps": {
             "naming": {
-                "title": "Define basic settings",
+                "title": "Define Basic Settings",
                 "subtitle": "Fill out the form. Create a SEB Client Template and a Connection Configuration, if you haven't done so already.",
                 "fields": {
                     "name": {
