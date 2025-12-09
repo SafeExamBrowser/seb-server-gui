@@ -15,10 +15,6 @@ export const getSummarySupervisors = (
             (userAccount) => userAccount.modelId === supervisorId,
         )?.name;
 
-        if (!supervisorName) {
-            return [];
-        }
-
         return [
             {
                 type: "basic" as const,
@@ -26,7 +22,14 @@ export const getSummarySupervisors = (
                 label: i18n.global.t(
                     "createTemplateExam.steps.summary.sections.supervisors.fields.user.label",
                 ),
-                value: { type: "string", value: supervisorName },
+                value: {
+                    type: "string",
+                    value:
+                        supervisorName ??
+                        i18n.global.t(
+                            "createTemplateExam.steps.summary.notFoundValue",
+                        ),
+                },
             },
         ] satisfies SummarySectionItem[];
     };
