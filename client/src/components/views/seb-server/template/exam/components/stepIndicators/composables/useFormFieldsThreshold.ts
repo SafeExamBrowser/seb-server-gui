@@ -46,6 +46,7 @@ export const useFormFieldsThreshold = (
                 ),
                 min: 0,
                 max: 100,
+                unit: "%",
             },
             {
                 type: "color" as const,

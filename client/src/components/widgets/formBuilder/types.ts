@@ -47,6 +47,7 @@ export type FormFieldSimple = FormFieldBase &
               required?: boolean;
               min?: number;
               max?: number;
+              unit?: string;
               model: Ref<number | undefined>;
           }
         | {
