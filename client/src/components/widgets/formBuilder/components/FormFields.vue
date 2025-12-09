@@ -39,6 +39,7 @@
                     ...getBaseProperties(field),
                     ...getTextualProperties(field),
                 }"
+                control-variant="split"
                 :min="field.min"
                 :max="field.max"
             >
