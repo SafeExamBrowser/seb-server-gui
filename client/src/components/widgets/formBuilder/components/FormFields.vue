@@ -39,9 +39,13 @@
                     ...getBaseProperties(field),
                     ...getTextualProperties(field),
                 }"
+                control-variant="split"
                 :min="field.min"
                 :max="field.max"
             >
+                <template v-if="field.unit" #append-inner>
+                    <span class="pa-2">{{ field.unit }}</span>
+                </template>
             </v-number-input>
             <FormFieldColor
                 v-else-if="field.type === 'color'"

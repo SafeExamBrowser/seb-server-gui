@@ -24,14 +24,21 @@ export const useTable = (): CrudTableConfig<Indicator, IndicatorTransient> => {
                 "createTemplateExam.steps.indicators.fields.name.label",
             ),
             value: "name",
-            width: "45%",
+            width: "30%",
         },
         {
             title: i18n.global.t(
                 "createTemplateExam.steps.indicators.fields.type.label",
             ),
             value: "type",
-            width: "45%",
+            width: "30%",
+        },
+        {
+            title: i18n.global.t(
+                "createTemplateExam.steps.indicators.fields.thresholds.label",
+            ),
+            value: "thresholds",
+            width: "30%",
         },
         {
             title: i18n.global.t(

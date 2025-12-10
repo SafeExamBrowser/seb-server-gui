@@ -61,7 +61,7 @@ watchEffect(() => {
 
     store.$reset();
 
-    // TODO @alain: properly handle success case (redirect?)
+    // TODO @alain: once the ExamDetailsPage exists, redirect to the ExamDetailsPage of the template that was just created
     console.log("Exam template was successfully created!");
     console.log(createdExamTemplate.value);
 });
