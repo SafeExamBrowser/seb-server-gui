@@ -398,11 +398,10 @@
                                     :disabled="sebSettingsStore.readonly"
                                     hide-details
                                     variant="outlined"
-                                    @update:focused="
-                                        saveOnFocusLost(
-                                            $event,
+                                    @update:model-value="
+                                        saveSingleValue(
                                             'HTTPPort',
-                                            HTTPPortVal?.toString(),
+                                            HTTPPortVal.toString(),
                                         )
                                     "
                                 >
@@ -538,11 +537,10 @@
                                     :disabled="sebSettingsStore.readonly"
                                     hide-details
                                     variant="outlined"
-                                    @update:focused="
-                                        saveOnFocusLost(
-                                            $event,
+                                    @update:model-value="
+                                        saveSingleValue(
                                             'HTTPSPort',
-                                            HTTPSPortVal?.toString(),
+                                            HTTPSPortVal.toString(),
                                         )
                                     "
                                 >
@@ -679,11 +677,10 @@
                                     :disabled="sebSettingsStore.readonly"
                                     hide-details
                                     variant="outlined"
-                                    @update:focused="
-                                        saveOnFocusLost(
-                                            $event,
+                                    @update:model-value="
+                                        saveSingleValue(
                                             'FTPPort',
-                                            FTPPortVal?.toString(),
+                                            FTPPortVal.toString(),
                                         )
                                     "
                                 >
@@ -819,11 +816,10 @@
                                     :disabled="sebSettingsStore.readonly"
                                     hide-details
                                     variant="outlined"
-                                    @update:focused="
-                                        saveOnFocusLost(
-                                            $event,
+                                    @update:model-value="
+                                        saveSingleValue(
                                             'SOCKSPort',
-                                            SOCKSPortVal?.toString(),
+                                            SOCKSPortVal.toString(),
                                         )
                                     "
                                 >
@@ -959,11 +955,10 @@
                                     :disabled="sebSettingsStore.readonly"
                                     hide-details
                                     variant="outlined"
-                                    @update:focused="
-                                        saveOnFocusLost(
-                                            $event,
+                                    @update:model-value="
+                                        saveSingleValue(
                                             'RTSPPort',
-                                            RTSPPortVal?.toString(),
+                                            RTSPPortVal.toString(),
                                         )
                                     "
                                 >

@@ -858,19 +858,22 @@
                 ></v-col>
             </v-row>
             <v-row>
-                <v-col class="pt-3 pb-0 pl-5">
+                <v-col class="pt-3 pb-0 pl-5 pr-10">
                     <v-row>
-                        <v-color-picker
+                        <v-color-input
                             v-model="lockScreenBackgroundColorVal"
                             :disabled="sebSettingsStore.readonly"
-                            hide-canvas
-                            hide-inputs
                             mode="hex"
+                            max-width="300"
                             :label="
                                 translate(
                                     'sebSettings.userView.screenLock.color',
                                 )
                             "
+                            pip-location="append-inner"
+                            color-pip
+                            variant="outlined"
+                            density="compact"
                             @update:model-value="
                                 saveSingleValue(
                                     'lockScreenBackgroundColor',
@@ -878,14 +881,7 @@
                                 )
                             "
                         >
-                        </v-color-picker>
-                        <div class="pt-5 pb-0 pl-5">
-                            {{
-                                translate(
-                                    "sebSettings.userView.screenLock.color",
-                                )
-                            }}
-                        </div>
+                        </v-color-input>
                     </v-row>
                 </v-col>
             </v-row>
