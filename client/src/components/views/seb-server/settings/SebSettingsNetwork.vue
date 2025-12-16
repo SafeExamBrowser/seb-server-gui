@@ -1,6 +1,6 @@
 <template>
     <v-row>
-        <v-col :class="sebSettingsStore.cp">
+        <v-col class="pt-5 pb-0">
             <v-checkbox-btn
                 v-model="urlFilterEnableVal"
                 :disabled="sebSettingsStore.readonly"
@@ -13,7 +13,7 @@
                 "
             ></v-checkbox-btn>
         </v-col>
-        <v-col :class="sebSettingsStore.cp">
+        <v-col class="pt-5 pb-0">
             <v-checkbox-btn
                 v-model="urlFilterEnableContentFilterVal"
                 :disabled="sebSettingsStore.readonly"
@@ -33,7 +33,7 @@
     </v-row>
 
     <v-row>
-        <v-col class="text-subtitle-1">
+        <v-col class="font-weight-bold pt-8 pb-0">
             <v-row>
                 <v-col>{{
                     translate("sebSettings.networkView.filterGroupTitle")
@@ -50,7 +50,7 @@
                     </v-btn>
                 </v-col>
             </v-row>
-            <v-divider class="border-opacity-25" :thickness="2"></v-divider>
+            <v-divider class="border-opacity-25" :thickness="5"></v-divider>
         </v-col>
     </v-row>
 
@@ -138,13 +138,13 @@
     </v-dialog>
 
     <v-row>
-        <v-col class="text-subtitle-1">
+        <v-col class="font-weight-bold pt-8 pb-0">
             <v-row>
                 <v-col>{{
                     translate("sebSettings.networkView.proxies")
                 }}</v-col>
             </v-row>
-            <v-divider class="border-opacity-25" :thickness="2"></v-divider>
+            <v-divider class="border-opacity-25" :thickness="5"></v-divider>
         </v-col>
     </v-row>
 

@@ -1,6 +1,6 @@
 <template>
     <v-row max-width="300">
-        <v-col :class="sebSettingsStore.cp">
+        <v-col class="pt-5 pb-0">
             <v-checkbox-btn
                 v-model="allowSwitchToApplicationsVal"
                 :disabled="sebSettingsStore.readonly"
@@ -27,7 +27,7 @@
     </v-row>
 
     <v-row>
-        <v-col class="text-subtitle-1">
+        <v-col class="font-weight-bold pt-8 pb-0">
             <v-row>
                 <v-col>{{
                     translate(
@@ -46,7 +46,7 @@
                     </v-btn>
                 </v-col>
             </v-row>
-            <v-divider class="border-opacity-25" :thickness="2"></v-divider>
+            <v-divider class="border-opacity-25" :thickness="5"></v-divider>
         </v-col>
     </v-row>
 
@@ -129,7 +129,7 @@
     </v-dialog>
 
     <v-row>
-        <v-col class="text-subtitle-1">
+        <v-col class="font-weight-bold pt-8 pb-0">
             <v-row>
                 <v-col>{{
                     translate(
@@ -148,7 +148,7 @@
                     </v-btn>
                 </v-col>
             </v-row>
-            <v-divider class="border-opacity-25" :thickness="2"></v-divider>
+            <v-divider class="border-opacity-25" :thickness="5"></v-divider>
         </v-col>
     </v-row>
     <v-row>

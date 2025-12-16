@@ -2,11 +2,11 @@
     <v-row>
         <v-col class="text-subtitle-1">
             <v-row>
-                <v-col
+                <v-col class="font-weight-bold pt-8 pb-0"
                     >{{ translate("sebSettings.securityView.sebService.title")
                     }}<v-divider
                         class="border-opacity-25"
-                        :thickness="2"
+                        :thickness="5"
                     ></v-divider
                 ></v-col>
             </v-row>
@@ -21,12 +21,7 @@
                                 'sebSettings.securityView.sebService.sebServiceIgnore',
                             )
                         "
-                        @update:model-value="
-                            saveSingleValue(
-                                'sebServiceIgnore',
-                                sebServiceIgnore ? 'true' : 'false',
-                            )
-                        "
+                        @update:model-value="saveSEBServiceIgnore"
                     ></v-checkbox-btn>
                 </v-col>
             </v-row>
@@ -45,7 +40,10 @@
                 <v-col class="pt-0 pb-0 pl-0">
                     <v-radio-group
                         v-model="sebServicePolicy"
-                        :disabled="sebSettingsStore.readonly"
+                        :disabled="
+                            sebSettingsStore.readonly ||
+                            !sebSettingsStore.ignoreSEBService
+                        "
                         hide-details
                         :label="
                             translate(
@@ -93,7 +91,10 @@
                 <v-col class="pt-0 pb-0 pl-0">
                     <v-checkbox-btn
                         v-model="enableWindowsUpdate"
-                        :disabled="sebSettingsStore.readonly"
+                        :disabled="
+                            sebSettingsStore.readonly ||
+                            !sebSettingsStore.ignoreSEBService
+                        "
                         hide-details
                         :label="
                             translate(
@@ -113,7 +114,10 @@
                 <v-col class="pt-0 pb-0 pl-0">
                     <v-checkbox-btn
                         v-model="enableChromeNotifications"
-                        :disabled="sebSettingsStore.readonly"
+                        :disabled="
+                            sebSettingsStore.readonly ||
+                            !sebSettingsStore.ignoreSEBService
+                        "
                         hide-details
                         :label="
                             translate(
@@ -133,7 +137,10 @@
                 <v-col class="pt-0 pb-0 pl-0">
                     <v-checkbox-btn
                         v-model="allowScreenSharing"
-                        :disabled="sebSettingsStore.readonly"
+                        :disabled="
+                            sebSettingsStore.readonly ||
+                            !sebSettingsStore.ignoreSEBService
+                        "
                         hide-details
                         :label="
                             translate(
@@ -151,14 +158,14 @@
             </v-row>
 
             <v-row>
-                <v-col
+                <v-col class="font-weight-bold pt-8 pb-0"
                     >{{
                         translate(
                             "sebSettings.securityView.kioskMode.kioskMode",
                         )
                     }}<v-divider
                         class="border-opacity-25"
-                        :thickness="2"
+                        :thickness="5"
                     ></v-divider>
                     <v-tooltip
                         activator="parent"
@@ -250,16 +257,16 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col
+                <v-col class="font-weight-bold pt-8 pb-0"
                     >{{ translate("sebSettings.securityView.overall.title")
                     }}<v-divider
                         class="border-opacity-25"
-                        :thickness="2"
+                        :thickness="5"
                     ></v-divider
                 ></v-col>
             </v-row>
             <v-row>
-                <v-col :class="sebSettingsStore.fp">
+                <v-col class="pt-5">
                     <v-number-input
                         v-model="allowedDisplaysMaxNumber"
                         density="compact"
@@ -391,11 +398,11 @@
             </v-row>
 
             <v-row>
-                <v-col
+                <v-col class="font-weight-bold pt-8 pb-0"
                     >{{ translate("sebSettings.securityView.logging.title")
                     }}<v-divider
                         class="border-opacity-25"
-                        :thickness="2"
+                        :thickness="5"
                     ></v-divider
                 ></v-col>
             </v-row>
@@ -556,11 +563,11 @@
 
         <v-col class="text-subtitle-1">
             <v-row>
-                <v-col
+                <v-col class="font-weight-bold pt-8 pb-0"
                     >{{ translate("sebSettings.securityView.macOS.title")
                     }}<v-divider
                         class="border-opacity-25"
-                        :thickness="2"
+                        :thickness="5"
                     ></v-divider
                 ></v-col>
             </v-row>
@@ -1018,11 +1025,11 @@
             </v-row>
 
             <v-row>
-                <v-col
+                <v-col class="font-weight-bold pt-8 pb-0"
                     >{{ translate("sebSettings.securityView.clipboard.title")
                     }}<v-divider
                         class="border-opacity-25"
-                        :thickness="2"
+                        :thickness="5"
                     ></v-divider
                 ></v-col>
             </v-row>
@@ -1104,11 +1111,11 @@
             </v-row>
 
             <v-row>
-                <v-col
+                <v-col class="font-weight-bold pt-8 pb-0"
                     >{{ translate("sebSettings.securityView.sebVersion.title")
                     }}<v-divider
                         class="border-opacity-25"
-                        :thickness="2"
+                        :thickness="5"
                     ></v-divider
                 ></v-col>
             </v-row>
@@ -1125,6 +1132,13 @@
                         {{
                             translate(
                                 "sebSettings.securityView.sebVersion.sebAllowedVersions_format",
+                            )
+                        }}
+                    </div>
+                    <div>
+                        {{
+                            translate(
+                                "sebSettings.securityView.sebVersion.sebAllowedVersions_note2",
                             )
                         }}
                     </div>
@@ -1149,13 +1163,6 @@
                         @update:focused="saveAllowedVersion($event)"
                     >
                     </v-textarea>
-                    <div>
-                        {{
-                            translate(
-                                "sebSettings.securityView.sebVersion.sebAllowedVersions_note2",
-                            )
-                        }}
-                    </div>
                 </v-col>
             </v-row>
         </v-col>
@@ -1336,6 +1343,7 @@ onBeforeMount(async () => {
     sebServiceIgnore.value = stringToBoolean(
         getSingleValue("sebServiceIgnore").value,
     );
+    sebSettingsStore.ignoreSEBService = sebServiceIgnore.value;
     allowApplicationLog.value = stringToBoolean(
         getSingleValue("allowApplicationLog").value,
     );
@@ -1407,6 +1415,15 @@ function toSEBVersion(versions: string): string {
     return versions.replaceAll(",", "\n");
 }
 
+async function saveSEBServiceIgnore() {
+    sebSettingsStore.ignoreSEBService = sebServiceIgnore.value;
+
+    saveSingleValue(
+        "sebServiceIgnore",
+        sebServiceIgnore.value ? "true" : "false",
+    );
+}
+
 async function saveMaxDisplays() {
     if (allowedDisplaysMaxNumber.value >= 1) {
         saveSingleValue(
@@ -1437,7 +1454,6 @@ async function saveAllowedVersion(focusIn: boolean) {
 
 var sebVersionsValid = true;
 const allowedVersionRule = () => {
-    console.info("***** validation");
     if (sebAllowedVersions.value == null) {
         return true;
     }

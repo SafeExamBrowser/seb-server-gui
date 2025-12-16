@@ -24,7 +24,7 @@
                     <v-form>
                         <!------------ active ------------->
                         <v-row align="center">
-                            <v-col class="pt-0 pb-0 pl-0">
+                            <v-col>
                                 <v-tooltip
                                     activator="parent"
                                     location="top left"
@@ -472,13 +472,6 @@
                         </v-row>
                         <!------------ allowUserToChooseApp ------------->
                         <v-row align="center">
-                            <v-col class="pt-0 pb-0"
-                                >{{
-                                    translate(
-                                        "sebSettings.applicationView.permittedProcess.allowUserToChooseApp",
-                                    )
-                                }}
-                            </v-col>
                             <v-col class="pt-0 pb-0">
                                 <v-checkbox-btn
                                     v-model="

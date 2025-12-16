@@ -2,11 +2,11 @@
     <v-row>
         <v-col class="text-subtitle-1">
             <v-row>
-                <v-col
+                <v-col class="font-weight-bold pt-8 pb-0"
                     >{{ translate("sebSettings.examView.sessionHandling.title")
                     }}<v-divider
                         class="border-opacity-25"
-                        :thickness="2"
+                        :thickness="5"
                     ></v-divider>
                     <v-tooltip
                         activator="parent"
@@ -72,11 +72,11 @@
             </v-row>
 
             <v-row>
-                <v-col
+                <v-col class="font-weight-bold pt-8 pb-0"
                     >{{ translate("sebSettings.examView.quitLink.title")
                     }}<v-divider
                         class="border-opacity-25"
-                        :thickness="2"
+                        :thickness="5"
                     ></v-divider>
                 </v-col>
             </v-row>
@@ -147,11 +147,53 @@
             </v-row>
 
             <v-row>
-                <v-col
+                <v-col class="font-weight-bold pt-8 pb-0"
+                    >{{ translate("sebSettings.examView.query.title")
+                    }}<v-divider
+                        class="border-opacity-25"
+                        :thickness="5"
+                    ></v-divider>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col class="pt-0 pb-0 pl-0">
+                    <v-checkbox-btn
+                        v-model="startURLAppendQueryParameter"
+                        :disabled="sebSettingsStore.readonly"
+                        hide-details
+                        :label="
+                            translate(
+                                'sebSettings.examView.query.startURLAppendQueryParameter',
+                            )
+                        "
+                        @update:model-value="
+                            saveSingleValue(
+                                'startURLAppendQueryParameter',
+                                startURLAppendQueryParameter ? 'true' : 'false',
+                            )
+                        "
+                    ></v-checkbox-btn>
+                    <v-tooltip
+                        activator="parent"
+                        location="top left"
+                        max-width="400"
+                    >
+                        {{
+                            translate(
+                                "sebSettings.examView.query.startURLAppendQueryParameter_tooltip",
+                            )
+                        }}
+                    </v-tooltip>
+                </v-col>
+            </v-row>
+        </v-col>
+        <v-col class="text-subtitle-1">
+            <v-row>
+                <v-col class="font-weight-bold pt-8 pb-0"
                     >{{ translate("sebSettings.examView.back.title")
                     }}<v-divider
                         class="border-opacity-25"
-                        :thickness="2"
+                        :thickness="5"
                     ></v-divider>
                 </v-col>
             </v-row>
@@ -285,11 +327,11 @@
             </v-row>
 
             <v-row>
-                <v-col
+                <v-col class="font-weight-bold pt-8 pb-0"
                     >{{ translate("sebSettings.examView.reconfigure.title")
                     }}<v-divider
                         class="border-opacity-25"
-                        :thickness="2"
+                        :thickness="5"
                     ></v-divider>
                 </v-col>
             </v-row>
@@ -346,47 +388,6 @@
                         "
                     >
                     </v-text-field>
-                </v-col>
-            </v-row>
-
-            <v-row>
-                <v-col
-                    >{{ translate("sebSettings.examView.query.title")
-                    }}<v-divider
-                        class="border-opacity-25"
-                        :thickness="2"
-                    ></v-divider>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col class="pt-0 pb-0 pl-0">
-                    <v-checkbox-btn
-                        v-model="startURLAppendQueryParameter"
-                        :disabled="sebSettingsStore.readonly"
-                        hide-details
-                        :label="
-                            translate(
-                                'sebSettings.examView.query.startURLAppendQueryParameter',
-                            )
-                        "
-                        @update:model-value="
-                            saveSingleValue(
-                                'startURLAppendQueryParameter',
-                                startURLAppendQueryParameter ? 'true' : 'false',
-                            )
-                        "
-                    ></v-checkbox-btn>
-                    <v-tooltip
-                        activator="parent"
-                        location="top left"
-                        max-width="400"
-                    >
-                        {{
-                            translate(
-                                "sebSettings.examView.query.startURLAppendQueryParameter_tooltip",
-                            )
-                        }}
-                    </v-tooltip>
                 </v-col>
             </v-row>
         </v-col>

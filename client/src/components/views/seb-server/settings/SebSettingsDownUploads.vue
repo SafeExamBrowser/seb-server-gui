@@ -2,6 +2,15 @@
     <v-row>
         <v-col class="text-subtitle-1">
             <v-row>
+                <v-col class="font-weight-bold pt-8 pb-0"
+                    >{{ translate("sebSettings.updownloadView.title")
+                    }}<v-divider
+                        class="border-opacity-25"
+                        :thickness="5"
+                    ></v-divider>
+                </v-col>
+            </v-row>
+            <v-row>
                 <v-col class="pt-0 pb-0 pl-0">
                     <v-checkbox-btn
                         v-model="allowDownUploadsVal"
@@ -265,12 +274,15 @@
                     </v-tooltip>
                 </v-col>
             </v-row>
+        </v-col>
+
+        <v-col class="text-subtitle-1">
             <v-row>
-                <v-col
+                <v-col class="font-weight-bold pt-8 pb-0"
                     >{{ translate("sebSettings.updownloadView.policy")
                     }}<v-divider
                         class="border-opacity-25"
-                        :thickness="2"
+                        :thickness="5"
                     ></v-divider>
                     <v-tooltip
                         activator="parent"
@@ -322,10 +334,10 @@
                     </v-radio-group>
                 </v-col>
             </v-row>
-            <v-row>
+            <v-row class="font-weight-bold pt-8 pb-0">
                 <v-col class="text-subtitle-1">
                     <v-row>
-                        <v-col>{{
+                        <v-col class="font-weight-bold">{{
                             translate(
                                 "sebSettings.updownloadView.filetypes.title",
                             )
@@ -344,7 +356,7 @@
                     </v-row>
                     <v-divider
                         class="border-opacity-25"
-                        :thickness="2"
+                        :thickness="5"
                     ></v-divider>
                 </v-col>
             </v-row>

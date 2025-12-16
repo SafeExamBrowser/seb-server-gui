@@ -2,11 +2,11 @@
     <v-row>
         <v-col class="text-subtitle-1">
             <v-row>
-                <v-col
+                <v-col class="font-weight-bold pt-8 pb-0"
                     >{{ translate("sebSettings.browser.links.title")
                     }}<v-divider
                         class="border-opacity-25"
-                        :thickness="2"
+                        :thickness="5"
                     ></v-divider
                 ></v-col>
             </v-row>
@@ -77,11 +77,11 @@
             </v-row>
 
             <v-row>
-                <v-col
+                <v-col class="font-weight-bold pt-8 pb-0"
                     >{{ translate("sebSettings.browser.window.title")
                     }}<v-divider
                         class="border-opacity-25"
-                        :thickness="2"
+                        :thickness="5"
                     ></v-divider
                 ></v-col>
             </v-row>
@@ -169,11 +169,11 @@
             </v-row>
 
             <v-row>
-                <v-col
+                <v-col class="font-weight-bold pt-8 pb-0"
                     >{{ translate("sebSettings.browser.security.title")
                     }}<v-divider
                         class="border-opacity-25"
-                        :thickness="2"
+                        :thickness="5"
                     ></v-divider
                 ></v-col>
             </v-row>
@@ -377,11 +377,11 @@
             </v-row>
 
             <v-row>
-                <v-col
+                <v-col class="font-weight-bold pt-8 pb-0"
                     >{{ translate("sebSettings.browser.restrictions.title")
                     }}<v-divider
                         class="border-opacity-25"
-                        :thickness="2"
+                        :thickness="5"
                     ></v-divider
                 ></v-col>
             </v-row>
@@ -515,11 +515,11 @@
             </v-row>
 
             <v-row>
-                <v-col
+                <v-col class="font-weight-bold pt-8 pb-0"
                     >{{ translate("sebSettings.browser.restrictionsAdd.title")
                     }}<v-divider
                         class="border-opacity-25"
-                        :thickness="2"
+                        :thickness="5"
                     ></v-divider
                 ></v-col>
             </v-row>
@@ -658,7 +658,18 @@
                 </v-col>
             </v-row>
         </v-col>
+
         <v-col class="text-subtitle-1">
+            <v-row>
+                <v-col class="font-weight-bold pt-8 pb-0"
+                    >{{ translate("sebSettings.browser.agent")
+                    }}<v-divider
+                        class="border-opacity-25"
+                        :thickness="5"
+                    ></v-divider
+                ></v-col>
+            </v-row>
+
             <v-row>
                 <v-col class="pt-0 pb-0 pl-0">
                     <v-checkbox-btn
@@ -783,11 +794,11 @@
             </v-row>
 
             <v-row>
-                <v-col
+                <v-col class="font-weight-bold pt-8 pb-0"
                     >{{ translate("sebSettings.browser.uaDesktop.title")
                     }}<v-divider
                         class="border-opacity-25"
-                        :thickness="2"
+                        :thickness="5"
                     ></v-divider
                 ></v-col>
             </v-row>
@@ -876,11 +887,11 @@
             </v-row>
 
             <v-row>
-                <v-col
+                <v-col class="font-weight-bold pt-8 pb-0"
                     >{{ translate("sebSettings.browser.uaMac.title")
                     }}<v-divider
                         class="border-opacity-25"
-                        :thickness="2"
+                        :thickness="5"
                     ></v-divider
                 ></v-col>
             </v-row>
@@ -965,11 +976,11 @@
             </v-row>
 
             <v-row>
-                <v-col
+                <v-col class="font-weight-bold pt-8 pb-0"
                     >{{ translate("sebSettings.browser.uaTouch.title")
                     }}<v-divider
                         class="border-opacity-25"
-                        :thickness="2"
+                        :thickness="5"
                     ></v-divider
                 ></v-col>
             </v-row>
@@ -1076,11 +1087,11 @@
             </v-row>
 
             <v-row>
-                <v-col
+                <v-col class="font-weight-bold pt-8 pb-0"
                     >{{ translate("sebSettings.browser.media.title")
                     }}<v-divider
                         class="border-opacity-25"
-                        :thickness="2"
+                        :thickness="5"
                     ></v-divider
                 ></v-col>
             </v-row>

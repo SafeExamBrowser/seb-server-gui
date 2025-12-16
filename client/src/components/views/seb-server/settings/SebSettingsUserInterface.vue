@@ -2,11 +2,11 @@
     <v-row>
         <v-col class="text-subtitle-1">
             <v-row>
-                <v-col
+                <v-col class="font-weight-bold pt-8 pb-0"
                     >{{ translate("sebSettings.userView.view_mode.title")
                     }}<v-divider
                         class="border-opacity-25"
-                        :thickness="2"
+                        :thickness="5"
                     ></v-divider
                 ></v-col>
             </v-row>
@@ -79,11 +79,11 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col
+                <v-col class="font-weight-bold pt-8 pb-0"
                     >{{ translate("sebSettings.userView.main_browser.title") }}
                     <v-divider
                         class="border-opacity-25"
-                        :thickness="2"
+                        :thickness="5"
                     ></v-divider
                 ></v-col>
             </v-row>
@@ -189,11 +189,11 @@
             </v-row>
 
             <v-row>
-                <v-col
+                <v-col class="font-weight-bold pt-8 pb-0"
                     >{{ translate("sebSettings.userView.browser_window.title")
                     }}<v-divider
                         class="border-opacity-25"
-                        :thickness="2"
+                        :thickness="5"
                     ></v-divider
                 ></v-col>
             </v-row>
@@ -371,11 +371,267 @@
             </v-row>
 
             <v-row>
-                <v-col
+                <v-col class="font-weight-bold pt-8 pb-0"
+                    >{{ translate("sebSettings.userView.zoom.title")
+                    }}<v-divider
+                        class="border-opacity-25"
+                        :thickness="5"
+                    ></v-divider
+                ></v-col>
+            </v-row>
+            <v-row>
+                <v-col class="pt-0 pb-0 pl-0">
+                    <v-checkbox-btn
+                        v-model="enableZoomPageVal"
+                        :disabled="sebSettingsStore.readonly"
+                        hide-details
+                        :label="
+                            translate(
+                                'sebSettings.userView.zoom.enableZoomPage',
+                            )
+                        "
+                        @update:model-value="
+                            saveSingleValue(
+                                'enableZoomPage',
+                                enableZoomPageVal ? 'true' : 'false',
+                            )
+                        "
+                    ></v-checkbox-btn>
+                    <v-tooltip
+                        activator="parent"
+                        location="top left"
+                        max-width="400"
+                    >
+                        {{
+                            translate(
+                                "sebSettings.userView.zoom.enableZoomPage_tooltip",
+                            )
+                        }}
+                    </v-tooltip>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col class="pt-0 pb-0 pl-0">
+                    <v-checkbox-btn
+                        v-model="enableZoomTextVal"
+                        :disabled="sebSettingsStore.readonly"
+                        hide-details
+                        :label="
+                            translate(
+                                'sebSettings.userView.zoom.enableZoomText',
+                            )
+                        "
+                        @update:model-value="
+                            saveSingleValue(
+                                'enableZoomText',
+                                enableZoomTextVal ? 'true' : 'false',
+                            )
+                        "
+                    ></v-checkbox-btn>
+                    <v-tooltip
+                        activator="parent"
+                        location="top left"
+                        max-width="400"
+                    >
+                        {{
+                            translate(
+                                "sebSettings.userView.zoom.enableZoomText_tooltip",
+                            )
+                        }}
+                    </v-tooltip>
+                </v-col>
+            </v-row>
+        </v-col>
+
+        <v-col class="text-subtitle-1">
+            <v-row>
+                <v-col class="font-weight-bold pt-8 pb-0"
+                    >{{ translate("sebSettings.userView.audio.title")
+                    }}<v-divider
+                        class="border-opacity-25"
+                        :thickness="5"
+                    ></v-divider
+                ></v-col>
+            </v-row>
+            <v-row>
+                <v-col class="pt-0 pb-0 pl-0">
+                    <v-checkbox-btn
+                        v-model="audioControlEnabledVal"
+                        :disabled="sebSettingsStore.readonly"
+                        hide-details
+                        :label="
+                            translate(
+                                'sebSettings.userView.audio.enableControl',
+                            )
+                        "
+                        @update:model-value="
+                            saveSingleValue(
+                                'audioControlEnabled',
+                                audioControlEnabledVal ? 'true' : 'false',
+                            )
+                        "
+                    ></v-checkbox-btn>
+                    <v-tooltip
+                        activator="parent"
+                        location="top left"
+                        max-width="400"
+                    >
+                        {{
+                            translate(
+                                "sebSettings.userView.audio.enableControl_tooltip",
+                            )
+                        }}
+                    </v-tooltip>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col class="pt-0 pb-0 pl-0">
+                    <v-checkbox-btn
+                        v-model="audioMuteVal"
+                        :disabled="sebSettingsStore.readonly"
+                        hide-details
+                        :label="translate('sebSettings.userView.audio.mute')"
+                        @update:model-value="
+                            saveSingleValue(
+                                'audioMute',
+                                audioMuteVal ? 'true' : 'false',
+                            )
+                        "
+                    ></v-checkbox-btn>
+                    <v-tooltip
+                        activator="parent"
+                        location="top left"
+                        max-width="400"
+                    >
+                        {{
+                            translate("sebSettings.userView.audio.mute_tooltip")
+                        }}
+                    </v-tooltip>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col class="pt-0 pb-0 pl-0">
+                    <v-checkbox-btn
+                        v-model="audioSetVolumeLevelVal"
+                        :disabled="sebSettingsStore.readonly"
+                        hide-details
+                        :label="translate('sebSettings.userView.audio.volume')"
+                        @update:model-value="
+                            saveSingleValue(
+                                'audioSetVolumeLevel',
+                                audioSetVolumeLevelVal ? 'true' : 'false',
+                            )
+                        "
+                    ></v-checkbox-btn>
+                    <v-tooltip
+                        activator="parent"
+                        location="top left"
+                        max-width="400"
+                    >
+                        {{
+                            translate(
+                                "sebSettings.userView.audio.volume_tooltip",
+                            )
+                        }}
+                    </v-tooltip>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col class="pt-0 pb-0 pl-0">
+                    <v-slider
+                        v-model="audioVolumeLevelVal"
+                        :max="100"
+                        :min="0"
+                        :step="1"
+                        :disabled="
+                            sebSettingsStore.readonly || !audioSetVolumeLevelVal
+                        "
+                        hide-details
+                        @update:focused="
+                            saveSingleValue(
+                                'audioVolumeLevel',
+                                audioVolumeLevelVal.toString(),
+                            )
+                        "
+                    ></v-slider>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col class="font-weight-bold pt-8 pb-0"
+                    >{{ translate("sebSettings.userView.spellChecker.title")
+                    }}<v-divider
+                        class="border-opacity-25"
+                        :thickness="5"
+                    ></v-divider
+                ></v-col>
+            </v-row>
+            <v-row>
+                <v-col class="pt-0 pb-0 pl-0">
+                    <v-checkbox-btn
+                        v-model="allowSpellCheckVal"
+                        :disabled="sebSettingsStore.readonly"
+                        hide-details
+                        :label="
+                            translate('sebSettings.userView.spellChecker.allow')
+                        "
+                        @update:model-value="
+                            saveSingleValue(
+                                'allowSpellCheck',
+                                allowSpellCheckVal ? 'true' : 'false',
+                            )
+                        "
+                    ></v-checkbox-btn>
+                    <v-tooltip
+                        activator="parent"
+                        location="top left"
+                        max-width="400"
+                    >
+                        {{
+                            translate(
+                                "sebSettings.userView.spellChecker.allow_tooltip",
+                            )
+                        }}
+                    </v-tooltip>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col class="pt-0 pb-0 pl-0">
+                    <v-checkbox-btn
+                        v-model="allowDictionaryLookupVal"
+                        :disabled="sebSettingsStore.readonly"
+                        hide-details
+                        :label="
+                            translate(
+                                'sebSettings.userView.spellChecker.allowDict',
+                            )
+                        "
+                        @update:model-value="
+                            saveSingleValue(
+                                'allowDictionaryLookup',
+                                allowDictionaryLookupVal ? 'true' : 'false',
+                            )
+                        "
+                    ></v-checkbox-btn>
+                    <v-tooltip
+                        activator="parent"
+                        location="top left"
+                        max-width="400"
+                    >
+                        {{
+                            translate(
+                                "sebSettings.userView.spellChecker.allowDict_tooltip",
+                            )
+                        }}
+                    </v-tooltip>
+                </v-col>
+            </v-row>
+
+            <v-row>
+                <v-col class="font-weight-bold pt-8 pb-0"
                     >{{ translate("sebSettings.userView.task_bar.title")
                     }}<v-divider
                         class="border-opacity-25"
-                        :thickness="2"
+                        :thickness="5"
                     ></v-divider
                 ></v-col>
             </v-row>
@@ -594,271 +850,16 @@
             </v-row>
 
             <v-row>
-                <v-col
-                    >{{ translate("sebSettings.userView.zoom.title")
-                    }}<v-divider
-                        class="border-opacity-25"
-                        :thickness="2"
-                    ></v-divider
-                ></v-col>
-            </v-row>
-            <v-row>
-                <v-col class="pt-0 pb-0 pl-0">
-                    <v-checkbox-btn
-                        v-model="enableZoomPageVal"
-                        :disabled="sebSettingsStore.readonly"
-                        hide-details
-                        :label="
-                            translate(
-                                'sebSettings.userView.zoom.enableZoomPage',
-                            )
-                        "
-                        @update:model-value="
-                            saveSingleValue(
-                                'enableZoomPage',
-                                enableZoomPageVal ? 'true' : 'false',
-                            )
-                        "
-                    ></v-checkbox-btn>
-                    <v-tooltip
-                        activator="parent"
-                        location="top left"
-                        max-width="400"
-                    >
-                        {{
-                            translate(
-                                "sebSettings.userView.zoom.enableZoomPage_tooltip",
-                            )
-                        }}
-                    </v-tooltip>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col class="pt-0 pb-0 pl-0">
-                    <v-checkbox-btn
-                        v-model="enableZoomTextVal"
-                        :disabled="sebSettingsStore.readonly"
-                        hide-details
-                        :label="
-                            translate(
-                                'sebSettings.userView.zoom.enableZoomText',
-                            )
-                        "
-                        @update:model-value="
-                            saveSingleValue(
-                                'enableZoomText',
-                                enableZoomTextVal ? 'true' : 'false',
-                            )
-                        "
-                    ></v-checkbox-btn>
-                    <v-tooltip
-                        activator="parent"
-                        location="top left"
-                        max-width="400"
-                    >
-                        {{
-                            translate(
-                                "sebSettings.userView.zoom.enableZoomText_tooltip",
-                            )
-                        }}
-                    </v-tooltip>
-                </v-col>
-            </v-row>
-        </v-col>
-
-        <v-col class="text-subtitle-1">
-            <v-row>
-                <v-col
-                    >{{ translate("sebSettings.userView.audio.title")
-                    }}<v-divider
-                        class="border-opacity-25"
-                        :thickness="2"
-                    ></v-divider
-                ></v-col>
-            </v-row>
-            <v-row>
-                <v-col class="pt-0 pb-0 pl-0">
-                    <v-checkbox-btn
-                        v-model="audioControlEnabledVal"
-                        :disabled="sebSettingsStore.readonly"
-                        hide-details
-                        :label="
-                            translate(
-                                'sebSettings.userView.audio.enableControl',
-                            )
-                        "
-                        @update:model-value="
-                            saveSingleValue(
-                                'audioControlEnabled',
-                                audioControlEnabledVal ? 'true' : 'false',
-                            )
-                        "
-                    ></v-checkbox-btn>
-                    <v-tooltip
-                        activator="parent"
-                        location="top left"
-                        max-width="400"
-                    >
-                        {{
-                            translate(
-                                "sebSettings.userView.audio.enableControl_tooltip",
-                            )
-                        }}
-                    </v-tooltip>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col class="pt-0 pb-0 pl-0">
-                    <v-checkbox-btn
-                        v-model="audioMuteVal"
-                        :disabled="sebSettingsStore.readonly"
-                        hide-details
-                        :label="translate('sebSettings.userView.audio.mute')"
-                        @update:model-value="
-                            saveSingleValue(
-                                'audioMute',
-                                audioMuteVal ? 'true' : 'false',
-                            )
-                        "
-                    ></v-checkbox-btn>
-                    <v-tooltip
-                        activator="parent"
-                        location="top left"
-                        max-width="400"
-                    >
-                        {{
-                            translate("sebSettings.userView.audio.mute_tooltip")
-                        }}
-                    </v-tooltip>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col class="pt-0 pb-0 pl-0">
-                    <v-checkbox-btn
-                        v-model="audioSetVolumeLevelVal"
-                        :disabled="sebSettingsStore.readonly"
-                        hide-details
-                        :label="translate('sebSettings.userView.audio.volume')"
-                        @update:model-value="
-                            saveSingleValue(
-                                'audioSetVolumeLevel',
-                                audioSetVolumeLevelVal ? 'true' : 'false',
-                            )
-                        "
-                    ></v-checkbox-btn>
-                    <v-tooltip
-                        activator="parent"
-                        location="top left"
-                        max-width="400"
-                    >
-                        {{
-                            translate(
-                                "sebSettings.userView.audio.volume_tooltip",
-                            )
-                        }}
-                    </v-tooltip>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col class="pt-0 pb-0 pl-0">
-                    <v-slider
-                        v-model="audioVolumeLevelVal"
-                        :max="100"
-                        :min="0"
-                        :step="1"
-                        :disabled="
-                            sebSettingsStore.readonly || !audioSetVolumeLevelVal
-                        "
-                        hide-details
-                        @update:focused="
-                            saveSingleValue(
-                                'audioVolumeLevel',
-                                audioVolumeLevelVal.toString(),
-                            )
-                        "
-                    ></v-slider>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col
-                    >{{ translate("sebSettings.userView.spellChecker.title")
-                    }}<v-divider
-                        class="border-opacity-25"
-                        :thickness="2"
-                    ></v-divider
-                ></v-col>
-            </v-row>
-            <v-row>
-                <v-col class="pt-0 pb-0 pl-0">
-                    <v-checkbox-btn
-                        v-model="allowSpellCheckVal"
-                        :disabled="sebSettingsStore.readonly"
-                        hide-details
-                        :label="
-                            translate('sebSettings.userView.spellChecker.allow')
-                        "
-                        @update:model-value="
-                            saveSingleValue(
-                                'allowSpellCheck',
-                                allowSpellCheckVal ? 'true' : 'false',
-                            )
-                        "
-                    ></v-checkbox-btn>
-                    <v-tooltip
-                        activator="parent"
-                        location="top left"
-                        max-width="400"
-                    >
-                        {{
-                            translate(
-                                "sebSettings.userView.spellChecker.allow_tooltip",
-                            )
-                        }}
-                    </v-tooltip>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col class="pt-0 pb-0 pl-0">
-                    <v-checkbox-btn
-                        v-model="allowDictionaryLookupVal"
-                        :disabled="sebSettingsStore.readonly"
-                        hide-details
-                        :label="
-                            translate(
-                                'sebSettings.userView.spellChecker.allowDict',
-                            )
-                        "
-                        @update:model-value="
-                            saveSingleValue(
-                                'allowDictionaryLookup',
-                                allowDictionaryLookupVal ? 'true' : 'false',
-                            )
-                        "
-                    ></v-checkbox-btn>
-                    <v-tooltip
-                        activator="parent"
-                        location="top left"
-                        max-width="400"
-                    >
-                        {{
-                            translate(
-                                "sebSettings.userView.spellChecker.allowDict_tooltip",
-                            )
-                        }}
-                    </v-tooltip>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col
+                <v-col class="font-weight-bold pt-8 pb-0"
                     >{{ translate("sebSettings.userView.screenLock.title")
                     }}<v-divider
                         class="border-opacity-25"
-                        :thickness="2"
+                        :thickness="5"
                     ></v-divider
                 ></v-col>
             </v-row>
             <v-row>
-                <v-col class="pt-3 pb-0 pl-5 pr-10">
+                <v-col class="pt-8 pb-0 pl-5 pr-10">
                     <v-row>
                         <v-color-input
                             v-model="lockScreenBackgroundColorVal"
