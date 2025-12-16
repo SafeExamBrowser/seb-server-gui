@@ -1,8 +1,12 @@
 import { test, expect, Page } from "@playwright/test";
 
-const USER = "playwright";
-const PASS = "playwright";
+//TODO change to whatever we chose to add in DB script via FLYWAY
+const correctUser = "playwright";
+const correctPass = "playwright";
+const wrongUser = "invalid@example.cdasdpef";
+const wrongPass = "wrong-passworddddddddddddddd";
 
+// Setup method for page (this, unlike register test, does NOT use test id's)
 async function setupLoginPage(page: Page) {
     await page.addInitScript(() => {
         localStorage.clear();
@@ -17,12 +21,19 @@ async function setupLoginPage(page: Page) {
     return { username, password };
 }
 
+//this triggers video recording for the worker
+test.use({
+    video: {
+        mode: "on",
+    },
+});
+
 test.describe("1.2.1 User Accounts - READ Log in", () => {
     test("A Successful login", async ({ page }) => {
         const { username, password } = await setupLoginPage(page);
 
-        await username.fill(USER);
-        await password.fill(PASS);
+        await username.fill(correctUser);
+        await password.fill(correctPass);
         await page.keyboard.press("Enter");
 
         await expect(page).toHaveURL(/\/home(?:$|[?#])/i, { timeout: 5000 });
@@ -31,8 +42,8 @@ test.describe("1.2.1 User Accounts - READ Log in", () => {
     test("B Failed login, bad credentials", async ({ page }) => {
         const { username, password } = await setupLoginPage(page);
 
-        await username.fill("invalid@example.com");
-        await password.fill("wrong-password");
+        await username.fill(wrongUser);
+        await password.fill(wrongPass);
         await page.keyboard.press("Enter");
 
         const alert = page.getByTestId("login-error-alert");

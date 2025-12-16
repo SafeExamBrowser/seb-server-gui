@@ -9,10 +9,7 @@ export default defineConfig({
     reporter: process.env.CI ? "line" : "html",
     use: {
         baseURL: process.env.BASE_URL || "http://localhost:8082",
-        trace: "on-first-retry",
-        launchOptions: {
-            slowMo: 500,
-        },
+        trace: "on",
         contextOptions: {
             javaScriptEnabled: true,
         },
