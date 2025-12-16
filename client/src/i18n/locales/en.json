@@ -266,7 +266,7 @@
         },
         "steps": {
             "naming": {
-                "title": "Define basic settings",
+                "title": "Define Basic Settings",
                 "subtitle": "Fill out the form. Create a SEB Client Template and a Connection Configuration, if you haven't done so already.",
                 "fields": {
                     "name": {
@@ -328,6 +328,21 @@
                         "types": {
                             "BATTERY_STATUS": "Battery Status",
                             "WLAN_STATUS": "Wifi Status"
+                        }
+                    },
+                    "thresholds": {
+                        "label": "Thresholds",
+                        "labelRow": "Threshold #",
+                        "labelAdd": "Add Threshold",
+                        "fields": {
+                            "value": {
+                                "label": "Value",
+                                "placeholder": "Enter 0% – 100%"
+                            },
+                            "color": {
+                                "label": "Color",
+                                "placeholder": "Enter hex color value"
+                            }
                         }
                     }
                 }
@@ -392,7 +407,28 @@
             },
             "summary": {
                 "title": "Overview Exam Template",
-                "subtitle": "TODO: translate (Kristina)"
+                "subtitle": "TODO: translate (Kristina)",
+                "emptyValue": "No data",
+                "notFoundValue": "Not found",
+                "sections": {
+                    "naming": {
+                        "title": "Basic Settings"
+                    },
+                    "supervisors": {
+                        "title": "Exam Supervisors",
+                        "fields": {
+                            "user": {
+                                "label": "User"
+                            }
+                        }
+                    },
+                    "indicators": {
+                        "title": "Indicators"
+                    },
+                    "clientGroup": {
+                        "title": "Groups"
+                    }
+                }
             }
         }
     },

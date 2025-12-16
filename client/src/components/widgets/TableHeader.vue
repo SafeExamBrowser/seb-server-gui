@@ -1,5 +1,5 @@
 <template>
-    <v-container class="ma-0 pa-0 pb-6">
+    <v-container class="ma-0 pa-0 pb-3 border-b-md">
         <v-row>
             <v-col>
                 <SectionSubtitle :name="label" />
@@ -9,7 +9,6 @@
             </v-col>
         </v-row>
     </v-container>
-    <v-divider :thickness="2"></v-divider>
 </template>
 
 <script setup lang="ts">

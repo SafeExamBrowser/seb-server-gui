@@ -2,13 +2,14 @@ import { computed } from "vue";
 import { FormField } from "@/components/widgets/formBuilder/types";
 import { ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
 import { useExamTemplateNames } from "./api/useExamTemplateNames";
-import { useClientConfigurationNames } from "./api/useClientConfigurationNames";
-import { useConfigurationTemplateNames } from "./api/useConfigurationTemplateNames";
 import { storeToRefs } from "pinia";
 import { useStepNamingStore } from "./store/useStepNamingStore";
 import { useRules } from "vuetify/labs/rules";
 import { useScreenProctoringStore } from "@/components/views/seb-server/template/exam/composables/store/useScreenProctoringStore";
 import i18n from "@/i18n";
+import { useConfigurationTemplateNames } from "@/composables/useConfigurationTemplateNames";
+import { useClientConfigurationNames } from "@/composables/useClientConfigurationNames";
+
 export const useFormFields = () => {
     const {
         name: modelName,
