@@ -510,7 +510,7 @@ const connectionConfigurationTableHeaders = computed(() => {
             title: translate(
                 "connectionConfigurations.connectionConfigurationsPage.connectionConfigurationsTableHeaders.tableHeaderInstitution",
             ),
-            key: "institutionName",
+            key: "institutionId",
             width: "20%",
             sortable: true,
         },
