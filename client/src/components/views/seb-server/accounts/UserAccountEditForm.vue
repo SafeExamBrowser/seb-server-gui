@@ -828,8 +828,6 @@ const isPasswordFormValid = computed(() => {
 });
 
 async function saveChanges() {
-    //rolesTouched.value = true;
-
     const { valid } = await formRef.value.validate();
     const selectedRole = selectedUserRole.value;
 
@@ -866,8 +864,6 @@ async function saveChanges() {
         };
 
         if ((await editUserAccount(editedUserAccountParams)) != null) {
-            // TODO apply success message
-
             navigateTo(
                 props.isProfile
                     ? constants.HOME_PAGE_ROUTE
