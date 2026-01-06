@@ -1716,6 +1716,13 @@
 
             "askKeyDescription": "The following App Signature Keys (ASK) have connected to this exam:",
             "askKeyConnected": " Connected"
+        },
+        "quitAll": {
+            "title": "Quit All Active SEB Clients",
+            "button": "Quit All SEB Clients",
+            "confirmText1": "Do you really want to quit all active SEB Clients?",
+            "confirmText2": "If so, enter YES in capital letters.",
+            "doQuit": "Quit All"
         }
     },
 

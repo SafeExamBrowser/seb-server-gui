@@ -163,6 +163,14 @@ export async function registerInstruction(
     }
 }
 
+export async function quitAll(examId: string): Promise<number | null> {
+    try {
+        return await monitoringService.quitAll(examId);
+    } catch {
+        return null;
+    }
+}
+
 export async function getPendingNotifcations(
     examId: string,
     connectionToken: string,
