@@ -48,7 +48,7 @@
             </v-row>
 
             <!-- Groups -->
-            <v-row class="mt-5">
+            <v-row class="mt-5" v-if="hasGroups">
                 <v-col cols="12">
                     <v-sheet
                         class="pa-6 fill-height min-height-sheet"
@@ -104,7 +104,15 @@ onBeforeUnmount(() => {
 });
 
 const hasIndicators = computed(
-    () => (monitoringStore.indicators?.content?.length ?? 0) > 0,
+    () =>
+        monitoringStore.monitoringOverviewData?.indicators.BATTERY_STATUS !=
+            null &&
+        monitoringStore.monitoringOverviewData?.indicators.WLAN_STATUS != null,
+);
+
+const hasGroups = computed(
+    () =>
+        (monitoringStore.monitoringOverviewData?.clientGroups.length ?? 0) > 0,
 );
 
 async function getOverviewData() {

@@ -8,6 +8,7 @@
 
                 <!-- Battery Status -->
                 <v-card
+                    v-if="hasBatteryIndicator()"
                     class="rounded-lg mb-3 px-4 py-3 d-flex align-center justify-space-between"
                     :color="
                         getBatteryStatusColor(
@@ -75,6 +76,7 @@
 
                 <!-- WLAN Status -->
                 <v-card
+                    v-if="hasWLANIndicator()"
                     class="rounded-lg mb-3 px-4 py-3 d-flex align-center justify-space-between"
                     :color="
                         getWLANStatusColor(
@@ -187,5 +189,18 @@ function getIndicatorNumber(
     }
 
     return num;
+}
+
+function hasBatteryIndicator(): boolean {
+    return (
+        monitoringStore.monitoringOverviewData?.indicators.BATTERY_STATUS !=
+        null
+    );
+}
+
+function hasWLANIndicator(): boolean {
+    return (
+        monitoringStore.monitoringOverviewData?.indicators.WLAN_STATUS != null
+    );
 }
 </script>
