@@ -1,4 +1,6 @@
 import * as apiService from "@/services/apiService";
+import * as newApiService from "@/services/newApiService";
+
 import { StorageItemEnum } from "@/models/StorageItemEnum";
 import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring";
 import { OptionalParGeneric } from "@/models/seb-server/optionalParamters";
@@ -21,11 +23,7 @@ export async function getExamTemplateNames(): Promise<
         name: string;
     }[]
 > {
-    return (
-        await apiService.api.get(url + "/names", {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
+    return (await newApiService.get(url + "/names")).data;
 }
 export async function getExamTemplates(
     optionalParameters?: OptionalParGeneric,
