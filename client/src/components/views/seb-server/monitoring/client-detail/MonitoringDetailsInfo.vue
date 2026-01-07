@@ -1,27 +1,52 @@
 <template>
-    <!-- Path -->
-    <v-row style="background-color: #fffffe">
-        <div class="path-text ml-10 mt-4">
-            <span
-                class="monitoring-link"
-                @click="navigateTo(constants.MONITORING_ROUTE)"
-            >
-                {{ translate("titles.monitoring") }}
-            </span>
-            &nbsp;>&nbsp;
-
-            <span
-                class="exam-name"
-                @click="
-                    navigateTo(
-                        constants.MONITORING_CLIENTS_ROUTE + '/' + examId,
-                        monitoringStore.currentMonitoringQuery,
-                    )
-                "
-            >
-                {{ monitoringStore.selectedExam?.quizName }}
-            </span>
-        </div>
+    <v-row dense>
+        <v-col class="pl-5 mb-1" cols="12" md="10">
+            <div class="path-text d-flex align-center">
+                <span
+                    class="breadcrumb-link"
+                    @click="navigateTo(constants.HOME_PAGE_ROUTE)"
+                >
+                    {{ translate("titles.home") }}
+                </span>
+                <span class="breadcrumb-arrow">›</span>
+                <span
+                    class="breadcrumb-link"
+                    @click="navigateTo(constants.MONITORING_ROUTE)"
+                >
+                    {{ translate("titles.monitoring") }}
+                </span>
+                <span
+                    v-if="monitoringStore.selectedExam !== null"
+                    class="breadcrumb-arrow"
+                    >›</span
+                >
+                <span
+                    v-if="monitoringStore.selectedExam !== null"
+                    class="breadcrumb-link"
+                    @click="
+                        navigateTo(
+                            constants.MONITORING_OVERVIEW_ROUTE +
+                                '/' +
+                                monitoringStore.selectedExam.id.toString(),
+                        )
+                    "
+                >
+                    {{ translate("titles.overview") }}
+                </span>
+                <span class="breadcrumb-arrow">›</span>
+                <span
+                    class="breadcrumb-link"
+                    @click="
+                        navigateTo(
+                            constants.MONITORING_CLIENTS_ROUTE + '/' + examId,
+                            monitoringStore.currentMonitoringQuery,
+                        )
+                    "
+                >
+                    {{ translate("titles.clientList") }}
+                </span>
+            </div>
+        </v-col>
     </v-row>
 
     <v-row style="background-color: #fffffe">

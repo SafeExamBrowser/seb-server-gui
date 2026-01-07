@@ -17,7 +17,7 @@
     "IP_V4_RANGE": "IP v4 Range",
     "CLIENT_OS": "SEB Client OS",
     "NAME_ALPHABETICAL_RANGE": "Alphabetical User Name Range",
-    "SP_FALLBACK_GROUP": "Screen Proctoring Fallback Group",
+    "SP_FALLBACK_GROUP": "Remaining Clients",
 
     "-------ClientOSEnum------": "----------",
     "WINDOWS": "Windows",
@@ -1686,12 +1686,13 @@
         "groups": {
             "groups": "Groups",
             "remainingClients": "Remaining Clients",
-            "allClients": "All Clients",
+            "fallbackGroup": "Screen Proctoring Fallback Group",
+            "spsGroup": "Screen Proctoring Group",
             "showAll": "Show All Clients",
             "addGroup": "Add Group",
             "group": "Group:",
             "range": "Range:",
-            "noGroupClients": "Clients not in any group",
+            "spsFallback": "Active clients in Screen Proctoring",
             "clients": " Clients",
             "buttons": {
                 "proctor": "Proctor",
@@ -1822,6 +1823,8 @@
         "examsOverview": "Exams Overview",
         "examDetails": "Exam Details",
         "monitoring": "Monitoring",
+        "overview": "Overview",
+        "clientList": "Client List",
         "quizImport": "Prepare Exam",
         "createTemplate": "Create Template",
         "createTemplateExam": "Create Exam Template",

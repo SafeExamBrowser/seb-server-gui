@@ -48,7 +48,7 @@
             </v-row>
 
             <!-- Groups -->
-            <v-row class="mt-5" v-if="hasGroups">
+            <v-row v-if="hasGroups" class="mt-5">
                 <v-col cols="12">
                     <v-sheet
                         class="pa-6 fill-height min-height-sheet"

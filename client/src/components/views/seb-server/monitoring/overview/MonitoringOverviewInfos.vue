@@ -10,9 +10,7 @@
                 >
                     {{ translate("titles.home") }}
                 </span>
-
                 <span class="breadcrumb-arrow">›</span>
-
                 <span
                     class="breadcrumb-link"
                     @click="navigateTo(constants.MONITORING_ROUTE)"
