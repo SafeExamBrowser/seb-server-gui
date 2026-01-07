@@ -235,9 +235,6 @@ async function loadItems(serverTablePaging: ServerTablePaging) {
         return;
     }
 
-    console.log("examsResponse:");
-    console.log(examsResponse);
-
     exams.value = examsResponse;
     totalItems.value = exams.value.number_of_pages * exams.value.page_size;
 

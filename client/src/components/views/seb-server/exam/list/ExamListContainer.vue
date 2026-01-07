@@ -5,10 +5,7 @@
         style="min-height: 90vh"
     >
         <!-- Info and Search -->
-        <ExamListInfo
-            class="flex-grow-0"
-            @load-exam-items-caller="loadExamItemsCaller"
-        >
+        <ExamListInfo @load-exam-items-caller="loadExamItemsCaller">
         </ExamListInfo>
 
         <!-- Table Component -->
