@@ -32,6 +32,7 @@ const isDataLoaded = ref<boolean>(false);
 
 // interval
 let intervalRefresh: ReturnType<typeof setInterval> | null = null;
+let dataFetching = false;
 const REFRESH_INTERVAL: number = 10000;
 
 const mainRef = ref();
@@ -57,15 +58,31 @@ onBeforeUnmount(() => {
     monitoringStore.clearClientValues();
 });
 
+// NOTE: This is the backend data fetch that gets called in an update interval.
+//       To prevent subsequent calls when the backend is not responding, what would lead to
+//       sending more calls and allocate unnecessary resources on the backend, we use the
+//       dataFetching here to track the fetching and only fetch data if there was a response
+//       from the former call.
 async function getOverviewData() {
+    if (dataFetching) {
+        console.warn(
+            "********** Skip client list data fetch due to no response from backend",
+        );
+        return;
+    }
+
+    dataFetching = true;
+
     const overviewResponse: MonitoringOverview | null =
         await monitoringViewService.getOverview(examId);
 
     if (overviewResponse == null) {
+        dataFetching = false;
         return;
     }
 
     monitoringStore.monitoringOverviewData = overviewResponse;
+    dataFetching = false;
 }
 
 async function updateAll() {
