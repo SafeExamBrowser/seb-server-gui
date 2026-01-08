@@ -2,7 +2,7 @@
     <!-- Raised Hand Popup  -->
     <v-row
         v-if="raiseHandNotification != null"
-        class="rounded-lg pa-4 raise-hand-row mb-1"
+        class="rounded-lg pa-4 raise-hand-row mb-1 ml-4 mr-4"
         elevation="4"
         style="background-color: #fffffe; border: 2px solid #215caf"
     >
@@ -35,12 +35,12 @@
 
     <!-- Messages -->
     <v-row>
-        <v-col class="mb-1" cols="12">
+        <v-col>
             <template v-if="messages != null">
                 <v-row
                     v-for="message in messages"
                     :key="message.id"
-                    class="rounded-lg pa-4 message-card"
+                    class="rounded-lg pa-4 message-card ml-4 mr-4"
                     elevation="4"
                     style="background-color: #fffffe; border: 2px solid #215caf"
                 >
@@ -75,9 +75,9 @@
                 </v-row>
             </template>
 
-            <div v-else align="center">
+            <!-- <div v-else align="center">
                 {{ translate("monitoringDetails.main.noNotifications") }}
-            </div>
+            </div> -->
         </v-col>
     </v-row>
 

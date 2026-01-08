@@ -49,177 +49,193 @@
         </v-col>
     </v-row>
 
-    <v-row style="background-color: #fffffe">
-        <!-- User Name -->
-        <v-col cols="12" md="3">
-            <div
-                v-if="nameParts.length"
-                class="top-container ml-10 d-flex align-center flex-nowrap"
-            >
-                <div
-                    v-for="(part, index) in nameParts"
-                    :key="index"
-                    class="name-part mr-2"
-                >
-                    {{ part }}
-                </div>
-            </div>
-        </v-col>
-
-        <v-col class="user-info-col" cols="12" md="3">
-            <div class="top-container">
-                <!-- Status -->
-                <div v-if="currentStatus">
-                    <v-card
-                        class="rounded-lg pa-2 text-center"
-                        :color="getConnectionStatusColor(currentStatus)"
-                        max-width="130"
-                        variant="flat"
-                    >
-                        <div class="status-row">
-                            <span class="status-label text-body-3">
-                                {{ translate(currentStatus) }}
-                            </span>
-                            <v-icon
-                                :icon="getConnectionStatusIcon(currentStatus)"
-                                size="18"
-                            />
+    <v-row class="pt-0 pl-4 pr-4 pb-6">
+        <v-col class="pt-0">
+            <v-sheet class="rounded-lg pl-4 pr-4" elevation="4">
+                <v-row style="background-color: #fffffe">
+                    <!-- User Name -->
+                    <v-col cols="12" md="3">
+                        <div
+                            v-for="(part, index) in nameParts"
+                            :key="index"
+                            class="name-part mr-2 d-flex align-center flex-nowrap pt-4"
+                        >
+                            {{ part }}
                         </div>
-                    </v-card>
-                </div>
+                    </v-col>
 
-                <!-- Group -->
-                <div class="mt-2 d-flex align-center flex-wrap group-container">
-                    <span class="group-label mr-2">Group:</span>
-                    <v-chip
-                        v-for="clientGroup in monitoringStore.clientGroupsSingle"
-                        :key="clientGroup.id"
-                        class="mr-1 pl-5 pr-5 text-body-4"
-                        size="default"
-                        variant="tonal"
-                    >
-                        {{ clientGroup.name }}
-                    </v-chip>
-                </div>
+                    <v-col class="user-info-col pt-6" cols="12" md="3">
+                        <div class="top-container">
+                            <!-- Status -->
+                            <div v-if="currentStatus">
+                                <v-card
+                                    class="rounded-lg pa-2 text-center"
+                                    :color="
+                                        getConnectionStatusColor(currentStatus)
+                                    "
+                                    max-width="130"
+                                    variant="flat"
+                                >
+                                    <div class="status-row">
+                                        <span class="status-label text-body-3">
+                                            {{ translate(currentStatus) }}
+                                        </span>
+                                        <v-icon
+                                            :icon="
+                                                getConnectionStatusIcon(
+                                                    currentStatus,
+                                                )
+                                            "
+                                            size="18"
+                                        />
+                                    </div>
+                                </v-card>
+                            </div>
 
-                <!-- SEB info tags -->
-                <div class="mt-2">
-                    <v-chip
-                        v-for="(info, index) in sebInfoParts"
-                        :key="index"
-                        class="mr-1 mb-1 text-body-3 info-chip"
-                        size="default"
-                        variant="text"
-                    >
-                        {{ info }}
-                    </v-chip>
-                </div>
-            </div>
-        </v-col>
+                            <!-- Group -->
+                            <div
+                                class="mt-2 d-flex align-center flex-wrap group-container"
+                            >
+                                <span class="group-label mr-2">Group:</span>
+                                <v-chip
+                                    v-for="clientGroup in monitoringStore.clientGroupsSingle"
+                                    :key="clientGroup.id"
+                                    class="mr-1 pl-5 pr-5 text-body-4"
+                                    size="default"
+                                    variant="tonal"
+                                >
+                                    {{ clientGroup.name }}
+                                </v-chip>
+                            </div>
 
-        <!-- Indicators -->
-        <v-col cols="12" md="3">
-            <v-card
-                v-if="
-                    filteredIndicators.length > 0 &&
-                    currentStatus !== ConnectionStatusEnum.CLOSED &&
-                    currentStatus !== ConnectionStatusEnum.DISABLED
-                "
-                class="ml-4 top-container pa-3"
-                style="
-                    height: 100%;
-                    display: flex;
-                    flex-wrap: wrap;
-                    align-content: flex-start;
-                "
-            >
-                <div
-                    v-for="indicator in filteredIndicators"
-                    :key="indicator.id"
-                    class="indicator-item d-flex align-center mb-5 mt-5"
-                    style="width: 33%"
-                >
-                    <v-icon
-                        class="mr-1"
-                        :color="indicator.color"
-                        :icon="indicator.icon"
-                    />
-                    <span>{{ indicator.displayValue }}</span>
-                </div>
-            </v-card>
-        </v-col>
+                            <!-- SEB info tags -->
+                            <div class="mt-2">
+                                <v-chip
+                                    v-for="(info, index) in sebInfoParts"
+                                    :key="index"
+                                    class="mr-1 mb-1 text-body-3 info-chip"
+                                    size="default"
+                                    variant="text"
+                                >
+                                    {{ info }}
+                                </v-chip>
+                            </div>
+                        </div>
+                    </v-col>
 
-        <!-- Action Buttons -->
-        <v-col class="button-col" cols="12" md="3">
-            <div
-                class="top-container d-flex flex-column align-end justify-center h-100 mr-5"
-            >
-                <v-btn
-                    class="action-btn mb-2"
-                    color="black"
-                    :disabled="
-                        !connectionStateBehavior[currentStatus || 'UNKNOWN']
-                            ?.cancel
-                    "
-                    prepend-icon="mdi-monitor-lock"
-                    rounded="sm"
-                    variant="outlined"
-                    @click="
-                        openInstructionConfirmDialog(
-                            InstructionEnum.SEB_MARK_AS_CANCELLED,
-                        )
-                    "
-                >
-                    {{ translate("monitoringDetails.info.mark-cancelled") }}
-                </v-btn>
+                    <!-- Indicators -->
+                    <v-col cols="12" md="3">
+                        <v-card
+                            v-if="
+                                filteredIndicators.length > 0 &&
+                                currentStatus !== ConnectionStatusEnum.CLOSED &&
+                                currentStatus !== ConnectionStatusEnum.DISABLED
+                            "
+                            class="ml-4 pa-3"
+                            variant="text"
+                        >
+                            <div
+                                v-for="indicator in filteredIndicators"
+                                :key="indicator.id"
+                                class="indicator-item d-flex align-center mb-5 mt-5"
+                            >
+                                <span class="pl-4 pr-4">
+                                    {{ indicator.name }}:
+                                </span>
+                                <v-icon
+                                    class="mr-1"
+                                    :color="indicator.color"
+                                    :icon="indicator.icon"
+                                />
+                                <span>{{ indicator.displayValue }}</span>
+                            </div>
+                        </v-card>
+                    </v-col>
 
-                <v-btn
-                    class="action-btn mb-2"
-                    color="black"
-                    :disabled="!canLockScreen()"
-                    prepend-icon="mdi-monitor-lock"
-                    rounded="sm"
-                    variant="outlined"
-                    @click="
-                        openInstructionConfirmDialog(
-                            InstructionEnum.SEB_FORCE_LOCK_SCREEN,
-                        )
-                    "
-                >
-                    {{ translate("monitoringDetails.info.lock") }}
-                </v-btn>
+                    <!-- Action Buttons -->
+                    <v-col class="button-col" cols="12" md="3">
+                        <div
+                            class="top-container d-flex flex-column align-end pt-4 h-100 mr-5"
+                        >
+                            <v-btn
+                                class="action-btn mb-2"
+                                color="black"
+                                :disabled="
+                                    !connectionStateBehavior[
+                                        currentStatus || 'UNKNOWN'
+                                    ]?.cancel
+                                "
+                                prepend-icon="mdi-monitor-lock"
+                                rounded="sm"
+                                variant="outlined"
+                                @click="
+                                    openInstructionConfirmDialog(
+                                        InstructionEnum.SEB_MARK_AS_CANCELLED,
+                                    )
+                                "
+                            >
+                                {{
+                                    translate(
+                                        "monitoringDetails.info.mark-cancelled",
+                                    )
+                                }}
+                            </v-btn>
 
-                <v-btn
-                    class="action-btn"
-                    color="black"
-                    :disabled="
-                        !connectionStateBehavior[currentStatus || 'UNKNOWN']
-                            ?.quit
-                    "
-                    prepend-icon="mdi-backspace-outline"
-                    rounded="sm"
-                    variant="outlined"
-                    @click="
-                        openInstructionConfirmDialog(InstructionEnum.SEB_QUIT)
-                    "
-                >
-                    {{ translate("monitoringDetails.info.quit") }}
-                </v-btn>
-            </div>
-        </v-col>
-    </v-row>
+                            <v-btn
+                                class="action-btn mb-2"
+                                color="black"
+                                :disabled="!canLockScreen()"
+                                prepend-icon="mdi-monitor-lock"
+                                rounded="sm"
+                                variant="outlined"
+                                @click="
+                                    openInstructionConfirmDialog(
+                                        InstructionEnum.SEB_FORCE_LOCK_SCREEN,
+                                    )
+                                "
+                            >
+                                {{ translate("monitoringDetails.info.lock") }}
+                            </v-btn>
 
-    <v-row class="pb-4 pr-4 pl-4" style="background-color: #fffffe">
-        <v-col class="d-flex justify-start">
-            <v-icon
-                icon="mdi-arrow-left"
-                @click="
-                    navigateTo(
-                        constants.MONITORING_CLIENTS_ROUTE + '/' + examId,
-                        monitoringStore.currentMonitoringQuery,
-                    )
-                "
-            />
+                            <v-btn
+                                class="action-btn"
+                                color="black"
+                                :disabled="
+                                    !connectionStateBehavior[
+                                        currentStatus || 'UNKNOWN'
+                                    ]?.quit
+                                "
+                                prepend-icon="mdi-backspace-outline"
+                                rounded="sm"
+                                variant="outlined"
+                                @click="
+                                    openInstructionConfirmDialog(
+                                        InstructionEnum.SEB_QUIT,
+                                    )
+                                "
+                            >
+                                {{ translate("monitoringDetails.info.quit") }}
+                            </v-btn>
+                        </div>
+                    </v-col>
+                </v-row>
+
+                <v-row class="pb-4 pr-4 pl-4" style="background-color: #fffffe">
+                    <v-col class="d-flex justify-start">
+                        <v-icon
+                            icon="mdi-arrow-left"
+                            @click="
+                                navigateTo(
+                                    constants.MONITORING_CLIENTS_ROUTE +
+                                        '/' +
+                                        examId,
+                                    monitoringStore.currentMonitoringQuery,
+                                )
+                            "
+                        />
+                    </v-col>
+                </v-row>
+            </v-sheet>
         </v-col>
     </v-row>
 
@@ -276,7 +292,7 @@ function closeInstructionConfirmDialog() {
 const nameParts = computed(() => {
     const rawName =
         monitoringStore.selectedSingleConn?.cdat.examUserSessionId || "";
-    return rawName.split(" ").filter((p) => p.trim() !== "");
+    return rawName.split("|").filter((p) => p.trim() !== "");
 });
 
 //= ==============groups, tags, and status====================
