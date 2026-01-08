@@ -109,7 +109,7 @@
 
                 <!-- Proctoring view -->
                 <div v-if="currentView === 'proctoring'" class="view-container">
-                    <ProctoringViewPage :session-id-prop="connectionToken" />
+                    <ProctoringViewPageOld :session-id-prop="connectionToken" />
                 </div>
 
                 <!-- Logs view -->
@@ -131,7 +131,7 @@ import { ref, computed, watch, nextTick } from "vue";
 import { useRoute } from "vue-router";
 import type { ComputedRef } from "vue";
 import { ClientNotification } from "@/models/seb-server/monitoring";
-import ProctoringViewPage from "@/components/views/screen-proctoring/proctoring/ProctoringViewPage.vue";
+import ProctoringViewPageOld from "@/components/views/screen-proctoring/proctoring/ProctoringViewPageOld.vue";
 import MonitoringClientLogsContainer from "@/components/views/seb-server/monitoring/client-detail/MonitoringClientLogsContainer.vue";
 
 // route params
