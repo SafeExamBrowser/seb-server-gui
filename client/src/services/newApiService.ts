@@ -19,3 +19,15 @@ export const get = (url: string) => {
         },
     });
 };
+
+export const post = <T>(url: string, data: T) => {
+    const authStore = useAuthStore();
+
+    return api.post(url, data, {
+        headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${authStore.getStorageItem(StorageItemEnum.ACCESS_TOKEN)}`,
+            "Content-Type": "application/json",
+        },
+    });
+};
