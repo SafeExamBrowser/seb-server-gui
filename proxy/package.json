@@ -11,6 +11,7 @@
     "@types/node": "22.10.5",
     "http-proxy-3": "1.23.2",
     "tsx": "4.19.2",
-    "typescript": "5.7.3"
+    "typescript": "5.7.3",
+    "zod": "4.3.5"
   }
 }
