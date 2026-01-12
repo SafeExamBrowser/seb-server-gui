@@ -4,7 +4,6 @@ import * as systemController from "../controllers/seb-server/system.controller";
 import * as quizController from "../controllers/seb-server/quiz.controller";
 import * as examController from "../controllers/seb-server/exam.controller";
 import * as configurationController from "../controllers/seb-server/configuration.controller";
-import * as configurationNodeController from "../controllers/seb-server/configuration-node.controller";
 import * as screenProctoringController from "../controllers/seb-server/screen-proctoring.controller";
 import * as indicatorController from "../controllers/seb-server/indicator.controller";
 import * as userAccountController from "../controllers/seb-server/user-account.controller";
@@ -106,9 +105,6 @@ router.post(constants.CONNECTION_CONFIG_ROUTE + "/:id" + constants.DEACTIVATION_
 router.delete(constants.CONNECTION_CONFIG_ROUTE+ "/:id", configurationController.deleteConnectionConfiguration);
 router.post(constants.CONNECTION_CONFIG_ROUTE, configurationController.createConnectionConfiguration);
 router.put(constants.CONNECTION_CONFIG_ROUTE, configurationController.editConnectionConfiguration);
-
-// configuration node
-router.get(constants.CONFIGURATION_NODE_ROUTE + "/*", configurationNodeController.genericGetAction);
 
 //assessment tool
 router.get(constants.ASSESSMENT_TOOL_GET_ROUTE + "/:id", assessmentToolController.getAssessmentTool);
