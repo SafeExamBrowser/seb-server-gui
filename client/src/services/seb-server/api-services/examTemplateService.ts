@@ -36,12 +36,7 @@ export async function getExamTemplateSp(
     ).data;
 }
 
-export async function createExamTemplate(
+export const createExamTemplate = async (
     examTemplate: ExamTemplate,
-): Promise<ExamTemplate> {
-    return (
-        await apiService.api.post(url + "/create", examTemplate, {
-            headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
+): Promise<ExamTemplate> =>
+    (await newApiService.post(url + "/create", examTemplate)).data;

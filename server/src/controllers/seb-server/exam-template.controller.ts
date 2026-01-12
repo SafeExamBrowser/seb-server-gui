@@ -23,21 +23,3 @@ export async function getExamTemplateSp(req: Request, res: Response){
         apiService.handleGenericApiError(error, res);
     }
 }
-
-export async function createExamTemplate(req: Request, res: Response) {
-    try {
-      const { data, status } = await apiService.api.post(
-        constants.EXAM_TEMPLATE_ROUTE + "/create",
-        req.body,
-        {
-          headers: apiService.getApplicationJsonHeaders(
-            req.headers.authorization
-          ),
-        }
-      );
-
-      return res.status(status).json(data);
-    } catch (error) {
-      apiService.handleGenericApiError(error, res);
-    }
-  }
