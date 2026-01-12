@@ -5,7 +5,6 @@ import * as quizController from "../controllers/seb-server/quiz.controller";
 import * as examController from "../controllers/seb-server/exam.controller";
 import * as configurationController from "../controllers/seb-server/configuration.controller";
 import * as configurationNodeController from "../controllers/seb-server/configuration-node.controller";
-import * as examTemplateController from "../controllers/seb-server/exam-template.controller";
 import * as screenProctoringController from "../controllers/seb-server/screen-proctoring.controller";
 import * as indicatorController from "../controllers/seb-server/indicator.controller";
 import * as userAccountController from "../controllers/seb-server/user-account.controller";
@@ -77,9 +76,6 @@ router.post(constants.TEMPLATE_SEB_SETTINGS_ROUTE + "/:id", templateSEBSettingsC
 router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE, screenProctoringController.saveScreenProctoringSettings);
 router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE + "/apply-groups", screenProctoringController.applyScreenProctoringGroups);
 router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE + "/activation", screenProctoringController.activateScreenProctoring);
-
-//exam template
-router.get(constants.EXAM_TEMPLATE_ROUTE + "/:id", examTemplateController.getExamTemplate);
 
 //institutions
 router.get(constants.INSTITUTION_ROUTE, institutionsController.getInstitutions);

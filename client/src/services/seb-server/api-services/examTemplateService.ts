@@ -1,19 +1,12 @@
-import * as apiService from "@/services/apiService";
 import * as newApiService from "@/services/newApiService";
 
-import { StorageItemEnum } from "@/models/StorageItemEnum";
 import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring";
 import { ExamTemplate, ExamTemplates } from "@/models/seb-server/examTemplate";
 
 const url: string = "/exam-template";
 
-export async function getExamTemplate(id: string): Promise<ExamTemplate> {
-    return (
-        await apiService.api.get(url + "/" + id, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
+export const getExamTemplate = async (id: string): Promise<ExamTemplate> =>
+    (await newApiService.get(url + "/" + id)).data;
 
 export const getExamTemplateNames = async (): Promise<
     {
