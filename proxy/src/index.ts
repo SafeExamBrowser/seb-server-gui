@@ -16,7 +16,6 @@ proxyConfig.on("proxyReq", (proxyReq, req, res) => {
   const authToken = req.headers.authorization;
 
   if (!authToken) {
-    // TODO @alain: is this the correct way to handle this?
     res.writeHead(401, { "Content-Type": "application/json" });
     res.end(JSON.stringify({ message: "Unauthorized" }));
     return;
