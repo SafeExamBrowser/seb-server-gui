@@ -3,7 +3,6 @@ import * as newApiService from "@/services/newApiService";
 
 import { StorageItemEnum } from "@/models/StorageItemEnum";
 import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring";
-import { OptionalParGeneric } from "@/models/seb-server/optionalParamters";
 import { ExamTemplate, ExamTemplates } from "@/models/seb-server/examTemplate";
 
 const url: string = "/exam-template";
@@ -24,16 +23,8 @@ export const getExamTemplateNames = async (): Promise<
     }[]
 > => (await newApiService.get(`${url}/names`)).data;
 
-export async function getExamTemplates(
-    optionalParameters?: OptionalParGeneric,
-): Promise<ExamTemplates> {
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-            params: { optionalParameters },
-        })
-    ).data;
-}
+export const getExamTemplates = async (): Promise<ExamTemplates> =>
+    (await newApiService.get(url)).data;
 
 export async function getExamTemplateSp(
     id: string,

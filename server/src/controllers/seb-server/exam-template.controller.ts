@@ -14,19 +14,6 @@ export async function getExamTemplate(req: Request, res: Response){
     }
 }
 
-
-export async function getExamTemplates(req: Request, res: Response){
-    try{
-        console.log(req.body);
-
-        const [examTemplates, status] = await examTemplateService.getExamTemplates(req.headers.authorization, req.query.optionalParameters);
-        return res.status(status).json(examTemplates);
-
-    }catch(error){
-        apiService.handleGenericApiError(error, res);
-    }
-}
-
 export async function getExamTemplateSp(req: Request, res: Response){
     try{
         const [examTemplateSp, status] = await examTemplateService.getExamTemplateSp(req.headers.authorization, req.params.id);
