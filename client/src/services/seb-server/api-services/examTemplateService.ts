@@ -16,15 +16,14 @@ export async function getExamTemplate(id: string): Promise<ExamTemplate> {
     ).data;
 }
 
-export async function getExamTemplateNames(): Promise<
+export const getExamTemplateNames = async (): Promise<
     {
         modelId: string;
         entityType: "EXAM_TEMPLATE";
         name: string;
     }[]
-> {
-    return (await newApiService.get(`${url}/names`)).data;
-}
+> => (await newApiService.get(`${url}/names`)).data;
+
 export async function getExamTemplates(
     optionalParameters?: OptionalParGeneric,
 ): Promise<ExamTemplates> {
