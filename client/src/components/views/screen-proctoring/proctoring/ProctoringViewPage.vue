@@ -534,9 +534,8 @@ async function initialize() {
 function setSessionId() {
     // rendered by component
     if (sessionIdRouteParam == null && props.sessionIdProp != null) {
-        console.log("rendered by component");
-
         sessionId = props.sessionIdProp;
+        console.log("rendered by component sessionId: " + sessionId);
         return;
     }
 

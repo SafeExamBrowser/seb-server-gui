@@ -42,7 +42,7 @@
                                     >
                                         {{
                                             translate(
-                                                "monitoringOverview.groups.remainingClients",
+                                                "monitoringOverview.groups.fallbackGroup",
                                             )
                                         }}
                                     </template>
@@ -63,8 +63,6 @@
                                 class="custom-chip"
                                 :style="{
                                     color: '#000',
-
-                                    // color: clientGroupItem.color ? '#' + clientGroupItem.color : '#000'
                                 }"
                             >
                                 {{ clientGroupItem.clientAmount }}
@@ -152,7 +150,7 @@
                         >
                             {{
                                 translate(
-                                    "monitoringOverview.groups.noGroupClients",
+                                    "monitoringOverview.groups.spsFallback",
                                 )
                             }}
                         </span>
@@ -170,7 +168,7 @@
                             prepend-icon="mdi-monitor-eye"
                             variant="flat"
                             @click="
-                                navigation.openUrlInNewTab(
+                                navigation.navigateTo(
                                     linkService.getGalleryViewLinkByExamId(
                                         clientGroupItem.spsGroupUUID,
                                         examId,
@@ -211,16 +209,10 @@
             </v-col>
         </template>
     </v-row>
+
     <!--------special card if no sp group is available but screen proctoring is activated on the exam-------->
     <v-row
-        v-if="
-            !isSPGroupAvailable &&
-            monitoringStore.selectedExam?.additionalAttributes
-                .enableScreenProctoring === 'true' &&
-            generalUtils.stringToBoolean(
-                authStore.getStorageItem(StorageItemEnum.IS_SP_AVAILABLE),
-            )
-        "
+        v-if="!isSPGroupAvailable && isScreenProctoringAvailable"
         class="mt-4"
     >
         <v-col cols="12" md="4">
@@ -243,23 +235,14 @@
                             <div class="font-weight-bold text-subtitle-1">
                                 {{
                                     translate(
-                                        "monitoringOverview.groups.allClients",
-                                    )
-                                }}
-                            </div>
-                            <div class="text-caption">
-                                {{
-                                    translate(
-                                        "monitoringOverview.groups.noGroupClients",
+                                        "monitoringOverview.groups.spsGroup",
                                     )
                                 }}
                             </div>
                         </div>
                         <div class="custom-chip">
                             {{
-                                monitoringStore.monitoringOverviewData?.clientGroups.at(
-                                    -1,
-                                )?.clientAmount ?? 0
+                                screenProctoringFallbackGroup?.clientAmount ?? 0
                             }}
                             {{ translate("monitoringOverview.groups.clients") }}
                         </div>
@@ -268,9 +251,9 @@
 
                 <!-- Group Value Info -->
                 <div class="px-4 pt-3 group-value-info">
-                    <v-icon size="20">mdi-account-multiple-remove</v-icon>
+                    <v-icon size="20">mdi-account-multiple</v-icon>
                     <span>{{
-                        translate("monitoringOverview.groups.noGroupClients")
+                        translate("monitoringOverview.groups.spsFallback")
                     }}</span>
                 </div>
 
@@ -278,20 +261,15 @@
                 <div class="d-flex align-center gap-3 px-4 py-3">
                     <!-- SP Gallery Button -->
                     <v-btn
-                        v-if="
-                            monitoringStore.monitoringOverviewData?.clientGroups.at(
-                                -1,
-                            )?.spsGroupUUID
-                        "
+                        v-if="screenProctoringFallbackGroup !== null"
                         color="primary"
                         prepend-icon="mdi-monitor-eye"
                         variant="flat"
                         @click="
-                            navigation.openUrlInNewTab(
+                            navigation.navigateTo(
                                 linkService.getGalleryViewLinkByExamId(
-                                    monitoringStore.monitoringOverviewData.clientGroups.at(
-                                        -1,
-                                    )?.spsGroupUUID ?? '',
+                                    screenProctoringFallbackGroup.spsGroupUUID ??
+                                        '',
                                     examId,
                                 ),
                             )
@@ -304,7 +282,7 @@
                         }}
                     </v-btn>
 
-                    <!-- View All Button -->
+                    <!-- View List Button -->
                     <v-btn
                         class="ml-4"
                         color="primary"
@@ -312,8 +290,8 @@
                         variant="outlined"
                         @click="
                             monitoringViewService.goToMonitoring(
-                                MonitoringHeaderEnum.SHOW_ALL,
-                                true,
+                                MonitoringHeaderEnum.SHOW_STATES,
+                                getScreenProctoringState(),
                                 examId,
                             )
                         "
@@ -332,7 +310,7 @@
     <!---------------------------->
 
     <!--------show all button-------->
-    <v-row
+    <!-- <v-row
         v-if="
             isSPGroupAvailable ||
             monitoringStore.monitoringOverviewData?.clientGroups.length == 0
@@ -353,7 +331,7 @@
                 {{ translate("monitoringOverview.groups.showAll") }}
             </v-btn>
         </v-col>
-    </v-row>
+    </v-row> -->
 </template>
 
 <script setup lang="ts">
@@ -374,6 +352,7 @@ import { useRoute } from "vue-router";
 import { computed } from "vue";
 import type { ComputedRef } from "vue";
 import { OverviewClientGroup } from "@/models/seb-server/monitoring";
+import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum";
 
 // stores
 const monitoringStore = useMonitoringStore();
@@ -425,6 +404,48 @@ const isSPGroupAvailable: ComputedRef<boolean> = computed(() => {
 
     return false;
 });
+
+const isScreenProctoringAvailable: ComputedRef<boolean> = computed(() => {
+    return (
+        monitoringStore.selectedExam?.additionalAttributes
+            .enableScreenProctoring === "true" &&
+        generalUtils.stringToBoolean(
+            authStore.getStorageItem(StorageItemEnum.IS_SP_AVAILABLE),
+        )
+    );
+});
+
+const screenProctoringFallbackGroup: ComputedRef<OverviewClientGroup | null> =
+    computed(() => {
+        if (monitoringStore.monitoringOverviewData == null) {
+            return null;
+        }
+        for (
+            let i = 0;
+            i < monitoringStore.monitoringOverviewData.clientGroups.length;
+            i++
+        ) {
+            if (
+                monitoringStore.monitoringOverviewData.clientGroups[i].type ===
+                ClientGroupEnum.SP_FALLBACK_GROUP
+            ) {
+                return monitoringStore.monitoringOverviewData.clientGroups[i];
+            }
+        }
+        return null;
+    });
+
+function getScreenProctoringState(): string {
+    if (monitoringStore.selectedExam == null) {
+        return ConnectionStatusEnum.ACTIVE;
+    }
+
+    if (!monitoringStore.selectedExam.lmsSetupId) {
+        return ConnectionStatusEnum.READY + "," + ConnectionStatusEnum.ACTIVE;
+    }
+
+    return ConnectionStatusEnum.ACTIVE;
+}
 </script>
 
 <style scoped>

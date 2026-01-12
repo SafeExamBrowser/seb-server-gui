@@ -299,6 +299,9 @@
                                 v-for="conn in pagedConnections"
                                 :key="conn.id"
                                 class="conn-card mb-3"
+                                @click="
+                                    showConnection(conn.conn.connectionToken)
+                                "
                             >
                                 <v-list-item-title
                                     class="font-weight-medium conn-card-title"
@@ -389,6 +392,8 @@ import { translate } from "@/utils/generalUtils";
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum";
 import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
 import * as examViewService from "@/services/seb-server/component-services/examViewService";
+import { navigateTo } from "@/router/navigation";
+import * as constants from "@/utils/constants";
 
 const store = useMonitoringStore();
 const emit = defineEmits<{
@@ -590,6 +595,17 @@ function statusColor(status?: string) {
     }
 }
 
+function showConnection(connectionToken: string) {
+    closeDialog();
+    navigateTo(
+        constants.MONITORING_ROUTE +
+            "/" +
+            examId +
+            "/details/" +
+            connectionToken,
+    );
+}
+
 const firstConnInfo = computed(() => {
     const first = selectedConnections.value[0]?.conn;
     const os = first?.clientOsName || "";
@@ -629,6 +645,13 @@ function onRemoveGrant() {
     border-radius: 10px !important;
     padding: 10px 14px;
     min-height: 64px;
+}
+
+.conn-card:hover {
+    border-color: #b8c4d4;
+    box-shadow:
+        0 1px 0 rgba(0, 0, 0, 0.02),
+        0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
 .conn-card-title,

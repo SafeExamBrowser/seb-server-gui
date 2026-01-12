@@ -10,14 +10,30 @@
                 >
                     {{ translate("titles.home") }}
                 </span>
-
                 <span class="breadcrumb-arrow">›</span>
-
                 <span
-                    class="breadcrumb-active"
+                    class="breadcrumb-link"
                     @click="navigateTo(constants.MONITORING_ROUTE)"
                 >
                     {{ translate("titles.monitoring") }}
+                </span>
+                <span
+                    v-if="monitoringStore.selectedExam !== null"
+                    class="breadcrumb-arrow"
+                    >›</span
+                >
+                <span
+                    v-if="monitoringStore.selectedExam !== null"
+                    class="breadcrumb-link"
+                    @click="
+                        navigateTo(
+                            constants.MONITORING_OVERVIEW_ROUTE +
+                                '/' +
+                                monitoringStore.selectedExam.id.toString(),
+                        )
+                    "
+                >
+                    {{ translate("titles.overview") }}
                 </span>
             </div>
         </v-col>
