@@ -7,10 +7,3 @@ export async function getExamTemplate(token: string, id: string): Promise<[objec
 
     return [data, status];
 }
-
-export async function getExamTemplateSp(token: string, id: string): Promise<[object, number]>{
-    const url: string =  constants.EXAM_TEMPLATE_ROUTE + "/" + id + "/screen-proctoring";
-    const {data, status} = await apiService.api.get(url, {headers: apiService.getHeaders(token)});
-
-    return [data, status];
-}

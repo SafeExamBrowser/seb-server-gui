@@ -80,7 +80,6 @@ router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE + "/activation", screenProcto
 
 //exam template
 router.get(constants.EXAM_TEMPLATE_ROUTE + "/:id", examTemplateController.getExamTemplate);
-router.get(constants.EXAM_TEMPLATE_SCREEN_PROCTORING_ROUTE, examTemplateController.getExamTemplateSp);
 
 //institutions
 router.get(constants.INSTITUTION_ROUTE, institutionsController.getInstitutions);

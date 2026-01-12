@@ -26,15 +26,10 @@ export const getExamTemplateNames = async (): Promise<
 export const getExamTemplates = async (): Promise<ExamTemplates> =>
     (await newApiService.get(url)).data;
 
-export async function getExamTemplateSp(
+export const getExamTemplateSp = async (
     id: string,
-): Promise<ScreenProctoringSettings> {
-    return (
-        await apiService.api.get(url + "/" + id + "/screen-proctoring", {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
+): Promise<ScreenProctoringSettings> =>
+    (await newApiService.get(url + "/" + id + "/screen-proctoring")).data;
 
 export const createExamTemplate = async (
     examTemplate: ExamTemplate,
