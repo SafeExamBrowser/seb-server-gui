@@ -25,7 +25,8 @@ proxyConfig.on("proxyReq", (proxyReq, req, res) => {
   // override auth header (personal access token)
   proxyReq.setHeader("Authorization", authToken);
 
-  // TODO @alain: this should be set by the client already (I'm currently assuming that the API wants this for all GET requests)
+  // the backend API requires a Content-Type, even on GET request, so we manually add it here
+  // TODO @alain: check with Andreas if we should adapt the API to not require this
   proxyReq.setHeader("Content-Type", "application/x-www-form-urlencoded");
 });
 

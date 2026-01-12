@@ -14,9 +14,8 @@ export const get = (url: string) => {
 
     return api.get(url, {
         headers: {
-            accept: "application/json",
+            Accept: "application/json",
             Authorization: `Bearer ${authStore.getStorageItem(StorageItemEnum.ACCESS_TOKEN)}`,
-            "Content-Type": "application/json",
         },
     });
 };

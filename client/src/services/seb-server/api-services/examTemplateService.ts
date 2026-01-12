@@ -23,7 +23,7 @@ export async function getExamTemplateNames(): Promise<
         name: string;
     }[]
 > {
-    return (await newApiService.get(url + "/names")).data;
+    return (await newApiService.get(`${url}/names`)).data;
 }
 export async function getExamTemplates(
     optionalParameters?: OptionalParGeneric,
