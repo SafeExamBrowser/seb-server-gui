@@ -39,7 +39,7 @@ const isDataLoaded = ref<boolean>(false);
 
 // interval
 let intervalRefresh: ReturnType<typeof setInterval> | null = null;
-
+let dataFetching = false;
 const REFRESH_INTERVAL: number = 5000;
 
 onBeforeMount(async () => {
@@ -62,6 +62,26 @@ onBeforeUnmount(() => {
 });
 
 //= =============data fetching================
+// NOTE: This is the backend data fetch that gets called in an update interval.
+//       To prevent subsequent calls when the backend is not responding, what would lead to
+//       sending more calls and allocate unnecessary resources on the backend, we use the
+//       dataFetching here to track the fetching and only fetch data if there was a response
+//       from the former call.
+async function fetchData() {
+    if (dataFetching) {
+        console.warn(
+            "********** Skip client data fetch due to no response from backend",
+        );
+        return;
+    }
+
+    dataFetching = true;
+
+    getSingleConnection();
+    getPendingNotifications();
+    dataFetching = false;
+}
+
 async function getSingleConnection() {
     const singleConnectionResponse: SingleConnection | null =
         await monitoringViewService.getSingleConnection(
@@ -114,8 +134,7 @@ async function storeClientGroups() {
 //= ================interval===================
 async function startIntervalRefresh() {
     intervalRefresh = setInterval(async () => {
-        getSingleConnection();
-        getPendingNotifications();
+        fetchData();
     }, REFRESH_INTERVAL);
 }
 

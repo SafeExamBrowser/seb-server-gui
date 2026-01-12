@@ -6,7 +6,6 @@
     >
         <!-- Info and Search -->
         <MonitoringExamsInfo
-            class="flex-grow-0"
             @load-monitoring-list-items-caller="loadMonitoringListItemsCaller"
         />
 

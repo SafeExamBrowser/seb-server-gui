@@ -65,6 +65,18 @@ export async function registerInstruction(req: Request, res: Response) {
     }
 }
 
+export async function quitAll(req: Request, res: Response) {
+    try {
+        const [status, data] = await monitoringService.quitAll(
+            req.headers.authorization,
+            req.params.id
+        );
+        return res.status(status).json(data ?? {});
+    } catch (error) {
+        apiService.handleGenericApiError(error, res);
+    }
+}
+
 export async function getPendingNotifications(req: Request, res: Response){
     try{
 

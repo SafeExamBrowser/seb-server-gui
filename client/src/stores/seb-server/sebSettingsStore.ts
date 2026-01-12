@@ -13,6 +13,8 @@ export const useSEBSettingsStore = defineStore("sebSettings", () => {
 
     const dialogTitle = ref<string | null>(null);
 
+    const ignoreSEBService = ref<boolean>(false);
+
     const fp = "pt-1 pb-1";
     const cp = "pt-1 pb-1 pl-0";
 
@@ -20,6 +22,7 @@ export const useSEBSettingsStore = defineStore("sebSettings", () => {
         isExam.value = false;
         selectedContainerId.value = null;
         readonly.value = false;
+        ignoreSEBService.value = false;
         activeSEBClientConnection.value = null;
         dialogTitle.value = null;
     }
@@ -28,6 +31,7 @@ export const useSEBSettingsStore = defineStore("sebSettings", () => {
         isExam,
         selectedContainerId,
         readonly,
+        ignoreSEBService,
         activeSEBClientConnection,
         dialogTitle,
         clearAll,

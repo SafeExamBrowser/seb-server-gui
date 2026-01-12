@@ -2,7 +2,7 @@
     <!-- Raised Hand Popup  -->
     <v-row
         v-if="raiseHandNotification != null"
-        class="rounded-lg pa-4 raise-hand-row mb-1"
+        class="rounded-lg pa-4 raise-hand-row mb-1 ml-4 mr-4"
         elevation="4"
         style="background-color: #fffffe; border: 2px solid #215caf"
     >
@@ -35,12 +35,12 @@
 
     <!-- Messages -->
     <v-row>
-        <v-col class="mb-1" cols="12">
+        <v-col>
             <template v-if="messages != null">
                 <v-row
                     v-for="message in messages"
                     :key="message.id"
-                    class="rounded-lg pa-4 message-card"
+                    class="rounded-lg pa-4 message-card ml-4 mr-4"
                     elevation="4"
                     style="background-color: #fffffe; border: 2px solid #215caf"
                 >
@@ -75,9 +75,9 @@
                 </v-row>
             </template>
 
-            <div v-else align="center">
+            <!-- <div v-else align="center">
                 {{ translate("monitoringDetails.main.noNotifications") }}
-            </div>
+            </div> -->
         </v-col>
     </v-row>
 
@@ -109,7 +109,7 @@
 
                 <!-- Proctoring view -->
                 <div v-if="currentView === 'proctoring'" class="view-container">
-                    <ProctoringViewPage :session-id-prop="connectionToken" />
+                    <ProctoringViewPageOld :session-id-prop="connectionToken" />
                 </div>
 
                 <!-- Logs view -->
@@ -131,7 +131,7 @@ import { ref, computed, watch, nextTick } from "vue";
 import { useRoute } from "vue-router";
 import type { ComputedRef } from "vue";
 import { ClientNotification } from "@/models/seb-server/monitoring";
-import ProctoringViewPage from "@/components/views/screen-proctoring/proctoring/ProctoringViewPage.vue";
+import ProctoringViewPageOld from "@/components/views/screen-proctoring/proctoring/ProctoringViewPageOld.vue";
 import MonitoringClientLogsContainer from "@/components/views/seb-server/monitoring/client-detail/MonitoringClientLogsContainer.vue";
 
 // route params

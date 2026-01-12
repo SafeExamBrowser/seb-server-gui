@@ -651,7 +651,7 @@ const userAccountsTableHeaders = computed(() => {
             title: translate(
                 "userAccount.userAccountPage.userAccountTableHeaders.tableHeaderInstitution",
             ),
-            key: "institutionName",
+            key: "institutionId",
             width: "12%",
             sortable: true,
         });

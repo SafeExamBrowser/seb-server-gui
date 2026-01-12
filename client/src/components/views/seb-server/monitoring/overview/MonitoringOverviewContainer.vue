@@ -48,7 +48,7 @@
             </v-row>
 
             <!-- Groups -->
-            <v-row class="mt-5">
+            <v-row v-if="hasGroups" class="mt-5">
                 <v-col cols="12">
                     <v-sheet
                         class="pa-6 fill-height min-height-sheet"
@@ -88,6 +88,7 @@ const monitoringStore = useMonitoringStore();
 
 // interval
 let intervalRefresh: ReturnType<typeof setInterval> | null = null;
+let dataFetching = false;
 const REFRESH_INTERVAL = 5000;
 
 onBeforeMount(async () => {
@@ -104,14 +105,42 @@ onBeforeUnmount(() => {
 });
 
 const hasIndicators = computed(
-    () => (monitoringStore.indicators?.content?.length ?? 0) > 0,
+    () =>
+        monitoringStore.monitoringOverviewData?.indicators.BATTERY_STATUS !=
+            null &&
+        monitoringStore.monitoringOverviewData?.indicators.WLAN_STATUS != null,
 );
 
+const hasGroups = computed(
+    () =>
+        (monitoringStore.monitoringOverviewData?.clientGroups.length ?? 0) > 0,
+);
+
+// NOTE: This is the backend data fetch that gets called in an update interval.
+//       To prevent subsequent calls when the backend is not responding, what would lead to
+//       sending more calls and allocate unnecessary resources on the backend, we use the
+//       dataFetching here to track the fetching and only fetch data if there was a response
+//       from the former call.
 async function getOverviewData() {
+    if (dataFetching) {
+        console.warn(
+            "********** Skip overview data fetch due to no response from backend",
+        );
+        return;
+    }
+
+    dataFetching = true;
+
     const overviewResponse: MonitoringOverview | null =
         await monitoringViewService.getOverview(examId);
-    if (!overviewResponse) return;
+
+    if (!overviewResponse) {
+        dataFetching = false;
+        return;
+    }
+
     monitoringStore.monitoringOverviewData = overviewResponse;
+    dataFetching = false;
 }
 
 async function getIndicatorData() {

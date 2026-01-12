@@ -24,7 +24,7 @@
                     <v-form>
                         <!------------ active ------------->
                         <v-row align="center">
-                            <v-col class="pt-0 pb-0 pl-0">
+                            <v-col>
                                 <v-tooltip
                                     activator="parent"
                                     location="top left"
@@ -207,7 +207,6 @@
                                     "
                                     :disabled="props.readOnly"
                                     hide-details
-                                    single-line
                                     variant="outlined"
                                 >
                                 </v-text-field>
@@ -336,34 +335,6 @@
                                 ></v-checkbox-btn>
                             </v-col>
                         </v-row>
-                        <!------------ allowOpenAndSavePanel ------------->
-                        <v-row align="center">
-                            <v-col class="pt-0 pb-0">
-                                <v-tooltip
-                                    activator="parent"
-                                    location="top left"
-                                    max-width="400"
-                                >
-                                    {{
-                                        translate(
-                                            "sebSettings.applicationView.permittedProcess.allowOpenAndSavePanel_tooltip",
-                                        )
-                                    }}
-                                </v-tooltip>
-                                <v-checkbox-btn
-                                    v-model="
-                                        props.permittedProcess!
-                                            .allowOpenAndSavePanel
-                                    "
-                                    :label="
-                                        translate(
-                                            'sebSettings.applicationView.permittedProcess.allowOpenAndSavePanel',
-                                        )
-                                    "
-                                    :disabled="props.readOnly"
-                                ></v-checkbox-btn>
-                            </v-col>
-                        </v-row>
                         <!------------ autostart ------------->
                         <v-row align="center">
                             <v-col class="pt-0 pb-0">
@@ -383,33 +354,6 @@
                                     :label="
                                         translate(
                                             'sebSettings.applicationView.permittedProcess.autostart',
-                                        )
-                                    "
-                                    :disabled="props.readOnly"
-                                ></v-checkbox-btn>
-                            </v-col>
-                        </v-row>
-                        <!------------ allowShareSheet ------------->
-                        <v-row align="center">
-                            <v-col class="pt-0 pb-0">
-                                <v-tooltip
-                                    activator="parent"
-                                    location="top left"
-                                    max-width="400"
-                                >
-                                    {{
-                                        translate(
-                                            "sebSettings.applicationView.permittedProcess.allowShareSheet_tooltip",
-                                        )
-                                    }}
-                                </v-tooltip>
-                                <v-checkbox-btn
-                                    v-model="
-                                        props.permittedProcess!.allowShareSheet
-                                    "
-                                    :label="
-                                        translate(
-                                            'sebSettings.applicationView.permittedProcess.allowShareSheet',
                                         )
                                     "
                                     :disabled="props.readOnly"
@@ -472,13 +416,6 @@
                         </v-row>
                         <!------------ allowUserToChooseApp ------------->
                         <v-row align="center">
-                            <v-col class="pt-0 pb-0"
-                                >{{
-                                    translate(
-                                        "sebSettings.applicationView.permittedProcess.allowUserToChooseApp",
-                                    )
-                                }}
-                            </v-col>
                             <v-col class="pt-0 pb-0">
                                 <v-checkbox-btn
                                     v-model="

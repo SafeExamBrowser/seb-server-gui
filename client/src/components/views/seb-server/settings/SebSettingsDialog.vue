@@ -1,61 +1,67 @@
 <template>
-    <v-card class="pa-5">
-        <v-row>
-            <v-toolbar color="transparent">
-                <v-toolbar-title
-                    class="text-h6"
-                    :text="translate(sebSettingsStore.dialogTitle)"
-                ></v-toolbar-title>
-                <template #append>
-                    <v-btn
-                        icon="mdi-close"
-                        @click="emit('closeSebSettingsDialog', false)"
-                    ></v-btn>
-                </template>
-            </v-toolbar>
-        </v-row>
-
-        <v-row
-            v-if="
-                sebSettingsStore.activeSEBClientConnection != null &&
-                sebSettingsStore.activeSEBClientConnection > 0
-            "
-            class="ml-5 mr-5"
-        >
-            <v-card class="pa-5" color="indigo" variant="elevated">
-                {{ translate("examDetail.main.activeSEBClientsNote") }}
-            </v-card>
-        </v-row>
-
+    <v-card class="pa-5" max-width="1200">
         <v-row>
             <v-col>
-                <v-tabs v-model="currentTab" show-arrows="always" center-active>
-                    <v-tab
-                        v-for="tab in tabs"
-                        :key="tab.value"
-                        :value="tab.value"
-                        >{{ tab.title }}</v-tab
+                <v-row>
+                    <v-toolbar color="transparent">
+                        <v-toolbar-title
+                            class="text-h6"
+                            :text="translate(sebSettingsStore.dialogTitle)"
+                        ></v-toolbar-title>
+                        <template #append>
+                            <v-btn
+                                icon="mdi-close"
+                                @click="emit('closeSebSettingsDialog', false)"
+                            ></v-btn>
+                        </template>
+                    </v-toolbar>
+                </v-row>
+                <v-row
+                    v-if="
+                        sebSettingsStore.activeSEBClientConnection != null &&
+                        sebSettingsStore.activeSEBClientConnection > 0
+                    "
+                    class="ml-5 mr-5"
+                >
+                    <v-card class="pa-5" color="indigo" variant="elevated">
+                        {{ translate("examDetail.main.activeSEBClientsNote") }}
+                    </v-card>
+                </v-row>
+                <v-row>
+                    <v-tabs
+                        v-model="currentTab"
+                        show-arrows="always"
+                        center-active
                     >
-                </v-tabs>
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col>
-                <v-tabs-window v-model="currentTab">
-                    <v-tabs-window-item
-                        v-for="tab in tabs"
-                        :key="tab.value"
-                        :value="tab.value"
-                    >
-                        <v-card class="rounded-lg pa-4" variant="outlined">
-                            <component :is="tab.component" />
-                        </v-card>
-                    </v-tabs-window-item>
-                </v-tabs-window>
+                        <v-tab
+                            v-for="tab in tabs"
+                            :key="tab.value"
+                            :value="tab.value"
+                            >{{ tab.title }}</v-tab
+                        >
+                    </v-tabs>
+                </v-row>
+                <v-row>
+                    <v-col>
+                        <v-tabs-window v-model="currentTab">
+                            <v-tabs-window-item
+                                v-for="tab in tabs"
+                                :key="tab.value"
+                                :value="tab.value"
+                            >
+                                <v-card
+                                    class="rounded-lg pa-4"
+                                    variant="outlined"
+                                >
+                                    <component :is="tab.component" />
+                                </v-card>
+                            </v-tabs-window-item> </v-tabs-window
+                    ></v-col>
+                </v-row>
             </v-col>
         </v-row>
 
-        <v-row align="center">
+        <v-row align="end">
             <v-col align="right">
                 <v-btn
                     color="black"

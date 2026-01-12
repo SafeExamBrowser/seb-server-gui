@@ -104,6 +104,14 @@ export async function registerInstruction(
     return call.status;
 }
 
+export async function quitAll(examId: string): Promise<number> {
+    const url: string = monitoringUrl + "/" + examId + "/quitAll";
+    const call = await apiService.api.post(url, {
+        headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),
+    });
+    return call.status;
+}
+
 export async function getPendingNotifcations(
     examId: string,
     connectionToken: string,

@@ -1,19 +1,19 @@
 <template>
     <v-row>
-        <v-col :class="sebSettingsStore.cp">
+        <v-col class="pt-5 pb-0">
             <v-checkbox-btn
                 v-model="urlFilterEnableVal"
                 :disabled="sebSettingsStore.readonly"
                 :label="translate('sebSettings.networkView.URLFilterEnable')"
                 @update:model-value="
                     saveSingleValue(
-                        urlFilterEnable.id,
+                        'URLFilterEnable',
                         urlFilterEnableVal ? 'true' : 'false',
                     )
                 "
             ></v-checkbox-btn>
         </v-col>
-        <v-col :class="sebSettingsStore.cp">
+        <v-col class="pt-5 pb-0">
             <v-checkbox-btn
                 v-model="urlFilterEnableContentFilterVal"
                 :disabled="sebSettingsStore.readonly"
@@ -24,7 +24,7 @@
                 "
                 @update:model-value="
                     saveSingleValue(
-                        urlFilterEnableContentFilter.id,
+                        'URLFilterEnableContentFilter',
                         urlFilterEnableContentFilterVal ? 'true' : 'false',
                     )
                 "
@@ -33,7 +33,7 @@
     </v-row>
 
     <v-row>
-        <v-col class="text-subtitle-1">
+        <v-col class="font-weight-bold pt-8 pb-0">
             <v-row>
                 <v-col>{{
                     translate("sebSettings.networkView.filterGroupTitle")
@@ -50,7 +50,7 @@
                     </v-btn>
                 </v-col>
             </v-row>
-            <v-divider class="border-opacity-25" :thickness="2"></v-divider>
+            <v-divider class="border-opacity-25" :thickness="5"></v-divider>
         </v-col>
     </v-row>
 
@@ -138,13 +138,13 @@
     </v-dialog>
 
     <v-row>
-        <v-col class="text-subtitle-1">
+        <v-col class="font-weight-bold pt-8 pb-0">
             <v-row>
                 <v-col>{{
                     translate("sebSettings.networkView.proxies")
                 }}</v-col>
             </v-row>
-            <v-divider class="border-opacity-25" :thickness="2"></v-divider>
+            <v-divider class="border-opacity-25" :thickness="5"></v-divider>
         </v-col>
     </v-row>
 
@@ -159,7 +159,7 @@
                         hide-details
                         @update:model-value="
                             saveSingleValue(
-                                proxySettingsPolicy.id,
+                                'proxySettingsPolicy',
                                 proxySettingsPolicyVal,
                             )
                         "
@@ -194,8 +194,8 @@
                             )
                         "
                         @update:model-value="
-                            saveSingleValue(
-                                ExcludeSimpleHostnames.id,
+                            saveProxyValue(
+                                'ExcludeSimpleHostnames',
                                 ExcludeSimpleHostnamesVal ? 'true' : 'false',
                             )
                         "
@@ -217,7 +217,7 @@
                         @update:focused="
                             saveOnFocusLost(
                                 $event,
-                                ExceptionsList.id,
+                                'ExceptionsList',
                                 ExceptionsListVal,
                             )
                         "
@@ -232,8 +232,8 @@
                         :disabled="sebSettingsStore.readonly"
                         :label="translate('sebSettings.networkView.FTPPassive')"
                         @update:model-value="
-                            saveSingleValue(
-                                FTPPassive.id,
+                            saveProxyValue(
+                                'FTPPassive',
                                 FTPPassiveVal ? 'true' : 'false',
                             )
                         "
@@ -255,8 +255,8 @@
                                     )
                                 "
                                 @update:model-value="
-                                    saveSingleValue(
-                                        AutoDiscoveryEnabled.id,
+                                    saveProxyValue(
+                                        'AutoDiscoveryEnabled',
                                         AutoDiscoveryEnabledVal
                                             ? 'true'
                                             : 'false',
@@ -279,8 +279,8 @@
                                         )
                                     "
                                     @update:model-value="
-                                        saveSingleValue(
-                                            AutoConfigurationEnabled.id,
+                                        saveProxyValue(
+                                            'AutoConfigurationEnabled',
                                             AutoConfigurationEnabledVal
                                                 ? 'true'
                                                 : 'false',
@@ -305,7 +305,7 @@
                                     @update:focused="
                                         saveOnFocusLost(
                                             $event,
-                                            AutoConfigurationURL.id,
+                                            'AutoConfigurationURL',
                                             AutoConfigurationURLVal,
                                         )
                                     "
@@ -330,7 +330,7 @@
                                     @update:focused="
                                         saveOnFocusLost(
                                             $event,
-                                            AutoConfigurationJavaScript.id,
+                                            'AutoConfigurationJavaScript',
                                             AutoConfigurationJavaScriptVal,
                                         )
                                     "
@@ -353,8 +353,8 @@
                                         )
                                     "
                                     @update:model-value="
-                                        saveSingleValue(
-                                            HTTPEnable.id,
+                                        saveProxyValue(
+                                            'HTTPEnable',
                                             HTTPEnableVal ? 'true' : 'false',
                                         )
                                     "
@@ -377,7 +377,7 @@
                                     @update:focused="
                                         saveOnFocusLost(
                                             $event,
-                                            HTTPProxy.id,
+                                            'HTTPProxy',
                                             HTTPProxyVal,
                                         )
                                     "
@@ -398,11 +398,10 @@
                                     :disabled="sebSettingsStore.readonly"
                                     hide-details
                                     variant="outlined"
-                                    @update:focused="
-                                        saveOnFocusLost(
-                                            $event,
-                                            HTTPPort.id,
-                                            HTTPPortVal?.toString(),
+                                    @update:model-value="
+                                        saveSingleValue(
+                                            'HTTPPort',
+                                            HTTPPortVal.toString(),
                                         )
                                     "
                                 >
@@ -420,8 +419,8 @@
                                         )
                                     "
                                     @update:model-value="
-                                        saveSingleValue(
-                                            HTTPRequiresPassword.id,
+                                        saveProxyValue(
+                                            'HTTPRequiresPassword',
                                             HTTPRequiresPasswordVal
                                                 ? 'true'
                                                 : 'false',
@@ -446,7 +445,7 @@
                                     @update:focused="
                                         saveOnFocusLost(
                                             $event,
-                                            HTTPUsername.id,
+                                            'HTTPUsername',
                                             HTTPUsernameVal,
                                         )
                                     "
@@ -470,7 +469,7 @@
                                     @update:focused="
                                         saveOnFocusLost(
                                             $event,
-                                            HTTPPassword.id,
+                                            'HTTPPassword',
                                             HTTPPasswordVal,
                                         )
                                     "
@@ -493,8 +492,8 @@
                                         )
                                     "
                                     @update:model-value="
-                                        saveSingleValue(
-                                            HTTPSEnable.id,
+                                        saveProxyValue(
+                                            'HTTPSEnable',
                                             HTTPSEnableVal ? 'true' : 'false',
                                         )
                                     "
@@ -517,7 +516,7 @@
                                     @update:focused="
                                         saveOnFocusLost(
                                             $event,
-                                            HTTPSProxy.id,
+                                            'HTTPSProxy',
                                             HTTPSProxyVal,
                                         )
                                     "
@@ -538,11 +537,10 @@
                                     :disabled="sebSettingsStore.readonly"
                                     hide-details
                                     variant="outlined"
-                                    @update:focused="
-                                        saveOnFocusLost(
-                                            $event,
-                                            HTTPSPort.id,
-                                            HTTPSPortVal?.toString(),
+                                    @update:model-value="
+                                        saveSingleValue(
+                                            'HTTPSPort',
+                                            HTTPSPortVal.toString(),
                                         )
                                     "
                                 >
@@ -560,8 +558,8 @@
                                         )
                                     "
                                     @update:model-value="
-                                        saveSingleValue(
-                                            HTTPSRequiresPassword.id,
+                                        saveProxyValue(
+                                            'HTTPSRequiresPassword',
                                             HTTPSRequiresPasswordVal
                                                 ? 'true'
                                                 : 'false',
@@ -587,7 +585,7 @@
                                     @update:focused="
                                         saveOnFocusLost(
                                             $event,
-                                            HTTPSUsername.id,
+                                            'HTTPSUsername',
                                             HTTPSUsernameVal,
                                         )
                                     "
@@ -611,7 +609,7 @@
                                     @update:focused="
                                         saveOnFocusLost(
                                             $event,
-                                            HTTPSPassword.id,
+                                            'HTTPSPassword',
                                             HTTPSPasswordVal,
                                         )
                                     "
@@ -634,8 +632,8 @@
                                         )
                                     "
                                     @update:model-value="
-                                        saveSingleValue(
-                                            FTPEnable.id,
+                                        saveProxyValue(
+                                            'FTPEnable',
                                             FTPEnableVal ? 'true' : 'false',
                                         )
                                     "
@@ -658,7 +656,7 @@
                                     @update:focused="
                                         saveOnFocusLost(
                                             $event,
-                                            FTPProxy.id,
+                                            'FTPProxy',
                                             FTPProxyVal,
                                         )
                                     "
@@ -679,11 +677,10 @@
                                     :disabled="sebSettingsStore.readonly"
                                     hide-details
                                     variant="outlined"
-                                    @update:focused="
-                                        saveOnFocusLost(
-                                            $event,
-                                            FTPPort.id,
-                                            FTPPortVal?.toString(),
+                                    @update:model-value="
+                                        saveSingleValue(
+                                            'FTPPort',
+                                            FTPPortVal.toString(),
                                         )
                                     "
                                 >
@@ -701,8 +698,8 @@
                                         )
                                     "
                                     @update:model-value="
-                                        saveSingleValue(
-                                            FTPRequiresPassword.id,
+                                        saveProxyValue(
+                                            'FTPRequiresPassword',
                                             FTPRequiresPasswordVal
                                                 ? 'true'
                                                 : 'false',
@@ -727,7 +724,7 @@
                                     @update:focused="
                                         saveOnFocusLost(
                                             $event,
-                                            FTPUsername.id,
+                                            'FTPUsername',
                                             FTPUsernameVal,
                                         )
                                     "
@@ -751,7 +748,7 @@
                                     @update:focused="
                                         saveOnFocusLost(
                                             $event,
-                                            FTPPassword.id,
+                                            'FTPPassword',
                                             FTPPasswordVal,
                                         )
                                     "
@@ -774,8 +771,8 @@
                                         )
                                     "
                                     @update:model-value="
-                                        saveSingleValue(
-                                            SOCKSEnable.id,
+                                        saveProxyValue(
+                                            'SOCKSEnable',
                                             SOCKSEnableVal ? 'true' : 'false',
                                         )
                                     "
@@ -798,7 +795,7 @@
                                     @update:focused="
                                         saveOnFocusLost(
                                             $event,
-                                            SOCKSProxy.id,
+                                            'SOCKSProxy',
                                             SOCKSProxyVal,
                                         )
                                     "
@@ -819,11 +816,10 @@
                                     :disabled="sebSettingsStore.readonly"
                                     hide-details
                                     variant="outlined"
-                                    @update:focused="
-                                        saveOnFocusLost(
-                                            $event,
-                                            SOCKSPort.id,
-                                            SOCKSPortVal?.toString(),
+                                    @update:model-value="
+                                        saveSingleValue(
+                                            'SOCKSPort',
+                                            SOCKSPortVal.toString(),
                                         )
                                     "
                                 >
@@ -841,8 +837,8 @@
                                         )
                                     "
                                     @update:model-value="
-                                        saveSingleValue(
-                                            SOCKSRequiresPassword.id,
+                                        saveProxyValue(
+                                            'SOCKSRequiresPassword',
                                             SOCKSRequiresPasswordVal
                                                 ? 'true'
                                                 : 'false',
@@ -867,7 +863,7 @@
                                     @update:focused="
                                         saveOnFocusLost(
                                             $event,
-                                            SOCKSUsername.id,
+                                            'SOCKSUsername',
                                             SOCKSUsernameVal,
                                         )
                                     "
@@ -891,7 +887,7 @@
                                     @update:focused="
                                         saveOnFocusLost(
                                             $event,
-                                            SOCKSPassword.id,
+                                            'SOCKSPassword',
                                             SOCKSPasswordVal,
                                         )
                                     "
@@ -914,8 +910,8 @@
                                         )
                                     "
                                     @update:model-value="
-                                        saveSingleValue(
-                                            RTSPEnable.id,
+                                        saveProxyValue(
+                                            'RTSPEnable',
                                             RTSPEnableVal ? 'true' : 'false',
                                         )
                                     "
@@ -938,7 +934,7 @@
                                     @update:focused="
                                         saveOnFocusLost(
                                             $event,
-                                            RTSPProxy.id,
+                                            'RTSPProxy',
                                             RTSPProxyVal,
                                         )
                                     "
@@ -959,11 +955,10 @@
                                     :disabled="sebSettingsStore.readonly"
                                     hide-details
                                     variant="outlined"
-                                    @update:focused="
-                                        saveOnFocusLost(
-                                            $event,
-                                            RTSPPort.id,
-                                            RTSPPortVal?.toString(),
+                                    @update:model-value="
+                                        saveSingleValue(
+                                            'RTSPPort',
+                                            RTSPPortVal.toString(),
                                         )
                                     "
                                 >
@@ -981,8 +976,8 @@
                                         )
                                     "
                                     @update:model-value="
-                                        saveSingleValue(
-                                            RTSPRequiresPassword.id,
+                                        saveProxyValue(
+                                            'RTSPRequiresPassword',
                                             RTSPRequiresPasswordVal
                                                 ? 'true'
                                                 : 'false',
@@ -1007,7 +1002,7 @@
                                     @update:focused="
                                         saveOnFocusLost(
                                             $event,
-                                            RTSPUsername.id,
+                                            'RTSPUsername',
                                             RTSPUsernameVal,
                                         )
                                     "
@@ -1031,7 +1026,7 @@
                                     @update:focused="
                                         saveOnFocusLost(
                                             $event,
-                                            RTSPPassword.id,
+                                            'RTSPPassword',
                                             RTSPPasswordVal,
                                         )
                                     "
@@ -1167,57 +1162,9 @@ const RTSPPasswordVal = ref<string>("");
 
 // the parent component identifier
 let componentId: string;
-
-let urlFilterEnable: SEBSettingsValue;
-let urlFilterEnableContentFilter: SEBSettingsValue;
-
-let proxySettingsPolicy: SEBSettingsValue;
-let ExcludeSimpleHostnames: SEBSettingsValue;
-let ExceptionsList: SEBSettingsValue;
-let FTPPassive: SEBSettingsValue;
-
-let AutoDiscoveryEnabled: SEBSettingsValue;
-
-let AutoConfigurationEnabled: SEBSettingsValue;
-let AutoConfigurationURL: SEBSettingsValue;
-let AutoConfigurationJavaScript: SEBSettingsValue;
-
-let HTTPEnable: SEBSettingsValue;
-let HTTPProxy: SEBSettingsValue;
-let HTTPPort: SEBSettingsValue;
-let HTTPRequiresPassword: SEBSettingsValue;
-let HTTPUsername: SEBSettingsValue;
-let HTTPPassword: SEBSettingsValue;
-
-let HTTPSEnable: SEBSettingsValue;
-let HTTPSProxy: SEBSettingsValue;
-let HTTPSPort: SEBSettingsValue;
-let HTTPSRequiresPassword: SEBSettingsValue;
-let HTTPSUsername: SEBSettingsValue;
-let HTTPSPassword: SEBSettingsValue;
-
-let FTPEnable: SEBSettingsValue;
-let FTPProxy: SEBSettingsValue;
-let FTPPort: SEBSettingsValue;
-let FTPRequiresPassword: SEBSettingsValue;
-let FTPUsername: SEBSettingsValue;
-let FTPPassword: SEBSettingsValue;
-
-let SOCKSEnable: SEBSettingsValue;
-let SOCKSProxy: SEBSettingsValue;
-let SOCKSPort: SEBSettingsValue;
-let SOCKSRequiresPassword: SEBSettingsValue;
-let SOCKSUsername: SEBSettingsValue;
-let SOCKSPassword: SEBSettingsValue;
-
-let RTSPEnable: SEBSettingsValue;
-let RTSPProxy: SEBSettingsValue;
-let RTSPPort: SEBSettingsValue;
-let RTSPRequiresPassword: SEBSettingsValue;
-let RTSPUsername: SEBSettingsValue;
-let RTSPPassword: SEBSettingsValue;
-
+let singleValues: Map<string, SEBSettingsValue>;
 let attributes: Map<string, SEBSettingAttribute>;
+let proxyValues: Map<string, SEBSettingsValue>;
 
 onBeforeMount(async () => {
     if (sebSettingsStore.selectedContainerId == null) {
@@ -1249,28 +1196,23 @@ onBeforeMount(async () => {
         SEBSettingsTableRowValues[]
     >(Object.entries(networkSettings.tableValues));
 
-    const singleValues: Map<string, SEBSettingsValue> = new Map<
-        string,
-        SEBSettingsValue
-    >(Object.entries(networkSettings.singleValues));
+    singleValues = new Map<string, SEBSettingsValue>(
+        Object.entries(networkSettings.singleValues),
+    );
 
     const proxyVals = tableValues.get("proxies");
     if (!proxyVals) {
         throw new Error("No Proxy Values found");
     }
-    const proxyValues: Map<string, SEBSettingsValue> = new Map<
-        string,
-        SEBSettingsValue
-    >(Object.entries(proxyVals[0].rowValues));
-
-    urlFilterEnable = getSingleValue(singleValues, "URLFilterEnable");
-    urlFilterEnableContentFilter = getSingleValue(
-        singleValues,
-        "URLFilterEnableContentFilter",
+    proxyValues = new Map<string, SEBSettingsValue>(
+        Object.entries(proxyVals[0].rowValues),
     );
-    urlFilterEnableVal.value = stringToBoolean(urlFilterEnable.value);
+
+    urlFilterEnableVal.value = stringToBoolean(
+        getSingleValue("URLFilterEnable").value,
+    );
     urlFilterEnableContentFilterVal.value = stringToBoolean(
-        urlFilterEnableContentFilter.value,
+        getSingleValue("URLFilterEnableContentFilter").value,
     );
 
     // URL Filter
@@ -1278,120 +1220,74 @@ onBeforeMount(async () => {
     if (urlFilterRules == null) {
         return;
     }
-
     updateURLFilterRulesTable(urlFilterRules);
 
     // Proxy single settings
-    proxySettingsPolicy = getSingleValue(singleValues, "proxySettingsPolicy");
-    proxySettingsPolicyVal.value = proxySettingsPolicy.value;
+    proxySettingsPolicyVal.value = getSingleValue("proxySettingsPolicy").value;
 
-    ExcludeSimpleHostnames = getSingleValue(
-        proxyValues,
-        "ExcludeSimpleHostnames",
-    );
     ExcludeSimpleHostnamesVal.value = stringToBoolean(
-        ExcludeSimpleHostnames.value,
+        getProxyValue("ExcludeSimpleHostnames").value,
     );
-
-    ExceptionsList = getSingleValue(proxyValues, "ExceptionsList");
-    ExceptionsListVal.value = ExceptionsList.value;
-
-    FTPPassive = getSingleValue(proxyValues, "FTPPassive");
-    FTPPassiveVal.value = stringToBoolean(FTPPassive.value);
+    ExceptionsListVal.value = getProxyValue("ExceptionsList").value;
+    FTPPassiveVal.value = stringToBoolean(getProxyValue("FTPPassive").value);
 
     // Proxy realm settings -- auto discovery
-    AutoDiscoveryEnabled = getSingleValue(proxyValues, "ExceptionsList");
-    AutoDiscoveryEnabledVal.value = stringToBoolean(AutoDiscoveryEnabled.value);
-
-    AutoConfigurationEnabled = getSingleValue(
-        proxyValues,
-        "AutoConfigurationEnabled",
-    );
-    AutoConfigurationURL = getSingleValue(proxyValues, "AutoConfigurationURL");
-    AutoConfigurationJavaScript = getSingleValue(
-        proxyValues,
-        "AutoConfigurationJavaScript",
+    AutoDiscoveryEnabledVal.value = stringToBoolean(
+        getProxyValue("AutoDiscoveryEnabled").value,
     );
     AutoConfigurationEnabledVal.value = stringToBoolean(
-        AutoConfigurationEnabled.value,
+        getProxyValue("AutoConfigurationEnabled").value,
     );
-    AutoConfigurationURLVal.value = AutoConfigurationURL.value;
-    AutoConfigurationJavaScriptVal.value = AutoConfigurationJavaScript.value;
 
-    HTTPEnable = getSingleValue(proxyValues, "HTTPEnable");
-    HTTPProxy = getSingleValue(proxyValues, "HTTPProxy");
-    HTTPPort = getSingleValue(proxyValues, "HTTPPort");
-    HTTPRequiresPassword = getSingleValue(proxyValues, "HTTPRequiresPassword");
-    HTTPUsername = getSingleValue(proxyValues, "HTTPUsername");
-    HTTPPassword = getSingleValue(proxyValues, "HTTPPassword");
-    HTTPEnableVal.value = stringToBoolean(HTTPEnable.value);
-    HTTPProxyVal.value = HTTPProxy.value;
-    HTTPPortVal.value = parseInt(HTTPPort.value);
-    HTTPRequiresPasswordVal.value = stringToBoolean(HTTPRequiresPassword.value);
-    HTTPUsernameVal.value = HTTPUsername.value;
-    HTTPPasswordVal.value = HTTPPassword.value;
+    AutoConfigurationURLVal.value = getProxyValue("AutoConfigurationURL").value;
+    AutoConfigurationJavaScriptVal.value = getProxyValue(
+        "AutoConfigurationJavaScript",
+    ).value;
 
-    HTTPSEnable = getSingleValue(proxyValues, "HTTPSEnable");
-    HTTPSProxy = getSingleValue(proxyValues, "HTTPSProxy");
-    HTTPSPort = getSingleValue(proxyValues, "HTTPSPort");
-    HTTPSRequiresPassword = getSingleValue(
-        proxyValues,
-        "HTTPSRequiresPassword",
+    HTTPEnableVal.value = stringToBoolean(getProxyValue("HTTPEnable").value);
+    HTTPProxyVal.value = getProxyValue("HTTPProxy").value;
+    HTTPPortVal.value = parseInt(getProxyValue("HTTPPort").value);
+    HTTPRequiresPasswordVal.value = stringToBoolean(
+        getProxyValue("HTTPRequiresPassword").value,
     );
-    HTTPSUsername = getSingleValue(proxyValues, "HTTPSUsername");
-    HTTPSPassword = getSingleValue(proxyValues, "HTTPSPassword");
-    HTTPSEnableVal.value = stringToBoolean(HTTPSEnable.value);
-    HTTPSProxyVal.value = HTTPSProxy.value;
-    HTTPSPortVal.value = parseInt(HTTPSPort.value);
+    HTTPUsernameVal.value = getProxyValue("HTTPUsername").value;
+    HTTPPasswordVal.value = getProxyValue("HTTPPassword").value;
+
+    HTTPSEnableVal.value = stringToBoolean(getProxyValue("HTTPSEnable").value);
+    HTTPSProxyVal.value = getProxyValue("HTTPSProxy").value;
+    HTTPSPortVal.value = parseInt(getProxyValue("HTTPSPort").value);
     HTTPSRequiresPasswordVal.value = stringToBoolean(
-        HTTPSRequiresPassword.value,
+        getProxyValue("HTTPSRequiresPassword").value,
     );
-    HTTPSUsernameVal.value = HTTPSUsername.value;
-    HTTPSPasswordVal.value = HTTPSPassword.value;
+    HTTPSUsernameVal.value = getProxyValue("HTTPSUsername").value;
+    HTTPSPasswordVal.value = getProxyValue("HTTPSPassword").value;
 
-    FTPEnable = getSingleValue(proxyValues, "FTPEnable");
-    FTPProxy = getSingleValue(proxyValues, "FTPProxy");
-    FTPPort = getSingleValue(proxyValues, "FTPPort");
-    FTPRequiresPassword = getSingleValue(proxyValues, "FTPRequiresPassword");
-    FTPUsername = getSingleValue(proxyValues, "FTPUsername");
-    FTPPassword = getSingleValue(proxyValues, "FTPPassword");
-    FTPEnableVal.value = stringToBoolean(FTPEnable.value);
-    FTPProxyVal.value = FTPProxy.value;
-    FTPPortVal.value = parseInt(FTPPort.value);
-    FTPRequiresPasswordVal.value = stringToBoolean(FTPRequiresPassword.value);
-    FTPUsernameVal.value = FTPUsername.value;
-    FTPPasswordVal.value = FTPPassword.value;
-
-    SOCKSEnable = getSingleValue(proxyValues, "SOCKSEnable");
-    SOCKSProxy = getSingleValue(proxyValues, "SOCKSProxy");
-    SOCKSPort = getSingleValue(proxyValues, "SOCKSPort");
-    SOCKSRequiresPassword = getSingleValue(
-        proxyValues,
-        "SOCKSRequiresPassword",
+    FTPEnableVal.value = stringToBoolean(getProxyValue("FTPEnable").value);
+    FTPProxyVal.value = getProxyValue("FTPProxy").value;
+    FTPPortVal.value = parseInt(getProxyValue("FTPPort").value);
+    FTPRequiresPasswordVal.value = stringToBoolean(
+        getProxyValue("FTPRequiresPassword").value,
     );
-    SOCKSUsername = getSingleValue(proxyValues, "SOCKSUsername");
-    SOCKSPassword = getSingleValue(proxyValues, "SOCKSPassword");
-    SOCKSEnableVal.value = stringToBoolean(SOCKSEnable.value);
-    SOCKSProxyVal.value = SOCKSProxy.value;
-    SOCKSPortVal.value = parseInt(SOCKSPort.value);
+    FTPUsernameVal.value = getProxyValue("FTPUsername").value;
+    FTPPasswordVal.value = getProxyValue("FTPPassword").value;
+
+    SOCKSEnableVal.value = stringToBoolean(getProxyValue("SOCKSEnable").value);
+    SOCKSProxyVal.value = getProxyValue("SOCKSProxy").value;
+    SOCKSPortVal.value = parseInt(getProxyValue("SOCKSPort").value);
     SOCKSRequiresPasswordVal.value = stringToBoolean(
-        SOCKSRequiresPassword.value,
+        getProxyValue("SOCKSRequiresPassword").value,
     );
-    SOCKSUsernameVal.value = SOCKSUsername.value;
-    SOCKSPasswordVal.value = SOCKSPassword.value;
+    SOCKSUsernameVal.value = getProxyValue("SOCKSUsername").value;
+    SOCKSPasswordVal.value = getProxyValue("SOCKSPassword").value;
 
-    RTSPEnable = getSingleValue(proxyValues, "RTSPEnable");
-    RTSPProxy = getSingleValue(proxyValues, "RTSPProxy");
-    RTSPPort = getSingleValue(proxyValues, "RTSPPort");
-    RTSPRequiresPassword = getSingleValue(proxyValues, "RTSPRequiresPassword");
-    RTSPUsername = getSingleValue(proxyValues, "RTSPUsername");
-    RTSPPassword = getSingleValue(proxyValues, "RTSPPassword");
-    RTSPEnableVal.value = stringToBoolean(RTSPEnable.value);
-    RTSPProxyVal.value = RTSPProxy.value;
-    RTSPPortVal.value = parseInt(RTSPPort.value);
-    RTSPRequiresPasswordVal.value = stringToBoolean(RTSPRequiresPassword.value);
-    RTSPUsernameVal.value = RTSPUsername.value;
-    RTSPPasswordVal.value = RTSPPassword.value;
+    RTSPEnableVal.value = stringToBoolean(getProxyValue("RTSPEnable").value);
+    RTSPProxyVal.value = getProxyValue("RTSPProxy").value;
+    RTSPPortVal.value = parseInt(getProxyValue("RTSPPort").value);
+    RTSPRequiresPasswordVal.value = stringToBoolean(
+        getProxyValue("RTSPRequiresPassword").value,
+    );
+    RTSPUsernameVal.value = getProxyValue("RTSPUsername").value;
+    RTSPPasswordVal.value = getProxyValue("RTSPPassword").value;
 });
 
 // ********* URL Filter Rule functions *********************
@@ -1518,18 +1414,29 @@ async function closeEditURLFilterRuleDialog(apply?: boolean) {
         selectedURLFilterRule.value;
 }
 
-async function saveSingleValue(valId: number, value: string) {
+async function saveSingleValue(name: string, value: string) {
+    const setting: SEBSettingsValue = getSingleValue(name);
     await sebSettingsService.updateSEBSettingValue(
         componentId,
-        valId.toString(),
+        setting.id.toString(),
         value,
         sebSettingsStore.isExam,
     );
 }
 
-async function saveOnFocusLost(focusIn: boolean, valId: number, value: string) {
+async function saveProxyValue(name: string, value: string) {
+    const setting: SEBSettingsValue = getProxyValue(name);
+    await sebSettingsService.updateSEBSettingValue(
+        componentId,
+        setting.id.toString(),
+        value,
+        sebSettingsStore.isExam,
+    );
+}
+
+async function saveOnFocusLost(focusIn: boolean, name: string, value: string) {
     if (!focusIn) {
-        saveSingleValue(valId, value);
+        saveProxyValue(name, value);
     }
 }
 
@@ -1579,11 +1486,17 @@ function getSettingId(
     return prop?.id;
 }
 
-function getSingleValue(
-    singleValues: Map<string, SEBSettingsValue>,
-    name: string,
-): SEBSettingsValue {
+function getSingleValue(name: string): SEBSettingsValue {
     const value = singleValues.get(name);
+    if (!value) {
+        throw new Error("No Single Value" + name + " found");
+    }
+
+    return value;
+}
+
+function getProxyValue(name: string): SEBSettingsValue {
+    const value = proxyValues.get(name);
     if (!value) {
         throw new Error("No Single Value" + name + " found");
     }

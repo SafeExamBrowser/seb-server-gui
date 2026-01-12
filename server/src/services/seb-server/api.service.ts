@@ -29,6 +29,13 @@ export function getHeaders(token: string): object {
     };
 }
 
+export function getHeadersNoContentType(token: string): object {
+    return {
+        "accept": "*/*",
+        "Authorization": token,
+    };
+}
+
 export function getPutHeaders(token: string): object {
     return {
         "accept": "application/json",

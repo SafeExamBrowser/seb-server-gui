@@ -10,9 +10,7 @@
                 >
                     {{ translate("titles.home") }}
                 </span>
-
                 <span class="breadcrumb-arrow">›</span>
-
                 <span
                     class="breadcrumb-link"
                     @click="navigateTo(constants.MONITORING_ROUTE)"
@@ -130,7 +128,27 @@
                         </div>
                     </div>
                 </v-col>
-                <v-col cols="2"> </v-col>
+                <v-col cols="2">
+                    <!--Quit All-->
+
+                    <v-btn
+                        block
+                        color="primary"
+                        rounded="sm"
+                        variant="flat"
+                        height="60"
+                        @click="openQuitAllDialog()"
+                    >
+                        <p class="text-wrap">
+                            {{ translate("monitoringOverview.quitAll.button") }}
+                        </p>
+                    </v-btn>
+                    <v-dialog v-model="quitAllDialog" max-width="800">
+                        <QuitAllDialog
+                            @close-quit-all-dialog="closeQuitAllDialog"
+                        />
+                    </v-dialog>
+                </v-col>
 
                 <v-col cols="3">
                     <MonitoringOverviewASK></MonitoringOverviewASK>
@@ -149,9 +167,30 @@ import * as timeUtils from "@/utils/timeUtils";
 import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants";
 import MonitoringOverviewASK from "@/components/views/seb-server/monitoring/overview/MonitoringOverviewASK.vue";
+import QuitAllDialog from "@/components/views/seb-server/monitoring/overview/dialogs/QuitAllDialog.vue";
+import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
+import { ref } from "vue";
 
 // stores
 const monitoringStore = useMonitoringStore();
+
+const quitAllDialog = ref(false);
+
+function openQuitAllDialog() {
+    quitAllDialog.value = true;
+}
+async function closeQuitAllDialog(apply: string) {
+    if (apply == "YES") {
+        quitAllDialog.value = false;
+        if (monitoringStore.selectedExam != null) {
+            await monitoringViewService.quitAll(
+                monitoringStore.selectedExam.id.toString(),
+            );
+        }
+    } else if (apply == "NO") {
+        quitAllDialog.value = false;
+    }
+}
 </script>
 
 <style scoped></style>

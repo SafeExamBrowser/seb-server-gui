@@ -1,6 +1,6 @@
 <template>
     <v-row max-width="300">
-        <v-col :class="sebSettingsStore.cp">
+        <v-col class="pt-5 pb-0">
             <v-checkbox-btn
                 v-model="allowSwitchToApplicationsVal"
                 :disabled="sebSettingsStore.readonly"
@@ -27,7 +27,7 @@
     </v-row>
 
     <v-row>
-        <v-col class="text-subtitle-1">
+        <v-col class="font-weight-bold pt-8 pb-0">
             <v-row>
                 <v-col>{{
                     translate(
@@ -46,7 +46,57 @@
                     </v-btn>
                 </v-col>
             </v-row>
-            <v-divider class="border-opacity-25" :thickness="2"></v-divider>
+            <v-divider class="border-opacity-25" :thickness="5"></v-divider>
+        </v-col>
+    </v-row>
+    <v-row max-width="300">
+        <v-col class="pt-5 pb-0">
+            <v-checkbox-btn
+                v-model="allowOpenAndSavePanelVal"
+                :disabled="sebSettingsStore.readonly"
+                :label="
+                    translate(
+                        'sebSettings.applicationView.permittedProcess.allowOpenAndSavePanel',
+                    )
+                "
+                @update:model-value="
+                    saveSingleValue(
+                        allowOpenAndSavePanel.id,
+                        allowOpenAndSavePanelVal ? 'true' : 'false',
+                    )
+                "
+            ></v-checkbox-btn>
+            <v-tooltip activator="parent" location="top left" max-width="400">
+                {{
+                    translate(
+                        "sebSettings.applicationView.permittedProcess.allowOpenAndSavePanel_tooltip",
+                    )
+                }}
+            </v-tooltip>
+        </v-col>
+        <v-col class="pt-5 pb-0">
+            <v-checkbox-btn
+                v-model="allowShareSheetVal"
+                :disabled="sebSettingsStore.readonly"
+                :label="
+                    translate(
+                        'sebSettings.applicationView.permittedProcess.allowShareSheet',
+                    )
+                "
+                @update:model-value="
+                    saveSingleValue(
+                        allowShareSheet.id,
+                        allowShareSheetVal ? 'true' : 'false',
+                    )
+                "
+            ></v-checkbox-btn>
+            <v-tooltip activator="parent" location="top left" max-width="400">
+                {{
+                    translate(
+                        "sebSettings.applicationView.permittedProcess.allowShareSheet_tooltip",
+                    )
+                }}
+            </v-tooltip>
         </v-col>
     </v-row>
 
@@ -129,7 +179,7 @@
     </v-dialog>
 
     <v-row>
-        <v-col class="text-subtitle-1">
+        <v-col class="font-weight-bold pt-8 pb-0">
             <v-row>
                 <v-col>{{
                     translate(
@@ -148,7 +198,7 @@
                     </v-btn>
                 </v-col>
             </v-row>
-            <v-divider class="border-opacity-25" :thickness="2"></v-divider>
+            <v-divider class="border-opacity-25" :thickness="5"></v-divider>
         </v-col>
     </v-row>
     <v-row>
@@ -251,7 +301,10 @@ const sebSettingsStore = useSEBSettingsStore();
 // single attributes
 const allowSwitchToApplicationsVal = ref<boolean>(false);
 
-// permittted processes
+// permitted processes
+const allowOpenAndSavePanelVal = ref<boolean>(false);
+const allowShareSheetVal = ref<boolean>(false);
+
 const editPermittedProcessDialog = ref<boolean>(false);
 const selectedPermittedProcess = ref<PermittedProcess | null>(null);
 const permittedProcessHeadersRef = ref<(HTMLElement | null)[]>([]);
@@ -353,6 +406,8 @@ const prohibitedProcessHeaders = ref([
 
 let componentId: string;
 let allowSwitchToApplications: SEBSettingsValue;
+let allowOpenAndSavePanel: SEBSettingsValue;
+let allowShareSheet: SEBSettingsValue;
 
 let attributes: Map<string, SEBSettingAttribute>;
 
@@ -403,6 +458,16 @@ onBeforeMount(async () => {
     );
     allowSwitchToApplicationsVal.value =
         allowSwitchToApplications.value === "true";
+
+    allowOpenAndSavePanel = getSingleValue(
+        singleValues,
+        "allowOpenAndSavePanel",
+    );
+    allowOpenAndSavePanelVal.value = stringToBoolean(
+        allowOpenAndSavePanel.value,
+    );
+    allowShareSheet = getSingleValue(singleValues, "allowShareSheet");
+    allowShareSheetVal.value = stringToBoolean(allowShareSheet.value);
 
     // Permitted Processes
     const permittedProcesses = tableValues.get("permittedProcesses");
@@ -457,15 +522,8 @@ function insertPermittedProcess(
         arguments: getPermittedProcessArguments(
             getStringValue(rowVals, "permittedProcesses.arguments"),
         ),
-        allowOpenAndSavePanel: getBooleanValue(
-            rowVals,
-            "permittedProcesses.allowOpenAndSavePanel",
-        ),
+
         autostart: getBooleanValue(rowVals, "permittedProcesses.autostart"),
-        allowShareSheet: getBooleanValue(
-            rowVals,
-            "permittedProcesses.allowShareSheet",
-        ),
         runInBackground: getBooleanValue(
             rowVals,
             "permittedProcesses.runInBackground",
@@ -503,15 +561,7 @@ function insertPermittedProcess(
                 "permittedProcesses.iconInTaskbar",
             ),
             arguments: getSettingId(rowVals, "permittedProcesses.arguments"),
-            allowOpenAndSavePanel: getSettingId(
-                rowVals,
-                "permittedProcesses.allowOpenAndSavePanel",
-            ),
             autostart: getSettingId(rowVals, "permittedProcesses.autostart"),
-            allowShareSheet: getSettingId(
-                rowVals,
-                "permittedProcesses.allowShareSheet",
-            ),
             runInBackground: getSettingId(
                 rowVals,
                 "permittedProcesses.runInBackground",
@@ -550,9 +600,7 @@ function newPermittedProcess() {
         path: "",
         iconInTaskbar: true,
         arguments: [],
-        allowOpenAndSavePanel: false,
         autostart: false,
-        allowShareSheet: false,
         runInBackground: false,
         allowManualStart: false,
         allowUserToChooseApp: false,
@@ -569,9 +617,7 @@ function newPermittedProcess() {
             path: -1,
             iconInTaskbar: -1,
             arguments: -1,
-            allowOpenAndSavePanel: -1,
             autostart: -1,
-            allowShareSheet: -1,
             runInBackground: -1,
             allowManualStart: -1,
             allowUserToChooseApp: -1,
@@ -688,22 +734,11 @@ async function closeEditPermittedProcessDialog(apply?: boolean) {
         argumentsToString(selectedPermittedProcess.value.arguments),
         sebSettingsStore.isExam,
     );
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        selectedPermittedProcess.value.ids.allowOpenAndSavePanel.toString(),
-        selectedPermittedProcess.value.allowOpenAndSavePanel ? "true" : "false",
-        sebSettingsStore.isExam,
-    );
+
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedPermittedProcess.value.ids.autostart.toString(),
         selectedPermittedProcess.value.autostart ? "true" : "false",
-        sebSettingsStore.isExam,
-    );
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        selectedPermittedProcess.value.ids.allowShareSheet.toString(),
-        selectedPermittedProcess.value.allowShareSheet ? "true" : "false",
         sebSettingsStore.isExam,
     );
     await sebSettingsService.updateSEBSettingValue(
@@ -1046,7 +1081,7 @@ function getSingleValue(
 ): SEBSettingsValue {
     const value = singleValues.get(name);
     if (!value) {
-        throw new Error("No Single Value" + name + " found");
+        throw new Error("No Single Value " + name + " found");
     }
 
     return value;

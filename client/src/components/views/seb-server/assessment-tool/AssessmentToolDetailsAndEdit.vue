@@ -953,6 +953,7 @@ async function onSave() {
         }
     } finally {
         isSaving.value = false;
+        navigateTo(constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE);
     }
 }
 const nz = (v: string | null | undefined) => v ?? "";

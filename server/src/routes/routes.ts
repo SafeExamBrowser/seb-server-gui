@@ -139,6 +139,7 @@ router.get(constants.MONITORING_CONNECTIONS_ROUTE + "/:id", monitoringController
 router.get(constants.MONITORING_GET_ROUTE + "/:id/:connectionToken", monitoringController.getSingleConnection);
 router.post(constants.MONITORING_ROUTE + "/:id/static-client-data", monitoringController.getStaticClientData);
 router.post(constants.MONITORING_INSTRUCTION_ROUTE, monitoringController.registerInstruction);
+router.post(constants.MONITORING_QUIT_ALL_ROUTE, monitoringController.quitAll);
 router.get(constants.MONITORING_NOTIFICATIONS_ROUTE + "/:connectionToken", monitoringController.getPendingNotifications);
 router.post(constants.MONITORING_NOTIFICATIONS_ROUTE + "/:notificationId/:connectionToken", monitoringController.confirmNotification);
 router.post(constants.MONITORING_DISABLE_CONNECTIONS_ROUTE, monitoringController.disableConnections);

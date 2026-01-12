@@ -24,9 +24,7 @@ export type PermittedProcess = {
     path: string;
     iconInTaskbar: boolean;
     arguments: PermittedProcessArgument[];
-    allowOpenAndSavePanel: boolean;
     autostart: boolean;
-    allowShareSheet: boolean;
     runInBackground: boolean;
     allowManualStart: boolean;
     allowUserToChooseApp: boolean;
@@ -43,9 +41,7 @@ export type PermittedProcess = {
         path: number;
         iconInTaskbar: number;
         arguments: number;
-        allowOpenAndSavePanel: number;
         autostart: number;
-        allowShareSheet: number;
         runInBackground: number;
         allowManualStart: number;
         allowUserToChooseApp: number;
@@ -134,5 +130,17 @@ export type URLFilterRule = {
         regex: number;
         expression: number;
         action: number;
+    };
+};
+
+export type FileExtensionEntry = {
+    index: number;
+    os: string;
+    fileExtension: string;
+    identifier: string;
+    ids: {
+        os: number;
+        fileExtension: number;
+        identifier: number;
     };
 };

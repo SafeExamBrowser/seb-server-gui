@@ -633,7 +633,7 @@ const assessmentToolTableHeaders = computed(() => {
             title: translate(
                 "assessmentToolConnections.assessmentToolsPage.assessmentToolTableHeaders.tableHeaderInstitution",
             ),
-            key: "institutionName",
+            key: "institutionId",
             width: "20%",
             sortable: true,
         },

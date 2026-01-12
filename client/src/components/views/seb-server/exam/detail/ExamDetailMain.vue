@@ -34,7 +34,7 @@
                                                 )
                                             }}
                                         </v-col>
-                                        <v-col align="right" cols="4" xl="3">
+                                        <v-col align="right" cols="4">
                                             <v-btn
                                                 v-if="
                                                     generalUtils.findEnumValue(
@@ -115,7 +115,7 @@
                                                 )
                                             }}
                                         </v-col>
-                                        <v-col align="right" cols="4" xl="3">
+                                        <v-col align="right" cols="4">
                                             <v-btn
                                                 block
                                                 color="primary"
@@ -161,7 +161,7 @@
                                                 )
                                             }}
                                         </v-col>
-                                        <v-col align="right" cols="4" xl="3">
+                                        <v-col align="right" cols="4">
                                             <v-btn
                                                 block
                                                 color="primary"
@@ -460,7 +460,7 @@
                                             }}
                                         </v-col>
 
-                                        <v-col align="right" cols="4" xl="3">
+                                        <v-col align="right" cols="4">
                                             <v-btn
                                                 block
                                                 color="primary"
@@ -513,7 +513,7 @@
                                                 )
                                             }}
                                         </v-col>
-                                        <v-col align="right" cols="4" xl="3">
+                                        <v-col align="right" cols="4">
                                             <v-btn
                                                 block
                                                 color="primary"
@@ -874,17 +874,22 @@
     </v-dialog>
 
     <!-----------seb settings dialog---------->
-    <v-dialog v-model="sebSettingsDialog" persistent>
+    <v-dialog
+        v-model="sebSettingsDialog"
+        persistent
+        height="80vh"
+        max-width="1200"
+    >
         <SebSettingsDialog @close-seb-settings-dialog="closeSebSettingsDialog">
         </SebSettingsDialog>
     </v-dialog>
 
     <!-----------group dialog---------->
     <v-dialog v-model="clientGroupDialog" max-width="1200">
-        <ClienGroupListDialog
+        <ClientGroupListDialog
             @close-client-group-dialog="closeClientGroupDialog"
         >
-        </ClienGroupListDialog>
+        </ClientGroupListDialog>
     </v-dialog>
 
     <!-----------add groups dialog---------->
@@ -940,7 +945,7 @@ import { ExamTemplate } from "@/models/seb-server/examTemplate";
 import ExamDetailSupervisorsDialog from "@/components/views/seb-server/exam/detail/dialogs/ExamDetailSupervisorsDialog.vue";
 import ExamDetailConfigDialog from "@/components/views/seb-server/exam/detail/dialogs/ExamDetailConfigDialog.vue";
 import ExamDetailArchiveDialog from "@/components/views/seb-server/exam/detail/dialogs/ExamDetailArchiveDialog.vue";
-import ClienGroupListDialog from "@/components/views/seb-server/exam/detail/dialogs/client-group/ClienGroupListDialog.vue";
+import ClientGroupListDialog from "@/components/views/seb-server/exam/detail/dialogs/client-group/ClientGroupListDialog.vue";
 import AddClientGroupDialog from "@/components/views/seb-server/exam/detail/dialogs/client-group/AddClientGroupDialog.vue";
 import ExamTemplateDialog from "@/components/widgets/ExamTemplateDialog.vue";
 import SebSettingsDialog from "@/components/views/seb-server/settings/SebSettingsDialog.vue";
