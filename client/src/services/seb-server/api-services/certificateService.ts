@@ -1,4 +1,5 @@
 import * as apiService from "@/services/apiService";
+import * as newApiService from "@/services/newApiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
 import {
     Certificate,
@@ -7,24 +8,18 @@ import {
     OptionalParGetCertificates,
 } from "@/models/seb-server/certificate";
 
-const certificatesURL: string = "/certificate";
+const baseUrl = "/certificate" as const;
 
-export async function getCertificates(
+export const getCertificates = async (
     optionalParameters?: OptionalParGetCertificates,
-): Promise<CertificatesResponse> {
-    return (
-        await apiService.api.get(certificatesURL, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-            params: { optionalParameters },
-        })
-    ).data;
-}
+): Promise<CertificatesResponse> =>
+    (await newApiService.get(baseUrl, { params: optionalParameters })).data;
 
 export async function deleteCertificate(
     certificateId: string,
 ): Promise<unknown | unknown> {
     return (
-        await apiService.api.delete(certificatesURL + "/" + certificateId, {
+        await apiService.api.delete(baseUrl + "/" + certificateId, {
             headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
         })
     ).data;
@@ -33,7 +28,7 @@ export async function deleteCertificate(
 export async function createCertificate(
     payload: CreateCertificateJSON,
 ): Promise<Certificate> {
-    const { data } = await apiService.api.post(certificatesURL, payload, {
+    const { data } = await apiService.api.post(baseUrl, payload, {
         headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),
     });
     return data;

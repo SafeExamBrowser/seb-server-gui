@@ -2,10 +2,7 @@ import * as quizService from "@/services/seb-server/api-services/quizService";
 import * as examTemplateService from "@/services/seb-server/api-services/examTemplateService";
 import * as examService from "@/services/seb-server/api-services/examService";
 import { Quizzes } from "@/models/seb-server/quiz";
-import {
-    OptionalParGeneric,
-    OptionalParGetQuizzes,
-} from "@/models/seb-server/optionalParamters";
+import { OptionalParGetQuizzes } from "@/models/seb-server/optionalParamters";
 import { CreateExamPar, Exam } from "@/models/seb-server/exam";
 import { ExamTemplate, ExamTemplates } from "@/models/seb-server/examTemplate";
 
@@ -20,11 +17,9 @@ export async function getQuizzes(
     }
 }
 
-export async function getExamTemplates(
-    optionalParameters?: OptionalParGeneric,
-): Promise<ExamTemplates | null> {
+export async function getExamTemplates(): Promise<ExamTemplates | null> {
     try {
-        return await examTemplateService.getExamTemplates(optionalParameters);
+        return await examTemplateService.getExamTemplates();
     } catch {
         return null;
     }

@@ -2,15 +2,6 @@ import * as certificateService from "../../services/seb-server/certificate.servi
 import * as apiService from "../../services/seb-server/api.service";
 import {Request, Response} from "express";
 
-export async function getCertificates(req: Request, res: Response){
-    try{
-        const [certificates, status] = await certificateService.getCertificates(req.headers.authorization, req.query.optionalParameters);
-        return res.status(status).json(certificates);
-
-    }catch(error){
-        apiService.handleGenericApiError(error, res);
-    }
-}
 
 export async function deleteCertificate(req: Request, res: Response){
     try{
