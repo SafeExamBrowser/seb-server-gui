@@ -12,7 +12,7 @@ const proxyConfig = createProxyServer({
   target: `${env.SEB_SERVER_URL}:${env.SEB_SERVER_PORT}${API_PREFIX}`,
 });
 
-proxyConfig.on("proxyReq", (proxyReq, req, res) => {
+proxyConfig.on("proxyReq", (proxyReq, _req, _res) => {
   // TODO @alain: add basic auth header for the requests that need it (authentication requests, ...?)
   // if (needsBasicAuth(req)) {
   //   proxyReq.setHeader("Authorization", `Basic ${env.SEB_SERVER_USERNAME}:${env.SEB_SERVER_PASSWORD}`);
