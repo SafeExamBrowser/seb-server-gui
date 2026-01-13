@@ -10,21 +10,13 @@ const env = parseEnv();
 
 const proxyConfig = createProxyServer({
   target: `${env.SEB_SERVER_URL}:${env.SEB_SERVER_PORT}${API_PREFIX}`,
-  auth: `${env.SEB_SERVER_USERNAME}:${env.SEB_SERVER_PASSWORD}`, // TODO @alain: when exactly is this used? For the authentication request maybe?
 });
 
 proxyConfig.on("proxyReq", (proxyReq, req, res) => {
-  const authToken = req.headers.authorization;
-
-  if (!authToken) {
-    res.writeHead(401, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({ message: "Unauthorized" }));
-    logRequest(req, 401);
-    return;
-  }
-
-  // override auth header (personal access token)
-  proxyReq.setHeader("Authorization", authToken);
+  // TODO @alain: add basic auth header for the requests that need it (authentication requests, ...?)
+  // if (needsBasicAuth(req)) {
+  //   proxyReq.setHeader("Authorization", `Basic ${env.SEB_SERVER_USERNAME}:${env.SEB_SERVER_PASSWORD}`);
+  // }
 
   if (proxyReq.method === "GET") {
     // TODO @Andreas: remove this, once the sev-server API doesn't require this anymore
