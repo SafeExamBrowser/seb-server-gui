@@ -3,7 +3,7 @@ import * as newApiService from "@/services/newApiService";
 import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring";
 import { ExamTemplate, ExamTemplates } from "@/models/seb-server/examTemplate";
 
-const baseUrl: string = "/exam-template";
+const baseUrl = "/exam-template" as const;
 
 export const getExamTemplates = async (): Promise<ExamTemplates> =>
     (await newApiService.get(baseUrl)).data;
