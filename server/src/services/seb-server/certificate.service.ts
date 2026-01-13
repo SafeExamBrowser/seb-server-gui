@@ -1,11 +1,5 @@
 import * as apiService from "./api.service";
 import * as constants from "../../utils/constants";
-import {getOctetStreamHeadersAcceptJson} from "./api.service";
-
-export async function getCertificates(token: string, options?: {}): Promise<[object, number]>{
-    const {data, status} = await apiService.api.get(constants.CERTIFICATE_ROUTE, {headers: apiService.getHeaders(token), params: options});
-    return [data, status];
-}
 
 
 export async function deleteCertificate(

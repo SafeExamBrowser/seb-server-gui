@@ -118,7 +118,6 @@ router.put(constants.ASSESSMENT_TOOL_ROUTE, assessmentToolController.editAssessm
 
 //certificate
 router.post(constants.CERTIFICATE_ROUTE, certificateController.createCertificate);
-router.get(constants.CERTIFICATE_ROUTE, certificateController.getCertificates);
 router.delete(constants.CERTIFICATE_ROUTE + "/:alias", certificateController.deleteCertificate);
 
 //monitoring
