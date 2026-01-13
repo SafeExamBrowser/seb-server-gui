@@ -27,10 +27,10 @@ proxyConfig.on("proxyReq", (proxyReq, req, res) => {
   proxyReq.setHeader("Authorization", authToken);
 
   if (proxyReq.method === "GET") {
-    // TODO @alain: check with Andreas if we should adapt the API to not require this
+    // TODO @Andreas: remove this, once the sev-server API doesn't require this anymore
     // - Content-Type on GET requests doesn't make sense, because GET requests don't have a body
     // - This leads to the browser filtering the header out if we send it from the client
-    // - Our API however requires a Content-Type, even on GET request, so we manually add it here
+    // - Our API (seb-server) however requires a Content-Type, even on GET requests, so we manually add it here
     proxyReq.setHeader("Content-Type", "application/x-www-form-urlencoded");
   }
 });
