@@ -18,7 +18,6 @@ const config: StorybookConfig = {
     },
 
     async viteFinal(config) {
-        config.base = "/storybook/";
         return config;
     },
 };
