@@ -15,6 +15,7 @@
                     @mousemove="onMouseMove"
                 >
                     <v-img
+                        eager
                         :aspect-ratio="16 / 9"
                         class="img-styling"
                         :src="imageLink"
