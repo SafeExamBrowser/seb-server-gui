@@ -166,18 +166,8 @@ test.describe("1.1.2 User Accounts - CREATE Register", () => {
         await expect(anyValidationMessage.first()).toBeVisible();
     });
 
+    //createtests as username
     test("C Server error on register (simulated)", async ({ page }) => {
-        await page.route("**/useraccount/register", async (route) => {
-            const req = route.request();
-            if (req.method() !== "POST") return route.fallback();
-
-            return route.fulfill({
-                status: 500,
-                body: JSON.stringify({ message: "Internal Server Error" }),
-                headers: { "Content-Type": "application/json" },
-            });
-        });
-
         const {
             institutionSelect,
             username,
@@ -191,19 +181,18 @@ test.describe("1.1.2 User Accounts - CREATE Register", () => {
             successAlert,
             errorAlert,
         } = await setupRegisterPage(page);
+        const uname = "createtests";
 
         await selectVuetifyOptionByName(page, institutionSelect, "ETH Zürich");
 
-        const uname = `playwright-error-${Date.now()}`;
         await username.fill(uname);
-        await name.fill("Server");
-        await surname.fill("Error");
-        await email.fill(`error+${Date.now()}@example.com`);
+        await name.fill("Andrei");
+        await surname.fill("Mititelu");
+        await email.fill(`${uname}@example.com`);
 
         await selectVuetifyFirstOption(page, timezoneSelect);
-
-        await password.fill("ValidPass123!");
-        await confirmPassword.fill("ValidPass123!");
+        await password.fill("StrongPass123!");
+        await confirmPassword.fill("StrongPass123!");
 
         await submitButton.click();
 

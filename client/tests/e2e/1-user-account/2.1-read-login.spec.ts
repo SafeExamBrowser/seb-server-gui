@@ -1,12 +1,10 @@
 import { test, expect, Page } from "@playwright/test";
 
-//TODO change to whatever we chose to add in DB script via FLYWAY
-const correctUser = "playwright";
-const correctPass = "playwright";
+const correctUser = "testmain";
+const correctPass = "testmain";
 const wrongUser = "invalid@example.cdasdpef";
 const wrongPass = "wrong-passworddddddddddddddd";
 
-// Setup method for page (this, unlike register test, does NOT use test id's)
 async function setupLoginPage(page: Page) {
     await page.addInitScript(() => {
         localStorage.clear();
