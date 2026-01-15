@@ -95,4 +95,32 @@ jobs:
           push: true
           tags: docker.io/${{ secrets.DOCKERHUB_ADMIN_USERNAME }}/storybook:${{ env.TAG_NAME }}
 
-# Add tests deployed to separate image (simple node image and pasted e2e tests in there should do the trick)
+  build-and-push-e2e-runner:
+    runs-on: ubuntu-latest
+    needs: build-and-push-admin-auto-test
+
+    steps:
+      - name: Set env for dynamic tag
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        run: echo "TAG_NAME=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
+      - name: Set env manual
+        if: github.event_name == 'workflow_dispatch'
+        run: echo "TAG_NAME=default_version" >> $GITHUB_ENV
+
+      - name: Checkout code
+        uses: actions/checkout@v4.2.2
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3.4.0
+        with:
+          username: ${{ secrets.DOCKERHUB_ADMIN_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_ADMIN_TOKEN }}
+
+      - name: Build and push E2E runner image
+        uses: docker/build-push-action@v6.17.0
+        with:
+          context: .
+          file: ./client/Dockerfile.e2e
+          push: true
+          tags: docker.io/${{ secrets.DOCKERHUB_ADMIN_USERNAME }}/seb-server-gui-e2e-runner:${{ env.TAG_NAME }}

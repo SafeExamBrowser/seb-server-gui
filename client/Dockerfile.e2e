@@ -1,0 +1,24 @@
+# Choose a pinned version that matches your @playwright/test version as closely as possible
+FROM mcr.microsoft.com/playwright:v1.47.2-jammy
+
+WORKDIR /work
+
+# Copy only what the runner needs (keeps image smaller + build faster)
+COPY client/package.json client/package-lock.json* client/pnpm-lock.yaml* client/yarn.lock* ./client/
+COPY client/playwright.config.ts ./client/
+COPY client/tsconfig.playwright.json ./client/
+COPY client/tests/e2e ./client/tests/e2e
+
+# Install deps
+WORKDIR /work/client
+# If you use npm:
+RUN npm ci
+
+# If your project uses pnpm or yarn, swap accordingly.
+
+# Default output locations (we’ll also set these in playwright.config.ts)
+ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+ENV NODE_ENV=production
+
+# Entrypoint runs the tests
+CMD ["npx", "playwright", "test"]
