@@ -8,7 +8,7 @@ export default defineConfig({
     workers: process.env.CI ? 1 : undefined,
     reporter: process.env.CI ? "line" : "html",
     use: {
-        baseURL: process.env.BASE_URL || "http://localhost:8082",
+        baseURL: process.env.BASE_URL || "https://ralphina.ethz.ch",
         trace: "on",
         contextOptions: {
             javaScriptEnabled: true,

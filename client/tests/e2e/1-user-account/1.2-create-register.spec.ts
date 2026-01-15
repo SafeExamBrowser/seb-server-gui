@@ -113,7 +113,7 @@ test.describe("1.1.2 User Accounts - CREATE Register", () => {
 
         const uname = uniqueUsername("e2e-user");
 
-        await selectVuetifyOptionByName(page, institutionSelect, "ETH Zürich");
+        await selectVuetifyOptionByName(page, institutionSelect, "SEB Server");
 
         await username.fill(uname);
         await name.fill("Andrei");
@@ -183,7 +183,7 @@ test.describe("1.1.2 User Accounts - CREATE Register", () => {
         } = await setupRegisterPage(page);
         const uname = "createtests";
 
-        await selectVuetifyOptionByName(page, institutionSelect, "ETH Zürich");
+        await selectVuetifyOptionByName(page, institutionSelect, "SEB Server");
 
         await username.fill(uname);
         await name.fill("Andrei");
