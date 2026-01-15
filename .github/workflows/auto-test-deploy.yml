@@ -93,7 +93,7 @@ jobs:
           context: .
           file: ./client/Dockerfile.storybook
           push: true
-          tags: docker.io/${{ secrets.DOCKERHUB_ADMIN_USERNAME }}/storybook:${{ env.TAG_NAME }}
+          tags: docker.io/${{ secrets.DOCKERHUB_ADMIN_USERNAME }}/seb-server-gui-storybook:${{ env.TAG_NAME }}
 
   build-and-push-e2e-runner:
     runs-on: ubuntu-latest
