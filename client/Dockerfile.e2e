@@ -1,5 +1,5 @@
 # Choose a pinned version that matches your @playwright/test version as closely as possible
-FROM mcr.microsoft.com/playwright:v1.47.2-jammy
+FROM mcr.microsoft.com/playwright:v1.56.1-jammy
 
 WORKDIR /work
 
