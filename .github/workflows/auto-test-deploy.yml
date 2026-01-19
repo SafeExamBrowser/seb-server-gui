@@ -6,6 +6,28 @@ on:
       - "auto-testing-deploy"
 
 jobs:
+
+  shai-hulud-detector:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout seb-server-gui repo
+        uses: actions/checkout@v6
+        with:
+          path: seb
+          clean: false
+      - name: Checkout Cobenian/shai-hulud-detect
+        uses: actions/checkout@v6
+        with:
+          repository: Cobenian/shai-hulud-detect
+          path: hulud
+          clean: false
+      - # Pipeline will automatically fail on exit codes 1 or 2
+        name: Security Scan with Shai-Hulud Detector
+        run: |
+          chmod +x ./hulud/shai-hulud-detector.sh
+          ./hulud/shai-hulud-detector.sh ./seb
+
+
   build-and-push-admin-auto-test:
     runs-on: ubuntu-latest
     strategy:
@@ -69,6 +91,36 @@ jobs:
         uses: docker/build-push-action@v6.17.0
         with:
           context: .
-          file: ./Dockerfile.storybook
+          file: ./client/Dockerfile.storybook
           push: true
-          tags: docker.io/${{ secrets.DOCKERHUB_ADMIN_USERNAME }}/storybook:${{ env.TAG_NAME }}
+          tags: docker.io/${{ secrets.DOCKERHUB_ADMIN_USERNAME }}/seb-server-gui-storybook:${{ env.TAG_NAME }}
+
+  build-and-push-e2e-runner:
+    runs-on: ubuntu-latest
+    needs: build-and-push-admin-auto-test
+
+    steps:
+      - name: Set env for dynamic tag
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        run: echo "TAG_NAME=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
+      - name: Set env manual
+        if: github.event_name == 'workflow_dispatch'
+        run: echo "TAG_NAME=default_version" >> $GITHUB_ENV
+
+      - name: Checkout code
+        uses: actions/checkout@v4.2.2
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3.4.0
+        with:
+          username: ${{ secrets.DOCKERHUB_ADMIN_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_ADMIN_TOKEN }}
+
+      - name: Build and push E2E runner image
+        uses: docker/build-push-action@v6.17.0
+        with:
+          context: .
+          file: ./client/Dockerfile.e2e
+          push: true
+          tags: docker.io/${{ secrets.DOCKERHUB_ADMIN_USERNAME }}/seb-server-gui-e2e-runner:${{ env.TAG_NAME }}

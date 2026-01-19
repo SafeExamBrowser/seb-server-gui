@@ -1,7 +1,9 @@
 import { test, expect, Page } from "@playwright/test";
 
-const USER = process.env.E2E_USER || "playwright";
-const PASS = process.env.E2E_PASS || "playwright";
+const correctUser = "testmain";
+const correctPass = "testmain";
+const wrongUser = "invalid@example.cdasdpef";
+const wrongPass = "wrong-passworddddddddddddddd";
 
 async function setupLoginPage(page: Page) {
     await page.addInitScript(() => {
@@ -11,32 +13,35 @@ async function setupLoginPage(page: Page) {
     await page.goto("/");
     await expect(page.getByTestId("login-page-container")).toBeVisible();
 
-    const username = page
-        .getByTestId("login-username-input")
-        .getByRole("textbox");
-    const password = page
-        .getByTestId("login-password-input")
-        .getByRole("textbox");
+    const username = page.getByRole("textbox", { name: "Username *" });
+    const password = page.getByRole("textbox", { name: "Password *" });
 
     return { username, password };
 }
 
-test.describe("LoginPage", () => {
-    test("logs in with Enter and redirects to /home", async ({ page }) => {
+//this triggers video recording for the worker
+test.use({
+    video: {
+        mode: "on",
+    },
+});
+
+test.describe("1.2.1 User Accounts - READ Log in", () => {
+    test("A Successful login", async ({ page }) => {
         const { username, password } = await setupLoginPage(page);
 
-        await username.fill(USER);
-        await password.fill(PASS);
+        await username.fill(correctUser);
+        await password.fill(correctPass);
         await page.keyboard.press("Enter");
 
         await expect(page).toHaveURL(/\/home(?:$|[?#])/i, { timeout: 5000 });
     });
 
-    test("shows error on invalid credentials", async ({ page }) => {
+    test("B Failed login, bad credentials", async ({ page }) => {
         const { username, password } = await setupLoginPage(page);
 
-        await username.fill("invalid@example.com");
-        await password.fill("wrong-password");
+        await username.fill(wrongUser);
+        await password.fill(wrongPass);
         await page.keyboard.press("Enter");
 
         const alert = page.getByTestId("login-error-alert");
@@ -45,9 +50,7 @@ test.describe("LoginPage", () => {
         await page.waitForTimeout(600);
     });
 
-    test("register link navigates on click and Space/Enter", async ({
-        page,
-    }) => {
+    test("C Navigates to Register", async ({ page }) => {
         await page.goto("/");
 
         const link = page.getByTestId("login-register-link");
