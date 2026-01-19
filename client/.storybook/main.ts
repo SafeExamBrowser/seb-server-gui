@@ -6,7 +6,10 @@ const config: StorybookConfig = {
         name: "@storybook/vue3-vite",
         options: {},
     },
-    stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
+    stories: [
+        "../tests/stories/**/*.mdx",
+        "../tests/stories/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+    ],
     addons: [
         "@chromatic-com/storybook",
         "@storybook/addon-docs",

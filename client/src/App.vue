@@ -1,7 +1,6 @@
 <template>
     <v-app>
         <ErrorMsg></ErrorMsg>
-
         <loading
             :active="loadingStore.isLoading"
             color="#215CAF"
