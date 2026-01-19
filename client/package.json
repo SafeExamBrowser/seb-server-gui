@@ -27,7 +27,8 @@
         "test:e2e:headed": "npx playwright test --headed",
         "test:e2e:interactive": "npx playwright codegen http://localhost:8082",
         "test:e2e:chromium": "npx playwright test --project=chromium --headed",
-        "build-storybook": "storybook build"
+        "build-storybook": "storybook build --disable-telemetry",
+        "postbuild-storybook": "node -e \"const fs=require('fs'); const p='./storybook-static/index.html'; let s=fs.readFileSync(p,'utf8'); s=s.replace('<head>', '<head>\\n<base href=\\\"/storybook/\\\">'); fs.writeFileSync(p,s);\""
     },
     "lint-staged": {
         "*.{vue,js,jsx,ts,tsx}": [
