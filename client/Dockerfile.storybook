@@ -10,4 +10,4 @@ RUN npm run build-storybook
 
 FROM nginx:alpine
 COPY --from=build /app/client/storybook-static/ /usr/share/nginx/html/
-EXPOSE 80  # Nginx will listen on port 80 by default
+EXPOSE 80
