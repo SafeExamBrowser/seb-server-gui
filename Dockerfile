@@ -15,7 +15,7 @@ RUN npm run build
 FROM node:22.2.0 as server-builder
 WORKDIR /app/server
 COPY server/package*.json ./
-RUN npm install
+5t2f y<RUN npm install
 RUN npm install typescript
 COPY server/ .
 RUN npm run build

@@ -1,4 +1,5 @@
 import { test, expect, Page } from "@playwright/test";
+import { loginAsServerAdmin } from "../utils/authenticate";
 
 const correctUser = "testmain";
 const correctPass = "testmain";
@@ -28,13 +29,7 @@ test.use({
 
 test.describe("1.2.1 User Accounts - READ Log in", () => {
     test("A Successful login", async ({ page }) => {
-        const { username, password } = await setupLoginPage(page);
-
-        await username.fill(correctUser);
-        await password.fill(correctPass);
-        await page.keyboard.press("Enter");
-
-        await expect(page).toHaveURL(/\/home(?:$|[?#])/i, { timeout: 5000 });
+        await loginAsServerAdmin(page, correctUser, correctPass);
     });
 
     test("B Failed login, bad credentials", async ({ page }) => {
