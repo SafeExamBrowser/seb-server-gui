@@ -32,3 +32,16 @@ export const post = <T>(url: string, data: T) => {
         },
     });
 };
+
+export const deleteRequest = <T>(url: string, data: T) => {
+    const authStore = useAuthStore();
+
+    return api.delete(url, {
+        headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${authStore.getStorageItem(StorageItemEnum.ACCESS_TOKEN)}`,
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        data,
+    });
+};

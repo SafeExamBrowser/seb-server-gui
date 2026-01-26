@@ -15,15 +15,11 @@ export const getCertificates = async (
 ): Promise<CertificatesResponse> =>
     (await newApiService.get(baseUrl, { params: optionalParameters })).data;
 
-export async function deleteCertificate(
+export const deleteCertificate = async (
     certificateId: string,
-): Promise<unknown | unknown> {
-    return (
-        await apiService.api.delete(baseUrl + "/" + certificateId, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
+): Promise<unknown | unknown> =>
+    (await newApiService.deleteRequest(`${baseUrl}`, { alias: certificateId }))
+        .data;
 
 export async function createCertificate(
     payload: CreateCertificateJSON,

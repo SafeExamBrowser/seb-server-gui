@@ -2,24 +2,6 @@ import * as apiService from "./api.service";
 import * as constants from "../../utils/constants";
 
 
-export async function deleteCertificate(
-    token: string,
-    alias: string,
-): Promise<[any, number]> {
-
-    const url = constants.CERTIFICATE_ROUTE
-
-    const body = apiService.createUrlEncodedBody({ alias });
-
-    const { data, status } = await apiService.api.delete(url, {
-        headers: apiService.getHeaders(token),
-        data: body,
-    });
-
-    return [data, status];
-}
-
-
 type CreateCertificateBody = {
     fileBase64: string;
     fileName: string;
