@@ -1,6 +1,7 @@
 // TODO @alain: this will eventually replace the apiService.ts file
 
 import axios, { AxiosRequestConfig } from "axios";
+import { merge } from "lodash";
 import * as ENV from "@/config/envConfig";
 import { useAuthStore } from "@/stores/authentication/authenticationStore";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
@@ -12,25 +13,28 @@ const api = axios.create({
 export const get = (url: string, options?: AxiosRequestConfig) => {
     const authStore = useAuthStore();
 
-    return api.get(url, {
+    const defaultOptions: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
             Authorization: `Bearer ${authStore.getStorageItem(StorageItemEnum.ACCESS_TOKEN)}`,
         },
-        ...options,
-    });
+    };
+
+    return api.get(url, merge({}, defaultOptions, options));
 };
 
-export const post = <T>(url: string, data: T) => {
+export const post = <T>(url: string, data: T, options?: AxiosRequestConfig) => {
     const authStore = useAuthStore();
 
-    return api.post(url, data, {
+    const defaultOptions: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
             Authorization: `Bearer ${authStore.getStorageItem(StorageItemEnum.ACCESS_TOKEN)}`,
             "Content-Type": "application/json",
         },
-    });
+    };
+
+    return api.post(url, data, merge({}, defaultOptions, options));
 };
 
 export const deleteRequest = <T>(url: string, data: T) => {
