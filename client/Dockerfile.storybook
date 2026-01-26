@@ -1,0 +1,13 @@
+FROM node:20-alpine AS build
+WORKDIR /app/client
+
+COPY client/package.json client/package-lock.json ./
+RUN npm ci
+
+COPY client/ ./
+
+RUN npm run build-storybook
+
+FROM nginx:alpine
+COPY --from=build /app/client/storybook-static/ /usr/share/nginx/html/
+EXPOSE 80
