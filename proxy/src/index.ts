@@ -5,6 +5,7 @@ import { parseEnv } from "./utils/env";
 import { logInfo, logRequest } from "./utils/logger";
 
 const API_PREFIX = "/admin-api/v1";
+const OAUTH_PREFIX = "/oauth";
 
 const env = parseEnv();
 
@@ -13,11 +14,6 @@ const proxyConfig = createProxyServer({
 });
 
 proxyConfig.on("proxyReq", (proxyReq, _req, _res) => {
-  // TODO @alain: add basic auth header for the requests that need it (authentication requests, ...?)
-  // if (needsBasicAuth(req)) {
-  //   proxyReq.setHeader("Authorization", `Basic ${env.SEB_SERVER_USERNAME}:${env.SEB_SERVER_PASSWORD}`);
-  // }
-
   if (proxyReq.method === "GET") {
     // TODO @Andreas: remove this, once the sev-server API doesn't require this anymore
     // - Content-Type on GET requests doesn't make sense, because GET requests don't have a body
@@ -39,6 +35,19 @@ const server = http.createServer((req, res) => {
     res.writeHead(204);
     res.end();
     logRequest(req, 204);
+    return;
+  }
+
+  // route authorize requests to the oauth token endpoint
+  if (req.url === "/authorize") {
+    proxyConfig.web(req, res, {
+      target: `${env.SEB_SERVER_URL}:${env.SEB_SERVER_PORT}${OAUTH_PREFIX}/token`,
+      ignorePath: true, // use the target URL as-is, don't append req.url
+      headers: {
+        Authorization: `Basic ${Buffer.from(`${env.SEB_SERVER_USERNAME}:${env.SEB_SERVER_PASSWORD}`).toString("base64")}`,
+      },
+    });
+
     return;
   }
 
