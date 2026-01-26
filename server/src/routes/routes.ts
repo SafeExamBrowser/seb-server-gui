@@ -21,7 +21,6 @@ import * as searchController from "../controllers/screen-proctoring/sp-search.co
 import * as settingsController from "../controllers/screen-proctoring/sp-settings.controller";
 import * as applicationSearchController from "../controllers/screen-proctoring/sp-application-search.controller";
 import * as institutionsController from "../controllers/seb-server/institution.controller";
-import * as certificateController from "../controllers/seb-server/certificate.controller";
 import * as clientConnectionController from "../controllers/seb-server/client-connection.controller";
 import {grantExamAppSignatureKey} from "../controllers/seb-server/exam.controller";
 
@@ -115,9 +114,6 @@ router.post(constants.ASSESSMENT_TOOL_ROUTE + "/:id" + constants.DEACTIVATION_RO
 router.delete(constants.ASSESSMENT_TOOL_ROUTE+ "/:id", assessmentToolController.deleteAssessmentTool);
 router.post(constants.ASSESSMENT_TOOL_ROUTE, assessmentToolController.createAssessmentTool);
 router.put(constants.ASSESSMENT_TOOL_ROUTE, assessmentToolController.editAssessmentTool);
-
-//certificate
-router.post(constants.CERTIFICATE_ROUTE, certificateController.createCertificate);
 
 //monitoring
 router.post(constants.MONITORING_TEST_RUN_ROUTE + "/:id", monitoringController.applyTestRun);
