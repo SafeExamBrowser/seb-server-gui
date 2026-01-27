@@ -14,7 +14,7 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: constants.DEFAULT_ROUTE,
         name: "LoginPage",
-        component: () => import("@/components/views/LoginPage.vue"),
+        component: () => import("@/components/views/login/LoginPage.vue"),
         meta: { requiresAuth: false },
     },
     {
