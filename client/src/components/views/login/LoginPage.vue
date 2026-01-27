@@ -1,7 +1,13 @@
 <template>
     <v-main data-testid="login-page-container">
         <v-container class="fill-height d-flex align-center justify-center">
-            <v-card class="pa-10">
+            <v-card class="pa-10" :loading="isLoading" :disabled="isLoading">
+                <template #loader="{ isActive }">
+                    <v-progress-linear
+                        :active="isActive"
+                        indeterminate
+                    ></v-progress-linear>
+                </template>
                 <div class="d-flex ml-15 mr-15 justify-center">
                     <img
                         :alt="translate('screenReader.logo')"
@@ -121,7 +127,7 @@ const username = ref("");
 const password = ref("");
 const passwordVisible = ref<boolean>(false);
 
-const { errorI18nKey, login } = useLogin();
+const { errorI18nKey, loading: isLoading, login } = useLogin();
 
 // theme
 const theme = useTheme();
