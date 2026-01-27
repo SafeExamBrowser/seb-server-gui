@@ -1,13 +1,11 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
-import * as authenticationService from "@/services/authenticationService";
 import { navigateTo } from "@/router/navigation";
 import * as ENV from "@/config/envConfig";
 import { useLoadingStore } from "@/stores/store";
 import { useAuthStore } from "@/stores/authentication/authenticationStore";
-import * as generalUtils from "@/utils/generalUtils";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
 import { notify } from "@/components/views/seb-server/toast/notify";
-import { Token } from "@/models/tokenModel";
+import * as constants from "@/utils/constants";
 
 export let api: AxiosInstance;
 
@@ -28,7 +26,6 @@ declare module "axios" {
 }
 
 export function createApiInterceptor() {
-    const authStore = useAuthStore();
     const loadingStore = useLoadingStore();
 
     let loadingTimer: NodeJS.Timeout | null = null;
@@ -67,7 +64,7 @@ export function createApiInterceptor() {
             const originalRequest = (error.config ?? {}) as AxiosRequestConfig;
 
             if (error?.response?.status === 401 && !originalRequest._retry) {
-                return handleAuthenticationError(originalRequest);
+                navigateTo(constants.DEFAULT_ROUTE);
             }
 
             const suppress = originalRequest?.suppressToast === true;
@@ -88,66 +85,6 @@ export function createApiInterceptor() {
             return Promise.reject(error);
         },
     );
-
-    async function handleAuthenticationError(
-        originalRequest: AxiosRequestConfig,
-    ) {
-        try {
-            const response: Token | null =
-                await authenticationService.refresh(false);
-            if (!response) {
-                return;
-            }
-
-            authStore.setStorageItem(
-                StorageItemEnum.ACCESS_TOKEN,
-                response.access_token,
-            );
-            authStore.setStorageItem(
-                StorageItemEnum.REFRESH_TOKEN,
-                response.refresh_token,
-            );
-
-            if (
-                generalUtils.stringToBoolean(
-                    authStore.getStorageItem(StorageItemEnum.IS_SP_AVAILABLE),
-                )
-            ) {
-                const spResponse: Token | null =
-                    await authenticationService.refresh(true);
-                if (!spResponse) {
-                    return;
-                }
-
-                authStore.setStorageItem(
-                    StorageItemEnum.SP_ACCESS_TOKEN,
-                    spResponse.access_token,
-                );
-                authStore.setStorageItem(
-                    StorageItemEnum.SP_REFRESH_TOKEN,
-                    spResponse.refresh_token,
-                );
-            }
-
-            originalRequest._retry = true;
-
-            const originalUrl = originalRequest.url;
-            originalRequest.headers =
-                originalUrl && originalUrl.startsWith("/sp/")
-                    ? getHeaders(StorageItemEnum.SP_ACCESS_TOKEN)
-                    : getHeaders(StorageItemEnum.ACCESS_TOKEN);
-
-            return api(originalRequest);
-        } catch (err) {
-            let redirectRoute = "/";
-            if (window.location.pathname != null) {
-                redirectRoute = window.location.pathname;
-            }
-            authStore.redirectRoute = redirectRoute;
-            navigateTo("/");
-            return Promise.reject(err);
-        }
-    }
 
     function resetLoadingState() {
         requests--;
