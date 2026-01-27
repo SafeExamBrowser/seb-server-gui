@@ -44,19 +44,6 @@ export const useAuthStore = defineStore("auth", () => {
         // setStorageItem()
     }
 
-    async function loginWithJwt(
-        accessTokenString: string,
-        refreshTokenString: string,
-        redirect: string,
-    ) {
-        setStorageItem(StorageItemEnum.SP_ACCESS_TOKEN, accessTokenString);
-        setStorageItem(StorageItemEnum.SP_REFRESH_TOKEN, refreshTokenString);
-
-        navigateTo(redirect);
-
-        await userAccountViewService.setPersonalUserAccount();
-    }
-
     async function logout() {
         //   await authenticationService.logLogout();
 
@@ -88,7 +75,6 @@ export const useAuthStore = defineStore("auth", () => {
         redirectRoute,
         login,
         loginSP,
-        loginWithJwt,
         logout,
         setStorageItem,
         getStorageItem,

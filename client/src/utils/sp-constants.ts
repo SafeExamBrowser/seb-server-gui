@@ -1,6 +1,5 @@
 // navigation routes
 export const DEFAULT_ROUTE = "/sp-";
-export const JWT_LOGIN_ROUTE = "/sp-jwt";
 
 export const RUNNING_EXAMS_ROUTE = "/sp-running-exams";
 export const SEARCH_ROUTE = "/sp-search";

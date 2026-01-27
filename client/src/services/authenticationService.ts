@@ -3,7 +3,7 @@ import axios, { AxiosResponse } from "axios";
 import * as ENV from "@/config/envConfig";
 import { useAuthStore } from "@/stores/authentication/authenticationStore";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
-import { JwtTokenResponse, Token } from "@/models/tokenModel";
+import { Token } from "@/models/tokenModel";
 
 export const authorize = async (
     userName: string,
@@ -55,18 +55,6 @@ export async function refresh(isSpRefresh: boolean): Promise<Token | null> {
     );
 
     return response.data;
-}
-
-export async function verifyJwt(token: string): Promise<JwtTokenResponse> {
-    const url: string = ENV.SERVER_URL + ENV.SERVER_PORT + "/jwttoken/verify";
-
-    const response = await axios.post(url, { token });
-
-    if (response.status === 200) {
-        return response.data;
-    } else {
-        return response.data;
-    }
 }
 
 // TODO integrate log out -> backend provides endpoint?
