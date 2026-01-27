@@ -55,7 +55,6 @@ export const useAuthStore = defineStore("auth", () => {
     }
 
     return {
-        redirectRoute,
         login,
         loginSP,
         logout,
