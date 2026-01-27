@@ -39,7 +39,7 @@
                 </v-card-subtitle>
 
                 <v-card-text>
-                    <v-form @keyup.enter="signIn()">
+                    <v-form @keyup.enter="handleSignIn()">
                         <v-text-field
                             v-model="username"
                             data-testid="login-username-input"
@@ -84,7 +84,7 @@
                             color="primary"
                             data-testid="login-signin-btn"
                             rounded="sm"
-                            @click="signIn()"
+                            @click="handleSignIn()"
                         >
                             {{ translate("loginPage.signIn") }}
                         </v-btn>
@@ -112,46 +112,23 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import * as authenticationService from "@/services/authenticationService";
 import { useTheme } from "vuetify";
 import * as constants from "@/utils/constants";
 import { translate } from "@/utils/generalUtils";
-import { useAuthStore } from "@/stores/authentication/authenticationStore";
+import { useLogin } from "./composables/useLogin";
 
 const username = ref("");
 const password = ref("");
-const loginError = ref(false);
-
 const passwordVisible = ref<boolean>(false);
 
-// stores
-const authStore = useAuthStore();
+const { error: loginError, login } = useLogin();
 
 // theme
 const theme = useTheme();
 const initialTheme = localStorage.getItem("theme") ?? "light";
 theme.change(initialTheme);
 
-async function signIn() {
-    loginError.value = false;
-
-    try {
-        const authResponse = await authenticationService.authorize(
-            username.value,
-            password.value,
-        );
-
-        authStore.login(
-            authResponse.sebServer.access_token,
-            authResponse.sebServer.refresh_token,
-        );
-
-        authStore.loginSP(
-            authResponse.proctorServer.access_token,
-            authResponse.proctorServer.refresh_token,
-        );
-    } catch {
-        loginError.value = true;
-    }
-}
+const handleSignIn = () => {
+    login(username.value, password.value);
+};
 </script>
