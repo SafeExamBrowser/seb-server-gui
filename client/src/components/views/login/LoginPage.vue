@@ -39,7 +39,7 @@
                 </v-card-subtitle>
 
                 <v-card-text>
-                    <v-form @keyup.enter="handleSignIn()">
+                    <v-form @submit.prevent="handleSubmit">
                         <v-text-field
                             v-model="username"
                             data-testid="login-username-input"
@@ -84,7 +84,7 @@
                             color="primary"
                             data-testid="login-signin-btn"
                             rounded="sm"
-                            @click="handleSignIn()"
+                            type="submit"
                         >
                             {{ translate("loginPage.signIn") }}
                         </v-btn>
@@ -128,7 +128,7 @@ const theme = useTheme();
 const initialTheme = localStorage.getItem("theme") ?? "light";
 theme.change(initialTheme);
 
-const handleSignIn = () => {
+const handleSubmit = () => {
     login(username.value, password.value);
 };
 </script>
