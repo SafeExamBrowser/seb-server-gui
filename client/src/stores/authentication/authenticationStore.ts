@@ -40,13 +40,9 @@ export const useAuthStore = defineStore("auth", () => {
         setStorageItem(StorageItemEnum.SP_ACCESS_TOKEN, accessTokenString);
         setStorageItem(StorageItemEnum.SP_REFRESH_TOKEN, refreshTokenString);
         setStorageItem(StorageItemEnum.IS_SP_AVAILABLE, "true");
-
-        // setStorageItem()
     }
 
     async function logout() {
-        //   await authenticationService.logLogout();
-
         setStorageItem(StorageItemEnum.ACCESS_TOKEN, "");
         setStorageItem(StorageItemEnum.REFRESH_TOKEN, "");
         setStorageItem(StorageItemEnum.SP_ACCESS_TOKEN, "");

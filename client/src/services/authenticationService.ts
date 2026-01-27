@@ -56,15 +56,3 @@ export async function refresh(isSpRefresh: boolean): Promise<Token | null> {
 
     return response.data;
 }
-
-// TODO integrate log out -> backend provides endpoint?
-// export async function logLogout() {
-//     try {
-//         const url: string = "useraccount/logLogout";
-//         await apiService.api.post(url, {
-//             headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-//         });
-//     } catch (error) {
-//         throw error;
-//     }
-// }
