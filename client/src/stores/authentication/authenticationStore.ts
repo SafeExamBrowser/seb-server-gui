@@ -8,8 +8,6 @@ import { UserAccount } from "@/models/userAccount";
 
 // ----------------------authentication---------------------------//
 export const useAuthStore = defineStore("auth", () => {
-    const redirectRoute: string = "";
-
     async function login(
         accessTokenString: string,
         refreshTokenString: string,
@@ -19,18 +17,7 @@ export const useAuthStore = defineStore("auth", () => {
 
         await userAccountViewService.setPersonalUserAccount();
 
-        if (useAuthStore().redirectRoute === "") {
-            navigateTo(constants.HOME_PAGE_ROUTE);
-        } else {
-            let route: string = useAuthStore().redirectRoute;
-            const subPath: string | null = import.meta.env.VITE_SUB_PATH;
-
-            if (subPath != null && route.includes(subPath)) {
-                route = route.replace(subPath, "");
-            }
-
-            navigateTo(route);
-        }
+        navigateTo(constants.HOME_PAGE_ROUTE);
     }
 
     async function loginSP(
@@ -72,7 +59,6 @@ export const useAuthStore = defineStore("auth", () => {
         login,
         loginSP,
         logout,
-        setStorageItem,
         getStorageItem,
     };
 });

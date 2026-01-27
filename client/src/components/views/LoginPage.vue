@@ -145,6 +145,7 @@ async function signIn() {
             authResponse.sebServer.access_token,
             authResponse.sebServer.refresh_token,
         );
+
         authStore.loginSP(
             authResponse.proctorServer.access_token,
             authResponse.proctorServer.refresh_token,
