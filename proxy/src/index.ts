@@ -1,11 +1,11 @@
 import { createProxyServer } from "http-proxy-3";
 import http from "http";
+import { handleAuthorize } from "./handlers/authorize";
 import { setCorsHeaders } from "./utils/cors";
 import { parseEnv } from "./utils/env";
 import { logInfo, logRequest } from "./utils/logger";
 
 const API_PREFIX = "/admin-api/v1";
-const OAUTH_PREFIX = "/oauth";
 
 const env = parseEnv();
 
@@ -38,16 +38,9 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // route authorize requests to the oauth token endpoint
+  // handle authorize requests
   if (req.url === "/authorize") {
-    proxyConfig.web(req, res, {
-      target: `${env.SEB_SERVER_URL}:${env.SEB_SERVER_PORT}${OAUTH_PREFIX}/token`,
-      ignorePath: true, // use the target URL as-is, don't append req.url
-      headers: {
-        Authorization: `Basic ${Buffer.from(`${env.SEB_SERVER_USERNAME}:${env.SEB_SERVER_PASSWORD}`).toString("base64")}`,
-      },
-    });
-
+    handleAuthorize(req, res, env);
     return;
   }
 

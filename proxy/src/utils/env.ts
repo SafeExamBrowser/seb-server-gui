@@ -13,6 +13,8 @@ const envSchema = z.object({
   PROCTOR_SERVER_PASSWORD: z.string(),
 });
 
+export type Env = z.infer<typeof envSchema>;
+
 export const parseEnv = () => {
   const envResult = envSchema.safeParse(process.env);
 

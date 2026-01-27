@@ -9,7 +9,7 @@ const logger = winston.createLogger({
     format.align(),
     format.printf((info) => {
       return `[${info.timestamp}] ${info.level} ${info.message}`;
-    })
+    }),
   ),
 });
 
@@ -19,4 +19,8 @@ export const logRequest = (req: IncomingMessage, statusCode?: number) => {
 
 export const logInfo = (message: string) => {
   logger.info(message);
+};
+
+export const logError = (prefix: string, message: string) => {
+  logger.error(`${prefix} ${message}`);
 };
