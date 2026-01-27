@@ -94,17 +94,15 @@
                         <span>
                             {{ translate("loginPage.noAccount") }}
                         </span>
-                        <span
-                            class="text-decoration-underline text-blue"
+                        <router-link
+                            :to="constants.REGISTER_ROUTE"
+                            class="text-primary"
                             data-testid="login-register-link"
                             role="button"
                             tabindex="0"
-                            @keydown="handleTabKeyEvent($event, 'navigate')"
                         >
-                            <router-link :to="constants.REGISTER_ROUTE">
-                                {{ translate("loginPage.register") }}
-                            </router-link>
-                        </span>
+                            {{ translate("loginPage.register") }}
+                        </router-link>
                     </div>
                 </v-card-text>
             </v-card>
@@ -119,7 +117,6 @@ import { useTheme } from "vuetify";
 import * as constants from "@/utils/constants";
 import { translate } from "@/utils/generalUtils";
 import { useAuthStore } from "@/stores/authentication/authenticationStore";
-import { useRouter } from "vue-router";
 
 const username = ref("");
 const password = ref("");
@@ -134,11 +131,6 @@ const authStore = useAuthStore();
 const theme = useTheme();
 const initialTheme = localStorage.getItem("theme") ?? "light";
 theme.change(initialTheme);
-
-// ToDo dark mode??
-// const isDark = computed<boolean>(() => theme.global.current.value.dark);
-
-const router = useRouter();
 
 async function signIn() {
     loginError.value = false;
@@ -159,14 +151,6 @@ async function signIn() {
         );
     } catch {
         loginError.value = true;
-    }
-}
-
-function handleTabKeyEvent(event: KeyboardEvent, action: string) {
-    if (event.key === "Enter" || event.key === " ") {
-        if (action === "navigate") {
-            router.push(constants.REGISTER_ROUTE);
-        }
     }
 }
 </script>
