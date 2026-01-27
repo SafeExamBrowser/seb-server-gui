@@ -10,6 +10,8 @@ const api = axios.create({
     baseURL: `${ENV.SERVER_URL}:${3002}`, // TODO @alain: don't hardcode port (this is the port of the new proxy server)
 });
 
+export const getApiForManualRequests = () => api;
+
 export const get = (url: string, options?: AxiosRequestConfig) => {
     const authStore = useAuthStore();
 

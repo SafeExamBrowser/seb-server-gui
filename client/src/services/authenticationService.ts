@@ -1,77 +1,37 @@
+import * as newApiService from "@/services/newApiService";
 import axios, { AxiosResponse } from "axios";
 import * as ENV from "@/config/envConfig";
-import { useLoadingStore } from "@/stores/store";
-// import * as apiService from "@/services/apiService";
 import { useAuthStore } from "@/stores/authentication/authenticationStore";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
 import { JwtTokenResponse, Token } from "@/models/tokenModel";
 
-let loadingTimeout: ReturnType<typeof setTimeout> | null = null;
-let loadingEndTimeout: ReturnType<typeof setTimeout> | null = null;
-
-export interface AuthResponse {
-    access_token: string;
-    refresh_token: string;
-    token_type?: string;
-    expires_in?: number;
-}
-function setLoginTimeouts() {
-    const loadingStore = useLoadingStore();
-
-    loadingTimeout = setTimeout(() => {
-        loadingStore.isLoading = true;
-    }, 500);
-
-    loadingEndTimeout = setTimeout(() => {
-        resetLoadingState();
-        loadingStore.isTimeout = true;
-    }, 10000);
-}
-
-function resetLoadingState() {
-    const loadingStore = useLoadingStore();
-
-    if (loadingTimeout) clearTimeout(loadingTimeout);
-    if (loadingEndTimeout) clearTimeout(loadingEndTimeout);
-
-    loadingTimeout = null;
-    loadingEndTimeout = null;
-
-    loadingStore.isLoading = false;
-}
-
-// ---- API ------------------------------------------------------
-
-export async function login(
-    username: string,
+export const authorize = async (
+    userName: string,
     password: string,
-    isSpLogin: boolean,
-): Promise<AuthResponse> {
-    const loadingStore = useLoadingStore();
+): Promise<{
+    proctorServer: {
+        access_token: string;
+        refresh_token: string;
+    };
+    sebServer: {
+        access_token: string;
+        refresh_token: string;
+    };
+}> => {
+    const body = new URLSearchParams({
+        grant_type: "password",
+        username: userName,
+        password: password,
+    }).toString();
 
-    try {
-        const base = ENV.SERVER_URL + ENV.SERVER_PORT;
-        const url = isSpLogin ? `${base}/sp-authorize` : `${base}/authorize`;
-
-        loadingStore.isTimeout = false;
-        setLoginTimeouts();
-
-        const response: AxiosResponse<AuthResponse> = await axios.post(url, {
-            username,
-            password,
-        });
-
-        if (response.status === 200) {
-            resetLoadingState();
-            return response.data;
-        }
-        resetLoadingState();
-        throw new Error(`Login failed with status ${response.status}`);
-    } catch (error) {
-        resetLoadingState();
-        throw error;
-    }
-}
+    return (
+        await newApiService.getApiForManualRequests().post("/authorize", body, {
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+        })
+    ).data;
+};
 
 export async function refresh(isSpRefresh: boolean): Promise<Token | null> {
     const authStore = useAuthStore();

@@ -26,20 +26,6 @@
                             }"
                         />
                     </div>
-
-                    <div
-                        v-if="loadingStore.isTimeout"
-                        data-testid="timeout-error-alert"
-                    >
-                        <AlertMsg
-                            :alert-props="{
-                                title: '',
-                                color: 'error',
-                                type: 'alert',
-                                textKey: 'timeout-error',
-                            }"
-                        />
-                    </div>
                 </div>
 
                 <v-card-title class="mt-10">
@@ -128,12 +114,10 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import * as authenticationService from "@/services/authenticationService";
-import { useLoadingStore } from "@/stores/store";
 import { useTheme } from "vuetify";
 import * as constants from "@/utils/constants";
 import { translate } from "@/utils/generalUtils";
 import { useAuthStore } from "@/stores/authentication/authenticationStore";
-import { StorageItemEnum } from "@/models/StorageItemEnum";
 import { useRouter } from "vue-router";
 
 const username = ref("");
@@ -144,7 +128,6 @@ const passwordVisible = ref<boolean>(false);
 
 // stores
 const authStore = useAuthStore();
-const loadingStore = useLoadingStore();
 
 // theme
 const theme = useTheme();
@@ -158,36 +141,21 @@ const router = useRouter();
 
 async function signIn() {
     loginError.value = false;
-    loadingStore.isTimeout = false;
 
     try {
-        // if seb server fails --> shows error msg
-        const tokenObject = await authenticationService.login(
+        const authResponse = await authenticationService.authorize(
             username.value,
             password.value,
-            false,
         );
 
-        try {
-            // if sp failes --> only logs error
-            const spTokenObject = await authenticationService.login(
-                username.value,
-                password.value,
-                true,
-            );
-            authStore.loginSP(
-                spTokenObject.access_token,
-                spTokenObject.refresh_token,
-            );
-        } catch (error) {
-            console.error("SP login failed:", error);
-            authStore.setStorageItem(StorageItemEnum.IS_SP_AVAILABLE, "false");
-        } finally {
-            authStore.login(
-                tokenObject.access_token,
-                tokenObject.refresh_token,
-            );
-        }
+        authStore.login(
+            authResponse.sebServer.access_token,
+            authResponse.sebServer.refresh_token,
+        );
+        authStore.loginSP(
+            authResponse.proctorServer.access_token,
+            authResponse.proctorServer.refresh_token,
+        );
     } catch {
         loginError.value = true;
     }
