@@ -1,17 +1,18 @@
 import { ref } from "vue";
 import * as authenticationService from "@/services/authenticationService";
 import { useAuthStore } from "@/stores/authentication/authenticationStore";
+import { AxiosError } from "axios";
 
 export const useLogin = () => {
     const data =
         ref<Awaited<ReturnType<typeof authenticationService.authorize>>>();
-    const error = ref<string>();
+    const errorI18nKey = ref<string>();
     const loading = ref(false);
 
     const authStore = useAuthStore();
 
     const login = async (username: string, password: string) => {
-        error.value = undefined;
+        errorI18nKey.value = undefined;
         loading.value = true;
 
         try {
@@ -32,11 +33,14 @@ export const useLogin = () => {
                 authResponse.proctorServer.refresh_token,
             );
         } catch (err) {
-            error.value = err instanceof Error ? err.message : "Login failed";
+            errorI18nKey.value =
+                err instanceof AxiosError && err.status === 401
+                    ? "login-error"
+                    : "api-error";
         } finally {
             loading.value = false;
         }
     };
 
-    return { data, error, loading, login };
+    return { data, errorI18nKey, loading, login };
 };

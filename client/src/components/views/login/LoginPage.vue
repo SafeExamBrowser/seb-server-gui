@@ -17,13 +17,13 @@
                 </div>
 
                 <div class="mt-10">
-                    <div v-if="loginError" data-testid="login-error-alert">
+                    <div v-if="errorI18nKey" data-testid="login-error-alert">
                         <AlertMsg
                             :alert-props="{
                                 title: '',
                                 color: 'error',
                                 type: 'alert',
-                                textKey: 'login-error',
+                                textKey: errorI18nKey,
                             }"
                         />
                     </div>
@@ -121,7 +121,7 @@ const username = ref("");
 const password = ref("");
 const passwordVisible = ref<boolean>(false);
 
-const { error: loginError, login } = useLogin();
+const { errorI18nKey, login } = useLogin();
 
 // theme
 const theme = useTheme();
