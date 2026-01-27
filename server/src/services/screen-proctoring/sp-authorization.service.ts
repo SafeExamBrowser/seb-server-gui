@@ -53,17 +53,3 @@ export async function refreshToken(refreshToken: string): Promise<[object, numbe
 
     return [data, status];
 }
-
-export async function logLogin(token: string): Promise<[object, number]>{
-    const url: string = "/useraccount/loglogin";
-    const {data, status} = await apiService.api.post(url, {}, {headers: apiService.getHeaders(token)});
-
-    return [data, status];
-}
-
-export async function logLogout(token: string): Promise<[object, number]>{
-    const url: string = "/useraccount/loglogout";
-    const {data, status} = await apiService.api.post(url, {}, {headers: apiService.getHeaders(token)});
-
-    return [data, status];
-}
