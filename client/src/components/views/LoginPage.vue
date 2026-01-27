@@ -5,8 +5,9 @@
                 <div class="d-flex ml-15 mr-15 justify-center">
                     <img
                         :alt="translate('screenReader.logo')"
-                        class="logo-img"
+                        class="w-100 h-auto"
                         src="/img/seb-logo-no-border.png"
+                        style="max-width: 150px"
                     />
                 </div>
                 <div class="d-flex ml-15 mr-15 mt-5 justify-center">
@@ -169,15 +170,3 @@ function handleTabKeyEvent(event: KeyboardEvent, action: string) {
     }
 }
 </script>
-
-<style scoped>
-.invert {
-    filter: invert(1);
-}
-
-.logo-img {
-    max-width: 150px;
-    width: 100%;
-    height: auto;
-}
-</style>
