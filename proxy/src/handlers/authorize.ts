@@ -5,7 +5,9 @@ import { logError, logRequest } from "../utils/logger";
 import { tokenResultSchema, FetchTokensResult } from "./types";
 
 const OAUTH_PREFIX = "/oauth";
-const ERROR_PREFIX = "[authorize]";
+const ERROR_PREFIX = "authorize";
+const SEB_SERVER_NAME = "SEB Server";
+const SPS_SERVER_NAME = "SPS Server";
 
 const sendJsonResponse = (
   req: http.IncomingMessage,
@@ -54,7 +56,8 @@ const parseRequest = async (req: http.IncomingMessage) => {
   return { method, contentType, body };
 };
 
-const fetchToken = ({
+const fetchToken = async ({
+  serverName,
   url,
   port,
   username,
@@ -63,6 +66,7 @@ const fetchToken = ({
   contentType,
   body,
 }: {
+  serverName: string;
   url: string;
   port: number;
   username: string;
@@ -70,15 +74,21 @@ const fetchToken = ({
   method: string;
   contentType: string;
   body: string;
-}) =>
-  fetch(`${url}:${port}${OAUTH_PREFIX}/token`, {
-    method,
-    headers: {
-      "Content-Type": contentType,
-      Authorization: `Basic ${Buffer.from(`${username}:${password}`).toString("base64")}`,
-    },
-    body,
-  });
+}) => {
+  try {
+    return await fetch(`${url}:${port}${OAUTH_PREFIX}/token`, {
+      method,
+      headers: {
+        "Content-Type": contentType,
+        Authorization: `Basic ${Buffer.from(`${username}:${password}`).toString("base64")}`,
+      },
+      body,
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unknown error";
+    throw new Error(`${serverName}: ${message}`);
+  }
+};
 
 const fetchTokensFromBothServers = async (
   env: Env,
@@ -86,6 +96,7 @@ const fetchTokensFromBothServers = async (
 ): Promise<FetchTokensResult> => {
   const [sebServerResponse, proctorServerResponse] = await Promise.all([
     fetchToken({
+      serverName: SEB_SERVER_NAME,
       url: env.SEB_SERVER_URL,
       port: env.SEB_SERVER_PORT,
       username: env.SEB_SERVER_USERNAME,
@@ -93,6 +104,7 @@ const fetchTokensFromBothServers = async (
       ...requestData,
     }),
     fetchToken({
+      serverName: SPS_SERVER_NAME,
       url: env.PROCTOR_SERVER_URL,
       port: env.PROCTOR_SERVER_PORT,
       username: env.PROCTOR_SERVER_USERNAME,
@@ -106,13 +118,13 @@ const fetchTokensFromBothServers = async (
 
     if (!sebServerResponse.ok) {
       errors.push(
-        `SEB Server: ${sebServerResponse.status} ${sebServerResponse.statusText}`,
+        `${SEB_SERVER_NAME}: ${sebServerResponse.status} ${sebServerResponse.statusText}`,
       );
     }
 
     if (!proctorServerResponse.ok) {
       errors.push(
-        `Proctor Server: ${proctorServerResponse.status} ${proctorServerResponse.statusText}`,
+        `${SPS_SERVER_NAME}: ${proctorServerResponse.status} ${proctorServerResponse.statusText}`,
       );
     }
 
@@ -131,11 +143,11 @@ const fetchTokensFromBothServers = async (
     const errors: string[] = [];
 
     if (!sebTokenResult.success) {
-      errors.push("SEB Server token validation failed");
+      errors.push(`${SEB_SERVER_NAME} token validation failed`);
     }
 
     if (!proctorTokenResult.success) {
-      errors.push("Proctor Server token validation failed");
+      errors.push(`${SPS_SERVER_NAME} token validation failed`);
     }
 
     throw new Error(errors.join(", "));
