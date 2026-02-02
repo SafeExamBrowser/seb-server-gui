@@ -44,7 +44,6 @@ export async function publishSettings(token: string, examId: string): Promise<[o
 }
 
 export async function undoChanges(token: string, examId: string): Promise<[object, number]> {
-    console.info("*********** exam-sebsettings.service token: " + token);
     const url: string =  constants.EXAM_SEB_SETTINGS_ENDPOINT + "/" + examId + "/undo-changes"
     const {data, status} = await apiService.api.post(url, "", {headers: apiService.getHeaders(token)});
     return [data, status];

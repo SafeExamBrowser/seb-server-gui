@@ -74,7 +74,6 @@ export async function publishSettings(req: Request, res: Response){
 
 export async function undoChanges(req: Request, res: Response){
     try{
-        console.info("*********** exam-sebsettings.controller token: " + req.headers.authorization);
         const [exam, status] = await examSEBSettingsService.undoChanges(req.headers.authorization, req.params.id);
         return res.status(status).json(exam);
 

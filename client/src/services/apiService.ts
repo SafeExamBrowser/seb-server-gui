@@ -165,9 +165,6 @@ export function createApiInterceptor() {
 export function getHeaders(type: string): object {
     const authStore = useAuthStore();
     const token = authStore.getStorageItem(type);
-
-    console.info("*********** apiService token: " + token);
-
     return {
         accept: "application/json",
         Authorization: "Bearer " + token,
@@ -178,9 +175,6 @@ export function getHeaders(type: string): object {
 export function getPostHeaders(type: string): object {
     const authStore = useAuthStore();
     const token = authStore.getStorageItem(type);
-
-    console.info("*********** apiService: " + token);
-
     return {
         accept: "application/json",
         Authorization: "Bearer " + token,
