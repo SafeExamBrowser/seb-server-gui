@@ -116,7 +116,7 @@ export async function publish(
         (forExam ? examUrlPrefix : templateUrlPrefix) + id + "/publish";
     return (
         await apiService.api.post(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+            headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),
         })
     ).data;
 }
@@ -129,7 +129,7 @@ export async function undoChanges(
         (forExam ? examUrlPrefix : templateUrlPrefix) + id + "/undo-changes";
     return (
         await apiService.api.post(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+            headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),
         })
     ).data;
 }
