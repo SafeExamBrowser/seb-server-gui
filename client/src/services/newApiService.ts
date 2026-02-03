@@ -25,7 +25,11 @@ export const get = (url: string, options?: AxiosRequestConfig) => {
     return api.get(url, merge({}, defaultOptions, options));
 };
 
-export const post = <T>(url: string, data: T, options?: AxiosRequestConfig) => {
+export const post = <T>(
+    url: string,
+    data?: T,
+    options?: AxiosRequestConfig,
+) => {
     const authStore = useAuthStore();
 
     const defaultOptions: AxiosRequestConfig = {
