@@ -106,9 +106,13 @@ export async function registerInstruction(
 
 export async function quitAll(examId: string): Promise<number> {
     const url: string = monitoringUrl + "/" + examId + "/quitAll";
-    const call = await apiService.api.post(url, {
-        headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),
-    });
+    const call = await apiService.api.post(
+        url,
+        {},
+        {
+            headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),
+        },
+    );
     return call.status;
 }
 
@@ -139,9 +143,15 @@ export async function confirmNotification(
         "/" +
         connectionToken;
     return (
-        await apiService.api.post(url, {
-            headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
+        await apiService.api.post(
+            url,
+            {},
+            {
+                headers: apiService.getPostHeaders(
+                    StorageItemEnum.ACCESS_TOKEN,
+                ),
+            },
+        )
     ).status;
 }
 

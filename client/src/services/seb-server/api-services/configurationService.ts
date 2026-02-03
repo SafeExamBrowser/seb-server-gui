@@ -78,9 +78,13 @@ export async function activateConnectionConfiguration(
 ): Promise<ConnectionConfiguration> {
     const url: string = connectionConfigurationUrl + "/" + id + "/active";
     return (
-        await apiService.api.post(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
+        await apiService.api.post(
+            url,
+            {},
+            {
+                headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+            },
+        )
     ).data;
 }
 
@@ -89,9 +93,13 @@ export async function deactivateConnectionConfiguration(
 ): Promise<ConnectionConfiguration> {
     const url: string = connectionConfigurationUrl + "/" + id + "/inactive";
     return (
-        await apiService.api.post(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
+        await apiService.api.post(
+            url,
+            {},
+            {
+                headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+            },
+        )
     ).data;
 }
 

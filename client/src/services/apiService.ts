@@ -101,20 +101,20 @@ export function createApiInterceptor() {
 
 export function getHeaders(type: string): object {
     const authStore = useAuthStore();
-
+    const token = authStore.getStorageItem(type);
     return {
         accept: "application/json",
-        Authorization: "Bearer " + authStore.getStorageItem(type),
+        Authorization: "Bearer " + token,
         "Content-Type": "application/x-www-form-urlencoded",
     };
 }
 
 export function getPostHeaders(type: string): object {
     const authStore = useAuthStore();
-
+    const token = authStore.getStorageItem(type);
     return {
         accept: "application/json",
-        Authorization: "Bearer " + authStore.getStorageItem(type),
+        Authorization: "Bearer " + token,
         "Content-Type": "application/json",
     };
 }

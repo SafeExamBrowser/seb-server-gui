@@ -45,9 +45,13 @@ export async function activateAssessmentTool(
 ): Promise<AssessmentTool> {
     const url: string = assessmentToolUrl + "/" + assessmentToolId + "/active";
     return (
-        await apiService.api.post(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
+        await apiService.api.post(
+            url,
+            {},
+            {
+                headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+            },
+        )
     ).data;
 }
 
@@ -57,9 +61,13 @@ export async function deactivateAssessmentTool(
     const url: string =
         assessmentToolUrl + "/" + assessmentToolId + "/inactive";
     return (
-        await apiService.api.post(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
+        await apiService.api.post(
+            url,
+            {},
+            {
+                headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+            },
+        )
     ).data;
 }
 
