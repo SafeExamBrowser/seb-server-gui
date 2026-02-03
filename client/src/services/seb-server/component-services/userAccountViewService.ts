@@ -45,16 +45,6 @@ export async function getUserAccountById(
     }
 }
 
-export async function getUserAccountByIdOptional(
-    accountId: string,
-): Promise<UserAccount | null> {
-    try {
-        return await userAccountService.getUserAccountByIdOptional(accountId);
-    } catch {
-        return null;
-    }
-}
-
 export async function getUserAccounts(
     optionalParameters?: OptionalParGetUserAccounts,
 ): Promise<UserAccountResponse | null> {

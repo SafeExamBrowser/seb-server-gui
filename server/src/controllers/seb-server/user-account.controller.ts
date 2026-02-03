@@ -3,20 +3,6 @@ import * as userAccountService from "../../services/seb-server/user-account.serv
 import * as apiService from "../../services/seb-server/api.service";
 
 
-export async function getUserAccount(req: Request, res: Response){
-    try{
-        const [userAccount, status] = await userAccountService.getUserAccount(req.headers.authorization, req.params.id);
-        return res.status(status).json(userAccount);
-    }catch(error){
-        // TODO find better or general way to do skip errors
-        if (req.query.skip_error && req.query.skip_error.toString().includes(error.status.toString())) {
-            res.status(206).send(null)
-        } else {
-            apiService.handleGenericApiError(error, res);
-        }
-    }
-}
-
 export async function getUserAccountFeatures(req: Request, res: Response){
     try{
         const [response, status] = await userAccountService.getUserAccountFeatures(req.headers.authorization);

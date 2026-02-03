@@ -1,3 +1,5 @@
+import * as newApiService from "@/services/newApiService";
+
 import axios, { AxiosResponse } from "axios";
 import * as ENV from "@/config/envConfig";
 import * as apiService from "@/services/apiService";
@@ -14,6 +16,7 @@ import {
 import { OptionalParInstitutionId } from "@/models/seb-server/optionalParamters";
 
 const userAccountUrl = "/useraccount";
+const baseUrl = "/useraccount" as const;
 
 export async function registerUserAccount(
     payload: Record<string, string>,
@@ -48,14 +51,8 @@ export async function deleteUserAccount(accountId: string): Promise<void> {
     });
 }
 
-export async function getPersonalUserAccount(): Promise<UserAccount> {
-    const url = userAccountUrl + "/me";
-    const { data }: AxiosResponse<UserAccount> =
-        await apiService.api.get<UserAccount>(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        });
-    return data;
-}
+export const getPersonalUserAccount = async (): Promise<UserAccount> =>
+    (await newApiService.get(`${baseUrl}/me`)).data;
 
 export type UserFeatures = unknown;
 
@@ -68,28 +65,10 @@ export async function getPersonalUserAccountFeatures(): Promise<UserFeatures> {
     return data;
 }
 
-export async function getUserAccountById(
+export const getUserAccountById = async (
     accountId: string,
-): Promise<UserAccount> {
-    const url = userAccountUrl + "/" + accountId;
-    const { data }: AxiosResponse<UserAccount> =
-        await apiService.api.get<UserAccount>(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        });
-    return data;
-}
-
-export async function getUserAccountByIdOptional(
-    accountId: string,
-): Promise<UserAccount> {
-    const url = userAccountUrl + "/" + accountId;
-    const { data }: AxiosResponse<UserAccount> =
-        await apiService.api.get<UserAccount>(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-            params: { skip_error: "404" },
-        });
-    return data;
-}
+): Promise<UserAccount> =>
+    (await newApiService.get(`${baseUrl}/${accountId}`)).data;
 
 export async function getUserAccounts(
     optionalParameters?: OptionalParGetUserAccounts,
