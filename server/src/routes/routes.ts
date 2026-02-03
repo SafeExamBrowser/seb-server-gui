@@ -81,7 +81,6 @@ router.get(constants.INSTITUTION_ROUTE, institutionsController.getInstitutions);
 router.get(constants.ADMIN_INSTITUTION_LOGO_ROUTE + "/:suffix", institutionsController.getInstitutionLogo)
 
 //user accounts
-router.get(constants.USER_ACCOUNT_ROUTE, userAccountController.getUserAccounts);
 router.get(constants.FEATURE_ROUTE, userAccountController.getUserAccountFeatures);
 router.get(constants.USER_ACCOUNT_NAMES_ROUTE, userAccountController.getUserAccountNames);
 router.get(constants.SUPERVISOR_ACCOUNT_NAMES_ROUTE, userAccountController.getSupervisorAccountNames);

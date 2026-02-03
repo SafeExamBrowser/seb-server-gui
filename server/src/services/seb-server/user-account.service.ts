@@ -18,11 +18,6 @@ export async function getUserAccountFeatures(token: string): Promise<[object, nu
     return [data, status];
 }
 
-export async function getUserAccounts(token: string, options?: {}): Promise<[object, number]>{
-    const {data, status} = await apiService.api.get(constants.USER_ACCOUNT_ROUTE, {headers: apiService.getHeaders(token), params: options});
-    return [data, status];
-}
-
 export async function getUserAccountNames(token: string, options?: {}): Promise<[object, number]>{
     const {data, status} = await apiService.api.get(constants.USER_ACCOUNT_NAMES_ROUTE, {headers: apiService.getHeaders(token), params: options});
     return [data, status];

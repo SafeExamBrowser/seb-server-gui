@@ -88,17 +88,6 @@ export async function changePassword(req: Request, res: Response) {
 }
 
 
-export async function getUserAccounts(req: Request, res: Response) {
-    try {
-
-        const [userAccount, status] = await userAccountService.getUserAccounts(req.headers.authorization, req.query.optionalParameters);
-        return res.status(status).json(userAccount);
-    } catch (error) {
-        apiService.handleGenericApiError(error, res);
-    }
-}
-
-
 export async function getSupervisorAccountNames(req: Request, res: Response){
     try{
         const [userAccountNames, status] = await userAccountService.getSupervisorAccountNames(req.headers.authorization, req.query.optionalParameters);

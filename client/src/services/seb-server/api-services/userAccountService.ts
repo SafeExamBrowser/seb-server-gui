@@ -70,16 +70,10 @@ export const getUserAccountById = async (
 ): Promise<UserAccount> =>
     (await newApiService.get(`${baseUrl}/${accountId}`)).data;
 
-export async function getUserAccounts(
+export const getUserAccounts = async (
     optionalParameters?: OptionalParGetUserAccounts,
-): Promise<UserAccountResponse> {
-    const { data }: AxiosResponse<UserAccountResponse> =
-        await apiService.api.get<UserAccountResponse>(userAccountUrl, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-            params: { optionalParameters },
-        });
-    return data;
-}
+): Promise<UserAccountResponse> =>
+    (await newApiService.get(baseUrl, { params: optionalParameters })).data;
 
 export async function createUserAccount(
     userAccount: CreateUserPar,
