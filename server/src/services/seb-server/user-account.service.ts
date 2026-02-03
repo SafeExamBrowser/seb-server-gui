@@ -42,15 +42,3 @@ export async function changePassword(token: string, editPasswordParams: {}): Pro
     );
     return [data, status];
 }
-
-export async function deactivateAccount(token: string, id: string, body: Record<string, any> = {}): Promise<[object, number]> {
-    const url: string = constants.USER_ACCOUNT_ROUTE + "/" + id + constants.DEACTIVATION_ROUTE;
-    const { data, status } = await apiService.api.post(url, apiService.createUrlEncodedBody(body), {headers: apiService.getHeaders(token)});
-    return [data, status];
-}
-
-export async function activateAccount(token: string, id: string, body: Record<string, any> = {}): Promise<[object, number]> {
-    const url: string = constants.USER_ACCOUNT_ROUTE + "/" + id + constants.ACTIVATION_ROUTE;
-    const { data, status } = await apiService.api.post(url, apiService.createUrlEncodedBody(body), {headers: apiService.getHeaders(token)});
-    return [data, status];
-}

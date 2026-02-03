@@ -119,24 +119,32 @@ export async function getSupervisorNames(
     return data;
 }
 
-export async function activateUserAccount(
+export const activateUserAccount = async (
     accountId: string,
-): Promise<UserAccount> {
-    const url = userAccountUrl + "/" + accountId + "/active";
-    const { data }: AxiosResponse<UserAccount> =
-        await apiService.api.post<UserAccount>(url, null, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        });
-    return data;
-}
+): Promise<UserAccount> =>
+    (
+        await newApiService.post(
+            `${baseUrl}/${accountId}/active`,
+            {},
+            {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+            },
+        )
+    ).data;
 
-export async function deactivateUserAccount(
+export const deactivateUserAccount = async (
     accountId: string,
-): Promise<UserAccount> {
-    const url = userAccountUrl + "/" + accountId + "/inactive";
-    const { data }: AxiosResponse<UserAccount> =
-        await apiService.api.post<UserAccount>(url, null, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        });
-    return data;
-}
+): Promise<UserAccount> =>
+    (
+        await newApiService.post(
+            `${baseUrl}/${accountId}/inactive`,
+            {},
+            {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+            },
+        )
+    ).data;
