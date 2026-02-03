@@ -39,7 +39,7 @@ export const post = <T>(url: string, data: T, options?: AxiosRequestConfig) => {
     return api.post(url, data, merge({}, defaultOptions, options));
 };
 
-export const deleteRequest = <T>(url: string, data: T) => {
+export const deleteRequest = <T>(url: string, data?: T) => {
     const authStore = useAuthStore();
 
     return api.delete(url, {
