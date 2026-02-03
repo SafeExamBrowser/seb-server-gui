@@ -87,7 +87,6 @@ router.get(constants.SUPERVISOR_ACCOUNT_NAMES_ROUTE, userAccountController.getSu
 router.post(constants.USER_ACCOUNT_REGISTRATION_ROUTE, userAccountController.registerUserAccount);
 router.post(constants.USER_ACCOUNT_ROUTE + "/:id" + constants.ACTIVATION_ROUTE, userAccountController.activateAccount);
 router.post(constants.USER_ACCOUNT_ROUTE + "/:id" + constants.DEACTIVATION_ROUTE, userAccountController.deactivateAccount);
-router.post(constants.USER_ACCOUNT_ROUTE, userAccountController.createUserAccount);
 router.put(constants.USER_ACCOUNT_ROUTE, userAccountController.editUserAccount);
 router.put(constants.USER_ACCOUNT_ROUTE + constants.CHANGE_PASSWORD_ROUTE, userAccountController.changePassword);
 router.delete(constants.USER_ACCOUNT_ROUTE + "/:id", userAccountController.deleteUserAccount);

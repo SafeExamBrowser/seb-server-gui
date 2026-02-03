@@ -1,11 +1,6 @@
 import * as apiService from "./api.service";
 import * as constants from "../../utils/constants";
 
-export async function createUserAccount(token: string, newUserAccount: {}): Promise<[object, number]>{
-    const {data, status} = await apiService.api.post(constants.USER_ACCOUNT_ROUTE, apiService.createUrlEncodedBody(newUserAccount), {headers: apiService.getHeaders(token)});
-    return [data, status];
-}
-
 export async function registerUserAccount(body: Record<string, any>): Promise<[object, number]> {
     const { data, status } = await apiService.api.post(
         constants.USER_ACCOUNT_REGISTRATION_SERVER_ROUTE, apiService.createUrlEncodedBody(body), {headers: apiService.getHeadersWithoutAuth()});

@@ -75,21 +75,27 @@ export const getUserAccounts = async (
 ): Promise<UserAccountResponse> =>
     (await newApiService.get(baseUrl, { params: optionalParameters })).data;
 
-export async function createUserAccount(
+export const createUserAccount = async (
     userAccount: CreateUserPar,
-): Promise<SingleUserAccountResponse> {
-    const { data }: AxiosResponse<SingleUserAccountResponse> =
-        await apiService.api.post<SingleUserAccountResponse>(
-            userAccountUrl,
-            userAccount,
+): Promise<SingleUserAccountResponse> =>
+    (
+        await newApiService.post(
+            baseUrl,
             {
-                headers: apiService.getPostHeaders(
-                    StorageItemEnum.ACCESS_TOKEN,
-                ),
+                ...userAccount,
+                // TODO @alain: this is a workaround because the API doesn't like bracket notation for arrays
+                // - Revisit with @Andreas
+                // - If the API can't be adapted, we may have to do this in a more generic way with Axios
+                //   e.g. by using "transformRequest": https://axios-http.com/docs/req_config#:~:text=the%20headers%20object.-,transformRequest,-%3A%20%5Bfunction
+                userRoles: userAccount.userRoles.join(","),
             },
-        );
-    return data;
-}
+            {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+            },
+        )
+    ).data;
 
 export async function editUserAccount(
     userAccount: EditUserAccountParameters,
