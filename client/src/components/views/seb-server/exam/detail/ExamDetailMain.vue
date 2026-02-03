@@ -1155,7 +1155,7 @@ async function getExamSupervisors() {
     examStore.selectedExamSupervisors = [];
     for (let i = 0; i < examStore.selectedExam.supporter.length; i++) {
         const userAccount: UserAccount | null =
-            await userAccountViewService.getUserAccountByIdOptional(
+            await userAccountViewService.getUserAccountById(
                 examStore.selectedExam.supporter[i],
             );
 

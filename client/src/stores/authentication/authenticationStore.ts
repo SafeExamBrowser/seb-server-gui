@@ -8,8 +8,6 @@ import { UserAccount } from "@/models/userAccount";
 
 // ----------------------authentication---------------------------//
 export const useAuthStore = defineStore("auth", () => {
-    const redirectRoute: string = "";
-
     async function login(
         accessTokenString: string,
         refreshTokenString: string,
@@ -19,18 +17,7 @@ export const useAuthStore = defineStore("auth", () => {
 
         await userAccountViewService.setPersonalUserAccount();
 
-        if (useAuthStore().redirectRoute === "") {
-            navigateTo(constants.HOME_PAGE_ROUTE);
-        } else {
-            let route: string = useAuthStore().redirectRoute;
-            const subPath: string | null = import.meta.env.VITE_SUB_PATH;
-
-            if (subPath != null && route.includes(subPath)) {
-                route = route.replace(subPath, "");
-            }
-
-            navigateTo(route);
-        }
+        navigateTo(constants.HOME_PAGE_ROUTE);
     }
 
     async function loginSP(
@@ -40,26 +27,9 @@ export const useAuthStore = defineStore("auth", () => {
         setStorageItem(StorageItemEnum.SP_ACCESS_TOKEN, accessTokenString);
         setStorageItem(StorageItemEnum.SP_REFRESH_TOKEN, refreshTokenString);
         setStorageItem(StorageItemEnum.IS_SP_AVAILABLE, "true");
-
-        // setStorageItem()
-    }
-
-    async function loginWithJwt(
-        accessTokenString: string,
-        refreshTokenString: string,
-        redirect: string,
-    ) {
-        setStorageItem(StorageItemEnum.SP_ACCESS_TOKEN, accessTokenString);
-        setStorageItem(StorageItemEnum.SP_REFRESH_TOKEN, refreshTokenString);
-
-        navigateTo(redirect);
-
-        await userAccountViewService.setPersonalUserAccount();
     }
 
     async function logout() {
-        //   await authenticationService.logLogout();
-
         setStorageItem(StorageItemEnum.ACCESS_TOKEN, "");
         setStorageItem(StorageItemEnum.REFRESH_TOKEN, "");
         setStorageItem(StorageItemEnum.SP_ACCESS_TOKEN, "");
@@ -85,12 +55,9 @@ export const useAuthStore = defineStore("auth", () => {
     }
 
     return {
-        redirectRoute,
         login,
         loginSP,
-        loginWithJwt,
         logout,
-        setStorageItem,
         getStorageItem,
     };
 });
