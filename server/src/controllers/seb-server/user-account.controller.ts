@@ -23,16 +23,6 @@ export async function getUserAccountNames(req: Request, res: Response){
     }
 }
 
-export async function deleteUserAccount(req: Request, res: Response){
-    try{
-        const [userAccount, status] = await userAccountService.deleteUserAccount(req.headers.authorization, req.params.id);
-        return res.status(status).json(userAccount);
-
-    }catch(error){
-        apiService.handleGenericApiError(error, res);
-    }
-}
-
 export async function registerUserAccount(req: Request, res: Response) {
     try {
         const [userAccount, status] = await userAccountService.registerUserAccount(req.body);

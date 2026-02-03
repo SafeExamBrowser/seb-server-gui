@@ -45,11 +45,8 @@ export async function changePassword(
     return data;
 }
 
-export async function deleteUserAccount(accountId: string): Promise<void> {
-    await apiService.api.delete<unknown>(userAccountUrl + "/" + accountId, {
-        headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-    });
-}
+export const deleteUserAccount = async (accountId: string): Promise<unknown> =>
+    (await newApiService.deleteRequest(`${baseUrl}/${accountId}`)).data;
 
 export const getPersonalUserAccount = async (): Promise<UserAccount> =>
     (await newApiService.get(`${baseUrl}/me`)).data;

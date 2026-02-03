@@ -54,11 +54,3 @@ export async function activateAccount(token: string, id: string, body: Record<st
     const { data, status } = await apiService.api.post(url, apiService.createUrlEncodedBody(body), {headers: apiService.getHeaders(token)});
     return [data, status];
 }
-
-export async function deleteUserAccount(token: string, id: string): Promise<[object, number]>{
-    const url: string =  constants.USER_ACCOUNT_ROUTE + "/" + id;
-    const {data, status} = await apiService.api.delete(url, {headers: apiService.getHeaders(token)});
-
-    return [data, status];
-}
-

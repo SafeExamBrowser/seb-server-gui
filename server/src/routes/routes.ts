@@ -89,7 +89,6 @@ router.post(constants.USER_ACCOUNT_ROUTE + "/:id" + constants.ACTIVATION_ROUTE, 
 router.post(constants.USER_ACCOUNT_ROUTE + "/:id" + constants.DEACTIVATION_ROUTE, userAccountController.deactivateAccount);
 router.put(constants.USER_ACCOUNT_ROUTE, userAccountController.editUserAccount);
 router.put(constants.USER_ACCOUNT_ROUTE + constants.CHANGE_PASSWORD_ROUTE, userAccountController.changePassword);
-router.delete(constants.USER_ACCOUNT_ROUTE + "/:id", userAccountController.deleteUserAccount);
 
 //connection configurations
 router.get(constants.DOWNLOAD_EXAM_CONFIG_ROUTE + "/:id", configurationController.downloadExamConfig);
