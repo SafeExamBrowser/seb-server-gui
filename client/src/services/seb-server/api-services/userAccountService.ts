@@ -49,17 +49,6 @@ export const deleteUserAccount = async (accountId: string): Promise<unknown> =>
 export const getPersonalUserAccount = async (): Promise<UserAccount> =>
     (await newApiService.get(`${baseUrl}/me`)).data;
 
-export type UserFeatures = unknown;
-
-export async function getPersonalUserAccountFeatures(): Promise<UserFeatures> {
-    const url = userAccountUrl + "/me/features";
-    const { data }: AxiosResponse<UserFeatures> =
-        await apiService.api.get<UserFeatures>(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        });
-    return data;
-}
-
 export const getUserAccountById = async (
     accountId: string,
 ): Promise<UserAccount> =>
