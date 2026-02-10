@@ -1,3 +1,5 @@
+import * as newApiService from "@/services/newApiService";
+
 import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
 import {
@@ -8,6 +10,8 @@ import {
     OptionalParGetConnectionConfiguration,
     UpdateConnectionConfigurationPar,
 } from "@/models/seb-server/connectionConfiguration";
+
+const baseUrl = "/client_configuration" as const;
 
 const connectionConfigurationUrl = "/client_configuration";
 const downloadExamConfigUrl = "/client_configuration/download";
@@ -61,17 +65,11 @@ export async function getConnectionConfiguration(
     ).data;
 }
 
-export async function getConnectionConfigurations(
+export const getConnectionConfigurations = async (
     optionalParameters?: OptionalParGetConnectionConfiguration,
-): Promise<ConnectionConfigurations> {
-    const url: string = connectionConfigurationUrl;
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-            params: { optionalParameters },
-        })
-    ).data;
-}
+): Promise<ConnectionConfigurations> =>
+    (await newApiService.getRequest(baseUrl, { params: optionalParameters }))
+        .data;
 
 export async function activateConnectionConfiguration(
     id: string,

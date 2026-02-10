@@ -87,7 +87,6 @@ router.post(constants.USER_ACCOUNT_REGISTRATION_ROUTE, userAccountController.reg
 router.get(constants.DOWNLOAD_EXAM_CONFIG_ROUTE + "/:id", configurationController.downloadExamConfig);
 router.get(constants.CONNECTION_CONFIG_ROUTE + constants.ACTIVE, configurationController.getConnectionConfigurationsActive);
 router.get(constants.CONNECTION_CONFIG_ROUTE + "/:id", configurationController.getConnectionConfiguration);
-router.get(constants.CONNECTION_CONFIG_ROUTE, configurationController.getConnectionConfigurations);
 router.post(constants.CONNECTION_CONFIG_ROUTE + "/:id" + constants.ACTIVATION_ROUTE, configurationController.activateConnectionConfiguration);
 router.post(constants.CONNECTION_CONFIG_ROUTE + "/:id" + constants.DEACTIVATION_ROUTE, configurationController.deactivateConnectionConfiguration);
 router.delete(constants.CONNECTION_CONFIG_ROUTE+ "/:id", configurationController.deleteConnectionConfiguration);

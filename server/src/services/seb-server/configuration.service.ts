@@ -23,10 +23,6 @@ export async function getConnectionConfigurationsActive(token: string, isActive:
     return [data, status];
 }
 
-export async function getConnectionConfigurations(token: string, options?: {}): Promise<[object, number]>{
-    const {data, status} = await apiService.api.get(constants.CONNECTION_CONFIG_ROUTE, {headers: apiService.getHeaders(token), params: options});
-    return [data, status];
-}
 
 export async function getConnectionConfiguration(token: string, id: string): Promise<[object, number]>{
     const url: string =  constants.CONNECTION_CONFIG_ROUTE + "/" + id;
