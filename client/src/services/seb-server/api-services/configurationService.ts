@@ -16,17 +16,14 @@ const baseUrl = "/client_configuration" as const;
 const connectionConfigurationUrl = "/client_configuration";
 const downloadExamConfigUrl = "/client_configuration/download";
 
-export async function getConnectionConfigurationNamesActive(): Promise<
+export const getConnectionConfigurationNamesActive = async (): Promise<
     ConnectionConfigurationName[]
-> {
-    const url: string = connectionConfigurationUrl + "/names";
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+> =>
+    (
+        await newApiService.getRequest(baseUrl + "/names", {
             params: { active: "true" },
         })
     ).data;
-}
 
 export async function getConnectionConfigurationsActive(
     isActive: string,
