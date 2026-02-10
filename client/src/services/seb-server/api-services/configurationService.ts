@@ -25,17 +25,9 @@ export const getConnectionConfigurationNamesActive = async (): Promise<
         })
     ).data;
 
-export async function getConnectionConfigurationsActive(
-    isActive: string,
-): Promise<ConnectionConfigurations> {
-    const url: string = connectionConfigurationUrl + "/active";
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-            params: { isActive },
-        })
-    ).data;
-}
+export const getConnectionConfigurationsActive =
+    async (): Promise<ConnectionConfigurations> =>
+        (await newApiService.getRequest(baseUrl + "/active")).data;
 
 export async function downloadExamConfig(
     examId: string,

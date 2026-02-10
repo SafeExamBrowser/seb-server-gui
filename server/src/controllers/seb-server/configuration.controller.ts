@@ -23,16 +23,6 @@ export async function downloadExamConfig(req: Request, res: Response){
     }
 }
 
-export async function getConnectionConfigurationsActive(req: Request, res: Response){
-    try{
-        const [connectionConfigurations, status] = await configurationService.getConnectionConfigurationsActive(req.headers.authorization, req.query.isActive);
-        return res.status(status).json(connectionConfigurations);
-
-    }catch(error){
-        apiService.handleGenericApiError(error, res);
-    }
-}
-
 
 export async function getConnectionConfiguration(req: Request, res: Response){
     try{

@@ -16,12 +16,6 @@ export async function downloadExamConfig(token: string, connectionId: string, ex
     return [data, status];
 }
 
-export async function getConnectionConfigurationsActive(token: string, isActive: {}){
-    const url: string =  constants.CONNECTION_CONFIG_ROUTE;
-    const {data, status} = await apiService.api.get(url, {headers: apiService.getHeaders(token), params: {active: isActive}});
-
-    return [data, status];
-}
 
 
 export async function getConnectionConfiguration(token: string, id: string): Promise<[object, number]>{

@@ -130,9 +130,7 @@ export async function updateExam(
 
 export async function getConnectionConfigurations(): Promise<ConnectionConfigurations | null> {
     try {
-        return await configurationService.getConnectionConfigurationsActive(
-            "true",
-        );
+        return await configurationService.getConnectionConfigurationsActive();
     } catch {
         return null;
     }
