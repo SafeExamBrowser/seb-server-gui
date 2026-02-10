@@ -33,7 +33,7 @@ export const changePassword = async (
     password: string,
     newPassword: string,
     confirmNewPassword: string,
-): Promise<SingleUserAccountResponse> =>
+): Promise<UserAccount[]> =>
     (
         await newApiService.put(`${baseUrl}/password`, {
             uuid,
@@ -72,7 +72,7 @@ export const createUserAccount = async (
 
 export const editUserAccount = async (
     userAccount: EditUserAccountParameters,
-): Promise<SingleUserAccountResponse> =>
+): Promise<UserAccountResponse> =>
     (await newApiService.put(baseUrl, userAccount)).data;
 
 export async function getUserAccountNames(
@@ -90,7 +90,7 @@ export async function getUserAccountNames(
 
 export const getSupervisorNames = async (
     optionalParameters?: OptionalParInstitutionId,
-): Promise<UserAccountResponse> =>
+): Promise<UserAccountName[]> =>
     (
         await newApiService.get(`${baseUrl}/supervisors`, {
             params: optionalParameters,
