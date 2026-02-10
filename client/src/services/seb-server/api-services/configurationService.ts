@@ -42,16 +42,10 @@ export const downloadExamConfig = async (
         })
     ).data;
 
-export async function getConnectionConfiguration(
+export const getConnectionConfiguration = async (
     id: number,
-): Promise<ConnectionConfiguration> {
-    const url: string = connectionConfigurationUrl + "/" + id;
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
+): Promise<ConnectionConfiguration> =>
+    (await newApiService.getRequest(baseUrl + "/" + id)).data;
 
 export const getConnectionConfigurations = async (
     optionalParameters?: OptionalParGetConnectionConfiguration,

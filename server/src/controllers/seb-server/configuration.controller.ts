@@ -14,17 +14,6 @@ export async function createConnectionConfiguration(req: Request, res: Response)
 }
 
 
-export async function getConnectionConfiguration(req: Request, res: Response){
-    try{
-        const [assessmentTool, status] = await configurationService.getConnectionConfiguration(req.headers.authorization, req.params.id);
-        return res.status(status).json(assessmentTool);
-
-    }catch(error){
-        apiService.handleGenericApiError(error, res);
-    }
-}
-
-
 export async function deactivateConnectionConfiguration(req: Request, res: Response) {
     try {
         const [assessmentTool, status] = await configurationService.deactivateConnectionConfiguration(req.headers.authorization, req.params.id);
