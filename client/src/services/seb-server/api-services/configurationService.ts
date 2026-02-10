@@ -53,35 +53,35 @@ export const getConnectionConfigurations = async (
     (await newApiService.getRequest(baseUrl, { params: optionalParameters }))
         .data;
 
-export async function activateConnectionConfiguration(
+export const activateConnectionConfiguration = async (
     id: string,
-): Promise<ConnectionConfiguration> {
-    const url: string = connectionConfigurationUrl + "/" + id + "/active";
-    return (
-        await apiService.api.post(
-            url,
+): Promise<ConnectionConfiguration> =>
+    (
+        await newApiService.postRequest(
+            `${baseUrl}/${id}/active`,
             {},
             {
-                headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
             },
         )
     ).data;
-}
 
-export async function deactivateConnectionConfiguration(
+export const deactivateConnectionConfiguration = async (
     id: string,
-): Promise<ConnectionConfiguration> {
-    const url: string = connectionConfigurationUrl + "/" + id + "/inactive";
-    return (
-        await apiService.api.post(
-            url,
+): Promise<ConnectionConfiguration> =>
+    (
+        await newApiService.postRequest(
+            `${baseUrl}/${id}/inactive`,
             {},
             {
-                headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
             },
         )
     ).data;
-}
 
 export async function deleteConnectionConfiguration(
     id: string,

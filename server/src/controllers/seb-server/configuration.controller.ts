@@ -13,24 +13,6 @@ export async function createConnectionConfiguration(req: Request, res: Response)
     }
 }
 
-
-export async function deactivateConnectionConfiguration(req: Request, res: Response) {
-    try {
-        const [assessmentTool, status] = await configurationService.deactivateConnectionConfiguration(req.headers.authorization, req.params.id);
-        return res.status(status).json(assessmentTool);
-    } catch (error) {
-        apiService.handleGenericApiError(error, res);
-    }
-}
-export async function activateConnectionConfiguration(req: Request, res: Response) {
-    try {
-        const [assessmentTool, status] = await configurationService.activateConnectionConfiguration(req.headers.authorization, req.params.id);
-        return res.status(status).json(assessmentTool);
-    } catch (error) {
-        apiService.handleGenericApiError(error, res);
-    }
-}
-
 export async function deleteConnectionConfiguration(req: Request, res: Response){
     try{
         const [assessmentTool, status] = await configurationService.deleteConnectionConfiguration(req.headers.authorization, req.params.id);

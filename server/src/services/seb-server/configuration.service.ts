@@ -8,19 +8,6 @@ export async function createConnectionConfiguration(token: string, newConnection
     return [data, status];
 }
 
-
-export async function deactivateConnectionConfiguration(token: string, id: string, body: Record<string, any> = {}): Promise<[object, number]> {
-    const url: string = constants.CONNECTION_CONFIG_ROUTE + "/" + id + constants.DEACTIVATION_ROUTE;
-    const { data, status } = await apiService.api.post(url, apiService.createUrlEncodedBody(body), {headers: apiService.getHeaders(token)});
-    return [data, status];
-}
-
-export async function activateConnectionConfiguration(token: string, id: string, body: Record<string, any> = {}): Promise<[object, number]> {
-    const url: string = constants.CONNECTION_CONFIG_ROUTE + "/" + id + constants.ACTIVATION_ROUTE;
-    const { data, status } = await apiService.api.post(url, apiService.createUrlEncodedBody(body), {headers: apiService.getHeaders(token)});
-    return [data, status];
-}
-
 export async function deleteConnectionConfiguration(token: string, id: string): Promise<[object, number]>{
     const url: string =  constants.CONNECTION_CONFIG_ROUTE + "/" + id;
     const {data, status} = await apiService.api.delete(url, {headers: apiService.getHeaders(token)});

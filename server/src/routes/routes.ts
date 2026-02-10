@@ -84,8 +84,6 @@ router.get(constants.ADMIN_INSTITUTION_LOGO_ROUTE + "/:suffix", institutionsCont
 router.post(constants.USER_ACCOUNT_REGISTRATION_ROUTE, userAccountController.registerUserAccount);
 
 //connection configurations
-router.post(constants.CONNECTION_CONFIG_ROUTE + "/:id" + constants.ACTIVATION_ROUTE, configurationController.activateConnectionConfiguration);
-router.post(constants.CONNECTION_CONFIG_ROUTE + "/:id" + constants.DEACTIVATION_ROUTE, configurationController.deactivateConnectionConfiguration);
 router.delete(constants.CONNECTION_CONFIG_ROUTE+ "/:id", configurationController.deleteConnectionConfiguration);
 router.post(constants.CONNECTION_CONFIG_ROUTE, configurationController.createConnectionConfiguration);
 router.put(constants.CONNECTION_CONFIG_ROUTE, configurationController.editConnectionConfiguration);
