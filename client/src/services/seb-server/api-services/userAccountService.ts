@@ -13,13 +13,13 @@ import {
 } from "@/models/userAccount";
 import { OptionalParInstitutionId } from "@/models/seb-server/optionalParamters";
 
-const userAccountUrl = "/useraccount";
 const baseUrl = "/useraccount" as const;
 
+// TODO @alain: migrate this to the new proxy, once the API for it works again
 export async function registerUserAccount(
     payload: Record<string, string>,
 ): Promise<UserAccount> {
-    const url = ENV.SERVER_URL + ENV.SERVER_PORT + userAccountUrl + "/register";
+    const url = ENV.SERVER_URL + ENV.SERVER_PORT + "/useraccount" + "/register";
     const { data, status }: AxiosResponse<UserAccount> =
         await axios.post<UserAccount>(url, payload);
     if (status === 200) return data;
