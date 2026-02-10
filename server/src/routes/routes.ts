@@ -84,7 +84,6 @@ router.post(constants.USER_ACCOUNT_REGISTRATION_ROUTE, userAccountController.reg
 
 //assessment tool
 router.get(constants.ASSESSMENT_TOOL_GET_ROUTE + "/:id", assessmentToolController.getAssessmentTool);
-router.get(constants.ASSESSMENT_TOOL_ROUTE, assessmentToolController.getAssessmentTools);
 router.get(constants.ASSESSMENT_TOOL_ROUTE + constants.ACTIVE, assessmentToolController.getAssessmentToolsActive);
 router.post(constants.ASSESSMENT_TOOL_ROUTE + "/:id" + constants.ACTIVATION_ROUTE, assessmentToolController.activateAssessmentTool);
 router.post(constants.ASSESSMENT_TOOL_ROUTE + "/:id" + constants.DEACTIVATION_ROUTE, assessmentToolController.deactivateAssessmentTool);
