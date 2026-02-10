@@ -1,7 +1,5 @@
 import * as newApiService from "@/services/newApiService";
 
-import * as apiService from "@/services/apiService";
-import { StorageItemEnum } from "@/models/StorageItemEnum";
 import {
     ConnectionConfiguration,
     ConnectionConfigurationName,
@@ -12,8 +10,6 @@ import {
 } from "@/models/seb-server/connectionConfiguration";
 
 const baseUrl = "/client_configuration" as const;
-
-const connectionConfigurationUrl = "/client_configuration";
 
 export const getConnectionConfigurationNamesActive = async (): Promise<
     ConnectionConfigurationName[]
@@ -88,30 +84,18 @@ export const deleteConnectionConfiguration = async (
 ): Promise<undefined | null> =>
     (await newApiService.deleteRequest(`${baseUrl}/${id}`)).data;
 
-export async function createConnectionConfiguration(
+export const createConnectionConfiguration = async (
     connectionConfigurationPar: CreateConnectionConfigurationPar,
-): Promise<ConnectionConfiguration> {
-    return (
-        await apiService.api.post(
-            connectionConfigurationUrl,
-            connectionConfigurationPar,
-            {
-                headers: apiService.getPostHeaders(
-                    StorageItemEnum.ACCESS_TOKEN,
-                ),
+): Promise<ConnectionConfiguration> =>
+    (
+        await newApiService.postRequest(baseUrl, connectionConfigurationPar, {
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
             },
-        )
+        })
     ).data;
-}
 
-export async function editConnectionConfiguration(
+export const editConnectionConfiguration = async (
     connectionConfiguration: UpdateConnectionConfigurationPar,
-): Promise<ConnectionConfiguration> {
-    return (
-        await apiService.api.put(
-            connectionConfigurationUrl,
-            connectionConfiguration,
-            { headers: apiService.getPutHeaders(StorageItemEnum.ACCESS_TOKEN) },
-        )
-    ).data;
-}
+): Promise<ConnectionConfiguration> =>
+    (await newApiService.putRequest(baseUrl, connectionConfiguration)).data;

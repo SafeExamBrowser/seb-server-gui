@@ -3,7 +3,6 @@ import express, {Router} from "express";
 import * as systemController from "../controllers/seb-server/system.controller";
 import * as quizController from "../controllers/seb-server/quiz.controller";
 import * as examController from "../controllers/seb-server/exam.controller";
-import * as configurationController from "../controllers/seb-server/configuration.controller";
 import * as screenProctoringController from "../controllers/seb-server/screen-proctoring.controller";
 import * as indicatorController from "../controllers/seb-server/indicator.controller";
 import * as userAccountController from "../controllers/seb-server/user-account.controller";
@@ -82,10 +81,6 @@ router.get(constants.ADMIN_INSTITUTION_LOGO_ROUTE + "/:suffix", institutionsCont
 
 //user accounts
 router.post(constants.USER_ACCOUNT_REGISTRATION_ROUTE, userAccountController.registerUserAccount);
-
-//connection configurations
-router.post(constants.CONNECTION_CONFIG_ROUTE, configurationController.createConnectionConfiguration);
-router.put(constants.CONNECTION_CONFIG_ROUTE, configurationController.editConnectionConfiguration);
 
 //assessment tool
 router.get(constants.ASSESSMENT_TOOL_GET_ROUTE + "/:id", assessmentToolController.getAssessmentTool);
