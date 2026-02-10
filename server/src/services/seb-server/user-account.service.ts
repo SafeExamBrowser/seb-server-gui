@@ -17,13 +17,3 @@ export async function getUserAccountNames(token: string, options?: {}): Promise<
     const {data, status} = await apiService.api.get(constants.USER_ACCOUNT_NAMES_ROUTE, {headers: apiService.getHeaders(token), params: options});
     return [data, status];
 }
-
-export async function editUserAccount(token: string, editedUserAccountPars: {}): Promise<[object, number]> {
-    const headers = apiService.getPutHeaders(token);
-    const { data, status } = await apiService.api.put(
-        constants.USER_ACCOUNT_ROUTE,
-        editedUserAccountPars,
-        { headers }
-    );
-    return [data, status];
-}

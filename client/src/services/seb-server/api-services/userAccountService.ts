@@ -81,15 +81,10 @@ export const createUserAccount = async (
         })
     ).data;
 
-export async function editUserAccount(
+export const editUserAccount = async (
     userAccount: EditUserAccountParameters,
-): Promise<UserAccountResponse> {
-    return (
-        await apiService.api.put(userAccountUrl, userAccount, {
-            headers: apiService.getPutHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
+): Promise<SingleUserAccountResponse> =>
+    (await newApiService.put(baseUrl, userAccount)).data;
 
 export async function getUserAccountNames(
     optionalParameters?: OptionalParInstitutionId,
