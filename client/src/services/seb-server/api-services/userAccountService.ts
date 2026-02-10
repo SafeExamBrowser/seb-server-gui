@@ -33,7 +33,7 @@ export const changePassword = async (
     confirmNewPassword: string,
 ): Promise<UserAccount[]> =>
     (
-        await newApiService.put(`${baseUrl}/password`, {
+        await newApiService.putRequest(`${baseUrl}/password`, {
             uuid,
             password,
             newPassword,
@@ -45,23 +45,24 @@ export const deleteUserAccount = async (accountId: string): Promise<unknown> =>
     (await newApiService.deleteRequest(`${baseUrl}/${accountId}`)).data;
 
 export const getPersonalUserAccount = async (): Promise<UserAccount> =>
-    (await newApiService.get(`${baseUrl}/me`)).data;
+    (await newApiService.getRequest(`${baseUrl}/me`)).data;
 
 export const getUserAccountById = async (
     accountId: string,
 ): Promise<UserAccount> =>
-    (await newApiService.get(`${baseUrl}/${accountId}`)).data;
+    (await newApiService.getRequest(`${baseUrl}/${accountId}`)).data;
 
 export const getUserAccounts = async (
     optionalParameters?: OptionalParGetUserAccounts,
 ): Promise<UserAccountResponse> =>
-    (await newApiService.get(baseUrl, { params: optionalParameters })).data;
+    (await newApiService.getRequest(baseUrl, { params: optionalParameters }))
+        .data;
 
 export const createUserAccount = async (
     userAccount: CreateUserPar,
 ): Promise<SingleUserAccountResponse> =>
     (
-        await newApiService.post(baseUrl, userAccount, {
+        await newApiService.postRequest(baseUrl, userAccount, {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
             },
@@ -71,13 +72,13 @@ export const createUserAccount = async (
 export const editUserAccount = async (
     userAccount: EditUserAccountParameters,
 ): Promise<UserAccountResponse> =>
-    (await newApiService.put(baseUrl, userAccount)).data;
+    (await newApiService.putRequest(baseUrl, userAccount)).data;
 
 export const getSupervisorNames = async (
     optionalParameters?: OptionalParInstitutionId,
 ): Promise<UserAccountName[]> =>
     (
-        await newApiService.get(`${baseUrl}/supervisors`, {
+        await newApiService.getRequest(`${baseUrl}/supervisors`, {
             params: optionalParameters,
         })
     ).data;
@@ -86,7 +87,7 @@ export const activateUserAccount = async (
     accountId: string,
 ): Promise<UserAccount> =>
     (
-        await newApiService.post(
+        await newApiService.postRequest(
             `${baseUrl}/${accountId}/active`,
             {},
             {
@@ -101,7 +102,7 @@ export const deactivateUserAccount = async (
     accountId: string,
 ): Promise<UserAccount> =>
     (
-        await newApiService.post(
+        await newApiService.postRequest(
             `${baseUrl}/${accountId}/inactive`,
             {},
             {

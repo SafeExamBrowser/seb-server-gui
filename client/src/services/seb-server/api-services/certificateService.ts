@@ -11,7 +11,8 @@ const baseUrl = "/certificate" as const;
 export const getCertificates = async (
     optionalParameters?: OptionalParGetCertificates,
 ): Promise<CertificatesResponse> =>
-    (await newApiService.get(baseUrl, { params: optionalParameters })).data;
+    (await newApiService.getRequest(baseUrl, { params: optionalParameters }))
+        .data;
 
 export const deleteCertificate = async (
     certificateId: string,
@@ -23,7 +24,7 @@ export const createCertificate = async (
     certificate: CreateCertificatePar,
 ): Promise<Certificate> =>
     (
-        await newApiService.post(baseUrl, certificate.file, {
+        await newApiService.postRequest(baseUrl, certificate.file, {
             headers: {
                 "Content-Type": "application/octet-stream",
                 importFile: certificate.fileName,

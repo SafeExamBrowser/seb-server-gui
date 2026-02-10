@@ -12,7 +12,7 @@ const api = axios.create({
 
 export const getApiForManualRequests = () => api;
 
-export const get = (url: string, options?: AxiosRequestConfig) => {
+export const getRequest = (url: string, options?: AxiosRequestConfig) => {
     const authStore = useAuthStore();
 
     const defaultOptions: AxiosRequestConfig = {
@@ -25,7 +25,7 @@ export const get = (url: string, options?: AxiosRequestConfig) => {
     return api.get(url, merge({}, defaultOptions, options));
 };
 
-export const post = <T>(
+export const postRequest = <T>(
     url: string,
     data?: T,
     options?: AxiosRequestConfig,
@@ -43,7 +43,11 @@ export const post = <T>(
     return api.post(url, data, merge({}, defaultOptions, options));
 };
 
-export const put = <T>(url: string, data?: T, options?: AxiosRequestConfig) => {
+export const putRequest = <T>(
+    url: string,
+    data?: T,
+    options?: AxiosRequestConfig,
+) => {
     const authStore = useAuthStore();
 
     const defaultOptions: AxiosRequestConfig = {

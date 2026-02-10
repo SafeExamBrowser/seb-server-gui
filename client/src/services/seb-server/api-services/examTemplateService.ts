@@ -6,10 +6,10 @@ import { ExamTemplate, ExamTemplates } from "@/models/seb-server/examTemplate";
 const baseUrl = "/exam-template" as const;
 
 export const getExamTemplates = async (): Promise<ExamTemplates> =>
-    (await newApiService.get(baseUrl)).data;
+    (await newApiService.getRequest(baseUrl)).data;
 
 export const getExamTemplate = async (id: string): Promise<ExamTemplate> =>
-    (await newApiService.get(`${baseUrl}/${id}`)).data;
+    (await newApiService.getRequest(`${baseUrl}/${id}`)).data;
 
 export const getExamTemplateNames = async (): Promise<
     {
@@ -17,14 +17,14 @@ export const getExamTemplateNames = async (): Promise<
         entityType: "EXAM_TEMPLATE";
         name: string;
     }[]
-> => (await newApiService.get(`${baseUrl}/names`)).data;
+> => (await newApiService.getRequest(`${baseUrl}/names`)).data;
 
 export const getExamTemplateSp = async (
     id: string,
 ): Promise<ScreenProctoringSettings> =>
-    (await newApiService.get(`${baseUrl}/${id}/screen-proctoring`)).data;
+    (await newApiService.getRequest(`${baseUrl}/${id}/screen-proctoring`)).data;
 
 export const createExamTemplate = async (
     examTemplate: ExamTemplate,
 ): Promise<ExamTemplate> =>
-    (await newApiService.post(`${baseUrl}/create`, examTemplate)).data;
+    (await newApiService.postRequest(`${baseUrl}/create`, examTemplate)).data;
