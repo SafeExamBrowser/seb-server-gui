@@ -18,11 +18,6 @@ export async function getUserAccountNames(token: string, options?: {}): Promise<
     return [data, status];
 }
 
-export async function getSupervisorAccountNames(token: string, options?: {}): Promise<[object, number]>{
-    const {data, status} = await apiService.api.get(constants.SUPERVISOR_ACCOUNT_NAMES_ROUTE, {headers: apiService.getHeaders(token), params: options});
-    return [data, status];
-}
-
 export async function editUserAccount(token: string, editedUserAccountPars: {}): Promise<[object, number]> {
     const headers = apiService.getPutHeaders(token);
     const { data, status } = await apiService.api.put(

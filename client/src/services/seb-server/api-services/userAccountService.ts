@@ -104,18 +104,14 @@ export async function getUserAccountNames(
     return data;
 }
 
-export async function getSupervisorNames(
+export const getSupervisorNames = async (
     optionalParameters?: OptionalParInstitutionId,
-): Promise<UserAccountName[]> {
-    const url = userAccountUrl + "/supervisors";
-    const { data }: AxiosResponse<UserAccountName[]> = await apiService.api.get<
-        UserAccountName[]
-    >(url, {
-        headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        params: { optionalParameters },
-    });
-    return data;
-}
+): Promise<UserAccountResponse> =>
+    (
+        await newApiService.get(`${baseUrl}/supervisors`, {
+            params: optionalParameters,
+        })
+    ).data;
 
 export const activateUserAccount = async (
     accountId: string,

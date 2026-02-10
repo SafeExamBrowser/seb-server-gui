@@ -40,15 +40,3 @@ export async function editUserAccount(req: Request, res: Response) {
         apiService.handleGenericApiError(error, res);
     }
 }
-
-
-export async function getSupervisorAccountNames(req: Request, res: Response){
-    try{
-        const [userAccountNames, status] = await userAccountService.getSupervisorAccountNames(req.headers.authorization, req.query.optionalParameters);
-        return res.status(status).json(userAccountNames);
-
-    }catch(error){
-        apiService.handleGenericApiError(error, res);
-    }
-}
-
