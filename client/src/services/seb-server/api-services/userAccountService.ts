@@ -2,8 +2,6 @@ import * as newApiService from "@/services/newApiService";
 
 import axios, { AxiosResponse } from "axios";
 import * as ENV from "@/config/envConfig";
-import * as apiService from "@/services/apiService";
-import { StorageItemEnum } from "@/models/StorageItemEnum";
 import {
     CreateUserPar,
     EditUserAccountParameters,
@@ -74,19 +72,6 @@ export const editUserAccount = async (
     userAccount: EditUserAccountParameters,
 ): Promise<UserAccountResponse> =>
     (await newApiService.put(baseUrl, userAccount)).data;
-
-export async function getUserAccountNames(
-    optionalParameters?: OptionalParInstitutionId,
-): Promise<UserAccountName[]> {
-    const url = userAccountUrl + "/names";
-    const { data }: AxiosResponse<UserAccountName[]> = await apiService.api.get<
-        UserAccountName[]
-    >(url, {
-        headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        params: { optionalParameters },
-    });
-    return data;
-}
 
 export const getSupervisorNames = async (
     optionalParameters?: OptionalParInstitutionId,

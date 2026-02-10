@@ -3,16 +3,6 @@ import * as userAccountService from "../../services/seb-server/user-account.serv
 import * as apiService from "../../services/seb-server/api.service";
 
 
-export async function getUserAccountNames(req: Request, res: Response){
-    try{
-        const [userAccountNames, status] = await userAccountService.getUserAccountNames(req.headers.authorization, req.query.optionalParameters);
-        return res.status(status).json(userAccountNames);
-
-    }catch(error){
-        apiService.handleGenericApiError(error, res);
-    }
-}
-
 export async function registerUserAccount(req: Request, res: Response) {
     try {
         const [userAccount, status] = await userAccountService.registerUserAccount(req.body);

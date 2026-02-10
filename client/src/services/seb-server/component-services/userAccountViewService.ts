@@ -84,16 +84,6 @@ export async function getInstitutions(): Promise<Institution[] | null> {
     }
 }
 
-export async function getUserAccountNames(
-    optionalParameters?: OptionalParInstitutionId,
-): Promise<UserAccountName[] | null> {
-    try {
-        return await userAccountService.getUserAccountNames(optionalParameters);
-    } catch {
-        return null;
-    }
-}
-
 export async function getSupervisorNames(
     optionalParameters?: OptionalParInstitutionId,
 ): Promise<UserAccountName[] | null> {
