@@ -84,7 +84,6 @@ router.get(constants.ADMIN_INSTITUTION_LOGO_ROUTE + "/:suffix", institutionsCont
 router.post(constants.USER_ACCOUNT_REGISTRATION_ROUTE, userAccountController.registerUserAccount);
 
 //connection configurations
-router.get(constants.DOWNLOAD_EXAM_CONFIG_ROUTE + "/:id", configurationController.downloadExamConfig);
 router.get(constants.CONNECTION_CONFIG_ROUTE + "/:id", configurationController.getConnectionConfiguration);
 router.post(constants.CONNECTION_CONFIG_ROUTE + "/:id" + constants.ACTIVATION_ROUTE, configurationController.activateConnectionConfiguration);
 router.post(constants.CONNECTION_CONFIG_ROUTE + "/:id" + constants.DEACTIVATION_ROUTE, configurationController.deactivateConnectionConfiguration);

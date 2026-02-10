@@ -13,16 +13,6 @@ export async function createConnectionConfiguration(req: Request, res: Response)
     }
 }
 
-export async function downloadExamConfig(req: Request, res: Response){
-    try{
-        const [examConfig, status] = await configurationService.downloadExamConfig(req.headers.authorization, req.params.id, req.query.examId);
-        return res.status(status).send(examConfig);
-
-    }catch(error){
-        apiService.handleGenericApiError(error, res);
-    }
-}
-
 
 export async function getConnectionConfiguration(req: Request, res: Response){
     try{

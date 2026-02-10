@@ -14,7 +14,6 @@ import {
 const baseUrl = "/client_configuration" as const;
 
 const connectionConfigurationUrl = "/client_configuration";
-const downloadExamConfigUrl = "/client_configuration/download";
 
 export const getConnectionConfigurationNamesActive = async (): Promise<
     ConnectionConfigurationName[]
@@ -29,19 +28,19 @@ export const getConnectionConfigurationsActive =
     async (): Promise<ConnectionConfigurations> =>
         (await newApiService.getRequest(baseUrl + "/active")).data;
 
-export async function downloadExamConfig(
+export const downloadExamConfig = async (
     examId: string,
     connectionId: string,
-): Promise<Blob> {
-    const url: string = downloadExamConfigUrl + "/" + connectionId;
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+): Promise<Blob> =>
+    (
+        await newApiService.getRequest(`${baseUrl}/download/${connectionId}`, {
             params: { examId },
             responseType: "blob",
+            headers: {
+                accept: "application/octet-stream",
+            },
         })
     ).data;
-}
 
 export async function getConnectionConfiguration(
     id: number,
