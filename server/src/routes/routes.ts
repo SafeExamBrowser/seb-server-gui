@@ -86,7 +86,6 @@ router.get(constants.USER_ACCOUNT_NAMES_ROUTE, userAccountController.getUserAcco
 router.get(constants.SUPERVISOR_ACCOUNT_NAMES_ROUTE, userAccountController.getSupervisorAccountNames);
 router.post(constants.USER_ACCOUNT_REGISTRATION_ROUTE, userAccountController.registerUserAccount);
 router.put(constants.USER_ACCOUNT_ROUTE, userAccountController.editUserAccount);
-router.put(constants.USER_ACCOUNT_ROUTE + constants.CHANGE_PASSWORD_ROUTE, userAccountController.changePassword);
 
 //connection configurations
 router.get(constants.DOWNLOAD_EXAM_CONFIG_ROUTE + "/:id", configurationController.downloadExamConfig);

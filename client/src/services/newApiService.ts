@@ -43,6 +43,20 @@ export const post = <T>(
     return api.post(url, data, merge({}, defaultOptions, options));
 };
 
+export const put = <T>(url: string, data?: T, options?: AxiosRequestConfig) => {
+    const authStore = useAuthStore();
+
+    const defaultOptions: AxiosRequestConfig = {
+        headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${authStore.getStorageItem(StorageItemEnum.ACCESS_TOKEN)}`,
+            "Content-Type": "application/json",
+        },
+    };
+
+    return api.put(url, data, merge({}, defaultOptions, options));
+};
+
 export const deleteRequest = <T>(url: string, data?: T) => {
     const authStore = useAuthStore();
 

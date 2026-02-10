@@ -28,22 +28,20 @@ export async function registerUserAccount(
     throw new Error(`Unexpected status ${status} for registerUserAccount`);
 }
 
-export async function changePassword(
+export const changePassword = async (
     uuid: string,
     password: string,
     newPassword: string,
     confirmNewPassword: string,
-): Promise<UserAccount[]> {
-    const url = userAccountUrl + "/password";
-    const { data }: AxiosResponse<UserAccount[]> = await apiService.api.put<
-        UserAccount[]
-    >(
-        url,
-        { uuid, password, newPassword, confirmNewPassword },
-        { headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN) },
-    );
-    return data;
-}
+): Promise<SingleUserAccountResponse> =>
+    (
+        await newApiService.put(`${baseUrl}/password`, {
+            uuid,
+            password,
+            newPassword,
+            confirmNewPassword,
+        })
+    ).data;
 
 export const deleteUserAccount = async (accountId: string): Promise<unknown> =>
     (await newApiService.deleteRequest(`${baseUrl}/${accountId}`)).data;

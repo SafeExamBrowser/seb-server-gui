@@ -32,13 +32,3 @@ export async function editUserAccount(token: string, editedUserAccountPars: {}):
     );
     return [data, status];
 }
-
-export async function changePassword(token: string, editPasswordParams: {}): Promise<[object, number]> {
-    const headers = apiService.getPutHeaders(token);
-    const { data, status } = await apiService.api.put(
-        constants.USER_ACCOUNT_ROUTE + constants.CHANGE_PASSWORD_ROUTE,
-        editPasswordParams,
-        { headers }
-    );
-    return [data, status];
-}
