@@ -8,13 +8,6 @@ export async function createConnectionConfiguration(token: string, newConnection
     return [data, status];
 }
 
-export async function deleteConnectionConfiguration(token: string, id: string): Promise<[object, number]>{
-    const url: string =  constants.CONNECTION_CONFIG_ROUTE + "/" + id;
-    const {data, status} = await apiService.api.delete(url, {headers: apiService.getHeaders(token)});
-
-    return [data, status];
-}
-
 
 export async function editConnectionConfiguration(token: string, editConnectionConfigurationPars: {}): Promise<[object, number]> {
     const headers = apiService.getPutHeaders(token);

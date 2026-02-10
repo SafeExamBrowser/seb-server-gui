@@ -83,15 +83,10 @@ export const deactivateConnectionConfiguration = async (
         )
     ).data;
 
-export async function deleteConnectionConfiguration(
+export const deleteConnectionConfiguration = async (
     id: string,
-): Promise<undefined | null> {
-    return (
-        await apiService.api.delete(connectionConfigurationUrl + "/" + id, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
+): Promise<undefined | null> =>
+    (await newApiService.deleteRequest(`${baseUrl}/${id}`)).data;
 
 export async function createConnectionConfiguration(
     connectionConfigurationPar: CreateConnectionConfigurationPar,
