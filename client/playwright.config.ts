@@ -15,7 +15,7 @@ const reporters = isCI
 
 export default defineConfig({
     testDir: "tests/e2e",
-    fullyParallel: false,
+    fullyParallel: true,
     forbidOnly: isCI,
     retries: isCI ? 2 : 0,
     workers: isCI ? 1 : undefined,
