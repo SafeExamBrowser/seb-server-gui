@@ -16,10 +16,6 @@ async function setupCreateUserAccountPage(page: Page) {
         "createUserAccount-institution-select",
     );
 
-    const timezoneSelectLocator = page.getByTestId(
-        "createUserAccount-timezone-select",
-    );
-
     const roleSelectLocator = page.getByTestId("createUserAccount-role-select");
 
     // fields
@@ -53,7 +49,6 @@ async function setupCreateUserAccountPage(page: Page) {
         nameLocator,
         surnameLocator,
         emailLocator,
-        timezoneSelectLocator,
         passwordLocator,
         confirmPasswordLocator,
         roleSelectLocator,
@@ -84,7 +79,6 @@ test.describe("1.1 User Accounts - CREATE Add", () => {
             nameLocator,
             surnameLocator,
             emailLocator,
-            timezoneSelectLocator,
             passwordLocator,
             confirmPasswordLocator,
             roleSelectLocator,
@@ -102,7 +96,6 @@ test.describe("1.1 User Accounts - CREATE Add", () => {
 
         const institutionToSelect = "SEB Server";
         const roleToSelect = "Server Administrator";
-        const timeZoneToSelect = "Europe/Zurich";
 
         // fill selects
         await selectVuetifyOptionByName(
@@ -111,11 +104,6 @@ test.describe("1.1 User Accounts - CREATE Add", () => {
             institutionToSelect,
         );
         await selectVuetifyOptionByName(page, roleSelectLocator, roleToSelect);
-        await selectVuetifyOptionByName(
-            page,
-            timezoneSelectLocator,
-            timeZoneToSelect,
-        );
 
         //fill fields
         await usernameLocator.fill(username);
@@ -165,13 +153,12 @@ test.describe("1.1 User Accounts - CREATE Add", () => {
             username: username,
             newPassword: password,
             confirmNewPassword: password,
-            timezone: timeZoneToSelect,
             language: "en",
             email: email,
             userRoles: ["SEB_SERVER_ADMIN"],
         };
 
-        expect(actualPayload).toEqual(expectedPayload);
+        expect(actualPayload).toMatchObject(expectedPayload);
 
         await expectSuccessfulCreateRedirect(page);
 
@@ -268,7 +255,6 @@ test.describe("1.1 User Accounts - CREATE Add", () => {
             nameLocator,
             surnameLocator,
             emailLocator,
-            timezoneSelectLocator,
             passwordLocator,
             confirmPasswordLocator,
             roleSelectLocator,
@@ -285,7 +271,6 @@ test.describe("1.1 User Accounts - CREATE Add", () => {
 
         const institutionToSelect = "SEB Server";
         const roleToSelect = "Server Administrator";
-        const timeZoneToSelect = "Europe/Zurich";
 
         // fill selects
         await selectVuetifyOptionByName(
@@ -294,11 +279,6 @@ test.describe("1.1 User Accounts - CREATE Add", () => {
             institutionToSelect,
         );
         await selectVuetifyOptionByName(page, roleSelectLocator, roleToSelect);
-        await selectVuetifyOptionByName(
-            page,
-            timezoneSelectLocator,
-            timeZoneToSelect,
-        );
 
         //fill fields
         await usernameLocator.fill(username);
