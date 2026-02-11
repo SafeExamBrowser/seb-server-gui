@@ -4,6 +4,7 @@ import {
     generateUniqueUsername,
     navigateTo,
     selectVuetifyOptionByName,
+    expectToHaveUrl,
 } from "../utils/helpers";
 
 async function setupCreateUserAccountPage(page: Page) {
@@ -15,12 +16,10 @@ async function setupCreateUserAccountPage(page: Page) {
     const institutionSelectLocator = page.getByTestId(
         "createUserAccount-institution-select",
     );
-
     const roleSelectLocator = page.getByTestId("createUserAccount-role-select");
 
     // fields
     const usernameLocator = page.getByLabel(/username/i);
-
     const nameLocator = page
         .getByTestId("createUserAccount-name-input")
         .getByRole("textbox");
@@ -38,6 +37,7 @@ async function setupCreateUserAccountPage(page: Page) {
         .getByTestId("createUserAccount-confirmPassword-input")
         .getByRole("textbox");
 
+    // buttons
     const saveButtonLocator = page.getByTestId("createUserAccount-save-button");
     const cancelButtonLocator = page.getByTestId(
         "createUserAccount-cancel-button",
@@ -55,12 +55,6 @@ async function setupCreateUserAccountPage(page: Page) {
         saveButtonLocator,
         cancelButtonLocator,
     };
-}
-
-async function expectSuccessfulCreateRedirect(page: Page) {
-    await expect(page).toHaveURL(/\/user-accounts(?:$|[?#])/i, {
-        timeout: 10_000,
-    });
 }
 
 //TODO this test was left with kinda big redundancies to explain to the apprentices in simple terms what is going on. Small refactor later
@@ -160,7 +154,7 @@ test.describe("1.1 User Accounts - CREATE Add", () => {
 
         expect(actualPayload).toMatchObject(expectedPayload);
 
-        await expectSuccessfulCreateRedirect(page);
+        await expectToHaveUrl(page, "user-accounts");
 
         //note that this test does not test if the backend actually saves the data correctly. This could be done in 2 ways:
         // 1: Navigate to User accounts, search for the username entered in the test, and look at the details - This however creates a dependency on get all, and get by id working. If one of those is broken, this test would fail too
@@ -243,7 +237,7 @@ test.describe("1.1 User Accounts - CREATE Add", () => {
         );
 
         // expected to not change URL
-        await expect(page).toHaveURL(/\/user-accounts\/create(?:$|[?#])/i);
+        await expectToHaveUrl(page, "user-accounts/create");
     });
 
     test("C Server Error - user account already exists (duplicate username)", async ({
@@ -313,8 +307,7 @@ test.describe("1.1 User Accounts - CREATE Add", () => {
         expect(createResponse.status()).toBe(400);
         expect(createResponse.ok()).toBeFalsy();
 
-        await expect(page).toHaveURL(/\/user-accounts\/create(?:$|[?#])/i);
-
+        await expectToHaveUrl(page, "user-accounts/create");
         //check toast
         const toast = page.locator(".toast-item[role='alert']");
 

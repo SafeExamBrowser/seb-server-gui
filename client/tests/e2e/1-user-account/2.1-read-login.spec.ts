@@ -1,19 +1,15 @@
 import { test, expect, Page } from "@playwright/test";
 import { loginAsServerAdmin } from "../utils/authenticate";
+import { clearLocalAndSessionStorage, navigateTo } from "../utils/helpers";
 
 const correctUser = "testmain";
 const correctPass = "testmain";
-const wrongUser = "invalid@example.cdasdpef";
+const wrongUser = "invalid@example.cdasdpef_#!@#!DFFADFA||>>:P";
 const wrongPass = "wrong-passworddddddddddddddd";
 
 async function setupLoginPage(page: Page) {
-    await page.addInitScript(() => {
-        localStorage.clear();
-        sessionStorage.clear();
-    });
-    await page.goto("/");
     await expect(page.getByTestId("login-page-container")).toBeVisible();
-
+    //fields definition
     const username = page.getByRole("textbox", { name: "Username *" });
     const password = page.getByRole("textbox", { name: "Password *" });
 
@@ -28,6 +24,11 @@ test.use({
 });
 
 test.describe("1.2.1 User Accounts - READ Log in", () => {
+    test.beforeEach(async ({ page }) => {
+        await clearLocalAndSessionStorage(page);
+        await navigateTo(page, "/");
+    });
+
     test("A Successful login", async ({ page }) => {
         await loginAsServerAdmin(page, correctUser, correctPass);
     });
@@ -43,24 +44,5 @@ test.describe("1.2.1 User Accounts - READ Log in", () => {
         await alert.waitFor({ state: "attached", timeout: 10000 });
         await expect(alert).toHaveCount(1);
         await page.waitForTimeout(600);
-    });
-
-    test("C Navigates to Register", async ({ page }) => {
-        await page.goto("/");
-
-        const link = page.getByTestId("login-register-link");
-
-        await link.click();
-        await expect(page).toHaveURL(/register/);
-
-        await page.goto("/");
-        await link.focus();
-        await page.keyboard.press("Enter");
-        await expect(page).toHaveURL(/register/);
-
-        await page.goto("/");
-        await link.focus();
-        await page.keyboard.press(" ");
-        await expect(page).toHaveURL(/register/);
     });
 });

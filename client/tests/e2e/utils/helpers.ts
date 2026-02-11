@@ -69,3 +69,18 @@ export async function selectVuetifyFirstOption(
 export async function navigateTo(page: Page, route: string) {
     await page.goto(route);
 }
+
+export async function clearLocalAndSessionStorage(page: Page) {
+    await page.addInitScript(() => {
+        localStorage.clear();
+        sessionStorage.clear();
+    });
+}
+
+export async function expectToHaveUrl(page: Page, path: string) {
+    const regex = new RegExp(`\\/${path}(?:$|[?#])`, "i");
+
+    await expect(page).toHaveURL(regex, {
+        timeout: 10_000,
+    });
+}
