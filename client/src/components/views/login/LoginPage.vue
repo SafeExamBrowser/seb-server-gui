@@ -1,12 +1,19 @@
 <template>
     <v-main data-testid="login-page-container">
         <v-container class="fill-height d-flex align-center justify-center">
-            <v-card class="pa-10">
+            <v-card class="pa-10" :loading="isLoading" :disabled="isLoading">
+                <template #loader="{ isActive }">
+                    <v-progress-linear
+                        :active="isActive"
+                        indeterminate
+                    ></v-progress-linear>
+                </template>
                 <div class="d-flex ml-15 mr-15 justify-center">
                     <img
                         :alt="translate('screenReader.logo')"
-                        class="logo-img"
+                        class="w-100 h-auto"
                         src="/img/seb-logo-no-border.png"
+                        style="max-width: 150px"
                     />
                 </div>
                 <div class="d-flex ml-15 mr-15 mt-5 justify-center">
@@ -16,27 +23,13 @@
                 </div>
 
                 <div class="mt-10">
-                    <div v-if="loginError" data-testid="login-error-alert">
+                    <div v-if="errorI18nKey" data-testid="login-error-alert">
                         <AlertMsg
                             :alert-props="{
                                 title: '',
                                 color: 'error',
                                 type: 'alert',
-                                textKey: 'login-error',
-                            }"
-                        />
-                    </div>
-
-                    <div
-                        v-if="loadingStore.isTimeout"
-                        data-testid="timeout-error-alert"
-                    >
-                        <AlertMsg
-                            :alert-props="{
-                                title: '',
-                                color: 'error',
-                                type: 'alert',
-                                textKey: 'timeout-error',
+                                textKey: errorI18nKey,
                             }"
                         />
                     </div>
@@ -52,7 +45,7 @@
                 </v-card-subtitle>
 
                 <v-card-text>
-                    <v-form @keyup.enter="signIn()">
+                    <v-form @submit.prevent="handleSubmit">
                         <v-text-field
                             v-model="username"
                             data-testid="login-username-input"
@@ -97,7 +90,7 @@
                             color="primary"
                             data-testid="login-signin-btn"
                             rounded="sm"
-                            @click="signIn()"
+                            type="submit"
                         >
                             {{ translate("loginPage.signIn") }}
                         </v-btn>
@@ -107,17 +100,15 @@
                         <span>
                             {{ translate("loginPage.noAccount") }}
                         </span>
-                        <span
-                            class="text-decoration-underline text-blue"
+                        <router-link
+                            :to="constants.REGISTER_ROUTE"
+                            class="text-primary"
                             data-testid="login-register-link"
                             role="button"
                             tabindex="0"
-                            @keydown="handleTabKeyEvent($event, 'navigate')"
                         >
-                            <router-link :to="constants.REGISTER_ROUTE">
-                                {{ translate("loginPage.register") }}
-                            </router-link>
-                        </span>
+                            {{ translate("loginPage.register") }}
+                        </router-link>
                     </div>
                 </v-card-text>
             </v-card>
@@ -127,89 +118,23 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import * as authenticationService from "@/services/authenticationService";
-import { useLoadingStore } from "@/stores/store";
 import { useTheme } from "vuetify";
 import * as constants from "@/utils/constants";
 import { translate } from "@/utils/generalUtils";
-import { useAuthStore } from "@/stores/authentication/authenticationStore";
-import { StorageItemEnum } from "@/models/StorageItemEnum";
-import { useRouter } from "vue-router";
+import { useLogin } from "./composables/useLogin";
 
 const username = ref("");
 const password = ref("");
-const loginError = ref(false);
-
 const passwordVisible = ref<boolean>(false);
 
-// stores
-const authStore = useAuthStore();
-const loadingStore = useLoadingStore();
+const { errorI18nKey, loading: isLoading, login } = useLogin();
 
 // theme
 const theme = useTheme();
 const initialTheme = localStorage.getItem("theme") ?? "light";
 theme.change(initialTheme);
 
-// ToDo dark mode??
-// const isDark = computed<boolean>(() => theme.global.current.value.dark);
-
-const router = useRouter();
-
-async function signIn() {
-    loginError.value = false;
-    loadingStore.isTimeout = false;
-
-    try {
-        // if seb server fails --> shows error msg
-        const tokenObject = await authenticationService.login(
-            username.value,
-            password.value,
-            false,
-        );
-
-        try {
-            // if sp failes --> only logs error
-            const spTokenObject = await authenticationService.login(
-                username.value,
-                password.value,
-                true,
-            );
-            authStore.loginSP(
-                spTokenObject.access_token,
-                spTokenObject.refresh_token,
-            );
-        } catch (error) {
-            console.error("SP login failed:", error);
-            authStore.setStorageItem(StorageItemEnum.IS_SP_AVAILABLE, "false");
-        } finally {
-            authStore.login(
-                tokenObject.access_token,
-                tokenObject.refresh_token,
-            );
-        }
-    } catch {
-        loginError.value = true;
-    }
-}
-
-function handleTabKeyEvent(event: KeyboardEvent, action: string) {
-    if (event.key === "Enter" || event.key === " ") {
-        if (action === "navigate") {
-            router.push(constants.REGISTER_ROUTE);
-        }
-    }
-}
+const handleSubmit = () => {
+    login(username.value, password.value);
+};
 </script>
-
-<style scoped>
-.invert {
-    filter: invert(1);
-}
-
-.logo-img {
-    max-width: 150px;
-    width: 100%;
-    height: auto;
-}
-</style>

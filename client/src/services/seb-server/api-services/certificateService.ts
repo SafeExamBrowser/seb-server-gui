@@ -1,40 +1,36 @@
-import * as apiService from "@/services/apiService";
-import { StorageItemEnum } from "@/models/StorageItemEnum";
+import * as newApiService from "@/services/newApiService";
 import {
     Certificate,
     CertificatesResponse,
-    CreateCertificateJSON,
+    CreateCertificatePar,
     OptionalParGetCertificates,
 } from "@/models/seb-server/certificate";
 
-const certificatesURL: string = "/certificate";
+const baseUrl = "/certificate" as const;
 
-export async function getCertificates(
+export const getCertificates = async (
     optionalParameters?: OptionalParGetCertificates,
-): Promise<CertificatesResponse> {
-    return (
-        await apiService.api.get(certificatesURL, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-            params: { optionalParameters },
-        })
-    ).data;
-}
+): Promise<CertificatesResponse> =>
+    (await newApiService.getRequest(baseUrl, { params: optionalParameters }))
+        .data;
 
-export async function deleteCertificate(
+export const deleteCertificate = async (
     certificateId: string,
-): Promise<unknown | unknown> {
-    return (
-        await apiService.api.delete(certificatesURL + "/" + certificateId, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+): Promise<unknown | unknown> =>
+    (await newApiService.deleteRequest(`${baseUrl}`, { alias: certificateId }))
+        .data;
+
+export const createCertificate = async (
+    certificate: CreateCertificatePar,
+): Promise<Certificate> =>
+    (
+        await newApiService.postRequest(baseUrl, certificate.file, {
+            headers: {
+                "Content-Type": "application/octet-stream",
+                importFile: certificate.fileName,
+                ...(certificate.password
+                    ? { importFilePassword: certificate.password }
+                    : {}),
+            },
         })
     ).data;
-}
-
-export async function createCertificate(
-    payload: CreateCertificateJSON,
-): Promise<Certificate> {
-    const { data } = await apiService.api.post(certificatesURL, payload, {
-        headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),
-    });
-    return data;
-}

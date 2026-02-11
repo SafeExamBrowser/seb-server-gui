@@ -6,7 +6,6 @@ import {
 import * as constants from "@/utils/constants";
 import * as spConstants from "@/utils/sp-constants";
 import i18n from "@/i18n";
-import type { JwtTokenResponse } from "@/models/tokenModel";
 
 const defaultPageTitle: string = " | SEB Server";
 
@@ -15,7 +14,7 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: constants.DEFAULT_ROUTE,
         name: "LoginPage",
-        component: () => import("@/components/views/LoginPage.vue"),
+        component: () => import("@/components/views/login/LoginPage.vue"),
         meta: { requiresAuth: false },
     },
     {
@@ -23,40 +22,6 @@ const routes: Array<RouteRecordRaw> = [
         name: "RegisterPage",
         component: () => import("@/components/views/RegisterPage.vue"),
         meta: { requiresAuth: false },
-    },
-    {
-        path: spConstants.JWT_LOGIN_ROUTE,
-        meta: { requiresAuth: false },
-        beforeEnter: async (to) => {
-            const { useAuthStore } = await import(
-                "@/stores/authentication/authenticationStore"
-            );
-            const authStore = useAuthStore();
-
-            const token = to.query.token?.toString();
-            if (token) {
-                try {
-                    const { verifyJwt } = await import(
-                        "@/services/authenticationService"
-                    );
-                    const tokenObject: JwtTokenResponse =
-                        await verifyJwt(token);
-                    authStore.loginWithJwt(
-                        tokenObject.login.access_token,
-                        tokenObject.login.refresh_token,
-                        tokenObject.redirect,
-                    );
-                    return;
-                } catch {
-                    // fall through to login page
-                    return true;
-                }
-            }
-
-            // true means continue to component (Login Page)
-            return true;
-        },
-        component: () => import("@/components/views/LoginPage.vue"),
     },
 
     // ---------- app (authenticated) routes ----------

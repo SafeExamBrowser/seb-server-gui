@@ -1,3 +1,4 @@
+import * as newApiService from "@/services/newApiService";
 import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
 import {
@@ -7,6 +8,7 @@ import {
     OptionalParGetAssessmentTool,
     UpdateAssessmentToolPar,
 } from "@/models/seb-server/assessmentTool";
+const baseUrl = "/lms-setup" as const;
 
 const assessmentToolUrl: string = "/assessment-tools";
 
@@ -28,17 +30,11 @@ export async function getAssessmentTool(id: number): Promise<AssessmentTool> {
     ).data;
 }
 
-export async function getAssessmentTools(
+export const getAssessmentTools = async (
     optionalParameters?: OptionalParGetAssessmentTool,
-): Promise<AssessmentToolsResponse> {
-    const url: string = assessmentToolUrl;
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-            params: { optionalParameters },
-        })
-    ).data;
-}
+): Promise<AssessmentToolsResponse> =>
+    (await newApiService.getRequest(baseUrl, { params: optionalParameters }))
+        .data;
 
 export async function activateAssessmentTool(
     assessmentToolId: string,

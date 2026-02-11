@@ -5,9 +5,6 @@ import express, {Express, Request, Response} from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 
-import authorizationRoutes from "./routes/authorization.routes";
-import spAuthorizationRoutes from "./routes/sp-authorization.routes";
-
 import routes from "./routes/routes";
 import {LOG} from "./logging/logger";
 import {apiRequestLogger} from "./logging/api-request-logger";
@@ -30,8 +27,6 @@ app.use(express.static(path));
 app.use(bodyParser.json());
 app.use(apiRequestLogger);
 
-app.use(authorizationRoutes);
-app.use(spAuthorizationRoutes);
 app.use(routes);
 
 

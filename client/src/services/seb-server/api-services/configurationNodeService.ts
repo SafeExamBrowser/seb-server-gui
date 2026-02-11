@@ -1,17 +1,13 @@
-import * as apiService from "@/services/apiService";
-import { StorageItemEnum } from "@/models/StorageItemEnum";
+import * as newApiService from "@/services/newApiService";
 import { ConfigurationTemplateName } from "@/models/seb-server/configurationNode";
 
-const baseUrl = "/configuration-node";
+const baseUrl = "/configuration-node" as const;
 
-export async function getConfigurationTemplateNamesActive(): Promise<
+export const getConfigurationTemplateNamesActive = async (): Promise<
     ConfigurationTemplateName[]
-> {
-    const url: string = baseUrl + "/names";
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+> =>
+    (
+        await newApiService.getRequest(`${baseUrl}/names`, {
             params: { type: "TEMPLATE", active: "true" },
         })
     ).data;
-}

@@ -3,15 +3,6 @@ import * as apiService from "../../services/seb-server/api.service";
 import {Request, Response} from "express";
 import * as userAccountService from "../../services/seb-server/user-account.service";
 
-export async function getAssessmentTools(req: Request, res: Response){
-    try{    
-        const [assessmentTools, status] = await assessmentToolService.getAssessmentTools(req.headers.authorization, req.query.optionalParameters);
-        return res.status(status).json(assessmentTools);
-    
-    }catch(error){
-        apiService.handleGenericApiError(error, res);
-    }
-}
 
 export async function getAssessmentTool(req: Request, res: Response){
     try{    

@@ -3,9 +3,6 @@ import express, {Router} from "express";
 import * as systemController from "../controllers/seb-server/system.controller";
 import * as quizController from "../controllers/seb-server/quiz.controller";
 import * as examController from "../controllers/seb-server/exam.controller";
-import * as configurationController from "../controllers/seb-server/configuration.controller";
-import * as configurationNodeController from "../controllers/seb-server/configuration-node.controller";
-import * as examTemplateController from "../controllers/seb-server/exam-template.controller";
 import * as screenProctoringController from "../controllers/seb-server/screen-proctoring.controller";
 import * as indicatorController from "../controllers/seb-server/indicator.controller";
 import * as userAccountController from "../controllers/seb-server/user-account.controller";
@@ -23,7 +20,6 @@ import * as searchController from "../controllers/screen-proctoring/sp-search.co
 import * as settingsController from "../controllers/screen-proctoring/sp-settings.controller";
 import * as applicationSearchController from "../controllers/screen-proctoring/sp-application-search.controller";
 import * as institutionsController from "../controllers/seb-server/institution.controller";
-import * as certificateController from "../controllers/seb-server/certificate.controller";
 import * as clientConnectionController from "../controllers/seb-server/client-connection.controller";
 import {grantExamAppSignatureKey} from "../controllers/seb-server/exam.controller";
 
@@ -78,59 +74,22 @@ router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE, screenProctoringController.s
 router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE + "/apply-groups", screenProctoringController.applyScreenProctoringGroups);
 router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE + "/activation", screenProctoringController.activateScreenProctoring);
 
-//exam template
-router.get(constants.EXAM_TEMPLATE_ROUTE + "/:id", examTemplateController.getExamTemplate);
-router.get(constants.EXAM_TEMPLATE_ROUTE, examTemplateController.getExamTemplates);
-router.get(constants.EXAM_TEMPLATE_SCREEN_PROCTORING_ROUTE, examTemplateController.getExamTemplateSp);
-router.post(constants.EXAM_TEMPLATE_ROUTE + "/create", examTemplateController.createExamTemplate);
-
 //institutions
 router.get(constants.INSTITUTION_ROUTE, institutionsController.getInstitutions);
 router.get(constants.INSTITUTION_ROUTE, institutionsController.getInstitutions);
 router.get(constants.ADMIN_INSTITUTION_LOGO_ROUTE + "/:suffix", institutionsController.getInstitutionLogo)
 
 //user accounts
-router.get(constants.USER_ACCOUNT_ROUTE + "/:id", userAccountController.getUserAccount);
-router.get(constants.USER_ACCOUNT_ROUTE, userAccountController.getUserAccounts);
-router.get(constants.FEATURE_ROUTE, userAccountController.getUserAccountFeatures);
-router.get(constants.USER_ACCOUNT_NAMES_ROUTE, userAccountController.getUserAccountNames);
-router.get(constants.SUPERVISOR_ACCOUNT_NAMES_ROUTE, userAccountController.getSupervisorAccountNames);
 router.post(constants.USER_ACCOUNT_REGISTRATION_ROUTE, userAccountController.registerUserAccount);
-router.post(constants.USER_ACCOUNT_ROUTE + "/:id" + constants.ACTIVATION_ROUTE, userAccountController.activateAccount);
-router.post(constants.USER_ACCOUNT_ROUTE + "/:id" + constants.DEACTIVATION_ROUTE, userAccountController.deactivateAccount);
-router.post(constants.USER_ACCOUNT_ROUTE, userAccountController.createUserAccount);
-router.put(constants.USER_ACCOUNT_ROUTE, userAccountController.editUserAccount);
-router.put(constants.USER_ACCOUNT_ROUTE + constants.CHANGE_PASSWORD_ROUTE, userAccountController.changePassword);
-router.delete(constants.USER_ACCOUNT_ROUTE + "/:id", userAccountController.deleteUserAccount);
-
-//connection configurations
-router.get(constants.DOWNLOAD_EXAM_CONFIG_ROUTE + "/:id", configurationController.downloadExamConfig);
-router.get(constants.CONNECTION_CONFIG_ROUTE + constants.ACTIVE, configurationController.getConnectionConfigurationsActive);
-router.get(constants.CONNECTION_CONFIG_ROUTE + "/:id", configurationController.getConnectionConfiguration);
-router.get(constants.CONNECTION_CONFIG_ROUTE, configurationController.getConnectionConfigurations);
-router.post(constants.CONNECTION_CONFIG_ROUTE + "/:id" + constants.ACTIVATION_ROUTE, configurationController.activateConnectionConfiguration);
-router.post(constants.CONNECTION_CONFIG_ROUTE + "/:id" + constants.DEACTIVATION_ROUTE, configurationController.deactivateConnectionConfiguration);
-router.delete(constants.CONNECTION_CONFIG_ROUTE+ "/:id", configurationController.deleteConnectionConfiguration);
-router.post(constants.CONNECTION_CONFIG_ROUTE, configurationController.createConnectionConfiguration);
-router.put(constants.CONNECTION_CONFIG_ROUTE, configurationController.editConnectionConfiguration);
-
-// configuration node
-router.get(constants.CONFIGURATION_NODE_ROUTE + "/*", configurationNodeController.genericGetAction);
 
 //assessment tool
 router.get(constants.ASSESSMENT_TOOL_GET_ROUTE + "/:id", assessmentToolController.getAssessmentTool);
-router.get(constants.ASSESSMENT_TOOL_ROUTE, assessmentToolController.getAssessmentTools);
 router.get(constants.ASSESSMENT_TOOL_ROUTE + constants.ACTIVE, assessmentToolController.getAssessmentToolsActive);
 router.post(constants.ASSESSMENT_TOOL_ROUTE + "/:id" + constants.ACTIVATION_ROUTE, assessmentToolController.activateAssessmentTool);
 router.post(constants.ASSESSMENT_TOOL_ROUTE + "/:id" + constants.DEACTIVATION_ROUTE, assessmentToolController.deactivateAssessmentTool);
 router.delete(constants.ASSESSMENT_TOOL_ROUTE+ "/:id", assessmentToolController.deleteAssessmentTool);
 router.post(constants.ASSESSMENT_TOOL_ROUTE, assessmentToolController.createAssessmentTool);
 router.put(constants.ASSESSMENT_TOOL_ROUTE, assessmentToolController.editAssessmentTool);
-
-//certificate
-router.post(constants.CERTIFICATE_ROUTE, certificateController.createCertificate);
-router.get(constants.CERTIFICATE_ROUTE, certificateController.getCertificates);
-router.delete(constants.CERTIFICATE_ROUTE + "/:alias", certificateController.deleteCertificate);
 
 //monitoring
 router.post(constants.MONITORING_TEST_RUN_ROUTE + "/:id", monitoringController.applyTestRun);

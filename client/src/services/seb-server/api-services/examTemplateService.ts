@@ -1,59 +1,30 @@
-import * as apiService from "@/services/apiService";
-import { StorageItemEnum } from "@/models/StorageItemEnum";
+import * as newApiService from "@/services/newApiService";
+
 import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring";
-import { OptionalParGeneric } from "@/models/seb-server/optionalParamters";
 import { ExamTemplate, ExamTemplates } from "@/models/seb-server/examTemplate";
 
-const url: string = "/exam-template";
+const baseUrl = "/exam-template" as const;
 
-export async function getExamTemplate(id: string): Promise<ExamTemplate> {
-    return (
-        await apiService.api.get(url + "/" + id, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
+export const getExamTemplates = async (): Promise<ExamTemplates> =>
+    (await newApiService.getRequest(baseUrl)).data;
 
-export async function getExamTemplateNames(): Promise<
+export const getExamTemplate = async (id: string): Promise<ExamTemplate> =>
+    (await newApiService.getRequest(`${baseUrl}/${id}`)).data;
+
+export const getExamTemplateNames = async (): Promise<
     {
         modelId: string;
         entityType: "EXAM_TEMPLATE";
         name: string;
     }[]
-> {
-    return (
-        await apiService.api.get(url + "/names", {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
-export async function getExamTemplates(
-    optionalParameters?: OptionalParGeneric,
-): Promise<ExamTemplates> {
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-            params: { optionalParameters },
-        })
-    ).data;
-}
+> => (await newApiService.getRequest(`${baseUrl}/names`)).data;
 
-export async function getExamTemplateSp(
+export const getExamTemplateSp = async (
     id: string,
-): Promise<ScreenProctoringSettings> {
-    return (
-        await apiService.api.get(url + "/" + id + "/screen-proctoring", {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
+): Promise<ScreenProctoringSettings> =>
+    (await newApiService.getRequest(`${baseUrl}/${id}/screen-proctoring`)).data;
 
-export async function createExamTemplate(
+export const createExamTemplate = async (
     examTemplate: ExamTemplate,
-): Promise<ExamTemplate> {
-    return (
-        await apiService.api.post(url + "/create", examTemplate, {
-            headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
+): Promise<ExamTemplate> =>
+    (await newApiService.postRequest(`${baseUrl}/create`, examTemplate)).data;
