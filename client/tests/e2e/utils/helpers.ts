@@ -84,3 +84,7 @@ export async function expectToHaveUrl(page: Page, path: string) {
         timeout: 10_000,
     });
 }
+
+export function suffixForProject(projectName: string) {
+    return projectName.toLowerCase();
+}
