@@ -15,7 +15,6 @@ async function setupUserAccountsPage(page: Page, suffix: string) {
         "userAccounts-searchIcon-button",
     );
 
-    //this needs suffix
     const activateButtonLocator = page.getByTestId(
         `userAccounts-status-chip-seb-inst-admin-inactive-${suffix}`,
     );
@@ -85,7 +84,6 @@ test.describe("1.3.2 User Accounts - UPDATE Activate", () => {
         const activateRequest = await activateRequestPromise;
         const activateResponse = await activateResponsePromise;
 
-        //this needs suffix
         expect(activateRequest.method()).toBe("POST");
         expect(activateRequest.url()).toMatch(activateRegex);
 
@@ -93,7 +91,6 @@ test.describe("1.3.2 User Accounts - UPDATE Activate", () => {
         expect(activateResponse.status()).toBe(200);
         expect(activateResponse.ok()).toBeTruthy();
 
-        // 8. verify the v-chip text is now "Active"
         await expect(activateButtonLocator).toHaveText("Active");
     });
 });
