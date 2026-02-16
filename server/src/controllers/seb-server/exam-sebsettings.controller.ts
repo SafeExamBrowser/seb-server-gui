@@ -2,16 +2,6 @@ import {Request, Response} from "express";
 import * as examSEBSettingsService from "../../services/seb-server/exam-sebsettings.service";
 import * as apiService from "../../services/seb-server/api.service";
 
-export async function updateSEBSetting(req: Request, res: Response){
-    try{
-        const [exams, status] = await examSEBSettingsService.updateSEBSettingsValue(req.headers.authorization, req.params.id, req.body.valueId, req.body.value);
-        return res.status(status).json(exams);
-
-    }catch(error){
-        apiService.handleGenericApiError(error, res);
-    }
-}
-
 export async function publishSettings(req: Request, res: Response){
     try{
         const [exam, status] = await examSEBSettingsService.publishSettings(req.headers.authorization, req.params.id);

@@ -50,7 +50,6 @@ router.delete(constants.EXAM_ROUTE + "/:id" + "/apply-seb-restriction", examCont
 router.get(constants.EXAM_ROUTE + "/:id" + "/check-seb-restriction", examController.checkSEBLock)
 
 // SEB Settings Exam
-router.post(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id", examSEBSettingsController.updateSEBSetting);
 router.post(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id/publish", examSEBSettingsController.publishSettings);
 router.post(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id/undo-changes", examSEBSettingsController.undoChanges);
 

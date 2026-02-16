@@ -42,14 +42,12 @@ export async function updateSEBSettingValue(
     id: string,
     valueId: string,
     value: string,
-    forExam: boolean,
 ): Promise<SEBSettingsValue | null> {
     try {
         return await sebSettingService.updateSEBSettingValue(
             id,
             valueId,
             value,
-            forExam,
         );
     } catch {
         return null;

@@ -65,26 +65,22 @@ export const deleteTableRow = async (
         })
     ).data;
 
-export async function updateSEBSettingValue(
+export const updateSEBSettingValue = async (
     id: string,
     valueId: string,
     value: string,
-    forExam: boolean,
-): Promise<SEBSettingsValue> {
-    const url: string =
-        (forExam ? examUrlPrefix : templateUrlPrefix) + id + "/";
-    return (
-        await apiService.api.post(
-            url,
-            { valueId, value },
+): Promise<SEBSettingsValue> =>
+    (
+        await newApiService.postRequest(
+            `${baseUrl}/${id}`,
+            { id: valueId, value: value },
             {
-                headers: apiService.getPostHeaders(
-                    StorageItemEnum.ACCESS_TOKEN,
-                ),
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
             },
         )
     ).data;
-}
 
 export async function publish(
     id: string,
