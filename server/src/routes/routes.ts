@@ -10,7 +10,6 @@ import * as monitoringController from "../controllers/seb-server/monitoring.cont
 import * as clientGroupsController from "../controllers/seb-server/client-groups.controller";
 import * as constants from "../utils/constants";
 import * as examSEBSettingsController from "../controllers/seb-server/exam-sebsettings.controller";
-import * as templateSEBSettingsController from "../controllers/seb-server/template-sebsettings.controller";
 
 //screen-proctoring
 import * as groupController from "../controllers/screen-proctoring/sp-group.controller";
@@ -59,12 +58,6 @@ router.delete(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id/table/:name/row/:listInd
 router.post(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id", examSEBSettingsController.updateSEBSetting);
 router.post(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id/publish", examSEBSettingsController.publishSettings);
 router.post(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id/undo-changes", examSEBSettingsController.undoChanges);
-
-// SEB Settings Template
-router.get(constants.TEMPLATE_SEB_SETTINGS_ROUTE + "/:id" + "/:viewType", templateSEBSettingsController.getView);
-router.post(constants.TEMPLATE_SEB_SETTINGS_ROUTE + "/:id" + "/table/:name/row", templateSEBSettingsController.addTableRow);
-router.delete(constants.TEMPLATE_SEB_SETTINGS_ROUTE + "/:id" + "/table/:name/row/:listIndex", templateSEBSettingsController.deleteTableRow);
-router.post(constants.TEMPLATE_SEB_SETTINGS_ROUTE + "/:id", templateSEBSettingsController.updateSEBSetting);
 
 //screen proctoring
 router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE, screenProctoringController.saveScreenProctoringSettings);
