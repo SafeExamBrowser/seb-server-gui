@@ -16,13 +16,6 @@ export async function getAssessmentToolsActive(token: string, isActive: {}): Pro
     return [data, status];
 }
 
-export async function deleteAssessmentTool(token: string, id: string): Promise<[object, number]>{
-    const url: string =  constants.LMS_SETUP_ROUTE + "/" + id;
-    const {data, status} = await apiService.api.delete(url, {headers: apiService.getHeaders(token)});
-
-    return [data, status];
-}
-
 
 export async function createAssessmentTool(token: string, newAssessmentTool: {}): Promise<[object, number]>{
     const {data, status} = await apiService.api.post(constants.LMS_SETUP_ROUTE, apiService.createUrlEncodedBody(newAssessmentTool), {headers: apiService.getHeaders(token)});

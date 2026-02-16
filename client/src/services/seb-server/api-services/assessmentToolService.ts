@@ -66,16 +66,10 @@ export const deactivateAssessmentTool = async (
         )
     ).data;
 
-export async function deleteAssessmentTool(
+export const deleteAssessmentTool = async (
     assessmentToolId: string,
-): Promise<undefined | null> {
-    return (
-        await apiService.api.delete(
-            assessmentToolUrl + "/" + assessmentToolId,
-            { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN) },
-        )
-    ).data;
-}
+): Promise<undefined | null> =>
+    (await newApiService.deleteRequest(`${baseUrl}/${assessmentToolId}`)).data;
 
 export async function createAssessmentTool(
     assessmentTool: CreateAssessmentToolPar,

@@ -24,16 +24,6 @@ export async function getAssessmentToolsActive(req: Request, res: Response){
     }
 }
 
-export async function deleteAssessmentTool(req: Request, res: Response){
-    try{
-        const [assessmentTool, status] = await assessmentToolService.deleteAssessmentTool(req.headers.authorization, req.params.id);
-        return res.status(status).json(assessmentTool);
-
-    }catch(error){
-        apiService.handleGenericApiError(error, res);
-    }
-}
-
 export async function createAssessmentTool(req: Request, res: Response) {
     try {
         const [assessmentTool, status] = await assessmentToolService.createAssessmentTool(req.headers.authorization, req.body);
