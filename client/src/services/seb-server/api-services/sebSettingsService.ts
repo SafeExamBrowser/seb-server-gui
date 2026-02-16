@@ -37,25 +37,21 @@ export const getView = async (
         })
     ).data;
 
-export async function addTableRow(
+export const addTableRow = async (
     id: string,
     settingName: string,
-    forExam: boolean,
-): Promise<SEBSettingsTableRowValues> {
-    const url: string =
-        (forExam ? examUrlPrefix : templateUrlPrefix) +
-        id +
-        "/table/" +
-        settingName +
-        "/row";
-    return (
-        await apiService.api.post(
-            url,
-            { settingName },
-            { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN) },
+): Promise<SEBSettingsTableRowValues> =>
+    (
+        await newApiService.postRequest(
+            `${baseUrl}/${id}/table/row`,
+            { name: settingName },
+            {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+            },
         )
     ).data;
-}
 
 export async function deleteTableRow(
     id: string,
