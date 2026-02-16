@@ -1383,25 +1383,21 @@ async function closeEditURLFilterRuleDialog(apply?: boolean) {
         componentId,
         selectedURLFilterRule.value.ids.active.toString(),
         selectedURLFilterRule.value.active ? "true" : "false",
-        sebSettingsStore.isExam,
     );
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedURLFilterRule.value.ids.regex.toString(),
         selectedURLFilterRule.value.regex ? "true" : "false",
-        sebSettingsStore.isExam,
     );
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedURLFilterRule.value.ids.expression.toString(),
         selectedURLFilterRule.value.expression,
-        sebSettingsStore.isExam,
     );
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedURLFilterRule.value.ids.action.toString(),
         selectedURLFilterRule.value.action,
-        sebSettingsStore.isExam,
     );
 
     urlFilterTable.value[selectedURLFilterRule.value.index] =
@@ -1414,7 +1410,6 @@ async function saveSingleValue(name: string, value: string) {
         componentId,
         setting.id.toString(),
         value,
-        sebSettingsStore.isExam,
     );
 }
 
@@ -1424,7 +1419,6 @@ async function saveProxyValue(name: string, value: string) {
         componentId,
         setting.id.toString(),
         value,
-        sebSettingsStore.isExam,
     );
 }
 

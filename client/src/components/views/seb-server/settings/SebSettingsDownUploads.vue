@@ -614,7 +614,6 @@ async function saveSingleValue(name: string, value: string) {
         componentId,
         setting.id.toString(),
         value,
-        sebSettingsStore.isExam,
     );
 }
 
@@ -728,19 +727,16 @@ async function closeFileTypeDialog(apply?: boolean) {
         componentId,
         selectedDownloadFileType.value.ids.os.toString(),
         selectedDownloadFileType.value.os,
-        sebSettingsStore.isExam,
     );
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedDownloadFileType.value.ids.fileExtension.toString(),
         selectedDownloadFileType.value.fileExtension,
-        sebSettingsStore.isExam,
     );
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedDownloadFileType.value.ids.identifier.toString(),
         selectedDownloadFileType.value.identifier,
-        sebSettingsStore.isExam,
     );
 
     downloadFileTypesTable.value[selectedDownloadFileType.value.index] =
