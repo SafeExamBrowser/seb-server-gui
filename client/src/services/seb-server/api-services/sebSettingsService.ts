@@ -15,16 +15,11 @@ const baseUrl = "/exam/seb-settings" as const;
 const examUrlPrefix: string = "/exam/seb-settings/";
 const templateUrlPrefix: string = "/exam/seb-settings/";
 
-export async function getExamConfigMapping(
+export const getExamConfigMapping = async (
     examId: string,
-): Promise<ExamConfigMapping[]> {
-    const url: string = examUrlPrefix + examId + "/examConfigMapping";
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
+): Promise<ExamConfigMapping[]> =>
+    (await newApiService.getRequest(`${baseUrl}/${examId}/examConfigMapping`))
+        .data;
 
 export const getActiveSEBClients = async (
     examId: string,

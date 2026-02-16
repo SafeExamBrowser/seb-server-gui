@@ -1,13 +1,6 @@
 import * as apiService from "./api.service";
 import * as constants from "../../utils/constants";
 
-export async function getExamConfigMapping(token: string, examId: string): Promise<[object, number]>{
-    const url: string =  constants.EXAM_SEB_SETTINGS_ENDPOINT + "/" + examId + "/examConfigMapping";
-    const {data, status} = await apiService.api.get(url, {headers: apiService.getHeaders(token)});
-    return [data, status];
-}
-
-
 export async function addTableRow(token: string, examId: string, params: {}): Promise<[object, number]> {
     const url: string =  constants.EXAM_SEB_SETTINGS_ENDPOINT + "/" + examId + "/table/row";
     const {data, status} = await apiService.api.post(url, apiService.createUrlEncodedBody(params), {headers: apiService.getHeaders(token)});
