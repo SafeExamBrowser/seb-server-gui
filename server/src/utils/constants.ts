@@ -13,10 +13,6 @@ export const EXAM_SCREEN_PROCTORING_ROUTE = "/exam/:id/screen-proctoring"
 export const KEY_INFO_ROUTE = "/sebkeyinfo"
 export const GRANT_ROUTE = "/grant"
 
-//exam template
-export const EXAM_TEMPLATE_ROUTE = "/exam-template";
-export const EXAM_TEMPLATE_SCREEN_PROCTORING_ROUTE = "/exam-template/:id/screen-proctoring";
-
 //institution
 export const ADMIN_INSTITUTION_INFO_ROUTE = "/info/institution";
 export const INSTITUTION_ROUTE = "/institution";
@@ -24,28 +20,8 @@ export const ADMIN_INSTITUTION_LOGO_ROUTE = "/info/logo";
 export const SYSTEM_FEATURE_ROUTE = "/info/features";
 
 //user account
-export const USER_ACCOUNT_ROUTE = "/useraccount";
-export const USER_ACCOUNT_NAMES_ROUTE = "/useraccount/names";
 export const USER_ACCOUNT_REGISTRATION_SERVER_ROUTE = "/register";
 export const USER_ACCOUNT_REGISTRATION_ROUTE = "/useraccount/register";
-export const SUPERVISOR_ACCOUNT_NAMES_ROUTE = "/useraccount/supervisors";
-export const DEACTIVATION_ROUTE = "/inactive";
-export const ACTIVATION_ROUTE = "/active";
-export const FEATURE_ROUTE = "/useraccount/me/features";
-
-
-export const CHANGE_PASSWORD_ROUTE = "/password";
-
-
-//client config
-export const CONNECTION_CONFIG_ROUTE = "/client_configuration";
-export const DOWNLOAD_EXAM_CONFIG_ROUTE = "/client_configuration/download";
-
-//lms
-export const LMS_SETUP_ROUTE = "/lms-setup";
-export const ASSESSMENT_TOOL_ROUTE = "/assessment-tools";
-export const ASSESSMENT_TOOL_GET_ROUTE = "/get-assessment-tool";
-export const CERTIFICATE_ROUTE = "/certificate";
 
 //monitoring
 export const MONITORING_ROUTE = "/monitoring";
@@ -70,10 +46,6 @@ export const EXAM_SEB_SETTINGS_ROUTE = EXAM_ROUTE + "/seb-settings";
 
 //indicator
 export const INDICATOR_ROUTE = "/indicator";
-
-
-//active filter
-export const ACTIVE = "/active";
 
 //client Connection
 export const CLIENT_CONNECTION_ROUTE = "/seb-client-connection"
