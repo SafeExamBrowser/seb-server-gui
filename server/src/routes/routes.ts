@@ -6,7 +6,6 @@ import * as examController from "../controllers/seb-server/exam.controller";
 import * as screenProctoringController from "../controllers/seb-server/screen-proctoring.controller";
 import * as indicatorController from "../controllers/seb-server/indicator.controller";
 import * as userAccountController from "../controllers/seb-server/user-account.controller";
-import * as assessmentToolController from "../controllers/seb-server/assessment-tool.controller";
 import * as monitoringController from "../controllers/seb-server/monitoring.controller";
 import * as clientGroupsController from "../controllers/seb-server/client-groups.controller";
 import * as constants from "../utils/constants";
@@ -81,9 +80,6 @@ router.get(constants.ADMIN_INSTITUTION_LOGO_ROUTE + "/:suffix", institutionsCont
 
 //user accounts
 router.post(constants.USER_ACCOUNT_REGISTRATION_ROUTE, userAccountController.registerUserAccount);
-
-//assessment tool
-router.get(constants.ASSESSMENT_TOOL_ROUTE + constants.ACTIVE, assessmentToolController.getAssessmentToolsActive);
 
 //monitoring
 router.post(constants.MONITORING_TEST_RUN_ROUTE + "/:id", monitoringController.applyTestRun);
