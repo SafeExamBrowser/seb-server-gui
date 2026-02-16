@@ -7,11 +7,6 @@ export async function getExamConfigMapping(token: string, examId: string): Promi
     return [data, status];
 }
 
-export async function getView(token: string, examId: string, viewType: string): Promise<[object, number]>{
-    const url: string =  constants.EXAM_SEB_SETTINGS_ENDPOINT + "/" + examId;
-    const {data, status} = await apiService.api.get(url, {headers: apiService.getHeaders(token), params: { viewType: viewType }});
-    return [data, status];
-}
 
 export async function addTableRow(token: string, examId: string, params: {}): Promise<[object, number]> {
     const url: string =  constants.EXAM_SEB_SETTINGS_ENDPOINT + "/" + examId + "/table/row";

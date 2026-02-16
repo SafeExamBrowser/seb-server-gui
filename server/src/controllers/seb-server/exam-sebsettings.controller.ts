@@ -12,16 +12,6 @@ export async function getExamConfigMapping(req: Request, res: Response){
     }
 }
 
-export async function getView(req: Request, res: Response){
-    try{
-        const [exams, status] = await examSEBSettingsService.getView(req.headers.authorization, req.params.id, req.params.viewType);
-        return res.status(status).json(exams);
-
-    }catch(error){
-        apiService.handleGenericApiError(error, res);
-    }
-}
-
 export async function addTableRow(req: Request, res: Response){
     try{
         const [exams, status] = await examSEBSettingsService.addTableRow(req.headers.authorization, req.params.id, req.params);

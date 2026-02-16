@@ -32,19 +32,15 @@ export const getActiveSEBClients = async (
     (await newApiService.getRequest(`${baseUrl}/${examId}/active-seb-clients`))
         .data;
 
-export async function getView(
+export const getView = async (
     viewType: ViewType,
     id: string,
-    forExam: boolean,
-): Promise<SEBSettingsView> {
-    const url: string =
-        (forExam ? examUrlPrefix : templateUrlPrefix) + id + "/" + viewType;
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+): Promise<SEBSettingsView> =>
+    (
+        await newApiService.getRequest(`${baseUrl}/${id}`, {
+            params: { viewType: viewType },
         })
     ).data;
-}
 
 export async function addTableRow(
     id: string,

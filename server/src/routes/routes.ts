@@ -59,7 +59,6 @@ router.delete(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id/table/:name/row/:listInd
 router.post(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id", examSEBSettingsController.updateSEBSetting);
 router.post(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id/publish", examSEBSettingsController.publishSettings);
 router.post(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id/undo-changes", examSEBSettingsController.undoChanges);
-router.get(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id/:viewType", examSEBSettingsController.getView);
 
 // SEB Settings Template
 router.get(constants.TEMPLATE_SEB_SETTINGS_ROUTE + "/:id" + "/:viewType", templateSEBSettingsController.getView);
