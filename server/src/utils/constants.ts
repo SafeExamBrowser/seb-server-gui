@@ -40,10 +40,6 @@ export const MONITORING_LOGS_ROUTE = CLIENT_EVENT_URL + "/search";
 //client group
 export const CLIENT_GROUP_ROUTE = "/client-group";
 
-// exam seb settings
-export const EXAM_SEB_SETTINGS_ENDPOINT = EXAM_ROUTE + "/seb-settings";
-export const EXAM_SEB_SETTINGS_ROUTE = EXAM_ROUTE + "/seb-settings";
-
 //indicator
 export const INDICATOR_ROUTE = "/indicator";
 

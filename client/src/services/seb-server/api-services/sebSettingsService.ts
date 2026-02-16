@@ -1,7 +1,5 @@
 import * as newApiService from "@/services/newApiService";
 
-import * as apiService from "@/services/apiService";
-import { StorageItemEnum } from "@/models/StorageItemEnum";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums";
 import {
     ExamConfigMapping,
@@ -11,9 +9,6 @@ import {
 } from "@/models/seb-server/sebSettings";
 
 const baseUrl = "/exam/seb-settings" as const;
-
-const examUrlPrefix: string = "/exam/seb-settings/";
-const templateUrlPrefix: string = "/exam/seb-settings/";
 
 export const getExamConfigMapping = async (
     examId: string,
@@ -82,40 +77,28 @@ export const updateSEBSettingValue = async (
         )
     ).data;
 
-export async function publish(
-    id: string,
-    forExam: boolean,
-): Promise<SEBSettingsValue> {
-    const url: string =
-        (forExam ? examUrlPrefix : templateUrlPrefix) + id + "/publish";
-    return (
-        await apiService.api.post(
-            url,
+export const publish = async (id: string): Promise<SEBSettingsValue> =>
+    (
+        await newApiService.postRequest(
+            `${baseUrl}/${id}/publish`,
             {},
             {
-                headers: apiService.getPostHeaders(
-                    StorageItemEnum.ACCESS_TOKEN,
-                ),
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
             },
         )
     ).data;
-}
 
-export async function undoChanges(
-    id: string,
-    forExam: boolean,
-): Promise<SEBSettingsValue> {
-    const url: string =
-        (forExam ? examUrlPrefix : templateUrlPrefix) + id + "/undo-changes";
-    return (
-        await apiService.api.post(
-            url,
+export const undoChanges = async (id: string): Promise<SEBSettingsValue> =>
+    (
+        await newApiService.postRequest(
+            `${baseUrl}/${id}/undo-changes`,
             {},
             {
-                headers: apiService.getPostHeaders(
-                    StorageItemEnum.ACCESS_TOKEN,
-                ),
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
             },
         )
     ).data;
-}

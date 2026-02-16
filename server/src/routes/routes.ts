@@ -9,7 +9,6 @@ import * as userAccountController from "../controllers/seb-server/user-account.c
 import * as monitoringController from "../controllers/seb-server/monitoring.controller";
 import * as clientGroupsController from "../controllers/seb-server/client-groups.controller";
 import * as constants from "../utils/constants";
-import * as examSEBSettingsController from "../controllers/seb-server/exam-sebsettings.controller";
 
 //screen-proctoring
 import * as groupController from "../controllers/screen-proctoring/sp-group.controller";
@@ -48,10 +47,6 @@ router.get(constants.EXAMS_ROUTE + "/monitoring", examController.getExamsForMoni
 router.put(constants.EXAM_ROUTE + "/:id" + "/apply-seb-restriction", examController.putSEBLock);
 router.delete(constants.EXAM_ROUTE + "/:id" + "/apply-seb-restriction", examController.deleteSEBLock);
 router.get(constants.EXAM_ROUTE + "/:id" + "/check-seb-restriction", examController.checkSEBLock)
-
-// SEB Settings Exam
-router.post(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id/publish", examSEBSettingsController.publishSettings);
-router.post(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id/undo-changes", examSEBSettingsController.undoChanges);
 
 //screen proctoring
 router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE, screenProctoringController.saveScreenProctoringSettings);

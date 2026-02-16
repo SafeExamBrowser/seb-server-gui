@@ -81,12 +81,9 @@ export async function deleteSEBSettingTableRow(
     }
 }
 
-export async function publish(
-    id: string,
-    forExam: boolean,
-): Promise<SEBSettingsValue | null> {
+export async function publish(id: string): Promise<SEBSettingsValue | null> {
     try {
-        return await sebSettingService.publish(id, forExam);
+        return await sebSettingService.publish(id);
     } catch {
         return null;
     }
@@ -94,10 +91,9 @@ export async function publish(
 
 export async function undoChanges(
     id: string,
-    forExam: boolean,
 ): Promise<SEBSettingsValue | null> {
     try {
-        return await sebSettingService.undoChanges(id, forExam);
+        return await sebSettingService.undoChanges(id);
     } catch {
         return null;
     }
