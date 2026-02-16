@@ -52,16 +52,6 @@ export async function updateSEBSetting(req: Request, res: Response){
     }
 }
 
-export async function getActiveSEBClients(req: Request, res: Response){
-    try{
-        const [exams, status] = await examSEBSettingsService.getActiveSEBClients(req.headers.authorization, req.params.id);
-        return res.status(status).json(exams);
-
-    }catch(error){
-        apiService.handleGenericApiError(error, res);
-    }
-}
-
 export async function publishSettings(req: Request, res: Response){
     try{
         const [exam, status] = await examSEBSettingsService.publishSettings(req.headers.authorization, req.params.id);

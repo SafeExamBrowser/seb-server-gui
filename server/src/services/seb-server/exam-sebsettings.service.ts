@@ -31,12 +31,6 @@ export async function updateSEBSettingsValue(token: string, examId: string, valu
     return [data, status];
 }
 
-export async function getActiveSEBClients(token: string, examId: string): Promise<[object, number]> {
-    const url: string =  constants.EXAM_SEB_SETTINGS_ENDPOINT + "/" + examId + "/active-seb-clients"
-    const {data, status} = await apiService.api.get(url, {headers: apiService.getHeaders(token)});
-    return [data, status];
-}
-
 export async function publishSettings(token: string, examId: string): Promise<[object, number]> {
     const url: string =  constants.EXAM_SEB_SETTINGS_ENDPOINT + "/" + examId + "/publish"
     const {data, status} = await apiService.api.post(url, "", {headers: apiService.getHeaders(token)});

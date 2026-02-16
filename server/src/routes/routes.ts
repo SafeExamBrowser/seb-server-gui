@@ -57,7 +57,6 @@ router.get(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id/examConfigMapping", examSEB
 router.post(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id/table/:name/row", examSEBSettingsController.addTableRow);
 router.delete(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id/table/:name/row/:listIndex", examSEBSettingsController.deleteTableRow);
 router.post(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id", examSEBSettingsController.updateSEBSetting);
-router.get(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id/active-seb-clients", examSEBSettingsController.getActiveSEBClients);
 router.post(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id/publish", examSEBSettingsController.publishSettings);
 router.post(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id/undo-changes", examSEBSettingsController.undoChanges);
 router.get(constants.EXAM_SEB_SETTINGS_ROUTE + "/:id/:viewType", examSEBSettingsController.getView);

@@ -1,3 +1,5 @@
+import * as newApiService from "@/services/newApiService";
+
 import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums";
@@ -7,6 +9,8 @@ import {
     SEBSettingsValue,
     SEBSettingsView,
 } from "@/models/seb-server/sebSettings";
+
+const baseUrl = "/exam/seb-settings" as const;
 
 const examUrlPrefix: string = "/exam/seb-settings/";
 const templateUrlPrefix: string = "/exam/seb-settings/";
@@ -22,16 +26,11 @@ export async function getExamConfigMapping(
     ).data;
 }
 
-export async function getActiveSEBClients(
+export const getActiveSEBClients = async (
     examId: string,
-): Promise<number | null> {
-    const url: string = examUrlPrefix + examId + "/active-seb-clients";
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
+): Promise<number | null> =>
+    (await newApiService.getRequest(`${baseUrl}/${examId}/active-seb-clients`))
+        .data;
 
 export async function getView(
     viewType: ViewType,
