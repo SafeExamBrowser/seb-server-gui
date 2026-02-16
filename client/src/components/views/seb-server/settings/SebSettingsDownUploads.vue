@@ -681,7 +681,6 @@ async function deleteFileType(index: number) {
             componentId,
             "downloadFileTypes",
             index,
-            sebSettingsStore.isExam,
         );
     if (resp == null) {
         return;

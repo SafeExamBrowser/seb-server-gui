@@ -71,14 +71,12 @@ export async function deleteSEBSettingTableRow(
     id: string,
     settingName: string,
     rowIndex: number,
-    forExam: boolean,
 ): Promise<SEBSettingsTableRowValues[] | null> {
     try {
         return await sebSettingService.deleteTableRow(
             id,
             settingName,
             rowIndex,
-            forExam,
         );
     } catch {
         return null;

@@ -1336,7 +1336,6 @@ async function urlFilterRuleDelete(index: number) {
             componentId,
             "URLFilterRules",
             index,
-            sebSettingsStore.isExam,
         );
     if (resp == null) {
         return;
@@ -1365,7 +1364,6 @@ async function closeEditURLFilterRuleDialog(apply?: boolean) {
             await sebSettingsService.newSEBSettingTableRow(
                 componentId,
                 "URLFilterRules",
-                sebSettingsStore.isExam,
             );
         if (resp == null) {
             return;

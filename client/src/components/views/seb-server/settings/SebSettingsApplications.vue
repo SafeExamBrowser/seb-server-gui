@@ -634,7 +634,6 @@ async function permittedProcessDelete(index: number) {
             componentId,
             "permittedProcesses",
             index,
-            sebSettingsStore.isExam,
         );
     if (resp == null) {
         return;
@@ -873,7 +872,6 @@ async function prohibitedProcessDelete(index: number) {
             componentId,
             "prohibitedProcesses",
             index,
-            sebSettingsStore.isExam,
         );
     if (resp == null) {
         return;
