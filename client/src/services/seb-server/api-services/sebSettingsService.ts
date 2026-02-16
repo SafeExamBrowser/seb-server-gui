@@ -53,25 +53,17 @@ export const addTableRow = async (
         )
     ).data;
 
-export async function deleteTableRow(
+export const deleteTableRow = async (
     id: string,
     settingName: string,
     rowIndex: number,
-    forExam: boolean,
-): Promise<SEBSettingsTableRowValues[]> {
-    const url: string =
-        (forExam ? examUrlPrefix : templateUrlPrefix) +
-        id +
-        "/table/" +
-        settingName +
-        "/row/" +
-        rowIndex;
-    return (
-        await apiService.api.delete(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+): Promise<SEBSettingsTableRowValues[]> =>
+    (
+        await newApiService.deleteRequest(`${baseUrl}/${id}/table/row`, {
+            name: settingName,
+            listIndex: rowIndex,
         })
     ).data;
-}
 
 export async function updateSEBSettingValue(
     id: string,
