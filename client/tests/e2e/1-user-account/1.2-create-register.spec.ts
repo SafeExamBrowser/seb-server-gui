@@ -5,6 +5,9 @@ import {
     selectVuetifyOptionByName,
 } from "../utils/helpers";
 
+// broken atm
+// TODO use expectToHaveUrl helper and othees
+
 // Setup Method for page
 async function setupRegisterPage(page: Page) {
     await page.addInitScript(() => {

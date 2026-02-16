@@ -17,34 +17,74 @@ export function generateUniqueUsername(prefix = "e2e") {
     return `${prefix}-${ts}`;
 }
 
-//select specific item from select
+function activeListbox(page: Page) {
+    return page
+        .locator(".v-overlay--active [role='listbox']")
+        .filter({ has: page.locator("[role='option']") })
+        .last();
+}
 export async function selectVuetifyOptionByName(
     page: Page,
     selectRoot: Locator,
     optionName: string,
 ) {
-    const input = selectRoot.locator(".v-field__input").first();
-    await input.click();
+    await selectRoot.scrollIntoViewIfNeeded();
+    await selectRoot.click({ force: true });
 
-    const option = page.getByRole("option", { name: optionName });
+    const listbox = activeListbox(page);
+    await expect(listbox).toBeVisible();
+
+    const option = listbox.getByRole("option", {
+        name: optionName,
+        exact: true,
+    });
+
+    await option.scrollIntoViewIfNeeded();
+    await expect(option).toBeVisible();
+    await expect(option).toBeEnabled();
+
+    await option.click({ trial: true });
     await option.click();
 
-    await page.keyboard.press("Escape").catch(() => {});
+    await expect(listbox).toBeHidden({ timeout: 10_000 });
 }
 
-//select first item from select
 export async function selectVuetifyFirstOption(
     page: Page,
     selectRoot: Locator,
 ) {
-    const input = selectRoot.locator(".v-field__input").first();
-    await input.click();
+    await selectRoot.click();
 
-    await expect(page.getByRole("option").first()).toBeVisible({
-        timeout: 10000,
+    const listbox = activeListbox(page);
+    await expect(listbox).toBeVisible();
+
+    const firstOption = listbox.getByRole("option").first();
+    await expect(firstOption).toBeVisible();
+
+    await firstOption.click();
+    await expect(listbox).toBeHidden();
+}
+
+//navigate
+export async function navigateTo(page: Page, route: string) {
+    await page.goto(route);
+}
+
+export async function clearLocalAndSessionStorage(page: Page) {
+    await page.addInitScript(() => {
+        localStorage.clear();
+        sessionStorage.clear();
     });
+}
 
-    await page.keyboard.press("ArrowDown");
-    await page.keyboard.press("Enter");
-    await page.keyboard.press("Escape").catch(() => {});
+export async function expectToHaveUrl(page: Page, path: string) {
+    const regex = new RegExp(`\\/${path}(?:$|[?#])`, "i");
+
+    await expect(page).toHaveURL(regex, {
+        timeout: 10_000,
+    });
+}
+
+export function suffixForProject(projectName: string) {
+    return projectName.toLowerCase();
 }

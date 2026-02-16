@@ -1,4 +1,5 @@
 import { expect, Page } from "@playwright/test";
+import { expectToHaveUrl, navigateTo } from "./helpers";
 
 const SEB_SERVER_ADMIN_USERNAME = "testmain";
 const SEB_SERVER_ADMIN_PASSWORD = "testmain";
@@ -8,7 +9,8 @@ export async function loginAsServerAdmin(
     username: string = SEB_SERVER_ADMIN_USERNAME,
     password: string = SEB_SERVER_ADMIN_PASSWORD,
 ) {
-    await page.goto("/");
+    await navigateTo(page, "/");
+
     await expect(page.getByTestId("login-page-container")).toBeVisible();
 
     const usernameField = page.getByRole("textbox", { name: "Username *" });
@@ -19,7 +21,5 @@ export async function loginAsServerAdmin(
 
     await page.keyboard.press("Enter");
 
-    await expect(page).toHaveURL(/\/home(?:$|[?#])/i, {
-        timeout: 10_000,
-    });
+    await expectToHaveUrl(page, "home");
 }
