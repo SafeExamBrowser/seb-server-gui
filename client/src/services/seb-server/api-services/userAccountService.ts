@@ -1,7 +1,5 @@
 import * as newApiService from "@/services/newApiService";
 
-import axios, { AxiosResponse } from "axios";
-import * as ENV from "@/config/envConfig";
 import {
     CreateUserPar,
     EditUserAccountParameters,
@@ -15,16 +13,18 @@ import { OptionalParInstitutionId } from "@/models/seb-server/optionalParamters"
 
 const baseUrl = "/useraccount" as const;
 
-// TODO @alain: migrate this to the new proxy, once the API for it works again
-export async function registerUserAccount(
+export const registerUserAccount = async (
     payload: Record<string, string>,
-): Promise<UserAccount> {
-    const url = ENV.SERVER_URL + ENV.SERVER_PORT + "/useraccount" + "/register";
-    const { data, status }: AxiosResponse<UserAccount> =
-        await axios.post<UserAccount>(url, payload);
-    if (status === 200) return data;
-    throw new Error(`Unexpected status ${status} for registerUserAccount`);
-}
+): Promise<UserAccount> =>
+    (
+        await newApiService
+            .getApiForManualRequests()
+            .post(`/register`, payload, {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+            })
+    ).data;
 
 export const changePassword = async (
     uuid: string,

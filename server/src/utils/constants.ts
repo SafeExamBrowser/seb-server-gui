@@ -19,10 +19,6 @@ export const INSTITUTION_ROUTE = "/institution";
 export const ADMIN_INSTITUTION_LOGO_ROUTE = "/info/logo";
 export const SYSTEM_FEATURE_ROUTE = "/info/features";
 
-//user account
-export const USER_ACCOUNT_REGISTRATION_SERVER_ROUTE = "/register";
-export const USER_ACCOUNT_REGISTRATION_ROUTE = "/useraccount/register";
-
 //monitoring
 export const MONITORING_ROUTE = "/monitoring";
 export const MONITORING_GET_ROUTE = "/get-monitoring";
