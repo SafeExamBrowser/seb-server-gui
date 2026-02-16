@@ -85,8 +85,6 @@ router.post(constants.USER_ACCOUNT_REGISTRATION_ROUTE, userAccountController.reg
 //assessment tool
 router.get(constants.ASSESSMENT_TOOL_GET_ROUTE + "/:id", assessmentToolController.getAssessmentTool);
 router.get(constants.ASSESSMENT_TOOL_ROUTE + constants.ACTIVE, assessmentToolController.getAssessmentToolsActive);
-router.post(constants.ASSESSMENT_TOOL_ROUTE, assessmentToolController.createAssessmentTool);
-router.put(constants.ASSESSMENT_TOOL_ROUTE, assessmentToolController.editAssessmentTool);
 
 //monitoring
 router.post(constants.MONITORING_TEST_RUN_ROUTE + "/:id", monitoringController.applyTestRun);

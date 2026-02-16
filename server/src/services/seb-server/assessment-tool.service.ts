@@ -15,21 +15,3 @@ export async function getAssessmentToolsActive(token: string, isActive: {}): Pro
 
     return [data, status];
 }
-
-
-export async function createAssessmentTool(token: string, newAssessmentTool: {}): Promise<[object, number]>{
-    const {data, status} = await apiService.api.post(constants.LMS_SETUP_ROUTE, apiService.createUrlEncodedBody(newAssessmentTool), {headers: apiService.getHeaders(token)});
-    return [data, status];
-}
-
-
-
-export async function editAssessmentTool(token: string, editedAssessmentToolPars: {}): Promise<[object, number]> {
-    const headers = apiService.getPutHeaders(token);
-    const { data, status } = await apiService.api.put(
-        constants.LMS_SETUP_ROUTE,
-        editedAssessmentToolPars,
-        { headers }
-    );
-    return [data, status];
-}

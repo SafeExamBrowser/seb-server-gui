@@ -71,22 +71,18 @@ export const deleteAssessmentTool = async (
 ): Promise<undefined | null> =>
     (await newApiService.deleteRequest(`${baseUrl}/${assessmentToolId}`)).data;
 
-export async function createAssessmentTool(
+export const createAssessmentTool = async (
     assessmentTool: CreateAssessmentToolPar,
-): Promise<AssessmentTool> {
-    return (
-        await apiService.api.post(assessmentToolUrl, assessmentTool, {
-            headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),
+): Promise<AssessmentTool> =>
+    (
+        await newApiService.postRequest(baseUrl, assessmentTool, {
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
         })
     ).data;
-}
 
-export async function editAssessmentTool(
+export const editAssessmentTool = async (
     assessmentTool: UpdateAssessmentToolPar,
-): Promise<AssessmentTool> {
-    return (
-        await apiService.api.put(assessmentToolUrl, assessmentTool, {
-            headers: apiService.getPutHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
+): Promise<AssessmentTool> =>
+    (await newApiService.putRequest(baseUrl, assessmentTool)).data;
