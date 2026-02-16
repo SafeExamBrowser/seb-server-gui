@@ -421,7 +421,6 @@ onBeforeMount(async () => {
         await sebSettingsService.getViewSettings(
             ViewType.HOOKED_KEYS,
             componentId,
-            sebSettingsStore.isExam,
         );
     if (hotKeySettings == null) {
         return;

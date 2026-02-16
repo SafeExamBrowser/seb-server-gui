@@ -462,7 +462,6 @@ onBeforeMount(async () => {
         await sebSettingsService.getViewSettings(
             ViewType.REGISTRY,
             componentId,
-            sebSettingsStore.isExam,
         );
     if (registrySettings == null) {
         return;

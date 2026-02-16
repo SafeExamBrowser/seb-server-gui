@@ -30,10 +30,9 @@ export async function getActiveSEBClients(
 export async function getViewSettings(
     viewType: ViewType,
     id: string,
-    forExam: boolean,
 ): Promise<SEBSettingsView | null> {
     try {
-        return await sebSettingService.getView(viewType, id, forExam);
+        return await sebSettingService.getView(viewType, id);
     } catch {
         return null;
     }

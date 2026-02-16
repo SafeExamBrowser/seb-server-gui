@@ -543,7 +543,6 @@ onBeforeMount(async () => {
         await sebSettingsService.getViewSettings(
             ViewType.DOWN_UPLOAD,
             componentId,
-            sebSettingsStore.isExam,
         );
 
     if (duSettings == null) {

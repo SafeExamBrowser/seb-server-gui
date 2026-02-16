@@ -471,7 +471,6 @@ onBeforeMount(async () => {
         await sebSettingsService.getViewSettings(
             ViewType.PROCTORING,
             componentId,
-            sebSettingsStore.isExam,
         );
     if (proctoringSettings == null) {
         return;

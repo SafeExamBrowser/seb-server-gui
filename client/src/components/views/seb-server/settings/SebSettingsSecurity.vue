@@ -1254,7 +1254,6 @@ onBeforeMount(async () => {
         await sebSettingsService.getViewSettings(
             ViewType.SECURITY,
             componentId,
-            sebSettingsStore.isExam,
         );
     if (securitySettings == null) {
         return;

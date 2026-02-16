@@ -1174,11 +1174,7 @@ onBeforeMount(async () => {
     componentId = sebSettingsStore.selectedContainerId.toString();
 
     const networkSettings: SEBSettingsView | null =
-        await sebSettingsService.getViewSettings(
-            ViewType.NETWORK,
-            componentId,
-            sebSettingsStore.isExam,
-        );
+        await sebSettingsService.getViewSettings(ViewType.NETWORK, componentId);
     if (networkSettings == null) {
         return;
     }

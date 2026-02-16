@@ -254,11 +254,7 @@ onBeforeMount(async () => {
     componentId = sebSettingsStore.selectedContainerId.toString();
 
     const generalSettings: SEBSettingsView | null =
-        await sebSettingsService.getViewSettings(
-            ViewType.GENERAL,
-            componentId,
-            sebSettingsStore.isExam,
-        );
+        await sebSettingsService.getViewSettings(ViewType.GENERAL, componentId);
     if (generalSettings == null) {
         return;
     }

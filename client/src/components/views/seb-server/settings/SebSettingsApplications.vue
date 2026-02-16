@@ -422,7 +422,6 @@ onBeforeMount(async () => {
         await sebSettingsService.getViewSettings(
             ViewType.APPLICATION,
             componentId,
-            sebSettingsStore.isExam,
         );
     if (applicationSettings == null) {
         return;
