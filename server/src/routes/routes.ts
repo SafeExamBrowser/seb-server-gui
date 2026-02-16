@@ -19,7 +19,6 @@ import * as settingsController from "../controllers/screen-proctoring/sp-setting
 import * as applicationSearchController from "../controllers/screen-proctoring/sp-application-search.controller";
 import * as institutionsController from "../controllers/seb-server/institution.controller";
 import * as clientConnectionController from "../controllers/seb-server/client-connection.controller";
-import {grantExamAppSignatureKey} from "../controllers/seb-server/exam.controller";
 
 const router: Router = express.Router();
 
@@ -120,15 +119,5 @@ router.get("/sp/search/applications/metadata/app", applicationSearchController.g
 router.get("/sp/search/applications/metadata/window", applicationSearchController.getDistinctMetadataWindowForExam);
 router.get("/sp/search/applications/users", applicationSearchController.getUserListForApplicationSearch);
 router.get("/sp/search/applications/timestamps", applicationSearchController.getTimestampListForApplicationSearch);
-
-// router.get("/sp/useraccount/me", spUserAccountController.getPersonalUserAccount);
-// router.get("/sp/useraccount/:accountId", spUserAccountController.getUserAccountById);
-// router.get("/sp/useraccount", spUserAccountController.getUserAccounts);
-// router.post("/sp/useraccount/register", spAuthorizationAdditional.isUserAccountOperationAllowed, spUserAccountController.registerUserAccount);
-// router.post("/sp/useraccount/changePassword", spAuthorizationAdditional.isUserAccountOperationAllowed, spUserAccountController.changePassword);
-// router.post("/sp/useraccount/activate/:accountId", spAuthorizationAdditional.isUserAccountOperationAllowed, spUserAccountController.activateUserAccount);
-// router.post("/sp/useraccount/deactivate/:accountId", spAuthorizationAdditional.isUserAccountOperationAllowed, spUserAccountController.deactivateUserAccount);
-
-
 
 export default router;
