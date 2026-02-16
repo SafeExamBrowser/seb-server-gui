@@ -663,7 +663,6 @@ async function closeEditPermittedProcessDialog(apply?: boolean) {
             await sebSettingsService.newSEBSettingTableRow(
                 componentId,
                 "permittedProcesses",
-                sebSettingsStore.isExam,
             );
         if (resp == null) {
             return;
@@ -904,7 +903,6 @@ async function closeEditProhibitedProcessDialog(apply?: boolean) {
             await sebSettingsService.newSEBSettingTableRow(
                 componentId,
                 "prohibitedProcesses",
-                sebSettingsStore.isExam,
             );
         if (resp == null) {
             return;

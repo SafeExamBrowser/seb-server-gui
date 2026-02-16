@@ -710,7 +710,6 @@ async function closeFileTypeDialog(apply?: boolean) {
             await sebSettingsService.newSEBSettingTableRow(
                 componentId,
                 "downloadFileTypes",
-                sebSettingsStore.isExam,
             );
         if (resp == null) {
             return;

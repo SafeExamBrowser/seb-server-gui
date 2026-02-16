@@ -59,10 +59,9 @@ export async function updateSEBSettingValue(
 export async function newSEBSettingTableRow(
     id: string,
     settingName: string,
-    forExam: boolean,
 ): Promise<SEBSettingsTableRowValues | null> {
     try {
-        return await sebSettingService.addTableRow(id, settingName, forExam);
+        return await sebSettingService.addTableRow(id, settingName);
     } catch {
         return null;
     }
