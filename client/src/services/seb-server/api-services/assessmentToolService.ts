@@ -36,36 +36,35 @@ export const getAssessmentTools = async (
     (await newApiService.getRequest(baseUrl, { params: optionalParameters }))
         .data;
 
-export async function activateAssessmentTool(
+export const activateAssessmentTool = async (
     assessmentToolId: string,
-): Promise<AssessmentTool> {
-    const url: string = assessmentToolUrl + "/" + assessmentToolId + "/active";
-    return (
-        await apiService.api.post(
-            url,
+): Promise<AssessmentTool> =>
+    (
+        await newApiService.postRequest(
+            `${baseUrl}/${assessmentToolId}/active`,
             {},
             {
-                headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
             },
         )
     ).data;
-}
 
-export async function deactivateAssessmentTool(
+export const deactivateAssessmentTool = async (
     assessmentToolId: string,
-): Promise<AssessmentTool> {
-    const url: string =
-        assessmentToolUrl + "/" + assessmentToolId + "/inactive";
-    return (
-        await apiService.api.post(
-            url,
+): Promise<AssessmentTool> =>
+    (
+        await newApiService.postRequest(
+            `${baseUrl}/${assessmentToolId}/inactive`,
             {},
             {
-                headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
             },
         )
     ).data;
-}
 
 export async function deleteAssessmentTool(
     assessmentToolId: string,
