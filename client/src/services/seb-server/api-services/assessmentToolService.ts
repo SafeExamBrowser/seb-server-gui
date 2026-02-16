@@ -21,14 +21,8 @@ export async function getAssessmentToolsActive(): Promise<AssessmentToolsRespons
     ).data;
 }
 
-export async function getAssessmentTool(id: number): Promise<AssessmentTool> {
-    const url: string = "/get-assessment-tool/" + id;
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
+export const getAssessmentTool = async (id: number): Promise<AssessmentTool> =>
+    (await newApiService.getRequest(`${baseUrl}/${id}`)).data;
 
 export const getAssessmentTools = async (
     optionalParameters?: OptionalParGetAssessmentTool,
