@@ -79,6 +79,10 @@ export async function removeGrantExamAppSignatureKeys(
     ).data;
 }
 
+export const checkSEBLock = async (id: string): Promise<boolean> =>
+    (await newApiService.getRequest(`${baseUrl}/${id}/check-seb-restriction`))
+        .data;
+
 // no logic in this file
 export async function applySEBLock(
     id: string,
@@ -104,13 +108,4 @@ export async function applySEBLock(
             })
         ).data;
     }
-}
-
-export async function checkSEBLock(id: string): Promise<boolean> {
-    const url: string = "/exam/" + id + "/check-seb-restriction";
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
 }
