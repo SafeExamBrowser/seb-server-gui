@@ -28,7 +28,6 @@ router.post(constants.EXAM_ROUTE, examController.createExam);
 router.delete(constants.EXAM_ROUTE + "/:id", examController.deleteExam);
 router.put(constants.EXAM_ROUTE + "/:id", examController.updateExam);
 router.patch(constants.EXAM_ARCHIVE_ROUTE, examController.archiveExam)
-router.get(constants.EXAM_GET_ROUTE + "/:id", examController.getExam);
 router.get(constants.EXAM_ROUTE + "/:id" + constants.KEY_INFO_ROUTE, examController.getExamAppSignatureKeys);
 router.post(constants.EXAM_ROUTE + "/:parentId" + constants.GRANT_ROUTE + "/:id", examController.grantExamAppSignatureKey);
 router.delete(constants.EXAM_ROUTE + "/:parentId" + constants.GRANT_ROUTE + "/:id", examController.removeGrantExamAppSignatureKey);

@@ -6,7 +6,6 @@ export const QUIZ_ROUTE = "/quiz";
 //exam
 export const EXAM_ROUTE = "/exam";
 export const EXAM_ARCHIVE_ROUTE = "/exam/:id/archive";
-export const EXAM_GET_ROUTE = "/get-exam";
 export const EXAMS_ROUTE = "/exams";
 export const EXAM_CONFIGURATION_MAP_ROUTE = "/exam-configuration-map";
 export const EXAM_SCREEN_PROCTORING_ROUTE = "/exam/:id/screen-proctoring"

@@ -1,3 +1,5 @@
+import * as newApiService from "@/services/newApiService";
+
 import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
 import { OptionalParGetExams } from "@/models/seb-server/optionalParamters";
@@ -10,14 +12,8 @@ import {
 const baseUrl = "/exam" as const;
 const examsUrl = "/exams" as const;
 
-export async function getExam(id: string): Promise<Exam> {
-    const url: string = "/get-exam/" + id;
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
+export const getExam = async (id: string): Promise<Exam> =>
+    (await newApiService.getRequest(`${baseUrl}/${id}`)).data;
 
 export async function getExamAppSignatureKeys(
     id: string,
