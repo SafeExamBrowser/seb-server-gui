@@ -44,7 +44,6 @@ router.post(constants.MONITORING_DISABLE_CONNECTIONS_ROUTE, monitoringController
 router.get(constants.MONITORING_LOGS_ROUTE + "/:id" , monitoringController.getClientEventLogs);
 
 //client groups
-router.get(constants.CLIENT_GROUP_ROUTE, clientGroupsController.getClientGroups);
 router.post(constants.CLIENT_GROUP_ROUTE, clientGroupsController.createClientGroup);
 router.put(constants.CLIENT_GROUP_ROUTE, clientGroupsController.updateClientGroup);
 router.delete(constants.CLIENT_GROUP_ROUTE + "/:id", clientGroupsController.deleteClientGroup);

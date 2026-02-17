@@ -1,5 +1,4 @@
 import * as newApiService from "@/services/newApiService";
-
 import { OptionalParGetExams } from "@/models/seb-server/optionalParamters";
 import { CreateExamPar, Exam, Exams } from "@/models/seb-server/exam";
 import {

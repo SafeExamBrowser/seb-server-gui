@@ -33,13 +33,3 @@ export async function deleteClientGroup(req: Request, res: Response){
         apiService.handleGenericApiError(error, res);
     }
 }
-
-export async function getClientGroups(req: Request, res: Response){
-    try{
-        const [clientGroups, status] = await clientGroupsService.getClientGroups(req.headers.authorization, req.query.id);
-        return res.status(status).json(clientGroups);
-
-    }catch(error){
-        apiService.handleGenericApiError(error, res);
-    }
-}
