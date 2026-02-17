@@ -1067,7 +1067,6 @@ async function updateExam(isSupervisorsManualUpdate?: boolean) {
     }
 
     const updateExamResponse: Exam | null = await examViewService.updateExam(
-        examId,
         examStore.selectedExam,
     );
 

@@ -24,6 +24,9 @@ export const createExam = async (createExamPar: CreateExamPar): Promise<Exam> =>
         })
     ).data;
 
+export const updateExam = async (exam: Exam): Promise<Exam> =>
+    (await newApiService.putRequest(baseUrl, exam)).data;
+
 export async function getExamAppSignatureKeys(
     id: string,
 ): Promise<AppSignatureKey[]> {
@@ -76,14 +79,6 @@ export async function deleteExam(id: string): Promise<unknown | null> {
     return (
         await apiService.api.delete(baseUrl + "/" + id, {
             headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
-
-export async function updateExam(id: string, exam: Exam): Promise<Exam> {
-    return (
-        await apiService.api.put(baseUrl + "/" + id, exam, {
-            headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),
         })
     ).data;
 }

@@ -117,12 +117,9 @@ export async function getExamsForMonitoring(
     }
 }
 
-export async function updateExam(
-    examId: string,
-    exam: Exam,
-): Promise<Exam | null> {
+export async function updateExam(exam: Exam): Promise<Exam | null> {
     try {
-        return await examService.updateExam(examId, exam);
+        return await examService.updateExam(exam);
     } catch {
         return null;
     }
