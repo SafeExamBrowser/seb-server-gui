@@ -1,7 +1,6 @@
 import express, {Router} from "express";
 
 import * as systemController from "../controllers/seb-server/system.controller";
-import * as quizController from "../controllers/seb-server/quiz.controller";
 import * as examController from "../controllers/seb-server/exam.controller";
 import * as screenProctoringController from "../controllers/seb-server/screen-proctoring.controller";
 import * as indicatorController from "../controllers/seb-server/indicator.controller";
@@ -22,9 +21,6 @@ const router: Router = express.Router();
 
 // system
 router.get(constants.SYSTEM_FEATURE_ROUTE, systemController.getSystemFeatures)
-
-//quiz
-router.get(constants.QUIZ_ROUTE, quizController.getQuizzes);
 
 //exams 
 router.get(constants.EXAMS_ROUTE, examController.getExams);
