@@ -1,7 +1,7 @@
 import * as newApiService from "@/services/newApiService";
 import { ClientGroup, ClientGroups } from "@/models/seb-server/clientGroup";
 
-const baseUrl = "/client-group";
+const baseUrl = "/client-group" as const;
 
 export const getClientGroups = async (id?: string): Promise<ClientGroups> =>
     (await newApiService.getRequest(baseUrl, { params: { examId: id } })).data;

@@ -11,7 +11,6 @@ import * as screenshotDataController from "../controllers/screen-proctoring/sp-s
 import * as searchController from "../controllers/screen-proctoring/sp-search.controller";
 import * as settingsController from "../controllers/screen-proctoring/sp-settings.controller";
 import * as applicationSearchController from "../controllers/screen-proctoring/sp-application-search.controller";
-import * as institutionsController from "../controllers/seb-server/institution.controller";
 import * as clientConnectionController from "../controllers/seb-server/client-connection.controller";
 
 const router: Router = express.Router();
@@ -23,11 +22,6 @@ router.get(constants.SYSTEM_FEATURE_ROUTE, systemController.getSystemFeatures)
 router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE, screenProctoringController.saveScreenProctoringSettings);
 router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE + "/apply-groups", screenProctoringController.applyScreenProctoringGroups);
 router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE + "/activation", screenProctoringController.activateScreenProctoring);
-
-//institutions
-router.get(constants.INSTITUTION_ROUTE, institutionsController.getInstitutions);
-router.get(constants.INSTITUTION_ROUTE, institutionsController.getInstitutions);
-router.get(constants.ADMIN_INSTITUTION_LOGO_ROUTE + "/:suffix", institutionsController.getInstitutionLogo)
 
 //monitoring
 router.post(constants.MONITORING_TEST_RUN_ROUTE + "/:id", monitoringController.applyTestRun);

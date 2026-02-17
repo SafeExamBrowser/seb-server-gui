@@ -7,9 +7,6 @@ export const QUIZ_ROUTE = "/quiz";
 export const EXAM_SCREEN_PROCTORING_ROUTE = "/exam/:id/screen-proctoring"
 
 //institution
-export const ADMIN_INSTITUTION_INFO_ROUTE = "/info/institution";
-export const INSTITUTION_ROUTE = "/institution";
-export const ADMIN_INSTITUTION_LOGO_ROUTE = "/info/logo";
 export const SYSTEM_FEATURE_ROUTE = "/info/features";
 
 //monitoring

@@ -1,22 +1,16 @@
-import * as apiService from "@/services/apiService";
+import * as newApiService from "@/services/newApiService";
 import { Institution } from "@/models/seb-server/institution";
 
-const url: string = "/institution";
-const logoUrl: string = "/info/logo";
+const baseUrl = "/info" as const;
 
-export async function getInstitutions(): Promise<Institution[]> {
-    return (await apiService.api.get(url)).data;
-}
+export const getInstitutions = async (): Promise<Institution[]> =>
+    (await newApiService.getRequest(`${baseUrl}/institution`)).data;
 
-export async function getInstitution(
-    institutionId: string,
-): Promise<Institution | unknown> {
-    return (await apiService.api.get(url, { params: { institutionId } })).data;
-}
-
-export async function getInstitutionLogo(
+export const getInstitutionLogo = async (
     institutionSuffix: string,
-): Promise<string> {
-    const url = logoUrl + "/" + institutionSuffix;
-    return (await apiService.api.get(url)).data;
-}
+): Promise<string> =>
+    (
+        await newApiService.getRequest(`${baseUrl}/logo/${institutionSuffix}`, {
+            headers: { Accept: "application/json, text/plain, */*" },
+        })
+    ).data;
