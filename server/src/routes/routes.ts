@@ -24,7 +24,6 @@ router.get(constants.SYSTEM_FEATURE_ROUTE, systemController.getSystemFeatures)
 
 //exams 
 router.get(constants.EXAMS_ROUTE, examController.getExams);
-router.post(constants.EXAM_ROUTE, examController.createExam);
 router.delete(constants.EXAM_ROUTE + "/:id", examController.deleteExam);
 router.put(constants.EXAM_ROUTE + "/:id", examController.updateExam);
 router.patch(constants.EXAM_ARCHIVE_ROUTE, examController.archiveExam)

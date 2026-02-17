@@ -15,6 +15,15 @@ const examsUrl = "/exams" as const;
 export const getExam = async (id: string): Promise<Exam> =>
     (await newApiService.getRequest(`${baseUrl}/${id}`)).data;
 
+export const createExam = async (createExamPar: CreateExamPar): Promise<Exam> =>
+    (
+        await newApiService.postRequest(baseUrl, createExamPar, {
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+        })
+    ).data;
+
 export async function getExamAppSignatureKeys(
     id: string,
 ): Promise<AppSignatureKey[]> {
@@ -59,14 +68,6 @@ export async function getGrantedExamAppSignatureKeys(
     return (
         await apiService.api.get(url, {
             headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
-
-export async function createExam(createExamPar: CreateExamPar): Promise<Exam> {
-    return (
-        await apiService.api.post(baseUrl, createExamPar, {
-            headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),
         })
     ).data;
 }
