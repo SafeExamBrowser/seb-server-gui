@@ -2,7 +2,6 @@ import express, {Router} from "express";
 
 import * as systemController from "../controllers/seb-server/system.controller";
 import * as screenProctoringController from "../controllers/seb-server/screen-proctoring.controller";
-import * as indicatorController from "../controllers/seb-server/indicator.controller";
 import * as monitoringController from "../controllers/seb-server/monitoring.controller";
 import * as clientGroupsController from "../controllers/seb-server/client-groups.controller";
 import * as constants from "../utils/constants";
@@ -53,9 +52,6 @@ router.delete(constants.CLIENT_GROUP_ROUTE + "/:id", clientGroupsController.dele
 
 //client connection
 router.get(constants.CLIENT_CONNECTION_ROUTE + "/list", clientConnectionController.getClientConnectionList)
-
-//indicator
-router.get(constants.INDICATOR_ROUTE, indicatorController.getIndicators);
 
 //screen-proctoring
 router.get("/sp/settings", settingsController.getSettings)

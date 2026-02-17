@@ -29,8 +29,5 @@ export const MONITORING_LOGS_ROUTE = CLIENT_EVENT_URL + "/search";
 //client group
 export const CLIENT_GROUP_ROUTE = "/client-group";
 
-//indicator
-export const INDICATOR_ROUTE = "/indicator";
-
 //client Connection
 export const CLIENT_CONNECTION_ROUTE = "/seb-client-connection"
