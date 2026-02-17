@@ -29,15 +29,3 @@ export async function removeGrantExamAppSignatureKey(token: string, parentId: st
     const {data, status} = await apiService.api.delete(url, {headers: apiService.getHeaders(token)});
     return [data, status];
 }
-
-export async function putSEBLock(token: string, id: string){
-    const url: string =  "/exam/" + id + "/seb-restriction";
-    const {data, status} = await apiService.api.put(url, {}, {headers: apiService.getHeaders(token)});
-    return [data, status];
-}
-
-export async function deleteSEBLock(token: string, id: string){
-    const url: string =  "/exam/" + id + "/seb-restriction";
-    const {data, status} = await apiService.api.delete(url, {headers: apiService.getHeaders(token)});
-    return [data, status];
-}

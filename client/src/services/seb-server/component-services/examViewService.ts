@@ -213,7 +213,9 @@ export async function applySEBLock(
     enableSEBLock: boolean,
 ): Promise<Exam | null> {
     try {
-        return await examService.applySEBLock(id, enableSEBLock);
+        return enableSEBLock
+            ? await examService.addSEBLock(id)
+            : await examService.removeSEBLock(id);
     } catch {
         return null;
     }

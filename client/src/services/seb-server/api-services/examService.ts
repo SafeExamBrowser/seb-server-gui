@@ -83,29 +83,19 @@ export const checkSEBLock = async (id: string): Promise<boolean> =>
     (await newApiService.getRequest(`${baseUrl}/${id}/check-seb-restriction`))
         .data;
 
-// no logic in this file
-export async function applySEBLock(
-    id: string,
-    enableSEBLock: boolean,
-): Promise<Exam | null> {
-    const url: string = "/exam/" + id + "/apply-seb-restriction";
-    if (enableSEBLock) {
-        return (
-            await apiService.api.put(
-                url,
-                {},
-                {
-                    headers: apiService.getHeaders(
-                        StorageItemEnum.ACCESS_TOKEN,
-                    ),
+export const addSEBLock = async (id: string): Promise<Exam> =>
+    (
+        await newApiService.putRequest(
+            `${baseUrl}/${id}/seb-restriction`,
+            {},
+            {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
                 },
-            )
-        ).data;
-    } else {
-        return (
-            await apiService.api.delete(url, {
-                headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-            })
-        ).data;
-    }
-}
+            },
+        )
+    ).data;
+
+export const removeSEBLock = async (id: string): Promise<null> =>
+    (await newApiService.deleteRequest(`${baseUrl}/${id}/seb-restriction`))
+        .data;
