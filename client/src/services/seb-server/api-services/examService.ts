@@ -51,18 +51,7 @@ export const getGrantedExamAppSignatureKeys = async (
 ): Promise<GrantedAppSignatureKey[]> =>
     (await newApiService.getRequest(`${baseUrl}/${parentId}/grant`)).data;
 
-export async function removeGrantExamAppSignatureKeys(
-    parentId: string,
-    id: string,
-): Promise<AppSignatureKey[]> {
-    const url: string = baseUrl + "/" + parentId + "/grant" + "/" + id;
-    return (
-        await apiService.api.delete(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
-
+// TODO @alain: migrate, as soon as I know how to test it
 export async function grantExamAppSignatureKeys(
     tagName: string,
     parentId: string,
@@ -73,6 +62,19 @@ export async function grantExamAppSignatureKeys(
         await apiService.api.post(url, null, {
             headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
             params: { tag: tagName },
+        })
+    ).data;
+}
+
+// TODO @alain: migrate, as soon as I know how to test it
+export async function removeGrantExamAppSignatureKeys(
+    parentId: string,
+    id: string,
+): Promise<AppSignatureKey[]> {
+    const url: string = baseUrl + "/" + parentId + "/grant" + "/" + id;
+    return (
+        await apiService.api.delete(url, {
+            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
         })
     ).data;
 }
