@@ -34,16 +34,6 @@ export async function deleteClientGroup(req: Request, res: Response){
     }
 }
 
-export async function getClientGroup(req: Request, res: Response){
-    try{
-        const [clientGroup, status] = await clientGroupsService.getClientGroup(req.headers.authorization, req.params.id);
-        return res.status(status).json(clientGroup);
-
-    }catch(error){
-        apiService.handleGenericApiError(error, res);
-    }
-}
-
 export async function getClientGroups(req: Request, res: Response){
     try{
         const [clientGroups, status] = await clientGroupsService.getClientGroups(req.headers.authorization, req.query.id);

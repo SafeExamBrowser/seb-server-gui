@@ -32,14 +32,6 @@ export async function deleteClientGroup(id: string): Promise<undefined | null> {
     ).data;
 }
 
-export async function getClientGroup(id: string): Promise<ClientGroup> {
-    return (
-        await apiService.api.get(url + "/" + id, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
-
 export async function getClientGroups(id?: string): Promise<ClientGroups> {
     return (
         await apiService.api.get(url, {
