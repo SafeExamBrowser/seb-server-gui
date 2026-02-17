@@ -11,7 +11,6 @@ import * as screenshotDataController from "../controllers/screen-proctoring/sp-s
 import * as searchController from "../controllers/screen-proctoring/sp-search.controller";
 import * as settingsController from "../controllers/screen-proctoring/sp-settings.controller";
 import * as applicationSearchController from "../controllers/screen-proctoring/sp-application-search.controller";
-import * as clientConnectionController from "../controllers/seb-server/client-connection.controller";
 
 const router: Router = express.Router();
 
@@ -35,9 +34,6 @@ router.get(constants.MONITORING_NOTIFICATIONS_ROUTE + "/:connectionToken", monit
 router.post(constants.MONITORING_NOTIFICATIONS_ROUTE + "/:notificationId/:connectionToken", monitoringController.confirmNotification);
 router.post(constants.MONITORING_DISABLE_CONNECTIONS_ROUTE, monitoringController.disableConnections);
 router.get(constants.MONITORING_LOGS_ROUTE + "/:id" , monitoringController.getClientEventLogs);
-
-//client connection
-router.get(constants.CLIENT_CONNECTION_ROUTE + "/list", clientConnectionController.getClientConnectionList)
 
 //screen-proctoring
 router.get("/sp/settings", settingsController.getSettings)

@@ -1,21 +1,14 @@
-import * as apiService from "@/services/apiService";
-import { StorageItemEnum } from "@/models/StorageItemEnum";
+import * as newApiService from "@/services/newApiService";
 import { SebClientConnection } from "@/models/seb-server/clientConnectionList";
 
-const url = "/seb-client-connection";
-const listEndpoint = url + "/list";
+const baseUrl = "/seb-client-connection" as const;
 
-export async function getClientConnectionList(
-    modelIds: number[] | string,
-): Promise<SebClientConnection[]> {
-    const value = Array.isArray(modelIds)
-        ? modelIds.join(",")
-        : String(modelIds).replace(/\s+/g, "");
-
-    return (
-        await apiService.api.get(listEndpoint, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-            params: { modelIds: value },
+// TODO @andreas: please test this
+export const getClientConnectionList = async (
+    modelIds: number[],
+): Promise<SebClientConnection[]> =>
+    (
+        await newApiService.getRequest(`${baseUrl}/list`, {
+            params: { modelIds: modelIds.join(",") },
         })
     ).data;
-}
