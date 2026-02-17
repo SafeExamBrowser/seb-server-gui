@@ -30,6 +30,15 @@ export const updateExam = async (exam: Exam): Promise<Exam> =>
 export const deleteExam = async (id: string): Promise<unknown | null> =>
     (await newApiService.deleteRequest(`${baseUrl}/${id}`)).data;
 
+export const getExams = async (
+    optionalParameters?: OptionalParGetExams,
+): Promise<Exams> =>
+    (
+        await newApiService.getRequest(baseUrl, {
+            params: optionalParameters,
+        })
+    ).data;
+
 export async function getExamAppSignatureKeys(
     id: string,
 ): Promise<AppSignatureKey[]> {
@@ -74,17 +83,6 @@ export async function getGrantedExamAppSignatureKeys(
     return (
         await apiService.api.get(url, {
             headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
-
-export async function getExams(
-    optionalParameters?: OptionalParGetExams,
-): Promise<Exams> {
-    return (
-        await apiService.api.get(examsUrl, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-            params: { optionalParameters },
         })
     ).data;
 }

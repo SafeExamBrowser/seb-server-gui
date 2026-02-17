@@ -23,7 +23,6 @@ const router: Router = express.Router();
 router.get(constants.SYSTEM_FEATURE_ROUTE, systemController.getSystemFeatures)
 
 //exams 
-router.get(constants.EXAMS_ROUTE, examController.getExams);
 router.patch(constants.EXAM_ARCHIVE_ROUTE, examController.archiveExam)
 router.get(constants.EXAM_ROUTE + "/:id" + constants.KEY_INFO_ROUTE, examController.getExamAppSignatureKeys);
 router.post(constants.EXAM_ROUTE + "/:parentId" + constants.GRANT_ROUTE + "/:id", examController.grantExamAppSignatureKey);
