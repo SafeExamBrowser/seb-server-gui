@@ -42,13 +42,6 @@ export async function removeGrantExamAppSignatureKey(token: string, parentId: st
     return [data, status];
 }
 
-export async function deleteExam(token: string, id: string): Promise<[object, number]>{
-    const url: string =  constants.EXAM_ROUTE + "/" + id;
-    const {data, status} = await apiService.api.delete(url, {headers: apiService.getHeaders(token)});
-
-    return [data, status];
-}
-
 export async function getExams(token: string, options?: {}): Promise<[object, number]>{
     const url: string =  constants.EXAM_ROUTE;
     const {data, status} = await apiService.api.get(url, {headers: apiService.getHeaders(token), params: options});

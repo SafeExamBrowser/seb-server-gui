@@ -61,16 +61,6 @@ export async function getExamConfigurationMap(req: Request, res: Response){
     }
 }
 
-export async function deleteExam(req: Request, res: Response){
-    try{
-        const [exams, status] = await examService.deleteExam(req.headers.authorization, req.params.id);
-        return res.status(status).json(exams);
-
-    }catch(error){
-        apiService.handleGenericApiError(error, res);
-    }
-}
-
 export async function getExams(req: Request, res: Response){
     try{
         const [exams, status] = await examService.getExams(req.headers.authorization, req.query.optionalParameters);
