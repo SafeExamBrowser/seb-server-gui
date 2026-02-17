@@ -10,12 +10,6 @@ export async function getExamConfigurationMap(token: string, id: string, options
     return [data, status];
 }
 
-export async function getGrantedExamAppSignatureKeys(token: string, id: string): Promise<[object, number]>{
-    const url: string =  constants.EXAM_ROUTE + "/" + id + constants.GRANT_ROUTE;
-    const {data, status} = await apiService.api.get(url, {headers: apiService.getHeaders(token)});
-    return [data, status];
-}
-
 export async function grantExamAppSignatureKey(token: string, parentId: string,  id: string, tag: string): Promise<[object, number]>{
     const url: string =  constants.EXAM_ROUTE + "/" + parentId + constants.GRANT_ROUTE + "/" + id;
     const { data, status } = await apiService.api.post(

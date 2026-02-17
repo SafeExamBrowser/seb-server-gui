@@ -25,7 +25,6 @@ router.get(constants.SYSTEM_FEATURE_ROUTE, systemController.getSystemFeatures)
 //exams 
 router.post(constants.EXAM_ROUTE + "/:parentId" + constants.GRANT_ROUTE + "/:id", examController.grantExamAppSignatureKey);
 router.delete(constants.EXAM_ROUTE + "/:parentId" + constants.GRANT_ROUTE + "/:id", examController.removeGrantExamAppSignatureKey);
-router.get(constants.EXAM_ROUTE + "/:id" + constants.GRANT_ROUTE, examController.getGrantedExamAppSignatureKeys);
 
 
 router.get(constants.EXAM_CONFIGURATION_MAP_ROUTE + "/:id", examController.getExamConfigurationMap);

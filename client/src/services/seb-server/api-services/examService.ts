@@ -46,6 +46,11 @@ export const getExamAppSignatureKeys = async (
 ): Promise<AppSignatureKey[]> =>
     (await newApiService.getRequest(`${baseUrl}/${id}/sebkeyinfo`)).data;
 
+export const getGrantedExamAppSignatureKeys = async (
+    parentId: string,
+): Promise<GrantedAppSignatureKey[]> =>
+    (await newApiService.getRequest(`${baseUrl}/${parentId}/grant`)).data;
+
 export async function removeGrantExamAppSignatureKeys(
     parentId: string,
     id: string,
@@ -68,17 +73,6 @@ export async function grantExamAppSignatureKeys(
         await apiService.api.post(url, null, {
             headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
             params: { tag: tagName },
-        })
-    ).data;
-}
-
-export async function getGrantedExamAppSignatureKeys(
-    parentId: string,
-): Promise<GrantedAppSignatureKey[]> {
-    const url: string = baseUrl + "/" + parentId + "/grant";
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
         })
     ).data;
 }

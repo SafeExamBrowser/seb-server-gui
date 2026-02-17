@@ -3,18 +3,6 @@ import {LOG} from "../../logging/logger";
 import * as examService from "../../services/seb-server/exam.service";
 import * as apiService from "../../services/seb-server/api.service";
 
-
-export async function getGrantedExamAppSignatureKeys(req: Request, res: Response){
-    try{
-        const [AppSignatureKeys, status] = await examService.getGrantedExamAppSignatureKeys(req.headers.authorization, req.params.id);
-        return res.status(status).json(AppSignatureKeys);
-
-    }catch(error){
-        apiService.handleGenericApiError(error, res);
-    }
-}
-
-
 export async function grantExamAppSignatureKey(req: Request, res: Response) {
     try {
         const { parentId, id } = req.params;
