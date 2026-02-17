@@ -1,7 +1,6 @@
 import express, {Router} from "express";
 
 import * as systemController from "../controllers/seb-server/system.controller";
-import * as examController from "../controllers/seb-server/exam.controller";
 import * as screenProctoringController from "../controllers/seb-server/screen-proctoring.controller";
 import * as indicatorController from "../controllers/seb-server/indicator.controller";
 import * as monitoringController from "../controllers/seb-server/monitoring.controller";
@@ -21,9 +20,6 @@ const router: Router = express.Router();
 
 // system
 router.get(constants.SYSTEM_FEATURE_ROUTE, systemController.getSystemFeatures)
-
-//exams 
-router.get(constants.EXAM_CONFIGURATION_MAP_ROUTE + "/:id", examController.getExamConfigurationMap);
 
 //screen proctoring
 router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE, screenProctoringController.saveScreenProctoringSettings);
