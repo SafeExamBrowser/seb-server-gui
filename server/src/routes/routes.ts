@@ -3,7 +3,6 @@ import express, {Router} from "express";
 import * as systemController from "../controllers/seb-server/system.controller";
 import * as screenProctoringController from "../controllers/seb-server/screen-proctoring.controller";
 import * as monitoringController from "../controllers/seb-server/monitoring.controller";
-import * as clientGroupsController from "../controllers/seb-server/client-groups.controller";
 import * as constants from "../utils/constants";
 
 //screen-proctoring
@@ -42,11 +41,6 @@ router.get(constants.MONITORING_NOTIFICATIONS_ROUTE + "/:connectionToken", monit
 router.post(constants.MONITORING_NOTIFICATIONS_ROUTE + "/:notificationId/:connectionToken", monitoringController.confirmNotification);
 router.post(constants.MONITORING_DISABLE_CONNECTIONS_ROUTE, monitoringController.disableConnections);
 router.get(constants.MONITORING_LOGS_ROUTE + "/:id" , monitoringController.getClientEventLogs);
-
-//client groups
-router.post(constants.CLIENT_GROUP_ROUTE, clientGroupsController.createClientGroup);
-router.put(constants.CLIENT_GROUP_ROUTE, clientGroupsController.updateClientGroup);
-router.delete(constants.CLIENT_GROUP_ROUTE + "/:id", clientGroupsController.deleteClientGroup);
 
 //client connection
 router.get(constants.CLIENT_CONNECTION_ROUTE + "/list", clientConnectionController.getClientConnectionList)

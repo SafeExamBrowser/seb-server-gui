@@ -25,9 +25,5 @@ export const MONITORING_DISABLE_CONNECTIONS_ROUTE = MONITORING_ROUTE + "/:id/dis
 export const CLIENT_EVENT_URL: string = "/seb-client-event"
 export const MONITORING_LOGS_ROUTE = CLIENT_EVENT_URL + "/search";
 
-
-//client group
-export const CLIENT_GROUP_ROUTE = "/client-group";
-
 //client Connection
 export const CLIENT_CONNECTION_ROUTE = "/seb-client-connection"
