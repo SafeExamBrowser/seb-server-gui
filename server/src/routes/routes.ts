@@ -31,7 +31,6 @@ router.get(constants.EXAM_ROUTE + "/:id" + constants.GRANT_ROUTE, examController
 
 
 router.get(constants.EXAM_CONFIGURATION_MAP_ROUTE + "/:id", examController.getExamConfigurationMap);
-router.get(constants.EXAMS_ROUTE + "/monitoring", examController.getExamsForMonitoring);
 
 // SEB lock
 router.put(constants.EXAM_ROUTE + "/:id" + "/apply-seb-restriction", examController.putSEBLock);

@@ -1,3 +1,4 @@
+import * as newApiService from "@/services/newApiService";
 import * as apiService from "@/services/apiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
 import { OptionalParGetMonitoringClientLogs } from "@/models/seb-server/optionalParamters";
@@ -9,11 +10,21 @@ import {
     MonitoringStaticClientData,
     SingleConnection,
 } from "@/models/seb-server/monitoring";
-import { Exam } from "@/models/seb-server/exam";
+import { Exam, Exams } from "@/models/seb-server/exam";
 import { ClientInstruction } from "@/models/seb-server/clientInstruction";
+import { OptionalParGetExams } from "@/models/seb-server/optionalParamters";
 
 const monitoringUrl: string = "/monitoring";
 const clientEventUrl: string = "/seb-client-event";
+
+export const getExamsForMonitoring = async (
+    optionalParameters?: OptionalParGetExams,
+): Promise<Exams> =>
+    (
+        await newApiService.getRequest(monitoringUrl, {
+            params: optionalParameters,
+        })
+    ).data;
 
 export async function applyTestRun(id: string): Promise<Exam> {
     return (

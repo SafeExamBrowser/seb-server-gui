@@ -61,16 +61,6 @@ export async function getExamConfigurationMap(req: Request, res: Response){
     }
 }
 
-export async function getExamsForMonitoring(req: Request, res: Response){
-    try{
-        const [exams, status] = await examService.getExamsForMonitoring(req.headers.authorization, req.query.optionalParameters);
-        return res.status(status).json(exams);
-
-    }catch(error){
-        apiService.handleGenericApiError(error, res);
-    }
-}
-
 export async function archiveExam(req: Request, res: Response){
     try{
         const [exams, status] = await examService.archiveExam(req.headers.authorization, req.params.id);

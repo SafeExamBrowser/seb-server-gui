@@ -107,16 +107,6 @@ export async function getExams(
     }
 }
 
-export async function getExamsForMonitoring(
-    optionalParGetExams?: OptionalParGetExams,
-): Promise<Exams | null> {
-    try {
-        return await examService.getExamsForMonitoring(optionalParGetExams);
-    } catch {
-        return null;
-    }
-}
-
 export async function updateExam(exam: Exam): Promise<Exam | null> {
     try {
         return await examService.updateExam(exam);

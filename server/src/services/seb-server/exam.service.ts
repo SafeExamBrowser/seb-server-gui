@@ -42,13 +42,6 @@ export async function removeGrantExamAppSignatureKey(token: string, parentId: st
     return [data, status];
 }
 
-export async function getExamsForMonitoring(token: string, options?: {}): Promise<[object, number]>{
-    const url: string = "/monitoring";
-    const {data, status} = await apiService.api.get(url, {headers: apiService.getHeaders(token), params: options});
-
-    return [data, status];
-} 
-
 //todo: check why this method with config object works and the defautl one does not
 export async function archiveExam(token: string, id: string): Promise<[object, number]>{
     const url: string =  constants.EXAM_ROUTE + "/" + id + "/archive";

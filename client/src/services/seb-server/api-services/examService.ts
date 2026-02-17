@@ -10,7 +10,6 @@ import {
 } from "@/models/seb-server/appSignatureKey";
 
 const baseUrl = "/exam" as const;
-const examsUrl = "/exams" as const;
 
 export const getExam = async (id: string): Promise<Exam> =>
     (await newApiService.getRequest(`${baseUrl}/${id}`)).data;
@@ -83,17 +82,6 @@ export async function getGrantedExamAppSignatureKeys(
     return (
         await apiService.api.get(url, {
             headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
-
-export async function getExamsForMonitoring(
-    optionalParameters?: OptionalParGetExams,
-): Promise<Exams> {
-    return (
-        await apiService.api.get(examsUrl + "/monitoring", {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-            params: { optionalParameters },
         })
     ).data;
 }

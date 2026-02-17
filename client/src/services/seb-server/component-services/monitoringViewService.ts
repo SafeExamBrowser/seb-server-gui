@@ -15,7 +15,10 @@ import {
 } from "vue-router";
 import * as clientGroupViewService from "@/services/seb-server/component-services/clientGroupViewService";
 import * as clientConnectionService from "@/services/seb-server/api-services/clientConnectionService";
-import { OptionalParGetMonitoringClientLogs } from "@/models/seb-server/optionalParamters";
+import {
+    OptionalParGetExams,
+    OptionalParGetMonitoringClientLogs,
+} from "@/models/seb-server/optionalParamters";
 import {
     ClientEventResponse,
     ClientNotification,
@@ -24,7 +27,7 @@ import {
     MonitoringStaticClientData,
     SingleConnection,
 } from "@/models/seb-server/monitoring";
-import { Exam } from "@/models/seb-server/exam";
+import { Exam, Exams } from "@/models/seb-server/exam";
 import { ClientInstruction } from "@/models/seb-server/clientInstruction";
 import { ClientGroup, ClientGroups } from "@/models/seb-server/clientGroup";
 import {
@@ -33,7 +36,18 @@ import {
     GrantedAppSignatureKey,
 } from "@/models/seb-server/appSignatureKey";
 
-//= ===============api===============
+export async function getExamsForMonitoring(
+    optionalParGetExams?: OptionalParGetExams,
+): Promise<Exams | null> {
+    try {
+        return await monitoringService.getExamsForMonitoring(
+            optionalParGetExams,
+        );
+    } catch {
+        return null;
+    }
+}
+
 export async function getOverview(
     examId: string,
 ): Promise<MonitoringOverview | null> {
