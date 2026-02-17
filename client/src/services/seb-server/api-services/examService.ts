@@ -38,6 +38,9 @@ export const getExams = async (
         })
     ).data;
 
+export const archiveExam = async (id: string): Promise<Exam> =>
+    (await newApiService.patchRequest(`${baseUrl}/${id}/archive`)).data;
+
 export async function getExamAppSignatureKeys(
     id: string,
 ): Promise<AppSignatureKey[]> {
@@ -81,14 +84,6 @@ export async function getGrantedExamAppSignatureKeys(
     const url: string = baseUrl + "/" + parentId + "/grant";
     return (
         await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
-
-export async function archiveExam(id: string): Promise<Exam> {
-    return (
-        await apiService.api.patch(baseUrl + "/" + id + "/archive", {
             headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
         })
     ).data;

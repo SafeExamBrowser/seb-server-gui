@@ -42,24 +42,6 @@ export async function removeGrantExamAppSignatureKey(token: string, parentId: st
     return [data, status];
 }
 
-//todo: check why this method with config object works and the defautl one does not
-export async function archiveExam(token: string, id: string): Promise<[object, number]>{
-    const url: string =  constants.EXAM_ROUTE + "/" + id + "/archive";
-    // const {data, status} = await apiService.api.patch(url, {headers: apiService.getPatchHeaders(token)});
-
-    let config = {
-        method: 'patch',
-        url: ENV.SEB_SERVER_URL + ENV.SEB_SERVER_PORT + ENV.SEB_SERVER_DEFAULT_URL + url,
-        headers: apiService.getPatchHeaders(token)
-      };
-
-    const {data, status} = await apiService.api.request(config)
-
-
-
-    return [data, status];
-} 
-
 export async function putSEBLock(token: string, id: string){
     const url: string =  "/exam/" + id + "/seb-restriction";
     const {data, status} = await apiService.api.put(url, {}, {headers: apiService.getHeaders(token)});
