@@ -9,23 +9,3 @@ export async function getExamConfigurationMap(token: string, id: string, options
 
     return [data, status];
 }
-
-export async function grantExamAppSignatureKey(token: string, parentId: string,  id: string, tag: string): Promise<[object, number]>{
-    const url: string =  constants.EXAM_ROUTE + "/" + parentId + constants.GRANT_ROUTE + "/" + id;
-    const { data, status } = await apiService.api.post(
-        url,
-        null,
-        {
-            headers: apiService.getPutHeaders(token),
-            params: {
-                ...(tag ? { tag } : {})
-            },
-        }
-    );    return [data, status];
-}
-
-export async function removeGrantExamAppSignatureKey(token: string, parentId: string,  id: string): Promise<[object, number]>{
-    const url: string =  constants.EXAM_ROUTE + "/" + parentId + constants.GRANT_ROUTE + "/" + id;
-    const {data, status} = await apiService.api.delete(url, {headers: apiService.getHeaders(token)});
-    return [data, status];
-}

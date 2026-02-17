@@ -1,7 +1,5 @@
 import * as newApiService from "@/services/newApiService";
 
-import * as apiService from "@/services/apiService";
-import { StorageItemEnum } from "@/models/StorageItemEnum";
 import { OptionalParGetExams } from "@/models/seb-server/optionalParamters";
 import { CreateExamPar, Exam, Exams } from "@/models/seb-server/exam";
 import {
@@ -51,33 +49,29 @@ export const getGrantedExamAppSignatureKeys = async (
 ): Promise<GrantedAppSignatureKey[]> =>
     (await newApiService.getRequest(`${baseUrl}/${parentId}/grant`)).data;
 
-// TODO @alain: migrate, as soon as I know how to test it
-export async function grantExamAppSignatureKeys(
+// TODO @andreas: please test this (source of error could be both the Content-Type header and the tag parameter)
+export const grantExamAppSignatureKeys = async (
     tagName: string,
     parentId: string,
     id: string,
-): Promise<GrantedAppSignatureKey> {
-    const url = `${baseUrl}/${parentId}/grant/${id}`;
-    return (
-        await apiService.api.post(url, null, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-            params: { tag: tagName },
-        })
+): Promise<GrantedAppSignatureKey> =>
+    (
+        await newApiService.postRequest(
+            `${baseUrl}/${parentId}/grant/${id}`,
+            {},
+            {
+                params: { tag: tagName },
+            },
+        )
     ).data;
-}
 
-// TODO @alain: migrate, as soon as I know how to test it
-export async function removeGrantExamAppSignatureKeys(
+// TODO @andreas: please test this
+export const removeGrantExamAppSignatureKeys = async (
     parentId: string,
     id: string,
-): Promise<AppSignatureKey[]> {
-    const url: string = baseUrl + "/" + parentId + "/grant" + "/" + id;
-    return (
-        await apiService.api.delete(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
+): Promise<AppSignatureKey[]> =>
+    (await newApiService.deleteRequest(`${baseUrl}/${parentId}/grant/${id}`))
+        .data;
 
 export const checkSEBLock = async (id: string): Promise<boolean> =>
     (await newApiService.getRequest(`${baseUrl}/${id}/check-seb-restriction`))

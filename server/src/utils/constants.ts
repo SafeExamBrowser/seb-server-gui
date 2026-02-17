@@ -4,10 +4,8 @@
 export const QUIZ_ROUTE = "/quiz";
 
 //exam
-export const EXAM_ROUTE = "/exam";
 export const EXAM_CONFIGURATION_MAP_ROUTE = "/exam-configuration-map";
 export const EXAM_SCREEN_PROCTORING_ROUTE = "/exam/:id/screen-proctoring"
-export const GRANT_ROUTE = "/grant"
 
 //institution
 export const ADMIN_INSTITUTION_INFO_ROUTE = "/info/institution";
