@@ -368,18 +368,27 @@ async function getAndSetConnections() {
         monitoringStore.isNoFilterSelected = false;
     }
 
-    const fullPageResponse: MonitoringConnections | null =
-        await monitoringViewService.getConnections(examId, {
+    const clientGroups = route.query[MonitoringHeaderEnum.SHOW_CLIENT_GROUPS];
+    const states = route.query[MonitoringHeaderEnum.SHOW_STATES];
+    const notifications = route.query[MonitoringHeaderEnum.SHOW_NOTIFCATION];
+    const indicators = route.query[MonitoringHeaderEnum.SHOW_INDICATORS];
+
+    const fullPageResponse = await monitoringViewService.getConnections(
+        examId,
+        {
             [MonitoringHeaderEnum.SHOW_ALL]: monitoringStore.isNoFilterSelected,
             [MonitoringHeaderEnum.SHOW_CLIENT_GROUPS]:
-                route.query[MonitoringHeaderEnum.SHOW_CLIENT_GROUPS] || [],
+                typeof clientGroups === "string" ? clientGroups.split(",") : [],
             [MonitoringHeaderEnum.SHOW_STATES]:
-                route.query[MonitoringHeaderEnum.SHOW_STATES] || [],
+                typeof states === "string" ? states.split(",") : [],
             [MonitoringHeaderEnum.SHOW_NOTIFCATION]:
-                route.query[MonitoringHeaderEnum.SHOW_NOTIFCATION] || [],
+                typeof notifications === "string"
+                    ? notifications.split(",")
+                    : [],
             [MonitoringHeaderEnum.SHOW_INDICATORS]:
-                route.query[MonitoringHeaderEnum.SHOW_INDICATORS] || [],
-        });
+                typeof indicators === "string" ? indicators.split(",") : [],
+        },
+    );
 
     if (fullPageResponse == null) {
         return;

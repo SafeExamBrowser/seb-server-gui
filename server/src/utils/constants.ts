@@ -12,7 +12,6 @@ export const SYSTEM_FEATURE_ROUTE = "/info/features";
 //monitoring
 export const MONITORING_ROUTE = "/monitoring";
 export const MONITORING_GET_ROUTE = "/get-monitoring";
-export const MONITORING_CONNECTIONS_ROUTE = MONITORING_ROUTE + "/connections";
 export const MONITORING_TEST_RUN_ROUTE = MONITORING_ROUTE + "/testrun";
 export const MONITORING_INSTRUCTION_ROUTE = MONITORING_ROUTE + "/:id/instruction";
 export const MONITORING_QUIT_ALL_ROUTE = MONITORING_ROUTE + "/:id/quitAll";

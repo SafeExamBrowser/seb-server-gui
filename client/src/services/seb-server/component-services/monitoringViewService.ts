@@ -22,6 +22,7 @@ import {
 import {
     ClientEventResponse,
     ClientNotification,
+    MonitoringConnectionHeaders,
     MonitoringConnections,
     MonitoringOverview,
     MonitoringStaticClientData,
@@ -60,10 +61,13 @@ export async function getOverview(
 
 export async function getConnections(
     examId: string,
-    optionalHeaders: object,
+    additionalHeaders: MonitoringConnectionHeaders,
 ): Promise<MonitoringConnections | null> {
     try {
-        return await monitoringService.getConnections(examId, optionalHeaders);
+        return await monitoringService.getConnections(
+            examId,
+            additionalHeaders,
+        );
     } catch {
         return null;
     }

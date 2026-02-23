@@ -12,23 +12,6 @@ export async function applyTestRun(token: string, id: string): Promise<[object, 
 function sleep(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
-  
-
-
-export async function getConnections(token: string, id: string, optionalHeaders: {}): Promise<[object, number]> {
-    const url: string = constants.MONITORING_CONNECTIONS_ROUTE + "/" + id;
-    const { data, status } = await apiService.api.get(
-        url,
-        {
-            headers: {
-                ...apiService.getHeaders(token),
-                ...optionalHeaders,
-            }
-        }
-    );
-
-    return [data, status];
-}
 
 export async function getSingleConnection(token: string, id: string, connectionToken: string): Promise<[object, number]> {
     const url: string = constants.MONITORING_ROUTE + "/" + id + "/" + connectionToken;

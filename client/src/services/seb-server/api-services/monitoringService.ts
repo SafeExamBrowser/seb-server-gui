@@ -13,6 +13,8 @@ import {
 import { Exam, Exams } from "@/models/seb-server/exam";
 import { ClientInstruction } from "@/models/seb-server/clientInstruction";
 import { OptionalParGetExams } from "@/models/seb-server/optionalParamters";
+import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums";
+import { MonitoringConnectionHeaders } from "@/models/seb-server/monitoring";
 
 const baseUrl: string = "/monitoring";
 const clientEventUrl: string = "/seb-client-event";
@@ -31,6 +33,26 @@ export const getOverview = async (
 ): Promise<MonitoringOverview> =>
     (await newApiService.getRequest(`${baseUrl}/overview/${examId}`)).data;
 
+export const getConnections = async (
+    examId: string,
+    additionalHeaders: MonitoringConnectionHeaders,
+): Promise<MonitoringConnections> =>
+    (
+        await newApiService.getRequest(`${baseUrl}/connections/${examId}`, {
+            headers: {
+                "show-all": additionalHeaders[MonitoringHeaderEnum.SHOW_ALL],
+                "show-client-groups":
+                    additionalHeaders[MonitoringHeaderEnum.SHOW_CLIENT_GROUPS],
+                "show-states":
+                    additionalHeaders[MonitoringHeaderEnum.SHOW_STATES],
+                "show-notifications":
+                    additionalHeaders[MonitoringHeaderEnum.SHOW_NOTIFCATION],
+                "show-indicators":
+                    additionalHeaders[MonitoringHeaderEnum.SHOW_INDICATORS],
+            },
+        })
+    ).data;
+
 export async function applyTestRun(id: string): Promise<Exam> {
     return (
         await apiService.api.post(
@@ -42,19 +64,6 @@ export async function applyTestRun(id: string): Promise<Exam> {
                 ),
             },
         )
-    ).data;
-}
-
-export async function getConnections(
-    examId: string,
-    optionalHeaders: unknown,
-): Promise<MonitoringConnections> {
-    const url: string = baseUrl + "/connections/" + examId;
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-            params: { optionalHeaders },
-        })
     ).data;
 }
 
