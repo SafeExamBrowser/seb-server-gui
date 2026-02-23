@@ -104,16 +104,17 @@ export const getStaticClientData = async (
         )
     ).data;
 
-export async function registerInstruction(
+// TODO @andreas: please test this
+export const registerInstruction = async (
     examId: string,
     clientInstruction: ClientInstruction,
-): Promise<number> {
-    const url: string = baseUrl + "/" + examId + "/instruction";
-    const call = await apiService.api.post(url, clientInstruction, {
-        headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),
-    });
-    return call.status;
-}
+): Promise<number> =>
+    (
+        await newApiService.postRequest(
+            `${baseUrl}/${examId}/instruction`,
+            clientInstruction,
+        )
+    ).status;
 
 export async function quitAll(examId: string): Promise<number> {
     const url: string = baseUrl + "/" + examId + "/quitAll";

@@ -23,7 +23,6 @@ router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE + "/apply-groups", screenProc
 router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE + "/activation", screenProctoringController.activateScreenProctoring);
 
 //monitoring
-router.post(constants.MONITORING_INSTRUCTION_ROUTE, monitoringController.registerInstruction);
 router.post(constants.MONITORING_QUIT_ALL_ROUTE, monitoringController.quitAll);
 router.get(constants.MONITORING_NOTIFICATIONS_ROUTE + "/:connectionToken", monitoringController.getPendingNotifications);
 router.post(constants.MONITORING_NOTIFICATIONS_ROUTE + "/:notificationId/:connectionToken", monitoringController.confirmNotification);

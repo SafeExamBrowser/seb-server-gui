@@ -1,23 +1,6 @@
 import * as apiService from "./api.service";
 import * as constants from "../../utils/constants";
 
-export async function registerInstruction(
-    token: string,
-    id: string,
-    clientInstruction: {}
-): Promise<[number, any]> {
-    const url: string = constants.MONITORING_ROUTE + "/" + id + "/instruction";
-    try {
-        const response = await apiService.api.post(url, clientInstruction, {
-            headers: apiService.getApplicationJsonHeaders(token),
-        });
-        return [response.status, response.data];
-    }
-    catch (error: any) {
-        throw error;
-    }
-}
-
 export async function quitAll(
     token: string,
     id: string
