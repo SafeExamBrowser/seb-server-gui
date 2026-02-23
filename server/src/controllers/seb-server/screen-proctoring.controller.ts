@@ -18,16 +18,6 @@ export async function saveScreenProctoringSettings(req: Request, res: Response){
     }
 }
 
-export async function applyScreenProctoringGroups(req: Request, res: Response){
-    try{
-        const [exam, status] = await screenProctoringService.applyScreenProctoringGroups(req.headers.authorization, req.params.id, req.query.spsSEBGroupsSelection);
-        return res.status(status).json(exam);
-
-    }catch(error){
-        apiService.handleGenericApiError(error, res);
-    }
-}
-
 export async function activateScreenProctoring(req: Request, res: Response){
     try{
 
