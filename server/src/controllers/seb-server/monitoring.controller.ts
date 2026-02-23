@@ -73,13 +73,3 @@ export async function disableConnections(req: Request, res: Response) {
         apiService.handleGenericApiError(error, res);
     }
 }
-
-export async function getClientEventLogs(req: Request, res: Response){
-    try{
-        const [logs, status] = await monitoringService.getClientEventLogs(req.headers.authorization, req.params.id,  req.query.optionalParameters);
-        return res.status(status).json(logs);
-
-    }catch(error){
-        apiService.handleGenericApiError(error, res);
-    }
-}

@@ -17,7 +17,6 @@ import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums";
 import { MonitoringConnectionHeaders } from "@/models/seb-server/monitoring";
 
 const baseUrl: string = "/monitoring";
-const clientEventUrl: string = "/seb-client-event";
 
 export const getExamsForMonitoring = async (
     optionalParameters?: OptionalParGetExams,
@@ -75,18 +74,19 @@ export const getSingleConnection = async (
     (await newApiService.getRequest(`${baseUrl}/${examId}/${connectionToken}`))
         .data;
 
-export async function getSingleConnectionEvents(
+// TODO @andreas: please test this
+export const getSingleConnectionEvents = async (
     clientConnectionId: string,
     optionalParameters?: OptionalParGetMonitoringClientLogs,
-): Promise<ClientEventResponse | null> {
-    const url: string = clientEventUrl + "/search" + "/" + clientConnectionId;
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-            params: { optionalParameters },
+): Promise<ClientEventResponse> =>
+    (
+        await newApiService.getRequest("/seb-client-event/search", {
+            params: {
+                ...optionalParameters,
+                clientConnectionId,
+            },
         })
     ).data;
-}
 
 export async function getStaticClientData(
     examId: string,

@@ -29,7 +29,6 @@ router.post(constants.MONITORING_QUIT_ALL_ROUTE, monitoringController.quitAll);
 router.get(constants.MONITORING_NOTIFICATIONS_ROUTE + "/:connectionToken", monitoringController.getPendingNotifications);
 router.post(constants.MONITORING_NOTIFICATIONS_ROUTE + "/:notificationId/:connectionToken", monitoringController.confirmNotification);
 router.post(constants.MONITORING_DISABLE_CONNECTIONS_ROUTE, monitoringController.disableConnections);
-router.get(constants.MONITORING_LOGS_ROUTE + "/:id" , monitoringController.getClientEventLogs);
 
 //screen-proctoring
 router.get("/sp/settings", settingsController.getSettings)

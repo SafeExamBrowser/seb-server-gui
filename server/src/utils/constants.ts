@@ -15,5 +15,3 @@ export const MONITORING_INSTRUCTION_ROUTE = MONITORING_ROUTE + "/:id/instruction
 export const MONITORING_QUIT_ALL_ROUTE = MONITORING_ROUTE + "/:id/quitAll";
 export const MONITORING_NOTIFICATIONS_ROUTE = MONITORING_ROUTE + "/:id/notification";
 export const MONITORING_DISABLE_CONNECTIONS_ROUTE = MONITORING_ROUTE + "/:id/disable-connection";
-export const CLIENT_EVENT_URL: string = "/seb-client-event"
-export const MONITORING_LOGS_ROUTE = CLIENT_EVENT_URL + "/search";
