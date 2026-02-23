@@ -1,7 +1,6 @@
 import express, {Router} from "express";
 
 import * as systemController from "../controllers/seb-server/system.controller";
-import * as screenProctoringController from "../controllers/seb-server/screen-proctoring.controller";
 import * as constants from "../utils/constants";
 
 //screen-proctoring
@@ -15,9 +14,6 @@ const router: Router = express.Router();
 
 // system
 router.get(constants.SYSTEM_FEATURE_ROUTE, systemController.getSystemFeatures)
-
-//screen proctoring
-router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE + "/activation", screenProctoringController.activateScreenProctoring);
 
 //screen-proctoring
 router.get("/sp/settings", settingsController.getSettings)

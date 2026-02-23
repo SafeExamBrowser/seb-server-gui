@@ -1,7 +1,5 @@
 import * as newApiService from "@/services/newApiService";
 
-import * as apiService from "@/services/apiService";
-import { StorageItemEnum } from "@/models/StorageItemEnum";
 import { Exam } from "@/models/seb-server/exam";
 
 export const applyScreenProctoringGroups = async (
@@ -20,19 +18,19 @@ export const applyScreenProctoringGroups = async (
         )
     ).data;
 
-export async function activateScreenProctoring(
+export const activateScreenProctoring = async (
     id: string,
     enableScreenProctoring: boolean,
-): Promise<Exam | null> {
-    const url: string = "/exam/" + id + "/screen-proctoring/activation";
-    return (
-        await apiService.api.post(
-            url,
+): Promise<Exam | null> =>
+    (
+        await newApiService.postRequest(
+            `/exam/${id}/screen-proctoring/activation`,
             {},
             {
-                headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
                 params: { enableScreenProctoring },
             },
         )
     ).data;
-}
