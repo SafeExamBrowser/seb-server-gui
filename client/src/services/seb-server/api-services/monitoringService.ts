@@ -14,14 +14,14 @@ import { Exam, Exams } from "@/models/seb-server/exam";
 import { ClientInstruction } from "@/models/seb-server/clientInstruction";
 import { OptionalParGetExams } from "@/models/seb-server/optionalParamters";
 
-const monitoringUrl: string = "/monitoring";
+const baseUrl: string = "/monitoring";
 const clientEventUrl: string = "/seb-client-event";
 
 export const getExamsForMonitoring = async (
     optionalParameters?: OptionalParGetExams,
 ): Promise<Exams> =>
     (
-        await newApiService.getRequest(monitoringUrl, {
+        await newApiService.getRequest(baseUrl, {
             params: optionalParameters,
         })
     ).data;
@@ -29,7 +29,7 @@ export const getExamsForMonitoring = async (
 export async function applyTestRun(id: string): Promise<Exam> {
     return (
         await apiService.api.post(
-            monitoringUrl + "/testrun/" + id,
+            baseUrl + "/testrun/" + id,
             {},
             {
                 headers: apiService.getPostHeaders(
@@ -42,7 +42,7 @@ export async function applyTestRun(id: string): Promise<Exam> {
 
 export async function getOverview(examId: string): Promise<MonitoringOverview> {
     const response = await apiService.api.get(
-        monitoringUrl + "/get-overview/" + examId,
+        baseUrl + "/get-overview/" + examId,
         { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN) },
     );
     return response.data;
@@ -52,7 +52,7 @@ export async function getConnections(
     examId: string,
     optionalHeaders: unknown,
 ): Promise<MonitoringConnections> {
-    const url: string = monitoringUrl + "/connections/" + examId;
+    const url: string = baseUrl + "/connections/" + examId;
     return (
         await apiService.api.get(url, {
             headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
@@ -90,7 +90,7 @@ export async function getStaticClientData(
     examId: string,
     modelIds: string,
 ): Promise<MonitoringStaticClientData> {
-    const url: string = monitoringUrl + "/" + examId + "/static-client-data";
+    const url: string = baseUrl + "/" + examId + "/static-client-data";
     return (
         await apiService.api.post(
             url,
@@ -108,7 +108,7 @@ export async function registerInstruction(
     examId: string,
     clientInstruction: ClientInstruction,
 ): Promise<number> {
-    const url: string = monitoringUrl + "/" + examId + "/instruction";
+    const url: string = baseUrl + "/" + examId + "/instruction";
     const call = await apiService.api.post(url, clientInstruction, {
         headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),
     });
@@ -116,7 +116,7 @@ export async function registerInstruction(
 }
 
 export async function quitAll(examId: string): Promise<number> {
-    const url: string = monitoringUrl + "/" + examId + "/quitAll";
+    const url: string = baseUrl + "/" + examId + "/quitAll";
     const call = await apiService.api.post(
         url,
         {},
@@ -132,7 +132,7 @@ export async function getPendingNotifcations(
     connectionToken: string,
 ): Promise<ClientNotification[]> {
     const url: string =
-        monitoringUrl + "/" + examId + "/notification/" + connectionToken;
+        baseUrl + "/" + examId + "/notification/" + connectionToken;
     return (
         await apiService.api.get(url, {
             headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
@@ -146,7 +146,7 @@ export async function confirmNotification(
     connectionToken: string,
 ): Promise<unknown> {
     const url: string =
-        monitoringUrl +
+        baseUrl +
         "/" +
         examId +
         "/notification/" +
@@ -170,7 +170,7 @@ export async function disableConnections(
     examId: string,
     connectionToken: string,
 ): Promise<unknown> {
-    const url: string = monitoringUrl + "/" + examId + "/disable-connection";
+    const url: string = baseUrl + "/" + examId + "/disable-connection";
     return (
         await apiService.api.post(
             url,
