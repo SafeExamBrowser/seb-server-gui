@@ -67,17 +67,13 @@ export async function applyTestRun(id: string): Promise<Exam> {
     ).data;
 }
 
-export async function getSingleConnection(
+// TODO @andreas: please test this
+export const getSingleConnection = async (
     examId: string,
     connectionToken: string,
-): Promise<SingleConnection> {
-    const url: string = "/get-monitoring/" + examId + "/" + connectionToken;
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
+): Promise<SingleConnection> =>
+    (await newApiService.getRequest(`${baseUrl}/${examId}/${connectionToken}`))
+        .data;
 
 export async function getSingleConnectionEvents(
     clientConnectionId: string,
