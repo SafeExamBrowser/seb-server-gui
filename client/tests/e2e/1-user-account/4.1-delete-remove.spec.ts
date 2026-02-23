@@ -84,8 +84,6 @@ test.describe("1.4.1 User Accounts - DELETE Remove", () => {
 
         await deleteDialogDeleteButtonLocator.click();
 
-        await deleteDialogDeleteButtonLocator.click();
-
         const deleteRequest = await deleteRequestPromise;
         const deleteResponse = await deleteResponsePromise;
 
