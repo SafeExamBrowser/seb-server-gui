@@ -1,12 +1,6 @@
 import * as apiService from "./api.service";
 import * as constants from "../../utils/constants";
 
-export async function getStaticClientData(token: string, id: string, modelIds: {}): Promise<[object, number]>{
-    const url: string = constants.MONITORING_ROUTE + "/" + id + "/static-client-data";
-    const {data, status} = await apiService.api.post(url, apiService.createUrlEncodedBody(modelIds), {headers: apiService.getHeaders(token)});
-    return [data, status];
-}
-
 export async function registerInstruction(
     token: string,
     id: string,

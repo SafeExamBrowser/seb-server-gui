@@ -88,23 +88,22 @@ export const getSingleConnectionEvents = async (
         })
     ).data;
 
-export async function getStaticClientData(
+// TODO @andreas: please test this
+export const getStaticClientData = async (
     examId: string,
     modelIds: string,
-): Promise<MonitoringStaticClientData> {
-    const url: string = baseUrl + "/" + examId + "/static-client-data";
-    return (
-        await apiService.api.post(
-            url,
+): Promise<MonitoringStaticClientData> =>
+    (
+        await newApiService.postRequest(
+            `${baseUrl}/${examId}/static-client-data`,
             { modelIds },
             {
-                headers: apiService.getPostHeaders(
-                    StorageItemEnum.ACCESS_TOKEN,
-                ),
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
             },
         )
     ).data;
-}
 
 export async function registerInstruction(
     examId: string,
