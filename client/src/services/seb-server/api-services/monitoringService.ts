@@ -55,13 +55,13 @@ export const getConnections = async (
 
 export async function applyTestRun(id: string): Promise<Exam> {
     return (
-        await apiService.api.post(
-            baseUrl + "/testrun/" + id,
+        await newApiService.postRequest(
+            `${baseUrl}/testrun/${id}`,
             {},
             {
-                headers: apiService.getPostHeaders(
-                    StorageItemEnum.ACCESS_TOKEN,
-                ),
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
             },
         )
     ).data;
