@@ -12,16 +12,6 @@ export async function applyTestRun(req: Request, res: Response){
     }
 }
 
-export async function getOverview(req: Request, res: Response){
-    try{    
-        const [overview, status] = await monitoringService.getOverview(req.headers.authorization, req.params.id);
-        return res.status(status).json(overview);
-    
-    }catch(error){
-        apiService.handleGenericApiError(error, res);
-    }
-}
-
 export async function getConnections(req: Request, res: Response){
     try{    
         const [fullPage, status] = await monitoringService.getConnections(req.headers.authorization, req.params.id, req.query.optionalHeaders);

@@ -9,14 +9,6 @@ export async function applyTestRun(token: string, id: string): Promise<[object, 
     return [data, status];
 }
 
-export async function getOverview(token: string, id: string): Promise<[object, number]>{
-    const url: string = "/monitoring/overview/" + id;
-    const { data, status } = await apiService.api.get(url, {
-        headers: apiService.getHeaders(token),
-    });
-    return [data, status];
-}
-
 function sleep(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
   }

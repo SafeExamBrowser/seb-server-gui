@@ -26,6 +26,11 @@ export const getExamsForMonitoring = async (
         })
     ).data;
 
+export const getOverview = async (
+    examId: string,
+): Promise<MonitoringOverview> =>
+    (await newApiService.getRequest(`${baseUrl}/overview/${examId}`)).data;
+
 export async function applyTestRun(id: string): Promise<Exam> {
     return (
         await apiService.api.post(
@@ -38,14 +43,6 @@ export async function applyTestRun(id: string): Promise<Exam> {
             },
         )
     ).data;
-}
-
-export async function getOverview(examId: string): Promise<MonitoringOverview> {
-    const response = await apiService.api.get(
-        baseUrl + "/get-overview/" + examId,
-        { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN) },
-    );
-    return response.data;
 }
 
 export async function getConnections(
