@@ -88,7 +88,6 @@ export const getSingleConnectionEvents = async (
         })
     ).data;
 
-// TODO @andreas: please test this
 export const getStaticClientData = async (
     examId: string,
     modelIds: string,
