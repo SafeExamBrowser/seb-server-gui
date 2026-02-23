@@ -116,17 +116,9 @@ export const registerInstruction = async (
         )
     ).status;
 
-export async function quitAll(examId: string): Promise<number> {
-    const url: string = baseUrl + "/" + examId + "/quitAll";
-    const call = await apiService.api.post(
-        url,
-        {},
-        {
-            headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),
-        },
-    );
-    return call.status;
-}
+// TODO @andreas: please test this
+export const quitAll = async (examId: string): Promise<number> =>
+    (await newApiService.postRequest(`${baseUrl}/${examId}/quitAll`)).status;
 
 export async function getPendingNotifcations(
     examId: string,
