@@ -2,7 +2,6 @@ import express, {Router} from "express";
 
 import * as systemController from "../controllers/seb-server/system.controller";
 import * as screenProctoringController from "../controllers/seb-server/screen-proctoring.controller";
-import * as monitoringController from "../controllers/seb-server/monitoring.controller";
 import * as constants from "../utils/constants";
 
 //screen-proctoring
@@ -21,9 +20,6 @@ router.get(constants.SYSTEM_FEATURE_ROUTE, systemController.getSystemFeatures)
 router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE, screenProctoringController.saveScreenProctoringSettings);
 router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE + "/apply-groups", screenProctoringController.applyScreenProctoringGroups);
 router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE + "/activation", screenProctoringController.activateScreenProctoring);
-
-//monitoring
-router.post(constants.MONITORING_DISABLE_CONNECTIONS_ROUTE, monitoringController.disableConnections);
 
 //screen-proctoring
 router.get("/sp/settings", settingsController.getSettings)

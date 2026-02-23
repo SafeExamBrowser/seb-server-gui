@@ -8,7 +8,3 @@ export const EXAM_SCREEN_PROCTORING_ROUTE = "/exam/:id/screen-proctoring"
 
 //institution
 export const SYSTEM_FEATURE_ROUTE = "/info/features";
-
-//monitoring
-export const MONITORING_ROUTE = "/monitoring";
-export const MONITORING_DISABLE_CONNECTIONS_ROUTE = MONITORING_ROUTE + "/:id/disable-connection";

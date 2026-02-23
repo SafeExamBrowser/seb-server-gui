@@ -1,6 +1,4 @@
 import * as newApiService from "@/services/newApiService";
-import * as apiService from "@/services/apiService";
-import { StorageItemEnum } from "@/models/StorageItemEnum";
 import { OptionalParGetMonitoringClientLogs } from "@/models/seb-server/optionalParamters";
 import {
     ClientEventResponse,
@@ -143,20 +141,19 @@ export const confirmNotification = async (
         )
     ).status;
 
-export async function disableConnections(
+// TODO @andreas: please test this
+export const disableConnections = async (
     examId: string,
     connectionToken: string,
-): Promise<unknown> {
-    const url: string = baseUrl + "/" + examId + "/disable-connection";
-    return (
-        await apiService.api.post(
-            url,
+): Promise<unknown> =>
+    (
+        await newApiService.postRequest(
+            `${baseUrl}/${examId}/disable-connection`,
             { connectionToken },
             {
-                headers: apiService.getPostHeaders(
-                    StorageItemEnum.ACCESS_TOKEN,
-                ),
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
             },
         )
     ).status;
-}
