@@ -1,12 +1,6 @@
 import * as apiService from "./api.service";
 import * as constants from "../../utils/constants";
 
-export async function getPendingNotifications(token: string, id: string, connectionToken: string): Promise<[object, number]> {
-    const url: string = constants.MONITORING_ROUTE + "/" + id + "/notification/" + connectionToken;
-    const {data, status} = await apiService.api.get(url, {headers: apiService.getHeaders(token)});
-    return [data, status];
-}
-
 export async function confirmNotification(token: string, id: string, notificationId: string, connectionToken: string): Promise<[number, any]> {
     const url: string = constants.MONITORING_ROUTE + "/" + id + "/notification/" + notificationId + "/" + connectionToken;
     const {data, status} = await apiService.api.post(url, "", {headers: apiService.getHeaders(token)});

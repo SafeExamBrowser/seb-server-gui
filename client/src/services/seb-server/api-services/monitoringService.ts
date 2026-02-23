@@ -120,18 +120,16 @@ export const registerInstruction = async (
 export const quitAll = async (examId: string): Promise<number> =>
     (await newApiService.postRequest(`${baseUrl}/${examId}/quitAll`)).status;
 
-export async function getPendingNotifcations(
+// TODO @andreas: please test this
+export const getPendingNotifcations = async (
     examId: string,
     connectionToken: string,
-): Promise<ClientNotification[]> {
-    const url: string =
-        baseUrl + "/" + examId + "/notification/" + connectionToken;
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
+): Promise<ClientNotification[]> =>
+    (
+        await newApiService.getRequest(
+            `${baseUrl}/${examId}/notification/${connectionToken}`,
+        )
     ).data;
-}
 
 export async function confirmNotification(
     examId: string,
