@@ -131,31 +131,17 @@ export const getPendingNotifcations = async (
         )
     ).data;
 
-export async function confirmNotification(
+// TODO @andreas: please test this
+export const confirmNotification = async (
     examId: string,
     notificationId: string,
     connectionToken: string,
-): Promise<unknown> {
-    const url: string =
-        baseUrl +
-        "/" +
-        examId +
-        "/notification/" +
-        notificationId +
-        "/" +
-        connectionToken;
-    return (
-        await apiService.api.post(
-            url,
-            {},
-            {
-                headers: apiService.getPostHeaders(
-                    StorageItemEnum.ACCESS_TOKEN,
-                ),
-            },
+): Promise<unknown> =>
+    (
+        await newApiService.postRequest(
+            `${baseUrl}/${examId}/notification/${notificationId}/${connectionToken}`,
         )
     ).status;
-}
 
 export async function disableConnections(
     examId: string,

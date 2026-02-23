@@ -11,5 +11,4 @@ export const SYSTEM_FEATURE_ROUTE = "/info/features";
 
 //monitoring
 export const MONITORING_ROUTE = "/monitoring";
-export const MONITORING_NOTIFICATIONS_ROUTE = MONITORING_ROUTE + "/:id/notification";
 export const MONITORING_DISABLE_CONNECTIONS_ROUTE = MONITORING_ROUTE + "/:id/disable-connection";
