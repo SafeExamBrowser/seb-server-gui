@@ -146,20 +146,6 @@ export async function archiveExam(id: string): Promise<Exam | null> {
     }
 }
 
-export async function saveScreenProctoringSettings(
-    id: string,
-    screenProctoringSettings: ScreenProctoringSettings,
-): Promise<Exam | null> {
-    try {
-        return await screenProctoringService.saveScreenProctoringSettings(
-            id,
-            screenProctoringSettings,
-        );
-    } catch {
-        return null;
-    }
-}
-
 export async function applyTestRun(id: string): Promise<Exam | null> {
     try {
         return await monitoringService.applyTestRun(id);

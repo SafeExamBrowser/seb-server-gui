@@ -17,7 +17,6 @@ const router: Router = express.Router();
 router.get(constants.SYSTEM_FEATURE_ROUTE, systemController.getSystemFeatures)
 
 //screen proctoring
-router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE, screenProctoringController.saveScreenProctoringSettings);
 router.post(constants.EXAM_SCREEN_PROCTORING_ROUTE + "/activation", screenProctoringController.activateScreenProctoring);
 
 //screen-proctoring

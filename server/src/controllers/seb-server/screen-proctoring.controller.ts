@@ -2,22 +2,6 @@ import * as screenProctoringService from "../../services/seb-server/screen-proct
 import * as apiService from "../../services/seb-server/api.service";
 import {Request, Response} from "express";
 
-
-export async function saveScreenProctoringSettings(req: Request, res: Response){
-    try{
-        const [exam, status] = await screenProctoringService.saveScreenProctoringSettings(
-            req.headers.authorization, 
-            req.params.id, 
-            req.body
-        
-        );
-        return res.status(status).json(exam);
-
-    }catch(error){
-        apiService.handleGenericApiError(error, res);
-    }
-}
-
 export async function activateScreenProctoring(req: Request, res: Response){
     try{
 
