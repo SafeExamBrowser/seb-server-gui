@@ -64,7 +64,6 @@ export async function applyTestRun(id: string): Promise<Exam> {
     ).data;
 }
 
-// TODO @andreas: please test this
 export const getSingleConnection = async (
     examId: string,
     connectionToken: string,
@@ -72,7 +71,6 @@ export const getSingleConnection = async (
     (await newApiService.getRequest(`${baseUrl}/${examId}/${connectionToken}`))
         .data;
 
-// TODO @andreas: please test this
 export const getSingleConnectionEvents = async (
     clientConnectionId: string,
     optionalParameters?: OptionalParGetMonitoringClientLogs,
@@ -102,7 +100,6 @@ export const getStaticClientData = async (
         )
     ).data;
 
-// TODO @andreas: please test this
 export const registerInstruction = async (
     examId: string,
     clientInstruction: ClientInstruction,
@@ -114,11 +111,10 @@ export const registerInstruction = async (
         )
     ).status;
 
-// TODO @andreas: please test this
+// TODO @andreas: please test this as soon as quit all function is working again
 export const quitAll = async (examId: string): Promise<number> =>
     (await newApiService.postRequest(`${baseUrl}/${examId}/quitAll`)).status;
 
-// TODO @andreas: please test this
 export const getPendingNotifcations = async (
     examId: string,
     connectionToken: string,
@@ -129,7 +125,6 @@ export const getPendingNotifcations = async (
         )
     ).data;
 
-// TODO @andreas: please test this
 export const confirmNotification = async (
     examId: string,
     notificationId: string,
@@ -141,7 +136,6 @@ export const confirmNotification = async (
         )
     ).status;
 
-// TODO @andreas: please test this
 export const disableConnections = async (
     examId: string,
     connectionToken: string,

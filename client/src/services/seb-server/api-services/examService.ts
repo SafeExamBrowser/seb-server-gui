@@ -48,7 +48,6 @@ export const getGrantedExamAppSignatureKeys = async (
 ): Promise<GrantedAppSignatureKey[]> =>
     (await newApiService.getRequest(`${baseUrl}/${parentId}/grant`)).data;
 
-// TODO @andreas: please test AGAIN!
 export const grantExamAppSignatureKeys = async (
     tagName: string,
     parentId: string,
@@ -67,7 +66,6 @@ export const grantExamAppSignatureKeys = async (
         )
     ).data;
 
-// TODO @andreas: please test this
 export const removeGrantExamAppSignatureKeys = async (
     parentId: string,
     id: string,
