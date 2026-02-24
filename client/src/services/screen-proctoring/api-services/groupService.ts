@@ -1,6 +1,4 @@
-import * as apiService from "@/services/apiService";
 import * as newApiService from "@/services/newApiService";
-import { StorageItemEnum } from "@/models/StorageItemEnum";
 import {
     OptionalParGroupByUuid,
     OptionalParGroups,
@@ -19,15 +17,13 @@ export const getGroups = async (
         })
     ).data;
 
-export async function getGroupByUuid(
+// TODO @andreas: please test this
+export const getGroupByUuid = async (
     uuid: string,
     optionalParameters?: OptionalParGroupByUuid,
-): Promise<GroupUuid> {
-    const url: string = "/sp/group/" + uuid;
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN),
-            params: { optionalParameters },
+): Promise<GroupUuid> =>
+    (
+        await newApiService.getRequest(`${baseUrl}/${uuid}`, {
+            params: optionalParameters,
         })
     ).data;
-}
