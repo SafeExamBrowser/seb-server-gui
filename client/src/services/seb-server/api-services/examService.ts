@@ -48,7 +48,7 @@ export const getGrantedExamAppSignatureKeys = async (
 ): Promise<GrantedAppSignatureKey[]> =>
     (await newApiService.getRequest(`${baseUrl}/${parentId}/grant`)).data;
 
-// TODO @andreas: please test this (source of error could be both the Content-Type header and the tag parameter)
+// TODO @andreas: please test AGAIN!
 export const grantExamAppSignatureKeys = async (
     tagName: string,
     parentId: string,
@@ -60,6 +60,9 @@ export const grantExamAppSignatureKeys = async (
             {},
             {
                 params: { tag: tagName },
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
             },
         )
     ).data;
