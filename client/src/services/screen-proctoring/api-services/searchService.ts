@@ -2,12 +2,10 @@ import * as apiService from "@/services/apiService";
 import * as newApiService from "@/services/newApiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
 import {
-    SearchScreenshots,
     SearchSessions,
     SearchTimeline,
 } from "@/models/screen-proctoring/search";
 import {
-    OptionalParSearchScreenshots,
     OptionalParSearchSessions,
     OptionalParSearchTimeline,
 } from "@/models/screen-proctoring/optionalParamters";
@@ -33,18 +31,6 @@ export const searchSessions = async (
             params: optionalParameters,
         })
     ).data;
-
-export async function searchScreenshots(
-    optionalParameters?: OptionalParSearchScreenshots,
-): Promise<SearchScreenshots> {
-    const url: string = "/sp/search/screenshots";
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN),
-            params: { optionalParameters },
-        })
-    ).data;
-}
 
 export async function searchTimeline(
     sessionId: string,

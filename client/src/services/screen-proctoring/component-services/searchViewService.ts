@@ -8,12 +8,10 @@ import {
 import * as spConstants from "@/utils/sp-constants";
 import { ServerTablePaging } from "@/models/types";
 import {
-    SearchScreenshots,
     SearchSessions,
     SearchTimeline,
 } from "@/models/screen-proctoring/search";
 import {
-    OptionalParSearchScreenshots,
     OptionalParSearchSessions,
     OptionalParSearchTimeline,
 } from "@/models/screen-proctoring/optionalParamters";
@@ -36,17 +34,6 @@ export async function searchSessions(
 ): Promise<SearchSessions | null> {
     try {
         return await searchService.searchSessions(optionalParameters);
-    } catch (error) {
-        console.error(error);
-        return null;
-    }
-}
-
-export async function searchScreenshots(
-    optionalParameters?: OptionalParSearchScreenshots,
-): Promise<SearchScreenshots | null> {
-    try {
-        return await searchService.searchScreenshots(optionalParameters);
     } catch (error) {
         console.error(error);
         return null;
