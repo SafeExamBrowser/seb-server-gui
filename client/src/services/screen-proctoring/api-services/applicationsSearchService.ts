@@ -1,4 +1,5 @@
 import * as apiService from "@/services/apiService";
+import * as newApiService from "@/services/newApiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
 import { OptionalParGetExamsStarted } from "@/models/screen-proctoring/optionalParamters";
 import { SPExam } from "@/models/screen-proctoring/exam";
@@ -7,17 +8,16 @@ import {
     UserListForApplicationSearchRecord,
 } from "@/models/screen-proctoring/applicationSearch";
 
-export async function getExamsStarted(
+const baseUrl = "/proctoring/search/applications" as const;
+
+export const getExamsStarted = async (
     optionalParameters?: OptionalParGetExamsStarted,
-): Promise<SPExam[]> {
-    const url: string = "/sp/search/applications/exams";
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN),
-            params: { optionalParameters },
+): Promise<SPExam[]> =>
+    (
+        await newApiService.getRequest(`${baseUrl}/exams`, {
+            params: optionalParameters,
         })
     ).data;
-}
 
 export async function getGroupIdsForExam(examId: number): Promise<number[]> {
     const url: string = "/sp/search/applications/groupIds/" + examId;

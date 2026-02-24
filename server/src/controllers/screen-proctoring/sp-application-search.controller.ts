@@ -2,16 +2,6 @@ import {Request, Response} from "express";
 import * as apiService from "../../services/screen-proctoring/sp-api.service";
 import * as applicationSearchService from "../../services/screen-proctoring/sp-application-search.service";
 
-export async function getExamsStarted(req: Request, res: Response){
-    try{
-        const [exams, status] = await applicationSearchService.getExamsStarted(req.headers.authorization, req.query.optionalParameters);
-        return res.status(status).json(exams);
-
-    }catch(error){
-        apiService.handleGenericApiError(error, res);
-    }
-}
-
 export async function getGroupIdsForExam(req: Request, res: Response){
     try{
         const [ids, status] = await applicationSearchService.getGroupIdsForExam(req.headers.authorization, req.params.examId);
