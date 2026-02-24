@@ -25,7 +25,6 @@ router.get("/sp/search/screenshots", searchController.searchScreenshots);
 router.get("/sp/search/timeline/:sessionId", searchController.searchTimeline);
 router.delete("/sp/search/sessions/delete", searchController.deleteSessions)
 
-router.get("/sp/search/applications/metadata/app", applicationSearchController.getDistinctMetadataAppForExam);
 router.get("/sp/search/applications/metadata/window", applicationSearchController.getDistinctMetadataWindowForExam);
 router.get("/sp/search/applications/users", applicationSearchController.getUserListForApplicationSearch);
 router.get("/sp/search/applications/timestamps", applicationSearchController.getTimestampListForApplicationSearch);

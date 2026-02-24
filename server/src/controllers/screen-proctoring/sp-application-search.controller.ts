@@ -2,16 +2,6 @@ import {Request, Response} from "express";
 import * as apiService from "../../services/screen-proctoring/sp-api.service";
 import * as applicationSearchService from "../../services/screen-proctoring/sp-application-search.service";
 
-export async function getDistinctMetadataAppForExam(req: Request, res: Response){
-    try{
-        const [metadataApps, status] = await applicationSearchService.getDistinctMetadataAppForExam(req.headers.authorization, req.query.groupIds);
-        return res.status(status).json(metadataApps);
-
-    }catch(error){
-        apiService.handleGenericApiError(error, res);
-    }
-}
-
 export async function getDistinctMetadataWindowForExam(req: Request, res: Response){
     try{
         const [metadataWindows, status] = await applicationSearchService.getDistinctMetadataWindowForExam(req.headers.authorization, {
