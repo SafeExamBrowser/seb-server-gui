@@ -33,18 +33,16 @@ export const getDistinctMetadataAppForExam = async (
         })
     ).data;
 
-export async function getDistinctMetadataWindowForExam(
+// TODO @andreas: please test this
+export const getDistinctMetadataWindowForExam = async (
     groupIds: string,
     screenProctoringMetadataApplication: string,
-): Promise<DistinctMetadataWindowForExamRecord> {
-    const url: string = "/sp/search/applications/metadata/window";
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN),
+): Promise<DistinctMetadataWindowForExamRecord> =>
+    (
+        await newApiService.getRequest(`${baseUrl}/metadata/window`, {
             params: { groupIds, screenProctoringMetadataApplication },
         })
     ).data;
-}
 
 export async function getUserListForApplicationSearch(
     groupIds: string,
