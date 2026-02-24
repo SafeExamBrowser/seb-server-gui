@@ -12,17 +12,13 @@ export const getScreenshotDataBySessionId = async (
 ): Promise<ScreenshotData> =>
     (await newApiService.getRequest(`${baseUrl}/${sessionId}`)).data;
 
-export async function getScreenshotDataByTimestamp(
+// TODO @andreas: please test this
+export const getScreenshotDataByTimestamp = async (
     sessionId: string,
     timestamp: string,
-): Promise<ScreenshotData> {
-    const url: string = "/sp/screenshot-data/" + sessionId + "/" + timestamp;
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN),
-        })
-    ).data;
-}
+): Promise<ScreenshotData> =>
+    (await newApiService.getRequest(`${baseUrl}/${sessionId}/${timestamp}`))
+        .data;
 
 export async function getScreenshotTimestamps(
     sessionId: string,
