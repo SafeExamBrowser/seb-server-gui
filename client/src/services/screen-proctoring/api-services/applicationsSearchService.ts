@@ -1,6 +1,4 @@
-import * as apiService from "@/services/apiService";
 import * as newApiService from "@/services/newApiService";
-import { StorageItemEnum } from "@/models/StorageItemEnum";
 import { OptionalParGetExamsStarted } from "@/models/screen-proctoring/optionalParamters";
 import { SPExam } from "@/models/screen-proctoring/exam";
 import {
@@ -60,15 +58,14 @@ export const getUserListForApplicationSearch = async (
         })
     ).data;
 
-export async function getTimestampListForApplicationSearch(
+// TODO @andreas: please test this
+export const getTimestampListForApplicationSearch = async (
     sessionUUID: string,
     screenProctoringMetadataApplication: string,
     screenProctoringMetadataWindowTitle: string,
-): Promise<number[]> {
-    const url: string = "/sp/search/applications/timestamps";
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN),
+): Promise<number[]> =>
+    (
+        await newApiService.getRequest(`${baseUrl}/timestamps`, {
             params: {
                 sessionUUID,
                 screenProctoringMetadataApplication,
@@ -76,4 +73,3 @@ export async function getTimestampListForApplicationSearch(
             },
         })
     ).data;
-}
