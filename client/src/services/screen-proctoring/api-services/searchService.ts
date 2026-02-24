@@ -32,18 +32,16 @@ export const searchSessions = async (
         })
     ).data;
 
-export async function searchTimeline(
+// TODO @andreas: please test this
+export const searchTimeline = async (
     sessionId: string,
     optionalParameters?: OptionalParSearchTimeline,
-): Promise<SearchTimeline> {
-    const url: string = "/sp/search/timeline/" + sessionId;
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN),
-            params: { optionalParameters },
+): Promise<SearchTimeline> =>
+    (
+        await newApiService.getRequest(`${baseUrl}/timeline/${sessionId}`, {
+            params: optionalParameters,
         })
     ).data;
-}
 
 export async function deleteSessions(
     sessionUuids: string[],

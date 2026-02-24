@@ -2,16 +2,6 @@ import {Request, Response} from 'express';
 import * as apiService from "../../services/screen-proctoring/sp-api.service";
 import * as searchService from '../../services/screen-proctoring/sp-search.service';
 
-export async function searchTimeline(req: Request, res: Response){
-    try{
-        const [timeline, status] = await searchService.searchTimeline(req.headers.authorization, req.params.sessionId, req.query.optionalParameters);
-        return res.status(status).json(timeline);
-
-    }catch(error){
-        apiService.handleGenericApiError(error, res);
-    }
-}
-
 export async function deleteSessions(req: Request, res: Response){
     try{
         const [response, status] = await searchService.deleteSessions(req.headers.authorization, req.query.modelIds);
