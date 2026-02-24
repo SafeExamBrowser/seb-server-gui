@@ -10,15 +10,16 @@ const api = axios.create({
     baseURL: `${ENV.SERVER_URL}:${3002}`, // TODO @alain: don't hardcode port (this is the port of the new proxy server)
 });
 
+const getAuthHeaderValueByUrl = (url: string) =>
+    `Bearer ${useAuthStore().getStorageItem(url.startsWith("/sp") ? StorageItemEnum.SP_ACCESS_TOKEN : StorageItemEnum.ACCESS_TOKEN)}`;
+
 export const getApiForManualRequests = () => api;
 
 export const getRequest = (url: string, options?: AxiosRequestConfig) => {
-    const authStore = useAuthStore();
-
     const defaultOptions: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${authStore.getStorageItem(StorageItemEnum.ACCESS_TOKEN)}`,
+            Authorization: getAuthHeaderValueByUrl(url),
         },
     };
 
@@ -30,12 +31,10 @@ export const postRequest = <T>(
     data?: T,
     options?: AxiosRequestConfig,
 ) => {
-    const authStore = useAuthStore();
-
     const defaultOptions: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${authStore.getStorageItem(StorageItemEnum.ACCESS_TOKEN)}`,
+            Authorization: getAuthHeaderValueByUrl(url),
             "Content-Type": "application/json",
         },
     };
@@ -48,12 +47,10 @@ export const putRequest = <T>(
     data?: T,
     options?: AxiosRequestConfig,
 ) => {
-    const authStore = useAuthStore();
-
     const defaultOptions: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${authStore.getStorageItem(StorageItemEnum.ACCESS_TOKEN)}`,
+            Authorization: getAuthHeaderValueByUrl(url),
             "Content-Type": "application/json",
         },
     };
@@ -66,12 +63,10 @@ export const patchRequest = <T>(
     data?: T,
     options?: AxiosRequestConfig,
 ) => {
-    const authStore = useAuthStore();
-
     const defaultOptions: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${authStore.getStorageItem(StorageItemEnum.ACCESS_TOKEN)}`,
+            Authorization: getAuthHeaderValueByUrl(url),
             "Content-Type": "application/x-www-form-urlencoded",
         },
     };
@@ -80,12 +75,10 @@ export const patchRequest = <T>(
 };
 
 export const deleteRequest = <T>(url: string, data?: T) => {
-    const authStore = useAuthStore();
-
     return api.delete(url, {
         headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${authStore.getStorageItem(StorageItemEnum.ACCESS_TOKEN)}`,
+            Authorization: getAuthHeaderValueByUrl(url),
             "Content-Type": "application/x-www-form-urlencoded",
         },
         data,
