@@ -1,3 +1,0 @@
-type Settings = {
-    isSebServerIntegratedMode: boolean;
-}
