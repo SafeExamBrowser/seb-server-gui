@@ -6,7 +6,6 @@ import * as groupController from "../controllers/screen-proctoring/sp-group.cont
 const router: Router = express.Router();
 
 //screen-proctoring
-router.get("/sp/group", groupController.getGroups);
 router.get("/sp/group/:uuid", groupController.getGroupByUuid);
 
 export default router;
