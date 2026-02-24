@@ -1,22 +1,29 @@
-import { createProxyServer } from "http-proxy-3";
+import ProxyServer, { createProxyServer } from "http-proxy-3";
 import http from "http";
 import { handleAuthorize } from "./handlers/authorize";
 import { setCorsHeaders } from "./utils/cors";
 import { parseEnv } from "./utils/env";
 import { logInfo, logRequest } from "./utils/logger";
 
-const API_PREFIX = "/admin-api/v1";
-
 const env = parseEnv();
 
-const proxyConfig = createProxyServer({
-  target: `${env.SEB_SERVER_URL}:${env.SEB_SERVER_PORT}${API_PREFIX}`,
+const sebProxy = createProxyServer({
+  target: `${env.SEB_SERVER_URL}:${env.SEB_SERVER_PORT}/admin-api/v1`,
 });
 
-proxyConfig.on("proxyRes", (proxyRes, req, res) => {
-  setCorsHeaders(res, env.PROXY_ALLOWED_ORIGIN);
-  logRequest(req, proxyRes.statusCode);
+const proctorProxy = createProxyServer({
+  target: `${env.PROCTOR_SERVER_URL}:${env.PROCTOR_SERVER_PORT}/admin-api/v1`,
 });
+
+const addProxyHandlers = (proxy: ProxyServer) => {
+  proxy.on("proxyRes", (proxyRes, req, res) => {
+    setCorsHeaders(res, env.PROXY_ALLOWED_ORIGIN);
+    logRequest(req, proxyRes.statusCode);
+  });
+};
+
+addProxyHandlers(sebProxy);
+addProxyHandlers(proctorProxy);
 
 const server = http.createServer((req, res) => {
   // handle preflight OPTIONS requests directly
@@ -35,7 +42,7 @@ const server = http.createServer((req, res) => {
   }
 
   // forward all other requests
-  proxyConfig.web(req, res);
+  (req.url?.startsWith("/proctoring") ? proctorProxy : sebProxy).web(req, res);
 });
 
 server.listen(env.PROXY_PORT, () => {
