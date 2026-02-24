@@ -24,17 +24,15 @@ export const searchSessionsDay = async (
         })
     ).data;
 
-export async function searchSessions(
+// TODO @andreas: please test this
+export const searchSessions = async (
     optionalParameters?: OptionalParSearchSessions,
-): Promise<SearchSessions> {
-    const url: string = "/sp/search/sessions";
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN),
-            params: { optionalParameters },
+): Promise<SearchSessions> =>
+    (
+        await newApiService.getRequest(`${baseUrl}/sessions`, {
+            params: optionalParameters,
         })
     ).data;
-}
 
 export async function searchScreenshots(
     optionalParameters?: OptionalParSearchScreenshots,

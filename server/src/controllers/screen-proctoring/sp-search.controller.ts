@@ -2,16 +2,6 @@ import {Request, Response} from 'express';
 import * as apiService from "../../services/screen-proctoring/sp-api.service";
 import * as searchService from '../../services/screen-proctoring/sp-search.service';
 
-export async function searchSessions(req: Request, res: Response){
-    try{
-        const [sessions, status] = await searchService.searchSessions(req.headers.authorization, req.query.optionalParameters);
-        return res.status(status).json(sessions);
-
-    }catch(error){
-        apiService.handleGenericApiError(error, res);
-    }
-}
-
 export async function searchScreenshots(req: Request, res: Response){
     try{
         const [screenshots, status] = await searchService.searchScreenshots(req.headers.authorization, req.query.optionalParameters);
