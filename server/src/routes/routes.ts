@@ -2,7 +2,6 @@ import express, {Router} from "express";
 
 //screen-proctoring
 import * as groupController from "../controllers/screen-proctoring/sp-group.controller";
-import * as screenshotDataController from "../controllers/screen-proctoring/sp-screenshot-data.controller";
 import * as settingsController from "../controllers/screen-proctoring/sp-settings.controller";
 
 const router: Router = express.Router();
@@ -12,7 +11,5 @@ router.get("/sp/settings", settingsController.getSettings)
 
 router.get("/sp/group", groupController.getGroups);
 router.get("/sp/group/:uuid", groupController.getGroupByUuid);
-
-router.get("/sp/screenshot-timestamps/:sessionId/:timestamp/:direction", screenshotDataController.getScreenshotTimestamps);
 
 export default router;
