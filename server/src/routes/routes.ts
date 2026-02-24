@@ -13,7 +13,6 @@ router.get("/sp/settings", settingsController.getSettings)
 router.get("/sp/group", groupController.getGroups);
 router.get("/sp/group/:uuid", groupController.getGroupByUuid);
 
-router.get("/sp/screenshot-data/:sessionId", screenshotDataController.getScreenshotDataBySessionId);
 router.get("/sp/screenshot-data/:sessionId/:timestamp", screenshotDataController.getScreenshotDataByTimestamp);
 router.get("/sp/screenshot-timestamps/:sessionId/:timestamp/:direction", screenshotDataController.getScreenshotTimestamps);
 
