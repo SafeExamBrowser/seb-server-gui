@@ -44,15 +44,14 @@ export const getDistinctMetadataWindowForExam = async (
         })
     ).data;
 
-export async function getUserListForApplicationSearch(
+// TODO @andreas: please test this
+export const getUserListForApplicationSearch = async (
     groupIds: string,
     screenProctoringMetadataApplication: string,
     screenProctoringMetadataWindowTitle: string,
-): Promise<UserListForApplicationSearchRecord[]> {
-    const url: string = "/sp/search/applications/users";
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN),
+): Promise<UserListForApplicationSearchRecord[]> =>
+    (
+        await newApiService.getRequest(`${baseUrl}/users`, {
             params: {
                 groupIds,
                 screenProctoringMetadataApplication,
@@ -60,7 +59,6 @@ export async function getUserListForApplicationSearch(
             },
         })
     ).data;
-}
 
 export async function getTimestampListForApplicationSearch(
     sessionUUID: string,
