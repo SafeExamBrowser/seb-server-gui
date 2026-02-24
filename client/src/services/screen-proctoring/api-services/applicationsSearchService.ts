@@ -19,14 +19,9 @@ export const getExamsStarted = async (
         })
     ).data;
 
-export async function getGroupIdsForExam(examId: number): Promise<number[]> {
-    const url: string = "/sp/search/applications/groupIds/" + examId;
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN),
-        })
-    ).data;
-}
+// TODO @andreas: please test this
+export const getGroupIdsForExam = async (examId: number): Promise<number[]> =>
+    (await newApiService.getRequest(`${baseUrl}/groupIds/${examId}`)).data;
 
 export async function getDistinctMetadataAppForExam(
     groupIds: string,

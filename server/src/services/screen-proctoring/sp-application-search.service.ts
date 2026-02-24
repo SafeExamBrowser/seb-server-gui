@@ -3,13 +3,6 @@ import * as ENV from "../../config/envConfig";
 
 const applicationSearchUrl: string = "/proctoring/search/applications";
 
-export async function getGroupIdsForExam(token: string, examId: string): Promise<[object, number]>{
-    const url: string = applicationSearchUrl + "/groupIds/" + examId;
-    const {data, status} = await apiService.api.get(url, {headers: apiService.getHeaders(token)});
-
-    return [data, status];
-}
-
 export async function getDistinctMetadataAppForExam(token: string, groupIds: {}): Promise<[object, number]>{
     const url: string = applicationSearchUrl + "/metadata/app";
     const {data, status} = await apiService.api.get(url, {headers: apiService.getHeaders(token), params: {groupIds}});
