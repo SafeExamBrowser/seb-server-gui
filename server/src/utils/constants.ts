@@ -1,7 +1,0 @@
-//routes - most of the time the same route for the B4F and to call SEB-Server
-
-//retrieves all quizzes that are ready for import --> quiz turns into exam as soon as its imported
-export const QUIZ_ROUTE = "/quiz";
-
-//institution
-export const SYSTEM_FEATURE_ROUTE = "/info/features";

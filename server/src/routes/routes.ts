@@ -1,8 +1,5 @@
 import express, {Router} from "express";
 
-import * as systemController from "../controllers/seb-server/system.controller";
-import * as constants from "../utils/constants";
-
 //screen-proctoring
 import * as groupController from "../controllers/screen-proctoring/sp-group.controller";
 import * as screenshotDataController from "../controllers/screen-proctoring/sp-screenshot-data.controller";
@@ -11,9 +8,6 @@ import * as settingsController from "../controllers/screen-proctoring/sp-setting
 import * as applicationSearchController from "../controllers/screen-proctoring/sp-application-search.controller";
 
 const router: Router = express.Router();
-
-// system
-router.get(constants.SYSTEM_FEATURE_ROUTE, systemController.getSystemFeatures)
 
 //screen-proctoring
 router.get("/sp/settings", settingsController.getSettings)
