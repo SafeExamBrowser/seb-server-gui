@@ -11,7 +11,7 @@ const api = axios.create({
 });
 
 const getAuthHeaderValueByUrl = (url: string) =>
-    `Bearer ${useAuthStore().getStorageItem(url.startsWith("/sp") ? StorageItemEnum.SP_ACCESS_TOKEN : StorageItemEnum.ACCESS_TOKEN)}`;
+    `Bearer ${useAuthStore().getStorageItem(url.startsWith("/proctoring") ? StorageItemEnum.SP_ACCESS_TOKEN : StorageItemEnum.ACCESS_TOKEN)}`;
 
 export const getApiForManualRequests = () => api;
 
