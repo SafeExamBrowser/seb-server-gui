@@ -1,6 +1,5 @@
 import * as apiService from "@/services/apiService";
 import * as newApiService from "@/services/newApiService";
-import { StorageItemEnum } from "@/models/StorageItemEnum";
 import {
     SearchSessions,
     SearchTimeline,
@@ -43,14 +42,12 @@ export const searchTimeline = async (
         })
     ).data;
 
-export async function deleteSessions(
+// TODO @andreas: please test this
+export const deleteSessions = async (
     sessionUuids: string[],
-): Promise<AxiosResponse<object>> {
-    const url: string =
-        "/sp/search/sessions/delete" +
-        apiService.createSessionDeleteUrlSuffix(sessionUuids);
-
-    return apiService.api.delete<object>(url, {
-        headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN),
-    });
-}
+): Promise<AxiosResponse<object>> =>
+    (
+        await newApiService.deleteRequest(
+            `${baseUrl}/session${apiService.createSessionDeleteUrlSuffix(sessionUuids)}`,
+        )
+    ).data;
