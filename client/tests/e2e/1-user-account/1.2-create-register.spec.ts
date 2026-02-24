@@ -5,10 +5,6 @@ import {
     selectVuetifyOptionByName,
 } from "../utils/helpers";
 
-// broken atm
-// TODO use expectToHaveUrl helper and othees
-
-// Setup Method for page
 async function setupRegisterPage(page: Page) {
     await page.addInitScript(() => {
         localStorage.clear();
@@ -54,7 +50,6 @@ async function setupRegisterPage(page: Page) {
     };
 }
 
-//tests
 test.describe("1.1.2 User Accounts - CREATE Register", () => {
     test("A Success", async ({ page }) => {
         const {
@@ -110,7 +105,6 @@ test.describe("1.1.2 User Accounts - CREATE Register", () => {
         await surname.fill("User");
         await email.fill(`${uname}@example.com`);
 
-        // too short (<8)
         await password.fill("Abc1");
         await confirmPassword.fill("Abc1");
 
