@@ -1,4 +1,5 @@
 import * as apiService from "@/services/apiService";
+import * as newApiService from "@/services/newApiService";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
 import {
     SearchScreenshots,
@@ -12,17 +13,16 @@ import {
 } from "@/models/screen-proctoring/optionalParamters";
 import { AxiosResponse } from "axios";
 
-export async function searchSessionsDay(
+const baseUrl = "/proctoring/search" as const;
+
+export const searchSessionsDay = async (
     optionalParameters?: OptionalParSearchSessions,
-): Promise<string[]> {
-    const url: string = "/sp/search/sessions/day";
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN),
-            params: { optionalParameters },
+): Promise<string[]> =>
+    (
+        await newApiService.getRequest(`${baseUrl}/sessions/day`, {
+            params: optionalParameters,
         })
     ).data;
-}
 
 export async function searchSessions(
     optionalParameters?: OptionalParSearchSessions,

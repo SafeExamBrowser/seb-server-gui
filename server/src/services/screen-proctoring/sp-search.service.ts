@@ -3,13 +3,6 @@ import * as utils from "../../utils/utils";
 
 const searchUrl: string = "/proctoring/search";
 
-export async function searchSessionsDay(token: string, options?: {}): Promise<[object, number]>{
-    const url: string = searchUrl + "/sessions/day";
-    const {data, status} = await apiService.api.get(url, {headers: apiService.getHeaders(token), params: options});
-
-    return [data, status];
-}
-
 export async function searchSessions(token: string, options?: {}): Promise<[object, number]>{
     const url: string = searchUrl + "/sessions";
     const {data, status} = await apiService.api.get(url, {headers: apiService.getHeaders(token), params: options});

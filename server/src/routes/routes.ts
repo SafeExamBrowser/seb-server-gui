@@ -18,7 +18,6 @@ router.get("/sp/screenshot-data/:sessionId", screenshotDataController.getScreens
 router.get("/sp/screenshot-data/:sessionId/:timestamp", screenshotDataController.getScreenshotDataByTimestamp);
 router.get("/sp/screenshot-timestamps/:sessionId/:timestamp/:direction", screenshotDataController.getScreenshotTimestamps);
 
-router.get("/sp/search/sessions/day", searchController.searchSessionsDay);
 router.get("/sp/search/sessions", searchController.searchSessions);
 router.get("/sp/search/screenshots", searchController.searchScreenshots);
 router.get("/sp/search/timeline/:sessionId", searchController.searchTimeline);
