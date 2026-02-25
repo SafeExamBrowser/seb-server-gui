@@ -7,7 +7,6 @@ import { GroupObject, GroupUuid } from "@/models/screen-proctoring/group";
 
 const baseUrl = "/proctoring/group" as const;
 
-// TODO @andreas: please test this
 export const getGroups = async (
     optionalParameters?: OptionalParGroups,
 ): Promise<GroupObject> =>
@@ -17,7 +16,6 @@ export const getGroups = async (
         })
     ).data;
 
-// TODO @andreas: please test this
 export const getGroupByUuid = async (
     uuid: string,
     optionalParameters?: OptionalParGroupByUuid,
