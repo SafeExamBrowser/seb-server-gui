@@ -21,7 +21,6 @@ export const searchSessionsDay = async (
         })
     ).data;
 
-// TODO @andreas: please test this
 export const searchSessions = async (
     optionalParameters?: OptionalParSearchSessions,
 ): Promise<SearchSessions> =>
@@ -31,7 +30,6 @@ export const searchSessions = async (
         })
     ).data;
 
-// TODO @andreas: please test this
 export const searchTimeline = async (
     sessionId: string,
     optionalParameters?: OptionalParSearchTimeline,
@@ -42,7 +40,8 @@ export const searchTimeline = async (
         })
     ).data;
 
-// TODO @andreas: please test this
+// TODO @andreas: We have to check if this is still a feature (with the new deletion strategy
+//                If yes, the current URL is wrong and should point to /session (no baseUrl) and with form-url-encoded header
 export const deleteSessions = async (
     sessionUuids: string[],
 ): Promise<AxiosResponse<object>> =>

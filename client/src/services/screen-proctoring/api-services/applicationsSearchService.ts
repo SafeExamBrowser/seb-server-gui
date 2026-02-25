@@ -17,11 +17,9 @@ export const getExamsStarted = async (
         })
     ).data;
 
-// TODO @andreas: please test this
 export const getGroupIdsForExam = async (examId: number): Promise<number[]> =>
     (await newApiService.getRequest(`${baseUrl}/groupIds/${examId}`)).data;
 
-// TODO @andreas: please test this
 export const getDistinctMetadataAppForExam = async (
     groupIds: string,
 ): Promise<string[]> =>
@@ -31,7 +29,8 @@ export const getDistinctMetadataAppForExam = async (
         })
     ).data;
 
-// TODO @andreas: please test this
+// TODO @andreas This is missing mandatory parameter "screenProctoringMetadataApplication"
+//               Maybe if screenProctoringMetadataApplication is null it should send empty string
 export const getDistinctMetadataWindowForExam = async (
     groupIds: string,
     screenProctoringMetadataApplication: string,
@@ -42,7 +41,6 @@ export const getDistinctMetadataWindowForExam = async (
         })
     ).data;
 
-// TODO @andreas: please test this
 export const getUserListForApplicationSearch = async (
     groupIds: string,
     screenProctoringMetadataApplication: string,
@@ -58,7 +56,6 @@ export const getUserListForApplicationSearch = async (
         })
     ).data;
 
-// TODO @andreas: please test this
 export const getTimestampListForApplicationSearch = async (
     sessionUUID: string,
     screenProctoringMetadataApplication: string,
