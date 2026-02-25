@@ -1,7 +1,5 @@
-import axios, { AxiosResponse } from "axios";
-import * as ENV from "@/config/envConfig";
-import * as apiService from "@/services/apiService";
-import { StorageItemEnum } from "@/models/StorageItemEnum";
+import * as newApiService from "@/services/newApiService";
+
 import {
     CreateUserPar,
     EditUserAccountParameters,
@@ -13,165 +11,104 @@ import {
 } from "@/models/userAccount";
 import { OptionalParInstitutionId } from "@/models/seb-server/optionalParamters";
 
-const userAccountUrl = "/useraccount";
+const baseUrl = "/useraccount" as const;
 
-export async function registerUserAccount(
+export const registerUserAccount = async (
     payload: Record<string, string>,
-): Promise<UserAccount> {
-    const url = ENV.SERVER_URL + ENV.SERVER_PORT + userAccountUrl + "/register";
-    const { data, status }: AxiosResponse<UserAccount> =
-        await axios.post<UserAccount>(url, payload);
-    if (status === 200) return data;
-    throw new Error(`Unexpected status ${status} for registerUserAccount`);
-}
+): Promise<UserAccount> =>
+    (
+        await newApiService
+            .getApiForManualRequests()
+            .post(`/register`, payload, {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+            })
+    ).data;
 
-export async function changePassword(
+export const changePassword = async (
     uuid: string,
     password: string,
     newPassword: string,
     confirmNewPassword: string,
-): Promise<UserAccount[]> {
-    const url = userAccountUrl + "/password";
-    const { data }: AxiosResponse<UserAccount[]> = await apiService.api.put<
-        UserAccount[]
-    >(
-        url,
-        { uuid, password, newPassword, confirmNewPassword },
-        { headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN) },
-    );
-    return data;
-}
-
-export async function deleteUserAccount(accountId: string): Promise<void> {
-    await apiService.api.delete<unknown>(userAccountUrl + "/" + accountId, {
-        headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-    });
-}
-
-export async function getPersonalUserAccount(): Promise<UserAccount> {
-    const url = userAccountUrl + "/me";
-    const { data }: AxiosResponse<UserAccount> =
-        await apiService.api.get<UserAccount>(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        });
-    return data;
-}
-
-export type UserFeatures = unknown;
-
-export async function getPersonalUserAccountFeatures(): Promise<UserFeatures> {
-    const url = userAccountUrl + "/me/features";
-    const { data }: AxiosResponse<UserFeatures> =
-        await apiService.api.get<UserFeatures>(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        });
-    return data;
-}
-
-export async function getUserAccountById(
-    accountId: string,
-): Promise<UserAccount> {
-    const url = userAccountUrl + "/" + accountId;
-    const { data }: AxiosResponse<UserAccount> =
-        await apiService.api.get<UserAccount>(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        });
-    return data;
-}
-
-export async function getUserAccountByIdOptional(
-    accountId: string,
-): Promise<UserAccount> {
-    const url = userAccountUrl + "/" + accountId;
-    const { data }: AxiosResponse<UserAccount> =
-        await apiService.api.get<UserAccount>(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-            params: { skip_error: "404" },
-        });
-    return data;
-}
-
-export async function getUserAccounts(
-    optionalParameters?: OptionalParGetUserAccounts,
-): Promise<UserAccountResponse> {
-    const { data }: AxiosResponse<UserAccountResponse> =
-        await apiService.api.get<UserAccountResponse>(userAccountUrl, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-            params: { optionalParameters },
-        });
-    return data;
-}
-
-export async function createUserAccount(
-    userAccount: CreateUserPar,
-): Promise<SingleUserAccountResponse> {
-    const { data }: AxiosResponse<SingleUserAccountResponse> =
-        await apiService.api.post<SingleUserAccountResponse>(
-            userAccountUrl,
-            userAccount,
-            {
-                headers: apiService.getPostHeaders(
-                    StorageItemEnum.ACCESS_TOKEN,
-                ),
-            },
-        );
-    return data;
-}
-
-export async function editUserAccount(
-    userAccount: EditUserAccountParameters,
-): Promise<UserAccountResponse> {
-    return (
-        await apiService.api.put(userAccountUrl, userAccount, {
-            headers: apiService.getPutHeaders(StorageItemEnum.ACCESS_TOKEN),
+): Promise<UserAccount[]> =>
+    (
+        await newApiService.putRequest(`${baseUrl}/password`, {
+            uuid,
+            password,
+            newPassword,
+            confirmNewPassword,
         })
     ).data;
-}
 
-export async function getUserAccountNames(
-    optionalParameters?: OptionalParInstitutionId,
-): Promise<UserAccountName[]> {
-    const url = userAccountUrl + "/names";
-    const { data }: AxiosResponse<UserAccountName[]> = await apiService.api.get<
-        UserAccountName[]
-    >(url, {
-        headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        params: { optionalParameters },
-    });
-    return data;
-}
+export const deleteUserAccount = async (accountId: string): Promise<unknown> =>
+    (await newApiService.deleteRequest(`${baseUrl}/${accountId}`)).data;
 
-export async function getSupervisorNames(
-    optionalParameters?: OptionalParInstitutionId,
-): Promise<UserAccountName[]> {
-    const url = userAccountUrl + "/supervisors";
-    const { data }: AxiosResponse<UserAccountName[]> = await apiService.api.get<
-        UserAccountName[]
-    >(url, {
-        headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        params: { optionalParameters },
-    });
-    return data;
-}
+export const getPersonalUserAccount = async (): Promise<UserAccount> =>
+    (await newApiService.getRequest(`${baseUrl}/me`)).data;
 
-export async function activateUserAccount(
+export const getUserAccountById = async (
     accountId: string,
-): Promise<UserAccount> {
-    const url = userAccountUrl + "/" + accountId + "/active";
-    const { data }: AxiosResponse<UserAccount> =
-        await apiService.api.post<UserAccount>(url, null, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        });
-    return data;
-}
+): Promise<UserAccount> =>
+    (await newApiService.getRequest(`${baseUrl}/${accountId}`)).data;
 
-export async function deactivateUserAccount(
+export const getUserAccounts = async (
+    optionalParameters?: OptionalParGetUserAccounts,
+): Promise<UserAccountResponse> =>
+    (await newApiService.getRequest(baseUrl, { params: optionalParameters }))
+        .data;
+
+export const createUserAccount = async (
+    userAccount: CreateUserPar,
+): Promise<SingleUserAccountResponse> =>
+    (
+        await newApiService.postRequest(baseUrl, userAccount, {
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+        })
+    ).data;
+
+export const editUserAccount = async (
+    userAccount: EditUserAccountParameters,
+): Promise<UserAccountResponse> =>
+    (await newApiService.putRequest(baseUrl, userAccount)).data;
+
+export const getSupervisorNames = async (
+    optionalParameters?: OptionalParInstitutionId,
+): Promise<UserAccountName[]> =>
+    (
+        await newApiService.getRequest(`${baseUrl}/supervisors`, {
+            params: optionalParameters,
+        })
+    ).data;
+
+export const activateUserAccount = async (
     accountId: string,
-): Promise<UserAccount> {
-    const url = userAccountUrl + "/" + accountId + "/inactive";
-    const { data }: AxiosResponse<UserAccount> =
-        await apiService.api.post<UserAccount>(url, null, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        });
-    return data;
-}
+): Promise<UserAccount> =>
+    (
+        await newApiService.postRequest(
+            `${baseUrl}/${accountId}/active`,
+            {},
+            {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+            },
+        )
+    ).data;
+
+export const deactivateUserAccount = async (
+    accountId: string,
+): Promise<UserAccount> =>
+    (
+        await newApiService.postRequest(
+            `${baseUrl}/${accountId}/inactive`,
+            {},
+            {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+            },
+        )
+    ).data;

@@ -26,28 +26,10 @@ export async function deleteCertificate(
     }
 }
 
-export async function createCertificate(params: CreateCertificatePar) {
+export async function createCertificate(certificate: CreateCertificatePar) {
     try {
-        const fileBase64 = await blobToBase64(params.file);
-        return await certificateService.createCertificate({
-            fileBase64,
-            fileName: params.fileName,
-            password: params.password,
-        });
+        return await certificateService.createCertificate(certificate);
     } catch {
         return null;
     }
-}
-
-function blobToBase64(blob: Blob): Promise<string> {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onerror = () => reject(new Error("Failed to read file"));
-        reader.onload = () => {
-            const result = String(reader.result ?? "");
-            const comma = result.indexOf(",");
-            resolve(comma >= 0 ? result.slice(comma + 1) : result);
-        };
-        reader.readAsDataURL(blob);
-    });
 }

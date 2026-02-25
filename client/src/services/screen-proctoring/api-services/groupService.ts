@@ -1,32 +1,27 @@
-import * as apiService from "@/services/apiService";
-import { StorageItemEnum } from "@/models/StorageItemEnum";
+import * as newApiService from "@/services/newApiService";
 import {
     OptionalParGroupByUuid,
     OptionalParGroups,
 } from "@/models/screen-proctoring/optionalParamters";
 import { GroupObject, GroupUuid } from "@/models/screen-proctoring/group";
 
-export async function getGroups(
+const baseUrl = "/proctoring/group" as const;
+
+export const getGroups = async (
     optionalParameters?: OptionalParGroups,
-): Promise<GroupObject> {
-    const url: string = "/sp/group";
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN),
-            params: { optionalParameters },
+): Promise<GroupObject> =>
+    (
+        await newApiService.getRequest(baseUrl, {
+            params: optionalParameters,
         })
     ).data;
-}
 
-export async function getGroupByUuid(
+export const getGroupByUuid = async (
     uuid: string,
     optionalParameters?: OptionalParGroupByUuid,
-): Promise<GroupUuid> {
-    const url: string = "/sp/group/" + uuid;
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN),
-            params: { optionalParameters },
+): Promise<GroupUuid> =>
+    (
+        await newApiService.getRequest(`${baseUrl}/${uuid}`, {
+            params: optionalParameters,
         })
     ).data;
-}

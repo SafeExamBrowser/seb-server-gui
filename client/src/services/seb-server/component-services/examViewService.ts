@@ -107,22 +107,9 @@ export async function getExams(
     }
 }
 
-export async function getExamsForMonitoring(
-    optionalParGetExams?: OptionalParGetExams,
-): Promise<Exams | null> {
+export async function updateExam(exam: Exam): Promise<Exam | null> {
     try {
-        return await examService.getExamsForMonitoring(optionalParGetExams);
-    } catch {
-        return null;
-    }
-}
-
-export async function updateExam(
-    examId: string,
-    exam: Exam,
-): Promise<Exam | null> {
-    try {
-        return await examService.updateExam(examId, exam);
+        return await examService.updateExam(exam);
     } catch {
         return null;
     }
@@ -130,9 +117,7 @@ export async function updateExam(
 
 export async function getConnectionConfigurations(): Promise<ConnectionConfigurations | null> {
     try {
-        return await configurationService.getConnectionConfigurationsActive(
-            "true",
-        );
+        return await configurationService.getConnectionConfigurationsActive();
     } catch {
         return null;
     }
@@ -156,20 +141,6 @@ export async function downloadExamConfig(
 export async function archiveExam(id: string): Promise<Exam | null> {
     try {
         return await examService.archiveExam(id);
-    } catch {
-        return null;
-    }
-}
-
-export async function saveScreenProctoringSettings(
-    id: string,
-    screenProctoringSettings: ScreenProctoringSettings,
-): Promise<Exam | null> {
-    try {
-        return await screenProctoringService.saveScreenProctoringSettings(
-            id,
-            screenProctoringSettings,
-        );
     } catch {
         return null;
     }
@@ -228,7 +199,9 @@ export async function applySEBLock(
     enableSEBLock: boolean,
 ): Promise<Exam | null> {
     try {
-        return await examService.applySEBLock(id, enableSEBLock);
+        return enableSEBLock
+            ? await examService.addSEBLock(id)
+            : await examService.removeSEBLock(id);
     } catch {
         return null;
     }

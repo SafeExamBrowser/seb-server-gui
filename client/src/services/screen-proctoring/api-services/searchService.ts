@@ -1,74 +1,52 @@
 import * as apiService from "@/services/apiService";
-import { StorageItemEnum } from "@/models/StorageItemEnum";
+import * as newApiService from "@/services/newApiService";
 import {
-    SearchScreenshots,
     SearchSessions,
     SearchTimeline,
 } from "@/models/screen-proctoring/search";
 import {
-    OptionalParSearchScreenshots,
     OptionalParSearchSessions,
     OptionalParSearchTimeline,
 } from "@/models/screen-proctoring/optionalParamters";
 import { AxiosResponse } from "axios";
 
-export async function searchSessionsDay(
+const baseUrl = "/proctoring/search" as const;
+
+export const searchSessionsDay = async (
     optionalParameters?: OptionalParSearchSessions,
-): Promise<string[]> {
-    const url: string = "/sp/search/sessions/day";
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN),
-            params: { optionalParameters },
+): Promise<string[]> =>
+    (
+        await newApiService.getRequest(`${baseUrl}/sessions/day`, {
+            params: optionalParameters,
         })
     ).data;
-}
 
-export async function searchSessions(
+export const searchSessions = async (
     optionalParameters?: OptionalParSearchSessions,
-): Promise<SearchSessions> {
-    const url: string = "/sp/search/sessions";
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN),
-            params: { optionalParameters },
+): Promise<SearchSessions> =>
+    (
+        await newApiService.getRequest(`${baseUrl}/sessions`, {
+            params: optionalParameters,
         })
     ).data;
-}
 
-export async function searchScreenshots(
-    optionalParameters?: OptionalParSearchScreenshots,
-): Promise<SearchScreenshots> {
-    const url: string = "/sp/search/screenshots";
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN),
-            params: { optionalParameters },
-        })
-    ).data;
-}
-
-export async function searchTimeline(
+export const searchTimeline = async (
     sessionId: string,
     optionalParameters?: OptionalParSearchTimeline,
-): Promise<SearchTimeline> {
-    const url: string = "/sp/search/timeline/" + sessionId;
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN),
-            params: { optionalParameters },
+): Promise<SearchTimeline> =>
+    (
+        await newApiService.getRequest(`${baseUrl}/timeline/${sessionId}`, {
+            params: optionalParameters,
         })
     ).data;
-}
 
-export async function deleteSessions(
+// TODO @andreas: We have to check if this is still a feature (with the new deletion strategy
+//                If yes, the current URL is wrong and should point to /session (no baseUrl) and with form-url-encoded header
+export const deleteSessions = async (
     sessionUuids: string[],
-): Promise<AxiosResponse<object>> {
-    const url: string =
-        "/sp/search/sessions/delete" +
-        apiService.createSessionDeleteUrlSuffix(sessionUuids);
-
-    return apiService.api.delete<object>(url, {
-        headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN),
-    });
-}
+): Promise<AxiosResponse<object>> =>
+    (
+        await newApiService.deleteRequest(
+            `${baseUrl}/session${apiService.createSessionDeleteUrlSuffix(sessionUuids)}`,
+        )
+    ).data;

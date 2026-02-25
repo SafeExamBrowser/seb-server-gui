@@ -33,9 +33,3 @@ export type CreateCertificatePar = {
     fileName: string;
     password?: string;
 };
-
-export type CreateCertificateJSON = {
-    fileBase64: string;
-    fileName: string;
-    password?: string;
-};

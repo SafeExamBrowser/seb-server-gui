@@ -1,5 +1,4 @@
-import * as apiService from "@/services/apiService";
-import { StorageItemEnum } from "@/models/StorageItemEnum";
+import * as newApiService from "@/services/newApiService";
 import { OptionalParGetMonitoringClientLogs } from "@/models/seb-server/optionalParamters";
 import {
     ClientEventResponse,
@@ -9,166 +8,146 @@ import {
     MonitoringStaticClientData,
     SingleConnection,
 } from "@/models/seb-server/monitoring";
-import { Exam } from "@/models/seb-server/exam";
+import { Exam, Exams } from "@/models/seb-server/exam";
 import { ClientInstruction } from "@/models/seb-server/clientInstruction";
+import { OptionalParGetExams } from "@/models/seb-server/optionalParamters";
+import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums";
+import { MonitoringConnectionHeaders } from "@/models/seb-server/monitoring";
 
-const monitoringUrl: string = "/monitoring";
-const clientEventUrl: string = "/seb-client-event";
+const baseUrl: string = "/monitoring";
+
+export const getExamsForMonitoring = async (
+    optionalParameters?: OptionalParGetExams,
+): Promise<Exams> =>
+    (
+        await newApiService.getRequest(baseUrl, {
+            params: optionalParameters,
+        })
+    ).data;
+
+export const getOverview = async (
+    examId: string,
+): Promise<MonitoringOverview> =>
+    (await newApiService.getRequest(`${baseUrl}/overview/${examId}`)).data;
+
+export const getConnections = async (
+    examId: string,
+    additionalHeaders: MonitoringConnectionHeaders,
+): Promise<MonitoringConnections> =>
+    (
+        await newApiService.getRequest(`${baseUrl}/connections/${examId}`, {
+            headers: {
+                "show-all": additionalHeaders[MonitoringHeaderEnum.SHOW_ALL],
+                "show-client-groups":
+                    additionalHeaders[MonitoringHeaderEnum.SHOW_CLIENT_GROUPS],
+                "show-states":
+                    additionalHeaders[MonitoringHeaderEnum.SHOW_STATES],
+                "show-notifications":
+                    additionalHeaders[MonitoringHeaderEnum.SHOW_NOTIFCATION],
+                "show-indicators":
+                    additionalHeaders[MonitoringHeaderEnum.SHOW_INDICATORS],
+            },
+        })
+    ).data;
 
 export async function applyTestRun(id: string): Promise<Exam> {
     return (
-        await apiService.api.post(
-            monitoringUrl + "/testrun/" + id,
+        await newApiService.postRequest(
+            `${baseUrl}/testrun/${id}`,
             {},
             {
-                headers: apiService.getPostHeaders(
-                    StorageItemEnum.ACCESS_TOKEN,
-                ),
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
             },
         )
     ).data;
 }
 
-export async function getOverview(examId: string): Promise<MonitoringOverview> {
-    const response = await apiService.api.get(
-        monitoringUrl + "/get-overview/" + examId,
-        { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN) },
-    );
-    return response.data;
-}
-
-export async function getConnections(
-    examId: string,
-    optionalHeaders: unknown,
-): Promise<MonitoringConnections> {
-    const url: string = monitoringUrl + "/connections/" + examId;
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-            params: { optionalHeaders },
-        })
-    ).data;
-}
-
-export async function getSingleConnection(
+export const getSingleConnection = async (
     examId: string,
     connectionToken: string,
-): Promise<SingleConnection> {
-    const url: string = "/get-monitoring/" + examId + "/" + connectionToken;
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
+): Promise<SingleConnection> =>
+    (await newApiService.getRequest(`${baseUrl}/${examId}/${connectionToken}`))
+        .data;
 
-export async function getSingleConnectionEvents(
+export const getSingleConnectionEvents = async (
     clientConnectionId: string,
     optionalParameters?: OptionalParGetMonitoringClientLogs,
-): Promise<ClientEventResponse | null> {
-    const url: string = clientEventUrl + "/search" + "/" + clientConnectionId;
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-            params: { optionalParameters },
+): Promise<ClientEventResponse> =>
+    (
+        await newApiService.getRequest("/seb-client-event/search", {
+            params: {
+                ...optionalParameters,
+                clientConnectionId,
+            },
         })
     ).data;
-}
 
-export async function getStaticClientData(
+export const getStaticClientData = async (
     examId: string,
     modelIds: string,
-): Promise<MonitoringStaticClientData> {
-    const url: string = monitoringUrl + "/" + examId + "/static-client-data";
-    return (
-        await apiService.api.post(
-            url,
+): Promise<MonitoringStaticClientData> =>
+    (
+        await newApiService.postRequest(
+            `${baseUrl}/${examId}/static-client-data`,
             { modelIds },
             {
-                headers: apiService.getPostHeaders(
-                    StorageItemEnum.ACCESS_TOKEN,
-                ),
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
             },
         )
     ).data;
-}
 
-export async function registerInstruction(
+export const registerInstruction = async (
     examId: string,
     clientInstruction: ClientInstruction,
-): Promise<number> {
-    const url: string = monitoringUrl + "/" + examId + "/instruction";
-    const call = await apiService.api.post(url, clientInstruction, {
-        headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),
-    });
-    return call.status;
-}
+): Promise<number> =>
+    (
+        await newApiService.postRequest(
+            `${baseUrl}/${examId}/instruction`,
+            clientInstruction,
+        )
+    ).status;
 
-export async function quitAll(examId: string): Promise<number> {
-    const url: string = monitoringUrl + "/" + examId + "/quitAll";
-    const call = await apiService.api.post(
-        url,
-        {},
-        {
-            headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),
-        },
-    );
-    return call.status;
-}
+// TODO @andreas: please test this as soon as quit all function is working again
+export const quitAll = async (examId: string): Promise<number> =>
+    (await newApiService.postRequest(`${baseUrl}/${examId}/quitAll`)).status;
 
-export async function getPendingNotifcations(
+export const getPendingNotifcations = async (
     examId: string,
     connectionToken: string,
-): Promise<ClientNotification[]> {
-    const url: string =
-        monitoringUrl + "/" + examId + "/notification/" + connectionToken;
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
+): Promise<ClientNotification[]> =>
+    (
+        await newApiService.getRequest(
+            `${baseUrl}/${examId}/notification/${connectionToken}`,
+        )
     ).data;
-}
 
-export async function confirmNotification(
+export const confirmNotification = async (
     examId: string,
     notificationId: string,
     connectionToken: string,
-): Promise<unknown> {
-    const url: string =
-        monitoringUrl +
-        "/" +
-        examId +
-        "/notification/" +
-        notificationId +
-        "/" +
-        connectionToken;
-    return (
-        await apiService.api.post(
-            url,
-            {},
-            {
-                headers: apiService.getPostHeaders(
-                    StorageItemEnum.ACCESS_TOKEN,
-                ),
-            },
+): Promise<unknown> =>
+    (
+        await newApiService.postRequest(
+            `${baseUrl}/${examId}/notification/${notificationId}/${connectionToken}`,
         )
     ).status;
-}
 
-export async function disableConnections(
+export const disableConnections = async (
     examId: string,
     connectionToken: string,
-): Promise<unknown> {
-    const url: string = monitoringUrl + "/" + examId + "/disable-connection";
-    return (
-        await apiService.api.post(
-            url,
+): Promise<unknown> =>
+    (
+        await newApiService.postRequest(
+            `${baseUrl}/${examId}/disable-connection`,
             { connectionToken },
             {
-                headers: apiService.getPostHeaders(
-                    StorageItemEnum.ACCESS_TOKEN,
-                ),
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
             },
         )
     ).status;
-}

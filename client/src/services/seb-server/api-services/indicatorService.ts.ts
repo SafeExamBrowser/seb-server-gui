@@ -1,14 +1,7 @@
-import * as apiService from "@/services/apiService";
-import { StorageItemEnum } from "@/models/StorageItemEnum";
+import * as newApiService from "@/services/newApiService";
 import { Indicators } from "@/models/seb-server/indicators";
 
-const url: string = "/indicator";
+const baseUrl: string = "/indicator";
 
-export async function getIndicators(examId: string): Promise<Indicators> {
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-            params: { examId },
-        })
-    ).data;
-}
+export const getIndicators = async (examId: string): Promise<Indicators> =>
+    (await newApiService.getRequest(`${baseUrl}`, { params: { examId } })).data;

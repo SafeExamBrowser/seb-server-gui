@@ -1,5 +1,4 @@
-import * as apiService from "@/services/apiService";
-import { StorageItemEnum } from "@/models/StorageItemEnum";
+import * as newApiService from "@/services/newApiService";
 import { OptionalParGetExamsStarted } from "@/models/screen-proctoring/optionalParamters";
 import { SPExam } from "@/models/screen-proctoring/exam";
 import {
@@ -7,61 +6,48 @@ import {
     UserListForApplicationSearchRecord,
 } from "@/models/screen-proctoring/applicationSearch";
 
-export async function getExamsStarted(
+const baseUrl = "/proctoring/search/applications" as const;
+
+export const getExamsStarted = async (
     optionalParameters?: OptionalParGetExamsStarted,
-): Promise<SPExam[]> {
-    const url: string = "/sp/search/applications/exams";
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN),
-            params: { optionalParameters },
+): Promise<SPExam[]> =>
+    (
+        await newApiService.getRequest(`${baseUrl}/exams`, {
+            params: optionalParameters,
         })
     ).data;
-}
 
-export async function getGroupIdsForExam(examId: number): Promise<number[]> {
-    const url: string = "/sp/search/applications/groupIds/" + examId;
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN),
-        })
-    ).data;
-}
+export const getGroupIdsForExam = async (examId: number): Promise<number[]> =>
+    (await newApiService.getRequest(`${baseUrl}/groupIds/${examId}`)).data;
 
-export async function getDistinctMetadataAppForExam(
+export const getDistinctMetadataAppForExam = async (
     groupIds: string,
-): Promise<string[]> {
-    const url: string = "/sp/search/applications/metadata/app";
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN),
+): Promise<string[]> =>
+    (
+        await newApiService.getRequest(`${baseUrl}/metadata/app`, {
             params: { groupIds },
         })
     ).data;
-}
 
-export async function getDistinctMetadataWindowForExam(
+// TODO @andreas This is missing mandatory parameter "screenProctoringMetadataApplication"
+//               Maybe if screenProctoringMetadataApplication is null it should send empty string
+export const getDistinctMetadataWindowForExam = async (
     groupIds: string,
     screenProctoringMetadataApplication: string,
-): Promise<DistinctMetadataWindowForExamRecord> {
-    const url: string = "/sp/search/applications/metadata/window";
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN),
+): Promise<DistinctMetadataWindowForExamRecord> =>
+    (
+        await newApiService.getRequest(`${baseUrl}/metadata/window`, {
             params: { groupIds, screenProctoringMetadataApplication },
         })
     ).data;
-}
 
-export async function getUserListForApplicationSearch(
+export const getUserListForApplicationSearch = async (
     groupIds: string,
     screenProctoringMetadataApplication: string,
     screenProctoringMetadataWindowTitle: string,
-): Promise<UserListForApplicationSearchRecord[]> {
-    const url: string = "/sp/search/applications/users";
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN),
+): Promise<UserListForApplicationSearchRecord[]> =>
+    (
+        await newApiService.getRequest(`${baseUrl}/users`, {
             params: {
                 groupIds,
                 screenProctoringMetadataApplication,
@@ -69,17 +55,14 @@ export async function getUserListForApplicationSearch(
             },
         })
     ).data;
-}
 
-export async function getTimestampListForApplicationSearch(
+export const getTimestampListForApplicationSearch = async (
     sessionUUID: string,
     screenProctoringMetadataApplication: string,
     screenProctoringMetadataWindowTitle: string,
-): Promise<number[]> {
-    const url: string = "/sp/search/applications/timestamps";
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.SP_ACCESS_TOKEN),
+): Promise<number[]> =>
+    (
+        await newApiService.getRequest(`${baseUrl}/timestamps`, {
             params: {
                 sessionUUID,
                 screenProctoringMetadataApplication,
@@ -87,4 +70,3 @@ export async function getTimestampListForApplicationSearch(
             },
         })
     ).data;
-}

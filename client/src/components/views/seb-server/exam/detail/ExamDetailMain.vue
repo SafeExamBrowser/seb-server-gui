@@ -1067,7 +1067,6 @@ async function updateExam(isSupervisorsManualUpdate?: boolean) {
     }
 
     const updateExamResponse: Exam | null = await examViewService.updateExam(
-        examId,
         examStore.selectedExam,
     );
 
@@ -1155,7 +1154,7 @@ async function getExamSupervisors() {
     examStore.selectedExamSupervisors = [];
     for (let i = 0; i < examStore.selectedExam.supporter.length; i++) {
         const userAccount: UserAccount | null =
-            await userAccountViewService.getUserAccountByIdOptional(
+            await userAccountViewService.getUserAccountById(
                 examStore.selectedExam.supporter[i],
             );
 
@@ -1477,9 +1476,9 @@ function openSebSettingsDialog() {
 async function closeSebSettingsDialog(apply?: boolean) {
     sebSettingsDialog.value = false;
     if (apply) {
-        await sebSettingsService.publish(examId, true);
+        await sebSettingsService.publish(examId);
     } else {
-        await sebSettingsService.undoChanges(examId, true);
+        await sebSettingsService.undoChanges(examId);
     }
 }
 

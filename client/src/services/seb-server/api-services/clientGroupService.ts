@@ -1,50 +1,26 @@
-import * as apiService from "@/services/apiService";
-import { StorageItemEnum } from "@/models/StorageItemEnum";
+import * as newApiService from "@/services/newApiService";
 import { ClientGroup, ClientGroups } from "@/models/seb-server/clientGroup";
 
-const url: string = "/client-group";
+const baseUrl = "/client-group" as const;
 
-export async function createClientGroup(
+export const getClientGroups = async (id?: string): Promise<ClientGroups> =>
+    (await newApiService.getRequest(baseUrl, { params: { examId: id } })).data;
+
+export const createClientGroup = async (
     clientGroup: ClientGroup,
-): Promise<ClientGroup> {
-    return (
-        await apiService.api.post(url, clientGroup, {
-            headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),
+): Promise<ClientGroup> =>
+    (
+        await newApiService.postRequest(baseUrl, clientGroup, {
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
         })
     ).data;
-}
 
-export async function updateClientGroup(
+export const updateClientGroup = async (
     clientGroup: ClientGroup,
-): Promise<ClientGroup> {
-    return (
-        await apiService.api.put(url, clientGroup, {
-            headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
+): Promise<ClientGroup> =>
+    (await newApiService.putRequest(baseUrl, clientGroup)).data;
 
-export async function deleteClientGroup(id: string): Promise<undefined | null> {
-    return (
-        await apiService.api.delete(url + "/" + id, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
-
-export async function getClientGroup(id: string): Promise<ClientGroup> {
-    return (
-        await apiService.api.get(url + "/" + id, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
-
-export async function getClientGroups(id?: string): Promise<ClientGroups> {
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-            params: { id },
-        })
-    ).data;
-}
+export const deleteClientGroup = async (
+    id: string,
+): Promise<undefined | null> =>
+    (await newApiService.deleteRequest(`${baseUrl}/${id}`)).data;

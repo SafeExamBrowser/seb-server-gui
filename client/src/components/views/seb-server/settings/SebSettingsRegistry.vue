@@ -462,7 +462,6 @@ onBeforeMount(async () => {
         await sebSettingsService.getViewSettings(
             ViewType.REGISTRY,
             componentId,
-            sebSettingsStore.isExam,
         );
     if (registrySettings == null) {
         return;
@@ -513,7 +512,6 @@ async function saveSingleValue(name: string, value: string) {
         componentId,
         setting.id.toString(),
         value,
-        sebSettingsStore.isExam,
     );
 }
 
