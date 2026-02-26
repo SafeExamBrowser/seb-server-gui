@@ -126,7 +126,7 @@ export class PlaywrightUserAccountsPage {
             "userAccounts-status-confirm-button",
         );
 
-        // Vuetify (generic validation/messages)
+        // Vuetify
         this.anyVuetifyValidationMessage = page.locator(
             ".v-messages .v-messages__message",
         );
@@ -155,8 +155,7 @@ export class PlaywrightUserAccountsPage {
     }
 
     // ------------------------
-    // Dynamic locators (rows/cells/actions)
-    // Note: your template uses item.uuid in testids
+    // Dynamic locators
     // ------------------------
 
     row(uuid: string): Locator {
@@ -213,9 +212,6 @@ export class PlaywrightUserAccountsPage {
         await this.cancelButton.click();
     }
 
-    /**
-     * Convenience: fill + trigger search
-     */
     async search(value: string) {
         await this.fillSearch(value);
         await this.searchByButton();
@@ -249,9 +245,6 @@ export class PlaywrightUserAccountsPage {
         await this.addUserButton.click();
     }
 
-    /**
-     * Row click navigates to edit details (because <tr @click="goToDetails">)
-     */
     async openUserDetails(uuid: string) {
         await this.row(uuid).click();
     }
@@ -320,33 +313,14 @@ export class PlaywrightUserAccountsPage {
     // ------------------------
     // Sorting + Paging (for future tests)
     // ------------------------
-    /**
-     * Vuetify server table triggers backend loads via @update:options.
-     * If your TableHeaders component exposes header refs, you can later
-     * implement "sortBy(columnKey)" by clicking the actual header cell.
-     *
-     * For now we add the placeholders + locators you'll likely need.
-     */
-
-    /**
-     * Tries to click a header by visible text.
-     * Works if the header text is actually in the DOM as a clickable element.
-     */
     headerByText(text: string): Locator {
-        // scoped under table headers component to reduce ambiguity
         return this.tableHeadersComponent.getByText(text, { exact: true });
     }
 
     async sortByHeaderText(text: string) {
         await this.headerByText(text).click();
     }
-
-    /**
-     * Generic pagination controls (Vuetify varies by version/theme).
-     * Keep as placeholders until we inspect your rendered DOM.
-     */
     paginationRoot(): Locator {
-        // v-data-table often renders .v-data-table-footer or .v-pagination
         return this.tableSection.locator(".v-data-table-footer, .v-pagination");
     }
 
@@ -365,6 +339,42 @@ export class PlaywrightUserAccountsPage {
         await expectRequestSucceeded({
             page: this.page,
             method: "DELETE",
+            urlRegex,
+            action,
+            expectedStatus: 200,
+        });
+    }
+
+    async expectDeactivateRequestSucceeded(
+        uuid: string,
+        action: () => Promise<void>,
+    ) {
+        const urlRegex = new RegExp(
+            `/useraccount/${uuid}/inactive(?:\\?|$)`,
+            "i",
+        );
+
+        await expectRequestSucceeded({
+            page: this.page,
+            method: "POST",
+            urlRegex,
+            action,
+            expectedStatus: 200,
+        });
+    }
+
+    async expectActivateRequestSucceeded(
+        uuid: string,
+        action: () => Promise<void>,
+    ) {
+        const urlRegex = new RegExp(
+            `/useraccount/${uuid}/active(?:\\?|$)`,
+            "i",
+        );
+
+        await expectRequestSucceeded({
+            page: this.page,
+            method: "POST",
             urlRegex,
             action,
             expectedStatus: 200,
