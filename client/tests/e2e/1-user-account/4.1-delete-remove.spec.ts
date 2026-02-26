@@ -1,97 +1,55 @@
-import { expect, Page, test } from "@playwright/test";
-import { navigateTo, suffixForProject } from "../utils/helpers";
+import { expect, test } from "@playwright/test";
+import { addBrowserSuffixToText } from "../utils/helpers";
 import { loginAsServerAdmin } from "../utils/authenticate";
+import { PlaywrightUserAccountsPage } from "../models/playwright-user-accounts-page";
 
 const userLastName = "testdelete";
-
 const userUUID = "seb-user-account-delete";
 
-async function setupUserAccountsPage(page: Page, suffix: string) {
-    await expect(page.getByTestId("userAccounts-list-container")).toBeVisible();
-
-    const searchFieldLocator = page
-        .getByTestId("userAccounts-search-input")
-        .getByRole("textbox");
-    const searchButtonLocator = page.getByTestId(
-        "userAccounts-searchIcon-button",
-    );
-
-    const deleteButtonLocator = page.getByTestId(
-        `userAccounts-delete-icon-seb-user-account-delete-${suffix}`,
-    );
-
-    const deleteDialogLocator = page.getByTestId("userAccounts-delete-dialog");
-
-    const deleteDialogDeleteButtonLocator = page.getByTestId(
-        "userAccounts-delete-confirm-button",
-    );
-
-    return {
-        searchFieldLocator,
-        searchButtonLocator,
-        deleteButtonLocator,
-        deleteDialogLocator,
-        deleteDialogDeleteButtonLocator,
-    };
-}
-
 test.describe("1.4.1 User Accounts - DELETE Remove", () => {
+    let userAccountsPage: PlaywrightUserAccountsPage;
+
     test.beforeEach(async ({ page }) => {
         await loginAsServerAdmin(page);
-        await navigateTo(page, "/user-accounts");
+        userAccountsPage = new PlaywrightUserAccountsPage(page);
+        await userAccountsPage.goto();
+        await userAccountsPage.expectVisible();
     });
 
-    test("A Success", async ({ page }, testInfo) => {
-        const browserSuffix = suffixForProject(testInfo.project.name);
-        const userLastNameWithBrowserSuffix =
-            userLastName + "-" + browserSuffix;
-        const userUUIDWithBrowserSuffix = userUUID + "-" + browserSuffix;
-
-        const deleteRegex = new RegExp(
-            `/useraccount/${userUUIDWithBrowserSuffix}(?:$|\\?)`,
-            "i",
+    test("A Success", async (_, testInfo) => {
+        //generate brwoser specific values
+        const userLastNameWithBrowserSuffix = addBrowserSuffixToText(
+            userLastName,
+            testInfo,
+        );
+        const userUUIDWithBrowserSuffix = addBrowserSuffixToText(
+            userUUID,
+            testInfo,
         );
 
-        const {
-            searchFieldLocator,
-            searchButtonLocator,
-            deleteButtonLocator,
-            deleteDialogLocator,
-            deleteDialogDeleteButtonLocator,
-        } = await setupUserAccountsPage(page, browserSuffix);
+        //search for user
+        await userAccountsPage.search(userLastNameWithBrowserSuffix);
 
-        await searchFieldLocator.fill(userLastNameWithBrowserSuffix);
+        //verify user delete icon is visible
+        await expect(
+            userAccountsPage.deleteIcon(userUUIDWithBrowserSuffix),
+        ).toBeVisible();
 
-        await searchButtonLocator.click();
+        //click delete icon
+        await userAccountsPage.clickDeleteIcon(userUUIDWithBrowserSuffix);
 
-        await expect(deleteButtonLocator).toBeVisible();
-        await deleteButtonLocator.click();
+        //verify dialog shows
+        await userAccountsPage.expectDeleteDialogVisible();
 
-        await expect(deleteDialogLocator).toBeVisible();
-        await expect(deleteDialogDeleteButtonLocator).toBeVisible();
+        //verify button says delete
+        await expect(userAccountsPage.deleteConfirmButton).toHaveText("Delete");
 
-        await expect(deleteDialogDeleteButtonLocator).toHaveText("Delete");
-
-        const deleteRequestPromise = page.waitForRequest(
-            (req) => req.method() === "DELETE" && deleteRegex.test(req.url()),
+        //click delete and assert network request
+        await userAccountsPage.expectDeleteRequestSucceeded(
+            userUUIDWithBrowserSuffix,
+            async () => {
+                await userAccountsPage.confirmDelete();
+            },
         );
-
-        const deleteResponsePromise = page.waitForResponse(
-            (resp) =>
-                resp.request().method() === "DELETE" &&
-                deleteRegex.test(resp.url()),
-        );
-
-        await deleteDialogDeleteButtonLocator.click();
-
-        const deleteRequest = await deleteRequestPromise;
-        const deleteResponse = await deleteResponsePromise;
-
-        expect(deleteRequest.method()).toBe("DELETE");
-        expect(deleteRequest.url()).toMatch(deleteRegex);
-
-        expect(deleteResponse.url()).toMatch(deleteRegex);
-        expect(deleteResponse.status()).toBe(200);
-        expect(deleteResponse.ok()).toBeTruthy();
     });
 });
