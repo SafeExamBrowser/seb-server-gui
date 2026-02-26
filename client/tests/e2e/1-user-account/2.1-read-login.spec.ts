@@ -1,9 +1,5 @@
 import { test } from "@playwright/test";
-import {
-    clearLocalAndSessionStorage,
-    expectToHaveUrl,
-    navigateTo,
-} from "../utils/helpers";
+import { clearLocalAndSessionStorage, navigateTo } from "../utils/helpers";
 import { PlaywrightLoginPage } from "../models/playwright-login-page";
 
 const correctUser = "testmain";
@@ -28,7 +24,7 @@ test.describe("1.2.1 User Accounts - READ Log in", () => {
         await loginPage.expectVisible();
         await loginPage.login(correctUser, correctPass);
 
-        await expectToHaveUrl(page, "home");
+        await loginPage.expectRedirectToHome();
     });
 
     test("B Failed login, bad credentials", async ({ page }) => {
@@ -38,6 +34,8 @@ test.describe("1.2.1 User Accounts - READ Log in", () => {
         await loginPage.login(wrongUser, wrongPass);
 
         await loginPage.expectErrorVisible();
+
+        await loginPage.expectNoRedirect();
 
         await page.waitForTimeout(600);
     });
