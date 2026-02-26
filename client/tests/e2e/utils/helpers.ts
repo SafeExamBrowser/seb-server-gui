@@ -1,4 +1,4 @@
-import { expect, Locator, Page } from "@playwright/test";
+import { expect, Locator, Page, TestInfo } from "@playwright/test";
 
 export function generateUniqueUsername(prefix = "e2e") {
     const d = new Date();
@@ -87,4 +87,12 @@ export async function expectToHaveUrl(page: Page, path: string) {
 
 export function suffixForProject(projectName: string) {
     return projectName.toLowerCase();
+}
+
+export function addBrowserSuffixToText(
+    text: string,
+    testInfo: TestInfo,
+): string {
+    const browserSuffix = suffixForProject(testInfo.project.name).toLowerCase();
+    return `${text}-${browserSuffix}`;
 }
