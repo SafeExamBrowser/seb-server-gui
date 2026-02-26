@@ -1,96 +1,63 @@
-import { expect, Page, test } from "@playwright/test";
-import { navigateTo, suffixForProject } from "../utils/helpers";
+import { expect, test } from "@playwright/test";
+import { addBrowserSuffixToText } from "../utils/helpers";
 import { loginAsServerAdmin } from "../utils/authenticate";
+import { PlaywrightUserAccountsPage } from "../models/playwright-user-accounts-page";
 
 const userLastName = "testinactive";
 const userUUID = "seb-inst-admin-inactive";
 
-async function setupUserAccountsPage(page: Page, suffix: string) {
-    await expect(page.getByTestId("userAccounts-list-container")).toBeVisible();
-
-    const searchFieldLocator = page
-        .getByTestId("userAccounts-search-input")
-        .getByRole("textbox");
-    const searchButtonLocator = page.getByTestId(
-        "userAccounts-searchIcon-button",
-    );
-
-    const activateButtonLocator = page.getByTestId(
-        `userAccounts-status-chip-seb-inst-admin-inactive-${suffix}`,
-    );
-    const statusDialogLocator = page.getByTestId("userAccounts-status-dialog");
-    const statusDialogActivateButtonLocator = page.getByTestId(
-        "userAccounts-status-confirm-button",
-    );
-
-    return {
-        searchFieldLocator,
-        searchButtonLocator,
-        activateButtonLocator,
-        statusDialogLocator,
-        statusDialogActivateButtonLocator,
-    };
-}
-
 test.describe("1.3.2 User Accounts - UPDATE Activate", () => {
+    let userAccountsPage: PlaywrightUserAccountsPage;
+
     test.beforeEach(async ({ page }) => {
         await loginAsServerAdmin(page);
-        await navigateTo(page, "/user-accounts");
+        userAccountsPage = new PlaywrightUserAccountsPage(page);
+        await userAccountsPage.goto();
+        await userAccountsPage.expectVisible();
     });
 
-    test("A Success", async ({ page }, testInfo) => {
-        const browserSuffix = suffixForProject(testInfo.project.name);
-        const userLastNameWithBrowserSuffix =
-            userLastName + "-" + browserSuffix;
-        const userUUIDWithBrowserSuffix = userUUID + "-" + browserSuffix;
-        const activateRegex = new RegExp(
-            `/useraccount/${userUUIDWithBrowserSuffix}/active(?:\\?|$)`,
-            "i",
+    test("A Success", async (_, testInfo) => {
+        //generate brwoser specific values
+        const userLastNameWithBrowserSuffix = addBrowserSuffixToText(
+            userLastName,
+            testInfo,
         );
 
-        const {
-            searchFieldLocator,
-            searchButtonLocator,
-            activateButtonLocator,
-            statusDialogLocator,
-            statusDialogActivateButtonLocator,
-        } = await setupUserAccountsPage(page, browserSuffix);
-
-        await searchFieldLocator.fill(userLastNameWithBrowserSuffix);
-
-        await searchButtonLocator.click();
-
-        await expect(activateButtonLocator).toBeVisible();
-        await expect(activateButtonLocator).toHaveText("Inactive");
-
-        await activateButtonLocator.click();
-
-        await expect(statusDialogLocator).toBeVisible();
-
-        await expect(statusDialogActivateButtonLocator).toHaveText("Activate");
-
-        const activateRequestPromise = page.waitForRequest(
-            (req) => req.method() === "POST" && activateRegex.test(req.url()),
+        const userUUIDWithBrowserSuffix = addBrowserSuffixToText(
+            userUUID,
+            testInfo,
         );
 
-        const activateResponsePromise = page.waitForResponse(
-            (resp) =>
-                resp.request().method() === "POST" &&
-                activateRegex.test(resp.url()),
+        //search for user
+        await userAccountsPage.search(userLastNameWithBrowserSuffix);
+
+        //verify user is visible and correct values
+        await userAccountsPage.expectRowVisible(userUUIDWithBrowserSuffix);
+        await userAccountsPage.expectStatusText(
+            userUUIDWithBrowserSuffix,
+            "Inactive",
         );
 
-        await statusDialogActivateButtonLocator.click();
+        //click status
+        await userAccountsPage.clickStatusChip(userUUIDWithBrowserSuffix);
 
-        const activateRequest = await activateRequestPromise;
-        const activateResponse = await activateResponsePromise;
+        //verify dialog shows and button is correct
+        await userAccountsPage.expectStatusDialogVisible();
+        await expect(userAccountsPage.statusConfirmButton).toHaveText(
+            "Activate",
+        );
 
-        expect(activateRequest.method()).toBe("POST");
-        expect(activateRequest.url()).toMatch(activateRegex);
+        //click ACTIVATE and assert network request
+        await userAccountsPage.expectActivateRequestSucceeded(
+            userUUIDWithBrowserSuffix,
+            async () => {
+                await userAccountsPage.confirmStatusChange();
+            },
+        );
 
-        expect(activateResponse.url()).toMatch(activateRegex);
-        expect(activateResponse.status()).toBe(200);
-        expect(activateResponse.ok()).toBeTruthy();
-
-        await expect(activateButtonLocator).toHaveText("Active");
+        await userAccountsPage.expectStatusText(
+            userUUIDWithBrowserSuffix,
+            "Active",
+        );
     });
 });
