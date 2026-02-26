@@ -94,11 +94,6 @@ export class PlaywrightLoginPage {
         await this.page.keyboard.press("Enter");
     }
 
-    async clearFields() {
-        await this.username.clear();
-        await this.password.clear();
-    }
-
     // ------------------------
     // Convenience Flow
     // ------------------------
