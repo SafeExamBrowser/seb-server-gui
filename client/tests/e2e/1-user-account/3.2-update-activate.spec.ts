@@ -16,7 +16,9 @@ test.describe("1.3.2 User Accounts - UPDATE Activate", () => {
         await userAccountsPage.expectVisible();
     });
 
-    test("A Success", async (_, testInfo) => {
+    test("A Success", async ({ page }, testInfo) => {
+        expect(page.url()).toContain("/user-accounts");
+
         //generate brwoser specific values
         const userLastNameWithBrowserSuffix = addBrowserSuffixToText(
             userLastName,

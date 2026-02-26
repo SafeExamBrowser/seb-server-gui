@@ -16,7 +16,9 @@ test.describe("1.4.1 User Accounts - DELETE Remove", () => {
         await userAccountsPage.expectVisible();
     });
 
-    test("A Success", async (_, testInfo) => {
+    test("A Success", async ({ page }, testInfo) => {
+        expect(page.url()).toContain("/user-accounts");
+
         //generate brwoser specific values
         const userLastNameWithBrowserSuffix = addBrowserSuffixToText(
             userLastName,
