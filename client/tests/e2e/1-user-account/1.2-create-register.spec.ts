@@ -1,158 +1,73 @@
-import { test, expect, Page } from "@playwright/test";
-import {
-    generateUniqueUsername,
-    selectVuetifyFirstOption,
-    selectVuetifyOptionByName,
-} from "../utils/helpers";
-
-async function setupRegisterPage(page: Page) {
-    await page.addInitScript(() => {
-        localStorage.clear();
-        sessionStorage.clear();
-    });
-
-    await page.goto("/register");
-    await expect(page.getByTestId("register-page-container")).toBeVisible();
-
-    const institutionSelect = page.getByTestId("register-institution-select");
-    const username = page
-        .getByTestId("register-username-input")
-        .getByRole("textbox");
-    const name = page.getByTestId("register-name-input").getByRole("textbox");
-    const surname = page
-        .getByTestId("register-surname-input")
-        .getByRole("textbox");
-    const email = page.getByTestId("register-email-input").getByRole("textbox");
-    const timezoneSelect = page.getByTestId("register-timezone-select");
-    const password = page
-        .getByTestId("register-password-input")
-        .getByRole("textbox");
-    const confirmPassword = page
-        .getByTestId("register-confirmPassword-input")
-        .getByRole("textbox");
-
-    const submitButton = page.getByTestId("register-submit-btn");
-    const successAlert = page.getByTestId("register-success-alert");
-    const errorAlert = page.getByTestId("register-error-alert");
-
-    return {
-        institutionSelect,
-        username,
-        name,
-        surname,
-        email,
-        timezoneSelect,
-        password,
-        confirmPassword,
-        submitButton,
-        successAlert,
-        errorAlert,
-    };
-}
+import { test } from "@playwright/test";
+import { PlaywrightLoginPage } from "../models/playwright-login-page";
+import { clearLocalAndSessionStorage } from "../utils/helpers";
+import type { PlaywrightRegisterPage } from "../models/playwright-register-page";
+import { generateUniqueUsername } from "../utils/helpers";
 
 test.describe("1.1.2 User Accounts - CREATE Register", () => {
-    test("A Success", async ({ page }) => {
-        const {
-            institutionSelect,
-            username,
-            name,
-            surname,
-            email,
-            timezoneSelect,
-            password,
-            confirmPassword,
-            submitButton,
-            successAlert,
-        } = await setupRegisterPage(page);
+    let registerPage: PlaywrightRegisterPage;
 
+    test.beforeEach(async ({ page }) => {
+        await clearLocalAndSessionStorage(page);
+        const loginPage = new PlaywrightLoginPage(page);
+        await loginPage.goto();
+        registerPage = await loginPage.navigateToRegister();
+    });
+
+    test("A Success", async () => {
         const uname = generateUniqueUsername("e2e-user");
 
-        await selectVuetifyOptionByName(page, institutionSelect, "SEB Server");
+        await registerPage.register({
+            institutionName: "SEB Server",
+            username: uname,
+            name: "John",
+            surname: "Doe",
+            email: `${uname}@example.com`,
+            pickFirstTimezone: true,
+            password: "StrongPass123!",
+            confirmPassword: "StrongPass123!",
+        });
 
-        await username.fill(uname);
-        await name.fill("John");
-        await surname.fill("Doe");
-        await email.fill(`${uname}@example.com`);
-
-        await selectVuetifyFirstOption(page, timezoneSelect);
-        await password.fill("StrongPass123!");
-        await confirmPassword.fill("StrongPass123!");
-
-        await submitButton.click();
-
-        await successAlert.waitFor({ state: "attached", timeout: 10000 });
-        await expect(successAlert).toBeVisible();
-        await expect(page.getByTestId("register-error-alert")).toHaveCount(0);
+        await registerPage.expectSuccessVisible();
+        await registerPage.expectErrorNotVisible();
+        await registerPage.expectRedirectToLogin();
     });
 
-    test("B Failed validation (client-side form validation)", async ({
-        page,
-    }) => {
-        const {
-            username,
-            name,
-            surname,
-            email,
-            password,
-            confirmPassword,
-            submitButton,
-        } = await setupRegisterPage(page);
-
+    test("B Failed validation (client-side form validation)", async () => {
         const uname = generateUniqueUsername("e2e-invalid");
 
-        await username.fill(uname);
-        await name.fill("Test");
-        await surname.fill("User");
-        await email.fill(`${uname}@example.com`);
+        await registerPage.register({
+            username: "",
+            name: "",
+            surname: "",
+            email: `${uname}@example.com`,
+            pickFirstTimezone: false,
+            password: "Abc1",
+            confirmPassword: "Abc1",
+        });
 
-        await password.fill("Abc1");
-        await confirmPassword.fill("Abc1");
-
-        await submitButton.click();
-
-        await expect(page.getByTestId("register-success-alert")).toHaveCount(0);
-        await expect(page.getByTestId("register-error-alert")).toHaveCount(0);
-
-        const anyValidationMessage = page.locator(
-            ".v-messages .v-messages__message",
-        );
-        await expect(anyValidationMessage.first()).toBeVisible();
+        await registerPage.expectSuccessNotVisible();
+        await registerPage.expectErrorNotVisible();
+        await registerPage.expectAnyValidationMessageVisible();
+        await registerPage.expectNoRedirect();
     });
 
-    test("C Server error on register - username already exists", async ({
-        page,
-    }) => {
-        const {
-            institutionSelect,
-            username,
-            name,
-            surname,
-            email,
-            timezoneSelect,
-            password,
-            confirmPassword,
-            submitButton,
-            successAlert,
-            errorAlert,
-        } = await setupRegisterPage(page);
+    test("C Server error on register - username already exists", async () => {
         const uname = "createtests";
 
-        await selectVuetifyOptionByName(page, institutionSelect, "SEB Server");
+        await registerPage.register({
+            institutionName: "SEB Server",
+            username: uname,
+            name: "John",
+            surname: "Doe",
+            email: `${uname}@example.com`,
+            pickFirstTimezone: true,
+            password: "StrongPass123!",
+            confirmPassword: "StrongPass123!",
+        });
 
-        await username.fill(uname);
-        await name.fill("John");
-        await surname.fill("Doe");
-        await email.fill(`${uname}@example.com`);
-
-        await selectVuetifyFirstOption(page, timezoneSelect);
-        await password.fill("StrongPass123!");
-        await confirmPassword.fill("StrongPass123!");
-
-        await submitButton.click();
-
-        await expect(errorAlert).toBeVisible();
-        await expect(successAlert).toHaveCount(0);
-
-        await expect(page).toHaveURL(/\/register(?:$|[?#])/i);
+        await registerPage.expectErrorVisible();
+        await registerPage.expectSuccessNotVisible();
+        await registerPage.expectNoRedirect();
     });
 });

@@ -1,4 +1,5 @@
 import { expect, type Locator, type Page } from "@playwright/test";
+import { PlaywrightRegisterPage } from "./playwright-register-page";
 
 export class PlaywrightLoginPage {
     readonly page: Page;
@@ -13,6 +14,9 @@ export class PlaywrightLoginPage {
     // Feedback
     readonly errorAlert: Locator;
 
+    // Navigation links
+    readonly registerLink: Locator;
+
     // Constructor
     constructor(page: Page) {
         this.page = page;
@@ -26,6 +30,10 @@ export class PlaywrightLoginPage {
 
         // Error feedback
         this.errorAlert = page.getByTestId("login-error-alert");
+
+        // Navigation links
+
+        this.registerLink = page.getByTestId("login-register-link");
     }
 
     // ------------------------
@@ -35,6 +43,14 @@ export class PlaywrightLoginPage {
     async goto() {
         await this.page.goto("/");
         await this.expectVisible();
+    }
+
+    async navigateToRegister(): Promise<PlaywrightRegisterPage> {
+        await this.goto();
+        await this.registerLink.click();
+        const registerPage = new PlaywrightRegisterPage(this.page);
+        await registerPage.expectVisible();
+        return registerPage;
     }
 
     async expectVisible() {
@@ -48,6 +64,18 @@ export class PlaywrightLoginPage {
 
     async expectErrorNotVisible() {
         await expect(this.errorAlert).toHaveCount(0);
+    }
+
+    // ------------------------
+    // Redirect Assertions
+    // ------------------------
+
+    async expectRedirectToHome() {
+        await expect(this.page).toHaveURL(/\/home(?:$|[?#])/i);
+    }
+
+    async expectNoRedirect() {
+        await expect(this.page).toHaveURL(/\/(?:$|[?#])/i);
     }
 
     // ------------------------
