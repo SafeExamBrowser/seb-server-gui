@@ -1,5 +1,6 @@
 import { expect, type Locator, type Page } from "@playwright/test";
 import { expectRequestSucceeded } from "../utils/networkAssertions";
+import { PlaywrightCreateUserAccountPage } from "./playwright-create-user-account-page";
 
 export class PlaywrightUserAccountsPage {
     readonly page: Page;
@@ -241,8 +242,13 @@ export class PlaywrightUserAccountsPage {
     // Table interactions
     // ------------------------
 
-    async clickAddUser() {
+    async navigateToCreateUserAccount(): Promise<PlaywrightCreateUserAccountPage> {
         await this.addUserButton.click();
+        const createUserAccountPage = new PlaywrightCreateUserAccountPage(
+            this.page,
+        );
+        await createUserAccountPage.expectVisible();
+        return createUserAccountPage;
     }
 
     async openUserDetails(uuid: string) {
