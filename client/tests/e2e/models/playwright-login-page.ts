@@ -46,7 +46,6 @@ export class PlaywrightLoginPage {
     }
 
     async navigateToRegister(): Promise<PlaywrightRegisterPage> {
-        await this.goto();
         await this.registerLink.click();
         const registerPage = new PlaywrightRegisterPage(this.page);
         await registerPage.expectVisible();
