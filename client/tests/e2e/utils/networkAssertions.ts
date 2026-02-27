@@ -60,3 +60,35 @@ export async function expectRequestSucceeded(params: {
     expect(resp.status()).toBe(expectedStatus);
     expect(resp.ok()).toBeTruthy();
 }
+
+export async function expectNoRequest(params: {
+    page: Page;
+    method: HttpMethod;
+    urlRegex: RegExp;
+    action: () => Promise<void>;
+    // how long to observe after action completes
+    settleMs?: number;
+}) {
+    const settleMs = params.settleMs ?? 300;
+
+    let called = false;
+
+    const onRequest = (request: Request): void => {
+        if (
+            request.method() === params.method &&
+            params.urlRegex.test(request.url())
+        ) {
+            called = true;
+        }
+    };
+
+    params.page.on("request", onRequest);
+
+    try {
+        await params.action();
+        await params.page.waitForTimeout(settleMs);
+        expect(called).toBe(false);
+    } finally {
+        params.page.off("request", onRequest);
+    }
+}
