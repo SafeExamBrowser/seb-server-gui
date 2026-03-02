@@ -13,14 +13,15 @@ test.describe("1.1.2 User Accounts - CREATE Register", () => {
         await loginPage.goto();
         registerPage = await loginPage.navigateToRegister();
     });
+    const uniqueValue = generateUniqueUsername("e2e-1.2.A-Success");
 
     test("A Success", async () => {
         await registerPage.register({
             institutionName: "SEB Server",
-            username: generateUniqueUsername("e2e-1.2.A-Success"),
-            name: "John",
-            surname: "Doe",
-            email: "example@example.com",
+            username: `${uniqueValue}Username`,
+            name: `${uniqueValue}Name`,
+            surname: `${uniqueValue}LastName`,
+            email: `${uniqueValue}@email.com`,
             pickFirstTimezone: true,
             password: "StrongPass123!",
             confirmPassword: "StrongPass123!",

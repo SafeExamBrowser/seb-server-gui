@@ -10,10 +10,12 @@ test.describe("1.1 User Accounts - CREATE Add", () => {
     test.beforeEach(async ({ page }) => {
         await loginAsServerAdmin(page);
 
+        // go to user accounts
         const userAccountsPage = new PlaywrightUserAccountsPage(page);
         await userAccountsPage.goto();
         await userAccountsPage.expectVisible();
 
+        //this navigates to create user account and returns the CreateUserAccountPagePOM
         createUserAccountPage =
             await userAccountsPage.navigateToCreateUserAccount();
         await createUserAccountPage.expectVisible();
@@ -24,6 +26,7 @@ test.describe("1.1 User Accounts - CREATE Add", () => {
     }) => {
         expect(page.url()).toContain("/user-accounts/create");
 
+        //generate an unique value
         const uniqueValue = generateUniqueUsername("e2e-1.1.A-Success");
 
         await createUserAccountPage.fillForm({
