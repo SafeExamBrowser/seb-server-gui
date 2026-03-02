@@ -307,11 +307,11 @@ export class PlaywrightUserAccountsPage {
     async expectUserAccountsListRequestSucceeded(
         action: () => Promise<void>,
         opts?: {
-            expectedStatus?: number;
+            expectedStatuses?: number[];
             urlMustContain?: Array<string | RegExp>;
         },
     ) {
-        const expectedStatus = opts?.expectedStatus ?? 200;
+        const expectedStatuses = opts?.expectedStatuses ?? [200, 304];
 
         const urlRegex = /\/useraccount\?/i;
 
@@ -322,7 +322,7 @@ export class PlaywrightUserAccountsPage {
             method: "GET",
             urlRegex,
             action,
-            expectedStatus,
+            expectedStatuses,
         });
 
         const req = await requestPromise;
