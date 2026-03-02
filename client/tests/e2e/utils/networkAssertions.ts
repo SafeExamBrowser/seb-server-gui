@@ -34,8 +34,11 @@ export async function expectRequestSucceeded(params: {
     urlRegex: RegExp;
     action?: () => Promise<void>;
     expectedStatus?: number;
+    expectedStatuses?: number[];
 }) {
-    const expectedStatus = params.expectedStatus ?? 200;
+    const expectedStatuses = params.expectedStatuses ?? [
+        params.expectedStatus ?? 200,
+    ];
 
     const requestPromise = waitForRequest(
         params.page,
@@ -48,7 +51,7 @@ export async function expectRequestSucceeded(params: {
         params.urlRegex,
     );
 
-    await params.action();
+    await params.action?.();
 
     const req = await requestPromise;
     const resp = await responsePromise;
@@ -57,8 +60,12 @@ export async function expectRequestSucceeded(params: {
     expect(req.url()).toMatch(params.urlRegex);
 
     expect(resp.url()).toMatch(params.urlRegex);
-    expect(resp.status()).toBe(expectedStatus);
-    expect(resp.ok()).toBeTruthy();
+
+    expect(expectedStatuses).toContain(resp.status());
+
+    if (resp.status() >= 200 && resp.status() < 300) {
+        expect(resp.ok()).toBeTruthy();
+    }
 }
 
 export async function expectNoRequest(params: {

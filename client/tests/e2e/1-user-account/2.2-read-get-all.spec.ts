@@ -121,7 +121,6 @@ test.describe("1.2.2 User Accounts - READ Get All", () => {
                 },
             );
 
-            // Best-effort: table still renders after filtering
             await expect(userAccountsPage.table).toBeVisible();
         } else {
             await userAccountsPage.expectInstitutionFilterNotVisible();
