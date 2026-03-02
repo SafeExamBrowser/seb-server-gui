@@ -1,13 +1,14 @@
 import { expect, type Locator, type Page } from "@playwright/test";
-import { expectRequestSucceeded } from "../utils/networkAssertions";
+import {
+    expectRequestSucceeded,
+    waitForRequest,
+} from "../utils/networkAssertions";
 import { PlaywrightCreateUserAccountPage } from "./playwright-create-user-account-page";
 
 export class PlaywrightUserAccountsPage {
     readonly page: Page;
 
-    // ------------------------
     // Page identity / layout
-    // ------------------------
     readonly listContainer: Locator;
     readonly pageTitle: Locator;
     readonly settingsNavigation: Locator;
@@ -127,10 +128,8 @@ export class PlaywrightUserAccountsPage {
             "userAccounts-status-confirm-button",
         );
 
-        // Vuetify
-        this.anyVuetifyValidationMessage = page.locator(
-            ".v-messages .v-messages__message",
-        );
+        // Toast verify
+        this.anyVuetifyValidationMessage = page.locator(".v-alert");
     }
 
     // ------------------------
@@ -163,22 +162,6 @@ export class PlaywrightUserAccountsPage {
         return this.page.getByTestId(`userAccounts-row-${uuid}`);
     }
 
-    cellSurname(uuid: string): Locator {
-        return this.page.getByTestId(`userAccounts-cell-surname-${uuid}`);
-    }
-
-    cellName(uuid: string): Locator {
-        return this.page.getByTestId(`userAccounts-cell-name-${uuid}`);
-    }
-
-    cellUsername(uuid: string): Locator {
-        return this.page.getByTestId(`userAccounts-cell-username-${uuid}`);
-    }
-
-    cellEmail(uuid: string): Locator {
-        return this.page.getByTestId(`userAccounts-cell-email-${uuid}`);
-    }
-
     statusChip(uuid: string): Locator {
         return this.page.getByTestId(`userAccounts-status-chip-${uuid}`);
     }
@@ -189,12 +172,6 @@ export class PlaywrightUserAccountsPage {
 
     deleteIcon(uuid: string): Locator {
         return this.page.getByTestId(`userAccounts-delete-icon-${uuid}`);
-    }
-
-    deleteIconDisabled(uuid: string): Locator {
-        return this.page.getByTestId(
-            `userAccounts-delete-icon-disabled-${uuid}`,
-        );
     }
 
     // ------------------------
@@ -228,13 +205,13 @@ export class PlaywrightUserAccountsPage {
         await this.statusChipFilter(status).click();
     }
 
-    institutionChipFilter(institutionModelId: string): Locator {
+    institutionChipFilter(institutionModelId: string | number): Locator {
         return this.page.getByTestId(
             `userAccounts-institutionFilter-chip-${institutionModelId}`,
         );
     }
 
-    async toggleInstitutionFilter(institutionModelId: string) {
+    async toggleInstitutionFilter(institutionModelId: string | number) {
         await this.institutionChipFilter(institutionModelId).click();
     }
 
@@ -249,10 +226,6 @@ export class PlaywrightUserAccountsPage {
         );
         await createUserAccountPage.expectVisible();
         return createUserAccountPage;
-    }
-
-    async openUserDetails(uuid: string) {
-        await this.row(uuid).click();
     }
 
     async clickEditIcon(uuid: string) {
@@ -283,10 +256,6 @@ export class PlaywrightUserAccountsPage {
         await this.deleteConfirmButton.click();
     }
 
-    async cancelDelete() {
-        await this.deleteCancelButton.click();
-    }
-
     async confirmStatusChange() {
         await this.statusConfirmButton.click();
     }
@@ -307,18 +276,14 @@ export class PlaywrightUserAccountsPage {
         await expect(this.statusChip(uuid)).toHaveText(text);
     }
 
-    async expectDeleteDisabled(uuid: string) {
-        await expect(this.deleteIconDisabled(uuid)).toBeVisible();
-        await expect(this.deleteIcon(uuid)).toHaveCount(0);
-    }
-
     async expectAnyValidationMessageVisible() {
         await expect(this.anyVuetifyValidationMessage.first()).toBeVisible();
     }
 
     // ------------------------
-    // Sorting + Paging (for future tests)
+    // Sorting + Paging
     // ------------------------
+
     headerByText(text: string): Locator {
         return this.tableHeadersComponent.getByText(text, { exact: true });
     }
@@ -326,8 +291,9 @@ export class PlaywrightUserAccountsPage {
     async sortByHeaderText(text: string) {
         await this.headerByText(text).click();
     }
+
     paginationRoot(): Locator {
-        return this.tableSection.locator(".v-data-table-footer, .v-pagination");
+        return this.tableSection.locator(".v-pagination-root");
     }
 
     async expectPaginationVisible() {
@@ -335,8 +301,43 @@ export class PlaywrightUserAccountsPage {
     }
 
     // ------------------------
-    // Network assertion
+    // Network assertion helpers
     // ------------------------
+
+    async expectUserAccountsListRequestSucceeded(
+        action: () => Promise<void>,
+        opts?: {
+            expectedStatus?: number;
+            urlMustContain?: Array<string | RegExp>;
+        },
+    ) {
+        const expectedStatus = opts?.expectedStatus ?? 200;
+
+        const urlRegex = /\/useraccount\?/i;
+
+        const requestPromise = waitForRequest(this.page, "GET", urlRegex);
+
+        await expectRequestSucceeded({
+            page: this.page,
+            method: "GET",
+            urlRegex,
+            action,
+            expectedStatus,
+        });
+
+        const req = await requestPromise;
+
+        if (opts?.urlMustContain?.length) {
+            for (const must of opts.urlMustContain) {
+                if (must instanceof RegExp) {
+                    expect(req.url()).toMatch(must);
+                } else {
+                    expect(req.url()).toContain(must);
+                }
+            }
+        }
+    }
+
     async expectDeleteRequestSucceeded(
         uuid: string,
         action: () => Promise<void>,
@@ -359,7 +360,6 @@ export class PlaywrightUserAccountsPage {
             `/useraccount/${uuid}/inactive(?:\\?|$)`,
             "i",
         );
-
         await expectRequestSucceeded({
             page: this.page,
             method: "POST",
@@ -377,7 +377,6 @@ export class PlaywrightUserAccountsPage {
             `/useraccount/${uuid}/active(?:\\?|$)`,
             "i",
         );
-
         await expectRequestSucceeded({
             page: this.page,
             method: "POST",
