@@ -2019,7 +2019,41 @@
             "invalid": "{field} is invalid.",
             "minlength": "{field} is too short.",
             "maxlength": "{field} is too long.",
-            "pattern": "{field} has an invalid format."
+            "pattern": "{field} has an invalid format.",
+
+            "size": "{field} has an invalid length.",
+            "max": "{field} is too long.",
+            "notNull": "{field} is required.",
+            "mandatory": "{field} is required.",
+
+            "exists": "{field} already exists. Please choose another one.",
+            "email": "{field} is not a valid email address.",
+
+            "invalidURL": "{field} is not a valid URL.",
+            "invalidIP": "{field} is not a valid IPv4 address.",
+            "invalidIPRange": "{field} is not a valid IP range.",
+            "invalidAlphaRange": "{field} is not a valid alphabetical range.",
+
+            "invalidDateRange": "{field} is an invalid date range.",
+            "endBeforeStart": "{field} is an invalid date range (end before start).",
+
+            "wrong": "{field} is wrong.",
+            "mismatch": "{field} does not match.",
+
+            "serverNotAvailable": "{field} cannot be reached (service not available).",
+            "noservice": "{field} does not provide the expected service.",
+            "noaccess": "{field} access was not granted. Please check the credentials.",
+            "noAccess": "{field} access was denied.",
+
+            "typeInvalid": "{field} is not supported yet.",
+
+            "thresholdDuplicate": "{field} contains duplicate threshold values.",
+            "thresholdEmpty": "{field} is missing threshold values or colors.",
+
+            "changeDeniedActiveClients": "{field} cannot be changed while there are active SEB client connections.",
+            "collecting-strategy-not-changeable": "{field} cannot be changed once created.",
+            "group-not-deletable": "{field} cannot be deleted because it contains data.",
+            "hasInvalidTrailing": "{field} must not start or end with a space."
         }
     }
 }
