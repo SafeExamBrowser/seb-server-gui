@@ -77,17 +77,7 @@ export const checkSEBLock = async (id: string): Promise<boolean> =>
         .data;
 
 export const addSEBLock = async (id: string): Promise<Exam> =>
-    (
-        await apiService.putRequest(
-            `${baseUrl}/${id}/seb-restriction`,
-            {},
-            {
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-            },
-        )
-    ).data;
+    (await apiService.putRequest(`${baseUrl}/${id}/seb-restriction`)).data;
 
 export const removeSEBLock = async (id: string): Promise<null> =>
     (await apiService.deleteRequest(`${baseUrl}/${id}/seb-restriction`)).data;
