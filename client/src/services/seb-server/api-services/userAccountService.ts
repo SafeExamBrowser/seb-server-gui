@@ -1,4 +1,4 @@
-import * as newApiService from "@/services/newApiService";
+import * as apiService from "@/services/apiService";
 
 import {
     CreateUserPar,
@@ -17,13 +17,11 @@ export const registerUserAccount = async (
     payload: Record<string, string>,
 ): Promise<UserAccount> =>
     (
-        await newApiService
-            .getApiForManualRequests()
-            .post(`/register`, payload, {
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-            })
+        await apiService.getApiForManualRequests().post(`/register`, payload, {
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+        })
     ).data;
 
 export const changePassword = async (
@@ -33,7 +31,7 @@ export const changePassword = async (
     confirmNewPassword: string,
 ): Promise<UserAccount[]> =>
     (
-        await newApiService.putRequest(`${baseUrl}/password`, {
+        await apiService.putRequest(`${baseUrl}/password`, {
             uuid,
             password,
             newPassword,
@@ -42,27 +40,26 @@ export const changePassword = async (
     ).data;
 
 export const deleteUserAccount = async (accountId: string): Promise<unknown> =>
-    (await newApiService.deleteRequest(`${baseUrl}/${accountId}`)).data;
+    (await apiService.deleteRequest(`${baseUrl}/${accountId}`)).data;
 
 export const getPersonalUserAccount = async (): Promise<UserAccount> =>
-    (await newApiService.getRequest(`${baseUrl}/me`)).data;
+    (await apiService.getRequest(`${baseUrl}/me`)).data;
 
 export const getUserAccountById = async (
     accountId: string,
 ): Promise<UserAccount> =>
-    (await newApiService.getRequest(`${baseUrl}/${accountId}`)).data;
+    (await apiService.getRequest(`${baseUrl}/${accountId}`)).data;
 
 export const getUserAccounts = async (
     optionalParameters?: OptionalParGetUserAccounts,
 ): Promise<UserAccountResponse> =>
-    (await newApiService.getRequest(baseUrl, { params: optionalParameters }))
-        .data;
+    (await apiService.getRequest(baseUrl, { params: optionalParameters })).data;
 
 export const createUserAccount = async (
     userAccount: CreateUserPar,
 ): Promise<SingleUserAccountResponse> =>
     (
-        await newApiService.postRequest(baseUrl, userAccount, {
+        await apiService.postRequest(baseUrl, userAccount, {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
             },
@@ -72,13 +69,13 @@ export const createUserAccount = async (
 export const editUserAccount = async (
     userAccount: EditUserAccountParameters,
 ): Promise<UserAccountResponse> =>
-    (await newApiService.putRequest(baseUrl, userAccount)).data;
+    (await apiService.putRequest(baseUrl, userAccount)).data;
 
 export const getSupervisorNames = async (
     optionalParameters?: OptionalParInstitutionId,
 ): Promise<UserAccountName[]> =>
     (
-        await newApiService.getRequest(`${baseUrl}/supervisors`, {
+        await apiService.getRequest(`${baseUrl}/supervisors`, {
             params: optionalParameters,
         })
     ).data;
@@ -87,7 +84,7 @@ export const activateUserAccount = async (
     accountId: string,
 ): Promise<UserAccount> =>
     (
-        await newApiService.postRequest(
+        await apiService.postRequest(
             `${baseUrl}/${accountId}/active`,
             {},
             {
@@ -102,7 +99,7 @@ export const deactivateUserAccount = async (
     accountId: string,
 ): Promise<UserAccount> =>
     (
-        await newApiService.postRequest(
+        await apiService.postRequest(
             `${baseUrl}/${accountId}/inactive`,
             {},
             {

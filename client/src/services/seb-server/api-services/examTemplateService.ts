@@ -1,4 +1,4 @@
-import * as newApiService from "@/services/newApiService";
+import * as apiService from "@/services/apiService";
 
 import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring";
 import { ExamTemplate, ExamTemplates } from "@/models/seb-server/examTemplate";
@@ -6,10 +6,10 @@ import { ExamTemplate, ExamTemplates } from "@/models/seb-server/examTemplate";
 const baseUrl = "/exam-template" as const;
 
 export const getExamTemplates = async (): Promise<ExamTemplates> =>
-    (await newApiService.getRequest(baseUrl)).data;
+    (await apiService.getRequest(baseUrl)).data;
 
 export const getExamTemplate = async (id: string): Promise<ExamTemplate> =>
-    (await newApiService.getRequest(`${baseUrl}/${id}`)).data;
+    (await apiService.getRequest(`${baseUrl}/${id}`)).data;
 
 export const getExamTemplateNames = async (): Promise<
     {
@@ -17,14 +17,14 @@ export const getExamTemplateNames = async (): Promise<
         entityType: "EXAM_TEMPLATE";
         name: string;
     }[]
-> => (await newApiService.getRequest(`${baseUrl}/names`)).data;
+> => (await apiService.getRequest(`${baseUrl}/names`)).data;
 
 export const getExamTemplateSp = async (
     id: string,
 ): Promise<ScreenProctoringSettings> =>
-    (await newApiService.getRequest(`${baseUrl}/${id}/screen-proctoring`)).data;
+    (await apiService.getRequest(`${baseUrl}/${id}/screen-proctoring`)).data;
 
 export const createExamTemplate = async (
     examTemplate: ExamTemplate,
 ): Promise<ExamTemplate> =>
-    (await newApiService.postRequest(`${baseUrl}/create`, examTemplate)).data;
+    (await apiService.postRequest(`${baseUrl}/create`, examTemplate)).data;

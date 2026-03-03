@@ -1,4 +1,4 @@
-import * as newApiService from "@/services/newApiService";
+import * as apiService from "@/services/apiService";
 import { OptionalParGetMonitoringClientLogs } from "@/models/seb-server/optionalParamters";
 import {
     ClientEventResponse,
@@ -20,7 +20,7 @@ export const getExamsForMonitoring = async (
     optionalParameters?: OptionalParGetExams,
 ): Promise<Exams> =>
     (
-        await newApiService.getRequest(baseUrl, {
+        await apiService.getRequest(baseUrl, {
             params: optionalParameters,
         })
     ).data;
@@ -28,14 +28,14 @@ export const getExamsForMonitoring = async (
 export const getOverview = async (
     examId: string,
 ): Promise<MonitoringOverview> =>
-    (await newApiService.getRequest(`${baseUrl}/overview/${examId}`)).data;
+    (await apiService.getRequest(`${baseUrl}/overview/${examId}`)).data;
 
 export const getConnections = async (
     examId: string,
     additionalHeaders: MonitoringConnectionHeaders,
 ): Promise<MonitoringConnections> =>
     (
-        await newApiService.getRequest(`${baseUrl}/connections/${examId}`, {
+        await apiService.getRequest(`${baseUrl}/connections/${examId}`, {
             headers: {
                 "show-all": additionalHeaders[MonitoringHeaderEnum.SHOW_ALL],
                 "show-client-groups":
@@ -52,7 +52,7 @@ export const getConnections = async (
 
 export async function applyTestRun(id: string): Promise<Exam> {
     return (
-        await newApiService.postRequest(
+        await apiService.postRequest(
             `${baseUrl}/testrun/${id}`,
             {},
             {
@@ -68,7 +68,7 @@ export const getSingleConnection = async (
     examId: string,
     connectionToken: string,
 ): Promise<SingleConnection> =>
-    (await newApiService.getRequest(`${baseUrl}/${examId}/${connectionToken}`))
+    (await apiService.getRequest(`${baseUrl}/${examId}/${connectionToken}`))
         .data;
 
 export const getSingleConnectionEvents = async (
@@ -76,7 +76,7 @@ export const getSingleConnectionEvents = async (
     optionalParameters?: OptionalParGetMonitoringClientLogs,
 ): Promise<ClientEventResponse> =>
     (
-        await newApiService.getRequest("/seb-client-event/search", {
+        await apiService.getRequest("/seb-client-event/search", {
             params: {
                 ...optionalParameters,
                 clientConnectionId,
@@ -89,7 +89,7 @@ export const getStaticClientData = async (
     modelIds: string,
 ): Promise<MonitoringStaticClientData> =>
     (
-        await newApiService.postRequest(
+        await apiService.postRequest(
             `${baseUrl}/${examId}/static-client-data`,
             { modelIds },
             {
@@ -105,7 +105,7 @@ export const registerInstruction = async (
     clientInstruction: ClientInstruction,
 ): Promise<number> =>
     (
-        await newApiService.postRequest(
+        await apiService.postRequest(
             `${baseUrl}/${examId}/instruction`,
             clientInstruction,
         )
@@ -113,14 +113,14 @@ export const registerInstruction = async (
 
 // TODO @andreas: please test this as soon as quit all function is working again
 export const quitAll = async (examId: string): Promise<number> =>
-    (await newApiService.postRequest(`${baseUrl}/${examId}/quitAll`)).status;
+    (await apiService.postRequest(`${baseUrl}/${examId}/quitAll`)).status;
 
 export const getPendingNotifcations = async (
     examId: string,
     connectionToken: string,
 ): Promise<ClientNotification[]> =>
     (
-        await newApiService.getRequest(
+        await apiService.getRequest(
             `${baseUrl}/${examId}/notification/${connectionToken}`,
         )
     ).data;
@@ -131,7 +131,7 @@ export const confirmNotification = async (
     connectionToken: string,
 ): Promise<unknown> =>
     (
-        await newApiService.postRequest(
+        await apiService.postRequest(
             `${baseUrl}/${examId}/notification/${notificationId}/${connectionToken}`,
         )
     ).status;
@@ -141,7 +141,7 @@ export const disableConnections = async (
     connectionToken: string,
 ): Promise<unknown> =>
     (
-        await newApiService.postRequest(
+        await apiService.postRequest(
             `${baseUrl}/${examId}/disable-connection`,
             { connectionToken },
             {

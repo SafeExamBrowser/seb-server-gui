@@ -1,4 +1,4 @@
-import * as newApiService from "@/services/newApiService";
+import * as apiService from "@/services/apiService";
 
 export const authorize = async (
     userName: string,
@@ -20,7 +20,7 @@ export const authorize = async (
     }).toString();
 
     return (
-        await newApiService.getApiForManualRequests().post("/authorize", body, {
+        await apiService.getApiForManualRequests().post("/authorize", body, {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
             },

@@ -1,4 +1,4 @@
-import * as newApiService from "@/services/newApiService";
+import * as apiService from "@/services/apiService";
 
 import { Exam } from "@/models/seb-server/exam";
 
@@ -7,7 +7,7 @@ export const applyScreenProctoringGroups = async (
     spsSEBGroupsSelection: string,
 ): Promise<Exam | null> =>
     (
-        await newApiService.postRequest(
+        await apiService.postRequest(
             `/exam/${id}/screen-proctoring/apply-groups`,
             { spsSEBGroupsSelection },
             {
@@ -23,7 +23,7 @@ export const activateScreenProctoring = async (
     enableScreenProctoring: boolean,
 ): Promise<Exam | null> =>
     (
-        await newApiService.postRequest(
+        await apiService.postRequest(
             `/exam/${id}/screen-proctoring/activation`,
             {},
             {

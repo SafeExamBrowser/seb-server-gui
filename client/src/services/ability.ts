@@ -6,7 +6,7 @@ import * as generalUtils from "@/utils/generalUtils";
 import { ref } from "vue";
 import { Exam } from "@/models/seb-server/exam";
 import { FeatureEnum, featureNameMapping } from "@/models/features";
-import * as newApiService from "@/services/newApiService";
+import * as apiService from "@/services/apiService";
 
 export enum GUIComponent {
     // Overall components
@@ -377,7 +377,7 @@ export const useAbilities = defineStore("ability", () => {
         if (!systemFeaturesFetched) {
             // fetch from server
             const response: Map<string, boolean> | null = (
-                await newApiService.getRequest("/quiz")
+                await apiService.getRequest("/quiz")
             ).data;
             if (response) {
                 systemFeatures.value = response;

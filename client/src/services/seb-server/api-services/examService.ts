@@ -1,4 +1,4 @@
-import * as newApiService from "@/services/newApiService";
+import * as apiService from "@/services/apiService";
 import { OptionalParGetExams } from "@/models/seb-server/optionalParamters";
 import { CreateExamPar, Exam, Exams } from "@/models/seb-server/exam";
 import {
@@ -9,11 +9,11 @@ import {
 const baseUrl = "/exam" as const;
 
 export const getExam = async (id: string): Promise<Exam> =>
-    (await newApiService.getRequest(`${baseUrl}/${id}`)).data;
+    (await apiService.getRequest(`${baseUrl}/${id}`)).data;
 
 export const createExam = async (createExamPar: CreateExamPar): Promise<Exam> =>
     (
-        await newApiService.postRequest(baseUrl, createExamPar, {
+        await apiService.postRequest(baseUrl, createExamPar, {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
             },
@@ -21,32 +21,32 @@ export const createExam = async (createExamPar: CreateExamPar): Promise<Exam> =>
     ).data;
 
 export const updateExam = async (exam: Exam): Promise<Exam> =>
-    (await newApiService.putRequest(baseUrl, exam)).data;
+    (await apiService.putRequest(baseUrl, exam)).data;
 
 export const deleteExam = async (id: string): Promise<unknown | null> =>
-    (await newApiService.deleteRequest(`${baseUrl}/${id}`)).data;
+    (await apiService.deleteRequest(`${baseUrl}/${id}`)).data;
 
 export const getExams = async (
     optionalParameters?: OptionalParGetExams,
 ): Promise<Exams> =>
     (
-        await newApiService.getRequest(baseUrl, {
+        await apiService.getRequest(baseUrl, {
             params: optionalParameters,
         })
     ).data;
 
 export const archiveExam = async (id: string): Promise<Exam> =>
-    (await newApiService.patchRequest(`${baseUrl}/${id}/archive`)).data;
+    (await apiService.patchRequest(`${baseUrl}/${id}/archive`)).data;
 
 export const getExamAppSignatureKeys = async (
     id: string,
 ): Promise<AppSignatureKey[]> =>
-    (await newApiService.getRequest(`${baseUrl}/${id}/sebkeyinfo`)).data;
+    (await apiService.getRequest(`${baseUrl}/${id}/sebkeyinfo`)).data;
 
 export const getGrantedExamAppSignatureKeys = async (
     parentId: string,
 ): Promise<GrantedAppSignatureKey[]> =>
-    (await newApiService.getRequest(`${baseUrl}/${parentId}/grant`)).data;
+    (await apiService.getRequest(`${baseUrl}/${parentId}/grant`)).data;
 
 export const grantExamAppSignatureKeys = async (
     tagName: string,
@@ -54,7 +54,7 @@ export const grantExamAppSignatureKeys = async (
     id: string,
 ): Promise<GrantedAppSignatureKey> =>
     (
-        await newApiService.postRequest(
+        await apiService.postRequest(
             `${baseUrl}/${parentId}/grant/${id}`,
             {},
             {
@@ -70,16 +70,15 @@ export const removeGrantExamAppSignatureKeys = async (
     parentId: string,
     id: string,
 ): Promise<AppSignatureKey[]> =>
-    (await newApiService.deleteRequest(`${baseUrl}/${parentId}/grant/${id}`))
-        .data;
+    (await apiService.deleteRequest(`${baseUrl}/${parentId}/grant/${id}`)).data;
 
 export const checkSEBLock = async (id: string): Promise<boolean> =>
-    (await newApiService.getRequest(`${baseUrl}/${id}/check-seb-restriction`))
+    (await apiService.getRequest(`${baseUrl}/${id}/check-seb-restriction`))
         .data;
 
 export const addSEBLock = async (id: string): Promise<Exam> =>
     (
-        await newApiService.putRequest(
+        await apiService.putRequest(
             `${baseUrl}/${id}/seb-restriction`,
             {},
             {
@@ -91,5 +90,4 @@ export const addSEBLock = async (id: string): Promise<Exam> =>
     ).data;
 
 export const removeSEBLock = async (id: string): Promise<null> =>
-    (await newApiService.deleteRequest(`${baseUrl}/${id}/seb-restriction`))
-        .data;
+    (await apiService.deleteRequest(`${baseUrl}/${id}/seb-restriction`)).data;

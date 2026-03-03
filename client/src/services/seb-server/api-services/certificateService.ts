@@ -1,4 +1,4 @@
-import * as newApiService from "@/services/newApiService";
+import * as apiService from "@/services/apiService";
 import {
     Certificate,
     CertificatesResponse,
@@ -11,20 +11,19 @@ const baseUrl = "/certificate" as const;
 export const getCertificates = async (
     optionalParameters?: OptionalParGetCertificates,
 ): Promise<CertificatesResponse> =>
-    (await newApiService.getRequest(baseUrl, { params: optionalParameters }))
-        .data;
+    (await apiService.getRequest(baseUrl, { params: optionalParameters })).data;
 
 export const deleteCertificate = async (
     certificateId: string,
 ): Promise<unknown | unknown> =>
-    (await newApiService.deleteRequest(`${baseUrl}`, { alias: certificateId }))
+    (await apiService.deleteRequest(`${baseUrl}`, { alias: certificateId }))
         .data;
 
 export const createCertificate = async (
     certificate: CreateCertificatePar,
 ): Promise<Certificate> =>
     (
-        await newApiService.postRequest(baseUrl, certificate.file, {
+        await apiService.postRequest(baseUrl, certificate.file, {
             headers: {
                 "Content-Type": "application/octet-stream",
                 importFile: certificate.fileName,

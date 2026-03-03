@@ -1,4 +1,4 @@
-import * as newApiService from "@/services/newApiService";
+import * as apiService from "@/services/apiService";
 import { SebClientConnection } from "@/models/seb-server/clientConnectionList";
 
 const baseUrl = "/seb-client-connection" as const;
@@ -10,7 +10,7 @@ export const getClientConnectionList = async (
     modelIds: number[],
 ): Promise<SebClientConnection[]> =>
     (
-        await newApiService.getRequest(`${baseUrl}/list`, {
+        await apiService.getRequest(`${baseUrl}/list`, {
             params: { modelIds: modelIds.join(",") },
         })
     ).data;

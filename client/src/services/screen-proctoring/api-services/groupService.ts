@@ -1,4 +1,4 @@
-import * as newApiService from "@/services/newApiService";
+import * as apiService from "@/services/apiService";
 import {
     OptionalParGroupByUuid,
     OptionalParGroups,
@@ -11,7 +11,7 @@ export const getGroups = async (
     optionalParameters?: OptionalParGroups,
 ): Promise<GroupObject> =>
     (
-        await newApiService.getRequest(baseUrl, {
+        await apiService.getRequest(baseUrl, {
             params: optionalParameters,
         })
     ).data;
@@ -21,7 +21,7 @@ export const getGroupByUuid = async (
     optionalParameters?: OptionalParGroupByUuid,
 ): Promise<GroupUuid> =>
     (
-        await newApiService.getRequest(`${baseUrl}/${uuid}`, {
+        await apiService.getRequest(`${baseUrl}/${uuid}`, {
             params: optionalParameters,
         })
     ).data;

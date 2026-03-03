@@ -1,5 +1,3 @@
-// TODO @alain: this will eventually replace the apiService.ts file
-
 import axios, { AxiosRequestConfig } from "axios";
 import { merge } from "lodash";
 import * as ENV from "@/config/envConfig";

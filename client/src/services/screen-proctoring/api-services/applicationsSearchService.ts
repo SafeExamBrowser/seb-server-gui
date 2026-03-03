@@ -1,4 +1,4 @@
-import * as newApiService from "@/services/newApiService";
+import * as apiService from "@/services/apiService";
 import { OptionalParGetExamsStarted } from "@/models/screen-proctoring/optionalParamters";
 import { SPExam } from "@/models/screen-proctoring/exam";
 import {
@@ -12,19 +12,19 @@ export const getExamsStarted = async (
     optionalParameters?: OptionalParGetExamsStarted,
 ): Promise<SPExam[]> =>
     (
-        await newApiService.getRequest(`${baseUrl}/exams`, {
+        await apiService.getRequest(`${baseUrl}/exams`, {
             params: optionalParameters,
         })
     ).data;
 
 export const getGroupIdsForExam = async (examId: number): Promise<number[]> =>
-    (await newApiService.getRequest(`${baseUrl}/groupIds/${examId}`)).data;
+    (await apiService.getRequest(`${baseUrl}/groupIds/${examId}`)).data;
 
 export const getDistinctMetadataAppForExam = async (
     groupIds: string,
 ): Promise<string[]> =>
     (
-        await newApiService.getRequest(`${baseUrl}/metadata/app`, {
+        await apiService.getRequest(`${baseUrl}/metadata/app`, {
             params: { groupIds },
         })
     ).data;
@@ -36,7 +36,7 @@ export const getDistinctMetadataWindowForExam = async (
     screenProctoringMetadataApplication: string,
 ): Promise<DistinctMetadataWindowForExamRecord> =>
     (
-        await newApiService.getRequest(`${baseUrl}/metadata/window`, {
+        await apiService.getRequest(`${baseUrl}/metadata/window`, {
             params: { groupIds, screenProctoringMetadataApplication },
         })
     ).data;
@@ -47,7 +47,7 @@ export const getUserListForApplicationSearch = async (
     screenProctoringMetadataWindowTitle: string,
 ): Promise<UserListForApplicationSearchRecord[]> =>
     (
-        await newApiService.getRequest(`${baseUrl}/users`, {
+        await apiService.getRequest(`${baseUrl}/users`, {
             params: {
                 groupIds,
                 screenProctoringMetadataApplication,
@@ -62,7 +62,7 @@ export const getTimestampListForApplicationSearch = async (
     screenProctoringMetadataWindowTitle: string,
 ): Promise<number[]> =>
     (
-        await newApiService.getRequest(`${baseUrl}/timestamps`, {
+        await apiService.getRequest(`${baseUrl}/timestamps`, {
             params: {
                 sessionUUID,
                 screenProctoringMetadataApplication,

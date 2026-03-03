@@ -1,4 +1,4 @@
-import * as newApiService from "@/services/newApiService";
+import * as apiService from "@/services/apiService";
 import {
     SearchSessions,
     SearchTimeline,
@@ -15,7 +15,7 @@ export const searchSessionsDay = async (
     optionalParameters?: OptionalParSearchSessions,
 ): Promise<string[]> =>
     (
-        await newApiService.getRequest(`${baseUrl}/sessions/day`, {
+        await apiService.getRequest(`${baseUrl}/sessions/day`, {
             params: optionalParameters,
         })
     ).data;
@@ -24,7 +24,7 @@ export const searchSessions = async (
     optionalParameters?: OptionalParSearchSessions,
 ): Promise<SearchSessions> =>
     (
-        await newApiService.getRequest(`${baseUrl}/sessions`, {
+        await apiService.getRequest(`${baseUrl}/sessions`, {
             params: optionalParameters,
         })
     ).data;
@@ -34,7 +34,7 @@ export const searchTimeline = async (
     optionalParameters?: OptionalParSearchTimeline,
 ): Promise<SearchTimeline> =>
     (
-        await newApiService.getRequest(`${baseUrl}/timeline/${sessionId}`, {
+        await apiService.getRequest(`${baseUrl}/timeline/${sessionId}`, {
             params: optionalParameters,
         })
     ).data;
@@ -60,7 +60,7 @@ export const deleteSessions = async (
     };
 
     return (
-        await newApiService.deleteRequest(
+        await apiService.deleteRequest(
             `${baseUrl}/session${createSessionDeleteUrlSuffix(sessionUuids)}`,
         )
     ).data;
