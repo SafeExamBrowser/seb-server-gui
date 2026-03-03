@@ -13,20 +13,31 @@ const ALLOWED_HEADERS_MONITORING = [
   "show-notifications",
 ] as const;
 
+const requestToUrl = (req: http.IncomingMessage): URL =>
+  new URL(req?.url ?? "/", "http://localhost");
+
 export const setCorsHeaders = (
   res: http.ServerResponse,
   allowedOrigin: string,
+  req: http.IncomingMessage,
 ): http.ServerResponse => {
+  const pathname = requestToUrl(req).pathname;
+
   res.setHeader("Access-Control-Allow-Origin", allowedOrigin);
   res.setHeader(
     "Access-Control-Allow-Methods",
     "GET, POST, PUT, DELETE, PATCH, OPTIONS",
   );
-
-  // TODO @alain: allow additional headers only for the respective endpoints?
   res.setHeader(
     "Access-Control-Allow-Headers",
-    `Content-Type, Authorization, ${ALLOWED_HEADERS_CERTIFICATE.join(", ")}, ${ALLOWED_HEADERS_MONITORING.join(", ")}`,
+    [
+      "Content-Type",
+      "Authorization",
+      ...(pathname === "/certificate" ? [...ALLOWED_HEADERS_CERTIFICATE] : []),
+      ...(pathname.startsWith("/monitoring/connections/")
+        ? [...ALLOWED_HEADERS_MONITORING]
+        : []),
+    ].join(", "),
   );
 
   return res;

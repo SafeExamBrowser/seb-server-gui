@@ -17,7 +17,7 @@ const proctorProxy = createProxyServer({
 
 const addProxyHandlers = (proxy: ProxyServer) => {
   proxy.on("proxyRes", (proxyRes, req, res) => {
-    setCorsHeaders(res, env.PROXY_ALLOWED_ORIGIN);
+    setCorsHeaders(res, env.PROXY_ALLOWED_ORIGIN, req);
     logRequest(req, proxyRes.statusCode);
   });
 };
@@ -28,7 +28,7 @@ addProxyHandlers(proctorProxy);
 const server = http.createServer((req, res) => {
   // handle preflight OPTIONS requests directly
   if (req.method === "OPTIONS") {
-    setCorsHeaders(res, env.PROXY_ALLOWED_ORIGIN);
+    setCorsHeaders(res, env.PROXY_ALLOWED_ORIGIN, req);
     res.writeHead(204);
     res.end();
     logRequest(req, 204);
