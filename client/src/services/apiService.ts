@@ -5,7 +5,7 @@ import { useAuthStore } from "@/stores/authentication/authenticationStore";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
 
 const api = axios.create({
-    baseURL: `${ENV.SERVER_URL}:${3002}`, // TODO @alain: don't hardcode port (this is the port of the new proxy server)
+    baseURL: `${ENV.SERVER_URL}${ENV.SERVER_PORT}`,
 });
 
 const getAuthHeaderValueByUrl = (url: string) =>
