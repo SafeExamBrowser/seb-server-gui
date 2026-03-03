@@ -33,7 +33,7 @@ export const postRequest = <T>(
         headers: {
             Accept: "application/json",
             Authorization: getAuthHeaderValueByUrl(url),
-            "Content-Type": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
         },
     };
 

@@ -10,11 +10,6 @@ export const applyScreenProctoringGroups = async (
         await apiService.postRequest(
             `/exam/${id}/screen-proctoring/apply-groups`,
             { spsSEBGroupsSelection },
-            {
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-            },
         )
     ).data;
 
@@ -26,11 +21,6 @@ export const activateScreenProctoring = async (
         await apiService.postRequest(
             `/exam/${id}/screen-proctoring/activation`,
             {},
-            {
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-                params: { enableScreenProctoring },
-            },
+            { params: { enableScreenProctoring } },
         )
     ).data;

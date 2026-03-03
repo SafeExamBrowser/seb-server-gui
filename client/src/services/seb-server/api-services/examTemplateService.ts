@@ -27,4 +27,10 @@ export const getExamTemplateSp = async (
 export const createExamTemplate = async (
     examTemplate: ExamTemplate,
 ): Promise<ExamTemplate> =>
-    (await apiService.postRequest(`${baseUrl}/create`, examTemplate)).data;
+    (
+        await apiService.postRequest(`${baseUrl}/create`, examTemplate, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+    ).data;

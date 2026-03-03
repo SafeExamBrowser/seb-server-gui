@@ -58,13 +58,7 @@ export const getUserAccounts = async (
 export const createUserAccount = async (
     userAccount: CreateUserPar,
 ): Promise<SingleUserAccountResponse> =>
-    (
-        await apiService.postRequest(baseUrl, userAccount, {
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-        })
-    ).data;
+    (await apiService.postRequest(baseUrl, userAccount)).data;
 
 export const editUserAccount = async (
     userAccount: EditUserAccountParameters,
@@ -83,29 +77,9 @@ export const getSupervisorNames = async (
 export const activateUserAccount = async (
     accountId: string,
 ): Promise<UserAccount> =>
-    (
-        await apiService.postRequest(
-            `${baseUrl}/${accountId}/active`,
-            {},
-            {
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-            },
-        )
-    ).data;
+    (await apiService.postRequest(`${baseUrl}/${accountId}/active`)).data;
 
 export const deactivateUserAccount = async (
     accountId: string,
 ): Promise<UserAccount> =>
-    (
-        await apiService.postRequest(
-            `${baseUrl}/${accountId}/inactive`,
-            {},
-            {
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-            },
-        )
-    ).data;
+    (await apiService.postRequest(`${baseUrl}/${accountId}/inactive`)).data;

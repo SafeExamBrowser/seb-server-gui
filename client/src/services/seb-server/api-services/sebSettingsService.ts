@@ -37,15 +37,9 @@ export const addTableRow = async (
     settingName: string,
 ): Promise<SEBSettingsTableRowValues> =>
     (
-        await apiService.postRequest(
-            `${baseUrl}/${id}/table/row`,
-            { name: settingName },
-            {
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-            },
-        )
+        await apiService.postRequest(`${baseUrl}/${id}/table/row`, {
+            name: settingName,
+        })
     ).data;
 
 export const deleteTableRow = async (
@@ -66,39 +60,14 @@ export const updateSEBSettingValue = async (
     value: string,
 ): Promise<SEBSettingsValue> =>
     (
-        await apiService.postRequest(
-            `${baseUrl}/${id}`,
-            { id: valueId, value: value },
-            {
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-            },
-        )
+        await apiService.postRequest(`${baseUrl}/${id}`, {
+            id: valueId,
+            value: value,
+        })
     ).data;
 
 export const publish = async (id: string): Promise<SEBSettingsValue> =>
-    (
-        await apiService.postRequest(
-            `${baseUrl}/${id}/publish`,
-            {},
-            {
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-            },
-        )
-    ).data;
+    (await apiService.postRequest(`${baseUrl}/${id}/publish`)).data;
 
 export const undoChanges = async (id: string): Promise<SEBSettingsValue> =>
-    (
-        await apiService.postRequest(
-            `${baseUrl}/${id}/undo-changes`,
-            {},
-            {
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-            },
-        )
-    ).data;
+    (await apiService.postRequest(`${baseUrl}/${id}/undo-changes`)).data;

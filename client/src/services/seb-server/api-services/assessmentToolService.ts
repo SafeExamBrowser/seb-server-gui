@@ -23,32 +23,14 @@ export const getAssessmentTools = async (
 export const activateAssessmentTool = async (
     assessmentToolId: string,
 ): Promise<AssessmentTool> =>
-    (
-        await apiService.postRequest(
-            `${baseUrl}/${assessmentToolId}/active`,
-            {},
-            {
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-            },
-        )
-    ).data;
+    (await apiService.postRequest(`${baseUrl}/${assessmentToolId}/active`))
+        .data;
 
 export const deactivateAssessmentTool = async (
     assessmentToolId: string,
 ): Promise<AssessmentTool> =>
-    (
-        await apiService.postRequest(
-            `${baseUrl}/${assessmentToolId}/inactive`,
-            {},
-            {
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-            },
-        )
-    ).data;
+    (await apiService.postRequest(`${baseUrl}/${assessmentToolId}/inactive`))
+        .data;
 
 export const deleteAssessmentTool = async (
     assessmentToolId: string,
@@ -58,13 +40,7 @@ export const deleteAssessmentTool = async (
 export const createAssessmentTool = async (
     assessmentTool: CreateAssessmentToolPar,
 ): Promise<AssessmentTool> =>
-    (
-        await apiService.postRequest(baseUrl, assessmentTool, {
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-        })
-    ).data;
+    (await apiService.postRequest(baseUrl, assessmentTool)).data;
 
 export const editAssessmentTool = async (
     assessmentTool: UpdateAssessmentToolPar,

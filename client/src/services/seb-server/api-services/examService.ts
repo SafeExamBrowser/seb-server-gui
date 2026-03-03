@@ -12,13 +12,7 @@ export const getExam = async (id: string): Promise<Exam> =>
     (await apiService.getRequest(`${baseUrl}/${id}`)).data;
 
 export const createExam = async (createExamPar: CreateExamPar): Promise<Exam> =>
-    (
-        await apiService.postRequest(baseUrl, createExamPar, {
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-        })
-    ).data;
+    (await apiService.postRequest(baseUrl, createExamPar)).data;
 
 export const updateExam = async (exam: Exam): Promise<Exam> =>
     (await apiService.putRequest(baseUrl, exam)).data;
@@ -59,9 +53,6 @@ export const grantExamAppSignatureKeys = async (
             {},
             {
                 params: { tag: tagName },
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
             },
         )
     ).data;

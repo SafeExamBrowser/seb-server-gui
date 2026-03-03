@@ -9,11 +9,7 @@ export const getClientGroups = async (id?: string): Promise<ClientGroups> =>
 export const createClientGroup = async (
     clientGroup: ClientGroup,
 ): Promise<ClientGroup> =>
-    (
-        await apiService.postRequest(baseUrl, clientGroup, {
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        })
-    ).data;
+    (await apiService.postRequest(baseUrl, clientGroup)).data;
 
 export const updateClientGroup = async (
     clientGroup: ClientGroup,

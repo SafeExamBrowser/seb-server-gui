@@ -51,17 +51,7 @@ export const getConnections = async (
     ).data;
 
 export async function applyTestRun(id: string): Promise<Exam> {
-    return (
-        await apiService.postRequest(
-            `${baseUrl}/testrun/${id}`,
-            {},
-            {
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-            },
-        )
-    ).data;
+    return (await apiService.postRequest(`${baseUrl}/testrun/${id}`)).data;
 }
 
 export const getSingleConnection = async (
@@ -104,16 +94,33 @@ export const registerInstruction = async (
     examId: string,
     clientInstruction: ClientInstruction,
 ): Promise<number> =>
+    // TODO @andreas: please check if this really needs "application/json"
     (
         await apiService.postRequest(
             `${baseUrl}/${examId}/instruction`,
             clientInstruction,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            },
         )
     ).status;
 
 // TODO @andreas: please test this as soon as quit all function is working again
 export const quitAll = async (examId: string): Promise<number> =>
-    (await apiService.postRequest(`${baseUrl}/${examId}/quitAll`)).status;
+    // TODO @andreas: please check if this really needs "application/json"
+    (
+        await apiService.postRequest(
+            `${baseUrl}/${examId}/quitAll`,
+            {},
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            },
+        )
+    ).status;
 
 export const getPendingNotifcations = async (
     examId: string,
@@ -130,9 +137,16 @@ export const confirmNotification = async (
     notificationId: string,
     connectionToken: string,
 ): Promise<unknown> =>
+    // TODO @andreas: please check if this really needs "application/json"
     (
         await apiService.postRequest(
             `${baseUrl}/${examId}/notification/${notificationId}/${connectionToken}`,
+            {},
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            },
         )
     ).status;
 
@@ -144,10 +158,5 @@ export const disableConnections = async (
         await apiService.postRequest(
             `${baseUrl}/${examId}/disable-connection`,
             { connectionToken },
-            {
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-            },
         )
     ).status;

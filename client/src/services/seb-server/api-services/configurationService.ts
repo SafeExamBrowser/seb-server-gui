@@ -51,32 +51,12 @@ export const getConnectionConfigurations = async (
 export const activateConnectionConfiguration = async (
     id: string,
 ): Promise<ConnectionConfiguration> =>
-    (
-        await apiService.postRequest(
-            `${baseUrl}/${id}/active`,
-            {},
-            {
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-            },
-        )
-    ).data;
+    (await apiService.postRequest(`${baseUrl}/${id}/active`)).data;
 
 export const deactivateConnectionConfiguration = async (
     id: string,
 ): Promise<ConnectionConfiguration> =>
-    (
-        await apiService.postRequest(
-            `${baseUrl}/${id}/inactive`,
-            {},
-            {
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-            },
-        )
-    ).data;
+    (await apiService.postRequest(`${baseUrl}/${id}/inactive`)).data;
 
 export const deleteConnectionConfiguration = async (
     id: string,
@@ -86,13 +66,7 @@ export const deleteConnectionConfiguration = async (
 export const createConnectionConfiguration = async (
     connectionConfigurationPar: CreateConnectionConfigurationPar,
 ): Promise<ConnectionConfiguration> =>
-    (
-        await apiService.postRequest(baseUrl, connectionConfigurationPar, {
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-        })
-    ).data;
+    (await apiService.postRequest(baseUrl, connectionConfigurationPar)).data;
 
 export const editConnectionConfiguration = async (
     connectionConfiguration: UpdateConnectionConfigurationPar,
