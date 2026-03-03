@@ -65,7 +65,7 @@ export const patchRequest = <T>(
         headers: {
             Accept: "application/json",
             Authorization: getAuthHeaderValueByUrl(url),
-            "Content-Type": "application/x-www-form-urlencoded",
+            "Content-Type": "application/json",
         },
     };
 
