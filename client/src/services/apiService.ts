@@ -27,18 +27,3 @@ export function throttle<TArgs extends unknown[]>(
         }
     };
 }
-
-// TODO @alain: migrate this
-export function createSessionDeleteUrlSuffix(sessionUuids: string[]): string {
-    let urlSuffix = "?modelIds=";
-
-    for (let i = 0; i < sessionUuids.length; i++) {
-        urlSuffix += sessionUuids[i];
-
-        if (i !== sessionUuids.length - 1) {
-            urlSuffix += "&modelIds=";
-        }
-    }
-
-    return urlSuffix;
-}

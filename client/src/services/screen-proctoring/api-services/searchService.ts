@@ -1,4 +1,3 @@
-import * as apiService from "@/services/apiService";
 import * as newApiService from "@/services/newApiService";
 import {
     SearchSessions,
@@ -44,9 +43,25 @@ export const searchTimeline = async (
 //                If yes, the current URL is wrong and should point to /session (no baseUrl) and with form-url-encoded header
 export const deleteSessions = async (
     sessionUuids: string[],
-): Promise<AxiosResponse<object>> =>
-    (
+): Promise<AxiosResponse<object>> => {
+    const createSessionDeleteUrlSuffix = (sessionUuids: string[]): string => {
+        // TODO @andreas: if we keep this function, it could be simplified a lot by using URLSearchParams (https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
+        let urlSuffix = "?modelIds=";
+
+        for (let i = 0; i < sessionUuids.length; i++) {
+            urlSuffix += sessionUuids[i];
+
+            if (i !== sessionUuids.length - 1) {
+                urlSuffix += "&modelIds=";
+            }
+        }
+
+        return urlSuffix;
+    };
+
+    return (
         await newApiService.deleteRequest(
-            `${baseUrl}/session${apiService.createSessionDeleteUrlSuffix(sessionUuids)}`,
+            `${baseUrl}/session${createSessionDeleteUrlSuffix(sessionUuids)}`,
         )
     ).data;
+};
