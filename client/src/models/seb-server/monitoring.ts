@@ -1,3 +1,5 @@
+import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums";
+
 export type MonitoringClientConnection = {
     id: number;
     nf: number;
@@ -64,6 +66,14 @@ export type MonitoringConnections = {
     examId: number;
     monitoringConnectionData: MonitoringConnectionData;
     screenProctoringData: ScreenProctoringData[];
+};
+
+export type MonitoringConnectionHeaders = {
+    [MonitoringHeaderEnum.SHOW_ALL]: boolean;
+    [MonitoringHeaderEnum.SHOW_CLIENT_GROUPS]: string[];
+    [MonitoringHeaderEnum.SHOW_STATES]: string[];
+    [MonitoringHeaderEnum.SHOW_NOTIFCATION]: string[];
+    [MonitoringHeaderEnum.SHOW_INDICATORS]: string[];
 };
 
 export type StaticClientConnectionData = {

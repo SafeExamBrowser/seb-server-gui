@@ -277,7 +277,7 @@ import * as searchViewService from "@/services/screen-proctoring/component-servi
 import { useFullscreen } from "@vueuse/core";
 import * as linkService from "@/services/screen-proctoring/component-services/linkService";
 import { SortOrder } from "@/models/screen-proctoring/sortOrderEnum";
-import * as apiService from "@/services/apiService";
+import { throttle } from "lodash";
 import { ScreenshotData } from "@/models/screen-proctoring/session";
 import {
     ScreenshotsGrouped,
@@ -569,7 +569,7 @@ async function setTimestampsList(sortOrder: SortOrder) {
 }
 
 // throttle function to mitigate amount of api calls
-const throttledSetImageLink = apiService.throttle((timestamp: string) => {
+const throttledSetImageLink = throttle((timestamp: string) => {
     setImageLink(timestamp);
 }, 100);
 

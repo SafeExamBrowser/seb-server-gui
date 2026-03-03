@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/vue3";
-import LoginPage from "@/components/views/LoginPage.vue";
+import LoginPage from "@/components/views/login/LoginPage.vue";
 import { useLoadingStore } from "@/stores/store";
 
 const meta: Meta<typeof LoginPage> = {

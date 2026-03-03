@@ -1174,11 +1174,7 @@ onBeforeMount(async () => {
     componentId = sebSettingsStore.selectedContainerId.toString();
 
     const networkSettings: SEBSettingsView | null =
-        await sebSettingsService.getViewSettings(
-            ViewType.NETWORK,
-            componentId,
-            sebSettingsStore.isExam,
-        );
+        await sebSettingsService.getViewSettings(ViewType.NETWORK, componentId);
     if (networkSettings == null) {
         return;
     }
@@ -1340,7 +1336,6 @@ async function urlFilterRuleDelete(index: number) {
             componentId,
             "URLFilterRules",
             index,
-            sebSettingsStore.isExam,
         );
     if (resp == null) {
         return;
@@ -1369,7 +1364,6 @@ async function closeEditURLFilterRuleDialog(apply?: boolean) {
             await sebSettingsService.newSEBSettingTableRow(
                 componentId,
                 "URLFilterRules",
-                sebSettingsStore.isExam,
             );
         if (resp == null) {
             return;
@@ -1389,25 +1383,21 @@ async function closeEditURLFilterRuleDialog(apply?: boolean) {
         componentId,
         selectedURLFilterRule.value.ids.active.toString(),
         selectedURLFilterRule.value.active ? "true" : "false",
-        sebSettingsStore.isExam,
     );
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedURLFilterRule.value.ids.regex.toString(),
         selectedURLFilterRule.value.regex ? "true" : "false",
-        sebSettingsStore.isExam,
     );
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedURLFilterRule.value.ids.expression.toString(),
         selectedURLFilterRule.value.expression,
-        sebSettingsStore.isExam,
     );
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedURLFilterRule.value.ids.action.toString(),
         selectedURLFilterRule.value.action,
-        sebSettingsStore.isExam,
     );
 
     urlFilterTable.value[selectedURLFilterRule.value.index] =
@@ -1420,7 +1410,6 @@ async function saveSingleValue(name: string, value: string) {
         componentId,
         setting.id.toString(),
         value,
-        sebSettingsStore.isExam,
     );
 }
 
@@ -1430,7 +1419,6 @@ async function saveProxyValue(name: string, value: string) {
         componentId,
         setting.id.toString(),
         value,
-        sebSettingsStore.isExam,
     );
 }
 
