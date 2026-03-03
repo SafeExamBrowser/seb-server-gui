@@ -100,22 +100,11 @@
             </v-sheet>
         </v-col>
     </v-row>
-
-    <AlertMsg
-        v-if="loadingStore.isTimeout"
-        :alert-props="{
-            title: 'title',
-            color: 'error',
-            type: 'snackbar',
-            textKey: 'timeout-error',
-        }"
-    >
-    </AlertMsg>
 </template>
 
 <script setup lang="ts">
 import { onBeforeMount, ref, watch } from "vue";
-import { useAppBarStore, useLoadingStore, useTableStore } from "@/stores/store";
+import { useAppBarStore, useTableStore } from "@/stores/store";
 import * as searchViewService from "@/services/screen-proctoring/component-services/searchViewService";
 import SearchForm from "./SearchForm.vue";
 import SearchSessionTable from "./SearchSessionTable.vue";
@@ -138,7 +127,6 @@ const closeAllPanelsDisabled = ref<boolean>(true);
 // store
 const appBarStore = useAppBarStore();
 const tableStore = useTableStore();
-const loadingStore = useLoadingStore();
 
 // form data
 const searchParameters = ref<OptionalParSearchSessions>();

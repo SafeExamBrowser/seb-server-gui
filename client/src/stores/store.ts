@@ -64,15 +64,6 @@ export const useLayoutStore = defineStore("layout", () => {
     };
 });
 
-// ----------------------loading---------------------------//
-export const useLoadingStore = defineStore("loading", () => {
-    const skipLoading = ref<boolean>(false);
-    const isLoading = ref<boolean>(false);
-    const isTimeout = ref<boolean>(false);
-
-    return { skipLoading, isLoading, isTimeout };
-});
-
 // ----------------------sp exams overview---------------------------//
 export const useTableStore = defineStore("table", () => {
     const isIndicatorsExpanded = ref<boolean>(false);

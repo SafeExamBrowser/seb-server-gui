@@ -1,24 +1,14 @@
 <template>
     <v-app>
         <ErrorMsg></ErrorMsg>
-        <loading
-            :active="loadingStore.isLoading"
-            color="#215CAF"
-            :width="100"
-        />
-
         <router-view />
     </v-app>
 </template>
 
 <script setup lang="ts">
-import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/css/index.css";
-import { useLoadingStore } from "@/stores/store";
 import "@vuepic/vue-datepicker/dist/main.css";
 import ErrorMsg from "@/components/widgets/ErrorMsg.vue";
-
-const loadingStore = useLoadingStore();
 </script>
 
 <style>
