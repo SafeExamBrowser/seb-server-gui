@@ -109,26 +109,7 @@ export function getHeaders(type: string): object {
     };
 }
 
-export function getPostHeaders(type: string): object {
-    const authStore = useAuthStore();
-    const token = authStore.getStorageItem(type);
-    return {
-        accept: "application/json",
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json",
-    };
-}
-
-export function getPutHeaders(type: string): object {
-    const authStore = useAuthStore();
-
-    return {
-        accept: "application/json",
-        Authorization: "Bearer " + authStore.getStorageItem(type),
-        "Content-Type": "application/json",
-    };
-}
-
+// TODO @alain: Ask Andreas, if we can delete this for now
 export function throttle<TArgs extends unknown[]>(
     func: (...args: TArgs) => void,
     limit: number,
@@ -188,6 +169,7 @@ function isUrlIgnorable(url: string | undefined): boolean {
     return ignoredUrls.some((urlFromList) => url.includes(urlFromList));
 }
 
+// TODO @alain: migrate this
 export function createSessionDeleteUrlSuffix(sessionUuids: string[]): string {
     let urlSuffix = "?modelIds=";
 
