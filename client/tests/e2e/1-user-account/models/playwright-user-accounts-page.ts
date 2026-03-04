@@ -4,6 +4,7 @@ import {
     waitForRequest,
 } from "../../utils/networkAssertions";
 import { PlaywrightCreateUserAccountPage } from "./playwright-create-user-account-page";
+import { PlaywrightUserAccountPage } from "./playwright-user-account-page";
 
 export class PlaywrightUserAccountsPage {
     readonly page: Page;
@@ -228,8 +229,11 @@ export class PlaywrightUserAccountsPage {
         return createUserAccountPage;
     }
 
-    async clickEditIcon(uuid: string) {
+    async clickEditIcon(uuid: string): Promise<PlaywrightUserAccountPage> {
         await this.editIcon(uuid).click();
+        const userAccountPage = new PlaywrightUserAccountPage(this.page);
+        await userAccountPage.expectVisible();
+        return userAccountPage;
     }
 
     async clickDeleteIcon(uuid: string) {

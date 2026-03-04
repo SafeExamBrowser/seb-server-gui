@@ -19,7 +19,7 @@ export class PlaywrightCreateUserAccountPage {
 
     // ------------------------
     // Page identity / layout
-    // ------------
+    // -----------------------
     readonly container: Locator;
 
     // Selects
