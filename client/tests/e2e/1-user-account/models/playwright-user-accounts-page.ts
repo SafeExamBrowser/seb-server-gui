@@ -2,7 +2,7 @@ import { expect, type Locator, type Page } from "@playwright/test";
 import {
     expectRequestSucceeded,
     waitForRequest,
-} from "../utils/networkAssertions";
+} from "../../utils/networkAssertions";
 import { PlaywrightCreateUserAccountPage } from "./playwright-create-user-account-page";
 
 export class PlaywrightUserAccountsPage {

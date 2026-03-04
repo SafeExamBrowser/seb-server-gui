@@ -7,12 +7,12 @@ import {
 import {
     selectVuetifyFirstOption,
     selectVuetifyOptionByName,
-} from "../utils/helpers";
+} from "../../utils/helpers";
 import {
     expectNoRequest,
     expectRequestSucceeded,
     waitForResponse,
-} from "../utils/networkAssertions";
+} from "../../utils/networkAssertions";
 
 export class PlaywrightCreateUserAccountPage {
     readonly page: Page;

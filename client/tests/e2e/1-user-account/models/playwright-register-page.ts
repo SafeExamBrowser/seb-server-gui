@@ -3,7 +3,7 @@ import {
     expectToHaveUrl,
     selectVuetifyFirstOption,
     selectVuetifyOptionByName,
-} from "../utils/helpers";
+} from "../../utils/helpers";
 
 export class PlaywrightRegisterPage {
     readonly page: Page;
