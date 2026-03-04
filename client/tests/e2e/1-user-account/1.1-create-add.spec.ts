@@ -1,10 +1,10 @@
 import { expect, test } from "@playwright/test";
 import { loginAsServerAdmin } from "../utils/authenticate";
 import { generateUniqueUsername } from "../utils/helpers";
-import { PlaywrightCreateUserAccountPage } from "../models/playwright-create-user-account-page";
-import { PlaywrightUserAccountsPage } from "../models/playwright-user-accounts-page";
+import { PlaywrightCreateUserAccountPage } from "./models/playwright-create-user-account-page";
+import { PlaywrightUserAccountsPage } from "./models/playwright-user-accounts-page";
 
-test.describe("1.1 User Accounts - CREATE Add", () => {
+test.describe("1.1.1 User Accounts - CREATE Add", () => {
     let createUserAccountPage: PlaywrightCreateUserAccountPage;
 
     test.beforeEach(async ({ page }) => {
