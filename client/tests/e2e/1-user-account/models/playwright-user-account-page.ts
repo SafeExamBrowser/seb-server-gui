@@ -39,7 +39,7 @@ export class PlaywrightUserAccountPage {
     readonly surname: Locator;
     readonly email: Locator;
 
-    // Password "field" (readonly) + opener
+    // Password field
     readonly passwordChangeOpen: Locator;
     readonly passwordField: Locator;
 
@@ -56,12 +56,14 @@ export class PlaywrightUserAccountPage {
     readonly changePasswordCancelButton: Locator;
     readonly changePasswordSaveButton: Locator;
 
-    // Toasts (same pattern as create page)
+    // Toasts
     readonly toast: Locator;
     readonly toastText: Locator;
 
     // --- Network URL regexes ---
     private readonly userAccountUrlRegex = /\/useraccount(?:\/|$|\?)/i;
+    private readonly userAccountPasswordUrlRegex =
+        /\/useraccount\/password(?:\/|$|\?)/i;
 
     constructor(page: Page) {
         this.page = page;
@@ -79,8 +81,6 @@ export class PlaywrightUserAccountPage {
         this.institutionSelect = page.getByTestId(
             "editUserAccount-institution-select",
         );
-        // IMPORTANT: your template currently uses createUserAccount-role-select in edit form.
-        // If you fix it later to editUserAccount-role-select, just update this locator.
         this.roleSelect = page.getByTestId("createUserAccount-role-select");
         this.timezoneSelect = page.getByTestId(
             "editUserAccount-timezone-select",
@@ -258,7 +258,7 @@ export class PlaywrightUserAccountPage {
         username?: string;
         name?: string;
         surname?: string;
-        email?: string; // pass "" if you want to clear it
+        email?: string;
     }) {
         if (params.roleName) await this.selectRole(params.roleName);
 
@@ -293,7 +293,7 @@ export class PlaywrightUserAccountPage {
         surname?: string;
         role?: string;
         timezone?: string;
-        email?: string; // for invalid email
+        email?: string;
     }) {
         if (errors.username)
             await this.expectFieldError(
@@ -325,7 +325,6 @@ export class PlaywrightUserAccountPage {
                 errors.email,
             );
 
-        // IMPORTANT: role testId mismatch in your template (createUserAccount-role-select).
         if (errors.role)
             await this.expectFieldError(
                 "createUserAccount-role-select",
@@ -351,11 +350,6 @@ export class PlaywrightUserAccountPage {
     // ------------------------
     // Network helpers
     // ------------------------
-
-    /**
-     * Typical edit flow: clicking "Save" calls PUT/PATCH to /useraccount...
-     * If your backend uses PUT, keep this. If it uses PATCH, change method + helper type.
-     */
     async expectEditRequestSucceeded(action: () => Promise<void>) {
         await expectRequestSucceeded({
             page: this.page,
@@ -377,6 +371,19 @@ export class PlaywrightUserAccountPage {
         return await respPromise;
     }
 
+    async captureChangePasswordResponse(
+        action: () => Promise<void>,
+    ): Promise<Response> {
+        const respPromise = waitForResponse(
+            this.page,
+            "PUT",
+            this.userAccountPasswordUrlRegex,
+        );
+
+        await action();
+        return await respPromise;
+    }
+
     async expectNoEditRequest(action: () => Promise<void>) {
         await expectNoRequest({
             page: this.page,
@@ -387,12 +394,6 @@ export class PlaywrightUserAccountPage {
         });
     }
 
-    /**
-     * Status toggle might call activate/deactivate endpoints.
-     * If those endpoints are still under /useraccount, this covers both.
-     * If you have separate routes (e.g. /useraccount/activate), keep as-is;
-     * otherwise narrow it later.
-     */
     async expectStatusToggleRequestSucceeded(action: () => Promise<void>) {
         await expectRequestSucceeded({
             page: this.page,
@@ -403,15 +404,11 @@ export class PlaywrightUserAccountPage {
         });
     }
 
-    /**
-     * Password change likely POSTs to some /useraccount/... endpoint.
-     * This helper is intentionally broad; you can tighten the regex when you confirm the route.
-     */
     async expectChangePasswordRequestSucceeded(action: () => Promise<void>) {
         await expectRequestSucceeded({
             page: this.page,
-            method: "POST",
-            urlRegex: this.userAccountUrlRegex,
+            method: "PUT",
+            urlRegex: this.userAccountPasswordUrlRegex,
             action,
             expectedStatuses: [200, 204],
         });
@@ -420,8 +417,8 @@ export class PlaywrightUserAccountPage {
     async expectNoChangePasswordRequest(action: () => Promise<void>) {
         await expectNoRequest({
             page: this.page,
-            method: "POST",
-            urlRegex: this.userAccountUrlRegex,
+            method: "PUT",
+            urlRegex: this.userAccountPasswordUrlRegex,
             action,
             settleMs: 300,
         });
