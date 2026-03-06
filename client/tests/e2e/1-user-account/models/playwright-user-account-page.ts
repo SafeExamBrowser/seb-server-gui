@@ -273,6 +273,21 @@ export class PlaywrightUserAccountPage {
         if (params.email !== undefined) await this.fillEmail(params.email);
     }
 
+    async expectFormLoaded(expected: {
+        name: string;
+        surname: string;
+        email: string;
+    }) {
+        await expect(this.name).toHaveValue(expected.name, { timeout: 10_000 });
+        await expect(this.surname).toHaveValue(expected.surname, {
+            timeout: 10_000,
+        });
+
+        await expect(this.email).toHaveValue(expected.email, {
+            timeout: 10_000,
+        });
+    }
+
     // ------------------------
     // Validation assertions
     // ------------------------
@@ -282,9 +297,13 @@ export class PlaywrightUserAccountPage {
     }
 
     async expectFieldError(testId: string, text: string) {
-        await expect(this.fieldError(testId, text)).toHaveCount(1, {
-            timeout: 5_000,
-        });
+        await expect(
+            this.page
+                .getByTestId(testId)
+                .locator(".v-messages__message")
+                .filter({ hasText: text })
+                .first(),
+        ).toBeVisible({ timeout: 5_000 });
     }
 
     async expectRequiredFieldErrors(errors: {
@@ -392,6 +411,23 @@ export class PlaywrightUserAccountPage {
             action,
             settleMs: 300,
         });
+    }
+
+    async expectEditRequestFailed(params: {
+        action: () => Promise<void>;
+        expectedStatus?: number;
+        expectedStatuses?: number[];
+    }) {
+        const expectedStatuses = params.expectedStatuses ?? [
+            params.expectedStatus ?? 400,
+        ];
+
+        const resp = await this.captureEditResponse(params.action);
+
+        expect(expectedStatuses).toContain(resp.status());
+        expect(resp.ok()).toBeFalsy();
+
+        return resp;
     }
 
     async expectStatusToggleRequestSucceeded(action: () => Promise<void>) {
