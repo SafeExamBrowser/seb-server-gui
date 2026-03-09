@@ -4,11 +4,6 @@ WORKDIR /app/client
 COPY client/package*.json ./
 RUN npm ci
 COPY client/ .
-
-# Inject environment variables for Vue
-ARG VITE_SUB_PATH
-RUN echo "VITE_SUB_PATH=$VITE_SUB_PATH" > .env
-
 RUN npm run build
 
 # Build proxy
@@ -25,7 +20,6 @@ WORKDIR /app
 ENV SERVE_CLIENT=true
 COPY --from=proxy-builder /app/proxy/dist ./proxy/dist
 COPY --from=client-builder /app/client/dist ./proxy/dist/views
-COPY --from=client-builder /app/client/.env ./proxy/dist/views
 COPY proxy/package*.json ./
 RUN npm ci
 

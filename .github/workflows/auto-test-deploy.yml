@@ -6,7 +6,6 @@ on:
       - "auto-testing-deploy"
 
 jobs:
-
   shai-hulud-detector:
     runs-on: ubuntu-latest
     steps:
@@ -27,12 +26,11 @@ jobs:
           chmod +x ./hulud/shai-hulud-detector.sh
           ./hulud/shai-hulud-detector.sh ./seb
 
-
   build-and-push-admin-auto-test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        tag_suffix: [ "", "-single-host" ]
+        tag_suffix: ["", "-single-host"]
         include:
           - tag_suffix: ""
             path_name: ""
@@ -63,7 +61,6 @@ jobs:
           context: .
           push: true
           tags: docker.io/${{ secrets.DOCKERHUB_ADMIN_USERNAME }}/seb-server-gui-auto-testing:${{ env.TAG_NAME }}
-          build-args: VITE_SUB_PATH=${{ matrix.path_name }}
 
   build-and-push-auto-test-storybook:
     runs-on: ubuntu-latest
