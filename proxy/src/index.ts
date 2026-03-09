@@ -3,7 +3,6 @@ import ProxyServer, { createProxyServer } from "http-proxy-3";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { handleAuthorize } from "./handlers/authorize.js";
-import { setCorsHeaders } from "./utils/cors.js";
 import { parseEnv } from "./utils/env.js";
 import { logInfo, logRequest } from "./utils/logger.js";
 
@@ -25,7 +24,6 @@ const proctorProxy = createProxyServer({
 
 const addProxyHandlers = (proxy: ProxyServer) => {
   proxy.on("proxyRes", (proxyRes, req, res) => {
-    setCorsHeaders(res, env.PROXY_ALLOWED_ORIGIN, req);
     logRequest(req, proxyRes.statusCode);
   });
 };
@@ -35,15 +33,6 @@ addProxyHandlers(proctorProxy);
 
 // everything that's prefixed with '/api' is proxied to the SEB or Proctor server
 app.use("/api", (req, res) => {
-  // handle preflight OPTIONS requests directly
-  if (req.method === "OPTIONS") {
-    setCorsHeaders(res, env.PROXY_ALLOWED_ORIGIN, req);
-    res.writeHead(204);
-    res.end();
-    logRequest(req, 204);
-    return;
-  }
-
   // handle authorize requests
   if (req.path === "/authorize") {
     handleAuthorize(req, res, env);

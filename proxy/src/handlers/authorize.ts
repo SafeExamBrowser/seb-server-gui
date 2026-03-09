@@ -1,5 +1,4 @@
 import http from "http";
-import { setCorsHeaders } from "../utils/cors.js";
 import type { Env } from "../utils/env.js";
 import { logError, logRequest } from "../utils/logger.js";
 import { tokenResultSchema } from "./types.js";
@@ -13,11 +12,9 @@ const SPS_SERVER_NAME = "SPS Server";
 const sendJsonResponse = (
   req: http.IncomingMessage,
   res: http.ServerResponse,
-  origin: string,
   status: number,
   data: unknown,
 ) => {
-  setCorsHeaders(res, origin, req);
   res.writeHead(status, { "Content-Type": "application/json" });
   res.end(JSON.stringify(data));
   logRequest(req, status);
@@ -171,7 +168,7 @@ export const handleAuthorize = async (
   const requestData = await parseRequest(req);
 
   if (!requestData) {
-    return sendJsonResponse(req, res, env.PROXY_ALLOWED_ORIGIN, 400, {
+    return sendJsonResponse(req, res, 400, {
       error: "Invalid request",
     });
   }
@@ -180,18 +177,18 @@ export const handleAuthorize = async (
     const result = await fetchTokensFromBothServers(env, requestData);
 
     if (result.status === "auth_error") {
-      return sendJsonResponse(req, res, env.PROXY_ALLOWED_ORIGIN, 401, {
+      return sendJsonResponse(req, res, 401, {
         error: "Authorization failed",
         details: result.errors,
       });
     }
 
-    sendJsonResponse(req, res, env.PROXY_ALLOWED_ORIGIN, 200, result.data);
+    sendJsonResponse(req, res, 200, result.data);
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
     logError(ERROR_PREFIX, `Unexpected error: ${message}`);
 
-    sendJsonResponse(req, res, env.PROXY_ALLOWED_ORIGIN, 500, {
+    sendJsonResponse(req, res, 500, {
       error: "A technical error occurred",
     });
   }
