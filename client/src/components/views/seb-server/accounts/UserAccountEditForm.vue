@@ -410,11 +410,16 @@
             <v-card-text class="pt-0">
                 <v-form
                     ref="changePasswordForm"
+                    v-model="isPasswordFormValid"
+                    validate-on="input"
                     data-testid="editUserAccount-changePassword-form"
                 >
                     <v-col class="custom-padding-textbox" cols="12">
                         <v-text-field
                             v-model="currentAdminPassword"
+                            :rules="[requiredRule]"
+                            type="password"
+                            validate-on="input"
                             data-testid="editUserAccount-changePassword-adminPassword-input"
                             density="compact"
                             :label="
@@ -422,9 +427,6 @@
                                     'userAccount.userAccountDetailAndEditPage.labels.adminPassword',
                                 )
                             "
-                            :rules="[requiredRule]"
-                            type="password"
-                            validate-on="blur"
                             variant="outlined"
                             @blur="adminPwTouched = true"
                         />
@@ -433,6 +435,9 @@
                     <v-col class="custom-padding-textbox" cols="12">
                         <v-text-field
                             v-model="newUserPassword"
+                            :rules="[requiredRule, newPasswordRule]"
+                            type="password"
+                            validate-on="input"
                             data-testid="editUserAccount-changePassword-newPassword-input"
                             density="compact"
                             :label="
@@ -440,9 +445,6 @@
                                     'userAccount.userAccountDetailAndEditPage.labels.newPassword',
                                 )
                             "
-                            :rules="[requiredRule, newPasswordRule]"
-                            type="password"
-                            validate-on="blur"
                             variant="outlined"
                             @blur="newPwTouched = true"
                         />
@@ -451,13 +453,6 @@
                     <v-col class="custom-padding-textbox" cols="12">
                         <v-text-field
                             v-model="confirmNewUserPassword"
-                            data-testid="editUserAccount-changePassword-confirmNewPassword-input"
-                            density="compact"
-                            :label="
-                                translate(
-                                    'userAccount.userAccountDetailAndEditPage.labels.confirmNewPassword',
-                                )
-                            "
                             :rules="[
                                 requiredRule,
                                 (v) =>
@@ -465,7 +460,14 @@
                                     passwordsDontMatchMessage,
                             ]"
                             type="password"
-                            validate-on="blur"
+                            validate-on="input"
+                            data-testid="editUserAccount-changePassword-confirmNewPassword-input"
+                            density="compact"
+                            :label="
+                                translate(
+                                    'userAccount.userAccountDetailAndEditPage.labels.confirmNewPassword',
+                                )
+                            "
                             variant="outlined"
                             @blur="confirmPwTouched = true"
                         />
@@ -816,16 +818,7 @@ const statusChanged = computed(
     () => user.value?.active !== initialActiveStatus.value,
 );
 
-const isPasswordFormValid = computed(() => {
-    return (
-        adminPwTouched.value &&
-        newPwTouched.value &&
-        confirmPwTouched.value &&
-        !!currentAdminPassword.value &&
-        newPasswordRule(newUserPassword.value) === true &&
-        newUserPassword.value === confirmNewUserPassword.value
-    );
-});
+const isPasswordFormValid = ref(false);
 
 async function saveChanges() {
     const { valid } = await formRef.value.validate();

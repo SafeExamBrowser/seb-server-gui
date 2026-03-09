@@ -1,6 +1,6 @@
 import { test } from "@playwright/test";
 import { clearLocalAndSessionStorage, navigateTo } from "../utils/helpers";
-import { PlaywrightLoginPage } from "../models/playwright-login-page";
+import { PlaywrightLoginPage } from "./models/playwright-login-page";
 
 const correctUser = "testmain";
 const correctPass = "testmain";

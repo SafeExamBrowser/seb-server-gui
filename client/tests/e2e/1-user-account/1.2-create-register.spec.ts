@@ -1,7 +1,7 @@
 import { test } from "@playwright/test";
-import { PlaywrightLoginPage } from "../models/playwright-login-page";
+import { PlaywrightLoginPage } from "./models/playwright-login-page";
 import { clearLocalAndSessionStorage } from "../utils/helpers";
-import type { PlaywrightRegisterPage } from "../models/playwright-register-page";
+import type { PlaywrightRegisterPage } from "./models/playwright-register-page";
 import { generateUniqueUsername } from "../utils/helpers";
 
 test.describe("1.1.2 User Accounts - CREATE Register", () => {

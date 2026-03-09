@@ -2,7 +2,7 @@ import { defineConfig, devices } from "@playwright/test";
 
 const isCI = !!process.env.CI;
 
-const baseURL = process.env.BASE_URL || "https://ralphina.ethz.ch";
+const baseURL = process.env.BASE_URL || "http://localhost:8082/";
 
 const ignoreHTTPSErrors = process.env.E2E_IGNORE_HTTPS_ERRORS === "true";
 

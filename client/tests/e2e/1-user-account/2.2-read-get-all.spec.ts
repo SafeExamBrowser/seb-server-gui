@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { addBrowserSuffixToText } from "../utils/helpers";
 import { loginAsServerAdmin } from "../utils/authenticate";
-import { PlaywrightUserAccountsPage } from "../models/playwright-user-accounts-page";
+import { PlaywrightUserAccountsPage } from "./models/playwright-user-accounts-page";
 
 const searchSurname = "000-testgetall";
 const activeUserUuid = "seb-user-account-getall-active";

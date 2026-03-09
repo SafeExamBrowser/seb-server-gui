@@ -2,8 +2,9 @@ import { expect, type Locator, type Page } from "@playwright/test";
 import {
     expectRequestSucceeded,
     waitForRequest,
-} from "../utils/networkAssertions";
+} from "../../utils/networkAssertions";
 import { PlaywrightCreateUserAccountPage } from "./playwright-create-user-account-page";
+import { PlaywrightUserAccountPage } from "./playwright-user-account-page";
 
 export class PlaywrightUserAccountsPage {
     readonly page: Page;
@@ -190,9 +191,11 @@ export class PlaywrightUserAccountsPage {
         await this.cancelButton.click();
     }
 
-    async search(value: string) {
+    async search(value: string, page: Page) {
+        await page.waitForTimeout(500);
         await this.fillSearch(value);
         await this.searchByButton();
+        await page.waitForTimeout(500);
     }
 
     statusChipFilter(status: "Active" | "Inactive"): Locator {
@@ -228,8 +231,11 @@ export class PlaywrightUserAccountsPage {
         return createUserAccountPage;
     }
 
-    async clickEditIcon(uuid: string) {
+    async clickEditIcon(uuid: string): Promise<PlaywrightUserAccountPage> {
         await this.editIcon(uuid).click();
+        const userAccountPage = new PlaywrightUserAccountPage(this.page);
+        await userAccountPage.expectVisible();
+        return userAccountPage;
     }
 
     async clickDeleteIcon(uuid: string) {

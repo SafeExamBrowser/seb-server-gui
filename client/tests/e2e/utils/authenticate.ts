@@ -1,6 +1,6 @@
 import { Page } from "@playwright/test";
 import { expectToHaveUrl } from "./helpers";
-import { PlaywrightLoginPage } from "../models/playwright-login-page";
+import { PlaywrightLoginPage } from "../1-user-account/models/playwright-login-page";
 
 const SEB_SERVER_ADMIN_USERNAME = "testmain";
 const SEB_SERVER_ADMIN_PASSWORD = "testmain";
