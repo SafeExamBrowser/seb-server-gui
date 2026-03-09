@@ -4,8 +4,25 @@ import Vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
 import { defineConfig, loadEnv } from "vite";
 import { fileURLToPath, URL } from "node:url";
 import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite";
+import { z } from "zod";
 
-export default ({ mode }) => {
+export const parseEnv = () => {
+    const envResult = z
+        .object({
+            VITE_DEV_API_PROXY_TARGET: z.url(),
+        })
+        .safeParse(process.env);
+
+    if (!envResult.success) {
+        console.error("Invalid environment variables:");
+        console.error(JSON.stringify(z.treeifyError(envResult.error), null, 2));
+        process.exit(1);
+    }
+
+    return envResult.data;
+};
+
+export default ({ mode, command }) => {
     process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
 
     return defineConfig({
@@ -51,12 +68,16 @@ export default ({ mode }) => {
 
         server: {
             port: 8082,
-            proxy: {
-                "/api": {
-                    target: "http://localhost:3001",
-                    changeOrigin: true, // TODO @alain: this may not be needed?
-                },
-            },
+            ...(command === "serve"
+                ? {
+                      proxy: {
+                          "/api": {
+                              target: parseEnv().VITE_DEV_API_PROXY_TARGET,
+                              changeOrigin: true, // TODO @alain: this may not be needed?
+                          },
+                      },
+                  }
+                : {}),
         },
     });
 };

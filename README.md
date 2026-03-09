@@ -40,6 +40,14 @@ If you're just working on the frontend part (SEB Server GUI), this is the easies
 1. Run `docker-compose up -d`
 1. Visit http://localhost:8082 and login to confirm that the full setup works
 
+## Setup the client
+
+1. `cd client`
+1. Start virtual node env: `nvm use`
+1. Install dependencies: `npm ci`
+1. Copy the example .env file and adapt it to your needs: `cp .env.example .env`
+1. Start the client: `npm run dev`
+
 ## Install the pre-commit hook
 
 The following steps have to be done on your **host machine** (not in the docker-container)
