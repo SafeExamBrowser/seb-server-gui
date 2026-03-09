@@ -113,7 +113,8 @@ services:
       - "mariadb"
     restart: unless-stopped
 
-  # uncomment this if you don't want to run the seb-server-gui yourself
+  # Uncomment this if you don't want to run the seb-server-gui yourself
+  # You have to run `docker build -t seb-server-gui:local .` for building the image before starting the container
   # seb-server-gui:
   #   image: "seb-server-gui:local"
   #   container_name: seb-server-gui
