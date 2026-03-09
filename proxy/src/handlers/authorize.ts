@@ -1,8 +1,9 @@
 import http from "http";
-import { setCorsHeaders } from "../utils/cors";
-import { Env } from "../utils/env";
-import { logError, logRequest } from "../utils/logger";
-import { tokenResultSchema, FetchTokensResult } from "./types";
+import { setCorsHeaders } from "../utils/cors.js";
+import type { Env } from "../utils/env.js";
+import { logError, logRequest } from "../utils/logger.js";
+import { tokenResultSchema } from "./types.js";
+import type { FetchTokensResult } from "./types.js";
 
 const OAUTH_PREFIX = "/oauth";
 const ERROR_PREFIX = "authorize";

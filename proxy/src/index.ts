@@ -1,9 +1,9 @@
 import ProxyServer, { createProxyServer } from "http-proxy-3";
 import http from "http";
-import { handleAuthorize } from "./handlers/authorize";
-import { setCorsHeaders } from "./utils/cors";
-import { parseEnv } from "./utils/env";
-import { logInfo, logRequest } from "./utils/logger";
+import { handleAuthorize } from "./handlers/authorize.js";
+import { setCorsHeaders } from "./utils/cors.js";
+import { parseEnv } from "./utils/env.js";
+import { logInfo, logRequest } from "./utils/logger.js";
 
 const env = parseEnv();
 const API_PREFIX_REGEX = /^\/api(?=\/|$|\?)/;
