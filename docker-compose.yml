@@ -113,6 +113,30 @@ services:
       - "mariadb"
     restart: unless-stopped
 
+  # uncomment this if you don't want to run the seb-server-gui yourself
+  # seb-server-gui:
+  #   image: "seb-server-gui:local"
+  #   container_name: seb-server-gui
+  #   environment:
+  #     - PROXY_PORT=3001
+  #     - SERVE_CLIENT=true
+  #     - SEB_SERVER_URL=http://seb-server
+  #     - SEB_SERVER_PORT=8080
+  #     - SEB_SERVER_USERNAME=guiClient
+  #     - SEB_SERVER_PASSWORD=somePW
+  #     - PROCTOR_SERVER_URL=http://sps-webservice
+  #     - PROCTOR_SERVER_PORT=8090
+  #     - PROCTOR_SERVER_USERNAME=spsGuiClient
+  #     - PROCTOR_SERVER_PASSWORD=somePW
+  #   ports:
+  #     - "3001:3001"
+  #   networks:
+  #     - seb-server-network
+  #   depends_on:
+  #     - "seb-server"
+  #     - "sps-webservice"
+  #   restart: unless-stopped
+
 networks:
   seb-server-network:
     name: seb-server-demo-network
