@@ -1,11 +1,10 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { merge } from "lodash";
-import * as ENV from "@/config/envConfig";
 import { useAuthStore } from "@/stores/authentication/authenticationStore";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
 
 const api = axios.create({
-    baseURL: `${ENV.SERVER_URL}${ENV.SERVER_PORT}`,
+    baseURL: "/api",
 });
 
 const getAuthHeaderValueByUrl = (url: string) =>

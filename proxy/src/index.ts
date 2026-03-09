@@ -6,6 +6,7 @@ import { parseEnv } from "./utils/env";
 import { logInfo, logRequest } from "./utils/logger";
 
 const env = parseEnv();
+const API_PREFIX_REGEX = /^\/api(?=\/|$|\?)/;
 
 const sebProxy = createProxyServer({
   target: `${env.SEB_SERVER_URL}:${env.SEB_SERVER_PORT}/admin-api/v1`,
@@ -25,7 +26,30 @@ const addProxyHandlers = (proxy: ProxyServer) => {
 addProxyHandlers(sebProxy);
 addProxyHandlers(proctorProxy);
 
+const hasApiPrefix = (requestUrl?: string) => {
+  return requestUrl != null && API_PREFIX_REGEX.test(requestUrl);
+};
+
+const stripApiPrefix = (requestUrl?: string) => {
+  if (requestUrl == null) {
+    return requestUrl;
+  }
+
+  const strippedUrl = requestUrl.replace(API_PREFIX_REGEX, "");
+  return strippedUrl === "" ? "/" : strippedUrl;
+};
+
 const server = http.createServer((req, res) => {
+  if (!hasApiPrefix(req.url)) {
+    throw new Error(
+      "Invalid proxy route. All requests must start with '/api'!",
+    );
+    // TODO @alain: here we will serve static files in prod
+  }
+
+  // normalize incoming api calls from the client (/api/* -> /*)
+  req.url = stripApiPrefix(req.url);
+
   // handle preflight OPTIONS requests directly
   if (req.method === "OPTIONS") {
     setCorsHeaders(res, env.PROXY_ALLOWED_ORIGIN, req);

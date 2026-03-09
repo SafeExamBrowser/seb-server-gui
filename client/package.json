@@ -3,8 +3,7 @@
     "version": "0.0.0",
     "type": "module",
     "scripts": {
-        "dev": "sh env.sh && vite",
-        "dev-win": "env.sh && vite",
+        "dev": "vite",
         "build": "vue-tsc --noEmit && vite build",
         "preview": "vite preview",
         "lint:check:file": "eslint",
@@ -105,7 +104,6 @@
         "vue-tsc": "^2.2.12",
         "vuetify": "3.11.0"
     },
-    "main": "env.js",
     "keywords": [],
     "author": "",
     "license": "ISC",

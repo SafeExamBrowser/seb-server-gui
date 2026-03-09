@@ -63,6 +63,12 @@ export default ({ mode }) => {
 
         server: {
             port: 8082,
+            proxy: {
+                "/api": {
+                    target: "http://localhost:3001",
+                    changeOrigin: true, // TODO @alain: this may not be needed?
+                },
+            },
         },
 
         base: getSubPath(),
