@@ -22,6 +22,7 @@ RUN npm run build
 # Create final image
 FROM node:22.12.0-alpine
 WORKDIR /app 
+ENV SERVE_CLIENT=true
 COPY --from=proxy-builder /app/proxy/dist ./proxy/dist
 COPY --from=client-builder /app/client/dist ./proxy/dist/views
 COPY --from=client-builder /app/client/.env ./proxy/dist/views
