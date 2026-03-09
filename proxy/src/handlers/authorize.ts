@@ -16,7 +16,7 @@ const sendJsonResponse = (
   status: number,
   data: unknown,
 ) => {
-  setCorsHeaders(res, origin);
+  setCorsHeaders(res, origin, req);
   res.writeHead(status, { "Content-Type": "application/json" });
   res.end(JSON.stringify(data));
   logRequest(req, status);
