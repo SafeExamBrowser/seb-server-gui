@@ -73,7 +73,6 @@ export default ({ mode, command }) => {
                       proxy: {
                           "/api": {
                               target: parseEnv().VITE_DEV_API_PROXY_TARGET,
-                              changeOrigin: true, // TODO @alain: this may not be needed?
                           },
                       },
                   }
