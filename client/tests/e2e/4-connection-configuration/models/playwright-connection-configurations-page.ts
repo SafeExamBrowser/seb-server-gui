@@ -32,6 +32,10 @@ export class PlaywrightConnectionConfigurationsPage {
     readonly statusDialogCancelButton: Locator;
     readonly statusDialogConfirmButton: Locator;
 
+    // Toasts
+    readonly toast: Locator;
+    readonly toastText: Locator;
+
     constructor(page: Page) {
         this.page = page;
 
@@ -92,6 +96,9 @@ export class PlaywrightConnectionConfigurationsPage {
         this.statusDialogConfirmButton = page.getByTestId(
             "connectionConfigurations-statusDialog-confirm-button",
         );
+
+        this.toast = page.locator(".toast-item[role='alert']");
+        this.toastText = this.toast.locator(".toast-text");
     }
 
     async goto() {
@@ -212,6 +219,12 @@ export class PlaywrightConnectionConfigurationsPage {
         await expect(this.statusChip(id)).toHaveText(text);
     }
 
+    async expectErrorToast(contains: string[]) {
+        await expect(this.toast).toBeVisible();
+        for (const part of contains) {
+            await expect(this.toastText).toContainText(part);
+        }
+    }
     headerByText(text: string): Locator {
         return this.tableHeadersComponent.getByText(text, { exact: true });
     }
@@ -233,8 +246,7 @@ export class PlaywrightConnectionConfigurationsPage {
     ) {
         const expectedStatuses = opts?.expectedStatuses ?? [200, 304];
 
-        const urlRegex = /\/connectionconfiguration\?/i;
-
+        const urlRegex = /\/client_configuration(?:\?|$)/i;
         const requestPromise = waitForRequest(this.page, "GET", urlRegex);
 
         await expectRequestSucceeded({
@@ -263,7 +275,7 @@ export class PlaywrightConnectionConfigurationsPage {
         action: () => Promise<void>,
     ) {
         const urlRegex = new RegExp(
-            `/connectionconfiguration/${id}(?:$|\\?)`,
+            `/client_configuration/${id}(?:$|\\?)`,
             "i",
         );
 
@@ -281,7 +293,7 @@ export class PlaywrightConnectionConfigurationsPage {
         action: () => Promise<void>,
     ) {
         const urlRegex = new RegExp(
-            `/connectionconfiguration/${id}/inactive(?:\\?|$)`,
+            `/client_configuration/${id}/inactive(?:\\?|$)`,
             "i",
         );
 
@@ -299,7 +311,7 @@ export class PlaywrightConnectionConfigurationsPage {
         action: () => Promise<void>,
     ) {
         const urlRegex = new RegExp(
-            `/connectionconfiguration/${id}/active(?:\\?|$)`,
+            `/client_configuration/${id}/active(?:\\?|$)`,
             "i",
         );
 
