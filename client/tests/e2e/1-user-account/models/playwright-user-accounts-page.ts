@@ -191,11 +191,9 @@ export class PlaywrightUserAccountsPage {
         await this.cancelButton.click();
     }
 
-    async search(value: string, page: Page) {
-        await page.waitForTimeout(500);
+    async search(value: string) {
         await this.fillSearch(value);
         await this.searchByButton();
-        await page.waitForTimeout(500);
     }
 
     statusChipFilter(status: "Active" | "Inactive"): Locator {
