@@ -1,39 +1,34 @@
-# Stage 1: Build the Vue app
-FROM node:22.2.0 as client-builder
+# Build Vue app
+FROM node:22.12.0 AS client-builder
 WORKDIR /app/client
 COPY client/package*.json ./
-RUN npm install
+RUN npm ci
 COPY client/ .
 
-# Inject environment variables for Vue.js
+# Inject environment variables for Vue
 ARG VITE_SUB_PATH
 RUN echo "VITE_SUB_PATH=$VITE_SUB_PATH" > .env
 
 RUN npm run build
 
-# Stage 2: Build the Express server
-FROM node:22.2.0 as server-builder
-WORKDIR /app/server
-COPY server/package*.json ./
-RUN npm install
-RUN npm install typescript
-COPY server/ .
+# Build proxy
+FROM node:22.12.0 AS proxy-builder
+WORKDIR /app/proxy
+COPY proxy/package*.json ./
+RUN npm ci
+COPY proxy/ .
 RUN npm run build
 
-# Stage 3: Create the final image
-FROM node:22.2.0-alpine
+# Create final image
+FROM node:22.12.0-alpine
 WORKDIR /app 
-COPY --from=server-builder /app/server/dist ./server/dist
-COPY --from=client-builder /app/client/dist ./server/dist/views
-COPY --from=client-builder /app/client/.env ./server/dist/views
-COPY server/package*.json ./
-RUN npm install
-
-# Stage 4: Copy env-var bash script
-COPY env.sh /app/env.sh
-RUN chmod +x /app/env.sh
+COPY --from=proxy-builder /app/proxy/dist ./proxy/dist
+COPY --from=client-builder /app/client/dist ./proxy/dist/views
+COPY --from=client-builder /app/client/.env ./proxy/dist/views
+COPY proxy/package*.json ./
+RUN npm ci
 
 EXPOSE 3001
 
-# Start the server
-CMD ["/bin/sh", "-c", "./env.sh && node ./server/dist/app.js"]
+# Start proxy
+CMD ["node", "./proxy/dist/index.js"]
