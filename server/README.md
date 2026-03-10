@@ -1,4 +1,4 @@
-# Proxy
+# Server
 
 ## Setup
 
@@ -8,4 +8,4 @@
 
 ## Dev
 
-Start proxy: `npm run dev`
+Start server: `npm run dev`

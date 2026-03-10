@@ -9,7 +9,7 @@ import { z } from "zod";
 export const parseEnv = () => {
     const envResult = z
         .object({
-            VITE_DEV_API_PROXY_TARGET: z.url(),
+            VITE_DEV_API_SERVER_TARGET: z.url(),
         })
         .safeParse(process.env);
 
@@ -72,7 +72,7 @@ export default ({ mode, command }) => {
                 ? {
                       proxy: {
                           "/api": {
-                              target: parseEnv().VITE_DEV_API_PROXY_TARGET,
+                              target: parseEnv().VITE_DEV_API_SERVER_TARGET,
                           },
                       },
                   }
