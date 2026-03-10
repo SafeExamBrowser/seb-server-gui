@@ -4,7 +4,6 @@ import { logError, logRequest } from "../utils/logger.js";
 import { tokenResultSchema } from "./types.js";
 import type { FetchTokensResult } from "./types.js";
 
-const OAUTH_PREFIX = "/oauth";
 const ERROR_PREFIX = "authorize";
 const SEB_SERVER_NAME = "SEB Server";
 const SPS_SERVER_NAME = "SPS Server";
@@ -74,7 +73,7 @@ const fetchToken = async ({
   body: string;
 }) => {
   try {
-    return await fetch(`${url}:${port}${OAUTH_PREFIX}/token`, {
+    return await fetch(`${url}:${port}/oauth/token`, {
       method,
       headers: {
         "Content-Type": contentType,
