@@ -1,4 +1,4 @@
-# Build Vue app
+# Build client
 FROM node:22.12.0 AS client-builder
 WORKDIR /app/client
 COPY client/package*.json ./
@@ -20,8 +20,7 @@ WORKDIR /app
 ENV SERVE_CLIENT=true
 COPY --from=server-builder /app/server/dist ./server/dist
 COPY --from=client-builder /app/client/dist ./server/dist/views
-COPY server/package*.json ./
-RUN npm ci
+COPY --from=server-builder /app/server/node_modules ./node_modules
 
 EXPOSE 3001
 
