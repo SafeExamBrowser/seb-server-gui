@@ -23,7 +23,7 @@ const proctorProxy = createProxyServer({
 });
 
 const addProxyHandlers = (proxy: ProxyServer) => {
-  proxy.on("proxyRes", (proxyRes, req, res) => {
+  proxy.on("proxyRes", (proxyRes, req) => {
     logRequest(req, proxyRes.statusCode);
   });
 };
