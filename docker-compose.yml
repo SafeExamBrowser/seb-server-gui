@@ -121,12 +121,10 @@ services:
   #   environment:
   #     - PROXY_PORT=3001
   #     - SERVE_CLIENT=true
-  #     - SEB_SERVER_URL=http://seb-server
-  #     - SEB_SERVER_PORT=8080
+  #     - SEB_SERVER_URL=http://seb-server:8080
   #     - SEB_SERVER_USERNAME=guiClient
   #     - SEB_SERVER_PASSWORD=somePW
-  #     - PROCTOR_SERVER_URL=http://sps-webservice
-  #     - PROCTOR_SERVER_PORT=8090
+  #     - PROCTOR_SERVER_URL=http://sps-webservice:8090
   #     - PROCTOR_SERVER_USERNAME=spsGuiClient
   #     - PROCTOR_SERVER_PASSWORD=somePW
   #   ports:

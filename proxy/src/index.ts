@@ -15,11 +15,11 @@ const clientBuildDirectory = path.join(
 );
 
 const sebProxy = createProxyServer({
-  target: `${env.SEB_SERVER_URL}:${env.SEB_SERVER_PORT}/admin-api/v1`,
+  target: new URL("/admin-api/v1", env.SEB_SERVER_URL),
 });
 
 const proctorProxy = createProxyServer({
-  target: `${env.PROCTOR_SERVER_URL}:${env.PROCTOR_SERVER_PORT}/admin-api/v1`,
+  target: new URL("/admin-api/v1", env.PROCTOR_SERVER_URL),
 });
 
 const addProxyHandlers = (proxy: ProxyServer) => {

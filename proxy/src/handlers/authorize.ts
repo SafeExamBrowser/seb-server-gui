@@ -55,8 +55,7 @@ const parseRequest = async (req: http.IncomingMessage) => {
 
 const fetchToken = async ({
   serverName,
-  url,
-  port,
+  baseURL,
   username,
   password,
   method,
@@ -64,8 +63,7 @@ const fetchToken = async ({
   body,
 }: {
   serverName: string;
-  url: string;
-  port: number;
+  baseURL: URL;
   username: string;
   password: string;
   method: string;
@@ -73,7 +71,7 @@ const fetchToken = async ({
   body: string;
 }) => {
   try {
-    return await fetch(`${url}:${port}/oauth/token`, {
+    return await fetch(new URL("/oauth/token", baseURL), {
       method,
       headers: {
         "Content-Type": contentType,
@@ -94,16 +92,14 @@ const fetchTokensFromBothServers = async (
   const [sebServerResponse, proctorServerResponse] = await Promise.all([
     fetchToken({
       serverName: SEB_SERVER_NAME,
-      url: env.SEB_SERVER_URL,
-      port: env.SEB_SERVER_PORT,
+      baseURL: new URL(env.SEB_SERVER_URL),
       username: env.SEB_SERVER_USERNAME,
       password: env.SEB_SERVER_PASSWORD,
       ...requestData,
     }),
     fetchToken({
       serverName: SPS_SERVER_NAME,
-      url: env.PROCTOR_SERVER_URL,
-      port: env.PROCTOR_SERVER_PORT,
+      baseURL: new URL(env.PROCTOR_SERVER_URL),
       username: env.PROCTOR_SERVER_USERNAME,
       password: env.PROCTOR_SERVER_PASSWORD,
       ...requestData,

@@ -4,11 +4,9 @@ const envSchema = z.object({
   PROXY_PORT: z.coerce.number(),
   SERVE_CLIENT: z.stringbool().default(false),
   SEB_SERVER_URL: z.url(),
-  SEB_SERVER_PORT: z.coerce.number(),
   SEB_SERVER_USERNAME: z.string(),
   SEB_SERVER_PASSWORD: z.string(),
   PROCTOR_SERVER_URL: z.url(),
-  PROCTOR_SERVER_PORT: z.coerce.number(),
   PROCTOR_SERVER_USERNAME: z.string(),
   PROCTOR_SERVER_PASSWORD: z.string(),
 });
