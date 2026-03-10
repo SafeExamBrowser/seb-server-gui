@@ -16,7 +16,7 @@ test.describe("1.3.1 User Accounts - UPDATE Edit", () => {
         const uuid = addBrowserSuffixToText(baseUuid, testInfo);
         const lastName = addBrowserSuffixToText(baseLastName, testInfo);
 
-        await userAccountsPage.search(lastName, page);
+        await userAccountsPage.search(lastName);
         const userAccountPage = await userAccountsPage.clickEditIcon(uuid);
 
         await userAccountPage.expectVisible();
