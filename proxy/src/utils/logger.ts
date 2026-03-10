@@ -18,10 +18,10 @@ export const logRequest = ({
   statusCode,
 }: {
   method?: string;
-  url: URL;
+  url: string;
   statusCode?: number;
 }) => {
-  logger.info(`${method ?? "?"} ${url.toString()} → ${statusCode ?? "?"}`);
+  logger.info(`${method ?? "?"} ${url} → ${statusCode ?? "?"}`);
 };
 
 export const logInfo = (message: string) => {

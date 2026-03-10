@@ -14,11 +14,8 @@ const clientBuildDirectory = path.join(
   "views",
 );
 
-const sebTarget = new URL(env.SEB_SERVER_DEFAULT_URL, env.SEB_SERVER_URL);
-const proctorTarget = new URL(
-  env.PROCTOR_SERVER_DEFAULT_URL,
-  env.PROCTOR_SERVER_URL,
-);
+const sebTarget = `${env.SEB_SERVER_URL}${env.SEB_SERVER_DEFAULT_URL}`;
+const proctorTarget = `${env.PROCTOR_SERVER_URL}${env.PROCTOR_SERVER_DEFAULT_URL}`;
 
 const sebProxy = createProxyServer({
   target: sebTarget,
@@ -28,11 +25,11 @@ const proctorProxy = createProxyServer({
   target: proctorTarget,
 });
 
-const addProxyHandlers = (proxy: ProxyServer, targetBase: URL) => {
+const addProxyHandlers = (proxy: ProxyServer, targetBase: string) => {
   proxy.on("proxyRes", (proxyRes, req) => {
     logRequest({
       method: req.method,
-      url: new URL(req.url ?? "/", targetBase),
+      url: `${targetBase}${req.url ?? "/"}`,
       statusCode: proxyRes.statusCode,
     });
   });

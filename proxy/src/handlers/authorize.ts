@@ -61,7 +61,7 @@ const fetchToken = async ({
   body,
 }: {
   serverName: string;
-  baseURL: URL;
+  baseURL: string;
   username: string;
   password: string;
   method: string;
@@ -69,7 +69,7 @@ const fetchToken = async ({
   body: string;
 }) => {
   try {
-    return await fetch(new URL("/oauth/token", baseURL), {
+    return await fetch(`${baseURL}/oauth/token`, {
       method,
       headers: {
         "Content-Type": contentType,
@@ -90,14 +90,14 @@ const fetchTokensFromBothServers = async (
   const [sebServerResponse, proctorServerResponse] = await Promise.all([
     fetchToken({
       serverName: SEB_SERVER_NAME,
-      baseURL: new URL(env.SEB_SERVER_URL),
+      baseURL: env.SEB_SERVER_URL,
       username: env.SEB_SERVER_USERNAME,
       password: env.SEB_SERVER_PASSWORD,
       ...requestData,
     }),
     fetchToken({
       serverName: SPS_SERVER_NAME,
-      baseURL: new URL(env.PROCTOR_SERVER_URL),
+      baseURL: env.PROCTOR_SERVER_URL,
       username: env.PROCTOR_SERVER_USERNAME,
       password: env.PROCTOR_SERVER_PASSWORD,
       ...requestData,
@@ -158,8 +158,8 @@ export const handleAuthorize = async (
   res: http.ServerResponse,
   env: Env,
 ) => {
-  const sebTokenUrl = new URL("/oauth/token", env.SEB_SERVER_URL);
-  const proctorTokenUrl = new URL("/oauth/token", env.PROCTOR_SERVER_URL);
+  const sebTokenUrl = `${env.SEB_SERVER_URL}/oauth/token`;
+  const proctorTokenUrl = `${env.PROCTOR_SERVER_URL}/oauth/token`;
   const requestData = await parseRequest(req);
 
   if (!requestData) {
