@@ -58,6 +58,6 @@ if (env.SERVE_CLIENT) {
   });
 }
 
-app.listen(env.PROXY_PORT, () => {
-  logInfo(`Proxy server running on port ${env.PROXY_PORT}`);
+app.listen(env.SERVER_PORT, () => {
+  logInfo(`Proxy server running on port ${env.SERVER_PORT}`);
 });

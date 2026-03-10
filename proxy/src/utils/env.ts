@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const envSchema = z.object({
-  PROXY_PORT: z.coerce.number(),
+  SERVER_PORT: z.coerce.number(),
   SERVE_CLIENT: z.stringbool().default(false),
   SEB_SERVER_URL: z.url(),
   SEB_SERVER_USERNAME: z.string(),

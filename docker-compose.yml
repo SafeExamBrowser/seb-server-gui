@@ -119,7 +119,7 @@ services:
   #   image: "seb-server-gui:local"
   #   container_name: seb-server-gui
   #   environment:
-  #     - PROXY_PORT=3001
+  #     - SERVER_PORT=3001
   #     - SERVE_CLIENT=true
   #     - SEB_SERVER_URL=http://seb-server:8080
   #     - SEB_SERVER_USERNAME=guiClient
