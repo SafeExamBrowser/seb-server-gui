@@ -14,8 +14,11 @@ const clientBuildDirectory = path.join(
   "views",
 );
 
-const sebTarget = new URL("/admin-api/v1", env.SEB_SERVER_URL);
-const proctorTarget = new URL("/admin-api/v1", env.PROCTOR_SERVER_URL);
+const sebTarget = new URL(env.SEB_SERVER_DEFAULT_URL, env.SEB_SERVER_URL);
+const proctorTarget = new URL(
+  env.PROCTOR_SERVER_DEFAULT_URL,
+  env.PROCTOR_SERVER_URL,
+);
 
 const sebProxy = createProxyServer({
   target: sebTarget,
