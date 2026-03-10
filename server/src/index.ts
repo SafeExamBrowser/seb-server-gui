@@ -38,7 +38,7 @@ const addProxyHandlers = (proxy: ProxyServer, targetBase: string) => {
 addProxyHandlers(sebProxy, sebTarget);
 addProxyHandlers(proctorProxy, proctorTarget);
 
-// everything that's prefixed with '/api' is proxied to the SEB or Proctor server
+// everything that's prefixed with '/api' is proxied to the SEB or proctor server
 app.use("/api", (req, res) => {
   // handle authorize requests
   if (req.path === "/authorize") {
@@ -50,7 +50,7 @@ app.use("/api", (req, res) => {
   (req.path.startsWith("/proctoring") ? proctorProxy : sebProxy).web(req, res);
 });
 
-// serve client if enabled
+// statically serve client if enabled
 if (env.SERVE_CLIENT) {
   app.use(express.static(clientBuildDirectory));
   app.get("/*path", (_req, res) => {
