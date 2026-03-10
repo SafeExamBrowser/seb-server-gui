@@ -14,22 +14,29 @@ const clientBuildDirectory = path.join(
   "views",
 );
 
+const sebTarget = new URL("/admin-api/v1", env.SEB_SERVER_URL);
+const proctorTarget = new URL("/admin-api/v1", env.PROCTOR_SERVER_URL);
+
 const sebProxy = createProxyServer({
-  target: new URL("/admin-api/v1", env.SEB_SERVER_URL),
+  target: sebTarget,
 });
 
 const proctorProxy = createProxyServer({
-  target: new URL("/admin-api/v1", env.PROCTOR_SERVER_URL),
+  target: proctorTarget,
 });
 
-const addProxyHandlers = (proxy: ProxyServer) => {
+const addProxyHandlers = (proxy: ProxyServer, targetBase: URL) => {
   proxy.on("proxyRes", (proxyRes, req) => {
-    logRequest(req, proxyRes.statusCode);
+    logRequest({
+      method: req.method,
+      url: new URL(req.url ?? "/", targetBase),
+      statusCode: proxyRes.statusCode,
+    });
   });
 };
 
-addProxyHandlers(sebProxy);
-addProxyHandlers(proctorProxy);
+addProxyHandlers(sebProxy, sebTarget);
+addProxyHandlers(proctorProxy, proctorTarget);
 
 // everything that's prefixed with '/api' is proxied to the SEB or Proctor server
 app.use("/api", (req, res) => {

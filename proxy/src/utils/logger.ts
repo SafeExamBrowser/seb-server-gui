@@ -1,5 +1,4 @@
 import winston, { format } from "winston";
-import { IncomingMessage } from "http";
 
 const logger = winston.createLogger({
   transports: [new winston.transports.Console()],
@@ -13,8 +12,16 @@ const logger = winston.createLogger({
   ),
 });
 
-export const logRequest = (req: IncomingMessage, statusCode?: number) => {
-  logger.info(`${req.method} ${req.url} → ${statusCode ?? "?"}`);
+export const logRequest = ({
+  method,
+  url,
+  statusCode,
+}: {
+  method?: string;
+  url: URL;
+  statusCode?: number;
+}) => {
+  logger.info(`${method ?? "?"} ${url.toString()} → ${statusCode ?? "?"}`);
 };
 
 export const logInfo = (message: string) => {

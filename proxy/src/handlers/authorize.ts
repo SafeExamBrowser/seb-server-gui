@@ -9,14 +9,12 @@ const SEB_SERVER_NAME = "SEB Server";
 const SPS_SERVER_NAME = "SPS Server";
 
 const sendJsonResponse = (
-  req: http.IncomingMessage,
   res: http.ServerResponse,
   status: number,
   data: unknown,
 ) => {
   res.writeHead(status, { "Content-Type": "application/json" });
   res.end(JSON.stringify(data));
-  logRequest(req, status);
 };
 
 const parseRequest = async (req: http.IncomingMessage) => {
@@ -160,30 +158,44 @@ export const handleAuthorize = async (
   res: http.ServerResponse,
   env: Env,
 ) => {
+  const sebTokenUrl = new URL("/oauth/token", env.SEB_SERVER_URL);
+  const proctorTokenUrl = new URL("/oauth/token", env.PROCTOR_SERVER_URL);
   const requestData = await parseRequest(req);
 
   if (!requestData) {
-    return sendJsonResponse(req, res, 400, {
+    logRequest({ method: req.method, url: sebTokenUrl, statusCode: 400 });
+    logRequest({ method: req.method, url: proctorTokenUrl, statusCode: 400 });
+    sendJsonResponse(res, 400, {
       error: "Invalid request",
     });
+
+    return;
   }
 
   try {
     const result = await fetchTokensFromBothServers(env, requestData);
 
     if (result.status === "auth_error") {
-      return sendJsonResponse(req, res, 401, {
+      logRequest({ method: req.method, url: sebTokenUrl, statusCode: 401 });
+      logRequest({ method: req.method, url: proctorTokenUrl, statusCode: 401 });
+      sendJsonResponse(res, 401, {
         error: "Authorization failed",
         details: result.errors,
       });
+
+      return;
     }
 
-    sendJsonResponse(req, res, 200, result.data);
+    logRequest({ method: req.method, url: sebTokenUrl, statusCode: 200 });
+    logRequest({ method: req.method, url: proctorTokenUrl, statusCode: 200 });
+    sendJsonResponse(res, 200, result.data);
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
     logError(ERROR_PREFIX, `Unexpected error: ${message}`);
 
-    sendJsonResponse(req, res, 500, {
+    logRequest({ method: req.method, url: sebTokenUrl, statusCode: 500 });
+    logRequest({ method: req.method, url: proctorTokenUrl, statusCode: 500 });
+    sendJsonResponse(res, 500, {
       error: "A technical error occurred",
     });
   }
