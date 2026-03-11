@@ -45,16 +45,6 @@ export async function getUserAccountById(
     }
 }
 
-export async function getUserAccountByIdOptional(
-    accountId: string,
-): Promise<UserAccount | null> {
-    try {
-        return await userAccountService.getUserAccountByIdOptional(accountId);
-    } catch {
-        return null;
-    }
-}
-
 export async function getUserAccounts(
     optionalParameters?: OptionalParGetUserAccounts,
 ): Promise<UserAccountResponse | null> {
@@ -89,16 +79,6 @@ export async function editUserAccount(
 export async function getInstitutions(): Promise<Institution[] | null> {
     try {
         return await institutionService.getInstitutions();
-    } catch {
-        return null;
-    }
-}
-
-export async function getUserAccountNames(
-    optionalParameters?: OptionalParInstitutionId,
-): Promise<UserAccountName[] | null> {
-    try {
-        return await userAccountService.getUserAccountNames(optionalParameters);
     } catch {
         return null;
     }

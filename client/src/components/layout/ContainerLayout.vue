@@ -648,10 +648,7 @@ function getNavigationOverviewRoute(): string {
 }
 
 function getHomePageRoute() {
-    if (import.meta.env.VITE_SUB_PATH == null) {
-        return constants.HOME_PAGE_ROUTE;
-    }
-    return import.meta.env.VITE_SUB_PATH + constants.HOME_PAGE_ROUTE;
+    return constants.HOME_PAGE_ROUTE;
 }
 
 // gallery view

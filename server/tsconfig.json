@@ -1,20 +1,10 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "esModuleInterop": true,
-    "target": "es6",
-    "noImplicitAny": true,
-    "moduleResolution": "node",
-    "sourceMap": true,
+    "target": "es2022",
+    "module": "es2022",
+    "moduleResolution": "bundler",
     "outDir": "dist",
-    "baseUrl": ".",
-    "paths": {
-        "*": [
-            "node_modules/*"
-        ]
-    }
+    "strict": true
   },
-  "include": [
-    "src/**/*"
-  ]
+  "include": ["src"]
 }

@@ -1254,7 +1254,6 @@ onBeforeMount(async () => {
         await sebSettingsService.getViewSettings(
             ViewType.SECURITY,
             componentId,
-            sebSettingsStore.isExam,
         );
     if (securitySettings == null) {
         return;
@@ -1547,7 +1546,6 @@ async function saveSingleValue(name: string, value: string) {
         componentId,
         setting.id.toString(),
         value,
-        sebSettingsStore.isExam,
     );
 }
 

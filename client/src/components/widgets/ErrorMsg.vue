@@ -35,6 +35,7 @@
 </template>
 
 <script setup lang="ts">
+// TODO @andrei: error handling: this might not be needed anymore?
 import { ref } from "vue";
 import { useErrorStore } from "@/stores/seb-server/errorStore";
 import { storeToRefs } from "pinia";

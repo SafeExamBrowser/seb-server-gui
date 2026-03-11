@@ -120,7 +120,7 @@
 </template>
 
 <script setup lang="ts">
-import * as examViewService from "@/services/seb-server/component-services/examViewService";
+import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
 import * as tableUtils from "@/utils/table/tableUtils";
 import * as timeUtils from "@/utils/timeUtils";
 import * as generalUtils from "@/utils/generalUtils";
@@ -236,7 +236,7 @@ async function loadItems(serverTablePaging: ServerTablePaging) {
         );
 
     const examsResponse: Exams | null =
-        await examViewService.getExamsForMonitoring(optionalParGetExams);
+        await monitoringViewService.getExamsForMonitoring(optionalParGetExams);
 
     if (examsResponse == null) {
         isLoading.value = false;

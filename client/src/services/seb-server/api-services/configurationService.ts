@@ -1,5 +1,5 @@
 import * as apiService from "@/services/apiService";
-import { StorageItemEnum } from "@/models/StorageItemEnum";
+
 import {
     ConnectionConfiguration,
     ConnectionConfigurationName,
@@ -9,134 +9,66 @@ import {
     UpdateConnectionConfigurationPar,
 } from "@/models/seb-server/connectionConfiguration";
 
-const connectionConfigurationUrl = "/client_configuration";
-const downloadExamConfigUrl = "/client_configuration/download";
+const baseUrl = "/client_configuration" as const;
 
-export async function getConnectionConfigurationNamesActive(): Promise<
+export const getConnectionConfigurationNamesActive = async (): Promise<
     ConnectionConfigurationName[]
-> {
-    const url: string = connectionConfigurationUrl + "/names";
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+> =>
+    (
+        await apiService.getRequest(baseUrl + "/names", {
             params: { active: "true" },
         })
     ).data;
-}
 
-export async function getConnectionConfigurationsActive(
-    isActive: string,
-): Promise<ConnectionConfigurations> {
-    const url: string = connectionConfigurationUrl + "/active";
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-            params: { isActive },
-        })
-    ).data;
-}
+export const getConnectionConfigurationsActive =
+    async (): Promise<ConnectionConfigurations> =>
+        (await apiService.getRequest(baseUrl + "/active")).data;
 
-export async function downloadExamConfig(
+export const downloadExamConfig = async (
     examId: string,
     connectionId: string,
-): Promise<Blob> {
-    const url: string = downloadExamConfigUrl + "/" + connectionId;
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+): Promise<Blob> =>
+    (
+        await apiService.getRequest(`${baseUrl}/download/${connectionId}`, {
             params: { examId },
             responseType: "blob",
+            headers: {
+                accept: "application/octet-stream",
+            },
         })
     ).data;
-}
 
-export async function getConnectionConfiguration(
+export const getConnectionConfiguration = async (
     id: number,
-): Promise<ConnectionConfiguration> {
-    const url: string = connectionConfigurationUrl + "/" + id;
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
+): Promise<ConnectionConfiguration> =>
+    (await apiService.getRequest(baseUrl + "/" + id)).data;
 
-export async function getConnectionConfigurations(
+export const getConnectionConfigurations = async (
     optionalParameters?: OptionalParGetConnectionConfiguration,
-): Promise<ConnectionConfigurations> {
-    const url: string = connectionConfigurationUrl;
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-            params: { optionalParameters },
-        })
-    ).data;
-}
+): Promise<ConnectionConfigurations> =>
+    (await apiService.getRequest(baseUrl, { params: optionalParameters })).data;
 
-export async function activateConnectionConfiguration(
+export const activateConnectionConfiguration = async (
     id: string,
-): Promise<ConnectionConfiguration> {
-    const url: string = connectionConfigurationUrl + "/" + id + "/active";
-    return (
-        await apiService.api.post(
-            url,
-            {},
-            {
-                headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-            },
-        )
-    ).data;
-}
+): Promise<ConnectionConfiguration> =>
+    (await apiService.postRequest(`${baseUrl}/${id}/active`)).data;
 
-export async function deactivateConnectionConfiguration(
+export const deactivateConnectionConfiguration = async (
     id: string,
-): Promise<ConnectionConfiguration> {
-    const url: string = connectionConfigurationUrl + "/" + id + "/inactive";
-    return (
-        await apiService.api.post(
-            url,
-            {},
-            {
-                headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-            },
-        )
-    ).data;
-}
+): Promise<ConnectionConfiguration> =>
+    (await apiService.postRequest(`${baseUrl}/${id}/inactive`)).data;
 
-export async function deleteConnectionConfiguration(
+export const deleteConnectionConfiguration = async (
     id: string,
-): Promise<undefined | null> {
-    return (
-        await apiService.api.delete(connectionConfigurationUrl + "/" + id, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
+): Promise<undefined | null> =>
+    (await apiService.deleteRequest(`${baseUrl}/${id}`)).data;
 
-export async function createConnectionConfiguration(
+export const createConnectionConfiguration = async (
     connectionConfigurationPar: CreateConnectionConfigurationPar,
-): Promise<ConnectionConfiguration> {
-    return (
-        await apiService.api.post(
-            connectionConfigurationUrl,
-            connectionConfigurationPar,
-            {
-                headers: apiService.getPostHeaders(
-                    StorageItemEnum.ACCESS_TOKEN,
-                ),
-            },
-        )
-    ).data;
-}
+): Promise<ConnectionConfiguration> =>
+    (await apiService.postRequest(baseUrl, connectionConfigurationPar)).data;
 
-export async function editConnectionConfiguration(
+export const editConnectionConfiguration = async (
     connectionConfiguration: UpdateConnectionConfigurationPar,
-): Promise<ConnectionConfiguration> {
-    return (
-        await apiService.api.put(
-            connectionConfigurationUrl,
-            connectionConfiguration,
-            { headers: apiService.getPutHeaders(StorageItemEnum.ACCESS_TOKEN) },
-        )
-    ).data;
-}
+): Promise<ConnectionConfiguration> =>
+    (await apiService.putRequest(baseUrl, connectionConfiguration)).data;

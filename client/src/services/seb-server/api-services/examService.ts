@@ -1,5 +1,4 @@
 import * as apiService from "@/services/apiService";
-import { StorageItemEnum } from "@/models/StorageItemEnum";
 import { OptionalParGetExams } from "@/models/seb-server/optionalParamters";
 import { CreateExamPar, Exam, Exams } from "@/models/seb-server/exam";
 import {
@@ -7,154 +6,69 @@ import {
     GrantedAppSignatureKey,
 } from "@/models/seb-server/appSignatureKey";
 
-const examUrl: string = "/exam";
-const examsUrl: string = "/exams";
-const grantUrl: string = "/grant";
-const askUrl: string = "/sebkeyinfo";
+const baseUrl = "/exam" as const;
 
-export async function getExam(id: string): Promise<Exam> {
-    const url: string = "/get-exam/" + id;
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
+export const getExam = async (id: string): Promise<Exam> =>
+    (await apiService.getRequest(`${baseUrl}/${id}`)).data;
+
+export const createExam = async (createExamPar: CreateExamPar): Promise<Exam> =>
+    (await apiService.postRequest(baseUrl, createExamPar)).data;
+
+export const updateExam = async (exam: Exam): Promise<Exam> =>
+    (await apiService.putRequest(baseUrl, exam)).data;
+
+export const deleteExam = async (id: string): Promise<unknown | null> =>
+    (await apiService.deleteRequest(`${baseUrl}/${id}`)).data;
+
+export const getExams = async (
+    optionalParameters?: OptionalParGetExams,
+): Promise<Exams> =>
+    (
+        await apiService.getRequest(baseUrl, {
+            params: optionalParameters,
         })
     ).data;
-}
 
-export async function getExamAppSignatureKeys(
+export const archiveExam = async (id: string): Promise<Exam> =>
+    (await apiService.patchRequest(`${baseUrl}/${id}/archive`)).data;
+
+export const getExamAppSignatureKeys = async (
     id: string,
-): Promise<AppSignatureKey[]> {
-    const url: string = examUrl + "/" + id + askUrl;
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
+): Promise<AppSignatureKey[]> =>
+    (await apiService.getRequest(`${baseUrl}/${id}/sebkeyinfo`)).data;
 
-export async function removeGrantExamAppSignatureKeys(
+export const getGrantedExamAppSignatureKeys = async (
     parentId: string,
-    id: string,
-): Promise<AppSignatureKey[]> {
-    const url: string = examUrl + "/" + parentId + grantUrl + "/" + id;
-    return (
-        await apiService.api.delete(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
+): Promise<GrantedAppSignatureKey[]> =>
+    (await apiService.getRequest(`${baseUrl}/${parentId}/grant`)).data;
 
-export async function grantExamAppSignatureKeys(
+export const grantExamAppSignatureKeys = async (
     tagName: string,
     parentId: string,
     id: string,
-): Promise<GrantedAppSignatureKey> {
-    const url = `${examUrl}/${parentId}${grantUrl}/${id}`;
-    return (
-        await apiService.api.post(url, null, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-            params: { tag: tagName },
-        })
+): Promise<GrantedAppSignatureKey> =>
+    (
+        await apiService.postRequest(
+            `${baseUrl}/${parentId}/grant/${id}`,
+            {},
+            {
+                params: { tag: tagName },
+            },
+        )
     ).data;
-}
 
-export async function getGrantedExamAppSignatureKeys(
+export const removeGrantExamAppSignatureKeys = async (
     parentId: string,
-): Promise<GrantedAppSignatureKey[]> {
-    const url: string = examUrl + "/" + parentId + grantUrl;
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
-
-export async function createExam(createExamPar: CreateExamPar): Promise<Exam> {
-    return (
-        await apiService.api.post(examUrl, createExamPar, {
-            headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
-
-export async function deleteExam(id: string): Promise<unknown | null> {
-    return (
-        await apiService.api.delete(examUrl + "/" + id, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
-
-export async function updateExam(id: string, exam: Exam): Promise<Exam> {
-    return (
-        await apiService.api.put(examUrl + "/" + id, exam, {
-            headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
-
-export async function getExams(
-    optionalParameters?: OptionalParGetExams,
-): Promise<Exams> {
-    return (
-        await apiService.api.get(examsUrl, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-            params: { optionalParameters },
-        })
-    ).data;
-}
-
-export async function getExamsForMonitoring(
-    optionalParameters?: OptionalParGetExams,
-): Promise<Exams> {
-    return (
-        await apiService.api.get(examsUrl + "/monitoring", {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-            params: { optionalParameters },
-        })
-    ).data;
-}
-
-export async function archiveExam(id: string): Promise<Exam> {
-    return (
-        await apiService.api.patch(examUrl + "/" + id + "/archive", {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
-
-// no logic in this file
-export async function applySEBLock(
     id: string,
-    enableSEBLock: boolean,
-): Promise<Exam | null> {
-    const url: string = "/exam/" + id + "/apply-seb-restriction";
-    if (enableSEBLock) {
-        return (
-            await apiService.api.put(
-                url,
-                {},
-                {
-                    headers: apiService.getHeaders(
-                        StorageItemEnum.ACCESS_TOKEN,
-                    ),
-                },
-            )
-        ).data;
-    } else {
-        return (
-            await apiService.api.delete(url, {
-                headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-            })
-        ).data;
-    }
-}
+): Promise<AppSignatureKey[]> =>
+    (await apiService.deleteRequest(`${baseUrl}/${parentId}/grant/${id}`)).data;
 
-export async function checkSEBLock(id: string): Promise<boolean> {
-    const url: string = "/exam/" + id + "/check-seb-restriction";
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
+export const checkSEBLock = async (id: string): Promise<boolean> =>
+    (await apiService.getRequest(`${baseUrl}/${id}/check-seb-restriction`))
+        .data;
+
+export const addSEBLock = async (id: string): Promise<Exam> =>
+    (await apiService.putRequest(`${baseUrl}/${id}/seb-restriction`)).data;
+
+export const removeSEBLock = async (id: string): Promise<null> =>
+    (await apiService.deleteRequest(`${baseUrl}/${id}/seb-restriction`)).data;

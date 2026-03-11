@@ -96,7 +96,7 @@
 import { onBeforeMount, onBeforeUnmount, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import * as galleryViewService from "@/services/screen-proctoring/component-services/galleryViewService";
-import { useAppBarStore, useLoadingStore } from "@/stores/store";
+import { useAppBarStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
 import GalleryImage from "./GalleryImage.vue";
 import { SortOrder } from "@/models/screen-proctoring/sortOrderEnum";
@@ -125,7 +125,6 @@ const SCREENSHOT_INTERVAL: number = 1 * 1000;
 // store
 const appBarStore = useAppBarStore();
 const appBarStoreRef = storeToRefs(appBarStore);
-const loadingStore = useLoadingStore();
 const monitoringStore = useMonitoringStore();
 
 // remaining
@@ -136,7 +135,6 @@ let intervalImageUrl: ReturnType<typeof setInterval> | null = null;
 //= ============lifecycle and watchers==================
 onBeforeMount(async () => {
     // todo: add error handling
-    loadingStore.skipLoading = true;
     group.value = await galleryViewService.getGroup(
         groupUuid,
         currentWindow.value,
@@ -161,7 +159,6 @@ onBeforeUnmount(() => {
 });
 
 watch(appBarStoreRef.galleryGridSize, async () => {
-    loadingStore.skipLoading = true;
     group.value = await galleryViewService.getGroup(
         groupUuid,
         currentWindow.value,
@@ -190,7 +187,6 @@ watch(appBarStoreRef.galleryIsNameSortAsc, async () => {
         sortOrder.value = SortOrder.desc;
     }
 
-    loadingStore.skipLoading = true;
     group.value = await galleryViewService.getGroup(
         groupUuid,
         currentWindow.value,
@@ -278,7 +274,6 @@ function calcAmountOfWindows() {
 //= ============interval==================
 function startIntervalGroup() {
     intervalGroup = setInterval(async () => {
-        loadingStore.skipLoading = true;
         group.value = await galleryViewService.getGroup(
             groupUuid,
             currentWindow.value,

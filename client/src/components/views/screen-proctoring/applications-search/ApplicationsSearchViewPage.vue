@@ -145,21 +145,11 @@
             <ApplicationsSearchMetadata :exam-object="examObject" />
         </v-sheet>
     </template>
-    <AlertMsg
-        v-if="loadingStore.isTimeout"
-        :alert-props="{
-            title: 'temp title',
-            color: 'error',
-            type: 'snackbar',
-            textKey: '',
-        }"
-    >
-    </AlertMsg>
 </template>
 
 <script setup lang="ts">
 import { onBeforeMount, ref } from "vue";
-import { useAppBarStore, useLoadingStore } from "@/stores/store";
+import { useAppBarStore } from "@/stores/store";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import * as applicationsSearchViewService from "@/services/screen-proctoring/component-services/applicationsSearchViewService";
 import ApplicationsExamList from "./ApplicationsSearchExamList.vue";
@@ -170,7 +160,6 @@ import { SPExam } from "@/models/screen-proctoring/exam";
 
 // store
 const appBarStore = useAppBarStore();
-const loadingStore = useLoadingStore();
 
 // form fields
 const timePeriodField = ref<number>(1);
@@ -262,7 +251,6 @@ async function getGroupIdsForExam(selectedExams: SPExam[]) {
         });
     }
 
-    loadingStore.isLoading = false;
     metadataAvailable.value = true;
 }
 // --------------------------------------------------------------------------------

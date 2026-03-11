@@ -471,7 +471,6 @@ onBeforeMount(async () => {
         await sebSettingsService.getViewSettings(
             ViewType.PROCTORING,
             componentId,
-            sebSettingsStore.isExam,
         );
     if (proctoringSettings == null) {
         return;
@@ -584,7 +583,6 @@ async function saveSingleValue(name: string, value: string) {
         componentId,
         setting.id.toString(),
         value,
-        sebSettingsStore.isExam,
     );
 }
 
