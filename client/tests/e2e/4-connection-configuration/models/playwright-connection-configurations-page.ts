@@ -4,6 +4,7 @@ import {
     waitForRequest,
 } from "../../utils/networkAssertions";
 import { PlaywrightCreateConnectionConfigurationPage } from "./playwright-create-connection-configuration-page";
+import { PlaywrightConnectionConfigurationEditPage } from "./playwright-connection-configuration-page";
 
 export class PlaywrightConnectionConfigurationsPage {
     readonly page: Page;
@@ -179,8 +180,15 @@ export class PlaywrightConnectionConfigurationsPage {
         await this.institutionFilterChip(institutionId).click();
     }
 
-    async clickEditButton(id: string | number) {
+    async clickEditButton(
+        id: string | number,
+    ): Promise<PlaywrightConnectionConfigurationEditPage> {
         await this.editButton(id).click();
+        const editPage = new PlaywrightConnectionConfigurationEditPage(
+            this.page,
+        );
+        await editPage.expectVisible();
+        return editPage;
     }
 
     async clickDeleteButton(id: string | number) {
