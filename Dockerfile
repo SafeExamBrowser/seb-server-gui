@@ -1,39 +1,28 @@
-# Stage 1: Build the Vue app
-FROM node:22.2.0 as client-builder
+# Build client
+FROM node:22.12.0 AS client-builder
 WORKDIR /app/client
 COPY client/package*.json ./
-RUN npm install
+RUN npm ci
 COPY client/ .
-
-# Inject environment variables for Vue.js
-ARG VITE_SUB_PATH
-RUN echo "VITE_SUB_PATH=$VITE_SUB_PATH" > .env
-
 RUN npm run build
 
-# Stage 2: Build the Express server
-FROM node:22.2.0 as server-builder
+# Build server
+FROM node:22.12.0 AS server-builder
 WORKDIR /app/server
 COPY server/package*.json ./
-RUN npm install
-RUN npm install typescript
+RUN npm ci
 COPY server/ .
 RUN npm run build
 
-# Stage 3: Create the final image
-FROM node:22.2.0-alpine
+# Create final image
+FROM node:22.12.0-alpine
 WORKDIR /app 
+ENV SERVE_CLIENT=true
 COPY --from=server-builder /app/server/dist ./server/dist
 COPY --from=client-builder /app/client/dist ./server/dist/views
-COPY --from=client-builder /app/client/.env ./server/dist/views
-COPY server/package*.json ./
-RUN npm install
-
-# Stage 4: Copy env-var bash script
-COPY env.sh /app/env.sh
-RUN chmod +x /app/env.sh
+COPY --from=server-builder /app/server/node_modules ./node_modules
 
 EXPOSE 3001
 
-# Start the server
-CMD ["/bin/sh", "-c", "./env.sh && node ./server/dist/app.js"]
+# Start server
+CMD ["node", "./server/dist/index.js"]

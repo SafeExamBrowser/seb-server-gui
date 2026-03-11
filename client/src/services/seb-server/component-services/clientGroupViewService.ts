@@ -16,14 +16,6 @@ export async function createClientGroup(
     }
 }
 
-export async function getClientGroup(id: string): Promise<ClientGroup | null> {
-    try {
-        return await clientGroupService.getClientGroup(id);
-    } catch {
-        return null;
-    }
-}
-
 export async function updateClientGroup(
     clientGroup: ClientGroup,
 ): Promise<ClientGroup | null> {

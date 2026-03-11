@@ -4,9 +4,25 @@ import Vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
 import { defineConfig, loadEnv } from "vite";
 import { fileURLToPath, URL } from "node:url";
 import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite";
-import { createHtmlPlugin } from "vite-plugin-html";
+import { z } from "zod";
 
-export default ({ mode }) => {
+export const parseEnv = () => {
+    const envResult = z
+        .object({
+            VITE_DEV_API_SERVER_TARGET: z.url(),
+        })
+        .safeParse(process.env);
+
+    if (!envResult.success) {
+        console.error("Invalid environment variables:");
+        console.error(JSON.stringify(z.treeifyError(envResult.error), null, 2));
+        process.exit(1);
+    }
+
+    return envResult.data;
+};
+
+export default ({ mode, command }) => {
     process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
 
     return defineConfig({
@@ -42,17 +58,6 @@ export default ({ mode }) => {
                     new URL("./src/i18n/locales/**", import.meta.url),
                 ),
             }),
-
-            createHtmlPlugin({
-                inject: {
-                    data: {
-                        VITE_SUB_PATH:
-                            mode === "development"
-                                ? ""
-                                : process.env.VITE_SUB_PATH,
-                    },
-                },
-            }),
         ],
 
         define: { "process.env": {} },
@@ -63,19 +68,15 @@ export default ({ mode }) => {
 
         server: {
             port: 8082,
+            ...(command === "serve"
+                ? {
+                      proxy: {
+                          "/api": {
+                              target: parseEnv().VITE_DEV_API_SERVER_TARGET,
+                          },
+                      },
+                  }
+                : {}),
         },
-
-        base: getSubPath(),
     });
-
-    function getSubPath() {
-        if (
-            process.env.VITE_SUB_PATH == null ||
-            process.env.VITE_SUB_PATH === ""
-        ) {
-            return "/";
-        }
-
-        return process.env.VITE_SUB_PATH;
-    }
 };

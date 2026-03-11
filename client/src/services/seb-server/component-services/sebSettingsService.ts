@@ -30,10 +30,9 @@ export async function getActiveSEBClients(
 export async function getViewSettings(
     viewType: ViewType,
     id: string,
-    forExam: boolean,
 ): Promise<SEBSettingsView | null> {
     try {
-        return await sebSettingService.getView(viewType, id, forExam);
+        return await sebSettingService.getView(viewType, id);
     } catch {
         return null;
     }
@@ -43,14 +42,12 @@ export async function updateSEBSettingValue(
     id: string,
     valueId: string,
     value: string,
-    forExam: boolean,
 ): Promise<SEBSettingsValue | null> {
     try {
         return await sebSettingService.updateSEBSettingValue(
             id,
             valueId,
             value,
-            forExam,
         );
     } catch {
         return null;
@@ -60,10 +57,9 @@ export async function updateSEBSettingValue(
 export async function newSEBSettingTableRow(
     id: string,
     settingName: string,
-    forExam: boolean,
 ): Promise<SEBSettingsTableRowValues | null> {
     try {
-        return await sebSettingService.addTableRow(id, settingName, forExam);
+        return await sebSettingService.addTableRow(id, settingName);
     } catch {
         return null;
     }
@@ -73,26 +69,21 @@ export async function deleteSEBSettingTableRow(
     id: string,
     settingName: string,
     rowIndex: number,
-    forExam: boolean,
 ): Promise<SEBSettingsTableRowValues[] | null> {
     try {
         return await sebSettingService.deleteTableRow(
             id,
             settingName,
             rowIndex,
-            forExam,
         );
     } catch {
         return null;
     }
 }
 
-export async function publish(
-    id: string,
-    forExam: boolean,
-): Promise<SEBSettingsValue | null> {
+export async function publish(id: string): Promise<SEBSettingsValue | null> {
     try {
-        return await sebSettingService.publish(id, forExam);
+        return await sebSettingService.publish(id);
     } catch {
         return null;
     }
@@ -100,10 +91,9 @@ export async function publish(
 
 export async function undoChanges(
     id: string,
-    forExam: boolean,
 ): Promise<SEBSettingsValue | null> {
     try {
-        return await sebSettingService.undoChanges(id, forExam);
+        return await sebSettingService.undoChanges(id);
     } catch {
         return null;
     }

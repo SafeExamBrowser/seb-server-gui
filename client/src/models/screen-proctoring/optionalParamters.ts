@@ -38,29 +38,6 @@ export type OptionalParSearchSessions = {
     sort?: string;
 };
 
-export type OptionalParSearchScreenshots = {
-    groupUUID?: string;
-    groupName?: string;
-    sessionUUID?: string;
-    fromTime?: string;
-    toTime?: string;
-    clientName?: string;
-    clientIP?: string | null;
-    clientMachineName?: string;
-    clientOsName?: string;
-    clientVersion?: string;
-
-    screenProctoringMetadataApplication?: string | null;
-    screenProctoringMetadataBrowser?: string | null;
-    screenProctoringMetadataUserAction?: string | null;
-    screenProctoringMetadataURL?: string | null;
-    screenProctoringMetadataWindowTitle?: string | null;
-
-    pageNumber?: number;
-    pageSize?: number;
-    sort?: string;
-};
-
 export type OptionalParSearchTimeline = {
     screenProctoringMetadataApplication?: string | null;
     screenProctoringMetadataBrowser?: string | null;

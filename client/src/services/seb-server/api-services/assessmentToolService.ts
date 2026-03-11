@@ -1,5 +1,4 @@
 import * as apiService from "@/services/apiService";
-import { StorageItemEnum } from "@/models/StorageItemEnum";
 import {
     AssessmentTool,
     AssessmentToolsResponse,
@@ -7,97 +6,43 @@ import {
     OptionalParGetAssessmentTool,
     UpdateAssessmentToolPar,
 } from "@/models/seb-server/assessmentTool";
+const baseUrl = "/lms-setup" as const;
 
-const assessmentToolUrl: string = "/assessment-tools";
+export const getAssessmentToolsActive =
+    async (): Promise<AssessmentToolsResponse> =>
+        (await apiService.getRequest(baseUrl + "/active")).data;
 
-export async function getAssessmentToolsActive(): Promise<AssessmentToolsResponse> {
-    const url: string = assessmentToolUrl + "/active";
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
+export const getAssessmentTool = async (id: number): Promise<AssessmentTool> =>
+    (await apiService.getRequest(`${baseUrl}/${id}`)).data;
 
-export async function getAssessmentTool(id: number): Promise<AssessmentTool> {
-    const url: string = "/get-assessment-tool/" + id;
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
-
-export async function getAssessmentTools(
+export const getAssessmentTools = async (
     optionalParameters?: OptionalParGetAssessmentTool,
-): Promise<AssessmentToolsResponse> {
-    const url: string = assessmentToolUrl;
-    return (
-        await apiService.api.get(url, {
-            headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-            params: { optionalParameters },
-        })
-    ).data;
-}
+): Promise<AssessmentToolsResponse> =>
+    (await apiService.getRequest(baseUrl, { params: optionalParameters })).data;
 
-export async function activateAssessmentTool(
+export const activateAssessmentTool = async (
     assessmentToolId: string,
-): Promise<AssessmentTool> {
-    const url: string = assessmentToolUrl + "/" + assessmentToolId + "/active";
-    return (
-        await apiService.api.post(
-            url,
-            {},
-            {
-                headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-            },
-        )
-    ).data;
-}
+): Promise<AssessmentTool> =>
+    (await apiService.postRequest(`${baseUrl}/${assessmentToolId}/active`))
+        .data;
 
-export async function deactivateAssessmentTool(
+export const deactivateAssessmentTool = async (
     assessmentToolId: string,
-): Promise<AssessmentTool> {
-    const url: string =
-        assessmentToolUrl + "/" + assessmentToolId + "/inactive";
-    return (
-        await apiService.api.post(
-            url,
-            {},
-            {
-                headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN),
-            },
-        )
-    ).data;
-}
+): Promise<AssessmentTool> =>
+    (await apiService.postRequest(`${baseUrl}/${assessmentToolId}/inactive`))
+        .data;
 
-export async function deleteAssessmentTool(
+export const deleteAssessmentTool = async (
     assessmentToolId: string,
-): Promise<undefined | null> {
-    return (
-        await apiService.api.delete(
-            assessmentToolUrl + "/" + assessmentToolId,
-            { headers: apiService.getHeaders(StorageItemEnum.ACCESS_TOKEN) },
-        )
-    ).data;
-}
+): Promise<undefined | null> =>
+    (await apiService.deleteRequest(`${baseUrl}/${assessmentToolId}`)).data;
 
-export async function createAssessmentTool(
+export const createAssessmentTool = async (
     assessmentTool: CreateAssessmentToolPar,
-): Promise<AssessmentTool> {
-    return (
-        await apiService.api.post(assessmentToolUrl, assessmentTool, {
-            headers: apiService.getPostHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
+): Promise<AssessmentTool> =>
+    (await apiService.postRequest(baseUrl, assessmentTool)).data;
 
-export async function editAssessmentTool(
+export const editAssessmentTool = async (
     assessmentTool: UpdateAssessmentToolPar,
-): Promise<AssessmentTool> {
-    return (
-        await apiService.api.put(assessmentToolUrl, assessmentTool, {
-            headers: apiService.getPutHeaders(StorageItemEnum.ACCESS_TOKEN),
-        })
-    ).data;
-}
+): Promise<AssessmentTool> =>
+    (await apiService.putRequest(baseUrl, assessmentTool)).data;

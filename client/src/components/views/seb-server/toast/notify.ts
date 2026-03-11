@@ -126,6 +126,7 @@ function store() {
     return useNotificationsStore();
 }
 
+// TODO @andrei: error handling: see if this can still be used. Otherwise delete it.
 export const notify = {
     success(title: string, text?: string, opts?: Partial<AlertInput>) {
         return store().success(title, text, opts);
