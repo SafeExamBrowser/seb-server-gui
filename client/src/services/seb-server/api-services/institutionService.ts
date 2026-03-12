@@ -4,7 +4,15 @@ import { Institution } from "@/models/seb-server/institution";
 const baseUrl = "/info" as const;
 
 export const getInstitutions = async (): Promise<Institution[]> =>
-    (await apiService.getRequestWithoutAuth(`${baseUrl}/institution`)).data;
+    (
+        await apiService
+            .getApiForManualRequests()
+            .get(`${baseUrl}/institution`, {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+            })
+    ).data;
 
 export const getInstitutionLogo = async (
     institutionSuffix: string,
