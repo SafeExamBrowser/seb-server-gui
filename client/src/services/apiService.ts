@@ -23,6 +23,19 @@ export const getRequest = (url: string, options?: AxiosRequestConfig) => {
     return api.get(url, merge({}, defaultOptions, options));
 };
 
+export const getRequestWithoutAuth = (
+    url: string,
+    options?: AxiosRequestConfig,
+) => {
+    const defaultOptions: AxiosRequestConfig = {
+        headers: {
+            Accept: "application/json",
+        },
+    };
+
+    return api.get(url, merge({}, defaultOptions, options));
+};
+
 export const postRequest = <T>(
     url: string,
     data?: T,
