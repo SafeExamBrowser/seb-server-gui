@@ -1,5 +1,5 @@
 import { useFetch } from "@/composables/useFetch";
-import { getSupervisorNames } from "@/services/seb-server/component-services/userAccountViewService";
+import { getSupervisorNames } from "@/services/seb-server/userAccountService";
 import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
 
 export const useSupervisors = () => {

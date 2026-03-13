@@ -553,7 +553,7 @@ import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
 import * as tableUtils from "@/utils/table/tableUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
-import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
+import * as userAccountService from "@/services/seb-server/userAccountService";
 import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants";
 import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/authenticationStore";
@@ -713,9 +713,9 @@ const options = ref({
 // update status
 async function onStatusChange(user: UserAccount, newStatus: string) {
     if (newStatus === "Active" && !user.active) {
-        await userAccountViewService.activateUserAccount(user.uuid);
+        await userAccountService.activateUserAccount(user.uuid);
     } else if (newStatus === "Inactive" && user.active) {
-        await userAccountViewService.deactivateUserAccount(user.uuid);
+        await userAccountService.deactivateUserAccount(user.uuid);
     }
     await loadItems(options.value);
 }
@@ -764,8 +764,7 @@ async function loadItems(serverTablePaging: ServerTablePaging) {
         selectedInstitutionId.value,
     );
 
-    const response =
-        await userAccountViewService.getUserAccounts(optionalParams);
+    const response = await userAccountService.getUserAccounts(optionalParams);
 
     if (!response) {
         isLoading.value = false;
@@ -807,7 +806,7 @@ function openDeleteDialog(user: UserAccount) {
 
 async function confirmDelete() {
     if (userToDelete.value) {
-        const response = await userAccountViewService.deleteUserAccount(
+        const response = await userAccountService.deleteUserAccount(
             userToDelete.value.uuid,
         );
         if (response !== null) {

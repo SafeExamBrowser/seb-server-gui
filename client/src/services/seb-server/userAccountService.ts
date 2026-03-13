@@ -1,5 +1,4 @@
 import * as apiService from "@/services/apiService";
-
 import {
     CreateUserPar,
     EditUserAccountParameters,
@@ -9,6 +8,7 @@ import {
     UserAccountName,
     UserAccountResponse,
 } from "@/models/userAccount";
+
 import { OptionalParInstitutionId } from "@/models/seb-server/optionalParamters";
 
 const baseUrl = "/useraccount" as const;

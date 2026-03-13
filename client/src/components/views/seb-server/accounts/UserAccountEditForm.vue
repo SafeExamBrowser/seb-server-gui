@@ -511,14 +511,11 @@ import { navigateTo } from "@/router/navigation";
 import { UserRoleEnum } from "@/models/userRoleEnum";
 import { useI18n } from "vue-i18n";
 import {
-    editUserAccount,
-    getUserAccountById,
-} from "@/services/seb-server/component-services/userAccountViewService";
-import {
     useUserAccountStore as useAuthenticatedUserAccountStore,
     useAuthStore,
 } from "@/stores/authentication/authenticationStore";
-import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
+import * as userAccountService from "@/services/seb-server/userAccountService";
+
 import { EditUserAccountParameters, UserAccount } from "@/models/userAccount";
 import { Institution } from "@/models/seb-server/institution";
 import SettingsNavigation from "@/components/views/seb-server/components/SettingsNavigation.vue";
@@ -634,7 +631,9 @@ async function loadUser() {
     if (!institutionsResult || institutionsResult.length === 0) return;
 
     setupInstitutionList(institutionsResult);
-    const fetchedUser = await getUserAccountById(props.userUuid);
+    const fetchedUser = await userAccountService.getUserAccountById(
+        props.userUuid,
+    );
     if (!fetchedUser) return;
 
     user.value = fetchedUser;
@@ -856,7 +855,11 @@ async function saveChanges() {
                 : userRoles,
         };
 
-        if ((await editUserAccount(editedUserAccountParams)) != null) {
+        if (
+            (await userAccountService.editUserAccount(
+                editedUserAccountParams,
+            )) != null
+        ) {
             navigateTo(
                 props.isProfile
                     ? constants.HOME_PAGE_ROUTE
@@ -893,9 +896,9 @@ const toggleStatusLocally = (user: UserAccount | null) => {
 const persistStatusChange = async (user: UserAccount | null) => {
     if (!user) return;
     if (user.active) {
-        await userAccountViewService.activateUserAccount(user.uuid);
+        await userAccountService.activateUserAccount(user.uuid);
     } else {
-        await userAccountViewService.deactivateUserAccount(user.uuid);
+        await userAccountService.deactivateUserAccount(user.uuid);
     }
 };
 
@@ -904,7 +907,7 @@ async function changeUserPassword() {
     if (!valid || !user.value?.uuid) {
         return;
     } else {
-        await userAccountViewService.changePassword(
+        await userAccountService.changePassword(
             user.value?.uuid,
             currentAdminPassword.value,
             newUserPassword.value,

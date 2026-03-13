@@ -157,7 +157,10 @@
 </template>
 
 <script setup lang="ts">
-import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
+import {
+    getUserAccountById,
+    getSupervisorNames,
+} from "@/services/seb-server/userAccountService";
 import * as tableUtils from "@/utils/table/tableUtils";
 import { translate } from "@/utils/generalUtils";
 import { ref, onBeforeMount, computed } from "vue";
@@ -206,7 +209,7 @@ function assignSupervisorsToLocalVar() {
 
 async function getAvailableUserAccounts() {
     const userAccountNamesResponse: UserAccountName[] | null =
-        await userAccountViewService.getSupervisorNames();
+        await getSupervisorNames();
 
     if (userAccountNamesResponse == null) {
         return;
@@ -237,10 +240,9 @@ async function onTableRowClick(selectedUserAccount: UserAccountName) {
         return;
     }
 
-    const userAccountFull: UserAccount | null =
-        await userAccountViewService.getUserAccountById(
-            selectedUserAccount.modelId,
-        );
+    const userAccountFull: UserAccount | null = await getUserAccountById(
+        selectedUserAccount.modelId,
+    );
 
     if (userAccountFull == null) {
         return;

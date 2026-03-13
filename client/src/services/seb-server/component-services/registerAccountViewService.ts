@@ -1,5 +1,5 @@
-import * as userAccountService from "@/services/seb-server/api-services/userAccountService";
-import * as institutionService from "@/services/seb-server/api-services/institutionService";
+import * as userAccountService from "@/services/seb-server/userAccountService";
+import * as institutionService from "@/services/seb-server/institutionService";
 import { UserAccount } from "@/models/userAccount";
 import { Institution } from "@/models/seb-server/institution";
 

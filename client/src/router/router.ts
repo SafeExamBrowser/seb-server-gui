@@ -6,6 +6,9 @@ import {
 import * as constants from "@/utils/constants";
 import * as spConstants from "@/utils/sp-constants";
 import i18n from "@/i18n";
+import { useUserAccountStore } from "@/stores/authentication/authenticationStore.ts";
+import { UserAccount } from "@/models/userAccount.ts";
+import * as userAccountService from "@/services/seb-server/userAccountService.ts";
 
 const defaultPageTitle: string = " | SEB Server";
 
@@ -333,11 +336,9 @@ const router = createRouter({
 
 router.beforeEach(async (to) => {
     if (to.meta.requiresAuth) {
-        // Lazy-load to avoid top-level import and potential cycles
-        const userAccountViewService = await import(
-            "@/services/seb-server/component-services/userAccountViewService"
-        );
-        await userAccountViewService.setPersonalUserAccount();
+        //Todo @Andrei improve authentication. I highly doubt this is correct
+
+        await setPersonalUserAccount();
     }
 
     const defaultTitle: string = "SEB Server";
@@ -349,5 +350,26 @@ router.beforeEach(async (to) => {
         document.title = defaultTitle;
     }
 });
+
+async function setPersonalUserAccount() {
+    const userAccountStore = useUserAccountStore();
+
+    try {
+        if (userAccountStore.userAccount != null) {
+            return;
+        }
+
+        const personalUserAccountResonse: UserAccount | null =
+            await userAccountService.getPersonalUserAccount();
+        if (personalUserAccountResonse == null) {
+            return;
+        }
+
+        userAccountStore.userAccount = personalUserAccountResonse;
+        userAccountStore.setUserTimeZone(userAccountStore.userAccount.timezone);
+    } catch {
+        return null;
+    }
+}
 
 export default router;

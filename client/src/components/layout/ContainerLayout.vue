@@ -283,7 +283,6 @@
                                     min-width: 3rem;
                                     padding: 0;
                                 "
-                                @click="userMenuOpened()"
                             >
                                 <span
                                     style="font-weight: 500; font-size: 1.1rem"
@@ -468,7 +467,6 @@ import {
     useAuthStore,
     useUserAccountStore,
 } from "@/stores/authentication/authenticationStore";
-import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
 import { useTheme } from "vuetify";
 import { useI18n } from "vue-i18n";
 import * as constants from "@/utils/constants";
@@ -628,10 +626,6 @@ const sortedUserRoles = computed(() => {
         return indexA - indexB;
     });
 });
-
-async function userMenuOpened() {
-    await userAccountViewService.setPersonalUserAccount();
-}
 
 function getNavigationOverviewRoute(): string {
     if (

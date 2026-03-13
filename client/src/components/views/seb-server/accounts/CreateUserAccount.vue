@@ -390,7 +390,7 @@ import * as constants from "@/utils/constants";
 import { watch } from "vue";
 import moment from "moment-timezone";
 import { getInstitutions } from "@/services/seb-server/component-services/registerAccountViewService";
-import { createUserAccount } from "@/services/seb-server/component-services/userAccountViewService";
+import { createUserAccount } from "@/services/seb-server/userAccountService";
 import { navigateTo } from "@/router/navigation";
 import { UserRoleEnum } from "@/models/userRoleEnum";
 import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/authenticationStore";
@@ -599,10 +599,6 @@ async function submit() {
 
 onBeforeUnmount(() => {
     layoutStore.setBlueBackground(false);
-});
-onMounted(() => {
-    appBarStore.title = translate("titles.createUserAccount");
-    layoutStore.setBlueBackground(true);
 });
 </script>
 
