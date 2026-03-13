@@ -106,6 +106,7 @@ export function dynamicTitle(method?: string, entity?: string): string {
         case "post":
             return `Error ${keyed("errors.backend.title.create", `Creating ${entityLabel}`)}`;
         case "put":
+            return `Error ${keyed("errors.backend.title.update", `Updating ${entityLabel}`)}`;
         case "patch":
             return `Error ${keyed("errors.backend.title.update", `Updating ${entityLabel}`)}`;
         case "delete":

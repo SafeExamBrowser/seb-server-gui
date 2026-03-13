@@ -398,11 +398,15 @@ import { GUIComponent, useAbilities } from "@/services/ability";
 import { CreateUserPar, SingleUserAccountResponse } from "@/models/userAccount";
 import { Institution } from "@/models/seb-server/institution";
 import SettingsNavigation from "@/components/views/seb-server/components/SettingsNavigation.vue";
+import { notify } from "@/components/views/seb-server/toast/notify.ts";
+import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService.ts";
+import { useUserAccountStore } from "@/stores/seb-server/userAccountStore.ts";
 
 const ability = useAbilities();
 const appBarStore = useAppBarStore();
 const layoutStore = useLayoutStore();
 
+const userAccountStore = useUserAccountStore();
 const i18n = useI18n();
 
 // fields
@@ -590,10 +594,31 @@ async function submit() {
     } else {
         createdUserName.value = createdUserAccountResponse.name;
         createdSuccess.value = true;
+        notify.success(
+            "User created",
+            "User created successfully, click here to activate",
+            {
+                actionLabel: "Activate",
+                onAction: async () => {
+                    const activated =
+                        await userAccountViewService.activateUserAccount(
+                            createdUserAccountResponse.uuid,
+                        );
+                    if (activated) {
+                        notify.success(
+                            "User activated",
+                            "The user account has been activated.",
+                            { duration: 5_000 },
+                        );
+                        userAccountStore.triggerRefresh();
+                    }
+                },
+            },
+        );
         setTimeout(() => {
             createdSuccess.value = false;
             navigateTo(constants.USER_ACCOUNTS_ROUTE);
-        }, 1500);
+        });
     }
 }
 

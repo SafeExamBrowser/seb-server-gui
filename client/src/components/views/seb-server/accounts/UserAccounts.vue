@@ -864,6 +864,13 @@ watch([selectedStatus, selectedInstitutionId], () => {
     options.value.page = 1;
     loadItems(options.value);
 });
+
+watch(
+    () => userAccountStore.refreshTrigger,
+    async () => {
+        await loadItems(options.value);
+    },
+);
 </script>
 
 <style scoped>
