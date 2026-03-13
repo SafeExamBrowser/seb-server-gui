@@ -124,11 +124,11 @@ export function buildBodyLines(item: BackendError): string[] {
     const fieldLabel = resolveFieldLabel(entity, field);
     const ruleLine = lineForRule(code, fieldLabel);
 
-    if (ruleLine) return [first, ruleLine];
+    if (ruleLine) return [ruleLine];
 
-    if (fieldLabel && code) return [first, `${fieldLabel} — ${code}`];
-    if (item.attributes?.length) return [first, item.attributes.join(" · ")];
-    if (item.details) return [first, item.details];
+    if (fieldLabel && code) return [`${fieldLabel} — ${code}`];
+    if (item.details) return [item.details];
+    if (item.attributes?.length) return [item.attributes.join(" · ")];
 
     return [first];
 }

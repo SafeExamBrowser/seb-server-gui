@@ -2,10 +2,24 @@ import axios, { AxiosRequestConfig } from "axios";
 import { merge } from "lodash";
 import { useAuthStore } from "@/stores/authentication/authenticationStore";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
+import { notify } from "@/components/views/seb-server/toast/notify.ts";
 
 const api = axios.create({
     baseURL: "/api",
 });
+
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        notify.serverError(error, {
+            contextLabel: error?.config?.url ?? "Request",
+            splitToasts: true,
+            dedupeKey: error?.config?.url ?? "request",
+        });
+
+        return Promise.reject(error);
+    },
+);
 
 const getAuthHeaderValueByUrl = (url: string) =>
     `Bearer ${useAuthStore().getStorageItem(url.startsWith("/proctoring") ? StorageItemEnum.SP_ACCESS_TOKEN : StorageItemEnum.ACCESS_TOKEN)}`;
