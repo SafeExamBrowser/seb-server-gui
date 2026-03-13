@@ -411,7 +411,6 @@ import * as timeUtils from "@/utils/timeUtils";
 
 import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants";
-import { getInstitutions } from "@/services/seb-server/component-services/registerAccountViewService";
 import { useConnectionConfigurationStore } from "@/stores/seb-server/connectionConfigurationStore";
 import { ServerTablePaging } from "@/models/types";
 import { Institution } from "@/models/seb-server/institution";
@@ -420,6 +419,7 @@ import {
     ConnectionConfigurations,
 } from "@/models/seb-server/connectionConfiguration";
 import SettingsNavigation from "@/components/views/seb-server/components/SettingsNavigation.vue";
+import { getInstitutions } from "@/services/seb-server/institutionService.ts";
 
 const appBarStore = useAppBarStore();
 const layoutStore = useLayoutStore();

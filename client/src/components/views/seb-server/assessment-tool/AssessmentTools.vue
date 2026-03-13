@@ -521,7 +521,6 @@ import * as assessmentToolViewService from "@/services/seb-server/component-serv
 
 import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants";
-import { getInstitutions } from "@/services/seb-server/component-services/registerAccountViewService";
 import { useAssessmentToolStore } from "@/stores/seb-server/asessmentToolStore";
 import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums";
 import { ServerTablePaging } from "@/models/types";
@@ -531,6 +530,7 @@ import {
     AssessmentToolsResponse,
 } from "@/models/seb-server/assessmentTool";
 import SettingsNavigation from "@/components/views/seb-server/components/SettingsNavigation.vue";
+import { getInstitutions } from "@/services/seb-server/institutionService.ts";
 
 const appBarStore = useAppBarStore();
 const layoutStore = useLayoutStore();

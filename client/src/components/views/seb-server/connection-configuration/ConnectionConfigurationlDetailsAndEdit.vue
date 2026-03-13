@@ -777,7 +777,8 @@ import * as connectionConfigurationViewService from "@/services/seb-server/compo
 import router from "@/router/router";
 import * as certificateViewService from "@/services/seb-server/component-services/certificateViewService";
 import moment from "moment-timezone";
-import { getUserAccountById } from "@/services/seb-server/component-services/userAccountViewService";
+import * as userAccountService from "@/services/seb-server/userAccountService";
+
 import { UserAccount } from "@/models/userAccount";
 import {
     ConnectionConfiguration,
@@ -1066,9 +1067,8 @@ onMounted(async () => {
                 .getConnectionConfiguration(idNum)
                 .catch(() => null);
         if (dto) {
-            userToLastUpdate.value = await getUserAccountById(
-                dto.lastUpdateUser,
-            );
+            userToLastUpdate.value =
+                await userAccountService.getUserAccountById(dto.lastUpdateUser);
 
             populateFromDto(dto);
 

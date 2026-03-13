@@ -160,7 +160,6 @@
 </template>
 
 <script setup lang="ts">
-import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
 import { useQuizImportStore } from "@/stores/seb-server/quizImportStore";
 import { translate } from "@/utils/generalUtils";
 import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
@@ -170,6 +169,7 @@ import {
     userAccountNameToFullName,
     userAccountNameToUsername,
 } from "@/utils/userAccount";
+import { getSupervisorNames } from "@/services/seb-server/userAccountService.ts";
 
 // stores
 const quizImportStore = useQuizImportStore();
@@ -204,7 +204,7 @@ const filteredAvailableSupervisors = computed(() => {
 //= ======================events & watchers=======================
 onBeforeMount(async () => {
     const userAccountNamesResponse: UserAccountName[] | null =
-        await userAccountViewService.getSupervisorNames({
+        await getSupervisorNames({
             institutionId: userAccountStore.userAccount?.institutionId,
         });
 

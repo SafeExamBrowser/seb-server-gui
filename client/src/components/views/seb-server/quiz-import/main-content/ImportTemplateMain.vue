@@ -75,12 +75,12 @@ import * as examViewService from "@/services/seb-server/component-services/examV
 import { useQuizImportStore } from "@/stores/seb-server/quizImportStore";
 import { translate } from "@/utils/generalUtils";
 import * as generalUtils from "@/utils/generalUtils";
-import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
 import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
 import { ref, onBeforeMount } from "vue";
 import { UserAccountName } from "@/models/userAccount";
 import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring";
 import { ExamTemplate, ExamTemplates } from "@/models/seb-server/examTemplate";
+import { getSupervisorNames } from "@/services/seb-server/userAccountService.ts";
 
 // stores
 const quizImportStore = useQuizImportStore();
@@ -132,7 +132,7 @@ async function onTemplateCardClick(examTemplate: ExamTemplate) {
 
     // select supervisors from template
     const userAccountNamesResponse: UserAccountName[] | null =
-        await userAccountViewService.getSupervisorNames({
+        await getSupervisorNames({
             institutionId: userAccountStore.userAccount?.institutionId,
         });
     if (userAccountNamesResponse != null) {

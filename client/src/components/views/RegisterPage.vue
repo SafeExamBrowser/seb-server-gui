@@ -315,13 +315,13 @@
 import { ref } from "vue";
 import { onMounted } from "vue";
 import * as constants from "@/utils/constants";
-import * as registerAccountViewService from "@/services/seb-server/component-services/registerAccountViewService";
-
 import moment from "moment-timezone";
 import { translate } from "@/utils/generalUtils";
 import { useI18n } from "vue-i18n";
 import { Institution } from "@/models/seb-server/institution";
 import { useRouter } from "vue-router";
+import { getInstitutions } from "@/services/seb-server/institutionService.ts";
+import { registerUserAccount } from "@/services/seb-server/userAccountService.ts";
 
 // form fields
 const selectedInstitution = ref<string>("");
@@ -353,8 +353,7 @@ const router = useRouter();
 
 // fetch Institutions
 onMounted(async () => {
-    const result: Institution[] | null =
-        await registerAccountViewService.getInstitutions();
+    const result: Institution[] | null = await getInstitutions();
     if (result && result.length > 0) {
         institutions.value = result;
 
@@ -391,16 +390,19 @@ async function register() {
     }
 
     try {
-        const result = await registerAccountViewService.registerUserAccount(
-            selectedInstitution.value,
-            name.value,
-            surname.value,
-            username.value,
-            password.value,
-            confirmPassword.value,
-            timezone.value,
-            email.value,
-        );
+        const language = navigator.language?.split("-")[0] || "gr";
+
+        const result = await registerUserAccount({
+            institutionId: selectedInstitution.value,
+            name: name.value,
+            surname: surname.value,
+            username: username.value,
+            newPassword: password.value,
+            confirmNewPassword: confirmPassword.value,
+            timezone: timezone.value,
+            language,
+            email: email.value,
+        });
 
         if (result) {
             registerSuccess.value = true;
@@ -413,7 +415,6 @@ async function register() {
         }
     } catch (error) {
         console.error(error);
-        // todo error handle
         registerError.value = true;
     }
 }

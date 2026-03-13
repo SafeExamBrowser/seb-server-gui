@@ -615,7 +615,7 @@ import { useAppBarStore, useLayoutStore } from "@/stores/store";
 import { translate } from "@/utils/generalUtils";
 import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/authenticationStore";
 import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums";
-import { getInstitutions } from "@/services/seb-server/api-services/institutionService";
+import { getInstitutions } from "@/services/seb-server/institutionService";
 import * as assessmentToolViewService from "@/services/seb-server/component-services/assessmentToolViewService";
 import router from "@/router/router";
 import { navigateTo } from "@/router/navigation";

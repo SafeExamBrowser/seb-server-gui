@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
 import { navigateTo } from "@/router/navigation";
-import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
 import * as constants from "@/utils/constants";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
 import { ref } from "vue";
@@ -14,9 +13,6 @@ export const useAuthStore = defineStore("auth", () => {
     ) {
         setStorageItem(StorageItemEnum.ACCESS_TOKEN, accessTokenString);
         setStorageItem(StorageItemEnum.REFRESH_TOKEN, refreshTokenString);
-
-        await userAccountViewService.setPersonalUserAccount();
-
         navigateTo(constants.HOME_PAGE_ROUTE);
     }
 

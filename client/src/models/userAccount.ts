@@ -80,3 +80,15 @@ export type OptionalParGetUserAccounts = {
     institutionId?: string | null;
     sort?: string;
 };
+
+export type RegisterUserAccountParams = {
+    institutionId: string;
+    name: string;
+    surname: string;
+    username: string;
+    newPassword: string;
+    confirmNewPassword: string;
+    timezone: string;
+    language: string;
+    email?: string;
+};

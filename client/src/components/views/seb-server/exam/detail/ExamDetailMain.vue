@@ -921,7 +921,7 @@ import * as constants from "@/utils/constants";
 import * as examViewService from "@/services/seb-server/component-services/examViewService";
 import * as sebSettingsService from "@/services/seb-server/component-services/sebSettingsService";
 import * as assessmentToolViewService from "@/services/seb-server/component-services/assessmentToolViewService";
-import * as userAccountViewService from "@/services/seb-server/component-services/userAccountViewService";
+import * as userAccountService from "@/services/seb-server/userAccountService";
 import * as clientGroupViewService from "@/services/seb-server/component-services/clientGroupViewService";
 import * as generalUtils from "@/utils/generalUtils";
 import { navigateTo } from "@/router/navigation";
@@ -1154,7 +1154,7 @@ async function getExamSupervisors() {
     examStore.selectedExamSupervisors = [];
     for (let i = 0; i < examStore.selectedExam.supporter.length; i++) {
         const userAccount: UserAccount | null =
-            await userAccountViewService.getUserAccountById(
+            await userAccountService.getUserAccountById(
                 examStore.selectedExam.supporter[i],
             );
 

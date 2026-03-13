@@ -1,20 +1,21 @@
 import * as apiService from "@/services/apiService";
-
 import {
     CreateUserPar,
     EditUserAccountParameters,
     OptionalParGetUserAccounts,
+    RegisterUserAccountParams,
     SingleUserAccountResponse,
     UserAccount,
     UserAccountName,
     UserAccountResponse,
 } from "@/models/userAccount";
+
 import { OptionalParInstitutionId } from "@/models/seb-server/optionalParamters";
 
 const baseUrl = "/useraccount" as const;
 
 export const registerUserAccount = async (
-    payload: Record<string, string>,
+    payload: RegisterUserAccountParams,
 ): Promise<UserAccount> =>
     (
         await apiService.getApiForManualRequests().post(`/register`, payload, {
