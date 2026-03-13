@@ -50,7 +50,7 @@ export const postRequest = <T>(
         },
     };
 
-    return api.post(url, data, merge({}, defaultOptions, options));
+    return api.post(url, data ?? null, merge({}, defaultOptions, options));
 };
 
 export const putRequest = <T>(
@@ -66,7 +66,7 @@ export const putRequest = <T>(
         },
     };
 
-    return api.put(url, data, merge({}, defaultOptions, options));
+    return api.put(url, data ?? null, merge({}, defaultOptions, options));
 };
 
 export const patchRequest = <T>(
@@ -82,7 +82,7 @@ export const patchRequest = <T>(
         },
     };
 
-    return api.patch(url, data, merge({}, defaultOptions, options));
+    return api.patch(url, data ?? null, merge({}, defaultOptions, options));
 };
 
 export const deleteRequest = <T>(url: string, data?: T) => {
@@ -92,6 +92,6 @@ export const deleteRequest = <T>(url: string, data?: T) => {
             Authorization: getAuthHeaderValueByUrl(url),
             "Content-Type": "application/x-www-form-urlencoded",
         },
-        data,
+        data: data ?? null,
     });
 };
