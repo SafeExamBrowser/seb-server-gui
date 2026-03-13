@@ -51,12 +51,12 @@ export const getConnectionConfigurations = async (
 export const activateConnectionConfiguration = async (
     id: string,
 ): Promise<ConnectionConfiguration> =>
-    (await apiService.postRequest(`${baseUrl}/${id}/active`, null)).data;
+    (await apiService.postRequest(`${baseUrl}/${id}/active`)).data;
 
 export const deactivateConnectionConfiguration = async (
     id: string,
 ): Promise<ConnectionConfiguration> =>
-    (await apiService.postRequest(`${baseUrl}/${id}/inactive`, null)).data;
+    (await apiService.postRequest(`${baseUrl}/${id}/inactive`)).data;
 
 export const deleteConnectionConfiguration = async (
     id: string,

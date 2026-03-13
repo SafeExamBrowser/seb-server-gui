@@ -23,22 +23,14 @@ export const getAssessmentTools = async (
 export const activateAssessmentTool = async (
     assessmentToolId: string,
 ): Promise<AssessmentTool> =>
-    (
-        await apiService.postRequest(
-            `${baseUrl}/${assessmentToolId}/active`,
-            null,
-        )
-    ).data;
+    (await apiService.postRequest(`${baseUrl}/${assessmentToolId}/active`))
+        .data;
 
 export const deactivateAssessmentTool = async (
     assessmentToolId: string,
 ): Promise<AssessmentTool> =>
-    (
-        await apiService.postRequest(
-            `${baseUrl}/${assessmentToolId}/inactive`,
-            null,
-        )
-    ).data;
+    (await apiService.postRequest(`${baseUrl}/${assessmentToolId}/inactive`))
+        .data;
 
 export const deleteAssessmentTool = async (
     assessmentToolId: string,
