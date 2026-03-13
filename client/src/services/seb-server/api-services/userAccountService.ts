@@ -77,9 +77,10 @@ export const getSupervisorNames = async (
 export const activateUserAccount = async (
     accountId: string,
 ): Promise<UserAccount> =>
-    (await apiService.postRequest(`${baseUrl}/${accountId}/active`)).data;
+    (await apiService.postRequest(`${baseUrl}/${accountId}/active`, null)).data;
 
 export const deactivateUserAccount = async (
     accountId: string,
 ): Promise<UserAccount> =>
-    (await apiService.postRequest(`${baseUrl}/${accountId}/inactive`)).data;
+    (await apiService.postRequest(`${baseUrl}/${accountId}/inactive`, null))
+        .data;
