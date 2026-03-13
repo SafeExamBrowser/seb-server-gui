@@ -558,12 +558,12 @@ import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants";
 import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/authenticationStore";
 import { UserRoleEnum } from "@/models/userRoleEnum";
-import { getInstitutions } from "@/services/seb-server/component-services/registerAccountViewService";
 import { GUIComponent, useAbilities } from "@/services/ability";
 import { UserAccount, UserAccountResponse } from "@/models/userAccount";
 import { ServerTablePaging } from "@/models/types";
 import { Institution } from "@/models/seb-server/institution";
 import SettingsNavigation from "@/components/views/seb-server/components/SettingsNavigation.vue";
+import { getInstitutions } from "@/services/seb-server/institutionService.ts";
 
 const ability = useAbilities();
 

@@ -588,7 +588,6 @@ import { onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useAppBarStore, useLayoutStore } from "@/stores/store";
 import { translate } from "@/utils/generalUtils";
 import * as constants from "@/utils/constants";
-import { getInstitutions } from "@/services/seb-server/component-services/registerAccountViewService";
 import { navigateTo } from "@/router/navigation";
 import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/authenticationStore";
 import { createAssessmentTool } from "@/services/seb-server/component-services/assessmentToolViewService";
@@ -599,6 +598,7 @@ import {
     CreateAssessmentToolPar,
 } from "@/models/seb-server/assessmentTool";
 import SettingsNavigation from "@/components/views/seb-server/components/SettingsNavigation.vue";
+import { getInstitutions } from "@/services/seb-server/institutionService.ts";
 
 const appBarStore = useAppBarStore();
 const layoutStore = useLayoutStore();

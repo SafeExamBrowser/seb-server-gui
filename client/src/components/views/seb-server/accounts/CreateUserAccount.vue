@@ -389,7 +389,6 @@ import { translate } from "@/utils/generalUtils";
 import * as constants from "@/utils/constants";
 import { watch } from "vue";
 import moment from "moment-timezone";
-import { getInstitutions } from "@/services/seb-server/component-services/registerAccountViewService";
 import { createUserAccount } from "@/services/seb-server/userAccountService";
 import { navigateTo } from "@/router/navigation";
 import { UserRoleEnum } from "@/models/userRoleEnum";
@@ -398,6 +397,7 @@ import { GUIComponent, useAbilities } from "@/services/ability";
 import { CreateUserPar, SingleUserAccountResponse } from "@/models/userAccount";
 import { Institution } from "@/models/seb-server/institution";
 import SettingsNavigation from "@/components/views/seb-server/components/SettingsNavigation.vue";
+import { getInstitutions } from "@/services/seb-server/institutionService.ts";
 
 const ability = useAbilities();
 const appBarStore = useAppBarStore();
