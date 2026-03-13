@@ -158,7 +158,6 @@
 </template>
 
 <script setup lang="ts">
-import * as assessmentToolViewService from "@/services/seb-server/component-services/assessmentToolViewService";
 import { useQuizImportStore } from "@/stores/seb-server/quizImportStore";
 import { storeToRefs } from "pinia";
 import * as constants from "@/utils/constants";
@@ -173,6 +172,7 @@ import { ref, onBeforeMount, watch } from "vue";
 import { CreateExamPar, Exam } from "@/models/seb-server/exam";
 import { AssessmentToolsResponse } from "@/models/seb-server/assessmentTool";
 import { APIMessage } from "@/models/seb-server/apiMessages";
+import { getAssessmentToolsActive } from "@/services/seb-server/assessmentToolService.ts";
 // i18n
 const i18n = useI18n();
 
@@ -274,7 +274,7 @@ async function loadAssessmentToolSelection() {
 
 async function getActiveAssessmentTools(): Promise<AssessmentToolsResponse | null> {
     const assessmentToolsResponse: AssessmentToolsResponse | null =
-        await assessmentToolViewService.getAssessmentToolsActive();
+        await getAssessmentToolsActive();
 
     if (assessmentToolsResponse == null) {
         return null;
