@@ -52,12 +52,13 @@
                         {{ alert.text }}
                     </div>
 
-                    <!-- optional Action button with custom label -->
+                    <!-- action button if passed -->
                     <v-btn
                         v-if="alert.actionLabel && alert.onAction"
                         size="small"
                         variant="text"
                         class="toast-action"
+                        :style="{ borderColor: colors.accent }"
                         @click.stop="handleAction"
                     >
                         {{ alert.actionLabel }}
@@ -86,7 +87,6 @@ const props = defineProps<{
     onRemove: (id: string) => void;
 }>();
 
-// turning our types into types v-alert understands to use variant properties
 const vuetifyType = computed<"success" | "info" | "warning" | "error">(() => {
     switch (props.alert.type) {
         case "success":
@@ -224,5 +224,15 @@ const colors = computed(() => {
     color: white;
     flex-shrink: 0;
     border-radius: 6px;
+}
+
+.toast-action {
+    align-self: flex-start;
+    margin-top: 0.25rem;
+    font-weight: 500;
+    border: 1px solid;
+}
+.toast-action:hover {
+    background: rgba(0, 0, 0, 0.05);
 }
 </style>
