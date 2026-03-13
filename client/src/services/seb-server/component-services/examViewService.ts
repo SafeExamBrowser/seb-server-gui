@@ -1,6 +1,7 @@
 import * as examService from "@/services/seb-server/api-services/examService";
 import * as examTemplateService from "@/services/seb-server/api-services/examTemplateService";
-import * as configurationService from "@/services/seb-server/api-services/configurationService";
+import * as connectionConfigurationService from "@/services/seb-server/connectionConfigurationService.ts";
+
 import * as screenProctoringService from "@/services/seb-server/api-services/screenProctoringService";
 import * as monitoringService from "@/services/seb-server/api-services/monitoringService";
 import * as timeUtils from "@/utils/timeUtils";
@@ -117,7 +118,7 @@ export async function updateExam(exam: Exam): Promise<Exam | null> {
 
 export async function getConnectionConfigurations(): Promise<ConnectionConfigurations | null> {
     try {
-        return await configurationService.getConnectionConfigurationsActive();
+        return await connectionConfigurationService.getConnectionConfigurationsActive();
     } catch {
         return null;
     }
@@ -128,7 +129,7 @@ export async function downloadExamConfig(
     connectionId: string,
 ): Promise<Blob | null> {
     try {
-        const blob = await configurationService.downloadExamConfig(
+        const blob = await connectionConfigurationService.downloadExamConfig(
             examId,
             connectionId,
         );

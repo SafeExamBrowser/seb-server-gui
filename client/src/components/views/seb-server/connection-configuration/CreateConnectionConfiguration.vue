@@ -727,11 +727,11 @@ import { useAppBarStore, useLayoutStore } from "@/stores/store";
 import { translate } from "@/utils/generalUtils";
 import * as constants from "@/utils/constants";
 import { navigateTo } from "@/router/navigation";
-import * as connectionConfigurationViewService from "@/services/seb-server/component-services/connectionConfigurationViewService";
 import * as certificateViewService from "@/services/seb-server/component-services/certificateViewService";
 import { CreateConnectionConfigurationPar } from "@/models/seb-server/connectionConfiguration";
 import SettingsNavigation from "@/components/views/seb-server/components/SettingsNavigation.vue";
 import AddCertificateDialog from "@/components/views/seb-server/certificates/AddCertificateDialog.vue";
+import { createConnectionConfiguration } from "@/services/seb-server/connectionConfigurationService.ts";
 
 const name = ref<string>("");
 const configurationPassword = ref<string>("");
@@ -964,10 +964,9 @@ async function submit() {
         "sebServerFallback ": connectionConfigParams.sebServerFallback,
     };
 
-    const created =
-        await connectionConfigurationViewService.createConnectionConfiguration(
-            payloadRecord as unknown as CreateConnectionConfigurationPar,
-        );
+    const created = await createConnectionConfiguration(
+        payloadRecord as unknown as CreateConnectionConfigurationPar,
+    );
     if (!created) return;
 
     navigateTo(constants.CONNECTION_CONFIGURATIONS_ROUTE);

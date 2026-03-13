@@ -773,7 +773,7 @@ import { useAppBarStore, useLayoutStore } from "@/stores/store";
 import { translate } from "@/utils/generalUtils";
 import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants";
-import * as connectionConfigurationViewService from "@/services/seb-server/component-services/connectionConfigurationViewService";
+import * as connectionConfigurationService from "@/services/seb-server/connectionConfigurationService";
 import router from "@/router/router";
 import * as certificateViewService from "@/services/seb-server/component-services/certificateViewService";
 import moment from "moment-timezone";
@@ -786,6 +786,7 @@ import {
 } from "@/models/seb-server/connectionConfiguration";
 import SettingsNavigation from "@/components/views/seb-server/components/SettingsNavigation.vue";
 import AddCertificateDialog from "@/components/views/seb-server/certificates/AddCertificateDialog.vue";
+import { getConnectionConfiguration } from "@/services/seb-server/connectionConfigurationService.ts";
 
 // Router
 const route = useRoute();
@@ -1063,9 +1064,7 @@ onMounted(async () => {
     const idNum = Number(idParam);
     if (idNum != null) {
         const dto: ConnectionConfiguration | null =
-            await connectionConfigurationViewService
-                .getConnectionConfiguration(idNum)
-                .catch(() => null);
+            await getConnectionConfiguration(idNum).catch(() => null);
         if (dto) {
             userToLastUpdate.value =
                 await userAccountService.getUserAccountById(dto.lastUpdateUser);
@@ -1188,11 +1187,11 @@ async function persistStatusChange() {
         fetchedId.value ?? route.params.connectionConfigId ?? route.params.id,
     );
     if (active.value) {
-        await connectionConfigurationViewService.activateConnectionConfiguration(
+        await connectionConfigurationService.activateConnectionConfiguration(
             id,
         );
     } else {
-        await connectionConfigurationViewService.deactivateConnectionConfiguration(
+        await connectionConfigurationService.deactivateConnectionConfiguration(
             id,
         );
     }
@@ -1341,7 +1340,7 @@ async function editConnectionConfigurationOnly() {
         "sebServerFallback ": sebServerFallbackVal,
     };
 
-    await connectionConfigurationViewService.editConnectionConfiguration(
+    await connectionConfigurationService.editConnectionConfiguration(
         toSend as unknown as UpdateConnectionConfigurationPar,
     );
 }

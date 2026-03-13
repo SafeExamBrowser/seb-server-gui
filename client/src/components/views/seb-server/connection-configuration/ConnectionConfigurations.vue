@@ -406,7 +406,7 @@ import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
 import * as tableUtils from "@/utils/table/tableUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
-import * as connectionConfigurationViewService from "@/services/seb-server/component-services/connectionConfigurationViewService";
+import * as connectionConfigurationService from "@/services/seb-server/connectionConfigurationService";
 import * as timeUtils from "@/utils/timeUtils";
 
 import { navigateTo } from "@/router/navigation";
@@ -550,11 +550,11 @@ async function onStatusChange(
     newStatus: string,
 ) {
     if (newStatus === "Active" && !connectionConfiguration.active) {
-        await connectionConfigurationViewService.activateConnectionConfiguration(
+        await connectionConfigurationService.activateConnectionConfiguration(
             connectionConfiguration.id.toString(),
         );
     } else if (newStatus === "Inactive" && connectionConfiguration.active) {
-        await connectionConfigurationViewService.deactivateConnectionConfiguration(
+        await connectionConfigurationService.deactivateConnectionConfiguration(
             connectionConfiguration.id.toString(),
         );
     }
@@ -607,7 +607,7 @@ async function loadItems(serverTablePaging: ServerTablePaging) {
         );
 
     const response =
-        await connectionConfigurationViewService.getConnectionConfigurations(
+        await connectionConfigurationService.getConnectionConfigurations(
             optionalParams,
         );
 
@@ -649,7 +649,7 @@ function openDeleteDialog(connectionConfiguration: ConnectionConfiguration) {
 async function confirmDelete() {
     if (connectionConfigurationToDelete.value) {
         const response =
-            await connectionConfigurationViewService.deleteConnectionConfiguration(
+            await connectionConfigurationService.deleteConnectionConfiguration(
                 connectionConfigurationToDelete.value.id.toString(),
             );
         if (response !== null) {
