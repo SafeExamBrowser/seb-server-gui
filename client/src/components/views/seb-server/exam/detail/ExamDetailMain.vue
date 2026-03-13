@@ -920,7 +920,7 @@ import { useExamStore } from "@/stores/seb-server/examStore";
 import * as constants from "@/utils/constants";
 import * as examViewService from "@/services/seb-server/component-services/examViewService";
 import * as sebSettingsService from "@/services/seb-server/component-services/sebSettingsService";
-import * as assessmentToolViewService from "@/services/seb-server/component-services/assessmentToolViewService";
+import * as assessmentToolService from "@/services/seb-server/assessmentToolService";
 import * as userAccountService from "@/services/seb-server/userAccountService";
 import * as clientGroupViewService from "@/services/seb-server/component-services/clientGroupViewService";
 import * as generalUtils from "@/utils/generalUtils";
@@ -1094,7 +1094,7 @@ async function getAssessmentTool() {
     }
 
     const assessmentToolResponse: AssessmentTool | null =
-        await assessmentToolViewService.getAssessmentTool(lmsId);
+        await assessmentToolService.getAssessmentTool(lmsId);
     if (assessmentToolResponse == null) {
         return;
     }

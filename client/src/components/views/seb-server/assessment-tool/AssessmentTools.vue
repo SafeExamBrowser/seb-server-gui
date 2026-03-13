@@ -517,7 +517,7 @@ import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
 import * as tableUtils from "@/utils/table/tableUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
-import * as assessmentToolViewService from "@/services/seb-server/component-services/assessmentToolViewService";
+import * as assessmentToolService from "@/services/seb-server/assessmentToolService";
 
 import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants";
@@ -531,6 +531,7 @@ import {
 } from "@/models/seb-server/assessmentTool";
 import SettingsNavigation from "@/components/views/seb-server/components/SettingsNavigation.vue";
 import { getInstitutions } from "@/services/seb-server/institutionService.ts";
+import { getAssessmentTools } from "@/services/seb-server/assessmentToolService.ts";
 
 const appBarStore = useAppBarStore();
 const layoutStore = useLayoutStore();
@@ -673,11 +674,11 @@ async function onStatusChange(
     newStatus: string,
 ) {
     if (newStatus === "Active" && !assessmentTool.active) {
-        await assessmentToolViewService.activateAssessmentTool(
+        await assessmentToolService.activateAssessmentTool(
             assessmentTool.id.toString(),
         );
     } else if (newStatus === "Inactive" && assessmentTool.active) {
-        await assessmentToolViewService.deactivateAssessmentTool(
+        await assessmentToolService.deactivateAssessmentTool(
             assessmentTool.id.toString(),
         );
     }
@@ -729,8 +730,7 @@ async function loadItems(serverTablePaging: ServerTablePaging) {
             : null,
     );
 
-    const response =
-        await assessmentToolViewService.getAssessmentTools(optionalParams);
+    const response = await getAssessmentTools(optionalParams);
 
     isLoading.value = false;
     if (!response) return;
@@ -770,7 +770,7 @@ function openDeleteDialog(assessmentTool: AssessmentTool) {
 
 async function confirmDelete() {
     if (assessmentToolToDelete.value) {
-        const response = await assessmentToolViewService.deleteAssessmentTool(
+        const response = await assessmentToolService.deleteAssessmentTool(
             assessmentToolToDelete.value.id.toString(),
         );
         if (response !== null) {

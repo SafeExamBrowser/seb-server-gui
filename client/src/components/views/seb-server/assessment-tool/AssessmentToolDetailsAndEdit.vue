@@ -616,7 +616,7 @@ import { translate } from "@/utils/generalUtils";
 import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/authenticationStore";
 import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums";
 import { getInstitutions } from "@/services/seb-server/institutionService";
-import * as assessmentToolViewService from "@/services/seb-server/component-services/assessmentToolViewService";
+import * as assessmentToolService from "@/services/seb-server/assessmentToolService";
 import router from "@/router/router";
 import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants";
@@ -768,7 +768,7 @@ onMounted(async () => {
     const idNum = Number(route.params.lmsId);
     if (Number.isFinite(idNum)) {
         const dto: AssessmentTool | null =
-            await assessmentToolViewService.getAssessmentTool(idNum);
+            await assessmentToolService.getAssessmentTool(idNum);
         if (dto) {
             populateFromDto(dto);
             fetchedId.value = dto.id;
@@ -843,9 +843,9 @@ function toggleStatusLocally() {
 async function persistStatusChange() {
     const id = String(fetchedId.value ?? route.params.lmsId);
     if (active.value) {
-        await assessmentToolViewService.activateAssessmentTool(id);
+        await assessmentToolService.activateAssessmentTool(id);
     } else {
-        await assessmentToolViewService.deactivateAssessmentTool(id);
+        await assessmentToolService.deactivateAssessmentTool(id);
     }
 }
 
@@ -1012,7 +1012,7 @@ async function editAssessmentToolOnly() {
         ...authPart,
     };
 
-    await assessmentToolViewService.editAssessmentTool(payload);
+    await assessmentToolService.editAssessmentTool(payload);
 }
 
 watch(authMode, (mode) => {
