@@ -372,7 +372,7 @@
 </template>
 
 <script setup lang="ts">
-import * as sebSettingsService from "@/services/seb-server/component-services/sebSettingsService";
+import * as sebSettingsService from "@/services/seb-server/sebSettingsService";
 import { stringToBoolean, translate } from "@/utils/generalUtils";
 import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums";
@@ -418,10 +418,7 @@ onBeforeMount(async () => {
     componentId = sebSettingsStore.selectedContainerId.toString();
 
     const hotKeySettings: SEBSettingsView | null =
-        await sebSettingsService.getViewSettings(
-            ViewType.HOOKED_KEYS,
-            componentId,
-        );
+        await sebSettingsService.getView(ViewType.HOOKED_KEYS, componentId);
     if (hotKeySettings == null) {
         return;
     }

@@ -278,7 +278,7 @@
 import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 import * as tableUtils from "@/utils/table/tableUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
-import * as sebSettingsService from "@/services/seb-server/component-services/sebSettingsService";
+import * as sebSettingsService from "@/services/seb-server/sebSettingsService";
 import { useI18n } from "vue-i18n";
 import { translate, stringToBoolean } from "@/utils/generalUtils";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums";
@@ -419,10 +419,7 @@ onBeforeMount(async () => {
     componentId = sebSettingsStore.selectedContainerId.toString();
 
     const applicationSettings: SEBSettingsView | null =
-        await sebSettingsService.getViewSettings(
-            ViewType.APPLICATION,
-            componentId,
-        );
+        await sebSettingsService.getView(ViewType.APPLICATION, componentId);
     if (applicationSettings == null) {
         return;
     }
@@ -630,7 +627,7 @@ function newPermittedProcess() {
 
 async function permittedProcessDelete(index: number) {
     const resp: SEBSettingsTableRowValues[] | null =
-        await sebSettingsService.deleteSEBSettingTableRow(
+        await sebSettingsService.deleteTableRow(
             componentId,
             "permittedProcesses",
             index,
@@ -659,7 +656,7 @@ async function closeEditPermittedProcessDialog(apply?: boolean) {
 
     if (selectedPermittedProcess.value?.index === -1) {
         const resp: SEBSettingsTableRowValues | null =
-            await sebSettingsService.newSEBSettingTableRow(
+            await sebSettingsService.addTableRow(
                 componentId,
                 "permittedProcesses",
             );
@@ -851,7 +848,7 @@ function newProhibitedProcess() {
 
 async function prohibitedProcessDelete(index: number) {
     const resp: SEBSettingsTableRowValues[] | null =
-        await sebSettingsService.deleteSEBSettingTableRow(
+        await sebSettingsService.deleteTableRow(
             componentId,
             "prohibitedProcesses",
             index,
@@ -881,7 +878,7 @@ async function closeEditProhibitedProcessDialog(apply?: boolean) {
     // If this is a new row, create new with default values on backend first
     if (selectedProhibitedProcess.value.index === -1) {
         const resp: SEBSettingsTableRowValues | null =
-            await sebSettingsService.newSEBSettingTableRow(
+            await sebSettingsService.addTableRow(
                 componentId,
                 "prohibitedProcesses",
             );

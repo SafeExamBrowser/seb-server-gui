@@ -919,7 +919,7 @@ import { ref, onBeforeMount } from "vue";
 import { useExamStore } from "@/stores/seb-server/examStore";
 import * as constants from "@/utils/constants";
 import * as examViewService from "@/services/seb-server/component-services/examViewService";
-import * as sebSettingsService from "@/services/seb-server/component-services/sebSettingsService";
+import * as sebSettingsService from "@/services/seb-server/sebSettingsService";
 import * as assessmentToolService from "@/services/seb-server/assessmentToolService";
 import * as userAccountService from "@/services/seb-server/userAccountService";
 import * as clientGroupViewService from "@/services/seb-server/component-services/clientGroupViewService";

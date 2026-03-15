@@ -1334,7 +1334,7 @@
 </template>
 
 <script setup lang="ts">
-import * as sebSettingsService from "@/services/seb-server/component-services/sebSettingsService";
+import * as sebSettingsService from "@/services/seb-server/sebSettingsService";
 import { useI18n } from "vue-i18n";
 import { stringToBoolean, translate } from "@/utils/generalUtils";
 import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
@@ -1428,7 +1428,7 @@ onBeforeMount(async () => {
     componentId = sebSettingsStore.selectedContainerId.toString();
 
     const browserSettings: SEBSettingsView | null =
-        await sebSettingsService.getViewSettings(ViewType.BROWSER, componentId);
+        await sebSettingsService.getView(ViewType.BROWSER, componentId);
 
     if (browserSettings == null) {
         return;
