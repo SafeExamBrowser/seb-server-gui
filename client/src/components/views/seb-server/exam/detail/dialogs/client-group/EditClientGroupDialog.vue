@@ -215,6 +215,7 @@ import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
 import { ref, watch, onBeforeMount } from "vue";
 import { ClientGroup } from "@/models/seb-server/clientGroup";
+import { getCreateClientGroupParams } from "@/utils/clientGroupFactory.ts";
 
 // i18n
 const i18n = useI18n();
@@ -320,17 +321,16 @@ async function updateClientGroup() {
         return;
     }
 
-    const clientGroup: ClientGroup | null =
-        clientGroupViewService.getCreateClientGroupParams(
-            examStore.selectedExam.id,
-            groupNameField.value,
-            clientGroupTypeSelect.value,
-            startIpField.value,
-            endIpField.value,
-            clientOsField.value,
-            startLetterField.value,
-            endLetterField.value,
-        );
+    const clientGroup: ClientGroup | null = getCreateClientGroupParams(
+        examStore.selectedExam.id,
+        groupNameField.value,
+        clientGroupTypeSelect.value,
+        startIpField.value,
+        endIpField.value,
+        clientOsField.value,
+        startLetterField.value,
+        endLetterField.value,
+    );
 
     if (clientGroup == null) {
         return;

@@ -318,6 +318,7 @@ import { translate } from "@/utils/generalUtils";
 import { computed, ref, watch, onBeforeMount } from "vue";
 import { ClientGroup } from "@/models/seb-server/clientGroup";
 import { applyScreenProctoringGroups } from "@/services/seb-server/screenProctoringService.ts";
+import { getCreateClientGroupParams } from "@/utils/clientGroupFactory.ts";
 // i18n
 const i18n = useI18n();
 
@@ -415,17 +416,16 @@ async function createClientGroup() {
         return;
     }
 
-    const clientGroup: ClientGroup | null =
-        clientGroupViewService.getCreateClientGroupParams(
-            examStore.selectedExam.id,
-            groupNameField.value,
-            clientGroupTypeSelect.value,
-            startIpField.value,
-            endIpField.value,
-            clientOsField.value,
-            startLetterField.value,
-            endLetterField.value,
-        );
+    const clientGroup: ClientGroup | null = getCreateClientGroupParams(
+        examStore.selectedExam.id,
+        groupNameField.value,
+        clientGroupTypeSelect.value,
+        startIpField.value,
+        endIpField.value,
+        clientOsField.value,
+        startLetterField.value,
+        endLetterField.value,
+    );
 
     if (clientGroup == null) {
         return;
