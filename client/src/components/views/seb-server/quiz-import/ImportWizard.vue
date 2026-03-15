@@ -165,7 +165,6 @@ import { useAppBarStore } from "@/stores/store";
 import * as generalUtils from "@/utils/generalUtils";
 import { translate } from "@/utils/generalUtils";
 import { useI18n } from "vue-i18n";
-import * as quizImportWizardViewService from "@/services/seb-server/component-services/quizImportWizardViewService";
 import { navigateTo } from "@/router/navigation";
 import { useExamStore } from "@/stores/seb-server/examStore";
 import { ref, onBeforeMount, watch } from "vue";
@@ -173,6 +172,7 @@ import { CreateExamPar, Exam } from "@/models/seb-server/exam";
 import { AssessmentToolsResponse } from "@/models/seb-server/assessmentTool";
 import { APIMessage } from "@/models/seb-server/apiMessages";
 import { getAssessmentToolsActive } from "@/services/seb-server/assessmentToolService.ts";
+import * as examService from "@/services/seb-server/api-services/examService.ts";
 // i18n
 const i18n = useI18n();
 
@@ -327,7 +327,7 @@ function handleStepperNext(index: number, next: () => void) {
         };
 
         const createExamResponse: Exam | null =
-            await quizImportWizardViewService.createExam(createExamParams);
+            await examService.createExam(createExamParams);
         if (createExamResponse == null) {
             return;
         }

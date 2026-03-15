@@ -1,4 +1,4 @@
-import { createExamTemplate } from "@/services/seb-server/api-services/examTemplateService";
+import { createExamTemplate } from "@/services/seb-server/examTemplateService";
 import { ref } from "vue";
 import { ExamTemplate } from "@/models/seb-server/examTemplate";
 

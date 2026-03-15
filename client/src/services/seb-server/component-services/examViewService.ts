@@ -1,5 +1,5 @@
 import * as examService from "@/services/seb-server/api-services/examService";
-import * as examTemplateService from "@/services/seb-server/api-services/examTemplateService";
+import * as examTemplateService from "@/services/seb-server/examTemplateService";
 import * as connectionConfigurationService from "@/services/seb-server/connectionConfigurationService.ts";
 
 import * as screenProctoringService from "@/services/seb-server/api-services/screenProctoringService";

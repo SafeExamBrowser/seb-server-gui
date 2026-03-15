@@ -70,7 +70,7 @@
 
 <script setup lang="ts">
 import ExamTemplateDialog from "@/components/widgets/ExamTemplateDialog.vue";
-import * as quizImportWizardViewService from "@/services/seb-server/component-services/quizImportWizardViewService";
+import * as examTemplateService from "@/services/seb-server/examTemplateService";
 import * as examViewService from "@/services/seb-server/component-services/examViewService";
 import { useQuizImportStore } from "@/stores/seb-server/quizImportStore";
 import { translate } from "@/utils/generalUtils";
@@ -96,7 +96,7 @@ const selectedTemplate = ref<ExamTemplate | null>(null);
 //= ======================events & watchers=======================
 onBeforeMount(async () => {
     const examTemplatesResponse: ExamTemplates | null =
-        await quizImportWizardViewService.getExamTemplates();
+        await examTemplateService.getExamTemplates();
     if (examTemplatesResponse == null) {
         return;
     }
@@ -118,7 +118,7 @@ async function onTemplateCardClick(examTemplate: ExamTemplate) {
     if (examTemplate.EXAM_ATTRIBUTES.quitPassword && examTemplate.id) {
         // get single template to get plain quit-password
         const examTemplateResponse: ExamTemplate | null =
-            await quizImportWizardViewService.getExamTemplate(
+            await examTemplateService.getExamTemplate(
                 examTemplate.id.toString(),
             );
         if (examTemplateResponse != null) {
