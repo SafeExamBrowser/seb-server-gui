@@ -949,6 +949,7 @@ import ClientGroupListDialog from "@/components/views/seb-server/exam/detail/dia
 import AddClientGroupDialog from "@/components/views/seb-server/exam/detail/dialogs/client-group/AddClientGroupDialog.vue";
 import ExamTemplateDialog from "@/components/widgets/ExamTemplateDialog.vue";
 import SebSettingsDialog from "@/components/views/seb-server/settings/SebSettingsDialog.vue";
+import { activateScreenProctoring } from "@/services/seb-server/screenProctoringService.ts";
 
 // general
 const isPageInitalizing = ref<boolean>(true);
@@ -1237,7 +1238,7 @@ function closeConfigDialog() {
 
 async function startExamConfigDownloadProcess() {
     const connectionConfigurations: ConnectionConfigurations | null =
-        await examViewService.getConnectionConfigurations();
+        await examViewService.getConnectionConfigurationsActive();
 
     if (connectionConfigurations == null) {
         return;
@@ -1330,11 +1331,10 @@ async function changeScreenProctoringSettings(enable: boolean) {
         return;
     }
 
-    const saveScreenProcResponse: Exam | null =
-        await examViewService.activateScreenProctoring(
-            examStore.selectedExam.id.toString(),
-            enable,
-        );
+    const saveScreenProcResponse: Exam | null = await activateScreenProctoring(
+        examStore.selectedExam.id.toString(),
+        enable,
+    );
 
     if (saveScreenProcResponse == null) {
         isScreenProctoringActive.value = !enable;

@@ -2,7 +2,6 @@ import * as examService from "@/services/seb-server/api-services/examService";
 import * as examTemplateService from "@/services/seb-server/examTemplateService";
 import * as connectionConfigurationService from "@/services/seb-server/connectionConfigurationService.ts";
 
-import * as screenProctoringService from "@/services/seb-server/api-services/screenProctoringService";
 import * as monitoringService from "@/services/seb-server/api-services/monitoringService";
 import * as timeUtils from "@/utils/timeUtils";
 import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring";
@@ -16,6 +15,8 @@ import {
 import { ExamTemplate } from "@/models/seb-server/examTemplate";
 
 //= ============api==============
+
+// good
 export async function getExam(id: string): Promise<Exam | null> {
     try {
         return await examService.getExam(id);
@@ -23,6 +24,8 @@ export async function getExam(id: string): Promise<Exam | null> {
         return null;
     }
 }
+
+// good
 
 export async function getExamAppSignatureKeys(
     id: string,
@@ -34,6 +37,7 @@ export async function getExamAppSignatureKeys(
     }
 }
 
+// good
 export async function getGrantedExamAppSignatureKeys(
     parentId: string,
 ): Promise<GrantedAppSignatureKey[] | null> {
@@ -44,6 +48,7 @@ export async function getGrantedExamAppSignatureKeys(
     }
 }
 
+// good
 export async function removeGrantExamAppSignatureKeys(
     parentId: string,
     id: string,
@@ -55,6 +60,7 @@ export async function removeGrantExamAppSignatureKeys(
     }
 }
 
+// good
 export async function grantExamAppSignatureKeys(
     tagName: string,
     parentId: string,
@@ -71,6 +77,7 @@ export async function grantExamAppSignatureKeys(
     }
 }
 
+// good
 export async function hasSEBLock(id: string): Promise<boolean> {
     try {
         return await examService.checkSEBLock(id);
@@ -79,6 +86,7 @@ export async function hasSEBLock(id: string): Promise<boolean> {
     }
 }
 
+// good
 export async function getExamTemplate(
     id: string,
 ): Promise<ExamTemplate | null> {
@@ -89,6 +97,7 @@ export async function getExamTemplate(
     }
 }
 
+// good
 export async function deleteExam(id: string): Promise<undefined | null> {
     try {
         await examService.deleteExam(id);
@@ -98,6 +107,7 @@ export async function deleteExam(id: string): Promise<undefined | null> {
     }
 }
 
+// good
 export async function getExams(
     optionalParGetExams?: OptionalParGetExams,
 ): Promise<Exams | null> {
@@ -108,6 +118,7 @@ export async function getExams(
     }
 }
 
+// good
 export async function updateExam(exam: Exam): Promise<Exam | null> {
     try {
         return await examService.updateExam(exam);
@@ -116,7 +127,8 @@ export async function updateExam(exam: Exam): Promise<Exam | null> {
     }
 }
 
-export async function getConnectionConfigurations(): Promise<ConnectionConfigurations | null> {
+// good
+export async function getConnectionConfigurationsActive(): Promise<ConnectionConfigurations | null> {
     try {
         return await connectionConfigurationService.getConnectionConfigurationsActive();
     } catch {
@@ -124,6 +136,7 @@ export async function getConnectionConfigurations(): Promise<ConnectionConfigura
     }
 }
 
+//good
 export async function downloadExamConfig(
     examId: string,
     connectionId: string,
@@ -138,7 +151,7 @@ export async function downloadExamConfig(
         return null;
     }
 }
-
+//good
 export async function archiveExam(id: string): Promise<Exam | null> {
     try {
         return await examService.archiveExam(id);
@@ -147,6 +160,7 @@ export async function archiveExam(id: string): Promise<Exam | null> {
     }
 }
 
+//good
 export async function applyTestRun(id: string): Promise<Exam | null> {
     try {
         return await monitoringService.applyTestRun(id);
@@ -155,34 +169,7 @@ export async function applyTestRun(id: string): Promise<Exam | null> {
     }
 }
 
-export async function applyScreenProctoringGroups(
-    id: string,
-    spsSEBGroupsSelection: string,
-): Promise<Exam | null> {
-    try {
-        return await screenProctoringService.applyScreenProctoringGroups(
-            id,
-            spsSEBGroupsSelection,
-        );
-    } catch {
-        return null;
-    }
-}
-
-export async function activateScreenProctoring(
-    id: string,
-    enableScreenProctoring: boolean,
-): Promise<Exam | null> {
-    try {
-        return await screenProctoringService.activateScreenProctoring(
-            id,
-            enableScreenProctoring,
-        );
-    } catch {
-        return null;
-    }
-}
-
+//good
 export async function getExamTemplateSp(
     id: string,
 ): Promise<ScreenProctoringSettings | null> {
@@ -194,7 +181,7 @@ export async function getExamTemplateSp(
 }
 
 //= =====SEB lock================
-
+// TODO @Andrei @RemoveViewServices : might aswell move the logic to usage class since it's only used once.
 export async function applySEBLock(
     id: string,
     enableSEBLock: boolean,
@@ -208,22 +195,7 @@ export async function applySEBLock(
     }
 }
 
-//= =====screen proctoring=======
-export function createDefaultScreenProctoringSettings(
-    enable: boolean,
-    examId: number,
-    groupName: string,
-): ScreenProctoringSettings {
-    return {
-        id: examId,
-        enableScreenProctoring: enable,
-        spsCollectingStrategy: "EXAM",
-        spsCollectingGroupName: groupName,
-        bundled: false,
-        changeStrategyConfirm: false,
-    };
-}
-
+// TODO @Andrei @RemoveViewServices     Why is this in a viewService? Isn't this a helper? There's no usage of api
 //= ==============exam connection config logic====================
 export function createDownloadLink(examName: string | undefined, blob: Blob) {
     const link = document.createElement("a");
@@ -237,6 +209,7 @@ export function createDownloadLink(examName: string | undefined, blob: Blob) {
     URL.revokeObjectURL(link.href);
 }
 
+// TODO @Andrei @RemoveViewServices   belongs to the function above @createDownloadLink
 function getExamConfigFileName(examName: string | undefined): string {
     if (examName == null) {
         return "";
