@@ -14,7 +14,7 @@ import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import { useAppBarStore } from "@/stores/store";
 import { translate } from "@/utils/generalUtils";
 import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
-import * as indicatorViewService from "@/services/seb-server/component-services/indicatorViewService";
+import * as indicatorService from "@/services/seb-server/indicatorService";
 import { useRoute } from "vue-router";
 import { ref, onBeforeMount, onBeforeUnmount } from "vue";
 import {
@@ -97,7 +97,7 @@ async function getSingleConnection() {
 
 async function getIndicators() {
     const indicatorsResponse: Indicators | null =
-        await indicatorViewService.getIndicators(examId);
+        await indicatorService.getIndicators(examId);
 
     if (indicatorsResponse == null) {
         return;

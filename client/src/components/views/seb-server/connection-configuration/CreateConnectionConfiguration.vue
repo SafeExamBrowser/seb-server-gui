@@ -727,11 +727,11 @@ import { useAppBarStore, useLayoutStore } from "@/stores/store";
 import { translate } from "@/utils/generalUtils";
 import * as constants from "@/utils/constants";
 import { navigateTo } from "@/router/navigation";
-import * as certificateViewService from "@/services/seb-server/component-services/certificateViewService";
 import { CreateConnectionConfigurationPar } from "@/models/seb-server/connectionConfiguration";
 import SettingsNavigation from "@/components/views/seb-server/components/SettingsNavigation.vue";
 import AddCertificateDialog from "@/components/views/seb-server/certificates/AddCertificateDialog.vue";
 import { createConnectionConfiguration } from "@/services/seb-server/connectionConfigurationService.ts";
+import { getCertificates } from "@/services/seb-server/certificateService.ts";
 
 const name = ref<string>("");
 const configurationPassword = ref<string>("");
@@ -1015,8 +1015,7 @@ async function loadCertificates() {
     certificatesLoading.value = true;
     try {
         const optionalParams = { page_number: 1, page_size: 500 };
-        const response =
-            await certificateViewService.getCertificates(optionalParams);
+        const response = await getCertificates(optionalParams);
 
         const certAliases: { label: string; value: string }[] =
             response?.content?.map((c: { alias: string }) => ({
