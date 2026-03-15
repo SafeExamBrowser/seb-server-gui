@@ -172,7 +172,7 @@
 </template>
 
 <script setup lang="ts">
-import * as quizImportWizardViewService from "@/services/seb-server/component-services/quizImportWizardViewService";
+import * as quizService from "@/services/seb-server/quizService";
 import * as tableUtils from "@/utils/table/tableUtils";
 import * as timeUtils from "@/utils/timeUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
@@ -303,8 +303,9 @@ async function loadItems(serverTablePaging: ServerTablePaging) {
     // reset forceNewSearch once we have applied it
     quizImportStore.forceNewSearch = false;
 
-    let quizzesResponse: Quizzes | null =
-        await quizImportWizardViewService.getQuizzes(optionalParGetQuizzes);
+    let quizzesResponse: Quizzes | null = await quizService.getQuizzes(
+        optionalParGetQuizzes,
+    );
 
     if (quizzesResponse == null) {
         finishFatching();
@@ -320,9 +321,7 @@ async function loadItems(serverTablePaging: ServerTablePaging) {
 
     while (!allQuizzes && breakerCount < 30) {
         await wait(3000);
-        quizzesResponse = await quizImportWizardViewService.getQuizzes(
-            optionalParGetQuizzes,
-        );
+        quizzesResponse = await quizService.getQuizzes(optionalParGetQuizzes);
         if (quizzesResponse == null) {
             finishFatching();
             return;
