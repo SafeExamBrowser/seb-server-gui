@@ -69,7 +69,7 @@ import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import { translate } from "@/utils/generalUtils";
 import { useAppBarStore } from "@/stores/store";
 import MonitoringOverviewIndicators from "@/components/views/seb-server/monitoring/overview/MonitoringOverviewIndicators.vue";
-import * as indicatorService from "@/services/seb-server/component-services/indicatorViewService";
+import * as indicatorService from "@/services/seb-server/indicatorService";
 import { useRoute } from "vue-router";
 import { computed, onBeforeMount, onBeforeUnmount } from "vue";
 import { MonitoringOverview } from "@/models/seb-server/monitoring";
