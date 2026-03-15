@@ -315,9 +315,9 @@ import * as generalUtils from "@/utils/generalUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
-import * as examViewService from "@/services/seb-server/component-services/examViewService";
 import { computed, ref, watch, onBeforeMount } from "vue";
 import { ClientGroup } from "@/models/seb-server/clientGroup";
+import { applyScreenProctoringGroups } from "@/services/seb-server/screenProctoringService.ts";
 // i18n
 const i18n = useI18n();
 
@@ -447,7 +447,7 @@ async function createClientGroup() {
             ...new Set([...existingSpGroupIds, createClientGroupResponse.id]),
         ];
 
-        await examViewService.applyScreenProctoringGroups(
+        await applyScreenProctoringGroups(
             examStore.selectedExam.id.toString(),
             generalUtils.createStringCommaList(updatedSpGroupIds),
         );

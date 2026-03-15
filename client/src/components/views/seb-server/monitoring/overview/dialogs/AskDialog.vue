@@ -391,7 +391,7 @@ import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import { translate } from "@/utils/generalUtils";
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum";
 import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
-import * as examViewService from "@/services/seb-server/component-services/examViewService";
+import * as examService from "@/services/seb-server/examService";
 import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants";
 
@@ -497,7 +497,7 @@ function onGrantKey() {
         console.log(examId, selectedAsk.value?.keyValue, val);
         return;
     }
-    examViewService.grantExamAppSignatureKeys(
+    examService.grantExamAppSignatureKeys(
         val,
         examId,
         String(firstConnId.value),
@@ -631,7 +631,7 @@ watch(firstConnInfo, (val) => {
 
 function onRemoveGrant() {
     if (!examId || !selectedAsk.value?.id) return;
-    examViewService.removeGrantExamAppSignatureKeys(
+    examService.removeGrantExamAppSignatureKeys(
         examId,
         selectedAsk.value?.id.toString(),
     );

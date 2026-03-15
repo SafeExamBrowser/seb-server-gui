@@ -168,7 +168,6 @@ import * as clientGroupViewService from "@/services/seb-server/component-service
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
 import * as generalUtils from "@/utils/generalUtils";
-import * as examViewService from "@/services/seb-server/component-services/examViewService";
 import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
 import { useRoute } from "vue-router";
@@ -177,6 +176,7 @@ import { Exam } from "@/models/seb-server/exam";
 import { ClientGroup, ClientGroups } from "@/models/seb-server/clientGroup";
 import EditClientGroupDialog from "@/components/views/seb-server/exam/detail/dialogs/client-group/EditClientGroupDialog.vue";
 import DeleteConfirmDialog from "@/components/widgets/DeleteConfirmDialog.vue";
+import { applyScreenProctoringGroups } from "@/services/seb-server/screenProctoringService.ts";
 
 // i18n
 const i18n = useI18n();
@@ -259,11 +259,10 @@ async function getClientGroups() {
 
 //= =======screen proctoring========
 async function saveScreenProctoringGroups() {
-    const examResponse: Exam | null =
-        await examViewService.applyScreenProctoringGroups(
-            examId,
-            generalUtils.createStringCommaList(getGroupsWithSelectedSp()),
-        );
+    const examResponse: Exam | null = await applyScreenProctoringGroups(
+        examId,
+        generalUtils.createStringCommaList(getGroupsWithSelectedSp()),
+    );
 
     if (examResponse == null) {
         return;

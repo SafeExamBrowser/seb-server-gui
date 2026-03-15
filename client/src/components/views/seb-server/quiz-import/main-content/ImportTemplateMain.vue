@@ -71,7 +71,6 @@
 <script setup lang="ts">
 import ExamTemplateDialog from "@/components/widgets/ExamTemplateDialog.vue";
 import * as examTemplateService from "@/services/seb-server/examTemplateService";
-import * as examViewService from "@/services/seb-server/component-services/examViewService";
 import { useQuizImportStore } from "@/stores/seb-server/quizImportStore";
 import { translate } from "@/utils/generalUtils";
 import * as generalUtils from "@/utils/generalUtils";
@@ -81,6 +80,7 @@ import { UserAccountName } from "@/models/userAccount";
 import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring";
 import { ExamTemplate, ExamTemplates } from "@/models/seb-server/examTemplate";
 import { getSupervisorNames } from "@/services/seb-server/userAccountService.ts";
+import { getExamTemplateSp } from "@/services/seb-server/examTemplateService";
 
 // stores
 const quizImportStore = useQuizImportStore();
@@ -190,7 +190,7 @@ async function getExamTemplateSpGroups() {
         return;
     }
     const examTemplateSp: ScreenProctoringSettings | null =
-        await examViewService.getExamTemplateSp(
+        await getExamTemplateSp(
             quizImportStore.selectedExamTemplate?.id.toString(),
         );
 
