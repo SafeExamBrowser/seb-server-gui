@@ -922,7 +922,7 @@ import * as examService from "@/services/seb-server/examService";
 import * as sebSettingsService from "@/services/seb-server/sebSettingsService";
 import * as assessmentToolService from "@/services/seb-server/assessmentToolService";
 import * as userAccountService from "@/services/seb-server/userAccountService";
-import * as clientGroupViewService from "@/services/seb-server/component-services/clientGroupViewService";
+import * as clientGroupService from "@/services/seb-server/clientGroupService";
 import * as generalUtils from "@/utils/generalUtils";
 import { navigateTo } from "@/router/navigation";
 import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum";
@@ -1512,7 +1512,7 @@ async function getClientGroups() {
     }
 
     const clientGroupResponse: ClientGroups | null =
-        await clientGroupViewService.getClientGroups(examId);
+        await clientGroupService.getClientGroups(examId);
 
     if (clientGroupResponse == null) {
         return;

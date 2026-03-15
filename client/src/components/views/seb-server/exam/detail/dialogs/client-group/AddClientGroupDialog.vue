@@ -306,7 +306,7 @@
 
 <script setup lang="ts">
 import { useExamStore } from "@/stores/seb-server/examStore";
-import * as clientGroupViewService from "@/services/seb-server/component-services/clientGroupViewService";
+import * as clientGroupService from "@/services/seb-server/clientGroupService";
 import {
     ClientGroupEnum,
     ClientOSEnum,
@@ -432,7 +432,7 @@ async function createClientGroup() {
     }
 
     const createClientGroupResponse: ClientGroup | null =
-        await clientGroupViewService.createClientGroup(clientGroup);
+        await clientGroupService.createClientGroup(clientGroup);
 
     if (createClientGroupResponse == null) {
         return;

@@ -210,7 +210,7 @@ import {
     ClientOSEnum,
 } from "@/models/seb-server/clientGroupEnum";
 import * as generalUtils from "@/utils/generalUtils";
-import * as clientGroupViewService from "@/services/seb-server/component-services/clientGroupViewService";
+import * as clientGroupService from "@/services/seb-server/clientGroupService";
 import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
 import { ref, watch, onBeforeMount } from "vue";
@@ -338,7 +338,7 @@ async function updateClientGroup() {
 
     clientGroup.id = props.clientGroup?.id;
     const createClientGroupResponse: ClientGroup | null =
-        await clientGroupViewService.updateClientGroup(clientGroup);
+        await clientGroupService.updateClientGroup(clientGroup);
 
     if (createClientGroupResponse == null) {
         return;
