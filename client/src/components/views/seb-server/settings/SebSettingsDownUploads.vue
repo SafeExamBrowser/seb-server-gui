@@ -455,7 +455,7 @@
 </template>
 
 <script setup lang="ts">
-import * as sebSettingsService from "@/services/seb-server/component-services/sebSettingsService";
+import * as sebSettingsService from "@/services/seb-server/sebSettingsService";
 import { useI18n } from "vue-i18n";
 import { stringToBoolean, translate } from "@/utils/generalUtils";
 import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
@@ -539,11 +539,10 @@ onBeforeMount(async () => {
 
     componentId = sebSettingsStore.selectedContainerId.toString();
 
-    const duSettings: SEBSettingsView | null =
-        await sebSettingsService.getViewSettings(
-            ViewType.DOWN_UPLOAD,
-            componentId,
-        );
+    const duSettings: SEBSettingsView | null = await sebSettingsService.getView(
+        ViewType.DOWN_UPLOAD,
+        componentId,
+    );
 
     if (duSettings == null) {
         return;
@@ -676,7 +675,7 @@ function newFileType() {
 
 async function deleteFileType(index: number) {
     const resp: SEBSettingsTableRowValues[] | null =
-        await sebSettingsService.deleteSEBSettingTableRow(
+        await sebSettingsService.deleteTableRow(
             componentId,
             "downloadFileTypes",
             index,
@@ -705,7 +704,7 @@ async function closeFileTypeDialog(apply?: boolean) {
 
     if (selectedDownloadFileType.value?.index === -1) {
         const resp: SEBSettingsTableRowValues | null =
-            await sebSettingsService.newSEBSettingTableRow(
+            await sebSettingsService.addTableRow(
                 componentId,
                 "downloadFileTypes",
             );

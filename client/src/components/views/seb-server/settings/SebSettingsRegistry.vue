@@ -422,7 +422,7 @@
 </template>
 
 <script setup lang="ts">
-import * as sebSettingsService from "@/services/seb-server/component-services/sebSettingsService";
+import * as sebSettingsService from "@/services/seb-server/sebSettingsService";
 import { stringToBoolean, translate } from "@/utils/generalUtils";
 import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums";
@@ -459,10 +459,7 @@ onBeforeMount(async () => {
     componentId = sebSettingsStore.selectedContainerId.toString();
 
     const registrySettings: SEBSettingsView | null =
-        await sebSettingsService.getViewSettings(
-            ViewType.REGISTRY,
-            componentId,
-        );
+        await sebSettingsService.getView(ViewType.REGISTRY, componentId);
     if (registrySettings == null) {
         return;
     }

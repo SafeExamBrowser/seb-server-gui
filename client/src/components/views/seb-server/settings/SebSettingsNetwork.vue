@@ -1044,7 +1044,7 @@
 <script setup lang="ts">
 import * as tableUtils from "@/utils/table/tableUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
-import * as sebSettingsService from "@/services/seb-server/component-services/sebSettingsService";
+import * as sebSettingsService from "@/services/seb-server/sebSettingsService";
 import { useI18n } from "vue-i18n";
 import { stringToBoolean, translate } from "@/utils/generalUtils";
 import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
@@ -1174,7 +1174,7 @@ onBeforeMount(async () => {
     componentId = sebSettingsStore.selectedContainerId.toString();
 
     const networkSettings: SEBSettingsView | null =
-        await sebSettingsService.getViewSettings(ViewType.NETWORK, componentId);
+        await sebSettingsService.getView(ViewType.NETWORK, componentId);
     if (networkSettings == null) {
         return;
     }
@@ -1332,7 +1332,7 @@ function newURLFilterRule() {
 
 async function urlFilterRuleDelete(index: number) {
     const resp: SEBSettingsTableRowValues[] | null =
-        await sebSettingsService.deleteSEBSettingTableRow(
+        await sebSettingsService.deleteTableRow(
             componentId,
             "URLFilterRules",
             index,
@@ -1361,10 +1361,7 @@ async function closeEditURLFilterRuleDialog(apply?: boolean) {
 
     if (selectedURLFilterRule.value?.index === -1) {
         const resp: SEBSettingsTableRowValues | null =
-            await sebSettingsService.newSEBSettingTableRow(
-                componentId,
-                "URLFilterRules",
-            );
+            await sebSettingsService.addTableRow(componentId, "URLFilterRules");
         if (resp == null) {
             return;
         }
