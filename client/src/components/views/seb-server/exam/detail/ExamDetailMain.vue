@@ -918,7 +918,7 @@
 import { ref, onBeforeMount } from "vue";
 import { useExamStore } from "@/stores/seb-server/examStore";
 import * as constants from "@/utils/constants";
-import * as examViewService from "@/services/seb-server/component-services/examViewService";
+import * as examService from "@/services/seb-server/examService";
 import * as sebSettingsService from "@/services/seb-server/sebSettingsService";
 import * as assessmentToolService from "@/services/seb-server/assessmentToolService";
 import * as userAccountService from "@/services/seb-server/userAccountService";
@@ -950,6 +950,7 @@ import AddClientGroupDialog from "@/components/views/seb-server/exam/detail/dial
 import ExamTemplateDialog from "@/components/widgets/ExamTemplateDialog.vue";
 import SebSettingsDialog from "@/components/views/seb-server/settings/SebSettingsDialog.vue";
 import { activateScreenProctoring } from "@/services/seb-server/screenProctoringService.ts";
+import * as timeUtils from "@/utils/timeUtils";
 
 // general
 const isPageInitalizing = ref<boolean>(true);
@@ -1050,14 +1051,14 @@ onBeforeMount(async () => {
 
 //= =======exam api===========
 async function getExam() {
-    const examResponse: Exam | null = await examViewService.getExam(examId);
+    const examResponse: Exam | null = await examService.getExam(examId);
 
     if (examResponse == null) {
         return;
     }
 
     examStore.selectedExam = examResponse;
-    isSEBLockActive.value = await examViewService.hasSEBLock(examId);
+    isSEBLockActive.value = await examService.checkSEBLock(examId);
 }
 
 async function updateExam(isSupervisorsManualUpdate?: boolean) {
@@ -1067,7 +1068,7 @@ async function updateExam(isSupervisorsManualUpdate?: boolean) {
         return;
     }
 
-    const updateExamResponse: Exam | null = await examViewService.updateExam(
+    const updateExamResponse: Exam | null = await examService.updateExam(
         examStore.selectedExam,
     );
 
@@ -1127,11 +1128,10 @@ async function changeSEBLock(enable: boolean) {
         return;
     }
 
-    const applySEBLockResponse: Exam | null =
-        await examViewService.applySEBLock(
-            examStore.selectedExam.id.toString(),
-            enable,
-        );
+    const applySEBLockResponse: Exam | null = await applySEBLockService(
+        examStore.selectedExam.id.toString(),
+        enable,
+    );
 
     if (applySEBLockResponse == null) {
         isSEBLockActive.value = !enable;
@@ -1139,6 +1139,20 @@ async function changeSEBLock(enable: boolean) {
     }
 
     examStore.selectedExam = applySEBLockResponse;
+}
+
+//SEB Lock
+async function applySEBLockService(
+    id: string,
+    enableSEBLock: boolean,
+): Promise<Exam | null> {
+    try {
+        return enableSEBLock
+            ? await examService.addSEBLock(id)
+            : await examService.removeSEBLock(id);
+    } catch {
+        return null;
+    }
 }
 
 //= ==============supervisors logic====================
@@ -1238,7 +1252,7 @@ function closeConfigDialog() {
 
 async function startExamConfigDownloadProcess() {
     const connectionConfigurations: ConnectionConfigurations | null =
-        await examViewService.getConnectionConfigurationsActive();
+        await examService.getConnectionConfigurationsActive();
 
     if (connectionConfigurations == null) {
         return;
@@ -1261,7 +1275,7 @@ async function downloadExamConfig(connectionId: string) {
         return;
     }
 
-    const blobResponse = await examViewService.downloadExamConfig(
+    const blobResponse = await examService.downloadExamConfig(
         examStore.selectedExam.id.toString(),
         connectionId,
     );
@@ -1270,10 +1284,7 @@ async function downloadExamConfig(connectionId: string) {
         return;
     }
 
-    examViewService.createDownloadLink(
-        examStore.selectedExam.quizName,
-        blobResponse,
-    );
+    createDownloadLink(examStore.selectedExam.quizName, blobResponse);
 }
 
 //= ==============monitor & archive exam logic====================
@@ -1292,7 +1303,7 @@ async function archiveExam() {
         return;
     }
 
-    const archiveExamResponse: Exam | null = await examViewService.archiveExam(
+    const archiveExamResponse: Exam | null = await examService.archiveExam(
         examStore.selectedExam.id.toString(),
     );
 
@@ -1355,7 +1366,7 @@ function closeDeleteDialog() {
 
 async function deleteExam() {
     const deleteExamResponse: undefined | null =
-        await examViewService.deleteExam(examId);
+        await examService.deleteExam(examId);
 
     if (deleteExamResponse == null) {
         return;
@@ -1371,7 +1382,7 @@ async function getExamTemplate() {
     }
 
     const examTemplateResponse: ExamTemplate | null =
-        await examViewService.getExamTemplate(
+        await examService.getExamTemplate(
             examStore.selectedExam?.examTemplateId.toString(),
         );
 
@@ -1387,7 +1398,7 @@ async function getTemplateGroupsWithSp() {
     if (!tmpl || tmpl.id == null) return;
 
     const examTemplateSp: ScreenProctoringSettings | null =
-        await examViewService.getExamTemplateSp(String(tmpl.id));
+        await examService.getExamTemplateSp(String(tmpl.id));
 
     if (!examTemplateSp) return;
 
@@ -1408,7 +1419,7 @@ function closeExamTemplateDialog() {
 // calling this function again after test run has been applied disables the test run
 async function applyTestRun() {
     const applyTestRunResponse: Exam | null =
-        await examViewService.applyTestRun(examId);
+        await examService.applyTestRun(examId);
 
     if (applyTestRunResponse == null) {
         return;
@@ -1521,6 +1532,29 @@ function closeAddClientGroupDialog(isChange?: boolean) {
     if (isChange) {
         getClientGroups();
     }
+}
+
+//= ==============exam connection config logic====================
+function createDownloadLink(examName: string | undefined, blob: Blob) {
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute("download", getExamConfigFileName(examName));
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+    URL.revokeObjectURL(link.href);
+}
+
+function getExamConfigFileName(examName: string | undefined): string {
+    if (examName == null) {
+        return "";
+    }
+
+    examName = examName?.replaceAll(" ", "_");
+
+    return `${examName}_${timeUtils.getCurrentDateString()}.seb`;
 }
 </script>
 

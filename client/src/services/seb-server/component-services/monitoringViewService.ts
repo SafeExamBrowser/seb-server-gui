@@ -3,7 +3,7 @@ import * as generalUtils from "@/utils/generalUtils";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum";
 import { translate } from "@/utils/generalUtils";
-import * as examViewService from "@/services/seb-server/component-services/examViewService";
+import * as examService from "@/services/seb-server/examService";
 import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums";
 import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants";
@@ -113,7 +113,7 @@ export async function getStaticClientData(
 }
 
 export async function getExamAndStore(examId: string) {
-    const examResponse: Exam | null = await examViewService.getExam(examId);
+    const examResponse: Exam | null = await examService.getExam(examId);
 
     if (examResponse == null) {
         return;
@@ -125,10 +125,10 @@ export async function getAskAndStore(examId: string) {
     const store = useMonitoringStore();
 
     const ask: AppSignatureKey[] | null =
-        await examViewService.getExamAppSignatureKeys(examId);
+        await examService.getExamAppSignatureKeys(examId);
 
     const grantedAsk: GrantedAppSignatureKey[] | null =
-        await examViewService.getGrantedExamAppSignatureKeys(examId);
+        await examService.getGrantedExamAppSignatureKeys(examId);
 
     const grantedByKey = new Map<string, GrantedAppSignatureKey>(
         (grantedAsk ?? []).map((g) => [g.keyValue, g]),

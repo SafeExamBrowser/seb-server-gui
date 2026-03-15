@@ -120,7 +120,6 @@
 </template>
 
 <script setup lang="ts">
-import * as examViewService from "@/services/seb-server/component-services/examViewService";
 import * as tableUtils from "@/utils/table/tableUtils";
 import * as timeUtils from "@/utils/timeUtils";
 import * as generalUtils from "@/utils/generalUtils";
@@ -137,6 +136,7 @@ import { ref } from "vue";
 import { ServerTablePaging } from "@/models/types";
 import { OptionalParGetExams } from "@/models/seb-server/optionalParamters";
 import { Exam, Exams } from "@/models/seb-server/exam";
+import { getExams } from "@/services/seb-server/examService.ts";
 
 // stores
 const examStore = useExamStore();
@@ -228,8 +228,7 @@ async function loadItems(serverTablePaging: ServerTablePaging) {
     // Note: always filter out inactive Exams here
     optionalParGetExams.active = "true";
 
-    const examsResponse: Exams | null =
-        await examViewService.getExams(optionalParGetExams);
+    const examsResponse: Exams | null = await getExams(optionalParGetExams);
     if (examsResponse == null) {
         isLoading.value = false;
         return;
