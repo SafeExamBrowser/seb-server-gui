@@ -306,7 +306,7 @@
 
 <script setup lang="ts">
 import { useExamStore } from "@/stores/seb-server/examStore";
-import * as clientGroupViewService from "@/services/seb-server/component-services/clientGroupViewService";
+import * as clientGroupService from "@/services/seb-server/clientGroupService";
 import {
     ClientGroupEnum,
     ClientOSEnum,
@@ -318,6 +318,7 @@ import { translate } from "@/utils/generalUtils";
 import { computed, ref, watch, onBeforeMount } from "vue";
 import { ClientGroup } from "@/models/seb-server/clientGroup";
 import { applyScreenProctoringGroups } from "@/services/seb-server/screenProctoringService.ts";
+import { getCreateClientGroupParams } from "@/utils/clientGroupFactory.ts";
 // i18n
 const i18n = useI18n();
 
@@ -415,24 +416,23 @@ async function createClientGroup() {
         return;
     }
 
-    const clientGroup: ClientGroup | null =
-        clientGroupViewService.getCreateClientGroupParams(
-            examStore.selectedExam.id,
-            groupNameField.value,
-            clientGroupTypeSelect.value,
-            startIpField.value,
-            endIpField.value,
-            clientOsField.value,
-            startLetterField.value,
-            endLetterField.value,
-        );
+    const clientGroup: ClientGroup | null = getCreateClientGroupParams(
+        examStore.selectedExam.id,
+        groupNameField.value,
+        clientGroupTypeSelect.value,
+        startIpField.value,
+        endIpField.value,
+        clientOsField.value,
+        startLetterField.value,
+        endLetterField.value,
+    );
 
     if (clientGroup == null) {
         return;
     }
 
     const createClientGroupResponse: ClientGroup | null =
-        await clientGroupViewService.createClientGroup(clientGroup);
+        await clientGroupService.createClientGroup(clientGroup);
 
     if (createClientGroupResponse == null) {
         return;

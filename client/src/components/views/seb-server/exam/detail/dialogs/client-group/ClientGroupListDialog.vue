@@ -164,7 +164,7 @@
 
 <script setup lang="ts">
 import { useExamStore } from "@/stores/seb-server/examStore";
-import * as clientGroupViewService from "@/services/seb-server/component-services/clientGroupViewService";
+import * as clientGroupService from "@/services/seb-server/clientGroupService";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
 import * as generalUtils from "@/utils/generalUtils";
@@ -242,7 +242,7 @@ onBeforeMount(async () => {
 
 async function getClientGroups() {
     const clientGroupResponse: ClientGroups | null =
-        await clientGroupViewService.getClientGroups(examId);
+        await clientGroupService.getClientGroups(examId);
 
     if (clientGroupResponse == null) {
         return;
@@ -293,7 +293,7 @@ async function deleteClientGroup(clientGroupId?: string) {
     }
 
     const deleteClientGroupResponse: undefined | null =
-        await clientGroupViewService.deleteClientGroup(clientGroupId);
+        await clientGroupService.deleteClientGroup(clientGroupId);
 
     if (deleteClientGroupResponse == null) {
         return;

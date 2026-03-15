@@ -13,7 +13,7 @@ import {
     LocationQueryRaw,
     LocationQueryValueRaw,
 } from "vue-router";
-import * as clientGroupViewService from "@/services/seb-server/component-services/clientGroupViewService";
+import * as clientGroupService from "@/services/seb-server/clientGroupService";
 import * as clientConnectionService from "@/services/seb-server/api-services/clientConnectionService";
 import {
     OptionalParGetExams,
@@ -390,7 +390,7 @@ export function goToMonitoringDetails(
 //= ===============data prep functions===============
 export async function getClientGroups(examId: string) {
     const clientGroupsResponse: ClientGroups | null =
-        await clientGroupViewService.getClientGroups(examId);
+        await clientGroupService.getClientGroups(examId);
     if (clientGroupsResponse == null) {
         return;
     }
