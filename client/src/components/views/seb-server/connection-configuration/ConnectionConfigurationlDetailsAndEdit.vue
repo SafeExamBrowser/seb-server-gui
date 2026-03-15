@@ -775,7 +775,6 @@ import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants";
 import * as connectionConfigurationService from "@/services/seb-server/connectionConfigurationService";
 import router from "@/router/router";
-import * as certificateViewService from "@/services/seb-server/component-services/certificateViewService";
 import moment from "moment-timezone";
 import * as userAccountService from "@/services/seb-server/userAccountService";
 
@@ -787,6 +786,7 @@ import {
 import SettingsNavigation from "@/components/views/seb-server/components/SettingsNavigation.vue";
 import AddCertificateDialog from "@/components/views/seb-server/certificates/AddCertificateDialog.vue";
 import { getConnectionConfiguration } from "@/services/seb-server/connectionConfigurationService.ts";
+import { getCertificates } from "@/services/seb-server/certificateService.ts";
 
 // Router
 const route = useRoute();
@@ -1387,8 +1387,7 @@ async function loadCertificates() {
     certificatesLoading.value = true;
     try {
         const optionalParams = { page_number: 1, page_size: 500 };
-        const response =
-            await certificateViewService.getCertificates(optionalParams);
+        const response = await getCertificates(optionalParams);
 
         const certAliases: { label: string; value: string }[] =
             response?.content?.map((c: { alias: string }) => ({

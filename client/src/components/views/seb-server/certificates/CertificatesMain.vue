@@ -296,7 +296,7 @@ import { useAppBarStore, useLayoutStore } from "@/stores/store";
 import { translate } from "@/utils/generalUtils";
 import * as tableUtils from "@/utils/table/tableUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
-import * as certificateViewService from "@/services/seb-server/component-services/certificateViewService";
+import * as certificateService from "@/services/seb-server/certificateService";
 import { useCertificateStore } from "@/stores/seb-server/certificateStore";
 import * as timeUtils from "@/utils/timeUtils";
 import { CertificateTypeEnum } from "@/models/seb-server/certificateTypeEnum";
@@ -402,8 +402,7 @@ async function loadItems(serverTablePaging: ServerTablePaging) {
             : null,
     );
 
-    const response =
-        await certificateViewService.getCertificates(optionalParams);
+    const response = await certificateService.getCertificates(optionalParams);
 
     isLoading.value = false;
     if (!response) return;
@@ -438,7 +437,7 @@ function openDeleteDialog(certificate: Certificate) {
 
 async function confirmDelete() {
     if (certificateToDelete.value) {
-        const response = await certificateViewService.deleteCertificate(
+        const response = await certificateService.deleteCertificate(
             certificateToDelete.value.alias,
         );
         if (response !== null) {

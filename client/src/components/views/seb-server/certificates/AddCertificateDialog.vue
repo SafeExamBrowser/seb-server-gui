@@ -177,9 +177,9 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import { translate } from "@/utils/generalUtils";
-import * as certificateViewService from "@/services/seb-server/component-services/certificateViewService";
 import { useI18n } from "vue-i18n";
 import { CreateCertificatePar } from "@/models/seb-server/certificate";
+import { createCertificate } from "@/services/seb-server/certificateService.ts";
 
 const password = ref<string>("");
 const passwordVisible = ref<boolean>(false);
@@ -289,7 +289,7 @@ async function doUpload() {
         uploadError.value = "";
         uploading.value = true;
         uploadProgress.value = 30;
-        const res = await certificateViewService.createCertificate({
+        const res = await createCertificate({
             file: selectedFile.value,
             fileName: selectedFile.value.name,
             password: password.value || undefined,
