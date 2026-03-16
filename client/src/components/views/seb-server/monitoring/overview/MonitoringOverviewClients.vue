@@ -38,7 +38,7 @@
                                     :ripple="false"
                                     variant="flat"
                                     @click="
-                                        monitoringViewService.goToMonitoring(
+                                        goToMonitoring(
                                             MonitoringHeaderEnum.SHOW_STATES,
                                             state!,
                                             examId,
@@ -85,7 +85,7 @@
                                 :ripple="false"
                                 variant="flat"
                                 @click="
-                                    monitoringViewService.goToMonitoring(
+                                    goToMonitoring(
                                         MonitoringHeaderEnum.SHOW_STATES,
                                         ConnectionStatusEnum.MISSING,
                                         examId,
@@ -129,11 +129,11 @@ import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import { translate } from "@/utils/generalUtils";
 import * as generalUtils from "@/utils/generalUtils";
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum";
-import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
 import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums";
 import { useI18n } from "vue-i18n";
 import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
+import { goToMonitoring } from "@/components/views/seb-server/monitoring/composables/useMonitoringNavigation.ts";
 
 // i18n
 const i18n = useI18n();

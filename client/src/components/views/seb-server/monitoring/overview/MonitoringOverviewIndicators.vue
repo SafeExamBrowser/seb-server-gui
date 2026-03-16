@@ -20,7 +20,7 @@
                     :ripple="false"
                     variant="flat"
                     @click="
-                        monitoringViewService.goToMonitoring(
+                        goToMonitoring(
                             MonitoringHeaderEnum.SHOW_INDICATORS,
                             IndicatorEnum.BATTERY_STATUS,
                             examId,
@@ -88,7 +88,7 @@
                     :ripple="false"
                     variant="flat"
                     @click="
-                        monitoringViewService.goToMonitoring(
+                        goToMonitoring(
                             MonitoringHeaderEnum.SHOW_INDICATORS,
                             IndicatorEnum.WLAN_STATUS,
                             examId,
@@ -153,8 +153,8 @@ import {
 } from "@/models/seb-server/monitoringEnums";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import { translate } from "@/utils/generalUtils";
-import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
 import { useRoute } from "vue-router";
+import { goToMonitoring } from "@/components/views/seb-server/monitoring/composables/useMonitoringNavigation.ts";
 
 const examId = useRoute().params.examId.toString();
 const monitoringStore = useMonitoringStore();

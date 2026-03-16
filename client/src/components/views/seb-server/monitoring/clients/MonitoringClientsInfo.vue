@@ -481,7 +481,6 @@ import { translate } from "@/utils/generalUtils";
 import { storeToRefs } from "pinia";
 import * as generalUtils from "@/utils/generalUtils";
 import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums";
-import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
 import { LocationQuery, useRoute } from "vue-router";
 import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants";
@@ -491,6 +490,7 @@ import { ref } from "vue";
 import { ErrorProps } from "@/models/alertProps";
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum";
 import InstructionConfirmDialog from "@/components/views/seb-server/monitoring/dialogs/InstructionConfirmDialog.vue";
+import * as useMonitoringNavigation from "@/components/views/seb-server/monitoring/composables/useMonitoringNavigation.ts";
 
 // info panel (whole component)
 const isInfoExpanded = ref<boolean>(true);
@@ -549,7 +549,7 @@ function loadMonitoringListItemsCaller() {
 }
 
 function clearFilters() {
-    monitoringViewService.applyShowAllFilter();
+    useMonitoringNavigation.applyShowAllFilter();
     emit("updatePageInfo");
 }
 
@@ -578,7 +578,7 @@ function applyFilterInternal(
     filterType: MonitoringHeaderEnum,
     filterValue: string,
 ) {
-    monitoringViewService.applyFilter(
+    useMonitoringNavigation.applyFilter(
         getCurrentRouteQueries(),
         filterType,
         filterValue,

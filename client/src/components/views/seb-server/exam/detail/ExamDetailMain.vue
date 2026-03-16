@@ -922,7 +922,7 @@ import * as examService from "@/services/seb-server/examService";
 import * as sebSettingsService from "@/services/seb-server/sebSettingsService";
 import * as assessmentToolService from "@/services/seb-server/assessmentToolService";
 import * as examTemplateService from "@/services/seb-server/examTemplateService";
-import * as monitoringService from "@/services/seb-server/api-services/monitoringService.ts";
+import * as monitoringService from "@/services/seb-server/monitoringService.ts";
 import * as connectionConfigurationService from "@/services/seb-server/connectionConfigurationService";
 
 import * as userAccountService from "@/services/seb-server/userAccountService";

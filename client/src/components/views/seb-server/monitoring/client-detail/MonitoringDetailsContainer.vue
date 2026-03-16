@@ -13,8 +13,6 @@
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import { useAppBarStore } from "@/stores/store";
 import { translate } from "@/utils/generalUtils";
-import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
-
 import * as monitoringService from "@/services/seb-server/monitoringService";
 import * as indicatorService from "@/services/seb-server/indicatorService";
 import { useRoute } from "vue-router";
@@ -26,6 +24,8 @@ import {
 import { Indicators } from "@/models/seb-server/indicators";
 import MonitoringDetailsMain from "@/components/views/seb-server/monitoring/client-detail/MonitoringDetailsMain.vue";
 import MonitoringDetailsInfo from "@/components/views/seb-server/monitoring/client-detail/MonitoringDetailsInfo.vue";
+import * as useMonitoringData from "@/components/views/seb-server/monitoring/composables/useMonitoringData.ts";
+import { extractClientGroupNames } from "@/components/views/seb-server/monitoring/utils/monitoringUtils.ts";
 
 // route params
 const examId = useRoute().params.examId.toString();
@@ -49,8 +49,8 @@ onBeforeMount(async () => {
 
     await getSingleConnection();
     await getIndicators();
-    await monitoringViewService.getExamAndStore(examId);
-    await monitoringViewService.getClientGroups(examId);
+    await useMonitoringData.getExamAndStore(examId);
+    await useMonitoringData.getClientGroups(examId);
     await getPendingNotifications();
     storeClientGroups();
 
@@ -124,10 +124,9 @@ async function storeClientGroups() {
         return;
     }
 
-    monitoringStore.clientGroupsSingle =
-        monitoringViewService.extractClientGroupNames(
-            monitoringStore.selectedSingleConn.cg,
-        );
+    monitoringStore.clientGroupsSingle = extractClientGroupNames(
+        monitoringStore.selectedSingleConn.cg,
+    );
 }
 
 //= ================interval===================

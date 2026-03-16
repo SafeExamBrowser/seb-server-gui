@@ -1,8 +1,8 @@
 <template>
     <AlertMsg
-        v-if="monitoringViewService.isMonitoringDisabled()"
+        v-if="isMonitoringDisabled()"
         :alert-props="{
-            title: monitoringViewService.getMonitoringDisabledWarningText(),
+            title: getMonitoringDisabledWarningText(),
             color: 'warning',
             type: 'alert',
             customText: '',
@@ -64,7 +64,6 @@
 </template>
 
 <script setup lang="ts">
-import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import { translate } from "@/utils/generalUtils";
 import { useAppBarStore } from "@/stores/store";
@@ -79,6 +78,11 @@ import MonitoringOverviewClients from "@/components/views/seb-server/monitoring/
 import MonitoringOverviewNotifications from "@/components/views/seb-server/monitoring/overview/MonitoringOverviewNotifications.vue";
 import MonitoringOverviewGroups from "@/components/views/seb-server/monitoring/overview/MonitoringOverviewGroups.vue";
 import * as monitoringService from "@/services/seb-server/monitoringService";
+import * as useMonitoringData from "@/components/views/seb-server/monitoring/composables/useMonitoringData.ts";
+import {
+    getMonitoringDisabledWarningText,
+    isMonitoringDisabled,
+} from "@/components/views/seb-server/monitoring/utils/monitoringUtils.ts";
 
 // exam
 const examId = useRoute().params.examId.toString();
@@ -94,10 +98,10 @@ const REFRESH_INTERVAL = 5000;
 
 onBeforeMount(async () => {
     appBarStore.title = translate("titles.monitoring");
-    await monitoringViewService.getExamAndStore(examId);
+    await useMonitoringData.getExamAndStore(examId);
     await getIndicatorData();
     await getOverviewData();
-    await monitoringViewService.getAskAndStore(examId);
+    await useMonitoringData.getAskAndStore(examId);
     await startIntervalRefresh();
 });
 

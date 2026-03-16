@@ -11,8 +11,8 @@
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import { useAppBarStore } from "@/stores/store";
 import { translate } from "@/utils/generalUtils";
-import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
 import * as monitoringService from "@/services/seb-server/monitoringService";
+import * as useMonitoringData from "@/components/views/seb-server/monitoring/composables/useMonitoringData.ts";
 
 import * as indicatorService from "@/services/seb-server/indicatorService";
 import MonitoringClientsMain from "@/components/views/seb-server/monitoring/clients/MonitoringClientsMain.vue";
@@ -43,11 +43,11 @@ onBeforeMount(async () => {
     appBarStore.title = translate("titles.monitoring");
 
     if (monitoringStore.selectedExam == null) {
-        await monitoringViewService.getExamAndStore(examId);
+        await useMonitoringData.getExamAndStore(examId);
     }
 
     await getIndicators();
-    await monitoringViewService.getClientGroups(examId);
+    await useMonitoringData.getClientGroups(examId);
     await getOverviewData();
 
     startIntervalRefresh();

@@ -167,7 +167,7 @@
                                     icon="mdi-chevron-right"
                                     style="font-size: 30px"
                                     @click="
-                                        monitoringViewService.goToMonitoringDetails(
+                                        goToMonitoringDetails(
                                             examId,
                                             item.connectionToken,
                                             route.query,
@@ -197,8 +197,6 @@
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import { useTableStore } from "@/stores/store";
 import { translate } from "@/utils/generalUtils";
-import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
-
 import * as generalUtils from "@/utils/generalUtils";
 import * as monitoringService from "@/services/seb-server/monitoringService";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
@@ -227,6 +225,8 @@ import {
 import { Indicator } from "@/models/seb-server/indicators";
 import { ClientGroup } from "@/models/seb-server/clientGroup";
 import ClientGroupInfoDialog from "@/components/views/seb-server/monitoring/dialogs/ClientGroupInfoDialog.vue";
+import { goToMonitoringDetails } from "@/components/views/seb-server/monitoring/composables/useMonitoringNavigation.ts";
+import { extractClientGroupNames } from "@/components/views/seb-server/monitoring/utils/monitoringUtils.ts";
 
 // exam
 const examId = useRoute().params.examId.toString();
@@ -562,9 +562,7 @@ function createMonitoringRowData(
         id: fullPageDataConnection.id,
         connectionToken: staticClientData.connectionToken,
         nameOrSession: staticClientData.examUserSessionId,
-        clientGroups: monitoringViewService.extractClientGroupNames(
-            staticClientData.cg,
-        ),
+        clientGroups: extractClientGroupNames(staticClientData.cg),
         connectionInfo: staticClientData.seb_info,
         status: fullPageDataConnection.st,
         missing: (fullPageDataConnection.nf & 1) > 0,
