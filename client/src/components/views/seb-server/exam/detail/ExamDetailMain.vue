@@ -1279,7 +1279,7 @@ async function downloadExamConfig(connectionId: string) {
         examStore.selectedExam.id.toString(),
         connectionId,
     );
-    // trigger pre-commit checkk
+    // trigger pre-commit checkkk
 
     if (blobResponse == null) {
         return;
