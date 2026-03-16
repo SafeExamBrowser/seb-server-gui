@@ -1,8 +1,5 @@
 import { SortOrder } from "@/models/screen-proctoring/sortOrderEnum";
-import {
-    MetaData,
-    ScreenshotData,
-} from "@/models/screen-proctoring/session.ts";
+import { MetaData } from "@/models/screen-proctoring/session.ts";
 import * as spConstants from "@/utils/sp-constants.ts";
 
 export function buildGroupQueryParams(
@@ -36,15 +33,4 @@ export function getScreenshotMetadata(
 
 export function calcIndex(i: number, n: number, gridSize: number): number {
     return (i - 1) * gridSize + (n - 1);
-}
-
-export function currentIndexExists(
-    screenshots: ScreenshotData[] | undefined,
-    index: number,
-): boolean {
-    if (screenshots != null && screenshots.length > index) {
-        return true;
-    }
-
-    return false;
 }

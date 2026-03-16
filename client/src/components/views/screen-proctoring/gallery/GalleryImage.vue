@@ -260,7 +260,7 @@ import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
 import { useRoute } from "vue-router";
 import { ScreenshotData } from "@/models/screen-proctoring/session";
-import { navigateToProctoringView } from "@/components/views/screen-proctoring/gallery/composables/useNavigateToProctoringView.ts";
+import { navigateToProctoringView } from "@/components/views/screen-proctoring/gallery/utils/galleryNavigation.ts";
 import * as galleryUtils from "@/components/views/screen-proctoring/gallery/utils/galleryUtils.ts";
 
 // props
