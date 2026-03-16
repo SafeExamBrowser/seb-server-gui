@@ -10,13 +10,17 @@ const api = axios.create({
 const getAuthHeaderValueByUrl = (url: string) =>
     `Bearer ${useAuthStore().getStorageItem(url.startsWith("/proctoring") ? StorageItemEnum.SP_ACCESS_TOKEN : StorageItemEnum.ACCESS_TOKEN)}`;
 
-export const getApiForManualRequests = () => api;
-
-export const getRequest = (url: string, options?: AxiosRequestConfig) => {
+export const getRequest = (
+    url: string,
+    options?: AxiosRequestConfig,
+    includeAuthHeader = true,
+) => {
     const defaultOptions: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
-            Authorization: getAuthHeaderValueByUrl(url),
+            ...(includeAuthHeader
+                ? { Authorization: getAuthHeaderValueByUrl(url) }
+                : {}),
         },
     };
 
@@ -27,11 +31,14 @@ export const postRequest = <T>(
     url: string,
     data?: T,
     options?: AxiosRequestConfig,
+    includeAuthHeader = true,
 ) => {
     const defaultOptions: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
-            Authorization: getAuthHeaderValueByUrl(url),
+            ...(includeAuthHeader
+                ? { Authorization: getAuthHeaderValueByUrl(url) }
+                : {}),
             "Content-Type": "application/x-www-form-urlencoded",
         },
     };
@@ -43,11 +50,14 @@ export const putRequest = <T>(
     url: string,
     data?: T,
     options?: AxiosRequestConfig,
+    includeAuthHeader = true,
 ) => {
     const defaultOptions: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
-            Authorization: getAuthHeaderValueByUrl(url),
+            ...(includeAuthHeader
+                ? { Authorization: getAuthHeaderValueByUrl(url) }
+                : {}),
             "Content-Type": "application/json",
         },
     };
@@ -59,11 +69,14 @@ export const patchRequest = <T>(
     url: string,
     data?: T,
     options?: AxiosRequestConfig,
+    includeAuthHeader = true,
 ) => {
     const defaultOptions: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
-            Authorization: getAuthHeaderValueByUrl(url),
+            ...(includeAuthHeader
+                ? { Authorization: getAuthHeaderValueByUrl(url) }
+                : {}),
             "Content-Type": "application/json",
         },
     };
@@ -71,11 +84,17 @@ export const patchRequest = <T>(
     return api.patch(url, data ?? null, merge({}, defaultOptions, options));
 };
 
-export const deleteRequest = <T>(url: string, data?: T) => {
+export const deleteRequest = <T>(
+    url: string,
+    data?: T,
+    includeAuthHeader = true,
+) => {
     return api.delete(url, {
         headers: {
             Accept: "application/json",
-            Authorization: getAuthHeaderValueByUrl(url),
+            ...(includeAuthHeader
+                ? { Authorization: getAuthHeaderValueByUrl(url) }
+                : {}),
             "Content-Type": "application/x-www-form-urlencoded",
         },
         data: data ?? null,

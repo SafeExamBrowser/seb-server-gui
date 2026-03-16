@@ -18,11 +18,16 @@ export const registerUserAccount = async (
     payload: RegisterUserAccountParams,
 ): Promise<UserAccount> =>
     (
-        await apiService.getApiForManualRequests().post(`/register`, payload, {
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
+        await apiService.postRequest(
+            `/register`,
+            payload,
+            {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
             },
-        })
+            false,
+        )
     ).data;
 
 export const changePassword = async (

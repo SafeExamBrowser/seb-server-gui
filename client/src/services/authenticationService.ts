@@ -20,10 +20,15 @@ export const authorize = async (
     }).toString();
 
     return (
-        await apiService.getApiForManualRequests().post("/authorize", body, {
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
+        await apiService.postRequest(
+            "/authorize",
+            body,
+            {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
             },
-        })
+            false,
+        )
     ).data;
 };
