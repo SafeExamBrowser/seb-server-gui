@@ -218,9 +218,9 @@ import * as timeUtils from "@/utils/timeUtils";
 import { useAppBarStore } from "@/stores/store";
 import { useFullscreen } from "@vueuse/core";
 import * as linkService from "@/services/screen-proctoring/component-services/linkService";
-import * as applicationsSearchViewService from "@/services/screen-proctoring/component-services/applicationsSearchViewService";
 import * as spConstants from "@/utils/sp-constants";
 import { ScreenshotData } from "@/models/screen-proctoring/session";
+import { getTimestampListForApplicationSearch } from "@/services/screen-proctoring/applicationsSearchService.ts";
 
 // slider
 const sliderTime = ref<number>(0);
@@ -338,7 +338,7 @@ watch(sliderTime, async () => {
 //= ============screenshot list logic==================
 async function setTimestampsList() {
     const timestamps: number[] | null =
-        await applicationsSearchViewService.getTimestampListForApplicationSearch(
+        await getTimestampListForApplicationSearch(
             sessionId,
             metadataApp.toString(),
             metadataWindow.toString(),
