@@ -7,7 +7,7 @@ import {
     GrantedAppSignatureKey,
 } from "@/models/seb-server/appSignatureKey.ts";
 import * as examService from "@/services/seb-server/examService";
-import * as clientConnectionService from "@/services/seb-server/api-services/clientConnectionService";
+import * as clientConnectionService from "@/services/seb-server/clientConnectionService";
 import { ClientGroups } from "@/models/seb-server/clientGroup.ts";
 import * as clientGroupService from "@/services/seb-server/clientGroupService.ts";
 
