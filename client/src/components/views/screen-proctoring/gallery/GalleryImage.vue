@@ -33,7 +33,7 @@
                                         <v-row
                                             v-for="(
                                                 value, key
-                                            ) in galleryViewService.getScreenshotMetadata(
+                                            ) in galleryUtils.getScreenshotMetadata(
                                                 screenshot.metaData,
                                             )"
                                             :key="key"
@@ -104,7 +104,7 @@
                                     size="small"
                                     variant="flat"
                                     @click="
-                                        galleryViewService.navigateToProctoringView(
+                                        navigateToProctoringView(
                                             screenshot,
                                             examId,
                                         )
@@ -190,7 +190,7 @@
                                                         <tr
                                                             v-for="(
                                                                 value, key
-                                                            ) in galleryViewService.getScreenshotMetadata(
+                                                            ) in galleryUtils.getScreenshotMetadata(
                                                                 screenshot.metaData,
                                                             )"
                                                             :key="key"
@@ -234,7 +234,7 @@
                                         size="small"
                                         variant="flat"
                                         @click="
-                                            galleryViewService.navigateToProctoringView(
+                                            navigateToProctoringView(
                                                 screenshot,
                                                 groupUuid,
                                             )
@@ -254,13 +254,14 @@
 
 <script setup lang="ts">
 import { computed, onBeforeMount, ref } from "vue";
-import * as galleryViewService from "@/services/screen-proctoring/component-services/galleryViewService";
 import * as linkService from "@/services/screen-proctoring/component-services/linkService";
 import { useAppBarStore, useGalleryStore } from "@/stores/store";
 import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
 import { useRoute } from "vue-router";
 import { ScreenshotData } from "@/models/screen-proctoring/session";
+import { navigateToProctoringView } from "@/components/views/screen-proctoring/gallery/composables/useNavigateToProctoringView.ts";
+import * as galleryUtils from "@/components/views/screen-proctoring/gallery/utils/galleryUtils.ts";
 
 // props
 const props = defineProps<{

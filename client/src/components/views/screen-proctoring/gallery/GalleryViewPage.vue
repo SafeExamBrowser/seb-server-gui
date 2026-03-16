@@ -57,7 +57,7 @@
                         <GalleryImage
                             :group-uuid="groupUuid"
                             :index="
-                                galleryViewService.calcIndex(
+                                galleryUtils.calcIndex(
                                     i,
                                     n,
                                     appBarStore.galleryGridSize.value,
@@ -65,7 +65,7 @@
                             "
                             :screenshot="
                                 group?.screenshots[
-                                    galleryViewService.calcIndex(
+                                    galleryUtils.calcIndex(
                                         i,
                                         n,
                                         appBarStore.galleryGridSize.value,
@@ -95,7 +95,6 @@
 <script setup lang="ts">
 import { onBeforeMount, onBeforeUnmount, ref, watch } from "vue";
 import { useRoute } from "vue-router";
-import * as galleryViewService from "@/services/screen-proctoring/component-services/galleryViewService";
 import { useAppBarStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
 import GalleryImage from "./GalleryImage.vue";
@@ -106,6 +105,10 @@ import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants";
 import { translate } from "@/utils/generalUtils";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
+import { getGroupByUuid } from "@/services/screen-proctoring/groupService";
+import * as galleryUtils from "@/components/views/screen-proctoring/gallery/utils/galleryUtils.ts";
+
+import { getScreenshotDataByTimestamp } from "@/services/screen-proctoring/screenshotDataService.ts";
 
 // reactive variables
 const group = ref<GroupUuid | null>();
@@ -134,12 +137,13 @@ let intervalImageUrl: ReturnType<typeof setInterval> | null = null;
 
 //= ============lifecycle and watchers==================
 onBeforeMount(async () => {
-    // todo: add error handling
-    group.value = await galleryViewService.getGroup(
+    group.value = await getGroupByUuid(
         groupUuid,
-        currentWindow.value,
-        appBarStore.galleryGridSize.value,
-        sortOrder.value,
+        galleryUtils.buildGroupQueryParams(
+            currentWindow.value,
+            appBarStore.galleryGridSize.value,
+            sortOrder.value,
+        ),
     );
 
     if (group.value) {
@@ -159,11 +163,13 @@ onBeforeUnmount(() => {
 });
 
 watch(appBarStoreRef.galleryGridSize, async () => {
-    group.value = await galleryViewService.getGroup(
+    group.value = await getGroupByUuid(
         groupUuid,
-        currentWindow.value,
-        appBarStore.galleryGridSize.value,
-        sortOrder.value,
+        galleryUtils.buildGroupQueryParams(
+            currentWindow.value,
+            appBarStore.galleryGridSize.value,
+            sortOrder.value,
+        ),
     );
     assignData();
     currentWindow.value = 0;
@@ -187,11 +193,13 @@ watch(appBarStoreRef.galleryIsNameSortAsc, async () => {
         sortOrder.value = SortOrder.desc;
     }
 
-    group.value = await galleryViewService.getGroup(
+    group.value = await getGroupByUuid(
         groupUuid,
-        currentWindow.value,
-        appBarStore.galleryGridSize.value,
-        sortOrder.value,
+        galleryUtils.buildGroupQueryParams(
+            currentWindow.value,
+            appBarStore.galleryGridSize.value,
+            sortOrder.value,
+        ),
     );
     assignData();
     currentWindow.value = 0;
@@ -245,11 +253,13 @@ function updateInfoData() {
 
 //= ====window functions======
 async function windowChange() {
-    group.value = await galleryViewService.getGroup(
+    group.value = await getGroupByUuid(
         groupUuid,
-        currentWindow.value,
-        appBarStore.galleryGridSize.value,
-        sortOrder.value,
+        galleryUtils.buildGroupQueryParams(
+            currentWindow.value,
+            appBarStore.galleryGridSize.value,
+            sortOrder.value,
+        ),
     );
     assignData();
 }
@@ -274,11 +284,13 @@ function calcAmountOfWindows() {
 //= ============interval==================
 function startIntervalGroup() {
     intervalGroup = setInterval(async () => {
-        group.value = await galleryViewService.getGroup(
+        group.value = await getGroupByUuid(
             groupUuid,
-            currentWindow.value,
-            appBarStore.galleryGridSize.value,
-            sortOrder.value,
+            galleryUtils.buildGroupQueryParams(
+                currentWindow.value,
+                appBarStore.galleryGridSize.value,
+                sortOrder.value,
+            ),
         );
         assignData();
     }, GROUP_INTERVAL);
@@ -302,9 +314,9 @@ function startIntervalImageUrl() {
         ) {
             for (let i = 0; i < group.value?.screenshots.length; i++) {
                 const screenshot: ScreenshotData | null =
-                    await galleryViewService.getLatestScreenshotData(
+                    await getScreenshotDataByTimestamp(
                         group.value.screenshots[i].uuid,
-                        timestamp.value,
+                        timestamp.value.toString(),
                     );
                 const metaData: MetaData | undefined = screenshot?.metaData;
                 group.value.screenshots[i].metaData =
