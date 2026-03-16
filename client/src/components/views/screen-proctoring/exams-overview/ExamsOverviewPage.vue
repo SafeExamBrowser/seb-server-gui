@@ -108,7 +108,7 @@
 
 <script setup lang="ts">
 import { onBeforeMount, onUnmounted, ref, watch } from "vue";
-import * as examsOverviewViewService from "@/services/screen-proctoring/component-services/examsOverviewViewService";
+import * as groupService from "@/services/screen-proctoring/groupService";
 import { useAppBarStore } from "@/stores/store";
 import * as timeUtils from "@/utils/timeUtils";
 import * as tableUtils from "@/utils/table/tableUtils";
@@ -154,12 +154,11 @@ watch(appBarStoreRef.examOverviewShowUpcomingExams, async () => {
 async function getGroups() {
     errorAvailable.value = false;
 
-    const groupsResponse: GroupObject | null =
-        await examsOverviewViewService.getGroups({
-            pageSize: 500,
-            includePastExams: appBarStore.examOverviewShowPastExams,
-            includeUpcomingExams: appBarStore.examOverviewShowUpcomingExams,
-        });
+    const groupsResponse: GroupObject | null = await groupService.getGroups({
+        pageSize: 500,
+        includePastExams: appBarStore.examOverviewShowPastExams,
+        includeUpcomingExams: appBarStore.examOverviewShowUpcomingExams,
+    });
 
     if (groupsResponse == null) {
         errorAvailable.value = true;

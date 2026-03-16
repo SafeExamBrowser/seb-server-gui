@@ -1,4 +1,3 @@
-import * as groupService from "@/services/screen-proctoring/api-services/groupService";
 import * as screenshotDataService from "@/services/screen-proctoring/api-services/screenshotDataService";
 import { SortOrder } from "@/models/screen-proctoring/sortOrderEnum";
 import { openUrlInNewTab } from "@/router/navigation";
@@ -6,6 +5,7 @@ import * as spConstants from "@/utils/sp-constants";
 import * as constants from "@/utils/constants";
 import { MetaData, ScreenshotData } from "@/models/screen-proctoring/session";
 import { GroupUuid } from "@/models/screen-proctoring/group";
+import { getGroupByUuid } from "@/services/screen-proctoring/groupService";
 
 //= ============api==============
 export async function getGroup(
@@ -15,7 +15,7 @@ export async function getGroup(
     sortOrder: SortOrder,
 ): Promise<GroupUuid | null> {
     try {
-        return await groupService.getGroupByUuid(groupUuid, {
+        return await getGroupByUuid(groupUuid, {
             pageNumber: (currentWindow += 1),
             pageSize: Math.pow(pageSize, 2),
             sortOrder,
