@@ -346,8 +346,6 @@ import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums";
 import * as generalUtils from "@/utils/generalUtils";
 import * as linkService from "@/services/screen-proctoring/component-services/linkService";
 import * as navigation from "@/router/navigation";
-import { useAuthStore } from "@/stores/authentication/authenticationStore";
-import { StorageItemEnum } from "@/models/StorageItemEnum";
 import { useRoute } from "vue-router";
 import { computed } from "vue";
 import type { ComputedRef } from "vue";
@@ -356,7 +354,6 @@ import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum";
 
 // stores
 const monitoringStore = useMonitoringStore();
-const authStore = useAuthStore();
 
 // exam
 const examId = useRoute().params.examId.toString();
@@ -408,10 +405,7 @@ const isSPGroupAvailable: ComputedRef<boolean> = computed(() => {
 const isScreenProctoringAvailable: ComputedRef<boolean> = computed(() => {
     return (
         monitoringStore.selectedExam?.additionalAttributes
-            .enableScreenProctoring === "true" &&
-        generalUtils.stringToBoolean(
-            authStore.getStorageItem(StorageItemEnum.IS_SP_AVAILABLE),
-        )
+            .enableScreenProctoring === "true"
     );
 });
 

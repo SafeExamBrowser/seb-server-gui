@@ -324,7 +324,7 @@
                                 class="logout-wrap text-caption font-weight-light d-flex align-center"
                                 data-testid="layout-logout-button"
                                 variant="text"
-                                @click="authStore.logout()"
+                                @click="useLogout().logout()"
                             >
                                 <span class="text-grey-lighten-2 mr-1"
                                     >Log out</span
@@ -464,7 +464,6 @@ import {
 } from "@/stores/store";
 import {
     useUserAccountStore as useAuthenticatedUserAccountStore,
-    useAuthStore,
     useUserAccountStore,
 } from "@/stores/authentication/authenticationStore";
 import { useTheme } from "vuetify";
@@ -480,6 +479,7 @@ import { computed } from "vue";
 import { GridSize, NavigationItem } from "@/models/types";
 import { Institution } from "@/models/seb-server/institution";
 import ToastContainer from "@/components/views/seb-server/toast/ToastContainer.vue";
+import { useLogout } from "@/composables/useLogout";
 
 // i18n
 const { locale } = useI18n();
@@ -527,7 +527,6 @@ const gridSizes: GridSize[] = [
 ];
 
 // stores
-const authStore = useAuthStore();
 const appBarStore = useAppBarStore();
 const userAccountStore = useUserAccountStore();
 const navigationStore = useNavigationStore();

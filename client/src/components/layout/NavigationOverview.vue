@@ -142,15 +142,7 @@
                         <v-col cols="3">
                             <h4 class="text-subtitle-1 font-weight-bold mb-3">
                                 {{
-                                    generalUtils.stringToBoolean(
-                                        authStore.getStorageItem(
-                                            StorageItemEnum.IS_SP_AVAILABLE,
-                                        ),
-                                    )
-                                        ? `${translate("titles.monitoring").toUpperCase()} / ${translate("titles.screenProctoring").toUpperCase()}`
-                                        : translate(
-                                              "titles.monitoring",
-                                          ).toUpperCase()
+                                    `${translate("titles.monitoring").toUpperCase()} / ${translate("titles.screenProctoring").toUpperCase()}`
                                 }}
                             </h4>
 
@@ -171,65 +163,44 @@
                             </v-list-item>
 
                             <v-divider
-                                :class="[
-                                    'section-divider',
-                                    generalUtils.stringToBoolean(
-                                        authStore.getStorageItem(
-                                            StorageItemEnum.IS_SP_AVAILABLE,
-                                        ),
-                                    )
-                                        ? 'thick-divider'
-                                        : '',
-                                ]"
+                                :class="['section-divider thick-divider']"
                             />
 
-                            <template
-                                v-if="
-                                    generalUtils.stringToBoolean(
-                                        authStore.getStorageItem(
-                                            StorageItemEnum.IS_SP_AVAILABLE,
-                                        ),
-                                    )
-                                "
-                            >
-                                <v-list-item class="px-0 nav-hover">
-                                    <router-link
-                                        class="link-color nav-link"
-                                        data-testid="navigationOverview-screenProctoring-link"
-                                        :to="spConstants.RUNNING_EXAMS_ROUTE"
-                                    >
-                                        {{
-                                            translate("titles.screenProctoring")
-                                        }}
-                                    </router-link>
-                                </v-list-item>
+                            <v-list-item class="px-0 nav-hover">
+                                <router-link
+                                    class="link-color nav-link"
+                                    data-testid="navigationOverview-screenProctoring-link"
+                                    :to="spConstants.RUNNING_EXAMS_ROUTE"
+                                >
+                                    {{ translate("titles.screenProctoring") }}
+                                </router-link>
+                            </v-list-item>
 
-                                <v-divider class="section-divider" />
+                            <v-divider class="section-divider" />
 
-                                <v-list-item class="px-0 nav-hover">
-                                    <router-link
-                                        class="link-color nav-link"
-                                        data-testid="navigationOverview-spSearch-link"
-                                        :to="spConstants.SEARCH_ROUTE"
-                                    >
-                                        {{ translate("titles.spSearch") }}
-                                    </router-link>
-                                </v-list-item>
+                            <v-list-item class="px-0 nav-hover">
+                                <router-link
+                                    class="link-color nav-link"
+                                    data-testid="navigationOverview-spSearch-link"
+                                    :to="spConstants.SEARCH_ROUTE"
+                                >
+                                    {{ translate("titles.spSearch") }}
+                                </router-link>
+                            </v-list-item>
 
-                                <v-divider class="section-divider" />
+                            <v-divider class="section-divider" />
 
-                                <v-list-item class="px-0 nav-hover">
-                                    <router-link
-                                        class="link-color nav-link"
-                                        data-testid="navigationOverview-spApplications-link"
-                                        :to="spConstants.APPLICATIONS_ROUTE"
-                                    >
-                                        {{ translate("titles.spApplications") }}
-                                    </router-link>
-                                </v-list-item>
+                            <v-list-item class="px-0 nav-hover">
+                                <router-link
+                                    class="link-color nav-link"
+                                    data-testid="navigationOverview-spApplications-link"
+                                    :to="spConstants.APPLICATIONS_ROUTE"
+                                >
+                                    {{ translate("titles.spApplications") }}
+                                </router-link>
+                            </v-list-item>
 
-                                <v-divider class="section-divider mb-16" />
-                            </template>
+                            <v-divider class="section-divider mb-16" />
                         </v-col>
 
                         <!-- Follow Up -->
@@ -272,13 +243,9 @@ import * as constants from "@/utils/constants";
 import * as spConstants from "@/utils/sp-constants";
 import { onBeforeMount, onMounted, onUnmounted } from "vue";
 import { translate } from "@/utils/generalUtils";
-import * as generalUtils from "@/utils/generalUtils";
-import { useAuthStore } from "@/stores/authentication/authenticationStore";
-import { StorageItemEnum } from "@/models/StorageItemEnum";
 
 const appBarStore = useAppBarStore();
 const navigationStore = useNavigationStore();
-const authStore = useAuthStore();
 
 onBeforeMount(() => {
     appBarStore.title = translate("titles.navigationOverview");

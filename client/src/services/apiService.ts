@@ -1,14 +1,19 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { merge } from "lodash";
-import { useAuthStore } from "@/stores/authentication/authenticationStore";
-import { StorageItemEnum } from "@/models/StorageItemEnum";
+import { useAuthStore } from "@/composables/store/useAuthStore";
 
 const api = axios.create({
     baseURL: "/api",
 });
 
-const getAuthHeaderValueByUrl = (url: string) =>
-    `Bearer ${useAuthStore().getStorageItem(url.startsWith("/proctoring") ? StorageItemEnum.SP_ACCESS_TOKEN : StorageItemEnum.ACCESS_TOKEN)}`;
+const getAuthHeaderValueByUrl = (url: string) => {
+    const authStore = useAuthStore();
+    if (url.startsWith("/proctoring")) {
+        return `Bearer ${authStore.spAccessToken}`;
+    }
+
+    return `Bearer ${authStore.sebAccessToken}`;
+};
 
 export const getRequest = (
     url: string,
