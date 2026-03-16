@@ -1279,6 +1279,7 @@ async function downloadExamConfig(connectionId: string) {
         examStore.selectedExam.id.toString(),
         connectionId,
     );
+    // trigger pre-commit check
 
     if (blobResponse == null) {
         return;
