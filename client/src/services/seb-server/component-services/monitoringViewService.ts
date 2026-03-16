@@ -1,4 +1,3 @@
-import * as monitoringService from "@/services/seb-server/api-services/monitoringService";
 import * as generalUtils from "@/utils/generalUtils";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum";
@@ -15,21 +14,8 @@ import {
 } from "vue-router";
 import * as clientGroupService from "@/services/seb-server/clientGroupService";
 import * as clientConnectionService from "@/services/seb-server/api-services/clientConnectionService";
-import {
-    OptionalParGetExams,
-    OptionalParGetMonitoringClientLogs,
-} from "@/models/seb-server/optionalParamters";
-import {
-    ClientEventResponse,
-    ClientNotification,
-    MonitoringConnectionHeaders,
-    MonitoringConnections,
-    MonitoringOverview,
-    MonitoringStaticClientData,
-    SingleConnection,
-} from "@/models/seb-server/monitoring";
-import { Exam, Exams } from "@/models/seb-server/exam";
-import { ClientInstruction } from "@/models/seb-server/clientInstruction";
+
+import { Exam } from "@/models/seb-server/exam";
 import { ClientGroup, ClientGroups } from "@/models/seb-server/clientGroup";
 import {
     AppSignatureKey,
@@ -37,81 +23,7 @@ import {
     GrantedAppSignatureKey,
 } from "@/models/seb-server/appSignatureKey";
 
-export async function getExamsForMonitoring(
-    optionalParGetExams?: OptionalParGetExams,
-): Promise<Exams | null> {
-    try {
-        return await monitoringService.getExamsForMonitoring(
-            optionalParGetExams,
-        );
-    } catch {
-        return null;
-    }
-}
-
-export async function getOverview(
-    examId: string,
-): Promise<MonitoringOverview | null> {
-    try {
-        return await monitoringService.getOverview(examId);
-    } catch {
-        return null;
-    }
-}
-
-export async function getConnections(
-    examId: string,
-    additionalHeaders: MonitoringConnectionHeaders,
-): Promise<MonitoringConnections | null> {
-    try {
-        return await monitoringService.getConnections(
-            examId,
-            additionalHeaders,
-        );
-    } catch {
-        return null;
-    }
-}
-
-export async function getSingleConnection(
-    examId: string,
-    connectionToken: string,
-): Promise<SingleConnection | null> {
-    try {
-        return await monitoringService.getSingleConnection(
-            examId,
-            connectionToken,
-        );
-    } catch {
-        return null;
-    }
-}
-
-export async function getSingleConnectionEvents(
-    clientConnectionId: string,
-    optionalParameters?: OptionalParGetMonitoringClientLogs,
-): Promise<ClientEventResponse | null> {
-    try {
-        return await monitoringService.getSingleConnectionEvents(
-            clientConnectionId,
-            optionalParameters,
-        );
-    } catch {
-        return null;
-    }
-}
-
-export async function getStaticClientData(
-    examId: string,
-    modelIds: string,
-): Promise<MonitoringStaticClientData | null> {
-    try {
-        return await monitoringService.getStaticClientData(examId, modelIds);
-    } catch {
-        return null;
-    }
-}
-
+// wait
 export async function getExamAndStore(examId: string) {
     const examResponse: Exam | null = await examService.getExam(examId);
 
@@ -121,6 +33,7 @@ export async function getExamAndStore(examId: string) {
     useMonitoringStore().selectedExam = examResponse;
 }
 
+// wait
 export async function getAskAndStore(examId: string) {
     const store = useMonitoringStore();
 
@@ -165,71 +78,6 @@ export async function getAskAndStore(examId: string) {
     // 6) Fetch connections for those IDs
     const list = await clientConnectionService.getClientConnectionList(ids);
     store.clientConnectionList = list ?? [];
-}
-
-export async function registerInstruction(
-    examId: string,
-    clientInstruction: ClientInstruction,
-): Promise<number | null> {
-    try {
-        return await monitoringService.registerInstruction(
-            examId,
-            clientInstruction,
-        );
-    } catch {
-        return null;
-    }
-}
-
-export async function quitAll(examId: string): Promise<number | null> {
-    try {
-        return await monitoringService.quitAll(examId);
-    } catch {
-        return null;
-    }
-}
-
-export async function getPendingNotifcations(
-    examId: string,
-    connectionToken: string,
-): Promise<ClientNotification[] | null> {
-    try {
-        return await monitoringService.getPendingNotifcations(
-            examId,
-            connectionToken,
-        );
-    } catch {
-        return null;
-    }
-}
-export async function confirmNotification(
-    examId: string,
-    notificationId: string,
-    connectionToken: string,
-): Promise<unknown | null> {
-    try {
-        return await monitoringService.confirmNotification(
-            examId,
-            notificationId,
-            connectionToken,
-        );
-    } catch {
-        return null;
-    }
-}
-
-export async function disableConnections(
-    examId: string,
-    connectionToken: string,
-): Promise<unknown | null> {
-    try {
-        return await monitoringService.disableConnections(
-            examId,
-            connectionToken,
-        );
-    } catch {
-        return null;
-    }
 }
 
 export function applyFilter(

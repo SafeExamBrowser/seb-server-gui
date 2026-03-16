@@ -14,6 +14,8 @@ import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import { useAppBarStore } from "@/stores/store";
 import { translate } from "@/utils/generalUtils";
 import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
+
+import * as monitoringService from "@/services/seb-server/monitoringService";
 import * as indicatorService from "@/services/seb-server/indicatorService";
 import { useRoute } from "vue-router";
 import { ref, onBeforeMount, onBeforeUnmount } from "vue";
@@ -84,10 +86,7 @@ async function fetchData() {
 
 async function getSingleConnection() {
     const singleConnectionResponse: SingleConnection | null =
-        await monitoringViewService.getSingleConnection(
-            examId,
-            connectionToken,
-        );
+        await monitoringService.getSingleConnection(examId, connectionToken);
     if (singleConnectionResponse == null) {
         return;
     }
@@ -108,7 +107,7 @@ async function getIndicators() {
 
 async function getPendingNotifications() {
     const notificationsResponse: ClientNotification[] | null =
-        await monitoringViewService.getPendingNotifcations(
+        await monitoringService.getPendingNotifications(
             examId,
             connectionToken,
         );

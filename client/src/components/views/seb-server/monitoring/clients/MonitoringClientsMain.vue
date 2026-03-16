@@ -198,7 +198,9 @@ import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import { useTableStore } from "@/stores/store";
 import { translate } from "@/utils/generalUtils";
 import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
+
 import * as generalUtils from "@/utils/generalUtils";
+import * as monitoringService from "@/services/seb-server/monitoringService";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import {
     IndicatorEnum,
@@ -373,22 +375,17 @@ async function getAndSetConnections() {
     const notifications = route.query[MonitoringHeaderEnum.SHOW_NOTIFCATION];
     const indicators = route.query[MonitoringHeaderEnum.SHOW_INDICATORS];
 
-    const fullPageResponse = await monitoringViewService.getConnections(
-        examId,
-        {
-            [MonitoringHeaderEnum.SHOW_ALL]: monitoringStore.isNoFilterSelected,
-            [MonitoringHeaderEnum.SHOW_CLIENT_GROUPS]:
-                typeof clientGroups === "string" ? clientGroups.split(",") : [],
-            [MonitoringHeaderEnum.SHOW_STATES]:
-                typeof states === "string" ? states.split(",") : [],
-            [MonitoringHeaderEnum.SHOW_NOTIFCATION]:
-                typeof notifications === "string"
-                    ? notifications.split(",")
-                    : [],
-            [MonitoringHeaderEnum.SHOW_INDICATORS]:
-                typeof indicators === "string" ? indicators.split(",") : [],
-        },
-    );
+    const fullPageResponse = await monitoringService.getConnections(examId, {
+        [MonitoringHeaderEnum.SHOW_ALL]: monitoringStore.isNoFilterSelected,
+        [MonitoringHeaderEnum.SHOW_CLIENT_GROUPS]:
+            typeof clientGroups === "string" ? clientGroups.split(",") : [],
+        [MonitoringHeaderEnum.SHOW_STATES]:
+            typeof states === "string" ? states.split(",") : [],
+        [MonitoringHeaderEnum.SHOW_NOTIFCATION]:
+            typeof notifications === "string" ? notifications.split(",") : [],
+        [MonitoringHeaderEnum.SHOW_INDICATORS]:
+            typeof indicators === "string" ? indicators.split(",") : [],
+    });
 
     if (fullPageResponse == null) {
         return;
@@ -402,7 +399,7 @@ async function getAndSetConnections() {
 
 async function getAndSetStaticClientData(modelIds: number[]) {
     const staticClientDataResponse: MonitoringStaticClientData | null =
-        await monitoringViewService.getStaticClientData(
+        await monitoringService.getStaticClientData(
             examId,
             generalUtils.createStringCommaList(modelIds),
         );
@@ -416,7 +413,7 @@ async function getAndSetStaticClientData(modelIds: number[]) {
 async function getStaticClientData(
     modelIds: number[],
 ): Promise<MonitoringStaticClientData | null> {
-    return monitoringViewService.getStaticClientData(
+    return monitoringService.getStaticClientData(
         examId,
         generalUtils.createStringCommaList(modelIds),
     );

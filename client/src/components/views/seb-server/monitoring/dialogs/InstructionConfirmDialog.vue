@@ -77,7 +77,7 @@
 
 <script setup lang="ts">
 import { InstructionEnum } from "@/models/seb-server/instructionEnum";
-import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
+import * as monitoringService from "@/services/seb-server/monitoringService";
 import { translate } from "@/utils/generalUtils";
 import { useRoute } from "vue-router";
 import { ref } from "vue";
@@ -178,7 +178,7 @@ async function registerInstruction() {
     }
 
     // send instruction
-    await monitoringViewService.registerInstruction(examId, clientInstruction);
+    await monitoringService.registerInstruction(examId, clientInstruction);
     emit("closeInstructionConfirmDialog");
 }
 
@@ -188,7 +188,7 @@ async function cancelClients() {
     }
 
     // send disable (calcel) inctruction
-    monitoringViewService.disableConnections(examId, props.connectionTokens);
+    monitoringService.disableConnections(examId, props.connectionTokens);
 
     emit("closeInstructionConfirmDialog");
 }

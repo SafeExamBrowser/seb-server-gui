@@ -78,6 +78,7 @@ import MonitoringOverviewInfos from "@/components/views/seb-server/monitoring/ov
 import MonitoringOverviewClients from "@/components/views/seb-server/monitoring/overview/MonitoringOverviewClients.vue";
 import MonitoringOverviewNotifications from "@/components/views/seb-server/monitoring/overview/MonitoringOverviewNotifications.vue";
 import MonitoringOverviewGroups from "@/components/views/seb-server/monitoring/overview/MonitoringOverviewGroups.vue";
+import * as monitoringService from "@/services/seb-server/monitoringService";
 
 // exam
 const examId = useRoute().params.examId.toString();
@@ -132,7 +133,7 @@ async function getOverviewData() {
     dataFetching = true;
 
     const overviewResponse: MonitoringOverview | null =
-        await monitoringViewService.getOverview(examId);
+        await monitoringService.getOverview(examId);
 
     if (!overviewResponse) {
         dataFetching = false;

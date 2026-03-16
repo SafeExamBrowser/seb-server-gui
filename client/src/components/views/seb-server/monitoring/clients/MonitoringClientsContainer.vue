@@ -12,6 +12,8 @@ import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import { useAppBarStore } from "@/stores/store";
 import { translate } from "@/utils/generalUtils";
 import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
+import * as monitoringService from "@/services/seb-server/monitoringService";
+
 import * as indicatorService from "@/services/seb-server/indicatorService";
 import MonitoringClientsMain from "@/components/views/seb-server/monitoring/clients/MonitoringClientsMain.vue";
 import { useRoute } from "vue-router";
@@ -74,7 +76,7 @@ async function getOverviewData() {
     dataFetching = true;
 
     const overviewResponse: MonitoringOverview | null =
-        await monitoringViewService.getOverview(examId);
+        await monitoringService.getOverview(examId);
 
     if (overviewResponse == null) {
         dataFetching = false;
