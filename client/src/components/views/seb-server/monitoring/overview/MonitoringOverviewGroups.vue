@@ -189,7 +189,7 @@
                             prepend-icon="mdi-format-list-bulleted"
                             variant="outlined"
                             @click="
-                                monitoringViewService.goToMonitoring(
+                                goToMonitoring(
                                     MonitoringHeaderEnum.SHOW_CLIENT_GROUPS,
                                     generalUtils.createStringCommaList([
                                         clientGroupItem.id,
@@ -289,7 +289,7 @@
                         prepend-icon="mdi-format-list-bulleted"
                         variant="outlined"
                         @click="
-                            monitoringViewService.goToMonitoring(
+                            goToMonitoring(
                                 MonitoringHeaderEnum.SHOW_STATES,
                                 getScreenProctoringState(),
                                 examId,
@@ -336,7 +336,6 @@
 
 <script setup lang="ts">
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
-import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
 import { translate } from "@/utils/generalUtils";
 import {
     ClientGroupEnum,
@@ -353,6 +352,7 @@ import { computed } from "vue";
 import type { ComputedRef } from "vue";
 import { OverviewClientGroup } from "@/models/seb-server/monitoring";
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum";
+import { goToMonitoring } from "@/components/views/seb-server/monitoring/composables/useMonitoringNavigation.ts";
 
 // stores
 const monitoringStore = useMonitoringStore();

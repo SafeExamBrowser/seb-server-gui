@@ -26,7 +26,7 @@
                         :ripple="false"
                         variant="flat"
                         @click="
-                            monitoringViewService.goToMonitoring(
+                            goToMonitoring(
                                 MonitoringHeaderEnum.SHOW_NOTIFCATION,
                                 generalUtils.findEnumValue(
                                     NotificationEnum,
@@ -113,8 +113,8 @@ import {
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import { translate } from "@/utils/generalUtils";
 import * as generalUtils from "@/utils/generalUtils";
-import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
 import { useRoute } from "vue-router";
+import { goToMonitoring } from "@/components/views/seb-server/monitoring/composables/useMonitoringNavigation.ts";
 
 // exam
 const examId = useRoute().params.examId.toString();

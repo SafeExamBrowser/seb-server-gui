@@ -390,10 +390,10 @@ import { useI18n } from "vue-i18n";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import { translate } from "@/utils/generalUtils";
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum";
-import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
 import * as examService from "@/services/seb-server/examService";
 import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants";
+import { getAskAndStore } from "@/components/views/seb-server/monitoring/composables/useMonitoringData.ts";
 
 const store = useMonitoringStore();
 const emit = defineEmits<{
@@ -486,7 +486,7 @@ function isStatusKey(k: string): k is keyof typeof ConnectionStatusEnum {
 
 async function refreshAsk() {
     if (!examId) return;
-    await monitoringViewService.getAskAndStore(examId);
+    await getAskAndStore(examId);
 }
 
 function onGrantKey() {
@@ -502,7 +502,7 @@ function onGrantKey() {
         examId,
         String(firstConnId.value),
     );
-    monitoringViewService.getAskAndStore(examId);
+    getAskAndStore(examId);
 }
 
 function trStatus(value: "ALL" | ConnectionStatusEnum) {
@@ -635,7 +635,7 @@ function onRemoveGrant() {
         examId,
         selectedAsk.value?.id.toString(),
     );
-    monitoringViewService.getAskAndStore(examId);
+    getAskAndStore(examId);
 }
 </script>
 

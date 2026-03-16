@@ -168,8 +168,8 @@ import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants";
 import MonitoringOverviewASK from "@/components/views/seb-server/monitoring/overview/MonitoringOverviewASK.vue";
 import QuitAllDialog from "@/components/views/seb-server/monitoring/overview/dialogs/QuitAllDialog.vue";
-import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
 import { ref } from "vue";
+import { quitAll } from "@/services/seb-server/monitoringService.ts";
 
 // stores
 const monitoringStore = useMonitoringStore();
@@ -183,9 +183,7 @@ async function closeQuitAllDialog(apply: string) {
     if (apply == "YES") {
         quitAllDialog.value = false;
         if (monitoringStore.selectedExam != null) {
-            await monitoringViewService.quitAll(
-                monitoringStore.selectedExam.id.toString(),
-            );
+            await quitAll(monitoringStore.selectedExam.id.toString());
         }
     } else if (apply == "NO") {
         quitAllDialog.value = false;

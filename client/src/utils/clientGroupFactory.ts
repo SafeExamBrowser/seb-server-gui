@@ -3,7 +3,7 @@ import {
     ClientOSEnum,
 } from "@/models/seb-server/clientGroupEnum.ts";
 import { ClientGroup } from "@/models/seb-server/clientGroup.ts";
-
+//TODO @Andrei move to Client Group composables (usage only in client group only)
 export function getCreateClientGroupParams(
     examId: number,
     name: string,
