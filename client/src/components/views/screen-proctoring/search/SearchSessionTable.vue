@@ -193,7 +193,7 @@ import SearchScreenshotsTable from "./SearchScreenshotsTable.vue";
 import * as searchViewService from "@/services/screen-proctoring/component-services/searchViewService";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import { useTableStore } from "@/stores/store";
-import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
+import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
 import { UserRoleEnum } from "@/models/userRoleEnum";
 import { ServerTablePaging } from "@/models/types";
 import {

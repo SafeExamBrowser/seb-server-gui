@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { UserRoleEnum } from "@/models/userRoleEnum";
 import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum";
-import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
+import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
 import * as generalUtils from "@/utils/generalUtils";
 import { ref } from "vue";
 import { Exam } from "@/models/seb-server/exam";

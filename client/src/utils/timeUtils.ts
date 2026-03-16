@@ -1,5 +1,5 @@
 import { toZonedTime } from "date-fns-tz";
-import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
+import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
 
 // display dates according to the user's timezone
 export function formatIsoDateToFullDate(

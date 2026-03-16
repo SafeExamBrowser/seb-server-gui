@@ -1,6 +1,6 @@
 import { useAuthStore } from "@/composables/store/useAuthStore";
 import { navigateTo } from "@/router/navigation";
-import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
+import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
 import * as constants from "@/utils/constants";
 
 export const useLogout = () => {

@@ -465,7 +465,7 @@ import {
 import {
     useUserAccountStore as useAuthenticatedUserAccountStore,
     useUserAccountStore,
-} from "@/stores/authentication/authenticationStore";
+} from "@/stores/authentication/userAccountStore";
 import { useTheme } from "vuetify";
 import { useI18n } from "vue-i18n";
 import * as constants from "@/utils/constants";

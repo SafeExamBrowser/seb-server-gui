@@ -509,7 +509,7 @@ import moment from "moment-timezone";
 import { navigateTo } from "@/router/navigation";
 import { UserRoleEnum } from "@/models/userRoleEnum";
 import { useI18n } from "vue-i18n";
-import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/authenticationStore";
+import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/userAccountStore";
 import * as userAccountService from "@/services/seb-server/userAccountService";
 
 import { EditUserAccountParameters, UserAccount } from "@/models/userAccount";

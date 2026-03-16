@@ -9,7 +9,7 @@
 
 <!-- pages/Profile.vue -->
 <script setup lang="ts">
-import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/authenticationStore";
+import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/userAccountStore";
 import UserAccountEditForm from "@/components/views/seb-server/accounts/UserAccountEditForm.vue";
 import { translate } from "@/utils/generalUtils";
 

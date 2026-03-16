@@ -74,7 +74,7 @@ import * as examTemplateService from "@/services/seb-server/examTemplateService"
 import { useQuizImportStore } from "@/stores/seb-server/quizImportStore";
 import { translate } from "@/utils/generalUtils";
 import * as generalUtils from "@/utils/generalUtils";
-import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
+import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
 import { ref, onBeforeMount } from "vue";
 import { UserAccountName } from "@/models/userAccount";
 import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring";

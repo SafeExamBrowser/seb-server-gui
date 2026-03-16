@@ -556,7 +556,7 @@ import TableHeaders from "@/utils/table/TableHeaders.vue";
 import * as userAccountService from "@/services/seb-server/userAccountService";
 import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants";
-import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/authenticationStore";
+import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/userAccountStore";
 import { UserRoleEnum } from "@/models/userRoleEnum";
 import { GUIComponent, useAbilities } from "@/services/ability";
 import { UserAccount, UserAccountResponse } from "@/models/userAccount";
