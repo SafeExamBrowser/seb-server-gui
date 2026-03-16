@@ -1,7 +1,6 @@
-import { useAuthStore } from "@/stores/authentication/authenticationStore";
-import { StorageItemEnum } from "@/models/StorageItemEnum";
-import * as spConstants from "@/utils/sp-constants";
-import { ScreenshotData } from "@/models/screen-proctoring/session";
+import { ScreenshotData } from "@/models/screen-proctoring/session.ts";
+import { useAuthStore } from "@/stores/authentication/authenticationStore.ts";
+import { StorageItemEnum } from "@/models/StorageItemEnum.ts";
 
 export function getLatestImageLink(
     screenshot: ScreenshotData | undefined,
@@ -31,30 +30,11 @@ export function getSpecificImageLink(
 
     if (screenshot == null) return "";
 
-    const screenshotLink: string =
+    return (
         screenshot.latestImageLink +
         "/" +
         timestamp +
         "?access_token=" +
-        authStore.getStorageItem(StorageItemEnum.SP_ACCESS_TOKEN);
-
-    return screenshotLink;
-}
-
-export function getGalleryViewLink(groupUuid: string): string {
-    return spConstants.GALLERY_VIEW_ROUTE + "/" + groupUuid;
-}
-
-export function getGalleryViewLinkByExamId(
-    groupUuid: string,
-    examId: string,
-): string {
-    return (
-        spConstants.GALLERY_VIEW_ROUTE +
-        "/" +
-        groupUuid +
-        spConstants.EXAM_ID +
-        "/" +
-        examId
+        authStore.getStorageItem(StorageItemEnum.SP_ACCESS_TOKEN)
     );
 }

@@ -169,7 +169,7 @@
                             variant="flat"
                             @click="
                                 navigation.navigateTo(
-                                    linkService.getGalleryViewLinkByExamId(
+                                    getGalleryViewLinkByExamId(
                                         clientGroupItem.spsGroupUUID,
                                         examId,
                                     ),
@@ -267,7 +267,7 @@
                         variant="flat"
                         @click="
                             navigation.navigateTo(
-                                linkService.getGalleryViewLinkByExamId(
+                                getGalleryViewLinkByExamId(
                                     screenProctoringFallbackGroup.spsGroupUUID ??
                                         '',
                                     examId,
@@ -343,7 +343,6 @@ import {
 } from "@/models/seb-server/clientGroupEnum";
 import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums";
 import * as generalUtils from "@/utils/generalUtils";
-import * as linkService from "@/services/screen-proctoring/component-services/linkService";
 import * as navigation from "@/router/navigation";
 import { useAuthStore } from "@/stores/authentication/authenticationStore";
 import { StorageItemEnum } from "@/models/StorageItemEnum";
@@ -353,6 +352,7 @@ import type { ComputedRef } from "vue";
 import { OverviewClientGroup } from "@/models/seb-server/monitoring";
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum";
 import { goToMonitoring } from "@/components/views/seb-server/monitoring/composables/useMonitoringNavigation.ts";
+import { getGalleryViewLinkByExamId } from "@/components/views/seb-server/monitoring/utils/monitoringUtils.ts";
 
 // stores
 const monitoringStore = useMonitoringStore();

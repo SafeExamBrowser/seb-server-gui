@@ -275,7 +275,6 @@ import * as groupingUtils from "@/utils/groupingUtils";
 import { useAppBarStore } from "@/stores/store";
 import * as searchService from "@/services/screen-proctoring/searchService";
 import { useFullscreen } from "@vueuse/core";
-import * as linkService from "@/services/screen-proctoring/component-services/linkService";
 import { SortOrder } from "@/models/screen-proctoring/sortOrderEnum";
 import { throttle } from "lodash";
 import { ScreenshotData } from "@/models/screen-proctoring/session";
@@ -283,6 +282,7 @@ import {
     ScreenshotsGrouped,
     SearchTimeline,
 } from "@/models/screen-proctoring/search";
+import { getSpecificImageLink } from "@/components/views/screen-proctoring/utils/linkBuilder.ts";
 
 // slider
 const sliderTime = ref<number>(0);
@@ -574,7 +574,7 @@ const throttledSetImageLink = throttle((timestamp: string) => {
 }, 100);
 
 function setImageLink(timestamp: string) {
-    imageLink.value = linkService.getSpecificImageLink(
+    imageLink.value = getSpecificImageLink(
         currentScreenshotData.value,
         timestamp,
     );

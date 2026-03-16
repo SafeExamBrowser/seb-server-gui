@@ -86,16 +86,14 @@
                                     'navigate',
                                     internalItem.index,
                                     {
-                                        path: linkService.getGalleryViewLink(
-                                            item.uuid,
-                                        ),
+                                        path: getGalleryViewLink(item.uuid),
                                     },
                                 )
                             "
                         >
                             <router-link
                                 class="default-color"
-                                :to="linkService.getGalleryViewLink(item.uuid)"
+                                :to="getGalleryViewLink(item.uuid)"
                                 >{{ item.name }}</router-link
                             >
                         </div>
@@ -114,8 +112,8 @@ import * as timeUtils from "@/utils/timeUtils";
 import * as tableUtils from "@/utils/table/tableUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import { storeToRefs } from "pinia";
-import * as linkService from "@/services/screen-proctoring/component-services/linkService";
 import { Group, GroupObject } from "@/models/screen-proctoring/group";
+import { getGalleryViewLink } from "@/components/views/seb-server/monitoring/utils/monitoringUtils.ts";
 
 // stores
 const appBarStore = useAppBarStore();

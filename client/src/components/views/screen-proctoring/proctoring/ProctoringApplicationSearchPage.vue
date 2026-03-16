@@ -217,10 +217,10 @@ import * as proctoringViewService from "@/services/screen-proctoring/component-s
 import * as timeUtils from "@/utils/timeUtils";
 import { useAppBarStore } from "@/stores/store";
 import { useFullscreen } from "@vueuse/core";
-import * as linkService from "@/services/screen-proctoring/component-services/linkService";
 import * as spConstants from "@/utils/sp-constants";
 import { ScreenshotData } from "@/models/screen-proctoring/session";
 import { getTimestampListForApplicationSearch } from "@/services/screen-proctoring/applicationsSearchService.ts";
+import { getSpecificImageLink } from "@/components/views/screen-proctoring/utils/linkBuilder.ts";
 
 // slider
 const sliderTime = ref<number>(0);
@@ -358,10 +358,7 @@ async function setTimestampsList() {
 }
 
 function setImageLink(timestamp: string) {
-    imageLink.value = linkService.getSpecificImageLink(
-        currentScreenshot.value,
-        timestamp,
-    );
+    imageLink.value = getSpecificImageLink(currentScreenshot.value, timestamp);
 }
 
 //= ============screenshot logic==================
