@@ -273,7 +273,7 @@ import * as proctoringViewService from "@/services/screen-proctoring/component-s
 import * as timeUtils from "@/utils/timeUtils";
 import * as groupingUtils from "@/utils/groupingUtils";
 import { useAppBarStore } from "@/stores/store";
-import * as searchViewService from "@/services/screen-proctoring/component-services/searchViewService";
+import * as searchService from "@/services/screen-proctoring/searchService";
 import { useFullscreen } from "@vueuse/core";
 import * as linkService from "@/services/screen-proctoring/component-services/linkService";
 import { SortOrder } from "@/models/screen-proctoring/sortOrderEnum";
@@ -519,7 +519,7 @@ async function initialize() {
     }
 
     setSliderMax(currentScreenshotData.value.endTime);
-    searchTimeline.value = await searchViewService.searchTimeline(sessionId);
+    searchTimeline.value = await searchService.searchTimeline(sessionId);
 
     await assignScreenshotDataByTimestamp(
         currentScreenshotData.value?.startTime.toString(),
