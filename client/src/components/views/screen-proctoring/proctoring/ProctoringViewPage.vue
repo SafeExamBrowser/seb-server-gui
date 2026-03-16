@@ -269,7 +269,7 @@ import {
     ref,
     watch,
 } from "vue";
-import * as proctoringViewService from "@/services/screen-proctoring/component-services/proctoringViewService";
+import * as screenshotDataService from "@/services/screen-proctoring/screenshotDataService";
 import * as timeUtils from "@/utils/timeUtils";
 import * as groupingUtils from "@/utils/groupingUtils";
 import { useAppBarStore } from "@/stores/store";
@@ -283,6 +283,10 @@ import {
     SearchTimeline,
 } from "@/models/screen-proctoring/search";
 import { getSpecificImageLink } from "@/components/views/screen-proctoring/utils/linkBuilder.ts";
+import {
+    getScreenshotMetadata,
+    getSessionInfodata,
+} from "@/components/views/screen-proctoring/proctoring/utils/screenshotMetadata.ts";
 
 // slider
 const sliderTime = ref<number>(0);
@@ -553,7 +557,7 @@ async function setTimestampsList(sortOrder: SortOrder) {
     if (sliderTime.value == null) return;
 
     const timestampsResponse: number[] | null =
-        await proctoringViewService.getScreenshotTimestamps(
+        await screenshotDataService.getScreenshotTimestamps(
             sessionId,
             sliderTime.value.toString(),
             sortOrder,
@@ -583,7 +587,7 @@ function setImageLink(timestamp: string) {
 //= ============screenshot logic==================
 async function assignScreenshotData() {
     const screenshotDataResponse: ScreenshotData | null =
-        await proctoringViewService.getScreenshotDataBySessionId(sessionId);
+        await screenshotDataService.getScreenshotDataBySessionId(sessionId);
     if (screenshotDataResponse)
         currentScreenshotData.value = screenshotDataResponse;
 }
@@ -592,7 +596,7 @@ async function assignScreenshotDataByTimestamp(timestamp: string | undefined) {
     if (timestamp == null) return;
 
     const screenshotDataResponse: ScreenshotData | null =
-        await proctoringViewService.getScreenshotDataByTimestamp(
+        await screenshotDataService.getScreenshotDataByTimestamp(
             sessionId,
             timestamp,
         );
@@ -631,9 +635,7 @@ const endTimeString = computed<string>(() => {
 });
 
 const sessionInfodata = computed<object>(() => {
-    return proctoringViewService.getSessionInfodata(
-        currentScreenshotData.value || null,
-    );
+    return getSessionInfodata(currentScreenshotData.value || null);
 });
 //= =============================
 
@@ -834,7 +836,7 @@ function play() {
 // todo: could be removed as information gain is quite small
 const screenshotMetadata = computed<object>(() => {
     if (currentScreenshotData.value) {
-        return proctoringViewService.getScreenshotMetadata(
+        return getScreenshotMetadata(
             sliderTime.value || 0,
             currentScreenshotData.value.metaData,
             additionalMetadataInfo.value,
@@ -842,7 +844,7 @@ const screenshotMetadata = computed<object>(() => {
         );
     }
 
-    return proctoringViewService.getScreenshotMetadata(
+    return getScreenshotMetadata(
         sliderTime.value || 0,
         null,
         additionalMetadataInfo.value,
@@ -917,7 +919,7 @@ async function calcTotalNrOfScreenshots(): Promise<number> {
     if (!firstScreenshotTime.value) return 0;
 
     const screenshotTimestamps: number[] | null =
-        await proctoringViewService.getScreenshotTimestamps(
+        await screenshotDataService.getScreenshotTimestamps(
             sessionId,
             firstScreenshotTime.value.toString(),
             SortOrder.asc,
