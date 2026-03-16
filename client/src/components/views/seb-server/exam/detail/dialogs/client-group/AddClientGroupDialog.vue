@@ -318,7 +318,7 @@ import { translate } from "@/utils/generalUtils";
 import { computed, ref, watch, onBeforeMount } from "vue";
 import { ClientGroup } from "@/models/seb-server/clientGroup";
 import { applyScreenProctoringGroups } from "@/services/seb-server/screenProctoringService.ts";
-import { getCreateClientGroupParams } from "@/utils/clientGroupFactory.ts";
+import { buildClientGroup } from "@/components/views/seb-server/exam/detail/dialogs/client-group/utils/buildClientGroup.ts";
 // i18n
 const i18n = useI18n();
 
@@ -416,7 +416,7 @@ async function createClientGroup() {
         return;
     }
 
-    const clientGroup: ClientGroup | null = getCreateClientGroupParams(
+    const clientGroup: ClientGroup | null = buildClientGroup(
         examStore.selectedExam.id,
         groupNameField.value,
         clientGroupTypeSelect.value,
