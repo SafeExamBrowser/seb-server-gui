@@ -52,6 +52,9 @@ services:
       # Logging
       - logging_level_ch_ethz_seb_sebserver_webservice_servicelayer=DEBUG
 
+      # Access Token Validity
+      - sebserver_webservice_api_admin_accessTokenValiditySeconds=3600
+
     volumes:
       - .:/sebserver/config/spring
     ports:
@@ -102,6 +105,9 @@ services:
       # Logging
       - logging_level_ch_ethz_seb_sps_server_servicelayer_impl=DEBUG
       - logging_level_ch_ethz_seb_sps_server_weblayer=DEBUG
+
+      # Access Token Validity
+      - sps_api_admin_accessTokenValiditySeconds=3600
 
     volumes:
       - .:/sebsps/config/spring

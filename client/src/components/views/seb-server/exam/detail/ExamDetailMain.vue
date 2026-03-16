@@ -921,6 +921,10 @@ import * as constants from "@/utils/constants";
 import * as examService from "@/services/seb-server/examService";
 import * as sebSettingsService from "@/services/seb-server/sebSettingsService";
 import * as assessmentToolService from "@/services/seb-server/assessmentToolService";
+import * as examTemplateService from "@/services/seb-server/examTemplateService";
+import * as monitoringService from "@/services/seb-server/api-services/monitoringService.ts";
+import * as connectionConfigurationService from "@/services/seb-server/connectionConfigurationService";
+
 import * as userAccountService from "@/services/seb-server/userAccountService";
 import * as clientGroupService from "@/services/seb-server/clientGroupService";
 import * as generalUtils from "@/utils/generalUtils";
@@ -1249,10 +1253,9 @@ function openConfigDialog(connectionConfigurations: ConnectionConfigurations) {
 function closeConfigDialog() {
     configDialog.value = false;
 }
-
 async function startExamConfigDownloadProcess() {
     const connectionConfigurations: ConnectionConfigurations | null =
-        await examService.getConnectionConfigurationsActive();
+        await connectionConfigurationService.getConnectionConfigurationsActive();
 
     if (connectionConfigurations == null) {
         return;
@@ -1274,11 +1277,11 @@ async function downloadExamConfig(connectionId: string) {
     if (examStore.selectedExam == null) {
         return;
     }
-
-    const blobResponse = await examService.downloadExamConfig(
-        examStore.selectedExam.id.toString(),
-        connectionId,
-    );
+    const blobResponse =
+        await connectionConfigurationService.downloadExamConfig(
+            examStore.selectedExam.id.toString(),
+            connectionId,
+        );
 
     if (blobResponse == null) {
         return;
@@ -1364,9 +1367,9 @@ function closeDeleteDialog() {
     deleteDialog.value = false;
 }
 
+// exam service is right
 async function deleteExam() {
-    const deleteExamResponse: undefined | null =
-        await examService.deleteExam(examId);
+    const deleteExamResponse: unknown = await examService.deleteExam(examId);
 
     if (deleteExamResponse == null) {
         return;
@@ -1380,9 +1383,8 @@ async function getExamTemplate() {
     if (examStore.selectedExam?.examTemplateId == null) {
         return;
     }
-
     const examTemplateResponse: ExamTemplate | null =
-        await examService.getExamTemplate(
+        await examTemplateService.getExamTemplate(
             examStore.selectedExam?.examTemplateId.toString(),
         );
 
@@ -1396,9 +1398,8 @@ async function getExamTemplate() {
 async function getTemplateGroupsWithSp() {
     const tmpl = examStore.selectedExamTemplate;
     if (!tmpl || tmpl.id == null) return;
-
     const examTemplateSp: ScreenProctoringSettings | null =
-        await examService.getExamTemplateSp(String(tmpl.id));
+        await examTemplateService.getExamTemplateSp(String(tmpl.id));
 
     if (!examTemplateSp) return;
 
@@ -1419,8 +1420,7 @@ function closeExamTemplateDialog() {
 // calling this function again after test run has been applied disables the test run
 async function applyTestRun() {
     const applyTestRunResponse: Exam | null =
-        await examService.applyTestRun(examId);
-
+        await monitoringService.applyTestRun(examId);
     if (applyTestRunResponse == null) {
         return;
     }
