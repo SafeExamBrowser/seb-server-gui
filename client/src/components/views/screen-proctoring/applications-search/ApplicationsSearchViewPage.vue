@@ -151,7 +151,7 @@
 import { onBeforeMount, ref } from "vue";
 import { useAppBarStore } from "@/stores/store";
 import VueDatePicker from "@vuepic/vue-datepicker";
-import * as applicationsSearchViewService from "@/services/screen-proctoring/component-services/applicationsSearchViewService";
+import * as applicationsSearchService from "@/services/screen-proctoring/applicationsSearchService";
 import ApplicationsExamList from "./ApplicationsSearchExamList.vue";
 import ApplicationsSearchMetadata from "./ApplicationsSearchMetadata.vue";
 import * as timeUtils from "@/utils/timeUtils";
@@ -207,7 +207,7 @@ async function getExamsStarted() {
         [fromTime, toTime] = timeUtils.calcTimeSelection(timeSelectionPicker);
 
     const examList: SPExam[] | null =
-        await applicationsSearchViewService.getExamsStarted({
+        await applicationsSearchService.getExamsStarted({
             fromTime,
             toTime,
         });
@@ -232,14 +232,14 @@ async function getGroupIdsForExam(selectedExams: SPExam[]) {
     for (let i = 0; i < selectedExams.length; i++) {
         // fetch groupdIds for the selected exams
         const groupIds: number[] | null =
-            await applicationsSearchViewService.getGroupIdsForExam(
+            await applicationsSearchService.getGroupIdsForExam(
                 selectedExams[i].id,
             );
         if (groupIds == null) continue;
 
         // fetch metadataAppList for the selected exams
         const metadataAppList: string[] | null =
-            await applicationsSearchViewService.getDistinctMetadataAppForExam(
+            await applicationsSearchService.getDistinctMetadataAppForExam(
                 generalUtils.createStringCommaList(groupIds),
             );
         if (metadataAppList == null) continue;

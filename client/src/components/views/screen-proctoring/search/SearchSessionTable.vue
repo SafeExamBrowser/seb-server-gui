@@ -84,7 +84,7 @@
             <v-btn
                 icon="mdi-video"
                 variant="text"
-                @click="searchViewService.openProctoringView(item.sessionUUID)"
+                @click="openProctoringView(item.sessionUUID)"
             ></v-btn>
         </template>
 
@@ -190,7 +190,6 @@ import { ref } from "vue";
 import * as timeUtils from "@/utils/timeUtils";
 import * as tableUtils from "@/utils/table/tableUtils";
 import SearchScreenshotsTable from "./SearchScreenshotsTable.vue";
-import * as searchViewService from "@/services/screen-proctoring/component-services/searchViewService";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import { useTableStore } from "@/stores/store";
 import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
@@ -201,6 +200,9 @@ import {
     SearchTimeline,
 } from "@/models/screen-proctoring/search";
 import { OptionalParSearchSessions } from "@/models/screen-proctoring/optionalParamters";
+import * as searchService from "@/services/screen-proctoring/searchService";
+import { prepareSessionSearchParameters } from "@/components/views/screen-proctoring/search/utils/searchUtils.ts";
+import { openProctoringView } from "@/components/views/screen-proctoring/utils/navigation.ts";
 
 // store
 const tableStore = useTableStore();
@@ -259,14 +261,14 @@ async function loadItems(serverTablePaging: ServerTablePaging) {
     }
 
     const searchParameters: OptionalParSearchSessions =
-        searchViewService.prepareSessionSearchParameters(
+        prepareSessionSearchParameters(
             props.day,
             props.searchParameters,
             serverTablePaging,
         );
 
     const sessionSearchResponse: SearchSessions | null =
-        await searchViewService.searchSessions(searchParameters);
+        await searchService.searchSessions(searchParameters);
     if (sessionSearchResponse == null) {
         isLoading.value = false;
         return;
@@ -287,7 +289,7 @@ async function searchTimeline<T>(
     if (removeTableItemFromRefs<T>(item, isExpanded, toggleExpand)) return;
 
     const timelineSearchResponse: SearchTimeline | null =
-        await searchViewService.searchTimeline(item.raw.sessionUUID, {
+        await searchService.searchTimeline(item.raw.sessionUUID, {
             screenProctoringMetadataApplication:
                 props.searchParameters.screenProctoringMetadataApplication,
             screenProctoringMetadataBrowser:
@@ -312,7 +314,7 @@ async function deleteSessions() {
     errorAvailable.value = false;
     if (!selectedSessionUuids.value.length) return;
 
-    const response = await searchViewService.deleteSessions(
+    const response = await searchService.deleteSessions(
         selectedSessionUuids.value,
     );
     if (response == null) {
