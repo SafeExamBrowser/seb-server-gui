@@ -7,4 +7,9 @@ const baseUrl = "/quiz" as const;
 export const getQuizzes = async (
     optionalParameters?: OptionalParGetQuizzes,
 ): Promise<Quizzes> =>
-    (await apiService.getRequest(baseUrl, { params: optionalParameters })).data;
+    (
+        await apiService.getRequest({
+            url: baseUrl,
+            options: { params: optionalParameters },
+        })
+    ).data;

@@ -20,20 +20,20 @@ export const authorize = async (
     }).toString();
 
     return (
-        await apiService.postRequest(
-            "/authorize",
-            body,
-            {
+        await apiService.postRequest({
+            url: "/authorize",
+            data: body,
+            options: {
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",
                 },
             },
-            "none",
-        )
+            authType: "none",
+        })
     ).data;
 };
 
 export const logout = async () => {
-    await apiService.postRequest("/useraccount/logout");
+    await apiService.postRequest({ url: "/useraccount/logout" });
     // TODO @alain: also do sps here
 };

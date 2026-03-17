@@ -10,7 +10,10 @@ export const getClientConnectionList = async (
     modelIds: number[],
 ): Promise<SebClientConnection[]> =>
     (
-        await apiService.getRequest(`${baseUrl}/list`, {
-            params: { modelIds: modelIds.join(",") },
+        await apiService.getRequest({
+            url: `${baseUrl}/list`,
+            options: {
+                params: { modelIds: modelIds.join(",") },
+            },
         })
     ).data;

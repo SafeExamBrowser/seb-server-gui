@@ -13,22 +13,31 @@ const baseUrl = "/exam/seb-settings" as const;
 export const getExamConfigMapping = async (
     examId: string,
 ): Promise<ExamConfigMapping[]> =>
-    (await apiService.getRequest(`${baseUrl}/${examId}/examConfigMapping`))
-        .data;
+    (
+        await apiService.getRequest({
+            url: `${baseUrl}/${examId}/examConfigMapping`,
+        })
+    ).data;
 
 export const getActiveSEBClients = async (
     examId: string,
 ): Promise<number | null> =>
-    (await apiService.getRequest(`${baseUrl}/${examId}/active-seb-clients`))
-        .data;
+    (
+        await apiService.getRequest({
+            url: `${baseUrl}/${examId}/active-seb-clients`,
+        })
+    ).data;
 
 export const getView = async (
     viewType: ViewType,
     id: string,
 ): Promise<SEBSettingsView> =>
     (
-        await apiService.getRequest(`${baseUrl}/${id}`, {
-            params: { viewType: viewType },
+        await apiService.getRequest({
+            url: `${baseUrl}/${id}`,
+            options: {
+                params: { viewType: viewType },
+            },
         })
     ).data;
 
@@ -37,8 +46,11 @@ export const addTableRow = async (
     settingName: string,
 ): Promise<SEBSettingsTableRowValues> =>
     (
-        await apiService.postRequest(`${baseUrl}/${id}/table/row`, {
-            name: settingName,
+        await apiService.postRequest({
+            url: `${baseUrl}/${id}/table/row`,
+            data: {
+                name: settingName,
+            },
         })
     ).data;
 
@@ -48,9 +60,12 @@ export const deleteTableRow = async (
     rowIndex: number,
 ): Promise<SEBSettingsTableRowValues[]> =>
     (
-        await apiService.deleteRequest(`${baseUrl}/${id}/table/row`, {
-            name: settingName,
-            listIndex: rowIndex,
+        await apiService.deleteRequest({
+            url: `${baseUrl}/${id}/table/row`,
+            data: {
+                name: settingName,
+                listIndex: rowIndex,
+            },
         })
     ).data;
 
@@ -60,14 +75,18 @@ export const updateSEBSettingValue = async (
     value: string,
 ): Promise<SEBSettingsValue> =>
     (
-        await apiService.postRequest(`${baseUrl}/${id}`, {
-            id: valueId,
-            value: value,
+        await apiService.postRequest({
+            url: `${baseUrl}/${id}`,
+            data: {
+                id: valueId,
+                value: value,
+            },
         })
     ).data;
 
 export const publish = async (id: string): Promise<SEBSettingsValue> =>
-    (await apiService.postRequest(`${baseUrl}/${id}/publish`)).data;
+    (await apiService.postRequest({ url: `${baseUrl}/${id}/publish` })).data;
 
 export const undoChanges = async (id: string): Promise<SEBSettingsValue> =>
-    (await apiService.postRequest(`${baseUrl}/${id}/undo-changes`)).data;
+    (await apiService.postRequest({ url: `${baseUrl}/${id}/undo-changes` }))
+        .data;

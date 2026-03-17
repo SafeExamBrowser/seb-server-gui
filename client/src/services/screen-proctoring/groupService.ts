@@ -11,13 +11,13 @@ export const getGroups = async (
     optionalParameters?: OptionalParGroups,
 ): Promise<GroupObject> =>
     (
-        await apiService.getRequest(
-            baseUrl,
-            {
+        await apiService.getRequest({
+            url: baseUrl,
+            options: {
                 params: optionalParameters,
             },
-            "sps",
-        )
+            authType: "sps",
+        })
     ).data;
 
 export const getGroupByUuid = async (
@@ -25,11 +25,11 @@ export const getGroupByUuid = async (
     optionalParameters?: OptionalParGroupByUuid,
 ): Promise<GroupUuid> =>
     (
-        await apiService.getRequest(
-            `${baseUrl}/${uuid}`,
-            {
+        await apiService.getRequest({
+            url: `${baseUrl}/${uuid}`,
+            options: {
                 params: optionalParameters,
             },
-            "sps",
-        )
+            authType: "sps",
+        })
     ).data;

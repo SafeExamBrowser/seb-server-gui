@@ -7,6 +7,13 @@ const api = axios.create({
     baseURL: "/api",
 });
 
+type RequestWithDataParams<T> = {
+    url: string;
+    data?: T;
+    options?: AxiosRequestConfig;
+    authType?: AuthType;
+};
+
 const getAuthHeaderValue = (authType: AuthType) => {
     const authStore = useAuthStore();
 
@@ -21,11 +28,15 @@ const getAuthHeaderValue = (authType: AuthType) => {
     return `Bearer ${authStore.sebAccessToken}`;
 };
 
-export const getRequest = (
-    url: string,
-    options?: AxiosRequestConfig,
-    authType: AuthType = "seb",
-) => {
+export const getRequest = ({
+    url,
+    options,
+    authType = "seb",
+}: {
+    url: string;
+    options?: AxiosRequestConfig;
+    authType?: AuthType;
+}) => {
     const authHeaderValue = getAuthHeaderValue(authType);
     const defaultOptions: AxiosRequestConfig = {
         headers: {
@@ -37,12 +48,12 @@ export const getRequest = (
     return api.get(url, merge({}, defaultOptions, options));
 };
 
-export const postRequest = <T>(
-    url: string,
-    data?: T,
-    options?: AxiosRequestConfig,
-    authType: AuthType = "seb",
-) => {
+export const postRequest = <T>({
+    url,
+    data,
+    options,
+    authType = "seb",
+}: RequestWithDataParams<T>) => {
     const authHeaderValue = getAuthHeaderValue(authType);
     const defaultOptions: AxiosRequestConfig = {
         headers: {
@@ -55,12 +66,12 @@ export const postRequest = <T>(
     return api.post(url, data ?? null, merge({}, defaultOptions, options));
 };
 
-export const putRequest = <T>(
-    url: string,
-    data?: T,
-    options?: AxiosRequestConfig,
-    authType: AuthType = "seb",
-) => {
+export const putRequest = <T>({
+    url,
+    data,
+    options,
+    authType = "seb",
+}: RequestWithDataParams<T>) => {
     const authHeaderValue = getAuthHeaderValue(authType);
     const defaultOptions: AxiosRequestConfig = {
         headers: {
@@ -73,12 +84,12 @@ export const putRequest = <T>(
     return api.put(url, data ?? null, merge({}, defaultOptions, options));
 };
 
-export const patchRequest = <T>(
-    url: string,
-    data?: T,
-    options?: AxiosRequestConfig,
-    authType: AuthType = "seb",
-) => {
+export const patchRequest = <T>({
+    url,
+    data,
+    options,
+    authType = "seb",
+}: RequestWithDataParams<T>) => {
     const authHeaderValue = getAuthHeaderValue(authType);
     const defaultOptions: AxiosRequestConfig = {
         headers: {
@@ -91,11 +102,15 @@ export const patchRequest = <T>(
     return api.patch(url, data ?? null, merge({}, defaultOptions, options));
 };
 
-export const deleteRequest = <T>(
-    url: string,
-    data?: T,
-    authType: AuthType = "seb",
-) => {
+export const deleteRequest = <T>({
+    url,
+    data,
+    authType = "seb",
+}: {
+    url: string;
+    data?: T;
+    authType?: AuthType;
+}) => {
     const authHeaderValue = getAuthHeaderValue(authType);
     return api.delete(url, {
         headers: {

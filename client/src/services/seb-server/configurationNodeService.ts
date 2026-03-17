@@ -7,7 +7,10 @@ export const getConfigurationTemplateNamesActive = async (): Promise<
     ConfigurationTemplateName[]
 > =>
     (
-        await apiService.getRequest(`${baseUrl}/names`, {
-            params: { type: "TEMPLATE", active: "true" },
+        await apiService.getRequest({
+            url: `${baseUrl}/names`,
+            options: {
+                params: { type: "TEMPLATE", active: "true" },
+            },
         })
     ).data;

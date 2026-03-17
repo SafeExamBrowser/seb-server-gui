@@ -377,7 +377,7 @@ export const useAbilities = defineStore("ability", () => {
         if (!systemFeaturesFetched) {
             // fetch from server
             const response: Map<string, boolean> | null = (
-                await apiService.getRequest("/quiz")
+                await apiService.getRequest({ url: "/quiz" })
             ).data;
             if (response) {
                 systemFeatures.value = response;
