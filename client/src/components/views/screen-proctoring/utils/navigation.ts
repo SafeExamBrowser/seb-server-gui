@@ -1,8 +1,5 @@
 import * as spConstants from "@/utils/sp-constants.ts";
-import {
-    openUrlInNewTab,
-    openUrlInNewTabApplicationView,
-} from "@/router/navigation.ts";
+import { openUrlInNewTab } from "@/router/navigation.ts";
 
 export function openProctoringView(sessionId: string, timestamp?: string) {
     let url: string = spConstants.PROCTORING_VIEW_ROUTE + "/" + sessionId;
@@ -24,14 +21,22 @@ export function openProctoringApplicationSearch(
     metadataApp: string,
     metadataWindow: string,
 ) {
-    const url: URL = new URL(
-        window.location.origin +
-            spConstants.PROCTORING_APPLICATION_SEARCH_ROUTE +
-            "/" +
-            sessionId,
-    );
-    url.searchParams.set("metadataApp", metadataApp);
-    url.searchParams.set("metadataWindow", metadataWindow);
+    let url: string =
+        spConstants.PROCTORING_APPLICATION_SEARCH_ROUTE + "/" + sessionId;
+    let query: string | undefined = undefined;
 
-    openUrlInNewTabApplicationView(url.toString());
+    if (metadataApp) {
+        query = "metadataApp=" + metadataApp;
+    }
+    if (metadataWindow) {
+        if (query) {
+            query = query + "&";
+        }
+        query = query + "metadataWindow=" + metadataWindow;
+    }
+    if (query) {
+        url = url + "?" + query;
+    }
+
+    openUrlInNewTab(url.toString());
 }
