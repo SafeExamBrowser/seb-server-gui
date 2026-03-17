@@ -28,6 +28,10 @@ const getAuthHeaderValue = (authType: AuthType) => {
     return `Bearer ${authStore.sebAccessToken}`;
 };
 
+const getRequestUrl = (url: string, authType: AuthType): string => {
+    return `${authType === "sps" ? "/sps" : ""}${url}`;
+};
+
 export const getRequest = ({
     url,
     options,
@@ -45,7 +49,10 @@ export const getRequest = ({
         },
     };
 
-    return api.get(url, merge({}, defaultOptions, options));
+    return api.get(
+        getRequestUrl(url, authType),
+        merge({}, defaultOptions, options),
+    );
 };
 
 export const postRequest = <T>({
@@ -63,7 +70,11 @@ export const postRequest = <T>({
         },
     };
 
-    return api.post(url, data ?? null, merge({}, defaultOptions, options));
+    return api.post(
+        getRequestUrl(url, authType),
+        data ?? null,
+        merge({}, defaultOptions, options),
+    );
 };
 
 export const putRequest = <T>({
@@ -81,7 +92,11 @@ export const putRequest = <T>({
         },
     };
 
-    return api.put(url, data ?? null, merge({}, defaultOptions, options));
+    return api.put(
+        getRequestUrl(url, authType),
+        data ?? null,
+        merge({}, defaultOptions, options),
+    );
 };
 
 export const patchRequest = <T>({
@@ -99,7 +114,11 @@ export const patchRequest = <T>({
         },
     };
 
-    return api.patch(url, data ?? null, merge({}, defaultOptions, options));
+    return api.patch(
+        getRequestUrl(url, authType),
+        data ?? null,
+        merge({}, defaultOptions, options),
+    );
 };
 
 export const deleteRequest = <T>({
@@ -112,7 +131,8 @@ export const deleteRequest = <T>({
     authType?: AuthType;
 }) => {
     const authHeaderValue = getAuthHeaderValue(authType);
-    return api.delete(url, {
+
+    return api.delete(getRequestUrl(url, authType), {
         headers: {
             Accept: "application/json",
             ...(authHeaderValue ? { Authorization: authHeaderValue } : {}),
