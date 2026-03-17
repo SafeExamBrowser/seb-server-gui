@@ -28,7 +28,7 @@ export const authorize = async (
                     "Content-Type": "application/x-www-form-urlencoded",
                 },
             },
-            false,
+            "none",
         )
     ).data;
 };

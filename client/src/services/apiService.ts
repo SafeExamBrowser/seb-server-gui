@@ -1,14 +1,20 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { merge } from "lodash";
 import { useAuthStore } from "@/composables/store/useAuthStore";
+import { AuthType } from "./types";
 
 const api = axios.create({
     baseURL: "/api",
 });
 
-const getAuthHeaderValueByUrl = (url: string) => {
+const getAuthHeaderValue = (authType: AuthType) => {
     const authStore = useAuthStore();
-    if (url.startsWith("/proctoring")) {
+
+    if (authType === "none") {
+        return undefined;
+    }
+
+    if (authType === "sps") {
         return `Bearer ${authStore.spAccessToken}`;
     }
 
@@ -18,14 +24,13 @@ const getAuthHeaderValueByUrl = (url: string) => {
 export const getRequest = (
     url: string,
     options?: AxiosRequestConfig,
-    includeAuthHeader = true,
+    authType: AuthType = "seb",
 ) => {
+    const authHeaderValue = getAuthHeaderValue(authType);
     const defaultOptions: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
-            ...(includeAuthHeader
-                ? { Authorization: getAuthHeaderValueByUrl(url) }
-                : {}),
+            ...(authHeaderValue ? { Authorization: authHeaderValue } : {}),
         },
     };
 
@@ -36,14 +41,13 @@ export const postRequest = <T>(
     url: string,
     data?: T,
     options?: AxiosRequestConfig,
-    includeAuthHeader = true,
+    authType: AuthType = "seb",
 ) => {
+    const authHeaderValue = getAuthHeaderValue(authType);
     const defaultOptions: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
-            ...(includeAuthHeader
-                ? { Authorization: getAuthHeaderValueByUrl(url) }
-                : {}),
+            ...(authHeaderValue ? { Authorization: authHeaderValue } : {}),
             "Content-Type": "application/x-www-form-urlencoded",
         },
     };
@@ -55,14 +59,13 @@ export const putRequest = <T>(
     url: string,
     data?: T,
     options?: AxiosRequestConfig,
-    includeAuthHeader = true,
+    authType: AuthType = "seb",
 ) => {
+    const authHeaderValue = getAuthHeaderValue(authType);
     const defaultOptions: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
-            ...(includeAuthHeader
-                ? { Authorization: getAuthHeaderValueByUrl(url) }
-                : {}),
+            ...(authHeaderValue ? { Authorization: authHeaderValue } : {}),
             "Content-Type": "application/json",
         },
     };
@@ -74,14 +77,13 @@ export const patchRequest = <T>(
     url: string,
     data?: T,
     options?: AxiosRequestConfig,
-    includeAuthHeader = true,
+    authType: AuthType = "seb",
 ) => {
+    const authHeaderValue = getAuthHeaderValue(authType);
     const defaultOptions: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
-            ...(includeAuthHeader
-                ? { Authorization: getAuthHeaderValueByUrl(url) }
-                : {}),
+            ...(authHeaderValue ? { Authorization: authHeaderValue } : {}),
             "Content-Type": "application/json",
         },
     };
@@ -92,14 +94,13 @@ export const patchRequest = <T>(
 export const deleteRequest = <T>(
     url: string,
     data?: T,
-    includeAuthHeader = true,
+    authType: AuthType = "seb",
 ) => {
+    const authHeaderValue = getAuthHeaderValue(authType);
     return api.delete(url, {
         headers: {
             Accept: "application/json",
-            ...(includeAuthHeader
-                ? { Authorization: getAuthHeaderValueByUrl(url) }
-                : {}),
+            ...(authHeaderValue ? { Authorization: authHeaderValue } : {}),
             "Content-Type": "application/x-www-form-urlencoded",
         },
         data: data ?? null,

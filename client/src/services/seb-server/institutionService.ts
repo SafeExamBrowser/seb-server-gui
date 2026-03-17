@@ -12,7 +12,7 @@ export const getInstitutions = async (): Promise<Institution[]> =>
                     "Content-Type": "application/x-www-form-urlencoded",
                 },
             },
-            false,
+            "none",
         )
     ).data;
 

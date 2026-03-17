@@ -15,18 +15,26 @@ export const searchSessionsDay = async (
     optionalParameters?: OptionalParSearchSessions,
 ): Promise<string[]> =>
     (
-        await apiService.getRequest(`${baseUrl}/sessions/day`, {
-            params: optionalParameters,
-        })
+        await apiService.getRequest(
+            `${baseUrl}/sessions/day`,
+            {
+                params: optionalParameters,
+            },
+            "sps",
+        )
     ).data;
 
 export const searchSessions = async (
     optionalParameters?: OptionalParSearchSessions,
 ): Promise<SearchSessions> =>
     (
-        await apiService.getRequest(`${baseUrl}/sessions`, {
-            params: optionalParameters,
-        })
+        await apiService.getRequest(
+            `${baseUrl}/sessions`,
+            {
+                params: optionalParameters,
+            },
+            "sps",
+        )
     ).data;
 
 export const searchTimeline = async (
@@ -34,9 +42,13 @@ export const searchTimeline = async (
     optionalParameters?: OptionalParSearchTimeline,
 ): Promise<SearchTimeline> =>
     (
-        await apiService.getRequest(`${baseUrl}/timeline/${sessionId}`, {
-            params: optionalParameters,
-        })
+        await apiService.getRequest(
+            `${baseUrl}/timeline/${sessionId}`,
+            {
+                params: optionalParameters,
+            },
+            "sps",
+        )
     ).data;
 
 // TODO @andreas: We have to check if this is still a feature (with the new deletion strategy
@@ -62,6 +74,8 @@ export const deleteSessions = async (
     return (
         await apiService.deleteRequest(
             `${baseUrl}/session${createSessionDeleteUrlSuffix(sessionUuids)}`,
+            undefined,
+            "sps",
         )
     ).data;
 };

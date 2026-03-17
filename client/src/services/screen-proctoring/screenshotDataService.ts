@@ -7,13 +7,20 @@ const baseUrl = "/proctoring/screenshot-data" as const;
 export const getScreenshotDataBySessionId = async (
     sessionId: string,
 ): Promise<ScreenshotData> =>
-    (await apiService.getRequest(`${baseUrl}/${sessionId}`)).data;
+    (await apiService.getRequest(`${baseUrl}/${sessionId}`, undefined, "sps"))
+        .data;
 
 export const getScreenshotDataByTimestamp = async (
     sessionId: string,
     timestamp: string,
 ): Promise<ScreenshotData> =>
-    (await apiService.getRequest(`${baseUrl}/${sessionId}/${timestamp}`)).data;
+    (
+        await apiService.getRequest(
+            `${baseUrl}/${sessionId}/${timestamp}`,
+            undefined,
+            "sps",
+        )
+    ).data;
 
 export const getScreenshotTimestamps = async (
     sessionId: string,
@@ -23,5 +30,7 @@ export const getScreenshotTimestamps = async (
     (
         await apiService.getRequest(
             `/proctoring/screenshot-timestamps/${sessionId}/${timestamp}/${direction}`,
+            undefined,
+            "sps",
         )
     ).data;

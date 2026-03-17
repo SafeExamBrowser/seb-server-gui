@@ -12,21 +12,35 @@ export const getExamsStarted = async (
     optionalParameters?: OptionalParGetExamsStarted,
 ): Promise<SPExam[]> =>
     (
-        await apiService.getRequest(`${baseUrl}/exams`, {
-            params: optionalParameters,
-        })
+        await apiService.getRequest(
+            `${baseUrl}/exams`,
+            {
+                params: optionalParameters,
+            },
+            "sps",
+        )
     ).data;
 
 export const getGroupIdsForExam = async (examId: number): Promise<number[]> =>
-    (await apiService.getRequest(`${baseUrl}/groupIds/${examId}`)).data;
+    (
+        await apiService.getRequest(
+            `${baseUrl}/groupIds/${examId}`,
+            undefined,
+            "sps",
+        )
+    ).data;
 
 export const getDistinctMetadataAppForExam = async (
     groupIds: string,
 ): Promise<string[]> =>
     (
-        await apiService.getRequest(`${baseUrl}/metadata/app`, {
-            params: { groupIds },
-        })
+        await apiService.getRequest(
+            `${baseUrl}/metadata/app`,
+            {
+                params: { groupIds },
+            },
+            "sps",
+        )
     ).data;
 
 // TODO @andreas This is missing mandatory parameter "screenProctoringMetadataApplication"
@@ -36,9 +50,13 @@ export const getDistinctMetadataWindowForExam = async (
     screenProctoringMetadataApplication: string,
 ): Promise<DistinctMetadataWindowForExamRecord> =>
     (
-        await apiService.getRequest(`${baseUrl}/metadata/window`, {
-            params: { groupIds, screenProctoringMetadataApplication },
-        })
+        await apiService.getRequest(
+            `${baseUrl}/metadata/window`,
+            {
+                params: { groupIds, screenProctoringMetadataApplication },
+            },
+            "sps",
+        )
     ).data;
 
 export const getUserListForApplicationSearch = async (
@@ -47,13 +65,17 @@ export const getUserListForApplicationSearch = async (
     screenProctoringMetadataWindowTitle: string,
 ): Promise<UserListForApplicationSearchRecord[]> =>
     (
-        await apiService.getRequest(`${baseUrl}/users`, {
-            params: {
-                groupIds,
-                screenProctoringMetadataApplication,
-                screenProctoringMetadataWindowTitle,
+        await apiService.getRequest(
+            `${baseUrl}/users`,
+            {
+                params: {
+                    groupIds,
+                    screenProctoringMetadataApplication,
+                    screenProctoringMetadataWindowTitle,
+                },
             },
-        })
+            "sps",
+        )
     ).data;
 
 export const getTimestampListForApplicationSearch = async (
@@ -62,11 +84,15 @@ export const getTimestampListForApplicationSearch = async (
     screenProctoringMetadataWindowTitle: string,
 ): Promise<number[]> =>
     (
-        await apiService.getRequest(`${baseUrl}/timestamps`, {
-            params: {
-                sessionUUID,
-                screenProctoringMetadataApplication,
-                screenProctoringMetadataWindowTitle,
+        await apiService.getRequest(
+            `${baseUrl}/timestamps`,
+            {
+                params: {
+                    sessionUUID,
+                    screenProctoringMetadataApplication,
+                    screenProctoringMetadataWindowTitle,
+                },
             },
-        })
+            "sps",
+        )
     ).data;

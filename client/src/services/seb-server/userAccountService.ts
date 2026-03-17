@@ -26,7 +26,7 @@ export const registerUserAccount = async (
                     "Content-Type": "application/x-www-form-urlencoded",
                 },
             },
-            false,
+            "none",
         )
     ).data;
 
