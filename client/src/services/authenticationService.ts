@@ -34,6 +34,8 @@ export const authorize = async (
 };
 
 export const logout = async () => {
-    await apiService.postRequest({ url: "/useraccount/logout" });
-    // TODO @alain: also do sps here
+    await Promise.all([
+        apiService.postRequest({ url: "/useraccount/logout" }),
+        apiService.postRequest({ url: "/useraccount/logout", authType: "sps" }),
+    ]);
 };
