@@ -8,8 +8,10 @@ export const useLogout = () => {
     const authStore = useAuthStore();
     const userAccountStore = useUserAccountStore();
 
-    const logout = async () => {
-        await authenticationService.logout();
+    const logout = async (skipServerLogout: boolean = false) => {
+        if (!skipServerLogout) {
+            await authenticationService.logout();
+        }
 
         authStore.$reset();
         userAccountStore.setUserTimeZone("");

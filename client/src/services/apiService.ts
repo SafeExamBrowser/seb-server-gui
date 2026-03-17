@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { merge } from "lodash";
 import { useAuthStore } from "@/composables/store/useAuthStore";
+import { useLogout } from "@/composables/useLogout";
 import { AuthType } from "./types";
 
 const api = axios.create({
@@ -13,6 +14,20 @@ type RequestWithDataParams<T> = {
     options?: AxiosRequestConfig;
     authType?: AuthType;
 };
+
+// if a request is unauthorized, properly log out the user (clean up store etc.) and reject the promise
+api.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+        if (error?.response?.status !== 401) {
+            return Promise.reject(error);
+        }
+
+        await useLogout().logout(true);
+
+        return Promise.reject(error);
+    },
+);
 
 const getAuthHeaderValue = (authType: AuthType) => {
     const authStore = useAuthStore();
