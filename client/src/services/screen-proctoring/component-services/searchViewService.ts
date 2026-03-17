@@ -1,10 +1,7 @@
 import * as searchService from "@/services/screen-proctoring/api-services/searchService";
 import * as timeUtils from "@/utils/timeUtils";
 import * as tableUtils from "@/utils/table/tableUtils";
-import {
-    openUrlInNewTab,
-    openUrlInNewTabApplicationView,
-} from "@/router/navigation";
+import { openUrlInNewTab } from "@/router/navigation";
 import * as spConstants from "@/utils/sp-constants";
 import { ServerTablePaging } from "@/models/types";
 import {
@@ -101,15 +98,23 @@ export function openProctoringApplicationSearch(
     metadataApp: string,
     metadataWindow: string,
 ) {
-    const url: URL = new URL(
-        window.location.origin +
-            spConstants.PROCTORING_APPLICATION_SEARCH_ROUTE +
-            "/" +
-            sessionId,
-    );
-    url.searchParams.set("metadataApp", metadataApp);
-    url.searchParams.set("metadataWindow", metadataWindow);
+    let url: string =
+        spConstants.PROCTORING_APPLICATION_SEARCH_ROUTE + "/" + sessionId;
+    let query: string | undefined = undefined;
 
-    openUrlInNewTabApplicationView(url.toString());
+    if (metadataApp) {
+        query = "metadataApp=" + metadataApp;
+    }
+    if (metadataWindow) {
+        if (query) {
+            query = query + "&";
+        }
+        query = query + "metadataWindow=" + metadataWindow;
+    }
+    if (query) {
+        url = url + "?" + query;
+    }
+
+    openUrlInNewTab(url.toString());
 }
 //= =============================
