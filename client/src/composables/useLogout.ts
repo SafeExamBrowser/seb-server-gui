@@ -14,7 +14,6 @@ export const useLogout = () => {
         }
 
         authStore.$reset();
-        userAccountStore.setUserTimeZone("");
         userAccountStore.userAccount = null;
 
         navigateTo(constants.DEFAULT_ROUTE);
