@@ -124,7 +124,7 @@
 
 <script setup lang="ts">
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
-import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
+import * as monitoringService from "@/services/seb-server/monitoringService";
 import { NotificationEnum } from "@/models/seb-server/monitoringEnums";
 import { translate } from "@/utils/generalUtils";
 import { ref, computed, watch, nextTick } from "vue";
@@ -215,7 +215,7 @@ function scrollToTop() {
 }
 
 async function confirmNotification(notificationId: string) {
-    await monitoringViewService.confirmNotification(
+    await monitoringService.confirmNotification(
         examId,
         notificationId,
         connectionToken,

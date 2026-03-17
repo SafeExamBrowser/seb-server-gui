@@ -172,7 +172,7 @@ import { CreateExamPar, Exam } from "@/models/seb-server/exam";
 import { AssessmentToolsResponse } from "@/models/seb-server/assessmentTool";
 import { APIMessage } from "@/models/seb-server/apiMessages";
 import { getAssessmentToolsActive } from "@/services/seb-server/assessmentToolService.ts";
-import * as examService from "@/services/seb-server/api-services/examService.ts";
+import * as examService from "@/services/seb-server/examService.ts";
 // i18n
 const i18n = useI18n();
 

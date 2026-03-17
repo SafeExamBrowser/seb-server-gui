@@ -12,7 +12,7 @@
                     icon="mdi-movie-play"
                     variant="text"
                     @click="
-                        searchViewService.openProctoringApplicationSearch(
+                        openProctoringApplicationSearch(
                             userItem.sessionUuid,
                             props.metadataApp,
                             props.metadataWindow,
@@ -24,7 +24,7 @@
                     icon="mdi-video"
                     variant="text"
                     @click="
-                        searchViewService.openProctoringView(
+                        openProctoringView(
                             userItem.sessionUuid,
                             userItem.firstScreenshotCaptureTime.toString(),
                         )
@@ -38,10 +38,13 @@
 
 <script setup lang="ts">
 import { onBeforeMount, ref } from "vue";
-import * as applicationsSearchViewService from "@/services/screen-proctoring/component-services/applicationsSearchViewService";
 import * as generalUtils from "@/utils/generalUtils";
-import * as searchViewService from "@/services/screen-proctoring/component-services/searchViewService";
 import { UserListForApplicationSearchRecord } from "@/models/screen-proctoring/applicationSearch";
+import { getUserListForApplicationSearch } from "@/services/screen-proctoring/applicationsSearchService.ts";
+import {
+    openProctoringApplicationSearch,
+    openProctoringView,
+} from "@/components/views/screen-proctoring/utils/navigation.ts";
 
 // props
 const props = defineProps<{
@@ -55,7 +58,7 @@ const userList = ref<UserListForApplicationSearchRecord[]>();
 
 onBeforeMount(async () => {
     const userListLocal: UserListForApplicationSearchRecord[] | null =
-        await applicationsSearchViewService.getUserListForApplicationSearch(
+        await getUserListForApplicationSearch(
             generalUtils.createStringCommaList(props.groupIds),
             props.metadataApp,
             props.metadataWindow,

@@ -120,7 +120,6 @@
 </template>
 
 <script setup lang="ts">
-import * as monitoringViewService from "@/services/seb-server/component-services/monitoringViewService";
 import * as tableUtils from "@/utils/table/tableUtils";
 import * as timeUtils from "@/utils/timeUtils";
 import * as generalUtils from "@/utils/generalUtils";
@@ -137,6 +136,7 @@ import { ref } from "vue";
 import { ServerTablePaging } from "@/models/types";
 import { OptionalParGetExams } from "@/models/seb-server/optionalParamters";
 import { Exam, Exams } from "@/models/seb-server/exam";
+import { getExamsForMonitoring } from "@/services/seb-server/monitoringService.ts";
 
 // stores
 const monitoringStore = useMonitoringStore();
@@ -236,7 +236,7 @@ async function loadItems(serverTablePaging: ServerTablePaging) {
         );
 
     const examsResponse: Exams | null =
-        await monitoringViewService.getExamsForMonitoring(optionalParGetExams);
+        await getExamsForMonitoring(optionalParGetExams);
 
     if (examsResponse == null) {
         isLoading.value = false;

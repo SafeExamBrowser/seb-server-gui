@@ -213,14 +213,18 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
 import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from "vue";
-import * as proctoringViewService from "@/services/screen-proctoring/component-services/proctoringViewService";
 import * as timeUtils from "@/utils/timeUtils";
 import { useAppBarStore } from "@/stores/store";
 import { useFullscreen } from "@vueuse/core";
-import * as linkService from "@/services/screen-proctoring/component-services/linkService";
-import * as applicationsSearchViewService from "@/services/screen-proctoring/component-services/applicationsSearchViewService";
 import * as spConstants from "@/utils/sp-constants";
 import { ScreenshotData } from "@/models/screen-proctoring/session";
+import { getTimestampListForApplicationSearch } from "@/services/screen-proctoring/applicationsSearchService.ts";
+import { getSpecificImageLink } from "@/components/views/screen-proctoring/utils/linkBuilder.ts";
+import * as screenshotDataService from "@/services/screen-proctoring/screenshotDataService";
+import {
+    getScreenshotMetadata,
+    getSessionInfodata,
+} from "@/components/views/screen-proctoring/proctoring/utils/screenshotMetadata.ts";
 
 // slider
 const sliderTime = ref<number>(0);
@@ -338,7 +342,7 @@ watch(sliderTime, async () => {
 //= ============screenshot list logic==================
 async function setTimestampsList() {
     const timestamps: number[] | null =
-        await applicationsSearchViewService.getTimestampListForApplicationSearch(
+        await getTimestampListForApplicationSearch(
             sessionId,
             metadataApp.toString(),
             metadataWindow.toString(),
@@ -358,10 +362,7 @@ async function setTimestampsList() {
 }
 
 function setImageLink(timestamp: string) {
-    imageLink.value = linkService.getSpecificImageLink(
-        currentScreenshot.value,
-        timestamp,
-    );
+    imageLink.value = getSpecificImageLink(currentScreenshot.value, timestamp);
 }
 
 //= ============screenshot logic==================
@@ -369,7 +370,7 @@ async function assignScreenshotDataByTimestamp(timestamp: string | undefined) {
     if (timestamp == null) return;
 
     const screenshotDataResponse: ScreenshotData | null =
-        await proctoringViewService.getScreenshotDataByTimestamp(
+        await screenshotDataService.getScreenshotDataByTimestamp(
             sessionId,
             timestamp,
         );
@@ -409,9 +410,7 @@ const endTimeString = computed<string>(() => {
 });
 
 const sessionInfodata = computed<object>(() => {
-    return proctoringViewService.getSessionInfodata(
-        currentScreenshot.value || null,
-    );
+    return getSessionInfodata(currentScreenshot.value || null);
 });
 //= =============================
 
@@ -498,7 +497,7 @@ function play() {
 //= ============metadata==================
 const screenshotMetadata = computed<object>(() => {
     if (currentScreenshot.value) {
-        return proctoringViewService.getScreenshotMetadata(
+        return getScreenshotMetadata(
             sliderTime.value || 0,
             currentScreenshot.value.metaData,
             "",
@@ -506,7 +505,7 @@ const screenshotMetadata = computed<object>(() => {
         );
     }
 
-    return proctoringViewService.getScreenshotMetadata(
+    return getScreenshotMetadata(
         sliderTime.value || 0,
         null,
         "",

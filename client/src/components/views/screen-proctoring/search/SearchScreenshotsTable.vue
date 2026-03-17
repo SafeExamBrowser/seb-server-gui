@@ -62,7 +62,7 @@
                 icon="mdi-video"
                 variant="text"
                 @click="
-                    searchViewService.openProctoringView(
+                    openProctoringView(
                         timelineSearchResultRef!.sessionUUID,
                         internalItem.columns.timestamp,
                     )
@@ -141,7 +141,7 @@
                         icon="mdi-video"
                         variant="text"
                         @click="
-                            searchViewService.openProctoringView(
+                            openProctoringView(
                                 timelineSearchResultRef!.sessionUUID,
                                 screenshot.timelineScreenshotDataList[0].timestamp.toString(),
                             )
@@ -162,11 +162,11 @@
 import { onBeforeMount, ref, watch } from "vue";
 import * as timeUtils from "@/utils/timeUtils";
 import * as tableUtils from "@/utils/table/tableUtils";
-import * as searchViewService from "@/services/screen-proctoring/component-services/searchViewService";
 import * as groupingUtils from "@/utils/groupingUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import * as spConstants from "@/utils/sp-constants";
 import { SearchTimeline } from "@/models/screen-proctoring/search";
+import { openProctoringView } from "@/components/views/screen-proctoring/utils/navigation.ts";
 
 // simple "clickable" for header refs (matches what TableHeaders expects)
 type Clickable = { click: () => void };

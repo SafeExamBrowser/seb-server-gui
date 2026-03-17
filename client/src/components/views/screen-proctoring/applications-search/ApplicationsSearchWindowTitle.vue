@@ -97,10 +97,10 @@
 
 <script setup lang="ts">
 import { onBeforeMount, ref } from "vue";
-import * as applicationsSearchViewService from "@/services/screen-proctoring/component-services/applicationsSearchViewService";
 import * as generalUtils from "@/utils/generalUtils";
 import ApplicationsSearchUserList from "./ApplicationsSearchUserList.vue";
 import { DistinctMetadataWindowForExamRecord } from "@/models/screen-proctoring/applicationSearch";
+import { getDistinctMetadataWindowForExam } from "@/services/screen-proctoring/applicationsSearchService.ts";
 
 // props
 const props = defineProps<{
@@ -121,7 +121,7 @@ const pageSize = ref<number>(50);
 
 onBeforeMount(async () => {
     const metadataWindowsLocal: DistinctMetadataWindowForExamRecord | null =
-        await applicationsSearchViewService.getDistinctMetadataWindowForExam(
+        await getDistinctMetadataWindowForExam(
             generalUtils.createStringCommaList(props.groupIds),
             props.metadataApp,
         );
