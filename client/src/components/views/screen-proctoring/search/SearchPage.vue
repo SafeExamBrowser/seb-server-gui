@@ -105,11 +105,11 @@
 <script setup lang="ts">
 import { onBeforeMount, ref, watch } from "vue";
 import { useAppBarStore, useTableStore } from "@/stores/store";
-import * as searchViewService from "@/services/screen-proctoring/component-services/searchViewService";
 import SearchForm from "./SearchForm.vue";
 import SearchSessionTable from "./SearchSessionTable.vue";
 import * as timeUtils from "@/utils/timeUtils";
 import { OptionalParSearchSessions } from "@/models/screen-proctoring/optionalParamters";
+import { searchSessionsDay } from "@/services/screen-proctoring/searchService.ts";
 
 // error handling
 const searchResultAvailable = ref<boolean>(false);
@@ -208,8 +208,9 @@ async function searchSessions(
         pageNumber,
     };
 
-    const sessionSearchResponse: string[] | null =
-        await searchViewService.searchSessionsDay(searchParameters.value);
+    const sessionSearchResponse: string[] | null = await searchSessionsDay(
+        searchParameters.value,
+    );
 
     if (sessionSearchResponse == null) {
         errorAvailable.value = true;

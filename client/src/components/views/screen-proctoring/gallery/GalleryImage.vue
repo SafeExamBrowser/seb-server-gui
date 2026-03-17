@@ -9,9 +9,7 @@
             class="img-styling"
             :class="{ 'on-hover': isHovering }"
             eager
-            :src="
-                linkService.getLatestImageLink(screenshot, timestamp.toString())
-            "
+            :src="getLatestImageLink(screenshot, timestamp.toString())"
             tabindex="0"
             @dblclick="openDialog()"
             @focus="setTabFocus()"
@@ -33,7 +31,7 @@
                                         <v-row
                                             v-for="(
                                                 value, key
-                                            ) in galleryViewService.getScreenshotMetadata(
+                                            ) in galleryUtils.getScreenshotMetadata(
                                                 screenshot.metaData,
                                             )"
                                             :key="key"
@@ -104,7 +102,7 @@
                                     size="small"
                                     variant="flat"
                                     @click="
-                                        galleryViewService.navigateToProctoringView(
+                                        navigateToProctoringView(
                                             screenshot,
                                             examId,
                                         )
@@ -122,9 +120,7 @@
             :aspect-ratio="16 / 9"
             class="content-filler"
             eager
-            :src="
-                linkService.getLatestImageLink(screenshot, timestamp.toString())
-            "
+            :src="getLatestImageLink(screenshot, timestamp.toString())"
         >
         </v-img>
     </v-hover>
@@ -190,7 +186,7 @@
                                                         <tr
                                                             v-for="(
                                                                 value, key
-                                                            ) in galleryViewService.getScreenshotMetadata(
+                                                            ) in galleryUtils.getScreenshotMetadata(
                                                                 screenshot.metaData,
                                                             )"
                                                             :key="key"
@@ -234,7 +230,7 @@
                                         size="small"
                                         variant="flat"
                                         @click="
-                                            galleryViewService.navigateToProctoringView(
+                                            navigateToProctoringView(
                                                 screenshot,
                                                 groupUuid,
                                             )
@@ -254,13 +250,14 @@
 
 <script setup lang="ts">
 import { computed, onBeforeMount, ref } from "vue";
-import * as galleryViewService from "@/services/screen-proctoring/component-services/galleryViewService";
-import * as linkService from "@/services/screen-proctoring/component-services/linkService";
 import { useAppBarStore, useGalleryStore } from "@/stores/store";
 import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
 import { useRoute } from "vue-router";
 import { ScreenshotData } from "@/models/screen-proctoring/session";
+import { navigateToProctoringView } from "@/components/views/screen-proctoring/gallery/utils/galleryNavigation.ts";
+import * as galleryUtils from "@/components/views/screen-proctoring/gallery/utils/galleryUtils.ts";
+import { getLatestImageLink } from "@/components/views/screen-proctoring/utils/linkBuilder.ts";
 
 // props
 const props = defineProps<{
@@ -300,10 +297,7 @@ function closeDialog() {
 }
 
 const expandedScreenshotLink = computed<string>(() => {
-    return linkService.getLatestImageLink(
-        props.screenshot,
-        props.timestamp.toString(),
-    );
+    return getLatestImageLink(props.screenshot, props.timestamp.toString());
 });
 
 function setTabFocus() {

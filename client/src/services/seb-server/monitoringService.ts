@@ -122,7 +122,7 @@ export const quitAll = async (examId: string): Promise<number> =>
         )
     ).status;
 
-export const getPendingNotifcations = async (
+export const getPendingNotifications = async (
     examId: string,
     connectionToken: string,
 ): Promise<ClientNotification[]> =>

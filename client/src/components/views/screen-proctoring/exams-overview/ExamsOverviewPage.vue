@@ -86,16 +86,14 @@
                                     'navigate',
                                     internalItem.index,
                                     {
-                                        path: linkService.getGalleryViewLink(
-                                            item.uuid,
-                                        ),
+                                        path: getGalleryViewLink(item.uuid),
                                     },
                                 )
                             "
                         >
                             <router-link
                                 class="default-color"
-                                :to="linkService.getGalleryViewLink(item.uuid)"
+                                :to="getGalleryViewLink(item.uuid)"
                                 >{{ item.name }}</router-link
                             >
                         </div>
@@ -108,14 +106,14 @@
 
 <script setup lang="ts">
 import { onBeforeMount, onUnmounted, ref, watch } from "vue";
-import * as examsOverviewViewService from "@/services/screen-proctoring/component-services/examsOverviewViewService";
+import * as groupService from "@/services/screen-proctoring/groupService";
 import { useAppBarStore } from "@/stores/store";
 import * as timeUtils from "@/utils/timeUtils";
 import * as tableUtils from "@/utils/table/tableUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import { storeToRefs } from "pinia";
-import * as linkService from "@/services/screen-proctoring/component-services/linkService";
 import { Group, GroupObject } from "@/models/screen-proctoring/group";
+import { getGalleryViewLink } from "@/components/views/seb-server/monitoring/utils/monitoringUtils.ts";
 
 // stores
 const appBarStore = useAppBarStore();
@@ -154,12 +152,11 @@ watch(appBarStoreRef.examOverviewShowUpcomingExams, async () => {
 async function getGroups() {
     errorAvailable.value = false;
 
-    const groupsResponse: GroupObject | null =
-        await examsOverviewViewService.getGroups({
-            pageSize: 500,
-            includePastExams: appBarStore.examOverviewShowPastExams,
-            includeUpcomingExams: appBarStore.examOverviewShowUpcomingExams,
-        });
+    const groupsResponse: GroupObject | null = await groupService.getGroups({
+        pageSize: 500,
+        includePastExams: appBarStore.examOverviewShowPastExams,
+        includeUpcomingExams: appBarStore.examOverviewShowUpcomingExams,
+    });
 
     if (groupsResponse == null) {
         errorAvailable.value = true;
