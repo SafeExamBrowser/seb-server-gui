@@ -1,5 +1,5 @@
 import { createProxyServer } from "http-proxy-3";
-import { logRequest } from "./logger";
+import { logRequest } from "./logger.js";
 import type { Request, Response } from "express";
 
 const prepareProxyRequest = ({
