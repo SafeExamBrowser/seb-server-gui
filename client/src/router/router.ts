@@ -366,7 +366,6 @@ async function setPersonalUserAccount() {
         }
 
         userAccountStore.userAccount = personalUserAccountResonse;
-        userAccountStore.setUserTimeZone(userAccountStore.userAccount.timezone);
     } catch {
         return null;
     }
