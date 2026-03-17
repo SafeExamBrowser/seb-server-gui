@@ -15,14 +15,14 @@ const clientBuildDirectory = path.join(
 );
 
 const sebTarget = `${env.SEB_SERVER_URL}${env.SEB_SERVER_DEFAULT_URL}`;
-const proctorTarget = `${env.PROCTOR_SERVER_URL}${env.PROCTOR_SERVER_DEFAULT_URL}`;
+const spsTarget = `${env.PROCTOR_SERVER_URL}${env.PROCTOR_SERVER_DEFAULT_URL}`;
 
 const sebProxy = createProxyServer({
   target: sebTarget,
 });
 
-const proctorProxy = createProxyServer({
-  target: proctorTarget,
+const spsProxy = createProxyServer({
+  target: spsTarget,
 });
 
 const addProxyHandlers = (proxy: ProxyServer, targetBase: string) => {
@@ -36,11 +36,11 @@ const addProxyHandlers = (proxy: ProxyServer, targetBase: string) => {
 };
 
 addProxyHandlers(sebProxy, sebTarget);
-addProxyHandlers(proctorProxy, proctorTarget);
+addProxyHandlers(spsProxy, spsTarget);
 
 // everything that's prefixed with '/api/sps' is proxied to sps
 app.use("/api/sps", (req, res) => {
-  proctorProxy.web(req, res);
+  spsProxy.web(req, res);
 });
 
 // everything else that's prefixed with '/api' is proxied to seb
