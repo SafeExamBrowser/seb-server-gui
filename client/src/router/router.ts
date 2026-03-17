@@ -48,7 +48,9 @@ const routes: Array<RouteRecordRaw> = [
                 path: constants.NAVIGATION_OVERVIEW_ROUTE,
                 name: "NavigationOverview",
                 component: () =>
-                    import("@/components/layout/NavigationOverview.vue"),
+                    import(
+                        "@/components/layout/navigationOverview/NavigationOverview.vue"
+                    ),
                 meta: { titleKey: "titles.navigationOverview" },
             },
 
@@ -131,6 +133,17 @@ const routes: Array<RouteRecordRaw> = [
                     ),
                 meta: { titleKey: "titles.userAccounts" },
             },
+
+            {
+                path: constants.NEW_USER_ACCOUNTS_ROUTE,
+                name: "NewUserAccounts",
+                component: () =>
+                    import(
+                        "@/components/views/seb-server/settings-navigation/user-account/NewUserAccountsPage.vue"
+                    ),
+                meta: { titleKey: "titles.userAccounts" },
+            },
+
             {
                 path: constants.PROFILE_ROUTE,
                 name: "ProfileRoute",
