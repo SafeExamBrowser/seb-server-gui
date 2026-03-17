@@ -9,38 +9,41 @@ import {
 const baseUrl = "/exam" as const;
 
 export const getExam = async (id: string): Promise<Exam> =>
-    (await apiService.getRequest(`${baseUrl}/${id}`)).data;
+    (await apiService.getRequest({ url: `${baseUrl}/${id}` })).data;
 
 export const createExam = async (createExamPar: CreateExamPar): Promise<Exam> =>
-    (await apiService.postRequest(baseUrl, createExamPar)).data;
+    (await apiService.postRequest({ url: baseUrl, data: createExamPar })).data;
 
 export const updateExam = async (exam: Exam): Promise<Exam> =>
-    (await apiService.putRequest(baseUrl, exam)).data;
+    (await apiService.putRequest({ url: baseUrl, data: exam })).data;
 
 export const deleteExam = async (id: string): Promise<unknown | null> =>
-    (await apiService.deleteRequest(`${baseUrl}/${id}`)).data;
+    (await apiService.deleteRequest({ url: `${baseUrl}/${id}` })).data;
 
 export const getExams = async (
     optionalParameters?: OptionalParGetExams,
 ): Promise<Exams> =>
     (
-        await apiService.getRequest(baseUrl, {
-            params: optionalParameters,
+        await apiService.getRequest({
+            url: baseUrl,
+            options: {
+                params: optionalParameters,
+            },
         })
     ).data;
 
 export const archiveExam = async (id: string): Promise<Exam> =>
-    (await apiService.patchRequest(`${baseUrl}/${id}/archive`)).data;
+    (await apiService.patchRequest({ url: `${baseUrl}/${id}/archive` })).data;
 
 export const getExamAppSignatureKeys = async (
     id: string,
 ): Promise<AppSignatureKey[]> =>
-    (await apiService.getRequest(`${baseUrl}/${id}/sebkeyinfo`)).data;
+    (await apiService.getRequest({ url: `${baseUrl}/${id}/sebkeyinfo` })).data;
 
 export const getGrantedExamAppSignatureKeys = async (
     parentId: string,
 ): Promise<GrantedAppSignatureKey[]> =>
-    (await apiService.getRequest(`${baseUrl}/${parentId}/grant`)).data;
+    (await apiService.getRequest({ url: `${baseUrl}/${parentId}/grant` })).data;
 
 export const grantExamAppSignatureKeys = async (
     tagName: string,
@@ -48,27 +51,39 @@ export const grantExamAppSignatureKeys = async (
     id: string,
 ): Promise<GrantedAppSignatureKey> =>
     (
-        await apiService.postRequest(
-            `${baseUrl}/${parentId}/grant/${id}`,
-            {},
-            {
+        await apiService.postRequest({
+            url: `${baseUrl}/${parentId}/grant/${id}`,
+            data: {},
+            options: {
                 params: { tag: tagName },
             },
-        )
+        })
     ).data;
 
 export const removeGrantExamAppSignatureKeys = async (
     parentId: string,
     id: string,
 ): Promise<AppSignatureKey[]> =>
-    (await apiService.deleteRequest(`${baseUrl}/${parentId}/grant/${id}`)).data;
+    (
+        await apiService.deleteRequest({
+            url: `${baseUrl}/${parentId}/grant/${id}`,
+        })
+    ).data;
 
 export const checkSEBLock = async (id: string): Promise<boolean> =>
-    (await apiService.getRequest(`${baseUrl}/${id}/check-seb-restriction`))
-        .data;
+    (
+        await apiService.getRequest({
+            url: `${baseUrl}/${id}/check-seb-restriction`,
+        })
+    ).data;
 
 export const addSEBLock = async (id: string): Promise<Exam> =>
-    (await apiService.putRequest(`${baseUrl}/${id}/seb-restriction`)).data;
+    (await apiService.putRequest({ url: `${baseUrl}/${id}/seb-restriction` }))
+        .data;
 
 export const removeSEBLock = async (id: string): Promise<null> =>
-    (await apiService.deleteRequest(`${baseUrl}/${id}/seb-restriction`)).data;
+    (
+        await apiService.deleteRequest({
+            url: `${baseUrl}/${id}/seb-restriction`,
+        })
+    ).data;

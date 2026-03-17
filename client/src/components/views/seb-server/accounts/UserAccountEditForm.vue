@@ -509,16 +509,14 @@ import moment from "moment-timezone";
 import { navigateTo } from "@/router/navigation";
 import { UserRoleEnum } from "@/models/userRoleEnum";
 import { useI18n } from "vue-i18n";
-import {
-    useUserAccountStore as useAuthenticatedUserAccountStore,
-    useAuthStore,
-} from "@/stores/authentication/authenticationStore";
+import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/userAccountStore";
 import * as userAccountService from "@/services/seb-server/userAccountService";
 
 import { EditUserAccountParameters, UserAccount } from "@/models/userAccount";
 import { Institution } from "@/models/seb-server/institution";
 import SettingsNavigation from "@/components/views/seb-server/components/SettingsNavigation.vue";
 import { getInstitutions } from "@/services/seb-server/institutionService.ts";
+import { useLogout } from "@/composables/useLogout";
 
 const props = defineProps<{
     title: string;
@@ -533,7 +531,6 @@ const appBarStore = useAppBarStore();
 const layoutStore = useLayoutStore();
 const i18n = useI18n();
 const authenticatedUserAccountStore = useAuthenticatedUserAccountStore();
-const authStore = useAuthStore();
 const timezoneOptions = moment.tz.names();
 
 // fields
@@ -915,10 +912,11 @@ async function changeUserPassword() {
         );
         passwordEditedSuccess.value = true;
         setTimeout(() => (passwordEditedSuccess.value = false), 1500);
+
         if (
             user.value?.uuid === authenticatedUserAccountStore.userAccount?.uuid
         ) {
-            await authStore.logout();
+            await useLogout().logout();
         }
     }
     changePasswordDialog.value = false;

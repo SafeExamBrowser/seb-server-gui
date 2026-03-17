@@ -589,7 +589,7 @@ import { useAppBarStore, useLayoutStore } from "@/stores/store";
 import { translate } from "@/utils/generalUtils";
 import * as constants from "@/utils/constants";
 import { navigateTo } from "@/router/navigation";
-import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/authenticationStore";
+import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/userAccountStore";
 import { createAssessmentTool } from "@/services/seb-server/assessmentToolService";
 import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums";
 import { Institution } from "@/models/seb-server/institution";

@@ -392,7 +392,7 @@ import moment from "moment-timezone";
 import { createUserAccount } from "@/services/seb-server/userAccountService";
 import { navigateTo } from "@/router/navigation";
 import { UserRoleEnum } from "@/models/userRoleEnum";
-import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/authenticationStore";
+import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/userAccountStore";
 import { GUIComponent, useAbilities } from "@/services/ability";
 import { CreateUserPar, SingleUserAccountResponse } from "@/models/userAccount";
 import { Institution } from "@/models/seb-server/institution";

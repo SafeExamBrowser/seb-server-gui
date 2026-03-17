@@ -192,7 +192,7 @@ import * as tableUtils from "@/utils/table/tableUtils";
 import SearchScreenshotsTable from "./SearchScreenshotsTable.vue";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import { useTableStore } from "@/stores/store";
-import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
+import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
 import { UserRoleEnum } from "@/models/userRoleEnum";
 import { ServerTablePaging } from "@/models/types";
 import {

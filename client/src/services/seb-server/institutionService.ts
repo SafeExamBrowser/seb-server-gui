@@ -5,20 +5,25 @@ const baseUrl = "/info" as const;
 
 export const getInstitutions = async (): Promise<Institution[]> =>
     (
-        await apiService
-            .getApiForManualRequests()
-            .get(`${baseUrl}/institution`, {
+        await apiService.getRequest({
+            url: `${baseUrl}/institution`,
+            options: {
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",
                 },
-            })
+            },
+            authType: "none",
+        })
     ).data;
 
 export const getInstitutionLogo = async (
     institutionSuffix: string,
 ): Promise<string> =>
     (
-        await apiService.getRequest(`${baseUrl}/logo/${institutionSuffix}`, {
-            headers: { Accept: "application/json, text/plain, */*" },
+        await apiService.getRequest({
+            url: `${baseUrl}/logo/${institutionSuffix}`,
+            options: {
+                headers: { Accept: "application/json, text/plain, */*" },
+            },
         })
     ).data;

@@ -15,25 +15,31 @@ export const getConnectionConfigurationNamesActive = async (): Promise<
     ConnectionConfigurationName[]
 > =>
     (
-        await apiService.getRequest(baseUrl + "/names", {
-            params: { active: "true" },
+        await apiService.getRequest({
+            url: baseUrl + "/names",
+            options: {
+                params: { active: "true" },
+            },
         })
     ).data;
 
 export const getConnectionConfigurationsActive =
     async (): Promise<ConnectionConfigurations> =>
-        (await apiService.getRequest(baseUrl + "/active")).data;
+        (await apiService.getRequest({ url: baseUrl + "/active" })).data;
 
 export const downloadExamConfig = async (
     examId: string,
     connectionId: string,
 ): Promise<Blob> =>
     (
-        await apiService.getRequest(`${baseUrl}/download/${connectionId}`, {
-            params: { examId },
-            responseType: "blob",
-            headers: {
-                accept: "application/octet-stream",
+        await apiService.getRequest({
+            url: `${baseUrl}/download/${connectionId}`,
+            options: {
+                params: { examId },
+                responseType: "blob",
+                headers: {
+                    accept: "application/octet-stream",
+                },
             },
         })
     ).data;
@@ -41,34 +47,49 @@ export const downloadExamConfig = async (
 export const getConnectionConfiguration = async (
     id: number,
 ): Promise<ConnectionConfiguration> =>
-    (await apiService.getRequest(baseUrl + "/" + id)).data;
+    (await apiService.getRequest({ url: baseUrl + "/" + id })).data;
 
 export const getConnectionConfigurations = async (
     optionalParameters?: OptionalParGetConnectionConfiguration,
 ): Promise<ConnectionConfigurations> =>
-    (await apiService.getRequest(baseUrl, { params: optionalParameters })).data;
+    (
+        await apiService.getRequest({
+            url: baseUrl,
+            options: { params: optionalParameters },
+        })
+    ).data;
 
 export const activateConnectionConfiguration = async (
     id: string,
 ): Promise<ConnectionConfiguration> =>
-    (await apiService.postRequest(`${baseUrl}/${id}/active`)).data;
+    (await apiService.postRequest({ url: `${baseUrl}/${id}/active` })).data;
 
 export const deactivateConnectionConfiguration = async (
     id: string,
 ): Promise<ConnectionConfiguration> =>
-    (await apiService.postRequest(`${baseUrl}/${id}/inactive`)).data;
+    (await apiService.postRequest({ url: `${baseUrl}/${id}/inactive` })).data;
 
 export const deleteConnectionConfiguration = async (
     id: string,
 ): Promise<undefined | null> =>
-    (await apiService.deleteRequest(`${baseUrl}/${id}`)).data;
+    (await apiService.deleteRequest({ url: `${baseUrl}/${id}` })).data;
 
 export const createConnectionConfiguration = async (
     connectionConfigurationPar: CreateConnectionConfigurationPar,
 ): Promise<ConnectionConfiguration> =>
-    (await apiService.postRequest(baseUrl, connectionConfigurationPar)).data;
+    (
+        await apiService.postRequest({
+            url: baseUrl,
+            data: connectionConfigurationPar,
+        })
+    ).data;
 
 export const editConnectionConfiguration = async (
     connectionConfiguration: UpdateConnectionConfigurationPar,
 ): Promise<ConnectionConfiguration> =>
-    (await apiService.putRequest(baseUrl, connectionConfiguration)).data;
+    (
+        await apiService.putRequest({
+            url: baseUrl,
+            data: connectionConfiguration,
+        })
+    ).data;

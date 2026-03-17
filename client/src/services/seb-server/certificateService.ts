@@ -11,25 +11,38 @@ const baseUrl = "/certificate" as const;
 export const getCertificates = async (
     optionalParameters?: OptionalParGetCertificates,
 ): Promise<CertificatesResponse> =>
-    (await apiService.getRequest(baseUrl, { params: optionalParameters })).data;
+    (
+        await apiService.getRequest({
+            url: baseUrl,
+            options: { params: optionalParameters },
+        })
+    ).data;
 
 export const deleteCertificate = async (
     certificateId: string,
 ): Promise<unknown | unknown> =>
-    (await apiService.deleteRequest(`${baseUrl}`, { alias: certificateId }))
-        .data;
+    (
+        await apiService.deleteRequest({
+            url: `${baseUrl}`,
+            data: { alias: certificateId },
+        })
+    ).data;
 
 export const createCertificate = async (
     certificate: CreateCertificatePar,
 ): Promise<Certificate> =>
     (
-        await apiService.postRequest(baseUrl, certificate.file, {
-            headers: {
-                "Content-Type": "application/octet-stream",
-                importFile: certificate.fileName,
-                ...(certificate.password
-                    ? { importFilePassword: certificate.password }
-                    : {}),
+        await apiService.postRequest({
+            url: baseUrl,
+            data: certificate.file,
+            options: {
+                headers: {
+                    "Content-Type": "application/octet-stream",
+                    importFile: certificate.fileName,
+                    ...(certificate.password
+                        ? { importFilePassword: certificate.password }
+                        : {}),
+                },
             },
         })
     ).data;

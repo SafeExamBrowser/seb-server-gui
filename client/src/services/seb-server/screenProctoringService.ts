@@ -7,10 +7,10 @@ export const applyScreenProctoringGroups = async (
     spsSEBGroupsSelection: string,
 ): Promise<Exam | null> =>
     (
-        await apiService.postRequest(
-            `/exam/${id}/screen-proctoring/apply-groups`,
-            { spsSEBGroupsSelection },
-        )
+        await apiService.postRequest({
+            url: `/exam/${id}/screen-proctoring/apply-groups`,
+            data: { spsSEBGroupsSelection },
+        })
     ).data;
 
 export const activateScreenProctoring = async (
@@ -18,9 +18,9 @@ export const activateScreenProctoring = async (
     enableScreenProctoring: boolean,
 ): Promise<Exam | null> =>
     (
-        await apiService.postRequest(
-            `/exam/${id}/screen-proctoring/activation`,
-            {},
-            { params: { enableScreenProctoring } },
-        )
+        await apiService.postRequest({
+            url: `/exam/${id}/screen-proctoring/activation`,
+            data: {},
+            options: { params: { enableScreenProctoring } },
+        })
     ).data;

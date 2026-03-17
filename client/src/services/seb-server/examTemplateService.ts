@@ -6,10 +6,10 @@ import { ExamTemplate, ExamTemplates } from "@/models/seb-server/examTemplate";
 const baseUrl = "/exam-template" as const;
 
 export const getExamTemplates = async (): Promise<ExamTemplates> =>
-    (await apiService.getRequest(baseUrl)).data;
+    (await apiService.getRequest({ url: baseUrl })).data;
 
 export const getExamTemplate = async (id: string): Promise<ExamTemplate> =>
-    (await apiService.getRequest(`${baseUrl}/${id}`)).data;
+    (await apiService.getRequest({ url: `${baseUrl}/${id}` })).data;
 
 export const getExamTemplateNames = async (): Promise<
     {
@@ -17,20 +17,28 @@ export const getExamTemplateNames = async (): Promise<
         entityType: "EXAM_TEMPLATE";
         name: string;
     }[]
-> => (await apiService.getRequest(`${baseUrl}/names`)).data;
+> => (await apiService.getRequest({ url: `${baseUrl}/names` })).data;
 
 export const getExamTemplateSp = async (
     id: string,
 ): Promise<ScreenProctoringSettings> =>
-    (await apiService.getRequest(`${baseUrl}/${id}/screen-proctoring`)).data;
+    (
+        await apiService.getRequest({
+            url: `${baseUrl}/${id}/screen-proctoring`,
+        })
+    ).data;
 
 export const createExamTemplate = async (
     examTemplate: ExamTemplate,
 ): Promise<ExamTemplate> =>
     (
-        await apiService.postRequest(`${baseUrl}/create`, examTemplate, {
-            headers: {
-                "Content-Type": "application/json",
+        await apiService.postRequest({
+            url: `${baseUrl}/create`,
+            data: examTemplate,
+            options: {
+                headers: {
+                    "Content-Type": "application/json",
+                },
             },
         })
     ).data;

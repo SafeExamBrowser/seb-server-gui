@@ -20,56 +20,75 @@ export const getExamsForMonitoring = async (
     optionalParameters?: OptionalParGetExams,
 ): Promise<Exams> =>
     (
-        await apiService.getRequest(baseUrl, {
-            params: optionalParameters,
+        await apiService.getRequest({
+            url: baseUrl,
+            options: {
+                params: optionalParameters,
+            },
         })
     ).data;
 
 export const getOverview = async (
     examId: string,
 ): Promise<MonitoringOverview> =>
-    (await apiService.getRequest(`${baseUrl}/overview/${examId}`)).data;
+    (await apiService.getRequest({ url: `${baseUrl}/overview/${examId}` }))
+        .data;
 
 export const getConnections = async (
     examId: string,
     additionalHeaders: MonitoringConnectionHeaders,
 ): Promise<MonitoringConnections> =>
     (
-        await apiService.getRequest(`${baseUrl}/connections/${examId}`, {
-            headers: {
-                "show-all": additionalHeaders[MonitoringHeaderEnum.SHOW_ALL],
-                "show-client-groups":
-                    additionalHeaders[MonitoringHeaderEnum.SHOW_CLIENT_GROUPS],
-                "show-states":
-                    additionalHeaders[MonitoringHeaderEnum.SHOW_STATES],
-                "show-notifications":
-                    additionalHeaders[MonitoringHeaderEnum.SHOW_NOTIFCATION],
-                "show-indicators":
-                    additionalHeaders[MonitoringHeaderEnum.SHOW_INDICATORS],
+        await apiService.getRequest({
+            url: `${baseUrl}/connections/${examId}`,
+            options: {
+                headers: {
+                    "show-all":
+                        additionalHeaders[MonitoringHeaderEnum.SHOW_ALL],
+                    "show-client-groups":
+                        additionalHeaders[
+                            MonitoringHeaderEnum.SHOW_CLIENT_GROUPS
+                        ],
+                    "show-states":
+                        additionalHeaders[MonitoringHeaderEnum.SHOW_STATES],
+                    "show-notifications":
+                        additionalHeaders[
+                            MonitoringHeaderEnum.SHOW_NOTIFCATION
+                        ],
+                    "show-indicators":
+                        additionalHeaders[MonitoringHeaderEnum.SHOW_INDICATORS],
+                },
             },
         })
     ).data;
 
 export async function applyTestRun(id: string): Promise<Exam> {
-    return (await apiService.postRequest(`${baseUrl}/testrun/${id}`)).data;
+    return (await apiService.postRequest({ url: `${baseUrl}/testrun/${id}` }))
+        .data;
 }
 
 export const getSingleConnection = async (
     examId: string,
     connectionToken: string,
 ): Promise<SingleConnection> =>
-    (await apiService.getRequest(`${baseUrl}/${examId}/${connectionToken}`))
-        .data;
+    (
+        await apiService.getRequest({
+            url: `${baseUrl}/${examId}/${connectionToken}`,
+        })
+    ).data;
 
 export const getSingleConnectionEvents = async (
     clientConnectionId: string,
     optionalParameters?: OptionalParGetMonitoringClientLogs,
 ): Promise<ClientEventResponse> =>
     (
-        await apiService.getRequest("/seb-client-event/search", {
-            params: {
-                ...optionalParameters,
-                clientConnectionId,
+        await apiService.getRequest({
+            url: "/seb-client-event/search",
+            options: {
+                params: {
+                    ...optionalParameters,
+                    clientConnectionId,
+                },
             },
         })
     ).data;
@@ -79,15 +98,15 @@ export const getStaticClientData = async (
     modelIds: string,
 ): Promise<MonitoringStaticClientData> =>
     (
-        await apiService.postRequest(
-            `${baseUrl}/${examId}/static-client-data`,
-            { modelIds },
-            {
+        await apiService.postRequest({
+            url: `${baseUrl}/${examId}/static-client-data`,
+            data: { modelIds },
+            options: {
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",
                 },
             },
-        )
+        })
     ).data;
 
 export const registerInstruction = async (
@@ -96,30 +115,30 @@ export const registerInstruction = async (
 ): Promise<number> =>
     // TODO @andreas: please check if this really needs "application/json"
     (
-        await apiService.postRequest(
-            `${baseUrl}/${examId}/instruction`,
-            clientInstruction,
-            {
+        await apiService.postRequest({
+            url: `${baseUrl}/${examId}/instruction`,
+            data: clientInstruction,
+            options: {
                 headers: {
                     "Content-Type": "application/json",
                 },
             },
-        )
+        })
     ).status;
 
 // TODO @andreas: please test this as soon as quit all function is working again
 export const quitAll = async (examId: string): Promise<number> =>
     // TODO @andreas: please check if this really needs "application/json"
     (
-        await apiService.postRequest(
-            `${baseUrl}/${examId}/quitAll`,
-            {},
-            {
+        await apiService.postRequest({
+            url: `${baseUrl}/${examId}/quitAll`,
+            data: {},
+            options: {
                 headers: {
                     "Content-Type": "application/json",
                 },
             },
-        )
+        })
     ).status;
 
 export const getPendingNotifications = async (
@@ -127,9 +146,9 @@ export const getPendingNotifications = async (
     connectionToken: string,
 ): Promise<ClientNotification[]> =>
     (
-        await apiService.getRequest(
-            `${baseUrl}/${examId}/notification/${connectionToken}`,
-        )
+        await apiService.getRequest({
+            url: `${baseUrl}/${examId}/notification/${connectionToken}`,
+        })
     ).data;
 
 export const confirmNotification = async (
@@ -139,15 +158,15 @@ export const confirmNotification = async (
 ): Promise<unknown> =>
     // TODO @andreas: please check if this really needs "application/json"
     (
-        await apiService.postRequest(
-            `${baseUrl}/${examId}/notification/${notificationId}/${connectionToken}`,
-            {},
-            {
+        await apiService.postRequest({
+            url: `${baseUrl}/${examId}/notification/${notificationId}/${connectionToken}`,
+            data: {},
+            options: {
                 headers: {
                     "Content-Type": "application/json",
                 },
             },
-        )
+        })
     ).status;
 
 export const disableConnections = async (
@@ -155,8 +174,8 @@ export const disableConnections = async (
     connectionToken: string,
 ): Promise<unknown> =>
     (
-        await apiService.postRequest(
-            `${baseUrl}/${examId}/disable-connection`,
-            { connectionToken },
-        )
+        await apiService.postRequest({
+            url: `${baseUrl}/${examId}/disable-connection`,
+            data: { connectionToken },
+        })
     ).status;

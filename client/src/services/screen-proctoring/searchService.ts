@@ -15,8 +15,12 @@ export const searchSessionsDay = async (
     optionalParameters?: OptionalParSearchSessions,
 ): Promise<string[]> =>
     (
-        await apiService.getRequest(`${baseUrl}/sessions/day`, {
-            params: optionalParameters,
+        await apiService.getRequest({
+            url: `${baseUrl}/sessions/day`,
+            options: {
+                params: optionalParameters,
+            },
+            authType: "sps",
         })
     ).data;
 
@@ -24,8 +28,12 @@ export const searchSessions = async (
     optionalParameters?: OptionalParSearchSessions,
 ): Promise<SearchSessions> =>
     (
-        await apiService.getRequest(`${baseUrl}/sessions`, {
-            params: optionalParameters,
+        await apiService.getRequest({
+            url: `${baseUrl}/sessions`,
+            options: {
+                params: optionalParameters,
+            },
+            authType: "sps",
         })
     ).data;
 
@@ -34,8 +42,12 @@ export const searchTimeline = async (
     optionalParameters?: OptionalParSearchTimeline,
 ): Promise<SearchTimeline> =>
     (
-        await apiService.getRequest(`${baseUrl}/timeline/${sessionId}`, {
-            params: optionalParameters,
+        await apiService.getRequest({
+            url: `${baseUrl}/timeline/${sessionId}`,
+            options: {
+                params: optionalParameters,
+            },
+            authType: "sps",
         })
     ).data;
 
@@ -60,8 +72,9 @@ export const deleteSessions = async (
     };
 
     return (
-        await apiService.deleteRequest(
-            `${baseUrl}/session${createSessionDeleteUrlSuffix(sessionUuids)}`,
-        )
+        await apiService.deleteRequest({
+            url: `${baseUrl}/session${createSessionDeleteUrlSuffix(sessionUuids)}`,
+            authType: "sps",
+        })
     ).data;
 };

@@ -6,7 +6,7 @@ import {
 import * as constants from "@/utils/constants";
 import * as spConstants from "@/utils/sp-constants";
 import i18n from "@/i18n";
-import { useUserAccountStore } from "@/stores/authentication/authenticationStore.ts";
+import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
 import { UserAccount } from "@/models/userAccount.ts";
 import * as userAccountService from "@/services/seb-server/userAccountService.ts";
 

@@ -1,81 +1,156 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { merge } from "lodash";
-import { useAuthStore } from "@/stores/authentication/authenticationStore";
-import { StorageItemEnum } from "@/models/StorageItemEnum";
+import { useAuthStore } from "@/composables/store/useAuthStore";
+import { useLogout } from "@/composables/useLogout";
+import { AuthType } from "./types";
 
 const api = axios.create({
     baseURL: "/api",
 });
 
-const getAuthHeaderValueByUrl = (url: string) =>
-    `Bearer ${useAuthStore().getStorageItem(url.startsWith("/proctoring") ? StorageItemEnum.SP_ACCESS_TOKEN : StorageItemEnum.ACCESS_TOKEN)}`;
+type RequestWithDataParams<T> = {
+    url: string;
+    data?: T;
+    options?: AxiosRequestConfig;
+    authType?: AuthType;
+};
 
-export const getApiForManualRequests = () => api;
+// if a request is unauthorized, properly log out the user (clean up store etc.) and reject the promise
+api.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+        if (error?.response?.status !== 401) {
+            return Promise.reject(error);
+        }
 
-export const getRequest = (url: string, options?: AxiosRequestConfig) => {
+        await useLogout().logout(true);
+
+        return Promise.reject(error);
+    },
+);
+
+const getAuthHeaderValue = (authType: AuthType) => {
+    const authStore = useAuthStore();
+
+    if (authType === "none") {
+        return undefined;
+    }
+
+    if (authType === "sps") {
+        return `Bearer ${authStore.spAccessToken}`;
+    }
+
+    return `Bearer ${authStore.sebAccessToken}`;
+};
+
+const getRequestUrl = (url: string, authType: AuthType): string => {
+    return `${authType === "sps" ? "/sps" : ""}${url}`;
+};
+
+export const getRequest = ({
+    url,
+    options,
+    authType = "seb",
+}: {
+    url: string;
+    options?: AxiosRequestConfig;
+    authType?: AuthType;
+}) => {
+    const authHeaderValue = getAuthHeaderValue(authType);
     const defaultOptions: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
-            Authorization: getAuthHeaderValueByUrl(url),
+            ...(authHeaderValue ? { Authorization: authHeaderValue } : {}),
         },
     };
 
-    return api.get(url, merge({}, defaultOptions, options));
+    return api.get(
+        getRequestUrl(url, authType),
+        merge({}, defaultOptions, options),
+    );
 };
 
-export const postRequest = <T>(
-    url: string,
-    data?: T,
-    options?: AxiosRequestConfig,
-) => {
+export const postRequest = <T>({
+    url,
+    data,
+    options,
+    authType = "seb",
+}: RequestWithDataParams<T>) => {
+    const authHeaderValue = getAuthHeaderValue(authType);
     const defaultOptions: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
-            Authorization: getAuthHeaderValueByUrl(url),
+            ...(authHeaderValue ? { Authorization: authHeaderValue } : {}),
             "Content-Type": "application/x-www-form-urlencoded",
         },
     };
 
-    return api.post(url, data ?? null, merge({}, defaultOptions, options));
+    return api.post(
+        getRequestUrl(url, authType),
+        data ?? null,
+        merge({}, defaultOptions, options),
+    );
 };
 
-export const putRequest = <T>(
-    url: string,
-    data?: T,
-    options?: AxiosRequestConfig,
-) => {
+export const putRequest = <T>({
+    url,
+    data,
+    options,
+    authType = "seb",
+}: RequestWithDataParams<T>) => {
+    const authHeaderValue = getAuthHeaderValue(authType);
     const defaultOptions: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
-            Authorization: getAuthHeaderValueByUrl(url),
+            ...(authHeaderValue ? { Authorization: authHeaderValue } : {}),
             "Content-Type": "application/json",
         },
     };
 
-    return api.put(url, data ?? null, merge({}, defaultOptions, options));
+    return api.put(
+        getRequestUrl(url, authType),
+        data ?? null,
+        merge({}, defaultOptions, options),
+    );
 };
 
-export const patchRequest = <T>(
-    url: string,
-    data?: T,
-    options?: AxiosRequestConfig,
-) => {
+export const patchRequest = <T>({
+    url,
+    data,
+    options,
+    authType = "seb",
+}: RequestWithDataParams<T>) => {
+    const authHeaderValue = getAuthHeaderValue(authType);
     const defaultOptions: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
-            Authorization: getAuthHeaderValueByUrl(url),
+            ...(authHeaderValue ? { Authorization: authHeaderValue } : {}),
             "Content-Type": "application/json",
         },
     };
 
-    return api.patch(url, data ?? null, merge({}, defaultOptions, options));
+    return api.patch(
+        getRequestUrl(url, authType),
+        data ?? null,
+        merge({}, defaultOptions, options),
+    );
 };
 
-export const deleteRequest = <T>(url: string, data?: T) => {
-    return api.delete(url, {
+export const deleteRequest = <T>({
+    url,
+    data,
+    authType = "seb",
+}: {
+    url: string;
+    data?: T;
+    authType?: AuthType;
+}) => {
+    const authHeaderValue = getAuthHeaderValue(authType);
+
+    return api.delete(getRequestUrl(url, authType), {
         headers: {
             Accept: "application/json",
-            Authorization: getAuthHeaderValueByUrl(url),
+            ...(authHeaderValue ? { Authorization: authHeaderValue } : {}),
             "Content-Type": "application/x-www-form-urlencoded",
         },
         data: data ?? null,

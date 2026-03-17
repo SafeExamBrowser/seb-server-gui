@@ -1,6 +1,5 @@
 import { ScreenshotData } from "@/models/screen-proctoring/session.ts";
-import { useAuthStore } from "@/stores/authentication/authenticationStore.ts";
-import { StorageItemEnum } from "@/models/StorageItemEnum.ts";
+import { useAuthStore } from "@/composables/store/useAuthStore";
 
 export function getLatestImageLink(
     screenshot: ScreenshotData | undefined,
@@ -11,9 +10,7 @@ export function getLatestImageLink(
     if (screenshot == null) return "";
 
     const screenshotLink: string =
-        screenshot.latestImageLink +
-        "?access_token=" +
-        authStore.getStorageItem(StorageItemEnum.SP_ACCESS_TOKEN);
+        screenshot.latestImageLink + "?access_token=" + authStore.spAccessToken;
 
     if (screenshot.active) {
         return screenshotLink + "&t=" + timestamp;
@@ -35,6 +32,6 @@ export function getSpecificImageLink(
         "/" +
         timestamp +
         "?access_token=" +
-        authStore.getStorageItem(StorageItemEnum.SP_ACCESS_TOKEN)
+        authStore.spAccessToken
     );
 }

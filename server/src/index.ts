@@ -15,14 +15,14 @@ const clientBuildDirectory = path.join(
 );
 
 const sebTarget = `${env.SEB_SERVER_URL}${env.SEB_SERVER_DEFAULT_URL}`;
-const proctorTarget = `${env.PROCTOR_SERVER_URL}${env.PROCTOR_SERVER_DEFAULT_URL}`;
+const spsTarget = `${env.PROCTOR_SERVER_URL}${env.PROCTOR_SERVER_DEFAULT_URL}`;
 
 const sebProxy = createProxyServer({
   target: sebTarget,
 });
 
-const proctorProxy = createProxyServer({
-  target: proctorTarget,
+const spsProxy = createProxyServer({
+  target: spsTarget,
 });
 
 const addProxyHandlers = (proxy: ProxyServer, targetBase: string) => {
@@ -36,18 +36,24 @@ const addProxyHandlers = (proxy: ProxyServer, targetBase: string) => {
 };
 
 addProxyHandlers(sebProxy, sebTarget);
-addProxyHandlers(proctorProxy, proctorTarget);
+addProxyHandlers(spsProxy, spsTarget);
 
-// everything that's prefixed with '/api' is proxied to the SEB or proctor server
+// everything that's prefixed with '/api/sps' is proxied to sps
+app.use("/api/sps", (req, res) => {
+  spsProxy.web(req, res);
+});
+
+// everything else that's prefixed with '/api' is proxied to seb
 app.use("/api", (req, res) => {
   // handle authorize requests
+  // TODO @alain: adapt "authorize"
   if (req.path === "/authorize") {
     handleAuthorize(req, res, env);
     return;
   }
 
   // forward all other requests
-  (req.path.startsWith("/proctoring") ? proctorProxy : sebProxy).web(req, res);
+  sebProxy.web(req, res);
 });
 
 // statically serve client if enabled

@@ -1,6 +1,6 @@
 import { useFetch } from "@/composables/useFetch";
 import { getSupervisorNames } from "@/services/seb-server/userAccountService";
-import { useUserAccountStore } from "@/stores/authentication/authenticationStore";
+import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
 
 export const useSupervisors = () => {
     const userAccountStore = useUserAccountStore();

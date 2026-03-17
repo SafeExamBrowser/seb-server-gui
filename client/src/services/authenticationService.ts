@@ -20,10 +20,22 @@ export const authorize = async (
     }).toString();
 
     return (
-        await apiService.getApiForManualRequests().post("/authorize", body, {
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
+        await apiService.postRequest({
+            url: "/authorize",
+            data: body,
+            options: {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
             },
+            authType: "none",
         })
     ).data;
+};
+
+export const logout = async () => {
+    await Promise.all([
+        apiService.postRequest({ url: "/useraccount/logout" }),
+        apiService.postRequest({ url: "/useraccount/logout", authType: "sps" }),
+    ]);
 };
