@@ -32,3 +32,8 @@ export const authorize = async (
         )
     ).data;
 };
+
+export const logout = async () => {
+    await apiService.postRequest("/useraccount/logout");
+    // TODO @alain: also do sps here
+};

@@ -916,7 +916,7 @@ async function changeUserPassword() {
         if (
             user.value?.uuid === authenticatedUserAccountStore.userAccount?.uuid
         ) {
-            useLogout().logout();
+            await useLogout().logout();
         }
     }
     changePasswordDialog.value = false;

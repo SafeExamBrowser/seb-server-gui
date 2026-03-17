@@ -324,7 +324,7 @@
                                 class="logout-wrap text-caption font-weight-light d-flex align-center"
                                 data-testid="layout-logout-button"
                                 variant="text"
-                                @click="useLogout().logout()"
+                                @click="handleLogoutButtonClick"
                             >
                                 <span class="text-grey-lighten-2 mr-1"
                                     >Log out</span
@@ -643,6 +643,10 @@ function getNavigationOverviewRoute(): string {
 function getHomePageRoute() {
     return constants.HOME_PAGE_ROUTE;
 }
+
+const handleLogoutButtonClick = async () => {
+    await useLogout().logout();
+};
 
 // gallery view
 function changeGridSize(gridSize: GridSize) {

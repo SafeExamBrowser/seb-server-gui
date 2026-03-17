@@ -2,14 +2,16 @@ import { useAuthStore } from "@/composables/store/useAuthStore";
 import { navigateTo } from "@/router/navigation";
 import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
 import * as constants from "@/utils/constants";
+import * as authenticationService from "@/services/authenticationService";
 
 export const useLogout = () => {
     const authStore = useAuthStore();
     const userAccountStore = useUserAccountStore();
 
-    const logout = () => {
-        authStore.$reset();
+    const logout = async () => {
+        await authenticationService.logout();
 
+        authStore.$reset();
         userAccountStore.setUserTimeZone("");
         userAccountStore.userAccount = null;
 
