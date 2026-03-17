@@ -4,7 +4,7 @@
             <v-col>
                 <div
                     class="text-white text-h5 font-weight-black ml-10 mt-5"
-                    data-testid="userAccounts-page-title"
+                    data-testid="settings-title"
                 >
                     {{ translate("titles.settings") }}
                 </div>
@@ -21,7 +21,18 @@
                     rounded="lg"
                     class="fill-height overflow-y-auto"
                 >
+                    <v-row>
+                        <v-col>
+                            <PageTitle :name="props.title" />
+                        </v-col>
+
+                        <!-- Add action button here  (it should be optional and passed along from usage -->
+                        <v-col> </v-col>
+                    </v-row>
+                    <!-- Add vertical line here  -->
+
                     <slot name="PanelMain"></slot>
+                    <!-- actual content here  -->
                 </v-card>
             </v-col>
         </v-row>
@@ -33,6 +44,7 @@ import { onBeforeUnmount, onBeforeMount } from "vue";
 import { useAppBarStore, useLayoutStore } from "@/stores/store";
 import SettingsNavigation from "@/components/views/seb-server/settings-navigation/SettingsNavigation.vue";
 import { translate } from "@/utils/generalUtils.ts";
+import PageTitle from "@/components/views/seb-server/settings-navigation/widgets/PageTitle.vue";
 
 const layoutStore = useLayoutStore();
 const appBarStore = useAppBarStore();

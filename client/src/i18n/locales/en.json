@@ -1888,7 +1888,8 @@
             "connectionConfiguration": "Connection Configuration",
             "certificates": "Certificates",
             "userAccounts": "User Accounts",
-            "createUserAccount": "New User Account"
+            "createUserAccount": "New User Account",
+            "newUserAccounts": "New User Accounts :)"
         },
 
         "screenReader": {

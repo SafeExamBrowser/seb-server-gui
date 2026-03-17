@@ -37,6 +37,12 @@ export function buildSettingsNavigationItems(
             testId: `${testIdPrefix}-userAccounts-link`,
             visible: ability.canView(GUIComponent.UserAccounts),
         },
+        {
+            label: translate("navigation.routeNames.newUserAccounts"),
+            to: constants.NEW_USER_ACCOUNTS_ROUTE,
+            testId: `${testIdPrefix}-newUserAccounts-link`,
+            visible: ability.canView(GUIComponent.UserAccounts),
+        },
     ];
 }
 

@@ -1,7 +1,7 @@
 <template>
     <BasicSettingsPage :title="$t('titles.userAccounts')">
         <template #PanelMain>
-            <h1>this goes in panel 1</h1>
+            <h1>Content</h1>
         </template>
     </BasicSettingsPage>
 </template>
