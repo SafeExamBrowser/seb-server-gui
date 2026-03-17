@@ -19,18 +19,29 @@ export const authorize = async (
         password: password,
     }).toString();
 
-    return (
-        await apiService.postRequest({
-            url: "/authorize",
+    const [sebServerResponse, proctorServerResponse] = await Promise.all([
+        apiService.postRequest({
+            url: "/oauth/token",
             data: body,
-            options: {
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-            },
             authType: "none",
-        })
-    ).data;
+        }),
+        apiService.postRequest({
+            url: "/sps/oauth/token",
+            data: body,
+            authType: "none",
+        }),
+    ]);
+
+    return {
+        proctorServer: {
+            access_token: proctorServerResponse.data.access_token,
+            refresh_token: proctorServerResponse.data.refresh_token,
+        },
+        sebServer: {
+            access_token: sebServerResponse.data.access_token,
+            refresh_token: sebServerResponse.data.refresh_token,
+        },
+    };
 };
 
 export const logout = async () => {
