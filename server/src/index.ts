@@ -1,63 +1,44 @@
 import express from "express";
-import ProxyServer, { createProxyServer } from "http-proxy-3";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { handleAuthorize } from "./handlers/authorize.js";
 import { parseEnv } from "./utils/env.js";
-import { logInfo, logRequest } from "./utils/logger.js";
+import { logInfo } from "./utils/logger.js";
+import { createBackend } from "./utils/createBackend.js";
 
-const env = parseEnv();
 const app = express();
+const env = parseEnv();
 
-const clientBuildDirectory = path.join(
-  path.dirname(fileURLToPath(import.meta.url)),
-  "views",
-);
-
-const sebTarget = `${env.SEB_SERVER_URL}${env.SEB_SERVER_DEFAULT_URL}`;
-const spsTarget = `${env.PROCTOR_SERVER_URL}${env.PROCTOR_SERVER_DEFAULT_URL}`;
-
-const sebProxy = createProxyServer({
-  target: sebTarget,
+const sebProxy = createBackend({
+  baseUrl: env.SEB_SERVER_URL,
+  defaultUrlPrefix: env.SEB_SERVER_DEFAULT_URL,
+  basicAuthUsername: env.SEB_SERVER_USERNAME,
+  basicAuthPassword: env.SEB_SERVER_PASSWORD,
 });
 
-const spsProxy = createProxyServer({
-  target: spsTarget,
+const spsProxy = createBackend({
+  baseUrl: env.PROCTOR_SERVER_URL,
+  defaultUrlPrefix: env.PROCTOR_SERVER_DEFAULT_URL,
+  basicAuthUsername: env.PROCTOR_SERVER_USERNAME,
+  basicAuthPassword: env.PROCTOR_SERVER_PASSWORD,
 });
-
-const addProxyHandlers = (proxy: ProxyServer, targetBase: string) => {
-  proxy.on("proxyRes", (proxyRes, req) => {
-    logRequest({
-      method: req.method,
-      url: `${targetBase}${req.url ?? "/"}`,
-      statusCode: proxyRes.statusCode,
-    });
-  });
-};
-
-addProxyHandlers(sebProxy, sebTarget);
-addProxyHandlers(spsProxy, spsTarget);
 
 // everything that's prefixed with '/api/sps' is proxied to sps
 app.use("/api/sps", (req, res) => {
-  spsProxy.web(req, res);
+  spsProxy.handleRequest(req, res);
 });
 
 // everything else that's prefixed with '/api' is proxied to seb
 app.use("/api", (req, res) => {
-  // handle authorize requests
-  // TODO @alain: adapt "authorize"
-  if (req.path === "/authorize") {
-    handleAuthorize(req, res, env);
-    return;
-  }
-
-  // forward all other requests
-  sebProxy.web(req, res);
+  sebProxy.handleRequest(req, res);
 });
 
 // statically serve client if enabled
 if (env.SERVE_CLIENT) {
+  const clientBuildDirectory = path.join(
+    path.dirname(fileURLToPath(import.meta.url)),
+    "views",
+  );
+
   app.use(express.static(clientBuildDirectory));
   app.get("/*path", (_req, res) => {
     res.sendFile(path.join(clientBuildDirectory, "index.html"));
