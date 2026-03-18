@@ -11,10 +11,12 @@
             </v-col>
         </v-row>
         <v-row>
+            <!--- Left Settings -->
             <v-col cols="3">
                 <SettingsNavigation> </SettingsNavigation>
             </v-col>
 
+            <!--- Right side white panel -->
             <v-col cols="9" class="fill-height overflow-y-auto">
                 <v-card
                     elevation="4"
@@ -26,16 +28,13 @@
                             <PageTitle :name="props.title" />
                         </v-col>
 
-                        <!-- Add action button here  (it should be optional and passed along from usage -->
                         <v-col>
                             <slot name="ActionButton"></slot>
                         </v-col>
                     </v-row>
-                    <!-- Add vertical line here  -->
                     <horizontal-divider-line />
 
                     <slot name="PanelMain"></slot>
-                    <!-- actual content here  -->
                 </v-card>
             </v-col>
         </v-row>

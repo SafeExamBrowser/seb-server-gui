@@ -3,7 +3,6 @@ import { ref } from "vue";
 import { UserAccount } from "@/models/userAccount";
 import { ServerTablePaging } from "@/models/types";
 import { APIMessage } from "@/models/seb-server/apiMessages";
-// (You can add more fields as you need them for the detail page, e.g. roles, messages, etc.)
 
 export const useUserAccountStore = defineStore("userAccount", () => {
     const searchField = ref<string | null>(null);
