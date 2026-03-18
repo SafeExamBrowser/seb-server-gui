@@ -27,7 +27,3 @@ export const logRequest = ({
 export const logInfo = (message: string) => {
   logger.info(message);
 };
-
-export const logError = (prefix: string, message: string) => {
-  logger.error(`[${prefix}] ${message}`);
-};

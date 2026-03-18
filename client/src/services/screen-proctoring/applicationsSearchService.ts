@@ -42,8 +42,6 @@ export const getDistinctMetadataAppForExam = async (
         })
     ).data;
 
-// TODO @andreas This is missing mandatory parameter "screenProctoringMetadataApplication"
-//               Maybe if screenProctoringMetadataApplication is null it should send empty string
 export const getDistinctMetadataWindowForExam = async (
     groupIds: string,
     screenProctoringMetadataApplication: string,
