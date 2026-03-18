@@ -26,7 +26,7 @@
                 </div>
 
                 <div
-                    class="d-flex align-center cursor-pointer add-user-container"
+                    class="d-flex align-center cursor-pointer add-button-container"
                     data-testid="certificates-add-button"
                     @click="uploadDialog = true"
                 >
@@ -34,7 +34,7 @@
                         {{ translate("certificates.addCertificate") }}
                     </span>
                     <div
-                        class="add-user-icon d-flex align-center justify-center"
+                        class="add-button-icon d-flex align-center justify-center"
                     >
                         <v-icon size="28">mdi-plus</v-icon>
                     </div>
@@ -506,12 +506,12 @@ async function onCertificateImported() {
     width: 100%;
 }
 
-.add-user-container {
+.add-button-container {
     font-size: 1rem;
     gap: 0.5rem;
 }
 
-.add-user-icon {
+.add-button-icon {
     border: 2px solid #1976d2;
     border-radius: 999px;
     width: 2.25rem;

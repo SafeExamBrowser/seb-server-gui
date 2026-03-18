@@ -19,7 +19,7 @@
                 <v-card
                     elevation="4"
                     rounded="lg"
-                    class="fill-height overflow-y-auto"
+                    class="fill-height overflow-y-auto mr-16"
                 >
                     <v-row>
                         <v-col>
@@ -27,9 +27,12 @@
                         </v-col>
 
                         <!-- Add action button here  (it should be optional and passed along from usage -->
-                        <v-col> </v-col>
+                        <v-col>
+                            <slot name="ActionButton"></slot>
+                        </v-col>
                     </v-row>
                     <!-- Add vertical line here  -->
+                    <horizontal-divider-line />
 
                     <slot name="PanelMain"></slot>
                     <!-- actual content here  -->
@@ -45,6 +48,7 @@ import { useAppBarStore, useLayoutStore } from "@/stores/store";
 import SettingsNavigation from "@/components/views/seb-server/settings-navigation/SettingsNavigation.vue";
 import { translate } from "@/utils/generalUtils.ts";
 import PageTitle from "@/components/views/seb-server/settings-navigation/widgets/PageTitle.vue";
+import HorizontalDividerLine from "@/components/views/seb-server/settings-navigation/widgets/HorizontalDividerLine.vue";
 
 const layoutStore = useLayoutStore();
 const appBarStore = useAppBarStore();

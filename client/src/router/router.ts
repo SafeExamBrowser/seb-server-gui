@@ -135,16 +135,6 @@ const routes: Array<RouteRecordRaw> = [
             },
 
             {
-                path: constants.NEW_USER_ACCOUNTS_ROUTE,
-                name: "NewUserAccounts",
-                component: () =>
-                    import(
-                        "@/components/views/seb-server/settings-navigation/user-account/NewUserAccountsPage.vue"
-                    ),
-                meta: { titleKey: "titles.userAccounts" },
-            },
-
-            {
                 path: constants.PROFILE_ROUTE,
                 name: "ProfileRoute",
                 component: () =>
@@ -163,14 +153,25 @@ const routes: Array<RouteRecordRaw> = [
                 meta: { titleKey: "titles.editUserAccount" },
             },
             {
-                path: constants.USER_ACCOUNTS_ROUTE,
-                name: "UserAccounts",
+                path: constants.OLD_USER_ACCOUNTS_ROUTE,
+                name: "OldUserAccounts",
                 component: () =>
                     import(
                         "@/components/views/seb-server/accounts/UserAccounts.vue"
                     ),
                 meta: { titleKey: "titles.userAccounts" },
             },
+
+            {
+                path: constants.USER_ACCOUNTS_ROUTE,
+                name: "UserAccounts",
+                component: () =>
+                    import(
+                        "@/components/views/seb-server/settings-navigation/user-account/userAccounts/UserAccountsPage.vue"
+                    ),
+                meta: { titleKey: "titles.userAccounts" },
+            },
+
             {
                 path: constants.CREATE_USER_ACCOUNTS_ROUTE,
                 name: "CreateUserAccount",

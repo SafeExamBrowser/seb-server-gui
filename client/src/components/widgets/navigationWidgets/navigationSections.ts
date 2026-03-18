@@ -38,8 +38,8 @@ export function buildSettingsNavigationItems(
             visible: ability.canView(GUIComponent.UserAccounts),
         },
         {
-            label: translate("navigation.routeNames.newUserAccounts"),
-            to: constants.NEW_USER_ACCOUNTS_ROUTE,
+            label: translate("navigation.routeNames.oldUserAccounts"),
+            to: constants.OLD_USER_ACCOUNTS_ROUTE,
             testId: `${testIdPrefix}-newUserAccounts-link`,
             visible: ability.canView(GUIComponent.UserAccounts),
         },
