@@ -242,7 +242,7 @@ async function getGroupIdsForExam(selectedExams: SPExam[]) {
             await applicationsSearchService.getDistinctMetadataAppForExam(
                 generalUtils.createStringCommaList(groupIds),
             );
-        if (metadataAppList == null) continue;
+        if (metadataAppList == null || metadataAppList.length == 0) continue;
 
         examObjects.value.push({
             exam: selectedExams[i],
