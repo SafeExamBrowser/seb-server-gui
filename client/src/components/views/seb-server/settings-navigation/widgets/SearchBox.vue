@@ -5,9 +5,7 @@
         data-testid="search-input"
         density="comfortable"
         hide-details
-        :placeholder="
-            translate('userAccount.userAccountPage.filters.searchField')
-        "
+        :placeholder="translate(searchText)"
         type="text"
         variant="outlined"
         @keydown.enter="onSearch"
@@ -32,6 +30,7 @@ import type { BaseSettingsStoreView } from "@/components/views/seb-server/settin
 
 const props = defineProps<{
     store: BaseSettingsStoreView<unknown>;
+    searchText: string;
 }>();
 
 const searchValue = computed({
