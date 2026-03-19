@@ -37,11 +37,32 @@ export function buildSettingsNavigationItems(
             testId: `${testIdPrefix}-userAccounts-link`,
             visible: ability.canView(GUIComponent.UserAccounts),
         },
+        //TODO @Andrei remove old routes
         {
             label: translate("navigation.routeNames.oldUserAccounts"),
             to: constants.OLD_USER_ACCOUNTS_ROUTE,
             testId: `${testIdPrefix}-newUserAccounts-link`,
             visible: ability.canView(GUIComponent.UserAccounts),
+        },
+        {
+            label: translate(
+                "navigation.routeNames.oldConnectionConfigurations",
+            ),
+            to: constants.OLD_CONNECTION_CONFIGURATIONS_ROUTE,
+            testId: `${testIdPrefix}-connectionConfigurations-link`,
+            visible: ability.canView(GUIComponent.ConnectionConfigs),
+        },
+        {
+            label: translate("navigation.routeNames.oldCertificates"),
+            to: constants.OLD_CERTIFICATES_ROUTE,
+            testId: `${testIdPrefix}-certificates-link`,
+            visible: ability.canView(GUIComponent.Certificates),
+        },
+        {
+            label: translate("navigation.routeNames.oldAssessmentTools"),
+            to: constants.OLD_ASSESSMENT_TOOLS_ROUTE,
+            testId: `${testIdPrefix}-assessmentToolConnections-link`,
+            visible: ability.canView(GUIComponent.LMSSetups),
         },
     ];
 }

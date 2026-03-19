@@ -14,13 +14,19 @@ import { translate } from "@/utils/generalUtils";
 import type { Component } from "vue";
 import { ImportWizardSteps } from "@/models/types";
 
+//TODO @Andrei remove old routes
+export const OLD_USER_ACCOUNTS_ROUTE: string = "/old-user-accounts";
+export const OLD_CERTIFICATES_ROUTE: string = "/old-certificates";
+export const OLD_ASSESSMENT_TOOLS_ROUTE: string = "/old-assessment-tools";
+export const OLD_CONNECTION_CONFIGURATIONS_ROUTE: string =
+    "/old-connection-configurations";
+
 // navigation routes
 export const DEFAULT_ROUTE: string = "/";
 export const REGISTER_ROUTE: string = "/register";
 export const HOME_PAGE_ROUTE: string = "/home";
 export const NAVIGATION_OVERVIEW_ROUTE: string = "/navigation-overview";
 export const USER_ACCOUNTS_ROUTE: string = "/user-accounts";
-export const OLD_USER_ACCOUNTS_ROUTE: string = "/old-user-accounts";
 
 export const EDIT_USER_ACCOUNT: string = USER_ACCOUNTS_ROUTE + "/edit-account";
 export const PROFILE_ROUTE = "/profile-settings";
@@ -43,6 +49,7 @@ export const FINISHED_EXAM_DATA_ROUTE: string = "/finished-exam-data";
 
 export const ASSESSMENT_TOOL_CONNECTIONS_ROUTE: string =
     "/assessment-tool-connections";
+
 export const CREATE_ASSESSMENT_TOOL_CONNECTION_ROUTE: string =
     ASSESSMENT_TOOL_CONNECTIONS_ROUTE + "/create";
 

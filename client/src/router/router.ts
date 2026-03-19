@@ -152,6 +152,8 @@ const routes: Array<RouteRecordRaw> = [
                     ),
                 meta: { titleKey: "titles.editUserAccount" },
             },
+
+            //TODO @Andrei remove old routes
             {
                 path: constants.OLD_USER_ACCOUNTS_ROUTE,
                 name: "OldUserAccounts",
@@ -167,7 +169,7 @@ const routes: Array<RouteRecordRaw> = [
                 name: "UserAccounts",
                 component: () =>
                     import(
-                        "@/components/views/seb-server/settings-navigation/user-account/userAccounts/UserAccountsPage.vue"
+                        "@/components/views/seb-server/settings-navigation/user-account/userAccounts/UserAccounts.vue"
                     ),
                 meta: { titleKey: "titles.userAccounts" },
             },
@@ -183,15 +185,28 @@ const routes: Array<RouteRecordRaw> = [
             },
 
             // ---------- assessment tools ----------
+
+            //TODO @Andrei remove old routes
             {
-                path: constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE,
-                name: "AssessmentToolConnections",
+                path: constants.OLD_ASSESSMENT_TOOLS_ROUTE,
+                name: "OldAssessmentTools",
                 component: () =>
                     import(
                         "@/components/views/seb-server/assessment-tool/AssessmentTools.vue"
                     ),
                 meta: { titleKey: "titles.assessmentToolConnections" },
             },
+
+            {
+                path: constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE,
+                name: "AssessmentTools",
+                component: () =>
+                    import(
+                        "@/components/views/seb-server/settings-navigation/assessment-tool/assessment-tools/AssessmentTools.vue"
+                    ),
+                meta: { titleKey: "titles.assessmentToolConnections" },
+            },
+
             {
                 path: constants.CREATE_ASSESSMENT_TOOL_CONNECTION_ROUTE,
                 name: "CreateAssessmentToolConnection",
@@ -212,12 +227,22 @@ const routes: Array<RouteRecordRaw> = [
             },
 
             // ---------- connection configuration ----------
+            //TODO @Andrei remove old routes
+            {
+                path: constants.OLD_CONNECTION_CONFIGURATIONS_ROUTE,
+                name: "OldConnectionConfigurations",
+                component: () =>
+                    import(
+                        "@/components/views/seb-server/connection-configuration/ConnectionConfigurations.vue"
+                    ),
+                meta: { titleKey: "titles.connectionConfigurations" },
+            },
             {
                 path: constants.CONNECTION_CONFIGURATIONS_ROUTE,
                 name: "ConnectionConfigurations",
                 component: () =>
                     import(
-                        "@/components/views/seb-server/connection-configuration/ConnectionConfigurations.vue"
+                        "@/components/views/seb-server/settings-navigation/connection-configuration/connection-configurations/ConnectionConfigurations.vue"
                     ),
                 meta: { titleKey: "titles.connectionConfigurations" },
             },
@@ -241,12 +266,23 @@ const routes: Array<RouteRecordRaw> = [
             },
 
             // ---------- certificates ----------
+
+            //TODO @Andrei remove old routes
+            {
+                path: constants.OLD_CERTIFICATES_ROUTE,
+                name: "OldCertificates",
+                component: () =>
+                    import(
+                        "@/components/views/seb-server/certificates/CertificatesMain.vue"
+                    ),
+                meta: { titleKey: "titles.certificates" },
+            },
             {
                 path: constants.CERTIFICATES_ROUTE,
                 name: "Certificates",
                 component: () =>
                     import(
-                        "@/components/views/seb-server/certificates/CertificatesMain.vue"
+                        "@/components/views/seb-server/settings-navigation/certificate/certificates/CertificatesList.vue"
                     ),
                 meta: { titleKey: "titles.certificates" },
             },

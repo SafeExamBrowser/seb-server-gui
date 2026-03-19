@@ -4,13 +4,11 @@
             <v-col cols="5">
                 <!------------ Search Box, Cancel and Search Buttons ------------->
                 <v-row class="pl-6">
-                    <SearchSectionTitle
-                        text="userAccount.userAccountPage.filters.searchTitle"
-                    />
+                    <SearchSectionTitle />
                 </v-row>
 
                 <v-row class="px-6">
-                    <SearchBox :store="store" />
+                    <SearchBox :store="store" :search-text="searchText" />
                 </v-row>
 
                 <v-row class="justify-end pa-6 pt-5 pb-0">
@@ -30,6 +28,7 @@ import SearchSectionTitle from "@/components/views/seb-server/settings-navigatio
 import { BaseSettingsStoreView } from "@/components/views/seb-server/settings-navigation/store/storeContract.ts";
 
 defineProps<{
+    searchText: string;
     store: BaseSettingsStoreView<unknown>;
 }>();
 </script>
