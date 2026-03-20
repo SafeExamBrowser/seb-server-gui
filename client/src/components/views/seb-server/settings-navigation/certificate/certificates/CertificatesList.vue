@@ -1,5 +1,5 @@
 <template>
-    <BasicSettingsPage :title="$t('titles.userAccounts')">
+    <BasicSettingsPage :title="$t('titles.certificates')">
         <template #ActionButton>
             <AddButton
                 text="certificates.addCertificate"
@@ -56,13 +56,13 @@ import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import AddButton from "@/components/views/seb-server/settings-navigation/widgets/AddButton.vue";
 import { CERTIFICATES_ROUTE } from "@/utils/constants.ts";
 import SearchSection from "@/components/views/seb-server/settings-navigation/components/SearchSection.vue";
-import { useUserAccounts } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/api/useUserAccounts.ts";
 import SettingsTable from "@/components/views/seb-server/settings-navigation/components/SettingsTable/SettingsTable.vue";
 import { useCertificatesStore } from "@/components/views/seb-server/settings-navigation/certificate/certificates/store/certificatesStore.ts";
 import { useCertificatesTableHeaders } from "@/components/views/seb-server/settings-navigation/certificate/certificates/composables/useCertificateTableHeaders.ts";
+import { useCertificates } from "@/components/views/seb-server/settings-navigation/certificate/certificates/api/useCertificates.ts";
 
 const certificatesStore = useCertificatesStore();
 const certificatesTableHeaders = useCertificatesTableHeaders();
 
-const { data, loading, error } = useUserAccounts();
+const { data, loading, error } = useCertificates();
 </script>

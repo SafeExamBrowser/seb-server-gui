@@ -62,14 +62,14 @@ import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import AddButton from "@/components/views/seb-server/settings-navigation/widgets/AddButton.vue";
 import { CREATE_CONNECTION_CONFIGURATION_ROUTE } from "@/utils/constants.ts";
 import SearchSection from "@/components/views/seb-server/settings-navigation/components/SearchSection.vue";
-import { useUserAccounts } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/api/useUserAccounts.ts";
 import SettingsTable from "@/components/views/seb-server/settings-navigation/components/SettingsTable/SettingsTable.vue";
 import { useConnectionConfigurationsStore } from "@/components/views/seb-server/settings-navigation/connection-configuration/connection-configurations/store/connectionConfigurationsStore.ts";
 import { useConnectionConfigurationsTableHeaders } from "@/components/views/seb-server/settings-navigation/connection-configuration/connection-configurations/composables/useConnectionConfigurationsTableHeaders.ts";
+import { useConnectionConfigurations } from "@/components/views/seb-server/settings-navigation/connection-configuration/connection-configurations/api/useConnectionConfigurations.ts";
 
 const connectionConfigurationsStore = useConnectionConfigurationsStore();
 const connectionConfigurationsTableHeaders =
     useConnectionConfigurationsTableHeaders();
 
-const { data, loading, error } = useUserAccounts();
+const { data, loading, error } = useConnectionConfigurations();
 </script>

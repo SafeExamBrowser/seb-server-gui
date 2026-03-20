@@ -35,7 +35,7 @@
                             :loading="loading || deleteLoading"
                             :route="USER_ACCOUNTS_ROUTE"
                             item-identifier-key="uuid"
-                            @delete="onDeleteUserAccount"
+                            @delete="removeUserAccountFromItem"
                         />
                     </v-col>
                 </v-row>
@@ -57,7 +57,6 @@ import { useUserAccounts } from "@/components/views/seb-server/settings-navigati
 import { useDeleteUserAccount } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/api/useDeleteUserAccount.ts";
 import { useUserAccountsTableHeaders } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/composables/useUserAccountsTableHeaders.ts";
 import SettingsTable from "@/components/views/seb-server/settings-navigation/components/SettingsTable/SettingsTable.vue";
-import type { UserAccount } from "@/models/userAccount";
 
 const userAccountStore = useUserAccountsStore();
 const userAccountsTableHeaders = useUserAccountsTableHeaders();
@@ -65,28 +64,8 @@ const userAccountsTableHeaders = useUserAccountsTableHeaders();
 const { data, loading, error } = useUserAccounts();
 
 const {
-    removeUserAccount,
+    removeUserAccountFromItem,
     loading: deleteLoading,
     error: deleteError,
-} = useDeleteUserAccount();
-
-async function onDeleteUserAccount(item: Record<string, unknown>) {
-    const uuid = item.uuid;
-
-    if (typeof uuid !== "string") {
-        return;
-    }
-
-    const success = await removeUserAccount(uuid);
-
-    if (!success) {
-        return;
-    }
-
-    if (data.value?.content) {
-        data.value.content = data.value.content.filter(
-            (user: UserAccount) => user.uuid !== uuid,
-        );
-    }
-}
+} = useDeleteUserAccount(data);
 </script>

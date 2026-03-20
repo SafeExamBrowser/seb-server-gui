@@ -1,7 +1,11 @@
+import type { Ref } from "vue";
 import { ref } from "vue";
 import { deleteUserAccount } from "@/services/seb-server/userAccountService";
+import type { UserAccountResponse } from "@/models/userAccount";
 
-export const useDeleteUserAccount = () => {
+export const useDeleteUserAccount = (
+    userAccounts: Ref<UserAccountResponse | undefined>,
+) => {
     const loading = ref(false);
     const error = ref<string>();
 
@@ -16,6 +20,12 @@ export const useDeleteUserAccount = () => {
                 throw new Error("Failed to delete user account.");
             }
 
+            if (userAccounts.value?.content) {
+                userAccounts.value.content = userAccounts.value.content.filter(
+                    (user) => user.uuid !== uuid,
+                );
+            }
+
             return true;
         } catch (err) {
             error.value = err instanceof Error ? err.message : "Unknown error";
@@ -25,8 +35,22 @@ export const useDeleteUserAccount = () => {
         }
     };
 
+    const removeUserAccountFromItem = async (
+        item: Record<string, unknown>,
+    ): Promise<boolean> => {
+        const uuid = item.uuid;
+
+        if (typeof uuid !== "string") {
+            error.value = "Invalid user account identifier.";
+            return false;
+        }
+
+        return removeUserAccount(uuid);
+    };
+
     return {
         removeUserAccount,
+        removeUserAccountFromItem,
         loading,
         error,
     };
