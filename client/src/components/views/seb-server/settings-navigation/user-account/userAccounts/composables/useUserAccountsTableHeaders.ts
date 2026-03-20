@@ -1,14 +1,24 @@
 import { computed } from "vue";
 import { translate } from "@/utils/generalUtils";
+import type { SettingsTableHeader } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/settingsTableTypes";
 
 export const useUserAccountsTableHeaders = () =>
-    computed(() => [
+    computed<SettingsTableHeader[]>(() => [
+        {
+            title: translate(
+                "userAccount.userAccountPage.userAccountTableHeaders.tableHeaderInstitution",
+            ),
+            key: "institutionId",
+            width: "6%",
+            sortable: true,
+        },
+
         {
             title: translate(
                 "userAccount.userAccountPage.userAccountTableHeaders.tableHeaderSurname",
             ),
             key: "surname",
-            width: "12%",
+            width: "8%",
             sortable: true,
         },
         {
@@ -16,7 +26,7 @@ export const useUserAccountsTableHeaders = () =>
                 "userAccount.userAccountPage.userAccountTableHeaders.tableHeaderName",
             ),
             key: "name",
-            width: "10%",
+            width: "8%",
             sortable: true,
         },
         {
@@ -24,7 +34,7 @@ export const useUserAccountsTableHeaders = () =>
                 "userAccount.userAccountPage.userAccountTableHeaders.tableHeaderUsername",
             ),
             key: "username",
-            width: "12%",
+            width: "8%",
             sortable: true,
         },
         {
@@ -32,7 +42,7 @@ export const useUserAccountsTableHeaders = () =>
                 "userAccount.userAccountPage.userAccountTableHeaders.tableHeaderEmail",
             ),
             key: "email",
-            width: "10%",
+            width: "12%",
             sortable: true,
         },
         {
@@ -40,7 +50,7 @@ export const useUserAccountsTableHeaders = () =>
                 "userAccount.userAccountPage.userAccountTableHeaders.tableHeaderStatus",
             ),
             key: "active",
-            width: "8%",
+            width: "6%",
             sortable: false,
         },
         {

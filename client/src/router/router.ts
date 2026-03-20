@@ -144,7 +144,7 @@ const routes: Array<RouteRecordRaw> = [
                 meta: { titleKey: "titles.profile" },
             },
             {
-                path: constants.EDIT_USER_ACCOUNT + "/:userUuid",
+                path: constants.USER_ACCOUNTS_ROUTE + "/:userUuid",
                 name: "EditUserAccount",
                 component: () =>
                     import(

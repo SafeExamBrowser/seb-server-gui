@@ -12,41 +12,32 @@
                 <v-row>
                     <SearchSection
                         :store="userAccountStore"
-                        ,
                         search-text="userAccount.userAccountPage.filters.searchField"
                     />
                 </v-row>
 
                 <v-row>
-                    <!-- In  here we do the following : import useraccountstableheaders. Call up the table in this html, pass on the headers. We also call up the /getalluseraccounts and store it in user accounts variable and pass it to the table
-                     we also need to pass on a couple more things, like the Type of-->
+                    <v-col>
+                        <div v-if="loading">Loading user accounts...</div>
 
-                    <v-row>
-                        <v-col>
-                            <div v-if="loading">Loading user accounts...</div>
+                        <div v-else-if="error">
+                            {{ error }}
+                        </div>
 
-                            <div v-else-if="error">
-                                {{ error }}
-                            </div>
+                        <div v-else-if="deleteError">
+                            {{ deleteError }}
+                        </div>
 
-                            <v-col>
-                                <div v-if="loading">
-                                    Loading user accounts...
-                                </div>
-
-                                <div v-else-if="error">
-                                    {{ error }}
-                                </div>
-
-                                <SettingsTable
-                                    v-else
-                                    :headers="userAccountsTableHeaders"
-                                    :items="data?.content ?? []"
-                                    :loading="loading"
-                                />
-                            </v-col>
-                        </v-col>
-                    </v-row>
+                        <SettingsTable
+                            v-else
+                            :headers="userAccountsTableHeaders"
+                            :items="data?.content ?? []"
+                            :loading="loading || deleteLoading"
+                            :route="USER_ACCOUNTS_ROUTE"
+                            item-identifier-key="uuid"
+                            @delete="onDeleteUserAccount"
+                        />
+                    </v-col>
                 </v-row>
             </v-col>
         </template>
@@ -56,15 +47,46 @@
 <script setup lang="ts">
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import AddButton from "@/components/views/seb-server/settings-navigation/widgets/AddButton.vue";
-import { CREATE_USER_ACCOUNTS_ROUTE } from "@/utils/constants.ts";
+import {
+    CREATE_USER_ACCOUNTS_ROUTE,
+    USER_ACCOUNTS_ROUTE,
+} from "@/utils/constants.ts";
 import SearchSection from "@/components/views/seb-server/settings-navigation/components/SearchSection.vue";
 import { useUserAccountsStore } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/store/userAccountsStore.ts";
 import { useUserAccounts } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/api/useUserAccounts.ts";
+import { useDeleteUserAccount } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/api/useDeleteUserAccount.ts";
 import { useUserAccountsTableHeaders } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/composables/useUserAccountsTableHeaders.ts";
 import SettingsTable from "@/components/views/seb-server/settings-navigation/components/SettingsTable/SettingsTable.vue";
+import type { UserAccount } from "@/models/userAccount";
 
 const userAccountStore = useUserAccountsStore();
 const userAccountsTableHeaders = useUserAccountsTableHeaders();
 
 const { data, loading, error } = useUserAccounts();
+
+const {
+    removeUserAccount,
+    loading: deleteLoading,
+    error: deleteError,
+} = useDeleteUserAccount();
+
+async function onDeleteUserAccount(item: Record<string, unknown>) {
+    const uuid = item.uuid;
+
+    if (typeof uuid !== "string") {
+        return;
+    }
+
+    const success = await removeUserAccount(uuid);
+
+    if (!success) {
+        return;
+    }
+
+    if (data.value?.content) {
+        data.value.content = data.value.content.filter(
+            (user: UserAccount) => user.uuid !== uuid,
+        );
+    }
+}
 </script>
