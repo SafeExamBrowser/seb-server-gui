@@ -5,7 +5,8 @@ type StorageItemName =
     | "sebAccessToken"
     | "sebRefreshToken"
     | "spAccessToken"
-    | "spRefreshToken";
+    | "spRefreshToken"
+    | "refreshBefore";
 
 const KEY_PREFIX = "auth___";
 
@@ -29,11 +30,16 @@ export const useAuthStore = defineStore("auth", () => {
         keyPrefix: KEY_PREFIX,
     });
 
+    const refreshBefore = usePersistedRef<StorageItemName>("refreshBefore", {
+        keyPrefix: KEY_PREFIX,
+    });
+
     const $reset = () => {
         sebAccessToken.value = undefined;
         sebRefreshToken.value = undefined;
         spAccessToken.value = undefined;
         spRefreshToken.value = undefined;
+        refreshBefore.value = undefined;
     };
 
     return {
@@ -41,6 +47,7 @@ export const useAuthStore = defineStore("auth", () => {
         sebRefreshToken,
         spAccessToken,
         spRefreshToken,
+        refreshBefore,
         $reset,
     };
 });

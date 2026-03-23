@@ -29,6 +29,13 @@ export const useLogin = () => {
             authStore.sebRefreshToken = authResponse.sebServer.refresh_token;
             authStore.spAccessToken = authResponse.proctorServer.access_token;
             authStore.spRefreshToken = authResponse.proctorServer.refresh_token;
+            authStore.refreshBefore = new Date(
+                Date.now() +
+                    Math.min(
+                        authResponse.sebServer.expires_in,
+                        authResponse.proctorServer.expires_in,
+                    ),
+            ).toISOString();
 
             navigateTo(constants.HOME_PAGE_ROUTE);
         } catch (err) {

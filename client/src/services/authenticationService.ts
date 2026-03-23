@@ -7,10 +7,12 @@ export const authorize = async (
     proctorServer: {
         access_token: string;
         refresh_token: string;
+        expires_in: number;
     };
     sebServer: {
         access_token: string;
         refresh_token: string;
+        expires_in: number;
     };
 }> => {
     const body = new URLSearchParams({
@@ -36,10 +38,12 @@ export const authorize = async (
         proctorServer: {
             access_token: proctorServerResponse.data.access_token,
             refresh_token: proctorServerResponse.data.refresh_token,
+            expires_in: proctorServerResponse.data.expires_in,
         },
         sebServer: {
             access_token: sebServerResponse.data.access_token,
             refresh_token: sebServerResponse.data.refresh_token,
+            expires_in: sebServerResponse.data.expires_in,
         },
     };
 };
