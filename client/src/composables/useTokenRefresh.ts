@@ -1,35 +1,50 @@
 import { useAuthStore } from "@/composables/store/useAuthStore";
-import { watch } from "vue";
+import { ref, watch } from "vue";
 
-const REFRESH_SAFETY_MARGIN_MILLISECONDS = 10 * 60 * 1000; // 10 minutes in milliseconds
+const REFRESH_SAFETY_MARGIN_MILLISECONDS = 1 * 60 * 1000; // 1 minute in milliseconds
 
 export const useTokenRefresh = () => {
-    const handleChange = (newRefreshBefore?: string) => {
-        console.log("refreshBefore changed!", newRefreshBefore);
+    const timerRef = ref<Awaited<ReturnType<typeof setTimeout>>>();
 
+    const refresh = async () => {
+        // TODO @alain: call the refresh token endpoint here
+        console.log("- - - -refresh token now!");
+    };
+
+    const replaceRefreshTimer = (millisecondsUntilRefresh?: number) => {
+        if (timerRef.value) {
+            clearTimeout(timerRef.value);
+            timerRef.value = undefined;
+        }
+
+        if (millisecondsUntilRefresh) {
+            timerRef.value = setTimeout(refresh, millisecondsUntilRefresh);
+        }
+    };
+
+    const handleRefreshBeforeChange = (newRefreshBefore?: string) => {
         if (!newRefreshBefore) {
-            console.log("user not logged in, do nothing!");
-            // TODO @alain: cleanup the timer here
+            // user is not logged in – no refresh timer needed
+            replaceRefreshTimer(undefined);
             return;
         }
 
-        const millisecondsUntilRefresh =
+        const millisecondsUntilExpiration =
             new Date(newRefreshBefore).getTime() - new Date().getTime();
 
-        if (millisecondsUntilRefresh <= REFRESH_SAFETY_MARGIN_MILLISECONDS) {
-            // TODO @alain: call the refresh token endpoint here
-            console.log("- - - -refresh now!");
-            console.log("millisecondsUntilRefresh", millisecondsUntilRefresh);
+        if (millisecondsUntilExpiration <= REFRESH_SAFETY_MARGIN_MILLISECONDS) {
+            // refresh token is expired – refresh now!
+            refresh();
             return;
         }
 
-        // TODO @alain: start a timer here
-        console.log(
-            `token still valid for ${millisecondsUntilRefresh} milliseconds. Just start a timer.`,
+        // refresh token is still valid – start a refresh timer
+        replaceRefreshTimer(
+            millisecondsUntilExpiration - REFRESH_SAFETY_MARGIN_MILLISECONDS,
         );
     };
 
-    watch(() => useAuthStore().refreshBefore, handleChange, {
+    watch(() => useAuthStore().refreshBefore, handleRefreshBeforeChange, {
         immediate: true, // this let's us react to the initial value too
     });
 };
