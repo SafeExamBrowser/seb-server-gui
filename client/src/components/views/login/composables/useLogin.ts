@@ -6,8 +6,6 @@ import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants";
 
 export const useLogin = () => {
-    const data =
-        ref<Awaited<ReturnType<typeof authenticationService.authorize>>>();
     const errorI18nKey = ref<string>();
     const loading = ref(false);
 
@@ -22,8 +20,6 @@ export const useLogin = () => {
                 username,
                 password,
             );
-
-            data.value = authResponse;
 
             authStore.sebAccessToken = authResponse.sebServer.access_token;
             authStore.sebRefreshToken = authResponse.sebServer.refresh_token;
@@ -48,5 +44,5 @@ export const useLogin = () => {
         }
     };
 
-    return { data, errorI18nKey, loading, login };
+    return { errorI18nKey, loading, login };
 };
