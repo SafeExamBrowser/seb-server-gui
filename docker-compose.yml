@@ -47,7 +47,8 @@ services:
       - sps_sebserver_password=admin
 
       # swagger
-      - enable_swagger=true
+      - springdoc_api-docs_enabled=true
+      - springdoc_swagger-ui_enabled=true
 
       # Logging
       - logging_level_ch_ethz_seb_sebserver_webservice_servicelayer=DEBUG
