@@ -27,15 +27,18 @@ export const getConnectionConfigurationsActive =
     async (): Promise<ConnectionConfigurations> =>
         (await apiService.getRequest({ url: baseUrl + "/active" })).data;
 
+// TODO @andreas, alain: this seems not to work, The examId is not sent with the request. Param should be id={examId}
 export const downloadExamConfig = async (
     examId: string,
     connectionId: string,
-): Promise<Blob> =>
-    (
+): Promise<Blob> => {
+    console.info("************** examId: " + examId);
+    return (
         await apiService.getRequest({
+            //url: `${baseUrl}/download/${connectionId}?id=${examId}`,
             url: `${baseUrl}/download/${connectionId}`,
             options: {
-                params: { examId },
+                params: { id: examId },
                 responseType: "blob",
                 headers: {
                     accept: "application/octet-stream",
@@ -43,6 +46,7 @@ export const downloadExamConfig = async (
             },
         })
     ).data;
+};
 
 export const getConnectionConfiguration = async (
     id: number,
