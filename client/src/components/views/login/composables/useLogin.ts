@@ -32,8 +32,8 @@ export const useLogin = () => {
             authStore.refreshBefore = new Date(
                 Date.now() +
                     Math.min(
-                        authResponse.sebServer.expires_in,
-                        authResponse.proctorServer.expires_in,
+                        authResponse.sebServer.expires_in * 1000, // the server returns seconds, but we want milliseconds
+                        authResponse.proctorServer.expires_in * 1000, // the server returns seconds, but we want milliseconds
                     ),
             ).toISOString();
 

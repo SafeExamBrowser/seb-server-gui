@@ -9,6 +9,12 @@
 import "vue-loading-overlay/dist/css/index.css";
 import "@vuepic/vue-datepicker/dist/main.css";
 import ErrorMsg from "@/components/widgets/ErrorMsg.vue";
+import { onMounted } from "vue";
+import { useTokenRefresh } from "@/composables/useTokenRefresh";
+
+onMounted(() => {
+    useTokenRefresh();
+});
 </script>
 
 <style>
