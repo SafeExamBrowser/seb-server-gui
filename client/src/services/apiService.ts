@@ -4,6 +4,12 @@ import { useAuthStore } from "@/composables/store/useAuthStore";
 import { useLogout } from "@/composables/useLogout";
 import { AuthType } from "./types";
 
+declare module "axios" {
+    interface AxiosRequestConfig {
+        _authType?: AuthType;
+    }
+}
+
 const api = axios.create({
     baseURL: "/api",
 });
@@ -15,7 +21,37 @@ type RequestWithDataParams<T> = {
     authType?: AuthType;
 };
 
-// if a request is unauthorized, properly log out the user (clean up store etc.) and reject the promise
+let tokenRefreshPromise: Promise<void> | undefined = undefined;
+
+export const setTokenRefreshPromise = (promise: Promise<void> | undefined) =>
+    (tokenRefreshPromise = promise);
+
+api.interceptors.request.use(async (config) => {
+    const authType = config._authType ?? ("none" satisfies AuthType);
+
+    if (authType === "none") {
+        return config;
+    }
+
+    if (tokenRefreshPromise) {
+        // wait for the token refresh to complete
+        await tokenRefreshPromise.catch(() => {});
+    }
+
+    // set correct Authorization header
+    const authStore = useAuthStore();
+    const authToken =
+        authType === "sps" ? authStore.spAccessToken : authStore.sebAccessToken;
+
+    if (!authToken) {
+        throw new Error(`No token found for auth type: ${authType}`);
+    }
+
+    config.headers.Authorization = `Bearer ${authToken}`;
+
+    return config;
+});
+
 api.interceptors.response.use(
     (response) => response,
     async (error) => {
@@ -23,25 +59,12 @@ api.interceptors.response.use(
             return Promise.reject(error);
         }
 
+        // if a request is unauthorized, properly log out the user (clean up store etc.) and reject the promise
         await useLogout().logout(true);
 
         return Promise.reject(error);
     },
 );
-
-const getAuthHeaderValue = (authType: AuthType) => {
-    const authStore = useAuthStore();
-
-    if (authType === "none") {
-        return undefined;
-    }
-
-    if (authType === "sps") {
-        return `Bearer ${authStore.spAccessToken}`;
-    }
-
-    return `Bearer ${authStore.sebAccessToken}`;
-};
 
 const getRequestUrl = (url: string, authType: AuthType): string => {
     return `${authType === "sps" ? "/sps" : ""}${url}`;
@@ -56,11 +79,10 @@ export const getRequest = ({
     options?: AxiosRequestConfig;
     authType?: AuthType;
 }) => {
-    const authHeaderValue = getAuthHeaderValue(authType);
     const defaultOptions: AxiosRequestConfig = {
+        _authType: authType,
         headers: {
             Accept: "application/json",
-            ...(authHeaderValue ? { Authorization: authHeaderValue } : {}),
         },
     };
 
@@ -76,11 +98,10 @@ export const postRequest = <T>({
     options,
     authType = "seb",
 }: RequestWithDataParams<T>) => {
-    const authHeaderValue = getAuthHeaderValue(authType);
     const defaultOptions: AxiosRequestConfig = {
+        _authType: authType,
         headers: {
             Accept: "application/json",
-            ...(authHeaderValue ? { Authorization: authHeaderValue } : {}),
             "Content-Type": "application/x-www-form-urlencoded",
         },
     };
@@ -98,11 +119,10 @@ export const putRequest = <T>({
     options,
     authType = "seb",
 }: RequestWithDataParams<T>) => {
-    const authHeaderValue = getAuthHeaderValue(authType);
     const defaultOptions: AxiosRequestConfig = {
+        _authType: authType,
         headers: {
             Accept: "application/json",
-            ...(authHeaderValue ? { Authorization: authHeaderValue } : {}),
             "Content-Type": "application/json",
         },
     };
@@ -120,11 +140,10 @@ export const patchRequest = <T>({
     options,
     authType = "seb",
 }: RequestWithDataParams<T>) => {
-    const authHeaderValue = getAuthHeaderValue(authType);
     const defaultOptions: AxiosRequestConfig = {
+        _authType: authType,
         headers: {
             Accept: "application/json",
-            ...(authHeaderValue ? { Authorization: authHeaderValue } : {}),
             "Content-Type": "application/json",
         },
     };
@@ -145,12 +164,10 @@ export const deleteRequest = <T>({
     data?: T;
     authType?: AuthType;
 }) => {
-    const authHeaderValue = getAuthHeaderValue(authType);
-
     return api.delete(getRequestUrl(url, authType), {
+        _authType: authType,
         headers: {
             Accept: "application/json",
-            ...(authHeaderValue ? { Authorization: authHeaderValue } : {}),
             "Content-Type": "application/x-www-form-urlencoded",
         },
         data: data ?? null,
