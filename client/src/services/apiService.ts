@@ -2,29 +2,13 @@ import axios, { AxiosRequestConfig } from "axios";
 import { merge } from "lodash";
 import { useAuthStore } from "@/composables/store/useAuthStore";
 import { useLogout } from "@/composables/useLogout";
-import { AuthType } from "./types";
+import { AuthType, RequestWithDataParams } from "./types";
 
-declare module "axios" {
-    interface AxiosRequestConfig {
-        _authType?: AuthType;
-    }
-}
+let tokenRefreshPromise: Promise<void> | undefined = undefined;
 
 const api = axios.create({
     baseURL: "/api",
 });
-
-type RequestWithDataParams<T> = {
-    url: string;
-    data?: T;
-    options?: AxiosRequestConfig;
-    authType?: AuthType;
-};
-
-let tokenRefreshPromise: Promise<void> | undefined = undefined;
-
-export const setTokenRefreshPromise = (promise: Promise<void> | undefined) =>
-    (tokenRefreshPromise = promise);
 
 api.interceptors.request.use(async (config) => {
     const authType = config._authType ?? ("none" satisfies AuthType);
@@ -69,6 +53,9 @@ api.interceptors.response.use(
 const getRequestUrl = (url: string, authType: AuthType): string => {
     return `${authType === "sps" ? "/sps" : ""}${url}`;
 };
+
+export const setTokenRefreshPromise = (promise: Promise<void> | undefined) =>
+    (tokenRefreshPromise = promise);
 
 export const getRequest = ({
     url,

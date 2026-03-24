@@ -1,6 +1,20 @@
+import { AxiosRequestConfig } from "axios";
 import { z } from "zod";
 
+declare module "axios" {
+    interface AxiosRequestConfig {
+        _authType?: AuthType;
+    }
+}
+
 export type AuthType = "seb" | "sps" | "none";
+
+export type RequestWithDataParams<T> = {
+    url: string;
+    data?: T;
+    options?: AxiosRequestConfig;
+    authType?: AuthType;
+};
 
 const tokenResponseSchema = z.object({
     access_token: z.string(),
