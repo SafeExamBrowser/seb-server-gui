@@ -39,12 +39,10 @@ api.interceptors.request.use(async (config) => {
 api.interceptors.response.use(
     (response) => response,
     async (error) => {
-        if (error?.response?.status !== 401) {
-            return Promise.reject(error);
+        // if a request is unauthorized, properly log out the user (clean up store etc.)
+        if (error?.response?.status === 401) {
+            await useLogout().logout(true);
         }
-
-        // if a request is unauthorized, properly log out the user (clean up store etc.) and reject the promise
-        await useLogout().logout(true);
 
         return Promise.reject(error);
     },
