@@ -1850,7 +1850,8 @@
         "connectionConfigurationViewAndEdit": "Edit Connection Configuration",
         "createConnectionConfiguration": "Add Connection Configuration",
         "connectionConfigurations": "Connection Configurations",
-        "certificates": "Certificates"
+        "certificates": "Certificates",
+        "editExamTemplate": "Edit Exam Template"
     },
 
     "warnings": {

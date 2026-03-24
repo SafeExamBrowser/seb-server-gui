@@ -18,6 +18,7 @@
 
                 <v-row>
                     <v-col>
+                        <!-- TODO @Andrei make these cases be default for the parents container aka basicSettingsPage and only pass the object type -->
                         <div v-if="loading">Loading user accounts...</div>
 
                         <div v-else-if="error">

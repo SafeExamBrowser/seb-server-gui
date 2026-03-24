@@ -85,6 +85,11 @@ export function buildPreparationNavigationItems(
             label: translate("titles.addExamWithURL"),
             testId: `${testIdPrefix}-addExamWithURL-text`,
         },
+        {
+            label: translate("titles.editExamTemplate"),
+            to: constants.CREATE_TEMPLATE_ROUTE,
+            testId: `${testIdPrefix}-editExamTemplate-link`,
+        },
     ];
 }
 

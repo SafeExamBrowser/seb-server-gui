@@ -7,6 +7,7 @@
         :loading="loading"
         :loading-text="$t('general.loading')"
         :no-data-text="$t('general.noData')"
+        striped="even"
     >
         <template #item="{ item }">
             <tr @click="onRowClick(getRawItem(item))">
@@ -41,6 +42,10 @@
                         </div>
                     </template>
 
+                    <template v-else-if="header.key === 'institutionId'">
+                        {{ getInstitutionName(getRawItem(item)[header.key]) }}
+                    </template>
+
                     <template v-else>
                         {{ getRawItem(item)[header.key] }}
                     </template>
@@ -61,6 +66,7 @@ import { computed, ref } from "vue";
 import type { SettingsTableHeader } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/settingsTableTypes";
 import DeleteDialog from "@/components/views/seb-server/settings-navigation/components/DeleteDialog.vue";
 import { useSettingsNavigation } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsNavigation.ts";
+import { useInstitutionNameMap } from "@/components/views/seb-server/settings-navigation/composables/useInstitutionNameMap.ts";
 
 type TableItem = Record<string, unknown>;
 
@@ -113,6 +119,7 @@ function getRawItem(item: unknown): TableItem {
     return item as TableItem;
 }
 
+//edit functionalities
 function onEdit(item: TableItem) {
     emit("edit", item);
 
@@ -127,6 +134,7 @@ function onRowClick(item: TableItem) {
     navigateToItem(item);
 }
 
+//delete dialog
 function openDeleteDialog(item: TableItem) {
     selectedItem.value = item;
     deleteDialogOpen.value = true;
@@ -138,6 +146,13 @@ function confirmDelete() {
     emit("delete", selectedItem.value);
     deleteDialogOpen.value = false;
 }
+
+// if institution column then translate
+const hasInstitutionColumn = computed(() =>
+    props.headers.some((header) => header.key === "institutionId"),
+);
+
+const { getInstitutionName } = useInstitutionNameMap(hasInstitutionColumn);
 </script>
 
 <style scoped>
