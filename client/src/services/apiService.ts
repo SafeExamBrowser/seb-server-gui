@@ -40,7 +40,7 @@ api.interceptors.response.use(
     (response) => response,
     async (error) => {
         // if a request is unauthorized, properly log out the user (clean up store etc.)
-        if (error?.response?.status === 401) {
+        if (error?.response?.status === 401 && error?.config?._authType) {
             await useLogout().logout(true);
         }
 
