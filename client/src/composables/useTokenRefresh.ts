@@ -3,7 +3,7 @@ import { ref, watch } from "vue";
 import * as authenticationService from "@/services/authenticationService";
 import { useLogout } from "@/composables/useLogout";
 
-const REFRESH_SAFETY_MARGIN_MILLISECONDS = 1 * 60 * 1000; // 1 minute in milliseconds
+const REFRESH_SAFETY_MARGIN_MILLISECONDS = 30 * 1000; // 30 seconds in milliseconds
 
 export const useTokenRefresh = () => {
     const authStore = useAuthStore();
