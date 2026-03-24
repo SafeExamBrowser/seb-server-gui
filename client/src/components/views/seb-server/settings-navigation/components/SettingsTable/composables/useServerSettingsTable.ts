@@ -27,7 +27,7 @@ export function useServerSettingsTable<TResponse extends PagedResponse>(
     const options = ref<ServerTablePaging>(
         initialOptions ?? {
             page: 1,
-            itemsPerPage: 5,
+            itemsPerPage: 10,
             sortBy: [{ key: "name", order: "asc" }],
         },
     );

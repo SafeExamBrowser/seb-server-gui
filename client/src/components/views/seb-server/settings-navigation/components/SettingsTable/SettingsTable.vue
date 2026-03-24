@@ -4,6 +4,7 @@
         :items="items"
         :items-length="totalItems"
         :items-per-page="itemsPerPage"
+        :items-per-page-options="itemsPerPageOptions"
         :loading="loading"
         :loading-text="$t('general.loading')"
         :no-data-text="$t('general.noData')"
@@ -89,6 +90,7 @@ const props = withDefaults(
         totalItems?: number;
         options?: ServerTablePaging;
         itemsPerPage?: number;
+        pageCount?: number;
         route?: string;
         itemIdentifierKey?: string;
         editable?: boolean;
@@ -98,7 +100,8 @@ const props = withDefaults(
     }>(),
     {
         totalItems: 0,
-        itemsPerPage: 5,
+        pageCount: 0,
+        itemsPerPage: 10,
         route: "",
         itemIdentifierKey: "",
         editable: true,
@@ -193,21 +196,25 @@ const hasInstitutionColumn = computed(() =>
 );
 
 const { getInstitutionName } = useInstitutionNameMap(hasInstitutionColumn);
+
+const itemsPerPageOptions = computed(() => {
+    const options = [5];
+
+    if (props.totalItems > 5) {
+        options.push(10);
+    }
+
+    if (props.totalItems > 10) {
+        options.push(15);
+    }
+
+    return options;
+});
 </script>
 
 <style scoped>
-:deep(.v-data-table) {
-    background: transparent;
-}
-
-:deep(.v-table) {
-    background: transparent;
-    border-radius: 0.75rem;
-    overflow: hidden;
-}
-
 :deep(.v-table__wrapper) {
-    min-height: 35vh;
+    min-height: 24vh;
 }
 
 :deep(table) {
@@ -233,18 +240,6 @@ const { getInstitutionName } = useInstitutionNameMap(hasInstitutionColumn);
     color: #215caf;
     vertical-align: middle !important;
     border-bottom: 1px solid rgba(220, 220, 220, 0.6);
-}
-
-:deep(.v-data-table-footer) {
-    border-top: 1px solid #dcdcdc;
-    padding-top: 0.5rem;
-}
-
-:deep(.v-data-table-footer__items-per-page),
-:deep(.v-data-table-footer__info),
-:deep(.v-data-table-footer__pagination) {
-    color: #757575;
-    font-size: 0.9rem;
 }
 
 :deep(.v-progress-linear) {

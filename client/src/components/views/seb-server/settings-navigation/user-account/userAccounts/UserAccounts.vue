@@ -36,6 +36,7 @@
                             :headers="userAccountsTableHeaders"
                             :items="data?.content ?? []"
                             :total-items="totalItems"
+                            :page-count="pageCount"
                             :options="options"
                             :items-per-page="options.itemsPerPage"
                             :loading="loading || deleteLoading || statusLoading"
@@ -68,12 +69,13 @@ import { useUserAccountsTableHeaders } from "@/components/views/seb-server/setti
 import SettingsTable from "@/components/views/seb-server/settings-navigation/components/SettingsTable/SettingsTable.vue";
 import { useToggleUserAccountStatus } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/api/useToggleUserAccountStatus.ts";
 import { useServerSettingsTable } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useServerSettingsTable.ts";
+import { computed } from "vue";
 
 const userAccountStore = useUserAccountsStore();
 const userAccountsTableHeaders = useUserAccountsTableHeaders();
 
 const { data, loading, error, fetchUserAccounts } = useUserAccounts();
-
+const pageCount = computed(() => data.value?.number_of_pages ?? 0);
 const {
     removeUserAccountFromItem,
     loading: deleteLoading,

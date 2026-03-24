@@ -29,7 +29,7 @@ import SearchBox from "@/components/views/seb-server/settings-navigation/widgets
 import SearchButton from "@/components/views/seb-server/settings-navigation/widgets/SearchButton.vue";
 import CancelButton from "@/components/views/seb-server/settings-navigation/widgets/CancelButton.vue";
 import SearchSectionTitle from "@/components/views/seb-server/settings-navigation/widgets/SearchSectionTitle.vue";
-import { BaseSettingsStoreView } from "@/components/views/seb-server/settings-navigation/store/storeContract.ts";
+import type { BaseSettingsStoreView } from "@/components/views/seb-server/settings-navigation/store/storeContract.ts";
 
 defineProps<{
     searchText: string;
