@@ -26,8 +26,7 @@ export const useTokenRefresh = () => {
             spsRefreshToken,
         });
 
-        // TODO @alain: update the auth store with the new tokens
-        console.log("- - - -refresh response:", refreshResponse);
+        authStore.updateAuthData(refreshResponse);
     };
 
     const replaceRefreshTimer = (millisecondsUntilRefresh?: number) => {
