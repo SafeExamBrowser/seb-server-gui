@@ -1,3 +1,4 @@
+import { computed } from "vue";
 import { defineStore } from "pinia";
 import { usePersistedRef } from "@/composables/usePersistedRef";
 import { AuthData } from "@/services/types";
@@ -35,15 +36,6 @@ export const useAuthStore = defineStore("auth", () => {
         keyPrefix: KEY_PREFIX,
     });
 
-    const $reset = () => {
-        sebAccessToken.value = undefined;
-        sebRefreshToken.value = undefined;
-        spAccessToken.value = undefined;
-        spRefreshToken.value = undefined;
-        refreshBefore.value = undefined;
-    };
-
-    // actions
     const updateAuthData = (authData: AuthData) => {
         sebAccessToken.value = authData.sebServer.access_token;
         sebRefreshToken.value = authData.sebServer.refresh_token;
@@ -58,12 +50,23 @@ export const useAuthStore = defineStore("auth", () => {
         ).toISOString();
     };
 
+    const $reset = () => {
+        sebAccessToken.value = undefined;
+        sebRefreshToken.value = undefined;
+        spAccessToken.value = undefined;
+        spRefreshToken.value = undefined;
+        refreshBefore.value = undefined;
+    };
+
     return {
-        sebAccessToken,
-        sebRefreshToken,
-        spAccessToken,
-        spRefreshToken,
-        refreshBefore,
+        // getters
+        sebAccessToken: computed(() => sebAccessToken.value),
+        sebRefreshToken: computed(() => sebRefreshToken.value),
+        spAccessToken: computed(() => spAccessToken.value),
+        spRefreshToken: computed(() => spRefreshToken.value),
+        refreshBefore: computed(() => refreshBefore.value),
+
+        // actions
         updateAuthData,
         $reset,
     };
