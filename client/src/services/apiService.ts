@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from "axios";
 import { merge } from "lodash";
 import { useAuthStore } from "@/composables/store/useAuthStore";
 import { useLogout } from "@/composables/useLogout";
-import { AuthType, RequestWithDataParams } from "./types";
+import { ApiRequest, AuthType } from "./types";
 
 let tokenRefreshPromise: Promise<void> | undefined = undefined;
 
@@ -70,11 +70,7 @@ export const getRequest = ({
     return api.get(url, merge({}, defaultOptions, options));
 };
 
-export const postRequest = <T>({
-    url,
-    data,
-    options,
-}: RequestWithDataParams<T>) => {
+export const postRequest = <T>({ url, data, options }: ApiRequest<T>) => {
     const defaultOptions: AxiosRequestConfig = {
         _authType: "seb",
         headers: {
@@ -86,11 +82,7 @@ export const postRequest = <T>({
     return api.post(url, data ?? null, merge({}, defaultOptions, options));
 };
 
-export const putRequest = <T>({
-    url,
-    data,
-    options,
-}: RequestWithDataParams<T>) => {
+export const putRequest = <T>({ url, data, options }: ApiRequest<T>) => {
     const defaultOptions: AxiosRequestConfig = {
         _authType: "seb",
         headers: {
@@ -102,11 +94,7 @@ export const putRequest = <T>({
     return api.put(url, data ?? null, merge({}, defaultOptions, options));
 };
 
-export const patchRequest = <T>({
-    url,
-    data,
-    options,
-}: RequestWithDataParams<T>) => {
+export const patchRequest = <T>({ url, data, options }: ApiRequest<T>) => {
     const defaultOptions: AxiosRequestConfig = {
         _authType: "seb",
         headers: {
@@ -118,11 +106,7 @@ export const patchRequest = <T>({
     return api.patch(url, data ?? null, merge({}, defaultOptions, options));
 };
 
-export const deleteRequest = <T>({
-    url,
-    data,
-    options,
-}: RequestWithDataParams<T>) => {
+export const deleteRequest = <T>({ url, data, options }: ApiRequest<T>) => {
     const defaultOptions: AxiosRequestConfig = {
         _authType: "seb",
         headers: {

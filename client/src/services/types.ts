@@ -9,7 +9,7 @@ declare module "axios" {
 
 export type AuthType = "seb" | "sps" | "none";
 
-export type RequestWithDataParams<T> = {
+export type ApiRequest<T> = {
     url: string;
     data?: T;
     options?: AxiosRequestConfig;
