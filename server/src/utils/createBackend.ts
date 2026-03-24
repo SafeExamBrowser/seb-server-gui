@@ -20,7 +20,7 @@ const prepareProxyRequest = ({
   }
 
   // all other requests are prefixed with the default url
-  req.url = `${defaultUrlPrefix}${req.path}`;
+  req.url = `${defaultUrlPrefix}${req.url}`;
   return req;
 };
 

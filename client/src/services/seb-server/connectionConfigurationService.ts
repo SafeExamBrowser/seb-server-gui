@@ -35,7 +35,7 @@ export const downloadExamConfig = async (
         await apiService.getRequest({
             url: `${baseUrl}/download/${connectionId}`,
             options: {
-                params: { examId },
+                params: { id: examId },
                 responseType: "blob",
                 headers: {
                     accept: "application/octet-stream",
