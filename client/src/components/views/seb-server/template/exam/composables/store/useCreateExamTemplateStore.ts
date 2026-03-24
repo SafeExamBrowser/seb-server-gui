@@ -204,10 +204,8 @@ export const useCreateExamTemplateStore = defineStore(
         };
 
         return {
-            // state
-            currentStepIndex,
-
             // getters
+            currentStepIndex: computed(() => currentStepIndex.value),
             stepperModel,
             currentStep,
             examTemplate,
