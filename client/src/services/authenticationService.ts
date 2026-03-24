@@ -1,20 +1,10 @@
 import * as apiService from "@/services/apiService";
+import { type AuthData, authDataSchema } from "@/services/types";
 
 export const authorize = async (
     userName: string,
     password: string,
-): Promise<{
-    proctorServer: {
-        access_token: string;
-        refresh_token: string;
-        expires_in: number;
-    };
-    sebServer: {
-        access_token: string;
-        refresh_token: string;
-        expires_in: number;
-    };
-}> => {
+): Promise<AuthData> => {
     const body = new URLSearchParams({
         grant_type: "password",
         username: userName,
@@ -34,18 +24,10 @@ export const authorize = async (
         }),
     ]);
 
-    return {
-        proctorServer: {
-            access_token: proctorServerResponse.data.access_token,
-            refresh_token: proctorServerResponse.data.refresh_token,
-            expires_in: proctorServerResponse.data.expires_in,
-        },
-        sebServer: {
-            access_token: sebServerResponse.data.access_token,
-            refresh_token: sebServerResponse.data.refresh_token,
-            expires_in: sebServerResponse.data.expires_in,
-        },
-    };
+    return authDataSchema.parse({
+        proctorServer: proctorServerResponse.data,
+        sebServer: sebServerResponse.data,
+    });
 };
 
 export const refresh = async ({
@@ -54,18 +36,7 @@ export const refresh = async ({
 }: {
     sebRefreshToken: string;
     spsRefreshToken: string;
-}): Promise<{
-    proctorServer: {
-        access_token: string;
-        refresh_token: string;
-        expires_in: number;
-    };
-    sebServer: {
-        access_token: string;
-        refresh_token: string;
-        expires_in: number;
-    };
-}> => {
+}): Promise<AuthData> => {
     const [sebServerResponse, proctorServerResponse] = await Promise.all([
         apiService.postRequest({
             url: "/oauth/token",
@@ -85,18 +56,10 @@ export const refresh = async ({
         }),
     ]);
 
-    return {
-        proctorServer: {
-            access_token: proctorServerResponse.data.access_token,
-            refresh_token: proctorServerResponse.data.refresh_token,
-            expires_in: proctorServerResponse.data.expires_in,
-        },
-        sebServer: {
-            access_token: sebServerResponse.data.access_token,
-            refresh_token: sebServerResponse.data.refresh_token,
-            expires_in: sebServerResponse.data.expires_in,
-        },
-    };
+    return authDataSchema.parse({
+        proctorServer: proctorServerResponse.data,
+        sebServer: sebServerResponse.data,
+    });
 };
 
 export const logout = async () => {
