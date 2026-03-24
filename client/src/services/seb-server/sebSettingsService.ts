@@ -16,6 +16,7 @@ export const getExamConfigMapping = async (
     (
         await apiService.getRequest({
             url: `${baseUrl}/${examId}/examConfigMapping`,
+            options: { _authType: "seb" },
         })
     ).data;
 
@@ -25,6 +26,7 @@ export const getActiveSEBClients = async (
     (
         await apiService.getRequest({
             url: `${baseUrl}/${examId}/active-seb-clients`,
+            options: { _authType: "seb" },
         })
     ).data;
 
@@ -36,6 +38,7 @@ export const getView = async (
         await apiService.getRequest({
             url: `${baseUrl}/${id}`,
             options: {
+                _authType: "seb",
                 params: { viewType: viewType },
             },
         })
@@ -51,6 +54,7 @@ export const addTableRow = async (
             data: {
                 name: settingName,
             },
+            options: { _authType: "seb" },
         })
     ).data;
 
@@ -66,6 +70,7 @@ export const deleteTableRow = async (
                 name: settingName,
                 listIndex: rowIndex,
             },
+            options: { _authType: "seb" },
         })
     ).data;
 
@@ -81,12 +86,22 @@ export const updateSEBSettingValue = async (
                 id: valueId,
                 value: value,
             },
+            options: { _authType: "seb" },
         })
     ).data;
 
 export const publish = async (id: string): Promise<SEBSettingsValue> =>
-    (await apiService.postRequest({ url: `${baseUrl}/${id}/publish` })).data;
+    (
+        await apiService.postRequest({
+            url: `${baseUrl}/${id}/publish`,
+            options: { _authType: "seb" },
+        })
+    ).data;
 
 export const undoChanges = async (id: string): Promise<SEBSettingsValue> =>
-    (await apiService.postRequest({ url: `${baseUrl}/${id}/undo-changes` }))
-        .data;
+    (
+        await apiService.postRequest({
+            url: `${baseUrl}/${id}/undo-changes`,
+            options: { _authType: "seb" },
+        })
+    ).data;

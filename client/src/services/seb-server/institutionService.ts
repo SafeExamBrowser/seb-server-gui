@@ -8,7 +8,6 @@ export const getInstitutions = async (): Promise<Institution[]> =>
         await apiService.getRequest({
             url: `${baseUrl}/institution`,
             options: {
-                _authType: "none",
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",
                 },
@@ -23,6 +22,7 @@ export const getInstitutionLogo = async (
         await apiService.getRequest({
             url: `${baseUrl}/logo/${institutionSuffix}`,
             options: {
+                _authType: "seb",
                 headers: { Accept: "application/json, text/plain, */*" },
             },
         })

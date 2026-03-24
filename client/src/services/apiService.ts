@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from "axios";
 import { merge } from "lodash";
 import { useAuthStore } from "@/composables/store/useAuthStore";
 import { useLogout } from "@/composables/useLogout";
-import { ApiRequest, AuthType } from "./types";
+import { ApiRequest } from "./types";
 
 let tokenRefreshPromise: Promise<void> | undefined = undefined;
 
@@ -11,9 +11,7 @@ const api = axios.create({
 });
 
 api.interceptors.request.use(async (config) => {
-    const authType = config._authType ?? ("none" satisfies AuthType);
-
-    if (authType === "none") {
+    if (!config._authType) {
         return config;
     }
 
@@ -25,10 +23,12 @@ api.interceptors.request.use(async (config) => {
     // set correct Authorization header
     const authStore = useAuthStore();
     const authToken =
-        authType === "sps" ? authStore.spAccessToken : authStore.sebAccessToken;
+        config._authType === "sps"
+            ? authStore.spAccessToken
+            : authStore.sebAccessToken;
 
     if (!authToken) {
-        throw new Error(`No token found for auth type: ${authType}`);
+        throw new Error(`No token found for auth type: ${config._authType}`);
     }
 
     config.headers.Authorization = `Bearer ${authToken}`;
@@ -61,7 +61,6 @@ export const getRequest = ({
     options?: AxiosRequestConfig;
 }) => {
     const defaultOptions: AxiosRequestConfig = {
-        _authType: "seb",
         headers: {
             Accept: "application/json",
         },
@@ -72,7 +71,6 @@ export const getRequest = ({
 
 export const postRequest = <T>({ url, data, options }: ApiRequest<T>) => {
     const defaultOptions: AxiosRequestConfig = {
-        _authType: "seb",
         headers: {
             Accept: "application/json",
             "Content-Type": "application/x-www-form-urlencoded",
@@ -84,7 +82,6 @@ export const postRequest = <T>({ url, data, options }: ApiRequest<T>) => {
 
 export const putRequest = <T>({ url, data, options }: ApiRequest<T>) => {
     const defaultOptions: AxiosRequestConfig = {
-        _authType: "seb",
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
@@ -96,7 +93,6 @@ export const putRequest = <T>({ url, data, options }: ApiRequest<T>) => {
 
 export const patchRequest = <T>({ url, data, options }: ApiRequest<T>) => {
     const defaultOptions: AxiosRequestConfig = {
-        _authType: "seb",
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
@@ -108,7 +104,6 @@ export const patchRequest = <T>({ url, data, options }: ApiRequest<T>) => {
 
 export const deleteRequest = <T>({ url, data, options }: ApiRequest<T>) => {
     const defaultOptions: AxiosRequestConfig = {
-        _authType: "seb",
         headers: {
             Accept: "application/json",
             "Content-Type": "application/x-www-form-urlencoded",

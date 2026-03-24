@@ -9,16 +9,38 @@ import {
 const baseUrl = "/exam" as const;
 
 export const getExam = async (id: string): Promise<Exam> =>
-    (await apiService.getRequest({ url: `${baseUrl}/${id}` })).data;
+    (
+        await apiService.getRequest({
+            url: `${baseUrl}/${id}`,
+            options: { _authType: "seb" },
+        })
+    ).data;
 
 export const createExam = async (createExamPar: CreateExamPar): Promise<Exam> =>
-    (await apiService.postRequest({ url: baseUrl, data: createExamPar })).data;
+    (
+        await apiService.postRequest({
+            url: baseUrl,
+            data: createExamPar,
+            options: { _authType: "seb" },
+        })
+    ).data;
 
 export const updateExam = async (exam: Exam): Promise<Exam> =>
-    (await apiService.putRequest({ url: baseUrl, data: exam })).data;
+    (
+        await apiService.putRequest({
+            url: baseUrl,
+            data: exam,
+            options: { _authType: "seb" },
+        })
+    ).data;
 
 export const deleteExam = async (id: string): Promise<unknown | null> =>
-    (await apiService.deleteRequest({ url: `${baseUrl}/${id}` })).data;
+    (
+        await apiService.deleteRequest({
+            url: `${baseUrl}/${id}`,
+            options: { _authType: "seb" },
+        })
+    ).data;
 
 export const getExams = async (
     optionalParameters?: OptionalParGetExams,
@@ -27,23 +49,39 @@ export const getExams = async (
         await apiService.getRequest({
             url: baseUrl,
             options: {
+                _authType: "seb",
                 params: optionalParameters,
             },
         })
     ).data;
 
 export const archiveExam = async (id: string): Promise<Exam> =>
-    (await apiService.patchRequest({ url: `${baseUrl}/${id}/archive` })).data;
+    (
+        await apiService.patchRequest({
+            url: `${baseUrl}/${id}/archive`,
+            options: { _authType: "seb" },
+        })
+    ).data;
 
 export const getExamAppSignatureKeys = async (
     id: string,
 ): Promise<AppSignatureKey[]> =>
-    (await apiService.getRequest({ url: `${baseUrl}/${id}/sebkeyinfo` })).data;
+    (
+        await apiService.getRequest({
+            url: `${baseUrl}/${id}/sebkeyinfo`,
+            options: { _authType: "seb" },
+        })
+    ).data;
 
 export const getGrantedExamAppSignatureKeys = async (
     parentId: string,
 ): Promise<GrantedAppSignatureKey[]> =>
-    (await apiService.getRequest({ url: `${baseUrl}/${parentId}/grant` })).data;
+    (
+        await apiService.getRequest({
+            url: `${baseUrl}/${parentId}/grant`,
+            options: { _authType: "seb" },
+        })
+    ).data;
 
 export const grantExamAppSignatureKeys = async (
     tagName: string,
@@ -55,6 +93,7 @@ export const grantExamAppSignatureKeys = async (
             url: `${baseUrl}/${parentId}/grant/${id}`,
             data: {},
             options: {
+                _authType: "seb",
                 params: { tag: tagName },
             },
         })
@@ -67,6 +106,7 @@ export const removeGrantExamAppSignatureKeys = async (
     (
         await apiService.deleteRequest({
             url: `${baseUrl}/${parentId}/grant/${id}`,
+            options: { _authType: "seb" },
         })
     ).data;
 
@@ -74,16 +114,22 @@ export const checkSEBLock = async (id: string): Promise<boolean> =>
     (
         await apiService.getRequest({
             url: `${baseUrl}/${id}/check-seb-restriction`,
+            options: { _authType: "seb" },
         })
     ).data;
 
 export const addSEBLock = async (id: string): Promise<Exam> =>
-    (await apiService.putRequest({ url: `${baseUrl}/${id}/seb-restriction` }))
-        .data;
+    (
+        await apiService.putRequest({
+            url: `${baseUrl}/${id}/seb-restriction`,
+            options: { _authType: "seb" },
+        })
+    ).data;
 
 export const removeSEBLock = async (id: string): Promise<null> =>
     (
         await apiService.deleteRequest({
             url: `${baseUrl}/${id}/seb-restriction`,
+            options: { _authType: "seb" },
         })
     ).data;

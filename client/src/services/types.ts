@@ -3,11 +3,9 @@ import { z } from "zod";
 
 declare module "axios" {
     interface AxiosRequestConfig {
-        _authType?: AuthType;
+        _authType?: "seb" | "sps";
     }
 }
-
-export type AuthType = "seb" | "sps" | "none";
 
 export type ApiRequest<T> = {
     url: string;

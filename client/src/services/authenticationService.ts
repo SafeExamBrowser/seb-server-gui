@@ -18,12 +18,10 @@ export const authorize = async ({
         apiService.postRequest({
             url: "/oauth/token",
             data: body,
-            options: { _authType: "none" },
         }),
         apiService.postRequest({
             url: "/sps/oauth/token",
             data: body,
-            options: { _authType: "none" },
         }),
     ]);
 
@@ -47,7 +45,6 @@ export const refresh = async ({
                 grant_type: "refresh_token",
                 refresh_token: sebRefreshToken,
             }).toString(),
-            options: { _authType: "none" },
         }),
         apiService.postRequest({
             url: "/sps/oauth/token",
@@ -55,7 +52,6 @@ export const refresh = async ({
                 grant_type: "refresh_token",
                 refresh_token: spsRefreshToken,
             }).toString(),
-            options: { _authType: "none" },
         }),
     ]);
 
@@ -67,7 +63,10 @@ export const refresh = async ({
 
 export const logout = async () => {
     await Promise.all([
-        apiService.postRequest({ url: "/useraccount/logout" }),
+        apiService.postRequest({
+            url: "/useraccount/logout",
+            options: { _authType: "seb" },
+        }),
         apiService.postRequest({
             url: "/sps/useraccount/logout",
             options: { _authType: "sps" },
