@@ -31,11 +31,9 @@ export const getConnectionConfigurationsActive =
 export const downloadExamConfig = async (
     examId: string,
     connectionId: string,
-): Promise<Blob> => {
-    console.info("************** examId: " + examId);
-    return (
+): Promise<Blob> =>
+    (
         await apiService.getRequest({
-            //url: `${baseUrl}/download/${connectionId}?id=${examId}`,
             url: `${baseUrl}/download/${connectionId}`,
             options: {
                 params: { id: examId },
@@ -46,7 +44,6 @@ export const downloadExamConfig = async (
             },
         })
     ).data;
-};
 
 export const getConnectionConfiguration = async (
     id: number,
