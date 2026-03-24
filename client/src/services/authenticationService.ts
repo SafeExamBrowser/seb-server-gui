@@ -48,6 +48,57 @@ export const authorize = async (
     };
 };
 
+export const refresh = async ({
+    sebRefreshToken,
+    spsRefreshToken,
+}: {
+    sebRefreshToken: string;
+    spsRefreshToken: string;
+}): Promise<{
+    proctorServer: {
+        access_token: string;
+        refresh_token: string;
+        expires_in: number;
+    };
+    sebServer: {
+        access_token: string;
+        refresh_token: string;
+        expires_in: number;
+    };
+}> => {
+    const [sebServerResponse, proctorServerResponse] = await Promise.all([
+        apiService.postRequest({
+            url: "/oauth/token",
+            data: new URLSearchParams({
+                grant_type: "refresh_token",
+                refresh_token: sebRefreshToken,
+            }).toString(),
+            authType: "none",
+        }),
+        apiService.postRequest({
+            url: "/sps/oauth/token",
+            data: new URLSearchParams({
+                grant_type: "refresh_token",
+                refresh_token: spsRefreshToken,
+            }).toString(),
+            authType: "none",
+        }),
+    ]);
+
+    return {
+        proctorServer: {
+            access_token: proctorServerResponse.data.access_token,
+            refresh_token: proctorServerResponse.data.refresh_token,
+            expires_in: proctorServerResponse.data.expires_in,
+        },
+        sebServer: {
+            access_token: sebServerResponse.data.access_token,
+            refresh_token: sebServerResponse.data.refresh_token,
+            expires_in: sebServerResponse.data.expires_in,
+        },
+    };
+};
+
 export const logout = async () => {
     await Promise.all([
         apiService.postRequest({ url: "/useraccount/logout" }),
