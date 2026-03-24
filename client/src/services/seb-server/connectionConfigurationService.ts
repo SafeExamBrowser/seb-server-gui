@@ -27,7 +27,6 @@ export const getConnectionConfigurationsActive =
     async (): Promise<ConnectionConfigurations> =>
         (await apiService.getRequest({ url: baseUrl + "/active" })).data;
 
-// TODO @andreas, alain: this seems not to work, The examId is not sent with the request. Param should be id={examId}
 export const downloadExamConfig = async (
     examId: string,
     connectionId: string,
