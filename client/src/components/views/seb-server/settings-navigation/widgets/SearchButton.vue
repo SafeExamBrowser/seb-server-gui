@@ -5,7 +5,7 @@
         data-testid="search-button"
         rounded="sm"
         variant="flat"
-        @click="onSearch()"
+        @click="onSearch"
     >
         {{ translate("general.searchButton") }}
     </v-btn>
@@ -13,13 +13,17 @@
 
 <script setup lang="ts">
 import { translate } from "@/utils/generalUtils.ts";
-import { BaseSettingsStoreView } from "@/components/views/seb-server/settings-navigation/store/storeContract.ts";
+import type { BaseSettingsStoreView } from "@/components/views/seb-server/settings-navigation/store/storeContract.ts";
 
-const props = defineProps<{
+defineProps<{
     store: BaseSettingsStoreView<unknown>;
 }>();
 
+const emit = defineEmits<{
+    click: [];
+}>();
+
 function onSearch() {
-    console.log("search:", props.store.searchField);
+    emit("click");
 }
 </script>

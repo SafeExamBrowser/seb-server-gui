@@ -2,18 +2,22 @@
     <v-col>
         <v-row>
             <v-col cols="5">
-                <!------------ Search Box, Cancel and Search Buttons ------------->
                 <v-row class="pl-6">
                     <SearchSectionTitle />
                 </v-row>
 
                 <v-row class="px-6">
-                    <SearchBox :store="store" :search-text="searchText" />
+                    <SearchBox
+                        :store="store"
+                        :search-text="searchText"
+                        @search="emit('search')"
+                        @clear="emit('clear')"
+                    />
                 </v-row>
 
                 <v-row class="justify-end pa-6 pt-5 pb-0">
-                    <CancelButton :store="store" />
-                    <SearchButton :store="store" />
+                    <CancelButton :store="store" @click="emit('clear')" />
+                    <SearchButton :store="store" @click="emit('search')" />
                 </v-row>
             </v-col>
         </v-row>
@@ -30,6 +34,11 @@ import { BaseSettingsStoreView } from "@/components/views/seb-server/settings-na
 defineProps<{
     searchText: string;
     store: BaseSettingsStoreView<unknown>;
+}>();
+
+const emit = defineEmits<{
+    search: [];
+    clear: [];
 }>();
 </script>
 

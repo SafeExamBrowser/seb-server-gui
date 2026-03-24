@@ -13,15 +13,14 @@
                     <SearchSection
                         :store="userAccountStore"
                         search-text="userAccount.userAccountPage.filters.searchField"
+                        @search="onSearch"
+                        @clear="onClearSearch"
                     />
                 </v-row>
 
                 <v-row>
                     <v-col>
-                        <!-- TODO @Andrei make these cases be default for the parents container aka basicSettingsPage and only pass the object type -->
-                        <div v-if="loading">Loading user accounts...</div>
-
-                        <div v-else-if="error">
+                        <div v-if="error">
                             {{ error }}
                         </div>
 
@@ -34,13 +33,16 @@
                         </div>
 
                         <SettingsTable
-                            v-else
                             :headers="userAccountsTableHeaders"
                             :items="data?.content ?? []"
+                            :total-items="totalItems"
+                            :options="options"
+                            :items-per-page="options.itemsPerPage"
                             :loading="loading || deleteLoading || statusLoading"
                             :route="USER_ACCOUNTS_ROUTE"
                             item-identifier-key="uuid"
                             translation-key-prefix="userAccount.userAccountPage"
+                            @update:options="loadItems"
                             @delete="removeUserAccountFromItem"
                             @status-change="toggleUserAccountStatusFromItem"
                         />
@@ -65,11 +67,12 @@ import { useDeleteUserAccount } from "@/components/views/seb-server/settings-nav
 import { useUserAccountsTableHeaders } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/composables/useUserAccountsTableHeaders.ts";
 import SettingsTable from "@/components/views/seb-server/settings-navigation/components/SettingsTable/SettingsTable.vue";
 import { useToggleUserAccountStatus } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/api/useToggleUserAccountStatus.ts";
+import { useServerSettingsTable } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useServerSettingsTable.ts";
 
 const userAccountStore = useUserAccountsStore();
 const userAccountsTableHeaders = useUserAccountsTableHeaders();
 
-const { data, loading, error } = useUserAccounts();
+const { data, loading, error, fetchUserAccounts } = useUserAccounts();
 
 const {
     removeUserAccountFromItem,
@@ -82,4 +85,23 @@ const {
     loading: statusLoading,
     error: statusError,
 } = useToggleUserAccountStatus(data);
+
+const { options, totalItems, loadItems, onSearch, onClearSearch } =
+    useServerSettingsTable(
+        userAccountStore,
+        data,
+        async ({
+            options,
+            searchField,
+            selectedStatus,
+            selectedInstitutionId,
+        }) => {
+            await fetchUserAccounts(
+                options,
+                searchField,
+                selectedStatus,
+                selectedInstitutionId,
+            );
+        },
+    );
 </script>

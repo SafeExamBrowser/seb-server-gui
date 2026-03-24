@@ -33,16 +33,22 @@ const props = defineProps<{
     searchText: string;
 }>();
 
+const emit = defineEmits<{
+    search: [];
+    clear: [];
+}>();
+
 const searchValue = computed({
     get: () => props.store.searchField,
     set: (value) => props.store.setSearchField(value),
 });
 
 function onSearch() {
-    console.log("search:", props.store.searchField);
+    emit("search");
 }
 
 function onClearSearch() {
     props.store.resetSearchState();
+    emit("clear");
 }
 </script>

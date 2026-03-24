@@ -2,12 +2,12 @@
     <v-data-table-server
         :headers="headers"
         :items="items"
-        :items-length="items.length"
-        :items-per-page="5"
+        :items-length="totalItems"
+        :items-per-page="itemsPerPage"
         :loading="loading"
         :loading-text="$t('general.loading')"
         :no-data-text="$t('general.noData')"
-        striped="even"
+        @update:options="emit('update:options', $event)"
     >
         <template #item="{ item }">
             <tr @click="onRowClick(getRawItem(item))">
@@ -77,6 +77,7 @@ import DeleteDialog from "@/components/views/seb-server/settings-navigation/comp
 import StatusDialog from "@/components/views/seb-server/settings-navigation/components/StatusDialog.vue";
 import { useSettingsNavigation } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsNavigation.ts";
 import { useInstitutionNameMap } from "@/components/views/seb-server/settings-navigation/composables/useInstitutionNameMap.ts";
+import type { ServerTablePaging } from "@/models/types";
 
 type TableItem = Record<string, unknown>;
 
@@ -85,6 +86,9 @@ const props = withDefaults(
         headers: SettingsTableHeader[];
         items: TableItem[];
         loading: boolean;
+        totalItems?: number;
+        options?: ServerTablePaging;
+        itemsPerPage?: number;
         route?: string;
         itemIdentifierKey?: string;
         editable?: boolean;
@@ -93,6 +97,8 @@ const props = withDefaults(
         translationKeyPrefix: string;
     }>(),
     {
+        totalItems: 0,
+        itemsPerPage: 5,
         route: "",
         itemIdentifierKey: "",
         editable: true,
@@ -106,6 +112,7 @@ const emit = defineEmits<{
     edit: [item: TableItem];
     rowClick: [item: TableItem];
     statusChange: [item: TableItem];
+    "update:options": [options: ServerTablePaging];
 }>();
 
 const deleteDialogOpen = ref(false);
