@@ -4,7 +4,7 @@ import * as authenticationService from "@/services/authenticationService";
 import { useLogout } from "@/composables/useLogout";
 import { setTokenRefreshPromise } from "@/services/apiService";
 
-const REFRESH_SAFETY_MARGIN_MILLISECONDS = 30 * 1000; // 30 seconds in milliseconds
+const REFRESH_SAFETY_MARGIN_MILLISECONDS = 60 * 1000; // 60 seconds in milliseconds
 
 export const useTokenRefresh = () => {
     const authStore = useAuthStore();
