@@ -14,9 +14,10 @@
                 <td v-for="header in headers" :key="header.key">
                     <template v-if="header.key === 'active'">
                         <v-chip
-                            class="text-white font-weight-medium"
+                            class="text-white font-weight-medium status-chip cursor-pointer"
                             :color="getRawItem(item).active ? 'green' : 'red'"
                             size="small"
+                            @click.stop="openStatusDialog(getRawItem(item))"
                         >
                             {{
                                 getRawItem(item).active ? "Active" : "Inactive"
@@ -57,7 +58,15 @@
     <DeleteDialog
         v-model="deleteDialogOpen"
         :target-route="deleteTargetRoute"
+        :translation-key-prefix="translationKeyPrefix"
         @confirm="confirmDelete"
+    />
+
+    <StatusDialog
+        v-model="statusDialogOpen"
+        :active="selectedItemActive"
+        :translation-key-prefix="translationKeyPrefix"
+        @confirm="confirmStatusChange"
     />
 </template>
 
@@ -65,6 +74,7 @@
 import { computed, ref } from "vue";
 import type { SettingsTableHeader } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/settingsTableTypes";
 import DeleteDialog from "@/components/views/seb-server/settings-navigation/components/DeleteDialog.vue";
+import StatusDialog from "@/components/views/seb-server/settings-navigation/components/StatusDialog.vue";
 import { useSettingsNavigation } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsNavigation.ts";
 import { useInstitutionNameMap } from "@/components/views/seb-server/settings-navigation/composables/useInstitutionNameMap.ts";
 
@@ -79,10 +89,15 @@ const props = withDefaults(
         itemIdentifierKey?: string;
         editable?: boolean;
         deletable?: boolean;
+        statusChangeable?: boolean;
+        translationKeyPrefix: string;
     }>(),
     {
+        route: "",
+        itemIdentifierKey: "",
         editable: true,
         deletable: true,
+        statusChangeable: true,
     },
 );
 
@@ -90,9 +105,11 @@ const emit = defineEmits<{
     delete: [item: TableItem];
     edit: [item: TableItem];
     rowClick: [item: TableItem];
+    statusChange: [item: TableItem];
 }>();
 
 const deleteDialogOpen = ref(false);
+const statusDialogOpen = ref(false);
 const selectedItem = ref<TableItem | null>(null);
 
 const { buildItemRoute, navigateToItem } = useSettingsNavigation(
@@ -103,6 +120,11 @@ const { buildItemRoute, navigateToItem } = useSettingsNavigation(
 const deleteTargetRoute = computed(() => {
     if (!selectedItem.value) return "";
     return buildItemRoute(selectedItem.value);
+});
+
+const selectedItemActive = computed(() => {
+    if (!selectedItem.value) return false;
+    return Boolean(selectedItem.value.active);
 });
 
 function getRawItem(item: unknown): TableItem {
@@ -119,7 +141,6 @@ function getRawItem(item: unknown): TableItem {
     return item as TableItem;
 }
 
-//edit functionalities
 function onEdit(item: TableItem) {
     emit("edit", item);
 
@@ -134,7 +155,6 @@ function onRowClick(item: TableItem) {
     navigateToItem(item);
 }
 
-//delete dialog
 function openDeleteDialog(item: TableItem) {
     selectedItem.value = item;
     deleteDialogOpen.value = true;
@@ -147,7 +167,20 @@ function confirmDelete() {
     deleteDialogOpen.value = false;
 }
 
-// if institution column then translate
+function openStatusDialog(item: TableItem) {
+    if (!props.statusChangeable) return;
+
+    selectedItem.value = item;
+    statusDialogOpen.value = true;
+}
+
+function confirmStatusChange() {
+    if (!selectedItem.value) return;
+
+    emit("statusChange", selectedItem.value);
+    statusDialogOpen.value = false;
+}
+
 const hasInstitutionColumn = computed(() =>
     props.headers.some((header) => header.key === "institutionId"),
 );
@@ -234,6 +267,24 @@ const { getInstitutionName } = useInstitutionNameMap(hasInstitutionColumn);
     justify-content: center;
     align-items: center;
     gap: 0.2rem;
+}
+
+.status-chip {
+    min-width: 4.7rem;
+    max-width: 6.5rem;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    transition:
+        transform 0.2s ease,
+        filter 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.status-chip:hover {
+    transform: translateY(-1px) scale(1.03);
+    filter: brightness(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
 }
 
 .action-icon {

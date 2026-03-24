@@ -2,11 +2,11 @@
     <v-dialog v-model="model" max-width="500">
         <v-card>
             <v-card-title class="text-h6 font-weight-bold">
-                Delete item
+                {{ $t(`${translationKeyPrefix}.deleteDialog.title`) }}
             </v-card-title>
 
             <v-card-text>
-                Are you sure you want to delete this item?
+                {{ $t(`${translationKeyPrefix}.deleteDialog.text`) }}
 
                 <div class="mt-4 text-primary font-weight-medium">
                     {{ targetRoute }}
@@ -19,7 +19,7 @@
                 </v-btn>
 
                 <v-btn color="red" variant="text" @click="emit('confirm')">
-                    {{ $t("general.deleteButton") }}
+                    {{ $t(`${translationKeyPrefix}.deleteDialog.action`) }}
                 </v-btn>
             </v-card-actions>
         </v-card>
@@ -31,6 +31,7 @@ const model = defineModel<boolean>({ required: true });
 
 defineProps<{
     targetRoute: string;
+    translationKeyPrefix: string;
 }>();
 
 const emit = defineEmits<{

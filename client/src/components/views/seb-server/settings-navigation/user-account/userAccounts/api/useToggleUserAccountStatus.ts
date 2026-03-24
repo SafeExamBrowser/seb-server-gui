@@ -1,10 +1,10 @@
 import type { Ref } from "vue";
 import { ref } from "vue";
+import type { UserAccountResponse } from "@/models/userAccount";
 import {
     activateUserAccount,
     deactivateUserAccount,
 } from "@/services/seb-server/userAccountService";
-import type { UserAccount, UserAccountResponse } from "@/models/userAccount";
 
 export const useToggleUserAccountStatus = (
     userAccounts: Ref<UserAccountResponse | undefined>,
@@ -12,15 +12,15 @@ export const useToggleUserAccountStatus = (
     const loading = ref(false);
     const error = ref<string>();
 
-    const toggleUserAccountStatus = async (
+    const changeUserAccountStatus = async (
         uuid: string,
-        currentlyActive: boolean,
+        active: boolean,
     ): Promise<boolean> => {
         loading.value = true;
         error.value = undefined;
 
         try {
-            const response = currentlyActive
+            const response = active
                 ? await deactivateUserAccount(uuid)
                 : await activateUserAccount(uuid);
 
@@ -30,9 +30,12 @@ export const useToggleUserAccountStatus = (
 
             if (userAccounts.value?.content) {
                 userAccounts.value.content = userAccounts.value.content.map(
-                    (user: UserAccount) =>
+                    (user) =>
                         user.uuid === uuid
-                            ? { ...user, active: !currentlyActive }
+                            ? {
+                                  ...user,
+                                  active: !active,
+                              }
                             : user,
                 );
             }
@@ -46,7 +49,7 @@ export const useToggleUserAccountStatus = (
         }
     };
 
-    const toggleUserAccountStatusFromItem = async (
+    const changeUserAccountStatusFromItem = async (
         item: Record<string, unknown>,
     ): Promise<boolean> => {
         const uuid = item.uuid;
@@ -62,12 +65,12 @@ export const useToggleUserAccountStatus = (
             return false;
         }
 
-        return toggleUserAccountStatus(uuid, active);
+        return changeUserAccountStatus(uuid, active);
     };
 
     return {
-        toggleUserAccountStatus,
-        toggleUserAccountStatusFromItem,
+        changeUserAccountStatus,
+        toggleUserAccountStatusFromItem: changeUserAccountStatusFromItem,
         loading,
         error,
     };

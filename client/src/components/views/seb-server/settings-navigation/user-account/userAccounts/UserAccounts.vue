@@ -29,14 +29,20 @@
                             {{ deleteError }}
                         </div>
 
+                        <div v-else-if="statusError">
+                            {{ statusError }}
+                        </div>
+
                         <SettingsTable
                             v-else
                             :headers="userAccountsTableHeaders"
                             :items="data?.content ?? []"
-                            :loading="loading || deleteLoading"
+                            :loading="loading || deleteLoading || statusLoading"
                             :route="USER_ACCOUNTS_ROUTE"
                             item-identifier-key="uuid"
+                            translation-key-prefix="userAccount.userAccountPage"
                             @delete="removeUserAccountFromItem"
+                            @status-change="toggleUserAccountStatusFromItem"
                         />
                     </v-col>
                 </v-row>
@@ -58,6 +64,7 @@ import { useUserAccounts } from "@/components/views/seb-server/settings-navigati
 import { useDeleteUserAccount } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/api/useDeleteUserAccount.ts";
 import { useUserAccountsTableHeaders } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/composables/useUserAccountsTableHeaders.ts";
 import SettingsTable from "@/components/views/seb-server/settings-navigation/components/SettingsTable/SettingsTable.vue";
+import { useToggleUserAccountStatus } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/api/useToggleUserAccountStatus.ts";
 
 const userAccountStore = useUserAccountsStore();
 const userAccountsTableHeaders = useUserAccountsTableHeaders();
@@ -69,4 +76,10 @@ const {
     loading: deleteLoading,
     error: deleteError,
 } = useDeleteUserAccount(data);
+
+const {
+    toggleUserAccountStatusFromItem,
+    loading: statusLoading,
+    error: statusError,
+} = useToggleUserAccountStatus(data);
 </script>
