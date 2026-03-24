@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { usePersistedRef } from "@/composables/usePersistedRef";
+import { AuthData } from "@/services/types";
 
 type StorageItemName =
     | "sebAccessToken"
@@ -42,12 +43,28 @@ export const useAuthStore = defineStore("auth", () => {
         refreshBefore.value = undefined;
     };
 
+    // actions
+    const updateAuthData = (authData: AuthData) => {
+        sebAccessToken.value = authData.sebServer.access_token;
+        sebRefreshToken.value = authData.sebServer.refresh_token;
+        spAccessToken.value = authData.proctorServer.access_token;
+        spRefreshToken.value = authData.proctorServer.refresh_token;
+        refreshBefore.value = new Date(
+            Date.now() +
+                Math.min(
+                    authData.sebServer.expires_in,
+                    authData.proctorServer.expires_in,
+                ),
+        ).toISOString();
+    };
+
     return {
         sebAccessToken,
         sebRefreshToken,
         spAccessToken,
         spRefreshToken,
         refreshBefore,
+        updateAuthData,
         $reset,
     };
 });

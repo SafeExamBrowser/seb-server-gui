@@ -21,17 +21,7 @@ export const useLogin = () => {
                 password: password,
             });
 
-            authStore.sebAccessToken = authResponse.sebServer.access_token;
-            authStore.sebRefreshToken = authResponse.sebServer.refresh_token;
-            authStore.spAccessToken = authResponse.proctorServer.access_token;
-            authStore.spRefreshToken = authResponse.proctorServer.refresh_token;
-            authStore.refreshBefore = new Date(
-                Date.now() +
-                    Math.min(
-                        authResponse.sebServer.expires_in * 1000, // the server returns seconds, but we want milliseconds
-                        authResponse.proctorServer.expires_in * 1000, // the server returns seconds, but we want milliseconds
-                    ),
-            ).toISOString();
+            authStore.updateAuthData(authResponse);
 
             navigateTo(constants.HOME_PAGE_ROUTE);
         } catch (err) {
