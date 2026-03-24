@@ -1,10 +1,13 @@
 import * as apiService from "@/services/apiService";
 import { type AuthData, authDataSchema } from "@/services/types";
 
-export const authorize = async (
-    userName: string,
-    password: string,
-): Promise<AuthData> => {
+export const authorize = async ({
+    userName,
+    password,
+}: {
+    userName: string;
+    password: string;
+}): Promise<AuthData> => {
     const body = new URLSearchParams({
         grant_type: "password",
         username: userName,

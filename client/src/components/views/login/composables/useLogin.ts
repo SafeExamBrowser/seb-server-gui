@@ -16,10 +16,10 @@ export const useLogin = () => {
         loading.value = true;
 
         try {
-            const authResponse = await authenticationService.authorize(
-                username,
-                password,
-            );
+            const authResponse = await authenticationService.authorize({
+                userName: username,
+                password: password,
+            });
 
             authStore.sebAccessToken = authResponse.sebServer.access_token;
             authStore.sebRefreshToken = authResponse.sebServer.refresh_token;
