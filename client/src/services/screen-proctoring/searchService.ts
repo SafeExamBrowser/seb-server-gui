@@ -9,7 +9,7 @@ import {
 } from "@/models/screen-proctoring/optionalParamters";
 import { AxiosResponse } from "axios";
 
-const baseUrl = "/proctoring/search" as const;
+const baseUrl = "/sps/proctoring/search" as const;
 
 export const searchSessionsDay = async (
     optionalParameters?: OptionalParSearchSessions,
@@ -18,9 +18,9 @@ export const searchSessionsDay = async (
         await apiService.getRequest({
             url: `${baseUrl}/sessions/day`,
             options: {
+                _authType: "sps",
                 params: optionalParameters,
             },
-            authType: "sps",
         })
     ).data;
 
@@ -31,9 +31,9 @@ export const searchSessions = async (
         await apiService.getRequest({
             url: `${baseUrl}/sessions`,
             options: {
+                _authType: "sps",
                 params: optionalParameters,
             },
-            authType: "sps",
         })
     ).data;
 
@@ -45,9 +45,9 @@ export const searchTimeline = async (
         await apiService.getRequest({
             url: `${baseUrl}/timeline/${sessionId}`,
             options: {
+                _authType: "sps",
                 params: optionalParameters,
             },
-            authType: "sps",
         })
     ).data;
 
@@ -74,7 +74,7 @@ export const deleteSessions = async (
     return (
         await apiService.deleteRequest({
             url: `${baseUrl}/session${createSessionDeleteUrlSuffix(sessionUuids)}`,
-            authType: "sps",
+            options: { _authType: "sps" },
         })
     ).data;
 };

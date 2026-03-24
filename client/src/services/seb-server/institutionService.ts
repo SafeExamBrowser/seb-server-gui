@@ -8,11 +8,11 @@ export const getInstitutions = async (): Promise<Institution[]> =>
         await apiService.getRequest({
             url: `${baseUrl}/institution`,
             options: {
+                _authType: "none",
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",
                 },
             },
-            authType: "none",
         })
     ).data;
 

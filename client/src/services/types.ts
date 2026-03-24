@@ -13,7 +13,6 @@ export type RequestWithDataParams<T> = {
     url: string;
     data?: T;
     options?: AxiosRequestConfig;
-    authType?: AuthType;
 };
 
 const tokenResponseSchema = z.object({

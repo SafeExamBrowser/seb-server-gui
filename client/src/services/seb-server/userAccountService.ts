@@ -22,11 +22,11 @@ export const registerUserAccount = async (
             url: `/register`,
             data: payload,
             options: {
+                _authType: "none",
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",
                 },
             },
-            authType: "none",
         })
     ).data;
 

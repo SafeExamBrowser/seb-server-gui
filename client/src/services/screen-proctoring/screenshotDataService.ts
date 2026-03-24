@@ -2,7 +2,7 @@ import * as apiService from "@/services/apiService";
 import { SortOrder } from "@/models/screen-proctoring/sortOrderEnum";
 import { ScreenshotData } from "@/models/screen-proctoring/session";
 
-const baseUrl = "/proctoring/screenshot-data" as const;
+const baseUrl = "/sps/proctoring/screenshot-data" as const;
 
 export const getScreenshotDataBySessionId = async (
     sessionId: string,
@@ -10,7 +10,7 @@ export const getScreenshotDataBySessionId = async (
     (
         await apiService.getRequest({
             url: `${baseUrl}/${sessionId}`,
-            authType: "sps",
+            options: { _authType: "sps" },
         })
     ).data;
 
@@ -21,7 +21,7 @@ export const getScreenshotDataByTimestamp = async (
     (
         await apiService.getRequest({
             url: `${baseUrl}/${sessionId}/${timestamp}`,
-            authType: "sps",
+            options: { _authType: "sps" },
         })
     ).data;
 
@@ -32,7 +32,7 @@ export const getScreenshotTimestamps = async (
 ) =>
     (
         await apiService.getRequest({
-            url: `/proctoring/screenshot-timestamps/${sessionId}/${timestamp}/${direction}`,
-            authType: "sps",
+            url: `/sps/proctoring/screenshot-timestamps/${sessionId}/${timestamp}/${direction}`,
+            options: { _authType: "sps" },
         })
     ).data;
