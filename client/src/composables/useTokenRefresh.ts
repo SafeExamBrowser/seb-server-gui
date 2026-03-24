@@ -22,12 +22,16 @@ export const useTokenRefresh = () => {
             return;
         }
 
-        const refreshResponse = await authenticationService.refresh({
-            sebRefreshToken,
-            spsRefreshToken,
-        });
+        try {
+            const refreshResponse = await authenticationService.refresh({
+                sebRefreshToken,
+                spsRefreshToken,
+            });
 
-        authStore.updateAuthData(refreshResponse);
+            authStore.updateAuthData(refreshResponse);
+        } catch {
+            useLogout().logout(true);
+        }
     };
 
     const replaceRefreshTimer = (millisecondsUntilRefresh?: number) => {
