@@ -11,12 +11,19 @@ type UseSettingsFiltersParams = {
     customFilters?:
         | Ref<SettingsFilterDefinition[]>
         | ComputedRef<SettingsFilterDefinition[]>;
+    institutionOptions?:
+        | Ref<SettingsFilterOption[]>
+        | ComputedRef<SettingsFilterOption[]>;
     translationPrefix: string;
 };
 
 export function useSettingsFilters(params: UseSettingsFiltersParams) {
     const hasStatusFilter = computed(() =>
         params.headers.value.some((header) => header.key === "active"),
+    );
+
+    const hasInstitutionFilter = computed(() =>
+        params.headers.value.some((header) => header.key === "institutionId"),
     );
 
     const statusOptions = computed<SettingsFilterOption[]>(() => [
@@ -44,6 +51,19 @@ export function useSettingsFilters(params: UseSettingsFiltersParams) {
                     `${params.translationPrefix}.filters.statusFilter`,
                 ),
                 options: statusOptions.value,
+            });
+        }
+
+        if (
+            hasInstitutionFilter.value &&
+            params.institutionOptions?.value?.length
+        ) {
+            result.push({
+                key: "institutionId",
+                title: translate(
+                    `${params.translationPrefix}.filters.institutionFilter`,
+                ),
+                options: params.institutionOptions.value,
             });
         }
 

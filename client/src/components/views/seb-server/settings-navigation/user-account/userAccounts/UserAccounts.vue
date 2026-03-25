@@ -41,17 +41,27 @@
                             {{ statusError }}
                         </div>
 
+                        <div v-else-if="standardConfigError">
+                            {{ standardConfigError }}
+                        </div>
+
                         <SettingsTable
                             :headers="userAccountsTableHeaders"
                             :items="data?.content ?? []"
                             :total-items="totalItems"
                             :page-count="pageCount"
-                            :options="options"
                             :items-per-page="options.itemsPerPage"
-                            :loading="loading || deleteLoading || statusLoading"
+                            :options="options"
+                            :loading="
+                                loading ||
+                                deleteLoading ||
+                                statusLoading ||
+                                standardConfigLoading
+                            "
                             :route="USER_ACCOUNTS_ROUTE"
                             item-identifier-key="uuid"
                             translation-key-prefix="userAccount.userAccountPage"
+                            :cell-formatters="cellFormatters"
                             @update:options="loadItems"
                             @delete="removeUserAccountFromItem"
                             @status-change="toggleUserAccountStatusFromItem"
@@ -80,9 +90,8 @@ import { useUserAccounts } from "@/components/views/seb-server/settings-navigati
 import { useDeleteUserAccount } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/api/useDeleteUserAccount.ts";
 import { useToggleUserAccountStatus } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/api/useToggleUserAccountStatus.ts";
 import { useUserAccountsTableHeaders } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/composables/useUserAccountsTableHeaders.ts";
-
 import { useServerSettingsTable } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useServerSettingsTable.ts";
-import { useSettingsFilters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsFilters.ts";
+import { useSettingsTableFilterConfig } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableFilterConfig.ts";
 
 const userAccountStore = useUserAccountsStore();
 const userAccountsTableHeaders = useUserAccountsTableHeaders();
@@ -127,7 +136,12 @@ const {
     },
 );
 
-const { filters } = useSettingsFilters({
+const {
+    filters,
+    cellFormatters,
+    loading: standardConfigLoading,
+    error: standardConfigError,
+} = useSettingsTableFilterConfig({
     headers: userAccountsTableHeaders,
     translationPrefix: "userAccount.userAccountPage",
 });

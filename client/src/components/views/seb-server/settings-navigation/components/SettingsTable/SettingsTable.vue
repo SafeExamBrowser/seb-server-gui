@@ -45,12 +45,15 @@
                         </div>
                     </template>
 
-                    <template v-else-if="header.key === 'institutionId'">
-                        {{ getInstitutionName(getRawItem(item)[header.key]) }}
-                    </template>
-
                     <template v-else>
-                        {{ getRawItem(item)[header.key] }}
+                        {{
+                            cellFormatters?.[header.key]
+                                ? cellFormatters[header.key](
+                                      getRawItem(item)[header.key],
+                                      getRawItem(item),
+                                  )
+                                : getRawItem(item)[header.key]
+                        }}
                     </template>
                 </td>
             </tr>
@@ -107,16 +110,17 @@
         @confirm="confirmStatusChange"
     />
 </template>
+
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import type { SettingsTableHeader } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/settingsTableTypes";
 import DeleteDialog from "@/components/views/seb-server/settings-navigation/components/DeleteDialog.vue";
 import StatusDialog from "@/components/views/seb-server/settings-navigation/components/StatusDialog.vue";
 import { useSettingsNavigation } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsNavigation.ts";
-import { useInstitutionNameMap } from "@/components/views/seb-server/settings-navigation/composables/useInstitutionNameMap.ts";
 import type { ServerTablePaging } from "@/models/types";
 
 type TableItem = Record<string, unknown>;
+type CellFormatter = (value: unknown, item: TableItem) => string;
 
 const props = withDefaults(
     defineProps<{
@@ -133,9 +137,9 @@ const props = withDefaults(
         deletable?: boolean;
         statusChangeable?: boolean;
         translationKeyPrefix: string;
+        cellFormatters?: Record<string, CellFormatter>;
     }>(),
     {
-        totalItems: 0,
         pageCount: 0,
         itemsPerPage: 10,
         route: "",
@@ -143,6 +147,7 @@ const props = withDefaults(
         editable: true,
         deletable: true,
         statusChangeable: true,
+        cellFormatters: () => ({}),
     },
 );
 
@@ -227,12 +232,6 @@ function confirmStatusChange() {
     statusDialogOpen.value = false;
 }
 
-const hasInstitutionColumn = computed(() =>
-    props.headers.some((header) => header.key === "institutionId"),
-);
-
-const { getInstitutionName } = useInstitutionNameMap(hasInstitutionColumn);
-
 const itemsPerPageOptions = computed(() => {
     const options = [5];
 
@@ -284,6 +283,7 @@ const internalItemsLength = computed(() => {
     return props.pageCount * perPage;
 });
 </script>
+
 <style scoped>
 :deep(.v-table__wrapper) {
     min-height: 24vh;
@@ -379,6 +379,7 @@ const internalItemsLength = computed(() => {
     color: #215caf;
     background-color: rgba(33, 92, 175, 0.1);
 }
+
 /* Footer überschrieben */
 .table-footer {
     display: grid;
