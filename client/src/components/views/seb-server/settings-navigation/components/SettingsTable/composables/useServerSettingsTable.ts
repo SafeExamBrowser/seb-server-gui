@@ -1,4 +1,4 @@
-import { computed, onMounted, ref } from "vue";
+import { computed, ref } from "vue";
 import type { ServerTablePaging } from "@/models/types";
 import type { BaseSettingsStoreView } from "@/components/views/seb-server/settings-navigation/store/storeContract";
 
@@ -8,11 +8,12 @@ type PagedResponse = {
     content?: unknown[];
 };
 
+type TableFilters = Record<string, string | null>;
+
 type LoadItemsFn = (params: {
     options: ServerTablePaging;
     searchField: string | null;
-    selectedStatus: string | null;
-    selectedInstitutionId: string | null;
+    filters: TableFilters;
 }) => Promise<void>;
 
 export function useServerSettingsTable<TResponse extends PagedResponse>(
@@ -20,9 +21,9 @@ export function useServerSettingsTable<TResponse extends PagedResponse>(
     data: { value: TResponse | undefined },
     loadFn: LoadItemsFn,
     initialOptions?: ServerTablePaging,
+    initialFilters?: TableFilters,
 ) {
-    const selectedStatus = ref<string | null>(null);
-    const selectedInstitutionId = ref<string | null>(null);
+    const selectedFilters = ref<TableFilters>(initialFilters ?? {});
 
     const options = ref<ServerTablePaging>(
         initialOptions ?? {
@@ -41,6 +42,29 @@ export function useServerSettingsTable<TResponse extends PagedResponse>(
                 newOptions?.itemsPerPage ?? options.value.itemsPerPage ?? 10,
             sortBy: newOptions?.sortBy ?? options.value.sortBy ?? [],
         };
+    }
+
+    function setFilter(key: string, value: string | null) {
+        selectedFilters.value = {
+            ...selectedFilters.value,
+            [key]: value,
+        };
+    }
+
+    function setFilters(filters: TableFilters) {
+        selectedFilters.value = {
+            ...filters,
+        };
+    }
+
+    function resetFilters() {
+        const reset: TableFilters = {};
+
+        Object.keys(selectedFilters.value).forEach((key) => {
+            reset[key] = null;
+        });
+
+        selectedFilters.value = reset;
     }
 
     const totalItems = computed(() => {
@@ -64,8 +88,7 @@ export function useServerSettingsTable<TResponse extends PagedResponse>(
         await loadFn({
             options: options.value,
             searchField: store.searchField,
-            selectedStatus: selectedStatus.value,
-            selectedInstitutionId: selectedInstitutionId.value,
+            filters: selectedFilters.value,
         });
     }
 
@@ -78,8 +101,7 @@ export function useServerSettingsTable<TResponse extends PagedResponse>(
     }
 
     async function onClearSearch() {
-        selectedStatus.value = null;
-        selectedInstitutionId.value = null;
+        resetFilters();
 
         options.value = getSafeOptions({
             page: 1,
@@ -88,19 +110,16 @@ export function useServerSettingsTable<TResponse extends PagedResponse>(
         await loadItems();
     }
 
-    onMounted(async () => {
-        options.value = getSafeOptions();
-        await loadItems();
-    });
-
     return {
-        selectedStatus,
-        selectedInstitutionId,
+        selectedFilters,
         options,
         totalItems,
         loadItems,
         onSearch,
         onClearSearch,
         getSafeOptions,
+        setFilter,
+        setFilters,
+        resetFilters,
     };
 }

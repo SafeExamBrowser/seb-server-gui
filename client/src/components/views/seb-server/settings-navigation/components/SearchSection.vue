@@ -1,7 +1,7 @@
 <template>
     <v-col>
         <v-row>
-            <v-col cols="5">
+            <v-col cols="11">
                 <v-row class="pl-6">
                     <SearchSectionTitle />
                 </v-row>

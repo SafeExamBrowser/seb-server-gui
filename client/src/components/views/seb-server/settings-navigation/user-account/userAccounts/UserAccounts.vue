@@ -9,13 +9,22 @@
 
         <template #PanelMain>
             <v-col>
-                <v-row>
-                    <SearchSection
-                        :store="userAccountStore"
-                        search-text="userAccount.userAccountPage.filters.searchField"
-                        @search="onSearch"
-                        @clear="onClearSearch"
-                    />
+                <v-row class="align-start">
+                    <v-col cols="12" md="5">
+                        <SearchSection
+                            :store="userAccountStore"
+                            search-text="userAccount.userAccountPage.filters.searchField"
+                            @search="onSearch"
+                            @clear="onClearSearch"
+                        />
+                    </v-col>
+
+                    <v-col cols="12" md="7">
+                        <SettingsFilters
+                            v-model="selectedFilters"
+                            :filters="filters"
+                        />
+                    </v-col>
                 </v-row>
 
                 <v-row>
@@ -55,6 +64,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed, watch } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import AddButton from "@/components/views/seb-server/settings-navigation/widgets/AddButton.vue";
 import {
@@ -62,20 +72,24 @@ import {
     USER_ACCOUNTS_ROUTE,
 } from "@/utils/constants.ts";
 import SearchSection from "@/components/views/seb-server/settings-navigation/components/SearchSection.vue";
+import SettingsFilters from "@/components/views/seb-server/settings-navigation/components/SettingsFilters.vue";
+import SettingsTable from "@/components/views/seb-server/settings-navigation/components/SettingsTable/SettingsTable.vue";
+
 import { useUserAccountsStore } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/store/userAccountsStore.ts";
 import { useUserAccounts } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/api/useUserAccounts.ts";
 import { useDeleteUserAccount } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/api/useDeleteUserAccount.ts";
-import { useUserAccountsTableHeaders } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/composables/useUserAccountsTableHeaders.ts";
-import SettingsTable from "@/components/views/seb-server/settings-navigation/components/SettingsTable/SettingsTable.vue";
 import { useToggleUserAccountStatus } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/api/useToggleUserAccountStatus.ts";
+import { useUserAccountsTableHeaders } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/composables/useUserAccountsTableHeaders.ts";
+
 import { useServerSettingsTable } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useServerSettingsTable.ts";
-import { computed } from "vue";
+import { useSettingsFilters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsFilters.ts";
 
 const userAccountStore = useUserAccountsStore();
 const userAccountsTableHeaders = useUserAccountsTableHeaders();
 
 const { data, loading, error, fetchUserAccounts } = useUserAccounts();
 const pageCount = computed(() => data.value?.number_of_pages ?? 0);
+
 const {
     removeUserAccountFromItem,
     loading: deleteLoading,
@@ -88,22 +102,46 @@ const {
     error: statusError,
 } = useToggleUserAccountStatus(data);
 
-const { options, totalItems, loadItems, onSearch, onClearSearch } =
-    useServerSettingsTable(
-        userAccountStore,
-        data,
-        async ({
+const {
+    selectedFilters,
+    options,
+    totalItems,
+    loadItems,
+    onSearch,
+    onClearSearch,
+} = useServerSettingsTable(
+    userAccountStore,
+    data,
+    async ({ options, searchField, filters }) => {
+        await fetchUserAccounts(
             options,
             searchField,
-            selectedStatus,
-            selectedInstitutionId,
-        }) => {
-            await fetchUserAccounts(
-                options,
-                searchField,
-                selectedStatus,
-                selectedInstitutionId,
-            );
-        },
-    );
+            filters.status,
+            filters.institutionId,
+        );
+    },
+    undefined,
+    {
+        status: null,
+        institutionId: null,
+    },
+);
+
+const { filters } = useSettingsFilters({
+    headers: userAccountsTableHeaders,
+    translationPrefix: "userAccount.userAccountPage",
+});
+
+watch(
+    selectedFilters,
+    async () => {
+        options.value = {
+            ...options.value,
+            page: 1,
+        };
+
+        await loadItems();
+    },
+    { deep: true },
+);
 </script>

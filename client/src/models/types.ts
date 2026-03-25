@@ -4,6 +4,18 @@ export type ServerTablePaging = {
     sortBy: { key: string; order: string }[];
 };
 
+export type SettingsFilterOption = {
+    label: string;
+    value: string;
+};
+
+export type SettingsFilterDefinition = {
+    key: string;
+    title: string;
+    options: SettingsFilterOption[];
+    visible?: boolean;
+};
+
 export type GridSize = {
     title: string;
     value: number;
