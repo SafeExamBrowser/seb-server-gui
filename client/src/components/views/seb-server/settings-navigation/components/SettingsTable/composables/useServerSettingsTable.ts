@@ -32,6 +32,17 @@ export function useServerSettingsTable<TResponse extends PagedResponse>(
         },
     );
 
+    function getSafeOptions(
+        newOptions?: Partial<ServerTablePaging>,
+    ): ServerTablePaging {
+        return {
+            page: newOptions?.page ?? options.value.page ?? 1,
+            itemsPerPage:
+                newOptions?.itemsPerPage ?? options.value.itemsPerPage ?? 10,
+            sortBy: newOptions?.sortBy ?? options.value.sortBy ?? [],
+        };
+    }
+
     const totalItems = computed(() => {
         if (!data.value) return 0;
 
@@ -43,7 +54,9 @@ export function useServerSettingsTable<TResponse extends PagedResponse>(
 
     async function loadItems(newOptions?: ServerTablePaging) {
         if (newOptions) {
-            options.value = newOptions;
+            options.value = getSafeOptions(newOptions);
+        } else {
+            options.value = getSafeOptions();
         }
 
         store.currentPagingOptions = options.value;
@@ -57,10 +70,9 @@ export function useServerSettingsTable<TResponse extends PagedResponse>(
     }
 
     async function onSearch() {
-        options.value = {
-            ...options.value,
+        options.value = getSafeOptions({
             page: 1,
-        };
+        });
 
         await loadItems();
     }
@@ -69,15 +81,15 @@ export function useServerSettingsTable<TResponse extends PagedResponse>(
         selectedStatus.value = null;
         selectedInstitutionId.value = null;
 
-        options.value = {
-            ...options.value,
+        options.value = getSafeOptions({
             page: 1,
-        };
+        });
 
         await loadItems();
     }
 
     onMounted(async () => {
+        options.value = getSafeOptions();
         await loadItems();
     });
 
@@ -89,5 +101,6 @@ export function useServerSettingsTable<TResponse extends PagedResponse>(
         loadItems,
         onSearch,
         onClearSearch,
+        getSafeOptions,
     };
 }

@@ -2,12 +2,13 @@
     <v-data-table-server
         :headers="headers"
         :items="items"
-        :items-length="totalItems"
+        :items-length="internalItemsLength"
         :items-per-page="itemsPerPage"
         :items-per-page-options="itemsPerPageOptions"
         :loading="loading"
         :loading-text="$t('general.loading')"
         :no-data-text="$t('general.noData')"
+        hide-default-footer
         @update:options="emit('update:options', $event)"
     >
         <template #item="{ item }">
@@ -54,6 +55,42 @@
                 </td>
             </tr>
         </template>
+
+        <template #bottom>
+            <div class="table-footer">
+                <div class="table-footer__left-spacer" />
+
+                <div class="table-footer__pagination-center">
+                    <v-pagination
+                        v-model="currentPage"
+                        :length="pageCount"
+                        :total-visible="5"
+                        density="comfortable"
+                        rounded="circle"
+                        prev-icon="mdi-chevron-left"
+                        next-icon="mdi-chevron-right"
+                        class="table-footer__pagination"
+                    />
+                </div>
+
+                <div class="table-footer__right-controls">
+                    <div class="table-footer__page-size">
+                        <span class="table-footer__page-size-label">
+                            Items per page
+                        </span>
+
+                        <v-select
+                            v-model="localItemsPerPage"
+                            :items="itemsPerPageOptions"
+                            variant="outlined"
+                            density="compact"
+                            hide-details
+                            class="table-footer__page-size-select"
+                        />
+                    </div>
+                </div>
+            </div>
+        </template>
     </v-data-table-server>
 
     <DeleteDialog
@@ -70,7 +107,6 @@
         @confirm="confirmStatusChange"
     />
 </template>
-
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import type { SettingsTableHeader } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/settingsTableTypes";
@@ -200,18 +236,54 @@ const { getInstitutionName } = useInstitutionNameMap(hasInstitutionColumn);
 const itemsPerPageOptions = computed(() => {
     const options = [5];
 
-    if (props.totalItems > 5) {
+    if (props.pageCount > 1 || props.items.length > 5) {
         options.push(10);
     }
 
-    if (props.totalItems > 10) {
+    if (props.pageCount > 2 || props.items.length > 10) {
         options.push(15);
     }
 
     return options;
 });
-</script>
 
+const currentPage = computed({
+    get: () => props.options?.page ?? 1,
+    set: (page: number) => {
+        emit("update:options", {
+            page,
+            itemsPerPage: props.options?.itemsPerPage ?? props.itemsPerPage,
+            sortBy: props.options?.sortBy ?? [],
+        });
+    },
+});
+
+const localItemsPerPage = computed({
+    get: () => props.options?.itemsPerPage ?? props.itemsPerPage,
+    set: (itemsPerPage: number) => {
+        emit("update:options", {
+            page: 1,
+            itemsPerPage,
+            sortBy: props.options?.sortBy ?? [],
+        });
+    },
+});
+
+const internalItemsLength = computed(() => {
+    const page = props.options?.page ?? 1;
+    const perPage = props.options?.itemsPerPage ?? props.itemsPerPage;
+
+    if (props.pageCount === 0) {
+        return props.items.length;
+    }
+
+    if (page === props.pageCount) {
+        return (props.pageCount - 1) * perPage + props.items.length;
+    }
+
+    return props.pageCount * perPage;
+});
+</script>
 <style scoped>
 :deep(.v-table__wrapper) {
     min-height: 24vh;
@@ -306,5 +378,102 @@ const itemsPerPageOptions = computed(() => {
 .action-icon:hover {
     color: #215caf;
     background-color: rgba(33, 92, 175, 0.1);
+}
+/* Footer überschrieben */
+.table-footer {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    width: 100%;
+    padding: 1rem 1.25rem 0.75rem 1.25rem;
+    border-top: 1px solid rgba(220, 220, 220, 0.6);
+    background: white;
+    column-gap: 1rem;
+}
+
+.table-footer__left-spacer {
+    min-width: 0;
+}
+
+.table-footer__pagination-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.table-footer__right-controls {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    min-width: 0;
+}
+
+.table-footer__page-size {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+}
+
+.table-footer__page-size-label {
+    color: #5d7285;
+    font-size: 0.9rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.table-footer__page-size-select {
+    width: 90px;
+}
+
+:deep(.table-footer__page-size-select .v-field) {
+    border-radius: 10px;
+    box-shadow: none;
+}
+
+:deep(.table-footer__page-size-select .v-field__input) {
+    min-height: 38px;
+    color: #215caf;
+    font-weight: 600;
+}
+
+/* Page options */
+:deep(.table-footer__pagination .v-btn) {
+    min-width: 34px;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    color: #5d7285;
+    font-weight: 600;
+    box-shadow: none;
+}
+
+:deep(.table-footer__pagination .v-btn:hover) {
+    background-color: rgba(33, 92, 175, 0.08);
+    color: #215caf;
+}
+
+:deep(.table-footer__pagination .v-btn--active) {
+    background-color: rgba(33, 92, 175, 0.06) !important;
+    color: #215caf !important;
+    box-shadow: none !important;
+}
+
+:deep(.table-footer__pagination .v-btn--active .v-btn__content) {
+    color: #215caf !important;
+}
+
+@media (max-width: 960px) {
+    .table-footer {
+        grid-template-columns: 1fr;
+        row-gap: 0.75rem;
+    }
+
+    .table-footer__pagination-center {
+        justify-content: center;
+    }
+
+    .table-footer__right-controls {
+        justify-content: center;
+    }
 }
 </style>
