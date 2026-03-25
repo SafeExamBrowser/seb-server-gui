@@ -26,7 +26,6 @@ export const registerUserAccount = async (
                     "Content-Type": "application/x-www-form-urlencoded",
                 },
             },
-            authType: "none",
         })
     ).data;
 
@@ -45,19 +44,35 @@ export const changePassword = async (
                 newPassword,
                 confirmNewPassword,
             },
+            options: { _authType: "seb" },
         })
     ).data;
 
 export const deleteUserAccount = async (accountId: string): Promise<unknown> =>
-    (await apiService.deleteRequest({ url: `${baseUrl}/${accountId}` })).data;
+    (
+        await apiService.deleteRequest({
+            url: `${baseUrl}/${accountId}`,
+            options: { _authType: "seb" },
+        })
+    ).data;
 
 export const getPersonalUserAccount = async (): Promise<UserAccount> =>
-    (await apiService.getRequest({ url: `${baseUrl}/me` })).data;
+    (
+        await apiService.getRequest({
+            url: `${baseUrl}/me`,
+            options: { _authType: "seb" },
+        })
+    ).data;
 
 export const getUserAccountById = async (
     accountId: string,
 ): Promise<UserAccount> =>
-    (await apiService.getRequest({ url: `${baseUrl}/${accountId}` })).data;
+    (
+        await apiService.getRequest({
+            url: `${baseUrl}/${accountId}`,
+            options: { _authType: "seb" },
+        })
+    ).data;
 
 export const getUserAccounts = async (
     optionalParameters?: OptionalParGetUserAccounts,
@@ -65,19 +80,31 @@ export const getUserAccounts = async (
     (
         await apiService.getRequest({
             url: baseUrl,
-            options: { params: optionalParameters },
+            options: { _authType: "seb", params: optionalParameters },
         })
     ).data;
 
 export const createUserAccount = async (
     userAccount: CreateUserPar,
 ): Promise<SingleUserAccountResponse> =>
-    (await apiService.postRequest({ url: baseUrl, data: userAccount })).data;
+    (
+        await apiService.postRequest({
+            url: baseUrl,
+            data: userAccount,
+            options: { _authType: "seb" },
+        })
+    ).data;
 
 export const editUserAccount = async (
     userAccount: EditUserAccountParameters,
 ): Promise<UserAccountResponse> =>
-    (await apiService.putRequest({ url: baseUrl, data: userAccount })).data;
+    (
+        await apiService.putRequest({
+            url: baseUrl,
+            data: userAccount,
+            options: { _authType: "seb" },
+        })
+    ).data;
 
 export const getSupervisorNames = async (
     optionalParameters?: OptionalParInstitutionId,
@@ -86,6 +113,7 @@ export const getSupervisorNames = async (
         await apiService.getRequest({
             url: `${baseUrl}/supervisors`,
             options: {
+                _authType: "seb",
                 params: optionalParameters,
             },
         })
@@ -94,8 +122,12 @@ export const getSupervisorNames = async (
 export const activateUserAccount = async (
     accountId: string,
 ): Promise<UserAccount> =>
-    (await apiService.postRequest({ url: `${baseUrl}/${accountId}/active` }))
-        .data;
+    (
+        await apiService.postRequest({
+            url: `${baseUrl}/${accountId}/active`,
+            options: { _authType: "seb" },
+        })
+    ).data;
 
 export const deactivateUserAccount = async (
     accountId: string,
@@ -103,5 +135,6 @@ export const deactivateUserAccount = async (
     (
         await apiService.postRequest({
             url: `${baseUrl}/${accountId}/inactive`,
+            options: { _authType: "seb" },
         })
     ).data;

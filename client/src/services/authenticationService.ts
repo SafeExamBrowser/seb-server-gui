@@ -1,18 +1,13 @@
 import * as apiService from "@/services/apiService";
+import { type AuthData, authDataSchema } from "@/services/types";
 
-export const authorize = async (
-    userName: string,
-    password: string,
-): Promise<{
-    proctorServer: {
-        access_token: string;
-        refresh_token: string;
-    };
-    sebServer: {
-        access_token: string;
-        refresh_token: string;
-    };
-}> => {
+export const authorize = async ({
+    userName,
+    password,
+}: {
+    userName: string;
+    password: string;
+}): Promise<AuthData> => {
     const body = new URLSearchParams({
         grant_type: "password",
         username: userName,
@@ -23,30 +18,58 @@ export const authorize = async (
         apiService.postRequest({
             url: "/oauth/token",
             data: body,
-            authType: "none",
         }),
         apiService.postRequest({
             url: "/sps/oauth/token",
             data: body,
-            authType: "none",
         }),
     ]);
 
-    return {
-        proctorServer: {
-            access_token: proctorServerResponse.data.access_token,
-            refresh_token: proctorServerResponse.data.refresh_token,
-        },
-        sebServer: {
-            access_token: sebServerResponse.data.access_token,
-            refresh_token: sebServerResponse.data.refresh_token,
-        },
-    };
+    return authDataSchema.parse({
+        proctorServer: proctorServerResponse.data,
+        sebServer: sebServerResponse.data,
+    });
+};
+
+export const refresh = async ({
+    sebRefreshToken,
+    spsRefreshToken,
+}: {
+    sebRefreshToken: string;
+    spsRefreshToken: string;
+}): Promise<AuthData> => {
+    const [sebServerResponse, proctorServerResponse] = await Promise.all([
+        apiService.postRequest({
+            url: "/oauth/token",
+            data: new URLSearchParams({
+                grant_type: "refresh_token",
+                refresh_token: sebRefreshToken,
+            }).toString(),
+        }),
+        apiService.postRequest({
+            url: "/sps/oauth/token",
+            data: new URLSearchParams({
+                grant_type: "refresh_token",
+                refresh_token: spsRefreshToken,
+            }).toString(),
+        }),
+    ]);
+
+    return authDataSchema.parse({
+        proctorServer: proctorServerResponse.data,
+        sebServer: sebServerResponse.data,
+    });
 };
 
 export const logout = async () => {
     await Promise.all([
-        apiService.postRequest({ url: "/useraccount/logout" }),
-        apiService.postRequest({ url: "/useraccount/logout", authType: "sps" }),
+        apiService.postRequest({
+            url: "/useraccount/logout",
+            options: { _authType: "seb" },
+        }),
+        apiService.postRequest({
+            url: "/sps/useraccount/logout",
+            options: { _authType: "sps" },
+        }),
     ]);
 };

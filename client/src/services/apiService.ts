@@ -2,157 +2,112 @@ import axios, { AxiosRequestConfig } from "axios";
 import { merge } from "lodash";
 import { useAuthStore } from "@/composables/store/useAuthStore";
 import { useLogout } from "@/composables/useLogout";
-import { AuthType } from "./types";
+import { ApiRequest } from "./types";
+
+let tokenRefreshPromise: Promise<void> | undefined = undefined;
 
 const api = axios.create({
     baseURL: "/api",
 });
 
-type RequestWithDataParams<T> = {
-    url: string;
-    data?: T;
-    options?: AxiosRequestConfig;
-    authType?: AuthType;
-};
+api.interceptors.request.use(async (config) => {
+    if (!config._authType) {
+        return config;
+    }
 
-// if a request is unauthorized, properly log out the user (clean up store etc.) and reject the promise
+    if (tokenRefreshPromise) {
+        // wait for the token refresh to complete
+        await tokenRefreshPromise.catch(() => {});
+    }
+
+    // set correct Authorization header
+    const authStore = useAuthStore();
+    const authToken =
+        config._authType === "sps"
+            ? authStore.spAccessToken
+            : authStore.sebAccessToken;
+
+    if (!authToken) {
+        throw new Error(`No token found for auth type: ${config._authType}`);
+    }
+
+    config.headers.Authorization = `Bearer ${authToken}`;
+
+    return config;
+});
+
 api.interceptors.response.use(
     (response) => response,
     async (error) => {
-        if (error?.response?.status !== 401) {
-            return Promise.reject(error);
+        // if a request is unauthorized, properly log out the user (clean up store etc.)
+        if (error?.response?.status === 401 && error?.config?._authType) {
+            await useLogout().logout(true);
         }
-
-        await useLogout().logout(true);
 
         return Promise.reject(error);
     },
 );
 
-const getAuthHeaderValue = (authType: AuthType) => {
-    const authStore = useAuthStore();
-
-    if (authType === "none") {
-        return undefined;
-    }
-
-    if (authType === "sps") {
-        return `Bearer ${authStore.spAccessToken}`;
-    }
-
-    return `Bearer ${authStore.sebAccessToken}`;
-};
-
-const getRequestUrl = (url: string, authType: AuthType): string => {
-    return `${authType === "sps" ? "/sps" : ""}${url}`;
-};
+export const setTokenRefreshPromise = (promise: Promise<void> | undefined) =>
+    (tokenRefreshPromise = promise);
 
 export const getRequest = ({
     url,
     options,
-    authType = "seb",
 }: {
     url: string;
     options?: AxiosRequestConfig;
-    authType?: AuthType;
 }) => {
-    const authHeaderValue = getAuthHeaderValue(authType);
     const defaultOptions: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
-            ...(authHeaderValue ? { Authorization: authHeaderValue } : {}),
         },
     };
 
-    return api.get(
-        getRequestUrl(url, authType),
-        merge({}, defaultOptions, options),
-    );
+    return api.get(url, merge({}, defaultOptions, options));
 };
 
-export const postRequest = <T>({
-    url,
-    data,
-    options,
-    authType = "seb",
-}: RequestWithDataParams<T>) => {
-    const authHeaderValue = getAuthHeaderValue(authType);
+export const postRequest = <T>({ url, data, options }: ApiRequest<T>) => {
     const defaultOptions: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
-            ...(authHeaderValue ? { Authorization: authHeaderValue } : {}),
             "Content-Type": "application/x-www-form-urlencoded",
         },
     };
 
-    return api.post(
-        getRequestUrl(url, authType),
-        data ?? null,
-        merge({}, defaultOptions, options),
-    );
+    return api.post(url, data ?? null, merge({}, defaultOptions, options));
 };
 
-export const putRequest = <T>({
-    url,
-    data,
-    options,
-    authType = "seb",
-}: RequestWithDataParams<T>) => {
-    const authHeaderValue = getAuthHeaderValue(authType);
+export const putRequest = <T>({ url, data, options }: ApiRequest<T>) => {
     const defaultOptions: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
-            ...(authHeaderValue ? { Authorization: authHeaderValue } : {}),
             "Content-Type": "application/json",
         },
     };
 
-    return api.put(
-        getRequestUrl(url, authType),
-        data ?? null,
-        merge({}, defaultOptions, options),
-    );
+    return api.put(url, data ?? null, merge({}, defaultOptions, options));
 };
 
-export const patchRequest = <T>({
-    url,
-    data,
-    options,
-    authType = "seb",
-}: RequestWithDataParams<T>) => {
-    const authHeaderValue = getAuthHeaderValue(authType);
+export const patchRequest = <T>({ url, data, options }: ApiRequest<T>) => {
     const defaultOptions: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
-            ...(authHeaderValue ? { Authorization: authHeaderValue } : {}),
             "Content-Type": "application/json",
         },
     };
 
-    return api.patch(
-        getRequestUrl(url, authType),
-        data ?? null,
-        merge({}, defaultOptions, options),
-    );
+    return api.patch(url, data ?? null, merge({}, defaultOptions, options));
 };
 
-export const deleteRequest = <T>({
-    url,
-    data,
-    authType = "seb",
-}: {
-    url: string;
-    data?: T;
-    authType?: AuthType;
-}) => {
-    const authHeaderValue = getAuthHeaderValue(authType);
-
-    return api.delete(getRequestUrl(url, authType), {
+export const deleteRequest = <T>({ url, data, options }: ApiRequest<T>) => {
+    const defaultOptions: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
-            ...(authHeaderValue ? { Authorization: authHeaderValue } : {}),
             "Content-Type": "application/x-www-form-urlencoded",
         },
         data: data ?? null,
-    });
+    };
+
+    return api.delete(url, merge({}, defaultOptions, options));
 };

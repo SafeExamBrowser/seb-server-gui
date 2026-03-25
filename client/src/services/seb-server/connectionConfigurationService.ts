@@ -18,6 +18,7 @@ export const getConnectionConfigurationNamesActive = async (): Promise<
         await apiService.getRequest({
             url: baseUrl + "/names",
             options: {
+                _authType: "seb",
                 params: { active: "true" },
             },
         })
@@ -25,7 +26,12 @@ export const getConnectionConfigurationNamesActive = async (): Promise<
 
 export const getConnectionConfigurationsActive =
     async (): Promise<ConnectionConfigurations> =>
-        (await apiService.getRequest({ url: baseUrl + "/active" })).data;
+        (
+            await apiService.getRequest({
+                url: baseUrl + "/active",
+                options: { _authType: "seb" },
+            })
+        ).data;
 
 export const downloadExamConfig = async (
     examId: string,
@@ -35,6 +41,7 @@ export const downloadExamConfig = async (
         await apiService.getRequest({
             url: `${baseUrl}/download/${connectionId}`,
             options: {
+                _authType: "seb",
                 params: { id: examId },
                 responseType: "blob",
                 headers: {
@@ -47,7 +54,12 @@ export const downloadExamConfig = async (
 export const getConnectionConfiguration = async (
     id: number,
 ): Promise<ConnectionConfiguration> =>
-    (await apiService.getRequest({ url: baseUrl + "/" + id })).data;
+    (
+        await apiService.getRequest({
+            url: baseUrl + "/" + id,
+            options: { _authType: "seb" },
+        })
+    ).data;
 
 export const getConnectionConfigurations = async (
     optionalParameters?: OptionalParGetConnectionConfiguration,
@@ -55,24 +67,39 @@ export const getConnectionConfigurations = async (
     (
         await apiService.getRequest({
             url: baseUrl,
-            options: { params: optionalParameters },
+            options: { _authType: "seb", params: optionalParameters },
         })
     ).data;
 
 export const activateConnectionConfiguration = async (
     id: string,
 ): Promise<ConnectionConfiguration> =>
-    (await apiService.postRequest({ url: `${baseUrl}/${id}/active` })).data;
+    (
+        await apiService.postRequest({
+            url: `${baseUrl}/${id}/active`,
+            options: { _authType: "seb" },
+        })
+    ).data;
 
 export const deactivateConnectionConfiguration = async (
     id: string,
 ): Promise<ConnectionConfiguration> =>
-    (await apiService.postRequest({ url: `${baseUrl}/${id}/inactive` })).data;
+    (
+        await apiService.postRequest({
+            url: `${baseUrl}/${id}/inactive`,
+            options: { _authType: "seb" },
+        })
+    ).data;
 
 export const deleteConnectionConfiguration = async (
     id: string,
 ): Promise<undefined | null> =>
-    (await apiService.deleteRequest({ url: `${baseUrl}/${id}` })).data;
+    (
+        await apiService.deleteRequest({
+            url: `${baseUrl}/${id}`,
+            options: { _authType: "seb" },
+        })
+    ).data;
 
 export const createConnectionConfiguration = async (
     connectionConfigurationPar: CreateConnectionConfigurationPar,
@@ -81,6 +108,7 @@ export const createConnectionConfiguration = async (
         await apiService.postRequest({
             url: baseUrl,
             data: connectionConfigurationPar,
+            options: { _authType: "seb" },
         })
     ).data;
 
@@ -91,5 +119,6 @@ export const editConnectionConfiguration = async (
         await apiService.putRequest({
             url: baseUrl,
             data: connectionConfiguration,
+            options: { _authType: "seb" },
         })
     ).data;

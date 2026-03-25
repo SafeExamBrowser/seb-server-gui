@@ -10,6 +10,7 @@ export const applyScreenProctoringGroups = async (
         await apiService.postRequest({
             url: `/exam/${id}/screen-proctoring/apply-groups`,
             data: { spsSEBGroupsSelection },
+            options: { _authType: "seb" },
         })
     ).data;
 
@@ -21,6 +22,6 @@ export const activateScreenProctoring = async (
         await apiService.postRequest({
             url: `/exam/${id}/screen-proctoring/activation`,
             data: {},
-            options: { params: { enableScreenProctoring } },
+            options: { _authType: "seb", params: { enableScreenProctoring } },
         })
     ).data;

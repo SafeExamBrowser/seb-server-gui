@@ -10,6 +10,6 @@ export const getQuizzes = async (
     (
         await apiService.getRequest({
             url: baseUrl,
-            options: { params: optionalParameters },
+            options: { _authType: "seb", params: optionalParameters },
         })
     ).data;

@@ -7,6 +7,6 @@ export const getIndicators = async (examId: string): Promise<Indicators> =>
     (
         await apiService.getRequest({
             url: `${baseUrl}`,
-            options: { params: { examId } },
+            options: { _authType: "seb", params: { examId } },
         })
     ).data;

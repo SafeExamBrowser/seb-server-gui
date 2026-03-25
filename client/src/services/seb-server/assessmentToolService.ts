@@ -10,10 +10,20 @@ const baseUrl = "/lms-setup" as const;
 
 export const getAssessmentToolsActive =
     async (): Promise<AssessmentToolsResponse> =>
-        (await apiService.getRequest({ url: baseUrl + "/active" })).data;
+        (
+            await apiService.getRequest({
+                url: baseUrl + "/active",
+                options: { _authType: "seb" },
+            })
+        ).data;
 
 export const getAssessmentTool = async (id: number): Promise<AssessmentTool> =>
-    (await apiService.getRequest({ url: `${baseUrl}/${id}` })).data;
+    (
+        await apiService.getRequest({
+            url: `${baseUrl}/${id}`,
+            options: { _authType: "seb" },
+        })
+    ).data;
 
 export const getAssessmentTools = async (
     optionalParameters?: OptionalParGetAssessmentTool,
@@ -21,7 +31,7 @@ export const getAssessmentTools = async (
     (
         await apiService.getRequest({
             url: baseUrl,
-            options: { params: optionalParameters },
+            options: { _authType: "seb", params: optionalParameters },
         })
     ).data;
 
@@ -31,6 +41,7 @@ export const activateAssessmentTool = async (
     (
         await apiService.postRequest({
             url: `${baseUrl}/${assessmentToolId}/active`,
+            options: { _authType: "seb" },
         })
     ).data;
 
@@ -40,6 +51,7 @@ export const deactivateAssessmentTool = async (
     (
         await apiService.postRequest({
             url: `${baseUrl}/${assessmentToolId}/inactive`,
+            options: { _authType: "seb" },
         })
     ).data;
 
@@ -49,15 +61,28 @@ export const deleteAssessmentTool = async (
     (
         await apiService.deleteRequest({
             url: `${baseUrl}/${assessmentToolId}`,
+            options: { _authType: "seb" },
         })
     ).data;
 
 export const createAssessmentTool = async (
     assessmentTool: CreateAssessmentToolPar,
 ): Promise<AssessmentTool> =>
-    (await apiService.postRequest({ url: baseUrl, data: assessmentTool })).data;
+    (
+        await apiService.postRequest({
+            url: baseUrl,
+            data: assessmentTool,
+            options: { _authType: "seb" },
+        })
+    ).data;
 
 export const editAssessmentTool = async (
     assessmentTool: UpdateAssessmentToolPar,
 ): Promise<AssessmentTool> =>
-    (await apiService.putRequest({ url: baseUrl, data: assessmentTool })).data;
+    (
+        await apiService.putRequest({
+            url: baseUrl,
+            data: assessmentTool,
+            options: { _authType: "seb" },
+        })
+    ).data;
