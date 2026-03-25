@@ -68,6 +68,7 @@ export const useInstitutionNameMap = () => {
         institutions,
         loading,
         error,
+        hasFetched,
         fetchInstitutions,
         getInstitutionName,
         institutionFilterOptions,

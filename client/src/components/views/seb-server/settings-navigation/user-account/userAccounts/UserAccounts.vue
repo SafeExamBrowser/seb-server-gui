@@ -21,6 +21,8 @@
 
                     <v-col cols="12" md="7">
                         <SettingsFilters
+                            v-if="filtersReady"
+                            :key="filtersRenderKey"
                             v-model="selectedFilters"
                             :filters="filters"
                         />
@@ -141,6 +143,8 @@ const {
     cellFormatters,
     loading: standardConfigLoading,
     error: standardConfigError,
+    filtersReady,
+    filtersRenderKey,
 } = useSettingsTableFilterConfig({
     headers: userAccountsTableHeaders,
     translationPrefix: "userAccount.userAccountPage",

@@ -24,6 +24,7 @@ export function useSettingsTableFilterConfig(
         institutionFilterOptions,
         loading,
         error,
+        hasFetched,
     } = useInstitutionNameMap();
 
     watch(
@@ -53,10 +54,31 @@ export function useSettingsTableFilterConfig(
         return result;
     });
 
+    const filtersReady = computed(() => {
+        if (!hasInstitutionColumn.value) {
+            return true;
+        }
+
+        return hasFetched.value;
+    });
+
+    const filtersRenderKey = computed(() => {
+        const institutionOptionsCount = institutionFilterOptions.value.length;
+
+        return [
+            params.translationPrefix,
+            hasInstitutionColumn.value ? "institution" : "no-institution",
+            hasFetched.value ? "loaded" : "loading",
+            institutionOptionsCount,
+        ].join("-");
+    });
+
     return {
         filters,
         cellFormatters,
         loading,
         error,
+        filtersReady,
+        filtersRenderKey,
     };
 }
