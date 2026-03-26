@@ -1,100 +1,108 @@
 <template>
-    <v-data-table-server
-        :headers="headers"
-        :items="items"
-        :items-length="internalItemsLength"
-        :items-per-page="itemsPerPage"
-        :items-per-page-options="itemsPerPageOptions"
-        :loading="loading"
-        :loading-text="$t('general.loading')"
-        :no-data-text="$t('general.noData')"
-        hide-default-footer
-        @update:options="emit('update:options', $event)"
-    >
-        <template #item="{ item }">
-            <tr @click="onRowClick(getRawItem(item))">
-                <td v-for="header in headers" :key="header.key">
-                    <template v-if="header.key === 'active'">
-                        <v-chip
-                            class="text-white font-weight-medium status-chip cursor-pointer"
-                            :color="getRawItem(item).active ? 'green' : 'red'"
-                            size="small"
-                            @click.stop="openStatusDialog(getRawItem(item))"
-                        >
+    <div>
+        <v-data-table-server
+            :headers="headers"
+            :items="items"
+            :items-length="internalItemsLength"
+            :items-per-page="itemsPerPage"
+            :items-per-page-options="itemsPerPageOptions"
+            :loading="loading"
+            :loading-text="$t('general.loading')"
+            :no-data-text="$t('general.noData')"
+            hide-default-footer
+            @update:options="emit('update:options', $event)"
+        >
+            <template #item="{ item }">
+                <tr @click="onRowClick(getRawItem(item))">
+                    <td v-for="header in headers" :key="header.key">
+                        <template v-if="header.key === 'active'">
+                            <v-chip
+                                class="text-white font-weight-medium status-chip cursor-pointer"
+                                :color="
+                                    getRawItem(item).active ? 'green' : 'red'
+                                "
+                                size="small"
+                                @click.stop="openStatusDialog(getRawItem(item))"
+                            >
+                                {{
+                                    getRawItem(item).active
+                                        ? "Active"
+                                        : "Inactive"
+                                }}
+                            </v-chip>
+                        </template>
+
+                        <template v-else-if="header.key === 'actions'">
+                            <div class="actions-container">
+                                <v-icon
+                                    v-if="editable"
+                                    class="action-icon"
+                                    icon="mdi-pencil"
+                                    @click.stop="onEdit(getRawItem(item))"
+                                />
+
+                                <v-icon
+                                    v-if="deletable"
+                                    class="action-icon"
+                                    icon="mdi-delete"
+                                    @click.stop="
+                                        openDeleteDialog(getRawItem(item))
+                                    "
+                                />
+                            </div>
+                        </template>
+
+                        <template v-else>
                             {{
-                                getRawItem(item).active ? "Active" : "Inactive"
+                                cellFormatters?.[header.key]
+                                    ? cellFormatters[header.key](
+                                          getRawItem(item)[header.key],
+                                          getRawItem(item),
+                                      )
+                                    : getRawItem(item)[header.key]
                             }}
-                        </v-chip>
-                    </template>
+                        </template>
+                    </td>
+                </tr>
+            </template>
 
-                    <template v-else-if="header.key === 'actions'">
-                        <div class="actions-container">
-                            <v-icon
-                                v-if="editable"
-                                class="action-icon"
-                                icon="mdi-pencil"
-                                @click.stop="onEdit(getRawItem(item))"
-                            />
+            <template #bottom>
+                <div class="table-footer">
+                    <div class="table-footer__left-spacer" />
 
-                            <v-icon
-                                v-if="deletable"
-                                class="action-icon"
-                                icon="mdi-delete"
-                                @click.stop="openDeleteDialog(getRawItem(item))"
-                            />
-                        </div>
-                    </template>
-
-                    <template v-else>
-                        {{
-                            cellFormatters?.[header.key]
-                                ? cellFormatters[header.key](
-                                      getRawItem(item)[header.key],
-                                      getRawItem(item),
-                                  )
-                                : getRawItem(item)[header.key]
-                        }}
-                    </template>
-                </td>
-            </tr>
-        </template>
-
-        <template #bottom>
-            <div class="table-footer">
-                <div class="table-footer__left-spacer" />
-
-                <div class="table-footer__pagination-center">
-                    <v-pagination
-                        v-model="currentPage"
-                        :length="pageCount"
-                        :total-visible="5"
-                        density="comfortable"
-                        rounded="circle"
-                        prev-icon="mdi-chevron-left"
-                        next-icon="mdi-chevron-right"
-                        class="table-footer__pagination"
-                    />
-                </div>
-
-                <div class="table-footer__right-controls">
-                    <div class="table-footer__page-size">
-                        <span class="table-footer__page-size-label">
-                            Items per page
-                        </span>
-
-                        <v-select
-                            v-model="localItemsPerPage"
-                            :items="itemsPerPageOptions"
-                            variant="outlined"
-                            density="compact"
-                            hide-details
-                            class="table-footer__page-size-select"
+                    <div class="table-footer__pagination-center">
+                        <v-pagination
+                            v-model="currentPage"
+                            :length="pageCount"
+                            :total-visible="5"
+                            density="comfortable"
+                            rounded="circle"
+                            prev-icon="mdi-chevron-left"
+                            next-icon="mdi-chevron-right"
+                            class="table-footer__pagination"
                         />
                     </div>
+
+                    <div class="table-footer__right-controls">
+                        <div class="table-footer__page-size">
+                            <span class="table-footer__page-size-label">
+                                Items per page
+                            </span>
+
+                            <v-select
+                                v-model="localItemsPerPage"
+                                :items="itemsPerPageOptions"
+                                variant="outlined"
+                                density="compact"
+                                hide-details
+                                class="table-footer__page-size-select"
+                            />
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </template>
-    </v-data-table-server>
+            </template>
+        </v-data-table-server>
+    </div>
 
     <DeleteDialog
         v-model="deleteDialogOpen"
@@ -286,7 +294,7 @@ const internalItemsLength = computed(() => {
 
 <style scoped>
 :deep(.v-table__wrapper) {
-    min-height: 24vh;
+    min-height: calc(56px + 5 * 52px);
 }
 
 :deep(table) {
