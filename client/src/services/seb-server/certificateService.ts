@@ -14,7 +14,7 @@ export const getCertificates = async (
     (
         await apiService.getRequest({
             url: baseUrl,
-            options: { params: optionalParameters },
+            options: { _authType: "seb", params: optionalParameters },
         })
     ).data;
 
@@ -25,6 +25,7 @@ export const deleteCertificate = async (
         await apiService.deleteRequest({
             url: `${baseUrl}`,
             data: { alias: certificateId },
+            options: { _authType: "seb" },
         })
     ).data;
 
@@ -36,6 +37,7 @@ export const createCertificate = async (
             url: baseUrl,
             data: certificate.file,
             options: {
+                _authType: "seb",
                 headers: {
                     "Content-Type": "application/octet-stream",
                     importFile: certificate.fileName,

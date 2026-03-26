@@ -12,7 +12,6 @@ export const getInstitutions = async (): Promise<Institution[]> =>
                     "Content-Type": "application/x-www-form-urlencoded",
                 },
             },
-            authType: "none",
         })
     ).data;
 
@@ -23,6 +22,7 @@ export const getInstitutionLogo = async (
         await apiService.getRequest({
             url: `${baseUrl}/logo/${institutionSuffix}`,
             options: {
+                _authType: "seb",
                 headers: { Accept: "application/json, text/plain, */*" },
             },
         })

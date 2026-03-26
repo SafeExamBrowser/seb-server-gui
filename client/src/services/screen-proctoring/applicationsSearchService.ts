@@ -6,7 +6,7 @@ import {
     UserListForApplicationSearchRecord,
 } from "@/models/screen-proctoring/applicationSearch";
 
-const baseUrl = "/proctoring/search/applications" as const;
+const baseUrl = "/sps/proctoring/search/applications" as const;
 
 export const getExamsStarted = async (
     optionalParameters?: OptionalParGetExamsStarted,
@@ -15,9 +15,9 @@ export const getExamsStarted = async (
         await apiService.getRequest({
             url: `${baseUrl}/exams`,
             options: {
+                _authType: "sps",
                 params: optionalParameters,
             },
-            authType: "sps",
         })
     ).data;
 
@@ -25,7 +25,7 @@ export const getGroupIdsForExam = async (examId: number): Promise<number[]> =>
     (
         await apiService.getRequest({
             url: `${baseUrl}/groupIds/${examId}`,
-            authType: "sps",
+            options: { _authType: "sps" },
         })
     ).data;
 
@@ -36,9 +36,9 @@ export const getDistinctMetadataAppForExam = async (
         await apiService.getRequest({
             url: `${baseUrl}/metadata/app`,
             options: {
+                _authType: "sps",
                 params: { groupIds },
             },
-            authType: "sps",
         })
     ).data;
 
@@ -50,9 +50,9 @@ export const getDistinctMetadataWindowForExam = async (
         await apiService.getRequest({
             url: `${baseUrl}/metadata/window`,
             options: {
+                _authType: "sps",
                 params: { groupIds, screenProctoringMetadataApplication },
             },
-            authType: "sps",
         })
     ).data;
 
@@ -65,13 +65,13 @@ export const getUserListForApplicationSearch = async (
         await apiService.getRequest({
             url: `${baseUrl}/users`,
             options: {
+                _authType: "sps",
                 params: {
                     groupIds,
                     screenProctoringMetadataApplication,
                     screenProctoringMetadataWindowTitle,
                 },
             },
-            authType: "sps",
         })
     ).data;
 
@@ -84,12 +84,12 @@ export const getTimestampListForApplicationSearch = async (
         await apiService.getRequest({
             url: `${baseUrl}/timestamps`,
             options: {
+                _authType: "sps",
                 params: {
                     sessionUUID,
                     screenProctoringMetadataApplication,
                     screenProctoringMetadataWindowTitle,
                 },
             },
-            authType: "sps",
         })
     ).data;

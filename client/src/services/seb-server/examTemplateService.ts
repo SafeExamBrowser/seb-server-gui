@@ -6,10 +6,20 @@ import { ExamTemplate, ExamTemplates } from "@/models/seb-server/examTemplate";
 const baseUrl = "/exam-template" as const;
 
 export const getExamTemplates = async (): Promise<ExamTemplates> =>
-    (await apiService.getRequest({ url: baseUrl })).data;
+    (
+        await apiService.getRequest({
+            url: baseUrl,
+            options: { _authType: "seb" },
+        })
+    ).data;
 
 export const getExamTemplate = async (id: string): Promise<ExamTemplate> =>
-    (await apiService.getRequest({ url: `${baseUrl}/${id}` })).data;
+    (
+        await apiService.getRequest({
+            url: `${baseUrl}/${id}`,
+            options: { _authType: "seb" },
+        })
+    ).data;
 
 export const getExamTemplateNames = async (): Promise<
     {
@@ -17,7 +27,13 @@ export const getExamTemplateNames = async (): Promise<
         entityType: "EXAM_TEMPLATE";
         name: string;
     }[]
-> => (await apiService.getRequest({ url: `${baseUrl}/names` })).data;
+> =>
+    (
+        await apiService.getRequest({
+            url: `${baseUrl}/names`,
+            options: { _authType: "seb" },
+        })
+    ).data;
 
 export const getExamTemplateSp = async (
     id: string,
@@ -25,6 +41,7 @@ export const getExamTemplateSp = async (
     (
         await apiService.getRequest({
             url: `${baseUrl}/${id}/screen-proctoring`,
+            options: { _authType: "seb" },
         })
     ).data;
 
@@ -36,6 +53,7 @@ export const createExamTemplate = async (
             url: `${baseUrl}/create`,
             data: examTemplate,
             options: {
+                _authType: "seb",
                 headers: {
                     "Content-Type": "application/json",
                 },

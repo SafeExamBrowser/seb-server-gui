@@ -5,7 +5,7 @@ import {
 } from "@/models/screen-proctoring/optionalParamters";
 import { GroupObject, GroupUuid } from "@/models/screen-proctoring/group";
 
-const baseUrl = "/proctoring/group" as const;
+const baseUrl = "/sps/proctoring/group" as const;
 
 export const getGroups = async (
     optionalParameters?: OptionalParGroups,
@@ -14,9 +14,9 @@ export const getGroups = async (
         await apiService.getRequest({
             url: baseUrl,
             options: {
+                _authType: "sps",
                 params: optionalParameters,
             },
-            authType: "sps",
         })
     ).data;
 
@@ -28,8 +28,8 @@ export const getGroupByUuid = async (
         await apiService.getRequest({
             url: `${baseUrl}/${uuid}`,
             options: {
+                _authType: "sps",
                 params: optionalParameters,
             },
-            authType: "sps",
         })
     ).data;

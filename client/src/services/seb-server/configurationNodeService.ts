@@ -10,6 +10,7 @@ export const getConfigurationTemplateNamesActive = async (): Promise<
         await apiService.getRequest({
             url: `${baseUrl}/names`,
             options: {
+                _authType: "seb",
                 params: { type: "TEMPLATE", active: "true" },
             },
         })

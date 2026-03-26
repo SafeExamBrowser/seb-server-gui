@@ -23,6 +23,7 @@ export const getExamsForMonitoring = async (
         await apiService.getRequest({
             url: baseUrl,
             options: {
+                _authType: "seb",
                 params: optionalParameters,
             },
         })
@@ -31,8 +32,12 @@ export const getExamsForMonitoring = async (
 export const getOverview = async (
     examId: string,
 ): Promise<MonitoringOverview> =>
-    (await apiService.getRequest({ url: `${baseUrl}/overview/${examId}` }))
-        .data;
+    (
+        await apiService.getRequest({
+            url: `${baseUrl}/overview/${examId}`,
+            options: { _authType: "seb" },
+        })
+    ).data;
 
 export const getConnections = async (
     examId: string,
@@ -42,6 +47,7 @@ export const getConnections = async (
         await apiService.getRequest({
             url: `${baseUrl}/connections/${examId}`,
             options: {
+                _authType: "seb",
                 headers: {
                     "show-all":
                         additionalHeaders[MonitoringHeaderEnum.SHOW_ALL],
@@ -63,8 +69,12 @@ export const getConnections = async (
     ).data;
 
 export async function applyTestRun(id: string): Promise<Exam> {
-    return (await apiService.postRequest({ url: `${baseUrl}/testrun/${id}` }))
-        .data;
+    return (
+        await apiService.postRequest({
+            url: `${baseUrl}/testrun/${id}`,
+            options: { _authType: "seb" },
+        })
+    ).data;
 }
 
 export const getSingleConnection = async (
@@ -74,6 +84,7 @@ export const getSingleConnection = async (
     (
         await apiService.getRequest({
             url: `${baseUrl}/${examId}/${connectionToken}`,
+            options: { _authType: "seb" },
         })
     ).data;
 
@@ -85,6 +96,7 @@ export const getSingleConnectionEvents = async (
         await apiService.getRequest({
             url: "/seb-client-event/search",
             options: {
+                _authType: "seb",
                 params: {
                     ...optionalParameters,
                     clientConnectionId,
@@ -102,6 +114,7 @@ export const getStaticClientData = async (
             url: `${baseUrl}/${examId}/static-client-data`,
             data: { modelIds },
             options: {
+                _authType: "seb",
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",
                 },
@@ -119,6 +132,7 @@ export const registerInstruction = async (
             url: `${baseUrl}/${examId}/instruction`,
             data: clientInstruction,
             options: {
+                _authType: "seb",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -134,6 +148,7 @@ export const quitAll = async (examId: string): Promise<number> =>
             url: `${baseUrl}/${examId}/quitAll`,
             data: {},
             options: {
+                _authType: "seb",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -148,6 +163,7 @@ export const getPendingNotifications = async (
     (
         await apiService.getRequest({
             url: `${baseUrl}/${examId}/notification/${connectionToken}`,
+            options: { _authType: "seb" },
         })
     ).data;
 
@@ -162,6 +178,7 @@ export const confirmNotification = async (
             url: `${baseUrl}/${examId}/notification/${notificationId}/${connectionToken}`,
             data: {},
             options: {
+                _authType: "seb",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -177,5 +194,6 @@ export const disableConnections = async (
         await apiService.postRequest({
             url: `${baseUrl}/${examId}/disable-connection`,
             data: { connectionToken },
+            options: { _authType: "seb" },
         })
     ).status;

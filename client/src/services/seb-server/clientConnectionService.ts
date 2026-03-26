@@ -13,6 +13,7 @@ export const getClientConnectionList = async (
         await apiService.getRequest({
             url: `${baseUrl}/list`,
             options: {
+                _authType: "seb",
                 params: { modelIds: modelIds.join(",") },
             },
         })
