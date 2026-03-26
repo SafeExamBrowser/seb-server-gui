@@ -41,7 +41,7 @@ export const useDeleteUserAccount = (
         const uuid = item.uuid;
 
         if (typeof uuid !== "string") {
-            error.value = "Invalid user account identifier.";
+            error.value = "Invalid User Account identifier.";
             return false;
         }
 

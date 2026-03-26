@@ -309,9 +309,9 @@ export function assignAssessmentToolSelectPagingOptions(
 
 export function assignConnectionConfigurationSelectPagingOptions(
     serverTablePaging: ServerTablePaging,
+    name: string | null,
     selectedStatus: string | null,
     selectedInstitutionId: string | null,
-    name: string | null,
 ): OptionalParGetConnectionConfiguration {
     const opt: OptionalParGetConnectionConfiguration = {};
 
