@@ -9,42 +9,53 @@
 
         <template #PanelMain>
             <v-col>
-                <v-row>
-                    <SearchSection
-                        search-text="certificates.filters.searchField"
-                        ,
-                        :store="certificatesStore"
-                    />
+                <v-row class="align-start">
+                    <v-col cols="12" md="5">
+                        <SearchSection
+                            search-text="certificates.filters.searchField"
+                            :store="certificatesStore"
+                            @search="onSearch"
+                            @clear="onClearSearch"
+                        />
+                    </v-col>
+                    <v-col cols="12" md="7"> </v-col>
                 </v-row>
 
                 <v-row>
-                    <!-- In  here we do the following : import useraccountstableheaders. Call up the table in this html, pass on the headers. We also call up the /getalluseraccounts and store it in user accounts variable and pass it to the table
-                     we also need to pass on a couple more things, like the Type of-->
+                    <v-col>
+                        <div v-if="error">
+                            {{ error }}
+                        </div>
 
-                    <v-row>
-                        <v-col>
-                            <div v-if="loading">Loading certificates...</div>
+                        <div v-else-if="deleteError">
+                            {{ deleteError }}
+                        </div>
 
-                            <div v-else-if="error">
-                                {{ error }}
-                            </div>
+                        <div v-else-if="standardConfigError">
+                            {{ standardConfigError }}
+                        </div>
 
-                            <v-col>
-                                <div v-if="loading">Loading certificates..</div>
-
-                                <div v-else-if="error">
-                                    {{ error }}
-                                </div>
-
-                                <SettingsTable
-                                    v-else
-                                    :headers="certificatesTableHeaders"
-                                    :items="data?.content ?? []"
-                                    :loading="loading"
-                                />
-                            </v-col>
-                        </v-col>
-                    </v-row>
+                        <SettingsTable
+                            :headers="certificatesTableHeaders"
+                            :items="data?.content ?? []"
+                            :total-items="totalItems"
+                            :page-count="pageCount"
+                            :items-per-page="options.itemsPerPage"
+                            :options="options"
+                            :loading="
+                                loading ||
+                                deleteLoading ||
+                                standardConfigLoading
+                            "
+                            item-identifier-key="alias"
+                            translation-key-prefix="certificates"
+                            :cell-formatters="cellFormatters"
+                            @update:options="loadItems"
+                            :editable="false"
+                            :status-changeable="false"
+                            @delete="removeCertificateFromItem"
+                        />
+                    </v-col>
                 </v-row>
             </v-col>
         </template>
@@ -60,9 +71,58 @@ import SettingsTable from "@/components/views/seb-server/settings-navigation/com
 import { useCertificatesStore } from "@/components/views/seb-server/settings-navigation/certificate/certificates/store/certificatesStore.ts";
 import { useCertificatesTableHeaders } from "@/components/views/seb-server/settings-navigation/certificate/certificates/composables/useCertificateTableHeaders.ts";
 import { useCertificates } from "@/components/views/seb-server/settings-navigation/certificate/certificates/api/useCertificates.ts";
+import { computed, watch } from "vue";
+import { useServerSettingsTable } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useServerSettingsTable.ts";
+import { useSettingsTableFilterConfig } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableFilterConfig.ts";
+import { useDeleteCertificate } from "@/components/views/seb-server/settings-navigation/certificate/certificates/api/useDeleteCertificate.ts";
 
 const certificatesStore = useCertificatesStore();
 const certificatesTableHeaders = useCertificatesTableHeaders();
 
-const { data, loading, error } = useCertificates();
+const { data, loading, error, fetchCertificates } = useCertificates();
+const pageCount = computed(() => data.value?.number_of_pages ?? 0);
+
+const {
+    removeCertificateFromItem,
+    loading: deleteLoading,
+    error: deleteError,
+} = useDeleteCertificate(data);
+
+const {
+    selectedFilters,
+    options,
+    totalItems,
+    loadItems,
+    onSearch,
+    onClearSearch,
+} = useServerSettingsTable(
+    certificatesStore,
+    data,
+    async ({ options, searchField }) => {
+        await fetchCertificates(options, searchField);
+    },
+    undefined,
+);
+
+const {
+    cellFormatters,
+    loading: standardConfigLoading,
+    error: standardConfigError,
+} = useSettingsTableFilterConfig({
+    headers: certificatesTableHeaders,
+    translationPrefix: "certificates",
+});
+
+watch(
+    selectedFilters,
+    async () => {
+        options.value = {
+            ...options.value,
+            page: 1,
+        };
+
+        await loadItems();
+    },
+    { deep: true },
+);
 </script>

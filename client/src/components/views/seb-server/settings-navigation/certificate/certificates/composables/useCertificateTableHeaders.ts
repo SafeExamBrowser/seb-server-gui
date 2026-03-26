@@ -32,7 +32,6 @@ export const useCertificatesTableHeaders = () =>
                 "certificates.certificateTableHeaders.tableHeaderTypes",
             ),
             key: "certType",
-            width: "15%",
             sortable: false,
         },
         {

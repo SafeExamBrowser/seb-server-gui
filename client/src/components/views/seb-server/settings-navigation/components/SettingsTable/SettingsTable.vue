@@ -13,7 +13,10 @@
             @update:options="emit('update:options', $event)"
         >
             <template #item="{ item }">
-                <tr @click="onRowClick(getRawItem(item))">
+                <tr
+                    :class="{ 'table-row--clickable': editable }"
+                    @click="onRowClick(getRawItem(item))"
+                >
                     <td v-for="header in headers" :key="header.key">
                         <template v-if="header.key === 'active'">
                             <v-chip
@@ -308,8 +311,11 @@ const internalItemsLength = computed(() => {
 }
 
 :deep(tbody tr) {
-    cursor: pointer;
     transition: background-color 0.15s ease-in-out;
+}
+
+:deep(tbody tr.table-row--clickable) {
+    cursor: pointer;
 }
 
 :deep(tbody tr:hover) {
