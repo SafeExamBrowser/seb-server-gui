@@ -650,7 +650,7 @@ const assessmentToolTableHeaders = computed(() => {
             title: translate(
                 "assessmentToolConnections.assessmentToolsPage.assessmentToolTableHeaders.tableHeaderAssessmentToolType",
             ),
-            key: "assessmentToolType",
+            key: "lmsType",
             width: "20%",
             sortable: false,
         },
