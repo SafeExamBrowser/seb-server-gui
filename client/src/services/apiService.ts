@@ -28,7 +28,10 @@ api.interceptors.request.use(async (config) => {
             : authStore.sebAccessToken;
 
     if (!authToken) {
-        throw new Error(`No token found for auth type: ${config._authType}`);
+        await useLogout().logout(true);
+        return Promise.reject(
+            new Error(`No token found for auth type: ${config._authType}`),
+        );
     }
 
     config.headers.Authorization = `Bearer ${authToken}`;
