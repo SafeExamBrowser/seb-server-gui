@@ -260,6 +260,8 @@ const routes: Array<RouteRecordRaw> = [
                     ),
                 meta: { titleKey: "titles.createTemplate" },
             },
+
+            // ---------- exam templates ----------
             {
                 path: constants.CREATE_EXAM_TEMPLATE_ROUTE,
                 name: "CreateExamTemplateWizard",
@@ -271,7 +273,7 @@ const routes: Array<RouteRecordRaw> = [
             },
             {
                 path: constants.EXAM_TEMPLATE_ROUTE,
-                name: "ExamTemplate",
+                name: "ExamTemplateList",
                 component: () =>
                     import(
                         "@/components/views/seb-server/exam-template/list/ExamTemplateList.vue"
