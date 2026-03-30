@@ -269,6 +269,15 @@ const routes: Array<RouteRecordRaw> = [
                     ),
                 meta: { titleKey: "titles.createTemplateExam" },
             },
+            {
+                path: constants.EXAM_TEMPLATE_ROUTE,
+                name: "ExamTemplate",
+                component: () =>
+                    import(
+                        "@/components/views/seb-server/exam-template/list/ExamTemplateList.vue"
+                    ),
+                meta: { titleKey: "titles.examTemplate" },
+            },
         ],
     },
 
