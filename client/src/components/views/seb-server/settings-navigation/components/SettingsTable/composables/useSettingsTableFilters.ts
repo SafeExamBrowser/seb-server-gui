@@ -1,5 +1,5 @@
 import { computed, watch, type ComputedRef, type Ref } from "vue";
-import type { SettingsTableHeader } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/settingsTableTypes";
+import type { SettingsTableHeader } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/types.ts";
 import { useInstitutionNameMap } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useInstitutionNameMap.ts";
 import { useSettingsFilters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsFilters.ts";
 

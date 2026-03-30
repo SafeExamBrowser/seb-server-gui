@@ -4,7 +4,7 @@ import {
     SettingsFilterDefinition,
     SettingsFilterOption,
 } from "@/models/types.ts";
-import type { SettingsTableHeader } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/settingsTableTypes";
+import type { SettingsTableHeader } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/types.ts";
 
 type UseSettingsFiltersParams = {
     headers: Ref<SettingsTableHeader[]> | ComputedRef<SettingsTableHeader[]>;

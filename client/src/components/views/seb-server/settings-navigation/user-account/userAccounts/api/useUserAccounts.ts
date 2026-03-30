@@ -3,6 +3,7 @@ import type { UserAccountResponse } from "@/models/userAccount";
 import { getUserAccounts } from "@/services/seb-server/userAccountService";
 import * as tableUtils from "@/utils/table/tableUtils";
 import type { ServerTablePaging } from "@/models/types";
+//todo use useFetch
 
 export const useUserAccounts = () => {
     const data = ref<UserAccountResponse>();

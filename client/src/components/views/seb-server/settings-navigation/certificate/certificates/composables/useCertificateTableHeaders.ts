@@ -1,6 +1,6 @@
 import { computed } from "vue";
 import { translate } from "@/utils/generalUtils";
-import type { SettingsTableHeader } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/settingsTableTypes.ts";
+import type { SettingsTableHeader } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/types.ts";
 
 export const useCertificatesTableHeaders = () => {
     return computed<SettingsTableHeader[]>(() => {

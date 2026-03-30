@@ -51,28 +51,32 @@
                             {{ formattersError }}
                         </div>
 
-                        <SettingsTable
-                            :headers="userAccountsTableHeaders"
-                            :items="data?.content ?? []"
-                            :total-items="totalItems"
-                            :page-count="pageCount"
-                            :items-per-page="options.itemsPerPage"
-                            :options="options"
-                            :loading="
-                                loading ||
-                                deleteLoading ||
-                                statusLoading ||
-                                filtersLoading ||
-                                formattersLoading
-                            "
-                            :route="USER_ACCOUNTS_ROUTE"
-                            item-identifier-key="uuid"
-                            translation-key-prefix="userAccount.userAccountPage"
-                            :cell-formatters="cellFormatters"
-                            @update:options="loadItems"
-                            @delete="removeUserAccountFromItem"
-                            @status-change="toggleUserAccountStatusFromItem"
-                        />
+                        <!-- TODO @Andrei pass error from fetch user -->
+
+                        <LoadingFallbackComponent :loading="false" :errors="[]">
+                            <SettingsTable
+                                :headers="userAccountsTableHeaders"
+                                :items="data?.content ?? []"
+                                :total-items="totalItems"
+                                :page-count="pageCount"
+                                :items-per-page="options.itemsPerPage"
+                                :options="options"
+                                :loading="
+                                    loading ||
+                                    deleteLoading ||
+                                    statusLoading ||
+                                    filtersLoading ||
+                                    formattersLoading
+                                "
+                                :route="USER_ACCOUNTS_ROUTE"
+                                item-identifier-key="uuid"
+                                translation-key-prefix="userAccount.userAccountPage"
+                                :cell-formatters="cellFormatters"
+                                @update:options="loadItems"
+                                @delete="removeUserAccountFromItem"
+                                @status-change="toggleUserAccountStatusFromItem"
+                            />
+                        </LoadingFallbackComponent>
                     </v-col>
                 </v-row>
             </v-col>
@@ -100,6 +104,7 @@ import { useUserAccountsTableHeaders } from "@/components/views/seb-server/setti
 import { useServerSettingsTable } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useServerSettingsTable.ts";
 import { useSettingsTableFilters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableFilters.ts";
 import { useSettingsTableCellFormatters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableCellFormatters.ts";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 
 const userAccountStore = useUserAccountsStore();
 const userAccountsTableHeaders = useUserAccountsTableHeaders();

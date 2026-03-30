@@ -124,7 +124,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import type { SettingsTableHeader } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/settingsTableTypes";
+import type { SettingsTableHeader } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/types.ts";
 import DeleteDialog from "@/components/views/seb-server/settings-navigation/components/DeleteDialog.vue";
 import StatusDialog from "@/components/views/seb-server/settings-navigation/components/StatusDialog.vue";
 import { useSettingsNavigation } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsNavigation.ts";

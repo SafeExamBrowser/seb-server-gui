@@ -2,7 +2,7 @@ import { computed, watch, type ComputedRef, type Ref } from "vue";
 import type {
     HeaderTranslateType,
     SettingsTableHeader,
-} from "@/components/views/seb-server/settings-navigation/components/SettingsTable/settingsTableTypes";
+} from "@/components/views/seb-server/settings-navigation/components/SettingsTable/types.ts";
 import { useInstitutionNameMap } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useInstitutionNameMap.ts";
 import { translate } from "@/utils/generalUtils";
 import * as timeUtils from "@/utils/timeUtils";
