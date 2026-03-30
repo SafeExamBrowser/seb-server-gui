@@ -1,20 +1,11 @@
 import { computed, ref } from "vue";
 import type { ServerTablePaging } from "@/models/types";
 import type { BaseSettingsStoreView } from "@/components/views/seb-server/settings-navigation/store/storeContract";
-
-type PagedResponse = {
-    number_of_pages?: number;
-    page_size?: number;
-    content?: unknown[];
-};
-
-type TableFilters = Record<string, string | null>;
-
-type LoadItemsFn = (params: {
-    options: ServerTablePaging;
-    searchField: string | null;
-    filters: TableFilters;
-}) => Promise<void>;
+import type {
+    PagedResponse,
+    TableFilters,
+    LoadItemsFn,
+} from "@/components/views/seb-server/settings-navigation/components/SettingsTable/types.ts";
 
 export function useServerSettingsTable<TResponse extends PagedResponse>(
     store: BaseSettingsStoreView<unknown>,

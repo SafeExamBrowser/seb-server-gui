@@ -1,12 +1,7 @@
-import { computed, watch, type ComputedRef, type Ref } from "vue";
-import type { SettingsTableHeader } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/types.ts";
+import { computed, watch } from "vue";
+import type { UseSettingsTableFiltersParams } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/types.ts";
 import { useInstitutionNameMap } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useInstitutionNameMap.ts";
 import { useSettingsFilters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsFilters.ts";
-
-type UseSettingsTableFiltersParams = {
-    headers: Ref<SettingsTableHeader[]> | ComputedRef<SettingsTableHeader[]>;
-    translationPrefix: string;
-};
 
 export function useSettingsTableFilters(params: UseSettingsTableFiltersParams) {
     const hasInstitutionFilter = computed(() =>

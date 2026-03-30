@@ -1,18 +1,12 @@
-import { computed, watch, type ComputedRef, type Ref } from "vue";
+import { computed, watch } from "vue";
 import type {
+    CellFormatter,
     HeaderTranslateType,
-    SettingsTableHeader,
+    UseSettingsTableCellFormattersParams,
 } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/types.ts";
 import { useInstitutionNameMap } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useInstitutionNameMap.ts";
 import { translate } from "@/utils/generalUtils";
 import * as timeUtils from "@/utils/timeUtils";
-
-type TableItem = Record<string, unknown>;
-type CellFormatter = (value: unknown, item: TableItem) => string;
-
-type UseSettingsTableCellFormattersParams = {
-    headers: Ref<SettingsTableHeader[]> | ComputedRef<SettingsTableHeader[]>;
-};
 
 function toDisplayString(value: unknown): string {
     if (value === null || value === undefined) {

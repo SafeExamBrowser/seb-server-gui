@@ -1,21 +1,10 @@
-import { computed, type ComputedRef, type Ref } from "vue";
+import { computed } from "vue";
 import { translate } from "@/utils/generalUtils";
 import {
     SettingsFilterDefinition,
     SettingsFilterOption,
 } from "@/models/types.ts";
-import type { SettingsTableHeader } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/types.ts";
-
-type UseSettingsFiltersParams = {
-    headers: Ref<SettingsTableHeader[]> | ComputedRef<SettingsTableHeader[]>;
-    customFilters?:
-        | Ref<SettingsFilterDefinition[]>
-        | ComputedRef<SettingsFilterDefinition[]>;
-    institutionOptions?:
-        | Ref<SettingsFilterOption[]>
-        | ComputedRef<SettingsFilterOption[]>;
-    translationPrefix: string;
-};
+import type { UseSettingsFiltersParams } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/types.ts";
 
 export function useSettingsFilters(params: UseSettingsFiltersParams) {
     const hasStatusFilter = computed(() =>

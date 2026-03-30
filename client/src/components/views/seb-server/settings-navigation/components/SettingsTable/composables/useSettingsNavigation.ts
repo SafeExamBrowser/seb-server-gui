@@ -1,7 +1,6 @@
 import { computed } from "vue";
 import { navigateTo } from "@/router/navigation";
-
-type TableItem = Record<string, unknown>;
+import { TableItem } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/types.ts";
 
 export function useSettingsNavigation(
     route?: string,
