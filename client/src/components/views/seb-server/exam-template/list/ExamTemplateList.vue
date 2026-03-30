@@ -11,7 +11,6 @@
         <template #PanelMain>
             TODO: Implement the exam template list.
         </template>
-        <template #PanelAside> TODO: Deal with side pane </template>
     </BasicPage>
 </template>
 
