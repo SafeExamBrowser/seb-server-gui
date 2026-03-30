@@ -1,4 +1,4 @@
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 
 // TODO @alain: consider using https://tanstack.com/query/latest/docs/framework/vue/overview for this
 export const useFetch = <T>(fetchFunction: () => Promise<T | null>) => {
@@ -24,7 +24,10 @@ export const useFetch = <T>(fetchFunction: () => Promise<T | null>) => {
         }
     };
 
-    onMounted(fetchData);
-
-    return { data, loading, error };
+    return {
+        data,
+        loading,
+        error,
+        fetchData,
+    };
 };
