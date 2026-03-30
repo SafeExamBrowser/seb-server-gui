@@ -31,13 +31,8 @@ export function useSettingsTableCellFormatters(
         ),
     );
 
-    const {
-        fetchInstitutions,
-        getInstitutionName,
-        loading,
-        error,
-        hasFetched,
-    } = useInstitutionNameMap();
+    const { fetchInstitutions, getInstitutionName, hasFetched } =
+        useInstitutionNameMap();
 
     watch(
         needsInstitutionNames,
@@ -97,8 +92,6 @@ export function useSettingsTableCellFormatters(
 
     return {
         cellFormatters,
-        loading,
-        error,
         formattersReady,
     };
 }

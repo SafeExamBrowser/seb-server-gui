@@ -31,10 +31,6 @@
                             {{ deleteError }}
                         </div>
 
-                        <div v-else-if="formattersError">
-                            {{ formattersError }}
-                        </div>
-
                         <SettingsTable
                             :headers="certificatesTableHeaders"
                             :items="data?.content ?? []"
@@ -42,9 +38,7 @@
                             :page-count="pageCount"
                             :items-per-page="options.itemsPerPage"
                             :options="options"
-                            :loading="
-                                loading || deleteLoading || formattersLoading
-                            "
+                            :loading="loading || deleteLoading"
                             item-identifier-key="alias"
                             translation-key-prefix="certificates"
                             :cell-formatters="cellFormatters"
@@ -102,11 +96,7 @@ const {
     undefined,
 );
 
-const {
-    cellFormatters,
-    loading: formattersLoading,
-    error: formattersError,
-} = useSettingsTableCellFormatters({
+const { cellFormatters } = useSettingsTableCellFormatters({
     headers: certificatesTableHeaders,
 });
 

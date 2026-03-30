@@ -43,14 +43,6 @@
                             {{ statusError }}
                         </div>
 
-                        <div v-else-if="filtersError">
-                            {{ filtersError }}
-                        </div>
-
-                        <div v-else-if="formattersError">
-                            {{ formattersError }}
-                        </div>
-
                         <SettingsTable
                             :headers="assessmentToolTableHeaders"
                             :items="data?.content ?? []"
@@ -58,13 +50,7 @@
                             :page-count="pageCount"
                             :items-per-page="options.itemsPerPage"
                             :options="options"
-                            :loading="
-                                loading ||
-                                deleteLoading ||
-                                statusLoading ||
-                                formattersLoading ||
-                                filtersLoading
-                            "
+                            :loading="loading || deleteLoading || statusLoading"
                             :route="ASSESSMENT_TOOL_CONNECTIONS_ROUTE"
                             item-identifier-key="id"
                             translation-key-prefix="assessmentToolConnections.assessmentToolsPage"
@@ -146,22 +132,12 @@ const {
     },
 );
 
-const {
-    filters,
-    loading: filtersLoading,
-    error: filtersError,
-    filtersReady,
-    filtersRenderKey,
-} = useSettingsTableFilters({
+const { filters, filtersReady, filtersRenderKey } = useSettingsTableFilters({
     headers: assessmentToolTableHeaders,
     translationPrefix: "assessmentToolConnections.assessmentToolsPage",
 });
 
-const {
-    cellFormatters,
-    loading: formattersLoading,
-    error: formattersError,
-} = useSettingsTableCellFormatters({
+const { cellFormatters } = useSettingsTableCellFormatters({
     headers: assessmentToolTableHeaders,
 });
 

@@ -42,14 +42,6 @@
                             {{ statusError }}
                         </div>
 
-                        <div v-else-if="filtersError">
-                            {{ filtersError }}
-                        </div>
-
-                        <div v-else-if="formattersError">
-                            {{ formattersError }}
-                        </div>
-
                         <SettingsTable
                             :headers="connectionConfigurationTableHeaders"
                             :items="data?.content ?? []"
@@ -57,13 +49,7 @@
                             :page-count="pageCount"
                             :items-per-page="options.itemsPerPage"
                             :options="options"
-                            :loading="
-                                loading ||
-                                deleteLoading ||
-                                statusLoading ||
-                                filtersLoading ||
-                                formattersLoading
-                            "
+                            :loading="loading || deleteLoading || statusLoading"
                             :route="CONNECTION_CONFIGURATIONS_ROUTE"
                             item-identifier-key="id"
                             translation-key-prefix="connectionConfigurations.connectionConfigurationsPage"
@@ -147,22 +133,12 @@ const {
     },
 );
 
-const {
-    filters,
-    loading: filtersLoading,
-    error: filtersError,
-    filtersReady,
-    filtersRenderKey,
-} = useSettingsTableFilters({
+const { filters, filtersReady, filtersRenderKey } = useSettingsTableFilters({
     headers: connectionConfigurationTableHeaders,
     translationPrefix: "connectionConfigurations.connectionConfigurationsPage",
 });
 
-const {
-    cellFormatters,
-    loading: formattersLoading,
-    error: formattersError,
-} = useSettingsTableCellFormatters({
+const { cellFormatters } = useSettingsTableCellFormatters({
     headers: connectionConfigurationTableHeaders,
 });
 

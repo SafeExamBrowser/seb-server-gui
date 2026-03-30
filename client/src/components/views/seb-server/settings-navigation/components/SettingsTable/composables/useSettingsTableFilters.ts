@@ -13,13 +13,8 @@ export function useSettingsTableFilters(params: UseSettingsTableFiltersParams) {
         params.headers.value.some((header) => header.key === "institutionId"),
     );
 
-    const {
-        fetchInstitutions,
-        institutionFilterOptions,
-        loading,
-        error,
-        hasFetched,
-    } = useInstitutionNameMap();
+    const { fetchInstitutions, institutionFilterOptions, hasFetched } =
+        useInstitutionNameMap();
 
     watch(
         hasInstitutionFilter,
@@ -58,8 +53,6 @@ export function useSettingsTableFilters(params: UseSettingsTableFiltersParams) {
 
     return {
         filters,
-        loading,
-        error,
         filtersReady,
         filtersRenderKey,
     };

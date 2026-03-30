@@ -43,15 +43,7 @@
                             {{ statusError }}
                         </div>
 
-                        <div v-else-if="filtersError">
-                            {{ filtersError }}
-                        </div>
-
-                        <div v-else-if="formattersError">
-                            {{ formattersError }}
-                        </div>
-
-                        <!-- TODO @Andrei pass error from fetch user -->
+                        <!-- TODO @Andrei pass error from fetch user to fallback component. Pass Loading / Error from delete or toggle status to Settings table so it passes it to the dialogs (there handle it) -->
 
                         <LoadingFallbackComponent :loading="false" :errors="[]">
                             <SettingsTable
@@ -62,11 +54,7 @@
                                 :items-per-page="options.itemsPerPage"
                                 :options="options"
                                 :loading="
-                                    loading ||
-                                    deleteLoading ||
-                                    statusLoading ||
-                                    filtersLoading ||
-                                    formattersLoading
+                                    loading || deleteLoading || statusLoading
                                 "
                                 :route="USER_ACCOUNTS_ROUTE"
                                 item-identifier-key="uuid"
@@ -149,22 +137,12 @@ const {
     },
 );
 
-const {
-    filters,
-    loading: filtersLoading,
-    error: filtersError,
-    filtersReady,
-    filtersRenderKey,
-} = useSettingsTableFilters({
+const { filters, filtersReady, filtersRenderKey } = useSettingsTableFilters({
     headers: userAccountsTableHeaders,
     translationPrefix: "userAccount.userAccountPage",
 });
 
-const {
-    cellFormatters,
-    loading: formattersLoading,
-    error: formattersError,
-} = useSettingsTableCellFormatters({
+const { cellFormatters } = useSettingsTableCellFormatters({
     headers: userAccountsTableHeaders,
 });
 
