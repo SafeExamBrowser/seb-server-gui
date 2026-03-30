@@ -1,9 +1,9 @@
 <template>
     <BasicPage
-        :title="$t('titles.examTemplate')"
+        :title="$t('titles.examTemplateList')"
         :bread-crumb="[
             {
-                label: $t('titles.examTemplate'),
+                label: $t('titles.examTemplateList'),
                 link: constants.EXAM_TEMPLATE_ROUTE,
             },
         ]"

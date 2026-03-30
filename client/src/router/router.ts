@@ -276,7 +276,7 @@ const routes: Array<RouteRecordRaw> = [
                     import(
                         "@/components/views/seb-server/exam-template/list/ExamTemplateList.vue"
                     ),
-                meta: { titleKey: "titles.examTemplate" },
+                meta: { titleKey: "titles.examTemplateList" },
             },
         ],
     },
