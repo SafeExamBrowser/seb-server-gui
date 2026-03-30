@@ -265,7 +265,7 @@ const routes: Array<RouteRecordRaw> = [
                 name: "CreateExamTemplateWizard",
                 component: () =>
                     import(
-                        "@/components/views/seb-server/template/exam/CreateExamTemplateWizard.vue"
+                        "@/components/views/seb-server/exam-template/wizard/CreateExamTemplateWizard.vue"
                     ),
                 meta: { titleKey: "titles.createTemplateExam" },
             },
