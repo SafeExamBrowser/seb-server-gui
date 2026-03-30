@@ -44,6 +44,7 @@ import { useCreateExamTemplateStore } from "./composables/store/useCreateExamTem
 import { useCreateExamTemplate } from "./composables/api/useCreateExamTemplate";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { watchEffect } from "vue";
+import { navigateTo } from "@/router/navigation";
 
 const {
     create: createExamTemplate,
@@ -61,9 +62,7 @@ watchEffect(() => {
 
     store.$reset();
 
-    // TODO @alain: once the ExamDetailsPage exists, redirect to the ExamDetailsPage of the template that was just created
-    console.log("Exam template was successfully created!");
-    console.log(createdExamTemplate.value);
+    navigateTo(constants.EXAM_TEMPLATE_ROUTE);
 });
 
 const handleStepperNext = () => {
