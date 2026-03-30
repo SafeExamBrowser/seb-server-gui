@@ -31,8 +31,8 @@
                             {{ deleteError }}
                         </div>
 
-                        <div v-else-if="standardConfigError">
-                            {{ standardConfigError }}
+                        <div v-else-if="formattersError">
+                            {{ formattersError }}
                         </div>
 
                         <SettingsTable
@@ -43,9 +43,7 @@
                             :items-per-page="options.itemsPerPage"
                             :options="options"
                             :loading="
-                                loading ||
-                                deleteLoading ||
-                                standardConfigLoading
+                                loading || deleteLoading || formattersLoading
                             "
                             item-identifier-key="alias"
                             translation-key-prefix="certificates"
@@ -73,8 +71,8 @@ import { useCertificatesTableHeaders } from "@/components/views/seb-server/setti
 import { useCertificates } from "@/components/views/seb-server/settings-navigation/certificate/certificates/api/useCertificates.ts";
 import { computed, watch } from "vue";
 import { useServerSettingsTable } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useServerSettingsTable.ts";
-import { useSettingsTableFilterConfig } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableFilterConfig.ts";
 import { useDeleteCertificate } from "@/components/views/seb-server/settings-navigation/certificate/certificates/api/useDeleteCertificate.ts";
+import { useSettingsTableCellFormatters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableCellFormatters.ts";
 
 const certificatesStore = useCertificatesStore();
 const certificatesTableHeaders = useCertificatesTableHeaders();
@@ -106,11 +104,10 @@ const {
 
 const {
     cellFormatters,
-    loading: standardConfigLoading,
-    error: standardConfigError,
-} = useSettingsTableFilterConfig({
+    loading: formattersLoading,
+    error: formattersError,
+} = useSettingsTableCellFormatters({
     headers: certificatesTableHeaders,
-    translationPrefix: "certificates",
 });
 
 watch(

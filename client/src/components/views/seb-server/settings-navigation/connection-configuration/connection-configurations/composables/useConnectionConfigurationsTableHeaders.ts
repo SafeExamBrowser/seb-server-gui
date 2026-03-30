@@ -17,6 +17,7 @@ export const useConnectionConfigurationsTableHeaders = () => {
                 key: "institutionId",
                 width: "20%",
                 sortable: true,
+                translateType: "institutionName",
             });
         }
 
@@ -36,6 +37,7 @@ export const useConnectionConfigurationsTableHeaders = () => {
                 key: "date",
                 width: "20%",
                 sortable: true,
+                translateType: "dateTime",
             },
             {
                 title: translate(

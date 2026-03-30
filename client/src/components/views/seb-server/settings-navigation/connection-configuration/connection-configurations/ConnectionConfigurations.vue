@@ -42,8 +42,12 @@
                             {{ statusError }}
                         </div>
 
-                        <div v-else-if="standardConfigError">
-                            {{ standardConfigError }}
+                        <div v-else-if="filtersError">
+                            {{ filtersError }}
+                        </div>
+
+                        <div v-else-if="formattersError">
+                            {{ formattersError }}
                         </div>
 
                         <SettingsTable
@@ -57,7 +61,8 @@
                                 loading ||
                                 deleteLoading ||
                                 statusLoading ||
-                                standardConfigLoading
+                                filtersLoading ||
+                                formattersLoading
                             "
                             :route="CONNECTION_CONFIGURATIONS_ROUTE"
                             item-identifier-key="id"
@@ -89,12 +94,13 @@ import SettingsFilters from "@/components/views/seb-server/settings-navigation/c
 import SettingsTable from "@/components/views/seb-server/settings-navigation/components/SettingsTable/SettingsTable.vue";
 
 import { useServerSettingsTable } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useServerSettingsTable.ts";
-import { useSettingsTableFilterConfig } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableFilterConfig.ts";
 import { useConnectionConfigurationsTableHeaders } from "@/components/views/seb-server/settings-navigation/connection-configuration/connection-configurations/composables/useConnectionConfigurationsTableHeaders.ts";
 import { useConnectionConfigurationsStore } from "@/components/views/seb-server/settings-navigation/connection-configuration/connection-configurations/store/connectionConfigurationsStore.ts";
 import { useConnectionConfigurations } from "@/components/views/seb-server/settings-navigation/connection-configuration/connection-configurations/api/useConnectionConfigurations.ts";
 import { useDeleteConnectionConfiguration } from "@/components/views/seb-server/settings-navigation/connection-configuration/connection-configurations/api/useDeleteConnectionConfiguration.ts";
 import { useToggleConnectionConfigurationStatus } from "@/components/views/seb-server/settings-navigation/connection-configuration/connection-configurations/api/useToggleConnectionConfigurationStatus.ts";
+import { useSettingsTableFilters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableFilters.ts";
+import { useSettingsTableCellFormatters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableCellFormatters.ts";
 
 const connectionConfigurationsStore = useConnectionConfigurationsStore();
 const connectionConfigurationTableHeaders =
@@ -143,14 +149,21 @@ const {
 
 const {
     filters,
-    cellFormatters,
-    loading: standardConfigLoading,
-    error: standardConfigError,
+    loading: filtersLoading,
+    error: filtersError,
     filtersReady,
     filtersRenderKey,
-} = useSettingsTableFilterConfig({
+} = useSettingsTableFilters({
     headers: connectionConfigurationTableHeaders,
     translationPrefix: "connectionConfigurations.connectionConfigurationsPage",
+});
+
+const {
+    cellFormatters,
+    loading: formattersLoading,
+    error: formattersError,
+} = useSettingsTableCellFormatters({
+    headers: connectionConfigurationTableHeaders,
 });
 
 watch(

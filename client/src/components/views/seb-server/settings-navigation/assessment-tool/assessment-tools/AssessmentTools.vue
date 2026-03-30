@@ -43,8 +43,12 @@
                             {{ statusError }}
                         </div>
 
-                        <div v-else-if="standardConfigError">
-                            {{ standardConfigError }}
+                        <div v-else-if="filtersError">
+                            {{ filtersError }}
+                        </div>
+
+                        <div v-else-if="formattersError">
+                            {{ formattersError }}
                         </div>
 
                         <SettingsTable
@@ -58,7 +62,8 @@
                                 loading ||
                                 deleteLoading ||
                                 statusLoading ||
-                                standardConfigLoading
+                                formattersLoading ||
+                                filtersLoading
                             "
                             :route="ASSESSMENT_TOOL_CONNECTIONS_ROUTE"
                             item-identifier-key="id"
@@ -88,13 +93,13 @@ import SettingsFilters from "@/components/views/seb-server/settings-navigation/c
 import SettingsTable from "@/components/views/seb-server/settings-navigation/components/SettingsTable/SettingsTable.vue";
 
 import { useServerSettingsTable } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useServerSettingsTable.ts";
-import { useSettingsTableFilterConfig } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableFilterConfig.ts";
 import { useAssessmentToolsStore } from "@/components/views/seb-server/settings-navigation/assessment-tool/assessment-tools/store/assessmentToolsStore.ts";
 import { useAssessmentToolsTableHeaders } from "@/components/views/seb-server/settings-navigation/assessment-tool/assessment-tools/composables/useAssessmentToolsTableHeaders.ts";
 import { useAssessmentTools } from "@/components/views/seb-server/settings-navigation/assessment-tool/assessment-tools/api/useAssessmentTools.ts";
 import { useDeleteAssessmentTool } from "@/components/views/seb-server/settings-navigation/assessment-tool/assessment-tools/api/useDeleteAssessmentTool.ts";
 import { useToggleAssessmentToolStatus } from "@/components/views/seb-server/settings-navigation/assessment-tool/assessment-tools/api/useToggleAssessmentTool.ts";
-import { LMSTypeEnum } from "@/models/seb-server/assessmentTool.ts";
+import { useSettingsTableFilters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableFilters.ts";
+import { useSettingsTableCellFormatters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableCellFormatters.ts";
 
 const assessmentToolStore = useAssessmentToolsStore();
 const assessmentToolTableHeaders = useAssessmentToolsTableHeaders();
@@ -129,7 +134,7 @@ const {
             options,
             searchField,
             filters.status,
-            LMSTypeEnum.OPEN_EDX,
+            null,
             filters.institutionId,
         );
     },
@@ -143,14 +148,21 @@ const {
 
 const {
     filters,
-    cellFormatters,
-    loading: standardConfigLoading,
-    error: standardConfigError,
+    loading: filtersLoading,
+    error: filtersError,
     filtersReady,
     filtersRenderKey,
-} = useSettingsTableFilterConfig({
+} = useSettingsTableFilters({
     headers: assessmentToolTableHeaders,
     translationPrefix: "assessmentToolConnections.assessmentToolsPage",
+});
+
+const {
+    cellFormatters,
+    loading: formattersLoading,
+    error: formattersError,
+} = useSettingsTableCellFormatters({
+    headers: assessmentToolTableHeaders,
 });
 
 watch(

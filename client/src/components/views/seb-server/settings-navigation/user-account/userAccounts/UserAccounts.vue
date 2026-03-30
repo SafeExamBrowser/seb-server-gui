@@ -43,8 +43,12 @@
                             {{ statusError }}
                         </div>
 
-                        <div v-else-if="standardConfigError">
-                            {{ standardConfigError }}
+                        <div v-else-if="filtersError">
+                            {{ filtersError }}
+                        </div>
+
+                        <div v-else-if="formattersError">
+                            {{ formattersError }}
                         </div>
 
                         <SettingsTable
@@ -58,7 +62,8 @@
                                 loading ||
                                 deleteLoading ||
                                 statusLoading ||
-                                standardConfigLoading
+                                filtersLoading ||
+                                formattersLoading
                             "
                             :route="USER_ACCOUNTS_ROUTE"
                             item-identifier-key="uuid"
@@ -93,7 +98,8 @@ import { useDeleteUserAccount } from "@/components/views/seb-server/settings-nav
 import { useToggleUserAccountStatus } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/api/useToggleUserAccountStatus.ts";
 import { useUserAccountsTableHeaders } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/composables/useUserAccountsTableHeaders.ts";
 import { useServerSettingsTable } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useServerSettingsTable.ts";
-import { useSettingsTableFilterConfig } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableFilterConfig.ts";
+import { useSettingsTableFilters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableFilters.ts";
+import { useSettingsTableCellFormatters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableCellFormatters.ts";
 
 const userAccountStore = useUserAccountsStore();
 const userAccountsTableHeaders = useUserAccountsTableHeaders();
@@ -140,14 +146,21 @@ const {
 
 const {
     filters,
-    cellFormatters,
-    loading: standardConfigLoading,
-    error: standardConfigError,
+    loading: filtersLoading,
+    error: filtersError,
     filtersReady,
     filtersRenderKey,
-} = useSettingsTableFilterConfig({
+} = useSettingsTableFilters({
     headers: userAccountsTableHeaders,
     translationPrefix: "userAccount.userAccountPage",
+});
+
+const {
+    cellFormatters,
+    loading: formattersLoading,
+    error: formattersError,
+} = useSettingsTableCellFormatters({
+    headers: userAccountsTableHeaders,
 });
 
 watch(

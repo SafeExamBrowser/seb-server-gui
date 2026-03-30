@@ -17,6 +17,7 @@ export const useUserAccountsTableHeaders = () => {
                 key: "institutionId",
                 width: "6%",
                 sortable: true,
+                translateType: "institutionName",
             });
         }
 

@@ -17,6 +17,7 @@ export const useAssessmentToolsTableHeaders = () => {
                 key: "institutionId",
                 width: "20%",
                 sortable: true,
+                translateType: "institutionName",
             });
         }
 
@@ -33,9 +34,10 @@ export const useAssessmentToolsTableHeaders = () => {
                 title: translate(
                     "assessmentToolConnections.assessmentToolsPage.assessmentToolTableHeaders.tableHeaderAssessmentToolType",
                 ),
-                key: "assessmentToolType",
+                key: "lmsType",
                 width: "20%",
                 sortable: false,
+                translateType: "assessmentToolType",
             },
             {
                 title: translate(
