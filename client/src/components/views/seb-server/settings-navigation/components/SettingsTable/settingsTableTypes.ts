@@ -1,3 +1,4 @@
+// if you have a type that you need to have translated, add it here and add logic to formatterMap in useSettingsTableCellFormatter.ts
 export type HeaderTranslateType =
     | "institutionName"
     | "dateTime"
