@@ -4,7 +4,6 @@
         :bread-crumb="[
             {
                 label: $t('titles.examTemplateList'),
-                link: constants.EXAM_TEMPLATE_ROUTE,
             },
         ]"
     >
@@ -16,5 +15,4 @@
 
 <script setup lang="ts">
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
-import * as constants from "@/utils/constants";
 </script>
