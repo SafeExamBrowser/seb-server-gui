@@ -63,10 +63,6 @@ export const CREATE_TEMPLATE_ROUTE = TEMPLATE_ROUTE + "/create";
 export const CREATE_SEB_CLIENT_TEMPLATE_ROUTE =
     CREATE_TEMPLATE_ROUTE + "/seb-client";
 
-// exam templates
-export const EXAM_TEMPLATE_ROUTE = "/exam-template";
-export const CREATE_EXAM_TEMPLATE_ROUTE = EXAM_TEMPLATE_ROUTE + "/create";
-
 export const QUIZ_IMPORT_ROUTE: string = "/quiz-import";
 
 type I18nLike = { t: (key: string, ...args: unknown[]) => string };

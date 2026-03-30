@@ -5,6 +5,7 @@ import {
 } from "vue-router";
 import * as constants from "@/utils/constants";
 import * as spConstants from "@/utils/sp-constants";
+import { getRouteName } from "@/router/routeNames";
 import i18n from "@/i18n";
 import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
 import { UserAccount } from "@/models/userAccount.ts";
@@ -263,8 +264,8 @@ const routes: Array<RouteRecordRaw> = [
 
             // ---------- exam templates ----------
             {
-                path: constants.CREATE_EXAM_TEMPLATE_ROUTE,
-                name: "CreateExamTemplateWizard",
+                path: "/exam-template/create",
+                name: getRouteName("CreateExamTemplateWizard"),
                 component: () =>
                     import(
                         "@/components/views/seb-server/exam-template/wizard/CreateExamTemplateWizard.vue"
@@ -272,8 +273,8 @@ const routes: Array<RouteRecordRaw> = [
                 meta: { titleKey: "titles.createTemplateExam" },
             },
             {
-                path: constants.EXAM_TEMPLATE_ROUTE,
-                name: "ExamTemplateList",
+                path: "/exam-template",
+                name: getRouteName("ExamTemplateList"),
                 component: () =>
                     import(
                         "@/components/views/seb-server/exam-template/list/ExamTemplateList.vue"

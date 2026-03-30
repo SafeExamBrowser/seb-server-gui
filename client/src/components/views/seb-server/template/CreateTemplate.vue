@@ -147,13 +147,13 @@
 
 <script setup lang="ts">
 import { translate } from "@/utils/generalUtils";
-import { navigateTo } from "@/router/navigation";
+import { navigateTo, navigateToRoute } from "@/router/navigation";
 import * as constants from "@/utils/constants";
 
 const goToSebClientCreation = () =>
     navigateTo(constants.CREATE_SEB_CLIENT_TEMPLATE_ROUTE);
 const goToExamTemplateCreation = () =>
-    navigateTo(constants.CREATE_EXAM_TEMPLATE_ROUTE);
+    navigateToRoute("CreateExamTemplateWizard");
 </script>
 
 <style scoped>

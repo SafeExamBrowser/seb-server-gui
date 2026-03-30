@@ -4,7 +4,7 @@
         :bread-crumb="[
             {
                 label: $t('titles.createTemplate'),
-                link: constants.CREATE_EXAM_TEMPLATE_ROUTE,
+                link: resolveRoutePath('CreateExamTemplateWizard'),
             },
             { label: store.currentStep.title },
         ]"
@@ -38,13 +38,12 @@
 <script setup lang="ts">
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import StepperVertical from "@/components/widgets/stepperVertical/StepperVertical.vue";
-import * as constants from "@/utils/constants";
 import { stepComponents } from "@/components/views/seb-server/exam-template/wizard/types";
 import { useCreateExamTemplateStore } from "./composables/store/useCreateExamTemplateStore";
 import { useCreateExamTemplate } from "./composables/api/useCreateExamTemplate";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { watchEffect } from "vue";
-import { navigateTo } from "@/router/navigation";
+import { navigateToRoute, resolveRoutePath } from "@/router/navigation";
 
 const {
     create: createExamTemplate,
@@ -62,7 +61,7 @@ watchEffect(() => {
 
     store.$reset();
 
-    navigateTo(constants.EXAM_TEMPLATE_ROUTE);
+    navigateToRoute("ExamTemplateList");
 });
 
 const handleStepperNext = () => {
