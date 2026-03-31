@@ -2,14 +2,31 @@ import * as apiService from "@/services/apiService";
 import { SebClientConnection } from "@/models/seb-server/clientConnectionList";
 
 const baseUrl = "/seb-client-connection" as const;
+const chunkSize = 200;
 
-// TODO @andreas: fix this
-// Note: This functions correctly but gives a problem when the modelIds array is too big for URL
-// Check that if modelIds is too big and fetch it in chunks if so. This would be completely transparent and do not change signature of this call
 export const getClientConnectionList = async (
     modelIds: number[],
-): Promise<SebClientConnection[]> =>
-    (
+): Promise<SebClientConnection[]> => {
+    // Note: if we have more then 100 model ids to send, we chunk up the request into several calls
+    if (modelIds.length > 100) {
+        let result: SebClientConnection[] = [];
+        for (let i = 0; i < modelIds.length; i += chunkSize) {
+            const chunk = modelIds.slice(i, i + chunkSize);
+            const res = await apiService.getRequest({
+                url: `${baseUrl}/list`,
+                options: {
+                    _authType: "seb",
+                    params: { modelIds: chunk.join(",") },
+                },
+            });
+
+            result = result.concat(res.data);
+        }
+
+        return result;
+    }
+
+    return (
         await apiService.getRequest({
             url: `${baseUrl}/list`,
             options: {
@@ -18,3 +35,4 @@ export const getClientConnectionList = async (
             },
         })
     ).data;
+};

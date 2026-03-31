@@ -4,26 +4,20 @@
         data-testid="cancel-button"
         rounded="sm"
         variant="outlined"
-        @click="onClearSearch"
+        @click="emit('click')"
     >
-        {{ translate("general.cancelButton") }}
+        {{ translate(text) }}
     </v-btn>
 </template>
 
 <script setup lang="ts">
 import { translate } from "@/utils/generalUtils.ts";
-import type { BaseSettingsStoreView } from "@/components/views/seb-server/settings-navigation/store/storeContract.ts";
 
-const props = defineProps<{
-    store: BaseSettingsStoreView<unknown>;
+defineProps<{
+    text: string;
 }>();
 
 const emit = defineEmits<{
     click: [];
 }>();
-
-function onClearSearch() {
-    props.store.resetSearchState();
-    emit("click");
-}
 </script>
