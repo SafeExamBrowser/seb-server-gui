@@ -8,7 +8,7 @@
         ]"
     >
         <template #PanelMain>
-            <LoadingFallbackComponent :loading="isLoading" :error="error">
+            <LoadingFallbackComponent :loading="isLoading" :errors="errors">
                 <ExamTemplateTable :headers="headers" :items="examTemplates" />
             </LoadingFallbackComponent>
         </template>
@@ -19,11 +19,12 @@
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import ExamTemplateTable from "./components/ExamTemplateTable.vue";
 import { useExamTemplateList } from "./composables/useExamTemplateList";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 
 const {
     examTemplates,
     headers,
     loading: isLoading,
-    error,
+    errors,
 } = useExamTemplateList();
 </script>

@@ -10,6 +10,10 @@ export const useExamTemplateList = () => {
         fetchData,
     } = useExamTemplates();
 
+    const errors = computed(() => {
+        return [error.value].filter((error) => error !== undefined);
+    });
+
     const examTemplates = computed(
         () => examTemplatesData.value?.content ?? [],
     );
@@ -44,7 +48,7 @@ export const useExamTemplateList = () => {
 
     return {
         loading: isLoading,
-        error,
+        errors,
         examTemplates,
         headers,
     };
