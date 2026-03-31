@@ -16,7 +16,10 @@
             <ActionButton
                 icon="mdi-pencil"
                 :title="$t('general.editButton')"
-                @click="handleEdit(item)"
+                :to="{
+                    name: getRouteName('ExamTemplateDetail'),
+                    params: { examTemplateId: item.id },
+                }"
             />
             <ActionButton
                 icon="mdi-content-copy"
@@ -36,6 +39,7 @@ import { ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
 import ActionButton from "@/components/views/seb-server/exam-template/list/components/ActionButton.vue";
 import ActionButtonDelete from "@/components/views/seb-server/exam-template/list/components/ActionButtonDelete.vue";
 import { tableOptionsSchema, type TableOptions } from "../types";
+import { getRouteName } from "@/router/routeNames";
 
 const emptyValue = "–";
 
@@ -70,11 +74,6 @@ const formatExamType = (item: ExamTemplate) => {
     }
 
     return i18n.global.t(item.examType);
-};
-
-const handleEdit = (item: ExamTemplate) => {
-    // TODO @alain: navigate to edit page
-    console.log("edit", item.name, item.id);
 };
 
 const handleCopy = (item: ExamTemplate) => {
