@@ -16,8 +16,14 @@
                 </v-row>
 
                 <v-row class="justify-end pa-6 pt-5 pb-0">
-                    <CancelButton :store="store" @click="emit('clear')" />
-                    <SearchButton :store="store" @click="emit('search')" />
+                    <CancelButton
+                        :text="'general.cancelButton'"
+                        @click="emit('clear')"
+                    />
+                    <ConfirmButton
+                        :text="'general.searchButton'"
+                        @click="emit('search')"
+                    />
                 </v-row>
             </v-col>
         </v-row>
@@ -26,9 +32,9 @@
 
 <script setup lang="ts">
 import SearchBox from "@/components/views/seb-server/settings-navigation/widgets/SearchBox.vue";
-import SearchButton from "@/components/views/seb-server/settings-navigation/widgets/SearchButton.vue";
 import CancelButton from "@/components/views/seb-server/settings-navigation/widgets/CancelButton.vue";
 import SearchSectionTitle from "@/components/views/seb-server/settings-navigation/widgets/SearchSectionTitle.vue";
+import ConfirmButton from "@/components/views/seb-server/settings-navigation/widgets/ConfirmButton.vue";
 import type { BaseSettingsStoreView } from "@/components/views/seb-server/settings-navigation/store/storeContract.ts";
 
 defineProps<{
