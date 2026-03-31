@@ -5,6 +5,10 @@
                 text="userAccount.userAccountPage.addUserContext"
                 :route="CREATE_USER_ACCOUNTS_ROUTE"
             />
+            <AddButton
+                text="userAccount.userAccountPage.addUserContext"
+                :route="'/user-account/create'"
+            />
         </template>
 
         <template #PanelMain>
@@ -83,15 +87,15 @@ import SettingsFilters from "@/components/views/seb-server/settings-navigation/c
 import SettingsTable from "@/components/views/seb-server/settings-navigation/components/SettingsTable/SettingsTable.vue";
 
 import { useUserAccountsStore } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/store/userAccountsStore.ts";
-import { useUserAccounts } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/api/useUserAccounts.ts";
-import { useDeleteUserAccount } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/api/useDeleteUserAccount.ts";
-import { useToggleUserAccountStatus } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/api/useToggleUserAccountStatus.ts";
+import { useUserAccounts } from "@/components/views/seb-server/settings-navigation/user-account/api/useUserAccounts.ts";
+import { useToggleUserAccountStatus } from "@/components/views/seb-server/settings-navigation/user-account/api/useToggleUserAccountStatus.ts";
 import { useUserAccountsTableHeaders } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/composables/useUserAccountsTableHeaders.ts";
 import { useServerSettingsTable } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useServerSettingsTable.ts";
 import { useSettingsTableFilters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableFilters.ts";
 import { useSettingsTableCellFormatters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableCellFormatters.ts";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import type { UserAccountResponse } from "@/models/userAccount";
+import { useDeleteUserAccount } from "@/components/views/seb-server/settings-navigation/user-account/api/useDeleteUserAccount.ts";
 
 const userAccountStore = useUserAccountsStore();
 const userAccountsTableHeaders = useUserAccountsTableHeaders();

@@ -153,7 +153,6 @@ const routes: Array<RouteRecordRaw> = [
                     ),
                 meta: { titleKey: "titles.editUserAccount" },
             },
-
             {
                 path: constants.USER_ACCOUNTS_ROUTE,
                 name: "UserAccounts",
@@ -164,12 +163,24 @@ const routes: Array<RouteRecordRaw> = [
                 meta: { titleKey: "titles.userAccounts" },
             },
 
+            //create user account
             {
                 path: constants.CREATE_USER_ACCOUNTS_ROUTE,
-                name: "CreateUserAccount",
+                name: "CreateUserAccounts",
                 component: () =>
                     import(
                         "@/components/views/seb-server/accounts/CreateUserAccount.vue"
+                    ),
+                meta: { titleKey: "titles.createUserAccount" },
+            },
+
+            // todo @Andrei refactor path
+            {
+                path: "user-account/create",
+                name: getRouteName("CreateUserAccount"),
+                component: () =>
+                    import(
+                        "@/components/views/seb-server/settings-navigation/user-account/createUserAccount/CreateUserAccount.vue"
                     ),
                 meta: { titleKey: "titles.createUserAccount" },
             },
@@ -255,7 +266,7 @@ const routes: Array<RouteRecordRaw> = [
                     ),
                 meta: { titleKey: "titles.createTemplate" },
             },
-
+            // this is alain change
             // ---------- exam templates ----------
             {
                 path: "/exam-template/create",

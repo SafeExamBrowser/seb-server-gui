@@ -564,15 +564,15 @@
         "createUserAccountPage": {
             "title": "New User Account",
             "labels": {
-                "institutionLabel": "Institution *",
-                "usernameLabel": "Username *",
-                "nameLabel": "Name *",
-                "surnameLabel": "Last Name*",
+                "institutionLabel": "Institution",
+                "usernameLabel": "Username",
+                "nameLabel": "Name",
+                "surnameLabel": "Last Name",
                 "emailLabel": "Email",
-                "timeZoneLabel": "Time Zone *",
-                "passwordLabel": "Password *",
-                "confirmPasswordLabel": "Confirm Password *",
-                "selectRolesLabel": "User Role *"
+                "timeZoneLabel": "Time Zone",
+                "passwordLabel": "Password",
+                "confirmPasswordLabel": "Confirm Password",
+                "selectRolesLabel": "User Role"
             },
             "info": {
                 "rolesSelectionInfo": "Please select at least one Role",
