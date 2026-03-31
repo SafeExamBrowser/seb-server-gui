@@ -60,6 +60,7 @@
         "viewButton": "View",
         "createButton": "Create",
         "deleteButton": "Delete",
+        "copyButton": "Copy",
         "noData": "No Data Available",
         "loading": "Loading",
         "true": "Yes",

@@ -15,7 +15,7 @@
             />
             <ExamTemplateActionButton
                 icon="mdi-content-copy"
-                :title="$t('general.TODO')"
+                :title="$t('general.copyButton')"
                 :item="item"
                 @click="handleCopy(item)"
             />
