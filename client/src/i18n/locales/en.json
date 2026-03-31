@@ -60,6 +60,7 @@
         "viewButton": "View",
         "createButton": "Create",
         "deleteButton": "Delete",
+        "copyButton": "Copy",
         "noData": "No Data Available",
         "loading": "Loading",
         "true": "Yes",
@@ -430,6 +431,20 @@
                     }
                 }
             }
+        }
+    },
+
+    "examTemplateList": {
+        "headers": {
+            "name": "Name",
+            "description": "Description",
+            "examType": "Exam Type",
+            "actions": "Actions"
+        },
+        "deleteDialog": {
+            "title": "Delete Exam Template",
+            "infoText": "This will permanently delete the exam template.",
+            "questionText": "Are you sure you want to delete this exam template?"
         }
     },
 
@@ -1822,7 +1837,8 @@
         "exams": "Exams",
         "examsOverview": "Exams Overview",
         "examDetails": "Exam Details",
-        "examTemplateList": "Exam Template List",
+        "examTemplateList": "Exam Templates",
+        "examTemplateDetail": "Exam Template",
         "monitoring": "Monitoring",
         "overview": "Overview",
         "clientList": "Client List",

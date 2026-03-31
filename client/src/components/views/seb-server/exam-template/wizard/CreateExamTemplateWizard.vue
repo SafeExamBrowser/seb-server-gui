@@ -61,7 +61,7 @@ watchEffect(() => {
 
     store.$reset();
 
-    navigateToRoute("ExamTemplateList");
+    navigateToRoute({ name: "ExamTemplateList" });
 });
 
 const handleStepperNext = () => {
