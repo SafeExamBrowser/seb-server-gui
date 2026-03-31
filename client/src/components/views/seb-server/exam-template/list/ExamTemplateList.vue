@@ -9,7 +9,11 @@
     >
         <template #PanelMain>
             <LoadingFallbackComponent :loading="isLoading" :errors="errors">
-                <ExamTemplateTable :headers="headers" :items="examTemplates" />
+                <ExamTemplateTable
+                    :headers="headers"
+                    :items="examTemplates"
+                    @changed="refetchData"
+                />
             </LoadingFallbackComponent>
         </template>
     </BasicPage>
@@ -26,5 +30,6 @@ const {
     headers,
     loading: isLoading,
     errors,
+    refetchData,
 } = useExamTemplateList();
 </script>

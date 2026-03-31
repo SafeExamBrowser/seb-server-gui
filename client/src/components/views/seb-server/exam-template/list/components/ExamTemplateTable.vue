@@ -7,24 +7,17 @@
             {{ formatExamType(item) }}
         </template>
         <template #[`item.actions`]="{ item }">
-            <ExamTemplateActionButton
+            <ActionButton
                 icon="mdi-pencil"
                 :title="$t('general.editButton')"
-                :item="item"
                 @click="handleEdit(item)"
             />
-            <ExamTemplateActionButton
+            <ActionButton
                 icon="mdi-content-copy"
                 :title="$t('general.copyButton')"
-                :item="item"
                 @click="handleCopy(item)"
             />
-            <ExamTemplateActionButton
-                icon="mdi-delete"
-                :title="$t('general.deleteButton')"
-                :item="item"
-                @click="handleDelete(item)"
-            />
+            <ActionButtonDelete :item="item" @changed="emit('changed')" />
         </template>
     </v-data-table>
 </template>
@@ -34,9 +27,14 @@ import { ExamTemplate } from "@/models/seb-server/examTemplate";
 import { DataTableHeader } from "vuetify";
 import i18n from "@/i18n";
 import { ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
-import ExamTemplateActionButton from "./ExamTemplateActionButton.vue";
+import ActionButton from "@/components/views/seb-server/exam-template/list/components/ActionButton.vue";
+import ActionButtonDelete from "@/components/views/seb-server/exam-template/list/components/ActionButtonDelete.vue";
 
 const emptyValue = "–";
+
+const emit = defineEmits<{
+    (e: "changed"): void;
+}>();
 
 defineProps<{
     items: ExamTemplate[];
@@ -68,10 +66,5 @@ const handleEdit = (item: ExamTemplate) => {
 const handleCopy = (item: ExamTemplate) => {
     // TODO @alain: copy via server
     console.log("copy", item.name, item.id);
-};
-
-const handleDelete = (item: ExamTemplate) => {
-    // TODO @alain: delete on server
-    console.log("delete", item.name, item.id);
 };
 </script>

@@ -12,12 +12,10 @@
 </template>
 
 <script setup lang="ts">
-import { ExamTemplate } from "@/models/seb-server/examTemplate";
 import { IconValue } from "vuetify/lib/composables/icons.mjs";
 
 defineProps<{
     icon: IconValue;
-    item: ExamTemplate;
     title: string;
 }>();
 

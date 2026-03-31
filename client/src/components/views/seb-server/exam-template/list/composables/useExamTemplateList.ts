@@ -50,5 +50,6 @@ export const useExamTemplateList = () => {
         errors,
         examTemplates,
         headers,
+        refetchData: fetchData,
     };
 };
