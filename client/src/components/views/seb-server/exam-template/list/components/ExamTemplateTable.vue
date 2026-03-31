@@ -12,7 +12,9 @@
             {{ formatDescription(item) }}
         </template>
         <template #[`item.examType`]="{ item }">
-            {{ formatExamType(item) }}
+            <v-chip size="small" variant="tonal">
+                {{ formatExamType(item) }}
+            </v-chip>
         </template>
         <template #[`item.actions`]="{ item }">
             <ActionButton
