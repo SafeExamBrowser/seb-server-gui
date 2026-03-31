@@ -14,7 +14,6 @@ export const useExamTemplateList = () => {
         () => examTemplatesData.value?.content ?? [],
     );
 
-    // TODO @alain: exam type value: use enum translation
     // TODO @alain: add correct action content
     const headers = [
         {
