@@ -136,16 +136,6 @@ const routes: Array<RouteRecordRaw> = [
             },
 
             {
-                path: constants.NEW_USER_ACCOUNTS_ROUTE,
-                name: "NewUserAccounts",
-                component: () =>
-                    import(
-                        "@/components/views/seb-server/settings-navigation/user-account/NewUserAccountsPage.vue"
-                    ),
-                meta: { titleKey: "titles.userAccounts" },
-            },
-
-            {
                 path: constants.PROFILE_ROUTE,
                 name: "ProfileRoute",
                 component: () =>
@@ -155,7 +145,7 @@ const routes: Array<RouteRecordRaw> = [
                 meta: { titleKey: "titles.profile" },
             },
             {
-                path: constants.EDIT_USER_ACCOUNT + "/:userUuid",
+                path: constants.USER_ACCOUNTS_ROUTE + "/:userUuid",
                 name: "EditUserAccount",
                 component: () =>
                     import(
@@ -163,15 +153,17 @@ const routes: Array<RouteRecordRaw> = [
                     ),
                 meta: { titleKey: "titles.editUserAccount" },
             },
+
             {
                 path: constants.USER_ACCOUNTS_ROUTE,
                 name: "UserAccounts",
                 component: () =>
                     import(
-                        "@/components/views/seb-server/accounts/UserAccounts.vue"
+                        "@/components/views/seb-server/settings-navigation/user-account/userAccounts/UserAccounts.vue"
                     ),
                 meta: { titleKey: "titles.userAccounts" },
             },
+
             {
                 path: constants.CREATE_USER_ACCOUNTS_ROUTE,
                 name: "CreateUserAccount",
@@ -183,15 +175,17 @@ const routes: Array<RouteRecordRaw> = [
             },
 
             // ---------- assessment tools ----------
+
             {
                 path: constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE,
-                name: "AssessmentToolConnections",
+                name: "AssessmentTools",
                 component: () =>
                     import(
-                        "@/components/views/seb-server/assessment-tool/AssessmentTools.vue"
+                        "@/components/views/seb-server/settings-navigation/assessment-tool/assessment-tools/AssessmentTools.vue"
                     ),
                 meta: { titleKey: "titles.assessmentToolConnections" },
             },
+
             {
                 path: constants.CREATE_ASSESSMENT_TOOL_CONNECTION_ROUTE,
                 name: "CreateAssessmentToolConnection",
@@ -217,7 +211,7 @@ const routes: Array<RouteRecordRaw> = [
                 name: "ConnectionConfigurations",
                 component: () =>
                     import(
-                        "@/components/views/seb-server/connection-configuration/ConnectionConfigurations.vue"
+                        "@/components/views/seb-server/settings-navigation/connection-configuration/connection-configurations/ConnectionConfigurations.vue"
                     ),
                 meta: { titleKey: "titles.connectionConfigurations" },
             },
@@ -246,7 +240,7 @@ const routes: Array<RouteRecordRaw> = [
                 name: "Certificates",
                 component: () =>
                     import(
-                        "@/components/views/seb-server/certificates/CertificatesMain.vue"
+                        "@/components/views/seb-server/settings-navigation/certificate/certificates/CertificatesList.vue"
                     ),
                 meta: { titleKey: "titles.certificates" },
             },

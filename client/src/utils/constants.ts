@@ -20,9 +20,8 @@ export const REGISTER_ROUTE: string = "/register";
 export const HOME_PAGE_ROUTE: string = "/home";
 export const NAVIGATION_OVERVIEW_ROUTE: string = "/navigation-overview";
 export const USER_ACCOUNTS_ROUTE: string = "/user-accounts";
-export const NEW_USER_ACCOUNTS_ROUTE: string = "/new-user-accounts";
 
-export const EDIT_USER_ACCOUNT: string = USER_ACCOUNTS_ROUTE + "/edit-account";
+export const EDIT_USER_ACCOUNT: string = USER_ACCOUNTS_ROUTE;
 export const PROFILE_ROUTE = "/profile-settings";
 
 export const CREATE_USER_ACCOUNTS_ROUTE: string =
@@ -31,7 +30,6 @@ export const EXAM_ROUTE: string = "/exam";
 export const EXAM_DETAILS_ROUTE: string = EXAM_ROUTE;
 
 export const EXAM_LMS_IMPORT_ROUTE: string = EXAM_ROUTE + "/lms";
-export const ACCOUNT_VIEW_ROUTE: string = "/account";
 
 export const MONITORING_ROUTE: string = "/monitoring";
 export const MONITORING_OVERVIEW_ROUTE: string = MONITORING_ROUTE + "/overview";
@@ -43,6 +41,7 @@ export const FINISHED_EXAM_DATA_ROUTE: string = "/finished-exam-data";
 
 export const ASSESSMENT_TOOL_CONNECTIONS_ROUTE: string =
     "/assessment-tool-connections";
+
 export const CREATE_ASSESSMENT_TOOL_CONNECTION_ROUTE: string =
     ASSESSMENT_TOOL_CONNECTIONS_ROUTE + "/create";
 

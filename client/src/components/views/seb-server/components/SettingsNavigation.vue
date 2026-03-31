@@ -74,6 +74,13 @@
                 </v-list-item>
 
                 <v-divider class="section-divider mb-10" />
+
+                <v-divider
+                    v-if="ability.canView(GUIComponent.UserAccounts)"
+                    class="section-divider"
+                />
+
+                <v-divider class="section-divider mb-10" />
             </v-col>
         </v-sheet>
     </v-col>
