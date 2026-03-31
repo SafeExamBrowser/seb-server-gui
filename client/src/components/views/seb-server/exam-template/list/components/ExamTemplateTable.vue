@@ -23,7 +23,7 @@
                 :title="$t('general.copyButton')"
                 @click="handleCopy(item)"
             />
-            <ActionButtonDelete :item="item" @changed="emit('changed')" />
+            <ActionButtonDelete :item="item" @changed="emit('update:items')" />
         </template>
     </v-data-table-server>
 </template>
@@ -40,7 +40,7 @@ import { tableOptionsSchema, type TableOptions } from "../types";
 const emptyValue = "–";
 
 const emit = defineEmits<{
-    (e: "changed"): void;
+    (e: "update:items"): void;
     (e: "update:options", options: TableOptions): void;
 }>();
 
