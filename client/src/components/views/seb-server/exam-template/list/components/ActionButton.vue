@@ -8,7 +8,7 @@
         :title="title"
         :aria-label="title"
         :to="to"
-        @click="emit('click')"
+        @click.stop="emit('click')"
     ></v-btn>
 </template>
 
