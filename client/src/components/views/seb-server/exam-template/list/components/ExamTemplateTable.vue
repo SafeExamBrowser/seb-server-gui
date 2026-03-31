@@ -1,10 +1,12 @@
 <template>
     <v-data-table-server
+        hover
         :headers="headers"
         :items="items"
         :items-length="itemsLength"
         :loading="isLoading"
         @update:options="handleOptionsUpdate"
+        @click:row="handleRowClick"
     >
         <template #[`item.description`]="{ item }">
             {{ formatDescription(item) }}
@@ -16,10 +18,7 @@
             <ActionButton
                 icon="mdi-pencil"
                 :title="$t('general.editButton')"
-                :to="{
-                    name: getRouteName('ExamTemplateDetail'),
-                    params: { examTemplateId: item.id },
-                }"
+                :to="getDetailRoute(item)"
             />
             <ActionButton
                 icon="mdi-content-copy"
@@ -40,6 +39,7 @@ import ActionButton from "@/components/views/seb-server/exam-template/list/compo
 import ActionButtonDelete from "@/components/views/seb-server/exam-template/list/components/ActionButtonDelete.vue";
 import { tableOptionsSchema, type TableOptions } from "../types";
 import { getRouteName } from "@/router/routeNames";
+import { navigateToRoute } from "@/router/navigation";
 
 const emptyValue = "–";
 
@@ -74,6 +74,16 @@ const formatExamType = (item: ExamTemplate) => {
     }
 
     return i18n.global.t(item.examType);
+};
+
+const getDetailRoute = (item: ExamTemplate) => ({
+    name: getRouteName("ExamTemplateDetail"),
+    params: { examTemplateId: item.id },
+});
+
+const handleRowClick = (_event: Event, row: { item: ExamTemplate }) => {
+    const route = getDetailRoute(row.item);
+    navigateToRoute(route.name, route.params);
 };
 
 const handleCopy = (item: ExamTemplate) => {
