@@ -86,15 +86,30 @@ import { useDeleteAssessmentTool } from "@/components/views/seb-server/settings-
 import { useToggleAssessmentToolStatus } from "@/components/views/seb-server/settings-navigation/assessment-tool/assessment-tools/api/useToggleAssessmentTool.ts";
 import { useSettingsTableFilters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableFilters.ts";
 import { useSettingsTableCellFormatters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableCellFormatters.ts";
-import type {
+import {
     AssessmentToolsResponse,
     LMSTypeEnum,
 } from "@/models/seb-server/assessmentTool.ts";
+import { SettingsFilterDefinition } from "@/models/types.ts";
+import { translate } from "@/utils/generalUtils.ts";
 
 const assessmentToolStore = useAssessmentToolsStore();
 const assessmentToolTableHeaders = useAssessmentToolsTableHeaders();
 
 const tableData = ref<AssessmentToolsResponse>();
+
+const lmsTypeFilter = computed<SettingsFilterDefinition[]>(() => [
+    {
+        key: "selectedType",
+        title: translate(
+            "assessmentToolConnections.assessmentToolsPage.filters.assessmentToolTypeFilter",
+        ),
+        options: Object.values(LMSTypeEnum).map((type) => ({
+            value: type,
+            label: translate(`assessmentToolConnections.lmsTypes.${type}`),
+        })),
+    },
+]);
 
 const {
     selectedFilters,
@@ -169,6 +184,7 @@ const {
 const { filters, filtersReady, filtersRenderKey } = useSettingsTableFilters({
     headers: assessmentToolTableHeaders,
     translationPrefix: "assessmentToolConnections.assessmentToolsPage",
+    customFilters: lmsTypeFilter,
 });
 
 const { cellFormatters } = useSettingsTableCellFormatters({
