@@ -6,6 +6,14 @@
         <template #[`item.examType`]="{ item }">
             {{ formatExamType(item) }}
         </template>
+        <template #[`item.actions`]="{ item }">
+            <ExamTemplateActionButton
+                icon="mdi-delete"
+                :title="$t('general.deleteButton')"
+                :item="item"
+                @click="handleDelete(item)"
+            />
+        </template>
     </v-data-table>
 </template>
 
@@ -14,6 +22,7 @@ import { ExamTemplate } from "@/models/seb-server/examTemplate";
 import { DataTableHeader } from "vuetify";
 import i18n from "@/i18n";
 import { ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
+import ExamTemplateActionButton from "./ExamTemplateActionButton.vue";
 
 const emptyValue = "–";
 
@@ -37,5 +46,10 @@ const formatExamType = (item: ExamTemplate) => {
     }
 
     return i18n.global.t(item.examType);
+};
+
+const handleDelete = (item: ExamTemplate) => {
+    // TODO @alain: delete on server
+    console.log("delete", item.name, item.id);
 };
 </script>
