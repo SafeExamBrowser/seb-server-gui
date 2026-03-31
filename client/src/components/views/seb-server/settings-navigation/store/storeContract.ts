@@ -13,10 +13,6 @@ export interface BaseSettingsStore<T> {
     resetSearchState: () => void;
 }
 
-export interface DateFilterStore<T> extends BaseSettingsStore<T> {
-    startDate: Ref<number | null>;
-}
-
 export interface BaseSettingsStoreView<T> {
     searchField: string | null;
     currentPagingOptions: ServerTablePaging | undefined;
@@ -26,8 +22,4 @@ export interface BaseSettingsStoreView<T> {
     clearSearchField: () => void;
     clearSelectedValues: () => void;
     resetSearchState: () => void;
-}
-
-export interface DateFilterStoreView<T> extends BaseSettingsStoreView<T> {
-    startDate: number | null;
 }

@@ -1,10 +1,7 @@
 import { ref, shallowRef } from "vue";
 import type { ServerTablePaging } from "@/models/types";
 import type { APIMessage } from "@/models/seb-server/apiMessages";
-import type {
-    BaseSettingsStore,
-    DateFilterStore,
-} from "@/components/views/seb-server/settings-navigation/store/storeContract.ts";
+import type { BaseSettingsStore } from "@/components/views/seb-server/settings-navigation/store/storeContract.ts";
 
 export function useBaseSettingsStore<T>(): BaseSettingsStore<T> {
     const searchField = ref<string | null>(null);
@@ -39,15 +36,5 @@ export function useBaseSettingsStore<T>(): BaseSettingsStore<T> {
         clearSearchField,
         clearSelectedValues,
         resetSearchState,
-    };
-}
-
-export function useDateFilterSettingsStore<T>(): DateFilterStore<T> {
-    const baseStore = useBaseSettingsStore<T>();
-    const startDate = ref<number | null>(null);
-
-    return {
-        ...baseStore,
-        startDate,
     };
 }
