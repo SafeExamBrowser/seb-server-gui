@@ -25,6 +25,7 @@ export function useSettingsTableFilters(params: UseSettingsTableFiltersParams) {
         headers: params.headers,
         translationPrefix: params.translationPrefix,
         institutionOptions: institutionFilterOptions,
+        customFilters: params.customFilters,
     });
 
     const filtersReady = computed(() => {

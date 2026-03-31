@@ -56,4 +56,7 @@ export type UseSettingsTableCellFormattersParams = {
 export type UseSettingsTableFiltersParams = {
     headers: Ref<SettingsTableHeader[]> | ComputedRef<SettingsTableHeader[]>;
     translationPrefix: string;
+    customFilters?:
+        | Ref<SettingsFilterDefinition[]>
+        | ComputedRef<SettingsFilterDefinition[]>;
 };
