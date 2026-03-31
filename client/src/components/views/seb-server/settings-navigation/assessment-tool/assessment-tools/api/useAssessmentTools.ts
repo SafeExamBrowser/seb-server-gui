@@ -1,53 +1,29 @@
-import { ref } from "vue";
+import type { Ref } from "vue";
+import { useFetch } from "@/composables/useFetch";
 import * as tableUtils from "@/utils/table/tableUtils";
 import type { ServerTablePaging } from "@/models/types";
-import {
+import type {
     AssessmentToolsResponse,
     LMSTypeEnum,
 } from "@/models/seb-server/assessmentTool.ts";
 import { getAssessmentTools } from "@/services/seb-server/assessmentToolService.ts";
 
-export const useAssessmentTools = () => {
-    const data = ref<AssessmentToolsResponse>();
-    const loading = ref(false);
-    const error = ref<string>();
-
-    const fetchAssessmentTools = async (
-        paging: ServerTablePaging,
-        searchField: string | null,
-        selectedStatus: string | null,
-        selectedType: LMSTypeEnum | null,
-        selectedInstitutionId: string | null,
-    ) => {
-        loading.value = true;
-        error.value = undefined;
-
-        try {
-            const response = await getAssessmentTools(
-                tableUtils.assignAssessmentToolSelectPagingOptions(
-                    paging,
-                    selectedStatus,
-                    selectedType,
-                    selectedInstitutionId,
-                    searchField,
-                ),
-            );
-
-            if (!response) {
-                throw new Error("Failed to fetch assessment tools.");
-            }
-            data.value = response;
-        } catch (err) {
-            error.value = err instanceof Error ? err.message : "Unknown error";
-        } finally {
-            loading.value = false;
-        }
-    };
-
-    return {
-        data,
-        loading,
-        error,
-        fetchAssessmentTools,
-    };
+export const useAssessmentTools = (
+    paging: Readonly<Ref<ServerTablePaging>>,
+    searchField: Readonly<Ref<string | null>>,
+    selectedStatus: Readonly<Ref<string | null>>,
+    selectedType: Readonly<Ref<LMSTypeEnum | null>>,
+    selectedInstitutionId: Readonly<Ref<string | null>>,
+) => {
+    return useFetch<AssessmentToolsResponse>(() =>
+        getAssessmentTools(
+            tableUtils.assignAssessmentToolSelectPagingOptions(
+                paging.value,
+                selectedStatus.value,
+                selectedType.value,
+                selectedInstitutionId.value,
+                searchField.value,
+            ),
+        ),
+    );
 };

@@ -18,7 +18,7 @@
                             @clear="onClearSearch"
                         />
                     </v-col>
-                    <v-col cols="12" md="7"> </v-col>
+                    <v-col cols="12" md="7" />
                 </v-row>
 
                 <v-row>
@@ -33,7 +33,7 @@
 
                         <SettingsTable
                             :headers="certificatesTableHeaders"
-                            :items="data?.content ?? []"
+                            :items="tableData?.content ?? []"
                             :total-items="totalItems"
                             :page-count="pageCount"
                             :items-per-page="options.itemsPerPage"
@@ -42,9 +42,9 @@
                             item-identifier-key="alias"
                             translation-key-prefix="certificates"
                             :cell-formatters="cellFormatters"
-                            @update:options="loadItems"
                             :editable="false"
                             :status-changeable="false"
+                            @update:options="loadItems"
                             @delete="removeCertificateFromItem"
                         />
                     </v-col>
@@ -55,6 +55,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref, watch } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import AddButton from "@/components/views/seb-server/settings-navigation/widgets/AddButton.vue";
 import { CERTIFICATES_ROUTE } from "@/utils/constants.ts";
@@ -63,22 +64,15 @@ import SettingsTable from "@/components/views/seb-server/settings-navigation/com
 import { useCertificatesStore } from "@/components/views/seb-server/settings-navigation/certificate/certificates/store/certificatesStore.ts";
 import { useCertificatesTableHeaders } from "@/components/views/seb-server/settings-navigation/certificate/certificates/composables/useCertificateTableHeaders.ts";
 import { useCertificates } from "@/components/views/seb-server/settings-navigation/certificate/certificates/api/useCertificates.ts";
-import { computed, watch } from "vue";
 import { useServerSettingsTable } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useServerSettingsTable.ts";
 import { useDeleteCertificate } from "@/components/views/seb-server/settings-navigation/certificate/certificates/api/useDeleteCertificate.ts";
 import { useSettingsTableCellFormatters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableCellFormatters.ts";
+import type { CertificatesResponse } from "@/models/seb-server/certificate";
 
 const certificatesStore = useCertificatesStore();
 const certificatesTableHeaders = useCertificatesTableHeaders();
 
-const { data, loading, error, fetchCertificates } = useCertificates();
-const pageCount = computed(() => data.value?.number_of_pages ?? 0);
-
-const {
-    removeCertificateFromItem,
-    loading: deleteLoading,
-    error: deleteError,
-} = useDeleteCertificate(data);
+const tableData = ref<CertificatesResponse>();
 
 const {
     selectedFilters,
@@ -89,12 +83,37 @@ const {
     onClearSearch,
 } = useServerSettingsTable(
     certificatesStore,
-    data,
-    async ({ options, searchField }) => {
-        await fetchCertificates(options, searchField);
+    tableData,
+    async () => {
+        await fetchCertificates();
     },
     undefined,
 );
+
+const searchField = computed(() => certificatesStore.searchField ?? null);
+
+const {
+    data: fetchedData,
+    loading,
+    error,
+    fetchData: fetchCertificates,
+} = useCertificates(options, searchField);
+
+watch(
+    fetchedData,
+    (newValue) => {
+        tableData.value = newValue;
+    },
+    { immediate: true },
+);
+
+const pageCount = computed(() => tableData.value?.number_of_pages ?? 0);
+
+const {
+    removeCertificateFromItem,
+    loading: deleteLoading,
+    error: deleteError,
+} = useDeleteCertificate(tableData);
 
 const { cellFormatters } = useSettingsTableCellFormatters({
     headers: certificatesTableHeaders,

@@ -44,7 +44,7 @@
 
                         <SettingsTable
                             :headers="connectionConfigurationTableHeaders"
-                            :items="data?.content ?? []"
+                            :items="tableData?.content ?? []"
                             :total-items="totalItems"
                             :page-count="pageCount"
                             :items-per-page="options.itemsPerPage"
@@ -68,7 +68,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import AddButton from "@/components/views/seb-server/settings-navigation/widgets/AddButton.vue";
 import {
@@ -87,26 +87,13 @@ import { useDeleteConnectionConfiguration } from "@/components/views/seb-server/
 import { useToggleConnectionConfigurationStatus } from "@/components/views/seb-server/settings-navigation/connection-configuration/connection-configurations/api/useToggleConnectionConfigurationStatus.ts";
 import { useSettingsTableFilters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableFilters.ts";
 import { useSettingsTableCellFormatters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableCellFormatters.ts";
+import type { ConnectionConfigurations } from "@/models/seb-server/connectionConfiguration.ts";
 
 const connectionConfigurationsStore = useConnectionConfigurationsStore();
 const connectionConfigurationTableHeaders =
     useConnectionConfigurationsTableHeaders();
 
-const { data, loading, error, fetchConnectionConfigurations } =
-    useConnectionConfigurations();
-const pageCount = computed(() => data.value?.number_of_pages ?? 0);
-
-const {
-    removeConnectionConfigurationFromItem,
-    loading: deleteLoading,
-    error: deleteError,
-} = useDeleteConnectionConfiguration(data);
-
-const {
-    toggleConnectionConfigurationStatusFromItem,
-    loading: statusLoading,
-    error: statusError,
-} = useToggleConnectionConfigurationStatus(data);
+const tableData = ref<ConnectionConfigurations>();
 
 const {
     selectedFilters,
@@ -117,14 +104,9 @@ const {
     onClearSearch,
 } = useServerSettingsTable(
     connectionConfigurationsStore,
-    data,
-    async ({ options, searchField, filters }) => {
-        await fetchConnectionConfigurations(
-            options,
-            searchField,
-            filters.status,
-            filters.institutionId,
-        );
+    tableData,
+    async () => {
+        await fetchConnectionConfigurations();
     },
     undefined,
     {
@@ -132,6 +114,52 @@ const {
         institutionId: null,
     },
 );
+
+const searchField = computed(
+    () => connectionConfigurationsStore.searchField ?? null,
+);
+
+const selectedStatus = computed(
+    () => (selectedFilters.value.status as string | null) ?? null,
+);
+
+const selectedInstitutionId = computed(
+    () => (selectedFilters.value.institutionId as string | null) ?? null,
+);
+
+const {
+    data: fetchedData,
+    loading,
+    error,
+    fetchData: fetchConnectionConfigurations,
+} = useConnectionConfigurations(
+    options,
+    searchField,
+    selectedStatus,
+    selectedInstitutionId,
+);
+
+watch(
+    fetchedData,
+    (newValue) => {
+        tableData.value = newValue;
+    },
+    { immediate: true },
+);
+
+const pageCount = computed(() => tableData.value?.number_of_pages ?? 0);
+
+const {
+    removeConnectionConfigurationFromItem,
+    loading: deleteLoading,
+    error: deleteError,
+} = useDeleteConnectionConfiguration(tableData);
+
+const {
+    toggleConnectionConfigurationStatusFromItem,
+    loading: statusLoading,
+    error: statusError,
+} = useToggleConnectionConfigurationStatus(tableData);
 
 const { filters, filtersReady, filtersRenderKey } = useSettingsTableFilters({
     headers: connectionConfigurationTableHeaders,

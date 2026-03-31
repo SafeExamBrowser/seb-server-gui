@@ -45,7 +45,7 @@
 
                         <SettingsTable
                             :headers="assessmentToolTableHeaders"
-                            :items="data?.content ?? []"
+                            :items="tableData?.content ?? []"
                             :total-items="totalItems"
                             :page-count="pageCount"
                             :items-per-page="options.itemsPerPage"
@@ -67,7 +67,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import AddButton from "@/components/views/seb-server/settings-navigation/widgets/AddButton.vue";
 import {
@@ -86,24 +86,15 @@ import { useDeleteAssessmentTool } from "@/components/views/seb-server/settings-
 import { useToggleAssessmentToolStatus } from "@/components/views/seb-server/settings-navigation/assessment-tool/assessment-tools/api/useToggleAssessmentTool.ts";
 import { useSettingsTableFilters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableFilters.ts";
 import { useSettingsTableCellFormatters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableCellFormatters.ts";
+import type {
+    AssessmentToolsResponse,
+    LMSTypeEnum,
+} from "@/models/seb-server/assessmentTool.ts";
 
 const assessmentToolStore = useAssessmentToolsStore();
 const assessmentToolTableHeaders = useAssessmentToolsTableHeaders();
 
-const { data, loading, error, fetchAssessmentTools } = useAssessmentTools();
-const pageCount = computed(() => data.value?.number_of_pages ?? 0);
-
-const {
-    removeAssessmentToolFromItem,
-    loading: deleteLoading,
-    error: deleteError,
-} = useDeleteAssessmentTool(data);
-
-const {
-    toggleAssessmentToolStatusFromItem,
-    loading: statusLoading,
-    error: statusError,
-} = useToggleAssessmentToolStatus(data);
+const tableData = ref<AssessmentToolsResponse>();
 
 const {
     selectedFilters,
@@ -114,15 +105,9 @@ const {
     onClearSearch,
 } = useServerSettingsTable(
     assessmentToolStore,
-    data,
-    async ({ options, searchField, filters }) => {
-        await fetchAssessmentTools(
-            options,
-            searchField,
-            filters.status,
-            null,
-            filters.institutionId,
-        );
+    tableData,
+    async () => {
+        await fetchAssessmentTools();
     },
     undefined,
     {
@@ -131,6 +116,55 @@ const {
         selectedType: null,
     },
 );
+
+const searchField = computed(() => assessmentToolStore.searchField ?? null);
+
+const selectedStatus = computed(
+    () => (selectedFilters.value.status as string | null) ?? null,
+);
+
+const selectedInstitutionId = computed(
+    () => (selectedFilters.value.institutionId as string | null) ?? null,
+);
+
+const selectedType = computed(
+    () => (selectedFilters.value.selectedType as LMSTypeEnum | null) ?? null,
+);
+
+const {
+    data: fetchedData,
+    loading,
+    error,
+    fetchData: fetchAssessmentTools,
+} = useAssessmentTools(
+    options,
+    searchField,
+    selectedStatus,
+    selectedType,
+    selectedInstitutionId,
+);
+
+watch(
+    fetchedData,
+    (newValue) => {
+        tableData.value = newValue;
+    },
+    { immediate: true },
+);
+
+const pageCount = computed(() => tableData.value?.number_of_pages ?? 0);
+
+const {
+    removeAssessmentToolFromItem,
+    loading: deleteLoading,
+    error: deleteError,
+} = useDeleteAssessmentTool(tableData);
+
+const {
+    toggleAssessmentToolStatusFromItem,
+    loading: statusLoading,
+    error: statusError,
+} = useToggleAssessmentToolStatus(tableData);
 
 const { filters, filtersReady, filtersRenderKey } = useSettingsTableFilters({
     headers: assessmentToolTableHeaders,

@@ -43,12 +43,10 @@
                             {{ statusError }}
                         </div>
 
-                        <!-- TODO @Andrei pass error from fetch user to fallback component. Pass Loading / Error from delete or toggle status to Settings table so it passes it to the dialogs (there handle it) -->
-
                         <LoadingFallbackComponent :loading="false" :errors="[]">
                             <SettingsTable
                                 :headers="userAccountsTableHeaders"
-                                :items="data?.content ?? []"
+                                :items="tableData?.content ?? []"
                                 :total-items="totalItems"
                                 :page-count="pageCount"
                                 :items-per-page="options.itemsPerPage"
@@ -73,7 +71,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import AddButton from "@/components/views/seb-server/settings-navigation/widgets/AddButton.vue";
 import {
@@ -93,24 +91,12 @@ import { useServerSettingsTable } from "@/components/views/seb-server/settings-n
 import { useSettingsTableFilters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableFilters.ts";
 import { useSettingsTableCellFormatters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableCellFormatters.ts";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import type { UserAccountResponse } from "@/models/userAccount";
 
 const userAccountStore = useUserAccountsStore();
 const userAccountsTableHeaders = useUserAccountsTableHeaders();
 
-const { data, loading, error, fetchUserAccounts } = useUserAccounts();
-const pageCount = computed(() => data.value?.number_of_pages ?? 0);
-
-const {
-    removeUserAccountFromItem,
-    loading: deleteLoading,
-    error: deleteError,
-} = useDeleteUserAccount(data);
-
-const {
-    toggleUserAccountStatusFromItem,
-    loading: statusLoading,
-    error: statusError,
-} = useToggleUserAccountStatus(data);
+const tableData = ref<UserAccountResponse>();
 
 const {
     selectedFilters,
@@ -121,14 +107,9 @@ const {
     onClearSearch,
 } = useServerSettingsTable(
     userAccountStore,
-    data,
-    async ({ options, searchField, filters }) => {
-        await fetchUserAccounts(
-            options,
-            searchField,
-            filters.status,
-            filters.institutionId,
-        );
+    tableData,
+    async () => {
+        await fetchUserAccounts();
     },
     undefined,
     {
@@ -136,6 +117,50 @@ const {
         institutionId: null,
     },
 );
+
+const searchField = computed(() => userAccountStore.searchField ?? null);
+
+const selectedStatus = computed(
+    () => (selectedFilters.value.status as string | null) ?? null,
+);
+
+const selectedInstitutionId = computed(
+    () => (selectedFilters.value.institutionId as string | null) ?? null,
+);
+
+const {
+    data: fetchedData,
+    loading,
+    error,
+    fetchData: fetchUserAccounts,
+} = useUserAccounts(
+    options,
+    searchField,
+    selectedStatus,
+    selectedInstitutionId,
+);
+
+watch(
+    fetchedData,
+    (newValue) => {
+        tableData.value = newValue;
+    },
+    { immediate: true },
+);
+
+const pageCount = computed(() => tableData.value?.number_of_pages ?? 0);
+
+const {
+    removeUserAccountFromItem,
+    loading: deleteLoading,
+    error: deleteError,
+} = useDeleteUserAccount(tableData);
+
+const {
+    toggleUserAccountStatusFromItem,
+    loading: statusLoading,
+    error: statusError,
+} = useToggleUserAccountStatus(tableData);
 
 const { filters, filtersReady, filtersRenderKey } = useSettingsTableFilters({
     headers: userAccountsTableHeaders,
