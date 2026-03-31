@@ -1,5 +1,11 @@
 <template>
-    <v-data-table :headers="headers" :items="items">
+    <v-data-table-server
+        :headers="headers"
+        :items="items"
+        :items-length="itemsLength"
+        :loading="isLoading"
+        @update:options="handleOptionsUpdate"
+    >
         <template #[`item.description`]="{ item }">
             {{ formatDescription(item) }}
         </template>
@@ -19,7 +25,7 @@
             />
             <ActionButtonDelete :item="item" @changed="emit('changed')" />
         </template>
-    </v-data-table>
+    </v-data-table-server>
 </template>
 
 <script setup lang="ts">
@@ -29,17 +35,25 @@ import i18n from "@/i18n";
 import { ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
 import ActionButton from "@/components/views/seb-server/exam-template/list/components/ActionButton.vue";
 import ActionButtonDelete from "@/components/views/seb-server/exam-template/list/components/ActionButtonDelete.vue";
+import { tableOptionsSchema, type TableOptions } from "../types";
 
 const emptyValue = "–";
 
 const emit = defineEmits<{
     (e: "changed"): void;
+    (e: "update:options", options: TableOptions): void;
 }>();
 
 defineProps<{
     items: ExamTemplate[];
     headers: DataTableHeader<ExamTemplate>[];
+    itemsLength: number;
+    isLoading: boolean;
 }>();
+
+const handleOptionsUpdate = (options: unknown) => {
+    emit("update:options", tableOptionsSchema.parse(options));
+};
 
 const formatDescription = (item: ExamTemplate) => {
     if (!item.description) {

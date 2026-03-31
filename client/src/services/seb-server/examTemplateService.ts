@@ -1,5 +1,4 @@
 import * as apiService from "@/services/apiService";
-
 import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring";
 import { ExamTemplate, ExamTemplates } from "@/models/seb-server/examTemplate";
 

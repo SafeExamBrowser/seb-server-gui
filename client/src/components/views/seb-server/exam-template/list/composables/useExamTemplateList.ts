@@ -1,6 +1,6 @@
 import i18n from "@/i18n";
 import { useExamTemplates } from "./api/useExamTemplates";
-import { computed, onMounted } from "vue";
+import { computed } from "vue";
 
 export const useExamTemplateList = () => {
     const {
@@ -17,6 +17,17 @@ export const useExamTemplateList = () => {
     const examTemplates = computed(
         () => examTemplatesData.value?.content ?? [],
     );
+
+    const totalItems = computed(() => {
+        if (!examTemplatesData.value) {
+            return 0;
+        }
+
+        return (
+            examTemplatesData.value.number_of_pages *
+            examTemplatesData.value.page_size
+        );
+    });
 
     const headers = [
         {
@@ -41,15 +52,12 @@ export const useExamTemplateList = () => {
         },
     ];
 
-    onMounted(() => {
-        fetchData();
-    });
-
     return {
-        loading: isLoading,
+        isLoading,
         errors,
         examTemplates,
+        totalItems,
         headers,
-        refetchData: fetchData,
+        fetchData,
     };
 };
