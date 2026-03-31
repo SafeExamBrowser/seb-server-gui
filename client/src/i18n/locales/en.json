@@ -1851,7 +1851,8 @@
         "connectionConfigurationViewAndEdit": "Edit Connection Configuration",
         "createConnectionConfiguration": "Add Connection Configuration",
         "connectionConfigurations": "Connection Configurations",
-        "certificates": "Certificates"
+        "certificates": "Certificates",
+        "editExamTemplate": "Edit Exam Template"
     },
 
     "warnings": {
@@ -1889,7 +1890,11 @@
             "connectionConfiguration": "Connection Configuration",
             "certificates": "Certificates",
             "userAccounts": "User Accounts",
-            "createUserAccount": "New User Account"
+            "createUserAccount": "New User Account",
+            "oldUserAccounts": "Old User Accounts :)",
+            "oldCertificates": "Old Certificates :)",
+            "oldConnectionConfigurations": "Old Connection Configurations :)",
+            "oldAssessmentTools": "Old Assessment Tools :)"
         },
 
         "screenReader": {
