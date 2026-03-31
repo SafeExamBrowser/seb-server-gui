@@ -18,7 +18,6 @@ export const useExamTemplateList = () => {
         () => examTemplatesData.value?.content ?? [],
     );
 
-    // TODO @alain: add correct action content
     const headers = [
         {
             title: i18n.global.t("examTemplateList.headers.name"),

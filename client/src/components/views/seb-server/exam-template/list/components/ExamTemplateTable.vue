@@ -8,6 +8,18 @@
         </template>
         <template #[`item.actions`]="{ item }">
             <ExamTemplateActionButton
+                icon="mdi-pencil"
+                :title="$t('general.editButton')"
+                :item="item"
+                @click="handleEdit(item)"
+            />
+            <ExamTemplateActionButton
+                icon="mdi-content-copy"
+                :title="$t('general.TODO')"
+                :item="item"
+                @click="handleCopy(item)"
+            />
+            <ExamTemplateActionButton
                 icon="mdi-delete"
                 :title="$t('general.deleteButton')"
                 :item="item"
@@ -46,6 +58,16 @@ const formatExamType = (item: ExamTemplate) => {
     }
 
     return i18n.global.t(item.examType);
+};
+
+const handleEdit = (item: ExamTemplate) => {
+    // TODO @alain: navigate to edit page
+    console.log("edit", item.name, item.id);
+};
+
+const handleCopy = (item: ExamTemplate) => {
+    // TODO @alain: copy via server
+    console.log("copy", item.name, item.id);
 };
 
 const handleDelete = (item: ExamTemplate) => {
