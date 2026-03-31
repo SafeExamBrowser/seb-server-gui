@@ -14,13 +14,6 @@ import { translate } from "@/utils/generalUtils";
 import type { Component } from "vue";
 import { ImportWizardSteps } from "@/models/types";
 
-//TODO @Andrei remove old routes
-export const OLD_USER_ACCOUNTS_ROUTE: string = "/old-user-accounts";
-export const OLD_CERTIFICATES_ROUTE: string = "/old-certificates";
-export const OLD_ASSESSMENT_TOOLS_ROUTE: string = "/old-assessment-tools";
-export const OLD_CONNECTION_CONFIGURATIONS_ROUTE: string =
-    "/old-connection-configurations";
-
 // navigation routes
 export const DEFAULT_ROUTE: string = "/";
 export const REGISTER_ROUTE: string = "/register";
@@ -37,7 +30,6 @@ export const EXAM_ROUTE: string = "/exam";
 export const EXAM_DETAILS_ROUTE: string = EXAM_ROUTE;
 
 export const EXAM_LMS_IMPORT_ROUTE: string = EXAM_ROUTE + "/lms";
-export const ACCOUNT_VIEW_ROUTE: string = "/account";
 
 export const MONITORING_ROUTE: string = "/monitoring";
 export const MONITORING_OVERVIEW_ROUTE: string = MONITORING_ROUTE + "/overview";

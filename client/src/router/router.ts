@@ -154,17 +154,6 @@ const routes: Array<RouteRecordRaw> = [
                 meta: { titleKey: "titles.editUserAccount" },
             },
 
-            //TODO @Andrei remove old routes
-            {
-                path: constants.OLD_USER_ACCOUNTS_ROUTE,
-                name: "OldUserAccounts",
-                component: () =>
-                    import(
-                        "@/components/views/seb-server/accounts/UserAccounts.vue"
-                    ),
-                meta: { titleKey: "titles.userAccounts" },
-            },
-
             {
                 path: constants.USER_ACCOUNTS_ROUTE,
                 name: "UserAccounts",
@@ -186,17 +175,6 @@ const routes: Array<RouteRecordRaw> = [
             },
 
             // ---------- assessment tools ----------
-
-            //TODO @Andrei remove old routes
-            {
-                path: constants.OLD_ASSESSMENT_TOOLS_ROUTE,
-                name: "OldAssessmentTools",
-                component: () =>
-                    import(
-                        "@/components/views/seb-server/assessment-tool/AssessmentTools.vue"
-                    ),
-                meta: { titleKey: "titles.assessmentToolConnections" },
-            },
 
             {
                 path: constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE,
@@ -228,16 +206,6 @@ const routes: Array<RouteRecordRaw> = [
             },
 
             // ---------- connection configuration ----------
-            //TODO @Andrei remove old routes
-            {
-                path: constants.OLD_CONNECTION_CONFIGURATIONS_ROUTE,
-                name: "OldConnectionConfigurations",
-                component: () =>
-                    import(
-                        "@/components/views/seb-server/connection-configuration/ConnectionConfigurations.vue"
-                    ),
-                meta: { titleKey: "titles.connectionConfigurations" },
-            },
             {
                 path: constants.CONNECTION_CONFIGURATIONS_ROUTE,
                 name: "ConnectionConfigurations",
@@ -267,17 +235,6 @@ const routes: Array<RouteRecordRaw> = [
             },
 
             // ---------- certificates ----------
-
-            //TODO @Andrei remove old routes
-            {
-                path: constants.OLD_CERTIFICATES_ROUTE,
-                name: "OldCertificates",
-                component: () =>
-                    import(
-                        "@/components/views/seb-server/certificates/CertificatesMain.vue"
-                    ),
-                meta: { titleKey: "titles.certificates" },
-            },
             {
                 path: constants.CERTIFICATES_ROUTE,
                 name: "Certificates",

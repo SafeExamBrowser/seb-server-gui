@@ -79,20 +79,6 @@
                     v-if="ability.canView(GUIComponent.UserAccounts)"
                     class="section-divider"
                 />
-                <v-list-item
-                    v-if="ability.canView(GUIComponent.UserAccounts)"
-                    class="px-0 nav-hover"
-                >
-                    <router-link
-                        class="link-color nav-link"
-                        data-testid="settingsNavigation-userAccounts-link"
-                        :to="constants.OLD_USER_ACCOUNTS_ROUTE"
-                    >
-                        {{
-                            translate("navigation.routeNames.oldUserAccounts")
-                        }}</router-link
-                    >
-                </v-list-item>
 
                 <v-divider class="section-divider mb-10" />
             </v-col>
