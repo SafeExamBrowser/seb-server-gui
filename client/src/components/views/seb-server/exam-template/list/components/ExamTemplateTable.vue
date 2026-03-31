@@ -34,14 +34,11 @@
 import { ExamTemplate } from "@/models/seb-server/examTemplate";
 import { DataTableHeader } from "vuetify";
 import i18n from "@/i18n";
-import { ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
 import ActionButton from "@/components/views/seb-server/exam-template/list/components/ActionButton.vue";
 import ActionButtonDelete from "@/components/views/seb-server/exam-template/list/components/ActionButtonDelete.vue";
 import { tableOptionsSchema, type TableOptions } from "../types";
 import { getRouteName } from "@/router/routeNames";
 import { navigateToRoute } from "@/router/navigation";
-
-const emptyValue = "–";
 
 const emit = defineEmits<{
     (e: "update:items"): void;
@@ -61,7 +58,7 @@ const handleOptionsUpdate = (options: unknown) => {
 
 const formatDescription = (item: ExamTemplate) => {
     if (!item.description) {
-        return emptyValue;
+        return "";
     }
 
     return item.description;
@@ -69,8 +66,8 @@ const formatDescription = (item: ExamTemplate) => {
 
 const formatExamType = (item: ExamTemplate) => {
     // TODO @alain: once we have proper api type abstractions, this can be simplified
-    if (!item.examType || item.examType === ExamTypeEnum.UNDEFINED) {
-        return emptyValue;
+    if (!item.examType) {
+        return "";
     }
 
     return i18n.global.t(item.examType);
