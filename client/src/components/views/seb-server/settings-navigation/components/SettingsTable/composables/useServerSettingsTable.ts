@@ -92,8 +92,8 @@ export function useServerSettingsTable<TResponse extends PagedResponse>(
     }
 
     async function onClearSearch() {
+        store.resetSearchState();
         resetFilters();
-
         options.value = getSafeOptions({
             page: 1,
         });
