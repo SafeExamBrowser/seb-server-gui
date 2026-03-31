@@ -433,6 +433,15 @@
         }
     },
 
+    "examTemplateList": {
+        "headers": {
+            "name": "Name",
+            "description": "Description",
+            "examType": "Exam Type",
+            "actions": "Actions"
+        }
+    },
+
     "galleryView": {
         "generalInfo": {
             "page": "Page",

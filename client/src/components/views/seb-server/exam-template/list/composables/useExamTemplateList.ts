@@ -1,3 +1,4 @@
+import i18n from "@/i18n";
 import { useExamTemplates } from "./api/useExamTemplates";
 import { computed, onMounted } from "vue";
 
@@ -13,27 +14,26 @@ export const useExamTemplateList = () => {
         () => examTemplatesData.value?.content ?? [],
     );
 
-    // TODO @alain: translate labels
     // TODO @alain: exam type value: use enum translation
     // TODO @alain: add correct action content
     const headers = [
         {
-            title: "Name",
+            title: i18n.global.t("examTemplateList.headers.name"),
             value: "name",
             width: "30%",
         },
         {
-            title: "Description",
+            title: i18n.global.t("examTemplateList.headers.description"),
             value: "description",
             width: "30%",
         },
         {
-            title: "Exam Type",
+            title: i18n.global.t("examTemplateList.headers.examType"),
             value: "examType",
             width: "30%",
         },
         {
-            title: "Actions",
+            title: i18n.global.t("examTemplateList.headers.actions"),
             value: "actions",
             width: "10%",
         },
