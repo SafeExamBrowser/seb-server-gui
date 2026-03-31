@@ -82,8 +82,7 @@ const getDetailRoute = (item: ExamTemplate) => ({
 });
 
 const handleRowClick = (_event: Event, row: { item: ExamTemplate }) => {
-    const route = getDetailRoute(row.item);
-    navigateToRoute(route.name, route.params);
+    navigateToRoute(getDetailRoute(row.item));
 };
 
 const handleCopy = (item: ExamTemplate) => {

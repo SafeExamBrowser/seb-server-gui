@@ -1,6 +1,6 @@
 import router from "@/router/router";
 import type { RouteName } from "@/router/routeNames";
-import type { LocationQueryRaw, RouteParamsRawGeneric } from "vue-router";
+import type { LocationQueryRaw, RouteLocationNamedRaw } from "vue-router";
 
 export function navigateTo(navPath: string, query?: LocationQueryRaw) {
     router.push({
@@ -16,11 +16,9 @@ export function addQueryParam(query: LocationQueryRaw) {
 }
 
 export const navigateToRoute = (
-    name: RouteName,
-    params?: RouteParamsRawGeneric,
-    query?: LocationQueryRaw,
+    to: Omit<RouteLocationNamedRaw, "name"> & { name: RouteName },
 ) => {
-    router.push({ name, params, query });
+    router.push(to);
 };
 
 export const resolveRoutePath = (name: RouteName): string =>
