@@ -14,12 +14,30 @@
             :field="field"
         >
             <v-text-field
-                v-if="field.type === 'text'"
+                v-if="field.type === 'text' || field.type === 'password'"
                 v-model="field.model.value"
                 v-bind="{
                     ...getBaseProperties(field),
                     ...getTextualProperties(field),
                 }"
+                :type="
+                    field.type === 'password'
+                        ? passwordVisibility[field.name]
+                            ? 'text'
+                            : 'password'
+                        : 'text'
+                "
+                :append-inner-icon="
+                    field.type === 'password'
+                        ? passwordVisibility[field.name]
+                            ? 'mdi-eye-off'
+                            : 'mdi-eye'
+                        : undefined
+                "
+                @click:append-inner="
+                    field.type === 'password' &&
+                    togglePasswordVisibility(field.name)
+                "
             >
             </v-text-field>
             <v-textarea
@@ -99,7 +117,7 @@ import {
     FormFieldsComponentProps,
 } from "../types";
 import { VInput } from "vuetify/components";
-import { ref, nextTick, watch } from "vue";
+import { ref, nextTick, watch, reactive } from "vue";
 import FormFieldCollection from "./FormFieldCollection.vue";
 import FormFieldColor from "./FormFieldColor.vue";
 
@@ -112,6 +130,8 @@ const fieldsRefs = new Map<
     ReturnType<typeof ref<VInput | undefined>>
 >();
 
+const passwordVisibility = reactive<Record<string, boolean>>({});
+
 // keep fieldsRefs up to date when fields change
 watch(
     () => props.fields.map((f) => f.name),
@@ -120,11 +140,17 @@ watch(
             if (!fieldsRefs.has(field.name)) {
                 fieldsRefs.set(field.name, ref<VInput | undefined>());
             }
+
+            if (
+                field.type === "password" &&
+                passwordVisibility[field.name] === undefined
+            ) {
+                passwordVisibility[field.name] = false;
+            }
         });
     },
     { immediate: true },
 );
-
 const getBaseProperties = (field: FormField): FormFieldBaseProperties => {
     const isRequired = field.type !== "switch" && field.required;
 
@@ -151,11 +177,15 @@ const getBaseProperties = (field: FormField): FormFieldBaseProperties => {
 
 const getTextualProperties = (
     field: FormField & {
-        type: "text" | "textarea" | "select" | "number" | "color";
+        type: "text" | "textarea" | "select" | "number" | "color" | "password";
     },
 ): FormFieldTextualProperties => ({
     placeholder: field.placeholder,
 });
+
+const togglePasswordVisibility = (fieldName: string) => {
+    passwordVisibility[fieldName] = !passwordVisibility[fieldName];
+};
 
 const handleFieldValueUpdated = async (fieldName: string) => {
     const fieldsToRevalidate = props.fields.filter((field) =>
