@@ -153,7 +153,7 @@ import * as constants from "@/utils/constants";
 const goToSebClientCreation = () =>
     navigateTo(constants.CREATE_SEB_CLIENT_TEMPLATE_ROUTE);
 const goToExamTemplateCreation = () =>
-    navigateToRoute("CreateExamTemplateWizard");
+    navigateToRoute({ name: "CreateExamTemplateWizard" });
 </script>
 
 <style scoped>

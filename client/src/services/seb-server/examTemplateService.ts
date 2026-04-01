@@ -1,5 +1,4 @@
 import * as apiService from "@/services/apiService";
-
 import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring";
 import { ExamTemplate, ExamTemplates } from "@/models/seb-server/examTemplate";
 
@@ -16,6 +15,14 @@ export const getExamTemplates = async (): Promise<ExamTemplates> =>
 export const getExamTemplate = async (id: string): Promise<ExamTemplate> =>
     (
         await apiService.getRequest({
+            url: `${baseUrl}/${id}`,
+            options: { _authType: "seb" },
+        })
+    ).data;
+
+export const deleteExamTemplate = async (id: number): Promise<void> =>
+    (
+        await apiService.deleteRequest({
             url: `${baseUrl}/${id}`,
             options: { _authType: "seb" },
         })

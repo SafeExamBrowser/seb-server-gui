@@ -1,8 +1,6 @@
 export type RouteName =
     | "ExamTemplateList"
     | "CreateExamTemplateWizard"
-
-    //User Accounts
+    | "ExamTemplateDetail"
     | "CreateUserAccount";
-
 export const getRouteName = (name: RouteName): RouteName => name;

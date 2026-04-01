@@ -269,6 +269,15 @@ const routes: Array<RouteRecordRaw> = [
             // this is alain change
             // ---------- exam templates ----------
             {
+                path: "/exam-template",
+                name: getRouteName("ExamTemplateList"),
+                component: () =>
+                    import(
+                        "@/components/views/seb-server/exam-template/list/ExamTemplateList.vue"
+                    ),
+                meta: { titleKey: "titles.examTemplateList" },
+            },
+            {
                 path: "/exam-template/create",
                 name: getRouteName("CreateExamTemplateWizard"),
                 component: () =>
@@ -278,13 +287,13 @@ const routes: Array<RouteRecordRaw> = [
                 meta: { titleKey: "titles.createTemplateExam" },
             },
             {
-                path: "/exam-template",
-                name: getRouteName("ExamTemplateList"),
+                path: "/exam-template/:examTemplateId",
+                name: getRouteName("ExamTemplateDetail"),
                 component: () =>
                     import(
-                        "@/components/views/seb-server/exam-template/list/ExamTemplateList.vue"
+                        "@/components/views/seb-server/exam-template/detail/ExamTemplateDetail.vue"
                     ),
-                meta: { titleKey: "titles.examTemplateList" },
+                meta: { titleKey: "titles.examTemplateDetail" },
             },
         ],
     },
