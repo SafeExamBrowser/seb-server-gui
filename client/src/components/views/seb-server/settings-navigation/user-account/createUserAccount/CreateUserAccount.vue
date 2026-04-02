@@ -61,7 +61,7 @@
                     <CancelButton
                         data-testid="createUserAccount-cancel-button"
                         text="general.cancelButton"
-                        @click="navigateTo(USER_ACCOUNTS_ROUTE)"
+                        @click="navigateToRoute({ name: 'UserAccountList' })"
                     />
                     <ConfirmButton
                         data-testid="createUserAccount-save-button"
@@ -87,8 +87,7 @@ import ConfirmButton from "@/components/views/seb-server/settings-navigation/wid
 import { useFormFields } from "./composable/useFormFields";
 import { useCreateUserAccount } from "./composable/api/useCreateUserAccount";
 import { useCreateUserAccountStore } from "./composable/store/useCreateUserAccountStore";
-import { navigateTo } from "@/router/navigation";
-import { USER_ACCOUNTS_ROUTE } from "@/utils/constants";
+import { navigateToRoute } from "@/router/navigation";
 import { UserRoleEnum } from "@/models/userRoleEnum";
 import i18n from "@/i18n";
 
@@ -170,7 +169,7 @@ async function submit() {
 
     if (result !== null) {
         store.$reset();
-        navigateTo(USER_ACCOUNTS_ROUTE);
+        navigateToRoute({ name: "UserAccountList" });
     }
 }
 </script>
