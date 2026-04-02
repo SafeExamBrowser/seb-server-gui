@@ -2,24 +2,24 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 
 const getInitialState = () => ({
-    isFormValid: false as boolean | null,
-    selectedInstitution: undefined as string | undefined,
+    institutionId: undefined as string | undefined,
     username: undefined as string | undefined,
     name: undefined as string | undefined,
     surname: undefined as string | undefined,
     email: undefined as string | undefined,
-    timezone: undefined as string | undefined,
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone as
+        | string
+        | undefined,
     password: undefined as string | undefined,
     confirmPassword: undefined as string | undefined,
-    selectedUserRole: undefined as string | undefined,
+    role: undefined as string | undefined,
 });
 
 export const useCreateUserAccountStore = defineStore(
     "createUserAccount",
     () => {
-        const isFormValid = ref<boolean | null>(getInitialState().isFormValid);
-        const selectedInstitution = ref<string | undefined>(
-            getInitialState().selectedInstitution,
+        const institutionId = ref<string | undefined>(
+            getInitialState().institutionId,
         );
         const username = ref<string | undefined>(getInitialState().username);
         const name = ref<string | undefined>(getInitialState().name);
@@ -30,13 +30,10 @@ export const useCreateUserAccountStore = defineStore(
         const confirmPassword = ref<string | undefined>(
             getInitialState().confirmPassword,
         );
-        const selectedUserRole = ref<string | undefined>(
-            getInitialState().selectedUserRole,
-        );
+        const role = ref<string | undefined>(getInitialState().role);
 
         const $reset = () => {
-            isFormValid.value = getInitialState().isFormValid;
-            selectedInstitution.value = getInitialState().selectedInstitution;
+            institutionId.value = getInitialState().institutionId;
             username.value = getInitialState().username;
             name.value = getInitialState().name;
             surname.value = getInitialState().surname;
@@ -44,12 +41,11 @@ export const useCreateUserAccountStore = defineStore(
             timezone.value = getInitialState().timezone;
             password.value = getInitialState().password;
             confirmPassword.value = getInitialState().confirmPassword;
-            selectedUserRole.value = getInitialState().selectedUserRole;
+            role.value = getInitialState().role;
         };
 
         return {
-            isFormValid,
-            selectedInstitution,
+            institutionId,
             username,
             name,
             surname,
@@ -57,7 +53,7 @@ export const useCreateUserAccountStore = defineStore(
             timezone,
             password,
             confirmPassword,
-            selectedUserRole,
+            role,
             $reset,
         };
     },
