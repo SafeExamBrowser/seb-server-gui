@@ -18,9 +18,10 @@
 import { translate } from "@/utils/generalUtils.ts";
 import { RouteName } from "@/router/routeNames.ts";
 import { navigateToRoute } from "@/router/navigation.ts";
+import type { LocationQueryRaw } from "vue-router";
 
 defineProps<{
-    route: { name: RouteName; query?: Record<string, unknown> };
+    route: { name: RouteName; query?: LocationQueryRaw };
     text: string;
 }>();
 </script>
