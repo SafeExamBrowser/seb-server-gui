@@ -3,7 +3,7 @@
         <template #ActionButton>
             <AddButton
                 text="assessmentToolConnections.assessmentToolsPage.addAssessmentTool"
-                :route="CREATE_ASSESSMENT_TOOL_CONNECTION_ROUTE"
+                :route="{ name: 'CreateAssessmentTool' }"
             />
         </template>
 
@@ -70,10 +70,7 @@
 import { computed, ref, watch } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import AddButton from "@/components/views/seb-server/settings-navigation/widgets/AddButton.vue";
-import {
-    ASSESSMENT_TOOL_CONNECTIONS_ROUTE,
-    CREATE_ASSESSMENT_TOOL_CONNECTION_ROUTE,
-} from "@/utils/constants.ts";
+import { ASSESSMENT_TOOL_CONNECTIONS_ROUTE } from "@/utils/constants.ts";
 import SearchSection from "@/components/views/seb-server/settings-navigation/components/SearchSection.vue";
 import SettingsFilters from "@/components/views/seb-server/settings-navigation/components/SettingsFilters.vue";
 import SettingsTable from "@/components/views/seb-server/settings-navigation/components/SettingsTable/SettingsTable.vue";

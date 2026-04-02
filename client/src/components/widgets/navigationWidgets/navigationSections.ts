@@ -3,6 +3,7 @@ import * as spConstants from "@/utils/sp-constants";
 import { translate } from "@/utils/generalUtils";
 import { GUIComponent } from "@/services/ability";
 import { NavigationSectionItem } from "@/components/widgets/navigationWidgets/navigationTypes.ts";
+import { getRouteName } from "@/router/routeNames";
 
 type AbilityLike = {
     canView: (component: GUIComponent) => boolean;
@@ -15,25 +16,25 @@ export function buildSettingsNavigationItems(
     return [
         {
             label: translate("titles.assessmentToolConnections"),
-            to: constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE,
+            to: { name: getRouteName("AssessmentToolList") },
             testId: `${testIdPrefix}-assessmentToolConnections-link`,
             visible: ability.canView(GUIComponent.LMSSetups),
         },
         {
             label: translate("navigation.routeNames.connectionConfiguration"),
-            to: constants.CONNECTION_CONFIGURATIONS_ROUTE,
+            to: { name: getRouteName("ConnectionConfigurationList") },
             testId: `${testIdPrefix}-connectionConfigurations-link`,
             visible: ability.canView(GUIComponent.ConnectionConfigs),
         },
         {
             label: translate("navigation.routeNames.certificates"),
-            to: constants.CERTIFICATES_ROUTE,
+            to: { name: getRouteName("CertificatesList") },
             testId: `${testIdPrefix}-certificates-link`,
             visible: ability.canView(GUIComponent.Certificates),
         },
         {
             label: translate("navigation.routeNames.userAccounts"),
-            to: constants.USER_ACCOUNTS_ROUTE,
+            to: { name: getRouteName("UserAccountList") },
             testId: `${testIdPrefix}-userAccounts-link`,
             visible: ability.canView(GUIComponent.UserAccounts),
         },

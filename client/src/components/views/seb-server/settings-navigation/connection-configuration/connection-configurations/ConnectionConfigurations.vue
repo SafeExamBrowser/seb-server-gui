@@ -3,7 +3,7 @@
         <template #ActionButton>
             <AddButton
                 text="connectionConfigurations.connectionConfigurationsPage.addConnectionConfiguration"
-                :route="CREATE_CONNECTION_CONFIGURATION_ROUTE"
+                :route="{ name: 'CreateConnectionConfiguration' }"
             />
         </template>
 
@@ -71,10 +71,7 @@
 import { computed, ref, watch } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import AddButton from "@/components/views/seb-server/settings-navigation/widgets/AddButton.vue";
-import {
-    CONNECTION_CONFIGURATIONS_ROUTE,
-    CREATE_CONNECTION_CONFIGURATION_ROUTE,
-} from "@/utils/constants.ts";
+import { CONNECTION_CONFIGURATIONS_ROUTE } from "@/utils/constants.ts";
 import SearchSection from "@/components/views/seb-server/settings-navigation/components/SearchSection.vue";
 import SettingsFilters from "@/components/views/seb-server/settings-navigation/components/SettingsFilters.vue";
 import SettingsTable from "@/components/views/seb-server/settings-navigation/components/SettingsTable/SettingsTable.vue";

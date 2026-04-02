@@ -3,7 +3,7 @@
         <template #ActionButton>
             <AddButton
                 text="certificates.addCertificate"
-                :route="CERTIFICATES_ROUTE"
+                :route="{ name: 'CreateCertificate' }"
             />
         </template>
 
@@ -58,7 +58,6 @@
 import { computed, ref, watch } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import AddButton from "@/components/views/seb-server/settings-navigation/widgets/AddButton.vue";
-import { CERTIFICATES_ROUTE } from "@/utils/constants.ts";
 import SearchSection from "@/components/views/seb-server/settings-navigation/components/SearchSection.vue";
 import SettingsTable from "@/components/views/seb-server/settings-navigation/components/SettingsTable/SettingsTable.vue";
 import { useCertificatesStore } from "@/components/views/seb-server/settings-navigation/certificate/certificates/store/certificatesStore.ts";
