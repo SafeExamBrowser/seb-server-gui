@@ -26,7 +26,7 @@ withDefaults(
     defineProps<{
         label: string;
         testId?: string;
-        to?: string;
+        to?: import("vue-router").RouteLocationRaw;
         visible?: boolean;
         thickDivider?: boolean;
     }>(),

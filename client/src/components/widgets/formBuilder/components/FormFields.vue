@@ -171,8 +171,13 @@ const getBaseProperties = (field: FormField): FormFieldBaseProperties => {
         ],
         hint: field.info || undefined,
         persistentHint: field.info !== undefined,
+        disabled: field.disabled,
         "onUpdate:modelValue": () => handleFieldValueUpdated(field.name),
     };
+};
+
+const togglePasswordVisibility = (fieldName: string) => {
+    passwordVisibility[fieldName] = !passwordVisibility[fieldName];
 };
 
 const getTextualProperties = (
@@ -182,10 +187,6 @@ const getTextualProperties = (
 ): FormFieldTextualProperties => ({
     placeholder: field.placeholder,
 });
-
-const togglePasswordVisibility = (fieldName: string) => {
-    passwordVisibility[fieldName] = !passwordVisibility[fieldName];
-};
 
 const handleFieldValueUpdated = async (fieldName: string) => {
     const fieldsToRevalidate = props.fields.filter((field) =>

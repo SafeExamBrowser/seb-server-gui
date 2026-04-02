@@ -576,11 +576,6 @@ onMounted(async () => {
     }
 });
 
-// watch(userRoles, (roles) => {
-//     ability.update(defineRulesForRoles(roles).rules)
-//     console.log("user roles: ", userRoles.value)
-// }, { immediate: true })
-
 watch(languageToggle, () => {
     locale.value = languageToggle.value === 0 ? "en" : "de";
     localStorage.setItem("locale", locale.value);

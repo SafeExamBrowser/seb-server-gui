@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, watchEffect } from "vue";
+import { computed } from "vue";
 import { SettingsFilterDefinition } from "@/models/types.ts";
 
 const props = defineProps<{
@@ -51,10 +51,6 @@ function toggleFilter(key: string, value: string) {
         [key]: props.modelValue[key] === value ? null : value,
     });
 }
-watchEffect(() => {
-    console.log("[SettingsFilters.vue] props.filters", props.filters);
-    console.log("[SettingsFilters.vue] visibleFilters", visibleFilters.value);
-});
 </script>
 
 <style scoped>

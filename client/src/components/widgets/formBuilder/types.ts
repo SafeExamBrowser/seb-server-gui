@@ -15,7 +15,9 @@ export type FormFieldBaseProperties = Pick<
     | "persistentHint"
     | "onUpdate:modelValue"
 > &
-    Pick<VFieldProps, "variant">;
+    Pick<VFieldProps, "variant"> & {
+        disabled?: boolean;
+    };
 
 export type FormFieldTextualProperties = Pick<VTextFieldProps, "placeholder">;
 
@@ -25,6 +27,7 @@ type FormFieldBase = {
     rules?: VInputProps["rules"];
     info?: string;
     validationDependsOn?: string[];
+    disabled?: boolean;
 };
 
 export type FormFieldSimple = FormFieldBase &

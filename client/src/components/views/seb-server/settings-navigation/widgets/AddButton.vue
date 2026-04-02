@@ -2,7 +2,7 @@
     <div
         class="d-flex justify-end align-center mx-6 mt-6 cursor-pointer add-button-container"
         data-testid="userAccounts-addUser-button"
-        @click="navigateTo(route)"
+        @click="navigateToRoute(route)"
     >
         <span class="text-primary font-weight-medium mr-2">
             {{ translate(text) }}
@@ -15,11 +15,13 @@
 </template>
 
 <script setup lang="ts">
-import { navigateTo } from "@/router/navigation.ts";
 import { translate } from "@/utils/generalUtils.ts";
+import { RouteName } from "@/router/routeNames.ts";
+import { navigateToRoute } from "@/router/navigation.ts";
+import type { LocationQueryRaw } from "vue-router";
 
 defineProps<{
-    route: string;
+    route: { name: RouteName; query?: LocationQueryRaw };
     text: string;
 }>();
 </script>

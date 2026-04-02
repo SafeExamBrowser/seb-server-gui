@@ -15,7 +15,7 @@
                     />
                 </v-row>
 
-                <v-row class="justify-end pa-6 pt-5 pb-0">
+                <v-row class="justify-end pa-6 pt-4 pb-0">
                     <CancelButton
                         :text="'general.cancelButton'"
                         @click="emit('clear')"

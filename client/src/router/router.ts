@@ -153,10 +153,9 @@ const routes: Array<RouteRecordRaw> = [
                     ),
                 meta: { titleKey: "titles.editUserAccount" },
             },
-
             {
-                path: constants.USER_ACCOUNTS_ROUTE,
-                name: "UserAccounts",
+                path: "/user-account",
+                name: getRouteName("UserAccountList"),
                 component: () =>
                     import(
                         "@/components/views/seb-server/settings-navigation/user-account/userAccounts/UserAccounts.vue"
@@ -164,21 +163,21 @@ const routes: Array<RouteRecordRaw> = [
                 meta: { titleKey: "titles.userAccounts" },
             },
 
+            //create user account
             {
-                path: constants.CREATE_USER_ACCOUNTS_ROUTE,
-                name: "CreateUserAccount",
+                path: "/user-account/create",
+                name: getRouteName("CreateUserAccount"),
                 component: () =>
                     import(
-                        "@/components/views/seb-server/accounts/CreateUserAccount.vue"
+                        "@/components/views/seb-server/settings-navigation/user-account/createUserAccount/CreateUserAccount.vue"
                     ),
                 meta: { titleKey: "titles.createUserAccount" },
             },
 
             // ---------- assessment tools ----------
-
             {
-                path: constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE,
-                name: "AssessmentTools",
+                path: "/assessment-tool",
+                name: getRouteName("AssessmentToolList"),
                 component: () =>
                     import(
                         "@/components/views/seb-server/settings-navigation/assessment-tool/assessment-tools/AssessmentTools.vue"
@@ -187,8 +186,8 @@ const routes: Array<RouteRecordRaw> = [
             },
 
             {
-                path: constants.CREATE_ASSESSMENT_TOOL_CONNECTION_ROUTE,
-                name: "CreateAssessmentToolConnection",
+                path: "/assessment-tool/create",
+                name: getRouteName("CreateAssessmentTool"),
                 component: () =>
                     import(
                         "@/components/views/seb-server/assessment-tool/CreateAssessmentTool.vue"
@@ -207,8 +206,8 @@ const routes: Array<RouteRecordRaw> = [
 
             // ---------- connection configuration ----------
             {
-                path: constants.CONNECTION_CONFIGURATIONS_ROUTE,
-                name: "ConnectionConfigurations",
+                path: "/connection-configuration",
+                name: getRouteName("ConnectionConfigurationList"),
                 component: () =>
                     import(
                         "@/components/views/seb-server/settings-navigation/connection-configuration/connection-configurations/ConnectionConfigurations.vue"
@@ -216,8 +215,8 @@ const routes: Array<RouteRecordRaw> = [
                 meta: { titleKey: "titles.connectionConfigurations" },
             },
             {
-                path: constants.CREATE_CONNECTION_CONFIGURATION_ROUTE,
-                name: "CreateConnectionConfiguration",
+                path: "/connection-configuration/create",
+                name: getRouteName("CreateConnectionConfiguration"),
                 component: () =>
                     import(
                         "@/components/views/seb-server/connection-configuration/CreateConnectionConfiguration.vue"
@@ -236,8 +235,9 @@ const routes: Array<RouteRecordRaw> = [
 
             // ---------- certificates ----------
             {
-                path: constants.CERTIFICATES_ROUTE,
-                name: "Certificates",
+                path: "/certificate",
+                name: getRouteName("CertificatesList"),
+
                 component: () =>
                     import(
                         "@/components/views/seb-server/settings-navigation/certificate/certificates/CertificatesList.vue"
@@ -255,7 +255,7 @@ const routes: Array<RouteRecordRaw> = [
                     ),
                 meta: { titleKey: "titles.createTemplate" },
             },
-
+            // this is alain change
             // ---------- exam templates ----------
             {
                 path: "/exam-template",

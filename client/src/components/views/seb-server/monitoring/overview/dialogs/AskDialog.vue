@@ -493,8 +493,6 @@ function onGrantKey() {
     const val = grantKeyInput.value;
 
     if (!examId || !firstConnId.value || !val) {
-        console.log("failed");
-        console.log(examId, selectedAsk.value?.keyValue, val);
         return;
     }
     examService.grantExamAppSignatureKeys(

@@ -1,6 +1,6 @@
 <template>
     <div
-        class="text-caption text-grey-darken-1 mt-1 mb-1"
+        class="text-caption text-grey-darken-1 mb-1"
         data-testid="userAccounts-search-label"
     >
         {{ translate("userAccount.userAccountPage.filters.searchTitle") }}
