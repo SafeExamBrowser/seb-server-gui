@@ -3,6 +3,10 @@
         :title="$t('titles.createTemplateExam')"
         :bread-crumb="[
             {
+                label: $t('titles.examTemplateList'),
+                link: resolveRoutePath('ExamTemplateList'),
+            },
+            {
                 label: $t('titles.createTemplateExam'),
                 link: resolveRoutePath('CreateExamTemplateWizard'),
             },
