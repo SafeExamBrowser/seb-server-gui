@@ -4,11 +4,31 @@ import { ExamTemplate, ExamTemplates } from "@/models/seb-server/examTemplate";
 
 const baseUrl = "/exam-template" as const;
 
-export const getExamTemplates = async (): Promise<ExamTemplates> =>
+export const getExamTemplates = async ({
+    pageNumber,
+    pageSize,
+    sort,
+}: {
+    pageNumber?: number;
+    pageSize?: number;
+    sort?: {
+        key: string;
+        order: "asc" | "desc";
+    };
+}): Promise<ExamTemplates> =>
     (
         await apiService.getRequest({
             url: baseUrl,
-            options: { _authType: "seb" },
+            options: {
+                _authType: "seb",
+                params: {
+                    page_number: pageNumber,
+                    page_size: pageSize,
+                    sort: sort
+                        ? `${sort.order === "desc" ? "" : "-"}${sort.key}`
+                        : undefined,
+                },
+            },
         })
     ).data;
 

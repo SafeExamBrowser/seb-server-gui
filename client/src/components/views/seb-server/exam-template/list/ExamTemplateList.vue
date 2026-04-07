@@ -14,6 +14,7 @@
                     :items="examTemplates"
                     :items-length="totalItems"
                     :is-loading="isLoading"
+                    :sort-by="queryParams.sort ? [queryParams.sort] : []"
                     @update:items="handleItemsUpdate"
                     @update:options="handleOptionsUpdate"
                 />
@@ -28,15 +29,14 @@ import ExamTemplateTable from "./components/ExamTemplateTable.vue";
 import { useExamTemplateList } from "./composables/useExamTemplateList";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 
-const handleOptionsUpdate = () => {
-    // TODO @alain: use TableOptions here
-    fetchData();
-};
-
-const handleItemsUpdate = () => {
-    fetchData();
-};
-
-const { examTemplates, headers, errors, totalItems, isLoading, fetchData } =
-    useExamTemplateList();
+const {
+    examTemplates,
+    headers,
+    errors,
+    totalItems,
+    isLoading,
+    queryParams,
+    handleItemsUpdate,
+    handleOptionsUpdate,
+} = useExamTemplateList();
 </script>

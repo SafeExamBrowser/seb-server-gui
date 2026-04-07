@@ -5,6 +5,7 @@
         :items="items"
         :items-length="itemsLength"
         :loading="isLoading"
+        :sort-by="sortBy"
         @update:options="handleOptionsUpdate"
         @click:row="handleRowClick"
     >
@@ -49,6 +50,7 @@ defineProps<{
     headers: DataTableHeader<ExamTemplate>[];
     itemsLength: number;
     isLoading: boolean;
+    sortBy: { key: string; order: "asc" | "desc" }[];
 }>();
 
 const handleOptionsUpdate = (options: unknown) => {
