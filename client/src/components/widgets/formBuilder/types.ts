@@ -63,8 +63,6 @@ export type FormFieldSimple = FormFieldBase &
               type: "password";
               placeholder?: string;
               required?: boolean;
-              min?: number;
-              max?: number;
               model: Ref<string | undefined>;
           }
         | {

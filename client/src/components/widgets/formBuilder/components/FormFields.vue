@@ -14,30 +14,26 @@
             :field="field"
         >
             <v-text-field
-                v-if="field.type === 'text' || field.type === 'password'"
+                v-if="field.type === 'text'"
                 v-model="field.model.value"
                 v-bind="{
                     ...getBaseProperties(field),
                     ...getTextualProperties(field),
                 }"
-                :type="
-                    field.type === 'password'
-                        ? passwordVisibility[field.name]
-                            ? 'text'
-                            : 'password'
-                        : 'text'
-                "
+            >
+            </v-text-field>
+            <v-text-field
+                v-else-if="field.type === 'password'"
+                v-model="field.model.value"
+                v-bind="{
+                    ...getBaseProperties(field),
+                    ...getTextualProperties(field),
+                }"
+                :type="passwordVisibility[field.name] ? 'text' : 'password'"
                 :append-inner-icon="
-                    field.type === 'password'
-                        ? passwordVisibility[field.name]
-                            ? 'mdi-eye-off'
-                            : 'mdi-eye'
-                        : undefined
+                    passwordVisibility[field.name] ? 'mdi-eye-off' : 'mdi-eye'
                 "
-                @click:append-inner="
-                    field.type === 'password' &&
-                    togglePasswordVisibility(field.name)
-                "
+                @click:append-inner="togglePasswordVisibility(field.name)"
             >
             </v-text-field>
             <v-textarea
