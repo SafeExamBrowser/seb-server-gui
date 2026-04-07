@@ -10,6 +10,13 @@
                 <PageTitle :name="title" />
             </v-col>
         </v-row>
+        <v-row v-if="hasTop" class="flex-grow-0 flex-shrink-0">
+            <v-col>
+                <v-card elevation="4" rounded="lg">
+                    <slot name="PanelTop"></slot>
+                </v-card>
+            </v-col>
+        </v-row>
         <v-row class="flex-grow-1 flex-shrink-1 overflow-y-auto">
             <v-col
                 :cols="hasAside ? 9 : 12"
@@ -48,5 +55,6 @@ defineProps<{
 }>();
 
 const slots = useSlots();
+const hasTop = computed(() => Boolean(slots.PanelTop));
 const hasAside = computed(() => Boolean(slots.PanelAside));
 </script>
