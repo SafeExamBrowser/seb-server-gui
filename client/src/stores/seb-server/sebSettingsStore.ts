@@ -1,41 +1,69 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
+const getInitialState = () => ({
+    isReady: false,
+    isExam: true,
+    selectedContainerId: null,
+    readonly: true,
+    activeSEBClientConnection: null,
+    dialogTitle: null,
+    ignoreSEBService: false,
+});
+
 export const useSEBSettingsStore = defineStore("sebSettings", () => {
+    const isReady = ref(getInitialState().isReady);
     // indicates we currently work with Exam SEB Settings. If false we work with Configuration Template SEB Settings
-    const isExam = ref<boolean>(false);
+    const isExam = ref<boolean>(getInitialState().isExam);
     // The SEB Settings container Id, either Exam id or Configuration Template id
-    const selectedContainerId = ref<number | null>(null);
+    const selectedContainerId = ref<number | null>(
+        getInitialState().selectedContainerId,
+    );
     // readonly flag for SEB Settings. Depends on Exam State or User rights or something else
-    const readonly = ref<boolean>(true);
+    const readonly = ref<boolean>(getInitialState().readonly);
     // indicates if there are active SEB client connections. This is only needed within Exam context
-    const activeSEBClientConnection = ref<number | null>(null);
+    const activeSEBClientConnection = ref<number | null>(
+        getInitialState().activeSEBClientConnection,
+    );
 
-    const dialogTitle = ref<string | null>(null);
+    const dialogTitle = ref<string | null>(getInitialState().dialogTitle);
 
-    const ignoreSEBService = ref<boolean>(false);
+    const ignoreSEBService = ref<boolean>(getInitialState().ignoreSEBService);
 
     const fp = "pt-1 pb-1";
     const cp = "pt-1 pb-1 pl-0";
 
-    function clearAll() {
-        isExam.value = false;
-        selectedContainerId.value = null;
-        readonly.value = false;
-        ignoreSEBService.value = false;
-        activeSEBClientConnection.value = null;
-        dialogTitle.value = null;
-    }
+    const $reset = () => {
+        isReady.value = getInitialState().isReady;
+        isExam.value = getInitialState().isExam;
+        selectedContainerId.value = getInitialState().selectedContainerId;
+        readonly.value = getInitialState().readonly;
+        activeSEBClientConnection.value =
+            getInitialState().activeSEBClientConnection;
+        dialogTitle.value = getInitialState().dialogTitle;
+        ignoreSEBService.value = getInitialState().ignoreSEBService;
+    };
+
+    // function clearAll() {
+    //     isExam.value = false;
+    //     selectedContainerId.value = null;
+    //     readonly.value = false;
+    //     ignoreSEBService.value = false;
+    //     activeSEBClientConnection.value = null;
+    //     dialogTitle.value = null;
+    // }
 
     return {
+        isReady,
         isExam,
         selectedContainerId,
         readonly,
         ignoreSEBService,
         activeSEBClientConnection,
         dialogTitle,
-        clearAll,
+        // clearAll,
         fp,
         cp,
+        $reset,
     };
 });

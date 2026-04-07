@@ -1430,7 +1430,7 @@ async function applyTestRun() {
 
 //= ==============settings logic====================
 async function getSEBSettings() {
-    sebSettingsStore.clearAll();
+    sebSettingsStore.$reset();
     const configs: ExamConfigMapping[] | null =
         await sebSettingsService.getExamConfigMapping(examId);
     if (configs != null && configs.length > 0) {

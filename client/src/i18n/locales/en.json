@@ -299,6 +299,10 @@
                     }
                 }
             },
+            "seb-settings": {
+                "title": "Enter SEB Settings",
+                "subtitle": "Upload SEB Settings or configure SEB Settings for the SEB Client"
+            },
             "supervisors": {
                 "title": "Add Exam Supervisors",
                 "subtitle": "Select or remove Exam Supervisors",

@@ -1,6 +1,7 @@
 import * as apiService from "@/services/apiService";
 import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring";
 import { ExamTemplate, ExamTemplates } from "@/models/seb-server/examTemplate";
+import { ConfigurationTemplateName } from "@/models/seb-server/configurationNode";
 
 const baseUrl = "/exam-template" as const;
 
@@ -67,3 +68,15 @@ export const createExamTemplate = async (
             },
         })
     ).data;
+
+export const createTemporaryConfigurationTemplate =
+    async (): Promise<ConfigurationTemplateName> =>
+        (
+            await apiService.postRequest({
+                url: `${baseUrl}/create-config-template`,
+                options: {
+                    _authType: "seb",
+                    params: {},
+                },
+            })
+        ).data;
