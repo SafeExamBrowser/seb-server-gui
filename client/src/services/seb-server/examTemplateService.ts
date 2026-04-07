@@ -4,6 +4,7 @@ import { ExamTemplate, ExamTemplates } from "@/models/seb-server/examTemplate";
 
 const baseUrl = "/exam-template" as const;
 
+// TODO @alain: share type and make reusable helper in tableUtils.ts
 export const getExamTemplates = async ({
     pageNumber,
     pageSize,
