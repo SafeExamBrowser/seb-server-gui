@@ -26,7 +26,7 @@
                         color="primary"
                         data-testid="homePageMain-createTemplates-startNow-button"
                         rounded="sm"
-                        :to="constants.CREATE_TEMPLATE_ROUTE"
+                        :to="resolveRoutePath('CreateExamTemplateWizard')"
                         variant="flat"
                     >
                         {{ translate("homePage.startNow") }}
@@ -97,6 +97,7 @@
 </template>
 
 <script setup lang="ts">
+import { resolveRoutePath } from "@/router/navigation";
 import * as constants from "@/utils/constants";
 import { translate } from "@/utils/generalUtils";
 </script>

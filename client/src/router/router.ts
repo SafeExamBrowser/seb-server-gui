@@ -245,17 +245,6 @@ const routes: Array<RouteRecordRaw> = [
                 meta: { titleKey: "titles.certificates" },
             },
 
-            // ---------- templates ----------
-            {
-                path: constants.CREATE_TEMPLATE_ROUTE,
-                name: "CreateTemplate",
-                component: () =>
-                    import(
-                        "@/components/views/seb-server/template/CreateTemplate.vue"
-                    ),
-                meta: { titleKey: "titles.createTemplate" },
-            },
-            // this is alain change
             // ---------- exam templates ----------
             {
                 path: "/exam-template",
