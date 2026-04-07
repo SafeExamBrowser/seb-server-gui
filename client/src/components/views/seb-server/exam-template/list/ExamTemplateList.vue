@@ -7,6 +7,14 @@
             },
         ]"
     >
+        <template #PanelTop>
+            <div class="d-flex">
+                <v-row>
+                    <v-col cols="6">TODO: Search Section</v-col>
+                    <v-col cols="6">TODO: Filters Section</v-col>
+                </v-row>
+            </div>
+        </template>
         <template #PanelMain>
             <LoadingFallbackComponent :loading="false" :errors="errors">
                 <ExamTemplateTable
