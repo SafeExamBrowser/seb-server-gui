@@ -3,7 +3,7 @@
         :title="$t('titles.createTemplateExam')"
         :bread-crumb="[
             {
-                label: $t('titles.createTemplate'),
+                label: $t('titles.createTemplateExam'),
                 link: resolveRoutePath('CreateExamTemplateWizard'),
             },
             { label: store.currentStep.title },
