@@ -5,6 +5,7 @@
         :items="items"
         :items-length="itemsLength"
         :loading="isLoading"
+        :items-per-page-options="[10, 20, 50, 100]"
         :sort-by="sortBy"
         @update:options="handleOptionsUpdate"
         @click:row="handleRowClick"
