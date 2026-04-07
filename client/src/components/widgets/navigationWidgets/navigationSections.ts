@@ -4,6 +4,7 @@ import { translate } from "@/utils/generalUtils";
 import { GUIComponent } from "@/services/ability";
 import { NavigationSectionItem } from "@/components/widgets/navigationWidgets/navigationTypes.ts";
 import { getRouteName } from "@/router/routeNames";
+import { resolveRoutePath } from "@/router/navigation";
 
 type AbilityLike = {
     canView: (component: GUIComponent) => boolean;
@@ -46,8 +47,8 @@ export function buildPreparationNavigationItems(
 ): NavigationSectionItem[] {
     return [
         {
-            label: translate("titles.createTemplate"),
-            to: constants.CREATE_TEMPLATE_ROUTE,
+            label: translate("titles.createTemplateExam"),
+            to: resolveRoutePath("CreateExamTemplateWizard"),
             testId: `${testIdPrefix}-createTemplate-link`,
         },
         {
@@ -60,9 +61,9 @@ export function buildPreparationNavigationItems(
             testId: `${testIdPrefix}-addExamWithURL-text`,
         },
         {
-            label: translate("titles.editExamTemplate"),
-            to: constants.CREATE_TEMPLATE_ROUTE,
-            testId: `${testIdPrefix}-editExamTemplate-link`,
+            label: translate("titles.examTemplateList"),
+            to: resolveRoutePath("ExamTemplateList"),
+            testId: `${testIdPrefix}-examTemplateList-link`,
         },
     ];
 }
