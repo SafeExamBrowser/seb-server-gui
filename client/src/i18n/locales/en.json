@@ -132,7 +132,7 @@
     },
 
     "homePage": {
-        "createTemplates": "Create\n  Template",
+        "createTemplates": "Create Exam Template",
         "prepareExam": "Prepare\n Exam",
 
         "monitorExams": "Monitor\n Exam",
