@@ -28,6 +28,14 @@ export const deleteExamTemplate = async (id: number): Promise<void> =>
         })
     ).data;
 
+export const copyExamTemplate = async (id: number): Promise<void> =>
+    (
+        await apiService.postRequest({
+            url: `${baseUrl}/${id}/copy`,
+            options: { _authType: "seb" },
+        })
+    ).data;
+
 export const getExamTemplateNames = async (): Promise<
     {
         modelId: string;
