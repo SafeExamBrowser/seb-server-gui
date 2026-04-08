@@ -109,7 +109,7 @@
 
                     <v-expand-transition>
                         <div
-                            v-show="withProxy"
+                            v-if="withProxy"
                             data-testid="createAssessmentTool-proxy-fields"
                         >
                             <FormBuilder
@@ -143,8 +143,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
-import { storeToRefs } from "pinia";
+import { ref } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
@@ -153,14 +152,18 @@ import CancelButton from "@/components/views/seb-server/settings-navigation/widg
 import ConfirmButton from "@/components/views/seb-server/settings-navigation/widgets/ConfirmButton.vue";
 import { navigateToRoute } from "@/router/navigation";
 import { useAssessmentToolFormFields } from "./composable/useAssessmentToolFormFields";
-import { useCreateAssessmentTool } from "./composable/api/useCreateAssessmentTool";
-import { useCreateAssessmentToolStore } from "./composable/store/useCreateAssessmentToolStore";
+import { useMutation } from "@/composables/useMutation";
+import { createAssessmentTool } from "@/services/seb-server/assessmentToolService";
 import type { CommonAssessmentToolPar } from "@/models/seb-server/assessmentTool";
 
-const store = useCreateAssessmentToolStore();
-const { withProxy, authMode } = storeToRefs(store);
-
 const {
+    mainFormFields,
+    authFormFields,
+    proxyFormFields,
+    authMode,
+    withProxy,
+    loading,
+    errors,
     institutionId,
     name,
     lmsType,
@@ -172,12 +175,10 @@ const {
     proxyPort,
     proxyUsername,
     proxyPassword,
-} = storeToRefs(store);
+} = useAssessmentToolFormFields();
 
-const { mainFormFields, authFormFields, proxyFormFields, loading, errors } =
-    useAssessmentToolFormFields();
-
-const { submit: createTool } = useCreateAssessmentTool();
+const { mutateData: createTool, data: toolResult } =
+    useMutation(createAssessmentTool);
 
 const mainFormRef = ref<InstanceType<typeof FormBuilder>>();
 const authFormRef = ref<InstanceType<typeof FormBuilder>>();
@@ -185,15 +186,6 @@ const proxyFormRef = ref<InstanceType<typeof FormBuilder>>();
 const isMainFormValid = ref<boolean | null>(null);
 const isAuthFormValid = ref<boolean | null>(null);
 const isProxyFormValid = ref<boolean | null>(null);
-
-watch(authMode, (mode) => {
-    if (mode === "client") {
-        accessToken.value = undefined;
-    } else {
-        clientUsername.value = undefined;
-        clientPassword.value = undefined;
-    }
-});
 
 async function submit() {
     const [mainResult, authResult] = await Promise.all([
@@ -238,35 +230,27 @@ async function submit() {
     };
 
     if (authMode.value === "token") {
-        const token = accessToken.value;
-        if (!token) return;
-
-        const result = await createTool({
+        const selectedToken = accessToken.value;
+        if (!selectedToken) return;
+        await createTool({
             ...common,
             authMode: "token",
-            lmsRestApiToken: token,
+            lmsRestApiToken: selectedToken,
         });
-
-        if (result !== null) {
-            store.$reset();
-            navigateToRoute({ name: "AssessmentToolList" });
-        }
     } else {
-        const username = clientUsername.value;
-        const password = clientPassword.value;
-        if (!username || !password) return;
-
-        const result = await createTool({
+        const selectedUsername = clientUsername.value;
+        const selectedPassword = clientPassword.value;
+        if (!selectedUsername || !selectedPassword) return;
+        await createTool({
             ...common,
             authMode: "client",
-            lmsClientname: username,
-            lmsClientsecret: password,
+            lmsClientname: selectedUsername,
+            lmsClientsecret: selectedPassword,
         });
+    }
 
-        if (result !== null) {
-            store.$reset();
-            navigateToRoute({ name: "AssessmentToolList" });
-        }
+    if (toolResult.value) {
+        navigateToRoute({ name: "AssessmentToolList" });
     }
 }
 </script>

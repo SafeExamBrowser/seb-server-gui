@@ -25,14 +25,7 @@ export type AssessmentToolsResponse = {
     content: AssessmentTool[];
 };
 
-export enum LMSTypeEnum {
-    MOCKUP = "MOCKUP",
-    OPEN_EDX = "OPEN_EDX",
-    MOODLE = "MOODLE",
-    MOODLE_PLUGIN = "MOODLE_PLUGIN",
-    ANS_DELFT = "ANS_DELFT",
-    OPEN_OLAT = "OPEN_OLAT",
-}
+export { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums";
 
 export type OptionalParGetAssessmentTool = {
     page_size?: number;

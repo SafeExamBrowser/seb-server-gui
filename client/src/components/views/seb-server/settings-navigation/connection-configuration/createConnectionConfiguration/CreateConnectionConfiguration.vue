@@ -101,7 +101,7 @@
 
                     <v-expand-transition>
                         <div
-                            v-show="withFallback"
+                            v-if="withFallback"
                             data-testid="createConnectionConfiguration-fallback-fields"
                         >
                             <FormBuilder
@@ -147,7 +147,6 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { storeToRefs } from "pinia";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import HintText from "@/components/views/seb-server/settings-navigation/widgets/HintText.vue";
@@ -156,13 +155,14 @@ import ConfirmButton from "@/components/views/seb-server/settings-navigation/wid
 import AddCertificateDialog from "@/components/views/seb-server/certificates/AddCertificateDialog.vue";
 import { navigateToRoute } from "@/router/navigation";
 import { useConnectionConfigurationFormFields } from "./composable/useConnectionConfigurationFormFields";
-import { useCreateConnectionConfiguration } from "./composable/api/useCreateConnectionConfiguration";
-import { useCreateConnectionConfigurationStore } from "./composable/store/useCreateConnectionConfigurationStore";
+import { useMutation } from "@/composables/useMutation";
+import { createConnectionConfiguration } from "@/services/seb-server/connectionConfigurationService";
 import { useCertificates } from "./composable/api/useCertificates";
 import type { CreateConnectionConfigurationPar } from "@/models/seb-server/connectionConfiguration";
 
-const store = useCreateConnectionConfigurationStore();
 const {
+    mainFormFields,
+    fallbackFormFields,
     name,
     configurationPurpose,
     configurationPassword,
@@ -179,11 +179,11 @@ const {
     confirmFallbackPassword,
     quitPassword,
     confirmQuitPassword,
-} = storeToRefs(store);
+} = useConnectionConfigurationFormFields();
 
-const { mainFormFields, fallbackFormFields } =
-    useConnectionConfigurationFormFields();
-const { submit: createConfig } = useCreateConnectionConfiguration();
+const { mutateData: createConfig, data: configResult } = useMutation(
+    createConnectionConfiguration,
+);
 const {
     certificateItems,
     loading: certificatesLoading,
@@ -202,8 +202,6 @@ function handleCertChange(val: string | undefined) {
     if (val === "__UPLOAD__") {
         certDialog.value = true;
         encryptWithCertificate.value = undefined;
-    } else {
-        encryptWithCertificate.value = val;
     }
 }
 
@@ -213,7 +211,7 @@ async function onCertImported(created: { id: string; name: string }) {
 }
 
 async function submit() {
-    const [mainResult] = await Promise.all([mainFormRef.value?.validate()]);
+    const mainResult = await mainFormRef.value?.validate();
 
     if (!mainResult?.valid) return;
 
@@ -228,12 +226,11 @@ async function submit() {
     if (!selectedPurpose || selectedPingInterval == null) return;
 
     const toMs = (s: number) => Math.round(Number(s) * 1000);
-    const pingMs = toMs(selectedPingInterval);
 
     const params: CreateConnectionConfigurationPar = {
         name: name.value ?? "",
         sebConfigPurpose: selectedPurpose,
-        sebServerPingTime: pingMs,
+        sebServerPingTime: toMs(selectedPingInterval),
         cert_alias: encryptWithCertificate.value || undefined,
         encryptSecret: (configurationPassword.value ?? "").trim() || undefined,
         confirm_encrypt_secret:
@@ -272,9 +269,9 @@ async function submit() {
             (confirmQuitPassword.value ?? "").trim() || undefined;
     }
 
-    const created = await createConfig(params);
-    if (created !== null) {
-        store.$reset();
+    await createConfig(params);
+
+    if (configResult.value) {
         navigateToRoute({ name: "ConnectionConfigurationList" });
     }
 }

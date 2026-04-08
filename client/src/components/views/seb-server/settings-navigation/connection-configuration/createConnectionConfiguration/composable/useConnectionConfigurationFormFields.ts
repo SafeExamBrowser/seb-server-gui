@@ -1,35 +1,31 @@
-import { computed } from "vue";
-import { storeToRefs } from "pinia";
+import { computed, ref } from "vue";
 import i18n from "@/i18n";
 import type { FormField } from "@/components/widgets/formBuilder/types";
-import { useCreateConnectionConfigurationStore } from "./store/useCreateConnectionConfigurationStore";
 
 export const useConnectionConfigurationFormFields = () => {
-    const store = useCreateConnectionConfigurationStore();
-    const {
-        name: modelName,
-        configurationPurpose: modelConfigurationPurpose,
-        configurationPassword: modelConfigurationPassword,
-        confirmConfigurationPassword: modelConfirmConfigurationPassword,
-        pingInterval: modelPingInterval,
-        asymmetricOnlyEncryption: modelAsymmetricOnlyEncryption,
-        withFallback,
-        fallbackStartUrl: modelFallbackStartUrl,
-        connectionAttempts: modelConnectionAttempts,
-        interval: modelInterval,
-        connectionTimeout: modelConnectionTimeout,
-        fallbackPassword: modelFallbackPassword,
-        confirmFallbackPassword: modelConfirmFallbackPassword,
-        quitPassword: modelQuitPassword,
-        confirmQuitPassword: modelConfirmQuitPassword,
-    } = storeToRefs(store);
+    const name = ref<string | undefined>(undefined);
+    const configurationPurpose = ref<string | undefined>(undefined);
+    const configurationPassword = ref<string | undefined>(undefined);
+    const confirmConfigurationPassword = ref<string | undefined>(undefined);
+    const encryptWithCertificate = ref<string | undefined>(undefined);
+    const pingInterval = ref<number | undefined>(1);
+    const asymmetricOnlyEncryption = ref<boolean>(false);
+
+    const withFallback = ref<boolean>(false);
+    const fallbackStartUrl = ref<string | undefined>(undefined);
+    const connectionAttempts = ref<number | undefined>(5);
+    const interval = ref<number | undefined>(2);
+    const connectionTimeout = ref<number | undefined>(30);
+    const fallbackPassword = ref<string | undefined>(undefined);
+    const confirmFallbackPassword = ref<string | undefined>(undefined);
+    const quitPassword = ref<string | undefined>(undefined);
+    const confirmQuitPassword = ref<string | undefined>(undefined);
 
     const t = (key: string) =>
         i18n.global.t(
             `connectionConfigurations.createConnectionConfigurationPage.${key}`,
         );
 
-    const requiredMessage = t("validation.required");
     const mustMatchMessage = t("validation.noMatch");
     const mustBeNumberMessage = t("validation.mustBeNumber");
     const mustBeUrlMessage = t("validation.mustBeWithUrl");
@@ -49,14 +45,14 @@ export const useConnectionConfigurationFormFields = () => {
         {
             type: "text" as const,
             name: "name",
-            model: modelName,
+            model: name,
             label: t("labels.name"),
             required: true,
         },
         {
             type: "select" as const,
             name: "configurationPurpose",
-            model: modelConfigurationPurpose,
+            model: configurationPurpose,
             label: t("labels.configurationPurpose"),
             options: configurationPurposeOptions,
             required: true,
@@ -64,21 +60,19 @@ export const useConnectionConfigurationFormFields = () => {
         {
             type: "password" as const,
             name: "configurationPassword",
-            model: modelConfigurationPassword,
+            model: configurationPassword,
             label: t("labels.configurationPassword"),
         },
         {
             type: "password" as const,
             name: "confirmConfigurationPassword",
-            model: modelConfirmConfigurationPassword,
+            model: confirmConfigurationPassword,
             label: t("labels.confirmConfigurationPassword"),
             validationDependsOn: ["configurationPassword"],
             rules: [
                 () => {
-                    const a = (modelConfigurationPassword.value ?? "").trim();
-                    const b = (
-                        modelConfirmConfigurationPassword.value ?? ""
-                    ).trim();
+                    const a = (configurationPassword.value ?? "").trim();
+                    const b = (confirmConfigurationPassword.value ?? "").trim();
                     if (!a && !b) return true;
                     if (!a || !b) return mustMatchMessage;
                     return a === b || mustMatchMessage;
@@ -88,12 +82,12 @@ export const useConnectionConfigurationFormFields = () => {
         {
             type: "number" as const,
             name: "pingInterval",
-            model: modelPingInterval,
+            model: pingInterval,
             label: t("labels.pingInterval"),
             required: true,
             rules: [
                 (v: number | undefined) => {
-                    if (v == null) return requiredMessage;
+                    if (v == null) return t("validation.required");
                     if (Number.isNaN(Number(v))) return mustBeNumberMessage;
                     return true;
                 },
@@ -102,7 +96,7 @@ export const useConnectionConfigurationFormFields = () => {
         {
             type: "switch" as const,
             name: "asymmetricOnlyEncryption",
-            model: modelAsymmetricOnlyEncryption,
+            model: asymmetricOnlyEncryption,
             label: t("labels.useAsymmetricOnlyEncryption"),
         },
     ]);
@@ -111,13 +105,12 @@ export const useConnectionConfigurationFormFields = () => {
         {
             type: "text" as const,
             name: "fallbackStartUrl",
-            model: modelFallbackStartUrl,
+            model: fallbackStartUrl,
             label: t("labels.fallbackStartURL"),
             required: true,
             rules: [
                 (v: string | undefined) => {
-                    if (!withFallback.value) return true;
-                    if (!v || !v.trim()) return requiredMessage;
+                    if (!v || !v.trim()) return t("validation.required");
                     const lower = v.trim().toLowerCase();
                     return (
                         lower.startsWith("http://") ||
@@ -130,13 +123,12 @@ export const useConnectionConfigurationFormFields = () => {
         {
             type: "number" as const,
             name: "connectionAttempts",
-            model: modelConnectionAttempts,
+            model: connectionAttempts,
             label: t("labels.connectionAttempts"),
             required: true,
             rules: [
                 (v: number | undefined) => {
-                    if (!withFallback.value) return true;
-                    if (v == null) return requiredMessage;
+                    if (v == null) return t("validation.required");
                     return !Number.isNaN(Number(v)) || mustBeNumberMessage;
                 },
             ],
@@ -144,13 +136,12 @@ export const useConnectionConfigurationFormFields = () => {
         {
             type: "number" as const,
             name: "interval",
-            model: modelInterval,
+            model: interval,
             label: t("labels.interval"),
             required: true,
             rules: [
                 (v: number | undefined) => {
-                    if (!withFallback.value) return true;
-                    if (v == null) return requiredMessage;
+                    if (v == null) return t("validation.required");
                     return !Number.isNaN(Number(v)) || mustBeNumberMessage;
                 },
             ],
@@ -158,13 +149,12 @@ export const useConnectionConfigurationFormFields = () => {
         {
             type: "number" as const,
             name: "connectionTimeout",
-            model: modelConnectionTimeout,
+            model: connectionTimeout,
             label: t("labels.connectionTimeout"),
             required: true,
             rules: [
                 (v: number | undefined) => {
-                    if (!withFallback.value) return true;
-                    if (v == null) return requiredMessage;
+                    if (v == null) return t("validation.required");
                     return !Number.isNaN(Number(v)) || mustBeNumberMessage;
                 },
             ],
@@ -172,19 +162,19 @@ export const useConnectionConfigurationFormFields = () => {
         {
             type: "password" as const,
             name: "fallbackPassword",
-            model: modelFallbackPassword,
+            model: fallbackPassword,
             label: t("labels.fallbackPassword"),
         },
         {
             type: "password" as const,
             name: "confirmFallbackPassword",
-            model: modelConfirmFallbackPassword,
+            model: confirmFallbackPassword,
             label: t("labels.confirmFallbackPassword"),
             validationDependsOn: ["fallbackPassword"],
             rules: [
                 () => {
-                    const a = (modelFallbackPassword.value ?? "").trim();
-                    const b = (modelConfirmFallbackPassword.value ?? "").trim();
+                    const a = (fallbackPassword.value ?? "").trim();
+                    const b = (confirmFallbackPassword.value ?? "").trim();
                     if (!a && !b) return true;
                     if (!a || !b) return mustMatchMessage;
                     return a === b || mustMatchMessage;
@@ -194,19 +184,19 @@ export const useConnectionConfigurationFormFields = () => {
         {
             type: "password" as const,
             name: "quitPassword",
-            model: modelQuitPassword,
+            model: quitPassword,
             label: t("labels.quitPassword"),
         },
         {
             type: "password" as const,
             name: "confirmQuitPassword",
-            model: modelConfirmQuitPassword,
+            model: confirmQuitPassword,
             label: t("labels.confirmQuitPassword"),
             validationDependsOn: ["quitPassword"],
             rules: [
                 () => {
-                    const a = (modelQuitPassword.value ?? "").trim();
-                    const b = (modelConfirmQuitPassword.value ?? "").trim();
+                    const a = (quitPassword.value ?? "").trim();
+                    const b = (confirmQuitPassword.value ?? "").trim();
                     if (!a && !b) return true;
                     if (!a || !b) return mustMatchMessage;
                     return a === b || mustMatchMessage;
@@ -218,6 +208,21 @@ export const useConnectionConfigurationFormFields = () => {
     return {
         mainFormFields,
         fallbackFormFields,
+        name,
+        configurationPurpose,
+        configurationPassword,
+        confirmConfigurationPassword,
+        encryptWithCertificate,
+        pingInterval,
+        asymmetricOnlyEncryption,
         withFallback,
+        fallbackStartUrl,
+        connectionAttempts,
+        interval,
+        connectionTimeout,
+        fallbackPassword,
+        confirmFallbackPassword,
+        quitPassword,
+        confirmQuitPassword,
     };
 };

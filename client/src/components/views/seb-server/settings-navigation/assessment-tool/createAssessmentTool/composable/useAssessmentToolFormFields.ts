@@ -1,29 +1,35 @@
 import { computed, ref, watch } from "vue";
-import { storeToRefs } from "pinia";
 import i18n from "@/i18n";
 import type { FormField } from "@/components/widgets/formBuilder/types";
-import { useCreateAssessmentToolStore } from "./store/useCreateAssessmentToolStore";
-import { useInstitutions } from "./api/useInstitutions";
+import { useInstitutions } from "@/composables/useInstitutions";
 import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
 import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums";
 
+export type AuthMode = "client" | "token";
+
 export const useAssessmentToolFormFields = () => {
-    const store = useCreateAssessmentToolStore();
-    const {
-        institutionId: modelInstitutionId,
-        name: modelName,
-        lmsType: modelLmsType,
-        serverAddress: modelServerAddress,
-        authMode,
-        clientUsername: modelClientUsername,
-        clientPassword: modelClientPassword,
-        accessToken: modelAccessToken,
-        withProxy,
-        proxyHost: modelProxyHost,
-        proxyPort: modelProxyPort,
-        proxyUsername: modelProxyUsername,
-        proxyPassword: modelProxyPassword,
-    } = storeToRefs(store);
+    const institutionId = ref<string | undefined>(undefined);
+    const name = ref<string | undefined>(undefined);
+    const lmsType = ref<string | undefined>(undefined);
+    const serverAddress = ref<string | undefined>(undefined);
+    const authMode = ref<AuthMode>("token");
+    const clientUsername = ref<string | undefined>(undefined);
+    const clientPassword = ref<string | undefined>(undefined);
+    const accessToken = ref<string | undefined>(undefined);
+    const withProxy = ref<boolean>(false);
+    const proxyHost = ref<string | undefined>(undefined);
+    const proxyPort = ref<string | undefined>(undefined);
+    const proxyUsername = ref<string | undefined>(undefined);
+    const proxyPassword = ref<string | undefined>(undefined);
+
+    watch(authMode, (mode) => {
+        if (mode === "client") {
+            accessToken.value = undefined;
+        } else {
+            clientUsername.value = undefined;
+            clientPassword.value = undefined;
+        }
+    });
 
     const {
         data: institutions,
@@ -32,7 +38,6 @@ export const useAssessmentToolFormFields = () => {
     } = useInstitutions();
 
     const authenticatedUser = useUserAccountStore().userAccount;
-    const institutionSelectDisabled = ref(true);
 
     watch(
         institutions,
@@ -41,7 +46,7 @@ export const useAssessmentToolFormFields = () => {
             const userInstitutionId = String(authenticatedUser?.institutionId);
             const matched = data.find((i) => i.modelId === userInstitutionId);
             if (matched) {
-                modelInstitutionId.value = matched.modelId;
+                institutionId.value = matched.modelId;
             }
         },
         { immediate: true },
@@ -65,8 +70,6 @@ export const useAssessmentToolFormFields = () => {
             `assessmentToolConnections.createAssessmentToolConnectionsPage.${key}`,
         );
 
-    const invalidPortMessage = t("validation.invalidPort");
-
     const loading = computed(() => loadingInstitutions.value);
     const errors = computed(() =>
         [errorInstitutions.value].filter((e) => e !== undefined),
@@ -78,23 +81,23 @@ export const useAssessmentToolFormFields = () => {
             {
                 type: "select" as const,
                 name: "institutionId",
-                model: modelInstitutionId,
+                model: institutionId,
                 label: t("labels.institutionLabel"),
                 options: institutionOptions.value,
                 required: true,
-                disabled: institutionSelectDisabled.value,
+                disabled: true,
             },
             {
                 type: "text" as const,
                 name: "name",
-                model: modelName,
+                model: name,
                 label: t("labels.nameLabel"),
                 required: true,
             },
             {
                 type: "select" as const,
                 name: "lmsType",
-                model: modelLmsType,
+                model: lmsType,
                 label: t("labels.typeLabel"),
                 options: lmsTypeOptions,
                 required: true,
@@ -102,7 +105,7 @@ export const useAssessmentToolFormFields = () => {
             {
                 type: "text" as const,
                 name: "serverAddress",
-                model: modelServerAddress,
+                model: serverAddress,
                 label: t("labels.assessmentToolServerAddressLabel"),
                 required: true,
                 rules: [
@@ -121,14 +124,14 @@ export const useAssessmentToolFormFields = () => {
                 {
                     type: "text" as const,
                     name: "clientUsername",
-                    model: modelClientUsername,
+                    model: clientUsername,
                     label: t("labels.assessmentToolServerUsernameLabel"),
                     required: true,
                 },
                 {
                     type: "password" as const,
                     name: "clientPassword",
-                    model: modelClientPassword,
+                    model: clientPassword,
                     label: t("labels.assessmentToolServerPasswordLabel"),
                     required: true,
                 },
@@ -138,7 +141,7 @@ export const useAssessmentToolFormFields = () => {
             {
                 type: "password" as const,
                 name: "accessToken",
-                model: modelAccessToken,
+                model: accessToken,
                 label: t("labels.accessTokenLabel"),
                 required: true,
             },
@@ -149,14 +152,14 @@ export const useAssessmentToolFormFields = () => {
         {
             type: "text" as const,
             name: "proxyHost",
-            model: modelProxyHost,
+            model: proxyHost,
             label: t("labels.proxyHostLabel"),
             required: true,
         },
         {
             type: "text" as const,
             name: "proxyPort",
-            model: modelProxyPort,
+            model: proxyPort,
             label: t("labels.proxyPortLabel"),
             required: true,
             rules: [
@@ -165,7 +168,7 @@ export const useAssessmentToolFormFields = () => {
                     const n = Number(v);
                     return (
                         (Number.isInteger(n) && n >= 1 && n <= 65535) ||
-                        invalidPortMessage
+                        t("validation.invalidPort")
                     );
                 },
             ],
@@ -173,14 +176,14 @@ export const useAssessmentToolFormFields = () => {
         {
             type: "text" as const,
             name: "proxyUsername",
-            model: modelProxyUsername,
+            model: proxyUsername,
             label: t("labels.proxyUsernameLabel"),
             required: true,
         },
         {
             type: "password" as const,
             name: "proxyPassword",
-            model: modelProxyPassword,
+            model: proxyPassword,
             label: t("labels.proxyPasswordLabel"),
             required: true,
         },
@@ -194,5 +197,16 @@ export const useAssessmentToolFormFields = () => {
         withProxy,
         loading,
         errors,
+        institutionId,
+        name,
+        lmsType,
+        serverAddress,
+        clientUsername,
+        clientPassword,
+        accessToken,
+        proxyHost,
+        proxyPort,
+        proxyUsername,
+        proxyPassword,
     };
 };
