@@ -1,3 +1,5 @@
+import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums.ts";
+
 export type AssessmentTool = {
     id: number;
     institutionId: number;
@@ -24,8 +26,6 @@ export type AssessmentToolsResponse = {
     complete: boolean;
     content: AssessmentTool[];
 };
-
-export { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums";
 
 export type OptionalParGetAssessmentTool = {
     page_size?: number;
