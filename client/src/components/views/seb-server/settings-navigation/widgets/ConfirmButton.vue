@@ -2,7 +2,7 @@
     <v-btn
         class="ml-2"
         color="primary"
-        data-testid="search-button"
+        data-testid="confirm-button"
         rounded="sm"
         variant="flat"
         @click="emit('click')"

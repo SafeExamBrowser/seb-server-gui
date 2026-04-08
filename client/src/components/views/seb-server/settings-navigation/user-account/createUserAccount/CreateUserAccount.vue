@@ -19,7 +19,6 @@
                     >
                         <FormBuilder
                             ref="leftFormRef"
-                            v-model="isLeftFormValid"
                             :fields="leftFormFields"
                             data-testid="createUserAccount-form"
                         />
@@ -46,7 +45,6 @@
                         >
                             <FormBuilder
                                 ref="rightFormRef"
-                                v-model="isRightFormValid"
                                 :fields="rightFormFields"
                                 data-testid="createUserAccount-role-form"
                             />
@@ -76,7 +74,6 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { storeToRefs } from "pinia";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
@@ -84,15 +81,18 @@ import HintText from "@/components/views/seb-server/settings-navigation/widgets/
 import UserAccountPreviewCard from "@/components/views/seb-server/settings-navigation/widgets/UserAccountPreviewCard.vue";
 import CancelButton from "@/components/views/seb-server/settings-navigation/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/views/seb-server/settings-navigation/widgets/ConfirmButton.vue";
-import { useFormFields } from "./composable/useFormFields";
-import { useCreateUserAccount } from "./composable/api/useCreateUserAccount";
-import { useCreateUserAccountStore } from "./composable/store/useCreateUserAccountStore";
+import { useUserAccountFormFields } from "./composable/useUserAccountFormFields";
+import { useMutation } from "@/composables/useMutation";
+import { createUserAccount } from "@/services/seb-server/userAccountService";
 import { navigateToRoute } from "@/router/navigation";
 import { UserRoleEnum } from "@/models/userRoleEnum";
 import i18n from "@/i18n";
 
-const store = useCreateUserAccountStore();
 const {
+    leftFormFields,
+    rightFormFields,
+    loading,
+    errors,
     name,
     surname,
     role,
@@ -102,15 +102,13 @@ const {
     timezone,
     password,
     confirmPassword,
-} = storeToRefs(store);
+} = useUserAccountFormFields();
 
-const { leftFormFields, rightFormFields, loading, errors } = useFormFields();
-const { submit: createAccount } = useCreateUserAccount();
+const { mutateData: createAccount, data: accountResult } =
+    useMutation(createUserAccount);
 
 const leftFormRef = ref<InstanceType<typeof FormBuilder>>();
 const rightFormRef = ref<InstanceType<typeof FormBuilder>>();
-const isLeftFormValid = ref<boolean | null>(null);
-const isRightFormValid = ref<boolean | null>(null);
 
 const roleDescription = computed(() => {
     if (!role.value) {
@@ -125,20 +123,26 @@ async function submit() {
         rightFormRef.value?.validate(),
     ]);
 
-    if (!leftResult?.valid || !rightResult?.valid) {
-        return;
-    }
+    if (!leftResult?.valid || !rightResult?.valid) return;
 
     const selectedRole = role.value;
+    const selectedInstitutionId = institutionId.value;
+    const selectedName = name.value;
+    const selectedSurname = surname.value;
+    const selectedUsername = username.value;
+    const selectedTimezone = timezone.value;
+    const selectedPassword = password.value;
+    const selectedConfirmPassword = confirmPassword.value;
+
     if (
         !selectedRole ||
-        !institutionId.value ||
-        !name.value ||
-        !surname.value ||
-        !username.value ||
-        !timezone.value ||
-        !password.value ||
-        !confirmPassword.value
+        !selectedInstitutionId ||
+        !selectedName ||
+        !selectedSurname ||
+        !selectedUsername ||
+        !selectedTimezone ||
+        !selectedPassword ||
+        !selectedConfirmPassword
     ) {
         return;
     }
@@ -154,21 +158,20 @@ async function submit() {
               ? [UserRoleEnum.EXAM_ADMIN, UserRoleEnum.EXAM_SUPPORTER]
               : [selectedRole];
 
-    const result = await createAccount({
-        institutionId: institutionId.value,
-        name: name.value,
-        surname: surname.value,
-        username: username.value,
+    await createAccount({
+        institutionId: selectedInstitutionId,
+        name: selectedName,
+        surname: selectedSurname,
+        username: selectedUsername,
         email: email.value ?? "",
         language: "en",
-        timezone: timezone.value,
+        timezone: selectedTimezone,
         userRoles,
-        newPassword: password.value,
-        confirmNewPassword: confirmPassword.value,
+        newPassword: selectedPassword,
+        confirmNewPassword: selectedConfirmPassword,
     });
 
-    if (result !== null) {
-        store.$reset();
+    if (accountResult.value) {
         navigateToRoute({ name: "UserAccountList" });
     }
 }

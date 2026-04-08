@@ -13,11 +13,9 @@ import {
 } from "@/models/seb-server/optionalParamters";
 import { OptionalParGetConnectionConfiguration } from "@/models/seb-server/connectionConfiguration";
 import { OptionalParGetCertificates } from "@/models/seb-server/certificate";
-import {
-    LMSTypeEnum,
-    OptionalParGetAssessmentTool,
-} from "@/models/seb-server/assessmentTool";
+import { OptionalParGetAssessmentTool } from "@/models/seb-server/assessmentTool";
 import { OptionalParSearchSessions } from "@/models/screen-proctoring/optionalParamters";
+import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums.ts";
 
 type ItemsLike = number | { length: number } | null | undefined;
 type ItemsPerPageOption = { value: number; title: string };

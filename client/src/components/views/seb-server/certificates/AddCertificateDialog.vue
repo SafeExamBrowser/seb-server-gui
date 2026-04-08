@@ -10,11 +10,7 @@
                 class="text-h6 font-weight-bold"
                 data-testid="certificates-addDialog-title"
             >
-                {{
-                    translate(
-                        "certificates.certificateDialog.uploadCertificate",
-                    )
-                }}
+                {{ t("certificates.certificateDialog.uploadCertificate") }}
             </v-card-title>
 
             <v-card-text data-testid="certificates-addDialog-body">
@@ -23,7 +19,7 @@
                     data-testid="certificates-addDialog-help"
                 >
                     {{
-                        translate(
+                        t(
                             "certificates.certificateDialog.uploadCertificateHelp",
                         )
                     }}
@@ -53,7 +49,7 @@
                     >
                         {{
                             selectedFileName ||
-                            translate("certificates.certificateDialog.dropHere")
+                            t("certificates.certificateDialog.dropHere")
                         }}
                     </div>
 
@@ -62,9 +58,8 @@
                         class="text-caption text-grey-darken-1 mb-4"
                         data-testid="certificates-addDialog-allowedExt"
                     >
-                        {{
-                            translate("certificates.certificateDialog.allowed")
-                        }}: {{ acceptExtHuman }}
+                        {{ t("certificates.certificateDialog.allowed") }}:
+                        {{ acceptExtHuman }}
                     </div>
 
                     <v-btn
@@ -74,9 +69,7 @@
                         @click="triggerFilePicker"
                     >
                         {{
-                            translate(
-                                "certificates.certificateDialog.selectFromFolder",
-                            )
+                            t("certificates.certificateDialog.selectFromFolder")
                         }}
                     </v-btn>
 
@@ -102,9 +95,7 @@
                             density="comfortable"
                             hide-details
                             :label="
-                                translate(
-                                    'certificates.certificateDialog.password',
-                                )
+                                t('certificates.certificateDialog.password')
                             "
                             prepend-inner-icon="mdi-lock-outline"
                             :type="passwordVisible ? 'text' : 'password'"
@@ -158,7 +149,7 @@
                     variant="text"
                     @click="close()"
                 >
-                    {{ translate("general.cancelButton") }}
+                    {{ t("general.cancelButton") }}
                 </v-btn>
                 <v-btn
                     color="primary"
@@ -167,7 +158,7 @@
                     variant="text"
                     @click="doUpload"
                 >
-                    {{ translate("general.saveButton") }}
+                    {{ t("general.saveButton") }}
                 </v-btn>
             </v-card-actions>
         </v-card>
@@ -176,10 +167,11 @@
 
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import { translate } from "@/utils/generalUtils";
 import { useI18n } from "vue-i18n";
 import { CreateCertificatePar } from "@/models/seb-server/certificate";
 import { createCertificate } from "@/services/seb-server/certificateService.ts";
+
+const { t } = useI18n();
 
 const password = ref<string>("");
 const passwordVisible = ref<boolean>(false);
@@ -188,7 +180,6 @@ type UploadedCert = { id: string; name: string };
 
 const props = defineProps<{
     modelValue: boolean;
-    simulate?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -204,7 +195,6 @@ const uploadError = ref<string>("");
 const uploading = ref(false);
 const uploadProgress = ref(0);
 const fileInputRef = ref<HTMLInputElement | null>(null);
-const { t } = useI18n();
 const internalOpen = ref<boolean>(props.modelValue);
 watch(
     () => props.modelValue,
@@ -217,20 +207,15 @@ function onToggle(val: boolean) {
 
 const defaultExtList = [".p12", ".pfx", ".pem", ".crt", ".cer"];
 const acceptExt = defaultExtList.join(",");
-
 const acceptExtHuman = defaultExtList.join(", ");
 
 function triggerFilePicker() {
     fileInputRef.value?.click();
 }
 
-function extList(): string[] {
-    return defaultExtList.slice();
-}
-
 function validExt(file: File) {
     const lower = file.name.toLowerCase();
-    return extList().some((ext) => lower.endsWith(ext));
+    return defaultExtList.some((ext) => lower.endsWith(ext));
 }
 
 function onFilePicked(e: Event) {
