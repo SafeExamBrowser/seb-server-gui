@@ -3,7 +3,7 @@
         <template #ActionButton>
             <AddButton
                 text="certificates.addCertificate"
-                :route="{ name: 'CreateCertificate' }"
+                @click="certDialog = true"
             />
         </template>
 
@@ -52,12 +52,15 @@
             </v-col>
         </template>
     </BasicSettingsPage>
+
+    <AddCertificateDialog v-model="certDialog" @imported="onCertImported" />
 </template>
 
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import AddButton from "@/components/views/seb-server/settings-navigation/widgets/AddButton.vue";
+import AddCertificateDialog from "@/components/views/seb-server/certificates/AddCertificateDialog.vue";
 import SearchSection from "@/components/views/seb-server/settings-navigation/components/SearchSection.vue";
 import SettingsTable from "@/components/views/seb-server/settings-navigation/components/SettingsTable/SettingsTable.vue";
 import { useCertificatesStore } from "@/components/views/seb-server/settings-navigation/certificate/certificates/store/certificatesStore.ts";
@@ -67,6 +70,12 @@ import { useServerSettingsTable } from "@/components/views/seb-server/settings-n
 import { useDeleteCertificate } from "@/components/views/seb-server/settings-navigation/certificate/certificates/api/useDeleteCertificate.ts";
 import { useSettingsTableCellFormatters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableCellFormatters.ts";
 import type { CertificatesResponse } from "@/models/seb-server/certificate";
+
+const certDialog = ref(false);
+
+async function onCertImported() {
+    await loadItems();
+}
 
 const certificatesStore = useCertificatesStore();
 const certificatesTableHeaders = useCertificatesTableHeaders();

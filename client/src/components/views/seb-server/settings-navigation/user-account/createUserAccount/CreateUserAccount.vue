@@ -19,7 +19,6 @@
                     >
                         <FormBuilder
                             ref="leftFormRef"
-                            v-model="isLeftFormValid"
                             :fields="leftFormFields"
                             data-testid="createUserAccount-form"
                         />
@@ -46,7 +45,6 @@
                         >
                             <FormBuilder
                                 ref="rightFormRef"
-                                v-model="isRightFormValid"
                                 :fields="rightFormFields"
                                 data-testid="createUserAccount-role-form"
                             />
@@ -111,8 +109,6 @@ const { mutateData: createAccount, data: accountResult } =
 
 const leftFormRef = ref<InstanceType<typeof FormBuilder>>();
 const rightFormRef = ref<InstanceType<typeof FormBuilder>>();
-const isLeftFormValid = ref<boolean | null>(null);
-const isRightFormValid = ref<boolean | null>(null);
 
 const roleDescription = computed(() => {
     if (!role.value) {

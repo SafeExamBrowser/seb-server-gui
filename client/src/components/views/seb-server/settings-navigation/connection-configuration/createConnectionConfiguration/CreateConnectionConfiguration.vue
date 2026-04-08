@@ -14,7 +14,6 @@
                 <v-col cols="8">
                     <FormBuilder
                         ref="mainFormRef"
-                        v-model="isMainFormValid"
                         :fields="mainFormFields"
                         data-testid="createConnectionConfiguration-main-form"
                     />
@@ -106,7 +105,6 @@
                         >
                             <FormBuilder
                                 ref="fallbackFormRef"
-                                v-model="isFallbackFormValid"
                                 :fields="fallbackFormFields"
                                 data-testid="createConnectionConfiguration-fallback-form"
                             />
@@ -138,11 +136,7 @@
     </BasicSettingsPage>
 
     <!-- Upload Certificate Dialog -->
-    <AddCertificateDialog
-        v-model="certDialog"
-        :simulate="true"
-        @imported="onCertImported"
-    />
+    <AddCertificateDialog v-model="certDialog" @imported="onCertImported" />
 </template>
 
 <script setup lang="ts">
@@ -181,7 +175,7 @@ const {
     confirmQuitPassword,
 } = useConnectionConfigurationFormFields();
 
-const { mutateData: createConfig, data: configResult } = useMutation(
+const { mutateData: createConfig, error: configError } = useMutation(
     createConnectionConfiguration,
 );
 const {
@@ -193,8 +187,6 @@ const {
 
 const mainFormRef = ref<InstanceType<typeof FormBuilder>>();
 const fallbackFormRef = ref<InstanceType<typeof FormBuilder>>();
-const isMainFormValid = ref<boolean | null>(null);
-const isFallbackFormValid = ref<boolean | null>(null);
 
 const certDialog = ref(false);
 
@@ -271,7 +263,7 @@ async function submit() {
 
     await createConfig(params);
 
-    if (configResult.value) {
+    if (!configError.value) {
         navigateToRoute({ name: "ConnectionConfigurationList" });
     }
 }

@@ -26,10 +26,6 @@ export const useConnectionConfigurationFormFields = () => {
             `connectionConfigurations.createConnectionConfigurationPage.${key}`,
         );
 
-    const mustMatchMessage = t("validation.noMatch");
-    const mustBeNumberMessage = t("validation.mustBeNumber");
-    const mustBeUrlMessage = t("validation.mustBeWithUrl");
-
     const configurationPurposeOptions = [
         {
             value: "START_EXAM",
@@ -74,8 +70,8 @@ export const useConnectionConfigurationFormFields = () => {
                     const a = (configurationPassword.value ?? "").trim();
                     const b = (confirmConfigurationPassword.value ?? "").trim();
                     if (!a && !b) return true;
-                    if (!a || !b) return mustMatchMessage;
-                    return a === b || mustMatchMessage;
+                    if (!a || !b) return t("validation.noMatch");
+                    return a === b || t("validation.noMatch");
                 },
             ],
         },
@@ -88,7 +84,8 @@ export const useConnectionConfigurationFormFields = () => {
             rules: [
                 (v: number | undefined) => {
                     if (v == null) return t("validation.required");
-                    if (Number.isNaN(Number(v))) return mustBeNumberMessage;
+                    if (Number.isNaN(Number(v)))
+                        return t("validation.mustBeNumber");
                     return true;
                 },
             ],
@@ -115,7 +112,7 @@ export const useConnectionConfigurationFormFields = () => {
                     return (
                         lower.startsWith("http://") ||
                         lower.startsWith("https://") ||
-                        mustBeUrlMessage
+                        t("validation.mustBeWithUrl")
                     );
                 },
             ],
@@ -129,7 +126,9 @@ export const useConnectionConfigurationFormFields = () => {
             rules: [
                 (v: number | undefined) => {
                     if (v == null) return t("validation.required");
-                    return !Number.isNaN(Number(v)) || mustBeNumberMessage;
+                    return (
+                        !Number.isNaN(Number(v)) || t("validation.mustBeNumber")
+                    );
                 },
             ],
         },
@@ -142,7 +141,9 @@ export const useConnectionConfigurationFormFields = () => {
             rules: [
                 (v: number | undefined) => {
                     if (v == null) return t("validation.required");
-                    return !Number.isNaN(Number(v)) || mustBeNumberMessage;
+                    return (
+                        !Number.isNaN(Number(v)) || t("validation.mustBeNumber")
+                    );
                 },
             ],
         },
@@ -155,7 +156,9 @@ export const useConnectionConfigurationFormFields = () => {
             rules: [
                 (v: number | undefined) => {
                     if (v == null) return t("validation.required");
-                    return !Number.isNaN(Number(v)) || mustBeNumberMessage;
+                    return (
+                        !Number.isNaN(Number(v)) || t("validation.mustBeNumber")
+                    );
                 },
             ],
         },
@@ -176,8 +179,8 @@ export const useConnectionConfigurationFormFields = () => {
                     const a = (fallbackPassword.value ?? "").trim();
                     const b = (confirmFallbackPassword.value ?? "").trim();
                     if (!a && !b) return true;
-                    if (!a || !b) return mustMatchMessage;
-                    return a === b || mustMatchMessage;
+                    if (!a || !b) return t("validation.noMatch");
+                    return a === b || t("validation.noMatch");
                 },
             ],
         },
@@ -198,8 +201,8 @@ export const useConnectionConfigurationFormFields = () => {
                     const a = (quitPassword.value ?? "").trim();
                     const b = (confirmQuitPassword.value ?? "").trim();
                     if (!a && !b) return true;
-                    if (!a || !b) return mustMatchMessage;
-                    return a === b || mustMatchMessage;
+                    if (!a || !b) return t("validation.noMatch");
+                    return a === b || t("validation.noMatch");
                 },
             ],
         },

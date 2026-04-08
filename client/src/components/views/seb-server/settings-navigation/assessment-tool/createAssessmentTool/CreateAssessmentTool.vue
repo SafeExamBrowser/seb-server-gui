@@ -18,7 +18,6 @@
                     >
                         <FormBuilder
                             ref="mainFormRef"
-                            v-model="isMainFormValid"
                             :fields="mainFormFields"
                             data-testid="createAssessmentTool-main-form"
                         />
@@ -70,7 +69,6 @@
 
                     <FormBuilder
                         ref="authFormRef"
-                        v-model="isAuthFormValid"
                         :fields="authFormFields"
                         data-testid="createAssessmentTool-auth-form"
                     />
@@ -114,7 +112,6 @@
                         >
                             <FormBuilder
                                 ref="proxyFormRef"
-                                v-model="isProxyFormValid"
                                 :fields="proxyFormFields"
                                 data-testid="createAssessmentTool-proxy-form"
                             />
@@ -177,15 +174,12 @@ const {
     proxyPassword,
 } = useAssessmentToolFormFields();
 
-const { mutateData: createTool, data: toolResult } =
+const { mutateData: createTool, error: toolError } =
     useMutation(createAssessmentTool);
 
 const mainFormRef = ref<InstanceType<typeof FormBuilder>>();
 const authFormRef = ref<InstanceType<typeof FormBuilder>>();
 const proxyFormRef = ref<InstanceType<typeof FormBuilder>>();
-const isMainFormValid = ref<boolean | null>(null);
-const isAuthFormValid = ref<boolean | null>(null);
-const isProxyFormValid = ref<boolean | null>(null);
 
 async function submit() {
     const [mainResult, authResult] = await Promise.all([
@@ -249,7 +243,7 @@ async function submit() {
         });
     }
 
-    if (toolResult.value) {
+    if (!toolError.value) {
         navigateToRoute({ name: "AssessmentToolList" });
     }
 }
