@@ -2,7 +2,7 @@
     <v-card class="pa-5" max-width="1200">
         <v-row>
             <v-col>
-                <v-row>
+                <v-row :params="init_store">
                     <v-tabs
                         v-model="currentTab"
                         show-arrows="always"
@@ -42,7 +42,6 @@
 import { translate } from "@/utils/generalUtils";
 import SebSettingsApplications from "@/components/views/seb-server/settings/SebSettingsApplications.vue";
 import SebSettingsNetwork from "@/components/views/seb-server/settings/SebSettingsNetwork.vue";
-//import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 import SebSettingsGeneral from "@/components/views/seb-server/settings/SebSettingsGeneral.vue";
 import { GUIAction, useAbilities } from "@/services/ability";
 import SebSettingsUserInterface from "@/components/views/seb-server/settings/SebSettingsUserInterface.vue";
@@ -53,34 +52,46 @@ import SebSettingsSecurity from "@/components/views/seb-server/settings/SebSetti
 import SebSettingsRegistry from "@/components/views/seb-server/settings/SebSettingsRegistry.vue";
 import SebSettingsHookedKeys from "@/components/views/seb-server/settings/SebSettingsHookedKeys.vue";
 import SebSettingsProctoring from "@/components/views/seb-server/settings/SebSettingsProctoring.vue";
-import { ref, markRaw } from "vue";
-import type { Component } from "vue";
-//import { createTemporaryConfigTemplate } from "./api/useCreateTemporaryConfigTemplate";
+import { computed, markRaw, ref } from "vue";
+import type { Component, ComputedRef } from "vue";
+import { ConfigurationTemplateKey } from "@/models/seb-server/configurationNode";
+import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
+import { useStepNamingStore } from "@/components/views/seb-server/exam-template/wizard/components/stepNaming/composables/store/useStepNamingStore";
 
-//const sebSettingsStore = useSEBSettingsStore();
+const configKey = defineModel<ConfigurationTemplateKey | undefined>({
+    required: true,
+});
+
 const ability = useAbilities();
-
-// const {
-//     data: temporaryConfigTemplateName,
-//     loading: loadingTemporaryConfigTemplateName,
-//     error: errorTemporaryConfigTemplateName,
-// } = createTemporaryConfigTemplate();
-
-// const loading = computed(
-//     () =>
-//         loadingTemporaryConfigTemplateName.value
-// );
-
-// const errors = computed(() =>
-//     [
-//         errorTemporaryConfigTemplateName.value,
-//     ].filter((error) => error !== undefined),
-// );
-
 const currentTab = ref<number>(1);
+const init_store = computed(() => {
+    if (configKey.value) {
+        const sebSettingsStore = useSEBSettingsStore();
+        const stepNamingStore = useStepNamingStore();
 
-const tabs: { title: string; value: number; component: Component }[] =
-    ability.canDo(GUIAction.EditFullSEBSettings)
+        if (sebSettingsStore.selectedContainerId == null) {
+            sebSettingsStore.isExam = false;
+            sebSettingsStore.readonly = false;
+            if (configKey.value.id) {
+                sebSettingsStore.selectedContainerId = parseInt(
+                    configKey.value.id,
+                );
+                stepNamingStore.configurationTemplate = configKey.value.id;
+            }
+        }
+        console.info(
+            "*********** sebSettingsStore.selectedContainerId: " +
+                sebSettingsStore.selectedContainerId,
+        );
+        return true;
+    }
+    return false;
+});
+
+const tabs: ComputedRef<
+    { title: string; value: number; component: Component }[]
+> = computed(() => {
+    return ability.canDo(GUIAction.EditFullSEBSettings)
         ? [
               {
                   title: translate("sebSettings.views.general"),
@@ -150,4 +161,5 @@ const tabs: { title: string; value: number; component: Component }[] =
                   component: markRaw(SebSettingsNetwork),
               },
           ];
+});
 </script>

@@ -542,6 +542,7 @@ onBeforeMount(async () => {
     const duSettings: SEBSettingsView | null = await sebSettingsService.getView(
         ViewType.DOWN_UPLOAD,
         componentId,
+        sebSettingsStore.isExam,
     );
 
     if (duSettings == null) {
@@ -613,6 +614,7 @@ async function saveSingleValue(name: string, value: string) {
         componentId,
         setting.id.toString(),
         value,
+        sebSettingsStore.isExam,
     );
 }
 
@@ -679,6 +681,7 @@ async function deleteFileType(index: number) {
             componentId,
             "downloadFileTypes",
             index,
+            sebSettingsStore.isExam,
         );
     if (resp == null) {
         return;
@@ -707,6 +710,7 @@ async function closeFileTypeDialog(apply?: boolean) {
             await sebSettingsService.addTableRow(
                 componentId,
                 "downloadFileTypes",
+                sebSettingsStore.isExam,
             );
         if (resp == null) {
             return;
@@ -726,16 +730,19 @@ async function closeFileTypeDialog(apply?: boolean) {
         componentId,
         selectedDownloadFileType.value.ids.os.toString(),
         selectedDownloadFileType.value.os,
+        sebSettingsStore.isExam,
     );
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedDownloadFileType.value.ids.fileExtension.toString(),
         selectedDownloadFileType.value.fileExtension,
+        sebSettingsStore.isExam,
     );
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedDownloadFileType.value.ids.identifier.toString(),
         selectedDownloadFileType.value.identifier,
+        sebSettingsStore.isExam,
     );
 
     downloadFileTypesTable.value[selectedDownloadFileType.value.index] =

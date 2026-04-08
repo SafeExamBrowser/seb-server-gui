@@ -1487,9 +1487,9 @@ function openSebSettingsDialog() {
 async function closeSebSettingsDialog(apply?: boolean) {
     sebSettingsDialog.value = false;
     if (apply) {
-        await sebSettingsService.publish(examId);
+        await sebSettingsService.publish(examId, sebSettingsStore.isExam);
     } else {
-        await sebSettingsService.undoChanges(examId);
+        await sebSettingsService.undoChanges(examId, sebSettingsStore.isExam);
     }
 }
 

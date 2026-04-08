@@ -251,10 +251,16 @@ onBeforeMount(async () => {
         return;
     }
 
+    console.info("********* load general settings...");
+
     componentId = sebSettingsStore.selectedContainerId.toString();
 
     const generalSettings: SEBSettingsView | null =
-        await sebSettingsService.getView(ViewType.GENERAL, componentId);
+        await sebSettingsService.getView(
+            ViewType.GENERAL,
+            componentId,
+            sebSettingsStore.isExam,
+        );
     if (generalSettings == null) {
         return;
     }
@@ -276,6 +282,7 @@ async function saveSingleValue(name: string, value: string) {
         componentId,
         setting.id.toString(),
         value,
+        sebSettingsStore.isExam,
     );
 }
 

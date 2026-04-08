@@ -1428,7 +1428,11 @@ onBeforeMount(async () => {
     componentId = sebSettingsStore.selectedContainerId.toString();
 
     const browserSettings: SEBSettingsView | null =
-        await sebSettingsService.getView(ViewType.BROWSER, componentId);
+        await sebSettingsService.getView(
+            ViewType.BROWSER,
+            componentId,
+            sebSettingsStore.isExam,
+        );
 
     if (browserSettings == null) {
         return;
@@ -1634,6 +1638,7 @@ async function saveSingleValue(name: string, value: string) {
         componentId,
         setting.id.toString(),
         value,
+        sebSettingsStore.isExam,
     );
 }
 

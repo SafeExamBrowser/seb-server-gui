@@ -208,6 +208,7 @@ export const useCreateExamTemplateStore = defineStore(
             // substores
             screenProctoringStore.$reset();
             stepNamingStore.$reset();
+            stepSEBSettings.$reset();
             stepSupervisorsStore.$reset();
             stepIndicatorsStore.$reset();
             stepClientGroupStore.$reset();

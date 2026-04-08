@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 const getInitialState = () => ({
     isReady: false,
@@ -12,7 +12,11 @@ const getInitialState = () => ({
 });
 
 export const useSEBSettingsStore = defineStore("sebSettings", () => {
-    const isReady = ref(getInitialState().isReady);
+    // store is ready when selectedContainerId is set
+    const isReady = computed<boolean>(
+        () => selectedContainerId.value != undefined,
+    );
+
     // indicates we currently work with Exam SEB Settings. If false we work with Configuration Template SEB Settings
     const isExam = ref<boolean>(getInitialState().isExam);
     // The SEB Settings container Id, either Exam id or Configuration Template id
@@ -34,7 +38,6 @@ export const useSEBSettingsStore = defineStore("sebSettings", () => {
     const cp = "pt-1 pb-1 pl-0";
 
     const $reset = () => {
-        isReady.value = getInitialState().isReady;
         isExam.value = getInitialState().isExam;
         selectedContainerId.value = getInitialState().selectedContainerId;
         readonly.value = getInitialState().readonly;
@@ -44,15 +47,6 @@ export const useSEBSettingsStore = defineStore("sebSettings", () => {
         ignoreSEBService.value = getInitialState().ignoreSEBService;
     };
 
-    // function clearAll() {
-    //     isExam.value = false;
-    //     selectedContainerId.value = null;
-    //     readonly.value = false;
-    //     ignoreSEBService.value = false;
-    //     activeSEBClientConnection.value = null;
-    //     dialogTitle.value = null;
-    // }
-
     return {
         isReady,
         isExam,
@@ -61,7 +55,6 @@ export const useSEBSettingsStore = defineStore("sebSettings", () => {
         ignoreSEBService,
         activeSEBClientConnection,
         dialogTitle,
-        // clearAll,
         fp,
         cp,
         $reset,
