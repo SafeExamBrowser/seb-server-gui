@@ -190,7 +190,7 @@ const routes: Array<RouteRecordRaw> = [
                 name: getRouteName("CreateAssessmentTool"),
                 component: () =>
                     import(
-                        "@/components/views/seb-server/assessment-tool/CreateAssessmentTool.vue"
+                        "@/components/views/seb-server/settings-navigation/assessment-tool/createAssessmentTool/CreateAssessmentTool.vue"
                     ),
                 meta: { titleKey: "titles.createAssessmentTool" },
             },
@@ -219,7 +219,7 @@ const routes: Array<RouteRecordRaw> = [
                 name: getRouteName("CreateConnectionConfiguration"),
                 component: () =>
                     import(
-                        "@/components/views/seb-server/connection-configuration/CreateConnectionConfiguration.vue"
+                        "@/components/views/seb-server/settings-navigation/connection-configuration/createConnectionConfiguration/CreateConnectionConfiguration.vue"
                     ),
                 meta: { titleKey: "titles.createConnectionConfiguration" },
             },

@@ -1,11 +1,9 @@
 import { computed, ref, watch } from "vue";
-import { storeToRefs } from "pinia";
 import moment from "moment-timezone";
 import { useRules } from "vuetify/labs/rules";
 import i18n from "@/i18n";
 import { FormField } from "@/components/widgets/formBuilder/types";
-import { useCreateUserAccountStore } from "./store/useCreateUserAccountStore";
-import { useInstitutions } from "./api/useInstitutions";
+import { useInstitutions } from "@/composables/useInstitutions";
 import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
 import { UserRoleEnum } from "@/models/userRoleEnum";
 
@@ -13,18 +11,18 @@ const timezoneOptions = moment.tz
     .names()
     .map((tz) => ({ value: tz, text: tz }));
 
-export const useFormFields = () => {
-    const {
-        institutionId: modelInstitutionId,
-        username: modelUsername,
-        name: modelName,
-        surname: modelSurname,
-        email: modelEmail,
-        timezone: modelTimezone,
-        password: modelPassword,
-        confirmPassword: modelConfirmPassword,
-        role: modelRole,
-    } = storeToRefs(useCreateUserAccountStore());
+export const useUserAccountFormFields = () => {
+    const institutionId = ref<string | undefined>(undefined);
+    const username = ref<string | undefined>(undefined);
+    const name = ref<string | undefined>(undefined);
+    const surname = ref<string | undefined>(undefined);
+    const email = ref<string | undefined>(undefined);
+    const timezone = ref<string | undefined>(
+        Intl.DateTimeFormat().resolvedOptions().timeZone,
+    );
+    const password = ref<string | undefined>(undefined);
+    const confirmPassword = ref<string | undefined>(undefined);
+    const role = ref<string | undefined>(undefined);
 
     const {
         data: institutions,
@@ -48,7 +46,7 @@ export const useFormFields = () => {
             const userInstitutionId = String(authenticatedUser?.institutionId);
             const matched = data.find((i) => i.modelId === userInstitutionId);
             if (matched) {
-                modelInstitutionId.value = matched.modelId;
+                institutionId.value = matched.modelId;
                 institutionSelectDisabled.value = true;
             }
         },
@@ -66,9 +64,9 @@ export const useFormFields = () => {
     );
 
     const availableRoles = computed(() => {
-        const allRoles = Object.values(UserRoleEnum).map((role) => ({
-            value: role,
-            text: i18n.global.t(`general.userRoles.${role}`),
+        const allRoles = Object.values(UserRoleEnum).map((r) => ({
+            value: r,
+            text: i18n.global.t(`general.userRoles.${r}`),
         }));
 
         if (hasSebServerAdmin) {
@@ -105,7 +103,7 @@ export const useFormFields = () => {
             {
                 type: "select" as const,
                 name: "institutionId",
-                model: modelInstitutionId,
+                model: institutionId,
                 label: i18n.global.t(
                     "userAccount.createUserAccountPage.labels.institutionLabel",
                 ),
@@ -116,7 +114,7 @@ export const useFormFields = () => {
             {
                 type: "text" as const,
                 name: "username",
-                model: modelUsername,
+                model: username,
                 label: i18n.global.t(
                     "userAccount.createUserAccountPage.labels.usernameLabel",
                 ),
@@ -125,7 +123,7 @@ export const useFormFields = () => {
             {
                 type: "text" as const,
                 name: "name",
-                model: modelName,
+                model: name,
                 label: i18n.global.t(
                     "userAccount.createUserAccountPage.labels.nameLabel",
                 ),
@@ -134,7 +132,7 @@ export const useFormFields = () => {
             {
                 type: "text" as const,
                 name: "surname",
-                model: modelSurname,
+                model: surname,
                 label: i18n.global.t(
                     "userAccount.createUserAccountPage.labels.surnameLabel",
                 ),
@@ -143,7 +141,7 @@ export const useFormFields = () => {
             {
                 type: "text" as const,
                 name: "email",
-                model: modelEmail,
+                model: email,
                 label: i18n.global.t(
                     "userAccount.createUserAccountPage.labels.emailLabel",
                 ),
@@ -159,7 +157,7 @@ export const useFormFields = () => {
             {
                 type: "select" as const,
                 name: "timezone",
-                model: modelTimezone,
+                model: timezone,
                 label: i18n.global.t(
                     "userAccount.createUserAccountPage.labels.timeZoneLabel",
                 ),
@@ -169,7 +167,7 @@ export const useFormFields = () => {
             {
                 type: "password" as const,
                 name: "password",
-                model: modelPassword,
+                model: password,
                 label: i18n.global.t(
                     "userAccount.createUserAccountPage.labels.passwordLabel",
                 ),
@@ -179,7 +177,7 @@ export const useFormFields = () => {
             {
                 type: "password" as const,
                 name: "confirmPassword",
-                model: modelConfirmPassword,
+                model: confirmPassword,
                 label: i18n.global.t(
                     "userAccount.createUserAccountPage.labels.confirmPasswordLabel",
                 ),
@@ -187,7 +185,7 @@ export const useFormFields = () => {
                 validationDependsOn: ["password"],
                 rules: [
                     (v: string | undefined) =>
-                        v === modelPassword.value ||
+                        v === password.value ||
                         i18n.global.t(
                             "userAccount.general.validation.passwordsDontMatch",
                         ),
@@ -200,7 +198,7 @@ export const useFormFields = () => {
         {
             type: "select" as const,
             name: "role",
-            model: modelRole,
+            model: role,
             label: i18n.global.t(
                 "userAccount.createUserAccountPage.labels.selectRolesLabel",
             ),
@@ -214,5 +212,14 @@ export const useFormFields = () => {
         rightFormFields,
         loading,
         errors,
+        institutionId,
+        username,
+        name,
+        surname,
+        email,
+        timezone,
+        password,
+        confirmPassword,
+        role,
     };
 };

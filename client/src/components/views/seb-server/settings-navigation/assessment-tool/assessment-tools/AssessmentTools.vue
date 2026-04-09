@@ -83,12 +83,10 @@ import { useDeleteAssessmentTool } from "@/components/views/seb-server/settings-
 import { useToggleAssessmentToolStatus } from "@/components/views/seb-server/settings-navigation/assessment-tool/assessment-tools/api/useToggleAssessmentTool.ts";
 import { useSettingsTableFilters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableFilters.ts";
 import { useSettingsTableCellFormatters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableCellFormatters.ts";
-import {
-    AssessmentToolsResponse,
-    LMSTypeEnum,
-} from "@/models/seb-server/assessmentTool.ts";
+import { AssessmentToolsResponse } from "@/models/seb-server/assessmentTool.ts";
 import { SettingsFilterDefinition } from "@/models/types.ts";
 import { translate } from "@/utils/generalUtils.ts";
+import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums.ts";
 
 const assessmentToolStore = useAssessmentToolsStore();
 const assessmentToolTableHeaders = useAssessmentToolsTableHeaders();
