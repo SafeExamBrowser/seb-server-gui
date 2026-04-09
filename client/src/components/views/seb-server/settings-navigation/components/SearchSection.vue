@@ -1,32 +1,28 @@
 <template>
-    <v-col>
-        <v-row>
-            <v-col cols="11">
-                <v-row class="pl-6">
-                    <SearchSectionTitle />
-                </v-row>
+    <v-col class="pr-12">
+        <v-row class="pl-6">
+            <SearchSectionTitle />
+        </v-row>
 
-                <v-row class="px-6">
-                    <SearchBox
-                        :model-value="modelValue"
-                        :search-text="searchText"
-                        @update:model-value="emit('update:modelValue', $event)"
-                        @search="emit('search')"
-                        @clear="emit('clear')"
-                    />
-                </v-row>
+        <v-row class="px-6">
+            <SearchBox
+                :model-value="modelValue"
+                :search-text="searchText"
+                @update:model-value="emit('update:modelValue', $event)"
+                @search="emit('search')"
+                @clear="emit('clear')"
+            />
+        </v-row>
 
-                <v-row class="justify-end pa-6 pt-4 pb-0">
-                    <CancelButton
-                        :text="'general.cancelButton'"
-                        @click="emit('clear')"
-                    />
-                    <ConfirmButton
-                        :text="'general.searchButton'"
-                        @click="emit('search')"
-                    />
-                </v-row>
-            </v-col>
+        <v-row class="justify-end pa-6 pt-4 pb-0 ga-2">
+            <CancelButton
+                :text="'general.cancelButton'"
+                @click="emit('clear')"
+            />
+            <ConfirmButton
+                :text="'general.searchButton'"
+                @click="emit('search')"
+            />
         </v-row>
     </v-col>
 </template>
