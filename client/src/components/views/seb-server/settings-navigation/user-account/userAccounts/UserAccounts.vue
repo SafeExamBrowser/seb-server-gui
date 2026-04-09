@@ -20,44 +20,19 @@
                     </v-col>
 
                     <v-col cols="12" md="7">
-                        <div class="filters-row">
-                            <SettingsFilters
-                                v-if="filtersReady"
-                                :key="filtersRenderKey"
-                                v-model="selectedFilters"
-                                :filters="filters"
-                            />
-                            <v-btn
-                                variant="text"
-                                size="small"
-                                class="clear-filters-btn"
-                                :style="{
-                                    visibility: hasActiveFilters
-                                        ? 'visible'
-                                        : 'hidden',
-                                }"
-                                @click="resetFilters"
-                            >
-                                <v-icon start size="small">mdi-close</v-icon>
-                                {{ $t("general.clearFilters") }}
-                            </v-btn>
-                        </div>
+                        <FiltersBar
+                            v-model="selectedFilters"
+                            :sections="filterSections"
+                            @clear="resetFilters"
+                        />
                     </v-col>
                 </v-row>
 
                 <v-row>
                     <v-col>
-                        <div v-if="error">
-                            {{ error }}
-                        </div>
-
-                        <div v-else-if="deleteError">
-                            {{ deleteError }}
-                        </div>
-
-                        <div v-else-if="statusError">
-                            {{ statusError }}
-                        </div>
+                        <div v-if="error">{{ error }}</div>
+                        <div v-else-if="deleteError">{{ deleteError }}</div>
+                        <div v-else-if="statusError">{{ statusError }}</div>
 
                         <LoadingFallbackComponent :loading="false" :errors="[]">
                             <SettingsTable
@@ -92,20 +67,20 @@ import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import AddButton from "@/components/views/seb-server/settings-navigation/widgets/AddButton.vue";
 import { USER_ACCOUNTS_ROUTE } from "@/utils/constants.ts";
 import SearchSection from "@/components/views/seb-server/settings-navigation/components/SearchSection.vue";
-import SettingsFilters from "@/components/views/seb-server/settings-navigation/components/SettingsFilters.vue";
+import FiltersBar from "@/components/views/seb-server/settings-navigation/components/filters/FiltersBar.vue";
 import SettingsTable from "@/components/views/seb-server/settings-navigation/components/SettingsTable/SettingsTable.vue";
-
-import { useUserAccounts } from "@/components/views/seb-server/settings-navigation/user-account/api/useUserAccounts.ts";
-import { useToggleUserAccountStatus } from "@/components/views/seb-server/settings-navigation/user-account/api/useToggleUserAccountStatus.ts";
-import { useUserAccountsTableHeaders } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/composables/useUserAccountsTableHeaders.ts";
-import { useUrlSettingsTable } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useUrlSettingsTable.ts";
-import { useSettingsTableFilters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableFilters.ts";
-import { useSettingsTableCellFormatters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableCellFormatters.ts";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import type { UserAccountResponse } from "@/models/userAccount";
+import { useUrlSettingsTable } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useUrlSettingsTable.ts";
+import { useUserAccountsTableHeaders } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/composables/useUserAccountsTableHeaders.ts";
+import { useUserAccountsFilters } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/composables/useUserAccountsFilters.ts";
+import { useUserAccounts } from "@/components/views/seb-server/settings-navigation/user-account/api/useUserAccounts.ts";
 import { useDeleteUserAccount } from "@/components/views/seb-server/settings-navigation/user-account/api/useDeleteUserAccount.ts";
+import { useToggleUserAccountStatus } from "@/components/views/seb-server/settings-navigation/user-account/api/useToggleUserAccountStatus.ts";
+import { useSettingsTableCellFormatters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableCellFormatters.ts";
+import type { UserAccountResponse } from "@/models/userAccount";
 
 const userAccountsTableHeaders = useUserAccountsTableHeaders();
+const filterSections = useUserAccountsFilters();
 
 const tableData = ref<UserAccountResponse>();
 
@@ -115,7 +90,6 @@ const {
     selectedFilters,
     options,
     totalItems,
-    hasActiveFilters,
     loadItems,
     onSearch,
     onClearSearch,
@@ -127,7 +101,6 @@ const {
 const selectedStatus = computed(
     () => (selectedFilters.value.status as string | null) ?? null,
 );
-
 const selectedInstitutionId = computed(
     () => (selectedFilters.value.institutionId as string | null) ?? null,
 );
@@ -146,8 +119,8 @@ const {
 
 watch(
     fetchedData,
-    (newValue) => {
-        tableData.value = newValue;
+    (v) => {
+        tableData.value = v;
     },
     { immediate: true },
 );
@@ -166,37 +139,7 @@ const {
     error: statusError,
 } = useToggleUserAccountStatus(tableData);
 
-const { filters, filtersReady, filtersRenderKey } = useSettingsTableFilters({
-    headers: userAccountsTableHeaders,
-    translationPrefix: "userAccount.userAccountPage",
-});
-
 const { cellFormatters } = useSettingsTableCellFormatters({
     headers: userAccountsTableHeaders,
 });
 </script>
-
-<style scoped>
-.filters-row {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    padding-top: 0.25rem;
-}
-
-.clear-filters-btn {
-    color: #757575;
-    font-size: 0.75rem;
-    font-weight: 500;
-    text-transform: none;
-    letter-spacing: 0;
-    padding: 0 0.5rem;
-    min-height: 28px;
-    transition: color 0.2s ease;
-}
-
-.clear-filters-btn:hover {
-    color: #215caf;
-}
-</style>

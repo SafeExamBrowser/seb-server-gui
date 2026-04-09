@@ -1,8 +1,4 @@
-import {
-    ServerTablePaging,
-    SettingsFilterDefinition,
-    SettingsFilterOption,
-} from "@/models/types.ts";
+import { ServerTablePaging } from "@/models/types.ts";
 import type { ComputedRef, Ref } from "vue";
 
 // if you have a type that you need to have translated, add it here and add logic to formatterMap in useSettingsTableCellFormatter.ts
@@ -34,29 +30,10 @@ export type LoadItemsFn = (params: {
     filters: TableFilters;
 }) => Promise<void>;
 
-export type UseSettingsFiltersParams = {
-    headers: Ref<SettingsTableHeader[]> | ComputedRef<SettingsTableHeader[]>;
-    customFilters?:
-        | Ref<SettingsFilterDefinition[]>
-        | ComputedRef<SettingsFilterDefinition[]>;
-    institutionOptions?:
-        | Ref<SettingsFilterOption[]>
-        | ComputedRef<SettingsFilterOption[]>;
-    translationPrefix: string;
-};
-
 export type TableItem = Record<string, unknown>;
 
 export type CellFormatter = (value: unknown, item: TableItem) => string;
 
 export type UseSettingsTableCellFormattersParams = {
     headers: Ref<SettingsTableHeader[]> | ComputedRef<SettingsTableHeader[]>;
-};
-
-export type UseSettingsTableFiltersParams = {
-    headers: Ref<SettingsTableHeader[]> | ComputedRef<SettingsTableHeader[]>;
-    translationPrefix: string;
-    customFilters?:
-        | Ref<SettingsFilterDefinition[]>
-        | ComputedRef<SettingsFilterDefinition[]>;
 };

@@ -48,18 +48,3 @@ const emit = defineEmits<{
     clear: [];
 }>();
 </script>
-
-<style scoped>
-.search-input :deep(.v-field--focused) {
-    border-color: #215caf !important;
-}
-
-.search-input :deep(input::placeholder) {
-    color: #215caf !important;
-    opacity: 1 !important;
-}
-
-.search-input.v-input.v-input--focused :deep(.v-icon) {
-    color: #215caf !important;
-}
-</style>

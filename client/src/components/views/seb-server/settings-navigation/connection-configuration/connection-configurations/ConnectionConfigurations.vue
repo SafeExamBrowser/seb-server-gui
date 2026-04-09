@@ -18,45 +18,21 @@
                             @clear="onClearSearch"
                         />
                     </v-col>
+
                     <v-col cols="12" md="7">
-                        <div class="filters-row">
-                            <SettingsFilters
-                                v-if="filtersReady"
-                                :key="filtersRenderKey"
-                                v-model="selectedFilters"
-                                :filters="filters"
-                            />
-                            <v-btn
-                                variant="text"
-                                size="small"
-                                class="clear-filters-btn"
-                                :style="{
-                                    visibility: hasActiveFilters
-                                        ? 'visible'
-                                        : 'hidden',
-                                }"
-                                @click="resetFilters"
-                            >
-                                <v-icon start size="small">mdi-close</v-icon>
-                                {{ $t("general.clearFilters") }}
-                            </v-btn>
-                        </div>
+                        <FiltersBar
+                            v-model="selectedFilters"
+                            :sections="filterSections"
+                            @clear="resetFilters"
+                        />
                     </v-col>
                 </v-row>
 
                 <v-row>
                     <v-col>
-                        <div v-if="error">
-                            {{ error }}
-                        </div>
-
-                        <div v-else-if="deleteError">
-                            {{ deleteError }}
-                        </div>
-
-                        <div v-else-if="statusError">
-                            {{ statusError }}
-                        </div>
+                        <div v-if="error">{{ error }}</div>
+                        <div v-else-if="deleteError">{{ deleteError }}</div>
+                        <div v-else-if="statusError">{{ statusError }}</div>
 
                         <SettingsTable
                             :headers="connectionConfigurationTableHeaders"
@@ -89,20 +65,20 @@ import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import AddButton from "@/components/views/seb-server/settings-navigation/widgets/AddButton.vue";
 import { CONNECTION_CONFIGURATIONS_ROUTE } from "@/utils/constants.ts";
 import SearchSection from "@/components/views/seb-server/settings-navigation/components/SearchSection.vue";
-import SettingsFilters from "@/components/views/seb-server/settings-navigation/components/SettingsFilters.vue";
+import FiltersBar from "@/components/views/seb-server/settings-navigation/components/filters/FiltersBar.vue";
 import SettingsTable from "@/components/views/seb-server/settings-navigation/components/SettingsTable/SettingsTable.vue";
-
 import { useUrlSettingsTable } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useUrlSettingsTable.ts";
 import { useConnectionConfigurationsTableHeaders } from "@/components/views/seb-server/settings-navigation/connection-configuration/connection-configurations/composables/useConnectionConfigurationsTableHeaders.ts";
+import { useConnectionConfigurationsFilters } from "@/components/views/seb-server/settings-navigation/connection-configuration/connection-configurations/composables/useConnectionConfigurationsFilters.ts";
 import { useConnectionConfigurations } from "@/components/views/seb-server/settings-navigation/connection-configuration/connection-configurations/api/useConnectionConfigurations.ts";
 import { useDeleteConnectionConfiguration } from "@/components/views/seb-server/settings-navigation/connection-configuration/connection-configurations/api/useDeleteConnectionConfiguration.ts";
 import { useToggleConnectionConfigurationStatus } from "@/components/views/seb-server/settings-navigation/connection-configuration/connection-configurations/api/useToggleConnectionConfigurationStatus.ts";
-import { useSettingsTableFilters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableFilters.ts";
 import { useSettingsTableCellFormatters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableCellFormatters.ts";
 import type { ConnectionConfigurations } from "@/models/seb-server/connectionConfiguration.ts";
 
 const connectionConfigurationTableHeaders =
     useConnectionConfigurationsTableHeaders();
+const filterSections = useConnectionConfigurationsFilters();
 
 const tableData = ref<ConnectionConfigurations>();
 
@@ -112,7 +88,6 @@ const {
     selectedFilters,
     options,
     totalItems,
-    hasActiveFilters,
     loadItems,
     onSearch,
     onClearSearch,
@@ -124,7 +99,6 @@ const {
 const selectedStatus = computed(
     () => (selectedFilters.value.status as string | null) ?? null,
 );
-
 const selectedInstitutionId = computed(
     () => (selectedFilters.value.institutionId as string | null) ?? null,
 );
@@ -143,8 +117,8 @@ const {
 
 watch(
     fetchedData,
-    (newValue) => {
-        tableData.value = newValue;
+    (v) => {
+        tableData.value = v;
     },
     { immediate: true },
 );
@@ -163,37 +137,7 @@ const {
     error: statusError,
 } = useToggleConnectionConfigurationStatus(tableData);
 
-const { filters, filtersReady, filtersRenderKey } = useSettingsTableFilters({
-    headers: connectionConfigurationTableHeaders,
-    translationPrefix: "connectionConfigurations.connectionConfigurationsPage",
-});
-
 const { cellFormatters } = useSettingsTableCellFormatters({
     headers: connectionConfigurationTableHeaders,
 });
 </script>
-
-<style scoped>
-.filters-row {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    padding-top: 0.25rem;
-}
-
-.clear-filters-btn {
-    color: #757575;
-    font-size: 0.75rem;
-    font-weight: 500;
-    text-transform: none;
-    letter-spacing: 0;
-    padding: 0 0.5rem;
-    min-height: 28px;
-    transition: color 0.2s ease;
-}
-
-.clear-filters-btn:hover {
-    color: #215caf;
-}
-</style>

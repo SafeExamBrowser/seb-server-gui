@@ -1,7 +1,7 @@
 <template>
     <v-text-field
         :model-value="modelValue"
-        class="search-input"
+        color="primary"
         data-testid="search-input"
         density="comfortable"
         hide-details
@@ -13,11 +13,7 @@
         @keydown.esc="onClearSearch"
     >
         <template #append-inner>
-            <v-icon
-                class="search-icon"
-                data-testid="searchIcon-button"
-                @click="onSearch"
-            >
+            <v-icon data-testid="searchIcon-button" @click="onSearch">
                 mdi-magnify
             </v-icon>
         </template>
