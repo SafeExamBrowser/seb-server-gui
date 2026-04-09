@@ -247,6 +247,11 @@ let singleValues: Map<string, SEBSettingsValue>;
 let clearValidations = false;
 
 onBeforeMount(async () => {
+    initSettings();
+});
+
+// @anhefti TODO: move functions to ts files when possible
+async function initSettings() {
     if (sebSettingsStore.selectedContainerId == null) {
         return;
     }
@@ -274,7 +279,7 @@ onBeforeMount(async () => {
     confirmAdminPassword.value = getSingleValue("hashedAdminPassword").value;
     hashedQuitPasswordVal.value = getSingleValue("hashedQuitPassword").value;
     confirmQuitPassword.value = getSingleValue("hashedQuitPassword").value;
-});
+}
 
 async function saveSingleValue(name: string, value: string) {
     const setting: SEBSettingsValue = getSingleValue(name);

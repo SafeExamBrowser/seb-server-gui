@@ -301,7 +301,9 @@
             },
             "seb-settings": {
                 "title": "Enter SEB Settings",
-                "subtitle": "Upload SEB Settings or configure SEB Settings for the SEB Client"
+                "subtitle": "Upload SEB Settings or configure SEB Settings for the SEB Client",
+                "name": "SEB Settings",
+                "import": "Import Settings"
             },
             "supervisors": {
                 "title": "Add Exam Supervisors",
@@ -909,6 +911,17 @@
         "pwdMismatch": "The password and confirm password must match",
         "pwdSpaces": "The value must not start or end with a space.",
         "noNegNumber": "Cant be a negative number",
+        "upload": {
+            "upload": "Upload SEB Settings",
+            "selectFromFolder": "Select From File Explorer",
+            "uploadHelp": "Drag and Drop or Search through File Explorer",
+            "allowed": "Allowed File Types",
+            "dropHere": "Drop a SEB Settings file here",
+            "password": "Password",
+            "onlyAllowed": "File Type not allowed",
+            "uploadFailed": "Failed to upload SEB Settings, please contact a system administrator",
+            "passwordIncorrect": "The password was incorrect. Please try again or contact a system administrator"
+        },
         "views": {
             "general": "General",
             "userInterface": "User Interface",

@@ -1,5 +1,22 @@
 <template>
-    <v-card class="pa-5" max-width="1200">
+    <v-container class="ma-0 pa-0 pb-3 border-b-md">
+        <v-row>
+            <v-col>
+                <div
+                    class="d-flex align-center mx-6 mt-6 cursor-pointer add-button-container"
+                >
+                    <SectionSubtitle
+                        :name="$t('createTemplateExam.steps.seb-settings.name')"
+                    />
+                </div>
+            </v-col>
+            <v-col cols="auto">
+                <AddButton text="" @click="importDialog = true" />
+            </v-col>
+        </v-row>
+    </v-container>
+
+    <v-card class="pa-5" variant="text">
         <v-row>
             <v-col>
                 <v-row :params="init_store">
@@ -36,6 +53,14 @@
             </v-col>
         </v-row>
     </v-card>
+
+    <!-----------import dialog ---------->
+    <v-dialog v-model="importDialog" max-width="800">
+        <SEBSettingsImportDialog
+            v-model="importDialog"
+            @imported="onConfigImported"
+        />
+    </v-dialog>
 </template>
 
 <script setup lang="ts">
@@ -57,6 +82,9 @@ import type { Component, ComputedRef } from "vue";
 import { ConfigurationTemplateKey } from "@/models/seb-server/configurationNode";
 import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 import { useStepNamingStore } from "@/components/views/seb-server/exam-template/wizard/components/stepNaming/composables/store/useStepNamingStore";
+import SectionSubtitle from "@/components/widgets/SectionSubtitle.vue";
+import SEBSettingsImportDialog from "@/components/views/seb-server/exam-template/wizard/components/stepSEBSettings/composables/SEBSettingsImportDialog.vue";
+import AddButton from "@/components/views/seb-server/settings-navigation/widgets/AddButton.vue";
 
 const configKey = defineModel<ConfigurationTemplateKey | undefined>({
     required: true,
@@ -64,6 +92,15 @@ const configKey = defineModel<ConfigurationTemplateKey | undefined>({
 
 const ability = useAbilities();
 const currentTab = ref<number>(1);
+
+const importDialog = ref<boolean>(false);
+async function onConfigImported() {
+    importDialog.value = false;
+    // TODO reload the settings
+    console.info("*********** TODO reload settings");
+    //await loadItems();
+}
+
 const init_store = computed(() => {
     if (configKey.value) {
         const sebSettingsStore = useSEBSettingsStore();

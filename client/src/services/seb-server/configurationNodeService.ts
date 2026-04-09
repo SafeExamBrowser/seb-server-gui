@@ -2,6 +2,8 @@ import * as apiService from "@/services/apiService";
 import {
     ConfigurationTemplateName,
     ConfigurationTemplateKey,
+    SEBSettingsImport,
+    ConfigurationKey,
 } from "@/models/seb-server/configurationNode";
 
 const baseUrl = "/configuration-node" as const;
@@ -28,6 +30,26 @@ export const getConfigurationTemplateName = async (
             options: {
                 _authType: "seb",
                 params: {},
+            },
+        })
+    ).data;
+
+export const importSEBSettings = async (
+    settingsImport: SEBSettingsImport,
+): Promise<ConfigurationKey> =>
+    (
+        await apiService.postRequest({
+            url: `${baseUrl}/${settingsImport.configurationTemplateId}/import`,
+            data: settingsImport.file,
+            options: {
+                _authType: "seb",
+                headers: {
+                    "Content-Type": "application/octet-stream",
+                    importFile: settingsImport.fileName,
+                    ...(settingsImport.password
+                        ? { importFilePassword: settingsImport.password }
+                        : {}),
+                },
             },
         })
     ).data;
