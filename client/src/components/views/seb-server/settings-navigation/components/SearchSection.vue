@@ -8,8 +8,9 @@
 
                 <v-row class="px-6">
                     <SearchBox
-                        :store="store"
+                        :model-value="modelValue"
                         :search-text="searchText"
+                        @update:model-value="emit('update:modelValue', $event)"
                         @search="emit('search')"
                         @clear="emit('clear')"
                     />
@@ -35,14 +36,14 @@ import SearchBox from "@/components/views/seb-server/settings-navigation/widgets
 import CancelButton from "@/components/views/seb-server/settings-navigation/widgets/CancelButton.vue";
 import SearchSectionTitle from "@/components/views/seb-server/settings-navigation/widgets/SearchSectionTitle.vue";
 import ConfirmButton from "@/components/views/seb-server/settings-navigation/widgets/ConfirmButton.vue";
-import type { BaseSettingsStoreView } from "@/components/views/seb-server/settings-navigation/store/storeContract.ts";
 
 defineProps<{
+    modelValue: string | null;
     searchText: string;
-    store: BaseSettingsStoreView<unknown>;
 }>();
 
 const emit = defineEmits<{
+    "update:modelValue": [value: string | null];
     search: [];
     clear: [];
 }>();

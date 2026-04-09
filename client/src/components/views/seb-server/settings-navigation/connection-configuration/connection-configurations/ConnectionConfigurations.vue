@@ -12,19 +12,35 @@
                 <v-row class="align-start">
                     <v-col cols="12" md="5">
                         <SearchSection
-                            :store="connectionConfigurationsStore"
+                            v-model="searchInputValue"
                             search-text="connectionConfigurations.connectionConfigurationsPage.filters.searchField"
                             @search="onSearch"
                             @clear="onClearSearch"
                         />
                     </v-col>
                     <v-col cols="12" md="7">
-                        <SettingsFilters
-                            v-if="filtersReady"
-                            :key="filtersRenderKey"
-                            v-model="selectedFilters"
-                            :filters="filters"
-                        />
+                        <div class="filters-row">
+                            <SettingsFilters
+                                v-if="filtersReady"
+                                :key="filtersRenderKey"
+                                v-model="selectedFilters"
+                                :filters="filters"
+                            />
+                            <v-btn
+                                variant="text"
+                                size="small"
+                                class="clear-filters-btn"
+                                :style="{
+                                    visibility: hasActiveFilters
+                                        ? 'visible'
+                                        : 'hidden',
+                                }"
+                                @click="resetFilters"
+                            >
+                                <v-icon start size="small">mdi-close</v-icon>
+                                {{ $t("general.clearFilters") }}
+                            </v-btn>
+                        </div>
                     </v-col>
                 </v-row>
 
@@ -76,9 +92,8 @@ import SearchSection from "@/components/views/seb-server/settings-navigation/com
 import SettingsFilters from "@/components/views/seb-server/settings-navigation/components/SettingsFilters.vue";
 import SettingsTable from "@/components/views/seb-server/settings-navigation/components/SettingsTable/SettingsTable.vue";
 
-import { useServerSettingsTable } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useServerSettingsTable.ts";
+import { useUrlSettingsTable } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useUrlSettingsTable.ts";
 import { useConnectionConfigurationsTableHeaders } from "@/components/views/seb-server/settings-navigation/connection-configuration/connection-configurations/composables/useConnectionConfigurationsTableHeaders.ts";
-import { useConnectionConfigurationsStore } from "@/components/views/seb-server/settings-navigation/connection-configuration/connection-configurations/store/connectionConfigurationsStore.ts";
 import { useConnectionConfigurations } from "@/components/views/seb-server/settings-navigation/connection-configuration/connection-configurations/api/useConnectionConfigurations.ts";
 import { useDeleteConnectionConfiguration } from "@/components/views/seb-server/settings-navigation/connection-configuration/connection-configurations/api/useDeleteConnectionConfiguration.ts";
 import { useToggleConnectionConfigurationStatus } from "@/components/views/seb-server/settings-navigation/connection-configuration/connection-configurations/api/useToggleConnectionConfigurationStatus.ts";
@@ -86,35 +101,25 @@ import { useSettingsTableFilters } from "@/components/views/seb-server/settings-
 import { useSettingsTableCellFormatters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableCellFormatters.ts";
 import type { ConnectionConfigurations } from "@/models/seb-server/connectionConfiguration.ts";
 
-const connectionConfigurationsStore = useConnectionConfigurationsStore();
 const connectionConfigurationTableHeaders =
     useConnectionConfigurationsTableHeaders();
 
 const tableData = ref<ConnectionConfigurations>();
 
 const {
+    searchInputValue,
+    searchField,
     selectedFilters,
     options,
     totalItems,
+    hasActiveFilters,
     loadItems,
     onSearch,
     onClearSearch,
-} = useServerSettingsTable(
-    connectionConfigurationsStore,
-    tableData,
-    async () => {
-        await fetchConnectionConfigurations();
-    },
-    undefined,
-    {
-        status: null,
-        institutionId: null,
-    },
-);
-
-const searchField = computed(
-    () => connectionConfigurationsStore.searchField ?? null,
-);
+    resetFilters,
+} = useUrlSettingsTable(tableData, async () => {
+    await fetchConnectionConfigurations();
+}, ["status", "institutionId"]);
 
 const selectedStatus = computed(
     () => (selectedFilters.value.status as string | null) ?? null,
@@ -166,17 +171,29 @@ const { filters, filtersReady, filtersRenderKey } = useSettingsTableFilters({
 const { cellFormatters } = useSettingsTableCellFormatters({
     headers: connectionConfigurationTableHeaders,
 });
-
-watch(
-    selectedFilters,
-    async () => {
-        options.value = {
-            ...options.value,
-            page: 1,
-        };
-
-        await loadItems();
-    },
-    { deep: true },
-);
 </script>
+
+<style scoped>
+.filters-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-top: 0.25rem;
+}
+
+.clear-filters-btn {
+    color: #757575;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: 0;
+    padding: 0 0.5rem;
+    min-height: 28px;
+    transition: color 0.2s ease;
+}
+
+.clear-filters-btn:hover {
+    color: #215caf;
+}
+</style>

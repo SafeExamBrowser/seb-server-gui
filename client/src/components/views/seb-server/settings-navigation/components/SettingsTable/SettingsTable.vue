@@ -153,6 +153,8 @@ const props = withDefaults(
     {
         pageCount: 0,
         itemsPerPage: 10,
+        totalItems: undefined,
+        options: undefined,
         route: "",
         itemIdentifierKey: "",
         editable: true,

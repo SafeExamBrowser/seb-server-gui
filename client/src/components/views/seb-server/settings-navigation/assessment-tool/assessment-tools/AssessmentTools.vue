@@ -12,7 +12,7 @@
                 <v-row class="align-start">
                     <v-col cols="12" md="5">
                         <SearchSection
-                            :store="assessmentToolStore"
+                            v-model="searchInputValue"
                             search-text="userAccount.userAccountPage.filters.searchField"
                             @search="onSearch"
                             @clear="onClearSearch"
@@ -20,12 +20,28 @@
                     </v-col>
 
                     <v-col cols="12" md="7">
-                        <SettingsFilters
-                            v-if="filtersReady"
-                            :key="filtersRenderKey"
-                            v-model="selectedFilters"
-                            :filters="filters"
-                        />
+                        <div class="filters-row">
+                            <SettingsFilters
+                                v-if="filtersReady"
+                                :key="filtersRenderKey"
+                                v-model="selectedFilters"
+                                :filters="filters"
+                            />
+                            <v-btn
+                                variant="text"
+                                size="small"
+                                class="clear-filters-btn"
+                                :style="{
+                                    visibility: hasActiveFilters
+                                        ? 'visible'
+                                        : 'hidden',
+                                }"
+                                @click="resetFilters"
+                            >
+                                <v-icon start size="small">mdi-close</v-icon>
+                                {{ $t("general.clearFilters") }}
+                            </v-btn>
+                        </div>
                     </v-col>
                 </v-row>
 
@@ -75,8 +91,7 @@ import SearchSection from "@/components/views/seb-server/settings-navigation/com
 import SettingsFilters from "@/components/views/seb-server/settings-navigation/components/SettingsFilters.vue";
 import SettingsTable from "@/components/views/seb-server/settings-navigation/components/SettingsTable/SettingsTable.vue";
 
-import { useServerSettingsTable } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useServerSettingsTable.ts";
-import { useAssessmentToolsStore } from "@/components/views/seb-server/settings-navigation/assessment-tool/assessment-tools/store/assessmentToolsStore.ts";
+import { useUrlSettingsTable } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useUrlSettingsTable.ts";
 import { useAssessmentToolsTableHeaders } from "@/components/views/seb-server/settings-navigation/assessment-tool/assessment-tools/composables/useAssessmentToolsTableHeaders.ts";
 import { useAssessmentTools } from "@/components/views/seb-server/settings-navigation/assessment-tool/assessment-tools/api/useAssessmentTools.ts";
 import { useDeleteAssessmentTool } from "@/components/views/seb-server/settings-navigation/assessment-tool/assessment-tools/api/useDeleteAssessmentTool.ts";
@@ -88,7 +103,6 @@ import { SettingsFilterDefinition } from "@/models/types.ts";
 import { translate } from "@/utils/generalUtils.ts";
 import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums.ts";
 
-const assessmentToolStore = useAssessmentToolsStore();
 const assessmentToolTableHeaders = useAssessmentToolsTableHeaders();
 
 const tableData = ref<AssessmentToolsResponse>();
@@ -107,27 +121,19 @@ const lmsTypeFilter = computed<SettingsFilterDefinition[]>(() => [
 ]);
 
 const {
+    searchInputValue,
+    searchField,
     selectedFilters,
     options,
     totalItems,
+    hasActiveFilters,
     loadItems,
     onSearch,
     onClearSearch,
-} = useServerSettingsTable(
-    assessmentToolStore,
-    tableData,
-    async () => {
-        await fetchAssessmentTools();
-    },
-    undefined,
-    {
-        status: null,
-        institutionId: null,
-        selectedType: null,
-    },
-);
-
-const searchField = computed(() => assessmentToolStore.searchField ?? null);
+    resetFilters,
+} = useUrlSettingsTable(tableData, async () => {
+    await fetchAssessmentTools();
+}, ["status", "institutionId", "selectedType"]);
 
 const selectedStatus = computed(
     () => (selectedFilters.value.status as string | null) ?? null,
@@ -185,17 +191,29 @@ const { filters, filtersReady, filtersRenderKey } = useSettingsTableFilters({
 const { cellFormatters } = useSettingsTableCellFormatters({
     headers: assessmentToolTableHeaders,
 });
-
-watch(
-    selectedFilters,
-    async () => {
-        options.value = {
-            ...options.value,
-            page: 1,
-        };
-
-        await loadItems();
-    },
-    { deep: true },
-);
 </script>
+
+<style scoped>
+.filters-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-top: 0.25rem;
+}
+
+.clear-filters-btn {
+    color: #757575;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: 0;
+    padding: 0 0.5rem;
+    min-height: 28px;
+    transition: color 0.2s ease;
+}
+
+.clear-filters-btn:hover {
+    color: #215caf;
+}
+</style>

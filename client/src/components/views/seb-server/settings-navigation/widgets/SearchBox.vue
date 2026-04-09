@@ -1,6 +1,6 @@
 <template>
     <v-text-field
-        v-model="searchValue"
+        :model-value="modelValue"
         class="search-input"
         data-testid="search-input"
         density="comfortable"
@@ -8,6 +8,7 @@
         :placeholder="translate(searchText)"
         type="text"
         variant="outlined"
+        @update:model-value="emit('update:modelValue', $event)"
         @keydown.enter="onSearch"
         @keydown.esc="onClearSearch"
     >
@@ -24,31 +25,25 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
 import { translate } from "@/utils/generalUtils.ts";
-import type { BaseSettingsStoreView } from "@/components/views/seb-server/settings-navigation/store/storeContract.ts";
 
-const props = defineProps<{
-    store: BaseSettingsStoreView<unknown>;
+defineProps<{
+    modelValue: string | null;
     searchText: string;
 }>();
 
 const emit = defineEmits<{
+    "update:modelValue": [value: string | null];
     search: [];
     clear: [];
 }>();
-
-const searchValue = computed({
-    get: () => props.store.searchField,
-    set: (value) => props.store.setSearchField(value),
-});
 
 function onSearch() {
     emit("search");
 }
 
 function onClearSearch() {
-    props.store.resetSearchState();
+    emit("update:modelValue", null);
     emit("clear");
 }
 </script>
