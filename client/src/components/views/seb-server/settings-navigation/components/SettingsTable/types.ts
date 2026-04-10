@@ -1,7 +1,5 @@
-import { ServerTablePaging } from "@/models/types.ts";
 import type { ComputedRef, Ref } from "vue";
 
-// if you have a type that you need to have translated, add it here and add logic to formatterMap in useSettingsTableCellFormatter.ts
 export type HeaderTranslateType =
     | "institutionName"
     | "dateTime"
@@ -24,11 +22,7 @@ export type PagedResponse = {
 
 export type TableFilters = Record<string, string | null>;
 
-export type LoadItemsFn = (params: {
-    options: ServerTablePaging;
-    searchField: string | null;
-    filters: TableFilters;
-}) => Promise<void>;
+export type LoadItemsFn = () => Promise<void>;
 
 export type TableItem = Record<string, unknown>;
 

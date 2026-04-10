@@ -1,5 +1,5 @@
 <template>
-    <v-col>
+    <div>
         <v-row class="pl-6">
             <SearchSectionTitle />
         </v-row>
@@ -24,7 +24,7 @@
                 @click="emit('search')"
             />
         </v-row>
-    </v-col>
+    </div>
 </template>
 
 <script setup lang="ts">

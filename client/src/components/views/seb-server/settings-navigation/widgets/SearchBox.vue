@@ -39,7 +39,6 @@ function onSearch() {
 }
 
 function onClearSearch() {
-    emit("update:modelValue", null);
     emit("clear");
 }
 </script>

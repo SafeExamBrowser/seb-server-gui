@@ -18,7 +18,6 @@
                             @clear="onClearSearch"
                         />
                     </v-col>
-                    <v-col cols="12" md="7" />
                 </v-row>
 
                 <v-row>

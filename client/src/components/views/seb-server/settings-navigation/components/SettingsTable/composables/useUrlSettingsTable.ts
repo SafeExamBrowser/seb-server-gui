@@ -12,7 +12,6 @@ export function useUrlSettingsTable<TResponse extends PagedResponse>(
     data: Ref<TResponse | undefined>,
     loadFn: LoadItemsFn,
     filterKeys: string[] = [],
-    initialOptions?: ServerTablePaging,
 ) {
     const route = useRoute();
     const router = useRouter();
@@ -21,13 +20,11 @@ export function useUrlSettingsTable<TResponse extends PagedResponse>(
         (route.query.search as string) || null,
     );
 
-    const options = ref<ServerTablePaging>(
-        initialOptions ?? {
-            page: 1,
-            itemsPerPage: 5,
-            sortBy: [{ key: "name", order: "asc" }],
-        },
-    );
+    const options = ref<ServerTablePaging>({
+        page: 1,
+        itemsPerPage: 5,
+        sortBy: [{ key: "name", order: "asc" }],
+    });
 
     const searchField = computed(() => (route.query.search as string) || null);
 
@@ -47,10 +44,6 @@ export function useUrlSettingsTable<TResponse extends PagedResponse>(
         );
     });
 
-    const hasActiveFilters = computed(() =>
-        filterKeys.some((key) => !!route.query[key]),
-    );
-
     function buildBaseQuery(): Record<string, string | undefined> {
         const q: Record<string, string | undefined> = {};
         if (route.query.search) q.search = route.query.search as string;
@@ -58,14 +51,6 @@ export function useUrlSettingsTable<TResponse extends PagedResponse>(
             if (route.query[key]) q[key] = route.query[key] as string;
         }
         return q;
-    }
-
-    async function refetch() {
-        await loadFn({
-            options: options.value,
-            searchField: searchField.value,
-            filters: selectedFilters.value,
-        });
     }
 
     watch(
@@ -83,26 +68,25 @@ export function useUrlSettingsTable<TResponse extends PagedResponse>(
                 searchInputValue.value = (newVal.search as string) || null;
             }
             options.value = { ...options.value, page: 1 };
-            await refetch();
+            await loadFn();
         },
         { deep: true },
     );
+
     async function loadItems(newOptions?: ServerTablePaging) {
         if (newOptions) {
             options.value = newOptions;
         }
-        await refetch();
+        await loadFn();
     }
 
     async function onSearch() {
         const query = buildBaseQuery();
-        const val = searchInputValue.value || undefined;
-        query.search = val || undefined;
+        query.search = searchInputValue.value || undefined;
         await router.push({ query });
     }
 
     async function onClearSearch() {
-        searchInputValue.value = null;
         const query = buildBaseQuery();
         query.search = undefined;
         await router.push({ query });
@@ -130,7 +114,6 @@ export function useUrlSettingsTable<TResponse extends PagedResponse>(
         selectedFilters,
         options,
         totalItems,
-        hasActiveFilters,
         loadItems,
         onSearch,
         onClearSearch,

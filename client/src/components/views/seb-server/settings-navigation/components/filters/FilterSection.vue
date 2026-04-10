@@ -1,7 +1,4 @@
 <template>
-    <!-- Always occupies its grid column.
-         Content is hidden while options haven't loaded yet,
-         preventing an empty-title flash and keeping layout stable. -->
     <div>
         <template v-if="options.length > 0">
             <div class="text-caption text-medium-emphasis mb-1">
