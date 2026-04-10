@@ -27,7 +27,7 @@
                 @click="emit('clear')"
             >
                 <v-icon start size="small">mdi-close</v-icon>
-                {{ $t("general.clearFilters") }}
+                {{ translate("general.clearFilters") }}
             </v-btn>
         </v-col>
     </v-row>
@@ -35,6 +35,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { translate } from "@/utils/generalUtils";
 import FilterSection from "./FilterSection.vue";
 import type { FilterSectionDef } from "./filterTypes";
 

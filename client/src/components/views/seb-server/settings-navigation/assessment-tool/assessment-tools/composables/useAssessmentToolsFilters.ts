@@ -1,9 +1,9 @@
 import { computed } from "vue";
 import { translate } from "@/utils/generalUtils";
-import { statusFilterSection } from "@/components/views/seb-server/settings-navigation/components/filters/statusFilterSection";
 import { useInstitutionFilterSection } from "@/components/views/seb-server/settings-navigation/components/filters/useInstitutionFilterSection";
 import type { FilterSectionDef } from "@/components/views/seb-server/settings-navigation/components/filters/filterTypes";
 import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums";
+import { getStatusFilterSection } from "@/components/views/seb-server/settings-navigation/components/filters/statusFilterSection.ts";
 
 const TRANSLATION_PREFIX = "assessmentToolConnections.assessmentToolsPage";
 
@@ -24,7 +24,7 @@ export function useAssessmentToolsFilters() {
 
     return computed<FilterSectionDef[]>(() => {
         const sections: FilterSectionDef[] = [
-            statusFilterSection(TRANSLATION_PREFIX),
+            getStatusFilterSection(TRANSLATION_PREFIX),
         ];
 
         if (institutionSection.value) {

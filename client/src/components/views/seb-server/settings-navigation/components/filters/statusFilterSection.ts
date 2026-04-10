@@ -3,7 +3,7 @@ import type { FilterSectionDef } from "./filterTypes";
 
 export const STATUS_FILTER_KEY = "status";
 
-export function statusFilterSection(
+export function getStatusFilterSection(
     translationPrefix: string,
 ): FilterSectionDef {
     return {

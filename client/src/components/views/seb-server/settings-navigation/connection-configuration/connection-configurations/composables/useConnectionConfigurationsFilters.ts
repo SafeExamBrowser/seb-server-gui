@@ -1,7 +1,7 @@
 import { computed } from "vue";
-import { statusFilterSection } from "@/components/views/seb-server/settings-navigation/components/filters/statusFilterSection";
 import { useInstitutionFilterSection } from "@/components/views/seb-server/settings-navigation/components/filters/useInstitutionFilterSection";
 import type { FilterSectionDef } from "@/components/views/seb-server/settings-navigation/components/filters/filterTypes";
+import { getStatusFilterSection } from "@/components/views/seb-server/settings-navigation/components/filters/statusFilterSection.ts";
 
 const TRANSLATION_PREFIX =
     "connectionConfigurations.connectionConfigurationsPage";
@@ -12,7 +12,7 @@ export function useConnectionConfigurationsFilters() {
 
     return computed<FilterSectionDef[]>(() => {
         const sections: FilterSectionDef[] = [
-            statusFilterSection(TRANSLATION_PREFIX),
+            getStatusFilterSection(TRANSLATION_PREFIX),
         ];
 
         if (institutionSection.value) {

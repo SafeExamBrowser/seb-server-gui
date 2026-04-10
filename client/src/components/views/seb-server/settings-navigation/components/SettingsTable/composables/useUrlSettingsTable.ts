@@ -83,13 +83,14 @@ export function useUrlSettingsTable<TResponse extends PagedResponse>(
     async function onSearch() {
         const query = buildBaseQuery();
         query.search = searchInputValue.value || undefined;
-        await router.push({ query });
+        await router.replace({ query });
     }
 
     async function onClearSearch() {
+        searchInputValue.value = null;
         const query = buildBaseQuery();
         query.search = undefined;
-        await router.push({ query });
+        await router.replace({ query });
     }
 
     async function setFilters(newFilters: TableFilters) {
