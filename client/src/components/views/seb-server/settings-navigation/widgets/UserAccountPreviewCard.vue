@@ -1,9 +1,13 @@
 <template>
     <v-card class="pa-6 rounded-lg" variant="flat">
         <div class="d-flex justify-center mb-8">
-            <div class="user-circle">
+            <v-avatar
+                size="208"
+                class="font-weight-bold text-primary text-h2"
+                :style="{ border: '0.5rem solid rgb(var(--v-theme-primary))' }"
+            >
                 {{ initials }}
-            </div>
+            </v-avatar>
         </div>
 
         <v-card variant="tonal" :text="selectedUserRoleDescription" />
@@ -23,20 +27,3 @@ const initials = computed(
     () => `${props.name?.[0] || ""}${props.surname?.[0] || ""}`,
 );
 </script>
-
-<style scoped>
-.user-circle {
-    background-color: transparent;
-    border: 0.5rem solid #215caf;
-    width: 13rem;
-    height: 13rem;
-    min-width: 13rem;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    font-size: 4rem;
-    color: #215caf;
-}
-</style>

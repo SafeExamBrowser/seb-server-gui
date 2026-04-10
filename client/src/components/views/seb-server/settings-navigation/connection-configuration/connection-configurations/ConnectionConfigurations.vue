@@ -21,8 +21,9 @@
 
                     <v-col cols="12" md="7">
                         <FiltersBar
-                            v-model="selectedFilters"
+                            :model-value="selectedFilters"
                             :sections="filterSections"
+                            @update:model-value="setFilters"
                             @clear="resetFilters"
                         />
                     </v-col>
@@ -70,6 +71,8 @@ import SettingsTable from "@/components/views/seb-server/settings-navigation/com
 import { useUrlSettingsTable } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useUrlSettingsTable.ts";
 import { useConnectionConfigurationsTableHeaders } from "@/components/views/seb-server/settings-navigation/connection-configuration/connection-configurations/composables/useConnectionConfigurationsTableHeaders.ts";
 import { useConnectionConfigurationsFilters } from "@/components/views/seb-server/settings-navigation/connection-configuration/connection-configurations/composables/useConnectionConfigurationsFilters.ts";
+import { STATUS_FILTER_KEY } from "@/components/views/seb-server/settings-navigation/components/filters/statusFilterSection";
+import { INSTITUTION_FILTER_KEY } from "@/components/views/seb-server/settings-navigation/components/filters/useInstitutionFilterSection";
 import { useConnectionConfigurations } from "@/components/views/seb-server/settings-navigation/connection-configuration/connection-configurations/api/useConnectionConfigurations.ts";
 import { useDeleteConnectionConfiguration } from "@/components/views/seb-server/settings-navigation/connection-configuration/connection-configurations/api/useDeleteConnectionConfiguration.ts";
 import { useToggleConnectionConfigurationStatus } from "@/components/views/seb-server/settings-navigation/connection-configuration/connection-configurations/api/useToggleConnectionConfigurationStatus.ts";
@@ -91,16 +94,15 @@ const {
     loadItems,
     onSearch,
     onClearSearch,
+    setFilters,
     resetFilters,
 } = useUrlSettingsTable(tableData, async () => {
     await fetchConnectionConfigurations();
-}, ["status", "institutionId"]);
+}, [STATUS_FILTER_KEY, INSTITUTION_FILTER_KEY]);
 
-const selectedStatus = computed(
-    () => (selectedFilters.value.status as string | null) ?? null,
-);
+const selectedStatus = computed(() => selectedFilters.value.status);
 const selectedInstitutionId = computed(
-    () => (selectedFilters.value.institutionId as string | null) ?? null,
+    () => selectedFilters.value.institutionId,
 );
 
 const {

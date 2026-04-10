@@ -1,15 +1,13 @@
 import { translate } from "@/utils/generalUtils";
 import type { FilterSectionDef } from "./filterTypes";
 
-/**
- * Returns the standard Active / Inactive status filter section definition.
- * Pass the page-level translation prefix (e.g. "userAccount.userAccountPage").
- */
+export const STATUS_FILTER_KEY = "status";
+
 export function statusFilterSection(
     translationPrefix: string,
 ): FilterSectionDef {
     return {
-        key: "status",
+        key: STATUS_FILTER_KEY,
         title: translate(`${translationPrefix}.filters.statusFilter`),
         options: [
             {

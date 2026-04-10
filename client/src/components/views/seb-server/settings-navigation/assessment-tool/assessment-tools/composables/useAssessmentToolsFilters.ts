@@ -7,12 +7,14 @@ import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums";
 
 const TRANSLATION_PREFIX = "assessmentToolConnections.assessmentToolsPage";
 
+export const LMS_TYPE_FILTER_KEY = "selectedType";
+
 export function useAssessmentToolsFilters() {
     const { section: institutionSection } =
         useInstitutionFilterSection(TRANSLATION_PREFIX);
 
     const lmsTypeSection: FilterSectionDef = {
-        key: "selectedType",
+        key: LMS_TYPE_FILTER_KEY,
         title: translate(`${TRANSLATION_PREFIX}.filters.typeFilter`),
         options: Object.values(LMSTypeEnum).map((type) => ({
             value: type,

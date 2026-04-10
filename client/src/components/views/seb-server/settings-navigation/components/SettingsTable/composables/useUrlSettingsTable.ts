@@ -1,4 +1,5 @@
 import { computed, ref, watch } from "vue";
+import type { Ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import type { ServerTablePaging } from "@/models/types";
 import type {
@@ -8,7 +9,7 @@ import type {
 } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/types.ts";
 
 export function useUrlSettingsTable<TResponse extends PagedResponse>(
-    data: { value: TResponse | undefined },
+    data: Ref<TResponse | undefined>,
     loadFn: LoadItemsFn,
     filterKeys: string[] = [],
     initialOptions?: ServerTablePaging,
@@ -16,14 +17,10 @@ export function useUrlSettingsTable<TResponse extends PagedResponse>(
     const route = useRoute();
     const router = useRouter();
 
-    // Local text input state — what the user is currently typing.
-    // Initialized from URL so a refresh or shared link restores the input.
     const searchInputValue = ref<string | null>(
         (route.query.search as string) || null,
     );
 
-    // Local pagination / sort state — intentionally NOT put in URL.
-    // Pagination resets to page 1 on every search or filter change.
     const options = ref<ServerTablePaging>(
         initialOptions ?? {
             page: 1,
@@ -32,31 +29,14 @@ export function useUrlSettingsTable<TResponse extends PagedResponse>(
         },
     );
 
-    // The search that was last *applied* (from URL).
     const searchField = computed(() => (route.query.search as string) || null);
 
-    // Filters are read from URL and written back via router.replace.
-    // Using a writable computed keeps v-model compatibility with SettingsFilters.
-    const selectedFilters = computed<TableFilters>({
-        get: () => {
-            const f: TableFilters = {};
-            for (const key of filterKeys) {
-                f[key] = (route.query[key] as string) || null;
-            }
-            return f;
-        },
-        set: (newFilters: TableFilters) => {
-            const query = buildBaseQuery();
-            for (const key of filterKeys) {
-                const val = newFilters[key];
-                if (val) {
-                    query[key] = val;
-                } else {
-                    query[key] = undefined;
-                }
-            }
-            void router.replace({ query });
-        },
+    const selectedFilters = computed<TableFilters>(() => {
+        const f: TableFilters = {};
+        for (const key of filterKeys) {
+            f[key] = (route.query[key] as string) || null;
+        }
+        return f;
     });
 
     const totalItems = computed(() => {
@@ -71,8 +51,6 @@ export function useUrlSettingsTable<TResponse extends PagedResponse>(
         filterKeys.some((key) => !!route.query[key]),
     );
 
-    // Builds a query object from the current URL, preserving search and all
-    // filter keys. Callers then overwrite or delete specific keys as needed.
     function buildBaseQuery(): Record<string, string | undefined> {
         const q: Record<string, string | undefined> = {};
         if (route.query.search) q.search = route.query.search as string;
@@ -82,7 +60,7 @@ export function useUrlSettingsTable<TResponse extends PagedResponse>(
         return q;
     }
 
-    async function fetch() {
+    async function refetch() {
         await loadFn({
             options: options.value,
             searchField: searchField.value,
@@ -90,10 +68,6 @@ export function useUrlSettingsTable<TResponse extends PagedResponse>(
         });
     }
 
-    // Watch URL search + filter params. Fires on:
-    //   • back/forward navigation
-    //   • programmatic router.push / router.replace from this composable
-    // On every change: reset page to 1 and reload.
     watch(
         () => {
             const watched: Record<string, string | null> = {
@@ -105,57 +79,49 @@ export function useUrlSettingsTable<TResponse extends PagedResponse>(
             return watched;
         },
         async (newVal, oldVal) => {
-            // Only sync the search input when the URL search value itself changed
-            // (e.g. back/forward navigation). Don't overwrite what the user is
-            // currently typing just because a filter was toggled.
             if (newVal.search !== oldVal?.search) {
                 searchInputValue.value = (newVal.search as string) || null;
             }
             options.value = { ...options.value, page: 1 };
-            await fetch();
+            await refetch();
         },
         { deep: true },
     );
-
-    // Called by SettingsTable's @update:options (pagination + sort changes).
-    // Pagination is local state, so no URL update needed here.
     async function loadItems(newOptions?: ServerTablePaging) {
         if (newOptions) {
             options.value = newOptions;
         }
-        await fetch();
+        await refetch();
     }
 
-    // Apply search — pushes a new history entry so the back button can undo it.
     async function onSearch() {
         const query = buildBaseQuery();
         const val = searchInputValue.value || undefined;
-        if (val) {
-            query.search = val;
-        } else {
-            delete query.search;
-        }
+        query.search = val || undefined;
         await router.push({ query });
-        // URL watcher handles page reset + fetch.
     }
 
-    // Clear search only — keeps filters intact.
     async function onClearSearch() {
         searchInputValue.value = null;
         const query = buildBaseQuery();
-        delete query.search;
+        query.search = undefined;
         await router.push({ query });
-        // URL watcher handles page reset + fetch.
     }
 
-    // Clear all filters — keeps search and sort intact.
+    async function setFilters(newFilters: TableFilters) {
+        const query = buildBaseQuery();
+        for (const key of filterKeys) {
+            query[key] = newFilters[key] || undefined;
+        }
+        await router.replace({ query });
+    }
+
     async function resetFilters() {
         const query = buildBaseQuery();
         for (const key of filterKeys) {
             query[key] = undefined;
         }
         await router.replace({ query });
-        // URL watcher handles page reset + fetch.
     }
 
     return {
@@ -168,6 +134,7 @@ export function useUrlSettingsTable<TResponse extends PagedResponse>(
         loadItems,
         onSearch,
         onClearSearch,
+        setFilters,
         resetFilters,
     };
 }

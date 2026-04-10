@@ -1,5 +1,5 @@
 <template>
-    <v-col class="pr-12">
+    <v-col>
         <v-row class="pl-6">
             <SearchSectionTitle />
         </v-row>
@@ -14,7 +14,7 @@
             />
         </v-row>
 
-        <v-row class="justify-end pa-6 pt-4 pb-0 ga-2">
+        <v-row class="justify-end px-6 pt-4 ga-2">
             <CancelButton
                 :text="'general.cancelButton'"
                 @click="emit('clear')"

@@ -21,8 +21,9 @@
 
                     <v-col cols="12" md="7">
                         <FiltersBar
-                            v-model="selectedFilters"
+                            :model-value="selectedFilters"
                             :sections="filterSections"
+                            @update:model-value="setFilters"
                             @clear="resetFilters"
                         />
                     </v-col>
@@ -73,6 +74,8 @@ import LoadingFallbackComponent from "@/components/widgets/loadingFallbackCompon
 import { useUrlSettingsTable } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useUrlSettingsTable.ts";
 import { useUserAccountsTableHeaders } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/composables/useUserAccountsTableHeaders.ts";
 import { useUserAccountsFilters } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/composables/useUserAccountsFilters.ts";
+import { STATUS_FILTER_KEY } from "@/components/views/seb-server/settings-navigation/components/filters/statusFilterSection";
+import { INSTITUTION_FILTER_KEY } from "@/components/views/seb-server/settings-navigation/components/filters/useInstitutionFilterSection";
 import { useUserAccounts } from "@/components/views/seb-server/settings-navigation/user-account/api/useUserAccounts.ts";
 import { useDeleteUserAccount } from "@/components/views/seb-server/settings-navigation/user-account/api/useDeleteUserAccount.ts";
 import { useToggleUserAccountStatus } from "@/components/views/seb-server/settings-navigation/user-account/api/useToggleUserAccountStatus.ts";
@@ -93,16 +96,15 @@ const {
     loadItems,
     onSearch,
     onClearSearch,
+    setFilters,
     resetFilters,
 } = useUrlSettingsTable(tableData, async () => {
     await fetchUserAccounts();
-}, ["status", "institutionId"]);
+}, [STATUS_FILTER_KEY, INSTITUTION_FILTER_KEY]);
 
-const selectedStatus = computed(
-    () => (selectedFilters.value.status as string | null) ?? null,
-);
+const selectedStatus = computed(() => selectedFilters.value.status);
 const selectedInstitutionId = computed(
-    () => (selectedFilters.value.institutionId as string | null) ?? null,
+    () => selectedFilters.value.institutionId,
 );
 
 const {

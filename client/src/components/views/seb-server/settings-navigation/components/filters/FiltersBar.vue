@@ -1,9 +1,6 @@
 <template>
-    <!-- Outer: 10 cols for filter sections, 2 cols pinned for the clear button. -->
     <v-row class="align-start">
         <v-col cols="10">
-            <!-- Each section takes 6 cols (half the filter area).
-                 More than 2 sections wrap naturally onto the next row. -->
             <v-row>
                 <v-col v-for="section in sections" :key="section.key" cols="6">
                     <FilterSection
@@ -20,9 +17,10 @@
 
         <v-col cols="2" class="d-flex justify-end align-center">
             <v-btn
-                variant="text"
+                variant="outlined"
                 size="small"
-                class="text-none text-caption font-weight-medium text-medium-emphasis"
+                color="primary"
+                class="text-none text-caption font-weight-medium"
                 :style="{
                     visibility: hasActiveFilters ? 'visible' : 'hidden',
                 }"

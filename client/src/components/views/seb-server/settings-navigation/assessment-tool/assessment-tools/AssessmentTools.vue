@@ -21,8 +21,9 @@
 
                     <v-col cols="12" md="7">
                         <FiltersBar
-                            v-model="selectedFilters"
+                            :model-value="selectedFilters"
                             :sections="filterSections"
+                            @update:model-value="setFilters"
                             @clear="resetFilters"
                         />
                     </v-col>
@@ -67,7 +68,12 @@ import FiltersBar from "@/components/views/seb-server/settings-navigation/compon
 import SettingsTable from "@/components/views/seb-server/settings-navigation/components/SettingsTable/SettingsTable.vue";
 import { useUrlSettingsTable } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useUrlSettingsTable.ts";
 import { useAssessmentToolsTableHeaders } from "@/components/views/seb-server/settings-navigation/assessment-tool/assessment-tools/composables/useAssessmentToolsTableHeaders.ts";
-import { useAssessmentToolsFilters } from "@/components/views/seb-server/settings-navigation/assessment-tool/assessment-tools/composables/useAssessmentToolsFilters.ts";
+import {
+    useAssessmentToolsFilters,
+    LMS_TYPE_FILTER_KEY,
+} from "@/components/views/seb-server/settings-navigation/assessment-tool/assessment-tools/composables/useAssessmentToolsFilters.ts";
+import { STATUS_FILTER_KEY } from "@/components/views/seb-server/settings-navigation/components/filters/statusFilterSection";
+import { INSTITUTION_FILTER_KEY } from "@/components/views/seb-server/settings-navigation/components/filters/useInstitutionFilterSection";
 import { useAssessmentTools } from "@/components/views/seb-server/settings-navigation/assessment-tool/assessment-tools/api/useAssessmentTools.ts";
 import { useDeleteAssessmentTool } from "@/components/views/seb-server/settings-navigation/assessment-tool/assessment-tools/api/useDeleteAssessmentTool.ts";
 import { useToggleAssessmentToolStatus } from "@/components/views/seb-server/settings-navigation/assessment-tool/assessment-tools/api/useToggleAssessmentTool.ts";
@@ -89,19 +95,18 @@ const {
     loadItems,
     onSearch,
     onClearSearch,
+    setFilters,
     resetFilters,
 } = useUrlSettingsTable(tableData, async () => {
     await fetchAssessmentTools();
-}, ["status", "institutionId", "selectedType"]);
+}, [STATUS_FILTER_KEY, INSTITUTION_FILTER_KEY, LMS_TYPE_FILTER_KEY]);
 
-const selectedStatus = computed(
-    () => (selectedFilters.value.status as string | null) ?? null,
-);
+const selectedStatus = computed(() => selectedFilters.value.status);
 const selectedInstitutionId = computed(
-    () => (selectedFilters.value.institutionId as string | null) ?? null,
+    () => selectedFilters.value.institutionId,
 );
 const selectedType = computed(
-    () => (selectedFilters.value.selectedType as LMSTypeEnum | null) ?? null,
+    () => selectedFilters.value.selectedType as LMSTypeEnum | null,
 );
 
 const {
