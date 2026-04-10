@@ -59,7 +59,6 @@
 import { computed, ref, watch } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import AddButton from "@/components/views/seb-server/settings-navigation/widgets/AddButton.vue";
-import AddCertificateDialog from "@/components/views/seb-server/certificates/AddCertificateDialog.vue";
 import SearchSection from "@/components/views/seb-server/settings-navigation/components/SearchSection.vue";
 import SettingsTable from "@/components/views/seb-server/settings-navigation/components/SettingsTable/SettingsTable.vue";
 import { useCertificatesTableHeaders } from "@/components/views/seb-server/settings-navigation/certificate/certificates/composables/useCertificateTableHeaders.ts";
@@ -68,6 +67,7 @@ import { useUrlSettingsTable } from "@/components/views/seb-server/settings-navi
 import { useDeleteCertificate } from "@/components/views/seb-server/settings-navigation/certificate/certificates/api/useDeleteCertificate.ts";
 import { useSettingsTableCellFormatters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableCellFormatters.ts";
 import type { CertificatesResponse } from "@/models/seb-server/certificate";
+import AddCertificateDialog from "@/components/views/seb-server/settings-navigation/certificate/certificates/AddCertificateDialog.vue";
 
 const certDialog = ref(false);
 

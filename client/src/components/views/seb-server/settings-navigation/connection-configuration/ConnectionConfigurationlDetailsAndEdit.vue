@@ -783,10 +783,10 @@ import {
     ConnectionConfiguration,
     UpdateConnectionConfigurationPar,
 } from "@/models/seb-server/connectionConfiguration";
-import SettingsNavigation from "@/components/views/seb-server/components/SettingsNavigation.vue";
-import AddCertificateDialog from "@/components/views/seb-server/certificates/AddCertificateDialog.vue";
+import SettingsNavigation from "@/components/views/seb-server/settings-navigation/SettingsNavigation.vue";
 import { getConnectionConfiguration } from "@/services/seb-server/connectionConfigurationService.ts";
 import { getCertificates } from "@/services/seb-server/certificateService.ts";
+import AddCertificateDialog from "@/components/views/seb-server/settings-navigation/certificate/certificates/AddCertificateDialog.vue";
 
 // Router
 const route = useRoute();

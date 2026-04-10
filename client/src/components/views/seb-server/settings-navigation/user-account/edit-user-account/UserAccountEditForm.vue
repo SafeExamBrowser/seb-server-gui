@@ -514,7 +514,7 @@ import * as userAccountService from "@/services/seb-server/userAccountService";
 
 import { EditUserAccountParameters, UserAccount } from "@/models/userAccount";
 import { Institution } from "@/models/seb-server/institution";
-import SettingsNavigation from "@/components/views/seb-server/components/SettingsNavigation.vue";
+import SettingsNavigation from "@/components/views/seb-server/settings-navigation/SettingsNavigation.vue";
 import { getInstitutions } from "@/services/seb-server/institutionService.ts";
 import { useLogout } from "@/composables/useLogout";
 

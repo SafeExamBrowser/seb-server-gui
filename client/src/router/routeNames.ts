@@ -4,16 +4,20 @@ export type RouteName =
     | "ExamTemplateDetail"
 
     //User Accounts
+    | "ProfileRoute"
+    | "EditUserAccount"
     | "CreateUserAccount"
     | "UserAccountList"
 
     //Assessment Tools
     | "CreateAssessmentTool"
     | "AssessmentToolList"
+    | "AssessmentToolDetailAndView"
 
     //Connection Configurations
     | "CreateConnectionConfiguration"
     | "ConnectionConfigurationList"
+    | "ConnectionConfigurationDetailAndView"
 
     //Certificates
     | "CreateCertificate"

@@ -46,7 +46,8 @@
                                 :loading="
                                     loading || deleteLoading || statusLoading
                                 "
-                                :route="USER_ACCOUNTS_ROUTE"
+                                :detail-route="getRouteName('EditUserAccount')"
+                                route-param-key="userUuid"
                                 item-identifier-key="uuid"
                                 translation-key-prefix="userAccount.userAccountPage"
                                 :cell-formatters="cellFormatters"
@@ -66,14 +67,14 @@
 import { computed, ref, watch } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import AddButton from "@/components/views/seb-server/settings-navigation/widgets/AddButton.vue";
-import { USER_ACCOUNTS_ROUTE } from "@/utils/constants.ts";
+import { getRouteName } from "@/router/routeNames";
 import SearchSection from "@/components/views/seb-server/settings-navigation/components/SearchSection.vue";
 import FiltersBar from "@/components/views/seb-server/settings-navigation/components/filters/FiltersBar.vue";
 import SettingsTable from "@/components/views/seb-server/settings-navigation/components/SettingsTable/SettingsTable.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useUrlSettingsTable } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useUrlSettingsTable.ts";
-import { useUserAccountsTableHeaders } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/composables/useUserAccountsTableHeaders.ts";
-import { useUserAccountsFilters } from "@/components/views/seb-server/settings-navigation/user-account/userAccounts/composables/useUserAccountsFilters.ts";
+import { useUserAccountsTableHeaders } from "@/components/views/seb-server/settings-navigation/user-account/user-accounts/composables/useUserAccountsTableHeaders.ts";
+import { useUserAccountsFilters } from "@/components/views/seb-server/settings-navigation/user-account/user-accounts/composables/useUserAccountsFilters.ts";
 import { STATUS_FILTER_KEY } from "@/components/views/seb-server/settings-navigation/components/filters/statusFilterSection";
 import { INSTITUTION_FILTER_KEY } from "@/components/views/seb-server/settings-navigation/components/filters/useInstitutionFilterSection";
 import { useUserAccounts } from "@/components/views/seb-server/settings-navigation/user-account/api/useUserAccounts.ts";

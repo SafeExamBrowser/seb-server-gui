@@ -43,7 +43,12 @@
                             :items-per-page="options.itemsPerPage"
                             :options="options"
                             :loading="loading || deleteLoading || statusLoading"
-                            :route="CONNECTION_CONFIGURATIONS_ROUTE"
+                            :detail-route="
+                                getRouteName(
+                                    'ConnectionConfigurationDetailAndView',
+                                )
+                            "
+                            route-param-key="id"
                             item-identifier-key="id"
                             translation-key-prefix="connectionConfigurations.connectionConfigurationsPage"
                             :cell-formatters="cellFormatters"
@@ -64,7 +69,7 @@
 import { computed, ref, watch } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import AddButton from "@/components/views/seb-server/settings-navigation/widgets/AddButton.vue";
-import { CONNECTION_CONFIGURATIONS_ROUTE } from "@/utils/constants.ts";
+import { getRouteName } from "@/router/routeNames";
 import SearchSection from "@/components/views/seb-server/settings-navigation/components/SearchSection.vue";
 import FiltersBar from "@/components/views/seb-server/settings-navigation/components/filters/FiltersBar.vue";
 import SettingsTable from "@/components/views/seb-server/settings-navigation/components/SettingsTable/SettingsTable.vue";

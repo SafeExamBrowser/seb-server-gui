@@ -625,7 +625,7 @@ import {
     AssessmentTool,
     UpdateAssessmentToolPar,
 } from "@/models/seb-server/assessmentTool";
-import SettingsNavigation from "@/components/views/seb-server/components/SettingsNavigation.vue";
+import SettingsNavigation from "@/components/views/seb-server/settings-navigation/SettingsNavigation.vue";
 
 // Router
 const route = useRoute();

@@ -1,12 +1,19 @@
 import { computed } from "vue";
-import { navigateTo } from "@/router/navigation";
-import { TableItem } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/types.ts";
+import { useRouter } from "vue-router";
+import { navigateToRoute } from "@/router/navigation";
+import type { RouteName } from "@/router/routeNames";
+import type { TableItem } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/types.ts";
 
 export function useSettingsNavigation(
-    route?: string,
+    detailRoute?: RouteName,
     itemIdentifierKey?: string,
+    routeParamKey?: string,
 ) {
+    const router = useRouter();
     const identifierKey = computed(() => itemIdentifierKey ?? "uuid");
+    const paramKey = computed(
+        () => routeParamKey ?? itemIdentifierKey ?? "uuid",
+    );
 
     function getItemIdentifier(item: TableItem): string | null {
         const identifier = item[identifierKey.value];
@@ -19,19 +26,27 @@ export function useSettingsNavigation(
     }
 
     function buildItemRoute(item: TableItem): string {
-        if (!route) return "";
+        if (!detailRoute) return "";
 
         const identifier = getItemIdentifier(item);
         if (!identifier) return "";
 
-        return `${route}/${identifier}`;
+        return router.resolve({
+            name: detailRoute,
+            params: { [paramKey.value]: identifier },
+        }).path;
     }
 
     function navigateToItem(item: TableItem) {
-        const targetRoute = buildItemRoute(item);
+        if (!detailRoute) return;
 
-        if (!targetRoute) return;
-        navigateTo(targetRoute);
+        const identifier = getItemIdentifier(item);
+        if (!identifier) return;
+
+        navigateToRoute({
+            name: detailRoute,
+            params: { [paramKey.value]: identifier },
+        });
     }
 
     return {

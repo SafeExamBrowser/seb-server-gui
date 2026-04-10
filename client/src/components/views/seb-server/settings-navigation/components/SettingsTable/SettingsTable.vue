@@ -131,6 +131,7 @@ import DeleteDialog from "@/components/views/seb-server/settings-navigation/comp
 import StatusDialog from "@/components/views/seb-server/settings-navigation/components/StatusDialog.vue";
 import { useSettingsNavigation } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsNavigation.ts";
 import type { ServerTablePaging } from "@/models/types";
+import type { RouteName } from "@/router/routeNames";
 
 type TableItem = Record<string, unknown>;
 type CellFormatter = (value: unknown, item: TableItem) => string;
@@ -144,7 +145,8 @@ const props = withDefaults(
         options?: ServerTablePaging;
         itemsPerPage?: number;
         pageCount?: number;
-        route?: string;
+        detailRoute?: RouteName;
+        routeParamKey?: string;
         itemIdentifierKey?: string;
         editable?: boolean;
         deletable?: boolean;
@@ -157,7 +159,8 @@ const props = withDefaults(
         itemsPerPage: 10,
         totalItems: undefined,
         options: undefined,
-        route: "",
+        detailRoute: undefined,
+        routeParamKey: undefined,
         itemIdentifierKey: "",
         editable: true,
         deletable: true,
@@ -179,8 +182,9 @@ const statusDialogOpen = ref(false);
 const selectedItem = ref<TableItem | null>(null);
 
 const { buildItemRoute, navigateToItem } = useSettingsNavigation(
-    props.route,
+    props.detailRoute,
     props.itemIdentifierKey,
+    props.routeParamKey,
 );
 
 const deleteTargetRoute = computed(() => {
