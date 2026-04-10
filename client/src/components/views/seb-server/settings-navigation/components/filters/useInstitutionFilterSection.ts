@@ -10,10 +10,6 @@ export function useInstitutionFilterSection(translationPrefix: string) {
     const showInstitution = useShowInstitutionColumn();
     const { institutions, fetchInstitutions } = useInstitutionNameMap();
 
-    // Watch instead of a bare void call: if userAccount isn't set yet when the
-    // component first renders (e.g. hard refresh before beforeEach resolves),
-    // showInstitution starts false and the watch re-fires the fetch the moment
-    // it becomes true. hasFetched inside the singleton prevents duplicate calls.
     watch(
         showInstitution,
         (isAdmin) => {
@@ -28,7 +24,6 @@ export function useInstitutionFilterSection(translationPrefix: string) {
         return {
             key: INSTITUTION_FILTER_KEY,
             title: translate(`${translationPrefix}.filters.institutionFilter`),
-            // Options are reactive: empty while fetching, populated once resolved.
             options: institutions.value.map((inst) => ({
                 value: String(inst.modelId),
                 label: inst.name,
