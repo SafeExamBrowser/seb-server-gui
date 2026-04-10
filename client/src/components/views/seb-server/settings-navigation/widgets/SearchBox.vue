@@ -1,22 +1,19 @@
 <template>
     <v-text-field
-        v-model="searchValue"
-        class="search-input"
+        :model-value="modelValue"
+        color="primary"
         data-testid="search-input"
         density="comfortable"
         hide-details
         :placeholder="translate(searchText)"
         type="text"
         variant="outlined"
+        @update:model-value="emit('update:modelValue', $event)"
         @keydown.enter="onSearch"
         @keydown.esc="onClearSearch"
     >
         <template #append-inner>
-            <v-icon
-                class="search-icon"
-                data-testid="searchIcon-button"
-                @click="onSearch"
-            >
+            <v-icon data-testid="searchIcon-button" @click="onSearch">
                 mdi-magnify
             </v-icon>
         </template>
@@ -24,31 +21,24 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
 import { translate } from "@/utils/generalUtils.ts";
-import type { BaseSettingsStoreView } from "@/components/views/seb-server/settings-navigation/store/storeContract.ts";
 
-const props = defineProps<{
-    store: BaseSettingsStoreView<unknown>;
+defineProps<{
+    modelValue: string | null;
     searchText: string;
 }>();
 
 const emit = defineEmits<{
+    "update:modelValue": [value: string | null];
     search: [];
     clear: [];
 }>();
-
-const searchValue = computed({
-    get: () => props.store.searchField,
-    set: (value) => props.store.setSearchField(value),
-});
 
 function onSearch() {
     emit("search");
 }
 
 function onClearSearch() {
-    props.store.resetSearchState();
     emit("clear");
 }
 </script>

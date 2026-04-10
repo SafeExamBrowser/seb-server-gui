@@ -1,6 +1,5 @@
 <template>
     <v-btn
-        class="ml-2"
         color="primary"
         data-testid="confirm-button"
         rounded="sm"

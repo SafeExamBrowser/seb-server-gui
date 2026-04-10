@@ -115,7 +115,7 @@
 
             <!-- Action buttons -->
             <v-row class="px-6 pb-4">
-                <v-col class="d-flex justify-end pa-0">
+                <v-col class="d-flex justify-end pa-0 ga-2">
                     <CancelButton
                         data-testid="createConnectionConfiguration-cancel-button"
                         text="general.cancelButton"

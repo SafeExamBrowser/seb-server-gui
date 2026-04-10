@@ -12,13 +12,12 @@
                 <v-row class="align-start">
                     <v-col cols="12" md="5">
                         <SearchSection
+                            v-model="searchInputValue"
                             search-text="certificates.filters.searchField"
-                            :store="certificatesStore"
                             @search="onSearch"
                             @clear="onClearSearch"
                         />
                     </v-col>
-                    <v-col cols="12" md="7" />
                 </v-row>
 
                 <v-row>
@@ -63,10 +62,9 @@ import AddButton from "@/components/views/seb-server/settings-navigation/widgets
 import AddCertificateDialog from "@/components/views/seb-server/certificates/AddCertificateDialog.vue";
 import SearchSection from "@/components/views/seb-server/settings-navigation/components/SearchSection.vue";
 import SettingsTable from "@/components/views/seb-server/settings-navigation/components/SettingsTable/SettingsTable.vue";
-import { useCertificatesStore } from "@/components/views/seb-server/settings-navigation/certificate/certificates/store/certificatesStore.ts";
 import { useCertificatesTableHeaders } from "@/components/views/seb-server/settings-navigation/certificate/certificates/composables/useCertificateTableHeaders.ts";
 import { useCertificates } from "@/components/views/seb-server/settings-navigation/certificate/certificates/api/useCertificates.ts";
-import { useServerSettingsTable } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useServerSettingsTable.ts";
+import { useUrlSettingsTable } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useUrlSettingsTable.ts";
 import { useDeleteCertificate } from "@/components/views/seb-server/settings-navigation/certificate/certificates/api/useDeleteCertificate.ts";
 import { useSettingsTableCellFormatters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableCellFormatters.ts";
 import type { CertificatesResponse } from "@/models/seb-server/certificate";
@@ -77,28 +75,21 @@ async function onCertImported() {
     await loadItems();
 }
 
-const certificatesStore = useCertificatesStore();
 const certificatesTableHeaders = useCertificatesTableHeaders();
 
 const tableData = ref<CertificatesResponse>();
 
 const {
-    selectedFilters,
+    searchInputValue,
+    searchField,
     options,
     totalItems,
     loadItems,
     onSearch,
     onClearSearch,
-} = useServerSettingsTable(
-    certificatesStore,
-    tableData,
-    async () => {
-        await fetchCertificates();
-    },
-    undefined,
-);
-
-const searchField = computed(() => certificatesStore.searchField ?? null);
+} = useUrlSettingsTable(tableData, async () => {
+    await fetchCertificates();
+});
 
 const {
     data: fetchedData,
@@ -126,17 +117,4 @@ const {
 const { cellFormatters } = useSettingsTableCellFormatters({
     headers: certificatesTableHeaders,
 });
-
-watch(
-    selectedFilters,
-    async () => {
-        options.value = {
-            ...options.value,
-            page: 1,
-        };
-
-        await loadItems();
-    },
-    { deep: true },
-);
 </script>

@@ -36,7 +36,9 @@
                         </template>
 
                         <template v-else-if="header.key === 'actions'">
-                            <div class="actions-container">
+                            <div
+                                class="d-flex justify-center align-center ga-1"
+                            >
                                 <v-icon
                                     v-if="editable"
                                     class="action-icon"
@@ -153,6 +155,8 @@ const props = withDefaults(
     {
         pageCount: 0,
         itemsPerPage: 10,
+        totalItems: undefined,
+        options: undefined,
         route: "",
         itemIdentifierKey: "",
         editable: true,
@@ -319,13 +323,13 @@ const internalItemsLength = computed(() => {
 }
 
 :deep(tbody tr:hover) {
-    background-color: rgba(33, 92, 175, 0.06);
+    background-color: rgba(var(--v-theme-primary), 0.06);
 }
 
 :deep(tbody td) {
-    color: #215caf;
+    color: rgb(var(--v-theme-primary));
     vertical-align: middle !important;
-    border-bottom: 1px solid rgba(220, 220, 220, 0.6);
+    border-bottom: 1px solid rgba(var(--v-theme-on-surface), 0.12);
 }
 
 :deep(.v-progress-linear) {
@@ -333,7 +337,7 @@ const internalItemsLength = computed(() => {
 }
 
 :deep(.v-data-table-rows-no-data td) {
-    color: #757575;
+    color: rgba(var(--v-theme-on-surface), 0.6);
     text-align: center;
 }
 
@@ -348,13 +352,6 @@ const internalItemsLength = computed(() => {
 
 :deep(.v-btn) {
     text-transform: none;
-}
-
-.actions-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.2rem;
 }
 
 .status-chip {
@@ -376,7 +373,7 @@ const internalItemsLength = computed(() => {
 }
 
 .action-icon {
-    color: #757575;
+    color: rgba(var(--v-theme-on-surface), 0.6);
     cursor: pointer;
     display: inline-flex;
     align-items: center;
@@ -390,19 +387,18 @@ const internalItemsLength = computed(() => {
 }
 
 .action-icon:hover {
-    color: #215caf;
-    background-color: rgba(33, 92, 175, 0.1);
+    color: rgb(var(--v-theme-primary));
+    background-color: rgba(var(--v-theme-primary), 0.1);
 }
 
-/* Footer überschrieben */
 .table-footer {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
     width: 100%;
     padding: 1rem 1.25rem 0.75rem 1.25rem;
-    border-top: 1px solid rgba(220, 220, 220, 0.6);
-    background: white;
+    border-top: 1px solid rgba(var(--v-theme-on-surface), 0.12);
+    background: rgb(var(--v-theme-surface));
     column-gap: 1rem;
 }
 
@@ -430,7 +426,7 @@ const internalItemsLength = computed(() => {
 }
 
 .table-footer__page-size-label {
-    color: #5d7285;
+    color: rgba(var(--v-theme-on-surface), 0.6);
     font-size: 0.9rem;
     font-weight: 500;
     white-space: nowrap;
@@ -447,34 +443,33 @@ const internalItemsLength = computed(() => {
 
 :deep(.table-footer__page-size-select .v-field__input) {
     min-height: 38px;
-    color: #215caf;
+    color: rgb(var(--v-theme-primary));
     font-weight: 600;
 }
 
-/* Page options */
 :deep(.table-footer__pagination .v-btn) {
     min-width: 34px;
     width: 34px;
     height: 34px;
     border-radius: 10px;
-    color: #5d7285;
+    color: rgba(var(--v-theme-on-surface), 0.6);
     font-weight: 600;
     box-shadow: none;
 }
 
 :deep(.table-footer__pagination .v-btn:hover) {
-    background-color: rgba(33, 92, 175, 0.08);
-    color: #215caf;
+    background-color: rgba(var(--v-theme-primary), 0.08);
+    color: rgb(var(--v-theme-primary));
 }
 
 :deep(.table-footer__pagination .v-btn--active) {
-    background-color: rgba(33, 92, 175, 0.06) !important;
-    color: #215caf !important;
+    background-color: rgba(var(--v-theme-primary), 0.06) !important;
+    color: rgb(var(--v-theme-primary)) !important;
     box-shadow: none !important;
 }
 
 :deep(.table-footer__pagination .v-btn--active .v-btn__content) {
-    color: #215caf !important;
+    color: rgb(var(--v-theme-primary)) !important;
 }
 
 @media (max-width: 960px) {

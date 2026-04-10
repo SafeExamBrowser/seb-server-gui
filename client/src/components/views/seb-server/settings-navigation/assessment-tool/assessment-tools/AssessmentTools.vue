@@ -12,36 +12,28 @@
                 <v-row class="align-start">
                     <v-col cols="12" md="5">
                         <SearchSection
-                            :store="assessmentToolStore"
-                            search-text="userAccount.userAccountPage.filters.searchField"
+                            v-model="searchInputValue"
+                            search-text="assessmentToolConnections.assessmentToolsPage.filters.searchField"
                             @search="onSearch"
                             @clear="onClearSearch"
                         />
                     </v-col>
 
                     <v-col cols="12" md="7">
-                        <SettingsFilters
-                            v-if="filtersReady"
-                            :key="filtersRenderKey"
-                            v-model="selectedFilters"
-                            :filters="filters"
+                        <FiltersBar
+                            :model-value="selectedFilters"
+                            :sections="filterSections"
+                            @update:model-value="setFilters"
+                            @clear="resetFilters"
                         />
                     </v-col>
                 </v-row>
 
                 <v-row>
                     <v-col>
-                        <div v-if="error">
-                            {{ error }}
-                        </div>
-
-                        <div v-else-if="deleteError">
-                            {{ deleteError }}
-                        </div>
-
-                        <div v-else-if="statusError">
-                            {{ statusError }}
-                        </div>
+                        <div v-if="error">{{ error }}</div>
+                        <div v-else-if="deleteError">{{ deleteError }}</div>
+                        <div v-else-if="statusError">{{ statusError }}</div>
 
                         <SettingsTable
                             :headers="assessmentToolTableHeaders"
@@ -72,73 +64,49 @@ import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import AddButton from "@/components/views/seb-server/settings-navigation/widgets/AddButton.vue";
 import { ASSESSMENT_TOOL_CONNECTIONS_ROUTE } from "@/utils/constants.ts";
 import SearchSection from "@/components/views/seb-server/settings-navigation/components/SearchSection.vue";
-import SettingsFilters from "@/components/views/seb-server/settings-navigation/components/SettingsFilters.vue";
+import FiltersBar from "@/components/views/seb-server/settings-navigation/components/filters/FiltersBar.vue";
 import SettingsTable from "@/components/views/seb-server/settings-navigation/components/SettingsTable/SettingsTable.vue";
-
-import { useServerSettingsTable } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useServerSettingsTable.ts";
-import { useAssessmentToolsStore } from "@/components/views/seb-server/settings-navigation/assessment-tool/assessment-tools/store/assessmentToolsStore.ts";
+import { useUrlSettingsTable } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useUrlSettingsTable.ts";
 import { useAssessmentToolsTableHeaders } from "@/components/views/seb-server/settings-navigation/assessment-tool/assessment-tools/composables/useAssessmentToolsTableHeaders.ts";
+import {
+    useAssessmentToolsFilters,
+    LMS_TYPE_FILTER_KEY,
+} from "@/components/views/seb-server/settings-navigation/assessment-tool/assessment-tools/composables/useAssessmentToolsFilters.ts";
+import { STATUS_FILTER_KEY } from "@/components/views/seb-server/settings-navigation/components/filters/statusFilterSection";
+import { INSTITUTION_FILTER_KEY } from "@/components/views/seb-server/settings-navigation/components/filters/useInstitutionFilterSection";
 import { useAssessmentTools } from "@/components/views/seb-server/settings-navigation/assessment-tool/assessment-tools/api/useAssessmentTools.ts";
 import { useDeleteAssessmentTool } from "@/components/views/seb-server/settings-navigation/assessment-tool/assessment-tools/api/useDeleteAssessmentTool.ts";
 import { useToggleAssessmentToolStatus } from "@/components/views/seb-server/settings-navigation/assessment-tool/assessment-tools/api/useToggleAssessmentTool.ts";
-import { useSettingsTableFilters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableFilters.ts";
 import { useSettingsTableCellFormatters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableCellFormatters.ts";
-import { AssessmentToolsResponse } from "@/models/seb-server/assessmentTool.ts";
-import { SettingsFilterDefinition } from "@/models/types.ts";
-import { translate } from "@/utils/generalUtils.ts";
-import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums.ts";
+import type { AssessmentToolsResponse } from "@/models/seb-server/assessmentTool.ts";
+import type { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums.ts";
 
-const assessmentToolStore = useAssessmentToolsStore();
 const assessmentToolTableHeaders = useAssessmentToolsTableHeaders();
+const filterSections = useAssessmentToolsFilters();
 
 const tableData = ref<AssessmentToolsResponse>();
 
-const lmsTypeFilter = computed<SettingsFilterDefinition[]>(() => [
-    {
-        key: "selectedType",
-        title: translate(
-            "assessmentToolConnections.assessmentToolsPage.filters.assessmentToolTypeFilter",
-        ),
-        options: Object.values(LMSTypeEnum).map((type) => ({
-            value: type,
-            label: translate(`assessmentToolConnections.lmsTypes.${type}`),
-        })),
-    },
-]);
-
 const {
+    searchInputValue,
+    searchField,
     selectedFilters,
     options,
     totalItems,
     loadItems,
     onSearch,
     onClearSearch,
-} = useServerSettingsTable(
-    assessmentToolStore,
-    tableData,
-    async () => {
-        await fetchAssessmentTools();
-    },
-    undefined,
-    {
-        status: null,
-        institutionId: null,
-        selectedType: null,
-    },
-);
+    setFilters,
+    resetFilters,
+} = useUrlSettingsTable(tableData, async () => {
+    await fetchAssessmentTools();
+}, [STATUS_FILTER_KEY, INSTITUTION_FILTER_KEY, LMS_TYPE_FILTER_KEY]);
 
-const searchField = computed(() => assessmentToolStore.searchField ?? null);
-
-const selectedStatus = computed(
-    () => (selectedFilters.value.status as string | null) ?? null,
-);
-
+const selectedStatus = computed(() => selectedFilters.value.status);
 const selectedInstitutionId = computed(
-    () => (selectedFilters.value.institutionId as string | null) ?? null,
+    () => selectedFilters.value.institutionId,
 );
-
 const selectedType = computed(
-    () => (selectedFilters.value.selectedType as LMSTypeEnum | null) ?? null,
+    () => selectedFilters.value.selectedType as LMSTypeEnum | null,
 );
 
 const {
@@ -156,8 +124,8 @@ const {
 
 watch(
     fetchedData,
-    (newValue) => {
-        tableData.value = newValue;
+    (v) => {
+        tableData.value = v;
     },
     { immediate: true },
 );
@@ -176,26 +144,7 @@ const {
     error: statusError,
 } = useToggleAssessmentToolStatus(tableData);
 
-const { filters, filtersReady, filtersRenderKey } = useSettingsTableFilters({
-    headers: assessmentToolTableHeaders,
-    translationPrefix: "assessmentToolConnections.assessmentToolsPage",
-    customFilters: lmsTypeFilter,
-});
-
 const { cellFormatters } = useSettingsTableCellFormatters({
     headers: assessmentToolTableHeaders,
 });
-
-watch(
-    selectedFilters,
-    async () => {
-        options.value = {
-            ...options.value,
-            page: 1,
-        };
-
-        await loadItems();
-    },
-    { deep: true },
-);
 </script>

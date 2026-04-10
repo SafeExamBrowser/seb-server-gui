@@ -1,7 +1,6 @@
 import { computed, ref } from "vue";
 import type { Institution } from "@/models/seb-server/institution";
 import { getInstitutions } from "@/services/seb-server/institutionService";
-import type { SettingsFilterOption } from "@/models/types";
 
 const institutions = ref<Institution[]>([]);
 const loading = ref(false);
@@ -19,13 +18,6 @@ export const useInstitutionNameMap = () => {
 
         return map;
     });
-
-    const institutionFilterOptions = computed<SettingsFilterOption[]>(() =>
-        institutions.value.map((institution) => ({
-            value: String(institution.modelId),
-            label: institution.name,
-        })),
-    );
 
     const fetchInstitutions = async () => {
         if (hasFetched.value) {
@@ -71,6 +63,5 @@ export const useInstitutionNameMap = () => {
         hasFetched,
         fetchInstitutions,
         getInstitutionName,
-        institutionFilterOptions,
     };
 };
