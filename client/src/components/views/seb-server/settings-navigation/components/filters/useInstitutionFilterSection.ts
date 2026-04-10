@@ -1,4 +1,4 @@
-import { computed, watch } from "vue";
+import { computed } from "vue";
 import { translate } from "@/utils/generalUtils";
 import { useInstitutionNameMap } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useInstitutionNameMap";
 import { useShowInstitutionColumn } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useShowInstitutionColumn";
@@ -8,15 +8,7 @@ export const INSTITUTION_FILTER_KEY = "institutionId";
 
 export function useInstitutionFilterSection(translationPrefix: string) {
     const showInstitution = useShowInstitutionColumn();
-    const { institutions, fetchInstitutions } = useInstitutionNameMap();
-
-    watch(
-        showInstitution,
-        (isAdmin) => {
-            if (isAdmin) void fetchInstitutions();
-        },
-        { immediate: true },
-    );
+    const { institutions } = useInstitutionNameMap();
 
     const section = computed<FilterSectionDef | null>(() => {
         if (!showInstitution.value) return null;
