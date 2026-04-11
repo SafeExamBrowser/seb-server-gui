@@ -2,47 +2,58 @@
     <BasicPage :title="$t('titles.exams')" :bread-crumb="breadCrumb">
         <template #PanelMain>
             <v-col>
-                <v-row class="align-start">
-                    <v-col cols="12" md="5">
-                        <SearchSection
-                            v-model="searchInputValue"
-                            search-text="examList.info.examName"
-                            @search="onSearch"
-                            @clear="onClearSearch"
-                        />
-                    </v-col>
+                <v-row class="mb-4">
+                    <v-col>
+                        <v-card elevation="4" rounded="lg">
+                            <v-row class="align-start pa-2">
+                                <v-col cols="12" md="5">
+                                    <SearchSection
+                                        v-model="searchInputValue"
+                                        search-text="examList.info.examName"
+                                        @search="onSearch"
+                                        @clear="onClearSearch"
+                                    />
+                                </v-col>
 
-                    <v-col cols="12" md="7">
-                        <FiltersBar
-                            :model-value="selectedFilters"
-                            :sections="filterSections"
-                            @update:model-value="setFilters"
-                            @clear="resetFilters"
-                        />
+                                <v-col cols="12" md="7">
+                                    <FiltersBar
+                                        :model-value="selectedFilters"
+                                        :sections="filterSections"
+                                        @update:model-value="setFilters"
+                                        @clear="resetFilters"
+                                    />
+                                </v-col>
+                            </v-row>
+                        </v-card>
                     </v-col>
                 </v-row>
 
                 <v-row>
                     <v-col>
-                        <div v-if="error">{{ error }}</div>
+                        <v-card elevation="4" rounded="lg">
+                            <div v-if="error" class="pa-4">{{ error }}</div>
 
-                        <LoadingFallbackComponent :loading="false" :errors="[]">
-                            <EntityTable
-                                :headers="examTableHeaders"
-                                :items="tableData?.content ?? []"
-                                :total-items="totalItems"
-                                :page-count="pageCount"
-                                :items-per-page="options.itemsPerPage"
-                                :options="options"
-                                :loading="loading"
-                                :detail-route="getRouteName('ExamDetail')"
-                                route-param-key="id"
-                                item-identifier-key="id"
-                                translation-key-prefix="examList"
-                                :cell-formatters="cellFormatters"
-                                @update:options="loadItems"
-                            />
-                        </LoadingFallbackComponent>
+                            <LoadingFallbackComponent
+                                :loading="false"
+                                :errors="[]"
+                            >
+                                <EntityTable
+                                    :headers="examTableHeaders"
+                                    :items="tableData?.content ?? []"
+                                    :total-items="totalItems"
+                                    :page-count="pageCount"
+                                    :items-per-page="options.itemsPerPage"
+                                    :options="options"
+                                    :loading="loading"
+                                    :detail-route="getRouteName('ExamDetail')"
+                                    route-param-key="id"
+                                    item-identifier-key="id"
+                                    translation-key-prefix="examList"
+                                    :cell-formatters="cellFormatters"
+                                    @update:options="loadItems"
+                                />
+                            </LoadingFallbackComponent>
+                        </v-card>
                     </v-col>
                 </v-row>
             </v-col>

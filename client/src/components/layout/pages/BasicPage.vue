@@ -15,22 +15,10 @@
                 :cols="hasAside ? 9 : 12"
                 class="fill-height overflow-y-auto"
             >
-                <v-card
-                    elevation="4"
-                    rounded="lg"
-                    class="fill-height overflow-y-auto"
-                >
-                    <slot name="PanelMain"></slot>
-                </v-card>
+                <slot name="PanelMain"></slot>
             </v-col>
             <v-col v-if="hasAside" cols="3" class="fill-height overflow-y-auto">
-                <v-card
-                    elevation="4"
-                    rounded="lg"
-                    class="fill-height overflow-y-auto"
-                >
-                    <slot name="PanelAside"></slot>
-                </v-card>
+                <slot name="PanelAside"></slot>
             </v-col>
         </v-row>
     </div>
