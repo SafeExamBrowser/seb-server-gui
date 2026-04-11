@@ -130,7 +130,7 @@ const routes: Array<RouteRecordRaw> = [
                 name: getRouteName("ProfileRoute"),
                 component: () =>
                     import(
-                        "@/components/views/seb-server/settings-navigation/user-account/edit-user-account/ProfilePage.vue"
+                        "@/components/views/seb-server/user-account/edit-user-account/ProfilePage.vue"
                     ),
                 meta: { titleKey: "titles.profile" },
             },
@@ -139,7 +139,7 @@ const routes: Array<RouteRecordRaw> = [
                 name: getRouteName("EditUserAccount"),
                 component: () =>
                     import(
-                        "@/components/views/seb-server/settings-navigation/user-account/edit-user-account/EditUserAccount.vue"
+                        "@/components/views/seb-server/user-account/edit-user-account/EditUserAccount.vue"
                     ),
                 meta: { titleKey: "titles.editUserAccount" },
             },
@@ -148,7 +148,7 @@ const routes: Array<RouteRecordRaw> = [
                 name: getRouteName("UserAccountList"),
                 component: () =>
                     import(
-                        "@/components/views/seb-server/settings-navigation/user-account/user-accounts/UserAccounts.vue"
+                        "@/components/views/seb-server/user-account/user-accounts/UserAccounts.vue"
                     ),
                 meta: { titleKey: "titles.userAccounts" },
             },
@@ -158,7 +158,7 @@ const routes: Array<RouteRecordRaw> = [
                 name: getRouteName("CreateUserAccount"),
                 component: () =>
                     import(
-                        "@/components/views/seb-server/settings-navigation/user-account/create-user-account/CreateUserAccount.vue"
+                        "@/components/views/seb-server/user-account/create-user-account/CreateUserAccount.vue"
                     ),
                 meta: { titleKey: "titles.createUserAccount" },
             },
@@ -169,7 +169,7 @@ const routes: Array<RouteRecordRaw> = [
                 name: getRouteName("AssessmentToolList"),
                 component: () =>
                     import(
-                        "@/components/views/seb-server/settings-navigation/assessment-tool/assessment-tools/AssessmentTools.vue"
+                        "@/components/views/seb-server/assessment-tool/assessment-tools/AssessmentTools.vue"
                     ),
                 meta: { titleKey: "titles.assessmentToolConnections" },
             },
@@ -179,7 +179,7 @@ const routes: Array<RouteRecordRaw> = [
                 name: getRouteName("CreateAssessmentTool"),
                 component: () =>
                     import(
-                        "@/components/views/seb-server/settings-navigation/assessment-tool/create-assessment-tool/CreateAssessmentTool.vue"
+                        "@/components/views/seb-server/assessment-tool/create-assessment-tool/CreateAssessmentTool.vue"
                     ),
                 meta: { titleKey: "titles.createAssessmentTool" },
             },
@@ -188,7 +188,7 @@ const routes: Array<RouteRecordRaw> = [
                 name: getRouteName("AssessmentToolDetailAndView"),
                 component: () =>
                     import(
-                        "@/components/views/seb-server/settings-navigation/assessment-tool/AssessmentToolDetailsAndEdit.vue"
+                        "@/components/views/seb-server/assessment-tool/AssessmentToolDetailsAndEdit.vue"
                     ),
                 meta: { titleKey: "titles.assessmentToolEdit" },
             },
@@ -199,7 +199,7 @@ const routes: Array<RouteRecordRaw> = [
                 name: getRouteName("ConnectionConfigurationList"),
                 component: () =>
                     import(
-                        "@/components/views/seb-server/settings-navigation/connection-configuration/connection-configurations/ConnectionConfigurations.vue"
+                        "@/components/views/seb-server/connection-configuration/connection-configurations/ConnectionConfigurations.vue"
                     ),
                 meta: { titleKey: "titles.connectionConfigurations" },
             },
@@ -208,7 +208,7 @@ const routes: Array<RouteRecordRaw> = [
                 name: getRouteName("CreateConnectionConfiguration"),
                 component: () =>
                     import(
-                        "@/components/views/seb-server/settings-navigation/connection-configuration/create-connection-configuration/CreateConnectionConfiguration.vue"
+                        "@/components/views/seb-server/connection-configuration/create-connection-configuration/CreateConnectionConfiguration.vue"
                     ),
                 meta: { titleKey: "titles.createConnectionConfiguration" },
             },
@@ -217,7 +217,7 @@ const routes: Array<RouteRecordRaw> = [
                 name: getRouteName("ConnectionConfigurationDetailAndView"),
                 component: () =>
                     import(
-                        "@/components/views/seb-server/settings-navigation/connection-configuration/ConnectionConfigurationlDetailsAndEdit.vue"
+                        "@/components/views/seb-server/connection-configuration/ConnectionConfigurationlDetailsAndEdit.vue"
                     ),
                 meta: { titleKey: "titles.connectionConfigurationViewAndEdit" },
             },
@@ -229,7 +229,7 @@ const routes: Array<RouteRecordRaw> = [
 
                 component: () =>
                     import(
-                        "@/components/views/seb-server/settings-navigation/certificate/certificates/CertificatesList.vue"
+                        "@/components/views/seb-server/certificate/certificates/CertificatesList.vue"
                     ),
                 meta: { titleKey: "titles.certificates" },
             },

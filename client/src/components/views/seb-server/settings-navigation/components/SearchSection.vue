@@ -30,6 +30,7 @@
 <script setup lang="ts">
 import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
+import SearchBox from "@/components/widgets/SearchBox.vue";
 import SearchSectionTitle from "@/components/widgets/SearchSectionTitle.vue";
 
 defineProps<{
