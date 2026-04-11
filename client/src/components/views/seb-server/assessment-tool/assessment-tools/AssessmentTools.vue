@@ -35,7 +35,7 @@
                         <div v-else-if="deleteError">{{ deleteError }}</div>
                         <div v-else-if="statusError">{{ statusError }}</div>
 
-                        <SettingsTable
+                        <EntityTable
                             :headers="assessmentToolTableHeaders"
                             :items="tableData?.content ?? []"
                             :total-items="totalItems"
@@ -65,10 +65,10 @@
 import { computed, ref, watch } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import { getRouteName } from "@/router/routeNames.ts";
-import SearchSection from "@/components/views/seb-server/settings-navigation/components/SearchSection.vue";
+import SearchSection from "@/components/layout/pages/widgets/SearchSection.vue";
 import FiltersBar from "@/components/blocks/filters/FiltersBar.vue";
-import SettingsTable from "@/components/views/seb-server/settings-navigation/components/SettingsTable/SettingsTable.vue";
-import { useUrlSettingsTable } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useUrlSettingsTable.ts";
+import EntityTable from "@/components/blocks/entity-table/EntityTable.vue";
+import { useUrlTableState } from "@/components/blocks/entity-table/composables/useUrlTableState.ts";
 import { useAssessmentToolsTableHeaders } from "@/components/views/seb-server/assessment-tool/assessment-tools/composables/useAssessmentToolsTableHeaders.ts";
 import {
     useAssessmentToolsFilters,
@@ -79,7 +79,7 @@ import { INSTITUTION_FILTER_KEY } from "@/components/blocks/filters/useInstituti
 import { useAssessmentTools } from "@/components/views/seb-server/assessment-tool/assessment-tools/api/useAssessmentTools.ts";
 import { useDeleteAssessmentTool } from "@/components/views/seb-server/assessment-tool/assessment-tools/api/useDeleteAssessmentTool.ts";
 import { useToggleAssessmentToolStatus } from "@/components/views/seb-server/assessment-tool/assessment-tools/api/useToggleAssessmentTool.ts";
-import { useSettingsTableCellFormatters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableCellFormatters.ts";
+import { useTableCellFormatters } from "@/components/blocks/entity-table/composables/useTableCellFormatters.ts";
 import type { AssessmentToolsResponse } from "@/models/seb-server/assessmentTool.ts";
 import type { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums.ts";
 import AddButton from "@/components/widgets/AddButton.vue";
@@ -100,7 +100,7 @@ const {
     onClearSearch,
     setFilters,
     resetFilters,
-} = useUrlSettingsTable(tableData, async () => {
+} = useUrlTableState(tableData, async () => {
     await fetchAssessmentTools();
 }, [STATUS_FILTER_KEY, INSTITUTION_FILTER_KEY, LMS_TYPE_FILTER_KEY]);
 
@@ -147,7 +147,7 @@ const {
     error: statusError,
 } = useToggleAssessmentToolStatus(tableData);
 
-const { cellFormatters } = useSettingsTableCellFormatters({
+const { cellFormatters } = useTableCellFormatters({
     headers: assessmentToolTableHeaders,
 });
 </script>

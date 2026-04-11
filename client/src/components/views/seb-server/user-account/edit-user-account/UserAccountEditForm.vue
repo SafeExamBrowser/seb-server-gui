@@ -519,7 +519,7 @@ import {
 import { Institution } from "@/models/seb-server/institution.ts";
 import { getInstitutions } from "@/services/seb-server/institutionService.ts";
 import { useLogout } from "@/composables/useLogout.ts";
-import SettingsNavigation from "@/components/layout/pages/widgets/SettingsNavigation.vue";
+import SettingsNavigation from "@/components/layout/pages/blocks/SettingsNavigation.vue";
 
 const props = defineProps<{
     title: string;

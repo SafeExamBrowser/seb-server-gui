@@ -1,10 +1,10 @@
 import { computed } from "vue";
 import { useRouter } from "vue-router";
-import { navigateToRoute } from "@/router/navigation";
-import type { RouteName } from "@/router/routeNames";
-import type { TableItem } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/types.ts";
+import { navigateToRoute } from "@/router/navigation.ts";
+import type { RouteName } from "@/router/routeNames.ts";
+import type { TableItem } from "@/components/blocks/entity-table/types.ts";
 
-export function useSettingsNavigation(
+export function useTableNavigation(
     detailRoute?: RouteName,
     itemIdentifierKey?: string,
     routeParamKey?: string,

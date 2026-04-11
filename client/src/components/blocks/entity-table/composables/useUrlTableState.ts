@@ -1,14 +1,14 @@
 import { computed, ref, watch } from "vue";
 import type { Ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import type { ServerTablePaging } from "@/models/types";
+import type { ServerTablePaging } from "@/models/types.ts";
 import type {
     PagedResponse,
     TableFilters,
     LoadItemsFn,
-} from "@/components/views/seb-server/settings-navigation/components/SettingsTable/types.ts";
+} from "@/components/blocks/entity-table/types.ts";
 
-export function useUrlSettingsTable<TResponse extends PagedResponse>(
+export function useUrlTableState<TResponse extends PagedResponse>(
     data: Ref<TResponse | undefined>,
     loadFn: LoadItemsFn,
     filterKeys: string[] = [],

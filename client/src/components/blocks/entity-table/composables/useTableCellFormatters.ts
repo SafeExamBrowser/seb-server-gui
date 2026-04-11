@@ -3,9 +3,9 @@ import type {
     CellFormatter,
     HeaderTranslateType,
     UseSettingsTableCellFormattersParams,
-} from "@/components/views/seb-server/settings-navigation/components/SettingsTable/types.ts";
-import { translate } from "@/utils/generalUtils";
-import * as timeUtils from "@/utils/timeUtils";
+} from "@/components/blocks/entity-table/types.ts";
+import { translate } from "@/utils/generalUtils.ts";
+import * as timeUtils from "@/utils/timeUtils.ts";
 import { useInstitutionNameMap } from "@/composables/useInstitutionNameMap.ts";
 
 function toDisplayString(value: unknown): string {
@@ -16,7 +16,7 @@ function toDisplayString(value: unknown): string {
     return String(value);
 }
 
-export function useSettingsTableCellFormatters(
+export function useTableCellFormatters(
     params: UseSettingsTableCellFormattersParams,
 ) {
     const needsInstitutionNames = computed(() =>

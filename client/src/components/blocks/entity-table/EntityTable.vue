@@ -126,12 +126,12 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import type { SettingsTableHeader } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/types.ts";
-import DeleteDialog from "@/components/views/seb-server/settings-navigation/components/SettingsTable/widgets/DeleteDialog.vue";
-import StatusDialog from "@/components/views/seb-server/settings-navigation/components/SettingsTable/widgets/StatusDialog.vue";
-import { useSettingsNavigation } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsNavigation.ts";
-import type { ServerTablePaging } from "@/models/types";
-import type { RouteName } from "@/router/routeNames";
+import type { SettingsTableHeader } from "@/components/blocks/entity-table/types.ts";
+import DeleteDialog from "@/components/blocks/entity-table/widgets/DeleteDialog.vue";
+import StatusDialog from "@/components/blocks/entity-table/widgets/StatusDialog.vue";
+import { useTableNavigation } from "@/components/blocks/entity-table/composables/useTableNavigation.ts";
+import type { ServerTablePaging } from "@/models/types.ts";
+import type { RouteName } from "@/router/routeNames.ts";
 
 type TableItem = Record<string, unknown>;
 type CellFormatter = (value: unknown, item: TableItem) => string;
@@ -181,7 +181,7 @@ const deleteDialogOpen = ref(false);
 const statusDialogOpen = ref(false);
 const selectedItem = ref<TableItem | null>(null);
 
-const { buildItemRoute, navigateToItem } = useSettingsNavigation(
+const { buildItemRoute, navigateToItem } = useTableNavigation(
     props.detailRoute,
     props.itemIdentifierKey,
     props.routeParamKey,

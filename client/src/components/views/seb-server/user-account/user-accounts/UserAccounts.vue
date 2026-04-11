@@ -36,7 +36,7 @@
                         <div v-else-if="statusError">{{ statusError }}</div>
 
                         <LoadingFallbackComponent :loading="false" :errors="[]">
-                            <SettingsTable
+                            <EntityTable
                                 :headers="userAccountsTableHeaders"
                                 :items="tableData?.content ?? []"
                                 :total-items="totalItems"
@@ -67,11 +67,11 @@
 import { computed, ref, watch } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import { getRouteName } from "@/router/routeNames.ts";
-import SearchSection from "@/components/views/seb-server/settings-navigation/components/SearchSection.vue";
+import SearchSection from "@/components/layout/pages/widgets/SearchSection.vue";
 import FiltersBar from "@/components/blocks/filters/FiltersBar.vue";
-import SettingsTable from "@/components/views/seb-server/settings-navigation/components/SettingsTable/SettingsTable.vue";
+import EntityTable from "@/components/blocks/entity-table/EntityTable.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import { useUrlSettingsTable } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useUrlSettingsTable.ts";
+import { useUrlTableState } from "@/components/blocks/entity-table/composables/useUrlTableState.ts";
 import { useUserAccountsTableHeaders } from "@/components/views/seb-server/user-account/user-accounts/composables/useUserAccountsTableHeaders.ts";
 import { useUserAccountsFilters } from "@/components/views/seb-server/user-account/user-accounts/composables/useUserAccountsFilters.ts";
 import { STATUS_FILTER_KEY } from "@/components/blocks/filters/statusFilterSection.ts";
@@ -79,7 +79,7 @@ import { INSTITUTION_FILTER_KEY } from "@/components/blocks/filters/useInstituti
 import { useUserAccounts } from "@/components/views/seb-server/user-account/api/useUserAccounts.ts";
 import { useDeleteUserAccount } from "@/components/views/seb-server/user-account/api/useDeleteUserAccount.ts";
 import { useToggleUserAccountStatus } from "@/components/views/seb-server/user-account/api/useToggleUserAccountStatus.ts";
-import { useSettingsTableCellFormatters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableCellFormatters.ts";
+import { useTableCellFormatters } from "@/components/blocks/entity-table/composables/useTableCellFormatters.ts";
 import type { UserAccountResponse } from "@/models/userAccount.ts";
 import AddButton from "@/components/widgets/AddButton.vue";
 
@@ -99,7 +99,7 @@ const {
     onClearSearch,
     setFilters,
     resetFilters,
-} = useUrlSettingsTable(tableData, async () => {
+} = useUrlTableState(tableData, async () => {
     await fetchUserAccounts();
 }, [STATUS_FILTER_KEY, INSTITUTION_FILTER_KEY]);
 
@@ -142,7 +142,7 @@ const {
     error: statusError,
 } = useToggleUserAccountStatus(tableData);
 
-const { cellFormatters } = useSettingsTableCellFormatters({
+const { cellFormatters } = useTableCellFormatters({
     headers: userAccountsTableHeaders,
 });
 </script>

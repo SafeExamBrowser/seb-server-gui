@@ -30,7 +30,7 @@
                             {{ deleteError }}
                         </div>
 
-                        <SettingsTable
+                        <EntityTable
                             :headers="certificatesTableHeaders"
                             :items="tableData?.content ?? []"
                             :total-items="totalItems"
@@ -58,13 +58,13 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
-import SearchSection from "@/components/views/seb-server/settings-navigation/components/SearchSection.vue";
-import SettingsTable from "@/components/views/seb-server/settings-navigation/components/SettingsTable/SettingsTable.vue";
+import SearchSection from "@/components/layout/pages/widgets/SearchSection.vue";
+import EntityTable from "@/components/blocks/entity-table/EntityTable.vue";
 import { useCertificatesTableHeaders } from "@/components/views/seb-server/certificate/certificates/composables/useCertificateTableHeaders.ts";
 import { useCertificates } from "@/components/views/seb-server/certificate/certificates/api/useCertificates.ts";
-import { useUrlSettingsTable } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useUrlSettingsTable.ts";
+import { useUrlTableState } from "@/components/blocks/entity-table/composables/useUrlTableState.ts";
 import { useDeleteCertificate } from "@/components/views/seb-server/certificate/certificates/api/useDeleteCertificate.ts";
-import { useSettingsTableCellFormatters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableCellFormatters.ts";
+import { useTableCellFormatters } from "@/components/blocks/entity-table/composables/useTableCellFormatters.ts";
 import type { CertificatesResponse } from "@/models/seb-server/certificate.ts";
 import AddCertificateDialog from "@/components/views/seb-server/certificate/certificates/AddCertificateDialog.vue";
 import AddButton from "@/components/widgets/AddButton.vue";
@@ -87,7 +87,7 @@ const {
     loadItems,
     onSearch,
     onClearSearch,
-} = useUrlSettingsTable(tableData, async () => {
+} = useUrlTableState(tableData, async () => {
     await fetchCertificates();
 });
 
@@ -114,7 +114,7 @@ const {
     error: deleteError,
 } = useDeleteCertificate(tableData);
 
-const { cellFormatters } = useSettingsTableCellFormatters({
+const { cellFormatters } = useTableCellFormatters({
     headers: certificatesTableHeaders,
 });
 </script>

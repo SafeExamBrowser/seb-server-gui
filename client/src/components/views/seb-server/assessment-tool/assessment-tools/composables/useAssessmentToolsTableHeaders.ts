@@ -1,6 +1,6 @@
 import { computed } from "vue";
 import { translate } from "@/utils/generalUtils.ts";
-import type { SettingsTableHeader } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/types.ts";
+import type { SettingsTableHeader } from "@/components/blocks/entity-table/types.ts";
 import { useShowInstitutionColumn } from "@/composables/useShowInstitutionColumn.ts";
 
 export const useAssessmentToolsTableHeaders = () => {

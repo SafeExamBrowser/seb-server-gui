@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-
+//TODO @Andrei : use in Containerlayout too
 const props = defineProps<{
     name: string | undefined;
     surname: string | undefined;
