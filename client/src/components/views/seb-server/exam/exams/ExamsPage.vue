@@ -5,25 +5,16 @@
                 <v-row class="mb-4">
                     <v-col>
                         <v-card elevation="4" rounded="lg">
-                            <v-row class="align-start pa-2">
-                                <v-col cols="12" md="5">
-                                    <SearchSection
-                                        v-model="searchInputValue"
-                                        search-text="examList.info.examName"
-                                        @search="onSearch"
-                                        @clear="onClearSearch"
-                                    />
-                                </v-col>
-
-                                <v-col cols="12" md="7">
-                                    <FiltersBar
-                                        :model-value="selectedFilters"
-                                        :sections="filterSections"
-                                        @update:model-value="setFilters"
-                                        @clear="resetFilters"
-                                    />
-                                </v-col>
-                            </v-row>
+                            <SearchBar
+                                v-model="searchInputValue"
+                                search-text="examList.info.examName"
+                                :filter-sections="filterSections"
+                                :filter-values="selectedFilters"
+                                @search="onSearch"
+                                @clear="onClearSearch"
+                                @update:filter-values="setFilters"
+                                @clear-filters="resetFilters"
+                            />
                         </v-card>
                     </v-col>
                 </v-row>
@@ -64,8 +55,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
-import SearchSection from "@/components/layout/pages/widgets/SearchSection.vue";
-import FiltersBar from "@/components/blocks/filters/FiltersBar.vue";
+import SearchBar from "@/components/blocks/search-bar/SearchBar.vue";
 import EntityTable from "@/components/blocks/entity-table/EntityTable.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useUrlTableState } from "@/components/blocks/entity-table/composables/useUrlTableState.ts";
