@@ -57,11 +57,11 @@ const routes: Array<RouteRecordRaw> = [
 
             // ---------- exam routes ----------
             {
-                path: constants.EXAM_ROUTE,
-                name: "Exams",
+                path: "/exam",
+                name: getRouteName("ExamList"),
                 component: () =>
                     import(
-                        "@/components/views/seb-server/exam/list/ExamListContainer.vue"
+                        "@/components/views/seb-server/exam/exams/ExamsPage.vue"
                     ),
                 meta: { titleKey: "titles.exams" },
             },

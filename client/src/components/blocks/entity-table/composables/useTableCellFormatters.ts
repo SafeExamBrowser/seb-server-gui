@@ -51,6 +51,10 @@ export function useTableCellFormatters(
                   )
                 : "",
 
+        examType: (value: unknown) => (value ? translate(String(value)) : ""),
+
+        examStatus: (value: unknown) => (value ? translate(String(value)) : ""),
+
         certificateTypes: (value: unknown) => {
             if (!Array.isArray(value) || value.length === 0) {
                 return "";
