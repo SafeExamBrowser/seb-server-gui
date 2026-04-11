@@ -15,9 +15,7 @@
 
     <v-row class="mt-10 w-98 h-100">
         <template v-if="!isProfile">
-            <SettingsNavigation
-                data-testid="editUserAccount-settingsNavigation-component"
-            />
+            <SettingsNavigation />
         </template>
 
         <!-- Show empty v-col instead when isProfile -->
@@ -514,9 +512,9 @@ import * as userAccountService from "@/services/seb-server/userAccountService";
 
 import { EditUserAccountParameters, UserAccount } from "@/models/userAccount";
 import { Institution } from "@/models/seb-server/institution";
-import SettingsNavigation from "@/components/views/seb-server/settings-navigation/SettingsNavigation.vue";
 import { getInstitutions } from "@/services/seb-server/institutionService.ts";
 import { useLogout } from "@/composables/useLogout";
+import SettingsNavigation from "@/components/views/seb-server/settings-navigation/widgets/SettingsNavigation.vue";
 
 const props = defineProps<{
     title: string;
