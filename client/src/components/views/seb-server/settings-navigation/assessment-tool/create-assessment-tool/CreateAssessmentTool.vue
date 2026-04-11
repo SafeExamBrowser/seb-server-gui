@@ -145,13 +145,13 @@ import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import HintText from "@/components/views/seb-server/settings-navigation/widgets/HintText.vue";
-import CancelButton from "@/components/views/seb-server/settings-navigation/widgets/CancelButton.vue";
-import ConfirmButton from "@/components/views/seb-server/settings-navigation/widgets/ConfirmButton.vue";
 import { navigateToRoute } from "@/router/navigation";
 import { useAssessmentToolFormFields } from "./composable/useAssessmentToolFormFields";
 import { useMutation } from "@/composables/useMutation";
 import { createAssessmentTool } from "@/services/seb-server/assessmentToolService";
 import type { CommonAssessmentToolPar } from "@/models/seb-server/assessmentTool";
+import CancelButton from "@/components/widgets/CancelButton.vue";
+import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
 
 const {
     mainFormFields,

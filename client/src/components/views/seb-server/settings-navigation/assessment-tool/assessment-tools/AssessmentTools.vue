@@ -64,7 +64,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
-import AddButton from "@/components/views/seb-server/settings-navigation/widgets/AddButton.vue";
 import { getRouteName } from "@/router/routeNames";
 import SearchSection from "@/components/views/seb-server/settings-navigation/components/SearchSection.vue";
 import FiltersBar from "@/components/views/seb-server/settings-navigation/components/filters/FiltersBar.vue";
@@ -83,6 +82,7 @@ import { useToggleAssessmentToolStatus } from "@/components/views/seb-server/set
 import { useSettingsTableCellFormatters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableCellFormatters.ts";
 import type { AssessmentToolsResponse } from "@/models/seb-server/assessmentTool.ts";
 import type { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums.ts";
+import AddButton from "@/components/widgets/AddButton.vue";
 
 const assessmentToolTableHeaders = useAssessmentToolsTableHeaders();
 const filterSections = useAssessmentToolsFilters();

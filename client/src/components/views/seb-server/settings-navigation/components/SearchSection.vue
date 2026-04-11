@@ -29,9 +29,9 @@
 
 <script setup lang="ts">
 import SearchBox from "@/components/views/seb-server/settings-navigation/widgets/SearchBox.vue";
-import CancelButton from "@/components/views/seb-server/settings-navigation/widgets/CancelButton.vue";
 import SearchSectionTitle from "@/components/views/seb-server/settings-navigation/widgets/SearchSectionTitle.vue";
-import ConfirmButton from "@/components/views/seb-server/settings-navigation/widgets/ConfirmButton.vue";
+import CancelButton from "@/components/widgets/CancelButton.vue";
+import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
 
 defineProps<{
     modelValue: string | null;

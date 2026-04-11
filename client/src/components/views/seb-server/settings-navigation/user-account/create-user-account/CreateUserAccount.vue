@@ -79,14 +79,14 @@ import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import HintText from "@/components/views/seb-server/settings-navigation/widgets/HintText.vue";
 import UserAccountPreviewCard from "@/components/views/seb-server/settings-navigation/widgets/UserAccountPreviewCard.vue";
-import CancelButton from "@/components/views/seb-server/settings-navigation/widgets/CancelButton.vue";
-import ConfirmButton from "@/components/views/seb-server/settings-navigation/widgets/ConfirmButton.vue";
 import { useUserAccountFormFields } from "./composable/useUserAccountFormFields";
 import { useMutation } from "@/composables/useMutation";
 import { createUserAccount } from "@/services/seb-server/userAccountService";
 import { navigateToRoute } from "@/router/navigation";
 import { UserRoleEnum } from "@/models/userRoleEnum";
 import i18n from "@/i18n";
+import CancelButton from "@/components/widgets/CancelButton.vue";
+import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
 
 const {
     leftFormFields,

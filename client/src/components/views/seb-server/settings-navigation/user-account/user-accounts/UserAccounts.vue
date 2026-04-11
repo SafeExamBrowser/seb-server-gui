@@ -66,7 +66,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
-import AddButton from "@/components/views/seb-server/settings-navigation/widgets/AddButton.vue";
 import { getRouteName } from "@/router/routeNames";
 import SearchSection from "@/components/views/seb-server/settings-navigation/components/SearchSection.vue";
 import FiltersBar from "@/components/views/seb-server/settings-navigation/components/filters/FiltersBar.vue";
@@ -82,6 +81,7 @@ import { useDeleteUserAccount } from "@/components/views/seb-server/settings-nav
 import { useToggleUserAccountStatus } from "@/components/views/seb-server/settings-navigation/user-account/api/useToggleUserAccountStatus.ts";
 import { useSettingsTableCellFormatters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableCellFormatters.ts";
 import type { UserAccountResponse } from "@/models/userAccount";
+import AddButton from "@/components/widgets/AddButton.vue";
 
 const userAccountsTableHeaders = useUserAccountsTableHeaders();
 const filterSections = useUserAccountsFilters();

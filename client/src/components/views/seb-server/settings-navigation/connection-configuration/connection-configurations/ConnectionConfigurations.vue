@@ -68,7 +68,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
-import AddButton from "@/components/views/seb-server/settings-navigation/widgets/AddButton.vue";
 import { getRouteName } from "@/router/routeNames";
 import SearchSection from "@/components/views/seb-server/settings-navigation/components/SearchSection.vue";
 import FiltersBar from "@/components/views/seb-server/settings-navigation/components/filters/FiltersBar.vue";
@@ -83,6 +82,7 @@ import { useDeleteConnectionConfiguration } from "@/components/views/seb-server/
 import { useToggleConnectionConfigurationStatus } from "@/components/views/seb-server/settings-navigation/connection-configuration/connection-configurations/api/useToggleConnectionConfigurationStatus.ts";
 import { useSettingsTableCellFormatters } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useSettingsTableCellFormatters.ts";
 import type { ConnectionConfigurations } from "@/models/seb-server/connectionConfiguration.ts";
+import AddButton from "@/components/widgets/AddButton.vue";
 
 const connectionConfigurationTableHeaders =
     useConnectionConfigurationsTableHeaders();
