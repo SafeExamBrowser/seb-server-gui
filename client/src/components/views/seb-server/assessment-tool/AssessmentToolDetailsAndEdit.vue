@@ -8,10 +8,9 @@
 
     <v-row class="mt-10 w-98 h-100">
         <!-- settings navigation -->
-        <SettingsNavigation
-            data-testid="assessmentToolsEdit-settingsNavigation-component"
-        />
-
+        <v-col cols="3" class="pt-0 h-100">
+            <SettingsNavigation />
+        </v-col>
         <v-col
             class="bg-white rounded-lg"
             cols="9"
@@ -611,21 +610,21 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
-import { useAppBarStore, useLayoutStore } from "@/stores/store";
-import { translate } from "@/utils/generalUtils";
-import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/userAccountStore";
-import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums";
-import { getInstitutions } from "@/services/seb-server/institutionService";
-import * as assessmentToolService from "@/services/seb-server/assessmentToolService";
-import router from "@/router/router";
-import { navigateTo } from "@/router/navigation";
-import * as constants from "@/utils/constants";
-import { Institution } from "@/models/seb-server/institution";
+import { useAppBarStore, useLayoutStore } from "@/stores/store.ts";
+import { translate } from "@/utils/generalUtils.ts";
+import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/userAccountStore.ts";
+import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums.ts";
+import { getInstitutions } from "@/services/seb-server/institutionService.ts";
+import * as assessmentToolService from "@/services/seb-server/assessmentToolService.ts";
+import router from "@/router/router.ts";
+import { navigateTo } from "@/router/navigation.ts";
+import * as constants from "@/utils/constants.ts";
+import { Institution } from "@/models/seb-server/institution.ts";
 import {
     AssessmentTool,
     UpdateAssessmentToolPar,
-} from "@/models/seb-server/assessmentTool";
-import SettingsNavigation from "@/components/views/seb-server/components/SettingsNavigation.vue";
+} from "@/models/seb-server/assessmentTool.ts";
+import SettingsNavigation from "@/components/layout/pages/blocks/SettingsNavigation.vue";
 
 // Router
 const route = useRoute();

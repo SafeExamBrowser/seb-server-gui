@@ -472,13 +472,13 @@ import * as constants from "@/utils/constants";
 import router from "@/router/router";
 import { translate } from "@/utils/generalUtils";
 import { getInstitutionLogo } from "@/services/seb-server/institutionService";
-import { useInstitutionNameMap } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useInstitutionNameMap";
 import { GUIComponent, useAbilities } from "@/services/ability";
 import { useRoute } from "vue-router";
 import { computed } from "vue";
 import { GridSize, NavigationItem } from "@/models/types";
 import ToastContainer from "@/components/views/seb-server/toast/ToastContainer.vue";
 import { useLogout } from "@/composables/useLogout";
+import { useInstitutionNameMap } from "@/composables/useInstitutionNameMap.ts";
 
 // i18n
 const { locale } = useI18n();

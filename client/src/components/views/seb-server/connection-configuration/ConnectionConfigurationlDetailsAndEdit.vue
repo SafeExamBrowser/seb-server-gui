@@ -6,8 +6,9 @@
 
     <v-row class="mt-10 w-98 h-100">
         <!-- settings navigation-->
-        <SettingsNavigation />
-
+        <v-col cols="3" class="pt-0 h-100">
+            <SettingsNavigation />
+        </v-col>
         <v-col class="bg-white rounded-lg" cols="9" elevation="4">
             <v-row class="d-flex align-center justify-space-between px-6 pt-6">
                 <div
@@ -769,24 +770,24 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
-import { useAppBarStore, useLayoutStore } from "@/stores/store";
-import { translate } from "@/utils/generalUtils";
-import { navigateTo } from "@/router/navigation";
-import * as constants from "@/utils/constants";
-import * as connectionConfigurationService from "@/services/seb-server/connectionConfigurationService";
-import router from "@/router/router";
+import { useAppBarStore, useLayoutStore } from "@/stores/store.ts";
+import { translate } from "@/utils/generalUtils.ts";
+import { navigateTo } from "@/router/navigation.ts";
+import * as constants from "@/utils/constants.ts";
+import * as connectionConfigurationService from "@/services/seb-server/connectionConfigurationService.ts";
+import router from "@/router/router.ts";
 import moment from "moment-timezone";
-import * as userAccountService from "@/services/seb-server/userAccountService";
+import * as userAccountService from "@/services/seb-server/userAccountService.ts";
 
-import { UserAccount } from "@/models/userAccount";
+import { UserAccount } from "@/models/userAccount.ts";
 import {
     ConnectionConfiguration,
     UpdateConnectionConfigurationPar,
-} from "@/models/seb-server/connectionConfiguration";
-import SettingsNavigation from "@/components/views/seb-server/components/SettingsNavigation.vue";
-import AddCertificateDialog from "@/components/views/seb-server/certificates/AddCertificateDialog.vue";
+} from "@/models/seb-server/connectionConfiguration.ts";
 import { getConnectionConfiguration } from "@/services/seb-server/connectionConfigurationService.ts";
 import { getCertificates } from "@/services/seb-server/certificateService.ts";
+import AddCertificateDialog from "@/components/views/seb-server/certificate/certificates/AddCertificateDialog.vue";
+import SettingsNavigation from "@/components/layout/pages/blocks/SettingsNavigation.vue";
 
 // Router
 const route = useRoute();
