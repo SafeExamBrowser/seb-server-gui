@@ -143,7 +143,6 @@
 import { ref } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
-import HintText from "@/components/views/seb-server/settings-navigation/widgets/HintText.vue";
 import { navigateToRoute } from "@/router/navigation";
 import { useConnectionConfigurationFormFields } from "./composable/useConnectionConfigurationFormFields";
 import { useMutation } from "@/composables/useMutation";
@@ -153,6 +152,7 @@ import type { CreateConnectionConfigurationPar } from "@/models/seb-server/conne
 import AddCertificateDialog from "@/components/views/seb-server/settings-navigation/certificate/certificates/AddCertificateDialog.vue";
 import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
+import HintText from "@/components/widgets/HintText.vue";
 
 const {
     mainFormFields,
