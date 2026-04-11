@@ -4,9 +4,9 @@ import type {
     HeaderTranslateType,
     UseSettingsTableCellFormattersParams,
 } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/types.ts";
-import { useInstitutionNameMap } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useInstitutionNameMap.ts";
 import { translate } from "@/utils/generalUtils";
 import * as timeUtils from "@/utils/timeUtils";
+import { useInstitutionNameMap } from "@/composables/useInstitutionNameMap.ts";
 
 function toDisplayString(value: unknown): string {
     if (value === null || value === undefined) {
