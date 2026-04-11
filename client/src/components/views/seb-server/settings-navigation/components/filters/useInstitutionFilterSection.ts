@@ -1,6 +1,6 @@
 import { computed } from "vue";
 import { translate } from "@/utils/generalUtils";
-import { useShowInstitutionColumn } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useShowInstitutionColumn";
+import { useShowInstitutionColumn } from "@/composables/useShowInstitutionColumn.ts";
 import type { FilterSectionDef } from "./filterTypes";
 import { useInstitutionNameMap } from "@/composables/useInstitutionNameMap.ts";
 

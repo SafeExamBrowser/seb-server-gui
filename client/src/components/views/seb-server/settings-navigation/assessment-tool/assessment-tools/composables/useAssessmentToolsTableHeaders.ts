@@ -1,7 +1,7 @@
 import { computed } from "vue";
 import { translate } from "@/utils/generalUtils";
 import type { SettingsTableHeader } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/types.ts";
-import { useShowInstitutionColumn } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useShowInstitutionColumn.ts";
+import { useShowInstitutionColumn } from "@/composables/useShowInstitutionColumn.ts";
 
 export const useAssessmentToolsTableHeaders = () => {
     const showInstitutionColumn = useShowInstitutionColumn();

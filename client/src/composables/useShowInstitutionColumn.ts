@@ -1,6 +1,6 @@
 import { computed } from "vue";
-import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/userAccountStore";
-import { UserRoleEnum } from "@/models/userRoleEnum";
+import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/userAccountStore.ts";
+import { UserRoleEnum } from "@/models/userRoleEnum.ts";
 
 export const useShowInstitutionColumn = () => {
     const authenticatedUserAccountStore = useAuthenticatedUserAccountStore();
