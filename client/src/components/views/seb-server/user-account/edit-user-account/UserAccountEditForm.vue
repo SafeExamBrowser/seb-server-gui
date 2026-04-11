@@ -15,7 +15,9 @@
 
     <v-row class="mt-10 w-98 h-100">
         <template v-if="!isProfile">
-            <SettingsNavigation />
+            <v-col cols="3" class="pt-0 h-100">
+                <SettingsNavigation />
+            </v-col>
         </template>
 
         <!-- Show empty v-col instead when isProfile -->
@@ -517,7 +519,7 @@ import {
 import { Institution } from "@/models/seb-server/institution.ts";
 import { getInstitutions } from "@/services/seb-server/institutionService.ts";
 import { useLogout } from "@/composables/useLogout.ts";
-import SettingsNavigation from "@/components/views/seb-server/settings-navigation/widgets/SettingsNavigation.vue";
+import SettingsNavigation from "@/components/layout/pages/widgets/SettingsNavigation.vue";
 
 const props = defineProps<{
     title: string;

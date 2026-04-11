@@ -20,7 +20,7 @@
 
 <script setup lang="ts">
 import FilterChip from "./FilterChip.vue";
-import type { FilterOption } from "./filterTypes";
+import type { FilterOption } from "./filterTypes.ts";
 
 const props = defineProps<{
     title: string;

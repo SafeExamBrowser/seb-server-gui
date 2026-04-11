@@ -12,10 +12,10 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { translate } from "@/utils/generalUtils";
-import { useAbilities } from "@/services/ability";
+import { translate } from "@/utils/generalUtils.ts";
+import { useAbilities } from "@/services/ability.ts";
 import NavigationSection from "@/components/widgets/navigationWidgets/NavigationSection.vue";
-import { buildSettingsNavigationItems } from "@/components/widgets/navigationWidgets/navigationSections";
+import { buildSettingsNavigationItems } from "@/components/widgets/navigationWidgets/navigationSections.ts";
 
 const ability = useAbilities();
 

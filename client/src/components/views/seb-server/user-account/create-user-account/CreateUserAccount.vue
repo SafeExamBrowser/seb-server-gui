@@ -77,7 +77,7 @@ import { computed, ref } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import UserAccountPreviewCard from "@/components/views/seb-server/settings-navigation/widgets/UserAccountPreviewCard.vue";
+import UserAccountPreviewCard from "@/components/layout/pages/widgets/UserAccountPreviewCard.vue";
 import { useUserAccountFormFields } from "./composable/useUserAccountFormFields.ts";
 import { useMutation } from "@/composables/useMutation.ts";
 import { createUserAccount } from "@/services/seb-server/userAccountService.ts";

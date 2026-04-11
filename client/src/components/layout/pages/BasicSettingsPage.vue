@@ -46,8 +46,8 @@ import { onBeforeUnmount, onBeforeMount } from "vue";
 import { useAppBarStore, useLayoutStore } from "@/stores/store";
 import { translate } from "@/utils/generalUtils.ts";
 import PageTitle from "@/components/views/seb-server/settings-navigation/widgets/PageTitle.vue";
-import HorizontalDividerLine from "@/components/views/seb-server/settings-navigation/widgets/HorizontalDividerLine.vue";
-import SettingsNavigation from "@/components/views/seb-server/settings-navigation/widgets/SettingsNavigation.vue";
+import HorizontalDividerLine from "@/components/layout/pages/widgets/HorizontalDividerLine.vue";
+import SettingsNavigation from "@/components/layout/pages/widgets/SettingsNavigation.vue";
 
 const layoutStore = useLayoutStore();
 const appBarStore = useAppBarStore();

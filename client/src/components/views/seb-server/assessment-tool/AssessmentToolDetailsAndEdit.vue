@@ -8,8 +8,9 @@
 
     <v-row class="mt-10 w-98 h-100">
         <!-- settings navigation -->
-        <SettingsNavigation />
-
+        <v-col cols="3" class="pt-0 h-100">
+            <SettingsNavigation />
+        </v-col>
         <v-col
             class="bg-white rounded-lg"
             cols="9"
@@ -623,7 +624,7 @@ import {
     AssessmentTool,
     UpdateAssessmentToolPar,
 } from "@/models/seb-server/assessmentTool.ts";
-import SettingsNavigation from "@/components/views/seb-server/settings-navigation/widgets/SettingsNavigation.vue";
+import SettingsNavigation from "@/components/layout/pages/widgets/SettingsNavigation.vue";
 
 // Router
 const route = useRoute();

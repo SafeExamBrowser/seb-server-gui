@@ -35,9 +35,9 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { translate } from "@/utils/generalUtils";
+import { translate } from "@/utils/generalUtils.ts";
 import FilterSection from "./FilterSection.vue";
-import type { FilterSectionDef } from "./filterTypes";
+import type { FilterSectionDef } from "./filterTypes.ts";
 
 const props = defineProps<{
     sections: FilterSectionDef[];

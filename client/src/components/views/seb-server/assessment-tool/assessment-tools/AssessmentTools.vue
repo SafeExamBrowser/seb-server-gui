@@ -66,7 +66,7 @@ import { computed, ref, watch } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import { getRouteName } from "@/router/routeNames.ts";
 import SearchSection from "@/components/views/seb-server/settings-navigation/components/SearchSection.vue";
-import FiltersBar from "@/components/views/seb-server/settings-navigation/components/filters/FiltersBar.vue";
+import FiltersBar from "@/components/blocks/filters/FiltersBar.vue";
 import SettingsTable from "@/components/views/seb-server/settings-navigation/components/SettingsTable/SettingsTable.vue";
 import { useUrlSettingsTable } from "@/components/views/seb-server/settings-navigation/components/SettingsTable/composables/useUrlSettingsTable.ts";
 import { useAssessmentToolsTableHeaders } from "@/components/views/seb-server/assessment-tool/assessment-tools/composables/useAssessmentToolsTableHeaders.ts";
@@ -74,8 +74,8 @@ import {
     useAssessmentToolsFilters,
     LMS_TYPE_FILTER_KEY,
 } from "@/components/views/seb-server/assessment-tool/assessment-tools/composables/useAssessmentToolsFilters.ts";
-import { STATUS_FILTER_KEY } from "@/components/views/seb-server/settings-navigation/components/filters/statusFilterSection.ts";
-import { INSTITUTION_FILTER_KEY } from "@/components/views/seb-server/settings-navigation/components/filters/useInstitutionFilterSection.ts";
+import { STATUS_FILTER_KEY } from "@/components/blocks/filters/statusFilterSection.ts";
+import { INSTITUTION_FILTER_KEY } from "@/components/blocks/filters/useInstitutionFilterSection.ts";
 import { useAssessmentTools } from "@/components/views/seb-server/assessment-tool/assessment-tools/api/useAssessmentTools.ts";
 import { useDeleteAssessmentTool } from "@/components/views/seb-server/assessment-tool/assessment-tools/api/useDeleteAssessmentTool.ts";
 import { useToggleAssessmentToolStatus } from "@/components/views/seb-server/assessment-tool/assessment-tools/api/useToggleAssessmentTool.ts";

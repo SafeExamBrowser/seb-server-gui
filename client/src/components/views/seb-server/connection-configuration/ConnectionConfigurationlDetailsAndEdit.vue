@@ -6,8 +6,9 @@
 
     <v-row class="mt-10 w-98 h-100">
         <!-- settings navigation-->
-        <SettingsNavigation />
-
+        <v-col cols="3" class="pt-0 h-100">
+            <SettingsNavigation />
+        </v-col>
         <v-col class="bg-white rounded-lg" cols="9" elevation="4">
             <v-row class="d-flex align-center justify-space-between px-6 pt-6">
                 <div
@@ -786,7 +787,7 @@ import {
 import { getConnectionConfiguration } from "@/services/seb-server/connectionConfigurationService.ts";
 import { getCertificates } from "@/services/seb-server/certificateService.ts";
 import AddCertificateDialog from "@/components/views/seb-server/certificate/certificates/AddCertificateDialog.vue";
-import SettingsNavigation from "@/components/views/seb-server/settings-navigation/widgets/SettingsNavigation.vue";
+import SettingsNavigation from "@/components/layout/pages/widgets/SettingsNavigation.vue";
 
 // Router
 const route = useRoute();

@@ -1,7 +1,7 @@
 import { computed } from "vue";
-import { translate } from "@/utils/generalUtils";
+import { translate } from "@/utils/generalUtils.ts";
 import { useShowInstitutionColumn } from "@/composables/useShowInstitutionColumn.ts";
-import type { FilterSectionDef } from "./filterTypes";
+import type { FilterSectionDef } from "./filterTypes.ts";
 import { useInstitutionNameMap } from "@/composables/useInstitutionNameMap.ts";
 
 export const INSTITUTION_FILTER_KEY = "institutionId";

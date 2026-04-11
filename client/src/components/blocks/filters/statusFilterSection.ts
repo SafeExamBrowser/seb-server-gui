@@ -1,5 +1,5 @@
-import { translate } from "@/utils/generalUtils";
-import type { FilterSectionDef } from "./filterTypes";
+import { translate } from "@/utils/generalUtils.ts";
+import type { FilterSectionDef } from "./filterTypes.ts";
 
 export const STATUS_FILTER_KEY = "status";
 
