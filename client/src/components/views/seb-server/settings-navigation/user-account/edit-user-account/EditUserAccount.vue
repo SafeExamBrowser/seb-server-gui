@@ -8,9 +8,9 @@
 </template>
 
 <script setup lang="ts">
-import UserAccountEditForm from "@/components/views/seb-server/accounts/UserAccountEditForm.vue";
 import { useRoute } from "vue-router";
 import { translate } from "@/utils/generalUtils";
+import UserAccountEditForm from "@/components/views/seb-server/settings-navigation/user-account/edit-user-account/UserAccountEditForm.vue";
 
 const route = useRoute();
 const userId: string = route.params.userUuid as string;

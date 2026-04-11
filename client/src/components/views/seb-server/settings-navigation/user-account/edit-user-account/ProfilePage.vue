@@ -10,8 +10,8 @@
 <!-- pages/Profile.vue -->
 <script setup lang="ts">
 import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/userAccountStore";
-import UserAccountEditForm from "@/components/views/seb-server/accounts/UserAccountEditForm.vue";
 import { translate } from "@/utils/generalUtils";
+import UserAccountEditForm from "@/components/views/seb-server/settings-navigation/user-account/edit-user-account/UserAccountEditForm.vue";
 
 const authStore = useAuthenticatedUserAccountStore();
 const userId: string = authStore.userAccount?.uuid || "";
