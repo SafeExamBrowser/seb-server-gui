@@ -1,57 +1,51 @@
 <template>
     <BasicPage :title="$t('titles.exams')" :bread-crumb="breadCrumb">
         <template #PanelMain>
-            <v-col>
-                <v-row class="mb-4">
-                    <v-col>
-                        <v-card elevation="4" rounded="lg">
-                            <SearchBar
-                                v-model="searchInputValue"
-                                search-text="examList.info.examName"
-                                search-title="examList.info.examNameSearchPlaceholder"
-                                date-title="examList.info.examStartSearchPlaceholder"
-                                :date-value="startDate"
-                                :filter-sections="filterSections"
-                                :filter-values="selectedFilters"
-                                @search="onSearch"
-                                @clear="onClear"
-                                @update:date-value="startDate = $event"
-                                @update:filter-values="setFilters"
-                                @clear-filters="resetFilters"
-                            />
-                        </v-card>
-                    </v-col>
-                </v-row>
+            <div class="d-flex flex-column fill-height ga-4">
+                <v-card elevation="4" rounded="lg" class="flex-shrink-0">
+                    <SearchBar
+                        v-model="searchInputValue"
+                        search-text="examList.info.examName"
+                        search-title="examList.info.examNameSearchPlaceholder"
+                        date-title="examList.info.examStartSearchPlaceholder"
+                        :date-value="dateValue"
+                        :filter-sections="filterSections"
+                        :filter-values="selectedFilters"
+                        @search="onSearch"
+                        @clear="onClear"
+                        @update:date-value="setDate"
+                        @update:filter-values="setFilters"
+                        @clear-filters="resetFilters"
+                    />
+                </v-card>
 
-                <v-row>
-                    <v-col>
-                        <v-card elevation="4" rounded="lg">
-                            <div v-if="error" class="pa-4">{{ error }}</div>
+                <v-card
+                    elevation="4"
+                    rounded="lg"
+                    class="flex-grow-1 overflow-y-auto"
+                    style="min-height: 0"
+                >
+                    <div v-if="error" class="pa-4">{{ error }}</div>
 
-                            <LoadingFallbackComponent
-                                :loading="false"
-                                :errors="[]"
-                            >
-                                <EntityTable
-                                    :headers="examTableHeaders"
-                                    :items="tableData?.content ?? []"
-                                    :total-items="totalItems"
-                                    :page-count="pageCount"
-                                    :items-per-page="options.itemsPerPage"
-                                    :options="options"
-                                    :loading="loading"
-                                    :detail-route="getRouteName('ExamDetail')"
-                                    route-param-key="id"
-                                    item-identifier-key="id"
-                                    translation-key-prefix="examList"
-                                    :cell-formatters="cellFormatters"
-                                    @update:options="loadItems"
-                                />
-                            </LoadingFallbackComponent>
-                        </v-card>
-                    </v-col>
-                </v-row>
-            </v-col>
+                    <LoadingFallbackComponent :loading="false" :errors="[]">
+                        <EntityTable
+                            :headers="examTableHeaders"
+                            :items="tableData?.content ?? []"
+                            :total-items="totalItems"
+                            :page-count="pageCount"
+                            :items-per-page="options.itemsPerPage"
+                            :options="options"
+                            :loading="loading"
+                            :detail-route="getRouteName('ExamDetail')"
+                            route-param-key="id"
+                            item-identifier-key="id"
+                            translation-key-prefix="examList"
+                            :cell-formatters="cellFormatters"
+                            @update:options="loadItems"
+                        />
+                    </LoadingFallbackComponent>
+                </v-card>
+            </div>
         </template>
     </BasicPage>
 </template>
@@ -84,28 +78,32 @@ const examTableHeaders = useExamTableHeaders();
 const filterSections = useExamFilters();
 
 const tableData = ref<Exams>();
-const startDate = ref<Date | null>(null);
-const startTimestamp = computed(() => startDate.value?.getTime() ?? null);
 
 const {
     searchInputValue,
     searchField,
     selectedFilters,
+    dateValue,
+    dateTimestamp,
     options,
     totalItems,
     loadItems,
     onSearch,
-    onClearSearch,
     setFilters,
     resetFilters,
-} = useUrlTableState(tableData, async () => {
-    await fetchExams();
-}, [TYPE_FILTER_KEY, EXAM_STATUS_FILTER_KEY]);
+    clearAll,
+    setDate,
+} = useUrlTableState(
+    tableData,
+    async () => {
+        await fetchExams();
+    },
+    [TYPE_FILTER_KEY, EXAM_STATUS_FILTER_KEY],
+    "startDate",
+);
 
 async function onClear() {
-    startDate.value = null;
-    await onClearSearch();
-    await resetFilters();
+    await clearAll();
 }
 
 const selectedType = computed(() => selectedFilters.value[TYPE_FILTER_KEY]);
@@ -118,13 +116,7 @@ const {
     loading,
     error,
     fetchData: fetchExams,
-} = useExams(
-    options,
-    searchField,
-    startTimestamp,
-    selectedType,
-    selectedStatus,
-);
+} = useExams(options, searchField, dateTimestamp, selectedType, selectedStatus);
 
 watch(
     fetchedData,
