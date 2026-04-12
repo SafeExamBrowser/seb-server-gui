@@ -69,7 +69,7 @@
 import { computed, ref, watch } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import { getRouteName } from "@/router/routeNames.ts";
-import SearchSection from "@/components/layout/pages/widgets/SearchSection.vue";
+import SearchSection from "@/components/blocks/searches/SearchSection.vue";
 import FiltersBar from "@/components/blocks/filters/FiltersBar.vue";
 import EntityTable from "@/components/blocks/entity-table/EntityTable.vue";
 import { useUrlTableState } from "@/components/blocks/entity-table/composables/useUrlTableState.ts";

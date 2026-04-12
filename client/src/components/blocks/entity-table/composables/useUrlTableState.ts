@@ -1,4 +1,4 @@
-import { computed, ref, watch } from "vue";
+import { computed, nextTick, ref, watch } from "vue";
 import type { Ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import type { ServerTablePaging } from "@/models/types.ts";
@@ -12,9 +12,12 @@ export function useUrlTableState<TResponse extends PagedResponse>(
     data: Ref<TResponse | undefined>,
     loadFn: LoadItemsFn,
     filterKeys: string[] = [],
+    dateKey?: string,
 ) {
     const route = useRoute();
     const router = useRouter();
+
+    let isInternalNavigation = false;
 
     const searchInputValue = ref<string | null>(
         (route.query.search as string) || null,
@@ -36,6 +39,18 @@ export function useUrlTableState<TResponse extends PagedResponse>(
         return f;
     });
 
+    const dateValue = computed<Date | null>(() => {
+        if (!dateKey) return null;
+        const raw = route.query[dateKey] as string;
+        if (!raw) return null;
+        const ts = Number(raw);
+        return isNaN(ts) ? null : new Date(ts);
+    });
+
+    const dateTimestamp = computed<number | null>(
+        () => dateValue.value?.getTime() ?? null,
+    );
+
     const totalItems = computed(() => {
         if (!data.value) return 0;
         return (
@@ -50,6 +65,9 @@ export function useUrlTableState<TResponse extends PagedResponse>(
         for (const key of filterKeys) {
             if (route.query[key]) q[key] = route.query[key] as string;
         }
+        if (dateKey && route.query[dateKey]) {
+            q[dateKey] = route.query[dateKey] as string;
+        }
         return q;
     }
 
@@ -61,17 +79,29 @@ export function useUrlTableState<TResponse extends PagedResponse>(
             for (const key of filterKeys) {
                 watched[key] = (route.query[key] as string) || null;
             }
+            if (dateKey) {
+                watched[dateKey] = (route.query[dateKey] as string) || null;
+            }
             return watched;
         },
-        async (newVal, oldVal) => {
-            if (newVal.search !== oldVal?.search) {
-                searchInputValue.value = (newVal.search as string) || null;
-            }
+        async (newVal) => {
+            if (isInternalNavigation) return;
+            searchInputValue.value = newVal.search || null;
             options.value = { ...options.value, page: 1 };
             await loadFn();
         },
         { deep: true },
     );
+
+    async function navigate(query: Record<string, string | undefined>) {
+        isInternalNavigation = true;
+        try {
+            await router.replace({ query });
+            await nextTick();
+        } finally {
+            isInternalNavigation = false;
+        }
+    }
 
     async function loadItems(newOptions?: ServerTablePaging) {
         if (newOptions) {
@@ -83,14 +113,16 @@ export function useUrlTableState<TResponse extends PagedResponse>(
     async function onSearch() {
         const query = buildBaseQuery();
         query.search = searchInputValue.value || undefined;
-        await router.replace({ query });
+        await navigate(query);
+        options.value = { ...options.value, page: 1 };
+        await loadFn();
     }
 
     async function onClearSearch() {
         searchInputValue.value = null;
         const query = buildBaseQuery();
         query.search = undefined;
-        await router.replace({ query });
+        await navigate(query);
     }
 
     async function setFilters(newFilters: TableFilters) {
@@ -98,7 +130,9 @@ export function useUrlTableState<TResponse extends PagedResponse>(
         for (const key of filterKeys) {
             query[key] = newFilters[key] || undefined;
         }
-        await router.replace({ query });
+        await navigate(query);
+        options.value = { ...options.value, page: 1 };
+        await loadFn();
     }
 
     async function resetFilters() {
@@ -106,13 +140,36 @@ export function useUrlTableState<TResponse extends PagedResponse>(
         for (const key of filterKeys) {
             query[key] = undefined;
         }
-        await router.replace({ query });
+        if (dateKey) {
+            query[dateKey] = undefined;
+        }
+        await navigate(query);
+        options.value = { ...options.value, page: 1 };
+        await loadFn();
+    }
+
+    async function clearAll() {
+        searchInputValue.value = null;
+        await navigate({});
+        options.value = { ...options.value, page: 1 };
+        await loadFn();
+    }
+
+    async function setDate(date: Date | null) {
+        if (!dateKey) return;
+        const query = buildBaseQuery();
+        query[dateKey] = date ? String(date.getTime()) : undefined;
+        await navigate(query);
+        options.value = { ...options.value, page: 1 };
+        await loadFn();
     }
 
     return {
         searchInputValue,
         searchField,
         selectedFilters,
+        dateValue,
+        dateTimestamp,
         options,
         totalItems,
         loadItems,
@@ -120,5 +177,7 @@ export function useUrlTableState<TResponse extends PagedResponse>(
         onClearSearch,
         setFilters,
         resetFilters,
+        clearAll,
+        setDate,
     };
 }

@@ -4,7 +4,9 @@ export type HeaderTranslateType =
     | "institutionName"
     | "dateTime"
     | "assessmentToolType"
-    | "certificateTypes";
+    | "certificateTypes"
+    | "examType"
+    | "examStatus";
 
 export type SettingsTableHeader = {
     title: string;

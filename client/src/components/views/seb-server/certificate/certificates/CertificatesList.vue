@@ -58,7 +58,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
-import SearchSection from "@/components/layout/pages/widgets/SearchSection.vue";
+import SearchSection from "@/components/blocks/searches/SearchSection.vue";
 import EntityTable from "@/components/blocks/entity-table/EntityTable.vue";
 import { useCertificatesTableHeaders } from "@/components/views/seb-server/certificate/certificates/composables/useCertificateTableHeaders.ts";
 import { useCertificates } from "@/components/views/seb-server/certificate/certificates/api/useCertificates.ts";

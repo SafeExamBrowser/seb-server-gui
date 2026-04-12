@@ -787,7 +787,7 @@ import {
 import { getConnectionConfiguration } from "@/services/seb-server/connectionConfigurationService.ts";
 import { getCertificates } from "@/services/seb-server/certificateService.ts";
 import AddCertificateDialog from "@/components/views/seb-server/certificate/certificates/AddCertificateDialog.vue";
-import SettingsNavigation from "@/components/layout/pages/blocks/SettingsNavigation.vue";
+import SettingsNavigation from "@/components/blocks/navigation/SettingsNavigation.vue";
 
 // Router
 const route = useRoute();

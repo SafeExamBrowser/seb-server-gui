@@ -1,4 +1,5 @@
 export type RouteName =
+    | "ExamDetail"
     | "ExamTemplateList"
     | "CreateExamTemplateWizard"
     | "ExamTemplateDetail"
@@ -21,6 +22,13 @@ export type RouteName =
 
     //Certificates
     | "CreateCertificate"
-    | "CertificatesList";
+    | "CertificatesList"
+
+    //Exams
+    | "ExamList"
+
+    //Monitoring
+    | "MonitoringList"
+    | "MonitoringOverview";
 
 export const getRouteName = (name: RouteName): RouteName => name;

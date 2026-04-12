@@ -57,11 +57,11 @@ const routes: Array<RouteRecordRaw> = [
 
             // ---------- exam routes ----------
             {
-                path: constants.EXAM_ROUTE,
-                name: "Exams",
+                path: "/exam",
+                name: getRouteName("ExamList"),
                 component: () =>
                     import(
-                        "@/components/views/seb-server/exam/list/ExamListContainer.vue"
+                        "@/components/views/seb-server/exam/exams/ExamList.vue"
                     ),
                 meta: { titleKey: "titles.exams" },
             },
@@ -88,11 +88,11 @@ const routes: Array<RouteRecordRaw> = [
 
             // ---------- monitoring routes ----------
             {
-                path: constants.MONITORING_ROUTE,
-                name: "Monitoring",
+                path: "/monitoring",
+                name: getRouteName("MonitoringList"),
                 component: () =>
                     import(
-                        "@/components/views/seb-server/monitoring/exams/MonitoringExamsContainer.vue"
+                        "@/components/views/seb-server/monitoring/exams/MonitoringExamList.vue"
                     ),
                 meta: { titleKey: "titles.monitoring" },
             },
