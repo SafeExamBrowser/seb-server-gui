@@ -28,6 +28,7 @@ export type RouteName =
     | "ExamList"
 
     //Monitoring
-    | "MonitoringList";
+    | "MonitoringList"
+    | "MonitoringOverview";
 
 export const getRouteName = (name: RouteName): RouteName => name;
