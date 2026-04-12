@@ -88,11 +88,11 @@ const routes: Array<RouteRecordRaw> = [
 
             // ---------- monitoring routes ----------
             {
-                path: constants.MONITORING_ROUTE,
-                name: "Monitoring",
+                path: "/monitoring",
+                name: getRouteName("MonitoringList"),
                 component: () =>
                     import(
-                        "@/components/views/seb-server/monitoring/exams/MonitoringExamsContainer.vue"
+                        "@/components/views/seb-server/monitoring/exams/MonitoringExamList.vue"
                     ),
                 meta: { titleKey: "titles.monitoring" },
             },
