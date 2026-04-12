@@ -61,7 +61,7 @@ const routes: Array<RouteRecordRaw> = [
                 name: getRouteName("ExamList"),
                 component: () =>
                     import(
-                        "@/components/views/seb-server/exam/exams/ExamsPage.vue"
+                        "@/components/views/seb-server/exam/exams/ExamList.vue"
                     ),
                 meta: { titleKey: "titles.exams" },
             },

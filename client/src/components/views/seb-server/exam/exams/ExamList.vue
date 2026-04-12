@@ -8,10 +8,14 @@
                             <SearchBar
                                 v-model="searchInputValue"
                                 search-text="examList.info.examName"
+                                search-title="examList.info.examNameSearchPlaceholder"
+                                date-title="examList.info.examStartSearchPlaceholder"
+                                :date-value="startDate"
                                 :filter-sections="filterSections"
                                 :filter-values="selectedFilters"
                                 @search="onSearch"
-                                @clear="onClearSearch"
+                                @clear="onClear"
+                                @update:date-value="startDate = $event"
                                 @update:filter-values="setFilters"
                                 @clear-filters="resetFilters"
                             />
@@ -55,7 +59,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
-import SearchBar from "@/components/blocks/search-bar/SearchBar.vue";
+import SearchBar from "@/components/blocks/searches/SearchBar.vue";
 import EntityTable from "@/components/blocks/entity-table/EntityTable.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useUrlTableState } from "@/components/blocks/entity-table/composables/useUrlTableState.ts";
@@ -80,6 +84,8 @@ const examTableHeaders = useExamTableHeaders();
 const filterSections = useExamFilters();
 
 const tableData = ref<Exams>();
+const startDate = ref<Date | null>(null);
+const startTimestamp = computed(() => startDate.value?.getTime() ?? null);
 
 const {
     searchInputValue,
@@ -96,6 +102,12 @@ const {
     await fetchExams();
 }, [TYPE_FILTER_KEY, EXAM_STATUS_FILTER_KEY]);
 
+async function onClear() {
+    startDate.value = null;
+    await onClearSearch();
+    await resetFilters();
+}
+
 const selectedType = computed(() => selectedFilters.value[TYPE_FILTER_KEY]);
 const selectedStatus = computed(
     () => selectedFilters.value[EXAM_STATUS_FILTER_KEY],
@@ -106,7 +118,13 @@ const {
     loading,
     error,
     fetchData: fetchExams,
-} = useExams(options, searchField, selectedType, selectedStatus);
+} = useExams(
+    options,
+    searchField,
+    startTimestamp,
+    selectedType,
+    selectedStatus,
+);
 
 watch(
     fetchedData,

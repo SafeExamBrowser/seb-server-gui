@@ -1,7 +1,9 @@
 <template>
     <div>
         <v-row class="pl-6">
-            <SearchSectionTitle />
+            <SearchSectionTitle
+                text="userAccount.userAccountPage.filters.searchTitle"
+            />
         </v-row>
 
         <v-row class="px-6">

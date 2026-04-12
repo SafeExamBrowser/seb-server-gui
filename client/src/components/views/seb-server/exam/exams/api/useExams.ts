@@ -8,6 +8,7 @@ import type { ServerTablePaging } from "@/models/types.ts";
 export const useExams = (
     paging: Readonly<Ref<ServerTablePaging>>,
     searchField: Readonly<Ref<string | null>>,
+    startTimestamp: Readonly<Ref<number | null>>,
     selectedType: Readonly<Ref<string | null>>,
     selectedStatus: Readonly<Ref<string | null>>,
 ) => {
@@ -15,7 +16,7 @@ export const useExams = (
         const params = tableUtils.assignExamSelectPagingOptions(
             paging.value,
             searchField.value,
-            null,
+            startTimestamp.value,
             selectedType.value,
             selectedStatus.value,
         );

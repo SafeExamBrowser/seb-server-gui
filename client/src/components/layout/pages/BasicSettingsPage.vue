@@ -46,7 +46,7 @@ import { onBeforeUnmount, onBeforeMount } from "vue";
 import { useAppBarStore, useLayoutStore } from "@/stores/store";
 import { translate } from "@/utils/generalUtils.ts";
 import HorizontalDividerLine from "@/components/layout/pages/widgets/HorizontalDividerLine.vue";
-import SettingsNavigation from "@/components/layout/pages/blocks/SettingsNavigation.vue";
+import SettingsNavigation from "@/components/blocks/navigation/SettingsNavigation.vue";
 import PageTitle from "@/components/blocks/entity-table/widgets/PageTitle.vue";
 
 const layoutStore = useLayoutStore();
