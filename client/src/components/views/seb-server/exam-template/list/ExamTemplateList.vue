@@ -9,7 +9,7 @@
     >
         <template #PanelTop>
             <SearchBar
-                v-model="searchInputValue"
+                v-model="searchInput"
                 search-text="examTemplateList.info.nameSearchPlaceholder"
                 search-title="examTemplateList.info.name"
                 :filter-sections="filterSections"
@@ -44,15 +44,8 @@ import LoadingFallbackComponent from "@/components/widgets/loadingFallbackCompon
 import { useExamTemplateList } from "./composables/useExamTemplateList";
 
 const {
-    examTemplates,
-    headers,
-    errors,
-    totalItems,
-    isLoading,
-    sortBy,
-    filterSections,
-    searchInputValue,
-    selectedFilters,
+    search: { filterSections, searchInput, selectedFilters },
+    table: { headers, examTemplates, totalItems, isLoading, errors, sortBy },
     handleSearch,
     handleClear,
     handleFiltersUpdate,

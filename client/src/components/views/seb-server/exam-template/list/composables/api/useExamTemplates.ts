@@ -5,16 +5,16 @@ import { getExamTemplates } from "@/services/seb-server/examTemplateService";
 
 export const useExamTemplates = (
     paging: Readonly<Ref<TableOptions>>,
-    searchQuery: Readonly<Ref<string | null>>,
-    examType: Readonly<Ref<string | null>>,
+    searchQuery: Readonly<Ref<string | undefined>>,
+    examType: Readonly<Ref<string | undefined>>,
 ) => {
     return useFetch(() =>
         getExamTemplates({
             pageNumber: paging.value.page,
             pageSize: paging.value.itemsPerPage,
             sort: paging.value.sortBy[0],
-            name: searchQuery.value ?? undefined,
-            examType: examType.value ?? undefined,
+            name: searchQuery.value,
+            examType: examType.value,
         }),
     );
 };
