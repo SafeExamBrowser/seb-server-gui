@@ -1,9 +1,5 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import {
-    ExamStatusEnum,
-    ExamTypeEnum,
-} from "@/models/seb-server/examFiltersEnum";
 import { MonitoringRow } from "@/models/seb-server/monitoringClients";
 import { ServerTablePaging } from "@/models/types";
 import {
@@ -21,13 +17,6 @@ import { AppSignatureKeysWithGrantValues } from "@/models/seb-server/appSignatur
 import { LocationQueryRaw } from "vue-router";
 
 export const useMonitoringStore = defineStore("monitoring", () => {
-    // exam table
-    const searchField = ref<string | null>(null);
-    const startDate = ref<number | null>(null);
-    const currentPagingOptions = ref<ServerTablePaging>();
-    const activeTypeFilter = ref<ExamTypeEnum | null>(null);
-    const activeStatusFilter = ref<ExamStatusEnum | null>(null);
-
     // monitoring overview
     const selectedExam = ref<Exam | null>(null);
     const monitoringOverviewData = ref<MonitoringOverview | null>(null);
@@ -35,6 +24,7 @@ export const useMonitoringStore = defineStore("monitoring", () => {
     const wlanStatusDefaultColor = ref<string>("#f0f0f0");
 
     // monitoring clients
+    const currentPagingOptions = ref<ServerTablePaging>();
     const searchName = ref<string | null>(null);
     const isNoFilterSelected = ref<boolean>(false);
     const selectedMonitoringIds = ref<number[]>([]);
@@ -81,11 +71,7 @@ export const useMonitoringStore = defineStore("monitoring", () => {
     }
 
     return {
-        searchField,
-        startDate,
         currentPagingOptions,
-        activeTypeFilter,
-        activeStatusFilter,
         selectedExam,
         monitoringOverviewData,
         batteryStatusDefaultColor,

@@ -13,7 +13,7 @@
         <v-row>
             <!--- Left Settings -->
             <v-col cols="3">
-                <SettingsNavigation> </SettingsNavigation>
+                <SettingsNavigation />
             </v-col>
 
             <!--- Right side white panel -->
@@ -44,10 +44,10 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onBeforeMount } from "vue";
 import { useAppBarStore, useLayoutStore } from "@/stores/store";
-import SettingsNavigation from "@/components/views/seb-server/settings-navigation/SettingsNavigation.vue";
 import { translate } from "@/utils/generalUtils.ts";
-import PageTitle from "@/components/views/seb-server/settings-navigation/widgets/PageTitle.vue";
-import HorizontalDividerLine from "@/components/views/seb-server/settings-navigation/widgets/HorizontalDividerLine.vue";
+import HorizontalDividerLine from "@/components/layout/pages/widgets/HorizontalDividerLine.vue";
+import SettingsNavigation from "@/components/blocks/navigation/SettingsNavigation.vue";
+import PageTitle from "@/components/blocks/entity-table/widgets/PageTitle.vue";
 
 const layoutStore = useLayoutStore();
 const appBarStore = useAppBarStore();

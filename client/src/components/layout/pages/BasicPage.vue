@@ -7,7 +7,7 @@
         </v-row>
         <v-row class="flex-grow-0 flex-shrink-0">
             <v-col>
-                <PageTitle :name="title" />
+                <PageTitle class="pl-9" :name="title" />
             </v-col>
         </v-row>
         <v-row v-if="hasTop" class="flex-grow-0 flex-shrink-0">
@@ -22,22 +22,10 @@
                 :cols="hasAside ? 9 : 12"
                 class="fill-height overflow-y-auto"
             >
-                <v-card
-                    elevation="4"
-                    rounded="lg"
-                    class="fill-height overflow-y-auto"
-                >
-                    <slot name="PanelMain"></slot>
-                </v-card>
+                <slot name="PanelMain"></slot>
             </v-col>
             <v-col v-if="hasAside" cols="3" class="fill-height overflow-y-auto">
-                <v-card
-                    elevation="4"
-                    rounded="lg"
-                    class="fill-height overflow-y-auto"
-                >
-                    <slot name="PanelAside"></slot>
-                </v-card>
+                <slot name="PanelAside"></slot>
             </v-col>
         </v-row>
     </div>

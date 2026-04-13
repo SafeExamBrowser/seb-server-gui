@@ -447,7 +447,7 @@
             ]"
             :data-testid="`${(useRoute().name || 'unknown').toString().toLowerCase()}-page-container`"
         >
-            <router-view />
+            <router-view v-if="isReady" />
         </div>
 
         <!-- Toasts / Alerts -->
@@ -471,15 +471,14 @@ import { useI18n } from "vue-i18n";
 import * as constants from "@/utils/constants";
 import router from "@/router/router";
 import { translate } from "@/utils/generalUtils";
-import { getInstitutions } from "@/services/seb-server/institutionService";
 import { getInstitutionLogo } from "@/services/seb-server/institutionService";
 import { GUIComponent, useAbilities } from "@/services/ability";
 import { useRoute } from "vue-router";
 import { computed } from "vue";
 import { GridSize, NavigationItem } from "@/models/types";
-import { Institution } from "@/models/seb-server/institution";
 import ToastContainer from "@/components/views/seb-server/toast/ToastContainer.vue";
 import { useLogout } from "@/composables/useLogout";
+import { useInstitutionNameMap } from "@/composables/useInstitutionNameMap.ts";
 
 // i18n
 const { locale } = useI18n();
@@ -515,8 +514,9 @@ const mainNavigationLinks: NavigationItem[] = [
     },
     // {title: "Screen Proctoring", route: spConstants.RUNNING_EXAMS_ROUTE, icon: "mdi-video"},
 ];
-const institutions = ref<Institution[]>([]);
+const { institutions, fetchInstitutions } = useInstitutionNameMap();
 const institutionName = ref<string>();
+const isReady = ref(false);
 const ability = useAbilities();
 
 // gallery view
@@ -555,18 +555,16 @@ const themeToggle = ref<number>(initialTheme === "dark" ? 1 : 0);
 const institutionLogo = ref<string | null>(null);
 
 onMounted(async () => {
+    await fetchInstitutions();
+    isReady.value = true;
+
     const user = authenticatedUserAccountStore.userAccount;
     const userInstitutionId = String(user?.institutionId);
-
-    const result: Institution[] | null = await getInstitutions();
-    institutions.value = result ?? [];
-
     const matchedInstitution = institutions.value.find(
         (inst) => inst.modelId === userInstitutionId,
     );
     if (matchedInstitution) {
         institutionName.value = matchedInstitution.name;
-
         const logoBase64: string = await getInstitutionLogo(
             matchedInstitution.name,
         );

@@ -14,32 +14,22 @@
             :field="field"
         >
             <v-text-field
-                v-if="field.type === 'text' || field.type === 'password'"
+                v-if="field.type === 'text'"
                 v-model="field.model.value"
                 v-bind="{
                     ...getBaseProperties(field),
                     ...getTextualProperties(field),
                 }"
-                :type="
-                    field.type === 'password'
-                        ? passwordVisibility[field.name]
-                            ? 'text'
-                            : 'password'
-                        : 'text'
-                "
-                :append-inner-icon="
-                    field.type === 'password'
-                        ? passwordVisibility[field.name]
-                            ? 'mdi-eye-off'
-                            : 'mdi-eye'
-                        : undefined
-                "
-                @click:append-inner="
-                    field.type === 'password' &&
-                    togglePasswordVisibility(field.name)
-                "
             >
             </v-text-field>
+            <FormFieldPassword
+                v-else-if="field.type === 'password'"
+                v-model="field.model.value"
+                :standard-properties="{
+                    ...getBaseProperties(field),
+                    ...getTextualProperties(field),
+                }"
+            />
             <v-textarea
                 v-else-if="field.type === 'textarea'"
                 v-model="field.model.value"
@@ -117,9 +107,10 @@ import {
     FormFieldsComponentProps,
 } from "../types";
 import { VInput } from "vuetify/components";
-import { ref, nextTick, watch, reactive } from "vue";
+import { ref, nextTick, watch } from "vue";
 import FormFieldCollection from "./FormFieldCollection.vue";
 import FormFieldColor from "./FormFieldColor.vue";
+import FormFieldPassword from "./FormFieldPassword.vue";
 
 const props = withDefaults(defineProps<FormFieldsComponentProps>(), {
     layout: "vertical" as const,
@@ -130,8 +121,6 @@ const fieldsRefs = new Map<
     ReturnType<typeof ref<VInput | undefined>>
 >();
 
-const passwordVisibility = reactive<Record<string, boolean>>({});
-
 // keep fieldsRefs up to date when fields change
 watch(
     () => props.fields.map((f) => f.name),
@@ -139,13 +128,6 @@ watch(
         props.fields.forEach((field) => {
             if (!fieldsRefs.has(field.name)) {
                 fieldsRefs.set(field.name, ref<VInput | undefined>());
-            }
-
-            if (
-                field.type === "password" &&
-                passwordVisibility[field.name] === undefined
-            ) {
-                passwordVisibility[field.name] = false;
             }
         });
     },
@@ -174,10 +156,6 @@ const getBaseProperties = (field: FormField): FormFieldBaseProperties => {
         disabled: field.disabled,
         "onUpdate:modelValue": () => handleFieldValueUpdated(field.name),
     };
-};
-
-const togglePasswordVisibility = (fieldName: string) => {
-    passwordVisibility[fieldName] = !passwordVisibility[fieldName];
 };
 
 const getTextualProperties = (
