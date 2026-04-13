@@ -9,6 +9,8 @@ export const getExamTemplates = async ({
     pageNumber,
     pageSize,
     sort,
+    name,
+    examType,
 }: {
     pageNumber?: number;
     pageSize?: number;
@@ -16,6 +18,8 @@ export const getExamTemplates = async ({
         key: string;
         order: "asc" | "desc";
     };
+    name?: string;
+    examType?: string;
 }): Promise<ExamTemplates> =>
     (
         await apiService.getRequest({
@@ -28,6 +32,8 @@ export const getExamTemplates = async ({
                     sort: sort
                         ? `${sort.order === "desc" ? "" : "-"}${sort.key}`
                         : undefined,
+                    name,
+                    examType,
                 },
             },
         })

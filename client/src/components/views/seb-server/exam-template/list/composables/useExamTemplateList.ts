@@ -1,101 +1,125 @@
+import { computed, ref } from "vue";
 import i18n from "@/i18n";
 import { useExamTemplates } from "./api/useExamTemplates";
-import { computed, ref, watch } from "vue";
-import { TableOptions } from "@/components/views/seb-server/exam-template/list/types";
-import { getExamTemplates } from "@/services/seb-server/examTemplateService";
+import {
+    useExamTemplateFilters,
+    EXAM_TYPE_FILTER_KEY,
+} from "./useExamTemplateFilters";
+import type { TableFilters } from "@/components/blocks/entity-table/types";
+import type { TableOptions } from "../types";
+
+const headers = [
+    {
+        title: i18n.global.t("examTemplateList.headers.name"),
+        value: "name",
+        width: "30%",
+        sortable: true,
+    },
+    {
+        title: i18n.global.t("examTemplateList.headers.description"),
+        value: "description",
+        width: "30%",
+        sortable: true,
+    },
+    {
+        title: i18n.global.t("examTemplateList.headers.examType"),
+        value: "examType",
+        width: "30%",
+        sortable: true,
+    },
+    {
+        title: i18n.global.t("examTemplateList.headers.actions"),
+        value: "actions",
+        width: "10%",
+        sortable: false,
+    },
+];
 
 export const useExamTemplateList = () => {
-    const queryParams = ref<Parameters<typeof getExamTemplates>[0]>({
-        pageNumber: 1,
-        pageSize: 10,
-        sort: { key: "name", order: "desc" },
+    const filterSections = useExamTemplateFilters();
+
+    const searchInputValue = ref<string | null>(null);
+    const searchQuery = ref<string | null>(null);
+    const selectedFilters = ref<TableFilters>({ [EXAM_TYPE_FILTER_KEY]: null });
+
+    const examType = computed(
+        () => selectedFilters.value[EXAM_TYPE_FILTER_KEY] ?? null,
+    );
+
+    const options = ref<TableOptions>({
+        page: 1,
+        itemsPerPage: 10,
+        sortBy: [{ key: "name", order: "asc" }],
     });
 
     const {
-        data: examTemplatesData,
+        data,
         loading: isLoading,
         error,
-        fetchData,
-    } = useExamTemplates(queryParams);
+        fetchData: fetchExamTemplates,
+    } = useExamTemplates(options, searchQuery, examType);
 
-    watch(
-        queryParams,
-        () => {
-            fetchData();
-        },
-        { deep: true },
-    );
-
-    const errors = computed(() => {
-        return [error.value].filter((error) => error !== undefined);
-    });
-
-    const examTemplates = computed(
-        () => examTemplatesData.value?.content ?? [],
-    );
+    const examTemplates = computed(() => data.value?.content ?? []);
 
     const totalItems = computed(() => {
-        if (!examTemplatesData.value) {
+        if (!data.value) {
             return 0;
         }
 
-        return (
-            examTemplatesData.value.number_of_pages *
-            examTemplatesData.value.page_size
-        );
+        return data.value.number_of_pages * data.value.page_size;
     });
 
-    const headers = [
-        {
-            title: i18n.global.t("examTemplateList.headers.name"),
-            value: "name",
-            width: "30%",
-            sortable: true,
-        },
-        {
-            title: i18n.global.t("examTemplateList.headers.description"),
-            value: "description",
-            width: "30%",
-            sortable: true,
-        },
-        {
-            title: i18n.global.t("examTemplateList.headers.examType"),
-            value: "examType",
-            width: "30%",
-            sortable: true,
-        },
-        {
-            title: i18n.global.t("examTemplateList.headers.actions"),
-            value: "actions",
-            width: "10%",
-            sortable: false,
-        },
-    ];
+    const sortBy = computed(() => options.value.sortBy);
 
-    const handleOptionsUpdate = (options: TableOptions) => {
-        queryParams.value = {
-            pageNumber: options.page,
-            pageSize: options.itemsPerPage,
-            sort: options.sortBy[0]
-                ? {
-                      key: options.sortBy[0].key,
-                      order: options.sortBy[0].order,
-                  }
-                : undefined,
-        };
+    const handleSearch = () => {
+        searchQuery.value = searchInputValue.value;
+        options.value = { ...options.value, page: 1 };
+        fetchExamTemplates();
+    };
+
+    const handleClear = () => {
+        searchInputValue.value = null;
+        searchQuery.value = null;
+        selectedFilters.value = { [EXAM_TYPE_FILTER_KEY]: null };
+        options.value = { ...options.value, page: 1 };
+        fetchExamTemplates();
+    };
+
+    const handleFiltersUpdate = (newFilters: TableFilters) => {
+        selectedFilters.value = newFilters;
+        options.value = { ...options.value, page: 1 };
+        fetchExamTemplates();
+    };
+
+    const handleFiltersReset = () => {
+        selectedFilters.value = { [EXAM_TYPE_FILTER_KEY]: null };
+        options.value = { ...options.value, page: 1 };
+        fetchExamTemplates();
+    };
+
+    const handleOptionsUpdate = (newOptions: TableOptions) => {
+        options.value = newOptions;
+        fetchExamTemplates();
     };
 
     const handleItemsUpdate = () => {
-        fetchData();
+        fetchExamTemplates();
     };
 
     return {
-        isLoading,
-        errors,
         examTemplates,
         totalItems,
+        isLoading,
+        errors: computed(() => [error.value].filter((e) => e !== undefined)),
         headers,
-        queryParams,
+        filterSections,
+        searchInputValue,
+        selectedFilters,
+        sortBy,
+        handleSearch,
+        handleClear,
+        handleFiltersUpdate,
+        handleFiltersReset,
         handleOptionsUpdate,
         handleItemsUpdate,
     };

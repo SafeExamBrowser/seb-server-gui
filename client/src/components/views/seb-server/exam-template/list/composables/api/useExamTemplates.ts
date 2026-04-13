@@ -1,7 +1,20 @@
+import type { Ref } from "vue";
 import { useFetch } from "@/composables/useFetch";
+import type { TableOptions } from "@/components/views/seb-server/exam-template/list/types";
 import { getExamTemplates } from "@/services/seb-server/examTemplateService";
-import { type Ref } from "vue";
 
 export const useExamTemplates = (
-    params: Ref<Parameters<typeof getExamTemplates>[0]>,
-) => useFetch(() => getExamTemplates(params.value));
+    paging: Readonly<Ref<TableOptions>>,
+    searchQuery: Readonly<Ref<string | null>>,
+    examType: Readonly<Ref<string | null>>,
+) => {
+    return useFetch(() =>
+        getExamTemplates({
+            pageNumber: paging.value.page,
+            pageSize: paging.value.itemsPerPage,
+            sort: paging.value.sortBy[0],
+            name: searchQuery.value ?? undefined,
+            examType: examType.value ?? undefined,
+        }),
+    );
+};
