@@ -40,7 +40,20 @@
                             item-identifier-key="id"
                             :cell-formatters="cellFormatters"
                             @update:options="loadItems"
-                        />
+                        >
+                            <template #cell-type="{ formattedValue }">
+                                <EnumChip :label="formattedValue" />
+                            </template>
+
+                            <template #cell-status="{ value, formattedValue }">
+                                <EnumChip
+                                    :label="formattedValue"
+                                    :color="
+                                        examStatusColor[value as ExamStatusEnum]
+                                    "
+                                />
+                            </template>
+                        </EntityTable>
                     </LoadingFallbackComponent>
                 </v-card>
             </div>
@@ -53,6 +66,7 @@ import { computed, ref, watch } from "vue";
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import SearchBar from "@/components/blocks/searches/SearchBar.vue";
 import EntityTable from "@/components/blocks/entity-table/EntityTable.vue";
+import EnumChip from "@/components/blocks/entity-table/widgets/EnumChip.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useUrlTableState } from "@/components/blocks/entity-table/composables/useUrlTableState.ts";
 import { useExamTableHeaders } from "@/components/views/seb-server/exam/exams/composables/useExamTableHeaders.ts";
@@ -67,6 +81,10 @@ import { getRouteName } from "@/router/routeNames.ts";
 import { translate } from "@/utils/generalUtils.ts";
 import type { Exams } from "@/models/seb-server/exam.ts";
 import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
+import {
+    ExamStatusEnum,
+    examStatusColor,
+} from "@/models/seb-server/examFiltersEnum.ts";
 
 const breadCrumb: BreadCrumbItem[] = [
     { label: translate("titles.home"), link: "/" },
