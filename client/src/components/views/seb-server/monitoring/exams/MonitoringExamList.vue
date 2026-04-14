@@ -29,6 +29,7 @@
 
                     <LoadingFallbackComponent :loading="false" :errors="[]">
                         <EntityTable
+                            class="pl-6 pr-6 pt-3"
                             :headers="tableHeaders"
                             :items="tableData?.content ?? []"
                             :page-count="pageCount"
