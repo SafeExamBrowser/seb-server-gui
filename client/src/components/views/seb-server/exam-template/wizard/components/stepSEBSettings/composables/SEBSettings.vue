@@ -16,7 +16,7 @@
         </v-row>
     </v-container>
 
-    <v-card class="pa-5" variant="text">
+    <v-card :key="reloadSettings" class="pa-5" variant="text">
         <v-row>
             <v-col>
                 <v-row :params="init_store">
@@ -84,7 +84,7 @@ import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 import { useStepNamingStore } from "@/components/views/seb-server/exam-template/wizard/components/stepNaming/composables/store/useStepNamingStore";
 import SectionSubtitle from "@/components/widgets/SectionSubtitle.vue";
 import SEBSettingsImportDialog from "@/components/views/seb-server/exam-template/wizard/components/stepSEBSettings/composables/SEBSettingsImportDialog.vue";
-import AddButton from "@/components/views/seb-server/settings-navigation/widgets/AddButton.vue";
+import AddButton from "@/components/widgets/AddButton.vue";
 
 const configKey = defineModel<ConfigurationTemplateKey | undefined>({
     required: true,
@@ -92,13 +92,13 @@ const configKey = defineModel<ConfigurationTemplateKey | undefined>({
 
 const ability = useAbilities();
 const currentTab = ref<number>(1);
+const reloadSettings = ref<number>(0);
 
 const importDialog = ref<boolean>(false);
 async function onConfigImported() {
     importDialog.value = false;
-    // TODO reload the settings
-    console.info("*********** TODO reload settings");
-    //await loadItems();
+    // reload seb settings
+    reloadSettings.value += 1;
 }
 
 const init_store = computed(() => {
@@ -116,10 +116,7 @@ const init_store = computed(() => {
                 stepNamingStore.configurationTemplate = configKey.value.id;
             }
         }
-        console.info(
-            "*********** sebSettingsStore.selectedContainerId: " +
-                sebSettingsStore.selectedContainerId,
-        );
+
         return true;
     }
     return false;

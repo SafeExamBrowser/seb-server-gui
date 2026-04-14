@@ -152,7 +152,7 @@
     <v-row>
         <v-col>
             <v-row>
-                <v-col :class="sebSettingsStore.cp">
+                <v-col class="pt-1 pb-1 pl-0">
                     <v-radio-group
                         v-model="proxySettingsPolicyVal"
                         :disabled="sebSettingsStore.readonly"
@@ -184,7 +184,7 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col :class="sebSettingsStore.cp">
+                <v-col class="pt-1 pb-1 pl-0">
                     <v-checkbox-btn
                         v-model="ExcludeSimpleHostnamesVal"
                         :disabled="sebSettingsStore.readonly"
@@ -204,7 +204,7 @@
             </v-row>
 
             <v-row>
-                <v-col :class="sebSettingsStore.fp">
+                <v-col class="pt-1 pb-1">
                     <v-text-field
                         v-model="ExceptionsListVal"
                         density="compact"
@@ -226,7 +226,7 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col :class="sebSettingsStore.cp">
+                <v-col class="pt-1 pb-1 pl-0">
                     <v-checkbox-btn
                         v-model="FTPPassiveVal"
                         :disabled="sebSettingsStore.readonly"
@@ -245,7 +245,7 @@
             <v-expansion-panels variant="accordion">
                 <v-expansion-panel title="Auto Proxy Discovers">
                     <v-expansion-panel-text>
-                        <v-col :class="sebSettingsStore.cp">
+                        <v-col class="pt-1 pb-1 pl-0">
                             <v-checkbox-btn
                                 v-model="AutoDiscoveryEnabledVal"
                                 :disabled="sebSettingsStore.readonly"
@@ -269,7 +269,7 @@
                 <v-expansion-panel title="Automatic Proxy Configuration">
                     <v-expansion-panel-text>
                         <v-row>
-                            <v-col :class="sebSettingsStore.cp">
+                            <v-col class="pt-1 pb-1 pl-0">
                                 <v-checkbox-btn
                                     v-model="AutoConfigurationEnabledVal"
                                     :disabled="sebSettingsStore.readonly"
@@ -290,7 +290,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col :class="sebSettingsStore.fp">
+                            <v-col class="pt-1 pb-1">
                                 <v-text-field
                                     v-model="AutoConfigurationURLVal"
                                     density="compact"
@@ -314,7 +314,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col :class="sebSettingsStore.fp">
+                            <v-col class="pt-1 pb-1">
                                 <v-text-field
                                     v-model="AutoConfigurationJavaScriptVal"
                                     density="compact"
@@ -343,7 +343,7 @@
                 <v-expansion-panel title="Web Proxy (HTTP)">
                     <v-expansion-panel-text>
                         <v-row>
-                            <v-col :class="sebSettingsStore.cp">
+                            <v-col class="pt-1 pb-1 pl-0">
                                 <v-checkbox-btn
                                     v-model="HTTPEnableVal"
                                     :disabled="sebSettingsStore.readonly"
@@ -362,7 +362,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col :class="sebSettingsStore.fp">
+                            <v-col class="pt-1 pb-1">
                                 <v-text-field
                                     v-model="HTTPProxyVal"
                                     density="compact"
@@ -386,7 +386,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col :class="sebSettingsStore.fp">
+                            <v-col class="pt-1 pb-1">
                                 <v-number-input
                                     v-model="HTTPPortVal"
                                     density="compact"
@@ -409,7 +409,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col :class="sebSettingsStore.cp">
+                            <v-col class="pt-1 pb-1 pl-0">
                                 <v-checkbox-btn
                                     v-model="HTTPRequiresPasswordVal"
                                     :disabled="sebSettingsStore.readonly"
@@ -430,7 +430,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col :class="sebSettingsStore.fp">
+                            <v-col class="pt-1 pb-1">
                                 <v-text-field
                                     v-model="HTTPUsernameVal"
                                     density="compact"
@@ -454,7 +454,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col :class="sebSettingsStore.fp">
+                            <v-col class="pt-1 pb-1">
                                 <v-text-field
                                     v-model="HTTPPasswordVal"
                                     density="compact"
@@ -482,7 +482,7 @@
                 <v-expansion-panel title="Secure Web Proxy (HTTPS)">
                     <v-expansion-panel-text>
                         <v-row>
-                            <v-col :class="sebSettingsStore.cp">
+                            <v-col class="pt-1 pb-1 pl-0">
                                 <v-checkbox-btn
                                     v-model="HTTPSEnableVal"
                                     :disabled="sebSettingsStore.readonly"
@@ -501,7 +501,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col :class="sebSettingsStore.fp">
+                            <v-col class="pt-1 pb-1">
                                 <v-text-field
                                     v-model="HTTPSProxyVal"
                                     density="compact"
@@ -525,7 +525,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col :class="sebSettingsStore.fp">
+                            <v-col class="pt-1 pb-1">
                                 <v-number-input
                                     v-model="HTTPSPortVal"
                                     density="compact"
@@ -548,7 +548,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col :class="sebSettingsStore.cp">
+                            <v-col class="pt-1 pb-1 pl-0">
                                 <v-checkbox-btn
                                     v-model="HTTPSRequiresPasswordVal"
                                     :disabled="sebSettingsStore.readonly"
@@ -569,7 +569,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col :class="sebSettingsStore.fp">
+                            <v-col class="pt-1 pb-1">
                                 <v-text-field
                                     v-model="HTTPSUsernameVal"
                                     density="compact"
@@ -594,7 +594,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col :class="sebSettingsStore.fp">
+                            <v-col class="pt-1 pb-1">
                                 <v-text-field
                                     v-model="HTTPSPasswordVal"
                                     density="compact"
@@ -622,7 +622,7 @@
                 <v-expansion-panel title="FTP Proxy">
                     <v-expansion-panel-text>
                         <v-row>
-                            <v-col :class="sebSettingsStore.cp">
+                            <v-col class="pt-1 pb-1 pl-0">
                                 <v-checkbox-btn
                                     v-model="FTPEnableVal"
                                     :disabled="sebSettingsStore.readonly"
@@ -641,7 +641,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col :class="sebSettingsStore.fp">
+                            <v-col class="pt-1 pb-1">
                                 <v-text-field
                                     v-model="FTPProxyVal"
                                     density="compact"
@@ -665,7 +665,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col :class="sebSettingsStore.fp">
+                            <v-col class="pt-1 pb-1">
                                 <v-number-input
                                     v-model="FTPPortVal"
                                     density="compact"
@@ -688,7 +688,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col :class="sebSettingsStore.cp">
+                            <v-col class="pt-1 pb-1 pl-0">
                                 <v-checkbox-btn
                                     v-model="FTPRequiresPasswordVal"
                                     :disabled="sebSettingsStore.readonly"
@@ -709,7 +709,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col :class="sebSettingsStore.fp">
+                            <v-col class="pt-1 pb-1">
                                 <v-text-field
                                     v-model="FTPUsernameVal"
                                     density="compact"
@@ -733,7 +733,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col :class="sebSettingsStore.fp">
+                            <v-col class="pt-1 pb-1">
                                 <v-text-field
                                     v-model="FTPPasswordVal"
                                     density="compact"
@@ -761,7 +761,7 @@
                 <v-expansion-panel title="SOCKS Proxy">
                     <v-expansion-panel-text>
                         <v-row>
-                            <v-col :class="sebSettingsStore.cp">
+                            <v-col class="pt-1 pb-1 pl-0">
                                 <v-checkbox-btn
                                     v-model="SOCKSEnableVal"
                                     :disabled="sebSettingsStore.readonly"
@@ -780,7 +780,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col :class="sebSettingsStore.fp">
+                            <v-col class="pt-1 pb-1">
                                 <v-text-field
                                     v-model="SOCKSProxyVal"
                                     density="compact"
@@ -804,7 +804,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col :class="sebSettingsStore.fp">
+                            <v-col class="pt-1 pb-1">
                                 <v-number-input
                                     v-model="SOCKSPortVal"
                                     density="compact"
@@ -827,7 +827,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col :class="sebSettingsStore.cp">
+                            <v-col class="pt-1 pb-1 pl-0">
                                 <v-checkbox-btn
                                     v-model="SOCKSRequiresPasswordVal"
                                     :disabled="sebSettingsStore.readonly"
@@ -848,7 +848,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col :class="sebSettingsStore.fp">
+                            <v-col class="pt-1 pb-1">
                                 <v-text-field
                                     v-model="SOCKSUsernameVal"
                                     density="compact"
@@ -872,7 +872,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col :class="sebSettingsStore.fp">
+                            <v-col class="pt-1 pb-1">
                                 <v-text-field
                                     v-model="SOCKSPasswordVal"
                                     density="compact"
@@ -900,7 +900,7 @@
                 <v-expansion-panel title="Streaming Proxy (RTSP)">
                     <v-expansion-panel-text>
                         <v-row>
-                            <v-col :class="sebSettingsStore.cp">
+                            <v-col class="pt-1 pb-1 pl-0">
                                 <v-checkbox-btn
                                     v-model="RTSPEnableVal"
                                     :disabled="sebSettingsStore.readonly"
@@ -919,7 +919,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col :class="sebSettingsStore.fp">
+                            <v-col class="pt-1 pb-1">
                                 <v-text-field
                                     v-model="RTSPProxyVal"
                                     density="compact"
@@ -943,7 +943,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col :class="sebSettingsStore.fp">
+                            <v-col class="pt-1 pb-1">
                                 <v-number-input
                                     v-model="RTSPPortVal"
                                     density="compact"
@@ -966,7 +966,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col :class="sebSettingsStore.cp">
+                            <v-col class="pt-1 pb-1 pl-0">
                                 <v-checkbox-btn
                                     v-model="RTSPRequiresPasswordVal"
                                     :disabled="sebSettingsStore.readonly"
@@ -987,7 +987,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col :class="sebSettingsStore.fp">
+                            <v-col class="pt-1 pb-1">
                                 <v-text-field
                                     v-model="RTSPUsernameVal"
                                     density="compact"
@@ -1011,7 +1011,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col :class="sebSettingsStore.fp">
+                            <v-col class="pt-1 pb-1">
                                 <v-text-field
                                     v-model="RTSPPasswordVal"
                                     density="compact"

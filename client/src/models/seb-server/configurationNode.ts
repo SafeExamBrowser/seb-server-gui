@@ -13,6 +13,7 @@ export type SEBSettingsImport = {
     fileName: string;
     configurationTemplateId: string;
     password?: string;
+    quitPassword?: string;
 };
 
 export type ConfigurationKey = {

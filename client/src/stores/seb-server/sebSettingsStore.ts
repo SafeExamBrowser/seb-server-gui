@@ -1,5 +1,12 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
+import {
+    SEBSettingsValue,
+    SEBSettingsView,
+} from "@/models/seb-server/sebSettings";
+import { ViewType } from "@/models/seb-server/sebSettingsEnums";
+import * as sebSettingsService from "@/services/seb-server/sebSettingsService";
+import { stringToBoolean } from "@/utils/generalUtils";
 
 const getInitialState = () => ({
     isReady: false,
@@ -31,11 +38,69 @@ export const useSEBSettingsStore = defineStore("sebSettings", () => {
     );
 
     const dialogTitle = ref<string | null>(getInitialState().dialogTitle);
-
     const ignoreSEBService = ref<boolean>(getInitialState().ignoreSEBService);
 
-    const fp = "pt-1 pb-1";
-    const cp = "pt-1 pb-1 pl-0";
+    const singleValues: Map<string, SEBSettingsValue> = new Map<
+        string,
+        SEBSettingsValue
+    >();
+
+    // Single Value Settings
+    async function fetchSingleValues(view: ViewType) {
+        if (selectedContainerId.value == null) return;
+
+        const fetchedValues: SEBSettingsView | null =
+            await sebSettingsService.getView(
+                view,
+                selectedContainerId.value.toString(),
+                isExam.value,
+            );
+        if (fetchedValues == null) {
+            return;
+        }
+
+        const newMap = new Map<string, SEBSettingsValue>(
+            Object.entries(fetchedValues.singleValues),
+        );
+
+        newMap.forEach((v, k) => {
+            singleValues.set(k, v);
+        });
+    }
+
+    function getSingleValue(name: string): SEBSettingsValue {
+        const value = singleValues.get(name);
+        if (!value) {
+            throw new Error("No Single Value" + name + " found");
+        }
+
+        return value;
+    }
+
+    function getStringValue(name: string): string {
+        return getSingleValue(name).value;
+    }
+
+    function getBooleanValue(name: string): boolean {
+        return stringToBoolean(getStringValue(name));
+    }
+
+    async function saveSingleValue(name: string, value: string) {
+        if (selectedContainerId.value == null) return;
+
+        const setting: SEBSettingsValue = getSingleValue(name);
+        try {
+            await sebSettingsService.updateSEBSettingValue(
+                selectedContainerId.value.toString(),
+                setting.id.toString(),
+                value,
+                isExam.value,
+            );
+        } catch (err) {
+            // @anhefti TODO propagate error message
+            console.error(err);
+        }
+    }
 
     const $reset = () => {
         isExam.value = getInitialState().isExam;
@@ -55,8 +120,12 @@ export const useSEBSettingsStore = defineStore("sebSettings", () => {
         ignoreSEBService,
         activeSEBClientConnection,
         dialogTitle,
-        fp,
-        cp,
+        singleValues,
+        fetchSingleValues,
+        getSingleValue,
+        getStringValue,
+        getBooleanValue,
+        saveSingleValue,
         $reset,
     };
 });

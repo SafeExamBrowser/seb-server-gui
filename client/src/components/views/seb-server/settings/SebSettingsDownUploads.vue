@@ -58,7 +58,7 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col :class="sebSettingsStore.fp">
+                <v-col class="pt-1 pb-1">
                     <v-text-field
                         v-model="downloadDirectoryWinVal"
                         density="compact"
@@ -78,7 +78,7 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col :class="sebSettingsStore.fp">
+                <v-col class="pt-1 pb-1">
                     <v-text-field
                         v-model="downloadDirectoryOSXVal"
                         density="compact"

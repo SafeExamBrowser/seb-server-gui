@@ -438,7 +438,7 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col :class="sebSettingsStore.fp">
+                <v-col class="pt-1 pb-1">
                     <v-text-field
                         v-model="logDirectoryWin"
                         density="compact"
@@ -462,7 +462,7 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col :class="sebSettingsStore.fp">
+                <v-col class="pt-1 pb-1">
                     <v-text-field
                         v-model="logDirectoryOSX"
                         density="compact"
@@ -1146,7 +1146,7 @@
             </v-row>
 
             <v-row>
-                <v-col :class="sebSettingsStore.fp">
+                <v-col class="pt-1 pb-1">
                     <v-textarea
                         v-model="sebAllowedVersions"
                         density="compact"

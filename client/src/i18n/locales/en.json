@@ -913,15 +913,17 @@
         "pwdSpaces": "The value must not start or end with a space.",
         "noNegNumber": "Cant be a negative number",
         "upload": {
-            "upload": "Upload SEB Settings",
+            "upload": "Import SEB Settings",
             "selectFromFolder": "Select From File Explorer",
             "uploadHelp": "Drag and Drop or Search through File Explorer",
             "allowed": "Allowed File Types",
             "dropHere": "Drop a SEB Settings file here",
             "password": "Password",
+            "quitPassword": "Quit Password",
             "onlyAllowed": "File Type not allowed",
             "uploadFailed": "Failed to upload SEB Settings, please contact a system administrator",
-            "passwordIncorrect": "The password was incorrect. Please try again or contact a system administrator"
+            "passwordIncorrect": "The password was incorrect. Please try again or contact a system administrator",
+            "importButton": "Import"
         },
         "views": {
             "general": "General",

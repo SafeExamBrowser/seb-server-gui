@@ -109,6 +109,42 @@
                     </v-col>
                 </v-row>
 
+                <!-- Quit Password -->
+                <v-row
+                    class="mt-5"
+                    data-testid="config-importDialog-quitPassword-row"
+                >
+                    <v-col class="pt-0" cols="12" md="12">
+                        <v-text-field
+                            v-model="quitPassword"
+                            data-testid="config-importDialog-quitPassword-input"
+                            density="comfortable"
+                            hide-details
+                            :label="t('sebSettings.upload.quitPassword')"
+                            prepend-inner-icon="mdi-lock-outline"
+                            :type="quitPasswordVisible ? 'text' : 'password'"
+                            variant="outlined"
+                        >
+                            <template #append-inner>
+                                <v-btn
+                                    data-testid="config-importDialog-quitPassword-toggle"
+                                    density="compact"
+                                    :icon="
+                                        quitPasswordVisible
+                                            ? 'mdi-eye-off'
+                                            : 'mdi-eye'
+                                    "
+                                    variant="text"
+                                    @click="
+                                        quitPasswordVisible =
+                                            !quitPasswordVisible
+                                    "
+                                />
+                            </template>
+                        </v-text-field>
+                    </v-col>
+                </v-row>
+
                 <v-alert
                     v-if="uploadError"
                     class="mb-2"
@@ -149,7 +185,7 @@
                     variant="text"
                     @click="doUpload"
                 >
-                    {{ t("general.saveButton") }}
+                    {{ t("sebSettings.upload.importButton") }}
                 </v-btn>
             </v-card-actions>
         </v-card>
@@ -168,6 +204,9 @@ const { t } = useI18n();
 
 const password = ref<string>("");
 const passwordVisible = ref<boolean>(false);
+
+const quitPassword = ref<string>("");
+const quitPasswordVisible = ref<boolean>(false);
 
 type SettingsImport = { id: string };
 
@@ -262,19 +301,25 @@ function close() {
 }
 
 async function doUpload() {
-    if (!selectedFile.value || sebSettingsStore.selectedContainerId) return;
+    if (!selectedFile.value || !sebSettingsStore.selectedContainerId) return;
 
     try {
         uploadError.value = "";
         uploading.value = true;
         uploadProgress.value = 30;
+        let intervalId = setInterval(() => {
+            uploadProgress.value += 10;
+            if (uploadProgress.value === 90) clearInterval(intervalId);
+        }, 1000);
         const res = await importSEBSettings({
             file: selectedFile.value,
             fileName: selectedFile.value.name,
             configurationTemplateId:
                 sebSettingsStore.selectedContainerId?.toString(),
             password: password.value || undefined,
+            quitPassword: quitPassword.value || undefined,
         } as SEBSettingsImport);
+        clearInterval(intervalId);
         uploadProgress.value = 90;
         if (!res) {
             throw new Error(t("sebSettings.upload.uploadFailed"));

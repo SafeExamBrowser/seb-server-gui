@@ -30,7 +30,7 @@
     </v-row>
     <v-row>
         <!-- Confirm Administrator Password -->
-        <v-col :class="sebSettingsStore.fp">
+        <v-col class="pt-1 pb-1">
             <v-text-field
                 ref="confirmAdminPasswordFieldRef"
                 v-model="confirmAdminPassword"
@@ -68,14 +68,14 @@
         </v-col>
     </v-row>
     <v-row>
-        <v-col :class="sebSettingsStore.cp">
+        <v-col class="pt-1 pb-1 pl-0">
             <v-checkbox-btn
                 v-model="allowQuitVal"
                 max-width="600"
                 :disabled="sebSettingsStore.readonly"
                 :label="translate('sebSettings.generalView.allowQuit')"
                 @update:model-value="
-                    saveSingleValue(
+                    sebSettingsStore.saveSingleValue(
                         'allowQuit',
                         allowQuitVal ? 'true' : 'false',
                     )
@@ -157,19 +157,14 @@
 </template>
 
 <script setup lang="ts">
-import * as sebSettingsService from "@/services/seb-server/sebSettingsService";
+import { ref, onBeforeMount } from "vue";
 import { useI18n } from "vue-i18n";
-import { stringToBoolean, translate } from "@/utils/generalUtils";
+import { translate } from "@/utils/generalUtils";
 import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums";
-import { ref, onBeforeMount } from "vue";
-import {
-    SEBSettingsValue,
-    SEBSettingsView,
-} from "@/models/seb-server/sebSettings";
 
-const i18n = useI18n();
 const sebSettingsStore = useSEBSettingsStore();
+const i18n = useI18n();
 
 const allowQuitVal = ref<boolean>(false);
 
@@ -236,13 +231,8 @@ const confirmQuitPasswordRule = () => {
     }
     return translate("sebSettings.pwdMismatch", i18n);
 };
-
 const quitPasswordFieldRef = ref();
 const confirmQuitPasswordFieldRef = ref();
-
-// the parent component identifier
-let componentId: string;
-let singleValues: Map<string, SEBSettingsValue>;
 
 let clearValidations = false;
 
@@ -250,45 +240,24 @@ onBeforeMount(async () => {
     initSettings();
 });
 
-// @anhefti TODO: move functions to ts files when possible
 async function initSettings() {
     if (sebSettingsStore.selectedContainerId == null) {
         return;
     }
 
-    console.info("********* load general settings...");
+    await sebSettingsStore.fetchSingleValues(ViewType.GENERAL);
 
-    componentId = sebSettingsStore.selectedContainerId.toString();
-
-    const generalSettings: SEBSettingsView | null =
-        await sebSettingsService.getView(
-            ViewType.GENERAL,
-            componentId,
-            sebSettingsStore.isExam,
-        );
-    if (generalSettings == null) {
-        return;
-    }
-
-    singleValues = new Map<string, SEBSettingsValue>(
-        Object.entries(generalSettings.singleValues),
+    allowQuitVal.value = sebSettingsStore.getBooleanValue("allowQuit");
+    hashedAdminPasswordVal.value = sebSettingsStore.getStringValue(
+        "hashedAdminPassword",
     );
-
-    allowQuitVal.value = stringToBoolean(getSingleValue("allowQuit").value);
-    hashedAdminPasswordVal.value = getSingleValue("hashedAdminPassword").value;
-    confirmAdminPassword.value = getSingleValue("hashedAdminPassword").value;
-    hashedQuitPasswordVal.value = getSingleValue("hashedQuitPassword").value;
-    confirmQuitPassword.value = getSingleValue("hashedQuitPassword").value;
-}
-
-async function saveSingleValue(name: string, value: string) {
-    const setting: SEBSettingsValue = getSingleValue(name);
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        setting.id.toString(),
-        value,
-        sebSettingsStore.isExam,
+    confirmAdminPassword.value = sebSettingsStore.getStringValue(
+        "hashedAdminPassword",
     );
+    hashedQuitPasswordVal.value =
+        sebSettingsStore.getStringValue("hashedQuitPassword");
+    confirmQuitPassword.value =
+        sebSettingsStore.getStringValue("hashedQuitPassword");
 }
 
 async function saveAdminPassword(focusIn: boolean, value: string) {
@@ -297,7 +266,7 @@ async function saveAdminPassword(focusIn: boolean, value: string) {
         hashedAdminPasswordVal.value.trim() === hashedAdminPasswordVal.value &&
         hashedAdminPasswordVal.value === confirmAdminPassword.value
     ) {
-        saveSingleValue("hashedAdminPassword", value);
+        sebSettingsStore.saveSingleValue("hashedAdminPassword", value);
     }
 }
 
@@ -307,16 +276,7 @@ async function saveQuitPassword(focusIn: boolean, value: string) {
         hashedQuitPasswordVal.value.trim() === hashedQuitPasswordVal.value &&
         hashedQuitPasswordVal.value === confirmQuitPassword.value
     ) {
-        saveSingleValue("hashedQuitPassword", value);
+        sebSettingsStore.saveSingleValue("hashedQuitPassword", value);
     }
-}
-
-function getSingleValue(name: string): SEBSettingsValue {
-    const value = singleValues.get(name);
-    if (!value) {
-        throw new Error("No Single Value" + name + " found");
-    }
-
-    return value;
 }
 </script>

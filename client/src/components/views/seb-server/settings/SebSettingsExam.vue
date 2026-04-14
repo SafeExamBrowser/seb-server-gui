@@ -86,7 +86,7 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col :class="sebSettingsStore.fp">
+                <v-col class="pt-1 pb-1">
                     <v-text-field
                         v-model="quitURL"
                         density="compact"
@@ -238,7 +238,7 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col :class="sebSettingsStore.fp">
+                <v-col class="pt-1 pb-1">
                     <v-text-field
                         v-model="restartExamURL"
                         density="compact"
@@ -271,7 +271,7 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col :class="sebSettingsStore.fp">
+                <v-col class="pt-1 pb-1">
                     <v-text-field
                         v-model="restartExamText"
                         density="compact"
@@ -367,7 +367,7 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col :class="sebSettingsStore.fp">
+                <v-col class="pt-1 pb-1">
                     <v-text-field
                         v-model="examSessionReconfigureConfigURL"
                         density="compact"

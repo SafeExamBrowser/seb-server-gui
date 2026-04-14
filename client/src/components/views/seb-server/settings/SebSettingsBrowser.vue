@@ -727,7 +727,7 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col :class="sebSettingsStore.fp">
+                <v-col class="pt-1 pb-1">
                     <v-text-field
                         v-model="browserUserAgentVal"
                         density="compact"
@@ -760,7 +760,7 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col :class="sebSettingsStore.fp">
+                <v-col class="pt-1 pb-1">
                     <v-text-field
                         v-model="browserWindowTitleSuffixVal"
                         density="compact"
@@ -856,7 +856,7 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col :class="sebSettingsStore.fp">
+                <v-col class="pt-1 pb-1">
                     <v-text-field
                         v-model="browserUserAgentWinDesktopModeCustomVal"
                         density="compact"
@@ -945,7 +945,7 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col :class="sebSettingsStore.fp">
+                <v-col class="pt-1 pb-1">
                     <v-text-field
                         v-model="browserUserAgentMacCustomVal"
                         density="compact"
@@ -1019,7 +1019,7 @@
                             value="1"
                         >
                         </v-radio>
-                        <v-col :class="sebSettingsStore.fp">
+                        <v-col class="pt-1 pb-1">
                             <v-text-field
                                 v-model="browserUserAgentWinTouchModeIPadVal"
                                 density="compact"
@@ -1056,7 +1056,7 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col :class="sebSettingsStore.fp">
+                <v-col class="pt-1 pb-1">
                     <v-text-field
                         v-model="browserUserAgentWinTouchModeCustomVal"
                         density="compact"

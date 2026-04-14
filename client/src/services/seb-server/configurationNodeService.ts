@@ -49,6 +49,9 @@ export const importSEBSettings = async (
                     ...(settingsImport.password
                         ? { importFilePassword: settingsImport.password }
                         : {}),
+                    ...(settingsImport.quitPassword
+                        ? { quitPassword: settingsImport.quitPassword }
+                        : {}),
                 },
             },
         })
