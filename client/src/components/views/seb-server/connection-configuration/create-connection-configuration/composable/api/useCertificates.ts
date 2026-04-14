@@ -1,4 +1,4 @@
-import { computed, onMounted } from "vue";
+import { computed } from "vue";
 import { useFetch } from "@/composables/useFetch.ts";
 import { getCertificates } from "@/services/seb-server/certificateService.ts";
 import i18n from "@/i18n";
@@ -12,11 +12,10 @@ export const useCertificates = () => {
         value: "__UPLOAD__",
     };
 
-    const { data, loading, error, fetchData } = useFetch(() =>
-        getCertificates({ page_number: 1, page_size: 500 }),
+    const { data, loading, error, fetchData } = useFetch(
+        () => getCertificates({ page_number: 1, page_size: 500 }),
+        { immediate: true },
     );
-
-    onMounted(fetchData);
 
     const certificateItems = computed(() => {
         const certs = (data.value?.content ?? []).map((c: Certificate) => ({

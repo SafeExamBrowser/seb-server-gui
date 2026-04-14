@@ -1,7 +1,10 @@
 import { ref } from "vue";
 
 // TODO @alain: consider using https://tanstack.com/query/latest/docs/framework/vue/overview for this
-export const useFetch = <T>(fetchFunction: () => Promise<T | null>) => {
+export const useFetch = <T>(
+    fetchFunction: () => Promise<T | null>,
+    options?: { immediate?: boolean },
+) => {
     const data = ref<T>();
     const loading = ref(false);
     const error = ref<string>();
@@ -23,6 +26,10 @@ export const useFetch = <T>(fetchFunction: () => Promise<T | null>) => {
             loading.value = false;
         }
     };
+
+    if (options?.immediate) {
+        fetchData();
+    }
 
     return {
         data,
