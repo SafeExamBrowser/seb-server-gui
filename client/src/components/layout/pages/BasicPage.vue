@@ -55,6 +55,6 @@ defineProps<{
 }>();
 
 const slots = useSlots();
-const hasAside = computed(() => Boolean(slots.PanelAside));
 const hasTop = computed(() => Boolean(slots.PanelTop));
+const hasAside = computed(() => Boolean(slots.PanelAside));
 </script>

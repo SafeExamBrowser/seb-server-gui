@@ -442,6 +442,11 @@
     },
 
     "examTemplateList": {
+        "info": {
+            "name": "Name",
+            "nameSearchPlaceholder": "Search",
+            "examType": "Exam Type"
+        },
         "headers": {
             "name": "Name",
             "description": "Description",

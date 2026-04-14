@@ -1,63 +1,54 @@
-import i18n from "@/i18n";
-import { useExamTemplates } from "./api/useExamTemplates";
-import { computed } from "vue";
+import { useExamTemplateSearch } from "./useExamTemplateSearch";
+import { useExamTemplateTable } from "./useExamTemplateTable";
+import type { TableFilters } from "@/components/blocks/entity-table/types";
+import type { TableOptions } from "../types";
 
 export const useExamTemplateList = () => {
-    const {
-        data: examTemplatesData,
-        loading: isLoading,
-        error,
-        fetchData,
-    } = useExamTemplates();
+    const search = useExamTemplateSearch();
+    const table = useExamTemplateTable(search.searchQuery, search.examType);
 
-    const errors = computed(() => {
-        return [error.value].filter((error) => error !== undefined);
-    });
+    const handleSearch = () => {
+        search.commitSearch();
+        table.fetchFromFirstPage();
+    };
 
-    const examTemplates = computed(
-        () => examTemplatesData.value?.content ?? [],
-    );
+    const handleResetAndFetch = () => {
+        search.resetFilters();
+        table.fetchFromFirstPage();
+    };
 
-    const totalItems = computed(() => {
-        if (!examTemplatesData.value) {
-            return 0;
-        }
+    const handleFiltersUpdate = (newFilters: TableFilters) => {
+        search.updateFilters(newFilters);
+        table.fetchFromFirstPage();
+    };
 
-        return (
-            examTemplatesData.value.number_of_pages *
-            examTemplatesData.value.page_size
-        );
-    });
+    const handleOptionsUpdate = (newOptions: TableOptions) => {
+        table.updateOptions(newOptions);
+    };
 
-    const headers = [
-        {
-            title: i18n.global.t("examTemplateList.headers.name"),
-            value: "name",
-            width: "30%",
-        },
-        {
-            title: i18n.global.t("examTemplateList.headers.description"),
-            value: "description",
-            width: "30%",
-        },
-        {
-            title: i18n.global.t("examTemplateList.headers.examType"),
-            value: "examType",
-            width: "30%",
-        },
-        {
-            title: i18n.global.t("examTemplateList.headers.actions"),
-            value: "actions",
-            width: "10%",
-        },
-    ];
+    const handleItemsUpdate = () => {
+        table.fetchExamTemplates();
+    };
 
     return {
-        isLoading,
-        errors,
-        examTemplates,
-        totalItems,
-        headers,
-        fetchData,
+        search: {
+            filterSections: search.filterSections,
+            searchInput: search.searchInput,
+            selectedFilters: search.selectedFilters,
+        },
+        table: {
+            headers: table.headers,
+            examTemplates: table.examTemplates,
+            totalItems: table.totalItems,
+            isLoading: table.isLoading,
+            errors: table.errors,
+            sortBy: table.sortBy,
+        },
+        handleSearch,
+        handleClear: handleResetAndFetch,
+        handleFiltersUpdate,
+        handleFiltersReset: handleResetAndFetch,
+        handleOptionsUpdate,
+        handleItemsUpdate,
     };
 };
