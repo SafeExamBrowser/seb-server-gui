@@ -1,4 +1,4 @@
-import { computed, onMounted } from "vue";
+import { computed } from "vue";
 import { FormField } from "@/components/widgets/formBuilder/types";
 import { ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
 import { useExamTemplateNames } from "./api/useExamTemplateNames";
@@ -29,28 +29,19 @@ export const useFormFields = () => {
         data: examTemplateNames,
         loading: loadingExamTemplateNames,
         error: errorExamTemplateNames,
-        fetchData: fetchExamTemplateNames,
     } = useExamTemplateNames();
 
     const {
         data: configurationTemplateNames,
         loading: loadingConfigurationTemplateNames,
         error: errorConfigurationTemplateNames,
-        fetchData: fetchConfigTemplateNames,
     } = useConfigurationTemplateNames();
 
     const {
         data: clientConfigurationNames,
         loading: loadingClientConfigurationNames,
         error: errorClientConfigurationNames,
-        fetchData: fetchClientConfigNames,
     } = useClientConfigurationNames();
-
-    onMounted(() => {
-        fetchExamTemplateNames();
-        fetchConfigTemplateNames();
-        fetchClientConfigNames();
-    });
 
     const loading = computed(
         () =>

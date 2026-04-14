@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from "vue";
+import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useStepSupervisorsStore } from "./composables/store/useStepSupervisorsStore";
 import SupervisorPicker from "@/components/widgets/supervisorPicker/SupervisorPicker.vue";
@@ -25,13 +25,7 @@ import LoadingFallbackComponent from "@/components/widgets/loadingFallbackCompon
 
 const { t } = useI18n();
 const stepSupervisorsStore = useStepSupervisorsStore();
-const {
-    data: supervisors,
-    loading,
-    error: errorLoading,
-    fetchData,
-} = useSupervisors();
-onMounted(fetchData);
+const { data: supervisors, loading, error: errorLoading } = useSupervisors();
 
 const errors = computed(() => {
     if (loading.value) {

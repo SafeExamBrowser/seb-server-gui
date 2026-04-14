@@ -2,4 +2,6 @@ import { getConfigurationTemplateNamesActive } from "@/services/seb-server/confi
 import { useFetch } from "@/composables/useFetch";
 
 export const useConfigurationTemplateNames = () =>
-    useFetch(() => getConfigurationTemplateNamesActive());
+    useFetch(() => getConfigurationTemplateNamesActive(), {
+        immediate: true,
+    });
