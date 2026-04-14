@@ -14,39 +14,27 @@
         ]"
     >
         <template #PanelMain>
-            <v-card
-                elevation="4"
-                rounded="lg"
-                class="fill-height overflow-y-auto"
+            <LoadingFallbackComponent
+                :loading="createExamTemplateLoading"
+                :errors="
+                    createExamTemplateError
+                        ? [createExamTemplateError]
+                        : undefined
+                "
             >
-                <LoadingFallbackComponent
-                    :loading="createExamTemplateLoading"
-                    :errors="
-                        createExamTemplateError
-                            ? [createExamTemplateError]
-                            : undefined
-                    "
-                >
-                    <component
-                        :is="stepComponents[store.currentStep.componentName]"
-                    />
-                </LoadingFallbackComponent>
-            </v-card>
+                <component
+                    :is="stepComponents[store.currentStep.componentName]"
+                />
+            </LoadingFallbackComponent>
         </template>
         <template #PanelAside>
-            <v-card
-                elevation="4"
-                rounded="lg"
-                class="fill-height overflow-y-auto"
-            >
-                <StepperVertical
-                    :steps="store.stepperModel"
-                    :current-step="store.currentStepIndex"
-                    @next="handleStepperNext"
-                    @prev="handleStepperPrev"
-                    @finish="handleStepperFinish"
-                />
-            </v-card>
+            <StepperVertical
+                :steps="store.stepperModel"
+                :current-step="store.currentStepIndex"
+                @next="handleStepperNext"
+                @prev="handleStepperPrev"
+                @finish="handleStepperFinish"
+            />
         </template>
     </BasicPage>
 </template>
