@@ -28,7 +28,6 @@
                                     )"
                                     :key="action.key"
                                     :icon="action.icon"
-                                    :color="action.color"
                                     :disabled="
                                         action.disabled?.(getRawItem(item)) ??
                                         false
@@ -41,6 +40,8 @@
                                     variant="text"
                                     density="comfortable"
                                     size="small"
+                                    class="action-btn"
+                                    :style="actionHoverStyle(action)"
                                     @click.stop="
                                         action.onClick(getRawItem(item))
                                     "
@@ -189,6 +190,11 @@ function formatCell(key: string, item: TableItem): string {
     return String(value);
 }
 
+function actionHoverStyle(action: TableAction): Record<string, string> {
+    const color = action.color ?? "primary";
+    return { "--action-hover-color": `var(--v-theme-${color})` };
+}
+
 function visibleActions(item: TableItem): TableAction[] {
     if (!props.actions) return [];
     return props.actions.filter((a) => a.visible?.(item) ?? true);
@@ -259,6 +265,21 @@ const internalItemsLength = computed(() => {
 :deep(.v-data-table-rows-no-data td) {
     color: rgba(var(--v-theme-on-surface), 0.6);
     text-align: center;
+}
+
+.action-btn {
+    color: rgba(var(--v-theme-on-surface), 0.6);
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.action-btn:hover {
+    color: rgb(var(--action-hover-color, var(--v-theme-primary)));
+    background-color: rgba(
+        var(--action-hover-color, var(--v-theme-primary)),
+        0.1
+    );
 }
 
 .table-footer {

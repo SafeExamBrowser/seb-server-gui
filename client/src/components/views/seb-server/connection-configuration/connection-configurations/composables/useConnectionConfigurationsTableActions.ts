@@ -19,6 +19,7 @@ export function useConnectionConfigurationsTableActions(deps: {
             key: "delete",
             icon: "mdi-delete",
             labelKey: "general.delete",
+            color: "error",
             onClick: deps.onDelete,
         },
     ]);

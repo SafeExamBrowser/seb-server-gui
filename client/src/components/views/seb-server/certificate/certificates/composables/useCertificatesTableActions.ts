@@ -12,6 +12,7 @@ export function useCertificatesTableActions(deps: {
             key: "delete",
             icon: "mdi-delete",
             labelKey: "general.delete",
+            color: "error",
             onClick: deps.onDelete,
         },
     ]);
