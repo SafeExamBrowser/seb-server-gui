@@ -4,7 +4,7 @@
         :color="active ? 'success' : 'error'"
         size="small"
         style="min-width: 4.7rem; justify-content: center"
-        @click="emit('click')"
+        @click.stop="emit('click')"
     >
         {{ active ? activeLabel : inactiveLabel }}
     </v-chip>
