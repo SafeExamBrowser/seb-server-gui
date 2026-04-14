@@ -10,9 +10,11 @@ export const useExamTemplates = (
 ) => {
     return useFetch(() =>
         getExamTemplates({
-            pageNumber: paging.value.page,
-            pageSize: paging.value.itemsPerPage,
-            sort: paging.value.sortBy[0],
+            basicListParams: {
+                pageNumber: paging.value.page,
+                pageSize: paging.value.itemsPerPage,
+                sortOrder: paging.value.sortBy[0],
+            },
             name: searchQuery.value,
             examType: examType.value,
         }),

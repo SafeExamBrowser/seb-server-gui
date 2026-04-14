@@ -1,23 +1,17 @@
 import * as apiService from "@/services/apiService";
 import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring";
 import { ExamTemplate, ExamTemplates } from "@/models/seb-server/examTemplate";
+import { BasicListParams } from "@/services/types";
+import { normaliseBasicListParams } from "@/utils/table/tableUtils";
 
 const baseUrl = "/exam-template" as const;
 
-// TODO @alain: share type and make reusable helper in tableUtils.ts
 export const getExamTemplates = async ({
-    pageNumber,
-    pageSize,
-    sort,
+    basicListParams,
     name,
     examType,
 }: {
-    pageNumber?: number;
-    pageSize?: number;
-    sort?: {
-        key: string;
-        order: "asc" | "desc";
-    };
+    basicListParams?: BasicListParams;
     name?: string;
     examType?: string;
 }): Promise<ExamTemplates> =>
@@ -27,11 +21,7 @@ export const getExamTemplates = async ({
             options: {
                 _authType: "seb",
                 params: {
-                    page_number: pageNumber,
-                    page_size: pageSize,
-                    sort: sort
-                        ? `${sort.order === "desc" ? "" : "-"}${sort.key}`
-                        : undefined,
+                    ...normaliseBasicListParams(basicListParams),
                     name,
                     examType,
                 },

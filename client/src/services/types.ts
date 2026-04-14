@@ -25,3 +25,14 @@ export const authDataSchema = z.object({
 });
 
 export type AuthData = z.infer<typeof authDataSchema>;
+
+export type SortOrder = {
+    key: string;
+    order: "asc" | "desc";
+};
+
+export type BasicListParams = {
+    pageNumber?: number;
+    pageSize?: number;
+    sortOrder?: SortOrder;
+};
