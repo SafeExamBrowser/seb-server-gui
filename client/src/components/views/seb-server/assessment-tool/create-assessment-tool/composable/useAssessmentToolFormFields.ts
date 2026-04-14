@@ -1,4 +1,4 @@
-import { computed, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import i18n from "@/i18n";
 import type { FormField } from "@/components/widgets/formBuilder/types.ts";
 import { useInstitutions } from "@/composables/useInstitutions.ts";
@@ -35,7 +35,9 @@ export const useAssessmentToolFormFields = () => {
         data: institutions,
         loading: loadingInstitutions,
         error: errorInstitutions,
+        fetchData: fetchInstitutions,
     } = useInstitutions();
+    onMounted(fetchInstitutions);
 
     const authenticatedUser = useUserAccountStore().userAccount;
 

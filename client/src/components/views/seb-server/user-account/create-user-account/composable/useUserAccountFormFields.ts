@@ -1,4 +1,4 @@
-import { computed, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import moment from "moment-timezone";
 import { useRules } from "vuetify/labs/rules";
 import i18n from "@/i18n";
@@ -28,7 +28,9 @@ export const useUserAccountFormFields = () => {
         data: institutions,
         loading: loadingInstitutions,
         error: errorInstitutions,
+        fetchData: fetchInstitutions,
     } = useInstitutions();
+    onMounted(fetchInstitutions);
 
     const authenticatedUser = useUserAccountStore().userAccount;
     const userRoles = authenticatedUser?.userRoles ?? [];

@@ -1,5 +1,5 @@
 import { SummarySectionData } from "@/components/widgets/wizardSummary/types";
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import { useCreateExamTemplateStore } from "@/components/views/seb-server/exam-template/wizard/composables/store/useCreateExamTemplateStore";
 import { getSummaryClientGroups } from "@/components/views/seb-server/exam-template/wizard/components/stepSummary/helpers/getSummaryClientGroups";
 import { getSummaryNaming } from "@/components/views/seb-server/exam-template/wizard/components/stepSummary/helpers/getSummaryNaming";
@@ -16,19 +16,28 @@ export const useSummary = () => {
         data: supervisors,
         loading: loadingSupervisors,
         error: errorSupervisors,
+        fetchData: fetchSupervisors,
     } = useSupervisors();
 
     const {
         data: configurationTemplateNames,
         loading: loadingConfigurationTemplateNames,
         error: errorConfigurationTemplateNames,
+        fetchData: fetchConfigTemplateNames,
     } = useConfigurationTemplateNames();
 
     const {
         data: clientConfigurationNames,
         loading: loadingClientConfigurationNames,
         error: errorClientConfigurationNames,
+        fetchData: fetchClientConfigNames,
     } = useClientConfigurationNames();
+
+    onMounted(() => {
+        fetchSupervisors();
+        fetchConfigTemplateNames();
+        fetchClientConfigNames();
+    });
 
     const loading = computed(
         () =>
