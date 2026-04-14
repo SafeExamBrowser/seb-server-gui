@@ -33,18 +33,14 @@
                         <EntityTable
                             :headers="certificatesTableHeaders"
                             :items="tableData?.content ?? []"
-                            :total-items="totalItems"
                             :page-count="pageCount"
                             :items-per-page="options.itemsPerPage"
                             :options="options"
                             :loading="loading || deleteLoading"
                             item-identifier-key="alias"
-                            translation-key-prefix="certificates"
                             :cell-formatters="cellFormatters"
-                            :editable="false"
-                            :status-changeable="false"
+                            :actions="tableActions"
                             @update:options="loadItems"
-                            @delete="removeCertificateFromItem"
                         />
                     </v-col>
                 </v-row>
@@ -53,6 +49,12 @@
     </BasicSettingsPage>
 
     <AddCertificateDialog v-model="certDialog" @imported="onCertImported" />
+
+    <DeleteConfirmDialog
+        v-model="deleteDialogOpen"
+        translation-key-prefix="certificates"
+        @confirm="confirmDelete"
+    />
 </template>
 
 <script setup lang="ts">
@@ -60,12 +62,15 @@ import { computed, ref, watch } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import SearchSection from "@/components/blocks/searches/SearchSection.vue";
 import EntityTable from "@/components/blocks/entity-table/EntityTable.vue";
+import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import { useCertificatesTableHeaders } from "@/components/views/seb-server/certificate/certificates/composables/useCertificateTableHeaders.ts";
+import { useCertificatesTableActions } from "@/components/views/seb-server/certificate/certificates/composables/useCertificatesTableActions.ts";
 import { useCertificates } from "@/components/views/seb-server/certificate/certificates/api/useCertificates.ts";
 import { useUrlTableState } from "@/components/blocks/entity-table/composables/useUrlTableState.ts";
 import { useDeleteCertificate } from "@/components/views/seb-server/certificate/certificates/api/useDeleteCertificate.ts";
-import { useTableCellFormatters } from "@/components/blocks/entity-table/composables/useTableCellFormatters.ts";
+import { useSebServerCellFormatters } from "@/components/views/seb-server/composables/useSebServerCellFormatters.ts";
 import type { CertificatesResponse } from "@/models/seb-server/certificate.ts";
+import type { TableItem } from "@/components/blocks/entity-table/types.ts";
 import AddCertificateDialog from "@/components/views/seb-server/certificate/certificates/AddCertificateDialog.vue";
 import AddButton from "@/components/widgets/AddButton.vue";
 
@@ -83,7 +88,6 @@ const {
     searchInputValue,
     searchField,
     options,
-    totalItems,
     loadItems,
     onSearch,
     onClearSearch,
@@ -114,7 +118,24 @@ const {
     error: deleteError,
 } = useDeleteCertificate(tableData);
 
-const { cellFormatters } = useTableCellFormatters({
-    headers: certificatesTableHeaders,
+const { cellFormatters } = useSebServerCellFormatters(certificatesTableHeaders);
+
+// Dialog state
+const deleteTarget = ref<TableItem | null>(null);
+const deleteDialogOpen = ref(false);
+
+function openDeleteDialog(item: TableItem) {
+    deleteTarget.value = item;
+    deleteDialogOpen.value = true;
+}
+
+async function confirmDelete() {
+    if (!deleteTarget.value) return;
+    await removeCertificateFromItem(deleteTarget.value);
+    deleteDialogOpen.value = false;
+}
+
+const tableActions = useCertificatesTableActions({
+    onDelete: (item) => openDeleteDialog(item),
 });
 </script>

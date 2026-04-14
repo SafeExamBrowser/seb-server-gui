@@ -38,7 +38,6 @@
                         <EntityTable
                             :headers="connectionConfigurationTableHeaders"
                             :items="tableData?.content ?? []"
-                            :total-items="totalItems"
                             :page-count="pageCount"
                             :items-per-page="options.itemsPerPage"
                             :options="options"
@@ -50,19 +49,38 @@
                             "
                             route-param-key="id"
                             item-identifier-key="id"
-                            translation-key-prefix="connectionConfigurations.connectionConfigurationsPage"
                             :cell-formatters="cellFormatters"
+                            :actions="tableActions"
                             @update:options="loadItems"
-                            @delete="removeConnectionConfigurationFromItem"
-                            @status-change="
-                                toggleConnectionConfigurationStatusFromItem
-                            "
-                        />
+                        >
+                            <template #cell-active="{ item }">
+                                <ActiveStatusChip
+                                    :active="!!item.active"
+                                    active-label="Active"
+                                    inactive-label="Inactive"
+                                    @click="openStatusDialog(item)"
+                                />
+                            </template>
+                        </EntityTable>
                     </v-col>
                 </v-row>
             </v-col>
         </template>
     </BasicSettingsPage>
+
+    <DeleteConfirmDialog
+        v-model="deleteDialogOpen"
+        :detail-text="deleteDetailText"
+        translation-key-prefix="connectionConfigurations.connectionConfigurationsPage"
+        @confirm="confirmDelete"
+    />
+
+    <StatusConfirmDialog
+        v-model="statusDialogOpen"
+        :active="!!statusTarget?.active"
+        translation-key-prefix="connectionConfigurations.connectionConfigurationsPage"
+        @confirm="confirmStatusChange"
+    />
 </template>
 
 <script setup lang="ts">
@@ -72,16 +90,22 @@ import { getRouteName } from "@/router/routeNames.ts";
 import SearchSection from "@/components/blocks/searches/SearchSection.vue";
 import FiltersBar from "@/components/blocks/filters/FiltersBar.vue";
 import EntityTable from "@/components/blocks/entity-table/EntityTable.vue";
+import ActiveStatusChip from "@/components/blocks/entity-table/widgets/ActiveStatusChip.vue";
+import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
+import StatusConfirmDialog from "@/components/widgets/confirmDialog/StatusConfirmDialog.vue";
 import { useUrlTableState } from "@/components/blocks/entity-table/composables/useUrlTableState.ts";
+import { useTableNavigation } from "@/components/blocks/entity-table/composables/useTableNavigation.ts";
 import { useConnectionConfigurationsTableHeaders } from "@/components/views/seb-server/connection-configuration/connection-configurations/composables/useConnectionConfigurationsTableHeaders.ts";
+import { useConnectionConfigurationsTableActions } from "@/components/views/seb-server/connection-configuration/connection-configurations/composables/useConnectionConfigurationsTableActions.ts";
 import { useConnectionConfigurationsFilters } from "@/components/views/seb-server/connection-configuration/connection-configurations/composables/useConnectionConfigurationsFilters.ts";
 import { STATUS_FILTER_KEY } from "@/components/blocks/filters/statusFilterSection.ts";
 import { INSTITUTION_FILTER_KEY } from "@/components/blocks/filters/useInstitutionFilterSection.ts";
 import { useConnectionConfigurations } from "@/components/views/seb-server/connection-configuration/connection-configurations/api/useConnectionConfigurations.ts";
 import { useDeleteConnectionConfiguration } from "@/components/views/seb-server/connection-configuration/connection-configurations/api/useDeleteConnectionConfiguration.ts";
 import { useToggleConnectionConfigurationStatus } from "@/components/views/seb-server/connection-configuration/connection-configurations/api/useToggleConnectionConfigurationStatus.ts";
-import { useTableCellFormatters } from "@/components/blocks/entity-table/composables/useTableCellFormatters.ts";
+import { useSebServerCellFormatters } from "@/components/views/seb-server/composables/useSebServerCellFormatters.ts";
 import type { ConnectionConfigurations } from "@/models/seb-server/connectionConfiguration.ts";
+import type { TableItem } from "@/components/blocks/entity-table/types.ts";
 import AddButton from "@/components/widgets/AddButton.vue";
 
 const connectionConfigurationTableHeaders =
@@ -95,7 +119,6 @@ const {
     searchField,
     selectedFilters,
     options,
-    totalItems,
     loadItems,
     onSearch,
     onClearSearch,
@@ -144,7 +167,51 @@ const {
     error: statusError,
 } = useToggleConnectionConfigurationStatus(tableData);
 
-const { cellFormatters } = useTableCellFormatters({
-    headers: connectionConfigurationTableHeaders,
+const { cellFormatters } = useSebServerCellFormatters(
+    connectionConfigurationTableHeaders,
+);
+
+// Dialog state
+const deleteTarget = ref<TableItem | null>(null);
+const statusTarget = ref<TableItem | null>(null);
+const deleteDialogOpen = ref(false);
+const statusDialogOpen = ref(false);
+
+const { buildItemRoute, navigateToItem } = useTableNavigation(
+    getRouteName("ConnectionConfigurationDetailAndView"),
+    "id",
+    "id",
+);
+
+const deleteDetailText = computed(() => {
+    if (!deleteTarget.value) return "";
+    return buildItemRoute(deleteTarget.value);
+});
+
+function openDeleteDialog(item: TableItem) {
+    deleteTarget.value = item;
+    deleteDialogOpen.value = true;
+}
+
+function openStatusDialog(item: TableItem) {
+    statusTarget.value = item;
+    statusDialogOpen.value = true;
+}
+
+async function confirmDelete() {
+    if (!deleteTarget.value) return;
+    await removeConnectionConfigurationFromItem(deleteTarget.value);
+    deleteDialogOpen.value = false;
+}
+
+async function confirmStatusChange() {
+    if (!statusTarget.value) return;
+    await toggleConnectionConfigurationStatusFromItem(statusTarget.value);
+    statusDialogOpen.value = false;
+}
+
+const tableActions = useConnectionConfigurationsTableActions({
+    onEdit: (item) => navigateToItem(item),
+    onDelete: (item) => openDeleteDialog(item),
 });
 </script>

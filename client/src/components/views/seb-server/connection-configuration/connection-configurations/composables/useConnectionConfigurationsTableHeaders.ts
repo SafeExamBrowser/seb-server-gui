@@ -1,13 +1,13 @@
 import { computed } from "vue";
 import { translate } from "@/utils/generalUtils.ts";
-import type { SettingsTableHeader } from "@/components/blocks/entity-table/types.ts";
+import type { SebTableHeader } from "@/components/views/seb-server/composables/sebServerTableHeaderTypes.ts";
 import { useShowInstitutionColumn } from "@/composables/useShowInstitutionColumn.ts";
 
 export const useConnectionConfigurationsTableHeaders = () => {
     const showInstitutionColumn = useShowInstitutionColumn();
 
-    return computed<SettingsTableHeader[]>(() => {
-        const headers: SettingsTableHeader[] = [];
+    return computed<SebTableHeader[]>(() => {
+        const headers: SebTableHeader[] = [];
 
         if (showInstitutionColumn.value) {
             headers.push({
@@ -45,12 +45,6 @@ export const useConnectionConfigurationsTableHeaders = () => {
                 ),
                 key: "active",
                 width: "15%",
-                sortable: false,
-            },
-            {
-                title: "",
-                key: "actions",
-                width: "1%",
                 sortable: false,
             },
         );

@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-data-table-server
-            :headers="headers"
+            :headers="computedHeaders"
             :items="items"
             :items-length="internalItemsLength"
             :items-per-page="itemsPerPage"
@@ -14,58 +14,52 @@
         >
             <template #item="{ item }">
                 <tr
-                    :class="{ 'table-row--clickable': editable }"
+                    :class="{ 'cursor-pointer': !!detailRoute }"
                     @click="onRowClick(getRawItem(item))"
                 >
-                    <td v-for="header in headers" :key="header.key">
-                        <template v-if="header.key === 'active'">
-                            <v-chip
-                                class="text-white font-weight-medium status-chip cursor-pointer"
-                                :color="
-                                    getRawItem(item).active ? 'green' : 'red'
-                                "
-                                size="small"
-                                @click.stop="openStatusDialog(getRawItem(item))"
-                            >
-                                {{
-                                    getRawItem(item).active
-                                        ? "Active"
-                                        : "Inactive"
-                                }}
-                            </v-chip>
-                        </template>
-
-                        <template v-else-if="header.key === 'actions'">
+                    <td v-for="header in computedHeaders" :key="header.key">
+                        <template v-if="header.key === '_actions'">
                             <div
                                 class="d-flex justify-center align-center ga-1"
                             >
-                                <v-icon
-                                    v-if="editable"
-                                    class="action-icon"
-                                    icon="mdi-pencil"
-                                    @click.stop="onEdit(getRawItem(item))"
-                                />
-
-                                <v-icon
-                                    v-if="deletable"
-                                    class="action-icon"
-                                    icon="mdi-delete"
+                                <v-btn
+                                    v-for="action in visibleActions(
+                                        getRawItem(item),
+                                    )"
+                                    :key="action.key"
+                                    :icon="action.icon"
+                                    :color="action.color"
+                                    :disabled="
+                                        action.disabled?.(getRawItem(item)) ??
+                                        false
+                                    "
+                                    :aria-label="
+                                        action.labelKey
+                                            ? $t(action.labelKey)
+                                            : undefined
+                                    "
+                                    variant="text"
+                                    density="comfortable"
+                                    size="small"
                                     @click.stop="
-                                        openDeleteDialog(getRawItem(item))
+                                        action.onClick(getRawItem(item))
                                     "
                                 />
                             </div>
                         </template>
 
                         <template v-else>
-                            {{
-                                cellFormatters?.[header.key]
-                                    ? cellFormatters[header.key](
-                                          getRawItem(item)[header.key],
-                                          getRawItem(item),
-                                      )
-                                    : getRawItem(item)[header.key]
-                            }}
+                            <slot
+                                :name="`cell-${header.key}`"
+                                :item="getRawItem(item)"
+                                :value="getRawItem(item)[header.key]"
+                                :formatted-value="
+                                    formatCell(header.key, getRawItem(item))
+                                "
+                                :header="header"
+                            >
+                                {{ formatCell(header.key, getRawItem(item)) }}
+                            </slot>
                         </template>
                     </td>
                 </tr>
@@ -108,93 +102,70 @@
             </template>
         </v-data-table-server>
     </div>
-
-    <DeleteDialog
-        v-model="deleteDialogOpen"
-        :target-route="deleteTargetRoute"
-        :translation-key-prefix="translationKeyPrefix"
-        @confirm="confirmDelete"
-    />
-
-    <StatusDialog
-        v-model="statusDialogOpen"
-        :active="selectedItemActive"
-        :translation-key-prefix="translationKeyPrefix"
-        @confirm="confirmStatusChange"
-    />
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
-import type { SettingsTableHeader } from "@/components/blocks/entity-table/types.ts";
-import DeleteDialog from "@/components/blocks/entity-table/widgets/DeleteDialog.vue";
-import StatusDialog from "@/components/blocks/entity-table/widgets/StatusDialog.vue";
+import { computed } from "vue";
+import type {
+    TableHeader,
+    TableItem,
+    TableAction,
+    CellFormatter,
+} from "@/components/blocks/entity-table/types.ts";
 import { useTableNavigation } from "@/components/blocks/entity-table/composables/useTableNavigation.ts";
 import type { ServerTablePaging } from "@/models/types.ts";
 import type { RouteName } from "@/router/routeNames.ts";
 
-type TableItem = Record<string, unknown>;
-type CellFormatter = (value: unknown, item: TableItem) => string;
-
 const props = withDefaults(
     defineProps<{
-        headers: SettingsTableHeader[];
+        headers: TableHeader[];
         items: TableItem[];
         loading: boolean;
-        totalItems?: number;
         options?: ServerTablePaging;
         itemsPerPage?: number;
         pageCount?: number;
+        itemsLength?: number;
         detailRoute?: RouteName;
         routeParamKey?: string;
         itemIdentifierKey?: string;
-        editable?: boolean;
-        deletable?: boolean;
-        statusChangeable?: boolean;
-        translationKeyPrefix: string;
+        actions?: TableAction[];
         cellFormatters?: Record<string, CellFormatter>;
     }>(),
     {
         pageCount: 0,
         itemsPerPage: 10,
-        totalItems: undefined,
+        itemsLength: undefined,
         options: undefined,
         detailRoute: undefined,
         routeParamKey: undefined,
         itemIdentifierKey: "",
-        editable: true,
-        deletable: true,
-        statusChangeable: true,
+        actions: undefined,
         cellFormatters: () => ({}),
     },
 );
 
 const emit = defineEmits<{
-    delete: [item: TableItem];
-    edit: [item: TableItem];
-    rowClick: [item: TableItem];
-    statusChange: [item: TableItem];
     "update:options": [options: ServerTablePaging];
 }>();
 
-const deleteDialogOpen = ref(false);
-const statusDialogOpen = ref(false);
-const selectedItem = ref<TableItem | null>(null);
-
-const { buildItemRoute, navigateToItem } = useTableNavigation(
+const { navigateToItem } = useTableNavigation(
     props.detailRoute,
     props.itemIdentifierKey,
     props.routeParamKey,
 );
 
-const deleteTargetRoute = computed(() => {
-    if (!selectedItem.value) return "";
-    return buildItemRoute(selectedItem.value);
-});
-
-const selectedItemActive = computed(() => {
-    if (!selectedItem.value) return false;
-    return Boolean(selectedItem.value.active);
+const computedHeaders = computed(() => {
+    const base = [...props.headers];
+    if (props.actions?.length) {
+        base.push({
+            title: "",
+            key: "_actions",
+            sortable: false,
+            width: "1%",
+            align: "center",
+        });
+    }
+    return base;
 });
 
 function getRawItem(item: unknown): TableItem {
@@ -207,62 +178,32 @@ function getRawItem(item: unknown): TableItem {
     ) {
         return item.raw as TableItem;
     }
-
     return item as TableItem;
 }
 
-function onEdit(item: TableItem) {
-    emit("edit", item);
+function formatCell(key: string, item: TableItem): string {
+    const formatter = props.cellFormatters?.[key];
+    if (formatter) return formatter(item[key], item);
+    const value = item[key];
+    if (value === null || value === undefined) return "";
+    return String(value);
+}
 
-    if (!props.editable) return;
-    navigateToItem(item);
+function visibleActions(item: TableItem): TableAction[] {
+    if (!props.actions) return [];
+    return props.actions.filter((a) => a.visible?.(item) ?? true);
 }
 
 function onRowClick(item: TableItem) {
-    emit("rowClick", item);
-
-    if (!props.editable) return;
+    if (!props.detailRoute) return;
     navigateToItem(item);
 }
 
-function openDeleteDialog(item: TableItem) {
-    selectedItem.value = item;
-    deleteDialogOpen.value = true;
-}
-
-function confirmDelete() {
-    if (!selectedItem.value) return;
-
-    emit("delete", selectedItem.value);
-    deleteDialogOpen.value = false;
-}
-
-function openStatusDialog(item: TableItem) {
-    if (!props.statusChangeable) return;
-
-    selectedItem.value = item;
-    statusDialogOpen.value = true;
-}
-
-function confirmStatusChange() {
-    if (!selectedItem.value) return;
-
-    emit("statusChange", selectedItem.value);
-    statusDialogOpen.value = false;
-}
-
 const itemsPerPageOptions = computed(() => {
-    const options = [5];
-
-    if (props.pageCount > 1 || props.items.length > 5) {
-        options.push(10);
-    }
-
-    if (props.pageCount > 2 || props.items.length > 10) {
-        options.push(15);
-    }
-
-    return options;
+    const opts = [5];
+    if (props.pageCount > 1 || props.items.length > 5) opts.push(10);
+    if (props.pageCount > 2 || props.items.length > 10) opts.push(15);
+    return opts;
 });
 
 const currentPage = computed({
@@ -288,17 +229,15 @@ const localItemsPerPage = computed({
 });
 
 const internalItemsLength = computed(() => {
+    if (props.itemsLength !== undefined) return props.itemsLength;
+
     const page = props.options?.page ?? 1;
     const perPage = props.options?.itemsPerPage ?? props.itemsPerPage;
 
-    if (props.pageCount === 0) {
-        return props.items.length;
-    }
-
+    if (props.pageCount === 0) return props.items.length;
     if (page === props.pageCount) {
         return (props.pageCount - 1) * perPage + props.items.length;
     }
-
     return props.pageCount * perPage;
 });
 </script>
@@ -308,91 +247,18 @@ const internalItemsLength = computed(() => {
     min-height: calc(56px + 5 * 52px);
 }
 
-:deep(table) {
-    border-collapse: separate;
-    border-spacing: 0;
-    width: 100%;
-}
-
-:deep(thead tr) {
-    background-color: transparent;
-}
-
-:deep(tbody tr) {
-    transition: background-color 0.15s ease-in-out;
-}
-
-:deep(tbody tr.table-row--clickable) {
-    cursor: pointer;
-}
-
 :deep(tbody tr:hover) {
     background-color: rgba(var(--v-theme-primary), 0.06);
 }
 
 :deep(tbody td) {
     color: rgb(var(--v-theme-primary));
-    vertical-align: middle !important;
     border-bottom: 1px solid rgba(var(--v-theme-on-surface), 0.12);
-}
-
-:deep(.v-progress-linear) {
-    border-radius: 999px;
 }
 
 :deep(.v-data-table-rows-no-data td) {
     color: rgba(var(--v-theme-on-surface), 0.6);
     text-align: center;
-}
-
-:deep(.v-data-table__td:last-child),
-:deep(.v-data-table__th:last-child) {
-    text-align: center;
-}
-
-:deep(.v-chip) {
-    font-weight: 500;
-}
-
-:deep(.v-btn) {
-    text-transform: none;
-}
-
-.status-chip {
-    min-width: 4.7rem;
-    max-width: 6.5rem;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    transition:
-        transform 0.2s ease,
-        filter 0.2s ease,
-        box-shadow 0.2s ease;
-}
-
-.status-chip:hover {
-    transform: translateY(-1px) scale(1.03);
-    filter: brightness(1.05);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
-}
-
-.action-icon {
-    color: rgba(var(--v-theme-on-surface), 0.6);
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.25rem;
-    height: 2.25rem;
-    border-radius: 0.5rem;
-    transition:
-        color 0.2s ease,
-        background-color 0.2s ease;
-}
-
-.action-icon:hover {
-    color: rgb(var(--v-theme-primary));
-    background-color: rgba(var(--v-theme-primary), 0.1);
 }
 
 .table-footer {
@@ -442,7 +308,6 @@ const internalItemsLength = computed(() => {
 
 :deep(.table-footer__page-size-select .v-field) {
     border-radius: 10px;
-    box-shadow: none;
 }
 
 :deep(.table-footer__page-size-select .v-field__input) {
@@ -458,7 +323,6 @@ const internalItemsLength = computed(() => {
     border-radius: 10px;
     color: rgba(var(--v-theme-on-surface), 0.6);
     font-weight: 600;
-    box-shadow: none;
 }
 
 :deep(.table-footer__pagination .v-btn:hover) {
@@ -468,11 +332,6 @@ const internalItemsLength = computed(() => {
 
 :deep(.table-footer__pagination .v-btn--active) {
     background-color: rgba(var(--v-theme-primary), 0.06) !important;
-    color: rgb(var(--v-theme-primary)) !important;
-    box-shadow: none !important;
-}
-
-:deep(.table-footer__pagination .v-btn--active .v-btn__content) {
     color: rgb(var(--v-theme-primary)) !important;
 }
 

@@ -31,7 +31,6 @@
                         <EntityTable
                             :headers="examTableHeaders"
                             :items="tableData?.content ?? []"
-                            :total-items="totalItems"
                             :page-count="pageCount"
                             :items-per-page="options.itemsPerPage"
                             :options="options"
@@ -39,7 +38,6 @@
                             :detail-route="getRouteName('ExamDetail')"
                             route-param-key="id"
                             item-identifier-key="id"
-                            translation-key-prefix="examList"
                             :cell-formatters="cellFormatters"
                             @update:options="loadItems"
                         />
@@ -64,7 +62,7 @@ import {
     EXAM_STATUS_FILTER_KEY,
 } from "@/components/views/seb-server/exam/exams/composables/useExamFilters.ts";
 import { useExams } from "@/components/views/seb-server/exam/exams/api/useExams.ts";
-import { useTableCellFormatters } from "@/components/blocks/entity-table/composables/useTableCellFormatters.ts";
+import { useSebServerCellFormatters } from "@/components/views/seb-server/composables/useSebServerCellFormatters.ts";
 import { getRouteName } from "@/router/routeNames.ts";
 import { translate } from "@/utils/generalUtils.ts";
 import type { Exams } from "@/models/seb-server/exam.ts";
@@ -86,7 +84,6 @@ const {
     dateValue,
     dateTimestamp,
     options,
-    totalItems,
     loadItems,
     onSearch,
     setFilters,
@@ -128,7 +125,5 @@ watch(
 
 const pageCount = computed(() => tableData.value?.number_of_pages ?? 0);
 
-const { cellFormatters } = useTableCellFormatters({
-    headers: examTableHeaders,
-});
+const { cellFormatters } = useSebServerCellFormatters(examTableHeaders);
 </script>

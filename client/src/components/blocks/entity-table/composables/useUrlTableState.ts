@@ -17,6 +17,8 @@ export function useUrlTableState<TResponse extends PagedResponse>(
     const route = useRoute();
     const router = useRouter();
 
+    // Guards against the route watcher re-triggering loads when we
+    // programmatically update query params via applyQuery/navigate.
     let isInternalNavigation = false;
 
     const searchInputValue = ref<string | null>(
@@ -71,6 +73,23 @@ export function useUrlTableState<TResponse extends PagedResponse>(
         return q;
     }
 
+    async function navigate(query: Record<string, string | undefined>) {
+        isInternalNavigation = true;
+        try {
+            await router.replace({ query });
+            await nextTick();
+        } finally {
+            isInternalNavigation = false;
+        }
+    }
+
+    async function applyQuery(patch: Record<string, string | undefined>) {
+        const query = { ...buildBaseQuery(), ...patch };
+        await navigate(query);
+        options.value = { ...options.value, page: 1 };
+        await loadFn();
+    }
+
     watch(
         () => {
             const watched: Record<string, string | null> = {
@@ -93,16 +112,6 @@ export function useUrlTableState<TResponse extends PagedResponse>(
         { deep: true },
     );
 
-    async function navigate(query: Record<string, string | undefined>) {
-        isInternalNavigation = true;
-        try {
-            await router.replace({ query });
-            await nextTick();
-        } finally {
-            isInternalNavigation = false;
-        }
-    }
-
     async function loadItems(newOptions?: ServerTablePaging) {
         if (newOptions) {
             options.value = newOptions;
@@ -111,41 +120,32 @@ export function useUrlTableState<TResponse extends PagedResponse>(
     }
 
     async function onSearch() {
-        const query = buildBaseQuery();
-        query.search = searchInputValue.value || undefined;
-        await navigate(query);
-        options.value = { ...options.value, page: 1 };
-        await loadFn();
+        searchInputValue.value = searchInputValue.value || null;
+        await applyQuery({
+            search: searchInputValue.value || undefined,
+        });
     }
 
     async function onClearSearch() {
         searchInputValue.value = null;
-        const query = buildBaseQuery();
-        query.search = undefined;
-        await navigate(query);
+        await applyQuery({ search: undefined });
     }
 
     async function setFilters(newFilters: TableFilters) {
-        const query = buildBaseQuery();
+        const patch: Record<string, string | undefined> = {};
         for (const key of filterKeys) {
-            query[key] = newFilters[key] || undefined;
+            patch[key] = newFilters[key] || undefined;
         }
-        await navigate(query);
-        options.value = { ...options.value, page: 1 };
-        await loadFn();
+        await applyQuery(patch);
     }
 
     async function resetFilters() {
-        const query = buildBaseQuery();
+        const patch: Record<string, string | undefined> = {};
         for (const key of filterKeys) {
-            query[key] = undefined;
+            patch[key] = undefined;
         }
-        if (dateKey) {
-            query[dateKey] = undefined;
-        }
-        await navigate(query);
-        options.value = { ...options.value, page: 1 };
-        await loadFn();
+        if (dateKey) patch[dateKey] = undefined;
+        await applyQuery(patch);
     }
 
     async function clearAll() {
@@ -157,11 +157,9 @@ export function useUrlTableState<TResponse extends PagedResponse>(
 
     async function setDate(date: Date | null) {
         if (!dateKey) return;
-        const query = buildBaseQuery();
-        query[dateKey] = date ? String(date.getTime()) : undefined;
-        await navigate(query);
-        options.value = { ...options.value, page: 1 };
-        await loadFn();
+        await applyQuery({
+            [dateKey]: date ? String(date.getTime()) : undefined,
+        });
     }
 
     return {

@@ -31,7 +31,6 @@
                         <EntityTable
                             :headers="tableHeaders"
                             :items="tableData?.content ?? []"
-                            :total-items="totalItems"
                             :page-count="pageCount"
                             :items-per-page="options.itemsPerPage"
                             :options="options"
@@ -39,7 +38,6 @@
                             :detail-route="getRouteName('MonitoringOverview')"
                             route-param-key="examId"
                             item-identifier-key="id"
-                            translation-key-prefix="monitoringExams"
                             :cell-formatters="cellFormatters"
                             @update:options="loadItems"
                         />
@@ -64,7 +62,7 @@ import {
     MONITORING_STATUS_FILTER_KEY,
 } from "@/components/views/seb-server/monitoring/exams/composables/useMonitoringFilters.ts";
 import { useMonitoringExams } from "@/components/views/seb-server/monitoring/exams/api/useMonitoringExams.ts";
-import { useTableCellFormatters } from "@/components/blocks/entity-table/composables/useTableCellFormatters.ts";
+import { useSebServerCellFormatters } from "@/components/views/seb-server/composables/useSebServerCellFormatters.ts";
 import { getRouteName } from "@/router/routeNames.ts";
 import { translate } from "@/utils/generalUtils.ts";
 import type { Exams } from "@/models/seb-server/exam.ts";
@@ -86,7 +84,6 @@ const {
     dateValue,
     dateTimestamp,
     options,
-    totalItems,
     loadItems,
     onSearch,
     setFilters,
@@ -134,7 +131,5 @@ watch(
 
 const pageCount = computed(() => tableData.value?.number_of_pages ?? 0);
 
-const { cellFormatters } = useTableCellFormatters({
-    headers: tableHeaders,
-});
+const { cellFormatters } = useSebServerCellFormatters(tableHeaders);
 </script>

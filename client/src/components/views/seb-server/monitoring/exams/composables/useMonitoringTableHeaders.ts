@@ -1,11 +1,11 @@
 import { computed } from "vue";
 import { translate } from "@/utils/generalUtils.ts";
-import type { SettingsTableHeader } from "@/components/blocks/entity-table/types.ts";
+import type { SebTableHeader } from "@/components/views/seb-server/composables/sebServerTableHeaderTypes.ts";
 
 const TRANSLATION_PREFIX = "monitoringExams.main";
 
 export const useMonitoringTableHeaders = () => {
-    return computed<SettingsTableHeader[]>(() => [
+    return computed<SebTableHeader[]>(() => [
         {
             title: translate(`${TRANSLATION_PREFIX}.tableHeaderName`),
             key: "quizName",
@@ -36,12 +36,6 @@ export const useMonitoringTableHeaders = () => {
             width: "8%",
             sortable: true,
             translateType: "examStatus",
-        },
-        {
-            title: "",
-            key: "actions",
-            width: "1%",
-            sortable: false,
         },
     ]);
 };
