@@ -10,15 +10,34 @@
                 <PageTitle class="pl-9" :name="title" />
             </v-col>
         </v-row>
+        <v-row v-if="hasTop" class="flex-grow-0 flex-shrink-0">
+            <v-col>
+                <v-card elevation="4" rounded="lg">
+                    <slot name="PanelTop"></slot>
+                </v-card>
+            </v-col>
+        </v-row>
         <v-row class="flex-grow-1 flex-shrink-1 overflow-y-auto">
             <v-col
                 :cols="hasAside ? 9 : 12"
                 class="fill-height overflow-y-auto"
             >
-                <slot name="PanelMain"></slot>
+                <v-card
+                    elevation="4"
+                    rounded="lg"
+                    class="fill-height overflow-y-auto"
+                >
+                    <slot name="PanelMain"></slot>
+                </v-card>
             </v-col>
             <v-col v-if="hasAside" cols="3" class="fill-height overflow-y-auto">
-                <slot name="PanelAside"></slot>
+                <v-card
+                    elevation="4"
+                    rounded="lg"
+                    class="fill-height overflow-y-auto"
+                >
+                    <slot name="PanelAside"></slot>
+                </v-card>
             </v-col>
         </v-row>
     </div>
@@ -37,4 +56,5 @@ defineProps<{
 
 const slots = useSlots();
 const hasAside = computed(() => Boolean(slots.PanelAside));
+const hasTop = computed(() => Boolean(slots.PanelTop));
 </script>

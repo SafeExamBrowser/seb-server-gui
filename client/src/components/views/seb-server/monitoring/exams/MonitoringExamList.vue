@@ -1,51 +1,40 @@
 <template>
     <BasicPage :title="$t('titles.monitoring')" :bread-crumb="breadCrumb">
+        <template #PanelTop>
+            <SearchBar
+                v-model="searchInputValue"
+                search-text="monitoringExams.info.examName"
+                search-title="monitoringExams.info.examNameSearchPlaceholder"
+                date-title="monitoringExams.info.examStartSearchPlaceholder"
+                :date-value="dateValue"
+                :filter-sections="filterSections"
+                :filter-values="selectedFilters"
+                @search="onSearch"
+                @clear="onClear"
+                @update:date-value="setDate"
+                @update:filter-values="setFilters"
+                @clear-filters="resetFilters"
+            />
+        </template>
         <template #PanelMain>
-            <div class="d-flex flex-column fill-height ga-4">
-                <v-card elevation="4" rounded="lg" class="flex-shrink-0">
-                    <SearchBar
-                        v-model="searchInputValue"
-                        search-text="monitoringExams.info.examName"
-                        search-title="monitoringExams.info.examNameSearchPlaceholder"
-                        date-title="monitoringExams.info.examStartSearchPlaceholder"
-                        :date-value="dateValue"
-                        :filter-sections="filterSections"
-                        :filter-values="selectedFilters"
-                        @search="onSearch"
-                        @clear="onClear"
-                        @update:date-value="setDate"
-                        @update:filter-values="setFilters"
-                        @clear-filters="resetFilters"
-                    />
-                </v-card>
-
-                <v-card
-                    elevation="4"
-                    rounded="lg"
-                    class="flex-grow-1 overflow-y-auto"
-                    style="min-height: 0"
-                >
-                    <div v-if="error" class="pa-4">{{ error }}</div>
-
-                    <LoadingFallbackComponent :loading="false" :errors="[]">
-                        <EntityTable
-                            :headers="tableHeaders"
-                            :items="tableData?.content ?? []"
-                            :total-items="totalItems"
-                            :page-count="pageCount"
-                            :items-per-page="options.itemsPerPage"
-                            :options="options"
-                            :loading="loading"
-                            :detail-route="getRouteName('MonitoringOverview')"
-                            route-param-key="examId"
-                            item-identifier-key="id"
-                            translation-key-prefix="monitoringExams"
-                            :cell-formatters="cellFormatters"
-                            @update:options="loadItems"
-                        />
-                    </LoadingFallbackComponent>
-                </v-card>
-            </div>
+            <div v-if="error" class="pa-4">{{ error }}</div>
+            <LoadingFallbackComponent :loading="false" :errors="[]">
+                <EntityTable
+                    :headers="tableHeaders"
+                    :items="tableData?.content ?? []"
+                    :total-items="totalItems"
+                    :page-count="pageCount"
+                    :items-per-page="options.itemsPerPage"
+                    :options="options"
+                    :loading="loading"
+                    :detail-route="getRouteName('MonitoringOverview')"
+                    route-param-key="examId"
+                    item-identifier-key="id"
+                    translation-key-prefix="monitoringExams"
+                    :cell-formatters="cellFormatters"
+                    @update:options="loadItems"
+                />
+            </LoadingFallbackComponent>
         </template>
     </BasicPage>
 </template>
