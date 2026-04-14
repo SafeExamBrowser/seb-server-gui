@@ -104,7 +104,7 @@
                         :items="mainBrowserWindowWidthItems"
                         variant="outlined"
                         @update:model-value="
-                            saveSingleValue(
+                            sebSettingsStore.saveSingleValue(
                                 'mainBrowserWindowWidth',
                                 mainBrowserWindowWidthVal,
                             )
@@ -142,7 +142,7 @@
                         :items="mainBrowserWindowHeightItems"
                         variant="outlined"
                         @update:model-value="
-                            saveSingleValue(
+                            sebSettingsStore.saveSingleValue(
                                 'mainBrowserWindowHeight',
                                 mainBrowserWindowHeightVal,
                             )
@@ -178,7 +178,7 @@
                         :items="mainBrowserWindowPositioningItems"
                         variant="outlined"
                         @update:model-value="
-                            saveSingleValue(
+                            sebSettingsStore.saveSingleValue(
                                 'mainBrowserWindowPositioning',
                                 mainBrowserWindowPositioningVal,
                             )
@@ -209,7 +209,7 @@
                             )
                         "
                         @update:model-value="
-                            saveSingleValue(
+                            sebSettingsStore.saveSingleValue(
                                 'enableBrowserWindowToolbar',
                                 enableBrowserWindowToolbarVal
                                     ? 'true'
@@ -245,7 +245,7 @@
                             )
                         "
                         @update:model-value="
-                            saveSingleValue(
+                            sebSettingsStore.saveSingleValue(
                                 'browserWindowAllowAddressBar',
                                 browserWindowAllowAddressBarVal
                                     ? 'true'
@@ -270,7 +270,7 @@
                             )
                         "
                         @update:model-value="
-                            saveSingleValue(
+                            sebSettingsStore.saveSingleValue(
                                 'newBrowserWindowAllowAddressBar',
                                 newBrowserWindowAllowAddressBarVal
                                     ? 'true'
@@ -296,7 +296,7 @@
                             )
                         "
                         @update:model-value="
-                            saveSingleValue(
+                            sebSettingsStore.saveSingleValue(
                                 'allowDeveloperConsole',
                                 allowDeveloperConsoleVal ? 'true' : 'false',
                             )
@@ -319,7 +319,7 @@
                             )
                         "
                         @update:model-value="
-                            saveSingleValue(
+                            sebSettingsStore.saveSingleValue(
                                 'hideBrowserWindowToolbar',
                                 hideBrowserWindowToolbarVal ? 'true' : 'false',
                             )
@@ -350,7 +350,7 @@
                             )
                         "
                         @update:model-value="
-                            saveSingleValue(
+                            sebSettingsStore.saveSingleValue(
                                 'showMenuBar',
                                 showMenuBarVal ? 'true' : 'false',
                             )
@@ -391,7 +391,7 @@
                             )
                         "
                         @update:model-value="
-                            saveSingleValue(
+                            sebSettingsStore.saveSingleValue(
                                 'enableZoomPage',
                                 enableZoomPageVal ? 'true' : 'false',
                             )
@@ -422,7 +422,7 @@
                             )
                         "
                         @update:model-value="
-                            saveSingleValue(
+                            sebSettingsStore.saveSingleValue(
                                 'enableZoomText',
                                 enableZoomTextVal ? 'true' : 'false',
                             )
@@ -465,7 +465,7 @@
                             )
                         "
                         @update:model-value="
-                            saveSingleValue(
+                            sebSettingsStore.saveSingleValue(
                                 'audioControlEnabled',
                                 audioControlEnabledVal ? 'true' : 'false',
                             )
@@ -492,7 +492,7 @@
                         hide-details
                         :label="translate('sebSettings.userView.audio.mute')"
                         @update:model-value="
-                            saveSingleValue(
+                            sebSettingsStore.saveSingleValue(
                                 'audioMute',
                                 audioMuteVal ? 'true' : 'false',
                             )
@@ -517,7 +517,7 @@
                         hide-details
                         :label="translate('sebSettings.userView.audio.volume')"
                         @update:model-value="
-                            saveSingleValue(
+                            sebSettingsStore.saveSingleValue(
                                 'audioSetVolumeLevel',
                                 audioSetVolumeLevelVal ? 'true' : 'false',
                             )
@@ -548,7 +548,7 @@
                         "
                         hide-details
                         @update:focused="
-                            saveSingleValue(
+                            sebSettingsStore.saveSingleValue(
                                 'audioVolumeLevel',
                                 audioVolumeLevelVal.toString(),
                             )
@@ -575,7 +575,7 @@
                             translate('sebSettings.userView.spellChecker.allow')
                         "
                         @update:model-value="
-                            saveSingleValue(
+                            sebSettingsStore.saveSingleValue(
                                 'allowSpellCheck',
                                 allowSpellCheckVal ? 'true' : 'false',
                             )
@@ -606,7 +606,7 @@
                             )
                         "
                         @update:model-value="
-                            saveSingleValue(
+                            sebSettingsStore.saveSingleValue(
                                 'allowDictionaryLookup',
                                 allowDictionaryLookupVal ? 'true' : 'false',
                             )
@@ -647,7 +647,7 @@
                             )
                         "
                         @update:model-value="
-                            saveSingleValue(
+                            sebSettingsStore.saveSingleValue(
                                 'showTaskBar',
                                 showTaskBarVal ? 'true' : 'false',
                             )
@@ -678,7 +678,7 @@
                             )
                         "
                         @update:model-value="
-                            saveSingleValue(
+                            sebSettingsStore.saveSingleValue(
                                 'showSideMenu',
                                 showSideMenuVal ? 'true' : 'false',
                             )
@@ -698,7 +698,7 @@
                             )
                         "
                         @update:model-value="
-                            saveSingleValue(
+                            sebSettingsStore.saveSingleValue(
                                 'raiseHandButtonShow',
                                 raiseHandButtonShowVal ? 'true' : 'false',
                             )
@@ -718,7 +718,7 @@
                             )
                         "
                         @update:model-value="
-                            saveSingleValue(
+                            sebSettingsStore.saveSingleValue(
                                 'raiseHandButtonAlwaysPromptMessage',
                                 raiseHandButtonAlwaysPromptMessageVal
                                     ? 'true'
@@ -749,7 +749,7 @@
                             translate('sebSettings.userView.task_bar.allowWlan')
                         "
                         @update:model-value="
-                            saveSingleValue(
+                            sebSettingsStore.saveSingleValue(
                                 'allowWlan',
                                 allowWlanVal ? 'true' : 'false',
                             )
@@ -780,7 +780,7 @@
                             )
                         "
                         @update:model-value="
-                            saveSingleValue(
+                            sebSettingsStore.saveSingleValue(
                                 'showReloadButton',
                                 showReloadButtonVal ? 'true' : 'false',
                             )
@@ -809,7 +809,7 @@
                             translate('sebSettings.userView.task_bar.showTime')
                         "
                         @update:model-value="
-                            saveSingleValue(
+                            sebSettingsStore.saveSingleValue(
                                 'showTime',
                                 showTimeVal ? 'true' : 'false',
                             )
@@ -829,7 +829,7 @@
                             )
                         "
                         @update:model-value="
-                            saveSingleValue(
+                            sebSettingsStore.saveSingleValue(
                                 'showInputLanguage',
                                 showInputLanguageVal ? 'true' : 'false',
                             )
@@ -876,7 +876,7 @@
                             variant="outlined"
                             density="compact"
                             @update:model-value="
-                                saveSingleValue(
+                                sebSettingsStore.saveSingleValue(
                                     'lockScreenBackgroundColor',
                                     lockScreenBackgroundColorVal,
                                 )
@@ -891,19 +891,11 @@
 </template>
 
 <script setup lang="ts">
-import * as sebSettingsService from "@/services/seb-server/sebSettingsService";
-import { useI18n } from "vue-i18n";
 import { stringToBoolean, translate } from "@/utils/generalUtils";
 import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums";
 import { ref, onBeforeMount } from "vue";
-import {
-    SEBSettingsValue,
-    SEBSettingsView,
-    SEBSettingAttribute,
-} from "@/models/seb-server/sebSettings";
 
-const i18n = useI18n();
 const sebSettingsStore = useSEBSettingsStore();
 
 // 0 and 1 is browserViewMode and 2 is touchOptimized=true / browserViewMode=null
@@ -950,164 +942,97 @@ const allowDictionaryLookupVal = ref<boolean>(false);
 
 const lockScreenBackgroundColorVal = ref<string>("#0000");
 
-// the parent component identifier
-let componentId: string;
-let singleValues: Map<string, SEBSettingsValue>;
-
 onBeforeMount(async () => {
     if (sebSettingsStore.selectedContainerId == null) {
         return;
     }
 
-    componentId = sebSettingsStore.selectedContainerId.toString();
+    await sebSettingsStore.fetchSingleValues(ViewType.USER_INTERFACE);
 
-    const userSettings: SEBSettingsView | null =
-        await sebSettingsService.getView(
-            ViewType.USER_INTERFACE,
-            componentId,
-            sebSettingsStore.isExam,
-        );
-    if (userSettings == null) {
-        return;
-    }
-
-    singleValues = new Map<string, SEBSettingsValue>(
-        Object.entries(userSettings.singleValues),
-    );
-    const attributes: Map<string, SEBSettingAttribute> = new Map<
-        string,
-        SEBSettingAttribute
-    >(Object.entries(userSettings.attributes));
-
-    browserViewModeVal.value = getSingleValue("browserViewMode").value;
-    touchOptimizedVal.value = stringToBoolean(
-        getSingleValue("touchOptimized").value,
-    );
-    mainBrowserWindowWidthVal.value = getSingleValue(
+    browserViewModeVal.value =
+        sebSettingsStore.getStringValue("browserViewMode");
+    touchOptimizedVal.value =
+        sebSettingsStore.getBooleanValue("touchOptimized");
+    mainBrowserWindowWidthVal.value = sebSettingsStore.getStringValue(
         "mainBrowserWindowWidth",
-    ).value;
-    attributes
-        .get("mainBrowserWindowWidth")
-        ?.resources?.split(",")
-        .forEach((item) => {
-            mainBrowserWindowWidthItems.value.push({
-                title: item,
-                value: item,
-            });
-        });
-    mainBrowserWindowHeightVal.value = getSingleValue(
+    );
+    sebSettingsStore.applyAttributes(
+        "mainBrowserWindowWidth",
+        mainBrowserWindowWidthItems.value,
+    );
+    mainBrowserWindowHeightVal.value = sebSettingsStore.getStringValue(
         "mainBrowserWindowHeight",
-    ).value;
-    attributes
-        .get("mainBrowserWindowHeight")
-        ?.resources?.split(",")
-        .forEach((item) => {
-            mainBrowserWindowHeightItems.value.push({
-                title: item,
-                value: item,
-            });
-        });
-    mainBrowserWindowPositioningVal.value = getSingleValue(
+    );
+    sebSettingsStore.applyAttributes(
+        "mainBrowserWindowHeight",
+        mainBrowserWindowHeightItems.value,
+    );
+    mainBrowserWindowPositioningVal.value = sebSettingsStore.getStringValue(
         "mainBrowserWindowPositioning",
-    ).value;
-    attributes
-        .get("mainBrowserWindowPositioning")
-        ?.resources?.split(",")
-        .forEach((item) => {
-            mainBrowserWindowPositioningItems.value.push({
-                title: translate(
-                    "sebSettings.userView.main_browser.pos_" + item,
-                    i18n,
-                ),
-                value: item,
-            });
-        });
+    );
+    sebSettingsStore.applyAttributes(
+        "mainBrowserWindowPositioning",
+        mainBrowserWindowPositioningItems.value,
+    );
+    enableBrowserWindowToolbarVal.value = sebSettingsStore.getBooleanValue(
+        "enableBrowserWindowToolbar",
+    );
+    browserWindowAllowAddressBarVal.value = sebSettingsStore.getBooleanValue(
+        "browserWindowAllowAddressBar",
+    );
+    newBrowserWindowAllowAddressBarVal.value = sebSettingsStore.getBooleanValue(
+        "newBrowserWindowAllowAddressBar",
+    );
+    allowDeveloperConsoleVal.value = sebSettingsStore.getBooleanValue(
+        "allowDeveloperConsole",
+    );
+    hideBrowserWindowToolbarVal.value = sebSettingsStore.getBooleanValue(
+        "hideBrowserWindowToolbar",
+    );
+    showMenuBarVal.value = sebSettingsStore.getBooleanValue("showMenuBar");
+    showTaskBarVal.value = sebSettingsStore.getBooleanValue("showTaskBar");
+    showSideMenuVal.value = sebSettingsStore.getBooleanValue("showSideMenu");
+    raiseHandButtonShowVal.value = sebSettingsStore.getBooleanValue(
+        "raiseHandButtonShow",
+    );
+    raiseHandButtonAlwaysPromptMessageVal.value =
+        sebSettingsStore.getBooleanValue("raiseHandButtonAlwaysPromptMessage");
+    allowWlanVal.value = sebSettingsStore.getBooleanValue("allowWlan");
+    showReloadButtonVal.value =
+        sebSettingsStore.getBooleanValue("showReloadButton");
+    showTimeVal.value = sebSettingsStore.getBooleanValue("showTime");
+    showInputLanguageVal.value = stringToBoolean("showInputLanguage");
 
-    enableBrowserWindowToolbarVal.value = stringToBoolean(
-        getSingleValue("enableBrowserWindowToolbar").value,
-    );
-    browserWindowAllowAddressBarVal.value = stringToBoolean(
-        getSingleValue("browserWindowAllowAddressBar").value,
-    );
-    newBrowserWindowAllowAddressBarVal.value = stringToBoolean(
-        getSingleValue("newBrowserWindowAllowAddressBar").value,
-    );
-    allowDeveloperConsoleVal.value = stringToBoolean(
-        getSingleValue("allowDeveloperConsole").value,
-    );
-    hideBrowserWindowToolbarVal.value = stringToBoolean(
-        getSingleValue("hideBrowserWindowToolbar").value,
-    );
-    showMenuBarVal.value = stringToBoolean(getSingleValue("showMenuBar").value);
-    showTaskBarVal.value = stringToBoolean(getSingleValue("showTaskBar").value);
-    showSideMenuVal.value = stringToBoolean(
-        getSingleValue("showSideMenu").value,
-    );
-    raiseHandButtonShowVal.value = stringToBoolean(
-        getSingleValue("raiseHandButtonShow").value,
-    );
-    raiseHandButtonAlwaysPromptMessageVal.value = stringToBoolean(
-        getSingleValue("raiseHandButtonAlwaysPromptMessage").value,
-    );
-    allowWlanVal.value = stringToBoolean(getSingleValue("allowWlan").value);
-    showReloadButtonVal.value = stringToBoolean(
-        getSingleValue("showReloadButton").value,
-    );
-    showTimeVal.value = stringToBoolean(getSingleValue("showTime").value);
-    showInputLanguageVal.value = stringToBoolean(
-        getSingleValue("showInputLanguage").value,
-    );
+    enableZoomPageVal.value =
+        sebSettingsStore.getBooleanValue("enableZoomPage");
+    enableZoomTextVal.value =
+        sebSettingsStore.getBooleanValue("enableZoomText");
 
-    enableZoomPageVal.value = stringToBoolean(
-        getSingleValue("enableZoomPage").value,
+    audioControlEnabledVal.value = sebSettingsStore.getBooleanValue(
+        "audioControlEnabled",
     );
-    enableZoomTextVal.value = stringToBoolean(
-        getSingleValue("enableZoomText").value,
+    audioMuteVal.value = sebSettingsStore.getBooleanValue("audioMute");
+    audioSetVolumeLevelVal.value = sebSettingsStore.getBooleanValue(
+        "audioSetVolumeLevel",
     );
+    audioVolumeLevelVal.value =
+        sebSettingsStore.getNumberValue("audioVolumeLevel");
 
-    audioControlEnabledVal.value = stringToBoolean(
-        getSingleValue("audioControlEnabled").value,
+    allowSpellCheckVal.value =
+        sebSettingsStore.getBooleanValue("allowSpellCheck");
+    allowDictionaryLookupVal.value = sebSettingsStore.getBooleanValue(
+        "allowDictionaryLookup",
     );
-    audioMuteVal.value = stringToBoolean(getSingleValue("audioMute").value);
-    audioSetVolumeLevelVal.value = stringToBoolean(
-        getSingleValue("audioSetVolumeLevel").value,
-    );
-    audioVolumeLevelVal.value = Number(
-        getSingleValue("audioVolumeLevel").value,
-    );
-
-    allowSpellCheckVal.value = stringToBoolean(
-        getSingleValue("allowSpellCheck").value,
-    );
-    allowDictionaryLookupVal.value = stringToBoolean(
-        getSingleValue("allowDictionaryLookup").value,
-    );
-    lockScreenBackgroundColorVal.value = getSingleValue(
+    lockScreenBackgroundColorVal.value = sebSettingsStore.getStringValue(
         "lockScreenBackgroundColor",
-    ).value;
+    );
 });
 
 async function saveBrowserViewMode(value: string) {
-    await saveSingleValue("browserViewMode", value);
-    await saveSingleValue("touchOptimized", value === "2" ? "true" : "false");
-}
-
-async function saveSingleValue(name: string, value: string) {
-    const setting: SEBSettingsValue = getSingleValue(name);
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        setting.id.toString(),
-        value,
-        sebSettingsStore.isExam,
+    await sebSettingsStore.saveSingleValue("browserViewMode", value);
+    await sebSettingsStore.saveSingleValue(
+        "touchOptimized",
+        value === "2" ? "true" : "false",
     );
-}
-
-function getSingleValue(name: string): SEBSettingsValue {
-    const value = singleValues.get(name);
-    if (!value) {
-        throw new Error("No Single Value" + name + " found");
-    }
-
-    return value;
 }
 </script>

@@ -3,6 +3,7 @@ import { ref, computed } from "vue";
 import {
     SEBSettingsValue,
     SEBSettingsView,
+    SEBSettingAttribute,
 } from "@/models/seb-server/sebSettings";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums";
 import * as sebSettingsService from "@/services/seb-server/sebSettingsService";
@@ -45,9 +46,16 @@ export const useSEBSettingsStore = defineStore("sebSettings", () => {
         SEBSettingsValue
     >();
 
+    const attributes: Map<string, SEBSettingAttribute> = new Map<
+        string,
+        SEBSettingAttribute
+    >();
+
     // Single Value Settings
     async function fetchSingleValues(view: ViewType) {
         if (selectedContainerId.value == null) return;
+
+        console.info("**** fetch: " + view);
 
         const fetchedValues: SEBSettingsView | null =
             await sebSettingsService.getView(
@@ -62,9 +70,15 @@ export const useSEBSettingsStore = defineStore("sebSettings", () => {
         const newMap = new Map<string, SEBSettingsValue>(
             Object.entries(fetchedValues.singleValues),
         );
+        const newAttrMap = new Map<string, SEBSettingAttribute>(
+            Object.entries(fetchedValues.attributes),
+        );
 
         newMap.forEach((v, k) => {
             singleValues.set(k, v);
+        });
+        newAttrMap.forEach((v, k) => {
+            attributes.set(k, v);
         });
     }
 
@@ -85,6 +99,10 @@ export const useSEBSettingsStore = defineStore("sebSettings", () => {
         return stringToBoolean(getStringValue(name));
     }
 
+    function getNumberValue(name: string): number {
+        return Number(getStringValue(name));
+    }
+
     async function saveSingleValue(name: string, value: string) {
         if (selectedContainerId.value == null) return;
 
@@ -100,6 +118,21 @@ export const useSEBSettingsStore = defineStore("sebSettings", () => {
             // @anhefti TODO propagate error message
             console.error(err);
         }
+    }
+
+    function applyAttributes(
+        name: string,
+        items: { title: string; value: string }[],
+    ) {
+        attributes
+            .get(name)
+            ?.resources?.split(",")
+            .forEach((item) => {
+                items.push({
+                    title: item,
+                    value: item,
+                });
+            });
     }
 
     const $reset = () => {
@@ -121,11 +154,14 @@ export const useSEBSettingsStore = defineStore("sebSettings", () => {
         activeSEBClientConnection,
         dialogTitle,
         singleValues,
+        attributes,
         fetchSingleValues,
         getSingleValue,
         getStringValue,
         getBooleanValue,
+        getNumberValue,
         saveSingleValue,
+        applyAttributes,
         $reset,
     };
 });
