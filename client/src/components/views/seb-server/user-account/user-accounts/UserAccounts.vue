@@ -124,7 +124,7 @@ const {
     onClearSearch,
     setFilters,
     resetFilters,
-} = useUrlTableState(tableData, async () => {
+} = useUrlTableState(async () => {
     await fetchUserAccounts();
 }, [STATUS_FILTER_KEY, INSTITUTION_FILTER_KEY]);
 

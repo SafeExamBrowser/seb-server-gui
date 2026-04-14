@@ -12,7 +12,7 @@
                         :filter-sections="filterSections"
                         :filter-values="selectedFilters"
                         @search="onSearch"
-                        @clear="onClear"
+                        @clear="onClearSearch"
                         @update:date-value="setDate"
                         @update:filter-values="setFilters"
                         @clear-filters="resetFilters"
@@ -105,22 +105,17 @@ const {
     options,
     loadItems,
     onSearch,
+    onClearSearch,
     setFilters,
     resetFilters,
-    clearAll,
     setDate,
 } = useUrlTableState(
-    tableData,
     async () => {
         await fetchExams();
     },
     [TYPE_FILTER_KEY, EXAM_STATUS_FILTER_KEY],
     "startDate",
 );
-
-async function onClear() {
-    await clearAll();
-}
 
 const selectedType = computed(() => selectedFilters.value[TYPE_FILTER_KEY]);
 const selectedStatus = computed(

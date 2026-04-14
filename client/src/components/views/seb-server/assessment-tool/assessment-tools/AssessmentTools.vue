@@ -125,7 +125,7 @@ const {
     onClearSearch,
     setFilters,
     resetFilters,
-} = useUrlTableState(tableData, async () => {
+} = useUrlTableState(async () => {
     await fetchAssessmentTools();
 }, [STATUS_FILTER_KEY, INSTITUTION_FILTER_KEY, LMS_TYPE_FILTER_KEY]);
 

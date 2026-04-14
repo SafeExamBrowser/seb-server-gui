@@ -91,7 +91,7 @@ const {
     loadItems,
     onSearch,
     onClearSearch,
-} = useUrlTableState(tableData, async () => {
+} = useUrlTableState(async () => {
     await fetchCertificates();
 });
 
