@@ -27,30 +27,41 @@
                             <div
                                 class="d-flex justify-center align-center ga-1"
                             >
-                                <v-btn
+                                <v-hover
                                     v-for="action in visibleActions(
                                         getRawItem(item),
                                     )"
                                     :key="action.key"
-                                    :icon="action.icon"
-                                    :disabled="
-                                        action.disabled?.(getRawItem(item)) ??
-                                        false
-                                    "
-                                    :aria-label="
-                                        action.labelKey
-                                            ? $t(action.labelKey)
-                                            : undefined
-                                    "
-                                    variant="text"
-                                    density="comfortable"
-                                    size="small"
-                                    rounded="lg"
-                                    :color="action.color ?? 'primary'"
-                                    @click.stop="
-                                        action.onClick(getRawItem(item))
-                                    "
-                                />
+                                    v-slot="{ isHovering, props: hoverProps }"
+                                >
+                                    <v-btn
+                                        v-bind="hoverProps"
+                                        :icon="action.icon"
+                                        :disabled="
+                                            action.disabled?.(
+                                                getRawItem(item),
+                                            ) ?? false
+                                        "
+                                        :aria-label="
+                                            action.labelKey
+                                                ? $t(action.labelKey)
+                                                : undefined
+                                        "
+                                        variant="text"
+                                        density="comfortable"
+                                        size="small"
+                                        rounded="lg"
+                                        :base-color="
+                                            getActionButtonColor(
+                                                action,
+                                                isHovering,
+                                            )
+                                        "
+                                        @click.stop="
+                                            action.onClick(getRawItem(item))
+                                        "
+                                    />
+                                </v-hover>
                             </div>
                         </template>
 
@@ -86,7 +97,7 @@
                             <v-pagination
                                 v-model="currentPage"
                                 :length="pageCount"
-                                :total-visible="5"
+                                :total-visible="10"
                                 active-color="primary"
                                 density="comfortable"
                                 rounded="lg"
@@ -222,6 +233,17 @@ function formatCell(key: string, item: TableItem): string {
 function visibleActions(item: TableItem): TableAction[] {
     if (!props.actions) return [];
     return props.actions.filter((a) => a.visible?.(item) ?? true);
+}
+
+function getActionButtonColor(
+    action: TableAction,
+    isHovering: boolean | null,
+): string {
+    if (isHovering) {
+        return action.color ?? "primary";
+    }
+
+    return "rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity))";
 }
 
 function getCellClasses(header: TableHeader): string[] {
