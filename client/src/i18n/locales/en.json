@@ -66,6 +66,7 @@
         "loading": "Loading",
         "true": "Yes",
         "false": "No",
+        "itemsPerPage": "Items Per Page",
         "userRoles": {
             "SEB_SERVER_ADMIN": "Server Administrator",
             "INSTITUTIONAL_ADMIN": "Institutional Administrator",

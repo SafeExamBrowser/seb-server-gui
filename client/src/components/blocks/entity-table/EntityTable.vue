@@ -9,15 +9,20 @@
             :loading="loading"
             :loading-text="$t('general.loading')"
             :no-data-text="$t('general.noData')"
+            hover
             hide-default-footer
             @update:options="emit('update:options', $event)"
         >
             <template #item="{ item }">
                 <tr
-                    :class="{ 'cursor-pointer': !!detailRoute }"
+                    :class="{ 'v-data-table__tr--clickable': !!detailRoute }"
                     @click="onRowClick(getRawItem(item))"
                 >
-                    <td v-for="header in computedHeaders" :key="header.key">
+                    <td
+                        v-for="header in computedHeaders"
+                        :key="header.key"
+                        :class="getCellClasses(header)"
+                    >
                         <template v-if="header.key === '_actions'">
                             <div
                                 class="d-flex justify-center align-center ga-1"
@@ -40,8 +45,8 @@
                                     variant="text"
                                     density="comfortable"
                                     size="small"
-                                    class="action-btn"
-                                    :style="actionHoverStyle(action)"
+                                    rounded="lg"
+                                    :color="action.color ?? 'primary'"
                                     @click.stop="
                                         action.onClick(getRawItem(item))
                                     "
@@ -50,55 +55,78 @@
                         </template>
 
                         <template v-else>
-                            <slot
-                                :name="`cell-${header.key}`"
-                                :item="getRawItem(item)"
-                                :value="getRawItem(item)[header.key]"
-                                :formatted-value="
-                                    formatCell(header.key, getRawItem(item))
-                                "
-                                :header="header"
-                            >
-                                {{ formatCell(header.key, getRawItem(item)) }}
-                            </slot>
+                            <div :class="getCellContentClasses(header)">
+                                <slot
+                                    :name="`cell-${header.key}`"
+                                    :item="getRawItem(item)"
+                                    :value="getRawItem(item)[header.key]"
+                                    :formatted-value="
+                                        formatCell(header.key, getRawItem(item))
+                                    "
+                                    :header="header"
+                                >
+                                    {{
+                                        formatCell(header.key, getRawItem(item))
+                                    }}
+                                </slot>
+                            </div>
                         </template>
                     </td>
                 </tr>
             </template>
 
             <template #bottom>
-                <div class="table-footer">
-                    <div class="table-footer__left-spacer" />
+                <div class="pt-4">
+                    <v-divider />
 
-                    <div class="table-footer__pagination-center">
-                        <v-pagination
-                            v-model="currentPage"
-                            :length="pageCount"
-                            :total-visible="5"
-                            density="comfortable"
-                            rounded="circle"
-                            prev-icon="mdi-chevron-left"
-                            next-icon="mdi-chevron-right"
-                            class="table-footer__pagination"
-                        />
-                    </div>
+                    <v-row no-gutters class="px-5 pt-4 pb-3 align-center">
+                        <v-col cols="12" md="4" class="d-none d-md-block" />
 
-                    <div class="table-footer__right-controls">
-                        <div class="table-footer__page-size">
-                            <span class="table-footer__page-size-label">
-                                Items per page
-                            </span>
-
-                            <v-select
-                                v-model="localItemsPerPage"
-                                :items="itemsPerPageOptions"
-                                variant="outlined"
-                                density="compact"
-                                hide-details
-                                class="table-footer__page-size-select"
+                        <v-col cols="12" md="4" class="d-flex justify-center">
+                            <v-pagination
+                                v-model="currentPage"
+                                :length="pageCount"
+                                :total-visible="5"
+                                active-color="primary"
+                                density="comfortable"
+                                rounded="lg"
+                                variant="text"
+                                prev-icon="mdi-chevron-left"
+                                next-icon="mdi-chevron-right"
+                                class="text-medium-emphasis"
                             />
-                        </div>
-                    </div>
+                        </v-col>
+
+                        <v-col
+                            cols="12"
+                            md="4"
+                            class="d-flex justify-center justify-md-end"
+                        >
+                            <div
+                                class="d-flex flex-wrap align-center justify-center justify-md-end ga-3"
+                            >
+                                <span
+                                    class="text-body-2 text-medium-emphasis font-weight-medium text-no-wrap"
+                                >
+                                    {{ translate("general.itemsPerPage") }}
+                                </span>
+
+                                <v-select
+                                    v-model="localItemsPerPage"
+                                    :items="itemsPerPageOptions"
+                                    base-color="primary"
+                                    color="primary"
+                                    max-width="90"
+                                    min-width="90"
+                                    variant="outlined"
+                                    density="compact"
+                                    rounded="lg"
+                                    hide-details
+                                    class="text-body-2 font-weight-semibold"
+                                />
+                            </div>
+                        </v-col>
+                    </v-row>
                 </div>
             </template>
         </v-data-table-server>
@@ -116,6 +144,7 @@ import type {
 import { useTableNavigation } from "@/components/blocks/entity-table/composables/useTableNavigation.ts";
 import type { ServerTablePaging } from "@/models/types.ts";
 import type { RouteName } from "@/router/routeNames.ts";
+import { translate } from "@/utils/generalUtils.ts";
 
 const props = withDefaults(
     defineProps<{
@@ -190,14 +219,37 @@ function formatCell(key: string, item: TableItem): string {
     return String(value);
 }
 
-function actionHoverStyle(action: TableAction): Record<string, string> {
-    const color = action.color ?? "primary";
-    return { "--action-hover-color": `var(--v-theme-${color})` };
-}
-
 function visibleActions(item: TableItem): TableAction[] {
     if (!props.actions) return [];
     return props.actions.filter((a) => a.visible?.(item) ?? true);
+}
+
+function getCellClasses(header: TableHeader): string[] {
+    const classes: string[] = [];
+
+    if (header.align) {
+        classes.push(`v-data-table-column--align-${header.align}`);
+    }
+
+    return classes;
+}
+
+function getCellContentClasses(header: TableHeader): string[] {
+    if (header.align === "center") {
+        return ["d-flex", "align-center", "justify-center", "text-primary"];
+    }
+
+    if (header.align === "end") {
+        return [
+            "d-flex",
+            "align-center",
+            "justify-end",
+            "text-end",
+            "text-primary",
+        ];
+    }
+
+    return ["d-flex", "align-center", "justify-start", "text-primary"];
 }
 
 function onRowClick(item: TableItem) {
@@ -247,127 +299,3 @@ const internalItemsLength = computed(() => {
     return props.pageCount * perPage;
 });
 </script>
-
-<style scoped>
-:deep(.v-table__wrapper) {
-    min-height: calc(56px + 5 * 52px);
-}
-
-:deep(tbody tr:hover) {
-    background-color: rgba(var(--v-theme-primary), 0.06);
-}
-
-:deep(tbody td) {
-    color: rgb(var(--v-theme-primary));
-    border-bottom: 1px solid rgba(var(--v-theme-on-surface), 0.12);
-}
-
-:deep(.v-data-table-rows-no-data td) {
-    color: rgba(var(--v-theme-on-surface), 0.6);
-    text-align: center;
-}
-
-.action-btn {
-    color: rgba(var(--v-theme-on-surface), 0.6);
-    transition:
-        color 0.2s ease,
-        background-color 0.2s ease;
-}
-
-.action-btn:hover {
-    color: rgb(var(--action-hover-color, var(--v-theme-primary)));
-    background-color: rgba(
-        var(--action-hover-color, var(--v-theme-primary)),
-        0.1
-    );
-}
-
-.table-footer {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-    width: 100%;
-    padding: 1rem 1.25rem 0.75rem 1.25rem;
-    border-top: 1px solid rgba(var(--v-theme-on-surface), 0.12);
-    background: rgb(var(--v-theme-surface));
-    column-gap: 1rem;
-}
-
-.table-footer__left-spacer {
-    min-width: 0;
-}
-
-.table-footer__pagination-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.table-footer__right-controls {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    min-width: 0;
-}
-
-.table-footer__page-size {
-    display: flex;
-    align-items: center;
-    gap: 0.65rem;
-}
-
-.table-footer__page-size-label {
-    color: rgba(var(--v-theme-on-surface), 0.6);
-    font-size: 0.9rem;
-    font-weight: 500;
-    white-space: nowrap;
-}
-
-.table-footer__page-size-select {
-    width: 90px;
-}
-
-:deep(.table-footer__page-size-select .v-field) {
-    border-radius: 10px;
-}
-
-:deep(.table-footer__page-size-select .v-field__input) {
-    min-height: 38px;
-    color: rgb(var(--v-theme-primary));
-    font-weight: 600;
-}
-
-:deep(.table-footer__pagination .v-btn) {
-    min-width: 34px;
-    width: 34px;
-    height: 34px;
-    border-radius: 10px;
-    color: rgba(var(--v-theme-on-surface), 0.6);
-    font-weight: 600;
-}
-
-:deep(.table-footer__pagination .v-btn:hover) {
-    background-color: rgba(var(--v-theme-primary), 0.08);
-    color: rgb(var(--v-theme-primary));
-}
-
-:deep(.table-footer__pagination .v-btn--active) {
-    background-color: rgba(var(--v-theme-primary), 0.06) !important;
-    color: rgb(var(--v-theme-primary)) !important;
-}
-
-@media (max-width: 960px) {
-    .table-footer {
-        grid-template-columns: 1fr;
-        row-gap: 0.75rem;
-    }
-
-    .table-footer__pagination-center {
-        justify-content: center;
-    }
-
-    .table-footer__right-controls {
-        justify-content: center;
-    }
-}
-</style>
