@@ -96,7 +96,7 @@ const selectedTemplate = ref<ExamTemplate | null>(null);
 //= ======================events & watchers=======================
 onBeforeMount(async () => {
     const examTemplatesResponse: ExamTemplates | null =
-        await examTemplateService.getExamTemplates();
+        await examTemplateService.getExamTemplates({});
     if (examTemplatesResponse == null) {
         return;
     }

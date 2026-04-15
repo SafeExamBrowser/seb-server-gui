@@ -16,6 +16,7 @@ import { OptionalParGetCertificates } from "@/models/seb-server/certificate";
 import { OptionalParGetAssessmentTool } from "@/models/seb-server/assessmentTool";
 import { OptionalParSearchSessions } from "@/models/screen-proctoring/optionalParamters";
 import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums.ts";
+import { BasicListParams, SortOrder } from "@/services/types";
 
 type ItemsLike = number | { length: number } | null | undefined;
 type ItemsPerPageOption = { value: number; title: string };
@@ -362,3 +363,22 @@ export function assignCertificateSelectPagingOptions(
     }
     return opt;
 }
+
+const sortOrderToSortString = (sortOrder: SortOrder): string => {
+    return `${sortOrder.order === "desc" ? "" : "-"}${sortOrder.key}`;
+};
+
+// TODO @Andrei: most of the code in this file can be replaced by using `normaliseBasicListParams` (see `getExamTemplates` for an example)
+export const normaliseBasicListParams = (basicListParams?: BasicListParams) => {
+    if (!basicListParams) {
+        return {};
+    }
+
+    return {
+        page_number: basicListParams.pageNumber,
+        page_size: basicListParams.pageSize,
+        sort: basicListParams.sortOrder
+            ? sortOrderToSortString(basicListParams.sortOrder)
+            : undefined,
+    };
+};
