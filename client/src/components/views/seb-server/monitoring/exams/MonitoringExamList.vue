@@ -1,63 +1,51 @@
 <template>
     <BasicPage :title="$t('titles.monitoring')" :bread-crumb="breadCrumb">
+        <template #PanelTop>
+            <SearchBar
+                v-model="searchInputValue"
+                search-text="monitoringExams.info.examName"
+                search-title="monitoringExams.info.examNameSearchPlaceholder"
+                date-title="monitoringExams.info.examStartSearchPlaceholder"
+                :date-value="dateValue"
+                :filter-sections="filterSections"
+                :filter-values="selectedFilters"
+                @search="onSearch"
+                @clear="onClearSearch"
+                @update:date-value="setDate"
+                @update:filter-values="setFilters"
+                @clear-filters="resetFilters"
+            />
+        </template>
         <template #PanelMain>
-            <div class="d-flex flex-column fill-height ga-4">
-                <v-card elevation="4" rounded="lg" class="flex-shrink-0">
-                    <SearchBar
-                        v-model="searchInputValue"
-                        search-text="monitoringExams.info.examName"
-                        search-title="monitoringExams.info.examNameSearchPlaceholder"
-                        date-title="monitoringExams.info.examStartSearchPlaceholder"
-                        :date-value="dateValue"
-                        :filter-sections="filterSections"
-                        :filter-values="selectedFilters"
-                        @search="onSearch"
-                        @clear="onClearSearch"
-                        @update:date-value="setDate"
-                        @update:filter-values="setFilters"
-                        @clear-filters="resetFilters"
-                    />
-                </v-card>
+            <div v-if="error" class="pa-4">{{ error }}</div>
 
-                <v-card
-                    elevation="4"
-                    rounded="lg"
-                    class="flex-grow-1 overflow-y-auto"
-                    style="min-height: 0"
+            <LoadingFallbackComponent :loading="false" :errors="[]">
+                <EntityTable
+                    class="pl-6 pr-6 pt-3"
+                    :headers="tableHeaders"
+                    :items="tableData?.content ?? []"
+                    :page-count="pageCount"
+                    :items-per-page="options.itemsPerPage"
+                    :options="options"
+                    :loading="loading"
+                    :detail-route="getRouteName('MonitoringOverview')"
+                    route-param-key="examId"
+                    item-identifier-key="id"
+                    :cell-formatters="cellFormatters"
+                    @update:options="loadItems"
                 >
-                    <div v-if="error" class="pa-4">{{ error }}</div>
+                    <template #cell-type="{ formattedValue }">
+                        <EnumChip :label="formattedValue" />
+                    </template>
 
-                    <LoadingFallbackComponent :loading="false" :errors="[]">
-                        <EntityTable
-                            class="pl-6 pr-6 pt-3"
-                            :headers="tableHeaders"
-                            :items="tableData?.content ?? []"
-                            :page-count="pageCount"
-                            :items-per-page="options.itemsPerPage"
-                            :options="options"
-                            :loading="loading"
-                            :detail-route="getRouteName('MonitoringOverview')"
-                            route-param-key="examId"
-                            item-identifier-key="id"
-                            :cell-formatters="cellFormatters"
-                            @update:options="loadItems"
-                        >
-                            <template #cell-type="{ formattedValue }">
-                                <EnumChip :label="formattedValue" />
-                            </template>
-
-                            <template #cell-status="{ value, formattedValue }">
-                                <EnumChip
-                                    :label="formattedValue"
-                                    :color="
-                                        examStatusColor[value as ExamStatusEnum]
-                                    "
-                                />
-                            </template>
-                        </EntityTable>
-                    </LoadingFallbackComponent>
-                </v-card>
-            </div>
+                    <template #cell-status="{ value, formattedValue }">
+                        <EnumChip
+                            :label="formattedValue"
+                            :color="examStatusColor[value as ExamStatusEnum]"
+                        />
+                    </template>
+                </EntityTable>
+            </LoadingFallbackComponent>
         </template>
     </BasicPage>
 </template>
