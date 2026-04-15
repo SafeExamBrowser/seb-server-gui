@@ -52,8 +52,8 @@ export const useSEBSettingsStore = defineStore("sebSettings", () => {
     >();
 
     // Single Value Settings
-    async function fetchSingleValues(view: ViewType) {
-        if (selectedContainerId.value == null) return;
+    async function fetchSingleValues(view: ViewType): Promise<boolean> {
+        if (selectedContainerId.value == null) return false;
 
         console.info("**** fetch: " + view);
 
@@ -64,7 +64,7 @@ export const useSEBSettingsStore = defineStore("sebSettings", () => {
                 isExam.value,
             );
         if (fetchedValues == null) {
-            return;
+            return false;
         }
 
         const newMap = new Map<string, SEBSettingsValue>(
@@ -80,6 +80,12 @@ export const useSEBSettingsStore = defineStore("sebSettings", () => {
         newAttrMap.forEach((v, k) => {
             attributes.set(k, v);
         });
+
+        console.info("**** fetched: " + view);
+        singleValues.forEach((key) => {
+            console.info(key);
+        });
+        return true;
     }
 
     function getSingleValue(name: string): SEBSettingsValue {
