@@ -1032,9 +1032,11 @@
             "agent": "User Agent",
             "links": {
                 "title": "Links requesting to be opened in a new browser window (Mac)",
-                "policy_0": "Get generally blocked",
-                "policy_1": "Open in same window",
-                "policy_2": "Open in new window",
+                "policy": {
+                    "0": "Get generally blocked",
+                    "1": "Open in same window",
+                    "2": "Open in new window"
+                },
                 "block": "Block when directing to a different server",
                 "block_tooltip": "USE WITH CARE: Hyperlinks invoked by JavaScript/plug-ins which direct to a different host than the one of the current main page will be ignored."
             },

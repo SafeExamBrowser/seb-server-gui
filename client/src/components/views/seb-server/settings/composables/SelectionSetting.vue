@@ -1,17 +1,18 @@
 <template>
-    <v-col class="pt-1 pb-1 pl-0">
-        <v-checkbox-btn
-            v-model="boolVal"
-            max-width="600"
-            :disabled="sebSettingsStore.readonly || disabled"
+    <v-col>
+        <v-select
+            v-model="selectValue"
+            density="compact"
             :label="translate(label)"
+            :disabled="sebSettingsStore.readonly || disabled"
+            hide-details
+            :items="selectAttributes"
+            variant="outlined"
             @update:model-value="
-                sebSettingsStore.saveSingleValue(
-                    name,
-                    boolVal ? 'true' : 'false',
-                )
+                sebSettingsStore.saveSingleValue(name, selectValue)
             "
-        ></v-checkbox-btn>
+        >
+        </v-select>
         <v-tooltip
             v-if="tooltip"
             activator="parent"
@@ -29,20 +30,27 @@ import { translate } from "@/utils/generalUtils";
 import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 
 const sebSettingsStore = useSEBSettingsStore();
-const boolVal = ref<boolean>(false);
-
 const props = defineProps<{
     name: string;
     label: string;
+    labels?: boolean;
     tooltip?: boolean;
     disabled?: boolean;
 }>();
 
+const selectValue = ref<string>("");
+const selectAttributes = ref<{ title: string; value: string }[]>([]);
+
 defineExpose({
-    boolVal,
+    selectValue,
 });
 
 onMounted(() => {
-    boolVal.value = sebSettingsStore.getBooleanValue(props.name);
+    selectValue.value = sebSettingsStore.getStringValue(props.name);
+    sebSettingsStore.applyAttributes(
+        props.name,
+        props.labels ? props.label : null,
+        selectAttributes.value,
+    );
 });
 </script>

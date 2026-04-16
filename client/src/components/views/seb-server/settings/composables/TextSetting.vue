@@ -1,17 +1,15 @@
 <template>
-    <v-col class="pt-1 pb-1 pl-0">
-        <v-checkbox-btn
-            v-model="boolVal"
-            max-width="600"
+    <v-col class="pt-1 pb-1">
+        <v-text-field
+            v-model="textVal"
+            density="compact"
             :disabled="sebSettingsStore.readonly || disabled"
-            :label="translate(label)"
-            @update:model-value="
-                sebSettingsStore.saveSingleValue(
-                    name,
-                    boolVal ? 'true' : 'false',
-                )
-            "
-        ></v-checkbox-btn>
+            :label="showLabel ? translate(label) : ''"
+            variant="outlined"
+            hide-details
+            @update:focused="saveOnFocusLost($event)"
+        >
+        </v-text-field>
         <v-tooltip
             v-if="tooltip"
             activator="parent"
@@ -29,20 +27,31 @@ import { translate } from "@/utils/generalUtils";
 import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 
 const sebSettingsStore = useSEBSettingsStore();
-const boolVal = ref<boolean>(false);
+const textVal = ref<string>("");
 
 const props = defineProps<{
     name: string;
     label: string;
+    showLabel?: boolean;
     tooltip?: boolean;
     disabled?: boolean;
 }>();
 
 defineExpose({
-    boolVal,
+    textVal,
 });
 
 onMounted(() => {
-    boolVal.value = sebSettingsStore.getBooleanValue(props.name);
+    textVal.value = sebSettingsStore.getStringValue(props.name);
 });
+
+async function saveOnFocusLost(focusIn: boolean) {
+    if (!focusIn) {
+        if (textVal.value) {
+            sebSettingsStore.saveSingleValue(props.name, textVal.value);
+        } else {
+            sebSettingsStore.saveSingleValue(props.name, "");
+        }
+    }
+}
 </script>

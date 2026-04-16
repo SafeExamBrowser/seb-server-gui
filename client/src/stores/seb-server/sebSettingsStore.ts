@@ -8,6 +8,7 @@ import {
 import { ViewType } from "@/models/seb-server/sebSettingsEnums";
 import * as sebSettingsService from "@/services/seb-server/sebSettingsService";
 import { stringToBoolean } from "@/utils/generalUtils";
+import { translate } from "@/utils/generalUtils";
 
 const getInitialState = () => ({
     isReady: false,
@@ -82,9 +83,6 @@ export const useSEBSettingsStore = defineStore("sebSettings", () => {
         });
 
         console.info("**** fetched: " + view);
-        singleValues.forEach((key) => {
-            console.info(key);
-        });
         return true;
     }
 
@@ -128,6 +126,7 @@ export const useSEBSettingsStore = defineStore("sebSettings", () => {
 
     function applyAttributes(
         name: string,
+        labels: string | null,
         items: { title: string; value: string }[],
     ) {
         attributes
@@ -135,7 +134,8 @@ export const useSEBSettingsStore = defineStore("sebSettings", () => {
             ?.resources?.split(",")
             .forEach((item) => {
                 items.push({
-                    title: item,
+                    title:
+                        labels != null ? translate(labels + "_" + item) : item,
                     value: item,
                 });
             });

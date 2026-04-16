@@ -5,16 +5,16 @@
             <v-col>
                 <v-text-field
                     ref="passwordFieldRef"
-                    v-model="passwordVal"
+                    v-model="password"
                     :label="translate(label)"
                     density="compact"
                     :rules="[passwordRule]"
                     :type="passwordVisible ? 'text' : 'password'"
                     validate-on="eager"
                     variant="outlined"
-                    :disabled="sebSettingsStore.readonly"
+                    :disabled="sebSettingsStore.readonly || disabled"
                     max-width="600"
-                    @update:focused="savePassword($event, passwordVal)"
+                    @update:focused="savePassword($event)"
                 >
                     <template #append-inner>
                         <v-btn
@@ -39,10 +39,11 @@
                     required
                     :rules="[confirmPasswordRule]"
                     :type="confirmPasswordVisible ? 'text' : 'password'"
+                    :disabled="sebSettingsStore.readonly || disabled"
                     validate-on="eager"
                     variant="outlined"
                     max-width="600"
-                    @update:focused="savePassword($event, passwordVal)"
+                    @update:focused="savePassword($event)"
                 >
                     <template #append-inner>
                         <v-btn
@@ -73,7 +74,7 @@ import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 const sebSettingsStore = useSEBSettingsStore();
 const i18n = useI18n();
 
-const passwordVal = ref<string>("");
+const password = ref<string>("");
 const passwordVisible = ref<boolean>(false);
 const confirmPassword = ref<string>("");
 const confirmPasswordVisible = ref<boolean>(false);
@@ -82,18 +83,22 @@ const props = defineProps<{
     name: string;
     label: string;
     confirmLabel: string;
-    tooltip: string | null;
+    disabled?: boolean;
 }>();
+
+defineExpose({
+    password,
+});
 
 let clearValidations = false;
 
 const passwordRule = () => {
-    if (!passwordVal.value) return true;
-    if (passwordVal.value.trim() !== passwordVal.value) {
+    if (!password.value) return true;
+    if (password.value.trim() !== password.value) {
         return translate("sebSettings.pwdSpaces", i18n);
     }
 
-    if (passwordVal.value === confirmPassword.value) {
+    if (password.value === confirmPassword.value) {
         if (!clearValidations) {
             clearValidations = true;
             confirmPasswordFieldRef.value?.validate?.();
@@ -105,7 +110,7 @@ const passwordRule = () => {
 };
 
 const confirmPasswordRule = () => {
-    if (passwordVal.value === confirmPassword.value) {
+    if (password.value === confirmPassword.value) {
         if (!clearValidations) {
             clearValidations = true;
             passwordFieldRef.value?.validate?.();
@@ -119,17 +124,18 @@ const passwordFieldRef = ref();
 const confirmPasswordFieldRef = ref();
 
 onMounted(() => {
-    passwordVal.value = sebSettingsStore.getStringValue(props.name);
+    password.value = sebSettingsStore.getStringValue(props.name);
     confirmPassword.value = sebSettingsStore.getStringValue(props.name);
 });
 
-async function savePassword(focusIn: boolean, value: string) {
-    if (
-        !focusIn &&
-        passwordVal.value.trim() === passwordVal.value &&
-        passwordVal.value === confirmPassword.value
-    ) {
-        sebSettingsStore.saveSingleValue(props.name, value);
+async function savePassword(focusIn: boolean) {
+    if (focusIn) return;
+    if (password.value === confirmPassword.value) {
+        if (!password.value) {
+            sebSettingsStore.saveSingleValue(props.name, "");
+        } else if (password.value.trim() === password.value) {
+            sebSettingsStore.saveSingleValue(props.name, password.value);
+        }
     }
 }
 </script>

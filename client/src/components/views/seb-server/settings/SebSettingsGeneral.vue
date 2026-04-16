@@ -12,7 +12,7 @@
             <CheckboxSetting
                 name="allowQuit"
                 label="sebSettings.generalView.allowQuit"
-                tooltip="sebSettings.generalView.allowQuit_tooltip"
+                :tooltip="true"
             />
         </v-row>
         <v-row>
@@ -37,14 +37,10 @@ const sebSettingsStore = useSEBSettingsStore();
 const fetched = ref<boolean>(false);
 
 onBeforeMount(async () => {
-    initSettings();
-});
-
-async function initSettings() {
     if (sebSettingsStore.selectedContainerId == null) {
         return;
     }
 
     fetched.value = await sebSettingsStore.fetchSingleValues(ViewType.GENERAL);
-}
+});
 </script>
