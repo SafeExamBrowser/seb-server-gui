@@ -4,6 +4,8 @@ import {
     SEBSettingsValue,
     SEBSettingsView,
     SEBSettingAttribute,
+    SEBSettingTableValue,
+    SEBSettingsTableRowValues,
 } from "@/models/seb-server/sebSettings";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums";
 import * as sebSettingsService from "@/services/seb-server/sebSettingsService";
@@ -42,15 +44,9 @@ export const useSEBSettingsStore = defineStore("sebSettings", () => {
     const dialogTitle = ref<string | null>(getInitialState().dialogTitle);
     const ignoreSEBService = ref<boolean>(getInitialState().ignoreSEBService);
 
-    const singleValues: Map<string, SEBSettingsValue> = new Map<
-        string,
-        SEBSettingsValue
-    >();
-
-    const attributes: Map<string, SEBSettingAttribute> = new Map<
-        string,
-        SEBSettingAttribute
-    >();
+    const singleValues = new Map<string, SEBSettingsValue>();
+    const tableValues = new Map<string, SEBSettingsTableRowValues[]>();
+    const attributes = new Map<string, SEBSettingAttribute>();
 
     // Single Value Settings
     async function fetchSingleValues(view: ViewType): Promise<boolean> {
@@ -71,12 +67,18 @@ export const useSEBSettingsStore = defineStore("sebSettings", () => {
         const newMap = new Map<string, SEBSettingsValue>(
             Object.entries(fetchedValues.singleValues),
         );
+        const newTabMap = new Map<string, SEBSettingsTableRowValues[]>(
+            Object.entries(fetchedValues.tableValues),
+        );
         const newAttrMap = new Map<string, SEBSettingAttribute>(
             Object.entries(fetchedValues.attributes),
         );
 
         newMap.forEach((v, k) => {
             singleValues.set(k, v);
+        });
+        newTabMap.forEach((v, k) => {
+            tableValues.set(k, v);
         });
         newAttrMap.forEach((v, k) => {
             attributes.set(k, v);
@@ -124,6 +126,52 @@ export const useSEBSettingsStore = defineStore("sebSettings", () => {
         }
     }
 
+    async function saveTableRow(values: SEBSettingTableValue[]) {
+        if (selectedContainerId.value == null) return;
+
+        const containerId = selectedContainerId.value.toString();
+
+        try {
+            values.forEach((tableValue) => {
+                sebSettingsService.updateSEBSettingValue(
+                    containerId,
+                    tableValue.id.toString(),
+                    tableValue.value,
+                    isExam.value,
+                );
+            });
+        } catch (err) {
+            // @anhefti TODO propagate error message
+            console.error(err);
+        }
+    }
+
+    async function addTableRow(
+        name: string,
+    ): Promise<SEBSettingsTableRowValues | null> {
+        if (selectedContainerId.value == null) return null;
+
+        return await sebSettingsService.addTableRow(
+            selectedContainerId.value.toString(),
+            name,
+            isExam.value,
+        );
+    }
+
+    async function deleteTableRow(
+        name: string,
+        index: number,
+    ): Promise<SEBSettingsTableRowValues[] | null> {
+        if (selectedContainerId.value == null) return null;
+
+        return await sebSettingsService.deleteTableRow(
+            selectedContainerId.value.toString(),
+            name,
+            index,
+            isExam.value,
+        );
+    }
+
     function applyAttributes(
         name: string,
         labels: string | null,
@@ -160,13 +208,18 @@ export const useSEBSettingsStore = defineStore("sebSettings", () => {
         activeSEBClientConnection,
         dialogTitle,
         singleValues,
+        tableValues,
         attributes,
+
         fetchSingleValues,
         getSingleValue,
         getStringValue,
         getBooleanValue,
         getNumberValue,
         saveSingleValue,
+        saveTableRow,
+        addTableRow,
+        deleteTableRow,
         applyAttributes,
         $reset,
     };
