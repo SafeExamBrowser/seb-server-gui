@@ -29,7 +29,7 @@
                     :options="options"
                     :loading="loading"
                     :detail-route="getRouteName('MonitoringOverview')"
-                    route-param-key="examId"
+                    route-param-key="id"
                     item-identifier-key="id"
                     :cell-formatters="cellFormatters"
                     @update:options="loadItems"

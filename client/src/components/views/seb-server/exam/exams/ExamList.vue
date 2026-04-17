@@ -28,7 +28,7 @@
                     :options="options"
                     :loading="loading"
                     :detail-route="getRouteName('ExamDetail')"
-                    route-param-key="id"
+                    route-param-key="examId"
                     item-identifier-key="id"
                     :cell-formatters="cellFormatters"
                     @update:options="loadItems"
