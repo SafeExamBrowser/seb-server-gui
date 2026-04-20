@@ -8,7 +8,7 @@ paths:
 This project is in a transition phase. Not all code is organised in the way we want yet. The following instructions win over what you encounter
 on the filesystem if they clash:
 
-- We build self contained components. Each component can contain it's own `types.ts`, `components` folder for subcomponents, `composables` etc.
+- We build self contained components. Each component can contain its own `types.ts`, `components` folder for subcomponents, `composables` etc.
   `client/src/components/views/seb-server/exam-template/wizard/` is a good example.
 - Components / composables that are used in several places are stored globally (see `client/src/components` / `client/src/composables`).
   `client/src/components/widgets/breadCrumb/BreadCrumb.vue` is a good example.
@@ -22,4 +22,4 @@ on the filesystem if they clash:
   `client/src/services` for data fetching.
 - Avoid writing custom CSS. Use Vuetify utility classes whenever possible.
 - When writing Pinia Stores, prefer "Setup Stores" over "Option Stores".
-  `client/src/components/views/seb-server/exam-template/wizard/composables/useScreenProctoringStore.ts` is a good example.
+  `client/src/components/views/seb-server/exam-template/wizard/composables/store/useScreenProctoringStore.ts` is a good example.
