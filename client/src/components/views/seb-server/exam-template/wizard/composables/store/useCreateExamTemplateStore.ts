@@ -10,11 +10,16 @@ import i18n from "@/i18n";
 import { ExamTemplate } from "@/models/seb-server/examTemplate";
 import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
 import { useStepIndicatorsStore } from "@/components/views/seb-server/exam-template/wizard/components/stepIndicators/composables/store/useStepIndicatorsStore";
+import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 
 const staticStepData = [
     {
         componentName: "StepNaming" as const,
         i18nKey: "createTemplateExam.steps.naming.title",
+    },
+    {
+        componentName: "StepSEBSettings" as const,
+        i18nKey: "createTemplateExam.steps.seb-settings.title",
     },
     {
         componentName: "StepSupervisors" as const,
@@ -37,6 +42,7 @@ const staticStepData = [
 const isStepReady = (
     stepName: StepItemCreateTemplateExam["componentName"],
     stepNamingStore: ReturnType<typeof useStepNamingStore>,
+    stepSEBSettings: ReturnType<typeof useSEBSettingsStore>,
     stepSupervisorsStore: ReturnType<typeof useStepSupervisorsStore>,
     stepIndicatorsStore: ReturnType<typeof useStepIndicatorsStore>,
     stepClientGroupStore: ReturnType<typeof useStepClientGroupStore>,
@@ -44,6 +50,8 @@ const isStepReady = (
     switch (stepName) {
         case "StepNaming":
             return stepNamingStore.isReady;
+        case "StepSEBSettings":
+            return stepSEBSettings.isReady;
         case "StepSupervisors":
             return stepSupervisorsStore.isReady;
         case "StepIndicators":
@@ -66,6 +74,7 @@ export const useCreateExamTemplateStore = defineStore(
     () => {
         const screenProctoringStore = useScreenProctoringStore();
         const stepNamingStore = useStepNamingStore();
+        const stepSEBSettings = useSEBSettingsStore();
         const stepSupervisorsStore = useStepSupervisorsStore();
         const stepClientGroupStore = useStepClientGroupStore();
         const stepIndicatorsStore = useStepIndicatorsStore();
@@ -80,6 +89,7 @@ export const useCreateExamTemplateStore = defineStore(
                 nextStepEnabled: isStepReady(
                     step.componentName,
                     stepNamingStore,
+                    stepSEBSettings,
                     stepSupervisorsStore,
                     stepIndicatorsStore,
                     stepClientGroupStore,
@@ -198,6 +208,7 @@ export const useCreateExamTemplateStore = defineStore(
             // substores
             screenProctoringStore.$reset();
             stepNamingStore.$reset();
+            stepSEBSettings.$reset();
             stepSupervisorsStore.$reset();
             stepIndicatorsStore.$reset();
             stepClientGroupStore.$reset();

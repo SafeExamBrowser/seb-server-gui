@@ -7,7 +7,7 @@ import { useStepNamingStore } from "./store/useStepNamingStore";
 import { useRules } from "vuetify/labs/rules";
 import { useScreenProctoringStore } from "@/components/views/seb-server/exam-template/wizard/composables/store/useScreenProctoringStore";
 import i18n from "@/i18n";
-import { useConfigurationTemplateNames } from "@/composables/useConfigurationTemplateNames";
+//import { useConfigurationTemplateNames } from "@/composables/useConfigurationTemplateNames";
 import { useClientConfigurationNames } from "@/composables/useClientConfigurationNames";
 
 export const useFormFields = () => {
@@ -15,7 +15,6 @@ export const useFormFields = () => {
         name: modelName,
         description: modelDescription,
         examType: modelExamType,
-        configurationTemplate: modelConfigurationTemplate,
         clientConfiguration: modelClientConfiguration,
         lmsIntegration: modelLmsIntegration,
         institutionalDefault: modelInstitutionalDefault,
@@ -32,12 +31,6 @@ export const useFormFields = () => {
     } = useExamTemplateNames();
 
     const {
-        data: configurationTemplateNames,
-        loading: loadingConfigurationTemplateNames,
-        error: errorConfigurationTemplateNames,
-    } = useConfigurationTemplateNames();
-
-    const {
         data: clientConfigurationNames,
         loading: loadingClientConfigurationNames,
         error: errorClientConfigurationNames,
@@ -46,14 +39,12 @@ export const useFormFields = () => {
     const loading = computed(
         () =>
             loadingExamTemplateNames.value ||
-            loadingConfigurationTemplateNames.value ||
             loadingClientConfigurationNames.value,
     );
 
     const errors = computed(() =>
         [
             errorExamTemplateNames.value,
-            errorConfigurationTemplateNames.value,
             errorClientConfigurationNames.value,
         ].filter((error) => error !== undefined),
     );
@@ -119,23 +110,6 @@ export const useFormFields = () => {
                 ),
                 placeholder: i18n.global.t(
                     "createTemplateExam.steps.naming.fields.examType.placeholder",
-                ),
-            },
-            {
-                type: "select" as const,
-                name: "configurationTemplate",
-                model: modelConfigurationTemplate,
-                options: Object.values(
-                    configurationTemplateNames.value ?? [],
-                ).map((configurationTemplate) => ({
-                    value: configurationTemplate.modelId,
-                    text: configurationTemplate.name,
-                })),
-                label: i18n.global.t(
-                    "createTemplateExam.steps.naming.fields.configurationTemplate.label",
-                ),
-                placeholder: i18n.global.t(
-                    "createTemplateExam.steps.naming.fields.configurationTemplate.placeholder",
                 ),
             },
             {
