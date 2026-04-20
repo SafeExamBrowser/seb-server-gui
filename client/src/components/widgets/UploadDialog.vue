@@ -1,35 +1,31 @@
 <template>
     <v-dialog
         v-model="internalOpen"
-        data-testid="certificates-add-dialog"
+        data-testid="import-dialog"
         max-width="720"
         @update:model-value="onToggle"
     >
-        <v-card data-testid="certificates-addDialog-card">
+        <v-card data-testid="importDialog-card">
             <v-card-title
                 class="text-h6 font-weight-bold"
-                data-testid="certificates-addDialog-title"
+                data-testid="importDialog-title"
             >
-                {{ t("certificates.certificateDialog.uploadCertificate") }}
+                {{ t(namePrefix + ".upload.upload") }}
             </v-card-title>
 
-            <v-card-text data-testid="certificates-addDialog-body">
+            <v-card-text data-testid="importDialog-body">
                 <div
                     class="text-body-2 text-grey-darken-1 mb-4"
-                    data-testid="certificates-addDialog-help"
+                    data-testid="importDialog-help"
                 >
-                    {{
-                        t(
-                            "certificates.certificateDialog.uploadCertificateHelp",
-                        )
-                    }}
+                    {{ t(namePrefix + ".upload.uploadHelp") }}
                 </div>
 
                 <!-- Drag & Drop Zone -->
                 <v-sheet
                     class="d-flex flex-column align-center justify-center pa-8 mb-4 upload-dropzone"
                     :class="{ 'upload-dropzone--active': dragActive }"
-                    data-testid="certificates-addDialog-dropzone"
+                    data-testid="importDialog-dropzone"
                     elevation="1"
                     @dragleave.prevent="onDragLeave"
                     @dragover.prevent="onDragOver"
@@ -37,73 +33,66 @@
                 >
                     <v-icon
                         class="mb-3"
-                        data-testid="certificates-addDialog-dropzone-icon"
+                        data-testid="importDialog-dropzone-icon"
                         size="48"
                     >
-                        mdi-file-certificate-outline
+                        {{ icon }}
                     </v-icon>
 
                     <div
                         class="text-subtitle-2 mb-2"
-                        data-testid="certificates-addDialog-fileLabel"
+                        data-testid="importDialog-fileLabel"
                     >
                         {{
                             selectedFileName ||
-                            t("certificates.certificateDialog.dropHere")
+                            t(namePrefix + ".upload.dropHere")
                         }}
                     </div>
 
                     <!-- Dynamic allowed extensions -->
                     <div
                         class="text-caption text-grey-darken-1 mb-4"
-                        data-testid="certificates-addDialog-allowedExt"
+                        data-testid="importDialog-allowedExt"
                     >
-                        {{ t("certificates.certificateDialog.allowed") }}:
+                        {{ t(namePrefix + ".upload.allowed") }}:
                         {{ acceptExtHuman }}
                     </div>
 
                     <v-btn
-                        data-testid="certificates-addDialog-selectFile-button"
+                        data-testid="importDialog-selectFile-button"
                         :disabled="uploading"
                         variant="outlined"
                         @click="triggerFilePicker"
                     >
-                        {{
-                            t("certificates.certificateDialog.selectFromFolder")
-                        }}
+                        {{ t(namePrefix + ".upload.selectFromFolder") }}
                     </v-btn>
 
                     <input
                         ref="fileInputRef"
                         :accept="acceptExt"
                         class="d-none"
-                        data-testid="certificates-addDialog-fileInput"
+                        data-testid="importDialog-fileInput"
                         type="file"
                         @change="onFilePicked"
                     />
                 </v-sheet>
 
                 <!-- Password -->
-                <v-row
-                    class="mt-5"
-                    data-testid="certificates-addDialog-password-row"
-                >
+                <v-row class="mt-5" data-testid="importDialog-password-row">
                     <v-col class="pt-0" cols="12" md="12">
                         <v-text-field
                             v-model="password"
-                            data-testid="certificates-addDialog-password-input"
+                            data-testid="importDialog-password-input"
                             density="comfortable"
                             hide-details
-                            :label="
-                                t('certificates.certificateDialog.password')
-                            "
+                            :label="t(namePrefix + '.upload.password')"
                             prepend-inner-icon="mdi-lock-outline"
                             :type="passwordVisible ? 'text' : 'password'"
                             variant="outlined"
                         >
                             <template #append-inner>
                                 <v-btn
-                                    data-testid="certificates-addDialog-password-toggle"
+                                    data-testid="importDialog-password-toggle"
                                     density="compact"
                                     :icon="
                                         passwordVisible
@@ -118,10 +107,47 @@
                     </v-col>
                 </v-row>
 
+                <!-- Quit Password -->
+                <v-row
+                    v-if="showQuitPassword"
+                    class="mt-5"
+                    data-testid="importDialog-quitPassword-row"
+                >
+                    <v-col class="pt-0" cols="12" md="12">
+                        <v-text-field
+                            v-model="quitPassword"
+                            data-testid="importDialog-quitPassword-input"
+                            density="comfortable"
+                            hide-details
+                            :label="t(namePrefix + '.upload.quitPassword')"
+                            prepend-inner-icon="mdi-lock-outline"
+                            :type="quitPasswordVisible ? 'text' : 'password'"
+                            variant="outlined"
+                        >
+                            <template #append-inner>
+                                <v-btn
+                                    data-testid="importDialog-quitPassword-toggle"
+                                    density="compact"
+                                    :icon="
+                                        quitPasswordVisible
+                                            ? 'mdi-eye-off'
+                                            : 'mdi-eye'
+                                    "
+                                    variant="text"
+                                    @click="
+                                        quitPasswordVisible =
+                                            !quitPasswordVisible
+                                    "
+                                />
+                            </template>
+                        </v-text-field>
+                    </v-col>
+                </v-row>
+
                 <v-alert
                     v-if="uploadError"
                     class="mb-2"
-                    data-testid="certificates-addDialog-error-alert"
+                    data-testid="importDialog-error-alert"
                     density="comfortable"
                     type="error"
                     variant="tonal"
@@ -132,7 +158,7 @@
                 <v-progress-linear
                     v-if="uploading"
                     class="mb-2"
-                    data-testid="certificates-addDialog-progress"
+                    data-testid="importDialog-progress"
                     height="6"
                     :model-value="uploadProgress"
                     rounded
@@ -141,10 +167,10 @@
 
             <v-card-actions
                 class="justify-end"
-                data-testid="certificates-addDialog-actions"
+                data-testid="importDialog-actions"
             >
                 <v-btn
-                    data-testid="certificates-addDialog-cancel-button"
+                    data-testid="importDialog-cancel-button"
                     :disabled="uploading"
                     variant="text"
                     @click="close()"
@@ -153,12 +179,12 @@
                 </v-btn>
                 <v-btn
                     color="primary"
-                    data-testid="certificates-addDialog-submit-button"
+                    data-testid="importDialog-submit-button"
                     :disabled="!selectedFile || uploading"
                     variant="text"
-                    @click="doUpload"
+                    @click="emit('upload')"
                 >
-                    {{ t("general.saveButton") }}
+                    {{ t(namePrefix + ".upload.importButton") }}
                 </v-btn>
             </v-card-actions>
         </v-card>
@@ -168,23 +194,26 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import { CreateCertificatePar } from "@/models/seb-server/certificate.ts";
-import { createCertificate } from "@/services/seb-server/certificateService.ts";
 
 const { t } = useI18n();
 
 const password = ref<string>("");
 const passwordVisible = ref<boolean>(false);
 
-type UploadedCert = { id: string; name: string };
+const quitPassword = ref<string>("");
+const quitPasswordVisible = ref<boolean>(false);
 
 const props = defineProps<{
     modelValue: boolean;
+    namePrefix: string;
+    showQuitPassword: boolean;
+    icon: string;
+    defaultExtList: string[];
 }>();
 
 const emit = defineEmits<{
     (e: "update:modelValue", v: boolean): void;
-    (e: "imported", cert: UploadedCert): void;
+    (e: "upload"): void;
 }>();
 
 // UI state
@@ -201,13 +230,22 @@ watch(
     (v) => (internalOpen.value = v),
 );
 
+defineExpose({
+    password,
+    quitPassword,
+    selectedFile,
+    uploadError,
+    uploading,
+    uploadProgress,
+});
+
 function onToggle(val: boolean) {
     emit("update:modelValue", val);
 }
 
-const defaultExtList = [".p12", ".pfx", ".pem", ".crt", ".cer"];
-const acceptExt = defaultExtList.join(",");
-const acceptExtHuman = defaultExtList.join(", ");
+//const defaultExtList = [".seb"];
+const acceptExt = props.defaultExtList.join(",");
+const acceptExtHuman = props.defaultExtList.join(", ");
 
 function triggerFilePicker() {
     fileInputRef.value?.click();
@@ -215,7 +253,7 @@ function triggerFilePicker() {
 
 function validExt(file: File) {
     const lower = file.name.toLowerCase();
-    return defaultExtList.some((ext) => lower.endsWith(ext));
+    return props.defaultExtList.some((ext) => lower.endsWith(ext));
 }
 
 function onFilePicked(e: Event) {
@@ -241,7 +279,7 @@ function onDrop(e: DragEvent) {
 function setFile(file: File | null) {
     if (!file) return;
     if (!validExt(file)) {
-        uploadError.value = `${t("certificates.certificateDialog.onlyAllowed")}: ${acceptExtHuman}`;
+        uploadError.value = `${t("sebSettings.upload.onlyAllowed")}: ${acceptExtHuman}`;
         selectedFile.value = null;
         selectedFileName.value = "";
         if (fileInputRef.value) fileInputRef.value.value = "";
@@ -266,69 +304,6 @@ function close() {
     internalOpen.value = false;
     emit("update:modelValue", false);
     resetState();
-}
-
-async function doUpload() {
-    if (!selectedFile.value) return;
-    try {
-        uploadError.value = "";
-        uploading.value = true;
-        uploadProgress.value = 30;
-        const res = await createCertificate({
-            file: selectedFile.value,
-            fileName: selectedFile.value.name,
-            password: password.value || undefined,
-        } as CreateCertificatePar);
-        uploadProgress.value = 90;
-        if (!res) {
-            throw new Error(t("certificates.certificateDialog.uploadFailed"));
-        }
-        const createdName =
-            res.alias || selectedFile.value.name.replace(/\.[^.]+$/i, "");
-        const createdId = res.alias || createdName;
-        emit("imported", { id: createdId, name: createdName });
-        uploadProgress.value = 100;
-        close();
-    } catch (e: unknown) {
-        const respData = (e as { response?: { data?: unknown } }).response
-            ?.data;
-        type DataObj = Record<string, unknown>;
-        const errObj: DataObj | undefined = Array.isArray(respData)
-            ? (respData[0] as DataObj)
-            : (respData as DataObj | undefined);
-
-        const details =
-            (typeof errObj?.details === "string"
-                ? errObj.details
-                : undefined) ??
-            (typeof errObj?.systemMessage === "string"
-                ? errObj.systemMessage
-                : undefined) ??
-            (e instanceof Error ? e.message : undefined);
-
-        if (
-            typeof details === "string" &&
-            /keystore password was incorrect/i.test(details)
-        ) {
-            uploadError.value = t(
-                "certificates.certificateDialog.keystorePasswordIncorrect",
-            );
-        } else {
-            const serverMsg =
-                (typeof errObj?.systemMessage === "string"
-                    ? errObj.systemMessage
-                    : undefined) ??
-                (typeof errObj?.message === "string"
-                    ? errObj.message
-                    : undefined);
-            uploadError.value =
-                serverMsg ||
-                details ||
-                t("certificates.certificateDialog.uploadFailed");
-        }
-    } finally {
-        uploading.value = false;
-    }
 }
 
 watch(internalOpen, (val) => {

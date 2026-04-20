@@ -894,16 +894,17 @@
             "informationPart1": "Delete Certificate: ",
             "informationPart3": " ?"
         },
-        "certificateDialog": {
-            "uploadCertificate": "Upload Certificate",
+        "upload": {
+            "upload": "Upload Certificate",
             "selectFromFolder": "Select From File Explorer",
-            "uploadCertificateHelp": "Drag and Drop or Search through File Explorer",
+            "uploadHelp": "Drag and Drop or Search through File Explorer",
             "onlyAllowed": "File Type not allowed",
             "allowed": "Allowed File Types",
             "dropHere": "Drop a certificate file here",
             "password": "Password",
             "uploadFailed": "Failed to upload certificate, please contact a system administrator",
-            "keystorePasswordIncorrect": "The password was incorrect. Please try again or contact a system administrator"
+            "keystorePasswordIncorrect": "The password was incorrect. Please try again or contact a system administrator",
+            "importButton": "Import"
         },
         "types": {
             "UNKNOWN": "Unknown",
