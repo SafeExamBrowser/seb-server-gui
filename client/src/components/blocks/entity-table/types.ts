@@ -6,12 +6,6 @@ export type TableHeader = {
     align?: "start" | "center" | "end";
 };
 
-export type PagedResponse = {
-    number_of_pages?: number;
-    page_size?: number;
-    content?: unknown[];
-};
-
 export type TableFilters = Record<string, string | null>;
 
 export type LoadItemsFn = () => Promise<void>;
