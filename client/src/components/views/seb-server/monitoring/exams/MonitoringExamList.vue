@@ -32,6 +32,7 @@
                     route-param-key="id"
                     item-identifier-key="id"
                     :cell-formatters="cellFormatters"
+                    :actions="tableActions"
                     @update:options="loadItems"
                 >
                     <template #cell-type="{ formattedValue }">
@@ -59,6 +60,8 @@ import EnumChip from "@/components/blocks/entity-table/widgets/EnumChip.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useUrlTableState } from "@/components/blocks/entity-table/composables/useUrlTableState.ts";
 import { useMonitoringTableHeaders } from "@/components/views/seb-server/monitoring/exams/composables/useMonitoringTableHeaders.ts";
+import { useMonitoringTableActions } from "@/components/views/seb-server/monitoring/exams/composables/useMonitoringTableActions.ts";
+import { useTableNavigation } from "@/components/blocks/entity-table/composables/useTableNavigation.ts";
 import {
     useMonitoringFilters,
     TYPE_FILTER_KEY,
@@ -131,4 +134,14 @@ watch(
 );
 
 const pageCount = computed(() => tableData.value?.number_of_pages ?? 0);
+
+const { navigateToItem } = useTableNavigation(
+    getRouteName("MonitoringOverview"),
+    "id",
+    "id",
+);
+
+const tableActions = useMonitoringTableActions({
+    onNavigate: (item) => navigateToItem(item),
+});
 </script>

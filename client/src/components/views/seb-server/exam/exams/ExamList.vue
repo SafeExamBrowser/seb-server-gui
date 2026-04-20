@@ -31,6 +31,7 @@
                     route-param-key="examId"
                     item-identifier-key="id"
                     :cell-formatters="cellFormatters"
+                    :actions="tableActions"
                     @update:options="loadItems"
                 >
                     <template #cell-type="{ formattedValue }">
@@ -58,6 +59,8 @@ import EnumChip from "@/components/blocks/entity-table/widgets/EnumChip.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useUrlTableState } from "@/components/blocks/entity-table/composables/useUrlTableState.ts";
 import { useExamTableHeaders } from "@/components/views/seb-server/exam/exams/composables/useExamTableHeaders.ts";
+import { useExamTableActions } from "@/components/views/seb-server/exam/exams/composables/useExamTableActions.ts";
+import { useTableNavigation } from "@/components/blocks/entity-table/composables/useTableNavigation.ts";
 import {
     useExamFilters,
     TYPE_FILTER_KEY,
@@ -124,4 +127,14 @@ watch(
 );
 
 const pageCount = computed(() => tableData.value?.number_of_pages ?? 0);
+
+const { navigateToItem } = useTableNavigation(
+    getRouteName("ExamDetail"),
+    "id",
+    "examId",
+);
+
+const tableActions = useExamTableActions({
+    onNavigate: (item) => navigateToItem(item),
+});
 </script>
