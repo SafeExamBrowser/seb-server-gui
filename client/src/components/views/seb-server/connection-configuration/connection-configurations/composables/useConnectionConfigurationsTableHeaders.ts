@@ -1,27 +1,40 @@
-import { computed } from "vue";
+import { computed, watch } from "vue";
 import { translate } from "@/utils/generalUtils.ts";
-import type { SebTableHeader } from "@/components/views/seb-server/composables/sebServerTableHeaderTypes.ts";
+import { formatIsoToReadableDateTime } from "@/utils/timeUtils.ts";
 import { useShowInstitutionColumn } from "@/composables/useShowInstitutionColumn.ts";
+import { useInstitutionNameMap } from "@/composables/useInstitutionNameMap.ts";
+import type {
+    TableHeader,
+    CellFormatter,
+} from "@/components/blocks/entity-table/types.ts";
 
-export const useConnectionConfigurationsTableHeaders = () => {
+export function useConnectionConfigurationsTableHeaders() {
     const showInstitutionColumn = useShowInstitutionColumn();
+    const { getInstitutionName, fetchInstitutions } = useInstitutionNameMap();
 
-    return computed<SebTableHeader[]>(() => {
-        const headers: SebTableHeader[] = [];
+    watch(
+        showInstitutionColumn,
+        async (show) => {
+            if (show) await fetchInstitutions();
+        },
+        { immediate: true },
+    );
+
+    const headers = computed<TableHeader[]>(() => {
+        const base: TableHeader[] = [];
 
         if (showInstitutionColumn.value) {
-            headers.push({
+            base.push({
                 title: translate(
                     "connectionConfigurations.connectionConfigurationsPage.connectionConfigurationsTableHeaders.tableHeaderInstitution",
                 ),
                 key: "institutionId",
                 width: "20%",
                 sortable: true,
-                translateType: "institutionName",
             });
         }
 
-        headers.push(
+        base.push(
             {
                 title: translate(
                     "connectionConfigurations.connectionConfigurationsPage.connectionConfigurationsTableHeaders.tableHeaderName",
@@ -37,7 +50,6 @@ export const useConnectionConfigurationsTableHeaders = () => {
                 key: "date",
                 width: "20%",
                 sortable: true,
-                translateType: "dateTime",
             },
             {
                 title: translate(
@@ -49,6 +61,14 @@ export const useConnectionConfigurationsTableHeaders = () => {
             },
         );
 
-        return headers;
+        return base;
     });
-};
+
+    const cellFormatters: Record<string, CellFormatter> = {
+        institutionId: (value) => getInstitutionName(value),
+        date: (value) =>
+            value ? formatIsoToReadableDateTime(String(value)) : "",
+    };
+
+    return { headers, cellFormatters };
+}

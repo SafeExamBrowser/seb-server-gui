@@ -103,12 +103,11 @@ import { INSTITUTION_FILTER_KEY } from "@/components/blocks/filters/useInstituti
 import { useConnectionConfigurations } from "@/components/views/seb-server/connection-configuration/connection-configurations/api/useConnectionConfigurations.ts";
 import { useDeleteConnectionConfiguration } from "@/components/views/seb-server/connection-configuration/connection-configurations/api/useDeleteConnectionConfiguration.ts";
 import { useToggleConnectionConfigurationStatus } from "@/components/views/seb-server/connection-configuration/connection-configurations/api/useToggleConnectionConfigurationStatus.ts";
-import { useSebServerCellFormatters } from "@/components/views/seb-server/composables/useSebServerCellFormatters.ts";
 import type { ConnectionConfigurations } from "@/models/seb-server/connectionConfiguration.ts";
 import type { TableItem } from "@/components/blocks/entity-table/types.ts";
 import AddButton from "@/components/widgets/AddButton.vue";
 
-const connectionConfigurationTableHeaders =
+const { headers: connectionConfigurationTableHeaders, cellFormatters } =
     useConnectionConfigurationsTableHeaders();
 const filterSections = useConnectionConfigurationsFilters();
 
@@ -166,10 +165,6 @@ const {
     loading: statusLoading,
     error: statusError,
 } = useToggleConnectionConfigurationStatus(tableData);
-
-const { cellFormatters } = useSebServerCellFormatters(
-    connectionConfigurationTableHeaders,
-);
 
 // Dialog state
 const deleteTarget = ref<TableItem | null>(null);

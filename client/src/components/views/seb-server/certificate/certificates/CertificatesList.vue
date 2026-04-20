@@ -68,7 +68,6 @@ import { useCertificatesTableActions } from "@/components/views/seb-server/certi
 import { useCertificates } from "@/components/views/seb-server/certificate/certificates/api/useCertificates.ts";
 import { useUrlTableState } from "@/components/blocks/entity-table/composables/useUrlTableState.ts";
 import { useDeleteCertificate } from "@/components/views/seb-server/certificate/certificates/api/useDeleteCertificate.ts";
-import { useSebServerCellFormatters } from "@/components/views/seb-server/composables/useSebServerCellFormatters.ts";
 import type { CertificatesResponse } from "@/models/seb-server/certificate.ts";
 import type { TableItem } from "@/components/blocks/entity-table/types.ts";
 import AddCertificateDialog from "@/components/views/seb-server/certificate/certificates/AddCertificateDialog.vue";
@@ -80,7 +79,8 @@ async function onCertImported() {
     await loadItems();
 }
 
-const certificatesTableHeaders = useCertificatesTableHeaders();
+const { headers: certificatesTableHeaders, cellFormatters } =
+    useCertificatesTableHeaders();
 
 const tableData = ref<CertificatesResponse>();
 
@@ -117,8 +117,6 @@ const {
     loading: deleteLoading,
     error: deleteError,
 } = useDeleteCertificate(tableData);
-
-const { cellFormatters } = useSebServerCellFormatters(certificatesTableHeaders);
 
 // Dialog state
 const deleteTarget = ref<TableItem | null>(null);

@@ -1,9 +1,13 @@
 import { computed } from "vue";
 import { translate } from "@/utils/generalUtils.ts";
-import type { SebTableHeader } from "@/components/views/seb-server/composables/sebServerTableHeaderTypes.ts";
+import { formatIsoToReadableDateTime } from "@/utils/timeUtils.ts";
+import type {
+    TableHeader,
+    CellFormatter,
+} from "@/components/blocks/entity-table/types.ts";
 
-export const useCertificatesTableHeaders = () => {
-    return computed<SebTableHeader[]>(() => [
+export function useCertificatesTableHeaders() {
+    const headers = computed<TableHeader[]>(() => [
         {
             title: translate(
                 "certificates.certificateTableHeaders.tableHeaderAlias",
@@ -19,7 +23,6 @@ export const useCertificatesTableHeaders = () => {
             key: "validityFrom",
             width: "20%",
             sortable: false,
-            translateType: "dateTime",
         },
         {
             title: translate(
@@ -28,7 +31,6 @@ export const useCertificatesTableHeaders = () => {
             key: "validityTo",
             width: "20%",
             sortable: false,
-            translateType: "dateTime",
         },
         {
             title: translate(
@@ -37,7 +39,21 @@ export const useCertificatesTableHeaders = () => {
             width: "25%",
             key: "certType",
             sortable: false,
-            translateType: "certificateTypes",
         },
     ]);
-};
+
+    const cellFormatters: Record<string, CellFormatter> = {
+        validityFrom: (value) =>
+            value ? formatIsoToReadableDateTime(String(value)) : "",
+        validityTo: (value) =>
+            value ? formatIsoToReadableDateTime(String(value)) : "",
+        certType: (value) => {
+            if (!Array.isArray(value) || value.length === 0) return "";
+            return value
+                .map((type) => translate(`certificates.types.${String(type)}`))
+                .join(" | ");
+        },
+    };
+
+    return { headers, cellFormatters };
+}

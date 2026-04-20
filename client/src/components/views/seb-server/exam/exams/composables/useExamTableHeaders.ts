@@ -1,11 +1,15 @@
 import { computed } from "vue";
 import { translate } from "@/utils/generalUtils.ts";
-import type { SebTableHeader } from "@/components/views/seb-server/composables/sebServerTableHeaderTypes.ts";
+import { formatIsoToReadableDateTime } from "@/utils/timeUtils.ts";
+import type {
+    TableHeader,
+    CellFormatter,
+} from "@/components/blocks/entity-table/types.ts";
 
 const TRANSLATION_PREFIX = "examList.main";
 
-export const useExamTableHeaders = () => {
-    return computed<SebTableHeader[]>(() => [
+export function useExamTableHeaders() {
+    const headers = computed<TableHeader[]>(() => [
         {
             title: translate(`${TRANSLATION_PREFIX}.tableHeaderName`),
             key: "quizName",
@@ -15,27 +19,34 @@ export const useExamTableHeaders = () => {
             title: translate(`${TRANSLATION_PREFIX}.tableHeaderStart`),
             key: "quizStartTime",
             sortable: true,
-            translateType: "dateTime",
         },
         {
             title: translate(`${TRANSLATION_PREFIX}.tableHeaderEnd`),
             key: "quizEndTime",
             sortable: true,
-            translateType: "dateTime",
         },
         {
             title: translate(`${TRANSLATION_PREFIX}.tableHeaderType`),
             key: "type",
             width: "8%",
             sortable: true,
-            translateType: "examType",
         },
         {
             title: translate(`${TRANSLATION_PREFIX}.tableHeaderStatus`),
             key: "status",
             width: "8%",
             sortable: true,
-            translateType: "examStatus",
         },
     ]);
-};
+
+    const cellFormatters: Record<string, CellFormatter> = {
+        quizStartTime: (value) =>
+            value ? formatIsoToReadableDateTime(String(value)) : "",
+        quizEndTime: (value) =>
+            value ? formatIsoToReadableDateTime(String(value)) : "",
+        type: (value) => (value ? translate(String(value)) : ""),
+        status: (value) => (value ? translate(String(value)) : ""),
+    };
+
+    return { headers, cellFormatters };
+}

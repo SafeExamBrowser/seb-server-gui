@@ -65,7 +65,6 @@ import {
     MONITORING_STATUS_FILTER_KEY,
 } from "@/components/views/seb-server/monitoring/exams/composables/useMonitoringFilters.ts";
 import { useMonitoringExams } from "@/components/views/seb-server/monitoring/exams/api/useMonitoringExams.ts";
-import { useSebServerCellFormatters } from "@/components/views/seb-server/composables/useSebServerCellFormatters.ts";
 import { getRouteName } from "@/router/routeNames.ts";
 import { translate } from "@/utils/generalUtils.ts";
 import type { Exams } from "@/models/seb-server/exam.ts";
@@ -79,7 +78,7 @@ const breadCrumb: BreadCrumbItem[] = [
     { label: translate("titles.home"), link: "/" },
 ];
 
-const tableHeaders = useMonitoringTableHeaders();
+const { headers: tableHeaders, cellFormatters } = useMonitoringTableHeaders();
 const filterSections = useMonitoringFilters();
 
 const tableData = ref<Exams>();
@@ -132,6 +131,4 @@ watch(
 );
 
 const pageCount = computed(() => tableData.value?.number_of_pages ?? 0);
-
-const { cellFormatters } = useSebServerCellFormatters(tableHeaders);
 </script>

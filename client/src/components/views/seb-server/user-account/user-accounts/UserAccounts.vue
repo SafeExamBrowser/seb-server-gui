@@ -104,12 +104,12 @@ import { INSTITUTION_FILTER_KEY } from "@/components/blocks/filters/useInstituti
 import { useUserAccounts } from "@/components/views/seb-server/user-account/api/useUserAccounts.ts";
 import { useDeleteUserAccount } from "@/components/views/seb-server/user-account/api/useDeleteUserAccount.ts";
 import { useToggleUserAccountStatus } from "@/components/views/seb-server/user-account/api/useToggleUserAccountStatus.ts";
-import { useSebServerCellFormatters } from "@/components/views/seb-server/composables/useSebServerCellFormatters.ts";
 import type { UserAccountResponse } from "@/models/userAccount.ts";
 import type { TableItem } from "@/components/blocks/entity-table/types.ts";
 import AddButton from "@/components/widgets/AddButton.vue";
 
-const userAccountsTableHeaders = useUserAccountsTableHeaders();
+const { headers: userAccountsTableHeaders, cellFormatters } =
+    useUserAccountsTableHeaders();
 const filterSections = useUserAccountsFilters();
 
 const tableData = ref<UserAccountResponse>();
@@ -166,8 +166,6 @@ const {
     loading: statusLoading,
     error: statusError,
 } = useToggleUserAccountStatus(tableData);
-
-const { cellFormatters } = useSebServerCellFormatters(userAccountsTableHeaders);
 
 // Dialog state
 const deleteTarget = ref<TableItem | null>(null);

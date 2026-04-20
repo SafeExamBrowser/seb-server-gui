@@ -21,7 +21,10 @@
                     <td
                         v-for="header in computedHeaders"
                         :key="header.key"
-                        :class="getCellClasses(header)"
+                        :class="
+                            header.align &&
+                            `v-data-table-column--align-${header.align}`
+                        "
                     >
                         <template v-if="header.key === '_actions'">
                             <div
@@ -51,11 +54,11 @@
                                         density="comfortable"
                                         size="small"
                                         rounded="lg"
-                                        :base-color="
-                                            getActionButtonColor(
-                                                action,
-                                                isHovering,
-                                            )
+                                        class="text-medium-emphasis"
+                                        :color="
+                                            isHovering
+                                                ? (action.color ?? 'primary')
+                                                : undefined
                                         "
                                         @click.stop="
                                             action.onClick(getRawItem(item))
@@ -66,7 +69,13 @@
                         </template>
 
                         <template v-else>
-                            <div :class="getCellContentClasses(header)">
+                            <div
+                                class="d-flex align-center"
+                                :class="[
+                                    `justify-${header.align || 'start'}`,
+                                    header.align === 'end' && 'text-end',
+                                ]"
+                            >
                                 <slot
                                     :name="`cell-${header.key}`"
                                     :item="getRawItem(item)"
@@ -233,45 +242,6 @@ function formatCell(key: string, item: TableItem): string {
 function visibleActions(item: TableItem): TableAction[] {
     if (!props.actions) return [];
     return props.actions.filter((a) => a.visible?.(item) ?? true);
-}
-
-function getActionButtonColor(
-    action: TableAction,
-    isHovering: boolean | null,
-): string {
-    if (isHovering) {
-        return action.color ?? "primary";
-    }
-
-    return "rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity))";
-}
-
-function getCellClasses(header: TableHeader): string[] {
-    const classes: string[] = [];
-
-    if (header.align) {
-        classes.push(`v-data-table-column--align-${header.align}`);
-    }
-
-    return classes;
-}
-
-function getCellContentClasses(header: TableHeader): string[] {
-    if (header.align === "center") {
-        return ["d-flex", "align-center", "justify-center", "text-primary"];
-    }
-
-    if (header.align === "end") {
-        return [
-            "d-flex",
-            "align-center",
-            "justify-end",
-            "text-end",
-            "text-primary",
-        ];
-    }
-
-    return ["d-flex", "align-center", "justify-start", "text-primary"];
 }
 
 function onRowClick(item: TableItem) {

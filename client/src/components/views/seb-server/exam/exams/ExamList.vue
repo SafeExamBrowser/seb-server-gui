@@ -64,7 +64,6 @@ import {
     EXAM_STATUS_FILTER_KEY,
 } from "@/components/views/seb-server/exam/exams/composables/useExamFilters.ts";
 import { useExams } from "@/components/views/seb-server/exam/exams/api/useExams.ts";
-import { useSebServerCellFormatters } from "@/components/views/seb-server/composables/useSebServerCellFormatters.ts";
 import { getRouteName } from "@/router/routeNames.ts";
 import { translate } from "@/utils/generalUtils.ts";
 import type { Exams } from "@/models/seb-server/exam.ts";
@@ -78,7 +77,7 @@ const breadCrumb: BreadCrumbItem[] = [
     { label: translate("titles.home"), link: "/" },
 ];
 
-const examTableHeaders = useExamTableHeaders();
+const { headers: examTableHeaders, cellFormatters } = useExamTableHeaders();
 const filterSections = useExamFilters();
 
 const tableData = ref<Exams>();
@@ -125,6 +124,4 @@ watch(
 );
 
 const pageCount = computed(() => tableData.value?.number_of_pages ?? 0);
-
-const { cellFormatters } = useSebServerCellFormatters(examTableHeaders);
 </script>

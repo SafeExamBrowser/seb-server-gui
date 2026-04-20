@@ -104,13 +104,13 @@ import { INSTITUTION_FILTER_KEY } from "@/components/blocks/filters/useInstituti
 import { useAssessmentTools } from "@/components/views/seb-server/assessment-tool/assessment-tools/api/useAssessmentTools.ts";
 import { useDeleteAssessmentTool } from "@/components/views/seb-server/assessment-tool/assessment-tools/api/useDeleteAssessmentTool.ts";
 import { useToggleAssessmentToolStatus } from "@/components/views/seb-server/assessment-tool/assessment-tools/api/useToggleAssessmentTool.ts";
-import { useSebServerCellFormatters } from "@/components/views/seb-server/composables/useSebServerCellFormatters.ts";
 import type { AssessmentToolsResponse } from "@/models/seb-server/assessmentTool.ts";
 import type { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums.ts";
 import type { TableItem } from "@/components/blocks/entity-table/types.ts";
 import AddButton from "@/components/widgets/AddButton.vue";
 
-const assessmentToolTableHeaders = useAssessmentToolsTableHeaders();
+const { headers: assessmentToolTableHeaders, cellFormatters } =
+    useAssessmentToolsTableHeaders();
 const filterSections = useAssessmentToolsFilters();
 
 const tableData = ref<AssessmentToolsResponse>();
@@ -171,10 +171,6 @@ const {
     loading: statusLoading,
     error: statusError,
 } = useToggleAssessmentToolStatus(tableData);
-
-const { cellFormatters } = useSebServerCellFormatters(
-    assessmentToolTableHeaders,
-);
 
 // Dialog state
 const deleteTarget = ref<TableItem | null>(null);
