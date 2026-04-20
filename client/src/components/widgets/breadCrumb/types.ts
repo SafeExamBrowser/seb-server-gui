@@ -1,4 +1,6 @@
+import type { RouteName } from "@/router/routeNames.ts";
+
 export interface BreadCrumbItem {
     label: string;
-    link?: string;
+    link?: RouteName;
 }

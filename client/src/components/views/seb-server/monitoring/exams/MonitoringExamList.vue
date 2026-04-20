@@ -1,5 +1,5 @@
 <template>
-    <BasicPage :title="$t('titles.monitoring')" :bread-crumb="breadCrumb">
+    <BasicPage :title="$t('titles.monitoring')" :bread-crumb="[]">
         <template #PanelTop>
             <SearchBar
                 v-model="searchInputValue"
@@ -55,13 +55,7 @@ import {
 import { useMonitoringExams } from "@/components/views/seb-server/monitoring/exams/api/useMonitoringExams.ts";
 import { useTableCellFormatters } from "@/components/blocks/entity-table/composables/useTableCellFormatters.ts";
 import { getRouteName } from "@/router/routeNames.ts";
-import { translate } from "@/utils/generalUtils.ts";
 import type { Exams } from "@/models/seb-server/exam.ts";
-import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
-
-const breadCrumb: BreadCrumbItem[] = [
-    { label: translate("titles.home"), link: "/" },
-];
 
 const tableHeaders = useMonitoringTableHeaders();
 const filterSections = useMonitoringFilters();

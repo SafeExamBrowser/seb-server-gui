@@ -1,55 +1,60 @@
 <template>
-    <nav class="d-flex align-center text-body-2">
-        <div class="d-flex align-center item">
+    <nav
+        aria-label="Breadcrumb"
+        class="d-flex align-center flex-wrap pl-5 mb-2 text-body-1"
+    >
+        <v-hover v-slot="{ isHovering, props: hoverProps }">
             <RouterLink
-                :to="HOME_PAGE_ROUTE"
-                class="text-primary font-weight-bold item__link"
+                v-bind="hoverProps"
+                :to="{ name: 'HomePage' }"
+                class="px-1 py-1 text-decoration-none"
+                :class="
+                    isHovering
+                        ? 'text-primary font-weight-bold'
+                        : 'text-medium-emphasis font-weight-medium'
+                "
             >
                 {{ $t("titles.home") }}
             </RouterLink>
-        </div>
+        </v-hover>
 
-        <template v-for="item in items" :key="item.label">
-            <div class="d-flex align-center item">
+        <template
+            v-for="(item, index) in items"
+            :key="`${item.label}-${index}`"
+        >
+            <span aria-hidden="true" class="mx-1 text-h5 text-medium-emphasis">
+                ›
+            </span>
+
+            <v-hover
+                v-if="item.link"
+                v-slot="{ isHovering, props: hoverProps }"
+            >
                 <RouterLink
-                    v-if="item.link"
-                    :to="item.link"
-                    class="text-primary item__link"
+                    v-bind="hoverProps"
+                    :to="{ name: item.link }"
+                    class="px-1 py-1 text-decoration-none"
+                    :class="
+                        isHovering
+                            ? 'text-primary font-weight-bold'
+                            : 'text-medium-emphasis font-weight-medium'
+                    "
                 >
                     {{ item.label }}
                 </RouterLink>
+            </v-hover>
 
-                <span v-else class="text-subtitle">
-                    {{ item.label }}
-                </span>
-            </div>
+            <span v-else class="px-1 py-1 text-primary font-weight-medium">
+                {{ item.label }}
+            </span>
         </template>
     </nav>
 </template>
 
 <script setup lang="ts">
-import { BreadCrumbItem } from "./types";
-import { HOME_PAGE_ROUTE } from "@/utils/constants";
+import type { BreadCrumbItem } from "./types";
 
 defineProps<{
     items: BreadCrumbItem[];
 }>();
 </script>
-
-<style scoped>
-.item:not(:last-child)::after {
-    content: "›";
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
-    color: rgba(var(--v-theme-subtitle), 0.6);
-    font-size: 1.25rem;
-}
-
-.item__link {
-    text-decoration: none;
-}
-
-.item__link:hover {
-    text-decoration: underline;
-}
-</style>

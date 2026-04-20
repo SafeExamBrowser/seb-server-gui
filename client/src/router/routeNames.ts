@@ -1,4 +1,5 @@
 export type RouteName =
+    | "HomePage"
     | "ExamDetail"
     | "ExamTemplateList"
     | "CreateExamTemplateWizard"
