@@ -45,3 +45,8 @@ If you're just working on the frontend part (SEB Server GUI), this is the easies
 
 - The setup comes with a static demo account: super-admin / admin
 - Alternatively you can run `docker-compose logs seb-server | grep "SEB Server initial admin-account"` to see the admin user and password that was generated for your instance of seb-server
+
+# AI info
+
+- We use [Claude Code](https://claude.com/product/claude-code)
+- Shared config for Claude is in `.claude`

@@ -300,6 +300,12 @@
                     }
                 }
             },
+            "seb-settings": {
+                "title": "Enter SEB Settings",
+                "subtitle": "Upload SEB Settings or configure SEB Settings for the SEB Client",
+                "name": "SEB Settings",
+                "import": "Import Settings"
+            },
             "supervisors": {
                 "title": "Add Exam Supervisors",
                 "subtitle": "Select or remove Exam Supervisors",
@@ -888,16 +894,17 @@
             "informationPart1": "Delete Certificate: ",
             "informationPart3": " ?"
         },
-        "certificateDialog": {
-            "uploadCertificate": "Upload Certificate",
+        "upload": {
+            "upload": "Upload Certificate",
             "selectFromFolder": "Select From File Explorer",
-            "uploadCertificateHelp": "Drag and Drop or Search through File Explorer",
+            "uploadHelp": "Drag and Drop or Search through File Explorer",
             "onlyAllowed": "File Type not allowed",
             "allowed": "Allowed File Types",
             "dropHere": "Drop a certificate file here",
             "password": "Password",
             "uploadFailed": "Failed to upload certificate, please contact a system administrator",
-            "keystorePasswordIncorrect": "The password was incorrect. Please try again or contact a system administrator"
+            "keystorePasswordIncorrect": "The password was incorrect. Please try again or contact a system administrator",
+            "importButton": "Import"
         },
         "types": {
             "UNKNOWN": "Unknown",
@@ -911,6 +918,19 @@
         "pwdMismatch": "The password and confirm password must match",
         "pwdSpaces": "The value must not start or end with a space.",
         "noNegNumber": "Cant be a negative number",
+        "upload": {
+            "upload": "Import SEB Settings",
+            "selectFromFolder": "Select From File Explorer",
+            "uploadHelp": "Drag and Drop or Search through File Explorer",
+            "allowed": "Allowed File Types",
+            "dropHere": "Drop a SEB Settings file here",
+            "password": "Password",
+            "quitPassword": "Quit Password",
+            "onlyAllowed": "File Type not allowed",
+            "uploadFailed": "Failed to upload SEB Settings, please contact a system administrator",
+            "passwordIncorrect": "The password was incorrect. Please try again or contact a system administrator",
+            "importButton": "Import"
+        },
         "views": {
             "general": "General",
             "userInterface": "User Interface",
@@ -1013,9 +1033,11 @@
             "agent": "User Agent",
             "links": {
                 "title": "Links requesting to be opened in a new browser window (Mac)",
-                "policy_0": "Get generally blocked",
-                "policy_1": "Open in same window",
-                "policy_2": "Open in new window",
+                "policy": {
+                    "0": "Get generally blocked",
+                    "1": "Open in same window",
+                    "2": "Open in new window"
+                },
                 "block": "Block when directing to a different server",
                 "block_tooltip": "USE WITH CARE: Hyperlinks invoked by JavaScript/plug-ins which direct to a different host than the one of the current main page will be ignored."
             },
@@ -1142,11 +1164,13 @@
             "dDirWin": "Download directory (Win)",
             "dDirMac": "Download directory (Mac)",
             "custom": "Allow user to select custom download / upload directory (Win)",
-            "policy": "Choose file to upload (Mac)",
-            "policy_tooltip": "SEB can let users choose the file to upload or automatically use the same file which was down-loaded before. If not found, a file requester or an error is presented depending on this setting.",
-            "policy_0": "manually with file requester",
-            "policy_1": "by attempting to upload the same file downloaded before",
-            "policy_2": "by only allowing to upload the same file downloaded before",
+            "policyTitle": "Choose file to upload (Mac)",
+            "policyTitle_tooltip": "SEB can let users choose the file to upload or automatically use the same file which was down-loaded before. If not found, a file requester or an error is presented depending on this setting.",
+            "policy": {
+                "0": "manually with file requester",
+                "1": "by attempting to upload the same file downloaded before",
+                "2": "by only allowing to upload the same file downloaded before"
+            },
             "download": "Download and open PDF files instead of displaying them inline",
             "download_tooltip": "PDF files will not be displayed by SEB but downloaded and opened (if 'Open files after downloading' is active!) by the application set in Finder (usually Preview or Adobe Acrobat).",
             "allowPDFPlugin": "Allow using Acrobat Reader PDF plugin (insecure! Mac only)",

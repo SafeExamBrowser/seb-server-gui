@@ -1,339 +1,104 @@
 <template>
-    <v-row>
+    <v-row v-if="fetched">
         <v-col class="text-subtitle-1">
+            <SettingsTitle label="sebSettings.updownloadView.title" />
             <v-row>
-                <v-col class="font-weight-bold pt-8 pb-0"
-                    >{{ translate("sebSettings.updownloadView.title")
-                    }}<v-divider
-                        class="border-opacity-25"
-                        :thickness="5"
-                    ></v-divider>
-                </v-col>
+                <CheckboxSetting
+                    name="allowDownUploads"
+                    label="sebSettings.updownloadView.allow"
+                    :tooltip="true"
+                />
             </v-row>
             <v-row>
-                <v-col class="pt-0 pb-0 pl-0">
-                    <v-checkbox-btn
-                        v-model="allowDownUploadsVal"
-                        :disabled="sebSettingsStore.readonly"
-                        hide-details
-                        :label="translate('sebSettings.updownloadView.allow')"
-                        @update:model-value="
-                            saveSingleValue(
-                                'allowDownUploads',
-                                allowDownUploadsVal ? 'true' : 'false',
-                            )
-                        "
-                    ></v-checkbox-btn>
-                    <v-tooltip
-                        activator="parent"
-                        location="top left"
-                        max-width="400"
-                    >
-                        {{
-                            translate(
-                                "sebSettings.updownloadView.allow_tooltip",
-                            )
-                        }}
-                    </v-tooltip>
-                </v-col>
+                <CheckboxSetting
+                    name="allowDownloads"
+                    label="sebSettings.updownloadView.allowDownload"
+                    :tooltip="false"
+                />
             </v-row>
             <v-row>
-                <v-col class="pt-0 pb-0 pl-0">
-                    <v-checkbox-btn
-                        v-model="allowDownloadsVal"
-                        :disabled="sebSettingsStore.readonly"
-                        hide-details
-                        :label="
-                            translate(
-                                'sebSettings.updownloadView.allowDownload',
-                            )
-                        "
-                        @update:model-value="
-                            saveSingleValue(
-                                'allowDownloads',
-                                allowDownloadsVal ? 'true' : 'false',
-                            )
-                        "
-                    ></v-checkbox-btn>
-                </v-col>
+                <TextSetting
+                    name="downloadDirectoryWin"
+                    label="sebSettings.updownloadView.dDirWin"
+                    :show-label="true"
+                    :tooltip="false"
+                />
             </v-row>
             <v-row>
-                <v-col :class="sebSettingsStore.fp">
-                    <v-text-field
-                        v-model="downloadDirectoryWinVal"
-                        density="compact"
-                        :disabled="sebSettingsStore.readonly"
-                        :label="translate('sebSettings.updownloadView.dDirWin')"
-                        variant="outlined"
-                        hide-details
-                        @update:focused="
-                            saveOnFocusLost(
-                                $event,
-                                'downloadDirectoryWin',
-                                downloadDirectoryWinVal,
-                            )
-                        "
-                    >
-                    </v-text-field>
-                </v-col>
+                <TextSetting
+                    name="downloadDirectoryOSX"
+                    label="sebSettings.updownloadView.dDirMac"
+                    :show-label="true"
+                    :tooltip="false"
+                />
             </v-row>
             <v-row>
-                <v-col :class="sebSettingsStore.fp">
-                    <v-text-field
-                        v-model="downloadDirectoryOSXVal"
-                        density="compact"
-                        :disabled="sebSettingsStore.readonly"
-                        :label="translate('sebSettings.updownloadView.dDirMac')"
-                        variant="outlined"
-                        hide-details
-                        @update:focused="
-                            saveOnFocusLost(
-                                $event,
-                                'downloadDirectoryOSX',
-                                downloadDirectoryOSXVal,
-                            )
-                        "
-                    >
-                    </v-text-field>
-                </v-col>
+                <CheckboxSetting
+                    name="allowCustomDownUploadLocation"
+                    label="sebSettings.updownloadView.custom"
+                    :tooltip="false"
+                />
             </v-row>
             <v-row>
-                <v-col class="pt-0 pb-0 pl-0">
-                    <v-checkbox-btn
-                        v-model="allowCustomDownUploadLocationVal"
-                        :disabled="sebSettingsStore.readonly"
-                        hide-details
-                        :label="translate('sebSettings.updownloadView.custom')"
-                        @update:model-value="
-                            saveSingleValue(
-                                'allowCustomDownUploadLocation',
-                                allowCustomDownUploadLocationVal
-                                    ? 'true'
-                                    : 'false',
-                            )
-                        "
-                    ></v-checkbox-btn>
-                </v-col>
+                <CheckboxSetting
+                    name="useTemporaryDownUploadDirectory"
+                    label="sebSettings.updownloadView.useTemp"
+                    :tooltip="false"
+                />
             </v-row>
             <v-row>
-                <v-col class="pt-0 pb-0 pl-0">
-                    <v-checkbox-btn
-                        v-model="useTemporaryDownUploadDirectoryVal"
-                        :disabled="sebSettingsStore.readonly"
-                        hide-details
-                        :label="translate('sebSettings.updownloadView.useTemp')"
-                        @update:model-value="
-                            saveSingleValue(
-                                'useTemporaryDownUploadDirectory',
-                                useTemporaryDownUploadDirectoryVal
-                                    ? 'true'
-                                    : 'false',
-                            )
-                        "
-                    ></v-checkbox-btn>
-                </v-col>
+                <CheckboxSetting
+                    name="downloadPDFFiles"
+                    label="sebSettings.updownloadView.download"
+                    :tooltip="true"
+                />
             </v-row>
             <v-row>
-                <v-col class="pt-0 pb-0 pl-0">
-                    <v-checkbox-btn
-                        v-model="downloadPDFFilesVal"
-                        :disabled="sebSettingsStore.readonly"
-                        hide-details
-                        :label="
-                            translate('sebSettings.updownloadView.download')
-                        "
-                        @update:model-value="
-                            saveSingleValue(
-                                'downloadPDFFiles',
-                                downloadPDFFilesVal ? 'true' : 'false',
-                            )
-                        "
-                    ></v-checkbox-btn>
-                    <v-tooltip
-                        activator="parent"
-                        location="top left"
-                        max-width="400"
-                    >
-                        {{
-                            translate(
-                                "sebSettings.updownloadView.download_tooltip",
-                            )
-                        }}
-                    </v-tooltip>
-                </v-col>
+                <CheckboxSetting
+                    name="allowPDFPlugIn"
+                    label="sebSettings.updownloadView.allowPDFPlugin"
+                    :tooltip="true"
+                />
             </v-row>
             <v-row>
-                <v-col class="pt-0 pb-0 pl-0">
-                    <v-checkbox-btn
-                        v-model="allowPDFPlugInVal"
-                        :disabled="sebSettingsStore.readonly"
-                        hide-details
-                        :label="
-                            translate(
-                                'sebSettings.updownloadView.allowPDFPlugin',
-                            )
-                        "
-                        @update:model-value="
-                            saveSingleValue(
-                                'allowPDFPlugIn',
-                                allowPDFPlugInVal ? 'true' : 'false',
-                            )
-                        "
-                    ></v-checkbox-btn>
-                    <v-tooltip
-                        activator="parent"
-                        location="top left"
-                        max-width="400"
-                    >
-                        {{
-                            translate(
-                                "sebSettings.updownloadView.allowPDFPlugin_tooltip",
-                            )
-                        }}
-                    </v-tooltip>
-                </v-col>
+                <CheckboxSetting
+                    name="allowUploads"
+                    label="sebSettings.updownloadView.files"
+                    :tooltip="true"
+                />
             </v-row>
             <v-row>
-                <v-col class="pt-0 pb-0 pl-0">
-                    <v-checkbox-btn
-                        v-model="allowUploadsVal"
-                        :disabled="sebSettingsStore.readonly"
-                        hide-details
-                        :label="translate('sebSettings.updownloadView.files')"
-                        @update:model-value="
-                            saveSingleValue(
-                                'allowUploads',
-                                allowUploadsVal ? 'true' : 'false',
-                            )
-                        "
-                    ></v-checkbox-btn>
-                    <v-tooltip
-                        activator="parent"
-                        location="top left"
-                        max-width="400"
-                    >
-                        {{
-                            translate(
-                                "sebSettings.updownloadView.files_tooltip",
-                            )
-                        }}
-                    </v-tooltip>
-                </v-col>
+                <CheckboxSetting
+                    name="downloadAndOpenSebConfig"
+                    label="sebSettings.updownloadView.andOpen"
+                    :tooltip="true"
+                />
             </v-row>
             <v-row>
-                <v-col class="pt-0 pb-0 pl-0">
-                    <v-checkbox-btn
-                        v-model="downloadAndOpenSebConfigVal"
-                        :disabled="sebSettingsStore.readonly"
-                        hide-details
-                        :label="translate('sebSettings.updownloadView.andOpen')"
-                        @update:model-value="
-                            saveSingleValue(
-                                'downloadAndOpenSebConfig',
-                                downloadAndOpenSebConfigVal ? 'true' : 'false',
-                            )
-                        "
-                    ></v-checkbox-btn>
-                    <v-tooltip
-                        activator="parent"
-                        location="top left"
-                        max-width="400"
-                    >
-                        {{
-                            translate(
-                                "sebSettings.updownloadView.andOpen_tooltip",
-                            )
-                        }}
-                    </v-tooltip>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col class="pt-0 pb-0 pl-0">
-                    <v-checkbox-btn
-                        v-model="allowUploadsiOSVal"
-                        :disabled="sebSettingsStore.readonly"
-                        hide-details
-                        :label="translate('sebSettings.updownloadView.photos')"
-                        @update:model-value="
-                            saveSingleValue(
-                                'allowUploadsiOS',
-                                allowUploadsiOSVal ? 'true' : 'false',
-                            )
-                        "
-                    ></v-checkbox-btn>
-                    <v-tooltip
-                        activator="parent"
-                        location="top left"
-                        max-width="400"
-                    >
-                        {{
-                            translate(
-                                "sebSettings.updownloadView.photos_tooltip",
-                            )
-                        }}
-                    </v-tooltip>
-                </v-col>
+                <CheckboxSetting
+                    name="allowUploadsiOS"
+                    label="sebSettings.updownloadView.photos"
+                    :tooltip="true"
+                />
             </v-row>
         </v-col>
 
         <v-col class="text-subtitle-1">
+            <SettingsTitle
+                label="sebSettings.updownloadView.policyTitle"
+                :tooltip="true"
+            />
             <v-row>
-                <v-col class="font-weight-bold pt-8 pb-0"
-                    >{{ translate("sebSettings.updownloadView.policy")
-                    }}<v-divider
-                        class="border-opacity-25"
-                        :thickness="5"
-                    ></v-divider>
-                    <v-tooltip
-                        activator="parent"
-                        location="top left"
-                        max-width="400"
-                    >
-                        {{
-                            translate(
-                                "sebSettings.updownloadView.policy_tooltip",
-                            )
-                        }}
-                    </v-tooltip>
-                </v-col>
+                <RadioSetting
+                    name="chooseFileToUploadPolicy"
+                    label="sebSettings.updownloadView.policy"
+                />
             </v-row>
-            <v-row>
-                <v-col class="pt-0 pb-0 pl-0">
-                    <v-radio-group
-                        v-model="chooseFileToUploadPolicyVal"
-                        :disabled="sebSettingsStore.readonly"
-                        hide-details
-                        @update:model-value="
-                            saveSingleValue(
-                                'chooseFileToUploadPolicy',
-                                chooseFileToUploadPolicyVal,
-                            )
-                        "
-                    >
-                        <v-radio
-                            :label="
-                                translate('sebSettings.updownloadView.policy_0')
-                            "
-                            value="0"
-                        >
-                        </v-radio>
-                        <v-radio
-                            :label="
-                                translate('sebSettings.updownloadView.policy_1')
-                            "
-                            value="1"
-                        >
-                        </v-radio>
-                        <v-radio
-                            :label="
-                                translate('sebSettings.updownloadView.policy_2')
-                            "
-                            value="2"
-                        >
-                        </v-radio>
-                    </v-radio-group>
-                </v-col>
-            </v-row>
+
+            <!-- UPLOAD TYPE LIST
+                TODO: @anhefti try to make SEB Settings lists composable. 
+                Use better (more generic model) for the table values, see sebSettings.SEBSettingsTableRow model
+            -->
             <v-row class="font-weight-bold pt-8 pb-0">
                 <v-col class="text-subtitle-1">
                     <v-row>
@@ -455,38 +220,28 @@
 </template>
 
 <script setup lang="ts">
-import * as sebSettingsService from "@/services/seb-server/sebSettingsService";
 import { useI18n } from "vue-i18n";
-import { stringToBoolean, translate } from "@/utils/generalUtils";
+import { translate } from "@/utils/generalUtils";
 import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums";
 import { ref, onBeforeMount } from "vue";
 import {
     SEBSettingsTableRowValues,
     SEBSettingsValue,
-    SEBSettingsView,
     FileExtensionEntry,
-    SEBSettingAttribute,
 } from "@/models/seb-server/sebSettings";
 import * as tableUtils from "@/utils/table/tableUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import EditFileDownloadRule from "./EditFileDownloadRule.vue";
 
-const i18n = useI18n();
-const sebSettingsStore = useSEBSettingsStore();
+import SettingsTitle from "./composables/SettingsTitle.vue";
+import RadioSetting from "./composables/RadioSetting.vue";
+import CheckboxSetting from "./composables/CheckboxSetting.vue";
+import TextSetting from "./composables/TextSetting.vue";
 
-const allowDownUploadsVal = ref<boolean>(false);
-const downloadDirectoryWinVal = ref<string>("");
-const downloadDirectoryOSXVal = ref<string>("");
-const allowCustomDownUploadLocationVal = ref<boolean>(false);
-const chooseFileToUploadPolicyVal = ref<string>("0");
-const downloadPDFFilesVal = ref<boolean>(false);
-const allowPDFPlugInVal = ref<boolean>(false);
-const downloadAndOpenSebConfigVal = ref<boolean>(false);
-const allowUploadsVal = ref<boolean>(false);
-const allowDownloadsVal = ref<boolean>(false);
-const useTemporaryDownUploadDirectoryVal = ref<boolean>(false);
-const allowUploadsiOSVal = ref<boolean>(false);
+const fetched = ref<boolean>(false);
+const sebSettingsStore = useSEBSettingsStore();
+const i18n = useI18n();
 
 const downloadFileTypesDialog = ref<boolean>(false);
 const selectedDownloadFileType = ref<FileExtensionEntry | null>(null);
@@ -527,109 +282,21 @@ const downloadFileTypesHeaders = ref([
     },
 ]);
 
-// the parent component identifier
-let componentId: string;
-let singleValues: Map<string, SEBSettingsValue>;
-let attributes: Map<string, SEBSettingAttribute>;
-
 onBeforeMount(async () => {
     if (sebSettingsStore.selectedContainerId == null) {
         return;
     }
 
-    componentId = sebSettingsStore.selectedContainerId.toString();
-
-    const duSettings: SEBSettingsView | null = await sebSettingsService.getView(
+    fetched.value = await sebSettingsStore.fetchSingleValues(
         ViewType.DOWN_UPLOAD,
-        componentId,
     );
 
-    if (duSettings == null) {
-        return;
-    }
-
-    singleValues = new Map<string, SEBSettingsValue>(
-        Object.entries(duSettings.singleValues),
-    );
-
-    attributes = new Map<string, SEBSettingAttribute>(
-        Object.entries(duSettings.attributes),
-    );
-
-    allowDownUploadsVal.value = stringToBoolean(
-        getSingleValue("allowDownUploads").value,
-    );
-    downloadDirectoryWinVal.value = getSingleValue(
-        "downloadDirectoryWin",
-    ).value;
-    downloadDirectoryOSXVal.value = getSingleValue(
-        "downloadDirectoryOSX",
-    ).value;
-    allowCustomDownUploadLocationVal.value = stringToBoolean(
-        getSingleValue("allowCustomDownUploadLocation").value,
-    );
-    chooseFileToUploadPolicyVal.value = getSingleValue(
-        "chooseFileToUploadPolicy",
-    ).value;
-
-    downloadPDFFilesVal.value = stringToBoolean(
-        getSingleValue("downloadPDFFiles").value,
-    );
-    allowPDFPlugInVal.value = stringToBoolean(
-        getSingleValue("allowPDFPlugIn").value,
-    );
-    downloadAndOpenSebConfigVal.value = stringToBoolean(
-        getSingleValue("downloadAndOpenSebConfig").value,
-    );
-    allowUploadsVal.value = stringToBoolean(
-        getSingleValue("allowUploads").value,
-    );
-    allowDownloadsVal.value = stringToBoolean(
-        getSingleValue("allowDownloads").value,
-    );
-    useTemporaryDownUploadDirectoryVal.value = stringToBoolean(
-        getSingleValue("useTemporaryDownUploadDirectory").value,
-    );
-    allowUploadsiOSVal.value = stringToBoolean(
-        getSingleValue("allowUploadsiOS").value,
-    );
-
-    // File Extensions
-    const tableValues: Map<string, SEBSettingsTableRowValues[]> = new Map<
-        string,
-        SEBSettingsTableRowValues[]
-    >(Object.entries(duSettings.tableValues));
-
-    const fileTypes = tableValues.get("downloadFileTypes");
+    const fileTypes = sebSettingsStore.tableValues.get("downloadFileTypes");
     if (fileTypes == null) {
         return;
     }
     updateFileTypesTable(fileTypes);
 });
-
-async function saveSingleValue(name: string, value: string) {
-    const setting: SEBSettingsValue = getSingleValue(name);
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        setting.id.toString(),
-        value,
-    );
-}
-
-async function saveOnFocusLost(focusIn: boolean, name: string, value: string) {
-    if (!focusIn) {
-        saveSingleValue(name, value);
-    }
-}
-
-function getSingleValue(name: string): SEBSettingsValue {
-    const value = singleValues.get(name);
-    if (!value) {
-        throw new Error("No Single Value" + name + " found");
-    }
-
-    return value;
-}
 
 // ********* File Type functions *********************
 function updateFileTypesTable(entries: SEBSettingsTableRowValues[]) {
@@ -674,12 +341,10 @@ function newFileType() {
 }
 
 async function deleteFileType(index: number) {
-    const resp: SEBSettingsTableRowValues[] | null =
-        await sebSettingsService.deleteTableRow(
-            componentId,
-            "downloadFileTypes",
-            index,
-        );
+    const resp = await sebSettingsStore.deleteTableRow(
+        "downloadFileTypes",
+        index,
+    );
     if (resp == null) {
         return;
     }
@@ -703,11 +368,7 @@ async function closeFileTypeDialog(apply?: boolean) {
     }
 
     if (selectedDownloadFileType.value?.index === -1) {
-        const resp: SEBSettingsTableRowValues | null =
-            await sebSettingsService.addTableRow(
-                componentId,
-                "downloadFileTypes",
-            );
+        const resp = await sebSettingsStore.addTableRow("downloadFileTypes");
         if (resp == null) {
             return;
         }
@@ -722,21 +383,20 @@ async function closeFileTypeDialog(apply?: boolean) {
             downloadFileTypesTable.value[resp.listIndex].ids;
     }
 
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        selectedDownloadFileType.value.ids.os.toString(),
-        selectedDownloadFileType.value.os,
-    );
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        selectedDownloadFileType.value.ids.fileExtension.toString(),
-        selectedDownloadFileType.value.fileExtension,
-    );
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        selectedDownloadFileType.value.ids.identifier.toString(),
-        selectedDownloadFileType.value.identifier,
-    );
+    sebSettingsStore.saveTableRow([
+        {
+            id: selectedDownloadFileType.value.ids.os,
+            value: selectedDownloadFileType.value.os,
+        },
+        {
+            id: selectedDownloadFileType.value.ids.fileExtension,
+            value: selectedDownloadFileType.value.fileExtension,
+        },
+        {
+            id: selectedDownloadFileType.value.ids.identifier,
+            value: selectedDownloadFileType.value.identifier,
+        },
+    ]);
 
     downloadFileTypesTable.value[selectedDownloadFileType.value.index] =
         selectedDownloadFileType.value;
@@ -748,7 +408,7 @@ function getStringValue(
 ): string {
     const prop = rowVals.get(name);
     if (!prop) {
-        const def = attributes.get(name);
+        const def = sebSettingsStore.attributes.get(name);
         if (!def) {
             throw new Error("No SEB Setting" + name + " found");
         } else {

@@ -6,7 +6,6 @@ import { getSummaryNaming } from "@/components/views/seb-server/exam-template/wi
 import { getSummaryIndicators } from "@/components/views/seb-server/exam-template/wizard/components/stepSummary/helpers/getSummaryIndicators";
 import { getSummarySupervisors } from "@/components/views/seb-server/exam-template/wizard/components/stepSummary/helpers/getSummarySupervisors";
 import { useSupervisors } from "@/composables/useSupervisors";
-import { useConfigurationTemplateNames } from "@/composables/useConfigurationTemplateNames";
 import { useClientConfigurationNames } from "@/composables/useClientConfigurationNames";
 
 export const useSummary = () => {
@@ -19,30 +18,19 @@ export const useSummary = () => {
     } = useSupervisors();
 
     const {
-        data: configurationTemplateNames,
-        loading: loadingConfigurationTemplateNames,
-        error: errorConfigurationTemplateNames,
-    } = useConfigurationTemplateNames();
-
-    const {
         data: clientConfigurationNames,
         loading: loadingClientConfigurationNames,
         error: errorClientConfigurationNames,
     } = useClientConfigurationNames();
 
     const loading = computed(
-        () =>
-            loadingSupervisors.value ||
-            loadingConfigurationTemplateNames.value ||
-            loadingClientConfigurationNames.value,
+        () => loadingSupervisors.value || loadingClientConfigurationNames.value,
     );
 
     const errors = computed(() =>
-        [
-            errorSupervisors.value,
-            errorConfigurationTemplateNames.value,
-            errorClientConfigurationNames.value,
-        ].filter((error) => error !== undefined),
+        [errorSupervisors.value, errorClientConfigurationNames.value].filter(
+            (error) => error !== undefined,
+        ),
     );
 
     const summarySections = computed<SummarySectionData[]>(() => {
@@ -53,7 +41,6 @@ export const useSummary = () => {
         return [
             getSummaryNaming(
                 examTemplate,
-                configurationTemplateNames.value ?? [],
                 clientConfigurationNames.value ?? [],
             ),
             getSummarySupervisors(examTemplate, supervisors.value ?? []),
