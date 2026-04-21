@@ -6,15 +6,13 @@
         style="min-width: 4.7rem; justify-content: center"
         @click.stop="emit('click')"
     >
-        {{ active ? activeLabel : inactiveLabel }}
+        {{ active ? $t("general.active") : $t("general.inactive") }}
     </v-chip>
 </template>
 
 <script setup lang="ts">
 defineProps<{
     active: boolean;
-    activeLabel: string;
-    inactiveLabel: string;
 }>();
 
 const emit = defineEmits<{

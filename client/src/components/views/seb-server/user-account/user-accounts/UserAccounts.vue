@@ -56,8 +56,6 @@
                                 <template #cell-active="{ item }">
                                     <ActiveStatusChip
                                         :active="!!item.active"
-                                        active-label="Active"
-                                        inactive-label="Inactive"
                                         @click="openStatusDialog(item)"
                                     />
                                 </template>
@@ -182,7 +180,7 @@ const { navigateToItem } = useTableNavigation(
 
 const deleteDetailText = computed(() => {
     if (!deleteTarget.value) return "";
-    return navigateToItem(deleteTarget.value);
+    return String(deleteTarget.value.name ?? "");
 });
 
 function openDeleteDialog(item: TableItem) {

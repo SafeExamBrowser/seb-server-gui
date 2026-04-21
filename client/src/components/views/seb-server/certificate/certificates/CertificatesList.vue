@@ -50,6 +50,7 @@
 
     <DeleteConfirmDialog
         v-model="deleteDialogOpen"
+        :detail-text="deleteDetailText"
         translation-key-prefix="certificates"
         @confirm="confirmDelete"
     />
@@ -194,6 +195,11 @@ const {
 // Dialog state
 const deleteTarget = ref<TableItem | null>(null);
 const deleteDialogOpen = ref(false);
+
+const deleteDetailText = computed(() => {
+    if (!deleteTarget.value) return "";
+    return String(deleteTarget.value.alias ?? "");
+});
 
 function openDeleteDialog(item: TableItem) {
     deleteTarget.value = item;

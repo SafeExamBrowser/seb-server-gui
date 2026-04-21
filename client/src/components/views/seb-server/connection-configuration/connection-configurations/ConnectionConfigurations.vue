@@ -60,8 +60,6 @@
                                 <template #cell-active="{ item }">
                                     <ActiveStatusChip
                                         :active="!!item.active"
-                                        active-label="Active"
-                                        inactive-label="Inactive"
                                         @click="openStatusDialog(item)"
                                     />
                                 </template>
@@ -178,7 +176,7 @@ const statusTarget = ref<TableItem | null>(null);
 const deleteDialogOpen = ref(false);
 const statusDialogOpen = ref(false);
 
-const { buildItemRoute, navigateToItem } = useTableNavigation(
+const { navigateToItem } = useTableNavigation(
     getRouteName("ConnectionConfigurationDetailAndView"),
     "id",
     "id",
@@ -186,7 +184,7 @@ const { buildItemRoute, navigateToItem } = useTableNavigation(
 
 const deleteDetailText = computed(() => {
     if (!deleteTarget.value) return "";
-    return buildItemRoute(deleteTarget.value);
+    return String(deleteTarget.value.name ?? "");
 });
 
 function openDeleteDialog(item: TableItem) {

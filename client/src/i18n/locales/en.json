@@ -67,6 +67,8 @@
         "true": "Yes",
         "false": "No",
         "itemsPerPage": "Items Per Page",
+        "active": "Active",
+        "inactive": "Inactive",
         "userRoles": {
             "SEB_SERVER_ADMIN": "Server Administrator",
             "INSTITUTIONAL_ADMIN": "Institutional Administrator",
