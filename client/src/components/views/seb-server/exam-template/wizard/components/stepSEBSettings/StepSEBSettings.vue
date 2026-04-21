@@ -18,7 +18,7 @@
 import { useDisplay } from "vuetify";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import StepItem from "@/components/widgets/stepItem/StepItem.vue";
-import SEBSettings from "./composables/SEBSettings.vue";
+import SEBSettings from "./components/SEBSettings.vue";
 import { useSEBSettings } from "./composables/useSEBSettings";
 
 const { temporaryConfigTemplateKey, loading, errors } = useSEBSettings();
