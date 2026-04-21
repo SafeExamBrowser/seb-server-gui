@@ -48,8 +48,6 @@
         </template>
     </BasicSettingsPage>
 
-    <AddCertificateDialog v-model="certDialog" @imported="onCertImported" />
-
     <DeleteConfirmDialog
         v-model="deleteDialogOpen"
         translation-key-prefix="certificates"
@@ -79,7 +77,6 @@ import { useUrlTableState } from "@/components/blocks/entity-table/composables/u
 import { useDeleteCertificate } from "@/components/views/seb-server/certificate/certificates/api/useDeleteCertificate.ts";
 import type { CertificatesResponse } from "@/models/seb-server/certificate.ts";
 import type { TableItem } from "@/components/blocks/entity-table/types.ts";
-import AddCertificateDialog from "@/components/views/seb-server/certificate/certificates/AddCertificateDialog.vue";
 import AddButton from "@/components/widgets/AddButton.vue";
 import { CreateCertificatePar } from "@/models/seb-server/certificate.ts";
 import { createCertificate } from "@/services/seb-server/certificateService.ts";
