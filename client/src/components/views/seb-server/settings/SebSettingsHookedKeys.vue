@@ -418,7 +418,11 @@ onBeforeMount(async () => {
     componentId = sebSettingsStore.selectedContainerId.toString();
 
     const hotKeySettings: SEBSettingsView | null =
-        await sebSettingsService.getView(ViewType.HOOKED_KEYS, componentId);
+        await sebSettingsService.getView(
+            ViewType.HOOKED_KEYS,
+            componentId,
+            sebSettingsStore.isExam,
+        );
     if (hotKeySettings == null) {
         return;
     }
@@ -463,6 +467,7 @@ async function saveSingleValue(name: string, value: string) {
         componentId,
         setting.id.toString(),
         value,
+        sebSettingsStore.isExam,
     );
 }
 

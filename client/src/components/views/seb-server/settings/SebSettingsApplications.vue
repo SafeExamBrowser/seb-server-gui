@@ -419,7 +419,11 @@ onBeforeMount(async () => {
     componentId = sebSettingsStore.selectedContainerId.toString();
 
     const applicationSettings: SEBSettingsView | null =
-        await sebSettingsService.getView(ViewType.APPLICATION, componentId);
+        await sebSettingsService.getView(
+            ViewType.APPLICATION,
+            componentId,
+            sebSettingsStore.isExam,
+        );
     if (applicationSettings == null) {
         return;
     }
@@ -631,6 +635,7 @@ async function permittedProcessDelete(index: number) {
             componentId,
             "permittedProcesses",
             index,
+            sebSettingsStore.isExam,
         );
     if (resp == null) {
         return;
@@ -659,6 +664,7 @@ async function closeEditPermittedProcessDialog(apply?: boolean) {
             await sebSettingsService.addTableRow(
                 componentId,
                 "permittedProcesses",
+                sebSettingsStore.isExam,
             );
         if (resp == null) {
             return;
@@ -678,87 +684,104 @@ async function closeEditPermittedProcessDialog(apply?: boolean) {
         componentId,
         selectedPermittedProcess.value.ids.active.toString(),
         selectedPermittedProcess.value.active ? "true" : "false",
+        sebSettingsStore.isExam,
     );
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedPermittedProcess.value.ids.os.toString(),
         selectedPermittedProcess.value.os,
+        sebSettingsStore.isExam,
     );
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedPermittedProcess.value.ids.executable.toString(),
         selectedPermittedProcess.value.executable,
+        sebSettingsStore.isExam,
     );
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedPermittedProcess.value.ids.title.toString(),
         selectedPermittedProcess.value.title,
+        sebSettingsStore.isExam,
     );
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedPermittedProcess.value.ids.originalName.toString(),
         selectedPermittedProcess.value.originalName,
+        sebSettingsStore.isExam,
     );
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedPermittedProcess.value.ids.signature.toString(),
         selectedPermittedProcess.value.signature,
+        sebSettingsStore.isExam,
     );
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedPermittedProcess.value.ids.path.toString(),
         selectedPermittedProcess.value.path,
+        sebSettingsStore.isExam,
     );
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedPermittedProcess.value.ids.iconInTaskbar.toString(),
         selectedPermittedProcess.value.iconInTaskbar ? "true" : "false",
+        sebSettingsStore.isExam,
     );
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedPermittedProcess.value.ids.arguments.toString(),
         argumentsToString(selectedPermittedProcess.value.arguments),
+        sebSettingsStore.isExam,
     );
 
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedPermittedProcess.value.ids.autostart.toString(),
         selectedPermittedProcess.value.autostart ? "true" : "false",
+        sebSettingsStore.isExam,
     );
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedPermittedProcess.value.ids.runInBackground.toString(),
         selectedPermittedProcess.value.runInBackground ? "true" : "false",
+        sebSettingsStore.isExam,
     );
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedPermittedProcess.value.ids.allowManualStart.toString(),
         selectedPermittedProcess.value.allowManualStart ? "true" : "false",
+        sebSettingsStore.isExam,
     );
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedPermittedProcess.value.ids.allowUserToChooseApp.toString(),
         selectedPermittedProcess.value.allowUserToChooseApp ? "true" : "false",
+        sebSettingsStore.isExam,
     );
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedPermittedProcess.value.ids.allowUserToChooseApp.toString(),
         selectedPermittedProcess.value.allowUserToChooseApp ? "true" : "false",
+        sebSettingsStore.isExam,
     );
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedPermittedProcess.value.ids.allowNetworkAccess.toString(),
         selectedPermittedProcess.value.allowNetworkAccess ? "true" : "false",
+        sebSettingsStore.isExam,
     );
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedPermittedProcess.value.ids.strongKill.toString(),
         selectedPermittedProcess.value.strongKill ? "true" : "false",
+        sebSettingsStore.isExam,
     );
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedPermittedProcess.value.ids.teamIdentifier.toString(),
         selectedPermittedProcess.value.teamIdentifier,
+        sebSettingsStore.isExam,
     );
 
     permittedProcessTable.value[selectedPermittedProcess.value.index] =
@@ -852,6 +875,7 @@ async function prohibitedProcessDelete(index: number) {
             componentId,
             "prohibitedProcesses",
             index,
+            sebSettingsStore.isExam,
         );
     if (resp == null) {
         return;
@@ -881,6 +905,7 @@ async function closeEditProhibitedProcessDialog(apply?: boolean) {
             await sebSettingsService.addTableRow(
                 componentId,
                 "prohibitedProcesses",
+                sebSettingsStore.isExam,
             );
         if (resp == null) {
             return;
@@ -900,48 +925,56 @@ async function closeEditProhibitedProcessDialog(apply?: boolean) {
         componentId,
         selectedProhibitedProcess.value.ids.active.toString(),
         selectedProhibitedProcess.value.active ? "true" : "false",
+        sebSettingsStore.isExam,
     );
 
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedProhibitedProcess.value.ids.os.toString(),
         selectedProhibitedProcess.value.os,
+        sebSettingsStore.isExam,
     );
 
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedProhibitedProcess.value.ids.executable.toString(),
         selectedProhibitedProcess.value.executable,
+        sebSettingsStore.isExam,
     );
 
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedProhibitedProcess.value.ids.description.toString(),
         selectedProhibitedProcess.value.description,
+        sebSettingsStore.isExam,
     );
 
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedProhibitedProcess.value.ids.originalName.toString(),
         selectedProhibitedProcess.value.originalName,
+        sebSettingsStore.isExam,
     );
 
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedProhibitedProcess.value.ids.identifier.toString(),
         selectedProhibitedProcess.value.identifier,
+        sebSettingsStore.isExam,
     );
 
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedProhibitedProcess.value.ids.strongKill.toString(),
         selectedProhibitedProcess.value.strongKill ? "true" : "false",
+        sebSettingsStore.isExam,
     );
 
     await sebSettingsService.updateSEBSettingValue(
         componentId,
         selectedProhibitedProcess.value.ids.ignoreInAAC.toString(),
         selectedProhibitedProcess.value.ignoreInAAC ? "true" : "false",
+        sebSettingsStore.isExam,
     );
 
     prohibitedProcessTable.value[selectedProhibitedProcess.value.index] =
@@ -953,6 +986,7 @@ async function saveSingleValue(valId: number, value: string) {
         componentId,
         valId.toString(),
         value,
+        sebSettingsStore.isExam,
     );
 }
 

@@ -144,3 +144,15 @@ export type FileExtensionEntry = {
         identifier: number;
     };
 };
+
+export type SEBSettingsTableRow = {
+    index: number;
+    tableName: string;
+    columnNames: string[];
+    values: SEBSettingTableValue[];
+};
+
+export type SEBSettingTableValue = {
+    id: number;
+    value: string;
+};

@@ -8,14 +8,15 @@ import {
     SEBSettingsView,
 } from "@/models/seb-server/sebSettings";
 
-const baseUrl = "/exam/seb-settings" as const;
+const examUrlPrefix: string = "/exam/seb-settings";
+const templateUrlPrefix: string = "/config-template/seb-settings";
 
 export const getExamConfigMapping = async (
     examId: string,
 ): Promise<ExamConfigMapping[]> =>
     (
         await apiService.getRequest({
-            url: `${baseUrl}/${examId}/examConfigMapping`,
+            url: `${examUrlPrefix}/${examId}/examConfigMapping`,
             options: { _authType: "seb" },
         })
     ).data;
@@ -25,7 +26,7 @@ export const getActiveSEBClients = async (
 ): Promise<number | null> =>
     (
         await apiService.getRequest({
-            url: `${baseUrl}/${examId}/active-seb-clients`,
+            url: `${examUrlPrefix}/${examId}/active-seb-clients`,
             options: { _authType: "seb" },
         })
     ).data;
@@ -33,10 +34,11 @@ export const getActiveSEBClients = async (
 export const getView = async (
     viewType: ViewType,
     id: string,
+    forExam: boolean,
 ): Promise<SEBSettingsView> =>
     (
         await apiService.getRequest({
-            url: `${baseUrl}/${id}`,
+            url: `${forExam ? examUrlPrefix : templateUrlPrefix}/${id}`,
             options: {
                 _authType: "seb",
                 params: { viewType: viewType },
@@ -47,10 +49,11 @@ export const getView = async (
 export const addTableRow = async (
     id: string,
     settingName: string,
+    forExam: boolean,
 ): Promise<SEBSettingsTableRowValues> =>
     (
         await apiService.postRequest({
-            url: `${baseUrl}/${id}/table/row`,
+            url: `${forExam ? examUrlPrefix : templateUrlPrefix}/${id}/table/row`,
             data: {
                 name: settingName,
             },
@@ -62,10 +65,11 @@ export const deleteTableRow = async (
     id: string,
     settingName: string,
     rowIndex: number,
+    forExam: boolean,
 ): Promise<SEBSettingsTableRowValues[]> =>
     (
         await apiService.deleteRequest({
-            url: `${baseUrl}/${id}/table/row`,
+            url: `${forExam ? examUrlPrefix : templateUrlPrefix}/${id}/table/row`,
             data: {
                 name: settingName,
                 listIndex: rowIndex,
@@ -78,10 +82,11 @@ export const updateSEBSettingValue = async (
     id: string,
     valueId: string,
     value: string,
+    forExam: boolean,
 ): Promise<SEBSettingsValue> =>
     (
         await apiService.postRequest({
-            url: `${baseUrl}/${id}`,
+            url: `${forExam ? examUrlPrefix : templateUrlPrefix}/${id}`,
             data: {
                 id: valueId,
                 value: value,
@@ -90,18 +95,24 @@ export const updateSEBSettingValue = async (
         })
     ).data;
 
-export const publish = async (id: string): Promise<SEBSettingsValue> =>
+export const publish = async (
+    id: string,
+    forExam: boolean,
+): Promise<SEBSettingsValue> =>
     (
         await apiService.postRequest({
-            url: `${baseUrl}/${id}/publish`,
+            url: `${forExam ? examUrlPrefix : templateUrlPrefix}/${id}/publish`,
             options: { _authType: "seb" },
         })
     ).data;
 
-export const undoChanges = async (id: string): Promise<SEBSettingsValue> =>
+export const undoChanges = async (
+    id: string,
+    forExam: boolean,
+): Promise<SEBSettingsValue> =>
     (
         await apiService.postRequest({
-            url: `${baseUrl}/${id}/undo-changes`,
+            url: `${forExam ? examUrlPrefix : templateUrlPrefix}/${id}/undo-changes`,
             options: { _authType: "seb" },
         })
     ).data;
