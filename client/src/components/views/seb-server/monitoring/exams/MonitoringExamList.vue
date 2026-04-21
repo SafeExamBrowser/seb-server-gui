@@ -30,7 +30,7 @@
                     :options="options"
                     :loading="loading"
                     :detail-route="getRouteName('MonitoringOverview')"
-                    route-param-key="id"
+                    route-param-key="examId"
                     item-identifier-key="id"
                     :cell-formatters="cellFormatters"
                     :actions="tableActions"
@@ -139,7 +139,7 @@ const pageCount = computed(() => tableData.value?.number_of_pages ?? 0);
 const { navigateToItem } = useTableNavigation(
     getRouteName("MonitoringOverview"),
     "id",
-    "id",
+    "examId",
 );
 
 const tableActions = useMonitoringTableActions({

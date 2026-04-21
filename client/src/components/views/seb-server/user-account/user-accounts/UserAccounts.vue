@@ -174,7 +174,7 @@ const statusTarget = ref<TableItem | null>(null);
 const deleteDialogOpen = ref(false);
 const statusDialogOpen = ref(false);
 
-const { buildItemRoute } = useTableNavigation(
+const { navigateToItem } = useTableNavigation(
     getRouteName("EditUserAccount"),
     "uuid",
     "userUuid",
@@ -182,7 +182,7 @@ const { buildItemRoute } = useTableNavigation(
 
 const deleteDetailText = computed(() => {
     if (!deleteTarget.value) return "";
-    return buildItemRoute(deleteTarget.value);
+    return navigateToItem(deleteTarget.value);
 });
 
 function openDeleteDialog(item: TableItem) {
@@ -206,12 +206,6 @@ async function confirmStatusChange() {
     await toggleUserAccountStatusFromItem(statusTarget.value);
     statusDialogOpen.value = false;
 }
-
-const { navigateToItem } = useTableNavigation(
-    getRouteName("EditUserAccount"),
-    "uuid",
-    "userUuid",
-);
 
 const tableActions = useUserAccountsTableActions({
     onEdit: (item) => navigateToItem(item),
