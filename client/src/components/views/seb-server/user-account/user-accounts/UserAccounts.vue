@@ -101,9 +101,9 @@ import { useUserAccountsTableActions } from "@/components/views/seb-server/user-
 import { useUserAccountsFilters } from "@/components/views/seb-server/user-account/user-accounts/composables/useUserAccountsFilters.ts";
 import { STATUS_FILTER_KEY } from "@/components/blocks/filters/statusFilterSection.ts";
 import { INSTITUTION_FILTER_KEY } from "@/components/blocks/filters/useInstitutionFilterSection.ts";
-import { useUserAccounts } from "@/components/views/seb-server/user-account/api/useUserAccounts.ts";
-import { useDeleteUserAccount } from "@/components/views/seb-server/user-account/api/useDeleteUserAccount.ts";
-import { useToggleUserAccountStatus } from "@/components/views/seb-server/user-account/api/useToggleUserAccountStatus.ts";
+import { useUserAccounts } from "@/components/views/seb-server/user-account/user-accounts/api/useUserAccounts.ts";
+import { useDeleteUserAccount } from "@/components/views/seb-server/user-account/user-accounts/api/useDeleteUserAccount.ts";
+import { useToggleUserAccountStatus } from "@/components/views/seb-server/user-account/user-accounts/api/useToggleUserAccountStatus.ts";
 import type { UserAccountResponse } from "@/models/userAccount.ts";
 import type { TableItem } from "@/components/blocks/entity-table/types.ts";
 import AddButton from "@/components/widgets/AddButton.vue";
