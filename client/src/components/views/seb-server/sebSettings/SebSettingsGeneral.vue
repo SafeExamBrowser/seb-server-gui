@@ -32,6 +32,7 @@ import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums";
 import CheckboxSetting from "./components/CheckboxSetting.vue";
 import PasswordSetting from "./components/PasswordSetting.vue";
+import { useSEBSettingValues } from "./composables/useSEBSettingValues";
 
 const sebSettingsStore = useSEBSettingsStore();
 const fetched = ref<boolean>(false);
@@ -40,6 +41,14 @@ onBeforeMount(async () => {
     if (sebSettingsStore.selectedContainerId == null) {
         return;
     }
+
+    const values = useSEBSettingValues(
+        false,
+        sebSettingsStore.selectedContainerId.toString(),
+        ViewType.GENERAL,
+    );
+
+    console.info("********** allowQuit: " + values);
 
     fetched.value = await sebSettingsStore.fetchSingleValues(ViewType.GENERAL);
 });

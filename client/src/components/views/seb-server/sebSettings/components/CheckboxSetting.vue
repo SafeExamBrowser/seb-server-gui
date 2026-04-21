@@ -24,12 +24,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import { translate } from "@/utils/generalUtils";
 import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
-
-const sebSettingsStore = useSEBSettingsStore();
-const boolVal = ref<boolean>(false);
 
 const props = defineProps<{
     name: string;
@@ -38,11 +35,10 @@ const props = defineProps<{
     disabled?: boolean;
 }>();
 
+const sebSettingsStore = useSEBSettingsStore();
+const boolVal = ref<boolean>(sebSettingsStore.getBooleanValue(props.name));
+
 defineExpose({
     boolVal,
-});
-
-onMounted(() => {
-    boolVal.value = sebSettingsStore.getBooleanValue(props.name);
 });
 </script>
