@@ -22,26 +22,26 @@
 
                 <v-row>
                     <v-col>
-                        <div v-if="error">
-                            {{ error }}
-                        </div>
-
-                        <div v-else-if="deleteError">
+                        <div v-if="deleteError">
                             {{ deleteError }}
                         </div>
-
-                        <EntityTable
-                            :headers="certificatesTableHeaders"
-                            :items="tableData?.content ?? []"
-                            :page-count="pageCount"
-                            :items-per-page="options.itemsPerPage"
-                            :options="options"
-                            :loading="loading || deleteLoading"
-                            item-identifier-key="alias"
-                            :cell-formatters="cellFormatters"
-                            :actions="tableActions"
-                            @update:options="loadItems"
-                        />
+                        <LoadingFallbackComponent
+                            :loading="false"
+                            :errors="error ? [error] : []"
+                        >
+                            <EntityTable
+                                :headers="certificatesTableHeaders"
+                                :items="tableData?.content ?? []"
+                                :page-count="pageCount"
+                                :items-per-page="options.itemsPerPage"
+                                :options="options"
+                                :loading="loading || deleteLoading"
+                                item-identifier-key="alias"
+                                :cell-formatters="cellFormatters"
+                                :actions="tableActions"
+                                @update:options="loadItems"
+                            />
+                        </LoadingFallbackComponent>
                     </v-col>
                 </v-row>
             </v-col>
@@ -69,6 +69,7 @@ import { computed, ref, watch, useTemplateRef } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import SearchSection from "@/components/blocks/searches/SearchSection.vue";
 import EntityTable from "@/components/blocks/entity-table/EntityTable.vue";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import { useCertificatesTableHeaders } from "@/components/views/seb-server/certificate/certificates/composables/useCertificateTableHeaders.ts";
 import { useCertificatesTableActions } from "@/components/views/seb-server/certificate/certificates/composables/useCertificatesTableActions.ts";

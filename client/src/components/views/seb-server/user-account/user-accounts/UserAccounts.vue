@@ -31,11 +31,12 @@
 
                 <v-row>
                     <v-col>
-                        <div v-if="error">{{ error }}</div>
-                        <div v-else-if="deleteError">{{ deleteError }}</div>
+                        <div v-if="deleteError">{{ deleteError }}</div>
                         <div v-else-if="statusError">{{ statusError }}</div>
-
-                        <LoadingFallbackComponent :loading="false" :errors="[]">
+                        <LoadingFallbackComponent
+                            :loading="false"
+                            :errors="error ? [error] : []"
+                        >
                             <EntityTable
                                 :headers="userAccountsTableHeaders"
                                 :items="tableData?.content ?? []"

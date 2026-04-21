@@ -31,37 +31,42 @@
 
                 <v-row>
                     <v-col>
-                        <div v-if="error">{{ error }}</div>
-                        <div v-else-if="deleteError">{{ deleteError }}</div>
+                        <div v-if="deleteError">{{ deleteError }}</div>
                         <div v-else-if="statusError">{{ statusError }}</div>
-
-                        <EntityTable
-                            :headers="connectionConfigurationTableHeaders"
-                            :items="tableData?.content ?? []"
-                            :page-count="pageCount"
-                            :items-per-page="options.itemsPerPage"
-                            :options="options"
-                            :loading="loading || deleteLoading || statusLoading"
-                            :detail-route="
-                                getRouteName(
-                                    'ConnectionConfigurationDetailAndView',
-                                )
-                            "
-                            route-param-key="id"
-                            item-identifier-key="id"
-                            :cell-formatters="cellFormatters"
-                            :actions="tableActions"
-                            @update:options="loadItems"
+                        <LoadingFallbackComponent
+                            :loading="false"
+                            :errors="error ? [error] : []"
                         >
-                            <template #cell-active="{ item }">
-                                <ActiveStatusChip
-                                    :active="!!item.active"
-                                    active-label="Active"
-                                    inactive-label="Inactive"
-                                    @click="openStatusDialog(item)"
-                                />
-                            </template>
-                        </EntityTable>
+                            <EntityTable
+                                :headers="connectionConfigurationTableHeaders"
+                                :items="tableData?.content ?? []"
+                                :page-count="pageCount"
+                                :items-per-page="options.itemsPerPage"
+                                :options="options"
+                                :loading="
+                                    loading || deleteLoading || statusLoading
+                                "
+                                :detail-route="
+                                    getRouteName(
+                                        'ConnectionConfigurationDetailAndView',
+                                    )
+                                "
+                                route-param-key="id"
+                                item-identifier-key="id"
+                                :cell-formatters="cellFormatters"
+                                :actions="tableActions"
+                                @update:options="loadItems"
+                            >
+                                <template #cell-active="{ item }">
+                                    <ActiveStatusChip
+                                        :active="!!item.active"
+                                        active-label="Active"
+                                        inactive-label="Inactive"
+                                        @click="openStatusDialog(item)"
+                                    />
+                                </template>
+                            </EntityTable>
+                        </LoadingFallbackComponent>
                     </v-col>
                 </v-row>
             </v-col>
@@ -93,6 +98,7 @@ import EntityTable from "@/components/blocks/entity-table/EntityTable.vue";
 import ActiveStatusChip from "@/components/blocks/entity-table/widgets/ActiveStatusChip.vue";
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import StatusConfirmDialog from "@/components/widgets/confirmDialog/StatusConfirmDialog.vue";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useUrlTableState } from "@/components/blocks/entity-table/composables/useUrlTableState.ts";
 import { useTableNavigation } from "@/components/blocks/entity-table/composables/useTableNavigation.ts";
 import { useConnectionConfigurationsTableHeaders } from "@/components/views/seb-server/connection-configuration/connection-configurations/composables/useConnectionConfigurationsTableHeaders.ts";

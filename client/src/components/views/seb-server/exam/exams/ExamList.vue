@@ -17,8 +17,10 @@
             />
         </template>
         <template #PanelMain>
-            <div v-if="error" class="pa-4">{{ error }}</div>
-            <LoadingFallbackComponent :loading="false" :errors="[]">
+            <LoadingFallbackComponent
+                :loading="false"
+                :errors="error ? [error] : []"
+            >
                 <EntityTable
                     class="pl-6 pr-6 pt-3"
                     :headers="examTableHeaders"
