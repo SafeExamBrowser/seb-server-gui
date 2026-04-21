@@ -22,3 +22,4 @@ application-prod.properties
 /client/storybook-static/
 /client/playwright-report/
 /client/test-results/
+.claude/**/*.local.*

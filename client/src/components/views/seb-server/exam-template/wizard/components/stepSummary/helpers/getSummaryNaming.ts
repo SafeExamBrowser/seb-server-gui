@@ -1,33 +1,12 @@
 import i18n from "@/i18n";
 import { ExamTemplate } from "@/models/seb-server/examTemplate";
 import { SummarySectionData } from "@/components/widgets/wizardSummary/types";
-import { ConfigurationTemplateName } from "@/models/seb-server/configurationNode";
 import { ConnectionConfigurationName } from "@/models/seb-server/connectionConfiguration";
 
 export const getSummaryNaming = (
     examTemplate: ExamTemplate,
-    configurationTemplateNames: ConfigurationTemplateName[],
     clientConfigurationNames: ConnectionConfigurationName[],
 ): SummarySectionData => {
-    const getConfigurationTemplateValue = (
-        configurationTemplateId?: number,
-    ) => {
-        if (!configurationTemplateId) {
-            return i18n.global.t("createTemplateExam.steps.summary.emptyValue");
-        }
-
-        const configurationTemplate = configurationTemplateNames.find(
-            (configurationTemplate) =>
-                configurationTemplate.modelId ===
-                configurationTemplateId.toString(),
-        );
-
-        return (
-            configurationTemplate?.name ??
-            i18n.global.t("createTemplateExam.steps.summary.notFoundValue")
-        );
-    };
-
     const getClientConfigurationValue = (clientConfigurationId?: number) => {
         if (!clientConfigurationId) {
             return i18n.global.t("createTemplateExam.steps.summary.emptyValue");
@@ -86,19 +65,6 @@ export const getSummaryNaming = (
                         : i18n.global.t(
                               "createTemplateExam.steps.summary.emptyValue",
                           ),
-                },
-            },
-            {
-                type: "basic" as const,
-                key: "configurationTemplate",
-                label: i18n.global.t(
-                    "createTemplateExam.steps.naming.fields.configurationTemplate.label",
-                ),
-                value: {
-                    type: "string",
-                    value: getConfigurationTemplateValue(
-                        examTemplate.configurationTemplateId,
-                    ),
                 },
             },
             {

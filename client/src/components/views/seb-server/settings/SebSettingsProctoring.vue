@@ -468,7 +468,11 @@ onBeforeMount(async () => {
     componentId = sebSettingsStore.selectedContainerId.toString();
 
     const proctoringSettings: SEBSettingsView | null =
-        await sebSettingsService.getView(ViewType.PROCTORING, componentId);
+        await sebSettingsService.getView(
+            ViewType.PROCTORING,
+            componentId,
+            sebSettingsStore.isExam,
+        );
     if (proctoringSettings == null) {
         return;
     }
@@ -580,6 +584,7 @@ async function saveSingleValue(name: string, value: string) {
         componentId,
         setting.id.toString(),
         value,
+        sebSettingsStore.isExam,
     );
 }
 

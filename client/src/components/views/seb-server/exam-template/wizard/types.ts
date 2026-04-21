@@ -3,9 +3,11 @@ import StepSupervisors from "./components/stepSupervisors/StepSupervisors.vue";
 import StepIndicators from "./components/stepIndicators/stepIndicators.vue";
 import StepClientGroup from "./components/stepClientGroup/stepClientGroup.vue";
 import StepSummary from "./components/stepSummary/StepSummary.vue";
+import StepSEBSettings from "./components/stepSEBSettings/StepSEBSettings.vue";
 
 export const stepComponents = {
     StepNaming,
+    StepSEBSettings,
     StepSupervisors,
     StepIndicators,
     StepClientGroup,

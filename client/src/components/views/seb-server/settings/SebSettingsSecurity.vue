@@ -438,7 +438,7 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col :class="sebSettingsStore.fp">
+                <v-col class="pt-1 pb-1">
                     <v-text-field
                         v-model="logDirectoryWin"
                         density="compact"
@@ -462,7 +462,7 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col :class="sebSettingsStore.fp">
+                <v-col class="pt-1 pb-1">
                     <v-text-field
                         v-model="logDirectoryOSX"
                         density="compact"
@@ -1146,7 +1146,7 @@
             </v-row>
 
             <v-row>
-                <v-col :class="sebSettingsStore.fp">
+                <v-col class="pt-1 pb-1">
                     <v-textarea
                         v-model="sebAllowedVersions"
                         density="compact"
@@ -1251,7 +1251,11 @@ onBeforeMount(async () => {
     componentId = sebSettingsStore.selectedContainerId.toString();
 
     const securitySettings: SEBSettingsView | null =
-        await sebSettingsService.getView(ViewType.SECURITY, componentId);
+        await sebSettingsService.getView(
+            ViewType.SECURITY,
+            componentId,
+            sebSettingsStore.isExam,
+        );
     if (securitySettings == null) {
         return;
     }
@@ -1543,6 +1547,7 @@ async function saveSingleValue(name: string, value: string) {
         componentId,
         setting.id.toString(),
         value,
+        sebSettingsStore.isExam,
     );
 }
 
