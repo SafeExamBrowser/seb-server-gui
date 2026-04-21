@@ -234,10 +234,10 @@ import * as tableUtils from "@/utils/table/tableUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import EditFileDownloadRule from "./EditFileDownloadRule.vue";
 
-import SettingsTitle from "./composables/SettingsTitle.vue";
-import RadioSetting from "./composables/RadioSetting.vue";
-import CheckboxSetting from "./composables/CheckboxSetting.vue";
-import TextSetting from "./composables/TextSetting.vue";
+import SettingsTitle from "./components/SettingsTitle.vue";
+import RadioSetting from "./components/RadioSetting.vue";
+import CheckboxSetting from "./components/CheckboxSetting.vue";
+import TextSetting from "./components/TextSetting.vue";
 
 const fetched = ref<boolean>(false);
 const sebSettingsStore = useSEBSettingsStore();

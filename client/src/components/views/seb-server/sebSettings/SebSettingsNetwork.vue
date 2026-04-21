@@ -1057,7 +1057,7 @@ import {
     URLFilterRule,
     SEBSettingAttribute,
 } from "@/models/seb-server/sebSettings";
-import EditURLFilterRule from "@/components/views/seb-server/settings/EditURLFilterRule.vue";
+import EditURLFilterRule from "@/components/views/seb-server/sebSettings/EditURLFilterRule.vue";
 
 const i18n = useI18n();
 const sebSettingsStore = useSEBSettingsStore();

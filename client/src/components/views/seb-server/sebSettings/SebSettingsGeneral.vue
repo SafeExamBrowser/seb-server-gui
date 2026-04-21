@@ -30,8 +30,8 @@
 import { ref, onBeforeMount } from "vue";
 import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums";
-import CheckboxSetting from "./composables/CheckboxSetting.vue";
-import PasswordSetting from "./composables/PasswordSetting.vue";
+import CheckboxSetting from "./components/CheckboxSetting.vue";
+import PasswordSetting from "./components/PasswordSetting.vue";
 
 const sebSettingsStore = useSEBSettingsStore();
 const fetched = ref<boolean>(false);

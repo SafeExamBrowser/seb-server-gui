@@ -310,11 +310,11 @@
 import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums";
 import { ref, onBeforeMount, useTemplateRef } from "vue";
-import SettingsTitle from "./composables/SettingsTitle.vue";
-import RadioSetting from "./composables/RadioSetting.vue";
-import SelectionSetting from "./composables/SelectionSetting.vue";
-import CheckboxSetting from "./composables/CheckboxSetting.vue";
-import TextSetting from "./composables/TextSetting.vue";
+import SettingsTitle from "./components/SettingsTitle.vue";
+import RadioSetting from "./components/RadioSetting.vue";
+import SelectionSetting from "./components/SelectionSetting.vue";
+import CheckboxSetting from "./components/CheckboxSetting.vue";
+import TextSetting from "./components/TextSetting.vue";
 
 const sebSettingsStore = useSEBSettingsStore();
 const fetched = ref<boolean>(false);

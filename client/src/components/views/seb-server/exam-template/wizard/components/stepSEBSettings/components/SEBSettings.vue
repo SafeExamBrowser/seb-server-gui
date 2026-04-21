@@ -48,7 +48,7 @@ import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 import { useStepNamingStore } from "@/components/views/seb-server/exam-template/wizard/components/stepNaming/composables/store/useStepNamingStore";
 import SectionSubtitle from "@/components/widgets/SectionSubtitle.vue";
 import AddButton from "@/components/widgets/AddButton.vue";
-import SEBSettingsPanel from "@/components/views/seb-server/settings/composables/SEBSettingsPanel.vue";
+import SEBSettingsPanel from "@/components/views/seb-server/sebSettings/components/SEBSettingsPanel.vue";
 import UploadDialog from "@/components/widgets/UploadDialog.vue";
 import { SEBSettingsImport } from "@/models/seb-server/configurationNode";
 import { importSEBSettings } from "@/services/seb-server/configurationNodeService";

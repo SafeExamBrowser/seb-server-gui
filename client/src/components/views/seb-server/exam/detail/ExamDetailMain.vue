@@ -952,7 +952,7 @@ import ExamDetailArchiveDialog from "@/components/views/seb-server/exam/detail/d
 import ClientGroupListDialog from "@/components/views/seb-server/exam/detail/dialogs/client-group/ClientGroupListDialog.vue";
 import AddClientGroupDialog from "@/components/views/seb-server/exam/detail/dialogs/client-group/AddClientGroupDialog.vue";
 import ExamTemplateDialog from "@/components/widgets/ExamTemplateDialog.vue";
-import SebSettingsDialog from "@/components/views/seb-server/settings/SebSettingsDialog.vue";
+import SebSettingsDialog from "@/components/views/seb-server/sebSettings/SebSettingsDialog.vue";
 import { activateScreenProctoring } from "@/services/seb-server/screenProctoringService.ts";
 import * as timeUtils from "@/utils/timeUtils";
 

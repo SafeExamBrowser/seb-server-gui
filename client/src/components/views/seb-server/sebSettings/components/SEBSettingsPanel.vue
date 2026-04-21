@@ -24,8 +24,8 @@
 
 <script setup lang="ts">
 import { translate } from "@/utils/generalUtils";
-import SebSettingsApplications from "@/components/views/seb-server/settings/SebSettingsApplications.vue";
-import SebSettingsNetwork from "@/components/views/seb-server/settings/SebSettingsNetwork.vue";
+import SebSettingsApplications from "@/components/views/seb-server/sebSettings/SebSettingsApplications.vue";
+import SebSettingsNetwork from "@/components/views/seb-server/sebSettings/SebSettingsNetwork.vue";
 import { GUIAction, useAbilities } from "@/services/ability";
 import SebSettingsGeneral from "../SebSettingsGeneral.vue";
 import SebSettingsUserInterface from "../SebSettingsUserInterface.vue";

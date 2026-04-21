@@ -61,7 +61,7 @@
 <script setup lang="ts">
 import { translate } from "@/utils/generalUtils";
 import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
-import SEBSettingsPanel from "@/components/views/seb-server/settings/composables/SEBSettingsPanel.vue";
+import SEBSettingsPanel from "./components/SEBSettingsPanel.vue";
 
 const sebSettingsStore = useSEBSettingsStore();
 
