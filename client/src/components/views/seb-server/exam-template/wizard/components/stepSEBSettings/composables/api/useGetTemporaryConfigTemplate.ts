@@ -18,6 +18,7 @@ export const getTemporaryConfigTemplate = () => {
             );
         }
     });
+    // TODO @andreas: use immediate=true instead
     onMounted(temporaryConfigTemplate.fetchData);
     return temporaryConfigTemplate;
 };
