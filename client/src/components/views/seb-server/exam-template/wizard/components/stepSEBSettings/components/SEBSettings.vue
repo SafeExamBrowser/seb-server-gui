@@ -35,8 +35,8 @@
         name-prefix="sebSettings"
         icon="mdi-file-upload-outline"
         :seb-settings-id="
-            sebSettingsStore.selectedContainerId
-                ? sebSettingsStore.selectedContainerId.toString()
+            stepNamingStore.configurationTemplate
+                ? stepNamingStore.configurationTemplate.toString()
                 : null
         "
         :show-quit-password="true"
@@ -55,7 +55,7 @@ import AddButton from "@/components/widgets/AddButton.vue";
 import SEBSettingsPanel from "@/components/views/seb-server/sebSettings/components/SEBSettingsPanel.vue";
 import UploadDialog from "@/components/widgets/UploadDialog.vue";
 
-const sebSettingsStore = useSEBSettingsStore();
+const stepNamingStore = useStepNamingStore();
 
 const configKey = defineModel<ConfigurationTemplateKey | undefined>({
     required: true,
