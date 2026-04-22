@@ -57,7 +57,7 @@ import { computed, ref, watch } from "vue";
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import SearchBar from "@/components/blocks/searches/SearchBar.vue";
 import EntityTable from "@/components/blocks/entity-table/EntityTable.vue";
-import EnumChip from "@/components/blocks/entity-table/widgets/EnumChip.vue";
+import EnumChip from "@/components/widgets/EnumChip.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useUrlTableState } from "@/components/blocks/entity-table/composables/useUrlTableState.ts";
 import { useMonitoringTableHeaders } from "@/components/views/seb-server/monitoring/exams/composables/useMonitoringTableHeaders.ts";

@@ -93,7 +93,7 @@ import { getRouteName } from "@/router/routeNames.ts";
 import SearchSection from "@/components/blocks/searches/SearchSection.vue";
 import FiltersBar from "@/components/blocks/filters/FiltersBar.vue";
 import EntityTable from "@/components/blocks/entity-table/EntityTable.vue";
-import ActiveStatusChip from "@/components/blocks/entity-table/widgets/ActiveStatusChip.vue";
+import ActiveStatusChip from "@/components/widgets/ActiveStatusChip.vue";
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import StatusConfirmDialog from "@/components/widgets/confirmDialog/StatusConfirmDialog.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
