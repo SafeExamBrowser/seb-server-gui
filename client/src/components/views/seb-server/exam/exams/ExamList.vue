@@ -1,5 +1,8 @@
 <template>
-    <BasicPage :title="$t('titles.exams')">
+    <BasicPage
+        :title="$t('titles.exams')"
+        :bread-crumb="[{ label: $t('titles.exams') }]"
+    >
         <template #PanelTop>
             <SearchBar
                 v-model="searchInputValue"

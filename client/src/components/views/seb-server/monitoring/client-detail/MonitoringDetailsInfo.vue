@@ -1,51 +1,7 @@
 <template>
     <v-row dense>
-        <v-col class="pl-5 mb-1" cols="12" md="10">
-            <div class="path-text d-flex align-center">
-                <span
-                    class="breadcrumb-link"
-                    @click="navigateTo(constants.HOME_PAGE_ROUTE)"
-                >
-                    {{ translate("titles.home") }}
-                </span>
-                <span class="breadcrumb-arrow">›</span>
-                <span
-                    class="breadcrumb-link"
-                    @click="navigateTo(constants.MONITORING_ROUTE)"
-                >
-                    {{ translate("titles.monitoring") }}
-                </span>
-                <span
-                    v-if="monitoringStore.selectedExam !== null"
-                    class="breadcrumb-arrow"
-                    >›</span
-                >
-                <span
-                    v-if="monitoringStore.selectedExam !== null"
-                    class="breadcrumb-link"
-                    @click="
-                        navigateTo(
-                            constants.MONITORING_OVERVIEW_ROUTE +
-                                '/' +
-                                monitoringStore.selectedExam.id.toString(),
-                        )
-                    "
-                >
-                    {{ translate("titles.overview") }}
-                </span>
-                <span class="breadcrumb-arrow">›</span>
-                <span
-                    class="breadcrumb-link"
-                    @click="
-                        navigateTo(
-                            constants.MONITORING_CLIENTS_ROUTE + '/' + examId,
-                            monitoringStore.currentMonitoringQuery,
-                        )
-                    "
-                >
-                    {{ translate("titles.clientList") }}
-                </span>
-            </div>
+        <v-col cols="12" md="10">
+            <BreadCrumb :items="breadCrumbItems" />
         </v-col>
     </v-row>
 
@@ -262,6 +218,8 @@ import { useRoute } from "vue-router";
 import { computed, ref } from "vue";
 import { NotificationEnum } from "@/models/seb-server/monitoringEnums";
 import InstructionConfirmDialog from "@/components/views/seb-server/monitoring/dialogs/InstructionConfirmDialog.vue";
+import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
+import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
 
 // route params
 const examId = useRoute().params.examId.toString();
@@ -293,6 +251,34 @@ const nameParts = computed(() => {
     const rawName =
         monitoringStore.selectedSingleConn?.cdat.examUserSessionId || "";
     return rawName.split("|").filter((p) => p.trim() !== "");
+});
+
+const breadCrumbItems = computed<BreadCrumbItem[]>(() => {
+    const items: BreadCrumbItem[] = [
+        { label: translate("titles.monitoring"), link: "MonitoringList" },
+    ];
+
+    const selectedExam = monitoringStore.selectedExam;
+    if (selectedExam !== null) {
+        items.push({
+            label: selectedExam.quizName,
+            link: "MonitoringOverview",
+            params: { examId: selectedExam.id.toString() },
+        });
+    }
+
+    items.push({
+        label: translate("titles.clientList"),
+        link: "MonitoringClients",
+        params: { examId },
+    });
+
+    const clientName = nameParts.value.join(" ").trim();
+    if (clientName !== "") {
+        items.push({ label: clientName });
+    }
+
+    return items;
 });
 
 //= ==============groups, tags, and status====================
@@ -483,24 +469,6 @@ const indicatorTypeConfig: Record<
     min-width: 180px;
     max-width: 220px;
     width: 100%;
-}
-
-/* path */
-
-.path-text {
-    font-size: 1rem;
-    margin-bottom: 1rem;
-}
-
-.monitoring-link {
-    color: black;
-    cursor: pointer;
-}
-
-/* name */
-.exam-name {
-    color: #215caf;
-    cursor: pointer;
 }
 
 .top-container {

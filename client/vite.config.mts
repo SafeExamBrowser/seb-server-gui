@@ -37,9 +37,6 @@ export default ({ mode, command }) => {
 
             Vuetify({
                 autoImport: true,
-                styles: {
-                    configFile: "src/styles/settings.scss",
-                },
             }),
 
             Fonts({

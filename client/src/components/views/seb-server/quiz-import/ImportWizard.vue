@@ -1,17 +1,8 @@
 <template>
     <!-- Breadcrumb & Title -->
     <v-row dense>
-        <v-col class="pl-5 mb-1" cols="12" md="10">
-            <div class="path-text d-flex align-center">
-                <span
-                    class="breadcrumb-link"
-                    @click="navigateTo(constants.HOME_PAGE_ROUTE)"
-                >
-                    {{ translate("titles.home") }}
-                </span>
-
-                <span class="breadcrumb-arrow">›</span>
-            </div>
+        <v-col cols="12" md="10">
+            <BreadCrumb :items="[{ label: translate('titles.quizImport') }]" />
         </v-col>
 
         <v-col class="pl-10 mb-7" cols="12" md="10">
@@ -173,6 +164,7 @@ import { AssessmentToolsResponse } from "@/models/seb-server/assessmentTool";
 import { APIMessage } from "@/models/seb-server/apiMessages";
 import { getAssessmentToolsActive } from "@/services/seb-server/assessmentToolService.ts";
 import * as examService from "@/services/seb-server/examService.ts";
+import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
 // i18n
 const i18n = useI18n();
 
