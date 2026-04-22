@@ -51,7 +51,7 @@ import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
 
 defineProps<{
     title: string;
-    breadCrumb: BreadCrumbItem[];
+    breadCrumb?: BreadCrumbItem[];
 }>();
 
 const slots = useSlots();

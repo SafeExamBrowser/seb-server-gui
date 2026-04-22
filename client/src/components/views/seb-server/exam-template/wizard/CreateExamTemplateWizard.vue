@@ -4,11 +4,11 @@
         :bread-crumb="[
             {
                 label: $t('titles.examTemplateList'),
-                link: resolveRoutePath('ExamTemplateList'),
+                link: 'ExamTemplateList',
             },
             {
                 label: $t('titles.createTemplateExam'),
-                link: resolveRoutePath('CreateExamTemplateWizard'),
+                link: 'CreateExamTemplateWizard',
             },
             { label: store.currentStep.title },
         ]"
@@ -47,7 +47,7 @@ import { useCreateExamTemplateStore } from "./composables/store/useCreateExamTem
 import { useCreateExamTemplate } from "./composables/api/useCreateExamTemplate";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { watchEffect } from "vue";
-import { navigateToRoute, resolveRoutePath } from "@/router/navigation";
+import { navigateToRoute } from "@/router/navigation";
 
 const {
     create: createExamTemplate,

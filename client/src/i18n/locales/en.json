@@ -1890,7 +1890,8 @@
         "createConnectionConfiguration": "Add Connection Configuration",
         "connectionConfigurations": "Connection Configurations",
         "certificates": "Certificates",
-        "editExamTemplate": "Edit Exam Template"
+        "editExamTemplate": "Edit Exam Template",
+        "galleryView": "Gallery View"
     },
 
     "warnings": {
