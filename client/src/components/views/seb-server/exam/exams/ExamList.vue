@@ -1,5 +1,5 @@
 <template>
-    <BasicPage :title="$t('titles.exams')" :bread-crumb="breadCrumb">
+    <BasicPage :title="$t('titles.exams')">
         <template #PanelTop>
             <SearchBar
                 v-model="searchInputValue"
@@ -70,17 +70,11 @@ import {
 } from "@/components/views/seb-server/exam/exams/composables/useExamFilters.ts";
 import { useExams } from "@/components/views/seb-server/exam/exams/api/useExams.ts";
 import { getRouteName } from "@/router/routeNames.ts";
-import { translate } from "@/utils/generalUtils.ts";
 import type { Exams } from "@/models/seb-server/exam.ts";
-import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
 import {
     ExamStatusEnum,
     examStatusColor,
 } from "@/models/seb-server/examFiltersEnum.ts";
-
-const breadCrumb: BreadCrumbItem[] = [
-    { label: translate("titles.home"), link: "/" },
-];
 
 const { headers: examTableHeaders, cellFormatters } = useExamTableHeaders();
 const filterSections = useExamFilters();

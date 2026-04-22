@@ -55,6 +55,6 @@
 import type { BreadCrumbItem } from "./types";
 
 defineProps<{
-    items: BreadCrumbItem[];
+    items?: BreadCrumbItem[];
 }>();
 </script>
