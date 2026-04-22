@@ -22,36 +22,38 @@
 
                 <v-row>
                     <v-col>
-                        <div v-if="error">
-                            {{ error }}
-                        </div>
-
-                        <div v-else-if="deleteError">
+                        <div v-if="deleteError">
                             {{ deleteError }}
                         </div>
-
-                        <EntityTable
-                            :headers="certificatesTableHeaders"
-                            :items="tableData?.content ?? []"
-                            :total-items="totalItems"
-                            :page-count="pageCount"
-                            :items-per-page="options.itemsPerPage"
-                            :options="options"
-                            :loading="loading || deleteLoading"
-                            item-identifier-key="alias"
-                            translation-key-prefix="certificates"
-                            :cell-formatters="cellFormatters"
-                            :editable="false"
-                            :status-changeable="false"
-                            @update:options="loadItems"
-                            @delete="removeCertificateFromItem"
-                        />
+                        <LoadingFallbackComponent
+                            :loading="false"
+                            :errors="error ? [error] : []"
+                        >
+                            <EntityTable
+                                :headers="certificatesTableHeaders"
+                                :items="tableData?.content ?? []"
+                                :page-count="pageCount"
+                                :items-per-page="options.itemsPerPage"
+                                :options="options"
+                                :loading="loading || deleteLoading"
+                                item-identifier-key="alias"
+                                :cell-formatters="cellFormatters"
+                                :actions="tableActions"
+                                @update:options="loadItems"
+                            />
+                        </LoadingFallbackComponent>
                     </v-col>
                 </v-row>
             </v-col>
         </template>
     </BasicSettingsPage>
 
+    <DeleteConfirmDialog
+        v-model="deleteDialogOpen"
+        :detail-text="deleteDetailText"
+        translation-key-prefix="certificates"
+        @confirm="confirmDelete"
+    />
     <UploadDialog
         ref="uploadDialog"
         v-model="certDialog"
@@ -69,12 +71,15 @@ import { computed, ref, watch } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import SearchSection from "@/components/blocks/searches/SearchSection.vue";
 import EntityTable from "@/components/blocks/entity-table/EntityTable.vue";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import { useCertificatesTableHeaders } from "@/components/views/seb-server/certificate/certificates/composables/useCertificateTableHeaders.ts";
+import { useCertificatesTableActions } from "@/components/views/seb-server/certificate/certificates/composables/useCertificatesTableActions.ts";
 import { useCertificates } from "@/components/views/seb-server/certificate/certificates/api/useCertificates.ts";
 import { useUrlTableState } from "@/components/blocks/entity-table/composables/useUrlTableState.ts";
 import { useDeleteCertificate } from "@/components/views/seb-server/certificate/certificates/api/useDeleteCertificate.ts";
-import { useTableCellFormatters } from "@/components/blocks/entity-table/composables/useTableCellFormatters.ts";
 import type { CertificatesResponse } from "@/models/seb-server/certificate.ts";
+import type { TableItem } from "@/components/blocks/entity-table/types.ts";
 import AddButton from "@/components/widgets/AddButton.vue";
 import UploadDialog from "@/components/widgets/UploadDialog.vue";
 
@@ -84,7 +89,8 @@ async function onCertImported() {
     await loadItems();
 }
 
-const certificatesTableHeaders = useCertificatesTableHeaders();
+const { headers: certificatesTableHeaders, cellFormatters } =
+    useCertificatesTableHeaders();
 
 const tableData = ref<CertificatesResponse>();
 
@@ -92,11 +98,10 @@ const {
     searchInputValue,
     searchField,
     options,
-    totalItems,
     loadItems,
     onSearch,
     onClearSearch,
-} = useUrlTableState(tableData, async () => {
+} = useUrlTableState(async () => {
     await fetchCertificates();
 });
 
@@ -123,7 +128,27 @@ const {
     error: deleteError,
 } = useDeleteCertificate(tableData);
 
-const { cellFormatters } = useTableCellFormatters({
-    headers: certificatesTableHeaders,
+// Dialog state
+const deleteTarget = ref<TableItem | null>(null);
+const deleteDialogOpen = ref(false);
+
+const deleteDetailText = computed(() => {
+    if (!deleteTarget.value) return "";
+    return String(deleteTarget.value.alias ?? "");
+});
+
+function openDeleteDialog(item: TableItem) {
+    deleteTarget.value = item;
+    deleteDialogOpen.value = true;
+}
+
+async function confirmDelete() {
+    if (!deleteTarget.value) return;
+    await removeCertificateFromItem(deleteTarget.value);
+    deleteDialogOpen.value = false;
+}
+
+const tableActions = useCertificatesTableActions({
+    onDelete: (item) => openDeleteDialog(item),
 });
 </script>

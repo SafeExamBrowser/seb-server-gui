@@ -6,6 +6,14 @@ export enum ExamStatusEnum {
     ARCHIVED = "ARCHIVED",
 }
 
+export const examStatusColor: Record<ExamStatusEnum, string> = {
+    [ExamStatusEnum.RUNNING]: "green",
+    [ExamStatusEnum.FINISHED]: "red",
+    [ExamStatusEnum.UP_COMING]: "orange",
+    [ExamStatusEnum.TEST_RUN]: "blue",
+    [ExamStatusEnum.ARCHIVED]: "",
+};
+
 export enum ExamTypeEnum {
     UNDEFINED = "UNDEFINED",
     MANAGED = "MANAGED",
