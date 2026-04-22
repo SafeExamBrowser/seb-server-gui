@@ -759,10 +759,15 @@
         </v-col>
 
         <!-- Upload Certificate Dialog-->
-        <AddCertificateDialog
+        <UploadDialog
+            ref="uploadDialog"
             v-model="certDialog"
-            :simulate="true"
-            @imported="onCertImported"
+            name-prefix="certificates"
+            icon="mdi-file-certificate-outline"
+            :seb-settings-id="null"
+            :show-quit-password="false"
+            :default-ext-list="['.p12', '.pfx', '.pem', '.crt', '.cer']"
+            @uploaded="onCertImported"
         />
     </v-row>
 </template>
@@ -786,8 +791,8 @@ import {
 } from "@/models/seb-server/connectionConfiguration.ts";
 import { getConnectionConfiguration } from "@/services/seb-server/connectionConfigurationService.ts";
 import { getCertificates } from "@/services/seb-server/certificateService.ts";
-import AddCertificateDialog from "@/components/views/seb-server/certificate/certificates/AddCertificateDialog.vue";
 import SettingsNavigation from "@/components/blocks/navigation/SettingsNavigation.vue";
+import UploadDialog from "@/components/widgets/UploadDialog.vue";
 
 // Router
 const route = useRoute();
