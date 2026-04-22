@@ -17,7 +17,7 @@ export type CellFormatter = (value: unknown, item: TableItem) => string;
 export interface TableAction<T extends TableItem = TableItem> {
     key: string;
     icon: string;
-    labelKey?: string;
+    label: string;
     color?: string;
     onClick: (item: T) => void | Promise<void>;
     visible?: (item: T) => boolean;

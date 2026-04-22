@@ -1,4 +1,5 @@
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import type {
     TableAction,
     TableItem,
@@ -7,11 +8,13 @@ import type {
 export function useMonitoringTableActions(deps: {
     onNavigate: (item: TableItem) => void;
 }) {
+    const { t } = useI18n();
+
     return computed<TableAction[]>(() => [
         {
             key: "navigate",
             icon: "mdi-chevron-right",
-            labelKey: "general.viewButton",
+            label: t("general.viewButton"),
             onClick: deps.onNavigate,
         },
     ]);

@@ -1,4 +1,5 @@
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import type {
     TableAction,
     TableItem,
@@ -7,11 +8,13 @@ import type {
 export function useCertificatesTableActions(deps: {
     onDelete: (item: TableItem) => void;
 }) {
+    const { t } = useI18n();
+
     return computed<TableAction[]>(() => [
         {
             key: "delete",
             icon: "mdi-delete",
-            labelKey: "general.delete",
+            label: t("general.deleteButton"),
             color: "error",
             onClick: deps.onDelete,
         },

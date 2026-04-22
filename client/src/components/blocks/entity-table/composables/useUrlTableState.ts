@@ -11,7 +11,7 @@ import type {
 const getDefaultOptions = (): ServerTablePaging => ({
     page: 1,
     itemsPerPage: 10,
-    sortBy: [{ key: "name", order: "asc" }],
+    sortBy: [],
 });
 
 export function useUrlTableState(
