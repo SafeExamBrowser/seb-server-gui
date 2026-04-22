@@ -24,7 +24,7 @@
                     class="fill-height overflow-y-auto mr-16"
                 >
                     <v-row>
-                        <v-col>
+                        <v-col class="pt-8 pl-12">
                             <PageTitle :name="props.title" />
                         </v-col>
 
@@ -47,7 +47,7 @@ import { useAppBarStore, useLayoutStore } from "@/stores/store";
 import { translate } from "@/utils/generalUtils.ts";
 import HorizontalDividerLine from "@/components/layout/pages/widgets/HorizontalDividerLine.vue";
 import SettingsNavigation from "@/components/blocks/navigation/SettingsNavigation.vue";
-import PageTitle from "@/components/blocks/entity-table/widgets/PageTitle.vue";
+import PageTitle from "@/components/widgets/PageTitle.vue";
 
 const layoutStore = useLayoutStore();
 const appBarStore = useAppBarStore();

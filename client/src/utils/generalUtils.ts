@@ -1,5 +1,8 @@
 import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
-import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum";
+import {
+    ExamStatusEnum,
+    examStatusColor,
+} from "@/models/seb-server/examFiltersEnum";
 import {
     LMSFeatureEnum,
     LMSTypeEnum,
@@ -37,24 +40,8 @@ export function findEnumValue<T extends Record<string, string | number>>(
 export function getExamStatusFilterColor(
     status: ExamStatusEnum | null,
 ): string {
-    if (status === ExamStatusEnum.RUNNING) {
-        return "green";
-    }
-
-    if (status === ExamStatusEnum.FINISHED) {
-        return "red";
-    }
-
-    if (status === ExamStatusEnum.UP_COMING) {
-        return "orange";
-    }
-
-    if (status === ExamStatusEnum.TEST_RUN) {
-        return "blue";
-    }
-
-    // ExamStatusEnum.ARCHIVED has no color
-    return "";
+    if (!status) return "";
+    return examStatusColor[status] ?? "";
 }
 
 export function getClientGroupDescription(

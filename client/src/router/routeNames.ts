@@ -1,8 +1,20 @@
 export type RouteName =
+    // Unregistered Routes
+    | "LoginPage"
+    | "RegisterPage"
+
+    // Default Pages
+    | "HomePage"
+    | "NavigationOverview"
+
+    //Exams
     | "ExamDetail"
     | "ExamTemplateList"
     | "CreateExamTemplateWizard"
     | "ExamTemplateDetail"
+
+    //Quiz
+    | "QuizImport"
 
     //User Accounts
     | "ProfileRoute"
@@ -29,6 +41,7 @@ export type RouteName =
 
     //Monitoring
     | "MonitoringList"
-    | "MonitoringOverview";
+    | "MonitoringOverview"
+    | "MonitoringClients";
 
 export const getRouteName = (name: RouteName): RouteName => name;

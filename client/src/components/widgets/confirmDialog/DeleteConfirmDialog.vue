@@ -8,8 +8,11 @@
             <v-card-text>
                 {{ $t(`${translationKeyPrefix}.deleteDialog.text`) }}
 
-                <div class="mt-4 text-primary font-weight-medium">
-                    {{ targetRoute }}
+                <div
+                    v-if="detailText"
+                    class="mt-4 text-primary font-weight-medium"
+                >
+                    {{ detailText }}
                 </div>
             </v-card-text>
 
@@ -18,7 +21,7 @@
                     {{ $t("general.cancelButton") }}
                 </v-btn>
 
-                <v-btn color="red" variant="text" @click="emit('confirm')">
+                <v-btn color="error" variant="text" @click="emit('confirm')">
                     {{ $t(`${translationKeyPrefix}.deleteDialog.action`) }}
                 </v-btn>
             </v-card-actions>
@@ -27,10 +30,11 @@
 </template>
 
 <script setup lang="ts">
+//@Todo Andrei : CreateConfirmActionDialog
 const model = defineModel<boolean>({ required: true });
 
 defineProps<{
-    targetRoute: string;
+    detailText?: string;
     translationKeyPrefix: string;
 }>();
 

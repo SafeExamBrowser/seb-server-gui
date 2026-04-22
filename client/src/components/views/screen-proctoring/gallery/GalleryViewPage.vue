@@ -1,40 +1,8 @@
 <template>
     <!-- Breadcrumb -->
     <v-row dense>
-        <v-col class="pl-5 mb-1" cols="12" md="10">
-            <div class="path-text d-flex align-center">
-                <span
-                    class="breadcrumb-link"
-                    @click="navigateTo(constants.HOME_PAGE_ROUTE)"
-                >
-                    {{ translate("titles.home") }}
-                </span>
-                <span class="breadcrumb-arrow">›</span>
-                <span
-                    class="breadcrumb-link"
-                    @click="navigateTo(constants.MONITORING_ROUTE)"
-                >
-                    {{ translate("titles.monitoring") }}
-                </span>
-                <span
-                    v-if="monitoringStore.selectedExam !== null"
-                    class="breadcrumb-arrow"
-                    >›</span
-                >
-                <span
-                    v-if="monitoringStore.selectedExam !== null"
-                    class="breadcrumb-link"
-                    @click="
-                        navigateTo(
-                            constants.MONITORING_OVERVIEW_ROUTE +
-                                '/' +
-                                monitoringStore.selectedExam.id.toString(),
-                        )
-                    "
-                >
-                    {{ translate("titles.overview") }}
-                </span>
-            </div>
+        <v-col cols="12" md="10">
+            <BreadCrumb :items="breadCrumbItems" />
         </v-col>
     </v-row>
     <v-window
@@ -93,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, onBeforeUnmount, ref, watch } from "vue";
+import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useAppBarStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
@@ -101,12 +69,12 @@ import GalleryImage from "./GalleryImage.vue";
 import { SortOrder } from "@/models/screen-proctoring/sortOrderEnum";
 import { MetaData, ScreenshotData } from "@/models/screen-proctoring/session";
 import { GroupUuid } from "@/models/screen-proctoring/group";
-import { navigateTo } from "@/router/navigation";
-import * as constants from "@/utils/constants";
 import { translate } from "@/utils/generalUtils";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import { getGroupByUuid } from "@/services/screen-proctoring/groupService";
 import * as galleryUtils from "@/components/views/screen-proctoring/gallery/utils/galleryUtils.ts";
+import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
+import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
 
 import { getScreenshotDataByTimestamp } from "@/services/screen-proctoring/screenshotDataService.ts";
 
@@ -129,6 +97,24 @@ const SCREENSHOT_INTERVAL: number = 1 * 1000;
 const appBarStore = useAppBarStore();
 const appBarStoreRef = storeToRefs(appBarStore);
 const monitoringStore = useMonitoringStore();
+
+const breadCrumbItems = computed<BreadCrumbItem[]>(() => {
+    const items: BreadCrumbItem[] = [
+        { label: translate("titles.monitoring"), link: "MonitoringList" },
+    ];
+
+    const selectedExam = monitoringStore.selectedExam;
+    if (selectedExam !== null) {
+        items.push({
+            label: translate("titles.overview"),
+            link: "MonitoringOverview",
+            params: { examId: selectedExam.id.toString() },
+        });
+    }
+
+    items.push({ label: translate("titles.galleryView") });
+    return items;
+});
 
 // remaining
 const groupUuid: string = useRoute().params.uuid.toString();

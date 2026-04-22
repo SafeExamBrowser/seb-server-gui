@@ -2,23 +2,16 @@
     <!-- Breadcrumb and Title -->
     <v-row dense>
         <!-- Breadcrumb -->
-        <v-col class="pl-5 mb-1" cols="12" md="10">
-            <div class="path-text d-flex align-center">
-                <span
-                    class="breadcrumb-link"
-                    @click="navigateTo(constants.HOME_PAGE_ROUTE)"
-                >
-                    {{ translate("titles.home") }}
-                </span>
-                <span class="breadcrumb-arrow">›</span>
-                <span
-                    class="breadcrumb-link"
-                    @click="navigateTo(constants.MONITORING_ROUTE)"
-                >
-                    {{ translate("titles.monitoring") }}
-                </span>
-                <span class="breadcrumb-arrow">›</span>
-            </div>
+        <v-col cols="12" md="10">
+            <BreadCrumb
+                :items="[
+                    {
+                        label: translate('titles.monitoring'),
+                        link: 'MonitoringList',
+                    },
+                    { label: monitoringStore.selectedExam?.quizName ?? '' },
+                ]"
+            />
         </v-col>
 
         <!-- Title -->
@@ -164,10 +157,9 @@ import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum";
 import * as generalUtils from "@/utils/generalUtils";
 import * as timeUtils from "@/utils/timeUtils";
-import { navigateTo } from "@/router/navigation";
-import * as constants from "@/utils/constants";
 import MonitoringOverviewASK from "@/components/views/seb-server/monitoring/overview/MonitoringOverviewASK.vue";
 import QuitAllDialog from "@/components/views/seb-server/monitoring/overview/dialogs/QuitAllDialog.vue";
+import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
 import { ref } from "vue";
 import { quitAll } from "@/services/seb-server/monitoringService.ts";
 

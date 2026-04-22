@@ -51,7 +51,6 @@ export function useTableNavigation(
 
     return {
         identifierKey,
-        getItemIdentifier,
         buildItemRoute,
         navigateToItem,
     };

@@ -64,8 +64,12 @@
         "copyButton": "Copy",
         "noData": "No Data Available",
         "loading": "Loading",
+        "view": "View",
         "true": "Yes",
         "false": "No",
+        "itemsPerPage": "Items Per Page",
+        "active": "Active",
+        "inactive": "Inactive",
         "userRoles": {
             "SEB_SERVER_ADMIN": "Server Administrator",
             "INSTITUTIONAL_ADMIN": "Institutional Administrator",
@@ -1886,7 +1890,8 @@
         "createConnectionConfiguration": "Add Connection Configuration",
         "connectionConfigurations": "Connection Configurations",
         "certificates": "Certificates",
-        "editExamTemplate": "Edit Exam Template"
+        "editExamTemplate": "Edit Exam Template",
+        "galleryView": "Gallery View"
     },
 
     "warnings": {

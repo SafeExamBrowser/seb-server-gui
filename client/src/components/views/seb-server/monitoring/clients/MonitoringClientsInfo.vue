@@ -2,40 +2,8 @@
     <!-- Breadcrumb and Title -->
     <v-row dense>
         <!-- Breadcrumb -->
-        <v-col class="pl-5 mb-1" cols="12" md="10">
-            <div class="path-text d-flex align-center">
-                <span
-                    class="breadcrumb-link"
-                    @click="navigateTo(constants.HOME_PAGE_ROUTE)"
-                >
-                    {{ translate("titles.home") }}
-                </span>
-                <span class="breadcrumb-arrow">›</span>
-                <span
-                    class="breadcrumb-link"
-                    @click="navigateTo(constants.MONITORING_ROUTE)"
-                >
-                    {{ translate("titles.monitoring") }}
-                </span>
-                <span
-                    v-if="monitoringStore.selectedExam !== null"
-                    class="breadcrumb-arrow"
-                    >›</span
-                >
-                <span
-                    v-if="monitoringStore.selectedExam !== null"
-                    class="breadcrumb-link"
-                    @click="
-                        navigateTo(
-                            constants.MONITORING_OVERVIEW_ROUTE +
-                                '/' +
-                                monitoringStore.selectedExam.id.toString(),
-                        )
-                    "
-                >
-                    {{ translate("titles.overview") }}
-                </span>
-            </div>
+        <v-col cols="12" md="10">
+            <BreadCrumb :items="breadCrumbItems" />
         </v-col>
 
         <!-- Title -->
@@ -486,11 +454,13 @@ import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants";
 import { InstructionEnum } from "@/models/seb-server/instructionEnum";
 import { useErrorStore } from "@/stores/seb-server/errorStore";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { ErrorProps } from "@/models/alertProps";
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum";
 import InstructionConfirmDialog from "@/components/views/seb-server/monitoring/dialogs/InstructionConfirmDialog.vue";
 import * as useMonitoringNavigation from "@/components/views/seb-server/monitoring/composables/useMonitoringNavigation.ts";
+import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
+import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
 
 // info panel (whole component)
 const isInfoExpanded = ref<boolean>(true);
@@ -505,6 +475,24 @@ const errorStore = useErrorStore();
 
 // exam
 const examId = useRoute().params.examId.toString();
+
+const breadCrumbItems = computed<BreadCrumbItem[]>(() => {
+    const items: BreadCrumbItem[] = [
+        { label: translate("titles.monitoring"), link: "MonitoringList" },
+    ];
+
+    const selectedExam = monitoringStore.selectedExam;
+    if (selectedExam !== null) {
+        items.push({
+            label: selectedExam.quizName,
+            link: "MonitoringOverview",
+            params: { examId: selectedExam.id.toString() },
+        });
+    }
+
+    items.push({ label: translate("titles.clientList") });
+    return items;
+});
 
 // instruction confirm dialog
 const instructionConfirmDialog = ref<boolean>(false);

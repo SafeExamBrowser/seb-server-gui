@@ -21,15 +21,9 @@ export const HOME_PAGE_ROUTE: string = "/home";
 export const NAVIGATION_OVERVIEW_ROUTE: string = "/navigation-overview";
 export const USER_ACCOUNTS_ROUTE: string = "/user-accounts";
 
-export const EDIT_USER_ACCOUNT: string = USER_ACCOUNTS_ROUTE;
 export const PROFILE_ROUTE = "/profile-settings";
 
-export const CREATE_USER_ACCOUNTS_ROUTE: string =
-    USER_ACCOUNTS_ROUTE + "/create";
 export const EXAM_ROUTE: string = "/exam";
-export const EXAM_DETAILS_ROUTE: string = EXAM_ROUTE;
-
-export const EXAM_LMS_IMPORT_ROUTE: string = EXAM_ROUTE + "/lms";
 
 export const MONITORING_ROUTE: string = "/monitoring";
 export const MONITORING_OVERVIEW_ROUTE: string = MONITORING_ROUTE + "/overview";
@@ -42,19 +36,9 @@ export const FINISHED_EXAM_DATA_ROUTE: string = "/finished-exam-data";
 export const ASSESSMENT_TOOL_CONNECTIONS_ROUTE: string =
     "/assessment-tool-connections";
 
-export const CREATE_ASSESSMENT_TOOL_CONNECTION_ROUTE: string =
-    ASSESSMENT_TOOL_CONNECTIONS_ROUTE + "/create";
-
 // seb client configs
 export const CONNECTION_CONFIGURATIONS_ROUTE: string =
     "/connection-configurations";
-export const CREATE_CONNECTION_CONFIGURATION_ROUTE: string =
-    CONNECTION_CONFIGURATIONS_ROUTE + "/create";
-
-// certificates
-export const CERTIFICATES_ROUTE: string = "/certificates";
-
-// export const USER_ACCOUNTS_ROUTE: string = MONITORING_ROUTE + "/userAccounts";
 
 export const QUIZ_IMPORT_ROUTE: string = "/quiz-import";
 

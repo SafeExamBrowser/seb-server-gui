@@ -1,27 +1,39 @@
-import { computed } from "vue";
+import { computed, watch } from "vue";
 import { translate } from "@/utils/generalUtils.ts";
-import type { SettingsTableHeader } from "@/components/blocks/entity-table/types.ts";
 import { useShowInstitutionColumn } from "@/composables/useShowInstitutionColumn.ts";
+import { useInstitutionNameMap } from "@/composables/useInstitutionNameMap.ts";
+import type {
+    TableHeader,
+    CellFormatter,
+} from "@/components/blocks/entity-table/types.ts";
 
-export const useUserAccountsTableHeaders = () => {
+export function useUserAccountsTableHeaders() {
     const showInstitutionColumn = useShowInstitutionColumn();
+    const { getInstitutionName, fetchInstitutions } = useInstitutionNameMap();
 
-    return computed<SettingsTableHeader[]>(() => {
-        const headers: SettingsTableHeader[] = [];
+    watch(
+        showInstitutionColumn,
+        async (show) => {
+            if (show) await fetchInstitutions();
+        },
+        { immediate: true },
+    );
+
+    const headers = computed<TableHeader[]>(() => {
+        const base: TableHeader[] = [];
 
         if (showInstitutionColumn.value) {
-            headers.push({
+            base.push({
                 title: translate(
                     "userAccount.userAccountPage.userAccountTableHeaders.tableHeaderInstitution",
                 ),
                 key: "institutionId",
                 width: "6%",
                 sortable: true,
-                translateType: "institutionName",
             });
         }
 
-        headers.push(
+        base.push(
             {
                 title: translate(
                     "userAccount.userAccountPage.userAccountTableHeaders.tableHeaderSurname",
@@ -62,14 +74,14 @@ export const useUserAccountsTableHeaders = () => {
                 width: "6%",
                 sortable: false,
             },
-            {
-                title: "",
-                key: "actions",
-                width: "1%",
-                sortable: false,
-            },
         );
 
-        return headers;
+        return base;
     });
-};
+
+    const cellFormatters: Record<string, CellFormatter> = {
+        institutionId: (value) => getInstitutionName(value),
+    };
+
+    return { headers, cellFormatters };
+}

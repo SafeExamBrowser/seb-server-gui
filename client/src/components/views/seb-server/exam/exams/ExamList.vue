@@ -1,5 +1,8 @@
 <template>
-    <BasicPage :title="$t('titles.exams')" :bread-crumb="breadCrumb">
+    <BasicPage
+        :title="$t('titles.exams')"
+        :bread-crumb="[{ label: $t('titles.exams') }]"
+    >
         <template #PanelTop>
             <SearchBar
                 v-model="searchInputValue"
@@ -10,30 +13,43 @@
                 :filter-sections="filterSections"
                 :filter-values="selectedFilters"
                 @search="onSearch"
-                @clear="onClear"
+                @clear="onClearSearch"
                 @update:date-value="setDate"
                 @update:filter-values="setFilters"
                 @clear-filters="resetFilters"
             />
         </template>
         <template #PanelMain>
-            <div v-if="error" class="pa-4">{{ error }}</div>
-            <LoadingFallbackComponent :loading="false" :errors="[]">
+            <LoadingFallbackComponent
+                :loading="false"
+                :errors="error ? [error] : []"
+            >
                 <EntityTable
+                    class="pl-6 pr-6 pt-3"
                     :headers="examTableHeaders"
                     :items="tableData?.content ?? []"
-                    :total-items="totalItems"
                     :page-count="pageCount"
                     :items-per-page="options.itemsPerPage"
                     :options="options"
                     :loading="loading"
                     :detail-route="getRouteName('ExamDetail')"
-                    route-param-key="id"
+                    route-param-key="examId"
                     item-identifier-key="id"
-                    translation-key-prefix="examList"
                     :cell-formatters="cellFormatters"
+                    :actions="tableActions"
                     @update:options="loadItems"
-                />
+                >
+                    <template #cell-type="{ formattedValue }">
+                        <EnumChip :label="formattedValue" />
+                    </template>
+
+                    <template #cell-status="{ value, formattedValue }">
+                        <EnumChip
+                            :label="formattedValue"
+                            :color="examStatusColor[value as ExamStatusEnum]"
+                        />
+                    </template>
+                </EntityTable>
             </LoadingFallbackComponent>
         </template>
     </BasicPage>
@@ -44,26 +60,26 @@ import { computed, ref, watch } from "vue";
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import SearchBar from "@/components/blocks/searches/SearchBar.vue";
 import EntityTable from "@/components/blocks/entity-table/EntityTable.vue";
+import EnumChip from "@/components/widgets/EnumChip.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useUrlTableState } from "@/components/blocks/entity-table/composables/useUrlTableState.ts";
 import { useExamTableHeaders } from "@/components/views/seb-server/exam/exams/composables/useExamTableHeaders.ts";
+import { useExamTableActions } from "@/components/views/seb-server/exam/exams/composables/useExamTableActions.ts";
+import { useTableNavigation } from "@/components/blocks/entity-table/composables/useTableNavigation.ts";
 import {
     useExamFilters,
     TYPE_FILTER_KEY,
     EXAM_STATUS_FILTER_KEY,
 } from "@/components/views/seb-server/exam/exams/composables/useExamFilters.ts";
 import { useExams } from "@/components/views/seb-server/exam/exams/api/useExams.ts";
-import { useTableCellFormatters } from "@/components/blocks/entity-table/composables/useTableCellFormatters.ts";
 import { getRouteName } from "@/router/routeNames.ts";
-import { translate } from "@/utils/generalUtils.ts";
 import type { Exams } from "@/models/seb-server/exam.ts";
-import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
+import {
+    ExamStatusEnum,
+    examStatusColor,
+} from "@/models/seb-server/examFiltersEnum.ts";
 
-const breadCrumb: BreadCrumbItem[] = [
-    { label: translate("titles.home"), link: "/" },
-];
-
-const examTableHeaders = useExamTableHeaders();
+const { headers: examTableHeaders, cellFormatters } = useExamTableHeaders();
 const filterSections = useExamFilters();
 
 const tableData = ref<Exams>();
@@ -75,25 +91,19 @@ const {
     dateValue,
     dateTimestamp,
     options,
-    totalItems,
     loadItems,
     onSearch,
+    onClearSearch,
     setFilters,
     resetFilters,
-    clearAll,
     setDate,
 } = useUrlTableState(
-    tableData,
     async () => {
         await fetchExams();
     },
     [TYPE_FILTER_KEY, EXAM_STATUS_FILTER_KEY],
     "startDate",
 );
-
-async function onClear() {
-    await clearAll();
-}
 
 const selectedType = computed(() => selectedFilters.value[TYPE_FILTER_KEY]);
 const selectedStatus = computed(
@@ -117,7 +127,13 @@ watch(
 
 const pageCount = computed(() => tableData.value?.number_of_pages ?? 0);
 
-const { cellFormatters } = useTableCellFormatters({
-    headers: examTableHeaders,
+const { navigateToItem } = useTableNavigation(
+    getRouteName("ExamDetail"),
+    "id",
+    "examId",
+);
+
+const tableActions = useExamTableActions({
+    onNavigate: (item) => navigateToItem(item),
 });
 </script>

@@ -16,28 +16,28 @@ const defaultPageTitle: string = " | SEB Server";
 const routes: Array<RouteRecordRaw> = [
     // ---------- public routes ----------
     {
-        path: constants.DEFAULT_ROUTE,
-        name: "LoginPage",
+        path: "/",
+        name: getRouteName("LoginPage"),
         component: () => import("@/components/views/login/LoginPage.vue"),
         meta: { requiresAuth: false },
     },
     {
-        path: constants.REGISTER_ROUTE,
-        name: "RegisterPage",
+        path: "/register",
+        name: getRouteName("RegisterPage"),
         component: () => import("@/components/views/RegisterPage.vue"),
         meta: { requiresAuth: false },
     },
 
     // ---------- app (authenticated) routes ----------
     {
-        path: constants.DEFAULT_ROUTE,
+        path: "/",
         component: () => import("@/components/layout/ContainerLayout.vue"),
         meta: { requiresAuth: true },
         children: [
             // home
             {
-                path: constants.HOME_PAGE_ROUTE,
-                name: "HomePage",
+                path: "/home",
+                name: getRouteName("HomePage"),
                 component: () =>
                     import(
                         "@/components/views/seb-server/home/HomePageContainer.vue"
@@ -46,8 +46,8 @@ const routes: Array<RouteRecordRaw> = [
             },
             // navigation overview
             {
-                path: constants.NAVIGATION_OVERVIEW_ROUTE,
-                name: "NavigationOverview",
+                path: "/navigation-overview",
+                name: getRouteName("NavigationOverview"),
                 component: () =>
                     import(
                         "@/components/layout/navigationOverview/NavigationOverview.vue"
@@ -66,8 +66,8 @@ const routes: Array<RouteRecordRaw> = [
                 meta: { titleKey: "titles.exams" },
             },
             {
-                path: constants.EXAM_DETAILS_ROUTE + "/:examId",
-                name: "ExamDetail",
+                path: "/exam/:examId",
+                name: getRouteName("ExamDetail"),
                 component: () =>
                     import(
                         "@/components/views/seb-server/exam/detail/ExamDetailContainer.vue"
@@ -77,8 +77,8 @@ const routes: Array<RouteRecordRaw> = [
 
             // ---------- import quiz routes ----------
             {
-                path: constants.QUIZ_IMPORT_ROUTE,
-                name: "QuizImport",
+                path: "/quiz-import",
+                name: getRouteName("QuizImport"),
                 component: () =>
                     import(
                         "@/components/views/seb-server/quiz-import/ImportWizard.vue"
@@ -97,8 +97,8 @@ const routes: Array<RouteRecordRaw> = [
                 meta: { titleKey: "titles.monitoring" },
             },
             {
-                path: constants.MONITORING_OVERVIEW_ROUTE + "/:examId",
-                name: "MonitoringOverview",
+                path: "/monitoring/overview/:examId",
+                name: getRouteName("MonitoringOverview"),
                 component: () =>
                     import(
                         "@/components/views/seb-server/monitoring/overview/MonitoringOverviewContainer.vue"
@@ -106,8 +106,8 @@ const routes: Array<RouteRecordRaw> = [
                 meta: { titleKey: "titles.monitoring" },
             },
             {
-                path: constants.MONITORING_CLIENTS_ROUTE + "/:examId",
-                name: "MonitoringClients",
+                path: "/monitoring/clients/:examId",
+                name: getRouteName("MonitoringClients"),
                 component: () =>
                     import(
                         "@/components/views/seb-server/monitoring/clients/MonitoringClientsContainer.vue"
