@@ -136,7 +136,16 @@
     </BasicSettingsPage>
 
     <!-- Upload Certificate Dialog -->
-    <AddCertificateDialog v-model="certDialog" @imported="onCertImported" />
+    <UploadDialog
+        ref="uploadDialog"
+        v-model="certDialog"
+        name-prefix="certificates"
+        icon="mdi-file-certificate-outline"
+        :seb-settings-id="null"
+        :show-quit-password="false"
+        :default-ext-list="['.p12', '.pfx', '.pem', '.crt', '.cer']"
+        @uploaded="onCertImported"
+    />
 </template>
 
 <script setup lang="ts">
@@ -149,10 +158,10 @@ import { useMutation } from "@/composables/useMutation.ts";
 import { createConnectionConfiguration } from "@/services/seb-server/connectionConfigurationService.ts";
 import { useCertificates } from "./composable/api/useCertificates.ts";
 import type { CreateConnectionConfigurationPar } from "@/models/seb-server/connectionConfiguration.ts";
-import AddCertificateDialog from "@/components/views/seb-server/certificate/certificates/AddCertificateDialog.vue";
 import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
 import HintText from "@/components/widgets/HintText.vue";
+import UploadDialog from "@/components/widgets/UploadDialog.vue";
 
 const {
     mainFormFields,
