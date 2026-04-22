@@ -7,7 +7,6 @@ import { useStepNamingStore } from "./store/useStepNamingStore";
 import { useRules } from "vuetify/labs/rules";
 import { useScreenProctoringStore } from "@/components/views/seb-server/exam-template/wizard/composables/store/useScreenProctoringStore";
 import i18n from "@/i18n";
-//import { useConfigurationTemplateNames } from "@/composables/useConfigurationTemplateNames";
 import { useClientConfigurationNames } from "@/composables/useClientConfigurationNames";
 
 export const useFormFields = () => {

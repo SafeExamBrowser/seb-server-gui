@@ -1,25 +1,9 @@
-import type { ComputedRef, Ref } from "vue";
-
-export type HeaderTranslateType =
-    | "institutionName"
-    | "dateTime"
-    | "assessmentToolType"
-    | "certificateTypes"
-    | "examType"
-    | "examStatus";
-
-export type SettingsTableHeader = {
+export type TableHeader = {
     title: string;
     key: string;
     width?: string;
     sortable?: boolean;
-    translateType?: HeaderTranslateType;
-};
-
-export type PagedResponse = {
-    number_of_pages?: number;
-    page_size?: number;
-    content?: unknown[];
+    align?: "start" | "center" | "end";
 };
 
 export type TableFilters = Record<string, string | null>;
@@ -30,6 +14,12 @@ export type TableItem = Record<string, unknown>;
 
 export type CellFormatter = (value: unknown, item: TableItem) => string;
 
-export type UseSettingsTableCellFormattersParams = {
-    headers: Ref<SettingsTableHeader[]> | ComputedRef<SettingsTableHeader[]>;
-};
+export interface TableAction<T extends TableItem = TableItem> {
+    key: string;
+    icon: string;
+    label: string;
+    color?: string;
+    onClick: (item: T) => void | Promise<void>;
+    visible?: (item: T) => boolean;
+    disabled?: (item: T) => boolean;
+}
