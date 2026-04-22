@@ -1,3 +1,6 @@
+// TODO @anhefti @ahorner This should be refactored and broke-up into generic
+components // See Issue: SEBSERV-898
+
 <template>
     <v-dialog
         v-model="internalOpen"
@@ -182,7 +185,7 @@
                     data-testid="importDialog-submit-button"
                     :disabled="!selectedFile || uploading"
                     variant="text"
-                    @click="emit('upload')"
+                    @click="doUpload"
                 >
                     {{ t(namePrefix + ".upload.importButton") }}
                 </v-btn>
@@ -194,6 +197,10 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
+import { SEBSettingsImport } from "@/models/seb-server/configurationNode";
+import { importSEBSettings } from "@/services/seb-server/configurationNodeService";
+import { CreateCertificatePar } from "@/models/seb-server/certificate.ts";
+import { createCertificate } from "@/services/seb-server/certificateService.ts";
 
 const { t } = useI18n();
 
@@ -209,11 +216,14 @@ const props = defineProps<{
     showQuitPassword: boolean;
     icon: string;
     defaultExtList: string[];
+    sebSettingsId: string | null;
 }>();
+
+type UploadedResult = { id: string; name: string };
 
 const emit = defineEmits<{
     (e: "update:modelValue", v: boolean): void;
-    (e: "upload"): void;
+    (e: "uploaded", result: UploadedResult): void;
 }>();
 
 // UI state
@@ -230,14 +240,14 @@ watch(
     (v) => (internalOpen.value = v),
 );
 
-defineExpose({
-    password,
-    quitPassword,
-    selectedFile,
-    uploadError,
-    uploading,
-    uploadProgress,
-});
+// defineExpose({
+//     password,
+//     quitPassword,
+//     selectedFile,
+//     uploadError,
+//     uploading,
+//     uploadProgress,
+// });
 
 function onToggle(val: boolean) {
     emit("update:modelValue", val);
@@ -313,6 +323,90 @@ watch(internalOpen, (val) => {
         passwordVisible.value = false;
     }
 });
+
+async function doUpload() {
+    if (!selectedFile.value) return;
+
+    try {
+        uploadError.value = "";
+        uploading.value = true;
+        uploadProgress.value = 30;
+        let intervalId = setInterval(() => {
+            uploadProgress.value += 5;
+            if (uploadProgress.value === 90) clearInterval(intervalId);
+        }, 1000);
+
+        if (props.sebSettingsId === null) {
+            const res = await createCertificate({
+                file: selectedFile.value,
+                fileName: selectedFile.value.name,
+                password: password.value || undefined,
+            } as CreateCertificatePar);
+            if (!res) {
+                throw new Error(
+                    t("certificates.certificateDialog.uploadFailed"),
+                );
+            }
+            uploadProgress.value = 90;
+            const createdName =
+                res.alias || selectedFile.value.name.replace(/\.[^.]+$/i, "");
+            const createdId = res.alias || createdName;
+            emit("uploaded", { id: createdId, name: createdName });
+        } else {
+            const res = await importSEBSettings({
+                file: selectedFile.value,
+                fileName: selectedFile.value.name,
+                configurationTemplateId: props.sebSettingsId,
+                password: password.value || undefined,
+                quitPassword: quitPassword.value || undefined,
+            } as SEBSettingsImport);
+            clearInterval(intervalId);
+            if (!res) {
+                throw new Error(t("sebSettings.upload.uploadFailed"));
+            }
+            uploadProgress.value = 90;
+            emit("uploaded", { id: res.id, name: res.configurationNodeId });
+        }
+
+        uploadProgress.value = 100;
+        close();
+    } catch (e: unknown) {
+        const respData = (e as { response?: { data?: unknown } }).response
+            ?.data;
+        type DataObj = Record<string, unknown>;
+        const errObj: DataObj | undefined = Array.isArray(respData)
+            ? (respData[0] as DataObj)
+            : (respData as DataObj | undefined);
+
+        const details =
+            (typeof errObj?.details === "string"
+                ? errObj.details
+                : undefined) ??
+            (typeof errObj?.systemMessage === "string"
+                ? errObj.systemMessage
+                : undefined) ??
+            (e instanceof Error ? e.message : undefined);
+
+        if (
+            typeof details === "string" &&
+            /keystore password was incorrect/i.test(details)
+        ) {
+            uploadError.value = t("sebSettings.upload.passwordIncorrect");
+        } else {
+            const serverMsg =
+                (typeof errObj?.systemMessage === "string"
+                    ? errObj.systemMessage
+                    : undefined) ??
+                (typeof errObj?.message === "string"
+                    ? errObj.message
+                    : undefined);
+            uploadError.value =
+                serverMsg || details || t("sebSettings.upload.uploadFailed");
+        }
+    } finally {
+        uploading.value = false;
+    }
+}
 </script>
 
 <style scoped>
