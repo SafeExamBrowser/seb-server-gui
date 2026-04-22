@@ -1,4 +1,3 @@
-import { onMounted } from "vue";
 import { useFetch } from "@/composables/useFetch";
 import { createTemporaryConfigurationTemplate } from "@/services/seb-server/examTemplateService";
 import { getConfigurationTemplateName } from "@/services/seb-server/configurationNodeService";
@@ -7,18 +6,18 @@ import { useStepNamingStore } from "@/components/views/seb-server/exam-template/
 const stepNamingStore = useStepNamingStore();
 
 export const getTemporaryConfigTemplate = () => {
-    const temporaryConfigTemplate = useFetch(() => {
-        // if temporary configuration template is not created yet create one
-        if (!stepNamingStore.configurationTemplate) {
-            return createTemporaryConfigurationTemplate();
-        } else {
-            // otherwise just request the existing one
-            return getConfigurationTemplateName(
-                stepNamingStore.configurationTemplate,
-            );
-        }
-    });
-    // TODO @andreas: use immediate=true instead
-    onMounted(temporaryConfigTemplate.fetchData);
-    return temporaryConfigTemplate;
+    return useFetch(
+        () => {
+            // if temporary configuration template is not created yet create one
+            if (!stepNamingStore.configurationTemplate) {
+                return createTemporaryConfigurationTemplate();
+            } else {
+                // otherwise just request the existing one
+                return getConfigurationTemplateName(
+                    stepNamingStore.configurationTemplate,
+                );
+            }
+        },
+        { immediate: true },
+    );
 };
