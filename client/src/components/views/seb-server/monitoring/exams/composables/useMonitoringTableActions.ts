@@ -11,7 +11,7 @@ export function useMonitoringTableActions(deps: {
         {
             key: "navigate",
             icon: "mdi-chevron-right",
-            labelKey: "general.view",
+            labelKey: "general.viewButton",
             onClick: deps.onNavigate,
         },
     ]);

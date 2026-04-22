@@ -1,156 +1,149 @@
 <template>
-    <div>
-        <v-data-table-server
-            :headers="computedHeaders"
-            :items="items"
-            :items-length="internalItemsLength"
-            :items-per-page="itemsPerPage"
-            :items-per-page-options="itemsPerPageOptions"
-            :loading="loading"
-            :loading-text="$t('general.loading')"
-            :no-data-text="$t('general.noData')"
-            hover
-            hide-default-footer
-            @update:options="emit('update:options', $event)"
-        >
-            <template #item="{ item }">
-                <tr
-                    :class="{ 'v-data-table__tr--clickable': !!detailRoute }"
-                    @click="onRowClick(getRawItem(item))"
+    <v-data-table-server
+        :headers="computedHeaders"
+        :items="items"
+        :items-length="internalItemsLength"
+        :items-per-page="itemsPerPage"
+        :items-per-page-options="itemsPerPageOptions"
+        :loading="loading"
+        :loading-text="$t('general.loading')"
+        :no-data-text="$t('general.noData')"
+        hover
+        hide-default-footer
+        @update:options="emit('update:options', $event)"
+    >
+        <template #item="{ item }">
+            <tr
+                :class="{ 'v-data-table__tr--clickable': !!detailRoute }"
+                @click="onRowClick(getRawItem(item))"
+            >
+                <td
+                    v-for="header in computedHeaders"
+                    :key="header.key"
+                    :class="
+                        header.align &&
+                        `v-data-table-column--align-${header.align}`
+                    "
                 >
-                    <td
-                        v-for="header in computedHeaders"
-                        :key="header.key"
-                        :class="
-                            header.align &&
-                            `v-data-table-column--align-${header.align}`
-                        "
-                    >
-                        <template v-if="header.key === '_actions'">
-                            <div
-                                class="d-flex justify-center align-center ga-1"
+                    <template v-if="header.key === '_actions'">
+                        <div class="d-flex justify-center align-center ga-1">
+                            <v-hover
+                                v-for="action in visibleActions(
+                                    getRawItem(item),
+                                )"
+                                :key="action.key"
+                                v-slot="{ isHovering, props: hoverProps }"
                             >
-                                <v-hover
-                                    v-for="action in visibleActions(
-                                        getRawItem(item),
-                                    )"
-                                    :key="action.key"
-                                    v-slot="{ isHovering, props: hoverProps }"
-                                >
-                                    <v-btn
-                                        v-bind="hoverProps"
-                                        :icon="action.icon"
-                                        :disabled="
-                                            action.disabled?.(
-                                                getRawItem(item),
-                                            ) ?? false
-                                        "
-                                        :aria-label="
-                                            action.labelKey
-                                                ? $t(action.labelKey)
-                                                : undefined
-                                        "
-                                        variant="text"
-                                        density="comfortable"
-                                        size="small"
-                                        rounded="lg"
-                                        class="text-medium-emphasis"
-                                        :color="
-                                            isHovering
-                                                ? (action.color ?? 'primary')
-                                                : undefined
-                                        "
-                                        @click.stop="
-                                            action.onClick(getRawItem(item))
-                                        "
-                                    />
-                                </v-hover>
-                            </div>
-                        </template>
-
-                        <template v-else>
-                            <div
-                                class="d-flex align-center"
-                                :class="[
-                                    `justify-${header.align || 'start'}`,
-                                    header.align === 'end' && 'text-end',
-                                ]"
-                            >
-                                <slot
-                                    :name="`cell-${header.key}`"
-                                    :item="getRawItem(item)"
-                                    :value="getRawItem(item)[header.key]"
-                                    :formatted-value="
-                                        formatCell(header.key, getRawItem(item))
+                                <v-btn
+                                    v-bind="hoverProps"
+                                    :icon="action.icon"
+                                    :disabled="
+                                        action.disabled?.(getRawItem(item)) ??
+                                        false
                                     "
-                                    :header="header"
-                                >
-                                    {{
-                                        formatCell(header.key, getRawItem(item))
-                                    }}
-                                </slot>
-                            </div>
-                        </template>
-                    </td>
-                </tr>
-            </template>
-
-            <template #bottom>
-                <div class="pt-4">
-                    <v-divider />
-
-                    <v-row no-gutters class="px-5 pt-4 pb-3 align-center">
-                        <v-col cols="12" md="4" class="d-none d-md-block" />
-
-                        <v-col cols="12" md="4" class="d-flex justify-center">
-                            <v-pagination
-                                v-model="currentPage"
-                                :length="pageCount"
-                                :total-visible="10"
-                                active-color="primary"
-                                density="comfortable"
-                                rounded="lg"
-                                variant="text"
-                                prev-icon="mdi-chevron-left"
-                                next-icon="mdi-chevron-right"
-                                class="text-medium-emphasis"
-                            />
-                        </v-col>
-
-                        <v-col
-                            cols="12"
-                            md="4"
-                            class="d-flex justify-center justify-md-end"
-                        >
-                            <div
-                                class="d-flex flex-wrap align-center justify-center justify-md-end ga-3"
-                            >
-                                <span
-                                    class="text-body-2 text-medium-emphasis font-weight-medium text-no-wrap"
-                                >
-                                    {{ translate("general.itemsPerPage") }}
-                                </span>
-
-                                <v-select
-                                    v-model="localItemsPerPage"
-                                    :items="itemsPerPageOptions"
-                                    base-color="primary"
-                                    color="primary"
-                                    max-width="90"
-                                    min-width="90"
-                                    variant="outlined"
-                                    density="compact"
+                                    :aria-label="
+                                        action.labelKey
+                                            ? $t(action.labelKey)
+                                            : undefined
+                                    "
+                                    variant="text"
+                                    density="comfortable"
+                                    size="small"
                                     rounded="lg"
-                                    hide-details
-                                    class="text-body-2 font-weight-semibold"
+                                    class="text-medium-emphasis"
+                                    :color="
+                                        isHovering
+                                            ? (action.color ?? 'primary')
+                                            : undefined
+                                    "
+                                    @click.stop="
+                                        action.onClick(getRawItem(item))
+                                    "
                                 />
-                            </div>
-                        </v-col>
-                    </v-row>
-                </div>
-            </template>
-        </v-data-table-server>
-    </div>
+                            </v-hover>
+                        </div>
+                    </template>
+
+                    <template v-else>
+                        <div
+                            class="d-flex align-center"
+                            :class="[
+                                `justify-${header.align || 'start'}`,
+                                header.align === 'end' && 'text-end',
+                            ]"
+                        >
+                            <slot
+                                :name="`cell-${header.key}`"
+                                :item="getRawItem(item)"
+                                :value="getRawItem(item)[header.key]"
+                                :formatted-value="
+                                    formatCell(header.key, getRawItem(item))
+                                "
+                                :header="header"
+                            >
+                                {{ formatCell(header.key, getRawItem(item)) }}
+                            </slot>
+                        </div>
+                    </template>
+                </td>
+            </tr>
+        </template>
+
+        <template #bottom>
+            <div class="pt-4">
+                <v-divider />
+
+                <v-row no-gutters class="px-5 pt-4 pb-3 align-center">
+                    <v-col cols="12" md="4" class="d-none d-md-block" />
+
+                    <v-col cols="12" md="4" class="d-flex justify-center">
+                        <v-pagination
+                            v-model="currentPage"
+                            :length="pageCount"
+                            :total-visible="10"
+                            active-color="primary"
+                            density="comfortable"
+                            rounded="lg"
+                            variant="text"
+                            prev-icon="mdi-chevron-left"
+                            next-icon="mdi-chevron-right"
+                            class="text-medium-emphasis"
+                        />
+                    </v-col>
+
+                    <v-col
+                        cols="12"
+                        md="4"
+                        class="d-flex justify-center justify-md-end"
+                    >
+                        <div
+                            class="d-flex flex-wrap align-center justify-center justify-md-end ga-3"
+                        >
+                            <span
+                                class="text-body-2 text-medium-emphasis font-weight-medium text-no-wrap"
+                            >
+                                {{ translate("general.itemsPerPage") }}
+                            </span>
+
+                            <v-select
+                                v-model="localItemsPerPage"
+                                :items="itemsPerPageOptions"
+                                base-color="primary"
+                                color="primary"
+                                max-width="90"
+                                min-width="90"
+                                variant="outlined"
+                                density="compact"
+                                rounded="lg"
+                                hide-details
+                                class="text-body-2 font-weight-semibold"
+                            />
+                        </div>
+                    </v-col>
+                </v-row>
+            </div>
+        </template>
+    </v-data-table-server>
 </template>
 
 <script setup lang="ts">
