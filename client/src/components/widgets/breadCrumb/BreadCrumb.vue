@@ -6,11 +6,11 @@
         <v-hover v-slot="{ isHovering, props: hoverProps }">
             <RouterLink
                 v-bind="hoverProps"
-                :to="{ name: 'HomePage' }"
+                :to="{ name: getRouteName('HomePage') }"
                 class="px-1 py-1 text-decoration-none"
                 :class="
                     isHovering
-                        ? 'text-primary font-weight-bold'
+                        ? 'text-primary font-weight-medium'
                         : 'text-medium-emphasis font-weight-medium'
                 "
             >
@@ -36,7 +36,7 @@
                     class="px-1 py-1 text-decoration-none"
                     :class="
                         isHovering
-                            ? 'text-primary font-weight-bold'
+                            ? 'text-primary font-weight-medium'
                             : 'text-medium-emphasis font-weight-medium'
                     "
                 >
@@ -53,6 +53,7 @@
 
 <script setup lang="ts">
 import type { BreadCrumbItem } from "./types";
+import { getRouteName } from "@/router/routeNames.ts";
 
 defineProps<{
     items?: BreadCrumbItem[];
