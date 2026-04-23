@@ -6,7 +6,7 @@
                     <v-toolbar color="transparent">
                         <v-toolbar-title
                             class="text-h6"
-                            :text="translate(sebSettingsStore.dialogTitle)"
+                            :text="translate(props.dialogTitle)"
                         ></v-toolbar-title>
                         <template #append>
                             <v-btn
@@ -18,8 +18,8 @@
                 </v-row>
                 <v-row
                     v-if="
-                        sebSettingsStore.activeSEBClientConnection != null &&
-                        sebSettingsStore.activeSEBClientConnection > 0
+                        props.activeSEBClientConnection != null &&
+                        props.activeSEBClientConnection > 0
                     "
                     class="ml-5 mr-5"
                 >
@@ -28,7 +28,7 @@
                     </v-card>
                 </v-row>
 
-                <SEBSettingsPanel />
+                <SEBSettingsPanel :context="props.context" />
             </v-col>
         </v-row>
 
@@ -46,7 +46,7 @@
                 <v-btn
                     class="ml-2"
                     color="primary"
-                    :disabled="sebSettingsStore.readonly"
+                    :disabled="context.readonly"
                     rounded="sm"
                     variant="flat"
                     @click="emit('closeSebSettingsDialog', true)"
@@ -60,10 +60,14 @@
 
 <script setup lang="ts">
 import { translate } from "@/utils/generalUtils";
-import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 import SEBSettingsPanel from "./components/SEBSettingsPanel.vue";
+import { SEBSettingsContext } from "./types";
 
-const sebSettingsStore = useSEBSettingsStore();
+const props = defineProps<{
+    context: SEBSettingsContext;
+    activeSEBClientConnection: number;
+    dialogTitle: string;
+}>();
 
 const emit = defineEmits<{
     (e: "closeSebSettingsDialog", value: boolean): void;

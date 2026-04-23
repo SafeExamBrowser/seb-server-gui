@@ -1,283 +1,336 @@
 <template>
-    <v-row v-if="fetched">
-        <v-col class="text-subtitle-1">
-            <SettingsTitle label="sebSettings.userView.view_mode.title" />
-            <v-row>
-                <RadioSetting
-                    ref="browserViewMode"
-                    name="browserViewMode"
-                    label="sebSettings.userView.view_mode"
-                    @saved="notifyBrowserViewMode"
+    <LoadingFallbackComponent
+        :loading="loadingSebSettingsView"
+        :errors="errorSebSettingsView"
+    >
+        <v-row v-if="singleValues">
+            <v-col class="text-subtitle-1">
+                <SettingsTitle label="sebSettings.userView.view_mode.title" />
+                <v-row>
+                    <RadioSetting
+                        ref="browserViewMode"
+                        v-model="singleValues"
+                        name="browserViewMode"
+                        label="sebSettings.userView.view_mode"
+                        :disabled="context.readonly"
+                        @saved="notifyBrowserViewMode"
+                    />
+                </v-row>
+                <SettingsTitle
+                    label="sebSettings.userView.main_browser.title"
                 />
-            </v-row>
-            <SettingsTitle label="sebSettings.userView.main_browser.title" />
-            <v-row>
-                <SelectionSetting
-                    name="mainBrowserWindowWidth"
-                    label="sebSettings.userView.main_browser.width"
-                    :disabled="browserViewModeRef?.radioValue !== '0'"
-                    :tooltip="true"
+                <v-row>
+                    <SelectionSetting
+                        v-model="singleValues"
+                        name="mainBrowserWindowWidth"
+                        label="sebSettings.userView.main_browser.width"
+                        :disabled="
+                            context.readonly ||
+                            browserViewModeRef?.radioValue !== '0'
+                        "
+                        :tooltip="true"
+                    />
+                </v-row>
+                <v-row>
+                    <SelectionSetting
+                        v-model="singleValues"
+                        name="mainBrowserWindowHeight"
+                        label="sebSettings.userView.main_browser.height"
+                        :disabled="
+                            context.readonly ||
+                            browserViewModeRef?.radioValue !== '0'
+                        "
+                        :tooltip="true"
+                    />
+                </v-row>
+                <v-row>
+                    <SelectionSetting
+                        v-model="singleValues"
+                        name="mainBrowserWindowPositioning"
+                        label="sebSettings.userView.main_browser.pos"
+                        :labels="true"
+                        :disabled="
+                            context.readonly ||
+                            browserViewModeRef?.radioValue !== '0'
+                        "
+                    />
+                </v-row>
+                <SettingsTitle
+                    label="sebSettings.userView.browser_window.title"
                 />
-            </v-row>
-            <v-row>
-                <SelectionSetting
-                    name="mainBrowserWindowHeight"
-                    label="sebSettings.userView.main_browser.height"
-                    :disabled="browserViewModeRef?.radioValue !== '0'"
-                    :tooltip="true"
-                />
-            </v-row>
-            <v-row>
-                <SelectionSetting
-                    name="mainBrowserWindowPositioning"
-                    label="sebSettings.userView.main_browser.pos"
-                    :labels="true"
-                    :disabled="browserViewModeRef?.radioValue !== '0'"
-                />
-            </v-row>
-            <SettingsTitle label="sebSettings.userView.browser_window.title" />
-            <v-row>
-                <CheckboxSetting
-                    ref="enableBrowserWindowToolbar"
-                    name="enableBrowserWindowToolbar"
-                    label="sebSettings.userView.browser_window.enableToolbar"
-                    :tooltip="true"
-                />
-            </v-row>
-            <v-row>
-                <CheckboxSetting
-                    name="browserWindowAllowAddressBar"
-                    label="sebSettings.userView.browser_window.addrBar"
-                    :tooltip="false"
-                    :disabled="!enableBrowserWindowToolbarRef?.boolVal"
-                />
-            </v-row>
-            <v-row>
-                <CheckboxSetting
-                    name="newBrowserWindowAllowAddressBar"
-                    label="sebSettings.userView.browser_window.newAddrBar"
-                    :tooltip="false"
-                    :disabled="!enableBrowserWindowToolbarRef?.boolVal"
-                />
-            </v-row>
-            <v-row>
-                <CheckboxSetting
-                    name="allowDeveloperConsole"
-                    label="sebSettings.userView.browser_window.allowDev"
-                    :tooltip="false"
-                    :disabled="!enableBrowserWindowToolbarRef?.boolVal"
-                />
-            </v-row>
-            <v-row>
-                <CheckboxSetting
-                    name="hideBrowserWindowToolbar"
-                    label="sebSettings.userView.browser_window.hideTool"
-                    :tooltip="true"
-                    :disabled="!enableBrowserWindowToolbarRef?.boolVal"
-                />
-            </v-row>
-            <v-row>
-                <CheckboxSetting
-                    name="showMenuBar"
-                    label="sebSettings.userView.browser_window.showMenuBar"
-                    :tooltip="true"
-                    :disabled="!enableBrowserWindowToolbarRef?.boolVal"
-                />
-            </v-row>
-            <SettingsTitle label="sebSettings.userView.zoom.title" />
-            <v-row>
-                <CheckboxSetting
-                    name="enableZoomPage"
-                    label="sebSettings.userView.zoom.enableZoomPage"
-                    :tooltip="true"
-                />
-            </v-row>
-            <v-row>
-                <CheckboxSetting
-                    name="enableZoomText"
-                    label="sebSettings.userView.zoom.enableZoomText"
-                    :tooltip="true"
-                />
-            </v-row>
-        </v-col>
+                <v-row>
+                    <CheckboxSetting
+                        ref="enableBrowserWindowToolbar"
+                        v-model="singleValues"
+                        name="enableBrowserWindowToolbar"
+                        label="sebSettings.userView.browser_window.enableToolbar"
+                        :disabled="context.readonly"
+                        :tooltip="true"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="browserWindowAllowAddressBar"
+                        label="sebSettings.userView.browser_window.addrBar"
+                        :tooltip="false"
+                        :disabled="
+                            context.readonly ||
+                            !enableBrowserWindowToolbarRef?.boolVal
+                        "
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="newBrowserWindowAllowAddressBar"
+                        label="sebSettings.userView.browser_window.newAddrBar"
+                        :tooltip="false"
+                        :disabled="
+                            context.readonly ||
+                            !enableBrowserWindowToolbarRef?.boolVal
+                        "
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="allowDeveloperConsole"
+                        label="sebSettings.userView.browser_window.allowDev"
+                        :tooltip="false"
+                        :disabled="
+                            context.readonly ||
+                            !enableBrowserWindowToolbarRef?.boolVal
+                        "
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="hideBrowserWindowToolbar"
+                        label="sebSettings.userView.browser_window.hideTool"
+                        :tooltip="true"
+                        :disabled="
+                            context.readonly ||
+                            !enableBrowserWindowToolbarRef?.boolVal
+                        "
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="showMenuBar"
+                        label="sebSettings.userView.browser_window.showMenuBar"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <SettingsTitle label="sebSettings.userView.zoom.title" />
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="enableZoomPage"
+                        label="sebSettings.userView.zoom.enableZoomPage"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="enableZoomText"
+                        label="sebSettings.userView.zoom.enableZoomText"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+            </v-col>
 
-        <v-col class="text-subtitle-1">
-            <SettingsTitle label="sebSettings.userView.audio.title" />
-            <v-row>
-                <CheckboxSetting
-                    name="audioControlEnabled"
-                    label="sebSettings.userView.audio.enableControl"
-                    :tooltip="true"
+            <v-col class="text-subtitle-1">
+                <SettingsTitle label="sebSettings.userView.audio.title" />
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="audioControlEnabled"
+                        label="sebSettings.userView.audio.enableControl"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="audioMute"
+                        label="sebSettings.userView.audio.mute"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        ref="audioSetVolumeLevel"
+                        v-model="singleValues"
+                        name="audioSetVolumeLevel"
+                        label="sebSettings.userView.audio.volume"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <SliderSetting
+                        v-model="singleValues"
+                        name="audioVolumeLevel"
+                        :max="100"
+                        :min="0"
+                        :step="1"
+                        :disabled="
+                            context.readonly || !audioSetVolumeLevelRef?.boolVal
+                        "
+                    />
+                </v-row>
+                <SettingsTitle
+                    label="sebSettings.userView.spellChecker.title"
                 />
-            </v-row>
-            <v-row>
-                <CheckboxSetting
-                    name="audioMute"
-                    label="sebSettings.userView.audio.mute"
-                    :tooltip="true"
-                />
-            </v-row>
-            <v-row>
-                <CheckboxSetting
-                    ref="audioSetVolumeLevel"
-                    name="audioSetVolumeLevel"
-                    label="sebSettings.userView.audio.volume"
-                    :tooltip="true"
-                />
-            </v-row>
-            <v-row>
-                <SliderSetting
-                    name="audioVolumeLevel"
-                    :max="100"
-                    :min="0"
-                    :step="1"
-                    :disabled="!audioSetVolumeLevelRef?.boolVal"
-                />
-            </v-row>
-            <SettingsTitle label="sebSettings.userView.spellChecker.title" />
-            <v-row>
-                <CheckboxSetting
-                    name="allowSpellCheck"
-                    label="sebSettings.userView.spellChecker.allow"
-                    :tooltip="true"
-                />
-            </v-row>
-            <v-row>
-                <CheckboxSetting
-                    name="allowDictionaryLookup"
-                    label="sebSettings.userView.spellChecker.allowDict"
-                    :tooltip="true"
-                />
-            </v-row>
-            <SettingsTitle label="sebSettings.userView.task_bar.title" />
-            <v-row>
-                <CheckboxSetting
-                    name="showTaskBar"
-                    label="sebSettings.userView.task_bar.showTaskBar"
-                    :tooltip="true"
-                />
-            </v-row>
-            <v-row>
-                <CheckboxSetting
-                    name="showSideMenu"
-                    label="sebSettings.userView.task_bar.showSideMenu"
-                    :tooltip="false"
-                />
-            </v-row>
-            <v-row>
-                <CheckboxSetting
-                    name="raiseHandButtonShow"
-                    label="sebSettings.userView.task_bar.raiseHandButtonShow"
-                    :tooltip="false"
-                />
-            </v-row>
-            <v-row>
-                <CheckboxSetting
-                    name="raiseHandButtonAlwaysPromptMessage"
-                    label="sebSettings.userView.task_bar.raiseHandButtonAlwaysPromptMessage"
-                    :tooltip="true"
-                />
-            </v-row>
-            <v-row>
-                <CheckboxSetting
-                    name="allowWlan"
-                    label="sebSettings.userView.task_bar.allowWlan"
-                    :tooltip="true"
-                />
-            </v-row>
-            <v-row>
-                <CheckboxSetting
-                    name="showReloadButton"
-                    label="sebSettings.userView.task_bar.showReloadButton"
-                    :tooltip="true"
-                />
-            </v-row>
-            <v-row>
-                <CheckboxSetting
-                    name="showTime"
-                    label="sebSettings.userView.task_bar.showTime"
-                    :tooltip="false"
-                />
-            </v-row>
-            <v-row>
-                <CheckboxSetting
-                    name="showInputLanguage"
-                    label="sebSettings.userView.task_bar.showInputLanguage"
-                    :tooltip="true"
-                />
-            </v-row>
-            <SettingsTitle label="sebSettings.userView.screenLock.title" />
-            <v-row>
-                <v-col class="pt-8 pb-0 pl-5 pr-10">
-                    <v-row>
-                        <v-color-input
-                            v-model="lockScreenBackgroundColorVal"
-                            :disabled="sebSettingsStore.readonly"
-                            mode="hex"
-                            max-width="300"
-                            :label="
-                                translate(
-                                    'sebSettings.userView.screenLock.color',
-                                )
-                            "
-                            pip-location="append-inner"
-                            color-pip
-                            variant="outlined"
-                            density="compact"
-                            @update:model-value="
-                                sebSettingsStore.saveSingleValue(
-                                    'lockScreenBackgroundColor',
-                                    lockScreenBackgroundColorVal,
-                                )
-                            "
-                        >
-                        </v-color-input>
-                    </v-row>
-                </v-col>
-            </v-row>
-        </v-col>
-    </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="allowSpellCheck"
+                        label="sebSettings.userView.spellChecker.allow"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="allowDictionaryLookup"
+                        label="sebSettings.userView.spellChecker.allowDict"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <SettingsTitle label="sebSettings.userView.task_bar.title" />
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="showTaskBar"
+                        label="sebSettings.userView.task_bar.showTaskBar"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="showSideMenu"
+                        label="sebSettings.userView.task_bar.showSideMenu"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="raiseHandButtonShow"
+                        label="sebSettings.userView.task_bar.raiseHandButtonShow"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="raiseHandButtonAlwaysPromptMessage"
+                        label="sebSettings.userView.task_bar.raiseHandButtonAlwaysPromptMessage"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="allowWlan"
+                        label="sebSettings.userView.task_bar.allowWlan"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="showReloadButton"
+                        label="sebSettings.userView.task_bar.showReloadButton"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="showTime"
+                        label="sebSettings.userView.task_bar.showTime"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="showInputLanguage"
+                        label="sebSettings.userView.task_bar.showInputLanguage"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <SettingsTitle label="sebSettings.userView.screenLock.title" />
+                <v-row>
+                    <ColorSetting
+                        v-model="singleValues"
+                        name="lockScreenBackgroundColor"
+                        label="sebSettings.userView.screenLock.color"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+            </v-col>
+        </v-row>
+    </LoadingFallbackComponent>
 </template>
 
 <script setup lang="ts">
-import { translate } from "@/utils/generalUtils";
-import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums";
-import { ref, onBeforeMount, useTemplateRef } from "vue";
+import { useTemplateRef } from "vue";
 import SettingsTitle from "./components/SettingsTitle.vue";
-import RadioSetting from "./components/RadioSetting.vue";
-import SelectionSetting from "./components/SelectionSetting.vue";
-import CheckboxSetting from "./components/CheckboxSetting.vue";
-import SliderSetting from "./components/SliderSetting.vue";
+import RadioSetting from "./components/inputFields/RadioSetting.vue";
+import SelectionSetting from "./components/inputFields/SelectionSetting.vue";
+import CheckboxSetting from "./components/inputFields/CheckboxSetting.vue";
+import SliderSetting from "./components/inputFields/SliderSetting.vue";
+import ColorSetting from "./components/inputFields/ColorSetting.vue";
+import { useSEBSettingValues } from "./composables/useSEBSettingValues";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import { SEBSettingsContext } from "./types";
 
-const sebSettingsStore = useSEBSettingsStore();
+const props = defineProps<{
+    context: SEBSettingsContext;
+}>();
 
-const fetched = ref<boolean>(false);
-// browserViewMode 0,1 is touchOptimized false and 2 is touchOptimized=true
+const { singleValues, loadingSebSettingsView, errorSebSettingsView } =
+    useSEBSettingValues(
+        props.context.isExam,
+        props.context.containerId,
+        ViewType.USER_INTERFACE,
+    );
+
 const browserViewModeRef = useTemplateRef("browserViewMode");
 const enableBrowserWindowToolbarRef = useTemplateRef(
     "enableBrowserWindowToolbar",
 );
 const audioSetVolumeLevelRef = useTemplateRef("audioSetVolumeLevel");
 
-const lockScreenBackgroundColorVal = ref<string>("#0000");
-
-onBeforeMount(async () => {
-    if (sebSettingsStore.selectedContainerId == null) {
-        return;
-    }
-
-    fetched.value = await sebSettingsStore.fetchSingleValues(
-        ViewType.USER_INTERFACE,
-    );
-
-    lockScreenBackgroundColorVal.value = sebSettingsStore.getStringValue(
-        "lockScreenBackgroundColor",
-    );
-});
-
 async function notifyBrowserViewMode() {
-    await sebSettingsStore.saveSingleValue(
+    if (!singleValues.value) return;
+
+    singleValues.value.saveSingleValue(
         "touchOptimized",
         browserViewModeRef.value?.radioValue === "2" ? "true" : "false",
     );

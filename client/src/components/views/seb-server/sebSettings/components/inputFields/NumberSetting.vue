@@ -1,15 +1,18 @@
 <template>
     <v-col class="pt-1 pb-1">
-        <v-text-field
-            v-model="textVal"
+        <v-number-input
+            v-model="numberValue"
             density="compact"
-            :disabled="sebSettingsStore.readonly || disabled"
+            :disabled="disabled"
             :label="showLabel ? translate(label) : ''"
             variant="outlined"
             hide-details
+            :min="min"
+            :max="max"
+            max-width="600"
             @update:focused="saveOnFocusLost($event)"
         >
-        </v-text-field>
+        </v-number-input>
         <v-tooltip
             v-if="tooltip"
             activator="parent"
@@ -22,35 +25,38 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import { translate } from "@/utils/generalUtils";
-import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
-
-const sebSettingsStore = useSEBSettingsStore();
-const textVal = ref<string>("");
+import { SEBSettingsSingeValueModel } from "../../types";
 
 const props = defineProps<{
+    modelValue: SEBSettingsSingeValueModel;
     name: string;
     label: string;
     showLabel?: boolean;
     tooltip?: boolean;
     disabled?: boolean;
+    min?: number;
+    max?: number;
 }>();
 
-defineExpose({
-    textVal,
-});
+const numberValue = ref<number>(
+    Number(props.modelValue.getStringValue(props.name)),
+);
 
-onMounted(() => {
-    textVal.value = sebSettingsStore.getStringValue(props.name);
+defineExpose({
+    numberValue,
 });
 
 async function saveOnFocusLost(focusIn: boolean) {
     if (!focusIn) {
-        if (textVal.value) {
-            sebSettingsStore.saveSingleValue(props.name, textVal.value);
+        if (numberValue.value) {
+            props.modelValue.saveSingleValue(
+                props.name,
+                numberValue.value.toString(),
+            );
         } else {
-            sebSettingsStore.saveSingleValue(props.name, "");
+            props.modelValue.saveSingleValue(props.name, "");
         }
     }
 }

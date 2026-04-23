@@ -16,15 +16,10 @@
         </v-row>
     </v-container>
 
-    <v-card
-        :key="reloadSettings"
-        :params="init_store"
-        class="pa-5"
-        variant="text"
-    >
+    <v-card :key="reloadSettings" class="pa-5" variant="text">
         <v-row>
             <v-col>
-                <SEBSettingsPanel />
+                <SEBSettingsPanel :context="init_store" />
             </v-col>
         </v-row>
     </v-card>
@@ -54,6 +49,7 @@ import SectionSubtitle from "@/components/widgets/SectionSubtitle.vue";
 import AddButton from "@/components/widgets/AddButton.vue";
 import SEBSettingsPanel from "@/components/views/seb-server/sebSettings/components/SEBSettingsPanel.vue";
 import UploadDialog from "@/components/widgets/UploadDialog.vue";
+import { SEBSettingsContext } from "@/components/views/seb-server/sebSettings/types";
 
 const stepNamingStore = useStepNamingStore();
 
@@ -72,6 +68,7 @@ async function onConfigImported() {
 
 const init_store = computed(() => {
     if (configKey.value) {
+        // TODO @anhefti remove sebSettingsStore after refactoring, should not be used anymore
         const sebSettingsStore = useSEBSettingsStore();
         const stepNamingStore = useStepNamingStore();
 
@@ -86,8 +83,16 @@ const init_store = computed(() => {
             }
         }
 
-        return true;
+        return {
+            isExam: false,
+            containerId: configKey.value.id,
+            readonly: false,
+        } as SEBSettingsContext;
     }
-    return false;
+    return {
+        isExam: false,
+        containerId: "",
+        readonly: false,
+    } as SEBSettingsContext;
 });
 </script>

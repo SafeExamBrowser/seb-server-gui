@@ -11,6 +11,7 @@
                     label="sebSettings.generalView.adminPassword"
                     confirm-label="sebSettings.generalView.confirmAdminPassword"
                     tooltip="sebSettings.generalView.adminPassword_tooltip"
+                    :disabled="context.readonly"
                 />
             </v-row>
             <v-row>
@@ -19,6 +20,7 @@
                     name="allowQuit"
                     label="sebSettings.generalView.allowQuit"
                     :tooltip="true"
+                    :disabled="context.readonly"
                 />
             </v-row>
             <v-row>
@@ -28,6 +30,7 @@
                     label="sebSettings.generalView.quitPassword"
                     confirm-label="sebSettings.generalView.confirmQuitPassword"
                     tooltip="sebSettings.generalView.quitPassword_tooltip"
+                    :disabled="context.readonly"
                 />
             </v-row>
         </v-col>
@@ -35,22 +38,21 @@
 </template>
 
 <script setup lang="ts">
-// import { ref, onBeforeMount } from "vue";
-import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import CheckboxSetting from "./components/CheckboxSetting.vue";
-import PasswordSetting from "./components/PasswordSetting.vue";
+import CheckboxSetting from "./components/inputFields/CheckboxSetting.vue";
+import PasswordSetting from "./components/inputFields/PasswordSetting.vue";
 import { useSEBSettingValues } from "./composables/useSEBSettingValues";
+import { SEBSettingsContext } from "./types";
 
-const sebSettingsStore = useSEBSettingsStore();
+const props = defineProps<{
+    context: SEBSettingsContext;
+}>();
 
 const { singleValues, loadingSebSettingsView, errorSebSettingsView } =
     useSEBSettingValues(
-        false,
-        sebSettingsStore.selectedContainerId !== null
-            ? sebSettingsStore.selectedContainerId.toString()
-            : "",
+        props.context.isExam,
+        props.context.containerId,
         ViewType.GENERAL,
     );
 </script>

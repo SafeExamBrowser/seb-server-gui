@@ -1439,24 +1439,7 @@ async function getSEBSettings() {
         sebSettingsStore.isExam = true;
         if (examStore.selectedExam != null) {
             sebSettingsStore.selectedContainerId = examStore.selectedExam.id;
-            if (examStore.selectedExam != null) {
-                sebSettingsStore.readonly = !ability.canDoExamAction(
-                    GUIAction.EditSEBSettings,
-                    examStore.selectedExam,
-                );
-                if (!sebSettingsStore.readonly) {
-                    // check also if there are no active SEB clients, otherwise set so on storage
-                    const numActiveClients =
-                        await sebSettingsService.getActiveSEBClients(examId);
-                    if (numActiveClients != null && numActiveClients > 0) {
-                        sebSettingsStore.readonly = true;
-                        sebSettingsStore.activeSEBClientConnection =
-                            numActiveClients;
-                    }
-                }
-            } else {
-                sebSettingsStore.readonly = true;
-            }
+            setSEBSettingsAccess();
 
             const fullSEBSettings = ability.canDo(
                 GUIAction.EditFullSEBSettings,
@@ -1468,9 +1451,27 @@ async function getSEBSettings() {
                 : fullSEBSettings
                   ? "examDetail.main.editSEBSettings"
                   : "examDetail.main.editAppNetworkSettings";
+        } else {
+            sebSettingsStore.readonly = true;
         }
         // TODO this is only for testing, remove it when done
         //sebSettingsStore.activeSEBClientConnection = 2;
+    }
+}
+
+async function setSEBSettingsAccess() {
+    sebSettingsStore.readonly = !ability.canDoExamAction(
+        GUIAction.EditSEBSettings,
+        examStore.selectedExam,
+    );
+    if (!sebSettingsStore.readonly) {
+        // check also if there are no active SEB clients, otherwise set so on storage
+        const numActiveClients =
+            await sebSettingsService.getActiveSEBClients(examId);
+        if (numActiveClients != null && numActiveClients > 0) {
+            sebSettingsStore.readonly = true;
+            sebSettingsStore.activeSEBClientConnection = numActiveClients;
+        }
     }
 }
 

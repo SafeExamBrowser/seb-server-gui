@@ -1,230 +1,260 @@
 <template>
-    <v-row v-if="fetched">
-        <v-col class="text-subtitle-1">
-            <SettingsTitle label="sebSettings.updownloadView.title" />
-            <v-row>
-                <CheckboxSetting
-                    name="allowDownUploads"
-                    label="sebSettings.updownloadView.allow"
-                    :tooltip="true"
-                />
-            </v-row>
-            <v-row>
-                <CheckboxSetting
-                    name="allowDownloads"
-                    label="sebSettings.updownloadView.allowDownload"
-                    :tooltip="false"
-                />
-            </v-row>
-            <v-row>
-                <TextSetting
-                    name="downloadDirectoryWin"
-                    label="sebSettings.updownloadView.dDirWin"
-                    :show-label="true"
-                    :tooltip="false"
-                />
-            </v-row>
-            <v-row>
-                <TextSetting
-                    name="downloadDirectoryOSX"
-                    label="sebSettings.updownloadView.dDirMac"
-                    :show-label="true"
-                    :tooltip="false"
-                />
-            </v-row>
-            <v-row>
-                <CheckboxSetting
-                    name="allowCustomDownUploadLocation"
-                    label="sebSettings.updownloadView.custom"
-                    :tooltip="false"
-                />
-            </v-row>
-            <v-row>
-                <CheckboxSetting
-                    name="useTemporaryDownUploadDirectory"
-                    label="sebSettings.updownloadView.useTemp"
-                    :tooltip="false"
-                />
-            </v-row>
-            <v-row>
-                <CheckboxSetting
-                    name="downloadPDFFiles"
-                    label="sebSettings.updownloadView.download"
-                    :tooltip="true"
-                />
-            </v-row>
-            <v-row>
-                <CheckboxSetting
-                    name="allowPDFPlugIn"
-                    label="sebSettings.updownloadView.allowPDFPlugin"
-                    :tooltip="true"
-                />
-            </v-row>
-            <v-row>
-                <CheckboxSetting
-                    name="allowUploads"
-                    label="sebSettings.updownloadView.files"
-                    :tooltip="true"
-                />
-            </v-row>
-            <v-row>
-                <CheckboxSetting
-                    name="downloadAndOpenSebConfig"
-                    label="sebSettings.updownloadView.andOpen"
-                    :tooltip="true"
-                />
-            </v-row>
-            <v-row>
-                <CheckboxSetting
-                    name="allowUploadsiOS"
-                    label="sebSettings.updownloadView.photos"
-                    :tooltip="true"
-                />
-            </v-row>
-        </v-col>
+    <LoadingFallbackComponent
+        :loading="loadingSebSettingsView"
+        :errors="errorSebSettingsView"
+    >
+        <v-row v-if="singleValues">
+            <v-col class="text-subtitle-1">
+                <SettingsTitle label="sebSettings.updownloadView.title" />
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="allowDownUploads"
+                        label="sebSettings.updownloadView.allow"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="allowDownloads"
+                        label="sebSettings.updownloadView.allowDownload"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <TextSetting
+                        v-model="singleValues"
+                        name="downloadDirectoryWin"
+                        label="sebSettings.updownloadView.dDirWin"
+                        :show-label="true"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <TextSetting
+                        v-model="singleValues"
+                        name="downloadDirectoryOSX"
+                        label="sebSettings.updownloadView.dDirMac"
+                        :show-label="true"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="allowCustomDownUploadLocation"
+                        label="sebSettings.updownloadView.custom"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="useTemporaryDownUploadDirectory"
+                        label="sebSettings.updownloadView.useTemp"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="downloadPDFFiles"
+                        label="sebSettings.updownloadView.download"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="allowPDFPlugIn"
+                        label="sebSettings.updownloadView.allowPDFPlugin"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="allowUploads"
+                        label="sebSettings.updownloadView.files"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="downloadAndOpenSebConfig"
+                        label="sebSettings.updownloadView.andOpen"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="allowUploadsiOS"
+                        label="sebSettings.updownloadView.photos"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+            </v-col>
 
-        <v-col class="text-subtitle-1">
-            <SettingsTitle
-                label="sebSettings.updownloadView.policyTitle"
-                :tooltip="true"
-            />
-            <v-row>
-                <RadioSetting
-                    name="chooseFileToUploadPolicy"
-                    label="sebSettings.updownloadView.policy"
+            <v-col class="text-subtitle-1">
+                <SettingsTitle
+                    label="sebSettings.updownloadView.policyTitle"
+                    :tooltip="true"
                 />
-            </v-row>
+                <v-row>
+                    <RadioSetting
+                        v-model="singleValues"
+                        name="chooseFileToUploadPolicy"
+                        label="sebSettings.updownloadView.policy"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
 
-            <!-- UPLOAD TYPE LIST
+                <!-- UPLOAD TYPE LIST
                 TODO: @anhefti try to make SEB Settings lists composable. 
                 Use better (more generic model) for the table values, see sebSettings.SEBSettingsTableRow model
             -->
-            <v-row class="font-weight-bold pt-8 pb-0">
-                <v-col class="text-subtitle-1">
-                    <v-row>
-                        <v-col class="font-weight-bold">{{
-                            translate(
-                                "sebSettings.updownloadView.filetypes.title",
-                            )
-                        }}</v-col>
-                        <v-col align="right">
-                            <v-btn
-                                color="primary"
-                                density="compact"
-                                :disabled="sebSettingsStore.readonly"
-                                icon="mdi-plus-circle-outline"
-                                variant="text"
-                                @click="newFileType()"
-                            >
-                            </v-btn>
-                        </v-col>
-                    </v-row>
-                    <v-divider
-                        class="border-opacity-25"
-                        :thickness="5"
-                    ></v-divider>
-                </v-col>
-            </v-row>
-
-            <v-row>
-                <v-col>
-                    <v-data-table
-                        class="rounded-lg elevation-4"
-                        density="compact"
-                        :headers="downloadFileTypesHeaders"
-                        item-value="id"
-                        :items="downloadFileTypesTable"
-                        :items-per-page="
-                            tableUtils.calcDefaultItemsPerPage(
-                                downloadFileTypesTable,
-                            )
-                        "
-                        :items-per-page-options="
-                            tableUtils.calcItemsPerPage(downloadFileTypesTable)
-                        "
-                    >
-                        <template
-                            #headers="{
-                                columns,
-                                isSorted,
-                                getSortIcon,
-                                toggleSort,
-                            }"
-                        >
-                            <TableHeaders
-                                :columns="columns"
-                                :get-sort-icon="getSortIcon"
-                                :header-refs-prop="downloadFileTypesRef"
-                                :is-sorted="isSorted"
-                                :toggle-sort="toggleSort"
-                            >
-                            </TableHeaders>
-                        </template>
-
-                        <!-------File Extension hook ------->
-                        <template #item.fileExtension="{ item }">
-                            {{ item.fileExtension }}
-                        </template>
-
-                        <!-------Operating System hook ------->
-                        <template #item.os="{ item }">
-                            {{
+                <v-row class="font-weight-bold pt-8 pb-0">
+                    <v-col class="text-subtitle-1">
+                        <v-row>
+                            <v-col class="font-weight-bold">{{
                                 translate(
-                                    "sebSettings.updownloadView.filetypes.os_" +
-                                        item.os,
-                                    i18n,
+                                    "sebSettings.updownloadView.filetypes.title",
                                 )
-                            }}
-                        </template>
+                            }}</v-col>
+                            <v-col align="right">
+                                <v-btn
+                                    color="primary"
+                                    density="compact"
+                                    :disabled="context.readonly"
+                                    icon="mdi-plus-circle-outline"
+                                    variant="text"
+                                    @click="newFileType()"
+                                >
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                        <v-divider
+                            class="border-opacity-25"
+                            :thickness="5"
+                        ></v-divider>
+                    </v-col>
+                </v-row>
 
-                        <!-------Identifier hook------->
-                        <template #item.identifier="{ item }">
-                            {{ item.identifier }}
-                        </template>
-
-                        <!-------edit button------->
-                        <template #item.edit="{ item }">
-                            <v-btn
-                                icon="mdi-pencil-outline"
-                                variant="text"
-                                @click="fileTypeOpenEditDialog(item.index)"
+                <v-row>
+                    <v-col>
+                        <v-data-table
+                            class="rounded-lg elevation-4"
+                            density="compact"
+                            :headers="downloadFileTypesHeaders"
+                            item-value="id"
+                            :items="downloadFileTypesTable"
+                            :items-per-page="
+                                tableUtils.calcDefaultItemsPerPage(
+                                    downloadFileTypesTable,
+                                )
+                            "
+                            :items-per-page-options="
+                                tableUtils.calcItemsPerPage(
+                                    downloadFileTypesTable,
+                                )
+                            "
+                        >
+                            <template
+                                #headers="{
+                                    columns,
+                                    isSorted,
+                                    getSortIcon,
+                                    toggleSort,
+                                }"
                             >
-                            </v-btn>
-                        </template>
+                                <TableHeaders
+                                    :columns="columns"
+                                    :get-sort-icon="getSortIcon"
+                                    :header-refs-prop="downloadFileTypesRef"
+                                    :is-sorted="isSorted"
+                                    :toggle-sort="toggleSort"
+                                >
+                                </TableHeaders>
+                            </template>
 
-                        <!-------delete button------->
-                        <template #item.delete="{ item }">
-                            <v-btn
-                                :disabled="sebSettingsStore.readonly"
-                                icon="mdi-delete-outline"
-                                variant="text"
-                                @click="deleteFileType(item.index!)"
-                            >
-                            </v-btn>
-                        </template>
-                    </v-data-table>
-                </v-col>
-            </v-row>
-        </v-col>
-    </v-row>
+                            <!-------File Extension hook ------->
+                            <template #item.fileExtension="{ item }">
+                                {{ item.fileExtension }}
+                            </template>
 
-    <!-----------edit download file type dialog---------->
-    <v-dialog v-model="downloadFileTypesDialog" max-width="800">
-        <EditFileDownloadRule
-            :read-only="sebSettingsStore.readonly"
-            :file-type="selectedDownloadFileType"
-            @close-file-type-dialog="closeFileTypeDialog"
-        >
-        </EditFileDownloadRule>
-    </v-dialog>
+                            <!-------Operating System hook ------->
+                            <template #item.os="{ item }">
+                                {{
+                                    translate(
+                                        "sebSettings.updownloadView.filetypes.os_" +
+                                            item.os,
+                                        i18n,
+                                    )
+                                }}
+                            </template>
+
+                            <!-------Identifier hook------->
+                            <template #item.identifier="{ item }">
+                                {{ item.identifier }}
+                            </template>
+
+                            <!-------edit button------->
+                            <template #item.edit="{ item }">
+                                <v-btn
+                                    icon="mdi-pencil-outline"
+                                    variant="text"
+                                    @click="fileTypeOpenEditDialog(item.index)"
+                                >
+                                </v-btn>
+                            </template>
+
+                            <!-------delete button------->
+                            <template #item.delete="{ item }">
+                                <v-btn
+                                    :disabled="context.readonly"
+                                    icon="mdi-delete-outline"
+                                    variant="text"
+                                    @click="deleteFileType(item.index!)"
+                                >
+                                </v-btn>
+                            </template>
+                        </v-data-table>
+                    </v-col>
+                </v-row>
+            </v-col>
+        </v-row>
+
+        <!-----------edit download file type dialog---------->
+        <v-dialog v-model="downloadFileTypesDialog" max-width="800">
+            <EditFileDownloadRule
+                :read-only="context.readonly"
+                :file-type="selectedDownloadFileType"
+                @close-file-type-dialog="closeFileTypeDialog"
+            >
+            </EditFileDownloadRule>
+        </v-dialog>
+    </LoadingFallbackComponent>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
-import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums";
-import { ref, onBeforeMount } from "vue";
+import { ref, watch } from "vue";
 import {
     SEBSettingsTableRowValues,
     SEBSettingsValue,
@@ -232,16 +262,40 @@ import {
 } from "@/models/seb-server/sebSettings";
 import * as tableUtils from "@/utils/table/tableUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
-import EditFileDownloadRule from "./EditFileDownloadRule.vue";
-
+import EditFileDownloadRule from "./components/tableDialogs/EditFileDownloadRule.vue";
 import SettingsTitle from "./components/SettingsTitle.vue";
-import RadioSetting from "./components/RadioSetting.vue";
-import CheckboxSetting from "./components/CheckboxSetting.vue";
-import TextSetting from "./components/TextSetting.vue";
+import RadioSetting from "./components/inputFields/RadioSetting.vue";
+import CheckboxSetting from "./components/inputFields/CheckboxSetting.vue";
+import TextSetting from "./components/inputFields/TextSetting.vue";
+import { useSEBSettingValues } from "./composables/useSEBSettingValues";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import { SEBSettingsContext } from "./types";
 
-const fetched = ref<boolean>(false);
-const sebSettingsStore = useSEBSettingsStore();
 const i18n = useI18n();
+
+const props = defineProps<{
+    context: SEBSettingsContext;
+}>();
+
+const {
+    singleValues,
+    tableValues,
+    loadingSebSettingsView,
+    errorSebSettingsView,
+} = useSEBSettingValues(
+    props.context.isExam,
+    props.context.containerId,
+    ViewType.DOWN_UPLOAD,
+);
+
+watch(tableValues, () => {
+    if (!tableValues.value) return;
+
+    const fileTypes = tableValues.value.tableValues.get("downloadFileTypes");
+    if (!fileTypes) return;
+
+    updateFileTypesTable(fileTypes);
+});
 
 const downloadFileTypesDialog = ref<boolean>(false);
 const selectedDownloadFileType = ref<FileExtensionEntry | null>(null);
@@ -281,22 +335,6 @@ const downloadFileTypesHeaders = ref([
         center: true,
     },
 ]);
-
-onBeforeMount(async () => {
-    if (sebSettingsStore.selectedContainerId == null) {
-        return;
-    }
-
-    fetched.value = await sebSettingsStore.fetchSingleValues(
-        ViewType.DOWN_UPLOAD,
-    );
-
-    const fileTypes = sebSettingsStore.tableValues.get("downloadFileTypes");
-    if (fileTypes == null) {
-        return;
-    }
-    updateFileTypesTable(fileTypes);
-});
 
 // ********* File Type functions *********************
 function updateFileTypesTable(entries: SEBSettingsTableRowValues[]) {
@@ -341,7 +379,9 @@ function newFileType() {
 }
 
 async function deleteFileType(index: number) {
-    const resp = await sebSettingsStore.deleteTableRow(
+    if (!tableValues.value) return;
+
+    const resp = await tableValues.value.deleteTableRow(
         "downloadFileTypes",
         index,
     );
@@ -363,12 +403,13 @@ function fileTypeOpenEditDialog(index: number) {
 async function closeFileTypeDialog(apply?: boolean) {
     downloadFileTypesDialog.value = false;
 
+    if (!tableValues.value) return;
     if (!apply || selectedDownloadFileType.value == null) {
         return;
     }
 
     if (selectedDownloadFileType.value?.index === -1) {
-        const resp = await sebSettingsStore.addTableRow("downloadFileTypes");
+        const resp = await tableValues.value.addTableRow("downloadFileTypes");
         if (resp == null) {
             return;
         }
@@ -383,7 +424,7 @@ async function closeFileTypeDialog(apply?: boolean) {
             downloadFileTypesTable.value[resp.listIndex].ids;
     }
 
-    sebSettingsStore.saveTableRow([
+    tableValues.value.saveTableRow([
         {
             id: selectedDownloadFileType.value.ids.os,
             value: selectedDownloadFileType.value.os,
@@ -408,7 +449,7 @@ function getStringValue(
 ): string {
     const prop = rowVals.get(name);
     if (!prop) {
-        const def = sebSettingsStore.attributes.get(name);
+        const def = singleValues.value?.attributes.get(name);
         if (!def) {
             throw new Error("No SEB Setting" + name + " found");
         } else {

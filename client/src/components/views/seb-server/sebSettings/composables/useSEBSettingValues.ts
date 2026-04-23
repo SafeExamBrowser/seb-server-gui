@@ -10,39 +10,11 @@ import {
     SEBSettingsTableRowValues,
     SEBSettingTableValue,
 } from "@/models/seb-server/sebSettings";
-
-// Singe SEB Setting values model encapsulates single SEB Setting values with its current ids
-// mapped by SEB Setting names and additional attributes also mapped to SEB Setting names.
-// Also provides some value accessors and a persistent function to save the value to backend
-export type SEBSettingsSingeValueModel = {
-    singleValues: Map<string, SEBSettingsValue>;
-    attributes: Map<string, SEBSettingAttribute>;
-
-    getStringValue(name: string): string;
-    getBooleanValue(name: string): boolean;
-    getNumberValue(name: string): number;
-    saveSingleValue(name: string, value: string): void;
-};
-
-// SEB Settings table model encapsulates table row values mapped by SEB Setting names
-// and additional attributes also mapped to SEB Setting names.
-// Also provides some row value accessors and a persistent function to save the value to backend
-export type SEBSettingsTableModel = {
-    tableValues: Map<string, SEBSettingsTableRowValues[]>;
-    attributes: Map<string, SEBSettingAttribute>;
-
-    addTableRow(name: string): Promise<SEBSettingsTableRowValues | null>;
-    deleteTableRow(
-        name: string,
-        index: number,
-    ): Promise<SEBSettingsTableRowValues[] | null>;
-    saveTableRow(values: SEBSettingTableValue[]): void;
-    applyAttributes(
-        name: string,
-        labels: string | null,
-        items: { title: string; value: string }[],
-    ): void;
-};
+import {
+    SEBSettingsSingeValueModel,
+    SEBSettingsTableModel,
+    SEBValueAttributes,
+} from "../types";
 
 export const useSEBSettingValues = (
     isExam: boolean,
@@ -55,12 +27,15 @@ export const useSEBSettingValues = (
         error: errorFetchSebSettingsView,
     } = useFetchViewValues(isExam, containerId, viewType);
 
+    console.info("********** fetch: ", viewType);
+    console.info("********** fetched: ", sebSettingsView);
+
     const singleValues = computed(() => {
         if (!sebSettingsView.value) {
             return undefined;
         }
 
-        return {
+        const result: SEBSettingsSingeValueModel = {
             singleValues: new Map<string, SEBSettingsValue>(
                 Object.entries(sebSettingsView.value.singleValues),
             ),
@@ -72,7 +47,31 @@ export const useSEBSettingValues = (
             getBooleanValue: getBooleanValue,
             getNumberValue: getNumberValue,
             saveSingleValue: saveSingleValue,
-        } as SEBSettingsSingeValueModel;
+            getAttributes: getAttributes,
+        };
+
+        // NOTE: Special case for proxies in Network view, they came as single row tables but are
+        //       in fact just single values. So we merge it in case of ViewType.NETWORK into the singe values map
+        if (viewType == ViewType.NETWORK) {
+            const tableValues = new Map<string, SEBSettingsTableRowValues[]>(
+                Object.entries(sebSettingsView.value.tableValues),
+            );
+            const proxyVals = tableValues.get("proxies");
+            if (proxyVals) {
+                const proxyValues = new Map<string, SEBSettingsValue>(
+                    Object.entries(proxyVals[0].rowValues),
+                );
+                proxyValues.forEach((v, k) => {
+                    result.singleValues.set(k, v);
+                });
+            }
+            console.info(
+                "************** NETWORK single value: ",
+                result.singleValues,
+            );
+        }
+
+        return result;
     });
 
     const tableValues = computed(() => {
@@ -91,7 +90,6 @@ export const useSEBSettingValues = (
             addTableRow: addTableRow,
             deleteTableRow: deleteTableRow,
             saveTableRow: saveTableRow,
-            applyAttributes: applyAttributes,
         } as SEBSettingsTableModel;
     });
 
@@ -109,42 +107,42 @@ export const useSEBSettingValues = (
         return singleValues.value.singleValues.get(name);
     }
 
-    function getStringValue(name: string): string | undefined {
+    function getStringValue(name: string): string {
         const singleValue = getSingleValue(name);
         if (!singleValue) {
-            return undefined;
+            return "";
         }
 
         return singleValue.value;
     }
 
-    function getBooleanValue(name: string): boolean | undefined {
+    function getBooleanValue(name: string): boolean {
         const singleValue = getSingleValue(name);
         if (!singleValue) {
-            return undefined;
+            return false;
         }
 
         return stringToBoolean(singleValue.value);
     }
 
-    function getNumberValue(name: string): number | undefined {
+    function getNumberValue(name: string): number {
         const singleValue = getSingleValue(name);
         if (!singleValue) {
-            return undefined;
+            return 0;
         }
 
         return Number(singleValue.value);
     }
 
-    function applyAttributes(
+    function getAttributes(
         name: string,
         labels: string | null,
-        items: { title: string; value: string }[],
-    ) {
-        if (!tableValues.value) {
-            return undefined;
+    ): SEBValueAttributes[] {
+        if (!singleValues.value) {
+            return [];
         }
-        tableValues.value.attributes
+        const items: SEBValueAttributes[] = [];
+        singleValues.value.attributes
             .get(name)
             ?.resources?.split(",")
             .forEach((item) => {
@@ -154,39 +152,33 @@ export const useSEBSettingValues = (
                     value: item,
                 });
             });
+        return items;
     }
 
     async function saveSingleValue(name: string, value: string) {
         if (containerId === null) return;
         const setting = getSingleValue(name);
         if (!setting) return;
-        try {
-            await sebSettingsService.updateSEBSettingValue(
-                containerId,
-                setting.id.toString(),
-                value,
-                isExam,
-            );
-        } catch (err) {
-            // @anhefti TODO propagate error message
-            console.error(err);
-        }
+        await sebSettingsService.updateSEBSettingValue(
+            containerId,
+            setting.id.toString(),
+            value,
+            isExam,
+        );
+
+        // also update the stored value
+        setting.value = value;
     }
 
     async function saveTableRow(values: SEBSettingTableValue[]) {
-        try {
-            values.forEach((tableValue) => {
-                sebSettingsService.updateSEBSettingValue(
-                    containerId,
-                    tableValue.id.toString(),
-                    tableValue.value,
-                    isExam,
-                );
-            });
-        } catch (err) {
-            // @anhefti TODO propagate error message
-            console.error(err);
-        }
+        values.forEach((tableValue) => {
+            sebSettingsService.updateSEBSettingValue(
+                containerId,
+                tableValue.id.toString(),
+                tableValue.value,
+                isExam,
+            );
+        });
     }
 
     async function addTableRow(

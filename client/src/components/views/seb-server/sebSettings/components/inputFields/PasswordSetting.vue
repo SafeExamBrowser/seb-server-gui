@@ -69,7 +69,7 @@
 import { useI18n } from "vue-i18n";
 import { ref } from "vue";
 import { translate } from "@/utils/generalUtils";
-import { SEBSettingsSingeValueModel } from "../composables/useSEBSettingValues";
+import { SEBSettingsSingeValueModel } from "../../types";
 
 const i18n = useI18n();
 
@@ -87,10 +87,6 @@ const confirmPassword = ref<string>(
     props.modelValue.getStringValue(props.name),
 );
 const confirmPasswordVisible = ref<boolean>(false);
-
-defineExpose({
-    password,
-});
 
 let clearValidations = false;
 

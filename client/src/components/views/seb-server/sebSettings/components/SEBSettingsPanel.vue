@@ -15,7 +15,10 @@
                     :value="tab.value"
                 >
                     <v-card class="rounded-lg pa-4" variant="outlined">
-                        <component :is="tab.component" />
+                        <component
+                            :is="tab.component"
+                            :context="props.context"
+                        />
                     </v-card>
                 </v-tabs-window-item> </v-tabs-window
         ></v-col>
@@ -38,9 +41,13 @@ import SebSettingsHookedKeys from "../SebSettingsHookedKeys.vue";
 import SebSettingsProctoring from "../SebSettingsProctoring.vue";
 import { ref, markRaw } from "vue";
 import type { Component } from "vue";
+import { SEBSettingsContext } from "../types";
+
+const props = defineProps<{
+    context: SEBSettingsContext;
+}>();
 
 const ability = useAbilities();
-
 const currentTab = ref<number>(1);
 
 const tabs: { title: string; value: number; component: Component }[] =

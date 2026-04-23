@@ -1,309 +1,287 @@
 <template>
-    <v-row max-width="300">
-        <v-col class="pt-5 pb-0">
-            <v-checkbox-btn
-                v-model="allowSwitchToApplicationsVal"
-                :disabled="sebSettingsStore.readonly"
-                :label="
-                    translate(
-                        'sebSettings.applicationView.allowSwitchToApplications',
-                    )
-                "
-                @update:model-value="
-                    saveSingleValue(
-                        allowSwitchToApplications.id,
-                        allowSwitchToApplicationsVal ? 'true' : 'false',
-                    )
-                "
-            ></v-checkbox-btn>
-            <v-tooltip activator="parent" location="top left" max-width="400">
-                {{
-                    translate(
-                        "sebSettings.applicationView.allowSwitchToApplications_tooltip",
-                    )
-                }}
-            </v-tooltip>
-        </v-col>
-    </v-row>
+    <LoadingFallbackComponent
+        :loading="loadingSebSettingsView"
+        :errors="errorSebSettingsView"
+    >
+        <v-row v-if="singleValues" max-width="300">
+            <CheckboxSetting
+                v-model="singleValues"
+                name="allowSwitchToApplications"
+                label="sebSettings.applicationView.allowSwitchToApplications"
+                :tooltip="true"
+                :disabled="context.readonly"
+            />
+        </v-row>
 
-    <v-row>
-        <v-col class="font-weight-bold pt-8 pb-0">
-            <v-row>
-                <v-col>{{
-                    translate(
-                        "sebSettings.applicationView.permittedProcess.settingName",
-                    )
-                }}</v-col>
-                <v-col align="right">
-                    <v-btn
-                        color="primary"
-                        density="compact"
-                        :disabled="sebSettingsStore.readonly"
-                        icon="mdi-plus-circle-outline"
-                        variant="text"
-                        @click="newPermittedProcess()"
+        <!--Permitted Process Table -->
+        <v-row>
+            <v-col class="font-weight-bold pt-8 pb-0">
+                <v-row>
+                    <v-col>{{
+                        translate(
+                            "sebSettings.applicationView.permittedProcess.settingName",
+                        )
+                    }}</v-col>
+                    <v-col align="right">
+                        <v-btn
+                            color="primary"
+                            density="compact"
+                            :disabled="context.readonly"
+                            icon="mdi-plus-circle-outline"
+                            variant="text"
+                            @click="newPermittedProcess()"
+                        >
+                        </v-btn>
+                    </v-col>
+                </v-row>
+                <v-divider class="border-opacity-25" :thickness="5"></v-divider>
+            </v-col>
+        </v-row>
+        <v-row v-if="singleValues" max-width="300">
+            <CheckboxSetting
+                v-model="singleValues"
+                name="allowOpenAndSavePanel"
+                label="sebSettings.applicationView.permittedProcess.allowOpenAndSavePanel"
+                :tooltip="true"
+                :disabled="context.readonly"
+            />
+            <CheckboxSetting
+                v-model="singleValues"
+                name="allowShareSheet"
+                label="sebSettings.applicationView.permittedProcess.allowShareSheet"
+                :tooltip="true"
+                :disabled="context.readonly"
+            />
+        </v-row>
+
+        <v-row>
+            <v-col>
+                <v-data-table
+                    class="rounded-lg elevation-4"
+                    density="compact"
+                    :headers="permittedProcessHeaders"
+                    item-value="id"
+                    :items="permittedProcessTable"
+                    :items-per-page="
+                        tableUtils.calcDefaultItemsPerPage(
+                            permittedProcessTable,
+                        )
+                    "
+                    :items-per-page-options="
+                        tableUtils.calcItemsPerPage(permittedProcessTable)
+                    "
+                >
+                    <template
+                        #headers="{
+                            columns,
+                            isSorted,
+                            getSortIcon,
+                            toggleSort,
+                        }"
                     >
-                    </v-btn>
-                </v-col>
-            </v-row>
-            <v-divider class="border-opacity-25" :thickness="5"></v-divider>
-        </v-col>
-    </v-row>
-    <v-row max-width="300">
-        <v-col class="pt-5 pb-0">
-            <v-checkbox-btn
-                v-model="allowOpenAndSavePanelVal"
-                :disabled="sebSettingsStore.readonly"
-                :label="
-                    translate(
-                        'sebSettings.applicationView.permittedProcess.allowOpenAndSavePanel',
-                    )
-                "
-                @update:model-value="
-                    saveSingleValue(
-                        allowOpenAndSavePanel.id,
-                        allowOpenAndSavePanelVal ? 'true' : 'false',
-                    )
-                "
-            ></v-checkbox-btn>
-            <v-tooltip activator="parent" location="top left" max-width="400">
-                {{
-                    translate(
-                        "sebSettings.applicationView.permittedProcess.allowOpenAndSavePanel_tooltip",
-                    )
-                }}
-            </v-tooltip>
-        </v-col>
-        <v-col class="pt-5 pb-0">
-            <v-checkbox-btn
-                v-model="allowShareSheetVal"
-                :disabled="sebSettingsStore.readonly"
-                :label="
-                    translate(
-                        'sebSettings.applicationView.permittedProcess.allowShareSheet',
-                    )
-                "
-                @update:model-value="
-                    saveSingleValue(
-                        allowShareSheet.id,
-                        allowShareSheetVal ? 'true' : 'false',
-                    )
-                "
-            ></v-checkbox-btn>
-            <v-tooltip activator="parent" location="top left" max-width="400">
-                {{
-                    translate(
-                        "sebSettings.applicationView.permittedProcess.allowShareSheet_tooltip",
-                    )
-                }}
-            </v-tooltip>
-        </v-col>
-    </v-row>
+                        <TableHeaders
+                            :columns="columns"
+                            :get-sort-icon="getSortIcon"
+                            :header-refs-prop="permittedProcessHeadersRef"
+                            :is-sorted="isSorted"
+                            :toggle-sort="toggleSort"
+                        >
+                        </TableHeaders>
+                    </template>
 
-    <v-row>
-        <v-col>
-            <v-data-table
-                class="rounded-lg elevation-4"
-                density="compact"
-                :headers="permittedProcessHeaders"
-                item-value="id"
-                :items="permittedProcessTable"
-                :items-per-page="
-                    tableUtils.calcDefaultItemsPerPage(permittedProcessTable)
-                "
-                :items-per-page-options="
-                    tableUtils.calcItemsPerPage(permittedProcessTable)
+                    <!-------active hook------->
+                    <template #item.active="{ item }">
+                        {{ translate("general." + item.active, i18n) }}
+                    </template>
+
+                    <!-------OS hook------->
+                    <template #item.os="{ item }">
+                        {{
+                            translate(
+                                "sebSettings.applicationView.prohibitedProcess.os_" +
+                                    item.os,
+                                i18n,
+                            )
+                        }}
+                    </template>
+
+                    <!-------edit button------->
+                    <template #item.edit="{ item }">
+                        <v-btn
+                            icon="mdi-pencil-outline"
+                            variant="text"
+                            @click="permittedProcessOpenEditDialog(item.index)"
+                        >
+                        </v-btn>
+                    </template>
+
+                    <!-------delete button------->
+                    <template #item.delete="{ item }">
+                        <v-btn
+                            :disabled="context.readonly"
+                            icon="mdi-delete-outline"
+                            variant="text"
+                            @click="permittedProcessDelete(item.index!)"
+                        >
+                        </v-btn>
+                    </template>
+                </v-data-table>
+            </v-col>
+        </v-row>
+
+        <!-----------edit permitted process dialog---------->
+        <v-dialog v-model="editPermittedProcessDialog" max-width="800">
+            <EditPermittedProcess
+                :permitted-process="selectedPermittedProcess"
+                :read-only="context.readonly"
+                @close-edit-permitted-process="closeEditPermittedProcessDialog"
+            >
+            </EditPermittedProcess>
+        </v-dialog>
+
+        <!--Prohibited Process Table -->
+        <v-row>
+            <v-col class="font-weight-bold pt-8 pb-0">
+                <v-row>
+                    <v-col>{{
+                        translate(
+                            "sebSettings.applicationView.prohibitedProcess.settingName",
+                        )
+                    }}</v-col>
+                    <v-col align="right">
+                        <v-btn
+                            color="primary"
+                            density="compact"
+                            :disabled="context.readonly"
+                            icon="mdi-plus-circle-outline"
+                            variant="text"
+                            @click="newProhibitedProcess()"
+                        >
+                        </v-btn>
+                    </v-col>
+                </v-row>
+                <v-divider class="border-opacity-25" :thickness="5"></v-divider>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col>
+                <v-data-table
+                    class="rounded-lg elevation-4"
+                    density="compact"
+                    :headers="prohibitedProcessHeaders"
+                    item-value="id"
+                    :items="prohibitedProcessTable"
+                >
+                    <template
+                        #headers="{
+                            columns,
+                            isSorted,
+                            getSortIcon,
+                            toggleSort,
+                        }"
+                    >
+                        <TableHeaders
+                            :columns="columns"
+                            :get-sort-icon="getSortIcon"
+                            :header-refs-prop="prohibitedProcessHeadersRef"
+                            :is-sorted="isSorted"
+                            :toggle-sort="toggleSort"
+                        >
+                        </TableHeaders>
+                    </template>
+
+                    <!-------active hook------->
+                    <template #item.active="{ item }">
+                        {{ translate("general." + item.active, i18n) }}
+                    </template>
+
+                    <!-------OS hook------->
+                    <template #item.os="{ item }">
+                        {{
+                            translate(
+                                "sebSettings.applicationView.permittedProcess.os_" +
+                                    item.os,
+                                i18n,
+                            )
+                        }}
+                    </template>
+
+                    <!-------edit button------->
+                    <template #item.edit="{ item }">
+                        <v-btn
+                            icon="mdi-pencil-outline"
+                            variant="text"
+                            @click="prohibitedProcessOpenEditDialog(item.index)"
+                        >
+                        </v-btn>
+                    </template>
+
+                    <!-------delete button------->
+                    <template #item.delete="{ item }">
+                        <v-btn
+                            :disabled="context.readonly"
+                            icon="mdi-delete-outline"
+                            variant="text"
+                            @click="prohibitedProcessDelete(item.index!)"
+                        >
+                        </v-btn>
+                    </template>
+                </v-data-table>
+            </v-col>
+        </v-row>
+
+        <!-----------edit prohibited process dialog---------->
+        <v-dialog v-model="editProhibitedProcessDialog" max-width="800">
+            <EditProhibitedProcess
+                :prohibited-process="selectedProhibitedProcess"
+                :read-only="context.readonly"
+                @close-edit-prohibited-process="
+                    closeEditProhibitedProcessDialog
                 "
             >
-                <template
-                    #headers="{ columns, isSorted, getSortIcon, toggleSort }"
-                >
-                    <TableHeaders
-                        :columns="columns"
-                        :get-sort-icon="getSortIcon"
-                        :header-refs-prop="permittedProcessHeadersRef"
-                        :is-sorted="isSorted"
-                        :toggle-sort="toggleSort"
-                    >
-                    </TableHeaders>
-                </template>
-
-                <!-------active hook------->
-                <template #item.active="{ item }">
-                    {{ translate("general." + item.active, i18n) }}
-                </template>
-
-                <!-------OS hook------->
-                <template #item.os="{ item }">
-                    {{
-                        translate(
-                            "sebSettings.applicationView.prohibitedProcess.os_" +
-                                item.os,
-                            i18n,
-                        )
-                    }}
-                </template>
-
-                <!-------edit button------->
-                <template #item.edit="{ item }">
-                    <v-btn
-                        icon="mdi-pencil-outline"
-                        variant="text"
-                        @click="permittedProcessOpenEditDialog(item.index)"
-                    >
-                    </v-btn>
-                </template>
-
-                <!-------delete button------->
-                <template #item.delete="{ item }">
-                    <v-btn
-                        :disabled="sebSettingsStore.readonly"
-                        icon="mdi-delete-outline"
-                        variant="text"
-                        @click="permittedProcessDelete(item.index!)"
-                    >
-                    </v-btn>
-                </template>
-            </v-data-table>
-        </v-col>
-    </v-row>
-
-    <!-----------edit permitted process dialog---------->
-    <v-dialog v-model="editPermittedProcessDialog" max-width="800">
-        <EditPermittedProcess
-            :permitted-process="selectedPermittedProcess"
-            :read-only="sebSettingsStore.readonly"
-            @close-edit-permitted-process="closeEditPermittedProcessDialog"
-        >
-        </EditPermittedProcess>
-    </v-dialog>
-
-    <v-row>
-        <v-col class="font-weight-bold pt-8 pb-0">
-            <v-row>
-                <v-col>{{
-                    translate(
-                        "sebSettings.applicationView.prohibitedProcess.settingName",
-                    )
-                }}</v-col>
-                <v-col align="right">
-                    <v-btn
-                        color="primary"
-                        density="compact"
-                        :disabled="sebSettingsStore.readonly"
-                        icon="mdi-plus-circle-outline"
-                        variant="text"
-                        @click="newProhibitedProcess()"
-                    >
-                    </v-btn>
-                </v-col>
-            </v-row>
-            <v-divider class="border-opacity-25" :thickness="5"></v-divider>
-        </v-col>
-    </v-row>
-    <v-row>
-        <v-col>
-            <v-data-table
-                class="rounded-lg elevation-4"
-                density="compact"
-                :headers="prohibitedProcessHeaders"
-                item-value="id"
-                :items="prohibitedProcessTable"
-            >
-                <template
-                    #headers="{ columns, isSorted, getSortIcon, toggleSort }"
-                >
-                    <TableHeaders
-                        :columns="columns"
-                        :get-sort-icon="getSortIcon"
-                        :header-refs-prop="prohibitedProcessHeadersRef"
-                        :is-sorted="isSorted"
-                        :toggle-sort="toggleSort"
-                    >
-                    </TableHeaders>
-                </template>
-
-                <!-------active hook------->
-                <template #item.active="{ item }">
-                    {{ translate("general." + item.active, i18n) }}
-                </template>
-
-                <!-------OS hook------->
-                <template #item.os="{ item }">
-                    {{
-                        translate(
-                            "sebSettings.applicationView.permittedProcess.os_" +
-                                item.os,
-                            i18n,
-                        )
-                    }}
-                </template>
-
-                <!-------edit button------->
-                <template #item.edit="{ item }">
-                    <v-btn
-                        icon="mdi-pencil-outline"
-                        variant="text"
-                        @click="prohibitedProcessOpenEditDialog(item.index)"
-                    >
-                    </v-btn>
-                </template>
-
-                <!-------delete button------->
-                <template #item.delete="{ item }">
-                    <v-btn
-                        :disabled="sebSettingsStore.readonly"
-                        icon="mdi-delete-outline"
-                        variant="text"
-                        @click="prohibitedProcessDelete(item.index!)"
-                    >
-                    </v-btn>
-                </template>
-            </v-data-table>
-        </v-col>
-    </v-row>
-
-    <!-----------edit prohibited process dialog---------->
-    <v-dialog v-model="editProhibitedProcessDialog" max-width="800">
-        <EditProhibitedProcess
-            :prohibited-process="selectedProhibitedProcess"
-            :read-only="sebSettingsStore.readonly"
-            @close-edit-prohibited-process="closeEditProhibitedProcessDialog"
-        >
-        </EditProhibitedProcess>
-    </v-dialog>
+            </EditProhibitedProcess>
+        </v-dialog>
+    </LoadingFallbackComponent>
 </template>
 
 <script setup lang="ts">
-import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 import * as tableUtils from "@/utils/table/tableUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import * as sebSettingsService from "@/services/seb-server/sebSettingsService";
 import { useI18n } from "vue-i18n";
 import { translate, stringToBoolean } from "@/utils/generalUtils";
-import { ViewType } from "@/models/seb-server/sebSettingsEnums";
-import { ref, onBeforeMount } from "vue";
+import { ref, watch } from "vue";
 import {
     PermittedProcess,
     PermittedProcessArgument,
     ProhibitedProcess,
     SEBSettingsTableRowValues,
     SEBSettingsValue,
-    SEBSettingsView,
-    SEBSettingAttribute,
 } from "@/models/seb-server/sebSettings";
-import EditPermittedProcess from "@/components/views/seb-server/sebSettings/EditPermittedProcess.vue";
-import EditProhibitedProcess from "@/components/views/seb-server/sebSettings/EditProhibitedProcess.vue";
+import EditPermittedProcess from "@/components/views/seb-server/sebSettings/components/tableDialogs/EditPermittedProcess.vue";
+import EditProhibitedProcess from "@/components/views/seb-server/sebSettings/components/tableDialogs/EditProhibitedProcess.vue";
+import { ViewType } from "@/models/seb-server/sebSettingsEnums";
+import CheckboxSetting from "./components/inputFields/CheckboxSetting.vue";
+import { useSEBSettingValues } from "./composables/useSEBSettingValues";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import { SEBSettingsContext } from "./types";
+
+const props = defineProps<{
+    context: SEBSettingsContext;
+}>();
+
+const {
+    singleValues,
+    tableValues,
+    loadingSebSettingsView,
+    errorSebSettingsView,
+} = useSEBSettingValues(
+    props.context.isExam,
+    props.context.containerId,
+    ViewType.APPLICATION,
+);
 
 const i18n = useI18n();
-const sebSettingsStore = useSEBSettingsStore();
-
-// single attributes
-const allowSwitchToApplicationsVal = ref<boolean>(false);
-
-// permitted processes
-const allowOpenAndSavePanelVal = ref<boolean>(false);
-const allowShareSheetVal = ref<boolean>(false);
 
 const editPermittedProcessDialog = ref<boolean>(false);
 const selectedPermittedProcess = ref<PermittedProcess | null>(null);
@@ -404,86 +382,21 @@ const prohibitedProcessHeaders = ref([
     },
 ]);
 
-let componentId: string;
-let allowSwitchToApplications: SEBSettingsValue;
-let allowOpenAndSavePanel: SEBSettingsValue;
-let allowShareSheet: SEBSettingsValue;
+watch(tableValues, () => {
+    if (!tableValues.value) return;
 
-let attributes: Map<string, SEBSettingAttribute>;
-
-onBeforeMount(async () => {
-    if (sebSettingsStore.selectedContainerId == null) {
-        return;
+    const permittedProcesses =
+        tableValues.value.tableValues.get("permittedProcesses");
+    if (permittedProcesses) {
+        updatePermittedProcessTable(permittedProcesses);
     }
 
-    componentId = sebSettingsStore.selectedContainerId.toString();
-
-    const applicationSettings: SEBSettingsView | null =
-        await sebSettingsService.getView(
-            ViewType.APPLICATION,
-            componentId,
-            sebSettingsStore.isExam,
-        );
-    if (applicationSettings == null) {
-        return;
-    }
-
-    attributes = new Map<string, SEBSettingAttribute>(
-        Object.entries(applicationSettings.attributes),
+    const prohibitedProcesses = tableValues.value.tableValues.get(
+        "prohibitedProcesses",
     );
-
-    if (sebSettingsStore.readonly) {
-        permittedProcessHeaders.value[4].title = translate(
-            "general.viewButton",
-            i18n,
-        );
-        prohibitedProcessHeaders.value[4].title = translate(
-            "general.viewButton",
-            i18n,
-        );
+    if (prohibitedProcesses) {
+        updateProhibitedProcessTable(prohibitedProcesses);
     }
-
-    const tableValues: Map<string, SEBSettingsTableRowValues[]> = new Map<
-        string,
-        SEBSettingsTableRowValues[]
-    >(Object.entries(applicationSettings.tableValues));
-    const singleValues: Map<string, SEBSettingsValue> = new Map<
-        string,
-        SEBSettingsValue
-    >(Object.entries(applicationSettings.singleValues));
-
-    allowSwitchToApplications = getSingleValue(
-        singleValues,
-        "allowSwitchToApplications",
-    );
-    allowSwitchToApplicationsVal.value =
-        allowSwitchToApplications.value === "true";
-
-    allowOpenAndSavePanel = getSingleValue(
-        singleValues,
-        "allowOpenAndSavePanel",
-    );
-    allowOpenAndSavePanelVal.value = stringToBoolean(
-        allowOpenAndSavePanel.value,
-    );
-    allowShareSheet = getSingleValue(singleValues, "allowShareSheet");
-    allowShareSheetVal.value = stringToBoolean(allowShareSheet.value);
-
-    // Permitted Processes
-    const permittedProcesses = tableValues.get("permittedProcesses");
-    if (permittedProcesses == null) {
-        return;
-    }
-
-    updatePermittedProcessTable(permittedProcesses);
-
-    // Prohibited Processes
-    const prohibitedProcesses = tableValues.get("prohibitedProcesses");
-    if (prohibitedProcesses == null) {
-        return;
-    }
-
-    updateProhibitedProcessTable(prohibitedProcesses);
 });
 
 // ********* permitted processes functions *********************
@@ -632,10 +545,10 @@ function newPermittedProcess() {
 async function permittedProcessDelete(index: number) {
     const resp: SEBSettingsTableRowValues[] | null =
         await sebSettingsService.deleteTableRow(
-            componentId,
+            props.context.containerId,
             "permittedProcesses",
             index,
-            sebSettingsStore.isExam,
+            props.context.isExam,
         );
     if (resp == null) {
         return;
@@ -655,6 +568,7 @@ function permittedProcessOpenEditDialog(index: number) {
 async function closeEditPermittedProcessDialog(apply?: boolean) {
     editPermittedProcessDialog.value = false;
 
+    if (!tableValues.value) return;
     if (!apply || selectedPermittedProcess.value == null) {
         return;
     }
@@ -662,9 +576,9 @@ async function closeEditPermittedProcessDialog(apply?: boolean) {
     if (selectedPermittedProcess.value?.index === -1) {
         const resp: SEBSettingsTableRowValues | null =
             await sebSettingsService.addTableRow(
-                componentId,
+                props.context.containerId,
                 "permittedProcesses",
-                sebSettingsStore.isExam,
+                props.context.isExam,
             );
         if (resp == null) {
             return;
@@ -680,109 +594,82 @@ async function closeEditPermittedProcessDialog(apply?: boolean) {
             permittedProcessTable.value[resp.listIndex].ids;
     }
 
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        selectedPermittedProcess.value.ids.active.toString(),
-        selectedPermittedProcess.value.active ? "true" : "false",
-        sebSettingsStore.isExam,
-    );
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        selectedPermittedProcess.value.ids.os.toString(),
-        selectedPermittedProcess.value.os,
-        sebSettingsStore.isExam,
-    );
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        selectedPermittedProcess.value.ids.executable.toString(),
-        selectedPermittedProcess.value.executable,
-        sebSettingsStore.isExam,
-    );
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        selectedPermittedProcess.value.ids.title.toString(),
-        selectedPermittedProcess.value.title,
-        sebSettingsStore.isExam,
-    );
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        selectedPermittedProcess.value.ids.originalName.toString(),
-        selectedPermittedProcess.value.originalName,
-        sebSettingsStore.isExam,
-    );
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        selectedPermittedProcess.value.ids.signature.toString(),
-        selectedPermittedProcess.value.signature,
-        sebSettingsStore.isExam,
-    );
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        selectedPermittedProcess.value.ids.path.toString(),
-        selectedPermittedProcess.value.path,
-        sebSettingsStore.isExam,
-    );
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        selectedPermittedProcess.value.ids.iconInTaskbar.toString(),
-        selectedPermittedProcess.value.iconInTaskbar ? "true" : "false",
-        sebSettingsStore.isExam,
-    );
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        selectedPermittedProcess.value.ids.arguments.toString(),
-        argumentsToString(selectedPermittedProcess.value.arguments),
-        sebSettingsStore.isExam,
-    );
-
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        selectedPermittedProcess.value.ids.autostart.toString(),
-        selectedPermittedProcess.value.autostart ? "true" : "false",
-        sebSettingsStore.isExam,
-    );
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        selectedPermittedProcess.value.ids.runInBackground.toString(),
-        selectedPermittedProcess.value.runInBackground ? "true" : "false",
-        sebSettingsStore.isExam,
-    );
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        selectedPermittedProcess.value.ids.allowManualStart.toString(),
-        selectedPermittedProcess.value.allowManualStart ? "true" : "false",
-        sebSettingsStore.isExam,
-    );
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        selectedPermittedProcess.value.ids.allowUserToChooseApp.toString(),
-        selectedPermittedProcess.value.allowUserToChooseApp ? "true" : "false",
-        sebSettingsStore.isExam,
-    );
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        selectedPermittedProcess.value.ids.allowUserToChooseApp.toString(),
-        selectedPermittedProcess.value.allowUserToChooseApp ? "true" : "false",
-        sebSettingsStore.isExam,
-    );
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        selectedPermittedProcess.value.ids.allowNetworkAccess.toString(),
-        selectedPermittedProcess.value.allowNetworkAccess ? "true" : "false",
-        sebSettingsStore.isExam,
-    );
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        selectedPermittedProcess.value.ids.strongKill.toString(),
-        selectedPermittedProcess.value.strongKill ? "true" : "false",
-        sebSettingsStore.isExam,
-    );
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        selectedPermittedProcess.value.ids.teamIdentifier.toString(),
-        selectedPermittedProcess.value.teamIdentifier,
-        sebSettingsStore.isExam,
-    );
+    tableValues.value.saveTableRow([
+        {
+            id: selectedPermittedProcess.value.ids.active,
+            value: selectedPermittedProcess.value.active ? "true" : "false",
+        },
+        {
+            id: selectedPermittedProcess.value.ids.os,
+            value: selectedPermittedProcess.value.os,
+        },
+        {
+            id: selectedPermittedProcess.value.ids.executable,
+            value: selectedPermittedProcess.value.executable,
+        },
+        {
+            id: selectedPermittedProcess.value.ids.title,
+            value: selectedPermittedProcess.value.title,
+        },
+        {
+            id: selectedPermittedProcess.value.ids.originalName,
+            value: selectedPermittedProcess.value.originalName,
+        },
+        {
+            id: selectedPermittedProcess.value.ids.signature,
+            value: selectedPermittedProcess.value.signature,
+        },
+        {
+            id: selectedPermittedProcess.value.ids.path,
+            value: selectedPermittedProcess.value.path,
+        },
+        {
+            id: selectedPermittedProcess.value.ids.iconInTaskbar,
+            value: selectedPermittedProcess.value.iconInTaskbar
+                ? "true"
+                : "false",
+        },
+        {
+            id: selectedPermittedProcess.value.ids.arguments,
+            value: argumentsToString(selectedPermittedProcess.value.arguments),
+        },
+        {
+            id: selectedPermittedProcess.value.ids.autostart,
+            value: selectedPermittedProcess.value.autostart ? "true" : "false",
+        },
+        {
+            id: selectedPermittedProcess.value.ids.runInBackground,
+            value: selectedPermittedProcess.value.runInBackground
+                ? "true"
+                : "false",
+        },
+        {
+            id: selectedPermittedProcess.value.ids.allowManualStart,
+            value: selectedPermittedProcess.value.allowManualStart
+                ? "true"
+                : "false",
+        },
+        {
+            id: selectedPermittedProcess.value.ids.allowUserToChooseApp,
+            value: selectedPermittedProcess.value.allowUserToChooseApp
+                ? "true"
+                : "false",
+        },
+        {
+            id: selectedPermittedProcess.value.ids.allowNetworkAccess,
+            value: selectedPermittedProcess.value.allowNetworkAccess
+                ? "true"
+                : "false",
+        },
+        {
+            id: selectedPermittedProcess.value.ids.strongKill,
+            value: selectedPermittedProcess.value.strongKill ? "true" : "false",
+        },
+        {
+            id: selectedPermittedProcess.value.ids.teamIdentifier,
+            value: selectedPermittedProcess.value.teamIdentifier,
+        },
+    ]);
 
     permittedProcessTable.value[selectedPermittedProcess.value.index] =
         selectedPermittedProcess.value;
@@ -872,10 +759,10 @@ function newProhibitedProcess() {
 async function prohibitedProcessDelete(index: number) {
     const resp: SEBSettingsTableRowValues[] | null =
         await sebSettingsService.deleteTableRow(
-            componentId,
+            props.context.containerId,
             "prohibitedProcesses",
             index,
-            sebSettingsStore.isExam,
+            props.context.isExam,
         );
     if (resp == null) {
         return;
@@ -895,6 +782,7 @@ function prohibitedProcessOpenEditDialog(index: number) {
 async function closeEditProhibitedProcessDialog(apply?: boolean) {
     editProhibitedProcessDialog.value = false;
 
+    if (!tableValues.value) return;
     if (!apply || selectedProhibitedProcess.value == null) {
         return;
     }
@@ -903,9 +791,9 @@ async function closeEditProhibitedProcessDialog(apply?: boolean) {
     if (selectedProhibitedProcess.value.index === -1) {
         const resp: SEBSettingsTableRowValues | null =
             await sebSettingsService.addTableRow(
-                componentId,
+                props.context.containerId,
                 "prohibitedProcesses",
-                sebSettingsStore.isExam,
+                props.context.isExam,
             );
         if (resp == null) {
             return;
@@ -921,73 +809,47 @@ async function closeEditProhibitedProcessDialog(apply?: boolean) {
             prohibitedProcessTable.value[resp.listIndex].ids;
     }
 
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        selectedProhibitedProcess.value.ids.active.toString(),
-        selectedProhibitedProcess.value.active ? "true" : "false",
-        sebSettingsStore.isExam,
-    );
-
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        selectedProhibitedProcess.value.ids.os.toString(),
-        selectedProhibitedProcess.value.os,
-        sebSettingsStore.isExam,
-    );
-
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        selectedProhibitedProcess.value.ids.executable.toString(),
-        selectedProhibitedProcess.value.executable,
-        sebSettingsStore.isExam,
-    );
-
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        selectedProhibitedProcess.value.ids.description.toString(),
-        selectedProhibitedProcess.value.description,
-        sebSettingsStore.isExam,
-    );
-
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        selectedProhibitedProcess.value.ids.originalName.toString(),
-        selectedProhibitedProcess.value.originalName,
-        sebSettingsStore.isExam,
-    );
-
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        selectedProhibitedProcess.value.ids.identifier.toString(),
-        selectedProhibitedProcess.value.identifier,
-        sebSettingsStore.isExam,
-    );
-
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        selectedProhibitedProcess.value.ids.strongKill.toString(),
-        selectedProhibitedProcess.value.strongKill ? "true" : "false",
-        sebSettingsStore.isExam,
-    );
-
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        selectedProhibitedProcess.value.ids.ignoreInAAC.toString(),
-        selectedProhibitedProcess.value.ignoreInAAC ? "true" : "false",
-        sebSettingsStore.isExam,
-    );
+    tableValues.value.saveTableRow([
+        {
+            id: selectedProhibitedProcess.value.ids.active,
+            value: selectedProhibitedProcess.value.active ? "true" : "false",
+        },
+        {
+            id: selectedProhibitedProcess.value.ids.os,
+            value: selectedProhibitedProcess.value.os,
+        },
+        {
+            id: selectedProhibitedProcess.value.ids.executable,
+            value: selectedProhibitedProcess.value.executable.toString(),
+        },
+        {
+            id: selectedProhibitedProcess.value.ids.description,
+            value: selectedProhibitedProcess.value.description.toString(),
+        },
+        {
+            id: selectedProhibitedProcess.value.ids.originalName,
+            value: selectedProhibitedProcess.value.originalName,
+        },
+        {
+            id: selectedProhibitedProcess.value.ids.identifier,
+            value: selectedProhibitedProcess.value.identifier,
+        },
+        {
+            id: selectedProhibitedProcess.value.ids.strongKill,
+            value: selectedProhibitedProcess.value.strongKill
+                ? "true"
+                : "false",
+        },
+        {
+            id: selectedProhibitedProcess.value.ids.ignoreInAAC,
+            value: selectedProhibitedProcess.value.ignoreInAAC
+                ? "true"
+                : "false",
+        },
+    ]);
 
     prohibitedProcessTable.value[selectedProhibitedProcess.value.index] =
         selectedProhibitedProcess.value;
-}
-
-async function saveSingleValue(valId: number, value: string) {
-    await sebSettingsService.updateSEBSettingValue(
-        componentId,
-        valId.toString(),
-        value,
-        sebSettingsStore.isExam,
-    );
 }
 
 function argumentsToString(args: PermittedProcessArgument[]): string {
@@ -1035,7 +897,7 @@ function getStringValue(
 ): string {
     const prop = rowVals.get(name);
     if (!prop) {
-        const def = attributes.get(name);
+        const def = singleValues.value?.attributes.get(name);
         if (!def) {
             throw new Error("No SEB Setting" + name + " found");
         } else {
@@ -1052,7 +914,7 @@ function getBooleanValue(
 ): boolean {
     const prop = rowVals.get(name);
     if (!prop) {
-        const def = attributes.get(name);
+        const def = singleValues.value?.attributes.get(name);
         if (!def) {
             throw new Error("No SEB Setting" + name + " found");
         } else {
@@ -1073,17 +935,5 @@ function getSettingId(
     }
 
     return prop?.id;
-}
-
-function getSingleValue(
-    singleValues: Map<string, SEBSettingsValue>,
-    name: string,
-): SEBSettingsValue {
-    const value = singleValues.get(name);
-    if (!value) {
-        throw new Error("No Single Value " + name + " found");
-    }
-
-    return value;
 }
 </script>

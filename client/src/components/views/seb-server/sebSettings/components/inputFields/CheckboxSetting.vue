@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { translate } from "@/utils/generalUtils";
-import { SEBSettingsSingeValueModel } from "../composables/useSEBSettingValues";
+import { SEBSettingsSingeValueModel } from "../../types";
 
 const props = defineProps<{
     modelValue: SEBSettingsSingeValueModel;
