@@ -9,16 +9,15 @@
 
         <template #PanelMain>
             <v-col>
-                <v-row class="align-start">
-                    <v-col cols="12" md="5">
-                        <SearchSection
-                            v-model="searchInputValue"
-                            search-text="certificates.filters.searchField"
-                            @search="onSearch"
-                            @clear="onClearSearch"
-                        />
-                    </v-col>
-                </v-row>
+                <SearchBar
+                    v-model="searchInputValue"
+                    search-text="certificates.filters.searchField"
+                    search-title="certificates.filters.searchField"
+                    :filter-sections="[]"
+                    :filter-values="{}"
+                    @search="onSearch"
+                    @clear="onClearSearch"
+                />
 
                 <v-row>
                     <v-col>
@@ -69,7 +68,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
-import SearchSection from "@/components/blocks/searches/SearchSection.vue";
+import SearchBar from "@/components/blocks/searches/SearchBar.vue";
 import EntityTable from "@/components/blocks/entity-table/EntityTable.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
