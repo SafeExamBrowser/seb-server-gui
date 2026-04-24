@@ -41,20 +41,35 @@
             </v-col>
         </v-row>
 
-        <v-row dense class="mt-3">
-            <v-col class="py-2">
+        <v-row dense class="mt-3 align-start">
+            <v-col cols="10" class="py-2">
                 <FiltersBar
                     :model-value="filterValues"
                     :sections="filterSections"
                     @update:model-value="emit('update:filterValues', $event)"
-                    @clear="emit('clearFilters')"
                 />
+            </v-col>
+            <v-col cols="2" class="d-flex justify-end align-center py-2">
+                <v-btn
+                    variant="outlined"
+                    size="small"
+                    color="primary"
+                    class="text-none text-caption font-weight-medium"
+                    :style="{
+                        visibility: hasActiveFilters ? 'visible' : 'hidden',
+                    }"
+                    @click="emit('clearFilters')"
+                >
+                    <v-icon start size="small">mdi-close</v-icon>
+                    {{ $t("general.clearFilters") }}
+                </v-btn>
             </v-col>
         </v-row>
     </div>
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import SearchBox from "@/components/widgets/SearchBox.vue";
 import DatePicker from "@/components/widgets/DatePicker.vue";
 import SearchSectionTitle from "@/components/widgets/SearchSectionTitle.vue";
@@ -64,7 +79,7 @@ import FiltersBar from "@/components/blocks/filters/FiltersBar.vue";
 import type { FilterSectionDef } from "@/components/blocks/filters/filterTypes.ts";
 import type { TableFilters } from "@/components/blocks/entity-table/types.ts";
 
-defineProps<{
+const props = defineProps<{
     modelValue: string | null;
     searchText: string;
     searchTitle: string;
@@ -73,6 +88,12 @@ defineProps<{
     dateTitle?: string;
     dateValue?: Date | null;
 }>();
+
+const hasActiveFilters = computed(
+    () =>
+        props.filterSections.some((s) => !!props.filterValues[s.key]) ||
+        props.dateValue != null,
+);
 
 const emit = defineEmits<{
     "update:modelValue": [value: string | null];

@@ -1,5 +1,6 @@
 <template>
     <VDateInput
+        :key="modelValue === null ? 'empty' : 'filled'"
         :model-value="modelValue"
         append-inner-icon="mdi-calendar"
         display-date-format="dd.MM.yyyy"
