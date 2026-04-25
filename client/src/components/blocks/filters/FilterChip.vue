@@ -1,7 +1,7 @@
 <template>
     <v-chip
         size="small"
-        :color="color ?? (active ? 'primary' : undefined)"
+        :color="color || (active ? 'primary' : undefined)"
         :variant="active ? 'flat' : 'tonal'"
         class="cursor-pointer font-weight-medium"
         @click="emit('toggle')"

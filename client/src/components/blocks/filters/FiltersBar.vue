@@ -1,14 +1,14 @@
 <template>
-    <v-row>
-        <v-col v-for="section in sections" :key="section.key" cols="6">
-            <FilterSection
-                :title="section.title"
-                :options="section.options"
-                :model-value="modelValue[section.key] ?? null"
-                @update:model-value="onSectionChange(section.key, $event)"
-            />
-        </v-col>
-    </v-row>
+    <div class="d-flex flex-column ga-4">
+        <FilterSection
+            v-for="section in sections"
+            :key="section.key"
+            :title="section.title"
+            :options="section.options"
+            :model-value="modelValue[section.key] ?? null"
+            @update:model-value="onSectionChange(section.key, $event)"
+        />
+    </div>
 </template>
 
 <script setup lang="ts">
