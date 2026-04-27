@@ -84,7 +84,7 @@
                 </v-expand-transition>
 
                 <v-btn
-                    v-if="filterSections.length > 0"
+                    v-if="filterSections.length > 1"
                     variant="text"
                     color="primary"
                     size="small"
