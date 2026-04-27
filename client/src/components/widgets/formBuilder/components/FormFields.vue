@@ -89,6 +89,7 @@
                 :standard-properties="getBaseProperties(field)"
                 :accept-extensions="field.acceptExtensions"
                 :icon="field.icon"
+                :clearable="!field.required"
             />
             <FormFieldCollection
                 v-else-if="field.type === 'collection'"

@@ -81,7 +81,8 @@
             "blacklisted": "Field must not be any of the following values: {values}",
             "ipAddress": "Field must be a valid IP address",
             "alphabeticalBefore": "Field must be alphabetically before \"{referenceValue}\"",
-            "alphabeticalAfter": "Field must be alphabetically after \"{referenceValue}\""
+            "alphabeticalAfter": "Field must be alphabetically after \"{referenceValue}\"",
+            "fileExtensions": "Only the following file types are allowed: {extensions}"
         }
     },
 
