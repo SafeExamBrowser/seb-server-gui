@@ -12,13 +12,11 @@
                 :date-value="dateValue"
                 :filter-sections="filterSections"
                 :filter-values="selectedFilters"
-                :actions="searchBarActions"
                 @search="onSearch"
                 @clear="onClearSearch"
                 @update:date-value="setDate"
                 @update:filter-values="setFilters"
-                @clear-filters="resetFilters"
-                @action="onSearchBarAction"
+                @clear-all="clearAll"
             />
         </template>
         <template #PanelMain>
@@ -61,7 +59,6 @@
 import { computed, ref, watch } from "vue";
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import SearchBar from "@/components/blocks/searches/SearchBar.vue";
-import type { SearchBarAction } from "@/components/blocks/searches/types.ts";
 import EntityTable from "@/components/blocks/entity-table/EntityTable.vue";
 import EnumChip from "@/components/widgets/EnumChip.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
@@ -98,7 +95,7 @@ const {
     onSearch,
     onClearSearch,
     setFilters,
-    resetFilters,
+    clearAll,
     setDate,
 } = useUrlTableState(
     async () => {
@@ -139,32 +136,4 @@ const { navigateToItem } = useTableNavigation(
 const tableActions = useExamTableActions({
     onNavigate: (item) => navigateToItem(item),
 });
-
-const searchBarActions: SearchBarAction[] = [
-    {
-        key: "create",
-        text: "examList.actions.create",
-        icon: "mdi-plus",
-    },
-    {
-        key: "import",
-        text: "examList.actions.import",
-        icon: "mdi-import",
-    },
-    {
-        key: "export",
-        text: "examList.actions.export",
-        icon: "mdi-export",
-    },
-];
-
-function onSearchBarAction(key: string) {
-    if (key === "create") {
-        // @TODO wire up create flow
-    } else if (key === "import") {
-        // @TODO wire up import flow
-    } else if (key === "export") {
-        // @TODO wire up export flow
-    }
-}
 </script>
