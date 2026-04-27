@@ -14,6 +14,7 @@
                     search-text="certificates.filters.searchField"
                     :filter-sections="[]"
                     :filter-values="{}"
+                    dense
                     @search="onSearch"
                     @clear="onClearSearch"
                     @clear-filters="onClearSearch"

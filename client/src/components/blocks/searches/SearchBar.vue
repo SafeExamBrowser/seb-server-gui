@@ -1,5 +1,5 @@
 <template>
-    <div class="pa-6 pt-0">
+    <div class="pa-6" :class="{ 'pt-0': dense }">
         <v-row align="start">
             <v-col
                 cols="12"
@@ -9,7 +9,7 @@
                 <span
                     class="text-caption text-medium-emphasis text-uppercase font-weight-medium"
                 >
-                    {{ $t("general.searchTitle") }}
+                    {{ $t(searchTitle ?? "general.searchTitle") }}
                 </span>
                 <SearchBox
                     :model-value="modelValue"
@@ -71,7 +71,7 @@
                                 v-for="pill in activePills"
                                 :key="`${pill.sectionKey}-${pill.option.value}`"
                                 size="small"
-                                :color="pill.option.color || 'primary'"
+                                :color="pill.option.color ?? 'primary'"
                                 variant="tonal"
                                 closable
                                 class="font-weight-medium"
@@ -179,11 +179,13 @@ const props = withDefaults(
         searchText: string;
         filterSections: FilterSectionDef[];
         filterValues: TableFilters;
+        searchTitle?: string;
         dateTitle?: string;
         dateValue?: Date | null;
         actions?: SearchBarAction[];
+        dense?: boolean;
     }>(),
-    { actions: () => [], dateTitle: undefined, dateValue: null },
+    { actions: () => [], dateTitle: undefined, dateValue: null, dense: false },
 );
 
 const emit = defineEmits<{

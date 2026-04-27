@@ -7,7 +7,6 @@
             <SearchBar
                 v-model="searchInputValue"
                 search-text="examList.info.examNameSearchPlaceholder"
-                search-title="general.searchTitle"
                 date-title="examList.info.examStartSearchPlaceholder"
                 :date-value="dateValue"
                 :filter-sections="filterSections"

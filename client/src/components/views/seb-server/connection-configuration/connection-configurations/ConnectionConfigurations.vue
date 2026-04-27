@@ -14,6 +14,7 @@
                     search-text="connectionConfigurations.connectionConfigurationsPage.filters.searchField"
                     :filter-sections="filterSections"
                     :filter-values="selectedFilters"
+                    dense
                     @search="onSearch"
                     @clear="onClearSearch"
                     @update:filter-values="setFilters"
