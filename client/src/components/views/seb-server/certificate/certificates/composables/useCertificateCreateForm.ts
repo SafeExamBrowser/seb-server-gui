@@ -3,12 +3,16 @@ import i18n from "@/i18n";
 
 import { FormField } from "@/components/widgets/formBuilder/types";
 import { CertUploadItem } from "@/components/views/seb-server/certificate/certificates/types";
+import { useCreateCertificate } from "@/components/views/seb-server/certificate/certificates/api/useCreateCertificate";
 
 export const useCertificateCreateForm = ({
     onSuccess,
 }: {
     onSuccess: () => void;
 }) => {
+    const { mutateData: uploadCertificate, error: uploadError } =
+        useCreateCertificate();
+
     const getEmptyItem = (): CertUploadItem => ({
         file: undefined,
         password: "",
@@ -51,14 +55,24 @@ export const useCertificateCreateForm = ({
     const handleUploadCertificate = async (
         item: CertUploadItem,
     ): Promise<void> => {
-        // TODO @alain: call api here instead (see UploadDialog.vue:373-405)
-        console.log("TODO @alain: submit data:", item);
-        onSuccess();
+        if (!item.file) {
+            // TODO @alain: this shouldn't happen. But maybe do zod validation here?
+            // TODO @alain: also, the password itself is required I think. Make sure that this is properly taken care of, including the empty string case.
+            throw new Error("File is required!");
+        }
 
-        // TODO @alain: in case of error, do something like this
-        // throw new Error(
-        //     "File upload field not yet wired up — coming in next commit",
-        // );
+        await uploadCertificate({
+            file: item.file,
+            fileName: item.file.name,
+            password: item.password,
+        });
+
+        if (uploadError.value) {
+            // TODO @alain: proper error handling
+            throw new Error(uploadError.value);
+        }
+
+        onSuccess();
     };
 
     return {
