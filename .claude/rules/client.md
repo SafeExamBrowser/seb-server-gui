@@ -16,6 +16,7 @@ on the filesystem if they clash:
 
 # Best practice
 
+- TypeScript: Avoid manual typecasts like `as FooBar`. Properly cast the types and fulfill their requirements.
 - Prefer the "Vue composition API" over the "Vue options API".
 - Use `getRouteName` in `client/src/router/routeNames.ts` when generating URLs.
 - Use `client/src/composables/useFetch.ts` and `client/src/composables/useMutation.ts` and the abstracted API services stored in
@@ -23,3 +24,4 @@ on the filesystem if they clash:
 - Avoid writing custom CSS. Use Vuetify utility classes whenever possible.
 - When writing Pinia Stores, prefer "Setup Stores" over "Option Stores".
   `client/src/components/views/seb-server/exam-template/wizard/composables/store/useScreenProctoringStore.ts` is a good example.
+- When dealing with i18n translation keys use `i18n.global.t`, unless you are in a setup function. In templates, always use `$t`
