@@ -76,7 +76,7 @@ import { useCertificatesTableActions } from "@/components/views/seb-server/certi
 import { useCertificates } from "@/components/views/seb-server/certificate/certificates/api/useCertificates.ts";
 import { useUrlTableState } from "@/components/blocks/entity-table/composables/useUrlTableState.ts";
 import { useDeleteCertificate } from "@/components/views/seb-server/certificate/certificates/api/useDeleteCertificate.ts";
-import { useCertUploadForm } from "@/components/views/seb-server/certificate/certificates/composables/useCertUploadForm.ts";
+import { useCertificateCreateForm } from "@/components/views/seb-server/certificate/certificates/composables/useCertificateCreateForm.ts";
 import type { CertificatesResponse } from "@/models/seb-server/certificate.ts";
 import type { TableItem } from "@/components/blocks/entity-table/types.ts";
 
@@ -120,9 +120,8 @@ const {
 } = useDeleteCertificate(tableData);
 
 const { getEmptyItem, getFormFields, handleUploadCertificate } =
-    useCertUploadForm({ onSuccess: loadItems });
+    useCertificateCreateForm({ onSuccess: loadItems });
 
-// Dialog state
 const deleteTarget = ref<TableItem | null>(null);
 const deleteDialogOpen = ref(false);
 

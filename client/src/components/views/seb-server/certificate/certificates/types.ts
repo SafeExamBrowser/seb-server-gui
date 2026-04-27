@@ -1,4 +1,4 @@
 export type CertUploadItem = {
-    file: File | null;
+    file: File | undefined;
     password: string;
 };

@@ -4,17 +4,24 @@ import i18n from "@/i18n";
 import { FormField } from "@/components/widgets/formBuilder/types";
 import { CertUploadItem } from "@/components/views/seb-server/certificate/certificates/types";
 
-export const useCertUploadForm = ({
-    onSuccess: onSuccess,
+export const useCertificateCreateForm = ({
+    onSuccess,
 }: {
     onSuccess: () => void;
 }) => {
     const getEmptyItem = (): CertUploadItem => ({
-        file: null,
+        file: undefined,
         password: "",
     });
 
     const getFormFields = (item: Ref<CertUploadItem>): FormField[] => {
+        const file = computed<File | undefined>({
+            get: () => item.value.file,
+            set: (value) => {
+                item.value = { ...item.value, file: value };
+            },
+        });
+
         const password = computed<string | undefined>({
             get: () => item.value.password,
             set: (value) => {
@@ -23,7 +30,15 @@ export const useCertUploadForm = ({
         });
 
         return [
-            // TODO @alain: add file field once FormBuilder supports it
+            {
+                type: "file" as const,
+                name: "file",
+                model: file,
+                label: i18n.global.t("certificates.upload.dropHere"),
+                acceptExtensions: [".p12", ".pfx", ".pem", ".crt", ".cer"],
+                icon: "mdi-file-certificate-outline",
+                required: true,
+            },
             {
                 type: "password" as const,
                 name: "password",
