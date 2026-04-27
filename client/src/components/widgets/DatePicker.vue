@@ -1,4 +1,5 @@
 <template>
+    <!-- :key forces a remount when toggling between empty/filled — VDateInput's clear-state has a Vuetify-labs bug where the input retains the prior value otherwise. -->
     <VDateInput
         :key="modelValue === null ? 'empty' : 'filled'"
         :model-value="modelValue"

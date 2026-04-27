@@ -6,8 +6,7 @@
         <template #PanelTop>
             <SearchBar
                 v-model="searchInputValue"
-                search-text="monitoringExams.info.examName"
-                search-title="monitoringExams.info.examNameSearchPlaceholder"
+                search-text="monitoringExams.info.examNameSearchPlaceholder"
                 date-title="monitoringExams.info.examStartSearchPlaceholder"
                 :date-value="dateValue"
                 :filter-sections="filterSections"
@@ -16,7 +15,7 @@
                 @clear="onClearSearch"
                 @update:date-value="setDate"
                 @update:filter-values="setFilters"
-                @clear-all="clearAll"
+                @clear-filters="clearAll"
             />
         </template>
         <template #PanelMain>

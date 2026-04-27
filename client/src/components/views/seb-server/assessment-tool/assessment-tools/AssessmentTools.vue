@@ -12,13 +12,12 @@
                 <SearchBar
                     v-model="searchInputValue"
                     search-text="assessmentToolConnections.assessmentToolsPage.filters.searchField"
-                    search-title="assessmentToolConnections.assessmentToolsPage.filters.searchField"
                     :filter-sections="filterSections"
                     :filter-values="selectedFilters"
                     @search="onSearch"
                     @clear="onClearSearch"
                     @update:filter-values="setFilters"
-                    @clear-all="clearAll"
+                    @clear-filters="clearAll"
                 />
 
                 <v-row>

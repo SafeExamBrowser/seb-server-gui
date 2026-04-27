@@ -12,13 +12,12 @@
                 <SearchBar
                     v-model="searchInputValue"
                     search-text="userAccount.userAccountPage.filters.searchField"
-                    search-title="userAccount.userAccountPage.filters.searchTitle"
                     :filter-sections="filterSections"
                     :filter-values="selectedFilters"
                     @search="onSearch"
                     @clear="onClearSearch"
                     @update:filter-values="setFilters"
-                    @clear-all="clearAll"
+                    @clear-filters="clearAll"
                 />
 
                 <v-row>

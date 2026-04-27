@@ -12,11 +12,11 @@
                 <SearchBar
                     v-model="searchInputValue"
                     search-text="certificates.filters.searchField"
-                    search-title="certificates.filters.searchField"
                     :filter-sections="[]"
                     :filter-values="{}"
                     @search="onSearch"
                     @clear="onClearSearch"
+                    @clear-filters="onClearSearch"
                 />
 
                 <v-row>

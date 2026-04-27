@@ -1,5 +1,5 @@
 <template>
-    <div class="pa-6">
+    <div class="pa-6 pt-0">
         <v-row align="start">
             <v-col
                 cols="12"
@@ -9,7 +9,7 @@
                 <span
                     class="text-caption text-medium-emphasis text-uppercase font-weight-medium"
                 >
-                    {{ $t(searchTitle) }}
+                    {{ $t("general.searchTitle") }}
                 </span>
                 <SearchBox
                     :model-value="modelValue"
@@ -120,7 +120,7 @@
                 </v-btn>
             </v-col>
         </v-row>
-        <v-divider class="mt-4 mb-4" />
+        <v-divider class="my-4" />
 
         <v-row>
             <v-col
@@ -135,7 +135,7 @@
                         color="primary"
                         size="small"
                         class="text-none"
-                        @click="clearAll"
+                        @click="clearFilters"
                     >
                         <v-icon start>mdi-close</v-icon>
                         {{ $t("general.clearAll") }}
@@ -177,7 +177,6 @@ const props = withDefaults(
     defineProps<{
         modelValue: string | null;
         searchText: string;
-        searchTitle: string;
         filterSections: FilterSectionDef[];
         filterValues: TableFilters;
         dateTitle?: string;
@@ -192,15 +191,17 @@ const emit = defineEmits<{
     search: [];
     clear: [];
     "update:filterValues": [value: TableFilters];
-    clearAll: [];
+    clearFilters: [];
     "update:dateValue": [value: Date | null];
     action: [key: string];
 }>();
 
 const expanded = ref(true);
 
+// The date picker is shown iff a dateTitle is provided.
 const hasDate = computed(() => !!props.dateTitle);
 
+// TODO: extend actions API (per-action disabled state, colors, tooltips) when first call site arrives.
 const hasActions = computed(() => props.actions.length > 0);
 
 const filtersColMd = computed(() => {
@@ -240,9 +241,10 @@ function onSearch() {
     emit("search");
 }
 
-function clearAll() {
+function clearFilters() {
     lastSearchedValue.value = null;
-    emit("clearAll");
+    emit("update:modelValue", null);
+    emit("clearFilters");
 }
 
 function clearFilter(key: string) {

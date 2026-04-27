@@ -32,6 +32,7 @@
                             <slot name="ActionButton"></slot>
                         </v-col>
                     </v-row>
+                    <horizontal-divider-line />
 
                     <slot name="PanelMain"></slot>
                 </v-card>
@@ -44,6 +45,7 @@
 import { onBeforeUnmount, onBeforeMount } from "vue";
 import { useAppBarStore, useLayoutStore } from "@/stores/store";
 import { translate } from "@/utils/generalUtils.ts";
+import HorizontalDividerLine from "@/components/layout/pages/widgets/HorizontalDividerLine.vue";
 import SettingsNavigation from "@/components/blocks/navigation/SettingsNavigation.vue";
 import PageTitle from "@/components/widgets/PageTitle.vue";
 

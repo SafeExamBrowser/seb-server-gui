@@ -52,6 +52,7 @@
         "backButton": "Back",
         "nextButton": "Next",
         "searchButton": "Search",
+        "searchTitle": "Search",
         "cancelSearch": "Cancel Search",
         "clearAll": "Clear all",
         "showAdvancedFilters": "Show advanced filters",
@@ -490,7 +491,7 @@
 
     "examList": {
         "info": {
-            "examNameSearchPlaceholder": "Search",
+            "examNameSearchPlaceholder": "Search by Exam Name",
             "examStartSearchPlaceholder": "Filter by Start Date",
             "selectExam": "Select Exam",
             "search": "Search:",
@@ -1664,7 +1665,7 @@
             "search": "Search:",
             "start": "Exam Start:",
             "examStartSearchPlaceholder": "Filter by Start Date",
-            "examNameSearchPlaceholder": "Search",
+            "examNameSearchPlaceholder": "Search by Exam Name",
 
             "filter": "Filter",
             "examType": "Exam Type",
