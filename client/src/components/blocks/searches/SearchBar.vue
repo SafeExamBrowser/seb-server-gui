@@ -101,7 +101,12 @@
                     }}
                 </v-btn>
             </v-col>
-            <v-col v-if="hasActions" cols="12" md="2" class="bg-red">
+            <v-col
+                v-if="hasActions"
+                cols="12"
+                md="2"
+                class="d-flex flex-column ga-2"
+            >
                 <v-btn
                     v-for="action in actions"
                     :key="action.key"
@@ -187,7 +192,7 @@ const emit = defineEmits<{
     search: [];
     clear: [];
     "update:filterValues": [value: TableFilters];
-    clearFilters: [];
+    clearAll: [];
     "update:dateValue": [value: Date | null];
     action: [key: string];
 }>();
@@ -237,8 +242,7 @@ function onSearch() {
 
 function clearAll() {
     lastSearchedValue.value = null;
-    emit("clear");
-    emit("clearFilters");
+    emit("clearAll");
 }
 
 function clearFilter(key: string) {
