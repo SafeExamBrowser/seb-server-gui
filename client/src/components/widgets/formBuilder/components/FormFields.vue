@@ -83,6 +83,13 @@
                 color="primary"
             >
             </v-switch>
+            <FormFieldFile
+                v-else-if="field.type === 'file'"
+                v-model="field.model.value"
+                :standard-properties="getBaseProperties(field)"
+                :accept-extensions="field.acceptExtensions"
+                :icon="field.icon"
+            />
             <FormFieldCollection
                 v-else-if="field.type === 'collection'"
                 :label="field.label"
@@ -110,6 +117,7 @@ import { VInput } from "vuetify/components";
 import { ref, nextTick, watch } from "vue";
 import FormFieldCollection from "./FormFieldCollection.vue";
 import FormFieldColor from "./FormFieldColor.vue";
+import FormFieldFile from "./FormFieldFile.vue";
 import FormFieldPassword from "./FormFieldPassword.vue";
 
 const props = withDefaults(defineProps<FormFieldsComponentProps>(), {

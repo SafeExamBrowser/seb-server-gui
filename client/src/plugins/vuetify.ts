@@ -6,6 +6,7 @@ import {
     VStepperVerticalItem,
 } from "vuetify/labs/VStepperVertical";
 import { VColorInput } from "vuetify/labs/VColorInput";
+import { VFileUpload } from "vuetify/labs/VFileUpload";
 import { createVuetify } from "vuetify";
 
 const alertColors = {
@@ -21,6 +22,7 @@ export const vuetify = createVuetify({
         VStepperVerticalItem,
         VStepperVerticalActions,
         VColorInput,
+        VFileUpload,
     },
     theme: {
         themes: {
