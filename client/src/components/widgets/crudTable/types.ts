@@ -16,12 +16,12 @@ export type CrudTableConfig<TItem, TTransient> = {
         title: string;
         allowed: MaybeRef<boolean>;
         getItem: () => TTransient;
-        createItem: (item: TTransient) => void;
+        createItem: (item: TTransient) => void | Promise<void>;
     };
     updateConfig: {
         title: string;
         getItem: (item: TItem) => TTransient;
-        updateItem: (item: TTransient) => void;
+        updateItem: (item: TTransient) => void | Promise<void>;
     };
     deleteConfig: {
         deleteItem: (item: TItem) => void;
