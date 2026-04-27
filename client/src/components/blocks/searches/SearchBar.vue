@@ -1,7 +1,6 @@
 <template>
-    <div class="pl-6 pr-6">
+    <div class="pa-6">
         <v-row align="start">
-            <!-- Column 1: Search -->
             <v-col
                 cols="12"
                 :md="hasDate ? 3 : 4"
@@ -21,7 +20,6 @@
                 />
             </v-col>
 
-            <!-- Column 2: Date (optional) -->
             <v-col
                 v-if="hasDate"
                 cols="12"
@@ -35,49 +33,59 @@
                 </span>
                 <DatePicker
                     :model-value="dateValue ?? null"
+                    density="compact"
                     @update:model-value="emit('update:dateValue', $event)"
                 />
             </v-col>
 
-            <!-- Column 3: Filters + toggle -->
             <v-col
                 cols="12"
                 :md="hasDate ? 7 : 8"
                 class="d-flex flex-column ga-3"
             >
-                <FiltersBar
-                    v-if="expanded"
-                    :sections="filterSections"
-                    :model-value="filterValues"
-                    @update:model-value="emit('update:filterValues', $event)"
-                />
+                <v-expand-transition>
+                    <FiltersBar
+                        v-if="expanded"
+                        :sections="filterSections"
+                        :model-value="filterValues"
+                        @update:model-value="
+                            emit('update:filterValues', $event)
+                        "
+                    />
+                </v-expand-transition>
 
-                <div v-else-if="activePills.length > 0">
-                    <div class="d-flex align-center ga-2 mb-2">
-                        <span
-                            class="text-caption text-medium-emphasis text-uppercase font-weight-medium"
-                        >
-                            {{ $t("general.activeFilters") }}
-                        </span>
-                        <v-chip size="x-small" color="primary" variant="flat">
-                            {{ activePills.length }}
-                        </v-chip>
+                <v-expand-transition>
+                    <div v-if="!expanded && activePills.length > 0">
+                        <div class="d-flex align-center ga-2 mb-2">
+                            <span
+                                class="text-caption text-medium-emphasis text-uppercase font-weight-medium"
+                            >
+                                {{ $t("general.activeFilters") }}
+                            </span>
+                            <v-chip
+                                size="x-small"
+                                color="primary"
+                                variant="flat"
+                            >
+                                {{ activePills.length }}
+                            </v-chip>
+                        </div>
+                        <div class="d-flex flex-wrap ga-2">
+                            <v-chip
+                                v-for="pill in activePills"
+                                :key="`${pill.sectionKey}-${pill.option.value}`"
+                                size="small"
+                                :color="pill.option.color || 'primary'"
+                                variant="tonal"
+                                closable
+                                class="font-weight-medium"
+                                @click:close="clearFilter(pill.sectionKey)"
+                            >
+                                {{ pill.option.label }}
+                            </v-chip>
+                        </div>
                     </div>
-                    <div class="d-flex flex-wrap ga-2">
-                        <v-chip
-                            v-for="pill in activePills"
-                            :key="`${pill.sectionKey}-${pill.option.value}`"
-                            size="small"
-                            :color="pill.option.color || 'primary'"
-                            variant="tonal"
-                            closable
-                            class="font-weight-medium"
-                            @click:close="clearFilter(pill.sectionKey)"
-                        >
-                            {{ pill.option.label }}
-                        </v-chip>
-                    </div>
-                </div>
+                </v-expand-transition>
 
                 <v-btn
                     v-if="filterSections.length > 0"
@@ -99,7 +107,7 @@
             </v-col>
         </v-row>
 
-        <!-- Actions row -->
+        <!-- @TODO Andrei to implement -->
         <v-divider class="mt-4 mb-4" />
         <div class="d-flex align-center ga-2">
             <v-btn
