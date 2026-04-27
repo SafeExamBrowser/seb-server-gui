@@ -38,11 +38,7 @@
                 />
             </v-col>
 
-            <v-col
-                cols="12"
-                :md="hasDate ? 7 : 8"
-                class="d-flex flex-column ga-3"
-            >
+            <v-col cols="12" :md="filtersColMd" class="d-flex flex-column ga-3">
                 <v-expand-transition>
                     <FiltersBar
                         v-if="expanded"
@@ -105,49 +101,57 @@
                     }}
                 </v-btn>
             </v-col>
-        </v-row>
-
-        <!-- @TODO Andrei to implement -->
-        <v-divider class="mt-4 mb-4" />
-        <div class="d-flex align-center ga-2">
-            <v-btn
-                v-if="activeFilterCount > 0"
-                variant="text"
-                color="primary"
-                size="small"
-                class="text-none me-auto"
-                @click="emit('clearFilters')"
-            >
-                <v-icon start>mdi-close</v-icon>
-                {{ $t("general.clearFilters") }}
-                <v-chip
-                    size="x-small"
+            <v-col v-if="hasActions" cols="12" md="2" class="bg-red">
+                <v-btn
+                    v-for="action in actions"
+                    :key="action.key"
+                    variant="outlined"
                     color="primary"
-                    variant="tonal"
-                    class="ms-2"
+                    class="text-none"
+                    @click="emit('action', action.key)"
                 >
-                    {{ activeFilterCount }}
-                </v-chip>
-            </v-btn>
+                    <v-icon start>{{ action.icon }}</v-icon>
+                    {{ $t(action.text) }}
+                </v-btn>
+            </v-col>
+        </v-row>
+        <v-divider class="mt-4 mb-4" />
 
-            <v-btn
-                v-for="action in actions"
-                :key="action.key"
-                variant="outlined"
-                color="primary"
-                class="text-none"
-                @click="emit('action', action.key)"
+        <v-row>
+            <v-col
+                cols="12"
+                :md="hasDate ? 3 : 4"
+                class="d-flex flex-column ga-2"
             >
-                <v-icon start>{{ action.icon }}</v-icon>
-                {{ $t(action.text) }}
-            </v-btn>
-
-            <CancelButton text="general.cancelButton" @click="emit('clear')" />
-            <ConfirmButton
-                text="general.searchButton"
-                @click="emit('search')"
-            />
-        </div>
+                <div class="d-flex align-center ga-2">
+                    <v-btn
+                        v-if="clearAllCount > 0"
+                        variant="text"
+                        color="primary"
+                        size="small"
+                        class="text-none"
+                        @click="clearAll"
+                    >
+                        <v-icon start>mdi-close</v-icon>
+                        {{ $t("general.clearAll") }}
+                        <v-chip
+                            size="x-small"
+                            color="primary"
+                            variant="tonal"
+                            class="ms-2"
+                        >
+                            {{ clearAllCount }}
+                        </v-chip>
+                    </v-btn>
+                    <v-spacer />
+                    <ConfirmButton
+                        text="general.searchButton"
+                        :disabled="searchDisabled"
+                        @click="onSearch"
+                    />
+                </div>
+            </v-col>
+        </v-row>
     </div>
 </template>
 
@@ -155,7 +159,6 @@
 import { computed, ref } from "vue";
 import SearchBox from "@/components/widgets/SearchBox.vue";
 import DatePicker from "@/components/widgets/DatePicker.vue";
-import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
 import FiltersBar from "@/components/blocks/filters/FiltersBar.vue";
 import type {
@@ -193,6 +196,13 @@ const expanded = ref(true);
 
 const hasDate = computed(() => !!props.dateTitle);
 
+const hasActions = computed(() => props.actions.length > 0);
+
+const filtersColMd = computed(() => {
+    if (hasActions.value) return hasDate.value ? 5 : 6;
+    return hasDate.value ? 7 : 8;
+});
+
 const activePills = computed(() => {
     const pills: { sectionKey: string; option: FilterOption }[] = [];
     for (const section of props.filterSections) {
@@ -204,14 +214,32 @@ const activePills = computed(() => {
     return pills;
 });
 
-const activeFilterCount = computed(() => {
+const lastSearchedValue = ref<string | null>(props.modelValue);
+
+const clearAllCount = computed(() => {
     let count = 0;
+    if (lastSearchedValue.value) count++;
     if (props.dateValue != null) count++;
     for (const section of props.filterSections) {
         if (props.filterValues[section.key]) count++;
     }
     return count;
 });
+
+const searchDisabled = computed(
+    () => props.modelValue === lastSearchedValue.value,
+);
+
+function onSearch() {
+    lastSearchedValue.value = props.modelValue;
+    emit("search");
+}
+
+function clearAll() {
+    lastSearchedValue.value = null;
+    emit("clear");
+    emit("clearFilters");
+}
 
 function clearFilter(key: string) {
     emit("update:filterValues", { ...props.filterValues, [key]: null });

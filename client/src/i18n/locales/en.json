@@ -53,7 +53,7 @@
         "nextButton": "Next",
         "searchButton": "Search",
         "cancelSearch": "Cancel Search",
-        "clearFilters": "Clear filters",
+        "clearAll": "Clear all",
         "showAdvancedFilters": "Show advanced filters",
         "hideAdvancedFilters": "Hide advanced filters",
         "activeFilters": "Active filters",
