@@ -1,11 +1,7 @@
 import { computed } from "vue";
 import { getTemporaryConfigTemplate } from "./api/useGetTemporaryConfigTemplate";
-import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 
 export const useSEBSettings = () => {
-    const sebSettingsStore = useSEBSettingsStore();
-    sebSettingsStore.$reset();
-
     const {
         data: temporaryConfigTemplateKey,
         loading: loadingTemporaryConfigTemplateKey,

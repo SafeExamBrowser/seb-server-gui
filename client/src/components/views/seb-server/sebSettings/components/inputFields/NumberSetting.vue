@@ -1,5 +1,5 @@
 <template>
-    <v-col class="pt-1 pb-1">
+    <v-col class="pt-5 pb-1">
         <v-number-input
             v-model="numberValue"
             density="compact"
@@ -10,7 +10,7 @@
             :min="min"
             :max="max"
             max-width="600"
-            @update:focused="saveOnFocusLost($event)"
+            @update:model-value="saveValue()"
         >
         </v-number-input>
         <v-tooltip
@@ -48,13 +48,16 @@ defineExpose({
     numberValue,
 });
 
-async function saveOnFocusLost(focusIn: boolean) {
-    if (!focusIn) {
-        if (numberValue.value) {
-            props.modelValue.saveSingleValue(
-                props.name,
-                numberValue.value.toString(),
-            );
+async function saveValue() {
+    if (numberValue.value) {
+        props.modelValue.saveSingleValue(
+            props.name,
+            numberValue.value.toString(),
+        );
+    } else {
+        if (props.min) {
+            numberValue.value = props.min;
+            props.modelValue.saveSingleValue(props.name, props.min.toString());
         } else {
             props.modelValue.saveSingleValue(props.name, "");
         }

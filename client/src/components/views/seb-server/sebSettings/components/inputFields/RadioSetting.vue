@@ -4,6 +4,7 @@
             v-model="radioValue"
             :disabled="disabled"
             hide-details
+            :label="showLabel ? translate(label + '.title') : ''"
             @update:model-value="save"
         >
             <v-radio
@@ -26,6 +27,14 @@
                 </v-tooltip>
             </v-radio>
         </v-radio-group>
+        <v-tooltip
+            v-if="labelTooltip"
+            activator="parent"
+            location="top left"
+            max-width="400"
+        >
+            {{ translate(props.label + "_tooltip") }}
+        </v-tooltip>
     </v-col>
 </template>
 
@@ -38,6 +47,8 @@ const props = defineProps<{
     modelValue: SEBSettingsSingeValueModel;
     name: string;
     label: string;
+    showLabel?: boolean;
+    labelTooltip?: boolean;
     tooltip?: boolean;
     disabled?: boolean;
 }>();

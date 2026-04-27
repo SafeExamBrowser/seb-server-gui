@@ -27,9 +27,6 @@ export const useSEBSettingValues = (
         error: errorFetchSebSettingsView,
     } = useFetchViewValues(isExam, containerId, viewType);
 
-    console.info("********** fetch: ", viewType);
-    console.info("********** fetched: ", sebSettingsView);
-
     const singleValues = computed(() => {
         if (!sebSettingsView.value) {
             return undefined;
@@ -65,10 +62,6 @@ export const useSEBSettingValues = (
                     result.singleValues.set(k, v);
                 });
             }
-            console.info(
-                "************** NETWORK single value: ",
-                result.singleValues,
-            );
         }
 
         return result;

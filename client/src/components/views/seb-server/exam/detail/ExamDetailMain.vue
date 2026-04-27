@@ -465,8 +465,7 @@
                                                 block
                                                 color="primary"
                                                 :disabled="
-                                                    sebSettingsStore.selectedContainerId ==
-                                                    null
+                                                    !seb_settings_context
                                                 "
                                                 rounded="sm"
                                                 variant="flat"
@@ -474,17 +473,14 @@
                                             >
                                                 {{
                                                     translate(
-                                                        sebSettingsStore.readonly
+                                                        isSEBSettingsReadonly()
                                                             ? "general.viewButton"
                                                             : "general.editButton",
                                                     )
                                                 }}
                                             </v-btn>
                                             <v-tooltip
-                                                v-if="
-                                                    sebSettingsStore.selectedContainerId ==
-                                                    null
-                                                "
+                                                v-if="!seb_settings_context"
                                                 activator="parent"
                                             >
                                                 <p class="pre-line">
@@ -880,7 +876,13 @@
         height="80vh"
         max-width="1200"
     >
-        <SebSettingsDialog @close-seb-settings-dialog="closeSebSettingsDialog">
+        <SebSettingsDialog
+            v-if="seb_settings_context"
+            @close-seb-settings-dialog="closeSebSettingsDialog"
+            :context="seb_settings_context"
+            :activeSEBClientConnection="activeClients"
+            :dialogTitle="getSEBSettingsTitle()"
+        >
         </SebSettingsDialog>
     </v-dialog>
 
@@ -915,7 +917,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onBeforeMount } from "vue";
+import { ref, onBeforeMount, ComputedRef, computed } from "vue";
 import { useExamStore } from "@/stores/seb-server/examStore";
 import * as constants from "@/utils/constants";
 import * as examService from "@/services/seb-server/examService";
@@ -936,10 +938,8 @@ import TableHeaders from "@/utils/table/TableHeaders.vue";
 import { translate } from "@/utils/generalUtils";
 import { LMSFeatureEnum } from "@/models/seb-server/assessmentToolEnums";
 import { GUIAction, useAbilities } from "@/services/ability";
-import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 import { useRoute } from "vue-router";
 import { UserAccount } from "@/models/userAccount";
-import { ExamConfigMapping } from "@/models/seb-server/sebSettings";
 import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring";
 import { Exam } from "@/models/seb-server/exam";
 import { ConnectionConfigurations } from "@/models/seb-server/connectionConfiguration";
@@ -955,13 +955,13 @@ import ExamTemplateDialog from "@/components/widgets/ExamTemplateDialog.vue";
 import SebSettingsDialog from "@/components/views/seb-server/sebSettings/SebSettingsDialog.vue";
 import { activateScreenProctoring } from "@/services/seb-server/screenProctoringService.ts";
 import * as timeUtils from "@/utils/timeUtils";
+import { SEBSettingsContext } from "../../sebSettings/types";
 
 // general
 const isPageInitalizing = ref<boolean>(true);
 
 // stores
 const examStore = useExamStore();
-const sebSettingsStore = useSEBSettingsStore();
 const ability = useAbilities();
 
 // exam
@@ -1009,6 +1009,22 @@ const isScreenProctoringActive = ref<boolean>(false);
 
 // seb settings
 const sebSettingsDialog = ref<boolean>(false);
+const activeClients = ref<number>(0);
+const seb_settings_context: ComputedRef<SEBSettingsContext | undefined> =
+    computed(() => {
+        if (!examStore.selectedExam) {
+            return undefined;
+        }
+
+        const acNum = activeClients.value ? activeClients.value : 0;
+
+        return {
+            isExam: true,
+            containerId: examStore.selectedExam.id.toString(),
+            readonly: isSEBSettingsReadonly() || acNum > 0,
+            ignoreSEBService: ref<boolean>(false),
+        };
+    });
 
 // client groups
 const clientGroupDialog = ref<boolean>(false);
@@ -1045,7 +1061,10 @@ onBeforeMount(async () => {
     await getAssessmentTool();
     await getExamSupervisors();
     await getClientGroups();
-    await getSEBSettings();
+
+    const numActiveClients =
+        await sebSettingsService.getActiveSEBClients(examId);
+    activeClients.value = numActiveClients ? numActiveClients : 0;
 
     setQuitPassword();
     setScreenProctoring();
@@ -1428,51 +1447,24 @@ async function applyTestRun() {
     updateExam();
 }
 
-//= ==============settings logic====================
-async function getSEBSettings() {
-    sebSettingsStore.$reset();
+//= ==============SEB settings logic====================
+function getSEBSettingsTitle(): string {
+    const fullSEBSettings = ability.canDo(GUIAction.EditFullSEBSettings);
 
-    const configs: ExamConfigMapping[] | null =
-        await sebSettingsService.getExamConfigMapping(examId);
-    if (configs != null && configs.length > 0) {
-        // init sebSettingsStore to work with Exam SEB Settings context
-        sebSettingsStore.isExam = true;
-        if (examStore.selectedExam != null) {
-            sebSettingsStore.selectedContainerId = examStore.selectedExam.id;
-            setSEBSettingsAccess();
-
-            const fullSEBSettings = ability.canDo(
-                GUIAction.EditFullSEBSettings,
-            );
-            sebSettingsStore.dialogTitle = sebSettingsStore.readonly
-                ? fullSEBSettings
-                    ? "examDetail.main.sebSettings"
-                    : "examDetail.main.appNetworkSettings"
-                : fullSEBSettings
-                  ? "examDetail.main.editSEBSettings"
-                  : "examDetail.main.editAppNetworkSettings";
-        } else {
-            sebSettingsStore.readonly = true;
-        }
-        // TODO this is only for testing, remove it when done
-        //sebSettingsStore.activeSEBClientConnection = 2;
-    }
+    return isSEBSettingsReadonly()
+        ? fullSEBSettings
+            ? "examDetail.main.sebSettings"
+            : "examDetail.main.appNetworkSettings"
+        : fullSEBSettings
+          ? "examDetail.main.editSEBSettings"
+          : "examDetail.main.editAppNetworkSettings";
 }
 
-async function setSEBSettingsAccess() {
-    sebSettingsStore.readonly = !ability.canDoExamAction(
+function isSEBSettingsReadonly(): boolean {
+    return !ability.canDoExamAction(
         GUIAction.EditSEBSettings,
         examStore.selectedExam,
     );
-    if (!sebSettingsStore.readonly) {
-        // check also if there are no active SEB clients, otherwise set so on storage
-        const numActiveClients =
-            await sebSettingsService.getActiveSEBClients(examId);
-        if (numActiveClients != null && numActiveClients > 0) {
-            sebSettingsStore.readonly = true;
-            sebSettingsStore.activeSEBClientConnection = numActiveClients;
-        }
-    }
 }
 
 function getSEBSettingsNameKey() {
@@ -1488,10 +1480,11 @@ function openSebSettingsDialog() {
 
 async function closeSebSettingsDialog(apply?: boolean) {
     sebSettingsDialog.value = false;
+
     if (apply) {
-        await sebSettingsService.publish(examId, sebSettingsStore.isExam);
+        await sebSettingsService.publish(examId, true);
     } else {
-        await sebSettingsService.undoChanges(examId, sebSettingsStore.isExam);
+        await sebSettingsService.undoChanges(examId, true);
     }
 }
 

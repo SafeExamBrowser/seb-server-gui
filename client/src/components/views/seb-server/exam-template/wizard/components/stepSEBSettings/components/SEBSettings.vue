@@ -19,7 +19,7 @@
     <v-card :key="reloadSettings" class="pa-5" variant="text">
         <v-row>
             <v-col>
-                <SEBSettingsPanel :context="init_store" />
+                <SEBSettingsPanel :context="seb_settings_context" />
             </v-col>
         </v-row>
     </v-card>
@@ -41,9 +41,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ComputedRef, ref } from "vue";
 import { ConfigurationTemplateKey } from "@/models/seb-server/configurationNode";
-import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 import { useStepNamingStore } from "@/components/views/seb-server/exam-template/wizard/components/stepNaming/composables/store/useStepNamingStore";
 import SectionSubtitle from "@/components/widgets/SectionSubtitle.vue";
 import AddButton from "@/components/widgets/AddButton.vue";
@@ -66,33 +65,24 @@ async function onConfigImported() {
     reloadSettings.value += 1;
 }
 
-const init_store = computed(() => {
+const seb_settings_context: ComputedRef<SEBSettingsContext> = computed(() => {
     if (configKey.value) {
-        // TODO @anhefti remove sebSettingsStore after refactoring, should not be used anymore
-        const sebSettingsStore = useSEBSettingsStore();
         const stepNamingStore = useStepNamingStore();
-
-        if (sebSettingsStore.selectedContainerId == null) {
-            sebSettingsStore.isExam = false;
-            sebSettingsStore.readonly = false;
-            if (configKey.value.id) {
-                sebSettingsStore.selectedContainerId = parseInt(
-                    configKey.value.id,
-                );
-                stepNamingStore.configurationTemplate = configKey.value.id;
-            }
+        if (configKey.value.id) {
+            stepNamingStore.configurationTemplate = configKey.value.id;
+            return {
+                isExam: false,
+                containerId: configKey.value.id,
+                readonly: false,
+                ignoreSEBService: ref<boolean>(false),
+            };
         }
-
-        return {
-            isExam: false,
-            containerId: configKey.value.id,
-            readonly: false,
-        } as SEBSettingsContext;
     }
     return {
         isExam: false,
         containerId: "",
         readonly: false,
-    } as SEBSettingsContext;
+        ignoreSEBService: ref<boolean>(false),
+    };
 });
 </script>

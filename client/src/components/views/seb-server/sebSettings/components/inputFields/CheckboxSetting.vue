@@ -5,9 +5,7 @@
             max-width="600"
             :disabled="disabled"
             :label="translate(label)"
-            @update:model-value="
-                modelValue.saveSingleValue(name, boolVal ? 'true' : 'false')
-            "
+            @update:model-value="save"
         ></v-checkbox-btn>
         <v-tooltip
             v-if="tooltip"
@@ -38,4 +36,14 @@ const boolVal = ref<boolean>(props.modelValue.getBooleanValue(props.name));
 defineExpose({
     boolVal,
 });
+
+const emit = defineEmits(["saved"]);
+
+async function save() {
+    props.modelValue.saveSingleValue(
+        props.name,
+        boolVal.value ? "true" : "false",
+    );
+    emit("saved");
+}
 </script>

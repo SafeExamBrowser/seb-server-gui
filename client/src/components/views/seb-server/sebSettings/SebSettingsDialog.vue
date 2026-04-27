@@ -17,10 +17,7 @@
                     </v-toolbar>
                 </v-row>
                 <v-row
-                    v-if="
-                        props.activeSEBClientConnection != null &&
-                        props.activeSEBClientConnection > 0
-                    "
+                    v-if="props.activeSEBClientConnection > 0"
                     class="ml-5 mr-5"
                 >
                     <v-card class="pa-5" color="indigo" variant="elevated">
@@ -65,8 +62,8 @@ import { SEBSettingsContext } from "./types";
 
 const props = defineProps<{
     context: SEBSettingsContext;
-    activeSEBClientConnection: number;
     dialogTitle: string;
+    activeSEBClientConnection: number;
 }>();
 
 const emit = defineEmits<{

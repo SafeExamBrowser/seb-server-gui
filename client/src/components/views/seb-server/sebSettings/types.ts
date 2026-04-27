@@ -4,12 +4,13 @@ import {
     SEBSettingsTableRowValues,
     SEBSettingTableValue,
 } from "@/models/seb-server/sebSettings";
+import { Ref } from "vue";
 
 export type SEBSettingsContext = {
     isExam: boolean;
     containerId: string;
     readonly: boolean;
-    ignoreSEBService: string;
+    ignoreSEBService: Ref<boolean, boolean>;
 };
 
 export type SEBValueAttributes = {

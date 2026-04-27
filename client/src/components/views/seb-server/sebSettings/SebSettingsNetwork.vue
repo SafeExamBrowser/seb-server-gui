@@ -256,6 +256,7 @@
                                     :show-label="true"
                                     :tooltip="false"
                                     :disabled="context.readonly"
+                                    :min="0"
                                 />
                             </v-row>
                             <v-row>
@@ -318,6 +319,7 @@
                                     :show-label="true"
                                     :tooltip="false"
                                     :disabled="context.readonly"
+                                    :min="0"
                                 />
                             </v-row>
                             <v-row>
@@ -380,6 +382,7 @@
                                     :show-label="true"
                                     :tooltip="false"
                                     :disabled="context.readonly"
+                                    :min="0"
                                 />
                             </v-row>
                             <v-row>
@@ -442,6 +445,7 @@
                                     :show-label="true"
                                     :tooltip="false"
                                     :disabled="context.readonly"
+                                    :min="0"
                                 />
                             </v-row>
                             <v-row>
@@ -504,6 +508,7 @@
                                     :show-label="true"
                                     :tooltip="false"
                                     :disabled="context.readonly"
+                                    :min="0"
                                 />
                             </v-row>
                             <v-row>
