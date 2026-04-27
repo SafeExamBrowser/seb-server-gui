@@ -1,9 +1,11 @@
 <template>
+    <!-- :key forces a remount when toggling between empty/filled — VDateInput's clear-state has a Vuetify-labs bug where the input retains the prior value otherwise. -->
     <VDateInput
+        :key="modelValue === null ? 'empty' : 'filled'"
         :model-value="modelValue"
         append-inner-icon="mdi-calendar"
         display-date-format="dd.MM.yyyy"
-        density="comfortable"
+        :density="density"
         hide-details
         input-format="dd.MM.yyyy"
         placeholder="dd.MM.yyyy"
@@ -16,9 +18,13 @@
 <script setup lang="ts">
 import { VDateInput } from "vuetify/labs/VDateInput";
 
-defineProps<{
-    modelValue: Date | null;
-}>();
+withDefaults(
+    defineProps<{
+        modelValue: Date | null;
+        density?: "default" | "comfortable" | "compact";
+    }>(),
+    { density: "comfortable" },
+);
 
 const emit = defineEmits<{
     "update:modelValue": [value: Date | null];
