@@ -18,7 +18,7 @@
                     @search="onSearch"
                     @clear="onClearSearch"
                     @update:filter-values="setFilters"
-                    @clear-filters="resetFilters"
+                    @clear-all="clearAll"
                 />
 
                 <v-row>
@@ -117,7 +117,7 @@ const {
     onSearch,
     onClearSearch,
     setFilters,
-    resetFilters,
+    clearAll,
 } = useUrlTableState(async () => {
     await fetchConnectionConfigurations();
 }, [STATUS_FILTER_KEY, INSTITUTION_FILTER_KEY]);

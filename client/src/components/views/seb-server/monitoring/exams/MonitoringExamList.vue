@@ -16,7 +16,7 @@
                 @clear="onClearSearch"
                 @update:date-value="setDate"
                 @update:filter-values="setFilters"
-                @clear-filters="resetFilters"
+                @clear-all="clearAll"
             />
         </template>
         <template #PanelMain>
@@ -95,7 +95,7 @@ const {
     onSearch,
     onClearSearch,
     setFilters,
-    resetFilters,
+    clearAll,
     setDate,
 } = useUrlTableState(
     async () => {
