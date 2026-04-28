@@ -188,7 +188,8 @@ const props = withDefaults(
     //@TODO Andrei change
     {
         actions: () => [],
-        dateTitle: "DateTitle",
+        searchTitle: "general.searchTitle",
+        dateTitle: undefined,
         dateValue: null,
         dense: false,
     },
