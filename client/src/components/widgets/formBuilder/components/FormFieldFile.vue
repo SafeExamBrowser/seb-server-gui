@@ -7,6 +7,8 @@
         :prepend-icon="icon"
         clearable
         show-size
+        :hint="completeHint"
+        persistent-hint
     />
 </template>
 
@@ -14,6 +16,7 @@
 import { FormFieldBaseProperties } from "../types";
 import { computed } from "vue";
 import { useRules } from "vuetify/labs/rules";
+import i18n from "@/i18n";
 
 const model = defineModel<File | undefined>();
 
@@ -21,6 +24,7 @@ const props = defineProps<{
     standardProperties: FormFieldBaseProperties;
     acceptExtensions: string[];
     icon?: string;
+    hint?: string;
     clearable: boolean;
 }>();
 
@@ -28,4 +32,19 @@ const allValidationRules = computed(() => [
     ...(props.standardProperties.rules ?? []),
     useRules().fileExtension(props.acceptExtensions),
 ]);
+
+const completeHint = computed(() =>
+    [
+        props.hint ?? i18n.global.t("general.formFields.file.hint"),
+        props.acceptExtensions.length > 0
+            ? [
+                  i18n.global.t("general.formFields.file.allowedFileTypes"),
+                  props.acceptExtensions.join(", "),
+              ]
+            : undefined,
+    ]
+        .flat()
+        .filter(Boolean)
+        .join(" "),
+);
 </script>

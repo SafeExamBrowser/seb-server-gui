@@ -4,9 +4,13 @@
             <FormDialog
                 icon-activator="mdi-plus-circle-outline"
                 color-activator="primary"
-                :label-activator="$t('certificates.upload.upload')"
+                :label-activator="
+                    $t('certificates.createDialog.addButtonTitle')
+                "
                 :label-cancel="$t('general.cancelButton')"
-                :label-submit="$t('certificates.upload.importButton')"
+                :label-submit="
+                    $t('certificates.createDialog.confirmButtonTitle')
+                "
                 form-id="form-certificate-upload"
                 :get-form-fields="getFormFields"
                 :get-item="getEmptyItem"

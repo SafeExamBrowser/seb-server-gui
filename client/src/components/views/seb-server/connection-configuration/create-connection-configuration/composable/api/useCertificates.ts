@@ -6,9 +6,7 @@ import type { Certificate } from "@/models/seb-server/certificate.ts";
 
 export const useCertificates = () => {
     const uploadOption = {
-        label: i18n.global.t(
-            "certificates.certificateDialog.uploadCertificate",
-        ),
+        label: i18n.global.t("certificates.createDialog.addButtonTitle"),
         value: "__UPLOAD__",
     };
 

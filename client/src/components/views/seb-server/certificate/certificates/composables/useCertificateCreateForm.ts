@@ -38,7 +38,12 @@ export const useCertificateCreateForm = ({
                 type: "file" as const,
                 name: "file",
                 model: file,
-                label: i18n.global.t("certificates.upload.dropHere"),
+                label: i18n.global.t(
+                    "certificates.createDialog.fields.file.label",
+                ),
+                hint: i18n.global.t(
+                    "certificates.createDialog.fields.file.hint",
+                ),
                 acceptExtensions: [".p12", ".pfx", ".pem", ".crt", ".cer"],
                 icon: "mdi-file-certificate-outline",
                 required: true,
@@ -47,7 +52,9 @@ export const useCertificateCreateForm = ({
                 type: "password" as const,
                 name: "password",
                 model: password,
-                label: i18n.global.t("certificates.upload.password"),
+                label: i18n.global.t(
+                    "certificates.createDialog.fields.password.label",
+                ),
             },
         ];
     };
@@ -68,8 +75,9 @@ export const useCertificateCreateForm = ({
         });
 
         if (uploadError.value) {
-            // TODO @alain: proper error handling
-            throw new Error(uploadError.value);
+            throw new Error(
+                i18n.global.t("certificates.createDialog.errors.generic"),
+            );
         }
 
         onSuccess();

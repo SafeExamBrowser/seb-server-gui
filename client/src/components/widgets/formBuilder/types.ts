@@ -81,6 +81,7 @@ export type FormFieldSimple = FormFieldBase &
               required?: boolean;
               model: Ref<File | undefined>;
               acceptExtensions: string[];
+              hint?: string;
               icon?: string;
           }
     );

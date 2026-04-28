@@ -89,6 +89,7 @@
                 :standard-properties="getBaseProperties(field)"
                 :accept-extensions="field.acceptExtensions"
                 :icon="field.icon"
+                :hint="field.hint"
                 :clearable="!field.required"
             />
             <FormFieldCollection
