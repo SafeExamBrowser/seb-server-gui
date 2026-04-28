@@ -6,7 +6,7 @@ import {
     CertificateUploadItemTransient,
     toCertificateUploadItem,
 } from "@/components/views/seb-server/certificate/certificates/types";
-import { useCreateCertificate } from "@/components/views/seb-server/certificate/certificates/api/useCreateCertificate";
+import { useCreateCertificate } from "@/components/views/seb-server/certificate/certificates/composables/api/useCreateCertificate";
 
 export const useCertificateCreateForm = ({
     onSuccess,
