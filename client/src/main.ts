@@ -11,6 +11,7 @@ import { createRulesPlugin } from "vuetify/labs/rules";
 
 import vuetify from "@/plugins/vuetify";
 import { blacklisted } from "@/utils/validation/blacklisted";
+import { fileExtension } from "@/utils/validation/fileExtension";
 import { ipAddress } from "@/utils/validation/ipAddress";
 import {
     alphabeticalAfter,
@@ -27,6 +28,7 @@ app.use(
         {
             aliases: {
                 blacklisted,
+                fileExtension,
                 ipAddress,
                 alphabeticalBefore,
                 alphabeticalAfter,

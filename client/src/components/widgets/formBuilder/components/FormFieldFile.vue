@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import { FormFieldBaseProperties } from "../types";
 import { computed } from "vue";
-import i18n from "@/i18n";
+import { useRules } from "vuetify/labs/rules";
 
 const model = defineModel<File | undefined>();
 
@@ -24,39 +24,8 @@ const props = defineProps<{
     clearable: boolean;
 }>();
 
-const normalizedAcceptExtensions = computed(() =>
-    props.acceptExtensions.map((ext) =>
-        ext.startsWith(".") ? ext.toLowerCase() : `.${ext.toLowerCase()}`,
-    ),
-);
-
 const allValidationRules = computed(() => [
     ...(props.standardProperties.rules ?? []),
-    ...(props.acceptExtensions.length > 0
-        ? [
-              (file: File | undefined) => {
-                  if (!file) {
-                      return true;
-                  }
-
-                  const hasAllowedExtension =
-                      normalizedAcceptExtensions.value.some((ext) =>
-                          file.name.toLowerCase().endsWith(ext),
-                      );
-
-                  if (!hasAllowedExtension) {
-                      return i18n.global.t(
-                          "general.validation.fileExtensions",
-                          {
-                              extensions:
-                                  normalizedAcceptExtensions.value.join(", "),
-                          },
-                      );
-                  }
-
-                  return true;
-              },
-          ]
-        : []),
+    useRules().fileExtension(props.acceptExtensions),
 ]);
 </script>

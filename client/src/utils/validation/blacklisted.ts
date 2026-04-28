@@ -12,6 +12,7 @@ export const blacklisted = (blacklistedValues: Set<string>, err?: string) => {
 
         return blacklistedValuesLowerCase.has(v.toLowerCase());
     };
+
     return (v?: string) =>
         !isBlacklisted(v) ||
         err ||
