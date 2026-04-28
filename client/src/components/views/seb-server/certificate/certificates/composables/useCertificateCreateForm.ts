@@ -2,7 +2,10 @@ import { computed, Ref } from "vue";
 import i18n from "@/i18n";
 
 import { FormField } from "@/components/widgets/formBuilder/types";
-import { CertUploadItem } from "@/components/views/seb-server/certificate/certificates/types";
+import {
+    CertificateUploadItemTransient,
+    toCertificateUploadItem,
+} from "@/components/views/seb-server/certificate/certificates/types";
 import { useCreateCertificate } from "@/components/views/seb-server/certificate/certificates/api/useCreateCertificate";
 
 export const useCertificateCreateForm = ({
@@ -13,12 +16,14 @@ export const useCertificateCreateForm = ({
     const { mutateData: uploadCertificate, error: uploadError } =
         useCreateCertificate();
 
-    const getEmptyItem = (): CertUploadItem => ({
+    const getEmptyItem = (): CertificateUploadItemTransient => ({
         file: undefined,
         password: "",
     });
 
-    const getFormFields = (item: Ref<CertUploadItem>): FormField[] => {
+    const getFormFields = (
+        item: Ref<CertificateUploadItemTransient>,
+    ): FormField[] => {
         const file = computed<File | undefined>({
             get: () => item.value.file,
             set: (value) => {
@@ -60,13 +65,9 @@ export const useCertificateCreateForm = ({
     };
 
     const handleUploadCertificate = async (
-        item: CertUploadItem,
+        itemTransient: CertificateUploadItemTransient,
     ): Promise<void> => {
-        if (!item.file) {
-            // TODO @alain: this shouldn't happen. But maybe do zod validation here?
-            // TODO @alain: also, the password itself is required I think. Make sure that this is properly taken care of, including the empty string case.
-            throw new Error("File is required!");
-        }
+        const item = toCertificateUploadItem(itemTransient);
 
         await uploadCertificate({
             file: item.file,
