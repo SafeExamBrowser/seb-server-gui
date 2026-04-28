@@ -9,25 +9,17 @@
 
         <template #PanelMain>
             <v-col>
-                <v-row class="align-start">
-                    <v-col cols="12" md="5">
-                        <SearchSection
-                            v-model="searchInputValue"
-                            search-text="userAccount.userAccountPage.filters.searchField"
-                            @search="onSearch"
-                            @clear="onClearSearch"
-                        />
-                    </v-col>
-
-                    <v-col cols="12" md="7">
-                        <FiltersBar
-                            :model-value="selectedFilters"
-                            :sections="filterSections"
-                            @update:model-value="setFilters"
-                            @clear="resetFilters"
-                        />
-                    </v-col>
-                </v-row>
+                <SearchBar
+                    v-model="searchInputValue"
+                    search-text="userAccount.userAccountPage.filters.searchField"
+                    :filter-sections="filterSections"
+                    :filter-values="selectedFilters"
+                    dense
+                    @search="onSearch"
+                    @clear="onClearSearch"
+                    @update:filter-values="setFilters"
+                    @clear-filters="clearAll"
+                />
 
                 <v-row>
                     <v-col>
@@ -86,8 +78,7 @@
 import { computed, ref, watch } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import { getRouteName } from "@/router/routeNames.ts";
-import SearchSection from "@/components/blocks/searches/SearchSection.vue";
-import FiltersBar from "@/components/blocks/filters/FiltersBar.vue";
+import SearchBar from "@/components/blocks/searches/SearchBar.vue";
 import EntityTable from "@/components/blocks/entity-table/EntityTable.vue";
 import ActiveStatusChip from "@/components/widgets/ActiveStatusChip.vue";
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
@@ -122,7 +113,7 @@ const {
     onSearch,
     onClearSearch,
     setFilters,
-    resetFilters,
+    clearAll,
 } = useUrlTableState(async () => {
     await fetchUserAccounts();
 }, [STATUS_FILTER_KEY, INSTITUTION_FILTER_KEY]);
