@@ -104,20 +104,22 @@ export type SEBSettingsView = {
     tableValues: Map<string, SEBSettingsTableRowValues[]>;
 };
 
-export type ApplicationView = {
-    configurationNodeId: number;
-    configurationId: number;
-    allowSwitchToApplications: {
-        id: number;
-        value: string;
-    };
-    allowFlashFullscreen: {
-        id: number;
-        value: string;
-    };
-    prohibitedProcesses: ProhibitedProcess[];
-    permittedProcesses: PermittedProcess[];
-};
+// TODO @anhefti: this seems not to be used. Remove them if it remains so
+
+// export type ApplicationView = {
+//     configurationNodeId: number;
+//     configurationId: number;
+//     allowSwitchToApplications: {
+//         id: number;
+//         value: string;
+//     };
+//     allowFlashFullscreen: {
+//         id: number;
+//         value: string;
+//     };
+//     prohibitedProcesses: ProhibitedProcess[];
+//     permittedProcesses: PermittedProcess[];
+// };
 
 export type URLFilterRule = {
     index: number;

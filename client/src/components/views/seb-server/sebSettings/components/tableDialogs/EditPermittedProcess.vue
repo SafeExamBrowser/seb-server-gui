@@ -1,5 +1,5 @@
 <template>
-    <v-card>
+    <v-card v-if="argumentsTable">
         <v-toolbar color="transparent">
             <v-toolbar-title
                 class="text-h6"
@@ -530,6 +530,7 @@ import {
 
 const argumentsHeadersRef = ref<(HTMLElement | null)[]>([]);
 const argumentsTable = ref<PermittedProcessArgument[]>([]);
+
 const argumentsHeaders = ref([
     {
         title: translate(
@@ -578,6 +579,8 @@ const osItems = [
     },
 ];
 
+// TODO, NOTE @anhefti tried this with computed value ref but it was not working.
+// addArgument and deleteArgument failed to manipulate the array for whatever reason!?
 onBeforeMount(async () => {
     if (props.permittedProcess == null) return;
 

@@ -156,15 +156,6 @@ export function useUrlTableState(
         });
     };
 
-    const resetFilters = async () => {
-        await updateQuery((query) => {
-            if (dateKey) query[dateKey] = undefined;
-            for (const key of filterKeys) {
-                query[key] = undefined;
-            }
-        });
-    };
-
     const clearAll = async () => {
         searchInputValue.value = null;
 
@@ -196,7 +187,6 @@ export function useUrlTableState(
         onSearch,
         onClearSearch,
         setFilters,
-        resetFilters,
         clearAll,
         setDate,
     };

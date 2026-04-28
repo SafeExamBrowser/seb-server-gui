@@ -4,28 +4,24 @@
     "MANAGED": "Managed Devices",
     "UNDEFINED": "Not Defined",
     "VDI": "VDI (Virtual Desktop Infrastructure)",
-
     "-------ExamStatusEnum------": "----------",
     "FINISHED": "Finished",
     "UP_COMING": "Up Coming",
     "TEST_RUN": "Test Run",
     "RUNNING": "Running",
     "ARCHIVED": "Archived",
-
     "-------ClientGroupEnum------": "----------",
     "NONE": "none",
     "IP_V4_RANGE": "IP v4 Range",
     "CLIENT_OS": "SEB Client OS",
     "NAME_ALPHABETICAL_RANGE": "Alphabetical User Name Range",
     "SP_FALLBACK_GROUP": "Remaining Clients",
-
     "-------ClientOSEnum------": "----------",
     "WINDOWS": "Windows",
     "MAC_OS": "macOS",
     "I_OS": "iOS",
     "IPAD_OS": "iPadOS",
     "I_OS_OR_IPAD_OS": "iOS/iPadOS",
-
     "-------ConnectionStatusEnum------": "----------",
     "CONNECTION_REQUESTED": "Connecting",
     "READY": "Ready",
@@ -33,7 +29,6 @@
     "DISABLED": "Canceled",
     "MISSING": "Missing",
     "CLOSED": "Closed",
-
     "-------IndicatorTypeEnum------": "----------",
     "LAST_PING": "Last ping",
     "ERROR_COUNT": "Error count",
@@ -41,19 +36,21 @@
     "INFO_COUNT": "Info count",
     "BATTERY_STATUS": "Battery status",
     "WLAN_STATUS": "Wifi status",
-
     "-------NotificationTypeEnum------": "----------",
     "LOCK_SCREEN": "Lock screen",
     "RAISE_HAND": "Raise hand",
-
     "general": {
         "loadingText": "Loading... Please wait",
         "cancelButton": "Cancel",
         "backButton": "Back",
         "nextButton": "Next",
         "searchButton": "Search",
+        "searchTitle": "Search",
         "cancelSearch": "Cancel Search",
-        "clearFilters": "Clear filters",
+        "clearAll": "Clear all",
+        "showAdvancedFilters": "Show advanced filters",
+        "hideAdvancedFilters": "Hide advanced filters",
+        "activeFilters": "Active filters",
         "saveButton": "Save",
         "startButton": "Start",
         "downloadButton": "Download",
@@ -91,11 +88,9 @@
             }
         }
     },
-
     "screenReader": {
         "logo": "SEB Logo"
     },
-
     "clientGroups": {
         "entityNamePlural": "Groups",
         "addDialogTitle": "Add Group",
@@ -124,13 +119,11 @@
             ]
         }
     },
-
     "indicators": {
         "entityNamePlural": "Indicators",
         "addDialogTitle": "Add Indicator",
         "editDialogTitle": "Edit Indicator"
     },
-
     "loginPage": {
         "title": "SEB Server",
         "signIn": "Sign in",
@@ -142,25 +135,19 @@
         "profile": "Profile",
         "settings": "Settings"
     },
-
     "homePage": {
         "createTemplates": "Create Exam Template",
         "prepareExam": "Prepare\n Exam",
-
         "monitorExams": "Monitor\n Exam",
-
         "something": "Something",
         "startNow": "Start now",
-
         "screenProctoring": "Screen Proctoring",
         "open": "Open"
     },
-
     "quizImportWizard": {
         "warning": {
             "title": "No Assessment Tool"
         },
-
         "steps": {
             "selectAssessmentTool": "Select Assessment Tool",
             "selectExam": "Select Exam",
@@ -172,25 +159,21 @@
             "previousStep": "Previous Step",
             "nextStep": "Next Step"
         },
-
         "genericInfo": {
             "start": "Start",
             "end": "End",
             "description": "Description"
         },
-
         "assessmentTool": {
             "title": "Select Assessment Tool",
             "description": "Please select an assessment tool to continue."
         },
-
         "examInfo": {
             "title": "Select Exam",
             "search": "Search:",
             "searchPlaceholder": "Search Exams",
             "start": "Start:"
         },
-
         "examMain": {
             "title": "Select Exam",
             "description": "Search and select the exam you want to prepare.",
@@ -201,14 +184,12 @@
             "filterDate": "Filter By Date",
             "searchName": "Search by Name"
         },
-
         "templateMain": {
             "title": "Choose Exam Template",
             "description": "Click on the Exam Template you want to use for the exam.",
             "templateInfo": "Open template info",
             "templateSelect": "Select template"
         },
-
         "groupMain": {
             "title": "Add Groups",
             "search": "Search",
@@ -219,7 +200,6 @@
             "tableHeaderScreenProctoring": "Screen Proctoring",
             "spAvailable": "Screen Proctoring enabled"
         },
-
         "supervisorsMain": {
             "searchButton": "Search",
             "cancelButton": "Cancel",
@@ -230,7 +210,6 @@
             "selectedSupervisors": "Selected Supervisors",
             "tableHeaderName": "Name"
         },
-
         "passwordMain": {
             "password": "Password",
             "title": "Set Quit Password",
@@ -238,7 +217,6 @@
             "description": "Set the quit password, otherwise a student can easily quit SEB.",
             "warning": "This password should be kept confidential and shared only with exam supervisors"
         },
-
         "summaryMain": {
             "title": "Configuration Summary",
             "description": "Review your configuration before saving.",
@@ -256,7 +234,6 @@
             "save": "save"
         }
     },
-
     "createTemplateExam": {
         "general": {
             "fields": {
@@ -451,7 +428,6 @@
             }
         }
     },
-
     "examTemplateList": {
         "info": {
             "name": "Name",
@@ -470,20 +446,17 @@
             "questionText": "Are you sure you want to delete this exam template?"
         }
     },
-
     "galleryView": {
         "generalInfo": {
             "page": "Page",
             "sessions": "Sessions",
             "sessionsTooltip": "currently live / total amount of sessions"
         },
-
         "gridSize": "Grid Size",
         "sortByName": "Sort by Name",
         "showName": "Show Name",
         "showIp": "Show IP",
         "metadata": "Metadata",
-
         "screenReader": {
             "settings": "Gallery View Settings",
             "expandImage": "Expand Image",
@@ -491,10 +464,9 @@
             "collapseImage": "Collapse Image"
         }
     },
-
     "examList": {
         "info": {
-            "examNameSearchPlaceholder": "Search",
+            "examNameSearchPlaceholder": "Search by Exam Name",
             "examStartSearchPlaceholder": "Filter by Start Date",
             "selectExam": "Select Exam",
             "search": "Search:",
@@ -559,7 +531,6 @@
                 "register": "Register"
             }
         },
-
         "userAccountPage": {
             "userAccountTableHeaders": {
                 "tableHeaderInstitution": "Institution",
@@ -682,11 +653,9 @@
             "deleteAssessmentToolContext": {
                 "title": "Confirm Deletion",
                 "informationPart1": "Delete Assessment Tool: ",
-
                 "informationPart3": " ?"
             }
         },
-
         "createAssessmentToolConnectionsPage": {
             "info": {
                 "assessmentToolConnectionsCreationInfo": "Fill out the required * fields to create a new Assessment Tool Connection"
@@ -721,7 +690,6 @@
                 "invalidPort": "Invalid port, ex. 8080"
             }
         },
-
         "assessmentToolDetailAndEditPage": {
             "buttons": {
                 "saveChanges": "Save Changes",
@@ -743,7 +711,6 @@
             "OPEN_OLAT": "OLAT"
         }
     },
-
     "connectionConfigurations": {
         "connectionConfigurationsPage": {
             "addConnectionConfiguration": "Add Connection Configuration",
@@ -777,7 +744,6 @@
                 "informationPart3": " ?"
             }
         },
-
         "createConnectionConfigurationPage": {
             "info": {
                 "createConnectionConfigurationInfo": "Fill out the required * fields to create a new Connection Configuration"
@@ -791,10 +757,8 @@
                 "useAsymmetricOnlyEncryption": "Use asymmetric-only encryption",
                 "pingInterval": "Ping Interval in seconds *",
                 "exams": "Exams",
-
                 "withFallback": "With Fallback",
                 "withFallbackArea": "Toggle Fallback settings",
-
                 "fallbackStartURL": "Fallback Start URL *",
                 "connectionAttempts": "Connection Attempts *",
                 "interval": "Interval in seconds *",
@@ -824,7 +788,6 @@
                 "configure_client": "Configure a Client"
             }
         },
-
         "connectionConfigurationViewAndEditPage": {
             "title": "Edit Connection Configuration",
             "buttons": {
@@ -848,10 +811,8 @@
                 "useAsymmetricOnlyEncryption": "Use asymmetric-only encryption",
                 "pingInterval": "Ping Interval in seconds *",
                 "exams": "Exams",
-
                 "withFallback": "With Fallback",
                 "withFallbackArea": "Toggle Fallback settings",
-
                 "fallbackStartURL": "Fallback Start URL *",
                 "connectionAttempts": "Connection Attempts *",
                 "interval": "Interval in seconds *",
@@ -876,7 +837,6 @@
                 "configure_client": "Configure a Client"
             }
         },
-
         "lmsTypes": {
             "MOCKUP": "Testing",
             "OPEN_EDX": "Open edX",
@@ -886,7 +846,6 @@
             "OPEN_OLAT": "OLAT"
         }
     },
-
     "certificates": {
         "filters": {
             "searchTitle": "Search",
@@ -1115,7 +1074,6 @@
             "browserUserAgent_tooltip": "This string is appended to any user agent in addition to the user agent generated with the other setting options",
             "windowTitleSuffix": "Suffix to be added to every browser window",
             "windowTitleSuffix_tooltip": "This string is appended to every browser window",
-
             "uaDesktop": {
                 "title": "User agent for desktop mode",
                 "0": "Desktop default",
@@ -1381,10 +1339,12 @@
             "sebService": {
                 "title": "SEB Service (Win)",
                 "note": "IMPORTANT: The SEB Service changes aspects of the system configuration. Some anti-virus software providers might falsely identify its operation as malicious, thus it is not recommended to use the SEB Service in uncontrolled environments (e.g. BYOD).",
-                "sebServicePolicy": "SEB Service policy",
-                "sebServicePolicy_0": "allow to run SEB without service",
-                "sebServicePolicy_1": "display warning when service is not running",
-                "sebServicePolicy_2": "allow to use SEB only with service",
+                "sebServicePolicy": {
+                    "title": "SEB Service policy",
+                    "0": "allow to run SEB without service",
+                    "1": "display warning when service is not running",
+                    "2": "allow to use SEB only with service"
+                },
                 "sebServicePolicy_tooltip": "Policy that applies when an exam client doesn't have the SEB client running",
                 "sebServiceIgnore": "Ignore SEB Service",
                 "enableWindowsUpdate": "Allow Windows Update to run while SEB is running",
@@ -1395,12 +1355,14 @@
             "kioskMode": {
                 "kioskMode": "Kiosk Mode",
                 "kioskMode_tooltip": "The kiosk mode setting reflects how the computer is locked down in SEB",
-                "kioskMode_0": "Create new desktop",
-                "kioskMode_0_tooltip": "This kiosk mode may prevent specific third party software to run correctly together with SEB, like some screen recording software or the Windows onscreen keyboard.",
-                "kioskMode_1": "Disable explorer Shell",
-                "kioskMode_1_tooltip": "This kiosk mode is compatible with some screen recording/proctoring software and the Windows onscreen keyboard.",
-                "kioskMode_2": "None (for debugging only)",
-                "kioskMode_2_tooltip": "SEB runs without kiosk mode, switching to other applications is possible. Use this for debugging purposes only."
+                "items": {
+                    "0": "Create new desktop",
+                    "0_tooltip": "This kiosk mode may prevent specific third party software to run correctly together with SEB, like some screen recording software or the Windows onscreen keyboard.",
+                    "1": "Disable explorer Shell",
+                    "1_tooltip": "This kiosk mode is compatible with some screen recording/proctoring software and the Windows onscreen keyboard.",
+                    "2": "None (for debugging only)",
+                    "2_tooltip": "SEB runs without kiosk mode, switching to other applications is possible. Use this for debugging purposes only."
+                }
             },
             "overall": {
                 "title": "General Security",
@@ -1487,13 +1449,12 @@
             },
             "clipboard": {
                 "title": "Clipboard Policy",
-                "clipboardPolicy": "Clipboard Policy",
-                "clipboardPolicy_0": "Allow",
-                "clipboardPolicy_0_tooltip": "Allows the usage of the system clipboard without restrictions",
-                "clipboardPolicy_1": "Block",
-                "clipboardPolicy_1_tooltip": "Completely blocks the usage of the system clipboard by continuously cleaning the content and blocking the keyboard shortcuts for cut, copy and paste.",
-                "clipboardPolicy_2": "SEB Only",
-                "clipboardPolicy_2_tooltip": "Continuously cleaning the content of the system clipboard and enables an isolated clipboard only working within the browser application of SEB."
+                "0": "Allow",
+                "0_tooltip": "Allows the usage of the system clipboard without restrictions",
+                "1": "Block",
+                "1_tooltip": "Completely blocks the usage of the system clipboard by continuously cleaning the content and blocking the keyboard shortcuts for cut, copy and paste.",
+                "2": "SEB Only",
+                "2_tooltip": "Continuously cleaning the content of the system clipboard and enables an isolated clipboard only working within the browser application of SEB."
             },
             "sebVersion": {
                 "title": "Allowed SEB Versions",
@@ -1563,7 +1524,6 @@
             "remoteProctoringViewShow_1": "Allow to Show",
             "remoteProctoringViewShow_2": "Allow to Hide",
             "remoteProctoringViewShow_3": "Always",
-
             "screenProctoring": {
                 "title": "SEB Screen Proctoring Settings",
                 "enableScreenProctoring": "Enable Screen Proctoring",
@@ -1609,7 +1569,6 @@
             }
         }
     },
-
     "examDetail": {
         "info": {
             "url": "Url",
@@ -1623,36 +1582,28 @@
             "testRunDisable": "Disable Test Run",
             "testRunApply": "Apply Test Run",
             "testTooltip": "Test run is only activated when exam is Up Coming",
-
             "monitorExam": "Monitor Exam",
             "monitorStart": "Monitor",
             "monitorTooltip": "Monitoring is only activated when exam is running",
             "showFinishedExamData": "Show Finished Exam Data",
             "show": "Show Data",
-
             "examTemplate": "Exam Template",
-
             "examSupervisors": "Exam Supervisors",
             "supervisorUsername": "Username",
             "supervisorName": "Name",
             "supervisorSurname": "Surname",
-
             "groups": "Groups",
             "tableHeadersGroupName": "Name",
             "tableHeadersGroupType": "Type",
             "tableHeadersScreenProctoring": "Screen Proctoring",
-
             "quitPassword": "Quit Password",
-
             "sebSettings": "SEB Settings",
             "appNetworkSettings": "Application and Network Settings",
             "editSEBSettings": "Edit SEB Settings",
             "editAppNetworkSettings": "Edit Application and Network Settings",
             "noSEBSettings": "This Exam has no SEB settings attached yet.\nPlease attach an Exam Configuration with SEB settings first.",
             "activeSEBClientsNote": "There are currently active SEB clients connected to this exam. Therefore it is not possible to change the SEB Settings. Please make sure there are no active SEB clients connected to the Exam before edit the SEB Setting.",
-
             "downloadExamConfig": "Exam Connection Configuration",
-
             "moreExamOptions": "More Exam Options",
             "applySP": "Apply Screen Proctoring",
             "applySebLock": "Apply SEB Lock",
@@ -1662,7 +1613,6 @@
             "deleteExam": "Delete Exam"
         }
     },
-
     "monitoringExams": {
         "title": "Monitor Exams",
         "info": {
@@ -1670,8 +1620,7 @@
             "search": "Search:",
             "start": "Exam Start:",
             "examStartSearchPlaceholder": "Filter by Start Date",
-            "examNameSearchPlaceholder": "Search",
-
+            "examNameSearchPlaceholder": "Search by Exam Name",
             "filter": "Filter",
             "examType": "Exam Type",
             "examState": "Exam State",
@@ -1686,7 +1635,6 @@
             "tableHeaderStatus": "Status"
         }
     },
-
     "monitoringDialog": {
         "info": {
             "name": "Name",
@@ -1698,7 +1646,6 @@
             "startLetter": "Start Letter",
             "endLetter": "End Letter"
         },
-
         "instructionConfirm": {
             "cancel": "Cancel",
             "markCancel": "Mark Cancel",
@@ -1713,23 +1660,19 @@
             "cancelAction": "This actions marks all selected SEB clients as canceled"
         }
     },
-
     "monitoringOverview": {
         "warning": {
             "notExist": "Exam does not exist",
             "notRunning": "Exam is not Running"
         },
-
         "infos": {
             "start": "Start Date",
             "end": "End Date",
             "status": "Status"
         },
-
         "clients": {
             "total": "Total:"
         },
-
         "groups": {
             "groups": "Groups",
             "remainingClients": "Remaining Clients",
@@ -1746,7 +1689,6 @@
                 "viewList": "View List"
             }
         },
-
         "notifications": {
             "notifications": "Notifications"
         },
@@ -1761,7 +1703,6 @@
         "ask": {
             "askKey": "App Signature Keys",
             "askKeyInfo": "Number of connected ASK",
-
             "askKeyDescription": "The following App Signature Keys (ASK) have connected to this exam:",
             "askKeyConnected": " Connected"
         },
@@ -1773,7 +1714,6 @@
             "doQuit": "Quit All"
         }
     },
-
     "monitoringClients": {
         "info": {
             "clearAll": "Clear All",
@@ -1787,7 +1727,6 @@
             "quitClients": "Quit selected clients",
             "cancelClients": "Cancel selected clients"
         },
-
         "main": {
             "displayedClients": "Displayed clients:",
             "selectedClients": "Selected clients:",
@@ -1800,7 +1739,6 @@
             "tableHeaderPing": "Ping"
         }
     },
-
     "monitoringDetails": {
         "info": {
             "userNameOrSession": "User Name or Session",
@@ -1849,7 +1787,6 @@
             "granted": "Granted",
             "notGranted": "Not Granted",
             "lowConnectionsTooltip": "This key has 3 connections or less and is not granted",
-
             "grantKeyButton": "Grant Key",
             "statuses": {
                 "ALL": "All",
@@ -1902,7 +1839,6 @@
         "editExamTemplate": "Edit Exam Template",
         "galleryView": "Gallery View"
     },
-
     "warnings": {
         "no-data": "No data available",
         "no-live-data": "No live sessions available",
@@ -1929,7 +1865,6 @@
         "signOut": "Sign out",
         "accountSettings": "Account settings",
         "loggedInAs": "Logged in as",
-
         "routeNames": {
             "runningExams": "Running Exams",
             "finishedExams": "Finished Exams",
@@ -1944,21 +1879,18 @@
             "oldConnectionConfigurations": "Old Connection Configurations :)",
             "oldAssessmentTools": "Old Assessment Tools :)"
         },
-
         "screenReader": {
             "titleImage": "SEB Server Homepage",
             "navigationBar": "Navigation Bar",
             "profile": "Profile"
         }
     },
-
     "changePasswordDialog": {
         "title": "Change password",
         "currentPassword": "Current password *",
         "newPassword": "New password *",
         "confirmPassword": "Confirm password *"
     },
-
     "searchForm": {
         "examName": "Exam name",
         "groupName": "Group name",
@@ -1976,27 +1908,23 @@
         "cancel": "Cancel",
         "search": "Search"
     },
-
     "searchPage": {
         "title": "Search results",
         "collapse": "Collapse",
         "expand": "Expand"
     },
-
     "timePeriod": {
         "day": "Days",
         "week": "Weeks",
         "month": "Months",
         "year": "Years"
     },
-
     "$vuetify": {
         "dataIterator": {
             "rowsPerPageText": "Items per page:",
             "pageText": "{0}-{1} of {2}"
         }
     },
-
     "errors": {
         "backend": {
             "title": {
@@ -2024,34 +1952,26 @@
                 "1010": "Illegal API argument",
                 "1100": "Unexpected server error",
                 "1101": "Integrity validation failed",
-
                 "1200": "Field validation error",
                 "1300": "Password mismatch",
                 "1301": "Missing password",
                 "1302": "LMS warnings",
-
                 "1400": "Exam consistency: no supporter",
                 "1401": "Exam consistency: no SEB configuration",
                 "1402": "Exam consistency: LMS restriction missing",
                 "1403": "Exam consistency: no indicator",
                 "1404": "Exam consistency: no LMS connection",
                 "1405": "Exam consistency: invalid exam–course reference",
-
                 "1500": "External service binding error",
-
                 "1600": "Exam import: partial success (setup issues)",
                 "1601": "Exam import: failed to create indicator(s)",
                 "1602": "Exam import: failed to create attributes",
                 "1603": "Exam import: failed to apply SEB restriction",
-
                 "1604": "Exam import: partial success",
                 "1605": "Exam import: partial success",
-
                 "1610": "Exam import: failed to create/link configuration",
                 "1611": "Exam import: failed to link auto configuration",
-
                 "1700": "Client connection integrity violation",
-
                 "1800": "Additional confirmation required"
             },
             "fallbackLine": "{systemMessage} — {details}"
@@ -2074,36 +1994,27 @@
             "minlength": "{field} is too short.",
             "maxlength": "{field} is too long.",
             "pattern": "{field} has an invalid format.",
-
             "size": "{field} has an invalid length.",
             "max": "{field} is too long.",
             "notNull": "{field} is required.",
             "mandatory": "{field} is required.",
-
             "exists": "{field} already exists. Please choose another one.",
             "email": "{field} is not a valid email address.",
-
             "invalidURL": "{field} is not a valid URL.",
             "invalidIP": "{field} is not a valid IPv4 address.",
             "invalidIPRange": "{field} is not a valid IP range.",
             "invalidAlphaRange": "{field} is not a valid alphabetical range.",
-
             "invalidDateRange": "{field} is an invalid date range.",
             "endBeforeStart": "{field} is an invalid date range (end before start).",
-
             "wrong": "{field} is wrong.",
             "mismatch": "{field} does not match.",
-
             "serverNotAvailable": "{field} cannot be reached (service not available).",
             "noservice": "{field} does not provide the expected service.",
             "noaccess": "{field} access was not granted. Please check the credentials.",
             "noAccess": "{field} access was denied.",
-
             "typeInvalid": "{field} is not supported yet.",
-
             "thresholdDuplicate": "{field} contains duplicate threshold values.",
             "thresholdEmpty": "{field} is missing threshold values or colors.",
-
             "changeDeniedActiveClients": "{field} cannot be changed while there are active SEB client connections.",
             "collecting-strategy-not-changeable": "{field} cannot be changed once created.",
             "group-not-deletable": "{field} cannot be deleted because it contains data.",

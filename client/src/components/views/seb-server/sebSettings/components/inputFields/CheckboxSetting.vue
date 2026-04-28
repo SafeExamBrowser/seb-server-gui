@@ -3,14 +3,9 @@
         <v-checkbox-btn
             v-model="boolVal"
             max-width="600"
-            :disabled="sebSettingsStore.readonly || disabled"
+            :disabled="disabled"
             :label="translate(label)"
-            @update:model-value="
-                sebSettingsStore.saveSingleValue(
-                    name,
-                    boolVal ? 'true' : 'false',
-                )
-            "
+            @update:model-value="save"
         ></v-checkbox-btn>
         <v-tooltip
             v-if="tooltip"
@@ -24,25 +19,31 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import { translate } from "@/utils/generalUtils";
-import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
-
-const sebSettingsStore = useSEBSettingsStore();
-const boolVal = ref<boolean>(false);
+import { SEBSettingsSingeValueModel } from "../../types";
 
 const props = defineProps<{
+    modelValue: SEBSettingsSingeValueModel;
     name: string;
     label: string;
     tooltip?: boolean;
     disabled?: boolean;
 }>();
 
+const boolVal = ref<boolean>(props.modelValue.getBooleanValue(props.name));
+
 defineExpose({
     boolVal,
 });
 
-onMounted(() => {
-    boolVal.value = sebSettingsStore.getBooleanValue(props.name);
-});
+const emit = defineEmits(["saved"]);
+
+async function save() {
+    props.modelValue.saveSingleValue(
+        props.name,
+        boolVal.value ? "true" : "false",
+    );
+    emit("saved");
+}
 </script>

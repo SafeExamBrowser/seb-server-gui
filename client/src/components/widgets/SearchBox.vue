@@ -3,7 +3,7 @@
         :model-value="modelValue"
         color="primary"
         data-testid="search-input"
-        density="comfortable"
+        density="compact"
         hide-details
         :placeholder="translate(searchText)"
         type="text"

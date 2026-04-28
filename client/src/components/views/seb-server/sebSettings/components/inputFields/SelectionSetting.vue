@@ -2,15 +2,14 @@
     <v-col>
         <v-select
             v-model="selectValue"
+            max-width="600"
             density="compact"
             :label="translate(label)"
-            :disabled="sebSettingsStore.readonly || disabled"
+            :disabled="disabled"
             hide-details
             :items="selectAttributes"
             variant="outlined"
-            @update:model-value="
-                sebSettingsStore.saveSingleValue(name, selectValue)
-            "
+            @update:model-value="modelValue.saveSingleValue(name, selectValue)"
         >
         </v-select>
         <v-tooltip
@@ -25,12 +24,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import { translate } from "@/utils/generalUtils";
-import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
+import { SEBSettingsSingeValueModel, SEBValueAttributes } from "../../types";
 
-const sebSettingsStore = useSEBSettingsStore();
 const props = defineProps<{
+    modelValue: SEBSettingsSingeValueModel;
     name: string;
     label: string;
     labels?: boolean;
@@ -38,19 +37,15 @@ const props = defineProps<{
     disabled?: boolean;
 }>();
 
-const selectValue = ref<string>("");
-const selectAttributes = ref<{ title: string; value: string }[]>([]);
-
-defineExpose({
-    selectValue,
-});
-
-onMounted(() => {
-    selectValue.value = sebSettingsStore.getStringValue(props.name);
-    sebSettingsStore.applyAttributes(
+const selectValue = ref<string>(props.modelValue.getStringValue(props.name));
+const selectAttributes = ref<SEBValueAttributes[]>(
+    props.modelValue.getAttributes(
         props.name,
         props.labels ? props.label : null,
-        selectAttributes.value,
-    );
-});
+    ),
+);
+
+// defineExpose({
+//     selectValue,
+// });
 </script>

@@ -1,0 +1,217 @@
+<template>
+    <LoadingFallbackComponent
+        :loading="loadingSebSettingsView"
+        :errors="errorSebSettingsView"
+    >
+        <v-row v-if="singleValues">
+            <v-col class="text-subtitle-1">
+                <SettingsTitle
+                    label="sebSettings.hotKeys.title"
+                    :tooltip="true"
+                />
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="enableEsc"
+                        label="sebSettings.hotKeys.enableEsc"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="enableCtrlEsc"
+                        label="sebSettings.hotKeys.enableCtrlEsc"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="enableAltEsc"
+                        label="sebSettings.hotKeys.enableAltEsc"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="enableAltTab"
+                        label="sebSettings.hotKeys.enableAltTab"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="enableAltF4"
+                        label="sebSettings.hotKeys.enableAltF4"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="enableStartMenu"
+                        label="sebSettings.hotKeys.enableStartMenu"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="enableRightMouse"
+                        label="sebSettings.hotKeys.enableRightMouse"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="enableAltMouseWheel"
+                        label="sebSettings.hotKeys.enableAltMouseWheel"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="enableF1"
+                        label="sebSettings.hotKeys.enableF1"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="enableF2"
+                        label="sebSettings.hotKeys.enableF2"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="enableF3"
+                        label="sebSettings.hotKeys.enableF3"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="enableF4"
+                        label="sebSettings.hotKeys.enableF4"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="enableF5"
+                        label="sebSettings.hotKeys.enableF5"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="enableF6"
+                        label="sebSettings.hotKeys.enableF6"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="enableF7"
+                        label="sebSettings.hotKeys.enableF7"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="enableF8"
+                        label="sebSettings.hotKeys.enableF8"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="enableF9"
+                        label="sebSettings.hotKeys.enableF9"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="enableF10"
+                        label="sebSettings.hotKeys.enableF10"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />>
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="enableF11"
+                        label="sebSettings.hotKeys.enableF11"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="enableF12"
+                        label="sebSettings.hotKeys.enableF12"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+            </v-col>
+
+            <v-col class="text-subtitle-1"> </v-col>
+        </v-row>
+    </LoadingFallbackComponent>
+</template>
+
+<script setup lang="ts">
+import { ViewType } from "@/models/seb-server/sebSettingsEnums";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import CheckboxSetting from "./components/inputFields/CheckboxSetting.vue";
+import SettingsTitle from "./components/SettingsTitle.vue";
+import { useSEBSettingValues } from "./composables/useSEBSettingValues";
+import { SEBSettingsContext } from "./types";
+
+const props = defineProps<{
+    context: SEBSettingsContext;
+}>();
+
+const { singleValues, loadingSebSettingsView, errorSebSettingsView } =
+    useSEBSettingValues(
+        props.context.isExam,
+        props.context.containerId,
+        ViewType.HOOKED_KEYS,
+    );
+</script>

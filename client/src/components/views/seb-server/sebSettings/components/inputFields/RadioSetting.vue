@@ -2,8 +2,9 @@
     <v-col class="pt-0 pb-0 pl-0">
         <v-radio-group
             v-model="radioValue"
-            :disabled="sebSettingsStore.readonly || disabled"
+            :disabled="disabled"
             hide-details
+            :label="showLabel ? translate(label + '.title') : ''"
             @update:model-value="save"
         >
             <v-radio
@@ -26,25 +27,36 @@
                 </v-tooltip>
             </v-radio>
         </v-radio-group>
+        <v-tooltip
+            v-if="labelTooltip"
+            activator="parent"
+            location="top left"
+            max-width="400"
+        >
+            {{ translate(props.label + "_tooltip") }}
+        </v-tooltip>
     </v-col>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import { translate } from "@/utils/generalUtils";
-import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
-
-const sebSettingsStore = useSEBSettingsStore();
-
-const radioValue = ref<string>("0");
-const radioAttributes = ref<{ title: string; value: string }[]>([]);
+import { SEBSettingsSingeValueModel, SEBValueAttributes } from "../../types";
 
 const props = defineProps<{
+    modelValue: SEBSettingsSingeValueModel;
     name: string;
     label: string;
+    showLabel?: boolean;
+    labelTooltip?: boolean;
     tooltip?: boolean;
     disabled?: boolean;
 }>();
+
+const radioValue = ref<string>(props.modelValue.getStringValue(props.name));
+const radioAttributes = ref<SEBValueAttributes[]>(
+    props.modelValue.getAttributes(props.name, null),
+);
 
 defineExpose({
     radioValue,
@@ -52,13 +64,8 @@ defineExpose({
 
 const emit = defineEmits(["saved"]);
 
-onMounted(() => {
-    radioValue.value = sebSettingsStore.getStringValue(props.name);
-    sebSettingsStore.applyAttributes(props.name, null, radioAttributes.value);
-});
-
 async function save() {
-    sebSettingsStore.saveSingleValue(props.name, radioValue.value);
+    props.modelValue.saveSingleValue(props.name, radioValue.value);
     emit("saved");
 }
 </script>

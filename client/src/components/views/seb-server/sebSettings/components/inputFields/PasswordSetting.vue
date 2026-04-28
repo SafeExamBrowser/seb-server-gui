@@ -12,7 +12,7 @@
                     :type="passwordVisible ? 'text' : 'password'"
                     validate-on="eager"
                     variant="outlined"
-                    :disabled="sebSettingsStore.readonly || disabled"
+                    :disabled="disabled"
                     max-width="600"
                     @update:focused="savePassword($event)"
                 >
@@ -39,7 +39,7 @@
                     required
                     :rules="[confirmPasswordRule]"
                     :type="confirmPasswordVisible ? 'text' : 'password'"
-                    :disabled="sebSettingsStore.readonly || disabled"
+                    :disabled="disabled"
                     validate-on="eager"
                     variant="outlined"
                     max-width="600"
@@ -67,28 +67,26 @@
 
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import { translate } from "@/utils/generalUtils";
-import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
+import { SEBSettingsSingeValueModel } from "../../types";
 
-const sebSettingsStore = useSEBSettingsStore();
 const i18n = useI18n();
 
-const password = ref<string>("");
-const passwordVisible = ref<boolean>(false);
-const confirmPassword = ref<string>("");
-const confirmPasswordVisible = ref<boolean>(false);
-
 const props = defineProps<{
+    modelValue: SEBSettingsSingeValueModel;
     name: string;
     label: string;
     confirmLabel: string;
     disabled?: boolean;
 }>();
 
-defineExpose({
-    password,
-});
+const password = ref<string>(props.modelValue.getStringValue(props.name));
+const passwordVisible = ref<boolean>(false);
+const confirmPassword = ref<string>(
+    props.modelValue.getStringValue(props.name),
+);
+const confirmPasswordVisible = ref<boolean>(false);
 
 let clearValidations = false;
 
@@ -123,18 +121,13 @@ const confirmPasswordRule = () => {
 const passwordFieldRef = ref();
 const confirmPasswordFieldRef = ref();
 
-onMounted(() => {
-    password.value = sebSettingsStore.getStringValue(props.name);
-    confirmPassword.value = sebSettingsStore.getStringValue(props.name);
-});
-
 async function savePassword(focusIn: boolean) {
     if (focusIn) return;
     if (password.value === confirmPassword.value) {
         if (!password.value) {
-            sebSettingsStore.saveSingleValue(props.name, "");
+            props.modelValue.saveSingleValue(props.name, "");
         } else if (password.value.trim() === password.value) {
-            sebSettingsStore.saveSingleValue(props.name, password.value);
+            props.modelValue.saveSingleValue(props.name, password.value);
         }
     }
 }

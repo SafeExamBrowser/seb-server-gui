@@ -16,15 +16,10 @@
         </v-row>
     </v-container>
 
-    <v-card
-        :key="reloadSettings"
-        :params="init_store"
-        class="pa-5"
-        variant="text"
-    >
+    <v-card :key="reloadSettings" class="pa-5" variant="text">
         <v-row>
             <v-col>
-                <SEBSettingsPanel />
+                <SEBSettingsPanel :context="seb_settings_context" />
             </v-col>
         </v-row>
     </v-card>
@@ -35,8 +30,8 @@
         name-prefix="sebSettings"
         icon="mdi-file-upload-outline"
         :seb-settings-id="
-            sebSettingsStore.selectedContainerId
-                ? sebSettingsStore.selectedContainerId.toString()
+            stepNamingStore.configurationTemplate
+                ? stepNamingStore.configurationTemplate.toString()
                 : null
         "
         :show-quit-password="true"
@@ -46,16 +41,16 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ComputedRef, ref } from "vue";
 import { ConfigurationTemplateKey } from "@/models/seb-server/configurationNode";
-import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
 import { useStepNamingStore } from "@/components/views/seb-server/exam-template/wizard/components/stepNaming/composables/store/useStepNamingStore";
 import SectionSubtitle from "@/components/widgets/SectionSubtitle.vue";
 import AddButton from "@/components/widgets/AddButton.vue";
-import SEBSettingsPanel from "@/components/views/seb-server/settings/composables/SEBSettingsPanel.vue";
+import SEBSettingsPanel from "@/components/views/seb-server/sebSettings/components/SEBSettingsPanel.vue";
 import UploadDialog from "@/components/widgets/UploadDialog.vue";
+import { SEBSettingsContext } from "@/components/views/seb-server/sebSettings/types";
 
-const sebSettingsStore = useSEBSettingsStore();
+const stepNamingStore = useStepNamingStore();
 
 const configKey = defineModel<ConfigurationTemplateKey | undefined>({
     required: true,
@@ -70,24 +65,24 @@ async function onConfigImported() {
     reloadSettings.value += 1;
 }
 
-const init_store = computed(() => {
+const seb_settings_context: ComputedRef<SEBSettingsContext> = computed(() => {
     if (configKey.value) {
-        const sebSettingsStore = useSEBSettingsStore();
         const stepNamingStore = useStepNamingStore();
-
-        if (sebSettingsStore.selectedContainerId == null) {
-            sebSettingsStore.isExam = false;
-            sebSettingsStore.readonly = false;
-            if (configKey.value.id) {
-                sebSettingsStore.selectedContainerId = parseInt(
-                    configKey.value.id,
-                );
-                stepNamingStore.configurationTemplate = configKey.value.id;
-            }
+        if (configKey.value.id) {
+            stepNamingStore.configurationTemplate = configKey.value.id;
+            return {
+                isExam: false,
+                containerId: configKey.value.id,
+                readonly: false,
+                ignoreSEBService: ref<boolean>(false),
+            };
         }
-
-        return true;
     }
-    return false;
+    return {
+        isExam: false,
+        containerId: "",
+        readonly: false,
+        ignoreSEBService: ref<boolean>(false),
+    };
 });
 </script>

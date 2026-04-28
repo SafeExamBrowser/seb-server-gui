@@ -3,7 +3,7 @@
         <v-text-field
             v-model="textVal"
             density="compact"
-            :disabled="sebSettingsStore.readonly || disabled"
+            :disabled="disabled"
             :label="showLabel ? translate(label) : ''"
             variant="outlined"
             hide-details
@@ -22,14 +22,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import { translate } from "@/utils/generalUtils";
-import { useSEBSettingsStore } from "@/stores/seb-server/sebSettingsStore";
-
-const sebSettingsStore = useSEBSettingsStore();
-const textVal = ref<string>("");
+import { SEBSettingsSingeValueModel } from "../../types";
 
 const props = defineProps<{
+    modelValue: SEBSettingsSingeValueModel;
     name: string;
     label: string;
     showLabel?: boolean;
@@ -37,20 +35,18 @@ const props = defineProps<{
     disabled?: boolean;
 }>();
 
+const textVal = ref<string>(props.modelValue.getStringValue(props.name));
+
 defineExpose({
     textVal,
-});
-
-onMounted(() => {
-    textVal.value = sebSettingsStore.getStringValue(props.name);
 });
 
 async function saveOnFocusLost(focusIn: boolean) {
     if (!focusIn) {
         if (textVal.value) {
-            sebSettingsStore.saveSingleValue(props.name, textVal.value);
+            props.modelValue.saveSingleValue(props.name, textVal.value);
         } else {
-            sebSettingsStore.saveSingleValue(props.name, "");
+            props.modelValue.saveSingleValue(props.name, "");
         }
     }
 }
