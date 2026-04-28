@@ -447,7 +447,10 @@ import TextSetting from "./components/inputFields/TextSetting.vue";
 import SelectionSetting from "./components/inputFields/SelectionSetting.vue";
 import NumberSetting from "./components/inputFields/NumberSetting.vue";
 import RadioSetting from "./components/inputFields/RadioSetting.vue";
-import { useSEBSettingValues } from "./composables/useSEBSettingValues";
+import {
+    useSEBSettingValues,
+    ignoreSEBService,
+} from "./composables/useSEBSettingValues";
 import { SEBSettingsContext } from "./types";
 import SEBVersionSetting from "./components/inputFields/SEBVersionSetting.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
@@ -467,12 +470,9 @@ const igonreSEBServiceRef = useTemplateRef("sebServiceIgnore");
 
 function notifyEBServiceIgnore() {
     if (!singleValues) return;
+
     if (igonreSEBServiceRef.value) {
-        // propagate ignoreSEBService value to Registry page
-        if (props.context.ignoreSEBService) {
-            // Note: @anhefti, this seems to work but cannot be commited --> error
-            //props.context.ignoreSEBService.value = igonreSEBServiceRef.value.boolVal;
-        }
+        ignoreSEBService.value = igonreSEBServiceRef.value.boolVal;
     }
 }
 </script>

@@ -1,6 +1,6 @@
 import { ViewType } from "@/models/seb-server/sebSettingsEnums";
 import { useFetchViewValues } from "./api/useFetchViewValues";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { stringToBoolean } from "@/utils/generalUtils";
 import { translate } from "@/utils/generalUtils";
 import * as sebSettingsService from "@/services/seb-server/sebSettingsService";
@@ -15,6 +15,11 @@ import {
     SEBSettingsTableModel,
     SEBValueAttributes,
 } from "../types";
+
+// This is used for inter tab communication of Security tab and Registry tab.
+// The Security tab ignoreSEBService set this value on change and the Registry
+// tab uses it to enable/disable its inputs like it is defined in the spec.
+export const ignoreSEBService = ref<boolean>(false);
 
 export const useSEBSettingValues = (
     isExam: boolean,

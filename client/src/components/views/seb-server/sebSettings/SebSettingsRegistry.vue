@@ -125,9 +125,11 @@ import { ViewType } from "@/models/seb-server/sebSettingsEnums";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import CheckboxSetting from "./components/inputFields/CheckboxSetting.vue";
 import SettingsTitle from "./components/SettingsTitle.vue";
-import { useSEBSettingValues } from "./composables/useSEBSettingValues";
+import {
+    useSEBSettingValues,
+    ignoreSEBService,
+} from "./composables/useSEBSettingValues";
 import { SEBSettingsContext } from "./types";
-import { watch, ref } from "vue";
 
 const props = defineProps<{
     context: SEBSettingsContext;
@@ -139,12 +141,4 @@ const { singleValues, loadingSebSettingsView, errorSebSettingsView } =
         props.context.containerId,
         ViewType.REGISTRY,
     );
-
-// NOTE: anhefti, This is to react on changes of ignoreSEBService in the Security tab.
-//                I tried to directly use props.context.ignoreSEBService for the components but it didn't work
-//                Roundabout over watch and ignoreSEBService works
-const ignoreSEBService = ref<boolean>(props.context.ignoreSEBService.value);
-watch(props.context.ignoreSEBService, () => {
-    ignoreSEBService.value = props.context.ignoreSEBService.value;
-});
 </script>

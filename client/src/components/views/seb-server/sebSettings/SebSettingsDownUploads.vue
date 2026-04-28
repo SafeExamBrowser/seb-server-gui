@@ -126,7 +126,7 @@
                 <!-- UPLOAD TYPE LIST
                 TODO: @anhefti try to make SEB Settings lists composable. 
                 Use better (more generic model) for the table values, see sebSettings.SEBSettingsTableRow model
-            -->
+                -->
                 <v-row class="font-weight-bold pt-8 pb-0">
                     <v-col class="text-subtitle-1">
                         <v-row>
@@ -296,6 +296,10 @@ watch(tableValues, () => {
 
     updateFileTypesTable(fileTypes);
 });
+
+// UPLOAD TYPE LIST
+// TODO: @anhefti try to make SEB Settings lists composable.
+// Use better (more generic model) for the table values, see sebSettings.SEBSettingsTableRow model
 
 const downloadFileTypesDialog = ref<boolean>(false);
 const selectedDownloadFileType = ref<FileExtensionEntry | null>(null);

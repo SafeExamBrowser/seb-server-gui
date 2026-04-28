@@ -597,6 +597,10 @@ watch(tableValues, () => {
     updateURLFilterRulesTable(urlFilterRules);
 });
 
+// URL FILTER LIST
+// TODO: @anhefti try to make SEB Settings lists composable.
+// Use better (more generic model) for the table values, see sebSettings.SEBSettingsTableRow model
+
 // url filter
 const editURLFilterRuleDialog = ref<boolean>(false);
 const selectedURLFilterRule = ref<URLFilterRule | null>(null);

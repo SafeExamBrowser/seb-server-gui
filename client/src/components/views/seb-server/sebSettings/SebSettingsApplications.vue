@@ -283,6 +283,10 @@ const {
 
 const i18n = useI18n();
 
+// PERMITTED PROCESS LIST
+// TODO: @anhefti try to make SEB Settings lists composable.
+// Use better (more generic model) for the table values, see sebSettings.SEBSettingsTableRow model
+
 const editPermittedProcessDialog = ref<boolean>(false);
 const selectedPermittedProcess = ref<PermittedProcess | null>(null);
 const permittedProcessHeadersRef = ref<(HTMLElement | null)[]>([]);
@@ -329,6 +333,10 @@ const permittedProcessHeaders = ref([
         center: true,
     },
 ]);
+
+// PROHIBITED PROCESS LIST
+// TODO: @anhefti try to make SEB Settings lists composable.
+// Use better (more generic model) for the table values, see sebSettings.SEBSettingsTableRow model
 
 // prohibited processes
 const editProhibitedProcessDialog = ref<boolean>(false);
@@ -873,7 +881,7 @@ function argumentsToString(args: PermittedProcessArgument[]): string {
 function getPermittedProcessArguments(
     args: string | null,
 ): PermittedProcessArgument[] | [] {
-    // args = active=true|argument=arg1,active=true|argument=arg2,...
+    // NOTE args = active=true|argument=arg1,active=true|argument=arg2,...
     const result: PermittedProcessArgument[] = [];
     if (args == null || args.length === 0) {
         return result;
