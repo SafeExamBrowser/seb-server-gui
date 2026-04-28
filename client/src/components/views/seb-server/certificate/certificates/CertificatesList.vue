@@ -7,6 +7,8 @@
                 :label-activator="
                     $t('certificates.createDialog.addButtonTitle')
                 "
+                size-activator="large"
+                label-activator-visible
                 :label-cancel="$t('general.cancelButton')"
                 :label-submit="
                     $t('certificates.createDialog.confirmButtonTitle')

@@ -2,14 +2,18 @@
     <v-btn
         ref="activatorRef"
         :disabled="disabled"
-        :icon="iconActivator"
+        :append-icon="iconActivator"
         :color="colorActivator"
         variant="text"
         density="compact"
         :size="sizeActivator"
         :title="labelActivator"
         :aria-label="labelActivator"
-    ></v-btn>
+    >
+        <span v-if="labelActivatorVisible" class="text-capitalize">
+            {{ labelActivator }}
+        </span>
+    </v-btn>
     <v-dialog
         v-model="isDialogOpen"
         :activator="activatorRef"
@@ -72,6 +76,7 @@ const props = withDefaults(
         colorActivator: string;
         sizeActivator?: string;
         labelActivator: string;
+        labelActivatorVisible?: boolean;
         labelCancel: string;
         labelSubmit: string;
         formId: string;
@@ -84,6 +89,7 @@ const props = withDefaults(
     {
         disabled: false,
         sizeActivator: undefined,
+        labelActivatorVisible: false,
     },
 );
 
