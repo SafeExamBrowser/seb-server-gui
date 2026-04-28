@@ -10,7 +10,7 @@
         :title="labelActivator"
         :aria-label="labelActivator"
     >
-        <span v-if="labelActivatorVisible" class="text-capitalize">
+        <span v-if="labelActivatorVisible">
             {{ labelActivator }}
         </span>
     </v-btn>
