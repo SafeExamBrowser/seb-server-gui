@@ -36,7 +36,6 @@ export default ({ mode, command }) => {
             VueRouter({
                 routesFolder: [
                     {
-                        //specif
                         src: "src/pages",
                         exclude: [
                             "**/components/**",

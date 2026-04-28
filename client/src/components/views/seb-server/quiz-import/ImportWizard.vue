@@ -90,7 +90,7 @@
                                 v-for="(
                                     stepItem, index
                                 ) in quizImportStore.steps"
-                                :key="stepItem"
+                                :key="stepItem.value"
                             >
                                 <v-stepper-vertical-item
                                     color="#215CAF"

@@ -4,6 +4,7 @@
         "jsx": "preserve",
         "lib": ["DOM", "ESNext"],
         "baseUrl": ".",
+        "rootDir": ".",
         "module": "ESNext",
         "moduleResolution": "Bundler",
         "allowImportingTsExtensions": true,
