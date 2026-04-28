@@ -1,23 +1,25 @@
 <template>
     <BasicSettingsPage :title="$t('titles.certificates')">
         <template #ActionButton>
-            <FormDialog
-                icon-activator="mdi-plus-circle-outline"
-                color-activator="primary"
-                :label-activator="
-                    $t('certificates.createDialog.addButtonTitle')
-                "
-                size-activator="large"
-                label-activator-visible
-                :label-cancel="$t('general.cancelButton')"
-                :label-submit="
-                    $t('certificates.createDialog.confirmButtonTitle')
-                "
-                form-id="form-certificate-upload"
-                :get-form-fields="getFormFields"
-                :get-item="getEmptyItem"
-                :on-submit="handleUploadCertificate"
-            />
+            <div class="d-flex justify-end align-center fill-height">
+                <FormDialog
+                    icon-activator="mdi-plus-circle-outline"
+                    color-activator="primary"
+                    :label-activator="
+                        $t('certificates.createDialog.addButtonTitle')
+                    "
+                    size-activator="large"
+                    label-activator-visible
+                    :label-cancel="$t('general.cancelButton')"
+                    :label-submit="
+                        $t('certificates.createDialog.confirmButtonTitle')
+                    "
+                    form-id="form-certificate-upload"
+                    :get-form-fields="getFormFields"
+                    :get-item="getEmptyItem"
+                    :on-submit="handleUploadCertificate"
+                />
+            </div>
         </template>
 
         <template #PanelMain>
