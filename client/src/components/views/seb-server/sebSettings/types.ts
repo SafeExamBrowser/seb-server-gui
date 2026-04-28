@@ -4,6 +4,7 @@ import {
     SEBSettingsTableRowValues,
     SEBSettingTableValue,
 } from "@/models/seb-server/sebSettings";
+import { Ref } from "vue";
 
 export type SEBSettingsContext = {
     isExam: boolean;
@@ -35,7 +36,6 @@ export type SEBSettingsSingeValueModel = {
 // Also provides some row value accessors and a persistent function to save the value to backend
 export type SEBSettingsTableModel = {
     tableValues: Map<string, SEBSettingsTableRowValues[]>;
-    //attributes: Map<string, SEBSettingAttribute>;
 
     addTableRow(name: string): Promise<SEBSettingsTableRowValues | null>;
     deleteTableRow(
@@ -43,4 +43,15 @@ export type SEBSettingsTableModel = {
         index: number,
     ): Promise<SEBSettingsTableRowValues[] | null>;
     saveTableRow(values: SEBSettingTableValue[]): void;
+};
+
+export type SettingsTable<T> = {
+    table: Ref<T[]>;
+    selectedRow: Ref<T | null>;
+    dialog: Ref<boolean>;
+
+    editRow: (index: number) => void;
+    newRow: () => void;
+    deleteRow: (index: number) => void;
+    closeDialog: (apply?: boolean) => void;
 };

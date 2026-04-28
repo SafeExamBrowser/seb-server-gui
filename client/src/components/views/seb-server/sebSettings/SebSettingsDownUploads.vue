@@ -123,10 +123,6 @@
                     />
                 </v-row>
 
-                <!-- UPLOAD TYPE LIST
-                TODO: @anhefti try to make SEB Settings lists composable. 
-                Use better (more generic model) for the table values, see sebSettings.SEBSettingsTableRow model
-                -->
                 <v-row class="font-weight-bold pt-8 pb-0">
                     <v-col class="text-subtitle-1">
                         <v-row>
@@ -137,12 +133,13 @@
                             }}</v-col>
                             <v-col align="right">
                                 <v-btn
+                                    v-if="fileTypeTable"
                                     color="primary"
                                     density="compact"
                                     :disabled="context.readonly"
                                     icon="mdi-plus-circle-outline"
                                     variant="text"
-                                    @click="newFileType()"
+                                    @click="fileTypeTable.newRow()"
                                 >
                                 </v-btn>
                             </v-col>
@@ -157,19 +154,20 @@
                 <v-row>
                     <v-col>
                         <v-data-table
+                            v-if="fileTypeTable"
                             class="rounded-lg elevation-4"
                             density="compact"
-                            :headers="downloadFileTypesHeaders"
+                            :headers="tableHeaders"
                             item-value="id"
-                            :items="downloadFileTypesTable"
+                            :items="fileTypeTable.table.value"
                             :items-per-page="
                                 tableUtils.calcDefaultItemsPerPage(
-                                    downloadFileTypesTable,
+                                    fileTypeTable.table.value,
                                 )
                             "
                             :items-per-page-options="
                                 tableUtils.calcItemsPerPage(
-                                    downloadFileTypesTable,
+                                    fileTypeTable.table.value,
                                 )
                             "
                         >
@@ -184,7 +182,7 @@
                                 <TableHeaders
                                     :columns="columns"
                                     :get-sort-icon="getSortIcon"
-                                    :header-refs-prop="downloadFileTypesRef"
+                                    :header-refs-prop="HeaderRefs"
                                     :is-sorted="isSorted"
                                     :toggle-sort="toggleSort"
                                 >
@@ -217,7 +215,7 @@
                                 <v-btn
                                     icon="mdi-pencil-outline"
                                     variant="text"
-                                    @click="fileTypeOpenEditDialog(item.index)"
+                                    @click="fileTypeTable.editRow(item.index)"
                                 >
                                 </v-btn>
                             </template>
@@ -228,7 +226,9 @@
                                     :disabled="context.readonly"
                                     icon="mdi-delete-outline"
                                     variant="text"
-                                    @click="deleteFileType(item.index!)"
+                                    @click="
+                                        fileTypeTable.deleteRow(item.index!)
+                                    "
                                 >
                                 </v-btn>
                             </template>
@@ -239,11 +239,15 @@
         </v-row>
 
         <!-----------edit download file type dialog---------->
-        <v-dialog v-model="downloadFileTypesDialog" max-width="800">
+        <v-dialog
+            v-if="fileTypeTable"
+            v-model="fileTypeTable.dialog.value"
+            max-width="800"
+        >
             <EditFileDownloadRule
                 :read-only="context.readonly"
-                :file-type="selectedDownloadFileType"
-                @close-file-type-dialog="closeFileTypeDialog"
+                :file-type="fileTypeTable.selectedRow.value"
+                @close-file-type-dialog="fileTypeTable.closeDialog"
             >
             </EditFileDownloadRule>
         </v-dialog>
@@ -254,12 +258,6 @@
 import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums";
-import { ref, watch } from "vue";
-import {
-    SEBSettingsTableRowValues,
-    SEBSettingsValue,
-    FileExtensionEntry,
-} from "@/models/seb-server/sebSettings";
 import * as tableUtils from "@/utils/table/tableUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import EditFileDownloadRule from "./components/tableDialogs/EditFileDownloadRule.vue";
@@ -270,6 +268,7 @@ import TextSetting from "./components/inputFields/TextSetting.vue";
 import { useSEBSettingValues } from "./composables/useSEBSettingValues";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { SEBSettingsContext } from "./types";
+import { HeaderRefs, useFileTypeTable } from "./composables/useFileTypeTable";
 
 const i18n = useI18n();
 
@@ -288,191 +287,8 @@ const {
     ViewType.DOWN_UPLOAD,
 );
 
-watch(tableValues, () => {
-    if (!tableValues.value) return;
-
-    const fileTypes = tableValues.value.tableValues.get("downloadFileTypes");
-    if (!fileTypes) return;
-
-    updateFileTypesTable(fileTypes);
-});
-
-// UPLOAD TYPE LIST
-// TODO: @anhefti try to make SEB Settings lists composable.
-// Use better (more generic model) for the table values, see sebSettings.SEBSettingsTableRow model
-
-const downloadFileTypesDialog = ref<boolean>(false);
-const selectedDownloadFileType = ref<FileExtensionEntry | null>(null);
-const downloadFileTypesRef = ref<(HTMLElement | null)[]>([]);
-const downloadFileTypesTable = ref<FileExtensionEntry[]>([]);
-const downloadFileTypesHeaders = ref([
-    {
-        title: translate("sebSettings.updownloadView.filetypes.fileExtension"),
-        key: "fileExtension",
-        sortable: true,
-        width: "30%",
-    },
-    {
-        title: translate("sebSettings.updownloadView.filetypes.os"),
-        key: "os",
-        sortable: true,
-        width: "30%",
-    },
-    {
-        title: translate("sebSettings.updownloadView.filetypes.identifier"),
-        key: "identifier",
-        sortable: true,
-        width: "30%",
-    },
-    {
-        title: translate("general.editButton"),
-        key: "edit",
-        sortable: false,
-        width: "5%",
-        center: true,
-    },
-    {
-        title: translate("general.deleteButton"),
-        key: "delete",
-        sortable: false,
-        width: "5%",
-        center: true,
-    },
-]);
-
-// ********* File Type functions *********************
-function updateFileTypesTable(entries: SEBSettingsTableRowValues[]) {
-    downloadFileTypesTable.value.splice(0);
-    entries.forEach((item) => {
-        const rowVals = new Map<string, SEBSettingsValue>(
-            Object.entries(item.rowValues),
-        );
-        insertFileType(item.listIndex, rowVals);
-    });
-}
-
-function insertFileType(index: number, rowVals: Map<string, SEBSettingsValue>) {
-    downloadFileTypesTable.value.splice(index, 0, {
-        index,
-        os: getStringValue(rowVals, "downloadFileTypes.os"),
-        fileExtension: getStringValue(rowVals, "downloadFileTypes.extension"),
-        identifier: getStringValue(
-            rowVals,
-            "downloadFileTypes.associatedAppId",
-        ),
-        ids: {
-            os: getSettingId(rowVals, "downloadFileTypes.os"),
-            fileExtension: getSettingId(rowVals, "downloadFileTypes.extension"),
-            identifier: getSettingId(
-                rowVals,
-                "downloadFileTypes.associatedAppId",
-            ),
-        },
-    });
-}
-
-function newFileType() {
-    selectedDownloadFileType.value = {
-        index: -1,
-        os: "0",
-        fileExtension: "",
-        identifier: "",
-        ids: { os: -1, fileExtension: -1, identifier: -1 },
-    };
-    downloadFileTypesDialog.value = true;
-}
-
-async function deleteFileType(index: number) {
-    if (!tableValues.value) return;
-
-    const resp = await tableValues.value.deleteTableRow(
-        "downloadFileTypes",
-        index,
-    );
-    if (resp == null) {
-        return;
-    }
-
-    updateFileTypesTable(resp);
-}
-
-function fileTypeOpenEditDialog(index: number) {
-    selectedDownloadFileType.value = Object.assign(
-        {},
-        downloadFileTypesTable.value[index],
-    );
-    downloadFileTypesDialog.value = true;
-}
-
-async function closeFileTypeDialog(apply?: boolean) {
-    downloadFileTypesDialog.value = false;
-
-    if (!tableValues.value) return;
-    if (!apply || selectedDownloadFileType.value == null) {
-        return;
-    }
-
-    if (selectedDownloadFileType.value?.index === -1) {
-        const resp = await tableValues.value.addTableRow("downloadFileTypes");
-        if (resp == null) {
-            return;
-        }
-
-        const rowVals = new Map<string, SEBSettingsValue>(
-            Object.entries(resp.rowValues),
-        );
-
-        insertFileType(resp.listIndex, rowVals);
-        selectedDownloadFileType.value.index = resp.listIndex;
-        selectedDownloadFileType.value.ids =
-            downloadFileTypesTable.value[resp.listIndex].ids;
-    }
-
-    tableValues.value.saveTableRow([
-        {
-            id: selectedDownloadFileType.value.ids.os,
-            value: selectedDownloadFileType.value.os,
-        },
-        {
-            id: selectedDownloadFileType.value.ids.fileExtension,
-            value: selectedDownloadFileType.value.fileExtension,
-        },
-        {
-            id: selectedDownloadFileType.value.ids.identifier,
-            value: selectedDownloadFileType.value.identifier,
-        },
-    ]);
-
-    downloadFileTypesTable.value[selectedDownloadFileType.value.index] =
-        selectedDownloadFileType.value;
-}
-
-function getStringValue(
-    rowVals: Map<string, SEBSettingsValue>,
-    name: string,
-): string {
-    const prop = rowVals.get(name);
-    if (!prop) {
-        const def = singleValues.value?.attributes.get(name);
-        if (!def) {
-            throw new Error("No SEB Setting" + name + " found");
-        } else {
-            return def.defaultValue;
-        }
-    } else {
-        return prop.value;
-    }
-}
-
-function getSettingId(
-    rowVals: Map<string, SEBSettingsValue>,
-    name: string,
-): number {
-    const prop = rowVals.get(name);
-    if (!prop) {
-        throw new Error("No SEB Setting" + name + " found");
-    }
-
-    return prop?.id;
-}
+const { fileTypeTable, tableHeaders } = useFileTypeTable(
+    tableValues,
+    singleValues,
+);
 </script>

@@ -29,12 +29,13 @@
                     }}</v-col>
                     <v-col align="right">
                         <v-btn
+                            v-if="urlFilterRuleTable"
                             color="primary"
                             density="compact"
                             :disabled="context.readonly"
                             icon="mdi-plus-circle-outline"
                             variant="text"
-                            @click="newURLFilterRule()"
+                            @click="urlFilterRuleTable.newRow()"
                         >
                         </v-btn>
                     </v-col>
@@ -45,16 +46,21 @@
         <v-row>
             <v-col>
                 <v-data-table
+                    v-if="urlFilterRuleTable"
                     class="rounded-lg elevation-4"
                     density="compact"
-                    :headers="urlFilterHeaders"
+                    :headers="tableHeaders"
                     item-value="id"
-                    :items="urlFilterTable"
+                    :items="urlFilterRuleTable.table.value"
                     :items-per-page="
-                        tableUtils.calcDefaultItemsPerPage(urlFilterTable)
+                        tableUtils.calcDefaultItemsPerPage(
+                            urlFilterRuleTable.table.value,
+                        )
                     "
                     :items-per-page-options="
-                        tableUtils.calcItemsPerPage(urlFilterTable)
+                        tableUtils.calcItemsPerPage(
+                            urlFilterRuleTable.table.value,
+                        )
                     "
                 >
                     <template
@@ -68,7 +74,7 @@
                         <TableHeaders
                             :columns="columns"
                             :get-sort-icon="getSortIcon"
-                            :header-refs-prop="urlFilterHeadersRef"
+                            :header-refs-prop="HeaderRefs"
                             :is-sorted="isSorted"
                             :toggle-sort="toggleSort"
                         >
@@ -101,7 +107,7 @@
                         <v-btn
                             icon="mdi-pencil-outline"
                             variant="text"
-                            @click="urlFilterRuleOpenEditDialog(item.index)"
+                            @click="urlFilterRuleTable.editRow(item.index)"
                         >
                         </v-btn>
                     </template>
@@ -112,7 +118,7 @@
                             :disabled="context.readonly"
                             icon="mdi-delete-outline"
                             variant="text"
-                            @click="urlFilterRuleDelete(item.index!)"
+                            @click="urlFilterRuleTable.deleteRow(item.index!)"
                         >
                         </v-btn>
                     </template>
@@ -121,11 +127,15 @@
         </v-row>
 
         <!-----------edit url filter dialog---------->
-        <v-dialog v-model="editURLFilterRuleDialog" max-width="800">
+        <v-dialog
+            v-if="urlFilterRuleTable"
+            v-model="urlFilterRuleTable.dialog.value"
+            max-width="800"
+        >
             <EditURLFilterRule
                 :read-only="context.readonly"
-                :url-filter-rule="selectedURLFilterRule"
-                @close-edit-u-r-l-filter-rule="closeEditURLFilterRuleDialog"
+                :url-filter-rule="urlFilterRuleTable.selectedRow.value"
+                @close-edit-u-r-l-filter-rule="urlFilterRuleTable.closeDialog"
             >
             </EditURLFilterRule>
         </v-dialog>
@@ -551,16 +561,7 @@
 <script setup lang="ts">
 import * as tableUtils from "@/utils/table/tableUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
-import * as sebSettingsService from "@/services/seb-server/sebSettingsService";
-import { stringToBoolean, translate } from "@/utils/generalUtils";
-import { ref, watch } from "vue";
-import {
-    SEBSettingsTableRowValues,
-    SEBSettingsValue,
-    URLFilterRule,
-} from "@/models/seb-server/sebSettings";
-import EditURLFilterRule from "@/components/views/seb-server/sebSettings/components/tableDialogs/EditURLFilterRule.vue";
-
+import { translate } from "@/utils/generalUtils";
 import { useI18n } from "vue-i18n";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
@@ -570,6 +571,10 @@ import TextSetting from "./components/inputFields/TextSetting.vue";
 import NumberSetting from "./components/inputFields/NumberSetting.vue";
 import { useSEBSettingValues } from "./composables/useSEBSettingValues";
 import { SEBSettingsContext } from "./types";
+import {
+    HeaderRefs,
+    useURLFilterRuleTable,
+} from "./composables/useURLFilterTable";
 
 const i18n = useI18n();
 
@@ -588,227 +593,8 @@ const {
     ViewType.NETWORK,
 );
 
-watch(tableValues, () => {
-    if (!tableValues.value) return;
-
-    const urlFilterRules = tableValues.value.tableValues.get("URLFilterRules");
-    if (!urlFilterRules) return;
-
-    updateURLFilterRulesTable(urlFilterRules);
-});
-
-// URL FILTER LIST
-// TODO: @anhefti try to make SEB Settings lists composable.
-// Use better (more generic model) for the table values, see sebSettings.SEBSettingsTableRow model
-
-// url filter
-const editURLFilterRuleDialog = ref<boolean>(false);
-const selectedURLFilterRule = ref<URLFilterRule | null>(null);
-const urlFilterHeadersRef = ref<(HTMLElement | null)[]>([]);
-const urlFilterTable = ref<URLFilterRule[]>([]);
-const urlFilterHeaders = ref([
-    {
-        title: translate("sebSettings.networkView.URLFilterRules.active"),
-        key: "active",
-        sortable: true,
-        width: "10%",
-    },
-    {
-        title: translate("sebSettings.networkView.URLFilterRules.regex"),
-        key: "regex",
-        sortable: true,
-        width: "10%",
-    },
-    {
-        title: translate("sebSettings.networkView.URLFilterRules.expression"),
-        key: "expression",
-        sortable: true,
-        width: "50%",
-    },
-    {
-        title: translate("sebSettings.networkView.URLFilterRules.action"),
-        key: "action",
-        sortable: true,
-        width: "30%",
-    },
-    {
-        title: translate("general.editButton"),
-        key: "edit",
-        sortable: false,
-        width: "5%",
-        center: true,
-    },
-    {
-        title: translate("general.deleteButton"),
-        key: "delete",
-        sortable: false,
-        width: "5%",
-        center: true,
-    },
-]);
-
-// ********* URL Filter Rule functions *********************
-function updateURLFilterRulesTable(
-    urlFilterRules: SEBSettingsTableRowValues[],
-) {
-    urlFilterTable.value.splice(0);
-    urlFilterRules.forEach((item) => {
-        const rowVals = new Map<string, SEBSettingsValue>(
-            Object.entries(item.rowValues),
-        );
-        insertURLFilter(item.listIndex, rowVals);
-    });
-}
-
-function insertURLFilter(
-    index: number,
-    rowVals: Map<string, SEBSettingsValue>,
-) {
-    urlFilterTable.value.splice(index, 0, {
-        index,
-        active: getBooleanValue(rowVals, "URLFilterRules.active"),
-        regex: getBooleanValue(rowVals, "URLFilterRules.regex"),
-        expression: getStringValue(rowVals, "URLFilterRules.expression"),
-        action: getStringValue(rowVals, "URLFilterRules.action"),
-        ids: {
-            active: getSettingId(rowVals, "URLFilterRules.active"),
-            regex: getSettingId(rowVals, "URLFilterRules.regex"),
-            expression: getSettingId(rowVals, "URLFilterRules.expression"),
-            action: getSettingId(rowVals, "URLFilterRules.action"),
-        },
-    });
-}
-
-function newURLFilterRule() {
-    selectedURLFilterRule.value = {
-        index: -1,
-        active: true,
-        regex: false,
-        expression: "",
-        action: "0",
-        ids: { active: -1, regex: -1, expression: -1, action: -1 },
-    };
-    editURLFilterRuleDialog.value = true;
-}
-
-async function urlFilterRuleDelete(index: number) {
-    const resp: SEBSettingsTableRowValues[] | null =
-        await sebSettingsService.deleteTableRow(
-            props.context.containerId,
-            "URLFilterRules",
-            index,
-            props.context.isExam,
-        );
-    if (resp == null) {
-        return;
-    }
-
-    updateURLFilterRulesTable(resp);
-}
-
-function urlFilterRuleOpenEditDialog(index: number) {
-    selectedURLFilterRule.value = Object.assign(
-        {},
-        urlFilterTable.value[index],
-    );
-    editURLFilterRuleDialog.value = true;
-}
-
-async function closeEditURLFilterRuleDialog(apply?: boolean) {
-    editURLFilterRuleDialog.value = false;
-
-    if (!tableValues.value) return;
-    if (!apply || selectedURLFilterRule.value == null) {
-        return;
-    }
-
-    if (selectedURLFilterRule.value?.index === -1) {
-        const resp: SEBSettingsTableRowValues | null =
-            await sebSettingsService.addTableRow(
-                props.context.containerId,
-                "URLFilterRules",
-                props.context.isExam,
-            );
-        if (resp == null) {
-            return;
-        }
-
-        const rowVals = new Map<string, SEBSettingsValue>(
-            Object.entries(resp.rowValues),
-        );
-
-        insertURLFilter(resp.listIndex, rowVals);
-        selectedURLFilterRule.value.index = resp.listIndex;
-        selectedURLFilterRule.value.ids =
-            urlFilterTable.value[resp.listIndex].ids;
-    }
-
-    tableValues.value.saveTableRow([
-        {
-            id: selectedURLFilterRule.value.ids.active,
-            value: selectedURLFilterRule.value.active ? "true" : "false",
-        },
-        {
-            id: selectedURLFilterRule.value.ids.regex,
-            value: selectedURLFilterRule.value.regex ? "true" : "false",
-        },
-        {
-            id: selectedURLFilterRule.value.ids.expression,
-            value: selectedURLFilterRule.value.expression,
-        },
-        {
-            id: selectedURLFilterRule.value.ids.action,
-            value: selectedURLFilterRule.value.action,
-        },
-    ]);
-
-    urlFilterTable.value[selectedURLFilterRule.value.index] =
-        selectedURLFilterRule.value;
-}
-
-function getStringValue(
-    rowVals: Map<string, SEBSettingsValue>,
-    name: string,
-): string {
-    const prop = rowVals.get(name);
-    if (!prop) {
-        const def = singleValues.value?.attributes.get(name);
-        if (!def) {
-            throw new Error("No SEB Setting" + name + " found");
-        } else {
-            return def.defaultValue;
-        }
-    } else {
-        return prop.value;
-    }
-}
-
-function getBooleanValue(
-    rowVals: Map<string, SEBSettingsValue>,
-    name: string,
-): boolean {
-    const prop = rowVals.get(name);
-    if (!prop) {
-        const def = singleValues.value?.attributes.get(name);
-        if (!def) {
-            throw new Error("No SEB Setting" + name + " found");
-        } else {
-            return stringToBoolean(def.defaultValue);
-        }
-    } else {
-        return stringToBoolean(prop.value);
-    }
-}
-
-function getSettingId(
-    rowVals: Map<string, SEBSettingsValue>,
-    name: string,
-): number {
-    const prop = rowVals.get(name);
-    if (!prop) {
-        throw new Error("No SEB Setting" + name + " found");
-    }
-
-    return prop?.id;
-}
+const { urlFilterRuleTable, tableHeaders } = useURLFilterRuleTable(
+    tableValues,
+    singleValues,
+);
 </script>
