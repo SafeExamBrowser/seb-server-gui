@@ -4,7 +4,9 @@ import Vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
 import { defineConfig, loadEnv } from "vite";
 import { fileURLToPath, URL } from "node:url";
 import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite";
-import { z } from "zod";
+import VueRouter from "vue-router/vite";
+
+import src, { z } from "zod";
 
 export const parseEnv = () => {
     const envResult = z
@@ -31,6 +33,26 @@ export default ({ mode, command }) => {
         },
 
         plugins: [
+            VueRouter({
+                routesFolder: [
+                    {
+                        //specif
+                        src: "src/pages",
+                        exclude: [
+                            "**/components/**",
+                            "**/composables/**",
+                            "**/api/**",
+                            "**/utils/**",
+                            "**/types/**",
+                            "**/schemas/**",
+                            "**/__tests__/**",
+                            "**/*.spec.*",
+                            "**/*.test.*",
+                        ],
+                    },
+                ],
+            }),
+
             Vue({
                 template: { transformAssetUrls },
             }),

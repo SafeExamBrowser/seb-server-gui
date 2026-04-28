@@ -25,7 +25,13 @@
     "vueCompilerOptions": {
         "strictTemplates": false // TODO @alain: we would like this to be "true", but it causes a known issue with Vuetify (see https://github.com/vuetifyjs/vuetify/issues/16190)
     },
-    "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+    "include": [
+        "./typed-router.d.ts",
+        "src/**/*.ts",
+        "src/**/*.d.ts",
+        "src/**/*.tsx",
+        "src/**/*.vue"
+    ],
     "exclude": ["dist", "node_modules", "cypress"],
     "references": [{ "path": "./tsconfig.node.json" }]
 }
