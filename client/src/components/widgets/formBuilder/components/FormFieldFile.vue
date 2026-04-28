@@ -28,9 +28,11 @@ const props = defineProps<{
     clearable: boolean;
 }>();
 
+const rules = useRules();
+
 const allValidationRules = computed(() => [
     ...(props.standardProperties.rules ?? []),
-    useRules().fileExtension(props.acceptExtensions),
+    rules.fileExtension(props.acceptExtensions),
 ]);
 
 const completeHint = computed(() =>
