@@ -1,5 +1,5 @@
 <template>
-    <CrudDialog
+    <FormDialog
         icon-activator="mdi-plus-circle-outline"
         color-activator="primary"
         :disabled="props.disabled"
@@ -9,12 +9,12 @@
         :form-id="props.formId"
         :get-form-fields="props.getFormFields"
         :get-item="props.getItem"
-        @submit="props.createItem"
+        :on-submit="props.createItem"
     />
 </template>
 
 <script setup lang="ts" generic="TItem, TTransient">
-import CrudDialog from "@/components/widgets/crudTable/components/CrudDialog.vue";
+import FormDialog from "@/components/widgets/formDialog/FormDialog.vue";
 import { CrudTableConfig } from "@/components/widgets/crudTable/types";
 
 const props = defineProps<{

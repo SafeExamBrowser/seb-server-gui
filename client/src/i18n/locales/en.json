@@ -78,7 +78,14 @@
             "blacklisted": "Field must not be any of the following values: {values}",
             "ipAddress": "Field must be a valid IP address",
             "alphabeticalBefore": "Field must be alphabetically before \"{referenceValue}\"",
-            "alphabeticalAfter": "Field must be alphabetically after \"{referenceValue}\""
+            "alphabeticalAfter": "Field must be alphabetically after \"{referenceValue}\"",
+            "fileExtensions": "Only the following file types are allowed: {extensions}"
+        },
+        "formFields": {
+            "file": {
+                "hint": "Drop a file here or search through file explorer.",
+                "allowedFileTypes": "Allowed file types:"
+            }
         }
     },
     "screenReader": {
@@ -840,7 +847,6 @@
         }
     },
     "certificates": {
-        "addCertificate": "Add Certificate",
         "filters": {
             "searchTitle": "Search",
             "searchField": "Search by Alias"
@@ -856,17 +862,21 @@
             "informationPart1": "Delete Certificate: ",
             "informationPart3": " ?"
         },
-        "upload": {
-            "upload": "Upload Certificate",
-            "selectFromFolder": "Select From File Explorer",
-            "uploadHelp": "Drag and Drop or Search through File Explorer",
-            "onlyAllowed": "File Type not allowed",
-            "allowed": "Allowed File Types",
-            "dropHere": "Drop a certificate file here",
-            "password": "Password",
-            "uploadFailed": "Failed to upload certificate, please contact a system administrator",
-            "keystorePasswordIncorrect": "The password was incorrect. Please try again or contact a system administrator",
-            "importButton": "Import"
+        "createDialog": {
+            "addButtonTitle": "Add Certificate",
+            "confirmButtonTitle": "Import",
+            "fields": {
+                "file": {
+                    "label": "Certificate File",
+                    "hint": "Drop a certificate file here or search through file explorer."
+                },
+                "password": {
+                    "label": "Password"
+                }
+            },
+            "errors": {
+                "generic": "Failed to upload certificate, please contact a system administrator"
+            }
         },
         "types": {
             "UNKNOWN": "Unknown",

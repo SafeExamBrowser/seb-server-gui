@@ -1,10 +1,25 @@
 <template>
     <BasicSettingsPage :title="$t('titles.certificates')">
         <template #ActionButton>
-            <AddButton
-                text="certificates.addCertificate"
-                @click="certDialog = true"
-            />
+            <div class="d-flex justify-end align-center fill-height">
+                <FormDialog
+                    icon-activator="mdi-plus-circle-outline"
+                    color-activator="primary"
+                    :label-activator="
+                        $t('certificates.createDialog.addButtonTitle')
+                    "
+                    size-activator="large"
+                    label-activator-visible
+                    :label-cancel="$t('general.cancelButton')"
+                    :label-submit="
+                        $t('certificates.createDialog.confirmButtonTitle')
+                    "
+                    form-id="form-certificate-upload"
+                    :get-form-fields="getFormFields"
+                    :get-item="getEmptyItem"
+                    :on-submit="handleUploadCertificate"
+                />
+            </div>
         </template>
 
         <template #PanelMain>
@@ -54,16 +69,6 @@
         translation-key-prefix="certificates"
         @confirm="confirmDelete"
     />
-    <UploadDialog
-        ref="uploadDialog"
-        v-model="certDialog"
-        name-prefix="certificates"
-        icon="mdi-file-certificate-outline"
-        :seb-settings-id="null"
-        :show-quit-password="false"
-        :default-ext-list="['.p12', '.pfx', '.pem', '.crt', '.cer']"
-        @uploaded="onCertImported"
-    />
 </template>
 
 <script setup lang="ts">
@@ -73,21 +78,15 @@ import SearchBar from "@/components/blocks/searches/SearchBar.vue";
 import EntityTable from "@/components/blocks/entity-table/EntityTable.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
+import FormDialog from "@/components/widgets/formDialog/FormDialog.vue";
 import { useCertificatesTableHeaders } from "@/components/views/seb-server/certificate/certificates/composables/useCertificateTableHeaders.ts";
 import { useCertificatesTableActions } from "@/components/views/seb-server/certificate/certificates/composables/useCertificatesTableActions.ts";
-import { useCertificates } from "@/components/views/seb-server/certificate/certificates/api/useCertificates.ts";
+import { useCertificates } from "@/components/views/seb-server/certificate/certificates/composables/api/useCertificates";
 import { useUrlTableState } from "@/components/blocks/entity-table/composables/useUrlTableState.ts";
-import { useDeleteCertificate } from "@/components/views/seb-server/certificate/certificates/api/useDeleteCertificate.ts";
+import { useDeleteCertificate } from "@/components/views/seb-server/certificate/certificates/composables/api/useDeleteCertificate";
+import { useCertificateCreateForm } from "@/components/views/seb-server/certificate/certificates/composables/useCertificateCreateForm.ts";
 import type { CertificatesResponse } from "@/models/seb-server/certificate.ts";
 import type { TableItem } from "@/components/blocks/entity-table/types.ts";
-import AddButton from "@/components/widgets/AddButton.vue";
-import UploadDialog from "@/components/widgets/UploadDialog.vue";
-
-const certDialog = ref(false);
-
-async function onCertImported() {
-    await loadItems();
-}
 
 const { headers: certificatesTableHeaders, cellFormatters } =
     useCertificatesTableHeaders();
@@ -128,7 +127,9 @@ const {
     error: deleteError,
 } = useDeleteCertificate(tableData);
 
-// Dialog state
+const { getEmptyItem, getFormFields, handleUploadCertificate } =
+    useCertificateCreateForm({ onSuccess: loadItems });
+
 const deleteTarget = ref<TableItem | null>(null);
 const deleteDialogOpen = ref(false);
 

@@ -902,7 +902,7 @@ const configurationPurposeItems = [
 
 const certificateItems = ref<{ label: string; value: string }[]>([
     {
-        label: translate("certificates.certificateDialog.uploadCertificate"),
+        label: translate("certificates.createDialog.addButtonTitle"),
         value: "__UPLOAD__",
     },
 ]);

@@ -76,6 +76,14 @@ export type FormFieldSimple = FormFieldBase &
               type: "switch";
               model: Ref<boolean>;
           }
+        | {
+              type: "file";
+              required?: boolean;
+              model: Ref<File | undefined>;
+              acceptExtensions: string[];
+              hint?: string;
+              icon?: string;
+          }
     );
 
 export type FormFieldCollection = FormFieldBase & {
