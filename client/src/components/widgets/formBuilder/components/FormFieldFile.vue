@@ -5,7 +5,7 @@
         :rules="allValidationRules"
         :accept="acceptExtensions.join(',')"
         :prepend-icon="icon"
-        clearable
+        :clearable="clearable"
         show-size
         :hint="completeHint"
         persistent-hint
