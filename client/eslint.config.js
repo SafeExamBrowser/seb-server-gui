@@ -36,7 +36,10 @@ export default defineConfig([
         languageOptions: {
             ecmaVersion: "latest",
             sourceType: "module",
-            globals: globals.browser,
+            globals: {
+                ...globals.browser,
+                definePage: "readonly",
+            },
             parserOptions: {
                 parser: tseslint.parser,
             },
