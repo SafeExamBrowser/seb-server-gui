@@ -185,7 +185,13 @@ const props = withDefaults(
         actions?: SearchBarAction[];
         dense?: boolean;
     }>(),
-    { actions: () => [], dateTitle: undefined, dateValue: null, dense: false },
+    //@TODO Andrei change
+    {
+        actions: () => [],
+        dateTitle: "DateTitle",
+        dateValue: null,
+        dense: false,
+    },
 );
 
 const emit = defineEmits<{

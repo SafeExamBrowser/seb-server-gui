@@ -878,10 +878,10 @@
     >
         <SebSettingsDialog
             v-if="seb_settings_context"
-            @close-seb-settings-dialog="closeSebSettingsDialog"
             :context="seb_settings_context"
-            :activeSEBClientConnection="activeClients"
-            :dialogTitle="getSEBSettingsTitle()"
+            :active-s-e-b-client-connection="activeClients"
+            :dialog-title="getSEBSettingsTitle()"
+            @close-seb-settings-dialog="closeSebSettingsDialog"
         >
         </SebSettingsDialog>
     </v-dialog>

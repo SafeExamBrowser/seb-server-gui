@@ -6,7 +6,7 @@ import { fileURLToPath, URL } from "node:url";
 import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite";
 import VueRouter from "vue-router/vite";
 
-import src, { z } from "zod";
+import { z } from "zod";
 
 export const parseEnv = () => {
     const envResult = z
