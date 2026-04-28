@@ -6,15 +6,16 @@ import {
 } from "@/models/seb-server/sebSettings";
 import { Ref } from "vue";
 
-export type SEBSettingsContext = {
-    isExam: boolean;
-    containerId: string;
-    readonly: boolean;
-};
-
 export type SEBValueAttributes = {
     title: string;
     value: string;
+};
+
+// Context used for SEB Settings panel component
+export type SEBSettingsContext = {
+    isExam: boolean; // indicates if the SEB Settings are for an Exam (or an ExamTemplate)
+    containerId: string; // entity id (either examID or examTemplateID)
+    readonly: boolean; // readonly flag
 };
 
 // Singe SEB Setting values model encapsulates single SEB Setting values with its current ids
@@ -45,6 +46,7 @@ export type SEBSettingsTableModel = {
     saveTableRow(values: SEBSettingTableValue[]): void;
 };
 
+// SEB Settings table model to use with SEB Settings tables.
 export type SettingsTable<T> = {
     table: Ref<T[]>;
     selectedRow: Ref<T | null>;
