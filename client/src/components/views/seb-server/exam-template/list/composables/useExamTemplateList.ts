@@ -1,6 +1,6 @@
 import { useExamTemplateSearch } from "./useExamTemplateSearch";
 import { useExamTemplateTable } from "./useExamTemplateTable";
-import type { TableFilters } from "@/components/blocks/entity-table/types";
+import type { TableFilters } from "@/components/widgets/entity-table/types";
 import type { TableOptions } from "../types";
 
 export const useExamTemplateList = () => {

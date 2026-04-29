@@ -2,7 +2,7 @@ import { type MaybeRefOrGetter, toValue } from "vue";
 import type {
     CellFormatter,
     TableItem,
-} from "@/components/blocks/entity-table/types.ts";
+} from "@/components/widgets/entity-table/types.ts";
 
 export function useTableItems(
     cellFormatters: MaybeRefOrGetter<Record<string, CellFormatter> | undefined>,

@@ -27,7 +27,7 @@ import { computed } from "vue";
 import type {
     TableAction,
     TableItem,
-} from "@/components/blocks/entity-table/types.ts";
+} from "@/components/widgets/entity-table/types.ts";
 
 const props = defineProps<{
     item: TableItem;

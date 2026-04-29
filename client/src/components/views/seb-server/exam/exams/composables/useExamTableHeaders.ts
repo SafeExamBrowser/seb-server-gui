@@ -4,7 +4,7 @@ import { formatIsoToReadableDateTime } from "@/utils/timeUtils.ts";
 import type {
     TableHeader,
     CellFormatter,
-} from "@/components/blocks/entity-table/types.ts";
+} from "@/components/widgets/entity-table/types.ts";
 
 const TRANSLATION_PREFIX = "examList.main";
 

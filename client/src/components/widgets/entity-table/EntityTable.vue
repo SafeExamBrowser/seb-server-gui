@@ -78,13 +78,13 @@ import type {
     TableItem,
     TableAction,
     CellFormatter,
-} from "@/components/blocks/entity-table/types.ts";
-import { useTableNavigation } from "@/components/blocks/entity-table/composables/useTableNavigation.ts";
-import { useTableHeaders } from "@/components/blocks/entity-table/composables/useTableHeaders.ts";
-import { useTableItems } from "@/components/blocks/entity-table/composables/useTableItems.ts";
-import { useTablePagination } from "@/components/blocks/entity-table/composables/useTablePagination.ts";
-import TableRowActions from "@/components/blocks/entity-table/components/TableRowActions.vue";
-import TableFooter from "@/components/blocks/entity-table/components/TableFooter.vue";
+} from "@/components/widgets/entity-table/types.ts";
+import { useTableNavigation } from "@/components/widgets/entity-table/composables/useTableNavigation.ts";
+import { useTableHeaders } from "@/components/widgets/entity-table/composables/useTableHeaders.ts";
+import { useTableItems } from "@/components/widgets/entity-table/composables/useTableItems.ts";
+import { useTablePagination } from "@/components/widgets/entity-table/composables/useTablePagination.ts";
+import TableRowActions from "@/components/widgets/entity-table/components/TableRowActions.vue";
+import TableFooter from "@/components/widgets/entity-table/components/TableFooter.vue";
 import type { ServerTablePaging } from "@/models/types.ts";
 import type { RouteName } from "@/router/routeNames.ts";
 

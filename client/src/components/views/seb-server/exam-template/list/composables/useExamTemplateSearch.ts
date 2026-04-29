@@ -1,6 +1,6 @@
 import { computed, ref } from "vue";
-import type { FilterSectionDef } from "@/components/blocks/filters/filterTypes";
-import type { TableFilters } from "@/components/blocks/entity-table/types";
+import type { FilterSectionDef } from "@/components/widgets/filters/filterTypes";
+import type { TableFilters } from "@/components/widgets/entity-table/types";
 import { ExamTypeEnum } from "@/models/seb-server/examFiltersEnum";
 import i18n from "@/i18n";
 

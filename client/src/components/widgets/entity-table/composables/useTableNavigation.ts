@@ -2,7 +2,7 @@ import { computed } from "vue";
 import { useRouter } from "vue-router";
 import { navigateToRoute } from "@/router/navigation.ts";
 import type { RouteName } from "@/router/routeNames.ts";
-import type { TableItem } from "@/components/blocks/entity-table/types.ts";
+import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 
 export function useTableNavigation(
     detailRoute?: RouteName,

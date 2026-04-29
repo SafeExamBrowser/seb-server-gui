@@ -74,19 +74,19 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
-import SearchBar from "@/components/blocks/searches/SearchBar.vue";
-import EntityTable from "@/components/blocks/entity-table/EntityTable.vue";
+import SearchBar from "@/components/widgets/searches/SearchBar.vue";
+import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import FormDialog from "@/components/widgets/formDialog/FormDialog.vue";
 import { useCertificatesTableHeaders } from "@/components/views/seb-server/certificate/certificates/composables/useCertificateTableHeaders.ts";
 import { useCertificatesTableActions } from "@/components/views/seb-server/certificate/certificates/composables/useCertificatesTableActions.ts";
 import { useCertificates } from "@/components/views/seb-server/certificate/certificates/composables/api/useCertificates";
-import { useUrlTableState } from "@/components/blocks/entity-table/composables/useUrlTableState.ts";
+import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
 import { useDeleteCertificate } from "@/components/views/seb-server/certificate/certificates/composables/api/useDeleteCertificate";
 import { useCertificateCreateForm } from "@/components/views/seb-server/certificate/certificates/composables/useCertificateCreateForm.ts";
 import type { CertificatesResponse } from "@/models/seb-server/certificate.ts";
-import type { TableItem } from "@/components/blocks/entity-table/types.ts";
+import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 
 const { headers: certificatesTableHeaders, cellFormatters } =
     useCertificatesTableHeaders();

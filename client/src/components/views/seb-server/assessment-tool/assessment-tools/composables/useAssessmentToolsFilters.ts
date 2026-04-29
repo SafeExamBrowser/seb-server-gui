@@ -1,9 +1,9 @@
 import { computed } from "vue";
 import { translate } from "@/utils/generalUtils.ts";
-import { useInstitutionFilterSection } from "@/components/blocks/filters/useInstitutionFilterSection.ts";
-import type { FilterSectionDef } from "@/components/blocks/filters/filterTypes.ts";
+import { useInstitutionFilterSection } from "@/components/widgets/filters/useInstitutionFilterSection.ts";
+import type { FilterSectionDef } from "@/components/widgets/filters/filterTypes.ts";
 import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums.ts";
-import { getStatusFilterSection } from "@/components/blocks/filters/statusFilterSection.ts";
+import { getStatusFilterSection } from "@/components/widgets/filters/statusFilterSection.ts";
 
 const TRANSLATION_PREFIX = "assessmentToolConnections.assessmentToolsPage";
 

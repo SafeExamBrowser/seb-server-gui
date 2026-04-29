@@ -82,24 +82,24 @@
 import { computed, ref, watch } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import { getRouteName } from "@/router/routeNames.ts";
-import SearchBar from "@/components/blocks/searches/SearchBar.vue";
-import EntityTable from "@/components/blocks/entity-table/EntityTable.vue";
+import SearchBar from "@/components/widgets/searches/SearchBar.vue";
+import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 import ActiveStatusChip from "@/components/widgets/ActiveStatusChip.vue";
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import StatusConfirmDialog from "@/components/widgets/confirmDialog/StatusConfirmDialog.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import { useUrlTableState } from "@/components/blocks/entity-table/composables/useUrlTableState.ts";
-import { useTableNavigation } from "@/components/blocks/entity-table/composables/useTableNavigation.ts";
+import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
+import { useTableNavigation } from "@/components/widgets/entity-table/composables/useTableNavigation.ts";
 import { useConnectionConfigurationsTableHeaders } from "@/components/views/seb-server/connection-configuration/connection-configurations/composables/useConnectionConfigurationsTableHeaders.ts";
 import { useConnectionConfigurationsTableActions } from "@/components/views/seb-server/connection-configuration/connection-configurations/composables/useConnectionConfigurationsTableActions.ts";
 import { useConnectionConfigurationsFilters } from "@/components/views/seb-server/connection-configuration/connection-configurations/composables/useConnectionConfigurationsFilters.ts";
-import { STATUS_FILTER_KEY } from "@/components/blocks/filters/statusFilterSection.ts";
-import { INSTITUTION_FILTER_KEY } from "@/components/blocks/filters/useInstitutionFilterSection.ts";
+import { STATUS_FILTER_KEY } from "@/components/widgets/filters/statusFilterSection.ts";
+import { INSTITUTION_FILTER_KEY } from "@/components/widgets/filters/useInstitutionFilterSection.ts";
 import { useConnectionConfigurations } from "@/components/views/seb-server/connection-configuration/connection-configurations/api/useConnectionConfigurations.ts";
 import { useDeleteConnectionConfiguration } from "@/components/views/seb-server/connection-configuration/connection-configurations/api/useDeleteConnectionConfiguration.ts";
 import { useToggleConnectionConfigurationStatus } from "@/components/views/seb-server/connection-configuration/connection-configurations/api/useToggleConnectionConfigurationStatus.ts";
 import type { ConnectionConfigurations } from "@/models/seb-server/connectionConfiguration.ts";
-import type { TableItem } from "@/components/blocks/entity-table/types.ts";
+import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 import AddButton from "@/components/widgets/AddButton.vue";
 
 const { headers: connectionConfigurationTableHeaders, cellFormatters } =

@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
-import SearchBar from "@/components/blocks/searches/SearchBar.vue";
+import SearchBar from "@/components/widgets/searches/SearchBar.vue";
 import ExamTemplateTable from "./components/ExamTemplateTable.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useExamTemplateList } from "./composables/useExamTemplateList";

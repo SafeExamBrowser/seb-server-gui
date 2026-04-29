@@ -165,12 +165,12 @@ import { computed, ref } from "vue";
 import SearchBox from "@/components/widgets/SearchBox.vue";
 import DatePicker from "@/components/widgets/DatePicker.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
-import FiltersBar from "@/components/blocks/filters/FiltersBar.vue";
+import FiltersBar from "@/components/widgets/filters/FiltersBar.vue";
 import type {
     FilterOption,
     FilterSectionDef,
-} from "@/components/blocks/filters/filterTypes.ts";
-import type { TableFilters } from "@/components/blocks/entity-table/types.ts";
+} from "@/components/widgets/filters/filterTypes.ts";
+import type { TableFilters } from "@/components/widgets/entity-table/types.ts";
 import type { SearchBarAction } from "./types.ts";
 
 const props = withDefaults(

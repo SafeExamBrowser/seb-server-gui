@@ -78,24 +78,24 @@
 import { computed, ref, watch } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import { getRouteName } from "@/router/routeNames.ts";
-import SearchBar from "@/components/blocks/searches/SearchBar.vue";
-import EntityTable from "@/components/blocks/entity-table/EntityTable.vue";
+import SearchBar from "@/components/widgets/searches/SearchBar.vue";
+import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 import ActiveStatusChip from "@/components/widgets/ActiveStatusChip.vue";
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import StatusConfirmDialog from "@/components/widgets/confirmDialog/StatusConfirmDialog.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import { useUrlTableState } from "@/components/blocks/entity-table/composables/useUrlTableState.ts";
-import { useTableNavigation } from "@/components/blocks/entity-table/composables/useTableNavigation.ts";
+import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
+import { useTableNavigation } from "@/components/widgets/entity-table/composables/useTableNavigation.ts";
 import { useUserAccountsTableHeaders } from "@/components/views/seb-server/user-account/user-accounts/composables/useUserAccountsTableHeaders.ts";
 import { useUserAccountsTableActions } from "@/components/views/seb-server/user-account/user-accounts/composables/useUserAccountsTableActions.ts";
 import { useUserAccountsFilters } from "@/components/views/seb-server/user-account/user-accounts/composables/useUserAccountsFilters.ts";
-import { STATUS_FILTER_KEY } from "@/components/blocks/filters/statusFilterSection.ts";
-import { INSTITUTION_FILTER_KEY } from "@/components/blocks/filters/useInstitutionFilterSection.ts";
+import { STATUS_FILTER_KEY } from "@/components/widgets/filters/statusFilterSection.ts";
+import { INSTITUTION_FILTER_KEY } from "@/components/widgets/filters/useInstitutionFilterSection.ts";
 import { useUserAccounts } from "@/components/views/seb-server/user-account/user-accounts/api/useUserAccounts.ts";
 import { useDeleteUserAccount } from "@/components/views/seb-server/user-account/user-accounts/api/useDeleteUserAccount.ts";
 import { useToggleUserAccountStatus } from "@/components/views/seb-server/user-account/user-accounts/api/useToggleUserAccountStatus.ts";
 import type { UserAccountResponse } from "@/models/userAccount.ts";
-import type { TableItem } from "@/components/blocks/entity-table/types.ts";
+import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 import AddButton from "@/components/widgets/AddButton.vue";
 
 const { headers: userAccountsTableHeaders, cellFormatters } =

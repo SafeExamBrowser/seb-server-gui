@@ -5,7 +5,7 @@ import { useInstitutionNameMap } from "@/composables/useInstitutionNameMap.ts";
 import type {
     TableHeader,
     CellFormatter,
-} from "@/components/blocks/entity-table/types.ts";
+} from "@/components/widgets/entity-table/types.ts";
 
 export function useUserAccountsTableHeaders() {
     const showInstitutionColumn = useShowInstitutionColumn();

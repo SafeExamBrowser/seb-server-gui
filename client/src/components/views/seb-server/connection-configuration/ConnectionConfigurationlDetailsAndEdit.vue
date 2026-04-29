@@ -791,7 +791,7 @@ import {
 } from "@/models/seb-server/connectionConfiguration.ts";
 import { getConnectionConfiguration } from "@/services/seb-server/connectionConfigurationService.ts";
 import { getCertificates } from "@/services/seb-server/certificateService.ts";
-import SettingsNavigation from "@/components/blocks/navigation/SettingsNavigation.vue";
+import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
 import UploadDialog from "@/components/widgets/UploadDialog.vue";
 
 // Router

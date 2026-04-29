@@ -1,6 +1,6 @@
 import { computed } from "vue";
 import { translate } from "@/utils/generalUtils.ts";
-import type { FilterSectionDef } from "@/components/blocks/filters/filterTypes.ts";
+import type { FilterSectionDef } from "@/components/widgets/filters/filterTypes.ts";
 import {
     ExamStatusEnum,
     ExamTypeEnum,

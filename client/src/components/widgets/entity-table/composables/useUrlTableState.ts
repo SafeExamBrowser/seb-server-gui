@@ -5,7 +5,7 @@ import type { ServerTablePaging } from "@/models/types.ts";
 import type {
     TableFilters,
     LoadItemsFn,
-} from "@/components/blocks/entity-table/types.ts";
+} from "@/components/widgets/entity-table/types.ts";
 
 //standard options foer all Tables, @TODO Andrei consider using some sort of local storage for itemsPerPage???? Talk with team. Would make sense. // Additional Feature that users can configure their UI's in the future
 const getDefaultOptions = (): ServerTablePaging => ({

@@ -1,5 +1,5 @@
 import { computed, type MaybeRefOrGetter, toValue } from "vue";
-import type { TableHeader } from "@/components/blocks/entity-table/types.ts";
+import type { TableHeader } from "@/components/widgets/entity-table/types.ts";
 
 export function useTableHeaders(
     headers: MaybeRefOrGetter<TableHeader[]>,

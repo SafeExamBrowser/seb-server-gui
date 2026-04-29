@@ -57,14 +57,14 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
-import SearchBar from "@/components/blocks/searches/SearchBar.vue";
-import EntityTable from "@/components/blocks/entity-table/EntityTable.vue";
+import SearchBar from "@/components/widgets/searches/SearchBar.vue";
+import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 import EnumChip from "@/components/widgets/EnumChip.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import { useUrlTableState } from "@/components/blocks/entity-table/composables/useUrlTableState.ts";
+import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
 import { useExamTableHeaders } from "@/components/views/seb-server/exam/exams/composables/useExamTableHeaders.ts";
 import { useExamTableActions } from "@/components/views/seb-server/exam/exams/composables/useExamTableActions.ts";
-import { useTableNavigation } from "@/components/blocks/entity-table/composables/useTableNavigation.ts";
+import { useTableNavigation } from "@/components/widgets/entity-table/composables/useTableNavigation.ts";
 import {
     useExamFilters,
     TYPE_FILTER_KEY,

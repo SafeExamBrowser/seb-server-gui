@@ -3,7 +3,7 @@ import { useI18n } from "vue-i18n";
 import type {
     TableAction,
     TableItem,
-} from "@/components/blocks/entity-table/types.ts";
+} from "@/components/widgets/entity-table/types.ts";
 
 export function useUserAccountsTableActions(deps: {
     onEdit: (item: TableItem) => void;
