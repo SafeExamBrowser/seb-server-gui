@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import ToastContainer from "@/components/views/seb-server/toast/ToastContainer.vue";
+import ToastContainer from "@/components/widgets/toast/ToastContainer.vue";
 
 defineProps<{
     isPageBlue: boolean;

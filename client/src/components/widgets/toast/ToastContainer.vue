@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 import ToastItem from "./ToastItem.vue";
-import { useNotificationsStore } from "@/stores/seb-server/notificationstore";
+import { useNotificationsStore } from "@/stores/seb-server/notificationstore.ts";
 
 withDefaults(
     defineProps<{

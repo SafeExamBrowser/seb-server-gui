@@ -78,7 +78,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, onBeforeUnmount, ref } from "vue";
-import type { Alert } from "@/stores/seb-server/notificationstore";
+import type { Alert } from "@/stores/seb-server/notificationstore.ts";
 
 //passable props
 const props = defineProps<{

@@ -1,16 +1,16 @@
 import {
     type AlertInput,
     useNotificationsStore,
-} from "@/stores/seb-server/notificationstore";
+} from "@/stores/seb-server/notificationstore.ts";
 
-import type { BackendErrorArray } from "@/components/views/seb-server/toast/backendError";
+import type { BackendErrorArray } from "@/components/widgets/toast/backendError.ts";
 
 import i18n from "@/i18n";
 
 import {
     buildBodyLines,
     dynamicTitle,
-} from "@/components/views/seb-server/toast/backendBodyBuilder";
+} from "@/components/widgets/toast/backendBodyBuilder.ts";
 import { Composer } from "vue-i18n";
 
 const { t } = ("global" in i18n ? i18n.global : i18n) as Composer;

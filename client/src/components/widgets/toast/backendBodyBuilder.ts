@@ -1,5 +1,5 @@
 import i18n from "@/i18n";
-import type { BackendError } from "@/components/views/seb-server/toast/backendError";
+import type { BackendError } from "@/components/widgets/toast/backendError.ts";
 
 type TranslateFn = (key: string, params?: Record<string, unknown>) => string;
 
