@@ -12,6 +12,7 @@ declare module "vue-router" {
             | "default"
             | "exams-overview"
             | "gallery-view"
-            | "monitoring";
+            | "monitoring"
+            | "navigation-overview";
     }
 }

@@ -8,7 +8,7 @@
                             class="title-inherit-styling text-h4"
                             data-testid="navigationOverview-title-text"
                         >
-                            {{ appBarStore.title }}
+                            {{ translate("titles.navigationOverview") }}
                         </h1>
                     </v-app-bar-title>
 
@@ -49,7 +49,6 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { useAppBarStore } from "@/stores/store";
 import { translate } from "@/utils/generalUtils";
 import { useAbilities } from "@/services/ability";
 import NavigationSection from "@/components/widgets/navigationWidgets/NavigationSection.vue";
@@ -65,10 +64,10 @@ definePage({
         titleKey: "titles.navigationOverview",
         pageTestId: "navigation-overview-page",
         isPageBlue: true,
+        layoutContext: "navigation-overview",
     },
 });
 
-const appBarStore = useAppBarStore();
 const ability = useAbilities();
 // TODO REFACTOR-ROUTER change to typed routes !!!
 const settingsItems = computed(() =>

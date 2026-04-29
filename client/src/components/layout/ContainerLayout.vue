@@ -28,7 +28,6 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import { useAppBarStore } from "@/stores/store";
 import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
 import { useTheme } from "vuetify";
 import { useI18n } from "vue-i18n";
@@ -44,7 +43,6 @@ import { useInstitutionBranding } from "@/components/layout/container/useInstitu
 
 const route = useRoute();
 const { locale, t } = useI18n();
-const appBarStore = useAppBarStore();
 const userAccountStore = useUserAccountStore();
 const ability = useAbilities();
 const { institutionName, institutionLogo } = useInstitutionBranding();
@@ -62,6 +60,7 @@ const homeRoute = { name: "/(app)/home/" } as const;
 const navigationOverviewRoute = {
     name: "/(app)/navigation-overview/",
 } as const;
+
 // TODO REFACTOR-ROUTER Migrate profile to typed route.
 const profileRoute = constants.PROFILE_ROUTE;
 
@@ -74,7 +73,7 @@ const mainNavigationLinks = computed(() =>
 const layoutContext = computed(() => route.meta.layoutContext ?? "default");
 
 const isNavigationOverviewRoute = computed(
-    () => route.name === "/(app)/navigation-overview/",
+    () => route.meta.layoutContext === "navigation-overview",
 );
 
 const isPageBlue = computed(() => route.meta.isPageBlue ?? false);
@@ -84,7 +83,7 @@ const pageTestId = computed(
 );
 
 const effectiveTitle = computed(() => {
-    return institutionName.value || appBarStore.title || "SEB Server";
+    return institutionName.value || "SEB Server";
 });
 
 watch(languageToggle, () => {
