@@ -32,7 +32,7 @@ export const vuetify = createVuetify({
                     green: "#2a8f5d",
                     title: "#000000",
                     subtitle: "#000000",
-                    // background: "#eef5f9",
+                    "layout-background": "#F4F6F9",
                     // surface: "#4D7DBF"
 
                     // flatten
@@ -51,6 +51,7 @@ export const vuetify = createVuetify({
                     secondary: "#5CBBF6",
                     blue: "#2196F3",
                     subtitle: "#ffffff",
+                    "layout-background": "#121212",
                 },
             },
             tableTheme: {

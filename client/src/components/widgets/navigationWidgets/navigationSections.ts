@@ -2,8 +2,7 @@ import * as constants from "@/utils/constants";
 import * as spConstants from "@/utils/sp-constants";
 import { translate } from "@/utils/generalUtils";
 import { GUIComponent } from "@/services/ability";
-import { NavigationSectionItem } from "@/components/widgets/navigationWidgets/navigationTypes.ts";
-import { getRouteName } from "@/router/routeNames";
+import type { NavigationSectionItem } from "@/components/widgets/navigationWidgets/types.ts";
 
 type AbilityLike = {
     canView: (component: GUIComponent) => boolean;
@@ -16,25 +15,25 @@ export function buildSettingsNavigationItems(
     return [
         {
             label: translate("titles.assessmentToolConnections"),
-            to: { name: getRouteName("AssessmentToolList") },
+            to: constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE,
             testId: `${testIdPrefix}-assessmentToolConnections-link`,
             visible: ability.canView(GUIComponent.LMSSetups),
         },
         {
             label: translate("navigation.routeNames.connectionConfiguration"),
-            to: { name: getRouteName("ConnectionConfigurationList") },
+            to: constants.CONNECTION_CONFIGURATIONS_ROUTE,
             testId: `${testIdPrefix}-connectionConfigurations-link`,
             visible: ability.canView(GUIComponent.ConnectionConfigs),
         },
         {
             label: translate("navigation.routeNames.certificates"),
-            to: { name: getRouteName("CertificatesList") },
+            to: "/certificate",
             testId: `${testIdPrefix}-certificates-link`,
             visible: ability.canView(GUIComponent.Certificates),
         },
         {
             label: translate("navigation.routeNames.userAccounts"),
-            to: { name: getRouteName("UserAccountList") },
+            to: constants.USER_ACCOUNTS_ROUTE,
             testId: `${testIdPrefix}-userAccounts-link`,
             visible: ability.canView(GUIComponent.UserAccounts),
         },
@@ -47,7 +46,7 @@ export function buildPreparationNavigationItems(
     return [
         {
             label: translate("titles.createTemplateExam"),
-            to: { name: getRouteName("CreateExamTemplateWizard") },
+            to: "/exam-template/create",
             testId: `${testIdPrefix}-createTemplate-link`,
         },
         {
@@ -61,7 +60,7 @@ export function buildPreparationNavigationItems(
         },
         {
             label: translate("titles.examTemplateList"),
-            to: { name: getRouteName("ExamTemplateList") },
+            to: "/exam-template",
             testId: `${testIdPrefix}-examTemplateList-link`,
         },
     ];

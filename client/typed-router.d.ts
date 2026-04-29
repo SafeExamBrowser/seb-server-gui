@@ -36,10 +36,18 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       Record<never, never>,
       | '/(app)/home/'
+      | '/(app)/navigation-overview/'
     >,
     '/(app)/home/': RouteRecordInfo<
       '/(app)/home/',
       '/home',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/(app)/navigation-overview/': RouteRecordInfo<
+      '/(app)/navigation-overview/',
+      '/navigation-overview',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -83,12 +91,19 @@ declare module 'vue-router/auto-routes' {
       routes:
         | '/(app)'
         | '/(app)/home/'
+        | '/(app)/navigation-overview/'
       views:
         | 'default'
     }
     'src/pages/(app)/home/index.vue': {
       routes:
         | '/(app)/home/'
+      views:
+        | never
+    }
+    'src/pages/(app)/navigation-overview/index.vue': {
+      routes:
+        | '/(app)/navigation-overview/'
       views:
         | never
     }

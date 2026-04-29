@@ -2,85 +2,34 @@
     <v-row data-testid="homePageMain-page-container">
         <!-- First Column -->
         <v-col
-            class="d-flex flex-column align-center"
+            class="d-flex flex-column align-center ga-8"
             cols="3"
             data-testid="homePageMain-leftCol-container"
-            style="min-height: 92vh; gap: 2rem"
         >
-            <!-- Create Templates -->
             <v-sheet
-                class="rounded-sm pa-4 d-flex flex-column justify-space-between"
-                data-testid="homePageMain-createTemplates-card"
+                v-for="card in actionCards"
+                :key="card.testIdPrefix"
+                class="w-100 pa-4 d-flex flex-column justify-space-between"
+                :data-testid="`homePageMain-${card.testIdPrefix}-card`"
                 elevation="4"
-                style="width: 100%; max-width: 95%; height: 30%"
+                max-width="95%"
+                min-height="12rem"
+                rounded="sm"
             >
                 <div
                     class="primary-text-color text-h5 font-weight-black mb-16"
-                    data-testid="homePageMain-createTemplates-title-text"
+                    :data-testid="`homePageMain-${card.testIdPrefix}-title-text`"
                 >
-                    {{ translate("homePage.createTemplates") }}
+                    {{ translate(card.titleKey) }}
                 </div>
                 <div class="d-flex justify-end mt-auto">
                     <v-btn
-                        class="bigger-btn"
+                        class="px-5 text-none"
                         color="primary"
-                        data-testid="homePageMain-createTemplates-startNow-button"
+                        :data-testid="`homePageMain-${card.testIdPrefix}-startNow-button`"
                         rounded="sm"
-                        to="/exam-template/create"
-                        variant="flat"
-                    >
-                        {{ translate("homePage.startNow") }}
-                    </v-btn>
-                </div>
-            </v-sheet>
-
-            <!-- Prepare Exam -->
-            <v-sheet
-                class="rounded-sm pa-4 d-flex flex-column justify-space-between"
-                data-testid="homePageMain-prepareExam-card"
-                elevation="4"
-                style="width: 100%; max-width: 95%; height: 30%"
-            >
-                <div
-                    class="primary-text-color text-h5 font-weight-black mb-16"
-                    data-testid="homePageMain-prepareExam-title-text"
-                >
-                    {{ translate("homePage.prepareExam") }}
-                </div>
-                <div class="d-flex justify-end mt-auto">
-                    <v-btn
-                        class="bigger-btn"
-                        color="primary"
-                        data-testid="homePageMain-prepareExam-startNow-button"
-                        rounded="sm"
-                        :to="constants.QUIZ_IMPORT_ROUTE"
-                        variant="flat"
-                    >
-                        {{ translate("homePage.startNow") }}
-                    </v-btn>
-                </div>
-            </v-sheet>
-
-            <!-- Monitor Exams -->
-            <v-sheet
-                class="rounded-sm pa-4 d-flex flex-column justify-space-between"
-                data-testid="homePageMain-monitorExams-card"
-                elevation="4"
-                style="width: 100%; max-width: 95%; height: 30%"
-            >
-                <div
-                    class="primary-text-color text-h5 font-weight-black mb-16"
-                    data-testid="homePageMain-monitorExams-title-text"
-                >
-                    {{ translate("homePage.monitorExams") }}
-                </div>
-                <div class="d-flex justify-end mt-auto">
-                    <v-btn
-                        class="bigger-btn"
-                        color="primary"
-                        data-testid="homePageMain-monitorExams-startNow-button"
-                        rounded="sm"
-                        :to="constants.MONITORING_ROUTE"
+                        size="large"
+                        :to="card.route"
                         variant="flat"
                     >
                         {{ translate("homePage.startNow") }}
@@ -97,14 +46,13 @@
 </template>
 
 <script setup lang="ts">
-import * as constants from "@/utils/constants.ts";
 import { translate } from "@/utils/generalUtils.ts";
+// TODO REFACTOR-ROUTER change routes to typed
+const actionCards = [
+    {
+        testIdPrefix: "createTemplates",
+        titleKey: "homePage.createTemplates",
+        route: "/exam-template/create",
+    },
+] as const;
 </script>
-
-<style scoped>
-.bigger-btn {
-    font-size: 0.9rem;
-    min-height: 40px;
-    padding: 0.5rem 1.25rem;
-}
-</style>

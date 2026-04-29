@@ -1,8 +1,5 @@
 <template>
-    <v-row
-        class="navigation-overview-container"
-        data-testid="navigationOverview-page-container"
-    >
+    <v-row data-testid="navigationOverview-page-container">
         <v-container class="ml-16 mr-0" fluid>
             <v-col>
                 <v-sheet class="rounded-lg pa-4" color="primary" elevation="0">
@@ -51,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount } from "vue";
+import { computed } from "vue";
 import { useAppBarStore } from "@/stores/store";
 import { translate } from "@/utils/generalUtils";
 import { useAbilities } from "@/services/ability";
@@ -63,13 +60,17 @@ import {
     buildSettingsNavigationItems,
 } from "@/components/widgets/navigationWidgets/navigationSections";
 
-const appBarStore = useAppBarStore();
-const ability = useAbilities();
-
-onBeforeMount(() => {
-    appBarStore.title = translate("titles.navigationOverview");
+definePage({
+    meta: {
+        titleKey: "titles.navigationOverview",
+        pageTestId: "navigation-overview-page",
+        isPageBlue: true,
+    },
 });
 
+const appBarStore = useAppBarStore();
+const ability = useAbilities();
+// TODO REFACTOR-ROUTER change to typed routes !!!
 const settingsItems = computed(() =>
     buildSettingsNavigationItems(ability, "navigationOverview"),
 );
@@ -87,8 +88,4 @@ const followUpItems = computed(() =>
 );
 </script>
 
-<style scoped>
-.navigation-overview-container {
-    color: white;
-}
-</style>
+<style scoped></style>

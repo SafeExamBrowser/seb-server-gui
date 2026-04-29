@@ -293,7 +293,7 @@
                                         "
                                     >
                                         <router-link
-                                            :to="constants.DEFAULT_ROUTE"
+                                            :to="{ name: '/(public)/' }"
                                             >{{
                                                 translate(
                                                     "userAccount.registerPage.buttons.login",
@@ -314,14 +314,13 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { onMounted } from "vue";
-import * as constants from "@/utils/constants";
 import moment from "moment-timezone";
 import { translate } from "@/utils/generalUtils";
 import { useI18n } from "vue-i18n";
 import { Institution } from "@/models/seb-server/institution";
-import { useRouter } from "vue-router";
 import { getInstitutions } from "@/services/seb-server/institutionService.ts";
 import { registerUserAccount } from "@/services/seb-server/userAccountService.ts";
+import { useRouter } from "vue-router";
 
 definePage({
     meta: {
@@ -414,7 +413,7 @@ async function register() {
             registerSuccess.value = true;
 
             setTimeout(() => {
-                router.push(constants.DEFAULT_ROUTE);
+                router.push({ name: "/(public)/" });
             }, 2500);
         } else {
             registerError.value = true;
@@ -427,7 +426,7 @@ async function register() {
 function handleTabKeyEvent(event: KeyboardEvent, action: string) {
     if (event.key === "Enter" || event.key === " ") {
         if (action === "navigate") {
-            router.push(constants.DEFAULT_ROUTE);
+            router.push({ name: "/(public)/" });
         }
     }
 }

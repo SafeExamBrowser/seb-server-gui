@@ -25,31 +25,13 @@
 </template>
 
 <script setup lang="ts">
+import HomePageInfo from "./components/HomePageInfo.vue";
+import HomePageMain from "./components/HomePageMain.vue";
+
 definePage({
     meta: {
         titleKey: "titles.home",
         pageTestId: "home-page",
     },
 });
-
-import { useAppBarStore } from "@/stores/store.ts";
-import { translate } from "@/utils/generalUtils.ts";
-import { onBeforeMount } from "vue";
-import HomePageInfo from "@/pages/(app)/home/components/HomePageInfo.vue";
-import HomePageMain from "@/pages/(app)/home/components/HomePageMain.vue";
-
-// stores
-const appBarStore = useAppBarStore();
-
-onBeforeMount(() => {
-    appBarStore.title = translate("titles.home");
-});
 </script>
-
-<style scoped>
-.bigger-btn {
-    font-size: 0.9rem;
-    min-height: 40px;
-    padding: 0.5rem 1.25rem;
-}
-</style>

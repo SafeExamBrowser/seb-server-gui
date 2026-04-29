@@ -101,7 +101,7 @@
                             {{ translate("loginPage.noAccount") }}
                         </span>
                         <router-link
-                            :to="constants.REGISTER_ROUTE"
+                            :to="{ name: '/(public)/register/' }"
                             class="text-primary"
                             data-testid="login-register-link"
                             role="button"
@@ -119,7 +119,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useTheme } from "vuetify";
-import * as constants from "@/utils/constants";
 import { translate } from "@/utils/generalUtils";
 import { useLogin } from "./composables/useLogin";
 

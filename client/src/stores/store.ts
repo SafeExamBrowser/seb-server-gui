@@ -42,15 +42,6 @@ export const useAppBarStore = defineStore("appBar", () => {
     };
 });
 
-// --------------------navigation-----------------------------//
-export const useNavigationStore = defineStore("navigation", () => {
-    const isNavigationOverviewOpen = ref<boolean>(false);
-
-    return {
-        isNavigationOverviewOpen,
-    };
-});
-
 export const useLayoutStore = defineStore("layout", () => {
     const isBlueBackground = ref(false);
 
