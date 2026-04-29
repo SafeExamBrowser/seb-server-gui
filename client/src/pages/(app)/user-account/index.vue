@@ -38,10 +38,10 @@
                                 :loading="
                                     loading || deleteLoading || statusLoading
                                 "
-                                :detail-route="{
-                                    name: '/(app)/user-account/[userUuid]/',
-                                }"
-                                item-identifier-key="uuid"
+                                :detail-route="userAccountDetailRoute"
+                                :item-identifier-key="
+                                    userAccountItemIdentifierKey
+                                "
                                 :cell-formatters="cellFormatters"
                                 :actions="tableActions"
                                 @update:options="loadItems"
@@ -97,6 +97,13 @@ import type { UserAccountResponse } from "@/models/userAccount.ts";
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 import AddButton from "@/components/widgets/AddButton.vue";
 import { useDetailRouteNavigation } from "@/router/detailRoute";
+import type { RouteLocationAsRelative } from "vue-router";
+
+const userAccountDetailRoute = {
+    name: "/(app)/user-account/[userUuid]/",
+} satisfies RouteLocationAsRelative<"/(app)/user-account/[userUuid]/">;
+
+const userAccountItemIdentifierKey = "uuid" as const;
 
 definePage({
     meta: {
@@ -201,9 +208,9 @@ async function confirmStatusChange() {
 const tableActions = useUserAccountsTableActions({
     onEdit: (item) =>
         pushDetailRoute(
-            { name: "/(app)/user-account/[userUuid]/" },
+            userAccountDetailRoute,
             item,
-            "uuid",
+            userAccountItemIdentifierKey,
         ),
     onDelete: (item) => openDeleteDialog(item),
 });
