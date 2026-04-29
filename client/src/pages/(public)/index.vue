@@ -123,6 +123,12 @@ import * as constants from "@/utils/constants";
 import { translate } from "@/utils/generalUtils";
 import { useLogin } from "./composables/useLogin";
 
+definePage({
+    meta: {
+        pageTestId: "login-page",
+    },
+});
+
 const username = ref("");
 const password = ref("");
 const passwordVisible = ref<boolean>(false);

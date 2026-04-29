@@ -57,6 +57,18 @@ export default defineConfig([
         },
     },
 
+    {
+        files: [
+            "src/pages/**/index.vue",
+            "src/pages/**/[[]*.vue",
+            "src/pages/(app).vue",
+            "src/pages/(public).vue",
+        ],
+        rules: {
+            "vue/multi-word-component-names": "off",
+        },
+    },
+
     // avoid conflicts with prettier
     eslintConfigPrettier,
 ]);

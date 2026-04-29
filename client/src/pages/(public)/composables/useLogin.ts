@@ -1,9 +1,9 @@
 import { ref } from "vue";
-import * as authenticationService from "@/services/authenticationService";
-import { useAuthStore } from "@/composables/store/useAuthStore";
+import * as authenticationService from "@/services/authenticationService.ts";
+import { useAuthStore } from "@/composables/store/useAuthStore.ts";
 import { AxiosError } from "axios";
-import { navigateTo } from "@/router/navigation";
-import * as constants from "@/utils/constants";
+import { navigateTo } from "@/router/navigation.ts";
+import * as constants from "@/utils/constants.ts";
 
 export const useLogin = () => {
     const errorI18nKey = ref<string>();

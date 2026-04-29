@@ -25,8 +25,8 @@
 </template>
 
 <script setup lang="ts">
-import { useAppBarStore } from "@/stores/store";
-import { translate } from "@/utils/generalUtils";
+import { useAppBarStore } from "@/stores/store.ts";
+import { translate } from "@/utils/generalUtils.ts";
 import { onBeforeMount } from "vue";
 
 // stores

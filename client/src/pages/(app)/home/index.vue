@@ -25,11 +25,18 @@
 </template>
 
 <script setup lang="ts">
-import { useAppBarStore } from "@/stores/store";
-import { translate } from "@/utils/generalUtils";
+definePage({
+    meta: {
+        titleKey: "titles.home",
+        pageTestId: "home-page",
+    },
+});
+
+import { useAppBarStore } from "@/stores/store.ts";
+import { translate } from "@/utils/generalUtils.ts";
 import { onBeforeMount } from "vue";
-import HomePageInfo from "@/components/views/seb-server/home/HomePageInfo.vue";
-import HomePageMain from "@/components/views/seb-server/home/HomePageMain.vue";
+import HomePageInfo from "@/pages/(app)/home/components/HomePageInfo.vue";
+import HomePageMain from "@/pages/(app)/home/components/HomePageMain.vue";
 
 // stores
 const appBarStore = useAppBarStore();
