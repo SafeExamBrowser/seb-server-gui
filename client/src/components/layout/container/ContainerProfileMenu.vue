@@ -88,16 +88,18 @@
 import { computed } from "vue";
 import type { UserAccount } from "@/models/userAccount";
 import { translate } from "@/utils/generalUtils";
-import type { RouteLocationRaw } from "vue-router";
-
+import type { RouteLocationAsRelative } from "vue-router";
 const props = defineProps<{
     userAccount: UserAccount | null | undefined;
-    profileRoute: RouteLocationRaw;
 }>();
 
 defineEmits<{
     logout: [];
 }>();
+// TODO REFACTOR-ROUTER
+const profileRoute = {
+    name: "/(app)/user-account/profile/",
+} satisfies RouteLocationAsRelative<"/(app)/user-account/profile/">;
 
 const rolePriority = [
     "SEB_SERVER_ADMIN",

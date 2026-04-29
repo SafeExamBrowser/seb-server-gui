@@ -45,7 +45,6 @@
             />
 
             <ContainerProfileMenu
-                :profile-route="profileRoute"
                 :user-account="userAccount"
                 @logout="$emit('logout')"
             />
@@ -67,7 +66,6 @@ defineProps<{
     institutionLogo: string | null;
     layoutContext?: string;
     userAccount: UserAccount | null | undefined;
-    profileRoute: RouteLocationRaw;
     languageToggle: number;
     themeToggle: number;
 }>();

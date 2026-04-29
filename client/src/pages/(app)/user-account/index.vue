@@ -3,7 +3,7 @@
         <template #ActionButton>
             <AddButton
                 text="userAccount.userAccountPage.addUserContext"
-                :route="{ name: 'CreateUserAccount' }"
+                :route="{ name: '/(app)/user-account/create/' }"
             />
         </template>
 
@@ -38,8 +38,9 @@
                                 :loading="
                                     loading || deleteLoading || statusLoading
                                 "
-                                :detail-route="getRouteName('EditUserAccount')"
-                                route-param-key="userUuid"
+                                :detail-route="{
+                                    name: '/(app)/user-account/[userUuid]/',
+                                }"
                                 item-identifier-key="uuid"
                                 :cell-formatters="cellFormatters"
                                 :actions="tableActions"
@@ -77,7 +78,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
-import { getRouteName } from "@/router/routeNames.ts";
 import SearchBar from "@/components/widgets/searches/SearchBar.vue";
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 import ActiveStatusChip from "@/components/widgets/ActiveStatusChip.vue";
@@ -85,22 +85,30 @@ import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfir
 import StatusConfirmDialog from "@/components/widgets/confirmDialog/StatusConfirmDialog.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
-import { useTableNavigation } from "@/components/widgets/entity-table/composables/useTableNavigation.ts";
-import { useUserAccountsTableHeaders } from "@/components/views/seb-server/user-account/user-accounts/composables/useUserAccountsTableHeaders.ts";
-import { useUserAccountsTableActions } from "@/components/views/seb-server/user-account/user-accounts/composables/useUserAccountsTableActions.ts";
-import { useUserAccountsFilters } from "@/components/views/seb-server/user-account/user-accounts/composables/useUserAccountsFilters.ts";
+import { useUserAccountsTableHeaders } from "@/pages/(app)/user-account/composables/useUserAccountsTableHeaders.ts";
+import { useUserAccountsTableActions } from "@/pages/(app)/user-account/composables/useUserAccountsTableActions.ts";
+import { useUserAccountsFilters } from "@/pages/(app)/user-account/composables/useUserAccountsFilters.ts";
 import { STATUS_FILTER_KEY } from "@/components/widgets/filters/statusFilterSection.ts";
 import { INSTITUTION_FILTER_KEY } from "@/components/widgets/filters/useInstitutionFilterSection.ts";
-import { useUserAccounts } from "@/components/views/seb-server/user-account/user-accounts/api/useUserAccounts.ts";
-import { useDeleteUserAccount } from "@/components/views/seb-server/user-account/user-accounts/api/useDeleteUserAccount.ts";
-import { useToggleUserAccountStatus } from "@/components/views/seb-server/user-account/user-accounts/api/useToggleUserAccountStatus.ts";
+import { useUserAccounts } from "@/pages/(app)/user-account/api/useUserAccounts.ts";
+import { useDeleteUserAccount } from "@/pages/(app)/user-account/api/useDeleteUserAccount.ts";
+import { useToggleUserAccountStatus } from "@/pages/(app)/user-account/api/useToggleUserAccountStatus.ts";
 import type { UserAccountResponse } from "@/models/userAccount.ts";
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 import AddButton from "@/components/widgets/AddButton.vue";
+import { useDetailRouteNavigation } from "@/router/detailRoute";
 
+definePage({
+    meta: {
+        titleKey: "titles.userAccounts",
+        pageTestId: "user-accounts-page",
+        isPageBlue: true,
+    },
+});
 const { headers: userAccountsTableHeaders, cellFormatters } =
     useUserAccountsTableHeaders();
 const filterSections = useUserAccountsFilters();
+const { pushDetailRoute } = useDetailRouteNavigation();
 
 const tableData = ref<UserAccountResponse>();
 
@@ -163,12 +171,6 @@ const statusTarget = ref<TableItem | null>(null);
 const deleteDialogOpen = ref(false);
 const statusDialogOpen = ref(false);
 
-const { navigateToItem } = useTableNavigation(
-    getRouteName("EditUserAccount"),
-    "uuid",
-    "userUuid",
-);
-
 const deleteDetailText = computed(() => {
     if (!deleteTarget.value) return "";
     return String(deleteTarget.value.name ?? "");
@@ -197,7 +199,12 @@ async function confirmStatusChange() {
 }
 
 const tableActions = useUserAccountsTableActions({
-    onEdit: (item) => navigateToItem(item),
+    onEdit: (item) =>
+        pushDetailRoute(
+            { name: "/(app)/user-account/[userUuid]/" },
+            item,
+            "uuid",
+        ),
     onDelete: (item) => openDeleteDialog(item),
 });
 </script>

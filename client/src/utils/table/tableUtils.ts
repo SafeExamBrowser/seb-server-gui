@@ -2,7 +2,6 @@ import {
     ExamStatusEnum,
     ExamTypeEnum,
 } from "@/models/seb-server/examFiltersEnum";
-import { navigateTo } from "@/router/navigation";
 import { useTableStore } from "@/stores/store";
 import { OptionalParGetUserAccounts } from "@/models/userAccount";
 import { ServerTablePaging } from "@/models/types";
@@ -87,8 +86,9 @@ export function handleTabKeyEvent(
         if (action === "sort") {
             sortTable(key, optional?.headerRefs);
         }
+        // TODO REFACTOR-ROUTER
         if (action === "navigate" && optional?.path) {
-            navigateTo(optional.path);
+            // navigateTo(optional.path);
         }
     }
 }

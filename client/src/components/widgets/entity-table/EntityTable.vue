@@ -79,14 +79,14 @@ import type {
     TableAction,
     CellFormatter,
 } from "@/components/widgets/entity-table/types.ts";
-import { useTableNavigation } from "@/components/widgets/entity-table/composables/useTableNavigation.ts";
 import { useTableHeaders } from "@/components/widgets/entity-table/composables/useTableHeaders.ts";
 import { useTableItems } from "@/components/widgets/entity-table/composables/useTableItems.ts";
 import { useTablePagination } from "@/components/widgets/entity-table/composables/useTablePagination.ts";
 import TableRowActions from "@/components/widgets/entity-table/components/TableRowActions.vue";
 import TableFooter from "@/components/widgets/entity-table/components/TableFooter.vue";
 import type { ServerTablePaging } from "@/models/types.ts";
-import type { RouteName } from "@/router/routeNames.ts";
+import { useDetailRouteNavigation } from "@/router/detailRoute";
+import type { RouteLocationAsRelative } from "vue-router";
 
 const props = withDefaults(
     defineProps<{
@@ -97,8 +97,7 @@ const props = withDefaults(
         itemsPerPage?: number;
         pageCount?: number;
         itemsLength?: number;
-        detailRoute?: RouteName;
-        routeParamKey?: string;
+        detailRoute?: RouteLocationAsRelative;
         itemIdentifierKey?: string;
         actions?: TableAction[];
         cellFormatters?: Record<string, CellFormatter>;
@@ -109,7 +108,6 @@ const props = withDefaults(
         itemsLength: undefined,
         options: undefined,
         detailRoute: undefined,
-        routeParamKey: undefined,
         itemIdentifierKey: "",
         actions: undefined,
         cellFormatters: () => ({}),
@@ -120,11 +118,7 @@ const emit = defineEmits<{
     "update:options": [options: ServerTablePaging];
 }>();
 
-const { navigateToItem } = useTableNavigation(
-    props.detailRoute,
-    props.itemIdentifierKey,
-    props.routeParamKey,
-);
+const { pushDetailRoute } = useDetailRouteNavigation();
 
 const { computedHeaders } = useTableHeaders(
     () => props.headers,
@@ -150,4 +144,14 @@ const {
     itemsLength: () => props.itemsLength,
     emit: (options) => emit("update:options", options),
 });
+
+async function navigateToItem(item: TableItem) {
+    if (!props.detailRoute) return;
+
+    await pushDetailRoute(
+        props.detailRoute,
+        item,
+        props.itemIdentifierKey || "uuid",
+    );
+}
 </script>

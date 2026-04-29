@@ -10,8 +10,16 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
 import { translate } from "@/utils/generalUtils.ts";
-import UserAccountEditForm from "@/components/views/seb-server/user-account/edit-user-account/UserAccountEditForm.vue";
+import UserAccountEditForm from "@/pages/(app)/user-account/components/UserAccountEditForm.vue";
 
-const route = useRoute();
-const userId: string = route.params.userUuid as string;
+definePage({
+    meta: {
+        titleKey: "titles.editUserAccountx",
+        pageTestId: "edit-user-account-page",
+        isPageBlue: true,
+    },
+});
+
+const route = useRoute<"/(app)/user-account/[userUuid]/">();
+const userId = route.params.userUuid;
 </script>

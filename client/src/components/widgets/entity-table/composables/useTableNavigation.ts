@@ -1,19 +1,14 @@
 import { computed } from "vue";
 import { useRouter } from "vue-router";
-import { navigateToRoute } from "@/router/navigation.ts";
-import type { RouteName } from "@/router/routeNames.ts";
+import type { RouteLocationAsRelative } from "vue-router";
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 
 export function useTableNavigation(
-    detailRoute?: RouteName,
+    detailRoute?: RouteLocationAsRelative,
     itemIdentifierKey?: string,
-    routeParamKey?: string,
 ) {
     const router = useRouter();
     const identifierKey = computed(() => itemIdentifierKey ?? "uuid");
-    const paramKey = computed(
-        () => routeParamKey ?? itemIdentifierKey ?? "uuid",
-    );
 
     function getItemIdentifier(item: TableItem): string | null {
         const identifier = item[identifierKey.value];
@@ -25,33 +20,37 @@ export function useTableNavigation(
         return String(identifier);
     }
 
-    function buildItemRoute(item: TableItem): string {
-        if (!detailRoute) return "";
-
-        const identifier = getItemIdentifier(item);
-        if (!identifier) return "";
-
-        return router.resolve({
-            name: detailRoute,
-            params: { [paramKey.value]: identifier },
-        }).path;
-    }
-
     function navigateToItem(item: TableItem) {
         if (!detailRoute) return;
 
         const identifier = getItemIdentifier(item);
         if (!identifier) return;
 
-        navigateToRoute({
-            name: detailRoute,
-            params: { [paramKey.value]: identifier },
-        });
+        const routeName =
+            typeof detailRoute.name === "string" ? detailRoute.name : null;
+
+        const paramKey = routeName?.match(/\[([^\]/]+)\]/)?.[1];
+
+        if (!routeName || !paramKey) {
+            void router.push(detailRoute);
+            return;
+        }
+
+        void router.push({
+            name: routeName,
+            params: {
+                [paramKey]: identifier,
+            },
+            query: detailRoute.query,
+            hash: detailRoute.hash,
+            replace: detailRoute.replace,
+            force: detailRoute.force,
+            state: detailRoute.state,
+        } as RouteLocationAsRelative);
     }
 
     return {
         identifierKey,
-        buildItemRoute,
         navigateToItem,
     };
 }

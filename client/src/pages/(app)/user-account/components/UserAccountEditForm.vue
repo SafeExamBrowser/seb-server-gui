@@ -356,11 +356,11 @@
                             rounded="sm"
                             variant="outlined"
                             @click="
-                                navigateTo(
-                                    props.isProfile
-                                        ? constants.HOME_PAGE_ROUTE
-                                        : constants.USER_ACCOUNTS_ROUTE,
-                                )
+                                router.push({
+                                    name: props.isProfile
+                                        ? '/(app)/home/'
+                                        : '/(app)/user-account/',
+                                })
                             "
                         >
                             {{ translate("general.cancelButton") }}
@@ -504,11 +504,10 @@
 import { onBeforeUnmount, onMounted, ref, watch, computed } from "vue";
 import { useAppBarStore, useLayoutStore } from "@/stores/store.ts";
 import { translate } from "@/utils/generalUtils.ts";
-import * as constants from "@/utils/constants.ts";
 import moment from "moment-timezone";
-import { navigateTo } from "@/router/navigation.ts";
 import { UserRoleEnum } from "@/models/userRoleEnum.ts";
 import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
 import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/userAccountStore.ts";
 import * as userAccountService from "@/services/seb-server/userAccountService.ts";
 
@@ -533,6 +532,7 @@ const institutions = ref<Institution[]>([]);
 const appBarStore = useAppBarStore();
 const layoutStore = useLayoutStore();
 const i18n = useI18n();
+const router = useRouter();
 const authenticatedUserAccountStore = useAuthenticatedUserAccountStore();
 const timezoneOptions = moment.tz.names();
 
@@ -860,11 +860,9 @@ async function saveChanges() {
                 editedUserAccountParams,
             )) != null
         ) {
-            navigateTo(
-                props.isProfile
-                    ? constants.HOME_PAGE_ROUTE
-                    : constants.USER_ACCOUNTS_ROUTE,
-            );
+            await router.push({
+                name: props.isProfile ? "/(app)/home/" : "/(app)/user-account/",
+            });
         }
     }
 

@@ -33,7 +33,7 @@ export function buildSettingsNavigationItems(
         },
         {
             label: translate("navigation.routeNames.userAccounts"),
-            to: constants.USER_ACCOUNTS_ROUTE,
+            to: { name: "/(app)/user-account/" },
             testId: `${testIdPrefix}-userAccounts-link`,
             visible: ability.canView(GUIComponent.UserAccounts),
         },

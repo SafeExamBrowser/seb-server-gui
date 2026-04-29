@@ -5,7 +5,6 @@
         :institution-logo="institutionLogo"
         :language-toggle="languageToggle"
         :layout-context="layoutContext"
-        :profile-route="profileRoute"
         :theme-toggle="themeToggle"
         :user-account="userAccountStore.userAccount"
         @logout="handleLogoutButtonClick"
@@ -31,7 +30,6 @@ import { computed, ref, watch } from "vue";
 import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
 import { useTheme } from "vuetify";
 import { useI18n } from "vue-i18n";
-import * as constants from "@/utils/constants";
 import { useRoute } from "vue-router";
 import { GUIComponent, useAbilities } from "@/services/ability";
 import { useLogout } from "@/composables/useLogout";
@@ -62,7 +60,6 @@ const navigationOverviewRoute = {
 } as const;
 
 // TODO REFACTOR-ROUTER Migrate profile to typed route.
-const profileRoute = constants.PROFILE_ROUTE;
 
 const mainNavigationLinks = computed(() =>
     locale.value === "de"

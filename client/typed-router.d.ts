@@ -37,6 +37,10 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | '/(app)/home/'
       | '/(app)/navigation-overview/'
+      | '/(app)/user-account/'
+      | '/(app)/user-account/[userUuid]/'
+      | '/(app)/user-account/create/'
+      | '/(app)/user-account/profile/'
     >,
     '/(app)/home/': RouteRecordInfo<
       '/(app)/home/',
@@ -48,6 +52,34 @@ declare module 'vue-router/auto-routes' {
     '/(app)/navigation-overview/': RouteRecordInfo<
       '/(app)/navigation-overview/',
       '/navigation-overview',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/(app)/user-account/': RouteRecordInfo<
+      '/(app)/user-account/',
+      '/user-account',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/(app)/user-account/[userUuid]/': RouteRecordInfo<
+      '/(app)/user-account/[userUuid]/',
+      '/user-account/:userUuid',
+      { userUuid: ParamValue<true> },
+      { userUuid: ParamValue<false> },
+      | never
+    >,
+    '/(app)/user-account/create/': RouteRecordInfo<
+      '/(app)/user-account/create/',
+      '/user-account/create',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/(app)/user-account/profile/': RouteRecordInfo<
+      '/(app)/user-account/profile/',
+      '/user-account/profile',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -92,6 +124,10 @@ declare module 'vue-router/auto-routes' {
         | '/(app)'
         | '/(app)/home/'
         | '/(app)/navigation-overview/'
+        | '/(app)/user-account/'
+        | '/(app)/user-account/[userUuid]/'
+        | '/(app)/user-account/create/'
+        | '/(app)/user-account/profile/'
       views:
         | 'default'
     }
@@ -104,6 +140,30 @@ declare module 'vue-router/auto-routes' {
     'src/pages/(app)/navigation-overview/index.vue': {
       routes:
         | '/(app)/navigation-overview/'
+      views:
+        | never
+    }
+    'src/pages/(app)/user-account/index.vue': {
+      routes:
+        | '/(app)/user-account/'
+      views:
+        | never
+    }
+    'src/pages/(app)/user-account/[userUuid]/index.vue': {
+      routes:
+        | '/(app)/user-account/[userUuid]/'
+      views:
+        | never
+    }
+    'src/pages/(app)/user-account/create/index.vue': {
+      routes:
+        | '/(app)/user-account/create/'
+      views:
+        | never
+    }
+    'src/pages/(app)/user-account/profile/index.vue': {
+      routes:
+        | '/(app)/user-account/profile/'
       views:
         | never
     }

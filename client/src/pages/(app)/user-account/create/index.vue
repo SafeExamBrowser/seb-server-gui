@@ -59,7 +59,7 @@
                     <CancelButton
                         data-testid="createUserAccount-cancel-button"
                         text="general.cancelButton"
-                        @click="navigateToRoute({ name: 'UserAccountList' })"
+                        @click="router.push({ name: '/(app)/user-account/' })"
                     />
                     <ConfirmButton
                         data-testid="createUserAccount-save-button"
@@ -81,13 +81,21 @@ import UserAccountPreviewCard from "@/components/layout/pages/widgets/UserAccoun
 import { useUserAccountFormFields } from "./composable/useUserAccountFormFields.ts";
 import { useMutation } from "@/composables/useMutation.ts";
 import { createUserAccount } from "@/services/seb-server/userAccountService.ts";
-import { navigateToRoute } from "@/router/navigation.ts";
 import { UserRoleEnum } from "@/models/userRoleEnum.ts";
 import i18n from "@/i18n";
 import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
 import HintText from "@/components/widgets/HintText.vue";
+import { useRouter } from "vue-router";
 
+definePage({
+    meta: {
+        titleKey: "titles.createUserAccount",
+        pageTestId: "create-user-account-page",
+        isPageBlue: true,
+    },
+});
+const router = useRouter();
 const {
     leftFormFields,
     rightFormFields,
@@ -172,7 +180,7 @@ async function submit() {
     });
 
     if (accountResult.value) {
-        navigateToRoute({ name: "UserAccountList" });
+        router.push({ name: "/(app)/user-account/" });
     }
 }
 </script>
