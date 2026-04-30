@@ -57,11 +57,11 @@
 </template>
 
 <script setup lang="ts">
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
-import { translate } from "@/utils/generalUtils";
-import AskDialog from "@/components/views/seb-server/monitoring/overview/dialogs/AskDialog.vue";
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
+import { translate } from "@/utils/generalUtils.ts";
+import AskDialog from "@/pages/(app)/monitoring/[id]/components/dialogs/AskDialog.vue";
 import { ref, computed } from "vue";
-import { AppSignatureKeysWithGrantValues } from "@/models/seb-server/appSignatureKey";
+import { AppSignatureKeysWithGrantValues } from "@/models/seb-server/appSignatureKey.ts";
 
 // stores
 const monitoringStore = useMonitoringStore();

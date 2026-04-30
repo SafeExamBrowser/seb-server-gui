@@ -63,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-import { translate } from "@/utils/generalUtils";
+import { translate } from "@/utils/generalUtils.ts";
 import { ref } from "vue";
 
 const emit = defineEmits<{

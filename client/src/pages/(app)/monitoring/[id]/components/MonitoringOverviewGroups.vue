@@ -335,20 +335,20 @@
 </template>
 
 <script setup lang="ts">
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
-import { translate } from "@/utils/generalUtils";
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
+import { translate } from "@/utils/generalUtils.ts";
 import {
     ClientGroupEnum,
     ClientOSEnum,
-} from "@/models/seb-server/clientGroupEnum";
-import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums";
-import * as generalUtils from "@/utils/generalUtils";
+} from "@/models/seb-server/clientGroupEnum.ts";
+import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums.ts";
+import * as generalUtils from "@/utils/generalUtils.ts";
 import * as navigation from "@/router/navigation";
 import { useRoute } from "vue-router";
 import { computed } from "vue";
 import type { ComputedRef } from "vue";
-import { OverviewClientGroup } from "@/models/seb-server/monitoring";
-import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum";
+import { OverviewClientGroup } from "@/models/seb-server/monitoring.ts";
+import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
 import { goToMonitoring } from "@/components/views/seb-server/monitoring/composables/useMonitoringNavigation.ts";
 import { getGalleryViewLinkByExamId } from "@/components/views/seb-server/monitoring/utils/monitoringUtils.ts";
 

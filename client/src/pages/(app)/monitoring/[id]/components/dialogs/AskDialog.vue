@@ -387,12 +387,12 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
-import { translate } from "@/utils/generalUtils";
-import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum";
-import * as examService from "@/services/seb-server/examService";
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
+import { translate } from "@/utils/generalUtils.ts";
+import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
+import * as examService from "@/services/seb-server/examService.ts";
 import { navigateTo } from "@/router/navigation";
-import * as constants from "@/utils/constants";
+import * as constants from "@/utils/constants.ts";
 import { getAskAndStore } from "@/components/views/seb-server/monitoring/composables/useMonitoringData.ts";
 
 const store = useMonitoringStore();

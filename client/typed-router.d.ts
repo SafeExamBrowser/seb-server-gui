@@ -45,6 +45,10 @@ declare module 'vue-router/auto-routes' {
       | '/(app)/exam/'
       | '/(app)/exam/[id]/'
       | '/(app)/home/'
+      | '/(app)/monitoring/'
+      | '/(app)/monitoring/[id]/'
+      | '/(app)/monitoring/[id]/client/'
+      | '/(app)/monitoring/[id]/client/[connectionToken]/'
       | '/(app)/navigation-overview/'
       | '/(app)/quiz-import/'
       | '/(app)/user-account/'
@@ -120,6 +124,34 @@ declare module 'vue-router/auto-routes' {
       '/home',
       Record<never, never>,
       Record<never, never>,
+      | never
+    >,
+    '/(app)/monitoring/': RouteRecordInfo<
+      '/(app)/monitoring/',
+      '/monitoring',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/(app)/monitoring/[id]/': RouteRecordInfo<
+      '/(app)/monitoring/[id]/',
+      '/monitoring/:id',
+      { id: ParamValue<true> },
+      { id: ParamValue<false> },
+      | never
+    >,
+    '/(app)/monitoring/[id]/client/': RouteRecordInfo<
+      '/(app)/monitoring/[id]/client/',
+      '/monitoring/:id/client',
+      { id: ParamValue<true> },
+      { id: ParamValue<false> },
+      | never
+    >,
+    '/(app)/monitoring/[id]/client/[connectionToken]/': RouteRecordInfo<
+      '/(app)/monitoring/[id]/client/[connectionToken]/',
+      '/monitoring/:id/client/:connectionToken',
+      { id: ParamValue<true>, connectionToken: ParamValue<true> },
+      { id: ParamValue<false>, connectionToken: ParamValue<false> },
       | never
     >,
     '/(app)/navigation-overview/': RouteRecordInfo<
@@ -212,6 +244,10 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/exam/'
         | '/(app)/exam/[id]/'
         | '/(app)/home/'
+        | '/(app)/monitoring/'
+        | '/(app)/monitoring/[id]/'
+        | '/(app)/monitoring/[id]/client/'
+        | '/(app)/monitoring/[id]/client/[connectionToken]/'
         | '/(app)/navigation-overview/'
         | '/(app)/quiz-import/'
         | '/(app)/user-account/'
@@ -278,6 +314,30 @@ declare module 'vue-router/auto-routes' {
     'src/pages/(app)/home/index.vue': {
       routes:
         | '/(app)/home/'
+      views:
+        | never
+    }
+    'src/pages/(app)/monitoring/index.vue': {
+      routes:
+        | '/(app)/monitoring/'
+      views:
+        | never
+    }
+    'src/pages/(app)/monitoring/[id]/index.vue': {
+      routes:
+        | '/(app)/monitoring/[id]/'
+      views:
+        | never
+    }
+    'src/pages/(app)/monitoring/[id]/client/index.vue': {
+      routes:
+        | '/(app)/monitoring/[id]/client/'
+      views:
+        | never
+    }
+    'src/pages/(app)/monitoring/[id]/client/[connectionToken]/index.vue': {
+      routes:
+        | '/(app)/monitoring/[id]/client/[connectionToken]/'
       views:
         | never
     }

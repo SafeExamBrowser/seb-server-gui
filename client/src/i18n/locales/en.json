@@ -1809,6 +1809,7 @@
         "examTemplateList": "Exam Templates",
         "examTemplateDetail": "Exam Template",
         "monitoring": "Monitoring",
+        "monitoringDetail": "Monitoring Detail",
         "overview": "Overview",
         "clientList": "Client List",
         "quizImport": "Prepare Exam",

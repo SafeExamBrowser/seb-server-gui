@@ -125,11 +125,11 @@
 <script setup lang="ts">
 import { Doughnut } from "vue-chartjs";
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
-import { translate } from "@/utils/generalUtils";
-import * as generalUtils from "@/utils/generalUtils";
-import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum";
-import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums";
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
+import { translate } from "@/utils/generalUtils.ts";
+import * as generalUtils from "@/utils/generalUtils.ts";
+import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
+import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums.ts";
 import { useI18n } from "vue-i18n";
 import { ref, watch } from "vue";
 import { useRoute } from "vue-router";

@@ -123,20 +123,24 @@
 </template>
 
 <script setup lang="ts">
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
-import * as monitoringService from "@/services/seb-server/monitoringService";
-import { NotificationEnum } from "@/models/seb-server/monitoringEnums";
-import { translate } from "@/utils/generalUtils";
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
+import * as monitoringService from "@/services/seb-server/monitoringService.ts";
+import { NotificationEnum } from "@/models/seb-server/monitoringEnums.ts";
+import { translate } from "@/utils/generalUtils.ts";
 import { ref, computed, watch, nextTick } from "vue";
-import { useRoute } from "vue-router";
 import type { ComputedRef } from "vue";
-import { ClientNotification } from "@/models/seb-server/monitoring";
+import { ClientNotification } from "@/models/seb-server/monitoring.ts";
 import ProctoringViewPage from "@/components/views/screen-proctoring/proctoring/ProctoringViewPage.vue";
-import MonitoringClientLogsContainer from "@/components/views/seb-server/monitoring/client-detail/MonitoringClientLogsContainer.vue";
+import MonitoringClientLogsContainer from "@/pages/(app)/monitoring/[id]/client/[connectionToken]/components/MonitoringClientLogsContainer.vue";
+
+const props = defineProps<{
+    examId: string;
+    connectionToken: string;
+}>();
 
 // route params
-const examId = useRoute().params.examId.toString();
-const connectionToken = useRoute().params.connectionToken.toString();
+const examId = props.examId;
+const connectionToken = props.connectionToken;
 
 // ui control
 const resolveRaiseHandSent = ref<boolean>(false);

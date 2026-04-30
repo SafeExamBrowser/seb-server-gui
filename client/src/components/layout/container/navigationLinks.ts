@@ -29,7 +29,7 @@ export function buildContainerNavigationLinks(
         // TODO REFACTOR-ROUTER Migrate monitoring to typed route.
         {
             title: i18n.t("titles.monitoring"),
-            route: { name: "/(app)/exam/" },
+            route: { name: "/(app)/monitoring/" },
             icon: "mdi-eye",
             testId: "layout-monitoring-button",
         },

@@ -121,13 +121,7 @@
                                                 color="primary"
                                                 rounded="sm"
                                                 variant="flat"
-                                                @click="
-                                                    navigateTo(
-                                                        constants.MONITORING_OVERVIEW_ROUTE +
-                                                            '/' +
-                                                            examId,
-                                                    )
-                                                "
+                                                @click="openMonitoringOverview"
                                             >
                                                 {{
                                                     translate(
@@ -167,13 +161,7 @@
                                                 color="primary"
                                                 rounded="sm"
                                                 variant="flat"
-                                                @click="
-                                                    navigateTo(
-                                                        constants.FINISHED_EXAM_DATA_ROUTE +
-                                                            '/' +
-                                                            examId,
-                                                    )
-                                                "
+                                                @click="openFinishedExamData"
                                             >
                                                 {{
                                                     translate(
@@ -938,6 +926,7 @@ import { translate } from "@/utils/generalUtils.ts";
 import { LMSFeatureEnum } from "@/models/seb-server/assessmentToolEnums.ts";
 import { GUIAction, useAbilities } from "@/services/ability.ts";
 import { useRouter } from "vue-router";
+import type { RouteLocationAsRelative } from "vue-router";
 import { UserAccount } from "@/models/userAccount.ts";
 import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring.ts";
 import { Exam } from "@/models/seb-server/exam.ts";
@@ -961,7 +950,7 @@ const props = defineProps<{
     id: string;
 }>();
 // general
-const isPageInitalizing = ref<boolean>(true);
+const isPageInitializing = ref<boolean>(true);
 
 // stores
 const examStore = useExamStore();
@@ -969,6 +958,21 @@ const ability = useAbilities();
 
 // exam
 const examId = props.id;
+
+function openMonitoringOverview() {
+    void router.push({
+        name: "/(app)/monitoring/[id]/",
+        params: {
+            id: examId,
+        },
+    } satisfies RouteLocationAsRelative<"/(app)/monitoring/[id]/">);
+}
+
+function openFinishedExamData() {
+    void router.push({
+        path: `${constants.FINISHED_EXAM_DATA_ROUTE}/${examId}`,
+    });
+}
 
 // pw field
 const passwordVisible = ref<boolean>(false);
@@ -1072,7 +1076,7 @@ onBeforeMount(async () => {
     setQuitPassword();
     setScreenProctoring();
 
-    isPageInitalizing.value = false;
+    isPageInitializing.value = false;
 });
 
 //= =======exam api===========

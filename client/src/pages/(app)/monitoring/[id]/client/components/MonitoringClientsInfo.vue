@@ -444,19 +444,18 @@
 </template>
 
 <script setup lang="ts">
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
-import { translate } from "@/utils/generalUtils";
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
+import { translate } from "@/utils/generalUtils.ts";
 import { storeToRefs } from "pinia";
-import * as generalUtils from "@/utils/generalUtils";
-import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums";
+import * as generalUtils from "@/utils/generalUtils.ts";
+import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums.ts";
 import { LocationQuery, useRoute } from "vue-router";
-import { navigateTo } from "@/router/navigation";
-import * as constants from "@/utils/constants";
-import { InstructionEnum } from "@/models/seb-server/instructionEnum";
-import { useErrorStore } from "@/stores/seb-server/errorStore";
+import * as constants from "@/utils/constants.ts";
+import { InstructionEnum } from "@/models/seb-server/instructionEnum.ts";
+import { useErrorStore } from "@/stores/seb-server/errorStore.ts";
 import { computed, ref } from "vue";
-import { ErrorProps } from "@/models/alertProps";
-import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum";
+import { ErrorProps } from "@/models/alertProps.ts";
+import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
 import InstructionConfirmDialog from "@/components/views/seb-server/monitoring/dialogs/InstructionConfirmDialog.vue";
 import * as useMonitoringNavigation from "@/components/views/seb-server/monitoring/composables/useMonitoringNavigation.ts";
 import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
@@ -464,6 +463,10 @@ import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
 
 // info panel (whole component)
 const isInfoExpanded = ref<boolean>(true);
+
+const props = defineProps<{
+    examId: string;
+}>();
 
 // router
 const route = useRoute();
@@ -474,7 +477,7 @@ storeToRefs(monitoringStore);
 const errorStore = useErrorStore();
 
 // exam
-const examId = useRoute().params.examId.toString();
+const examId = props.examId;
 
 const breadCrumbItems = computed<BreadCrumbItem[]>(() => {
     const items: BreadCrumbItem[] = [

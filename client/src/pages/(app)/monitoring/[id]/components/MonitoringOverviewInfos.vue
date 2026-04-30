@@ -152,13 +152,13 @@
 </template>
 
 <script setup lang="ts">
-import { translate } from "@/utils/generalUtils";
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
-import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum";
-import * as generalUtils from "@/utils/generalUtils";
-import * as timeUtils from "@/utils/timeUtils";
-import MonitoringOverviewASK from "@/components/views/seb-server/monitoring/overview/MonitoringOverviewASK.vue";
-import QuitAllDialog from "@/components/views/seb-server/monitoring/overview/dialogs/QuitAllDialog.vue";
+import { translate } from "@/utils/generalUtils.ts";
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
+import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum.ts";
+import * as generalUtils from "@/utils/generalUtils.ts";
+import * as timeUtils from "@/utils/timeUtils.ts";
+import MonitoringOverviewASK from "@/pages/(app)/monitoring/[id]/components/MonitoringOverviewASK.vue";
+import QuitAllDialog from "@/pages/(app)/monitoring/[id]/components/dialogs/QuitAllDialog.vue";
 import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
 import { ref } from "vue";
 import { quitAll } from "@/services/seb-server/monitoringService.ts";

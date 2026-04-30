@@ -150,9 +150,9 @@
 import {
     IndicatorEnum,
     MonitoringHeaderEnum,
-} from "@/models/seb-server/monitoringEnums";
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
-import { translate } from "@/utils/generalUtils";
+} from "@/models/seb-server/monitoringEnums.ts";
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
+import { translate } from "@/utils/generalUtils.ts";
 import { useRoute } from "vue-router";
 import { goToMonitoring } from "@/components/views/seb-server/monitoring/composables/useMonitoringNavigation.ts";
 

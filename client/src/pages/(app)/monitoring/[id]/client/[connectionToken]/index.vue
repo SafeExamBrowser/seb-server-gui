@@ -1,40 +1,40 @@
 <template>
     <template v-if="isDataLoaded">
         <MonitoringDetailsInfo
+            :exam-id="examId"
+            :connection-token="connectionToken"
             @update-page-info="updatePage"
         ></MonitoringDetailsInfo>
         <MonitoringDetailsMain
+            :exam-id="examId"
+            :connection-token="connectionToken"
             @update-page-main="updatePage"
         ></MonitoringDetailsMain>
     </template>
 </template>
 
 <script setup lang="ts">
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
-import { useAppBarStore } from "@/stores/store";
-import { translate } from "@/utils/generalUtils";
-import * as monitoringService from "@/services/seb-server/monitoringService";
-import * as indicatorService from "@/services/seb-server/indicatorService";
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
+import * as monitoringService from "@/services/seb-server/monitoringService.ts";
+import * as indicatorService from "@/services/seb-server/indicatorService.ts";
 import { useRoute } from "vue-router";
 import { ref, onBeforeMount, onBeforeUnmount } from "vue";
 import {
     ClientNotification,
     SingleConnection,
-} from "@/models/seb-server/monitoring";
-import { Indicators } from "@/models/seb-server/indicators";
-import MonitoringDetailsMain from "@/components/views/seb-server/monitoring/client-detail/MonitoringDetailsMain.vue";
-import MonitoringDetailsInfo from "@/components/views/seb-server/monitoring/client-detail/MonitoringDetailsInfo.vue";
+} from "@/models/seb-server/monitoring.ts";
+import { Indicators } from "@/models/seb-server/indicators.ts";
+import MonitoringDetailsMain from "@/pages/(app)/monitoring/[id]/client/[connectionToken]/components/MonitoringDetailsMain.vue";
+import MonitoringDetailsInfo from "@/pages/(app)/monitoring/[id]/client/[connectionToken]/components/MonitoringDetailsInfo.vue";
 import * as useMonitoringData from "@/components/views/seb-server/monitoring/composables/useMonitoringData.ts";
 import { extractClientGroupNames } from "@/components/views/seb-server/monitoring/utils/monitoringUtils.ts";
 
 // route params
-const examId = useRoute().params.examId.toString();
-const connectionToken = useRoute().params.connectionToken.toString();
-// const connectionId = useRoute().params.connectionId.toString();
+const examId = useRoute().params.id;
+const connectionToken = useRoute().params.connectionToken;
 
 // stores
 const monitoringStore = useMonitoringStore();
-const appBarStore = useAppBarStore();
 
 // data load
 const isDataLoaded = ref<boolean>(false);
@@ -45,8 +45,6 @@ let dataFetching = false;
 const REFRESH_INTERVAL: number = 5000;
 
 onBeforeMount(async () => {
-    appBarStore.title = translate("titles.monitoring");
-
     await getSingleConnection();
     await getIndicators();
     await useMonitoringData.getExamAndStore(examId);

@@ -206,24 +206,27 @@
 </template>
 
 <script setup lang="ts">
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
-import * as generalUtils from "@/utils/generalUtils";
-import { translate } from "@/utils/generalUtils";
-import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum";
-import { InstructionEnum } from "@/models/seb-server/instructionEnum";
-import { navigateTo } from "@/router/navigation";
-import * as constants from "@/utils/constants";
-import { IndicatorEnum } from "@/models/seb-server/monitoringEnums";
-import { useRoute } from "vue-router";
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
+import * as generalUtils from "@/utils/generalUtils.ts";
+import { translate } from "@/utils/generalUtils.ts";
+import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
+import { InstructionEnum } from "@/models/seb-server/instructionEnum.ts";
+import * as constants from "@/utils/constants.ts";
+import { IndicatorEnum } from "@/models/seb-server/monitoringEnums.ts";
 import { computed, ref } from "vue";
-import { NotificationEnum } from "@/models/seb-server/monitoringEnums";
+import { NotificationEnum } from "@/models/seb-server/monitoringEnums.ts";
 import InstructionConfirmDialog from "@/components/views/seb-server/monitoring/dialogs/InstructionConfirmDialog.vue";
 import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
 import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
 
+const props = defineProps<{
+    examId: string;
+    connectionToken: string;
+}>();
+
 // route params
-const examId = useRoute().params.examId.toString();
-const connectionToken = useRoute().params.connectionToken.toString();
+const examId = props.examId;
+const connectionToken = props.connectionToken;
 
 // stores
 const monitoringStore = useMonitoringStore();

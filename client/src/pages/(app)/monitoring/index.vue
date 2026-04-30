@@ -31,9 +31,8 @@
                     :items-per-page="options.itemsPerPage"
                     :options="options"
                     :loading="loading"
-                    :detail-route="getRouteName('MonitoringOverview')"
-                    route-param-key="examId"
-                    item-identifier-key="id"
+                    :detail-route="monitoringDetailRoute"
+                    :item-identifier-key="monitoringIdentifierKey"
                     :cell-formatters="cellFormatters"
                     :actions="tableActions"
                     @update:options="loadItems"
@@ -62,24 +61,37 @@ import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 import EnumChip from "@/components/widgets/EnumChip.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
-import { useMonitoringTableHeaders } from "@/components/views/seb-server/monitoring/exams/composables/useMonitoringTableHeaders.ts";
-import { useMonitoringTableActions } from "@/components/views/seb-server/monitoring/exams/composables/useMonitoringTableActions.ts";
-import { useTableNavigation } from "@/components/widgets/entity-table/composables/useTableNavigation.ts";
+import { useMonitoringTableHeaders } from "@/pages/(app)/monitoring/composables/useMonitoringTableHeaders.ts";
+import { useMonitoringTableActions } from "@/pages/(app)/monitoring/composables/useMonitoringTableActions.ts";
 import {
     useMonitoringFilters,
     TYPE_FILTER_KEY,
     MONITORING_STATUS_FILTER_KEY,
-} from "@/components/views/seb-server/monitoring/exams/composables/useMonitoringFilters.ts";
-import { useMonitoringExams } from "@/components/views/seb-server/monitoring/exams/api/useMonitoringExams.ts";
-import { getRouteName } from "@/router/routeNames.ts";
+} from "@/pages/(app)/monitoring/composables/useMonitoringFilters.ts";
+import { useMonitoringExams } from "@/pages/(app)/monitoring/api/useMonitoringExams.ts";
 import type { Exams } from "@/models/seb-server/exam.ts";
 import {
     ExamStatusEnum,
     examStatusColor,
 } from "@/models/seb-server/examFiltersEnum.ts";
+import { useDetailRouteNavigation } from "@/router/detailRoute.ts";
+import type { RouteLocationAsRelative } from "vue-router";
+
+definePage({
+    meta: {
+        titleKey: "titles.monitoring",
+        pageTestId: "monitoring-page",
+    },
+});
+const monitoringDetailRoute: RouteLocationAsRelative = {
+    name: "/(app)/monitoring/[id]/",
+};
+
+const monitoringIdentifierKey = "id";
 
 const { headers: tableHeaders, cellFormatters } = useMonitoringTableHeaders();
 const filterSections = useMonitoringFilters();
+const { pushDetailRoute } = useDetailRouteNavigation();
 
 const tableData = ref<Exams>();
 
@@ -132,13 +144,8 @@ watch(
 
 const pageCount = computed(() => tableData.value?.number_of_pages ?? 0);
 
-const { navigateToItem } = useTableNavigation(
-    getRouteName("MonitoringOverview"),
-    "id",
-    "examId",
-);
-
 const tableActions = useMonitoringTableActions({
-    onNavigate: (item) => navigateToItem(item),
+    onNavigate: (item) =>
+        pushDetailRoute(monitoringDetailRoute, item, monitoringIdentifierKey),
 });
 </script>

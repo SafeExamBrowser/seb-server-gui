@@ -64,31 +64,35 @@
 </template>
 
 <script setup lang="ts">
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
-import { translate } from "@/utils/generalUtils";
-import { useAppBarStore } from "@/stores/store";
-import MonitoringOverviewIndicators from "@/components/views/seb-server/monitoring/overview/MonitoringOverviewIndicators.vue";
-import * as indicatorService from "@/services/seb-server/indicatorService";
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
+import MonitoringOverviewIndicators from "@/pages/(app)/monitoring/[id]/components/MonitoringOverviewIndicators.vue";
+import * as indicatorService from "@/services/seb-server/indicatorService.ts";
 import { useRoute } from "vue-router";
 import { computed, onBeforeMount, onBeforeUnmount } from "vue";
-import { MonitoringOverview } from "@/models/seb-server/monitoring";
-import { Indicators } from "@/models/seb-server/indicators";
-import MonitoringOverviewInfos from "@/components/views/seb-server/monitoring/overview/MonitoringOverviewInfos.vue";
-import MonitoringOverviewClients from "@/components/views/seb-server/monitoring/overview/MonitoringOverviewClients.vue";
-import MonitoringOverviewNotifications from "@/components/views/seb-server/monitoring/overview/MonitoringOverviewNotifications.vue";
-import MonitoringOverviewGroups from "@/components/views/seb-server/monitoring/overview/MonitoringOverviewGroups.vue";
-import * as monitoringService from "@/services/seb-server/monitoringService";
+import { MonitoringOverview } from "@/models/seb-server/monitoring.ts";
+import { Indicators } from "@/models/seb-server/indicators.ts";
+import MonitoringOverviewInfos from "@/pages/(app)/monitoring/[id]/components/MonitoringOverviewInfos.vue";
+import MonitoringOverviewClients from "@/pages/(app)/monitoring/[id]/components/MonitoringOverviewClients.vue";
+import MonitoringOverviewNotifications from "@/pages/(app)/monitoring/[id]/components/MonitoringOverviewNotifications.vue";
+import MonitoringOverviewGroups from "@/pages/(app)/monitoring/[id]/components/MonitoringOverviewGroups.vue";
+import * as monitoringService from "@/services/seb-server/monitoringService.ts";
 import * as useMonitoringData from "@/components/views/seb-server/monitoring/composables/useMonitoringData.ts";
 import {
     getMonitoringDisabledWarningText,
     isMonitoringDisabled,
 } from "@/components/views/seb-server/monitoring/utils/monitoringUtils.ts";
 
+definePage({
+    meta: {
+        titleKey: "titles.monitoring",
+        pageTestId: "monitoring-detail-page",
+    },
+});
+
 // exam
-const examId = useRoute().params.examId.toString();
+const examId = useRoute().params.id;
 
 // stores
-const appBarStore = useAppBarStore();
 const monitoringStore = useMonitoringStore();
 
 // interval
@@ -97,7 +101,6 @@ let dataFetching = false;
 const REFRESH_INTERVAL = 5000;
 
 onBeforeMount(async () => {
-    appBarStore.title = translate("titles.monitoring");
     await useMonitoringData.getExamAndStore(examId);
     await getIndicatorData();
     await getOverviewData();

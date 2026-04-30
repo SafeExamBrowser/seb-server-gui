@@ -194,18 +194,18 @@
 </template>
 
 <script setup lang="ts">
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
-import { useTableStore } from "@/stores/store";
-import { translate } from "@/utils/generalUtils";
-import * as generalUtils from "@/utils/generalUtils";
-import * as monitoringService from "@/services/seb-server/monitoringService";
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
+import { useTableStore } from "@/stores/store.ts";
+import { translate } from "@/utils/generalUtils.ts";
+import * as generalUtils from "@/utils/generalUtils.ts";
+import * as monitoringService from "@/services/seb-server/monitoringService.ts";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import {
     IndicatorEnum,
     IndicatorObject,
     MonitoringHeaderEnum,
-} from "@/models/seb-server/monitoringEnums";
-import { MonitoringRow } from "@/models/seb-server/monitoringClients";
+} from "@/models/seb-server/monitoringEnums.ts";
+import { MonitoringRow } from "@/models/seb-server/monitoringClients.ts";
 import { useI18n } from "vue-i18n";
 import { LocationQueryValue, useRoute } from "vue-router";
 import {
@@ -221,15 +221,19 @@ import {
     MonitoringConnections,
     MonitoringStaticClientData,
     StaticClientConnectionData,
-} from "@/models/seb-server/monitoring";
-import { Indicator } from "@/models/seb-server/indicators";
-import { ClientGroup } from "@/models/seb-server/clientGroup";
+} from "@/models/seb-server/monitoring.ts";
+import { Indicator } from "@/models/seb-server/indicators.ts";
+import { ClientGroup } from "@/models/seb-server/clientGroup.ts";
 import ClientGroupInfoDialog from "@/components/views/seb-server/monitoring/dialogs/ClientGroupInfoDialog.vue";
 import { goToMonitoringDetails } from "@/components/views/seb-server/monitoring/composables/useMonitoringNavigation.ts";
 import { extractClientGroupNames } from "@/components/views/seb-server/monitoring/utils/monitoringUtils.ts";
 
+const props = defineProps<{
+    examId: string;
+}>();
+
 // exam
-const examId = useRoute().params.examId.toString();
+const examId = props.examId;
 
 // router
 const route = useRoute();

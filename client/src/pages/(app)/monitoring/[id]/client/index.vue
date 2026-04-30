@@ -1,33 +1,41 @@
 <template>
     <template v-if="isDataLoaded">
         <MonitoringClientsInfo
+            :exam-id="examId"
             @update-page-info="updateAll"
         ></MonitoringClientsInfo>
-        <MonitoringClientsMain ref="mainRef"></MonitoringClientsMain>
+        <MonitoringClientsMain
+            :exam-id="examId"
+            ref="mainRef"
+        ></MonitoringClientsMain>
     </template>
 </template>
 
 <script setup lang="ts">
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
-import { useAppBarStore } from "@/stores/store";
-import { translate } from "@/utils/generalUtils";
-import * as monitoringService from "@/services/seb-server/monitoringService";
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
+import * as monitoringService from "@/services/seb-server/monitoringService.ts";
 import * as useMonitoringData from "@/components/views/seb-server/monitoring/composables/useMonitoringData.ts";
 
-import * as indicatorService from "@/services/seb-server/indicatorService";
-import MonitoringClientsMain from "@/components/views/seb-server/monitoring/clients/MonitoringClientsMain.vue";
+import * as indicatorService from "@/services/seb-server/indicatorService.ts";
+import MonitoringClientsMain from "@/pages/(app)/monitoring/[id]/client/components/MonitoringClientsMain.vue";
 import { useRoute } from "vue-router";
 import { ref, onBeforeMount, onBeforeUnmount } from "vue";
-import { MonitoringOverview } from "@/models/seb-server/monitoring";
-import { Indicators } from "@/models/seb-server/indicators";
-import MonitoringClientsInfo from "@/components/views/seb-server/monitoring/clients/MonitoringClientsInfo.vue";
+import { MonitoringOverview } from "@/models/seb-server/monitoring.ts";
+import { Indicators } from "@/models/seb-server/indicators.ts";
+import MonitoringClientsInfo from "@/pages/(app)/monitoring/[id]/client/components/MonitoringClientsInfo.vue";
+
+definePage({
+    meta: {
+        titleKey: "titles.monitoring",
+        pageTestId: "monitoring-detail-clients-page",
+    },
+});
 
 // exam
-const examId = useRoute().params.examId.toString();
+const examId = useRoute().params.id;
 
 // stores
 const monitoringStore = useMonitoringStore();
-const appBarStore = useAppBarStore();
 
 // data load
 const isDataLoaded = ref<boolean>(false);
@@ -40,8 +48,6 @@ const REFRESH_INTERVAL: number = 10000;
 const mainRef = ref();
 
 onBeforeMount(async () => {
-    appBarStore.title = translate("titles.monitoring");
-
     if (monitoringStore.selectedExam == null) {
         await useMonitoringData.getExamAndStore(examId);
     }
