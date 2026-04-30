@@ -64,12 +64,12 @@ const actionCards: ActionCard[] = [
     {
         testIdPrefix: "prepare-exam",
         titleKey: "homePage.prepareExam",
-        route: { name: "/(app)/quiz-import/" },
+        route: { name: "/(app)/exam-template/create/" },
     },
     {
         testIdPrefix: "monitor-exam",
         titleKey: "homePage.monitorExams",
-        route: { name: "/(app)/quiz-import/" },
+        route: { name: "/(app)/monitoring/" },
     },
 ];
 </script>

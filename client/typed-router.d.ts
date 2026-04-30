@@ -42,6 +42,9 @@ declare module 'vue-router/auto-routes' {
       | '/(app)/connection-configuration/'
       | '/(app)/connection-configuration/[id]/'
       | '/(app)/connection-configuration/create/'
+      | '/(app)/exam-template/'
+      | '/(app)/exam-template/[id]/'
+      | '/(app)/exam-template/create/'
       | '/(app)/exam/'
       | '/(app)/exam/[id]/'
       | '/(app)/home/'
@@ -117,6 +120,27 @@ declare module 'vue-router/auto-routes' {
       '/exam/:id',
       { id: ParamValue<true> },
       { id: ParamValue<false> },
+      | never
+    >,
+    '/(app)/exam-template/': RouteRecordInfo<
+      '/(app)/exam-template/',
+      '/exam-template',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/(app)/exam-template/[id]/': RouteRecordInfo<
+      '/(app)/exam-template/[id]/',
+      '/exam-template/:id',
+      { id: ParamValue<true> },
+      { id: ParamValue<false> },
+      | never
+    >,
+    '/(app)/exam-template/create/': RouteRecordInfo<
+      '/(app)/exam-template/create/',
+      '/exam-template/create',
+      Record<never, never>,
+      Record<never, never>,
       | never
     >,
     '/(app)/home/': RouteRecordInfo<
@@ -241,6 +265,9 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/connection-configuration/'
         | '/(app)/connection-configuration/[id]/'
         | '/(app)/connection-configuration/create/'
+        | '/(app)/exam-template/'
+        | '/(app)/exam-template/[id]/'
+        | '/(app)/exam-template/create/'
         | '/(app)/exam/'
         | '/(app)/exam/[id]/'
         | '/(app)/home/'
@@ -308,6 +335,24 @@ declare module 'vue-router/auto-routes' {
     'src/pages/(app)/exam/[id]/index.vue': {
       routes:
         | '/(app)/exam/[id]/'
+      views:
+        | never
+    }
+    'src/pages/(app)/exam-template/index.vue': {
+      routes:
+        | '/(app)/exam-template/'
+      views:
+        | never
+    }
+    'src/pages/(app)/exam-template/[id]/index.vue': {
+      routes:
+        | '/(app)/exam-template/[id]/'
+      views:
+        | never
+    }
+    'src/pages/(app)/exam-template/create/index.vue': {
+      routes:
+        | '/(app)/exam-template/create/'
       views:
         | never
     }

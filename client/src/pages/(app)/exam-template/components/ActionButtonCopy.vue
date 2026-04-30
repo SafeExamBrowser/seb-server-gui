@@ -1,0 +1,35 @@
+<template>
+    <ActionButtonLoading v-if="isCopying" />
+    <ActionButton
+        v-else
+        icon="mdi-content-copy"
+        :title="$t('general.copyButton')"
+        @click="handleCopy"
+    />
+</template>
+
+<script setup lang="ts">
+import { ExamTemplate } from "@/models/seb-server/examTemplate.ts";
+import { useCopyExamTemplate } from "@/pages/(app)/exam-template/composables/api/useCopyExamTemplate.ts";
+import ActionButton from "@/pages/(app)/exam-template/components/ActionButton.vue";
+import ActionButtonLoading from "@/pages/(app)/exam-template/components/ActionButtonLoading.vue";
+
+const props = defineProps<{
+    item: ExamTemplate;
+}>();
+
+const emit = defineEmits<{
+    (e: "changed"): void;
+}>();
+
+const { mutateData: copyTemplate, loading: isCopying } = useCopyExamTemplate();
+
+const handleCopy = async () => {
+    if (!props.item.id) {
+        throw new Error("ExamTemplate without id can't be copied");
+    }
+
+    await copyTemplate(props.item.id);
+    emit("changed");
+};
+</script>

@@ -940,10 +940,10 @@ import ExamDetailArchiveDialog from "@/pages/(app)/exam/[id]/components/dialogs/
 import ClientGroupListDialog from "@/pages/(app)/exam/[id]/components/dialogs/client-group/ClientGroupListDialog.vue";
 import AddClientGroupDialog from "@/pages/(app)/exam/[id]/components/dialogs/client-group/AddClientGroupDialog.vue";
 import ExamTemplateDialog from "@/components/widgets/ExamTemplateDialog.vue";
-import SebSettingsDialog from "@/components/views/seb-server/sebSettings/SebSettingsDialog.vue";
+import SebSettingsDialog from "@/components/widgets/sebSettings/SebSettingsDialog.vue";
 import { activateScreenProctoring } from "@/services/seb-server/screenProctoringService.ts";
 import * as timeUtils from "@/utils/timeUtils.ts";
-import { SEBSettingsContext } from "@/components/views/seb-server/sebSettings/types.ts";
+import { SEBSettingsContext } from "@/components/widgets/sebSettings/types.ts";
 
 const router = useRouter();
 const props = defineProps<{
