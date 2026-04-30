@@ -35,20 +35,12 @@ declare module 'vue-router/auto-routes' {
       '/',
       Record<never, never>,
       Record<never, never>,
-      | '/(app)/assessment-tool/'
       | '/(app)/home/'
       | '/(app)/navigation-overview/'
       | '/(app)/user-account/'
       | '/(app)/user-account/[userUuid]/'
       | '/(app)/user-account/create/'
       | '/(app)/user-account/profile/'
-    >,
-    '/(app)/assessment-tool/': RouteRecordInfo<
-      '/(app)/assessment-tool/',
-      '/assessment-tool',
-      Record<never, never>,
-      Record<never, never>,
-      | never
     >,
     '/(app)/home/': RouteRecordInfo<
       '/(app)/home/',
@@ -130,7 +122,6 @@ declare module 'vue-router/auto-routes' {
     'src/pages/(app).vue': {
       routes:
         | '/(app)'
-        | '/(app)/assessment-tool/'
         | '/(app)/home/'
         | '/(app)/navigation-overview/'
         | '/(app)/user-account/'
@@ -139,12 +130,6 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/user-account/profile/'
       views:
         | 'default'
-    }
-    'src/pages/(app)/assessment-tool/index.vue': {
-      routes:
-        | '/(app)/assessment-tool/'
-      views:
-        | never
     }
     'src/pages/(app)/home/index.vue': {
       routes:
