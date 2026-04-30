@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import * as monitoringService from "@/services/seb-server/monitoringService.ts";
-import * as useMonitoringData from "@/components/views/seb-server/monitoring/composables/useMonitoringData.ts";
+import * as useMonitoringData from "@/pages/(app)/monitoring/[id]/client/composables/useMonitoringData.ts";
 
 import * as indicatorService from "@/services/seb-server/indicatorService.ts";
 import MonitoringClientsMain from "@/pages/(app)/monitoring/[id]/client/components/MonitoringClientsMain.vue";

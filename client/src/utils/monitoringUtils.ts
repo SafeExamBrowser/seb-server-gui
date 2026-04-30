@@ -1,8 +1,8 @@
 import { Exam } from "@/models/seb-server/exam.ts";
 import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum.ts";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
-import * as generalUtils from "@/utils/generalUtils";
-import { ClientGroup } from "@/models/seb-server/clientGroup";
+import * as generalUtils from "@/utils/generalUtils.ts";
+import { ClientGroup } from "@/models/seb-server/clientGroup.ts";
 import * as spConstants from "@/utils/sp-constants.ts";
 
 export function isMonitoringDisabled(): boolean {

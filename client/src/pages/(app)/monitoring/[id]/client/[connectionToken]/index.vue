@@ -26,8 +26,8 @@ import {
 import { Indicators } from "@/models/seb-server/indicators.ts";
 import MonitoringDetailsMain from "@/pages/(app)/monitoring/[id]/client/[connectionToken]/components/MonitoringDetailsMain.vue";
 import MonitoringDetailsInfo from "@/pages/(app)/monitoring/[id]/client/[connectionToken]/components/MonitoringDetailsInfo.vue";
-import * as useMonitoringData from "@/components/views/seb-server/monitoring/composables/useMonitoringData.ts";
-import { extractClientGroupNames } from "@/components/views/seb-server/monitoring/utils/monitoringUtils.ts";
+import * as useMonitoringData from "@/pages/(app)/monitoring/[id]/client/composables/useMonitoringData.ts";
+import { extractClientGroupNames } from "@/utils/monitoringUtils.ts";
 
 // route params
 const examId = useRoute().params.id;

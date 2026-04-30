@@ -1,5 +1,5 @@
 import { ScreenshotData } from "@/models/screen-proctoring/session.ts";
-import { useAuthStore } from "@/composables/store/useAuthStore";
+import { useAuthStore } from "@/composables/store/useAuthStore.ts";
 
 export function getLatestImageLink(
     screenshot: ScreenshotData | undefined,

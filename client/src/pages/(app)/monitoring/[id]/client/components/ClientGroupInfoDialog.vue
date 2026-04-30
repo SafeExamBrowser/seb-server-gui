@@ -197,12 +197,12 @@
 import {
     ClientGroupEnum,
     ClientOSEnum,
-} from "@/models/seb-server/clientGroupEnum";
-import * as generalUtils from "@/utils/generalUtils";
+} from "@/models/seb-server/clientGroupEnum.ts";
+import * as generalUtils from "@/utils/generalUtils.ts";
 import { useI18n } from "vue-i18n";
-import { translate } from "@/utils/generalUtils";
+import { translate } from "@/utils/generalUtils.ts";
 import { ref } from "vue";
-import { ClientGroup } from "@/models/seb-server/clientGroup";
+import { ClientGroup } from "@/models/seb-server/clientGroup.ts";
 
 // props
 const props = defineProps<{

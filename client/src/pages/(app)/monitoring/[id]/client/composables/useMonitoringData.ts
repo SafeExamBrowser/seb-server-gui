@@ -1,4 +1,3 @@
-// // wait   ----- overview  /    / ---- usemonitoringdata
 import { Exam } from "@/models/seb-server/exam.ts";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import {
@@ -6,8 +5,8 @@ import {
     AppSignatureKeysWithGrantValues,
     GrantedAppSignatureKey,
 } from "@/models/seb-server/appSignatureKey.ts";
-import * as examService from "@/services/seb-server/examService";
-import * as clientConnectionService from "@/services/seb-server/clientConnectionService";
+import * as examService from "@/services/seb-server/examService.ts";
+import * as clientConnectionService from "@/services/seb-server/clientConnectionService.ts";
 import { ClientGroups } from "@/models/seb-server/clientGroup.ts";
 import * as clientGroupService from "@/services/seb-server/clientGroupService.ts";
 
@@ -20,7 +19,6 @@ export async function getExamAndStore(examId: string) {
     useMonitoringStore().selectedExam = examResponse;
 }
 
-// wait   ----- overview ---- usemonitoringdata
 export async function getAskAndStore(examId: string) {
     const store = useMonitoringStore();
 

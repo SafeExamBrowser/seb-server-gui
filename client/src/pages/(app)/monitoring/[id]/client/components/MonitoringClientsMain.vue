@@ -224,9 +224,9 @@ import {
 } from "@/models/seb-server/monitoring.ts";
 import { Indicator } from "@/models/seb-server/indicators.ts";
 import { ClientGroup } from "@/models/seb-server/clientGroup.ts";
-import ClientGroupInfoDialog from "@/components/views/seb-server/monitoring/dialogs/ClientGroupInfoDialog.vue";
-import { goToMonitoringDetails } from "@/components/views/seb-server/monitoring/composables/useMonitoringNavigation.ts";
-import { extractClientGroupNames } from "@/components/views/seb-server/monitoring/utils/monitoringUtils.ts";
+import ClientGroupInfoDialog from "@/pages/(app)/monitoring/[id]/client/components/ClientGroupInfoDialog.vue";
+import { goToMonitoringDetails } from "@/pages/(app)/monitoring/[id]/composables/useMonitoringNavigation.ts";
+import { extractClientGroupNames } from "@/utils/monitoringUtils.ts";
 
 const props = defineProps<{
     examId: string;

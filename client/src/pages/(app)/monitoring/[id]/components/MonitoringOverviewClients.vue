@@ -133,7 +133,7 @@ import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums.ts";
 import { useI18n } from "vue-i18n";
 import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
-import { goToMonitoring } from "@/components/views/seb-server/monitoring/composables/useMonitoringNavigation.ts";
+import { goToMonitoring } from "@/pages/(app)/monitoring/[id]/composables/useMonitoringNavigation.ts";
 
 // i18n
 const i18n = useI18n();

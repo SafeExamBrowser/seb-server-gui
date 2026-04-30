@@ -1,4 +1,4 @@
-import router from "@/router/router";
+import router from "@/router/router.ts";
 import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums.ts";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import type {

@@ -113,7 +113,7 @@ import * as tableUtils from "@/utils/table/tableUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import { storeToRefs } from "pinia";
 import { Group, GroupObject } from "@/models/screen-proctoring/group";
-import { getGalleryViewLink } from "@/components/views/seb-server/monitoring/utils/monitoringUtils.ts";
+import { getGalleryViewLink } from "@/utils/monitoringUtils.ts";
 
 // stores
 const appBarStore = useAppBarStore();

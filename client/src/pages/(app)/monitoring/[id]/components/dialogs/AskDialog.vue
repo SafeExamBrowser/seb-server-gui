@@ -393,7 +393,7 @@ import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.t
 import * as examService from "@/services/seb-server/examService.ts";
 import { navigateTo } from "@/router/navigation";
 import * as constants from "@/utils/constants.ts";
-import { getAskAndStore } from "@/components/views/seb-server/monitoring/composables/useMonitoringData.ts";
+import { getAskAndStore } from "@/pages/(app)/monitoring/[id]/client/composables/useMonitoringData.ts";
 
 const store = useMonitoringStore();
 const emit = defineEmits<{

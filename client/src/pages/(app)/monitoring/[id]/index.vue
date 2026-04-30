@@ -76,11 +76,11 @@ import MonitoringOverviewClients from "@/pages/(app)/monitoring/[id]/components/
 import MonitoringOverviewNotifications from "@/pages/(app)/monitoring/[id]/components/MonitoringOverviewNotifications.vue";
 import MonitoringOverviewGroups from "@/pages/(app)/monitoring/[id]/components/MonitoringOverviewGroups.vue";
 import * as monitoringService from "@/services/seb-server/monitoringService.ts";
-import * as useMonitoringData from "@/components/views/seb-server/monitoring/composables/useMonitoringData.ts";
+import * as useMonitoringData from "@/pages/(app)/monitoring/[id]/client/composables/useMonitoringData.ts";
 import {
     getMonitoringDisabledWarningText,
     isMonitoringDisabled,
-} from "@/components/views/seb-server/monitoring/utils/monitoringUtils.ts";
+} from "@/utils/monitoringUtils.ts";
 
 definePage({
     meta: {

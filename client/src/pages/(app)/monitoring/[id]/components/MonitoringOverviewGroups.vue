@@ -349,8 +349,8 @@ import { computed } from "vue";
 import type { ComputedRef } from "vue";
 import { OverviewClientGroup } from "@/models/seb-server/monitoring.ts";
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
-import { goToMonitoring } from "@/components/views/seb-server/monitoring/composables/useMonitoringNavigation.ts";
-import { getGalleryViewLinkByExamId } from "@/components/views/seb-server/monitoring/utils/monitoringUtils.ts";
+import { goToMonitoring } from "@/pages/(app)/monitoring/[id]/composables/useMonitoringNavigation.ts";
+import { getGalleryViewLinkByExamId } from "@/utils/monitoringUtils.ts";
 
 // stores
 const monitoringStore = useMonitoringStore();

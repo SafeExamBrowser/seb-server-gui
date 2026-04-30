@@ -215,7 +215,7 @@ import * as constants from "@/utils/constants.ts";
 import { IndicatorEnum } from "@/models/seb-server/monitoringEnums.ts";
 import { computed, ref } from "vue";
 import { NotificationEnum } from "@/models/seb-server/monitoringEnums.ts";
-import InstructionConfirmDialog from "@/components/views/seb-server/monitoring/dialogs/InstructionConfirmDialog.vue";
+import InstructionConfirmDialog from "@/pages/(app)/monitoring/[id]/client/components/InstructionConfirmDialog.vue";
 import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
 import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
 

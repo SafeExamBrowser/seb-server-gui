@@ -44,7 +44,7 @@ import { getUserListForApplicationSearch } from "@/services/screen-proctoring/ap
 import {
     openProctoringApplicationSearch,
     openProctoringView,
-} from "@/components/views/screen-proctoring/utils/navigation.ts";
+} from "@/utils/navigation.ts";
 
 // props
 const props = defineProps<{

@@ -257,7 +257,7 @@ import { useRoute } from "vue-router";
 import { ScreenshotData } from "@/models/screen-proctoring/session";
 import { navigateToProctoringView } from "@/components/views/screen-proctoring/gallery/utils/galleryNavigation.ts";
 import * as galleryUtils from "@/components/views/screen-proctoring/gallery/utils/galleryUtils.ts";
-import { getLatestImageLink } from "@/components/views/screen-proctoring/utils/linkBuilder.ts";
+import { getLatestImageLink } from "@/utils/linkBuilder.ts";
 
 // props
 const props = defineProps<{

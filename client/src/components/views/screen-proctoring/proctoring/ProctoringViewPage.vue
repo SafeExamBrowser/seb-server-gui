@@ -282,7 +282,7 @@ import {
     ScreenshotsGrouped,
     SearchTimeline,
 } from "@/models/screen-proctoring/search";
-import { getSpecificImageLink } from "@/components/views/screen-proctoring/utils/linkBuilder.ts";
+import { getSpecificImageLink } from "@/utils/linkBuilder.ts";
 import {
     getScreenshotMetadata,
     getSessionInfodata,

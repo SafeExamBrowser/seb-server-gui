@@ -219,7 +219,7 @@ import { useFullscreen } from "@vueuse/core";
 import * as spConstants from "@/utils/sp-constants";
 import { ScreenshotData } from "@/models/screen-proctoring/session";
 import { getTimestampListForApplicationSearch } from "@/services/screen-proctoring/applicationsSearchService.ts";
-import { getSpecificImageLink } from "@/components/views/screen-proctoring/utils/linkBuilder.ts";
+import { getSpecificImageLink } from "@/utils/linkBuilder.ts";
 import * as screenshotDataService from "@/services/screen-proctoring/screenshotDataService";
 import {
     getScreenshotMetadata,
