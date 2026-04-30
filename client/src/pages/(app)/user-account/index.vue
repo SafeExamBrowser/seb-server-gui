@@ -99,12 +99,6 @@ import AddButton from "@/components/widgets/AddButton.vue";
 import { useDetailRouteNavigation } from "@/router/detailRoute";
 import type { RouteLocationAsRelative } from "vue-router";
 
-const userAccountDetailRoute = {
-    name: "/(app)/user-account/[userUuid]/",
-} satisfies RouteLocationAsRelative<"/(app)/user-account/[userUuid]/">;
-
-const userAccountItemIdentifierKey = "uuid" as const;
-
 definePage({
     meta: {
         titleKey: "titles.userAccounts",
@@ -112,6 +106,13 @@ definePage({
         isPageBlue: true,
     },
 });
+
+const userAccountDetailRoute: RouteLocationAsRelative = {
+    name: "/(app)/user-account/[userUuid]/",
+};
+
+const userAccountItemIdentifierKey = "uuid";
+
 const { headers: userAccountsTableHeaders, cellFormatters } =
     useUserAccountsTableHeaders();
 const filterSections = useUserAccountsFilters();

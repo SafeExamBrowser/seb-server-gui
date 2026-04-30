@@ -21,7 +21,7 @@ export function buildSettingsNavigationItems(
         },
         {
             label: translate("navigation.routeNames.connectionConfiguration"),
-            to: constants.CONNECTION_CONFIGURATIONS_ROUTE,
+            to: { name: "/(app)/connection-configuration/" },
             testId: `${testIdPrefix}-connectionConfigurations-link`,
             visible: ability.canView(GUIComponent.ConnectionConfigs),
         },

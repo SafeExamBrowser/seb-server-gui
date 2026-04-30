@@ -3,7 +3,7 @@
         <template #ActionButton>
             <AddButton
                 text="connectionConfigurations.connectionConfigurationsPage.addConnectionConfiguration"
-                :route="{ name: 'CreateConnectionConfiguration' }"
+                :route="{ name: '/(app)/connection-configuration/create/' }"
             />
         </template>
 
@@ -39,11 +39,11 @@
                                     loading || deleteLoading || statusLoading
                                 "
                                 :detail-route="
-                                    getRouteName(
-                                        'ConnectionConfigurationDetailAndView',
-                                    )
+                                    connectionConfigurationDetailRoute
                                 "
-                                route-param-key="id"
+                                :route-param-key="
+                                    connectionConfigurationItemIdentifierKey
+                                "
                                 item-identifier-key="id"
                                 :cell-formatters="cellFormatters"
                                 :actions="tableActions"
@@ -81,7 +81,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
-import { getRouteName } from "@/router/routeNames.ts";
 import SearchBar from "@/components/widgets/searches/SearchBar.vue";
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 import ActiveStatusChip from "@/components/widgets/ActiveStatusChip.vue";
@@ -89,22 +88,37 @@ import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfir
 import StatusConfirmDialog from "@/components/widgets/confirmDialog/StatusConfirmDialog.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
-import { useTableNavigation } from "@/components/widgets/entity-table/composables/useTableNavigation.ts";
-import { useConnectionConfigurationsTableHeaders } from "@/components/views/seb-server/connection-configuration/connection-configurations/composables/useConnectionConfigurationsTableHeaders.ts";
-import { useConnectionConfigurationsTableActions } from "@/components/views/seb-server/connection-configuration/connection-configurations/composables/useConnectionConfigurationsTableActions.ts";
-import { useConnectionConfigurationsFilters } from "@/components/views/seb-server/connection-configuration/connection-configurations/composables/useConnectionConfigurationsFilters.ts";
+import { useConnectionConfigurationsTableHeaders } from "@/pages/(app)/connection-configuration/composables/useConnectionConfigurationsTableHeaders.ts";
+import { useConnectionConfigurationsTableActions } from "@/pages/(app)/connection-configuration/composables/useConnectionConfigurationsTableActions.ts";
+import { useConnectionConfigurationsFilters } from "@/pages/(app)/connection-configuration/composables/useConnectionConfigurationsFilters.ts";
 import { STATUS_FILTER_KEY } from "@/components/widgets/filters/statusFilterSection.ts";
 import { INSTITUTION_FILTER_KEY } from "@/components/widgets/filters/useInstitutionFilterSection.ts";
-import { useConnectionConfigurations } from "@/components/views/seb-server/connection-configuration/connection-configurations/api/useConnectionConfigurations.ts";
-import { useDeleteConnectionConfiguration } from "@/components/views/seb-server/connection-configuration/connection-configurations/api/useDeleteConnectionConfiguration.ts";
-import { useToggleConnectionConfigurationStatus } from "@/components/views/seb-server/connection-configuration/connection-configurations/api/useToggleConnectionConfigurationStatus.ts";
+import { useConnectionConfigurations } from "@/pages/(app)/connection-configuration/api/useConnectionConfigurations.ts";
+import { useDeleteConnectionConfiguration } from "@/pages/(app)/connection-configuration/api/useDeleteConnectionConfiguration.ts";
+import { useToggleConnectionConfigurationStatus } from "@/pages/(app)/connection-configuration/api/useToggleConnectionConfigurationStatus.ts";
 import type { ConnectionConfigurations } from "@/models/seb-server/connectionConfiguration.ts";
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 import AddButton from "@/components/widgets/AddButton.vue";
+import { useDetailRouteNavigation } from "@/router/detailRoute.ts";
+import type { RouteLocationAsRelative } from "vue-router";
+
+definePage({
+    meta: {
+        titleKey: "titles.connectionConfigurations",
+        pageTestId: "connection-configurations-page",
+        isPageBlue: true,
+    },
+});
+
+const connectionConfigurationDetailRoute: RouteLocationAsRelative = {
+    name: "/(app)/connection-configuration/[id]/",
+};
+const connectionConfigurationItemIdentifierKey = "id";
 
 const { headers: connectionConfigurationTableHeaders, cellFormatters } =
     useConnectionConfigurationsTableHeaders();
 const filterSections = useConnectionConfigurationsFilters();
+const { pushDetailRoute } = useDetailRouteNavigation();
 
 const tableData = ref<ConnectionConfigurations>();
 
@@ -167,12 +181,6 @@ const statusTarget = ref<TableItem | null>(null);
 const deleteDialogOpen = ref(false);
 const statusDialogOpen = ref(false);
 
-const { navigateToItem } = useTableNavigation(
-    getRouteName("ConnectionConfigurationDetailAndView"),
-    "id",
-    "id",
-);
-
 const deleteDetailText = computed(() => {
     if (!deleteTarget.value) return "";
     return String(deleteTarget.value.name ?? "");
@@ -201,7 +209,12 @@ async function confirmStatusChange() {
 }
 
 const tableActions = useConnectionConfigurationsTableActions({
-    onEdit: (item) => navigateToItem(item),
+    onEdit: (item) =>
+        pushDetailRoute(
+            connectionConfigurationDetailRoute,
+            item,
+            connectionConfigurationItemIdentifierKey,
+        ),
     onDelete: (item) => openDeleteDialog(item),
 });
 </script>

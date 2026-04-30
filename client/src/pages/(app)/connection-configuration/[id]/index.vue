@@ -773,14 +773,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
-import { useRoute } from "vue-router";
-import { useAppBarStore, useLayoutStore } from "@/stores/store.ts";
+import { computed, onMounted, ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { translate } from "@/utils/generalUtils.ts";
-import { navigateTo } from "@/router/navigation.ts";
-import * as constants from "@/utils/constants.ts";
 import * as connectionConfigurationService from "@/services/seb-server/connectionConfigurationService.ts";
-import router from "@/router/router.ts";
 import moment from "moment-timezone";
 import * as userAccountService from "@/services/seb-server/userAccountService.ts";
 
@@ -794,12 +790,18 @@ import { getCertificates } from "@/services/seb-server/certificateService.ts";
 import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
 import UploadDialog from "@/components/widgets/UploadDialog.vue";
 
+definePage({
+    meta: {
+        titleKey: "titles.connectionConfigurationViewAndEdit",
+        pageTestId: "edit-connection-configuration-page",
+        isPageBlue: true,
+    },
+});
+
 // Router
 const route = useRoute();
-
+const router = useRouter();
 // Stores
-const appBarStore = useAppBarStore();
-const layoutStore = useLayoutStore();
 
 // Fields (mirroring the Create page)
 const name = ref<string>("");
@@ -1059,35 +1061,27 @@ const canSave = computed(
 );
 
 onMounted(async () => {
-    appBarStore.title = translate("titles.connectionConfiguration");
-    layoutStore.setBlueBackground(true);
-
     await loadCertificates();
 
     examsLoading.value = false;
 
-    const idParam = route.params.connectionConfigId ?? route.params.id;
-    const idNum = Number(idParam);
-    if (idNum != null) {
+    const idParam = route.params.id;
+    if (idParam != null) {
         const dto: ConnectionConfiguration | null =
-            await getConnectionConfiguration(idNum).catch(() => null);
+            await getConnectionConfiguration(idParam).catch(() => null);
         if (dto) {
             userToLastUpdate.value =
                 await userAccountService.getUserAccountById(dto.lastUpdateUser);
 
             populateFromDto(dto);
 
-            fetchedId.value = dto.id ?? idNum;
+            fetchedId.value = dto.id ?? idParam;
             initialActiveStatus.value = dto.active;
             active.value = dto.active;
         }
     }
 
     takeSnapshot();
-});
-
-onBeforeUnmount(() => {
-    layoutStore.setBlueBackground(false);
 });
 
 function populateFromDto(dto: ConnectionConfiguration) {
@@ -1189,9 +1183,7 @@ function toggleStatusLocally() {
 }
 
 async function persistStatusChange() {
-    const id = String(
-        fetchedId.value ?? route.params.connectionConfigId ?? route.params.id,
-    );
+    const id = String(fetchedId.value ?? route.params.id);
     if (active.value) {
         await connectionConfigurationService.activateConnectionConfiguration(
             id,
@@ -1207,7 +1199,7 @@ function onBack() {
     if (window.history.length > 1) {
         router.back();
     } else {
-        navigateTo(constants.CONNECTION_CONFIGURATIONS_ROUTE);
+        router.push({ name: "/(app)/connection-configuration/" });
     }
 }
 
@@ -1251,9 +1243,7 @@ async function onSave() {
 }
 
 async function editConnectionConfigurationOnly() {
-    const idToSend = String(
-        fetchedId.value ?? route.params.connectionConfigId ?? route.params.id,
-    );
+    const idToSend = String(fetchedId.value ?? route.params.id);
 
     if (institutionId.value == null) {
         console.warn("Skipping save: institutionId is not set");

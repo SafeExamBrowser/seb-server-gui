@@ -39,6 +39,9 @@ declare module 'vue-router/auto-routes' {
       | '/(app)/assessment-tool/[id]/'
       | '/(app)/assessment-tool/create/'
       | '/(app)/certificate/'
+      | '/(app)/connection-configuration/'
+      | '/(app)/connection-configuration/[id]/'
+      | '/(app)/connection-configuration/create/'
       | '/(app)/home/'
       | '/(app)/navigation-overview/'
       | '/(app)/user-account/'
@@ -70,6 +73,27 @@ declare module 'vue-router/auto-routes' {
     '/(app)/certificate/': RouteRecordInfo<
       '/(app)/certificate/',
       '/certificate',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/(app)/connection-configuration/': RouteRecordInfo<
+      '/(app)/connection-configuration/',
+      '/connection-configuration',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/(app)/connection-configuration/[id]/': RouteRecordInfo<
+      '/(app)/connection-configuration/[id]/',
+      '/connection-configuration/:id',
+      { id: ParamValue<true> },
+      { id: ParamValue<false> },
+      | never
+    >,
+    '/(app)/connection-configuration/create/': RouteRecordInfo<
+      '/(app)/connection-configuration/create/',
+      '/connection-configuration/create',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -158,6 +182,9 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/assessment-tool/[id]/'
         | '/(app)/assessment-tool/create/'
         | '/(app)/certificate/'
+        | '/(app)/connection-configuration/'
+        | '/(app)/connection-configuration/[id]/'
+        | '/(app)/connection-configuration/create/'
         | '/(app)/home/'
         | '/(app)/navigation-overview/'
         | '/(app)/user-account/'
@@ -188,6 +215,24 @@ declare module 'vue-router/auto-routes' {
     'src/pages/(app)/certificate/index.vue': {
       routes:
         | '/(app)/certificate/'
+      views:
+        | never
+    }
+    'src/pages/(app)/connection-configuration/index.vue': {
+      routes:
+        | '/(app)/connection-configuration/'
+      views:
+        | never
+    }
+    'src/pages/(app)/connection-configuration/[id]/index.vue': {
+      routes:
+        | '/(app)/connection-configuration/[id]/'
+      views:
+        | never
+    }
+    'src/pages/(app)/connection-configuration/create/index.vue': {
+      routes:
+        | '/(app)/connection-configuration/create/'
       views:
         | never
     }

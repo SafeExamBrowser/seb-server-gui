@@ -120,8 +120,8 @@
                         data-testid="createConnectionConfiguration-cancel-button"
                         text="general.cancelButton"
                         @click="
-                            navigateToRoute({
-                                name: 'ConnectionConfigurationList',
+                            router.push({
+                                name: '/(app)/connection-configuration/',
                             })
                         "
                     />
@@ -152,7 +152,6 @@
 import { ref } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
-import { navigateToRoute } from "@/router/navigation.ts";
 import { useConnectionConfigurationFormFields } from "./composable/useConnectionConfigurationFormFields.ts";
 import { useMutation } from "@/composables/useMutation.ts";
 import { createConnectionConfiguration } from "@/services/seb-server/connectionConfigurationService.ts";
@@ -162,6 +161,16 @@ import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
 import HintText from "@/components/widgets/HintText.vue";
 import UploadDialog from "@/components/widgets/UploadDialog.vue";
+
+import { useRouter } from "vue-router";
+definePage({
+    meta: {
+        titleKey: "titles.createConnectionConfiguration",
+        pageTestId: "create-connection-configuration-page",
+        isPageBlue: true,
+    },
+});
+const router = useRouter();
 
 const {
     mainFormFields,
@@ -273,7 +282,7 @@ async function submit() {
     await createConfig(params);
 
     if (!configError.value) {
-        navigateToRoute({ name: "ConnectionConfigurationList" });
+        await router.push({ name: "/(app)/connection-configuration/" });
     }
 }
 </script>

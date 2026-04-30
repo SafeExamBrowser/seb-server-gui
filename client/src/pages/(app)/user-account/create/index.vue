@@ -180,7 +180,7 @@ async function submit() {
     });
 
     if (accountResult.value) {
-        router.push({ name: "/(app)/user-account/" });
+        await router.push({ name: "/(app)/user-account/" });
     }
 }
 </script>
