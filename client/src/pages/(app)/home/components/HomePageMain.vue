@@ -47,12 +47,29 @@
 
 <script setup lang="ts">
 import { translate } from "@/utils/generalUtils.ts";
-// TODO REFACTOR-ROUTER change routes to typed
-const actionCards = [
+import type { RouteLocationAsRelative } from "vue-router";
+
+type ActionCard = {
+    testIdPrefix: string;
+    titleKey: string;
+    route: RouteLocationAsRelative;
+};
+
+const actionCards: ActionCard[] = [
     {
-        testIdPrefix: "createTemplates",
+        testIdPrefix: "create-templates",
         titleKey: "homePage.createTemplates",
-        route: "/exam-template/create",
+        route: { name: "/(app)/quiz-import/" },
     },
-] as const;
+    {
+        testIdPrefix: "prepare-exam",
+        titleKey: "homePage.prepareExam",
+        route: { name: "/(app)/quiz-import/" },
+    },
+    {
+        testIdPrefix: "monitor-exam",
+        titleKey: "homePage.monitorExams",
+        route: { name: "/(app)/quiz-import/" },
+    },
+];
 </script>

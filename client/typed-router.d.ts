@@ -46,6 +46,7 @@ declare module 'vue-router/auto-routes' {
       | '/(app)/exam/[id]/'
       | '/(app)/home/'
       | '/(app)/navigation-overview/'
+      | '/(app)/quiz-import/'
       | '/(app)/user-account/'
       | '/(app)/user-account/[userUuid]/'
       | '/(app)/user-account/create/'
@@ -128,6 +129,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/(app)/quiz-import/': RouteRecordInfo<
+      '/(app)/quiz-import/',
+      '/quiz-import',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/(app)/user-account/': RouteRecordInfo<
       '/(app)/user-account/',
       '/user-account',
@@ -205,6 +213,7 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/exam/[id]/'
         | '/(app)/home/'
         | '/(app)/navigation-overview/'
+        | '/(app)/quiz-import/'
         | '/(app)/user-account/'
         | '/(app)/user-account/[userUuid]/'
         | '/(app)/user-account/create/'
@@ -275,6 +284,12 @@ declare module 'vue-router/auto-routes' {
     'src/pages/(app)/navigation-overview/index.vue': {
       routes:
         | '/(app)/navigation-overview/'
+      views:
+        | never
+    }
+    'src/pages/(app)/quiz-import/index.vue': {
+      routes:
+        | '/(app)/quiz-import/'
       views:
         | never
     }

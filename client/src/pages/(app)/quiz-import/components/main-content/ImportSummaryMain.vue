@@ -157,8 +157,8 @@
 </template>
 
 <script setup lang="ts">
-import { useQuizImportStore } from "@/stores/seb-server/quizImportStore";
-import { translate } from "@/utils/generalUtils";
+import { useQuizImportStore } from "@/stores/seb-server/quizImportStore.ts";
+import { translate } from "@/utils/generalUtils.ts";
 import { ref, computed } from "vue";
 // stores
 const quizImportStore = useQuizImportStore();

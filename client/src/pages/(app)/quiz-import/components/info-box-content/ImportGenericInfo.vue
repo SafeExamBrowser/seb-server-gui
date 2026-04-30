@@ -101,9 +101,9 @@
 </template>
 
 <script setup lang="ts">
-import { useQuizImportStore } from "@/stores/seb-server/quizImportStore";
-import * as timeUtils from "@/utils/timeUtils";
-import { translate } from "@/utils/generalUtils";
+import { useQuizImportStore } from "@/stores/seb-server/quizImportStore.ts";
+import * as timeUtils from "@/utils/timeUtils.ts";
+import { translate } from "@/utils/generalUtils.ts";
 
 // stores
 const quizImportStore = useQuizImportStore();

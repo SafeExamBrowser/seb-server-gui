@@ -70,17 +70,20 @@
 
 <script setup lang="ts">
 import ExamTemplateDialog from "@/components/widgets/ExamTemplateDialog.vue";
-import * as examTemplateService from "@/services/seb-server/examTemplateService";
-import { useQuizImportStore } from "@/stores/seb-server/quizImportStore";
-import { translate } from "@/utils/generalUtils";
-import * as generalUtils from "@/utils/generalUtils";
-import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
+import * as examTemplateService from "@/services/seb-server/examTemplateService.ts";
+import { useQuizImportStore } from "@/stores/seb-server/quizImportStore.ts";
+import { translate } from "@/utils/generalUtils.ts";
+import * as generalUtils from "@/utils/generalUtils.ts";
+import { useUserAccountStore } from "@/stores/authentication/userAccountStore.ts";
 import { ref, onBeforeMount } from "vue";
-import { UserAccountName } from "@/models/userAccount";
-import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring";
-import { ExamTemplate, ExamTemplates } from "@/models/seb-server/examTemplate";
+import { UserAccountName } from "@/models/userAccount.ts";
+import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring.ts";
+import {
+    ExamTemplate,
+    ExamTemplates,
+} from "@/models/seb-server/examTemplate.ts";
 import { getSupervisorNames } from "@/services/seb-server/userAccountService.ts";
-import { getExamTemplateSp } from "@/services/seb-server/examTemplateService";
+import { getExamTemplateSp } from "@/services/seb-server/examTemplateService.ts";
 
 // stores
 const quizImportStore = useQuizImportStore();

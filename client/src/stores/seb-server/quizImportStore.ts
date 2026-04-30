@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import * as constants from "@/utils/constants";
-import ImportGroupInfo from "@/components/views/seb-server/quiz-import/info-box-content/ImportGroupInfo.vue";
-import ImportGroupMain from "@/components/views/seb-server/quiz-import/main-content/ImportGroupMain.vue";
+import ImportGroupInfo from "@/pages/(app)/quiz-import/components/info-box-content/ImportGroupInfo.vue";
+import ImportGroupMain from "@/pages/(app)/quiz-import/components/main-content/ImportGroupMain.vue";
 import { useI18n } from "vue-i18n";
 import { ref, markRaw } from "vue";
 import type { Component } from "vue";

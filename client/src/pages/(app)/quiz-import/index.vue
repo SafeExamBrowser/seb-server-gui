@@ -149,36 +149,42 @@
 </template>
 
 <script setup lang="ts">
-import { useQuizImportStore } from "@/stores/seb-server/quizImportStore";
+import { useQuizImportStore } from "@/stores/seb-server/quizImportStore.ts";
 import { storeToRefs } from "pinia";
-import * as constants from "@/utils/constants";
-import { useAppBarStore } from "@/stores/store";
-import * as generalUtils from "@/utils/generalUtils";
-import { translate } from "@/utils/generalUtils";
+import * as constants from "@/utils/constants.ts";
+import * as generalUtils from "@/utils/generalUtils.ts";
+import { translate } from "@/utils/generalUtils.ts";
 import { useI18n } from "vue-i18n";
-import { navigateTo } from "@/router/navigation";
-import { useExamStore } from "@/stores/seb-server/examStore";
+import { useExamStore } from "@/stores/seb-server/examStore.ts";
 import { ref, onBeforeMount, watch } from "vue";
-import { CreateExamPar, Exam } from "@/models/seb-server/exam";
-import { AssessmentToolsResponse } from "@/models/seb-server/assessmentTool";
-import { APIMessage } from "@/models/seb-server/apiMessages";
+import { CreateExamPar, Exam } from "@/models/seb-server/exam.ts";
+import { AssessmentToolsResponse } from "@/models/seb-server/assessmentTool.ts";
+import { APIMessage } from "@/models/seb-server/apiMessages.ts";
 import { getAssessmentToolsActive } from "@/services/seb-server/assessmentToolService.ts";
 import * as examService from "@/services/seb-server/examService.ts";
 import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
+import { useRouter } from "vue-router";
+import type { RouteLocationAsRelative } from "vue-router";
+
+definePage({
+    meta: {
+        titleKey: "titles.quizImport",
+        pageTestId: "quiz-import-page",
+    },
+});
+
 // i18n
 const i18n = useI18n();
 
 // stores
-const appBarStore = useAppBarStore();
 const quizImportStore = useQuizImportStore();
 const quizImportStoreRef = storeToRefs(quizImportStore);
+const router = useRouter();
 
 // error msg
 const isNoAssessmentTool = ref<boolean>(false);
 
 onBeforeMount(async () => {
-    appBarStore.title = translate("titles.quizImport");
-
     quizImportStore.clearValues();
     await loadAssessmentToolSelection();
     setTabTitle();
@@ -284,6 +290,15 @@ function setTabTitle() {
         translate("titles.quizImport", i18n);
 }
 
+function buildExamDetailRoute(examId: string | number) {
+    return {
+        name: "/(app)/exam/[id]/",
+        params: {
+            id: String(examId),
+        },
+    } satisfies RouteLocationAsRelative<"/(app)/exam/[id]/">;
+}
+
 function handleStepperNext(index: number, next: () => void) {
     if (index + 1 === quizImportStore.steps.length) {
         createExam();
@@ -328,17 +343,21 @@ function handleStepperNext(index: number, next: () => void) {
             createExamResponse.id === undefined ||
             createExamResponse.id === null
         ) {
-            console.log(createExamResponse);
             const msg: unknown = createExamResponse;
             const message: APIMessage[] = msg as APIMessage[];
-
-            navigateTo(constants.EXAM_ROUTE + "/" + message[0].details);
-            quizImportStore.clearValues();
             const examStore = useExamStore();
             examStore.importMessages = message;
-        } else {
-            navigateTo(constants.EXAM_ROUTE + "/" + createExamResponse.id);
+            const examId = message[0]?.details;
+
+            if (examId == null) {
+                return;
+            }
+
             quizImportStore.clearValues();
+            await router.push(buildExamDetailRoute(examId));
+        } else {
+            quizImportStore.clearValues();
+            await router.push(buildExamDetailRoute(createExamResponse.id));
         }
     }
 }

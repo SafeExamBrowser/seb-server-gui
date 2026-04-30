@@ -76,9 +76,9 @@
 </template>
 
 <script setup lang="ts">
-import { useQuizImportStore } from "@/stores/seb-server/quizImportStore";
+import { useQuizImportStore } from "@/stores/seb-server/quizImportStore.ts";
 import { storeToRefs } from "pinia";
-import { translate } from "@/utils/generalUtils";
+import { translate } from "@/utils/generalUtils.ts";
 import { computed, ref } from "vue";
 
 // stores

@@ -172,18 +172,18 @@
 </template>
 
 <script setup lang="ts">
-import * as quizService from "@/services/seb-server/quizService";
-import * as tableUtils from "@/utils/table/tableUtils";
-import * as timeUtils from "@/utils/timeUtils";
+import * as quizService from "@/services/seb-server/quizService.ts";
+import * as tableUtils from "@/utils/table/tableUtils.ts";
+import * as timeUtils from "@/utils/timeUtils.ts";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
-import { useQuizImportStore } from "@/stores/seb-server/quizImportStore";
+import { useQuizImportStore } from "@/stores/seb-server/quizImportStore.ts";
 import { storeToRefs } from "pinia";
-import { translate, wait } from "@/utils/generalUtils";
+import { translate, wait } from "@/utils/generalUtils.ts";
 import { VDateInput } from "vuetify/labs/VDateInput";
 import { ref, watch } from "vue";
-import { ServerTablePaging } from "@/models/types";
-import { Quiz, Quizzes } from "@/models/seb-server/quiz";
-import { OptionalParGetQuizzes } from "@/models/seb-server/optionalParamters";
+import { ServerTablePaging } from "@/models/types.ts";
+import { Quiz, Quizzes } from "@/models/seb-server/quiz.ts";
+import { OptionalParGetQuizzes } from "@/models/seb-server/optionalParamters.ts";
 
 // stores
 const quizImportStore = useQuizImportStore();

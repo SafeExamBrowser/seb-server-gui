@@ -160,15 +160,15 @@
 </template>
 
 <script setup lang="ts">
-import { useQuizImportStore } from "@/stores/seb-server/quizImportStore";
-import { translate } from "@/utils/generalUtils";
-import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
+import { useQuizImportStore } from "@/stores/seb-server/quizImportStore.ts";
+import { translate } from "@/utils/generalUtils.ts";
+import { useUserAccountStore } from "@/stores/authentication/userAccountStore.ts";
 import { ref, computed, onBeforeMount } from "vue";
-import { UserAccountName } from "@/models/userAccount";
+import { UserAccountName } from "@/models/userAccount.ts";
 import {
     userAccountNameToFullName,
     userAccountNameToUsername,
-} from "@/utils/userAccount";
+} from "@/utils/userAccount.ts";
 import { getSupervisorNames } from "@/services/seb-server/userAccountService.ts";
 
 // stores
