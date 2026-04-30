@@ -79,14 +79,22 @@ import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import FormDialog from "@/components/widgets/formDialog/FormDialog.vue";
-import { useCertificatesTableHeaders } from "@/components/views/seb-server/certificate/certificates/composables/useCertificateTableHeaders.ts";
-import { useCertificatesTableActions } from "@/components/views/seb-server/certificate/certificates/composables/useCertificatesTableActions.ts";
-import { useCertificates } from "@/components/views/seb-server/certificate/certificates/composables/api/useCertificates";
+import { useCertificatesTableHeaders } from "@/pages/(app)/certificate/composables/useCertificateTableHeaders.ts";
+import { useCertificatesTableActions } from "@/pages/(app)/certificate/composables/useCertificatesTableActions.ts";
+import { useCertificates } from "@/pages/(app)/certificate/composables/api/useCertificates.ts";
 import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
-import { useDeleteCertificate } from "@/components/views/seb-server/certificate/certificates/composables/api/useDeleteCertificate";
-import { useCertificateCreateForm } from "@/components/views/seb-server/certificate/certificates/composables/useCertificateCreateForm.ts";
+import { useDeleteCertificate } from "@/pages/(app)/certificate/composables/api/useDeleteCertificate.ts";
+import { useCertificateCreateForm } from "@/pages/(app)/certificate/composables/useCertificateCreateForm.ts";
 import type { CertificatesResponse } from "@/models/seb-server/certificate.ts";
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
+
+definePage({
+    meta: {
+        titleKey: "titles.certificates",
+        pageTestId: "certificates-page",
+        isPageBlue: true,
+    },
+});
 
 const { headers: certificatesTableHeaders, cellFormatters } =
     useCertificatesTableHeaders();

@@ -35,12 +35,44 @@ declare module 'vue-router/auto-routes' {
       '/',
       Record<never, never>,
       Record<never, never>,
+      | '/(app)/assessment-tool/'
+      | '/(app)/assessment-tool/[id]/'
+      | '/(app)/assessment-tool/create/'
+      | '/(app)/certificate/'
       | '/(app)/home/'
       | '/(app)/navigation-overview/'
       | '/(app)/user-account/'
       | '/(app)/user-account/[userUuid]/'
       | '/(app)/user-account/create/'
       | '/(app)/user-account/profile/'
+    >,
+    '/(app)/assessment-tool/': RouteRecordInfo<
+      '/(app)/assessment-tool/',
+      '/assessment-tool',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/(app)/assessment-tool/[id]/': RouteRecordInfo<
+      '/(app)/assessment-tool/[id]/',
+      '/assessment-tool/:id',
+      { id: ParamValue<true> },
+      { id: ParamValue<false> },
+      | never
+    >,
+    '/(app)/assessment-tool/create/': RouteRecordInfo<
+      '/(app)/assessment-tool/create/',
+      '/assessment-tool/create',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/(app)/certificate/': RouteRecordInfo<
+      '/(app)/certificate/',
+      '/certificate',
+      Record<never, never>,
+      Record<never, never>,
+      | never
     >,
     '/(app)/home/': RouteRecordInfo<
       '/(app)/home/',
@@ -122,6 +154,10 @@ declare module 'vue-router/auto-routes' {
     'src/pages/(app).vue': {
       routes:
         | '/(app)'
+        | '/(app)/assessment-tool/'
+        | '/(app)/assessment-tool/[id]/'
+        | '/(app)/assessment-tool/create/'
+        | '/(app)/certificate/'
         | '/(app)/home/'
         | '/(app)/navigation-overview/'
         | '/(app)/user-account/'
@@ -130,6 +166,30 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/user-account/profile/'
       views:
         | 'default'
+    }
+    'src/pages/(app)/assessment-tool/index.vue': {
+      routes:
+        | '/(app)/assessment-tool/'
+      views:
+        | never
+    }
+    'src/pages/(app)/assessment-tool/[id]/index.vue': {
+      routes:
+        | '/(app)/assessment-tool/[id]/'
+      views:
+        | never
+    }
+    'src/pages/(app)/assessment-tool/create/index.vue': {
+      routes:
+        | '/(app)/assessment-tool/create/'
+      views:
+        | never
+    }
+    'src/pages/(app)/certificate/index.vue': {
+      routes:
+        | '/(app)/certificate/'
+      views:
+        | never
     }
     'src/pages/(app)/home/index.vue': {
       routes:

@@ -1,12 +1,12 @@
 import { computed, Ref } from "vue";
 import i18n from "@/i18n";
 
-import { FormField } from "@/components/widgets/formBuilder/types";
+import { FormField } from "@/components/widgets/formBuilder/types.ts";
 import {
     CertificateUploadItemTransient,
     toCertificateUploadItem,
-} from "@/components/views/seb-server/certificate/certificates/types";
-import { useCreateCertificate } from "@/components/views/seb-server/certificate/certificates/composables/api/useCreateCertificate";
+} from "@/pages/(app)/certificate/types/types.ts";
+import { useCreateCertificate } from "@/pages/(app)/certificate/composables/api/useCreateCertificate.ts";
 
 export const useCertificateCreateForm = ({
     onSuccess,

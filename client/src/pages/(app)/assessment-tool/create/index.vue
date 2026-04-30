@@ -126,7 +126,9 @@
                     <CancelButton
                         data-testid="createAssessmentTool-cancel-button"
                         text="general.cancelButton"
-                        @click="navigateToRoute({ name: 'AssessmentToolList' })"
+                        @click="
+                            router.push({ name: '/(app)/assessment-tool/' })
+                        "
                     />
                     <ConfirmButton
                         data-testid="createAssessmentTool-save-button"
@@ -144,14 +146,24 @@ import { ref } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import { navigateToRoute } from "@/router/navigation.ts";
-import { useAssessmentToolFormFields } from "./composable/useAssessmentToolFormFields.ts";
+import { useAssessmentToolFormFields } from "@/pages/(app)/assessment-tool/create/composables/useAssessmentToolFormFields.ts";
 import { useMutation } from "@/composables/useMutation.ts";
 import { createAssessmentTool } from "@/services/seb-server/assessmentToolService.ts";
 import type { CommonAssessmentToolPar } from "@/models/seb-server/assessmentTool.ts";
 import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
 import HintText from "@/components/widgets/HintText.vue";
+import { useRouter } from "vue-router";
+
+definePage({
+    meta: {
+        titleKey: "titles.createAssessmentTool",
+        pageTestId: "create-assessment-tool-page",
+        isPageBlue: true,
+    },
+});
+
+const router = useRouter();
 
 const {
     mainFormFields,
@@ -244,7 +256,7 @@ async function submit() {
     }
 
     if (!toolError.value) {
-        navigateToRoute({ name: "AssessmentToolList" });
+        await router.push({ name: "/(app)/assessment-tool/" });
     }
 }
 </script>

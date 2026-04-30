@@ -608,17 +608,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
-import { useRoute } from "vue-router";
-import { useAppBarStore, useLayoutStore } from "@/stores/store.ts";
+import { computed, onMounted, ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { translate } from "@/utils/generalUtils.ts";
 import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/userAccountStore.ts";
 import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums.ts";
 import { getInstitutions } from "@/services/seb-server/institutionService.ts";
 import * as assessmentToolService from "@/services/seb-server/assessmentToolService.ts";
-import router from "@/router/router.ts";
-import { navigateTo } from "@/router/navigation.ts";
-import * as constants from "@/utils/constants.ts";
 import { Institution } from "@/models/seb-server/institution.ts";
 import {
     AssessmentTool,
@@ -626,12 +622,20 @@ import {
 } from "@/models/seb-server/assessmentTool.ts";
 import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
 
+definePage({
+    meta: {
+        titleKey: "titles.assessmentToolEdit",
+        pageTestId: "edit-assessment-tool-page",
+        isPageBlue: true,
+    },
+});
+
 // Router
 const route = useRoute();
+const router = useRouter();
 
 // Stores
-const appBarStore = useAppBarStore();
-const layoutStore = useLayoutStore();
+
 const authenticatedUserAccountStore = useAuthenticatedUserAccountStore();
 
 // Fields
@@ -756,15 +760,12 @@ const canSave = computed(
 );
 
 onMounted(async () => {
-    appBarStore.title = translate("titles.assessmentTool");
-    layoutStore.setBlueBackground(true);
-
     // Load institutions so the disabled select shows a label
     const inst = await getInstitutions().catch(() => null);
     institutions.value = inst ?? [];
 
     // Fetch the tool
-    const idNum = Number(route.params.lmsId);
+    const idNum = Number(route.params.id);
     if (Number.isFinite(idNum)) {
         const dto: AssessmentTool | null =
             await assessmentToolService.getAssessmentTool(idNum);
@@ -782,10 +783,6 @@ onMounted(async () => {
     }
 
     takeSnapshot();
-});
-
-onBeforeUnmount(() => {
-    layoutStore.setBlueBackground(false);
 });
 
 function populateFromDto(dto: AssessmentTool) {
@@ -840,7 +837,7 @@ function toggleStatusLocally() {
 }
 
 async function persistStatusChange() {
-    const id = String(fetchedId.value ?? route.params.lmsId);
+    const id = String(fetchedId.value ?? route.params.id);
     if (active.value) {
         await assessmentToolService.activateAssessmentTool(id);
     } else {
@@ -910,7 +907,7 @@ function onBack() {
     if (window.history.length > 1) {
         router.back();
     } else {
-        navigateTo(constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE);
+        router.push({ name: "/(app)/assessment-tool/" });
     }
 }
 
@@ -952,7 +949,7 @@ async function onSave() {
         }
     } finally {
         isSaving.value = false;
-        navigateTo(constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE);
+        await router.push({ name: "/(app)/assessment-tool/" });
     }
 }
 const nz = (v: string | null | undefined) => v ?? "";
@@ -963,7 +960,7 @@ type AuthPart = Pick<
 >;
 
 async function editAssessmentToolOnly() {
-    const idToSend = String(fetchedId.value ?? route.params.lmsId);
+    const idToSend = String(fetchedId.value ?? route.params.id);
 
     const common: Pick<
         UpdateAssessmentToolPar,

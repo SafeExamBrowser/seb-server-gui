@@ -20,6 +20,6 @@ definePage({
     },
 });
 
-const route = useRoute<"/(app)/user-account/[userUuid]/">();
+const route = useRoute();
 const userId = route.params.userUuid;
 </script>

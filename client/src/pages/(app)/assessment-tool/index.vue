@@ -3,7 +3,7 @@
         <template #ActionButton>
             <AddButton
                 text="assessmentToolConnections.assessmentToolsPage.addAssessmentTool"
-                :route="{ name: 'CreateAssessmentTool' }"
+                :route="{ name: '/(app)/assessment-tool/create/' }"
             />
         </template>
 
@@ -39,11 +39,10 @@
                                 :loading="
                                     loading || deleteLoading || statusLoading
                                 "
-                                :detail-route="
-                                    getRouteName('AssessmentToolDetailAndView')
+                                :detail-route="assessmentToolDetailRoute"
+                                :item-identifier-key="
+                                    assessmentToolItemIdentifierKey
                                 "
-                                route-param-key="lmsId"
-                                item-identifier-key="id"
                                 :cell-formatters="cellFormatters"
                                 :actions="tableActions"
                                 @update:options="loadItems"
@@ -80,7 +79,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
-import { getRouteName } from "@/router/routeNames.ts";
 import SearchBar from "@/components/widgets/searches/SearchBar.vue";
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 import ActiveStatusChip from "@/components/widgets/ActiveStatusChip.vue";
@@ -88,26 +86,40 @@ import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfir
 import StatusConfirmDialog from "@/components/widgets/confirmDialog/StatusConfirmDialog.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
-import { useTableNavigation } from "@/components/widgets/entity-table/composables/useTableNavigation.ts";
-import { useAssessmentToolsTableHeaders } from "@/components/views/seb-server/assessment-tool/assessment-tools/composables/useAssessmentToolsTableHeaders.ts";
-import { useAssessmentToolsTableActions } from "@/components/views/seb-server/assessment-tool/assessment-tools/composables/useAssessmentToolsTableActions.ts";
+import { useAssessmentToolsTableHeaders } from "@/pages/(app)/assessment-tool/composables/useAssessmentToolsTableHeaders.ts";
+import { useAssessmentToolsTableActions } from "@/pages/(app)/assessment-tool/composables/useAssessmentToolsTableActions.ts";
 import {
     useAssessmentToolsFilters,
     LMS_TYPE_FILTER_KEY,
-} from "@/components/views/seb-server/assessment-tool/assessment-tools/composables/useAssessmentToolsFilters.ts";
+} from "@/pages/(app)/assessment-tool/composables/useAssessmentToolsFilters.ts";
 import { STATUS_FILTER_KEY } from "@/components/widgets/filters/statusFilterSection.ts";
 import { INSTITUTION_FILTER_KEY } from "@/components/widgets/filters/useInstitutionFilterSection.ts";
-import { useAssessmentTools } from "@/components/views/seb-server/assessment-tool/assessment-tools/api/useAssessmentTools.ts";
-import { useDeleteAssessmentTool } from "@/components/views/seb-server/assessment-tool/assessment-tools/api/useDeleteAssessmentTool.ts";
-import { useToggleAssessmentToolStatus } from "@/components/views/seb-server/assessment-tool/assessment-tools/api/useToggleAssessmentTool.ts";
+import { useAssessmentTools } from "@/pages/(app)/assessment-tool/api/useAssessmentTools.ts";
+import { useDeleteAssessmentTool } from "@/pages/(app)/assessment-tool/api/useDeleteAssessmentTool.ts";
+import { useToggleAssessmentToolStatus } from "@/pages/(app)/assessment-tool/api/useToggleAssessmentTool.ts";
 import type { AssessmentToolsResponse } from "@/models/seb-server/assessmentTool.ts";
 import type { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums.ts";
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 import AddButton from "@/components/widgets/AddButton.vue";
+import type { RouteLocationAsRelative } from "vue-router";
+import { useDetailRouteNavigation } from "@/router/detailRoute.ts";
+
+definePage({
+    meta: {
+        titleKey: "titles.assessmentToolConnections",
+        pageTestId: "assessment-tools-page",
+        isPageBlue: true,
+    },
+});
+const assessmentToolDetailRoute: RouteLocationAsRelative = {
+    name: "/(app)/assessment-tool/[id]/",
+};
+const assessmentToolItemIdentifierKey = "id";
 
 const { headers: assessmentToolTableHeaders, cellFormatters } =
     useAssessmentToolsTableHeaders();
 const filterSections = useAssessmentToolsFilters();
+const { pushDetailRoute } = useDetailRouteNavigation();
 
 const tableData = ref<AssessmentToolsResponse>();
 
@@ -174,12 +186,6 @@ const statusTarget = ref<TableItem | null>(null);
 const deleteDialogOpen = ref(false);
 const statusDialogOpen = ref(false);
 
-const { navigateToItem } = useTableNavigation(
-    getRouteName("AssessmentToolDetailAndView"),
-    "id",
-    "lmsId",
-);
-
 const deleteDetailText = computed(() => {
     if (!deleteTarget.value) return "";
     return String(deleteTarget.value.name ?? "");
@@ -208,7 +214,12 @@ async function confirmStatusChange() {
 }
 
 const tableActions = useAssessmentToolsTableActions({
-    onEdit: (item) => navigateToItem(item),
+    onEdit: (item) =>
+        pushDetailRoute(
+            assessmentToolDetailRoute,
+            item,
+            assessmentToolItemIdentifierKey,
+        ),
     onDelete: (item) => openDeleteDialog(item),
 });
 </script>

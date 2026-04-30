@@ -15,7 +15,7 @@ export function buildSettingsNavigationItems(
     return [
         {
             label: translate("titles.assessmentToolConnections"),
-            to: constants.ASSESSMENT_TOOL_CONNECTIONS_ROUTE,
+            to: { name: "/(app)/assessment-tool/" },
             testId: `${testIdPrefix}-assessmentToolConnections-link`,
             visible: ability.canView(GUIComponent.LMSSetups),
         },
@@ -27,7 +27,7 @@ export function buildSettingsNavigationItems(
         },
         {
             label: translate("navigation.routeNames.certificates"),
-            to: "/certificate",
+            to: { name: "/(app)/certificate/" },
             testId: `${testIdPrefix}-certificates-link`,
             visible: ability.canView(GUIComponent.Certificates),
         },
