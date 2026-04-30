@@ -160,11 +160,11 @@
 import {
     getUserAccountById,
     getSupervisorNames,
-} from "@/services/seb-server/userAccountService";
-import * as tableUtils from "@/utils/table/tableUtils";
-import { translate } from "@/utils/generalUtils";
+} from "@/services/seb-server/userAccountService.ts";
+import * as tableUtils from "@/utils/table/tableUtils.ts";
+import { translate } from "@/utils/generalUtils.ts";
 import { ref, onBeforeMount, computed } from "vue";
-import { UserAccount, UserAccountName } from "@/models/userAccount";
+import { UserAccount, UserAccountName } from "@/models/userAccount.ts";
 
 // main item
 const selectedExamSupervisors = ref<UserAccount[]>([]);

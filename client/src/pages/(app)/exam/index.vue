@@ -31,9 +31,8 @@
                     :items-per-page="options.itemsPerPage"
                     :options="options"
                     :loading="loading"
-                    :detail-route="getRouteName('ExamDetail')"
-                    route-param-key="examId"
-                    item-identifier-key="id"
+                    :detail-route="examDetailRoute"
+                    :item-identifier-key="examItemIdentifierKey"
                     :cell-formatters="cellFormatters"
                     :actions="tableActions"
                     @update:options="loadItems"
@@ -62,24 +61,37 @@ import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 import EnumChip from "@/components/widgets/EnumChip.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
-import { useExamTableHeaders } from "@/components/views/seb-server/exam/exams/composables/useExamTableHeaders.ts";
-import { useExamTableActions } from "@/components/views/seb-server/exam/exams/composables/useExamTableActions.ts";
-import { useTableNavigation } from "@/components/widgets/entity-table/composables/useTableNavigation.ts";
+import { useExamTableHeaders } from "@/pages/(app)/exam/composables/useExamTableHeaders.ts";
+import { useExamTableActions } from "@/pages/(app)/exam/composables/useExamTableActions.ts";
 import {
     useExamFilters,
     TYPE_FILTER_KEY,
     EXAM_STATUS_FILTER_KEY,
-} from "@/components/views/seb-server/exam/exams/composables/useExamFilters.ts";
-import { useExams } from "@/components/views/seb-server/exam/exams/api/useExams.ts";
-import { getRouteName } from "@/router/routeNames.ts";
+} from "@/pages/(app)/exam/composables/useExamFilters.ts";
+import { useExams } from "@/pages/(app)/exam/api/useExams.ts";
 import type { Exams } from "@/models/seb-server/exam.ts";
 import {
     ExamStatusEnum,
     examStatusColor,
 } from "@/models/seb-server/examFiltersEnum.ts";
+import { useDetailRouteNavigation } from "@/router/detailRoute.ts";
+import type { RouteLocationAsRelative } from "vue-router";
+
+definePage({
+    meta: {
+        titleKey: "titles.exams",
+        pageTestId: "exams-page",
+    },
+});
+const examDetailRoute: RouteLocationAsRelative = {
+    name: "/(app)/exam/[id]/",
+};
+
+const examItemIdentifierKey = "id";
 
 const { headers: examTableHeaders, cellFormatters } = useExamTableHeaders();
 const filterSections = useExamFilters();
+const { pushDetailRoute } = useDetailRouteNavigation();
 
 const tableData = ref<Exams>();
 
@@ -126,13 +138,8 @@ watch(
 
 const pageCount = computed(() => tableData.value?.number_of_pages ?? 0);
 
-const { navigateToItem } = useTableNavigation(
-    getRouteName("ExamDetail"),
-    "id",
-    "examId",
-);
-
 const tableActions = useExamTableActions({
-    onNavigate: (item) => navigateToItem(item),
+    onNavigate: (item) =>
+        pushDetailRoute(examDetailRoute, item, examItemIdentifierKey),
 });
 </script>

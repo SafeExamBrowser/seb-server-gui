@@ -305,20 +305,20 @@
 </template>
 
 <script setup lang="ts">
-import { useExamStore } from "@/stores/seb-server/examStore";
-import * as clientGroupService from "@/services/seb-server/clientGroupService";
+import { useExamStore } from "@/stores/seb-server/examStore.ts";
+import * as clientGroupService from "@/services/seb-server/clientGroupService.ts";
 import {
     ClientGroupEnum,
     ClientOSEnum,
-} from "@/models/seb-server/clientGroupEnum";
-import * as generalUtils from "@/utils/generalUtils";
+} from "@/models/seb-server/clientGroupEnum.ts";
+import * as generalUtils from "@/utils/generalUtils.ts";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import { useI18n } from "vue-i18n";
-import { translate } from "@/utils/generalUtils";
+import { translate } from "@/utils/generalUtils.ts";
 import { computed, ref, watch, onBeforeMount } from "vue";
-import { ClientGroup } from "@/models/seb-server/clientGroup";
+import { ClientGroup } from "@/models/seb-server/clientGroup.ts";
 import { applyScreenProctoringGroups } from "@/services/seb-server/screenProctoringService.ts";
-import { buildClientGroup } from "@/components/views/seb-server/exam/detail/dialogs/client-group/utils/buildClientGroup.ts";
+import { buildClientGroup } from "@/pages/(app)/exam/[id]/components/dialogs/client-group/utils/buildClientGroup.ts";
 // i18n
 const i18n = useI18n();
 

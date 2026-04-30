@@ -42,6 +42,8 @@ declare module 'vue-router/auto-routes' {
       | '/(app)/connection-configuration/'
       | '/(app)/connection-configuration/[id]/'
       | '/(app)/connection-configuration/create/'
+      | '/(app)/exam/'
+      | '/(app)/exam/[id]/'
       | '/(app)/home/'
       | '/(app)/navigation-overview/'
       | '/(app)/user-account/'
@@ -96,6 +98,20 @@ declare module 'vue-router/auto-routes' {
       '/connection-configuration/create',
       Record<never, never>,
       Record<never, never>,
+      | never
+    >,
+    '/(app)/exam/': RouteRecordInfo<
+      '/(app)/exam/',
+      '/exam',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/(app)/exam/[id]/': RouteRecordInfo<
+      '/(app)/exam/[id]/',
+      '/exam/:id',
+      { id: ParamValue<true> },
+      { id: ParamValue<false> },
       | never
     >,
     '/(app)/home/': RouteRecordInfo<
@@ -185,6 +201,8 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/connection-configuration/'
         | '/(app)/connection-configuration/[id]/'
         | '/(app)/connection-configuration/create/'
+        | '/(app)/exam/'
+        | '/(app)/exam/[id]/'
         | '/(app)/home/'
         | '/(app)/navigation-overview/'
         | '/(app)/user-account/'
@@ -233,6 +251,18 @@ declare module 'vue-router/auto-routes' {
     'src/pages/(app)/connection-configuration/create/index.vue': {
       routes:
         | '/(app)/connection-configuration/create/'
+      views:
+        | never
+    }
+    'src/pages/(app)/exam/index.vue': {
+      routes:
+        | '/(app)/exam/'
+      views:
+        | never
+    }
+    'src/pages/(app)/exam/[id]/index.vue': {
+      routes:
+        | '/(app)/exam/[id]/'
       views:
         | never
     }

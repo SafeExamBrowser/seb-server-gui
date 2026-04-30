@@ -1,7 +1,6 @@
-import type { RouteName } from "@/router/routeNames.ts";
+import type { RouteLocationAsRelative } from "vue-router";
 
 export interface BreadCrumbItem {
     label: string;
-    link?: RouteName;
-    params?: Record<string, string | number>;
+    link?: RouteLocationAsRelative;
 }

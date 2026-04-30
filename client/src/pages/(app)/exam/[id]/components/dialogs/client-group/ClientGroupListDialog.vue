@@ -163,18 +163,18 @@
 </template>
 
 <script setup lang="ts">
-import { useExamStore } from "@/stores/seb-server/examStore";
-import * as clientGroupService from "@/services/seb-server/clientGroupService";
+import { useExamStore } from "@/stores/seb-server/examStore.ts";
+import * as clientGroupService from "@/services/seb-server/clientGroupService.ts";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
-import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
-import * as generalUtils from "@/utils/generalUtils";
+import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum.ts";
+import * as generalUtils from "@/utils/generalUtils.ts";
 import { useI18n } from "vue-i18n";
-import { translate } from "@/utils/generalUtils";
+import { translate } from "@/utils/generalUtils.ts";
 import { useRoute } from "vue-router";
 import { ref, onBeforeMount, computed } from "vue";
-import { Exam } from "@/models/seb-server/exam";
-import { ClientGroup, ClientGroups } from "@/models/seb-server/clientGroup";
-import EditClientGroupDialog from "@/components/views/seb-server/exam/detail/dialogs/client-group/EditClientGroupDialog.vue";
+import { Exam } from "@/models/seb-server/exam.ts";
+import { ClientGroup, ClientGroups } from "@/models/seb-server/clientGroup.ts";
+import EditClientGroupDialog from "@/pages/(app)/exam/[id]/components/dialogs/client-group/EditClientGroupDialog.vue";
 import DeleteConfirmDialog from "@/components/widgets/DeleteConfirmDialog.vue";
 import { applyScreenProctoringGroups } from "@/services/seb-server/screenProctoringService.ts";
 

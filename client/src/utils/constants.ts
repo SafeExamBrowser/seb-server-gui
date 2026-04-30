@@ -15,13 +15,6 @@ import type { Component } from "vue";
 import { ImportWizardSteps } from "@/models/types";
 
 // navigation routes
-export const DEFAULT_ROUTE: string = "/";
-export const REGISTER_ROUTE: string = "/register";
-export const HOME_PAGE_ROUTE: string = "/home";
-export const NAVIGATION_OVERVIEW_ROUTE: string = "/navigation-overview";
-export const USER_ACCOUNTS_ROUTE: string = "/user-accounts";
-
-export const PROFILE_ROUTE = "/profile";
 
 export const EXAM_ROUTE: string = "/exam";
 

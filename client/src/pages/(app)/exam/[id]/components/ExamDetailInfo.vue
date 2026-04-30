@@ -4,7 +4,10 @@
         <v-col cols="12" md="10">
             <BreadCrumb
                 :items="[
-                    { label: translate('titles.exams'), link: 'ExamList' },
+                    {
+                        label: translate('titles.exams'),
+                        link: { name: '/(app)/exam/' },
+                    },
                     { label: examStore.selectedExam?.quizName ?? '' },
                 ]"
             />
@@ -139,14 +142,14 @@
 </template>
 
 <script setup lang="ts">
-import { useExamStore } from "@/stores/seb-server/examStore";
-import * as timeUtils from "@/utils/timeUtils";
-import * as generalUtils from "@/utils/generalUtils";
+import { useExamStore } from "@/stores/seb-server/examStore.ts";
+import * as timeUtils from "@/utils/timeUtils.ts";
+import * as generalUtils from "@/utils/generalUtils.ts";
 import {
     ExamStatusEnum,
     ExamTypeEnum,
-} from "@/models/seb-server/examFiltersEnum";
-import { translate } from "@/utils/generalUtils";
+} from "@/models/seb-server/examFiltersEnum.ts";
+import { translate } from "@/utils/generalUtils.ts";
 import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
 
 // stores

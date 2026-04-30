@@ -501,8 +501,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref, watch, computed } from "vue";
-import { useAppBarStore, useLayoutStore } from "@/stores/store.ts";
+import { onMounted, ref, watch, computed } from "vue";
 import { translate } from "@/utils/generalUtils.ts";
 import moment from "moment-timezone";
 import { UserRoleEnum } from "@/models/userRoleEnum.ts";
@@ -529,8 +528,6 @@ const props = defineProps<{
 const user = ref<UserAccount | null>(null);
 const institutions = ref<Institution[]>([]);
 
-const appBarStore = useAppBarStore();
-const layoutStore = useLayoutStore();
 const i18n = useI18n();
 const router = useRouter();
 const authenticatedUserAccountStore = useAuthenticatedUserAccountStore();
@@ -599,13 +596,7 @@ const allRoles = Object.values(UserRoleEnum).map((role) => ({
 const selectedUserRoleDescription = ref<string>("");
 const roleSelectDisabled = ref(false);
 
-onBeforeUnmount(() => {
-    layoutStore.setBlueBackground(false);
-});
-
 onMounted(async () => {
-    layoutStore.setBlueBackground(true);
-    appBarStore.title = props.title;
     await loadUser();
 });
 
