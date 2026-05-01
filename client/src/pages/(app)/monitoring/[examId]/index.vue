@@ -23,7 +23,7 @@
                 <!-- Client States -->
                 <v-col :cols="hasIndicators ? 4 : 6">
                     <v-sheet class="pa-6 h-100" elevation="4" rounded="lg">
-                        <MonitoringOverviewClients />
+                        <MonitoringOverviewClients :exam-id="examId" />
                     </v-sheet>
                 </v-col>
 
@@ -35,6 +35,7 @@
                                 monitoringStore.monitoringOverviewData
                                     ?.notifications
                             "
+                            :exam-id="examId"
                         />
                     </v-sheet>
                 </v-col>
@@ -42,7 +43,7 @@
                 <!-- Indicators -->
                 <v-col v-if="hasIndicators" cols="4">
                     <v-sheet class="pa-6 h-100" elevation="4" rounded="lg">
-                        <MonitoringOverviewIndicators />
+                        <MonitoringOverviewIndicators :exam-id="examId" />
                     </v-sheet>
                 </v-col>
             </v-row>
@@ -55,7 +56,9 @@
                         elevation="4"
                         rounded="lg"
                     >
-                        <MonitoringOverviewGroups></MonitoringOverviewGroups>
+                        <MonitoringOverviewGroups
+                            :exam-id="examId"
+                        ></MonitoringOverviewGroups>
                     </v-sheet>
                 </v-col>
             </v-row>
@@ -65,18 +68,18 @@
 
 <script setup lang="ts">
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
-import MonitoringOverviewIndicators from "@/pages/(app)/monitoring/[id]/components/MonitoringOverviewIndicators.vue";
+import MonitoringOverviewIndicators from "./components/MonitoringOverviewIndicators.vue";
 import * as indicatorService from "@/services/seb-server/indicatorService.ts";
 import { useRoute } from "vue-router";
 import { computed, onBeforeMount, onBeforeUnmount } from "vue";
 import { MonitoringOverview } from "@/models/seb-server/monitoring.ts";
 import { Indicators } from "@/models/seb-server/indicators.ts";
-import MonitoringOverviewInfos from "@/pages/(app)/monitoring/[id]/components/MonitoringOverviewInfos.vue";
-import MonitoringOverviewClients from "@/pages/(app)/monitoring/[id]/components/MonitoringOverviewClients.vue";
-import MonitoringOverviewNotifications from "@/pages/(app)/monitoring/[id]/components/MonitoringOverviewNotifications.vue";
-import MonitoringOverviewGroups from "@/pages/(app)/monitoring/[id]/components/MonitoringOverviewGroups.vue";
+import MonitoringOverviewInfos from "./components/MonitoringOverviewInfos.vue";
+import MonitoringOverviewClients from "./components/MonitoringOverviewClients.vue";
+import MonitoringOverviewNotifications from "./components/MonitoringOverviewNotifications.vue";
+import MonitoringOverviewGroups from "./components/MonitoringOverviewGroups.vue";
 import * as monitoringService from "@/services/seb-server/monitoringService.ts";
-import * as useMonitoringData from "@/pages/(app)/monitoring/[id]/client/composables/useMonitoringData.ts";
+import * as useMonitoringData from "./client/composables/useMonitoringData.ts";
 import {
     getMonitoringDisabledWarningText,
     isMonitoringDisabled,
@@ -90,7 +93,7 @@ definePage({
 });
 
 // exam
-const examId = useRoute().params.id;
+const examId = useRoute().params.examId;
 
 // stores
 const monitoringStore = useMonitoringStore();

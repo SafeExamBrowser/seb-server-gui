@@ -391,11 +391,12 @@ import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import { translate } from "@/utils/generalUtils.ts";
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
 import * as examService from "@/services/seb-server/examService.ts";
-import { navigateTo } from "@/router/navigation";
-import * as constants from "@/utils/constants.ts";
-import { getAskAndStore } from "@/pages/(app)/monitoring/[id]/client/composables/useMonitoringData.ts";
+import { getAskAndStore } from "../../client/composables/useMonitoringData.ts";
+import { useRouter } from "vue-router";
+import type { RouteLocationAsRelative } from "vue-router";
 
 const store = useMonitoringStore();
+const router = useRouter();
 const emit = defineEmits<{
     closeAskDialog: [];
     refresh: [];
@@ -594,14 +595,18 @@ function statusColor(status?: string) {
 }
 
 function showConnection(connectionToken: string) {
+    if (!examId) {
+        return;
+    }
+
     closeDialog();
-    navigateTo(
-        constants.MONITORING_ROUTE +
-            "/" +
-            examId +
-            "/details/" +
+    void router.push({
+        name: "/(app)/monitoring/[examId]/client/[connectionToken]/",
+        params: {
+            examId,
             connectionToken,
-    );
+        },
+    } satisfies RouteLocationAsRelative<"/(app)/monitoring/[examId]/client/[connectionToken]/">);
 }
 
 const firstConnInfo = computed(() => {

@@ -24,13 +24,13 @@ import {
     SingleConnection,
 } from "@/models/seb-server/monitoring.ts";
 import { Indicators } from "@/models/seb-server/indicators.ts";
-import MonitoringDetailsMain from "@/pages/(app)/monitoring/[id]/client/[connectionToken]/components/MonitoringDetailsMain.vue";
-import MonitoringDetailsInfo from "@/pages/(app)/monitoring/[id]/client/[connectionToken]/components/MonitoringDetailsInfo.vue";
-import * as useMonitoringData from "@/pages/(app)/monitoring/[id]/client/composables/useMonitoringData.ts";
+import MonitoringDetailsMain from "../../client/[connectionToken]/components/MonitoringDetailsMain.vue";
+import MonitoringDetailsInfo from "../../client/[connectionToken]/components/MonitoringDetailsInfo.vue";
+import * as useMonitoringData from "../../client/composables/useMonitoringData.ts";
 import { extractClientGroupNames } from "@/utils/monitoringUtils.ts";
 
 // route params
-const examId = useRoute().params.id;
+const examId = useRoute().params.examId;
 const connectionToken = useRoute().params.connectionToken;
 
 // stores

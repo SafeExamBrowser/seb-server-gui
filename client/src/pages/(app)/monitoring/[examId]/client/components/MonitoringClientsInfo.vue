@@ -456,8 +456,8 @@ import { useErrorStore } from "@/stores/seb-server/errorStore.ts";
 import { computed, ref } from "vue";
 import { ErrorProps } from "@/models/alertProps.ts";
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
-import InstructionConfirmDialog from "@/pages/(app)/monitoring/[id]/client/components/InstructionConfirmDialog.vue";
-import * as useMonitoringNavigation from "@/pages/(app)/monitoring/[id]/composables/useMonitoringNavigation.ts";
+import InstructionConfirmDialog from "../../client/components/InstructionConfirmDialog.vue";
+import * as useMonitoringNavigation from "../../composables/useMonitoringNavigation.ts";
 import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
 import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
 

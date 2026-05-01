@@ -10,12 +10,12 @@ import type {
 
 function buildMonitoringRoute(examId: string, query?: LocationQueryRaw) {
     return {
-        name: "/(app)/monitoring/[id]/",
+        name: "/(app)/monitoring/[examId]/",
         params: {
-            id: examId,
+            examId,
         },
         query,
-    } satisfies RouteLocationAsRelative<"/(app)/monitoring/[id]/">;
+    } satisfies RouteLocationAsRelative<"/(app)/monitoring/[examId]/">;
 }
 
 function addQueryParam(query: LocationQueryRaw) {

@@ -84,7 +84,7 @@ definePage({
     },
 });
 const monitoringDetailRoute: RouteLocationAsRelative = {
-    name: "/(app)/monitoring/[id]/",
+    name: "/(app)/monitoring/[examId]/",
 };
 
 const monitoringIdentifierKey = "id";

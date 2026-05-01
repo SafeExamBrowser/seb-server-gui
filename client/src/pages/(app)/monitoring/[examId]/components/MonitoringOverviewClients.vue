@@ -132,8 +132,11 @@ import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.t
 import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums.ts";
 import { useI18n } from "vue-i18n";
 import { ref, watch } from "vue";
-import { useRoute } from "vue-router";
-import { goToMonitoring } from "@/pages/(app)/monitoring/[id]/composables/useMonitoringNavigation.ts";
+import { goToMonitoring } from "../composables/useMonitoringNavigation.ts";
+
+const props = defineProps<{
+    examId: string;
+}>();
 
 // i18n
 const i18n = useI18n();
@@ -142,7 +145,7 @@ const i18n = useI18n();
 const monitoringStore = useMonitoringStore();
 
 // exam
-const examId = useRoute().params.examId.toString();
+const examId = props.examId;
 
 // chart
 ChartJS.register(ArcElement, Tooltip, Legend);

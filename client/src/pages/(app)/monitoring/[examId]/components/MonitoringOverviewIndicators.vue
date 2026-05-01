@@ -153,10 +153,13 @@ import {
 } from "@/models/seb-server/monitoringEnums.ts";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import { translate } from "@/utils/generalUtils.ts";
-import { useRoute } from "vue-router";
-import { goToMonitoring } from "@/pages/(app)/monitoring/[id]/composables/useMonitoringNavigation.ts";
+import { goToMonitoring } from "../composables/useMonitoringNavigation.ts";
 
-const examId = useRoute().params.examId.toString();
+const props = defineProps<{
+    examId: string;
+}>();
+
+const examId = props.examId;
 const monitoringStore = useMonitoringStore();
 
 function getBatteryStatusColor(color: string | undefined): string {

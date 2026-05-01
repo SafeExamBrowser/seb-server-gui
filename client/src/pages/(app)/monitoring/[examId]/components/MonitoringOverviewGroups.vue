@@ -168,12 +168,7 @@
                             prepend-icon="mdi-monitor-eye"
                             variant="flat"
                             @click="
-                                navigation.navigateTo(
-                                    getGalleryViewLinkByExamId(
-                                        clientGroupItem.spsGroupUUID,
-                                        examId,
-                                    ),
-                                )
+                                openGalleryView(clientGroupItem.spsGroupUUID)
                             "
                         >
                             {{
@@ -266,12 +261,9 @@
                         prepend-icon="mdi-monitor-eye"
                         variant="flat"
                         @click="
-                            navigation.navigateTo(
-                                getGalleryViewLinkByExamId(
-                                    screenProctoringFallbackGroup.spsGroupUUID ??
-                                        '',
-                                    examId,
-                                ),
+                            openGalleryView(
+                                screenProctoringFallbackGroup.spsGroupUUID ??
+                                    '',
                             )
                         "
                     >
@@ -343,20 +335,24 @@ import {
 } from "@/models/seb-server/clientGroupEnum.ts";
 import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums.ts";
 import * as generalUtils from "@/utils/generalUtils.ts";
-import * as navigation from "@/router/navigation";
-import { useRoute } from "vue-router";
 import { computed } from "vue";
 import type { ComputedRef } from "vue";
 import { OverviewClientGroup } from "@/models/seb-server/monitoring.ts";
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
-import { goToMonitoring } from "@/pages/(app)/monitoring/[id]/composables/useMonitoringNavigation.ts";
+import { goToMonitoring } from "../composables/useMonitoringNavigation.ts";
 import { getGalleryViewLinkByExamId } from "@/utils/monitoringUtils.ts";
+import { useRouter } from "vue-router";
+
+const props = defineProps<{
+    examId: string;
+}>();
 
 // stores
 const monitoringStore = useMonitoringStore();
+const router = useRouter();
 
 // exam
-const examId = useRoute().params.examId.toString();
+const examId = props.examId;
 
 const overViewClientGroups: ComputedRef<OverviewClientGroup[] | null> =
     computed(() => {
@@ -439,6 +435,12 @@ function getScreenProctoringState(): string {
     }
 
     return ConnectionStatusEnum.ACTIVE;
+}
+
+function openGalleryView(groupUuid: string) {
+    void router.push({
+        path: getGalleryViewLinkByExamId(groupUuid, examId),
+    });
 }
 </script>
 

@@ -5,8 +5,8 @@
             @update-page-info="updateAll"
         ></MonitoringClientsInfo>
         <MonitoringClientsMain
-            :exam-id="examId"
             ref="mainRef"
+            :exam-id="examId"
         ></MonitoringClientsMain>
     </template>
 </template>
@@ -14,15 +14,15 @@
 <script setup lang="ts">
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import * as monitoringService from "@/services/seb-server/monitoringService.ts";
-import * as useMonitoringData from "@/pages/(app)/monitoring/[id]/client/composables/useMonitoringData.ts";
+import * as useMonitoringData from "../client/composables/useMonitoringData.ts";
 
 import * as indicatorService from "@/services/seb-server/indicatorService.ts";
-import MonitoringClientsMain from "@/pages/(app)/monitoring/[id]/client/components/MonitoringClientsMain.vue";
+import MonitoringClientsMain from "../client/components/MonitoringClientsMain.vue";
 import { useRoute } from "vue-router";
 import { ref, onBeforeMount, onBeforeUnmount } from "vue";
 import { MonitoringOverview } from "@/models/seb-server/monitoring.ts";
 import { Indicators } from "@/models/seb-server/indicators.ts";
-import MonitoringClientsInfo from "@/pages/(app)/monitoring/[id]/client/components/MonitoringClientsInfo.vue";
+import MonitoringClientsInfo from "../client/components/MonitoringClientsInfo.vue";
 
 definePage({
     meta: {
@@ -32,7 +32,7 @@ definePage({
 });
 
 // exam
-const examId = useRoute().params.id;
+const examId = useRoute().params.examId;
 
 // stores
 const monitoringStore = useMonitoringStore();

@@ -7,7 +7,7 @@
                 :items="[
                     {
                         label: translate('titles.monitoring'),
-                        link: 'MonitoringList',
+                        link: monitoringListRoute,
                     },
                     { label: monitoringStore.selectedExam?.quizName ?? '' },
                 ]"
@@ -157,14 +157,18 @@ import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum.ts";
 import * as generalUtils from "@/utils/generalUtils.ts";
 import * as timeUtils from "@/utils/timeUtils.ts";
-import MonitoringOverviewASK from "@/pages/(app)/monitoring/[id]/components/MonitoringOverviewASK.vue";
-import QuitAllDialog from "@/pages/(app)/monitoring/[id]/components/dialogs/QuitAllDialog.vue";
+import MonitoringOverviewASK from "../components/MonitoringOverviewASK.vue";
+import QuitAllDialog from "../components/dialogs/QuitAllDialog.vue";
 import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
 import { ref } from "vue";
 import { quitAll } from "@/services/seb-server/monitoringService.ts";
+import type { RouteLocationAsRelative } from "vue-router";
 
 // stores
 const monitoringStore = useMonitoringStore();
+const monitoringListRoute = {
+    name: "/(app)/monitoring/",
+} satisfies RouteLocationAsRelative<"/(app)/monitoring/">;
 
 const quitAllDialog = ref(false);
 
