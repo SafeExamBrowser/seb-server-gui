@@ -8,14 +8,14 @@ import type {
     RouteLocationAsRelative,
 } from "vue-router";
 
-function buildMonitoringRoute(examId: string, query?: LocationQueryRaw) {
+function buildMonitoringClientsRoute(examId: string, query?: LocationQueryRaw) {
     return {
-        name: "/(app)/monitoring/[examId]/",
+        name: "/(app)/monitoring/[examId]/client/",
         params: {
             examId,
         },
         query,
-    } satisfies RouteLocationAsRelative<"/(app)/monitoring/[examId]/">;
+    } satisfies RouteLocationAsRelative<"/(app)/monitoring/[examId]/client/">;
 }
 
 function addQueryParam(query: LocationQueryRaw) {
@@ -33,7 +33,7 @@ export function goToMonitoring(
         [String(header)]: value as LocationQueryValueRaw,
     };
 
-    void router.push(buildMonitoringRoute(examId, query));
+    void router.push(buildMonitoringClientsRoute(examId, query));
 }
 
 export function goToMonitoringDetails(
@@ -43,11 +43,13 @@ export function goToMonitoringDetails(
 ) {
     useMonitoringStore().currentMonitoringQuery = query;
 
-    // This detail route is still legacy and does not exist in the generated
-    // file-based route map yet, so this has to stay path-based for now.
     void router.push({
-        path: `/monitoring/${examId}/details/${connectionToken}`,
-    });
+        name: "/(app)/monitoring/[examId]/client/[connectionToken]/",
+        params: {
+            examId,
+            connectionToken,
+        },
+    } satisfies RouteLocationAsRelative<"/(app)/monitoring/[examId]/client/[connectionToken]/">);
 }
 
 export function applyFilter(
