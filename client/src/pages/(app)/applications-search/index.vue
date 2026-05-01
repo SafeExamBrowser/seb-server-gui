@@ -149,17 +149,22 @@
 
 <script setup lang="ts">
 import { onBeforeMount, ref } from "vue";
-import { useAppBarStore } from "@/stores/store";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import * as applicationsSearchService from "@/services/screen-proctoring/applicationsSearchService";
-import ApplicationsExamList from "./ApplicationsSearchExamList.vue";
-import ApplicationsSearchMetadata from "./ApplicationsSearchMetadata.vue";
+import ApplicationsExamList from "./components/ApplicationsSearchExamList.vue";
+import ApplicationsSearchMetadata from "./components/ApplicationsSearchMetadata.vue";
 import * as timeUtils from "@/utils/timeUtils";
 import * as generalUtils from "@/utils/generalUtils";
 import { SPExam } from "@/models/screen-proctoring/exam";
 
+definePage({
+    meta: {
+        titleKey: "titles.spApplications",
+        pageTestId: "applications-page",
+    },
+});
+
 // store
-const appBarStore = useAppBarStore();
 
 // form fields
 const timePeriodField = ref<number>(1);
@@ -185,7 +190,6 @@ const examObjects = ref<
 >([]);
 
 onBeforeMount(async () => {
-    appBarStore.title = "Applications";
     await getExamsStarted();
 });
 

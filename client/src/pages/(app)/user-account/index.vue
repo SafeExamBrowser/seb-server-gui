@@ -96,7 +96,7 @@ import { useToggleUserAccountStatus } from "@/pages/(app)/user-account/api/useTo
 import type { UserAccountResponse } from "@/models/userAccount.ts";
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 import AddButton from "@/components/widgets/AddButton.vue";
-import { useDetailRouteNavigation } from "@/router/detailRoute";
+import { useDetailRouteNavigation } from "../../../router/routeNavigation";
 import type { RouteLocationAsRelative } from "vue-router";
 
 definePage({

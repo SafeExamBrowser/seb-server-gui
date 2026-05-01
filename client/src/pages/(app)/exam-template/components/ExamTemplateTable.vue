@@ -41,7 +41,7 @@ import { tableOptionsSchema, type TableOptions } from "../types/types.ts";
 import {
     buildDetailRoute,
     useDetailRouteNavigation,
-} from "@/router/detailRoute.ts";
+} from "../../../../router/routeNavigation.ts";
 import type { RouteLocationAsRelative } from "vue-router";
 
 const emit = defineEmits<{

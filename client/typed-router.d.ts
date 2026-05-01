@@ -35,6 +35,7 @@ declare module 'vue-router/auto-routes' {
       '/',
       Record<never, never>,
       Record<never, never>,
+      | '/(app)/applications-search/'
       | '/(app)/assessment-tool/'
       | '/(app)/assessment-tool/[id]/'
       | '/(app)/assessment-tool/create/'
@@ -58,6 +59,13 @@ declare module 'vue-router/auto-routes' {
       | '/(app)/user-account/[userUuid]/'
       | '/(app)/user-account/create/'
       | '/(app)/user-account/profile/'
+    >,
+    '/(app)/applications-search/': RouteRecordInfo<
+      '/(app)/applications-search/',
+      '/applications-search',
+      Record<never, never>,
+      Record<never, never>,
+      | never
     >,
     '/(app)/assessment-tool/': RouteRecordInfo<
       '/(app)/assessment-tool/',
@@ -258,6 +266,7 @@ declare module 'vue-router/auto-routes' {
     'src/pages/(app).vue': {
       routes:
         | '/(app)'
+        | '/(app)/applications-search/'
         | '/(app)/assessment-tool/'
         | '/(app)/assessment-tool/[id]/'
         | '/(app)/assessment-tool/create/'
@@ -283,6 +292,12 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/user-account/profile/'
       views:
         | 'default'
+    }
+    'src/pages/(app)/applications-search/index.vue': {
+      routes:
+        | '/(app)/applications-search/'
+      views:
+        | never
     }
     'src/pages/(app)/assessment-tool/index.vue': {
       routes:

@@ -99,7 +99,7 @@ import { useToggleConnectionConfigurationStatus } from "@/pages/(app)/connection
 import type { ConnectionConfigurations } from "@/models/seb-server/connectionConfiguration.ts";
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 import AddButton from "@/components/widgets/AddButton.vue";
-import { useDetailRouteNavigation } from "@/router/detailRoute.ts";
+import { useDetailRouteNavigation } from "../../../router/routeNavigation.ts";
 import type { RouteLocationAsRelative } from "vue-router";
 
 definePage({

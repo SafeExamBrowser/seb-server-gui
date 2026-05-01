@@ -85,7 +85,7 @@ import { useTablePagination } from "@/components/widgets/entity-table/composable
 import TableRowActions from "@/components/widgets/entity-table/components/TableRowActions.vue";
 import TableFooter from "@/components/widgets/entity-table/components/TableFooter.vue";
 import type { ServerTablePaging } from "@/models/types.ts";
-import { useDetailRouteNavigation } from "@/router/detailRoute";
+import { useDetailRouteNavigation } from "../../../router/routeNavigation";
 import type { RouteLocationAsRelative } from "vue-router";
 
 const props = withDefaults(

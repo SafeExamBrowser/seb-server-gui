@@ -1,5 +1,3 @@
-import * as constants from "@/utils/constants";
-import * as spConstants from "@/utils/sp-constants";
 import { translate } from "@/utils/generalUtils";
 import { GUIComponent } from "@/services/ability";
 import type { NavigationSectionItem } from "@/components/widgets/navigationWidgets/types.ts";
@@ -46,12 +44,12 @@ export function buildPreparationNavigationItems(
     return [
         {
             label: translate("titles.createTemplateExam"),
-            to: "/exam-template/create",
+            to: { name: "/(app)/exam-template/create/" },
             testId: `${testIdPrefix}-createTemplate-link`,
         },
         {
             label: translate("titles.quizImport"),
-            to: constants.QUIZ_IMPORT_ROUTE,
+            to: { name: "/(app)/quiz-import/" },
             testId: `${testIdPrefix}-quizImport-link`,
         },
         {
@@ -60,7 +58,7 @@ export function buildPreparationNavigationItems(
         },
         {
             label: translate("titles.examTemplateList"),
-            to: "/exam-template",
+            to: { name: "/(app)/exam-template/" },
             testId: `${testIdPrefix}-examTemplateList-link`,
         },
     ];
@@ -70,25 +68,23 @@ export function buildMonitoringNavigationItems(
     testIdPrefix: string,
 ): NavigationSectionItem[] {
     return [
+        //TODO REFACTOR-ROUTER
         {
             label: translate("navigation.routeNames.runningExams"),
-            to: constants.MONITORING_ROUTE,
             testId: `${testIdPrefix}-runningExams-link`,
         },
         {
             label: translate("titles.screenProctoring"),
-            to: spConstants.RUNNING_EXAMS_ROUTE,
             testId: `${testIdPrefix}-screenProctoring-link`,
             thickDivider: true,
         },
         {
             label: translate("titles.spSearch"),
-            to: spConstants.SEARCH_ROUTE,
             testId: `${testIdPrefix}-spSearch-link`,
         },
         {
             label: translate("titles.spApplications"),
-            to: spConstants.APPLICATIONS_ROUTE,
+            to: { name: "/(app)/applications-search/" },
             testId: `${testIdPrefix}-spApplications-link`,
         },
     ];
@@ -97,6 +93,7 @@ export function buildMonitoringNavigationItems(
 export function buildFollowUpNavigationItems(
     testIdPrefix: string,
 ): NavigationSectionItem[] {
+    // TODO REFACTOR-ROUTER
     return [
         {
             label: translate("navigation.routeNames.finishedExams"),

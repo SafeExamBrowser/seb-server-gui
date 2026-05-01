@@ -376,13 +376,7 @@
                             <v-icon
                                 icon="mdi-arrow-left"
                                 variant="flat"
-                                @click="
-                                    navigateTo(
-                                        constants.MONITORING_OVERVIEW_ROUTE +
-                                            '/' +
-                                            examId,
-                                    )
-                                "
+                                @click="goBackToMonitoringOverview()"
                             >
                             </v-icon>
                         </div>
@@ -450,7 +444,6 @@ import { storeToRefs } from "pinia";
 import * as generalUtils from "@/utils/generalUtils.ts";
 import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums.ts";
 import { LocationQuery, useRoute } from "vue-router";
-import * as constants from "@/utils/constants.ts";
 import { InstructionEnum } from "@/models/seb-server/instructionEnum.ts";
 import { useErrorStore } from "@/stores/seb-server/errorStore.ts";
 import { computed, ref } from "vue";
@@ -460,6 +453,8 @@ import InstructionConfirmDialog from "../../client/components/InstructionConfirm
 import * as useMonitoringNavigation from "../../composables/useMonitoringNavigation.ts";
 import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
 import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
+import { navigateTo } from "../../../../../../router/routeNavigation.ts";
+import type { RouteLocationAsRelative } from "vue-router";
 
 // info panel (whole component)
 const isInfoExpanded = ref<boolean>(true);
@@ -479,23 +474,40 @@ const errorStore = useErrorStore();
 // exam
 const examId = props.examId;
 
+const monitoringListRoute = {
+    name: "/(app)/monitoring/",
+} satisfies RouteLocationAsRelative<"/(app)/monitoring/">;
+
 const breadCrumbItems = computed<BreadCrumbItem[]>(() => {
     const items: BreadCrumbItem[] = [
-        { label: translate("titles.monitoring"), link: "MonitoringList" },
+        { label: translate("titles.monitoring"), link: monitoringListRoute },
     ];
 
     const selectedExam = monitoringStore.selectedExam;
     if (selectedExam !== null) {
         items.push({
             label: selectedExam.quizName,
-            link: "MonitoringOverview",
-            params: { examId: selectedExam.id.toString() },
+            link: {
+                name: "/(app)/monitoring/[examId]/",
+                params: {
+                    examId: selectedExam.id.toString(),
+                },
+            } satisfies RouteLocationAsRelative<"/(app)/monitoring/[examId]/">,
         });
     }
 
     items.push({ label: translate("titles.clientList") });
     return items;
 });
+
+function goBackToMonitoringOverview() {
+    void navigateTo({
+        name: "/(app)/monitoring/[examId]/",
+        params: {
+            examId,
+        },
+    } satisfies RouteLocationAsRelative<"/(app)/monitoring/[examId]/">);
+}
 
 // instruction confirm dialog
 const instructionConfirmDialog = ref<boolean>(false);

@@ -202,7 +202,7 @@ import {
 import { OptionalParSearchSessions } from "@/models/screen-proctoring/optionalParamters";
 import * as searchService from "@/services/screen-proctoring/searchService";
 import { prepareSessionSearchParameters } from "@/components/views/screen-proctoring/search/utils/searchUtils.ts";
-import { openProctoringView } from "@/utils/navigation.ts";
+import { openProctoringView } from "../../../../router/routeNavigation.ts";
 
 // store
 const tableStore = useTableStore();

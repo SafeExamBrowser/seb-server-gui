@@ -180,14 +180,7 @@
                     <v-col class="d-flex justify-start">
                         <v-icon
                             icon="mdi-arrow-left"
-                            @click="
-                                navigateTo(
-                                    constants.MONITORING_CLIENTS_ROUTE +
-                                        '/' +
-                                        examId,
-                                    monitoringStore.currentMonitoringQuery,
-                                )
-                            "
+                            @click="goBackToMonitoringClients()"
                         />
                     </v-col>
                 </v-row>
@@ -211,13 +204,14 @@ import * as generalUtils from "@/utils/generalUtils.ts";
 import { translate } from "@/utils/generalUtils.ts";
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
 import { InstructionEnum } from "@/models/seb-server/instructionEnum.ts";
-import * as constants from "@/utils/constants.ts";
 import { IndicatorEnum } from "@/models/seb-server/monitoringEnums.ts";
 import { computed, ref } from "vue";
 import { NotificationEnum } from "@/models/seb-server/monitoringEnums.ts";
 import InstructionConfirmDialog from "../../../client/components/InstructionConfirmDialog.vue";
 import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
 import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
+import { navigateTo } from "../../../../../../../router/routeNavigation.ts";
+import type { RouteLocationAsRelative } from "vue-router";
 
 const props = defineProps<{
     examId: string;
@@ -256,24 +250,36 @@ const nameParts = computed(() => {
     return rawName.split("|").filter((p) => p.trim() !== "");
 });
 
+const monitoringListRoute = {
+    name: "/(app)/monitoring/",
+} satisfies RouteLocationAsRelative<"/(app)/monitoring/">;
+
 const breadCrumbItems = computed<BreadCrumbItem[]>(() => {
     const items: BreadCrumbItem[] = [
-        { label: translate("titles.monitoring"), link: "MonitoringList" },
+        { label: translate("titles.monitoring"), link: monitoringListRoute },
     ];
 
     const selectedExam = monitoringStore.selectedExam;
     if (selectedExam !== null) {
         items.push({
             label: selectedExam.quizName,
-            link: "MonitoringOverview",
-            params: { examId: selectedExam.id.toString() },
+            link: {
+                name: "/(app)/monitoring/[examId]/",
+                params: {
+                    examId: selectedExam.id.toString(),
+                },
+            } satisfies RouteLocationAsRelative<"/(app)/monitoring/[examId]/">,
         });
     }
 
     items.push({
         label: translate("titles.clientList"),
-        link: "MonitoringClients",
-        params: { examId },
+        link: {
+            name: "/(app)/monitoring/[examId]/client/",
+            params: {
+                examId,
+            },
+        } satisfies RouteLocationAsRelative<"/(app)/monitoring/[examId]/client/">,
     });
 
     const clientName = nameParts.value.join(" ").trim();
@@ -283,6 +289,16 @@ const breadCrumbItems = computed<BreadCrumbItem[]>(() => {
 
     return items;
 });
+
+function goBackToMonitoringClients() {
+    void navigateTo({
+        name: "/(app)/monitoring/[examId]/client/",
+        params: {
+            examId,
+        },
+        query: monitoringStore.currentMonitoringQuery,
+    } satisfies RouteLocationAsRelative<"/(app)/monitoring/[examId]/client/">);
+}
 
 //= ==============groups, tags, and status====================
 

@@ -74,7 +74,7 @@ import {
     ExamStatusEnum,
     examStatusColor,
 } from "@/models/seb-server/examFiltersEnum.ts";
-import { useDetailRouteNavigation } from "@/router/detailRoute.ts";
+import { useDetailRouteNavigation } from "../../../router/routeNavigation.ts";
 import type { RouteLocationAsRelative } from "vue-router";
 
 definePage({
