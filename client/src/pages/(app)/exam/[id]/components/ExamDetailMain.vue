@@ -961,11 +961,11 @@ const examId = props.id;
 
 function openMonitoringOverview() {
     void router.push({
-        name: "/(app)/monitoring/[id]/",
+        name: "/(app)/monitoring/[examId]/",
         params: {
-            id: examId,
+            examId: examId,
         },
-    } satisfies RouteLocationAsRelative<"/(app)/monitoring/[id]/">);
+    } satisfies RouteLocationAsRelative<"/(app)/monitoring/[examId]/">);
 }
 
 function openFinishedExamData() {

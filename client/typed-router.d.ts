@@ -55,6 +55,7 @@ declare module 'vue-router/auto-routes' {
       | '/(app)/monitoring/[examId]/client/[connectionToken]/'
       | '/(app)/navigation-overview/'
       | '/(app)/quiz-import/'
+      | '/(app)/running-exams/'
       | '/(app)/user-account/'
       | '/(app)/user-account/[userUuid]/'
       | '/(app)/user-account/create/'
@@ -200,6 +201,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/(app)/running-exams/': RouteRecordInfo<
+      '/(app)/running-exams/',
+      '/running-exams',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/(app)/user-account/': RouteRecordInfo<
       '/(app)/user-account/',
       '/user-account',
@@ -286,6 +294,7 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/monitoring/[examId]/client/[connectionToken]/'
         | '/(app)/navigation-overview/'
         | '/(app)/quiz-import/'
+        | '/(app)/running-exams/'
         | '/(app)/user-account/'
         | '/(app)/user-account/[userUuid]/'
         | '/(app)/user-account/create/'
@@ -410,6 +419,12 @@ declare module 'vue-router/auto-routes' {
     'src/pages/(app)/quiz-import/index.vue': {
       routes:
         | '/(app)/quiz-import/'
+      views:
+        | never
+    }
+    'src/pages/(app)/running-exams/index.vue': {
+      routes:
+        | '/(app)/running-exams/'
       views:
         | never
     }

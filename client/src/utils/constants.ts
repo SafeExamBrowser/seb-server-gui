@@ -16,14 +16,6 @@ import { ImportWizardSteps } from "@/models/types";
 
 // navigation routes
 
-export const EXAM_ROUTE: string = "/exam";
-
-export const MONITORING_ROUTE: string = "/monitoring";
-export const MONITORING_OVERVIEW_ROUTE: string = MONITORING_ROUTE + "/overview";
-export const MONITORING_CLIENTS_ROUTE: string = MONITORING_ROUTE + "/clients";
-export const MONITORING_DETAILS_ROUTE: string =
-    MONITORING_ROUTE + "/:examId" + "/details";
-
 export const FINISHED_EXAM_DATA_ROUTE: string = "/finished-exam-data";
 
 export const ASSESSMENT_TOOL_CONNECTIONS_ROUTE: string =

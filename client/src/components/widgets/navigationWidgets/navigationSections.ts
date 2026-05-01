@@ -71,6 +71,7 @@ export function buildMonitoringNavigationItems(
         //TODO REFACTOR-ROUTER
         {
             label: translate("navigation.routeNames.runningExams"),
+            to: { name: "/(app)/running-exams/" },
             testId: `${testIdPrefix}-runningExams-link`,
         },
         {
