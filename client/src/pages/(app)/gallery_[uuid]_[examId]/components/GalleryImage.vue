@@ -255,8 +255,8 @@ import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils";
 import { useRoute } from "vue-router";
 import { ScreenshotData } from "@/models/screen-proctoring/session";
-import { navigateToProctoringView } from "@/components/views/screen-proctoring/gallery/utils/galleryNavigation.ts";
-import * as galleryUtils from "@/components/views/screen-proctoring/gallery/utils/galleryUtils.ts";
+import { navigateToProctoringView } from "@/pages/(app)/gallery_[uuid]_[examId]/utils/galleryNavigation.ts";
+import * as galleryUtils from "@/pages/(app)/gallery_[uuid]_[examId]/utils/galleryUtils.ts";
 import { getLatestImageLink } from "@/utils/linkBuilder.ts";
 
 // props
@@ -273,7 +273,15 @@ const galleryStore = useGalleryStore();
 
 // examId
 const route = useRoute();
-const examId = computed(() => route.params.examId?.toString() ?? "");
+const examId = computed(() => {
+    const params = route.params as Record<
+        string,
+        string | string[] | undefined
+    >;
+    const value = params.examId;
+
+    return typeof value === "string" ? value : "";
+});
 
 // i18n
 const i18n = useI18n();

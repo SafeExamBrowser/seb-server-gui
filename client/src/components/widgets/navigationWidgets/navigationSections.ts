@@ -70,12 +70,13 @@ export function buildMonitoringNavigationItems(
     return [
         //TODO REFACTOR-ROUTER
         {
-            label: translate("navigation.routeNames.runningExams"),
-            to: { name: "/(app)/running-exams/" },
+            label: translate("titles.monitoring"),
+            to: { name: "/(app)/monitoring/" },
             testId: `${testIdPrefix}-runningExams-link`,
         },
         {
             label: translate("titles.screenProctoring"),
+            to: { name: "/(app)/running-sp-exams/" },
             testId: `${testIdPrefix}-screenProctoring-link`,
             thickDivider: true,
         },

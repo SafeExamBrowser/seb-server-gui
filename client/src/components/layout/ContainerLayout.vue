@@ -67,10 +67,12 @@ const mainNavigationLinks = computed(() =>
         : buildContainerNavigationLinks({ t }),
 );
 
-const layoutContext = computed(() => route.meta.layoutContext ?? "default");
+const layoutContext = computed(
+    () => route.meta.layoutContext ?? route.meta.layout ?? "default",
+);
 
 const isNavigationOverviewRoute = computed(
-    () => route.meta.layoutContext === "navigation-overview",
+    () => layoutContext.value === "navigation-overview",
 );
 
 const isPageBlue = computed(() => route.meta.isPageBlue ?? false);

@@ -115,6 +115,14 @@ import { storeToRefs } from "pinia";
 import { Group, GroupObject } from "@/models/screen-proctoring/group";
 import { getGalleryViewLink } from "@/utils/monitoringUtils.ts";
 
+definePage({
+    meta: {
+        titleKey: "titles.runningExams",
+        pageTestId: "running-sp-exams-page",
+        layoutContext: "exams-overview",
+    },
+});
+
 // stores
 const appBarStore = useAppBarStore();
 const appBarStoreRef = storeToRefs(appBarStore);
@@ -166,14 +174,6 @@ async function getGroups() {
     groups.value = groupsResponse.content;
 }
 
-// function getGalleryViewLink(index: number) {
-//     if(groups.value != null){
-//         return spConstants.GALLERY_VIEW_ROUTE + "/" + groups.value[index].uuid;
-//     }
-
-//     return "";
-// }
-
 function getExamNameColor(group: Group): string {
     if (group.terminationTime != null) {
         return "red";
@@ -185,19 +185,6 @@ function getExamNameColor(group: Group): string {
 
     return "green";
 }
-
-// function addAddtionalExamHeaders(){
-//     tableStore.isExamExpand = true;
-
-//     headers.value.splice(2, 0, {title: "Exam End-Time", key: "exam.endTime", width: "8%"});
-//     headers.value.splice(3, 0, {title: "Group Termination-Time", key: "terminationTime", width: "8%"});
-// }
-
-// function removeAddtionalExamHeaders(){
-//     tableStore.isExamExpand = false;
-
-//     headers.value.splice(2, 2);
-// }
 </script>
 
 <style scoped>

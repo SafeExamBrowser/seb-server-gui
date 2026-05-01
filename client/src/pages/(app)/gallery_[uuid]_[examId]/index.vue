@@ -65,18 +65,26 @@ import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useAppBarStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
-import GalleryImage from "./GalleryImage.vue";
+import GalleryImage from "@/pages/(app)/gallery_[uuid]_[examId]/components/GalleryImage.vue";
 import { SortOrder } from "@/models/screen-proctoring/sortOrderEnum";
 import { MetaData, ScreenshotData } from "@/models/screen-proctoring/session";
 import { GroupUuid } from "@/models/screen-proctoring/group";
 import { translate } from "@/utils/generalUtils";
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import { getGroupByUuid } from "@/services/screen-proctoring/groupService";
-import * as galleryUtils from "@/components/views/screen-proctoring/gallery/utils/galleryUtils.ts";
+import * as galleryUtils from "@/pages/(app)/gallery_[uuid]_[examId]/utils/galleryUtils.ts";
 import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
 import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
+import type { RouteLocationAsRelative } from "vue-router";
 
 import { getScreenshotDataByTimestamp } from "@/services/screen-proctoring/screenshotDataService.ts";
+
+definePage({
+    meta: {
+        titleKey: "titles.galleryView",
+        pageTestId: "gallery-view-page",
+        layoutContext: "gallery-view",
+    },
+});
 
 // reactive variables
 const group = ref<GroupUuid | null>();
@@ -96,19 +104,29 @@ const SCREENSHOT_INTERVAL: number = 1 * 1000;
 // store
 const appBarStore = useAppBarStore();
 const appBarStoreRef = storeToRefs(appBarStore);
-const monitoringStore = useMonitoringStore();
+const route = useRoute();
+const groupUuid =
+    typeof route.params.uuid === "string" ? route.params.uuid : "";
+const examId =
+    typeof route.params.examId === "string" ? route.params.examId : "";
+const monitoringListRoute = {
+    name: "/(app)/monitoring/",
+} satisfies RouteLocationAsRelative<"/(app)/monitoring/">;
 
 const breadCrumbItems = computed<BreadCrumbItem[]>(() => {
     const items: BreadCrumbItem[] = [
-        { label: translate("titles.monitoring"), link: "MonitoringList" },
+        { label: translate("titles.monitoring"), link: monitoringListRoute },
     ];
 
-    const selectedExam = monitoringStore.selectedExam;
-    if (selectedExam !== null) {
+    if (examId !== "") {
         items.push({
             label: translate("titles.overview"),
-            link: "MonitoringOverview",
-            params: { examId: selectedExam.id.toString() },
+            link: {
+                name: "/(app)/monitoring/[examId]/",
+                params: {
+                    examId,
+                },
+            } satisfies RouteLocationAsRelative<"/(app)/monitoring/[examId]/">,
         });
     }
 
@@ -116,8 +134,6 @@ const breadCrumbItems = computed<BreadCrumbItem[]>(() => {
     return items;
 });
 
-// remaining
-const groupUuid: string = useRoute().params.uuid.toString();
 let intervalGroup: ReturnType<typeof setInterval> | null = null;
 let intervalImageUrl: ReturnType<typeof setInterval> | null = null;
 

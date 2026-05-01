@@ -1,7 +1,7 @@
 //= ============ TODO change link links============
 // TODO @Andrei consider putting this further up depending on whether oether methods in screen proctoring context or otherwise call this up
 import { ScreenshotData } from "@/models/screen-proctoring/session.ts";
-import { openRouteInNewTab } from "../../../../../router/routeNavigation.ts";
+import { openRouteInNewTab } from "../../../../router/routeNavigation.ts";
 import type { RouteLocationAsRelative } from "vue-router";
 
 export function navigateToProctoringView(
