@@ -3,6 +3,8 @@ import router from "@/router/router.ts";
 import type { RouteLocationAsRelative } from "vue-router";
 import { useRouter } from "vue-router";
 
+export const typedTo = (to: RouteLocationAsRelative) => to;
+
 export async function navigateTo(to: RouteLocationAsRelative): Promise<void> {
     await router.push(to);
 }

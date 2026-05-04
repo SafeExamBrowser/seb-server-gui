@@ -18,7 +18,8 @@ on the filesystem if they clash:
 
 - TypeScript: Avoid manual typecasts like `as FooBar`. Properly cast the types and fulfill their requirements.
 - Prefer the "Vue composition API" over the "Vue options API".
-- Use `getRouteName` in `client/src/router/routeNames.ts` when generating URLs.
+- Routing: when generating urls for Vuetify components with a `to` property (e.g. `v-list-item`, `v-btn`, ...), you
+  must always use the `typedTo` helper function so type safety is ensured.
 - Use `client/src/composables/useFetch.ts` and `client/src/composables/useMutation.ts` and the abstracted API services stored in
   `client/src/services` for data fetching.
 - Avoid writing custom CSS. Use Vuetify utility classes whenever possible.
