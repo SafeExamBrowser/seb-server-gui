@@ -66,7 +66,7 @@
                 <v-list-item
                     prepend-icon="mdi-account-cog-outline"
                     :title="translate('titles.profileSettings')"
-                    :to="profileRoute"
+                    :to="typedTo({ name: '/(app)/user-account/profile/' })"
                 />
 
                 <v-list-item
@@ -87,8 +87,8 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import type { UserAccount } from "@/models/userAccount";
+import { typedTo } from "@/router/routeNavigation";
 import { translate } from "@/utils/generalUtils";
-import type { RouteLocationAsRelative } from "vue-router";
 
 const props = defineProps<{
     userAccount: UserAccount | null | undefined;
@@ -97,10 +97,6 @@ const props = defineProps<{
 defineEmits<{
     logout: [];
 }>();
-
-const profileRoute: RouteLocationAsRelative = {
-    name: "/(app)/user-account/profile/",
-};
 
 const rolePriority = [
     "SEB_SERVER_ADMIN",
