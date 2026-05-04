@@ -14,6 +14,7 @@ import { translate } from "@/utils/generalUtils";
 import type { Component } from "vue";
 import { ImportWizardSteps } from "@/models/types";
 
+//TODO @andrei This global util file reaching into pages to import stuff is a code smell. It has no business in reaching into the pages folder.
 type I18nLike = { t: (key: string, ...args: unknown[]) => string };
 
 // quiz import wizard steps & components

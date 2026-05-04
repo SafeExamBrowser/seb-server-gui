@@ -35,6 +35,7 @@ declare module 'vue-router/auto-routes' {
       '/',
       Record<never, never>,
       Record<never, never>,
+      | '/(app)/'
       | '/(app)/applications-search/'
       | '/(app)/assessment-tool/'
       | '/(app)/assessment-tool/[id]/'
@@ -63,6 +64,13 @@ declare module 'vue-router/auto-routes' {
       | '/(app)/user-account/[userUuid]/'
       | '/(app)/user-account/create/'
       | '/(app)/user-account/profile/'
+    >,
+    '/(app)/': RouteRecordInfo<
+      '/(app)/',
+      '/',
+      Record<never, never>,
+      Record<never, never>,
+      | never
     >,
     '/(app)/applications-search/': RouteRecordInfo<
       '/(app)/applications-search/',
@@ -265,7 +273,15 @@ declare module 'vue-router/auto-routes' {
       '/',
       Record<never, never>,
       Record<never, never>,
+      | '/(public)/login/'
       | '/(public)/register/'
+    >,
+    '/(public)/login/': RouteRecordInfo<
+      '/(public)/login/',
+      '/login',
+      Record<never, never>,
+      Record<never, never>,
+      | never
     >,
     '/(public)/register/': RouteRecordInfo<
       '/(public)/register/',
@@ -290,6 +306,7 @@ declare module 'vue-router/auto-routes' {
     'src/pages/(app).vue': {
       routes:
         | '/(app)'
+        | '/(app)/'
         | '/(app)/applications-search/'
         | '/(app)/assessment-tool/'
         | '/(app)/assessment-tool/[id]/'
@@ -320,6 +337,12 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/user-account/profile/'
       views:
         | 'default'
+    }
+    'src/pages/(app)/index.vue': {
+      routes:
+        | '/(app)/'
+      views:
+        | never
     }
     'src/pages/(app)/applications-search/index.vue': {
       routes:
@@ -492,9 +515,16 @@ declare module 'vue-router/auto-routes' {
     'src/pages/(public).vue': {
       routes:
         | '/(public)'
+        | '/(public)/login/'
         | '/(public)/register/'
       views:
         | 'default'
+    }
+    'src/pages/(public)/login/index.vue': {
+      routes:
+        | '/(public)/login/'
+      views:
+        | never
     }
     'src/pages/(public)/register/index.vue': {
       routes:

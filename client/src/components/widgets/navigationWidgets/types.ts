@@ -1,6 +1,6 @@
-import type { RouteLocationAsRelative, RouteLocationRaw } from "vue-router";
+import type { RouteLocationAsRelative } from "vue-router";
 
-export type NavigationSectionTarget = RouteLocationRaw;
+export type NavigationSectionTarget = RouteLocationAsRelative;
 export interface NavigationSectionItem {
     label: string;
     to?: RouteLocationAsRelative;

@@ -40,7 +40,6 @@ export default ({ mode, command }) => {
                         exclude: [
                             "**/components/**",
                             "**/composables/**",
-                            "**/api/**",
                             "**/utils/**",
                             "**/types/**",
                         ],
@@ -81,7 +80,7 @@ export default ({ mode, command }) => {
         },
 
         server: {
-            port: 8084,
+            port: 8082,
             ...(command === "serve"
                 ? {
                       proxy: {
