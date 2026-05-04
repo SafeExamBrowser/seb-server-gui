@@ -1,12 +1,10 @@
 import { useAuthStore } from "@/composables/store/useAuthStore";
 import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
 import * as authenticationService from "@/services/authenticationService";
-import { useRouter } from "vue-router";
 
 export const useLogout = () => {
     const authStore = useAuthStore();
     const userAccountStore = useUserAccountStore();
-    const router = useRouter();
 
     const logout = async (skipServerLogout: boolean = false) => {
         if (!skipServerLogout) {
@@ -16,6 +14,7 @@ export const useLogout = () => {
         authStore.$reset();
         userAccountStore.userAccount = null;
 
+        const { default: router } = await import("@/router/router");
         await router.push({ name: "/(public)/" });
     };
 

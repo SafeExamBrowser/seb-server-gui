@@ -69,7 +69,6 @@ definePage({
 });
 
 const ability = useAbilities();
-// TODO REFACTOR-ROUTER change to typed routes !!!
 const settingsItems = computed(() =>
     buildSettingsNavigationItems(ability, "navigationOverview"),
 );

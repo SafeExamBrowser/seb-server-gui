@@ -68,7 +68,6 @@ export function buildMonitoringNavigationItems(
     testIdPrefix: string,
 ): NavigationSectionItem[] {
     return [
-        //TODO REFACTOR-ROUTER
         {
             label: translate("titles.monitoring"),
             to: { name: "/(app)/monitoring/" },
@@ -97,7 +96,6 @@ export function buildMonitoringNavigationItems(
 export function buildFollowUpNavigationItems(
     testIdPrefix: string,
 ): NavigationSectionItem[] {
-    // TODO REFACTOR-ROUTER
     return [
         {
             label: translate("navigation.routeNames.finishedExams"),
