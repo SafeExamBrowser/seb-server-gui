@@ -57,6 +57,11 @@ declare module 'vue-router/auto-routes' {
       | '/(app)/navigation-overview/'
       | '/(app)/quiz-import/'
       | '/(app)/running-sp-exams/'
+      | '/(app)/sp-recording/[sessionId]/'
+      | '/(app)/sp-recording/[sessionId]/ProctoringViewPage'
+      | '/(app)/sp-recording/application-search/[sessionId]/'
+      | '/(app)/sp-recording/application-search/[sessionId]/ProctoringApplicationSearchPage'
+      | '/(app)/sp-search/'
       | '/(app)/user-account/'
       | '/(app)/user-account/[userUuid]/'
       | '/(app)/user-account/create/'
@@ -216,6 +221,41 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/(app)/sp-recording/[sessionId]/': RouteRecordInfo<
+      '/(app)/sp-recording/[sessionId]/',
+      '/sp-recording/:sessionId',
+      { sessionId: ParamValue<true> },
+      { sessionId: ParamValue<false> },
+      | never
+    >,
+    '/(app)/sp-recording/[sessionId]/ProctoringViewPage': RouteRecordInfo<
+      '/(app)/sp-recording/[sessionId]/ProctoringViewPage',
+      '/sp-recording/:sessionId/ProctoringViewPage',
+      { sessionId: ParamValue<true> },
+      { sessionId: ParamValue<false> },
+      | never
+    >,
+    '/(app)/sp-recording/application-search/[sessionId]/': RouteRecordInfo<
+      '/(app)/sp-recording/application-search/[sessionId]/',
+      '/sp-recording/application-search/:sessionId',
+      { sessionId: ParamValue<true> },
+      { sessionId: ParamValue<false> },
+      | never
+    >,
+    '/(app)/sp-recording/application-search/[sessionId]/ProctoringApplicationSearchPage': RouteRecordInfo<
+      '/(app)/sp-recording/application-search/[sessionId]/ProctoringApplicationSearchPage',
+      '/sp-recording/application-search/:sessionId/ProctoringApplicationSearchPage',
+      { sessionId: ParamValue<true> },
+      { sessionId: ParamValue<false> },
+      | never
+    >,
+    '/(app)/sp-search/': RouteRecordInfo<
+      '/(app)/sp-search/',
+      '/sp-search',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/(app)/user-account/': RouteRecordInfo<
       '/(app)/user-account/',
       '/user-account',
@@ -304,6 +344,11 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/navigation-overview/'
         | '/(app)/quiz-import/'
         | '/(app)/running-sp-exams/'
+        | '/(app)/sp-recording/[sessionId]/'
+        | '/(app)/sp-recording/[sessionId]/ProctoringViewPage'
+        | '/(app)/sp-recording/application-search/[sessionId]/'
+        | '/(app)/sp-recording/application-search/[sessionId]/ProctoringApplicationSearchPage'
+        | '/(app)/sp-search/'
         | '/(app)/user-account/'
         | '/(app)/user-account/[userUuid]/'
         | '/(app)/user-account/create/'
@@ -440,6 +485,36 @@ declare module 'vue-router/auto-routes' {
     'src/pages/(app)/running-sp-exams/index.vue': {
       routes:
         | '/(app)/running-sp-exams/'
+      views:
+        | never
+    }
+    'src/pages/(app)/sp-recording/[sessionId]/index.vue': {
+      routes:
+        | '/(app)/sp-recording/[sessionId]/'
+      views:
+        | never
+    }
+    'src/pages/(app)/sp-recording/[sessionId]/ProctoringViewPage.vue': {
+      routes:
+        | '/(app)/sp-recording/[sessionId]/ProctoringViewPage'
+      views:
+        | never
+    }
+    'src/pages/(app)/sp-recording/application-search/[sessionId]/index.vue': {
+      routes:
+        | '/(app)/sp-recording/application-search/[sessionId]/'
+      views:
+        | never
+    }
+    'src/pages/(app)/sp-recording/application-search/[sessionId]/ProctoringApplicationSearchPage.vue': {
+      routes:
+        | '/(app)/sp-recording/application-search/[sessionId]/ProctoringApplicationSearchPage'
+      views:
+        | never
+    }
+    'src/pages/(app)/sp-search/index.vue': {
+      routes:
+        | '/(app)/sp-search/'
       views:
         | never
     }

@@ -105,11 +105,18 @@
 <script setup lang="ts">
 import { onBeforeMount, ref, watch } from "vue";
 import { useAppBarStore, useTableStore } from "@/stores/store";
-import SearchForm from "./SearchForm.vue";
-import SearchSessionTable from "./SearchSessionTable.vue";
+import SearchForm from "@/pages/(app)/sp-search/components/SearchForm.vue";
+import SearchSessionTable from "@/pages/(app)/sp-search/components/SearchSessionTable.vue";
 import * as timeUtils from "@/utils/timeUtils";
 import { OptionalParSearchSessions } from "@/models/screen-proctoring/optionalParamters";
 import { searchSessionsDay } from "@/services/screen-proctoring/searchService.ts";
+
+definePage({
+    meta: {
+        titleKey: "titles.spSearch",
+        pageTestId: "sp-search-page",
+    },
+});
 
 // error handling
 const searchResultAvailable = ref<boolean>(false);

@@ -1,6 +1,5 @@
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 import router from "@/router/router.ts";
-import * as spConstants from "@/utils/sp-constants.ts";
 import type { RouteLocationAsRelative } from "vue-router";
 import { useRouter } from "vue-router";
 
@@ -16,24 +15,22 @@ export function openRouteInNewTab(to: RouteLocationAsRelative): void {
     window.open(router.resolve(to).href, "_blank");
 }
 
-function openPathInNewTab(path: string): void {
-    if (typeof window === "undefined") {
-        return;
-    }
-
-    window.open(router.resolve(path).href, "_blank");
-}
-
 export function openProctoringView(
     sessionId: string,
     timestamp?: string,
 ): void {
     const searchTimestamp = timestamp?.trim();
-    const path = searchTimestamp
-        ? `${spConstants.PROCTORING_VIEW_ROUTE}/${sessionId}?searchTimestamp=${encodeURIComponent(searchTimestamp)}`
-        : `${spConstants.PROCTORING_VIEW_ROUTE}/${sessionId}`;
-
-    openPathInNewTab(path);
+    openRouteInNewTab({
+        name: "/(app)/sp-recording/[sessionId]/",
+        params: {
+            sessionId,
+        },
+        query: searchTimestamp
+            ? {
+                  searchTimestamp,
+              }
+            : undefined,
+    } satisfies RouteLocationAsRelative<"/(app)/sp-recording/[sessionId]/">);
 }
 
 export function openProctoringApplicationSearch(
@@ -41,20 +38,16 @@ export function openProctoringApplicationSearch(
     metadataApp: string,
     metadataWindow: string,
 ): void {
-    const query = new URLSearchParams();
-
-    if (metadataApp) {
-        query.set("metadataApp", metadataApp);
-    }
-
-    if (metadataWindow) {
-        query.set("metadataWindow", metadataWindow);
-    }
-
-    const path = `${spConstants.PROCTORING_APPLICATION_SEARCH_ROUTE}/${sessionId}`;
-    const queryString = query.toString();
-
-    openPathInNewTab(queryString ? `${path}?${queryString}` : path);
+    openRouteInNewTab({
+        name: "/(app)/sp-recording/application-search/[sessionId]/",
+        params: {
+            sessionId,
+        },
+        query: {
+            ...(metadataApp ? { metadataApp } : {}),
+            ...(metadataWindow ? { metadataWindow } : {}),
+        },
+    } satisfies RouteLocationAsRelative<"/(app)/sp-recording/application-search/[sessionId]/">);
 }
 
 export function buildDetailRoute(

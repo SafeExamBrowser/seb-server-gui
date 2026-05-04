@@ -269,24 +269,24 @@ import {
     ref,
     watch,
 } from "vue";
-import * as screenshotDataService from "@/services/screen-proctoring/screenshotDataService";
-import * as timeUtils from "@/utils/timeUtils";
-import * as groupingUtils from "@/utils/groupingUtils";
-import { useAppBarStore } from "@/stores/store";
-import * as searchService from "@/services/screen-proctoring/searchService";
+import * as screenshotDataService from "client/src/services/screen-proctoring/screenshotDataService";
+import * as timeUtils from "client/src/utils/timeUtils";
+import * as groupingUtils from "client/src/utils/groupingUtils";
+import { useAppBarStore } from "client/src/stores/store";
+import * as searchService from "client/src/services/screen-proctoring/searchService";
 import { useFullscreen } from "@vueuse/core";
-import { SortOrder } from "@/models/screen-proctoring/sortOrderEnum";
+import { SortOrder } from "client/src/models/screen-proctoring/sortOrderEnum";
 import { throttle } from "lodash";
-import { ScreenshotData } from "@/models/screen-proctoring/session";
+import { ScreenshotData } from "client/src/models/screen-proctoring/session";
 import {
     ScreenshotsGrouped,
     SearchTimeline,
-} from "@/models/screen-proctoring/search";
-import { getSpecificImageLink } from "@/utils/linkBuilder.ts";
+} from "client/src/models/screen-proctoring/search";
+import { getSpecificImageLink } from "client/src/utils/linkBuilder.ts";
 import {
     getScreenshotMetadata,
     getSessionInfodata,
-} from "@/components/views/screen-proctoring/proctoring/utils/screenshotMetadata.ts";
+} from "client/src/components/views/screen-proctoring/proctoring/utils/screenshotMetadata.ts";
 
 // slider
 const sliderTime = ref<number>(0);

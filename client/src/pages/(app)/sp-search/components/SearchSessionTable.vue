@@ -189,7 +189,7 @@
 import { ref } from "vue";
 import * as timeUtils from "@/utils/timeUtils";
 import * as tableUtils from "@/utils/table/tableUtils";
-import SearchScreenshotsTable from "./SearchScreenshotsTable.vue";
+import SearchScreenshotsTable from "@/pages/(app)/sp-search/components/SearchScreenshotsTable.vue";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import { useTableStore } from "@/stores/store";
 import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
@@ -201,8 +201,8 @@ import {
 } from "@/models/screen-proctoring/search";
 import { OptionalParSearchSessions } from "@/models/screen-proctoring/optionalParamters";
 import * as searchService from "@/services/screen-proctoring/searchService";
-import { prepareSessionSearchParameters } from "@/components/views/screen-proctoring/search/utils/searchUtils.ts";
-import { openProctoringView } from "../../../../router/routeNavigation.ts";
+import { prepareSessionSearchParameters } from "@/pages/(app)/sp-search/utils/searchUtils.ts";
+import { openProctoringView } from "@/router/routeNavigation.ts";
 
 // store
 const tableStore = useTableStore();

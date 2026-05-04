@@ -35,6 +35,7 @@ export default ({ mode, command }) => {
         plugins: [
             VueRouter({
                 routesFolder: [
+                    // TODO REFACTOR-ROUTER remove what is not necessary here
                     {
                         src: "src/pages",
                         exclude: [

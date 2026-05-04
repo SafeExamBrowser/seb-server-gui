@@ -130,7 +130,7 @@ import { translate } from "@/utils/generalUtils.ts";
 import { ref, computed, watch, nextTick } from "vue";
 import type { ComputedRef } from "vue";
 import { ClientNotification } from "@/models/seb-server/monitoring.ts";
-import ProctoringViewPage from "@/components/views/screen-proctoring/proctoring/ProctoringViewPage.vue";
+import ProctoringViewPage from "../../../../../sp-recording/[sessionId]/ProctoringViewPage.vue";
 import MonitoringClientLogsContainer from "../../../client/[connectionToken]/components/MonitoringClientLogsContainer.vue";
 
 const props = defineProps<{

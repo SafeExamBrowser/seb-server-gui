@@ -166,7 +166,7 @@ import * as groupingUtils from "@/utils/groupingUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import * as spConstants from "@/utils/sp-constants";
 import { SearchTimeline } from "@/models/screen-proctoring/search";
-import { openProctoringView } from "../../../../router/routeNavigation.ts";
+import { openProctoringView } from "@/router/routeNavigation.ts";
 
 // simple "clickable" for header refs (matches what TableHeaders expects)
 type Clickable = { click: () => void };

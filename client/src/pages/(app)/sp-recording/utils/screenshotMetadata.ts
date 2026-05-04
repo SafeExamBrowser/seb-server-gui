@@ -1,9 +1,9 @@
 import {
     MetaData,
     ScreenshotData,
-} from "@/models/screen-proctoring/session.ts";
-import * as timeUtils from "@/utils/timeUtils.ts";
-import * as spConstants from "@/utils/sp-constants.ts";
+} from "client/src/models/screen-proctoring/session";
+import * as timeUtils from "client/src/utils/timeUtils";
+import * as spConstants from "client/src/utils/sp-constants";
 
 export function getScreenshotMetadata(
     sliderTime: number,
