@@ -43,6 +43,7 @@ const route = useRoute();
 const { locale, t } = useI18n();
 const userAccountStore = useUserAccountStore();
 const ability = useAbilities();
+const { logout } = useLogout();
 const { institutionName, institutionLogo } = useInstitutionBranding();
 
 locale.value = localStorage.getItem("locale") ?? "en";
@@ -88,6 +89,6 @@ watch(themeToggle, () => {
 });
 
 async function handleLogoutButtonClick() {
-    await useLogout().logout();
+    await logout();
 }
 </script>
