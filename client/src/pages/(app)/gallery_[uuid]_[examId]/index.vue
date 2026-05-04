@@ -105,13 +105,11 @@ const SCREENSHOT_INTERVAL: number = 1 * 1000;
 const appBarStore = useAppBarStore();
 const appBarStoreRef = storeToRefs(appBarStore);
 const route = useRoute();
-const groupUuid =
-    typeof route.params.uuid === "string" ? route.params.uuid : "";
-const examId =
-    typeof route.params.examId === "string" ? route.params.examId : "";
-const monitoringListRoute = {
+const groupUuid = route.params.uuid;
+const examId = route.params.examId;
+const monitoringListRoute: RouteLocationAsRelative = {
     name: "/(app)/monitoring/",
-} satisfies RouteLocationAsRelative<"/(app)/monitoring/">;
+};
 
 const breadCrumbItems = computed<BreadCrumbItem[]>(() => {
     const items: BreadCrumbItem[] = [
@@ -149,7 +147,6 @@ onBeforeMount(async () => {
     );
 
     if (group.value) {
-        appBarStore.title = "Group: " + group.value.name;
         updateInfoData();
         // appBarStore.galleryDescription = group.value.description;
     }

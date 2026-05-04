@@ -25,14 +25,5 @@
 </template>
 
 <script setup lang="ts">
-import { useAppBarStore } from "@/stores/store.ts";
 import { translate } from "@/utils/generalUtils.ts";
-import { onBeforeMount } from "vue";
-
-// stores
-const appBarStore = useAppBarStore();
-
-onBeforeMount(() => {
-    appBarStore.title = translate("titles.home");
-});
 </script>

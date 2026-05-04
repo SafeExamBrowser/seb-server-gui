@@ -103,8 +103,8 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, ref, watch } from "vue";
-import { useAppBarStore, useTableStore } from "@/stores/store";
+import { ref, watch } from "vue";
+import { useTableStore } from "@/stores/store";
 import SearchForm from "@/pages/(app)/sp-search/components/SearchForm.vue";
 import SearchSessionTable from "@/pages/(app)/sp-search/components/SearchSessionTable.vue";
 import * as timeUtils from "@/utils/timeUtils";
@@ -132,7 +132,6 @@ const sessionPanels = ref<string[]>([]);
 const closeAllPanelsDisabled = ref<boolean>(true);
 
 // store
-const appBarStore = useAppBarStore();
 const tableStore = useTableStore();
 
 // form data
@@ -148,10 +147,6 @@ let metadataSearchWindowTitle: string | null;
 let loginNameSearch: string | null;
 let ipAddressSearch: string | null;
 let machineNameSearch: string | null;
-
-onBeforeMount(async () => {
-    appBarStore.title = "Search";
-});
 
 watch(sessionPanels, () => {
     if (sessionPanels.value.length === 0) {

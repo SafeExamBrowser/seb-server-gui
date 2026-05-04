@@ -141,7 +141,6 @@ const headers = ref([
 const errorAvailable = ref<boolean>();
 
 onBeforeMount(async () => {
-    appBarStore.title = "Running Exams";
     await getGroups();
 });
 
