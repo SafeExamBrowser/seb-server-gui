@@ -15,7 +15,7 @@ export function buildContainerNavigationLinks(
     return [
         {
             title: i18n.t("titles.home"),
-            route: { name: "/(app)/home/" },
+            route: { name: "/(app)/" },
             icon: "mdi-home",
             testId: "layout-home-button",
         },

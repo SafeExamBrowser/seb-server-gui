@@ -15,7 +15,7 @@ export const useLogout = () => {
         userAccountStore.userAccount = null;
 
         const { default: router } = await import("@/router/router");
-        await router.push({ name: "/(public)/" });
+        await router.push({ name: "/(public)/login/" });
     };
 
     return { logout };

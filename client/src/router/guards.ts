@@ -17,7 +17,7 @@ export function installGuards(router: Router): void {
             );
 
             if (!isAuthenticated) {
-                return { name: "/(public)/" };
+                return { name: "/(public)/login/" };
             }
 
             await hydratePersonalUserAccount();

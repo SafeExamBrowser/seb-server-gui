@@ -120,7 +120,7 @@
 import { ref } from "vue";
 import { useTheme } from "vuetify";
 import { translate } from "@/utils/generalUtils";
-import { useLogin } from "./composables/useLogin";
+import { useLogin } from "../composables/useLogin";
 
 definePage({
     meta: {

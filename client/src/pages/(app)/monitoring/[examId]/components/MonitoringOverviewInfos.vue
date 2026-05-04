@@ -166,9 +166,9 @@ import type { RouteLocationAsRelative } from "vue-router";
 
 // stores
 const monitoringStore = useMonitoringStore();
-const monitoringListRoute = {
-    name: "/(app)/monitoring/",
-} satisfies RouteLocationAsRelative<"/(app)/monitoring/">;
+const monitoringListRoute: RouteLocationAsRelative = {
+    name: "/(app)/user-account/profile/",
+};
 
 const quitAllDialog = ref(false);
 

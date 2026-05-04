@@ -49,7 +49,7 @@ export function openProctoringApplicationSearch(
         },
     } satisfies RouteLocationAsRelative<"/(app)/sp-recording/application-search/[sessionId]/">);
 }
-
+//TODO REFACTOR-ROUTER
 export function buildDetailRoute(
     detailRoute: RouteLocationAsRelative,
     item: TableItem,

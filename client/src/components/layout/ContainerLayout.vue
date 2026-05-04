@@ -1,7 +1,7 @@
 <template>
     <ContainerAppBar
         :effective-title="effectiveTitle"
-        :home-route="{ name: '/(app)/home/' }"
+        :home-route="{ name: '/(app)/' }"
         :institution-logo="institutionLogo"
         :language-toggle="languageToggle"
         :layout-context="layoutContext"
@@ -16,7 +16,7 @@
         :can-view-navigation-overview="
             ability.canView(GUIComponent.NavigationOverview)
         "
-        :home-route="{ name: '/(app)/home/' }"
+        :home-route="{ name: '/(app)/' }"
         :is-navigation-overview-route="isNavigationOverviewRoute"
         :links="mainNavigationLinks"
         :navigation-overview-route="{ name: '/(app)/navigation-overview/' }"

@@ -49,7 +49,6 @@ declare module 'vue-router/auto-routes' {
       | '/(app)/exam/'
       | '/(app)/exam/[id]/'
       | '/(app)/gallery_[uuid]_[examId]/'
-      | '/(app)/home/'
       | '/(app)/monitoring/'
       | '/(app)/monitoring/[examId]/'
       | '/(app)/monitoring/[examId]/client/'
@@ -163,13 +162,6 @@ declare module 'vue-router/auto-routes' {
       { uuid: ParamValue<false>, examId: ParamValue<false> },
       | never
     >,
-    '/(app)/home/': RouteRecordInfo<
-      '/(app)/home/',
-      '/home',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
     '/(app)/monitoring/': RouteRecordInfo<
       '/(app)/monitoring/',
       '/monitoring',
@@ -273,15 +265,7 @@ declare module 'vue-router/auto-routes' {
       '/',
       Record<never, never>,
       Record<never, never>,
-      | '/(public)/'
       | '/(public)/register/'
-    >,
-    '/(public)/': RouteRecordInfo<
-      '/(public)/',
-      '/',
-      Record<never, never>,
-      Record<never, never>,
-      | never
     >,
     '/(public)/register/': RouteRecordInfo<
       '/(public)/register/',
@@ -320,7 +304,6 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/exam/'
         | '/(app)/exam/[id]/'
         | '/(app)/gallery_[uuid]_[examId]/'
-        | '/(app)/home/'
         | '/(app)/monitoring/'
         | '/(app)/monitoring/[examId]/'
         | '/(app)/monitoring/[examId]/client/'
@@ -422,12 +405,6 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
-    'src/pages/(app)/home/index.vue': {
-      routes:
-        | '/(app)/home/'
-      views:
-        | never
-    }
     'src/pages/(app)/monitoring/index.vue': {
       routes:
         | '/(app)/monitoring/'
@@ -515,16 +492,9 @@ declare module 'vue-router/auto-routes' {
     'src/pages/(public).vue': {
       routes:
         | '/(public)'
-        | '/(public)/'
         | '/(public)/register/'
       views:
         | 'default'
-    }
-    'src/pages/(public)/index.vue': {
-      routes:
-        | '/(public)/'
-      views:
-        | never
     }
     'src/pages/(public)/register/index.vue': {
       routes:

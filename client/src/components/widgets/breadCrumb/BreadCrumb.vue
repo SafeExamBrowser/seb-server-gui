@@ -6,7 +6,7 @@
         <v-hover v-slot="{ isHovering, props: hoverProps }">
             <RouterLink
                 v-bind="hoverProps"
-                :to="{ name: '/(app)/home/' }"
+                :to="{ name: '/(app)/' }"
                 class="px-1 py-1 text-decoration-none font-weight-medium"
                 :class="isHovering ? 'text-primary' : 'text-medium-emphasis'"
             >

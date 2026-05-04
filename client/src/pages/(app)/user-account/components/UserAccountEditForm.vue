@@ -358,7 +358,7 @@
                             @click="
                                 router.push({
                                     name: props.isProfile
-                                        ? '/(app)/home/'
+                                        ? '/(app)/'
                                         : '/(app)/user-account/',
                                 })
                             "
@@ -852,7 +852,7 @@ async function saveChanges() {
             )) != null
         ) {
             await router.push({
-                name: props.isProfile ? "/(app)/home/" : "/(app)/user-account/",
+                name: props.isProfile ? "/(app)/" : "/(app)/user-account/",
             });
         }
     }

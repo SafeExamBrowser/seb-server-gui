@@ -107,6 +107,7 @@ definePage({
         titleKey: "titles.connectionConfigurations",
         pageTestId: "connection-configurations-page",
         isPageBlue: true,
+        das: true,
     },
 });
 

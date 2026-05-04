@@ -22,7 +22,7 @@ export const useLogin = () => {
 
             authStore.updateAuthData(authResponse);
 
-            await router.push({ name: "/(app)/home/" });
+            await router.push({ name: "/(app)/" });
         } catch (err) {
             errorI18nKey.value =
                 err instanceof AxiosError && err.status === 401

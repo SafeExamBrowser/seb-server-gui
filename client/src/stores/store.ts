@@ -37,19 +37,6 @@ export const useAppBarStore = defineStore("appBar", () => {
     };
 });
 
-export const useLayoutStore = defineStore("layout", () => {
-    const isBlueBackground = ref(false);
-
-    function setBlueBackground(value: boolean) {
-        isBlueBackground.value = value;
-    }
-
-    return {
-        isBlueBackground,
-        setBlueBackground,
-    };
-});
-
 // ----------------------sp exams overview---------------------------//
 export const useTableStore = defineStore("table", () => {
     const isIndicatorsExpanded = ref<boolean>(false);
