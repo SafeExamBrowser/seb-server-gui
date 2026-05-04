@@ -44,7 +44,6 @@ export default ({ mode, command }) => {
                             "**/api/**",
                             "**/utils/**",
                             "**/types/**",
-                            "**/schemas/**",
                         ],
                     },
                 ],
