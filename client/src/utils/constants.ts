@@ -14,19 +14,6 @@ import { translate } from "@/utils/generalUtils";
 import type { Component } from "vue";
 import { ImportWizardSteps } from "@/models/types";
 
-// navigation routes
-
-export const FINISHED_EXAM_DATA_ROUTE: string = "/finished-exam-data";
-
-export const ASSESSMENT_TOOL_CONNECTIONS_ROUTE: string =
-    "/assessment-tool-connections";
-
-// seb client configs
-export const CONNECTION_CONFIGURATIONS_ROUTE: string =
-    "/connection-configurations";
-
-export const QUIZ_IMPORT_ROUTE: string = "/quiz-import";
-
 type I18nLike = { t: (key: string, ...args: unknown[]) => string };
 
 // quiz import wizard steps & components

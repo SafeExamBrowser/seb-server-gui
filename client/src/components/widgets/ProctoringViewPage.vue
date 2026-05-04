@@ -269,24 +269,25 @@ import {
     ref,
     watch,
 } from "vue";
-import * as screenshotDataService from "client/src/services/screen-proctoring/screenshotDataService";
-import * as timeUtils from "client/src/utils/timeUtils";
-import * as groupingUtils from "client/src/utils/groupingUtils";
-import { useAppBarStore } from "client/src/stores/store";
-import * as searchService from "client/src/services/screen-proctoring/searchService";
+import * as screenshotDataService from "@/services/screen-proctoring/screenshotDataService";
+import * as timeUtils from "@/utils/timeUtils";
+import * as groupingUtils from "@/utils/groupingUtils";
+import * as searchService from "@/services/screen-proctoring/searchService";
 import { useFullscreen } from "@vueuse/core";
-import { SortOrder } from "client/src/models/screen-proctoring/sortOrderEnum";
+import { SortOrder } from "@/models/screen-proctoring/sortOrderEnum";
 import { throttle } from "lodash";
-import { ScreenshotData } from "client/src/models/screen-proctoring/session";
+import { ScreenshotData } from "@/models/screen-proctoring/session";
 import {
     ScreenshotsGrouped,
     SearchTimeline,
-} from "client/src/models/screen-proctoring/search";
-import { getSpecificImageLink } from "client/src/utils/linkBuilder.ts";
+} from "@/models/screen-proctoring/search";
+import { getSpecificImageLink } from "@/utils/linkBuilder.ts";
 import {
     getScreenshotMetadata,
     getSessionInfodata,
-} from "client/src/components/views/screen-proctoring/proctoring/utils/screenshotMetadata.ts";
+} from "@/utils/screenshotMetadata.ts";
+
+//TODO REFACTOR @Andrei This page is used as both component and page, really not great
 
 // slider
 const sliderTime = ref<number>(0);
@@ -338,12 +339,8 @@ let intervalScreenshots: ReturnType<typeof setInterval> | null = null;
 let intervalLiveImage: ReturnType<typeof setInterval> | null = null;
 let intervalRefresh: ReturnType<typeof setInterval> | null = null;
 
-// store
-const appBarStore = useAppBarStore();
-
 // router params
 let sessionId: string = "";
-const sessionIdRouteParam: string = useRoute().params.sessionId?.toString();
 const searchTimestampOnLoad = ref<boolean>(false);
 const searchTimestamp: string | undefined =
     useRoute().query.searchTimestamp?.toString();
@@ -362,7 +359,7 @@ let hideControlsTimeout: ReturnType<typeof setTimeout> | null = null;
 
 // props
 const props = defineProps<{
-    sessionIdProp?: string;
+    sessionIdProp: string;
 }>();
 
 const videoHeight = ref(0);
@@ -380,9 +377,6 @@ onBeforeMount(async () => {
     } else {
         totalAmountOfScreenshots.value = await calcTotalNrOfScreenshots();
     }
-
-    appBarStore.title =
-        "Proctoring: " + currentScreenshotData.value?.clientName;
 });
 
 onMounted(() => {
@@ -537,16 +531,10 @@ async function initialize() {
 }
 
 function setSessionId() {
-    // rendered by component
-    if (sessionIdRouteParam == null && props.sessionIdProp != null) {
+    if (props.sessionIdProp != null) {
         sessionId = props.sessionIdProp;
-        console.log("rendered by component sessionId: " + sessionId);
         return;
     }
-
-    console.log("rendered by route");
-    // rendered by route
-    sessionId = sessionIdRouteParam;
 }
 
 //= =============================

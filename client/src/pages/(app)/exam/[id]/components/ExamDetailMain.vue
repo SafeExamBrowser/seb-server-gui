@@ -907,7 +907,6 @@
 <script setup lang="ts">
 import { ref, onBeforeMount, ComputedRef, computed } from "vue";
 import { useExamStore } from "@/stores/seb-server/examStore.ts";
-import * as constants from "@/utils/constants.ts";
 import * as examService from "@/services/seb-server/examService.ts";
 import * as sebSettingsService from "@/services/seb-server/sebSettingsService.ts";
 import * as assessmentToolService from "@/services/seb-server/assessmentToolService.ts";
@@ -967,11 +966,9 @@ function openMonitoringOverview() {
         },
     } satisfies RouteLocationAsRelative<"/(app)/monitoring/[examId]/">);
 }
-
+// TODO reroute to finished exam once implemented
 function openFinishedExamData() {
-    void router.push({
-        path: `${constants.FINISHED_EXAM_DATA_ROUTE}/${examId}`,
-    });
+    return;
 }
 
 // pw field

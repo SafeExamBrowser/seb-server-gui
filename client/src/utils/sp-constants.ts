@@ -1,5 +1,6 @@
 // navigation routes
 export const DEFAULT_ROUTE = "/sp-";
+// TODO REFACTOR-ROUTER should mostly be gone, especially routes
 
 export const RUNNING_EXAMS_ROUTE = "/sp-running-exams";
 export const SEARCH_ROUTE = "/sp-search";

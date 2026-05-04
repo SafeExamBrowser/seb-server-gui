@@ -82,6 +82,8 @@ export function buildMonitoringNavigationItems(
         },
         {
             label: translate("titles.spSearch"),
+            to: { name: "/(app)/sp-search/" },
+
             testId: `${testIdPrefix}-spSearch-link`,
         },
         {

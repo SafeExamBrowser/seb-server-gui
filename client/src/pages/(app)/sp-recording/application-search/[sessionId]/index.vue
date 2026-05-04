@@ -213,18 +213,24 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
 import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from "vue";
-import * as timeUtils from "client/src/utils/timeUtils";
-import { useAppBarStore } from "client/src/stores/store";
+import * as timeUtils from "@/utils/timeUtils";
 import { useFullscreen } from "@vueuse/core";
-import * as spConstants from "client/src/utils/sp-constants";
-import { ScreenshotData } from "client/src/models/screen-proctoring/session";
-import { getTimestampListForApplicationSearch } from "client/src/services/screen-proctoring/applicationsSearchService.ts";
-import { getSpecificImageLink } from "client/src/utils/linkBuilder.ts";
-import * as screenshotDataService from "client/src/services/screen-proctoring/screenshotDataService";
+import * as spConstants from "@/utils/sp-constants";
+import { ScreenshotData } from "@/models/screen-proctoring/session";
+import { getTimestampListForApplicationSearch } from "@/services/screen-proctoring/applicationsSearchService.ts";
+import { getSpecificImageLink } from "@/utils/linkBuilder.ts";
+import * as screenshotDataService from "@/services/screen-proctoring/screenshotDataService";
 import {
     getScreenshotMetadata,
     getSessionInfodata,
-} from "client/src/components/views/screen-proctoring/proctoring/utils/screenshotMetadata.ts";
+} from "@/utils/screenshotMetadata.ts";
+
+definePage({
+    meta: {
+        titleKey: "titles.screenProctoring",
+        pageTestId: "sp-recording-application-search-page",
+    },
+});
 
 // slider
 const sliderTime = ref<number>(0);
@@ -257,11 +263,10 @@ const playbackSpeeds: { title: string; id: number }[] = [
 let intervalScreenshots: ReturnType<typeof setInterval> | null = null;
 
 // store
-const appBarStore = useAppBarStore();
 
 // router params & query
 const route = useRoute();
-const sessionId: string = route.params.sessionId.toString();
+const sessionId: string = route.params.sessionId;
 const metadataApp = route.query.metadataApp ?? "";
 const metadataWindow = route.query.metadataWindow ?? "";
 
@@ -278,7 +283,6 @@ const showError = ref<boolean>(false);
 //= ============lifecycle and watchers==================
 onBeforeMount(async () => {
     await initialize();
-    appBarStore.title = "Proctoring: " + currentScreenshot.value?.clientName;
 });
 
 onBeforeUnmount(() => {

@@ -56,7 +56,7 @@ export function extractClientGroupNames(
 
     return clientGroups;
 }
-
+// TODO REFACTOR-ROUTER
 export function getGalleryViewLinkByExamId(
     groupUuid: string,
     examId: string,
