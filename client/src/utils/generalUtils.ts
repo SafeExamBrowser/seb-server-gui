@@ -8,7 +8,7 @@ import {
     LMSTypeEnum,
     LMSTypeFeatureMappig,
 } from "@/models/seb-server/assessmentToolEnums";
-import { useI18n } from "vue-i18n";
+import i18n from "@/i18n";
 
 type I18nLike = { t: (key: string, ...args: unknown[]) => string };
 
@@ -21,7 +21,7 @@ export function translate(
     if (i18nParam != null) {
         return i18nParam.t(key);
     }
-    return useI18n().t(key);
+    return i18n.global.t(key);
 }
 
 export function findEnumValue<T extends Record<string, string | number>>(

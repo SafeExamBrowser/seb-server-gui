@@ -20,6 +20,7 @@
                         ? homeRoute
                         : navigationOverviewRoute
                 "
+                value="nav-overview-toggle"
                 variant="elevated"
             >
                 <template v-if="isNavigationOverviewRoute">
@@ -40,6 +41,7 @@
                     :data-testid="link.testId"
                     link
                     :to="link.route"
+                    :value="link.testId"
                 >
                     <template #default="{ isActive }">
                         <v-icon
