@@ -3,7 +3,6 @@ import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum.ts";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import * as generalUtils from "@/utils/generalUtils.ts";
 import { ClientGroup } from "@/models/seb-server/clientGroup.ts";
-import * as spConstants from "@/utils/sp-constants.ts";
 
 export function isMonitoringDisabled(): boolean {
     const selectedExam: Exam | null = useMonitoringStore().selectedExam;
@@ -55,22 +54,4 @@ export function extractClientGroupNames(
     }
 
     return clientGroups;
-}
-// TODO REFACTOR-ROUTER
-export function getGalleryViewLinkByExamId(
-    groupUuid: string,
-    examId: string,
-): string {
-    return (
-        spConstants.GALLERY_VIEW_ROUTE +
-        "/" +
-        groupUuid +
-        spConstants.EXAM_ID +
-        "/" +
-        examId
-    );
-}
-
-export function getGalleryViewLink(groupUuid: string): string {
-    return spConstants.GALLERY_VIEW_ROUTE + "/" + groupUuid;
 }

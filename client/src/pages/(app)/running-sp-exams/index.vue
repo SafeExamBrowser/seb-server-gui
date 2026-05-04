@@ -86,14 +86,26 @@
                                     'navigate',
                                     internalItem.index,
                                     {
-                                        path: getGalleryViewLink(item.uuid),
+                                        route: {
+                                            name: '/(app)/gallery_[uuid]_[examId]/',
+                                            params: {
+                                                uuid: item.uuid,
+                                                examId: item.exam.uuid,
+                                            },
+                                        },
                                     },
                                 )
                             "
                         >
                             <router-link
                                 class="default-color"
-                                :to="getGalleryViewLink(item.uuid)"
+                                :to="{
+                                    name: '/(app)/gallery_[uuid]_[examId]/',
+                                    params: {
+                                        uuid: item.uuid,
+                                        examId: item.exam.uuid,
+                                    },
+                                }"
                                 >{{ item.name }}</router-link
                             >
                         </div>
@@ -113,7 +125,6 @@ import * as tableUtils from "@/utils/table/tableUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import { storeToRefs } from "pinia";
 import { Group, GroupObject } from "@/models/screen-proctoring/group";
-import { getGalleryViewLink } from "@/utils/monitoringUtils.ts";
 
 definePage({
     meta: {

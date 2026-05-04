@@ -340,7 +340,6 @@ import type { ComputedRef } from "vue";
 import { OverviewClientGroup } from "@/models/seb-server/monitoring.ts";
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
 import { goToMonitoring } from "../composables/useMonitoringNavigation.ts";
-import { getGalleryViewLinkByExamId } from "@/utils/monitoringUtils.ts";
 import { useRouter } from "vue-router";
 
 const props = defineProps<{
@@ -439,7 +438,8 @@ function getScreenProctoringState(): string {
 
 function openGalleryView(groupUuid: string) {
     void router.push({
-        path: getGalleryViewLinkByExamId(groupUuid, examId),
+        name: "/(app)/gallery_[uuid]_[examId]/",
+        params: { uuid: groupUuid, examId },
     });
 }
 </script>
