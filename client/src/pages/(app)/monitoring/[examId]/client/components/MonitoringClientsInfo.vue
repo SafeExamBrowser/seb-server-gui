@@ -428,6 +428,7 @@
     <!-----------instruction confirm dialog---------->
     <v-dialog v-model="instructionConfirmDialog" max-width="600">
         <InstructionConfirmDialog
+            :exam-id="examId"
             :connection-tokens="selectedConnectionTokens"
             :instruction-type="selectedInstructionType"
             :is-cancel-instruction="isSelectedInstructionCancel"
@@ -474,13 +475,14 @@ const errorStore = useErrorStore();
 // exam
 const examId = props.examId;
 
-const monitoringListRoute = {
-    name: "/(app)/monitoring/",
-} satisfies RouteLocationAsRelative<"/(app)/monitoring/">;
-
 const breadCrumbItems = computed<BreadCrumbItem[]>(() => {
     const items: BreadCrumbItem[] = [
-        { label: translate("titles.monitoring"), link: monitoringListRoute },
+        {
+            label: translate("titles.monitoring"),
+            link: {
+                name: "/(app)/monitoring/",
+            },
+        },
     ];
 
     const selectedExam = monitoringStore.selectedExam;
@@ -492,7 +494,7 @@ const breadCrumbItems = computed<BreadCrumbItem[]>(() => {
                 params: {
                     examId: selectedExam.id.toString(),
                 },
-            } satisfies RouteLocationAsRelative<"/(app)/monitoring/[examId]/">,
+            },
         });
     }
 

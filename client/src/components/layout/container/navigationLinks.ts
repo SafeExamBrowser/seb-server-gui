@@ -19,14 +19,12 @@ export function buildContainerNavigationLinks(
             icon: "mdi-home",
             testId: "layout-home-button",
         },
-        // TODO REFACTOR-ROUTER Migrate exams to typed route.
         {
             title: i18n.t("titles.exams"),
             route: { name: "/(app)/exam/" },
             icon: "mdi-file-document",
             testId: "layout-exam-button",
         },
-        // TODO REFACTOR-ROUTER Migrate monitoring to typed route.
         {
             title: i18n.t("titles.monitoring"),
             route: { name: "/(app)/monitoring/" },

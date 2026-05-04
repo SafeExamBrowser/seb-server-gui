@@ -190,6 +190,7 @@
 
     <v-dialog v-model="instructionConfirmDialog" max-width="600">
         <InstructionConfirmDialog
+            :exam-id="examId"
             :connection-tokens="connectionToken"
             :instruction-type="selectedInstructionType"
             :is-cancel-instruction="isSelectedInstructionCancel"
@@ -210,7 +211,7 @@ import { NotificationEnum } from "@/models/seb-server/monitoringEnums.ts";
 import InstructionConfirmDialog from "../../../client/components/InstructionConfirmDialog.vue";
 import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
 import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
-import { navigateTo } from "../../../../../../../router/routeNavigation.ts";
+import { navigateTo } from "@/router/routeNavigation.ts";
 import type { RouteLocationAsRelative } from "vue-router";
 
 const props = defineProps<{

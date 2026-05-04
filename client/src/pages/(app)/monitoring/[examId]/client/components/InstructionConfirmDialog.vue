@@ -79,12 +79,10 @@
 import { InstructionEnum } from "@/models/seb-server/instructionEnum.ts";
 import * as monitoringService from "@/services/seb-server/monitoringService.ts";
 import { translate } from "@/utils/generalUtils.ts";
-import { useRoute } from "vue-router";
 import { ref } from "vue";
 import { ClientInstruction } from "@/models/seb-server/clientInstruction.ts";
 
 // exam
-const examId = useRoute().params.examId.toString();
 
 // emits
 const emit = defineEmits<{
@@ -93,10 +91,13 @@ const emit = defineEmits<{
 
 // props
 const props = defineProps<{
+    examId: string;
     instructionType: InstructionEnum | null;
     isCancelInstruction?: boolean;
     connectionTokens: string;
 }>();
+
+const examId = props.examId;
 
 // lock screen text
 const lockScreenText = ref<string>("");

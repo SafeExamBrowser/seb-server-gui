@@ -170,7 +170,6 @@ import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum.ts";
 import * as generalUtils from "@/utils/generalUtils.ts";
 import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils.ts";
-import { useRoute } from "vue-router";
 import { ref, onBeforeMount, computed } from "vue";
 import { Exam } from "@/models/seb-server/exam.ts";
 import { ClientGroup, ClientGroups } from "@/models/seb-server/clientGroup.ts";
@@ -178,11 +177,15 @@ import EditClientGroupDialog from "@/pages/(app)/exam/[id]/components/dialogs/cl
 import DeleteConfirmDialog from "@/components/widgets/DeleteConfirmDialog.vue";
 import { applyScreenProctoringGroups } from "@/services/seb-server/screenProctoringService.ts";
 
+const props = defineProps<{
+    examId: string;
+}>();
+
 // i18n
 const i18n = useI18n();
 
 // exam
-const examId = useRoute().params.examId.toString();
+const examId = props.examId;
 
 // stores
 const examStore = useExamStore();

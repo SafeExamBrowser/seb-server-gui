@@ -1,7 +1,7 @@
 <template>
     <ContainerAppBar
         :effective-title="effectiveTitle"
-        :home-route="homeRoute"
+        :home-route="{ name: '/(app)/home/' }"
         :institution-logo="institutionLogo"
         :language-toggle="languageToggle"
         :layout-context="layoutContext"
@@ -16,10 +16,10 @@
         :can-view-navigation-overview="
             ability.canView(GUIComponent.NavigationOverview)
         "
-        :home-route="homeRoute"
+        :home-route="{ name: '/(app)/home/' }"
         :is-navigation-overview-route="isNavigationOverviewRoute"
         :links="mainNavigationLinks"
-        :navigation-overview-route="navigationOverviewRoute"
+        :navigation-overview-route="{ name: '/(app)/navigation-overview/' }"
     />
 
     <ContainerMainShell :is-page-blue="isPageBlue" :page-test-id="pageTestId" />
@@ -54,22 +54,13 @@ const initialTheme = localStorage.getItem("theme") ?? "light";
 theme.change(initialTheme);
 const themeToggle = ref<number>(initialTheme === "dark" ? 1 : 0);
 
-const homeRoute = { name: "/(app)/home/" } as const;
-const navigationOverviewRoute = {
-    name: "/(app)/navigation-overview/",
-} as const;
-
-// TODO REFACTOR-ROUTER Migrate profile to typed route.
-
 const mainNavigationLinks = computed(() =>
     locale.value === "de"
         ? buildContainerNavigationLinks({ t })
         : buildContainerNavigationLinks({ t }),
 );
 
-const layoutContext = computed(
-    () => route.meta.layoutContext ?? route.meta.layout ?? "default",
-);
+const layoutContext = computed(() => route.meta.layoutContext ?? "default");
 
 const isNavigationOverviewRoute = computed(
     () => layoutContext.value === "navigation-overview",

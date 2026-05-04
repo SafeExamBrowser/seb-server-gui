@@ -4,11 +4,11 @@
         :bread-crumb="[
             {
                 label: $t('titles.examTemplateList'),
-                link: 'ExamTemplateList',
+                link: { name: '/(app)/exam-template/' },
             },
             {
                 label: $t('titles.createTemplateExam'),
-                link: 'CreateExamTemplateWizard',
+                link: { name: '/(app)/exam-template/create/' },
             },
             { label: store.currentStep.title },
         ]"
@@ -63,7 +63,6 @@ watchEffect(() => {
     if (!createdExamTemplate.value) {
         return;
     }
-
     store.$reset();
     router.push({ name: "/(app)/exam-template/" });
 });

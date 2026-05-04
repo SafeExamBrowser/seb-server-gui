@@ -877,6 +877,7 @@
     <!-----------group dialog---------->
     <v-dialog v-model="clientGroupDialog" max-width="1200">
         <ClientGroupListDialog
+            :exam-id="examId"
             @close-client-group-dialog="closeClientGroupDialog"
         >
         </ClientGroupListDialog>
