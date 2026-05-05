@@ -1,6 +1,7 @@
 <template>
     <v-btn
         ref="activatorRef"
+        class="text-none"
         :disabled="disabled"
         :append-icon="iconActivator"
         :color="colorActivator"
