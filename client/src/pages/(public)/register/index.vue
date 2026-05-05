@@ -293,7 +293,7 @@
                                         "
                                     >
                                         <router-link
-                                            :to="{ name: '/(public)/' }"
+                                            :to="{ name: '/(public)/login/' }"
                                             >{{
                                                 translate(
                                                     "userAccount.registerPage.buttons.login",
@@ -413,7 +413,7 @@ async function register() {
             registerSuccess.value = true;
 
             setTimeout(() => {
-                router.push({ name: "/(public)/" });
+                router.push({ name: "/(public)/login/" });
             }, 2500);
         } else {
             registerError.value = true;
@@ -426,7 +426,7 @@ async function register() {
 function handleTabKeyEvent(event: KeyboardEvent, action: string) {
     if (event.key === "Enter" || event.key === " ") {
         if (action === "navigate") {
-            router.push({ name: "/(public)/" });
+            router.push({ name: "/(public)/login/" });
         }
     }
 }
