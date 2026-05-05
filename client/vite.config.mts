@@ -80,7 +80,7 @@ export default ({ mode, command }) => {
         },
 
         server: {
-            port: 8083,
+            port: 8082,
             ...(command === "serve"
                 ? {
                       proxy: {
