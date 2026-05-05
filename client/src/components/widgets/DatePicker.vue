@@ -11,6 +11,7 @@
         placeholder="dd.MM.yyyy"
         prepend-icon=""
         variant="outlined"
+        :data-testid="dataTestId"
         @update:model-value="emit('update:modelValue', $event ?? null)"
     />
 </template>
@@ -22,8 +23,9 @@ withDefaults(
     defineProps<{
         modelValue: Date | null;
         density?: "default" | "comfortable" | "compact";
+        dataTestId?: string;
     }>(),
-    { density: "comfortable" },
+    { density: "comfortable", dataTestId: undefined },
 );
 
 const emit = defineEmits<{

@@ -16,6 +16,7 @@
                 rounded="lg"
                 class="text-medium-emphasis"
                 :color="isHovering ? (action.color ?? 'primary') : undefined"
+                :data-testid="`${dataTestId}-${action.key}-button`"
                 @click.stop="action.onClick(item)"
             />
         </v-hover>
@@ -32,6 +33,7 @@ import type {
 const props = defineProps<{
     item: TableItem;
     actions: TableAction[];
+    dataTestId: string;
 }>();
 
 const visibleActions = computed(() =>

@@ -14,6 +14,7 @@
                     search-text="connectionConfigurations.connectionConfigurationsPage.filters.searchField"
                     :filter-sections="filterSections"
                     :filter-values="selectedFilters"
+                    :data-test-id="dataTestId"
                     dense
                     @search="onSearch"
                     @clear="onClearSearch"
@@ -43,11 +44,14 @@
                                 "
                                 :cell-formatters="cellFormatters"
                                 :actions="tableActions"
+                                :data-test-id="dataTestId"
+                                item-key="id"
                                 @update:options="loadItems"
                             >
-                                <template #cell-active="{ item }">
+                                <template #cell-active="{ item, rowTestId }">
                                     <ActiveStatusChip
                                         :active="!!item.active"
+                                        :data-test-id="`${rowTestId}-status-chip`"
                                         @click="openStatusDialog(item)"
                                     />
                                 </template>
@@ -107,6 +111,8 @@ definePage({
 });
 
 const router = useRouter();
+
+const dataTestId = "connectionConfigurations";
 
 const connectionConfigurationDetailRoute = (
     item: TableItem,

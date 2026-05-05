@@ -1,5 +1,5 @@
 <template>
-    <div class="pt-4">
+    <div class="pt-4" :data-testid="`${dataTestId}-footer`">
         <v-divider />
 
         <v-row no-gutters class="px-5 pt-4 pb-3 align-center">
@@ -17,6 +17,7 @@
                     prev-icon="mdi-chevron-left"
                     next-icon="mdi-chevron-right"
                     class="text-medium-emphasis"
+                    :data-testid="`${dataTestId}-pagination`"
                     @update:model-value="emit('update:page', $event)"
                 />
             </v-col>
@@ -47,6 +48,7 @@
                         rounded="lg"
                         hide-details
                         class="text-body-2 font-weight-semibold"
+                        :data-testid="`${dataTestId}-items-per-page`"
                         @update:model-value="
                             emit('update:items-per-page', $event)
                         "
@@ -63,6 +65,7 @@ defineProps<{
     itemsPerPage: number;
     pageCount: number;
     itemsPerPageOptions: number[];
+    dataTestId: string;
 }>();
 
 const emit = defineEmits<{

@@ -16,6 +16,7 @@ export function useInstitutionFilterSection(translationPrefix: string) {
         return {
             key: INSTITUTION_FILTER_KEY,
             title: translate(`${translationPrefix}.filters.institutionFilter`),
+            testIdSuffix: "institutionFilter",
             options: institutions.value.map((inst) => ({
                 value: String(inst.modelId),
                 label: inst.name,

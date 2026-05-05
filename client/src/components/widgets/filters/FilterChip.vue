@@ -4,6 +4,7 @@
         :color="color ?? (active ? 'primary' : undefined)"
         :variant="active ? 'flat' : 'tonal'"
         class="cursor-pointer font-weight-medium"
+        :data-testid="dataTestId"
         @click="emit('toggle')"
     >
         {{ label }}
@@ -15,6 +16,7 @@ defineProps<{
     label: string;
     active: boolean;
     color?: string;
+    dataTestId: string;
 }>();
 
 const emit = defineEmits<{

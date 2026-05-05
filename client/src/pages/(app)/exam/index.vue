@@ -11,6 +11,7 @@
                 :date-value="dateValue"
                 :filter-sections="filterSections"
                 :filter-values="selectedFilters"
+                :data-test-id="dataTestId"
                 @search="onSearch"
                 @clear="onClearSearch"
                 @update:date-value="setDate"
@@ -34,6 +35,8 @@
                     :detail-route="examDetailRoute"
                     :cell-formatters="cellFormatters"
                     :actions="tableActions"
+                    :data-test-id="dataTestId"
+                    item-key="id"
                     @update:options="loadItems"
                 >
                     <template #cell-type="{ formattedValue }">
@@ -84,6 +87,8 @@ definePage({
 });
 
 const router = useRouter();
+
+const dataTestId = "exams";
 
 const examDetailRoute = (item: TableItem): RouteLocationAsRelative | null =>
     item.id != null
