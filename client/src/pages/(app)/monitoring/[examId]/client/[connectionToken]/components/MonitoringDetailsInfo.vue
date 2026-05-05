@@ -208,7 +208,7 @@ import { InstructionEnum } from "@/models/seb-server/instructionEnum.ts";
 import { IndicatorEnum } from "@/models/seb-server/monitoringEnums.ts";
 import { computed, ref } from "vue";
 import { NotificationEnum } from "@/models/seb-server/monitoringEnums.ts";
-import InstructionConfirmDialog from "../../../client/components/InstructionConfirmDialog.vue";
+import InstructionConfirmDialog from "@/pages/(app)/monitoring/[examId]/client/components/InstructionConfirmDialog.vue";
 import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
 import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
 import { useRouter } from "vue-router";

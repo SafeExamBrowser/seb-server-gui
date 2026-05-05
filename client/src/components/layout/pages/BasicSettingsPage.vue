@@ -47,7 +47,6 @@ import HorizontalDividerLine from "@/components/layout/pages/widgets/HorizontalD
 import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
 import PageTitle from "@/components/widgets/PageTitle.vue";
 
-//TODO read title from metadata and not from stores or passed onj
 const props = defineProps<{
     title: string;
 }>();

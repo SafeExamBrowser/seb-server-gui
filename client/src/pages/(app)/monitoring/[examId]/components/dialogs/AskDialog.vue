@@ -391,7 +391,7 @@ import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import { translate } from "@/utils/generalUtils.ts";
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
 import * as examService from "@/services/seb-server/examService.ts";
-import { getAskAndStore } from "../../client/composables/useMonitoringData.ts";
+import { getAskAndStore } from "@/pages/(app)/monitoring/[examId]/client/composables/useMonitoringData.ts";
 import { useRouter } from "vue-router";
 
 const store = useMonitoringStore();

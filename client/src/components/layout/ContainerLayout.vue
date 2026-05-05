@@ -54,7 +54,7 @@ const theme = useTheme();
 const initialTheme = localStorage.getItem("theme") ?? "light";
 theme.change(initialTheme);
 const themeToggle = ref<number>(initialTheme === "dark" ? 1 : 0);
-
+// TODO Refactor
 const mainNavigationLinks = computed(() =>
     locale.value === "de"
         ? buildContainerNavigationLinks({ t })

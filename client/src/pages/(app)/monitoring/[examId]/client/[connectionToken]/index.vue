@@ -26,7 +26,7 @@ import {
 import { Indicators } from "@/models/seb-server/indicators.ts";
 import MonitoringDetailsMain from "./components/MonitoringDetailsMain.vue";
 import MonitoringDetailsInfo from "./components/MonitoringDetailsInfo.vue";
-import * as useMonitoringData from "../../client/composables/useMonitoringData.ts";
+import * as useMonitoringData from "@/pages/(app)/monitoring/[examId]/client/composables/useMonitoringData.ts";
 import { extractClientGroupNames } from "@/utils/monitoringUtils.ts";
 
 // route params

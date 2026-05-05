@@ -224,8 +224,8 @@ import {
 } from "@/models/seb-server/monitoring.ts";
 import { Indicator } from "@/models/seb-server/indicators.ts";
 import { ClientGroup } from "@/models/seb-server/clientGroup.ts";
-import ClientGroupInfoDialog from "../../client/components/ClientGroupInfoDialog.vue";
-import { goToMonitoringDetails } from "../../composables/useMonitoringNavigation.ts";
+import ClientGroupInfoDialog from "./ClientGroupInfoDialog.vue";
+import { goToMonitoringDetails } from "@/pages/(app)/monitoring/[examId]/composables/useMonitoringNavigation.ts";
 import { extractClientGroupNames } from "@/utils/monitoringUtils.ts";
 
 const props = defineProps<{

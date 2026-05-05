@@ -25,8 +25,8 @@
 </template>
 
 <script setup lang="ts">
-import HomePageInfo from "../../components/widgets/homePageWidgets/HomePageInfo.vue";
-import HomePageMain from "../../components/widgets/homePageWidgets/HomePageMain.vue";
+import HomePageInfo from "@/components/widgets/homePageWidgets/HomePageInfo.vue";
+import HomePageMain from "@/components/widgets/homePageWidgets/HomePageMain.vue";
 
 definePage({
     meta: {

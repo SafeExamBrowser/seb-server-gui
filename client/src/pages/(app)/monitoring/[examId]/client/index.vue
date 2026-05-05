@@ -14,15 +14,15 @@
 <script setup lang="ts">
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import * as monitoringService from "@/services/seb-server/monitoringService.ts";
-import * as useMonitoringData from "../client/composables/useMonitoringData.ts";
+import * as useMonitoringData from "./composables/useMonitoringData.ts";
 
 import * as indicatorService from "@/services/seb-server/indicatorService.ts";
-import MonitoringClientsMain from "../client/components/MonitoringClientsMain.vue";
+import MonitoringClientsMain from "./components/MonitoringClientsMain.vue";
 import { useRoute } from "vue-router";
 import { ref, onBeforeMount, onBeforeUnmount } from "vue";
 import { MonitoringOverview } from "@/models/seb-server/monitoring.ts";
 import { Indicators } from "@/models/seb-server/indicators.ts";
-import MonitoringClientsInfo from "../client/components/MonitoringClientsInfo.vue";
+import MonitoringClientsInfo from "./components/MonitoringClientsInfo.vue";
 
 definePage({
     meta: {
