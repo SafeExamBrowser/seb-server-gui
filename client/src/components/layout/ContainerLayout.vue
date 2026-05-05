@@ -3,13 +3,9 @@
         :effective-title="effectiveTitle"
         :home-route="{ name: '/(app)/' }"
         :institution-logo="institutionLogo"
-        :language-toggle="languageToggle"
         :layout-context="layoutContext"
-        :theme-toggle="themeToggle"
         :user-account="userAccountStore.userAccount"
         @logout="handleLogoutButtonClick"
-        @update:language-toggle="languageToggle = $event"
-        @update:theme-toggle="themeToggle = $event"
     />
 
     <ContainerNavigationDrawer
@@ -26,9 +22,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed } from "vue";
 import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
-import { useTheme } from "vuetify";
 import { useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
 import { GUIComponent, useAbilities } from "@/services/ability";
@@ -40,25 +35,14 @@ import ContainerNavigationDrawer from "@/components/layout/container/ContainerNa
 import { useInstitutionBranding } from "@/components/layout/container/useInstitutionBranding";
 
 const route = useRoute();
-const { locale, t } = useI18n();
+const { t } = useI18n();
 const userAccountStore = useUserAccountStore();
 const ability = useAbilities();
 const { logout } = useLogout();
 const { institutionName, institutionLogo } = useInstitutionBranding();
 
-locale.value = localStorage.getItem("locale") ?? "en";
-
-const languageToggle = ref<number>(locale.value === "en" ? 0 : 1);
-
-const theme = useTheme();
-const initialTheme = localStorage.getItem("theme") ?? "light";
-theme.change(initialTheme);
-const themeToggle = ref<number>(initialTheme === "dark" ? 1 : 0);
-// TODO Refactor
 const mainNavigationLinks = computed(() =>
-    locale.value === "de"
-        ? buildContainerNavigationLinks({ t })
-        : buildContainerNavigationLinks({ t }),
+    buildContainerNavigationLinks({ t }),
 );
 
 const layoutContext = computed(() => route.meta.layoutContext ?? "default");
@@ -75,17 +59,6 @@ const pageTestId = computed(
 
 const effectiveTitle = computed(() => {
     return institutionName.value || "SEB Server";
-});
-
-watch(languageToggle, () => {
-    locale.value = languageToggle.value === 0 ? "en" : "de";
-    localStorage.setItem("locale", locale.value);
-});
-
-watch(themeToggle, () => {
-    const next = themeToggle.value === 0 ? "light" : "dark";
-    theme.change(next);
-    localStorage.setItem("theme", next);
 });
 
 async function handleLogoutButtonClick() {

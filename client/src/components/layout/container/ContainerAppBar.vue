@@ -37,13 +37,6 @@
         <template #append>
             <ContainerRouteActions :layout-context="layoutContext" />
 
-            <ContainerPreferences
-                :language-toggle="languageToggle"
-                :theme-toggle="themeToggle"
-                @update:language-toggle="emit('update:languageToggle', $event)"
-                @update:theme-toggle="emit('update:themeToggle', $event)"
-            />
-
             <ContainerProfileMenu
                 :user-account="userAccount"
                 @logout="$emit('logout')"
@@ -55,7 +48,6 @@
 <script setup lang="ts">
 import type { UserAccount } from "@/models/userAccount";
 import { translate } from "@/utils/generalUtils";
-import ContainerPreferences from "@/components/layout/container/ContainerPreferences.vue";
 import ContainerProfileMenu from "@/components/layout/container/ContainerProfileMenu.vue";
 import ContainerRouteActions from "@/components/layout/container/ContainerRouteActions.vue";
 import type { RouteLocationAsRelative } from "vue-router";
@@ -66,13 +58,9 @@ defineProps<{
     institutionLogo: string | null;
     layoutContext?: string;
     userAccount: UserAccount | null | undefined;
-    languageToggle: number;
-    themeToggle: number;
 }>();
 
-const emit = defineEmits<{
-    "update:languageToggle": [number];
-    "update:themeToggle": [number];
+defineEmits<{
     logout: [];
 }>();
 </script>
