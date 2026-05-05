@@ -48,6 +48,7 @@
 <script setup lang="ts">
 import { translate } from "@/utils/generalUtils.ts";
 import type { RouteLocationAsRelative } from "vue-router";
+import { typedTo } from "@/router/typedTo";
 
 type ActionCard = {
     testIdPrefix: string;
@@ -59,17 +60,17 @@ const actionCards: ActionCard[] = [
     {
         testIdPrefix: "create-templates",
         titleKey: "homePage.createTemplates",
-        route: { name: "/(app)/quiz-import/" },
+        route: typedTo({ name: "/(app)/quiz-import/" }),
     },
     {
         testIdPrefix: "prepare-exam",
         titleKey: "homePage.prepareExam",
-        route: { name: "/(app)/exam-template/create/" },
+        route: typedTo({ name: "/(app)/exam-template/create/" }),
     },
     {
         testIdPrefix: "monitor-exam",
         titleKey: "homePage.monitorExams",
-        route: { name: "/(app)/monitoring/" },
+        route: typedTo({ name: "/(app)/monitoring/" }),
     },
 ];
 </script>

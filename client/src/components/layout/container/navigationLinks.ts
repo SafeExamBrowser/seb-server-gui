@@ -1,4 +1,5 @@
 import type { RouteLocationAsRelative } from "vue-router";
+import { typedTo } from "@/router/typedTo";
 
 type I18nLike = { t: (key: string) => string };
 
@@ -15,19 +16,19 @@ export function buildContainerNavigationLinks(
     return [
         {
             title: i18n.t("titles.home"),
-            route: { name: "/(app)/" },
+            route: typedTo({ name: "/(app)/" }),
             icon: "mdi-home",
             testId: "layout-home-button",
         },
         {
             title: i18n.t("titles.exams"),
-            route: { name: "/(app)/exam/" },
+            route: typedTo({ name: "/(app)/exam/" }),
             icon: "mdi-file-document",
             testId: "layout-exam-button",
         },
         {
             title: i18n.t("titles.monitoring"),
-            route: { name: "/(app)/monitoring/" },
+            route: typedTo({ name: "/(app)/monitoring/" }),
             icon: "mdi-eye",
             testId: "layout-monitoring-button",
         },
