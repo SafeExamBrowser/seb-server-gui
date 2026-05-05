@@ -1,9 +1,7 @@
-import * as constants from "@/utils/constants";
-import * as spConstants from "@/utils/sp-constants";
 import { translate } from "@/utils/generalUtils";
 import { GUIComponent } from "@/services/ability";
-import { NavigationSectionItem } from "@/components/widgets/navigationWidgets/navigationTypes.ts";
-import { getRouteName } from "@/router/routeNames";
+import { typedTo } from "@/router/typedTo";
+import type { NavigationSectionItem } from "@/components/widgets/navigationWidgets/types.ts";
 
 type AbilityLike = {
     canView: (component: GUIComponent) => boolean;
@@ -16,25 +14,25 @@ export function buildSettingsNavigationItems(
     return [
         {
             label: translate("titles.assessmentToolConnections"),
-            to: { name: getRouteName("AssessmentToolList") },
+            to: typedTo({ name: "/(app)/assessment-tool/" }),
             testId: `${testIdPrefix}-assessmentToolConnections-link`,
             visible: ability.canView(GUIComponent.LMSSetups),
         },
         {
             label: translate("navigation.routeNames.connectionConfiguration"),
-            to: { name: getRouteName("ConnectionConfigurationList") },
+            to: typedTo({ name: "/(app)/connection-configuration/" }),
             testId: `${testIdPrefix}-connectionConfigurations-link`,
             visible: ability.canView(GUIComponent.ConnectionConfigs),
         },
         {
             label: translate("navigation.routeNames.certificates"),
-            to: { name: getRouteName("CertificatesList") },
+            to: typedTo({ name: "/(app)/certificate/" }),
             testId: `${testIdPrefix}-certificates-link`,
             visible: ability.canView(GUIComponent.Certificates),
         },
         {
             label: translate("navigation.routeNames.userAccounts"),
-            to: { name: getRouteName("UserAccountList") },
+            to: typedTo({ name: "/(app)/user-account/" }),
             testId: `${testIdPrefix}-userAccounts-link`,
             visible: ability.canView(GUIComponent.UserAccounts),
         },
@@ -47,12 +45,12 @@ export function buildPreparationNavigationItems(
     return [
         {
             label: translate("titles.createTemplateExam"),
-            to: { name: getRouteName("CreateExamTemplateWizard") },
+            to: typedTo({ name: "/(app)/exam-template/create/" }),
             testId: `${testIdPrefix}-createTemplate-link`,
         },
         {
             label: translate("titles.quizImport"),
-            to: constants.QUIZ_IMPORT_ROUTE,
+            to: typedTo({ name: "/(app)/quiz-import/" }),
             testId: `${testIdPrefix}-quizImport-link`,
         },
         {
@@ -61,7 +59,7 @@ export function buildPreparationNavigationItems(
         },
         {
             label: translate("titles.examTemplateList"),
-            to: { name: getRouteName("ExamTemplateList") },
+            to: typedTo({ name: "/(app)/exam-template/" }),
             testId: `${testIdPrefix}-examTemplateList-link`,
         },
     ];
@@ -72,24 +70,25 @@ export function buildMonitoringNavigationItems(
 ): NavigationSectionItem[] {
     return [
         {
-            label: translate("navigation.routeNames.runningExams"),
-            to: constants.MONITORING_ROUTE,
+            label: translate("titles.monitoring"),
+            to: typedTo({ name: "/(app)/monitoring/" }),
             testId: `${testIdPrefix}-runningExams-link`,
         },
         {
             label: translate("titles.screenProctoring"),
-            to: spConstants.RUNNING_EXAMS_ROUTE,
+            to: typedTo({ name: "/(app)/running-sp-exams/" }),
             testId: `${testIdPrefix}-screenProctoring-link`,
             thickDivider: true,
         },
         {
             label: translate("titles.spSearch"),
-            to: spConstants.SEARCH_ROUTE,
+            to: typedTo({ name: "/(app)/sp-search/" }),
+
             testId: `${testIdPrefix}-spSearch-link`,
         },
         {
             label: translate("titles.spApplications"),
-            to: spConstants.APPLICATIONS_ROUTE,
+            to: typedTo({ name: "/(app)/applications-search/" }),
             testId: `${testIdPrefix}-spApplications-link`,
         },
     ];

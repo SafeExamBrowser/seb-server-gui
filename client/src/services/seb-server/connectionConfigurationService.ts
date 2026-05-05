@@ -52,7 +52,7 @@ export const downloadExamConfig = async (
     ).data;
 
 export const getConnectionConfiguration = async (
-    id: number,
+    id: string,
 ): Promise<ConnectionConfiguration> =>
     (
         await apiService.getRequest({

@@ -36,7 +36,10 @@ export default defineConfig([
         languageOptions: {
             ecmaVersion: "latest",
             sourceType: "module",
-            globals: globals.browser,
+            globals: {
+                ...globals.browser,
+                definePage: "readonly",
+            },
             parserOptions: {
                 parser: tseslint.parser,
             },
@@ -51,6 +54,18 @@ export default defineConfig([
                 "error",
                 { "ts-ignore": "allow-with-description" },
             ],
+        },
+    },
+
+    {
+        files: [
+            "src/pages/**/index.vue",
+            "src/pages/**/[[]*.vue",
+            "src/pages/(app).vue",
+            "src/pages/(public).vue",
+        ],
+        rules: {
+            "vue/multi-word-component-names": "off",
         },
     },
 

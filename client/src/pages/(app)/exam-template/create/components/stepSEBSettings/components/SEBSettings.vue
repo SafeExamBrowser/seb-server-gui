@@ -1,0 +1,88 @@
+<template>
+    <v-container class="ma-0 pa-0 pb-3 border-b-md">
+        <v-row>
+            <v-col>
+                <div
+                    class="d-flex align-center mx-6 mt-6 cursor-pointer add-button-container"
+                >
+                    <SectionSubtitle
+                        :name="$t('createTemplateExam.steps.seb-settings.name')"
+                    />
+                </div>
+            </v-col>
+            <v-col cols="auto">
+                <AddButton text="" @click="importDialog = true" />
+            </v-col>
+        </v-row>
+    </v-container>
+
+    <v-card :key="reloadSettings" class="pa-5" variant="text">
+        <v-row>
+            <v-col>
+                <SEBSettingsPanel :context="seb_settings_context" />
+            </v-col>
+        </v-row>
+    </v-card>
+
+    <!-----------import dialog ---------->
+    <UploadDialog
+        v-model="importDialog"
+        name-prefix="sebSettings"
+        icon="mdi-file-upload-outline"
+        :seb-settings-id="
+            stepNamingStore.configurationTemplate
+                ? stepNamingStore.configurationTemplate.toString()
+                : null
+        "
+        :show-quit-password="true"
+        :default-ext-list="['.seb']"
+        @uploaded="onConfigImported"
+    />
+</template>
+
+<script setup lang="ts">
+import { computed, ComputedRef, ref } from "vue";
+import { ConfigurationTemplateKey } from "@/models/seb-server/configurationNode.ts";
+import { useStepNamingStore } from "@/pages/(app)/exam-template/create/components/stepNaming/composables/store/useStepNamingStore.ts";
+import SectionSubtitle from "@/components/widgets/SectionSubtitle.vue";
+import AddButton from "@/components/widgets/AddButton.vue";
+import SEBSettingsPanel from "@/components/widgets/sebSettings/components/SEBSettingsPanel.vue";
+import UploadDialog from "@/components/widgets/UploadDialog.vue";
+import { SEBSettingsContext } from "@/components/widgets/sebSettings/types.ts";
+
+const stepNamingStore = useStepNamingStore();
+
+const configKey = defineModel<ConfigurationTemplateKey | undefined>({
+    required: true,
+});
+
+const reloadSettings = ref<number>(0);
+
+const importDialog = ref<boolean>(false);
+async function onConfigImported() {
+    importDialog.value = false;
+    // reload seb settings
+    reloadSettings.value += 1;
+}
+
+const seb_settings_context: ComputedRef<SEBSettingsContext> = computed(() => {
+    if (configKey.value) {
+        const stepNamingStore = useStepNamingStore();
+        if (configKey.value.id) {
+            stepNamingStore.configurationTemplate = configKey.value.id;
+            return {
+                isExam: false,
+                containerId: configKey.value.id,
+                readonly: false,
+                ignoreSEBService: ref<boolean>(false),
+            };
+        }
+    }
+    return {
+        isExam: false,
+        containerId: "",
+        readonly: false,
+        ignoreSEBService: ref<boolean>(false),
+    };
+});
+</script>

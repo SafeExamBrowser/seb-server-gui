@@ -22,11 +22,13 @@
 </template>
 
 <script setup lang="ts">
+import type { NavigationSectionTarget } from "@/components/widgets/navigationWidgets/types.ts";
+
 withDefaults(
     defineProps<{
         label: string;
         testId?: string;
-        to?: import("vue-router").RouteLocationRaw;
+        to?: NavigationSectionTarget;
         visible?: boolean;
         thickDivider?: boolean;
     }>(),

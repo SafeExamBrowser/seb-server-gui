@@ -1809,6 +1809,7 @@
         "examTemplateList": "Exam Templates",
         "examTemplateDetail": "Exam Template",
         "monitoring": "Monitoring",
+        "monitoringDetail": "Monitoring Detail",
         "overview": "Overview",
         "clientList": "Client List",
         "quizImport": "Prepare Exam",
@@ -1819,23 +1820,28 @@
         "preparation": "Preparation",
         "recentExams": "Last Edited Exams",
         "settings": "Settings",
-        "register": "Register",
-        "userAccounts": "User Accounts",
-        "profileSettings": "Profile Settings",
         "screenProctoring": "Screen Proctoring",
         "spSearch": "Search",
-        "createUserAccount": "Create User Account",
         "spApplications": "Applications",
+        "runningExams": "Running Exams",
+
+        "userAccounts": "User Accounts",
+        "createUserAccount": "Create User Account",
         "editUserAccount": "Edit User Account",
-        "profile": "Profile Settings",
+        "profileSettings": "Profile Settings",
+        "register": "Register",
+
         "assessmentToolConnections": "Assessment Tool Connections",
         "createAssessmentTool": "Assessment Tool Setup",
         "assessmentTool": "Assessment Tool",
         "assessmentToolEdit": "Edit Assessment Tool Connection",
+
         "connectionConfigurationViewAndEdit": "Edit Connection Configuration",
         "createConnectionConfiguration": "Add Connection Configuration",
         "connectionConfigurations": "Connection Configurations",
+
         "certificates": "Certificates",
+
         "editExamTemplate": "Edit Exam Template",
         "galleryView": "Gallery View"
     },

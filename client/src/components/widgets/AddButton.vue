@@ -19,12 +19,12 @@
 
 <script setup lang="ts">
 import { translate } from "@/utils/generalUtils.ts";
-import { RouteName } from "@/router/routeNames.ts";
-import { navigateToRoute } from "@/router/navigation.ts";
-import type { LocationQueryRaw } from "vue-router";
+import { useRouter } from "vue-router";
+import type { RouteLocationAsRelative } from "vue-router";
 
+const router = useRouter();
 const props = defineProps<{
-    route?: { name: RouteName; query?: LocationQueryRaw };
+    route?: RouteLocationAsRelative;
     text: string;
 }>();
 
@@ -34,7 +34,7 @@ const emit = defineEmits<{
 
 function handleClick() {
     if (props.route) {
-        navigateToRoute(props.route);
+        router.push(props.route);
     } else {
         emit("click");
     }

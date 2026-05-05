@@ -21,7 +21,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import NavigationItem from "@/components/widgets/navigationWidgets/NavigationItem.vue";
-import { NavigationSectionItem } from "@/components/widgets/navigationWidgets/navigationTypes";
+import type { NavigationSectionItem } from "@/components/widgets/navigationWidgets/types.ts";
 
 const props = withDefaults(
     defineProps<{

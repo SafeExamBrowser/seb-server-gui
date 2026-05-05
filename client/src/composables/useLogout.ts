@@ -1,8 +1,7 @@
 import { useAuthStore } from "@/composables/store/useAuthStore";
-import { navigateTo } from "@/router/navigation";
 import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
-import * as constants from "@/utils/constants";
 import * as authenticationService from "@/services/authenticationService";
+import router from "@/router/router";
 
 export const useLogout = () => {
     const authStore = useAuthStore();
@@ -16,7 +15,7 @@ export const useLogout = () => {
         authStore.$reset();
         userAccountStore.userAccount = null;
 
-        navigateTo(constants.DEFAULT_ROUTE);
+        await router.push({ name: "/(public)/login/" });
     };
 
     return { logout };

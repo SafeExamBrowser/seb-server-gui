@@ -1,47 +1,20 @@
-import ImportAssessmentInfo from "@/components/views/seb-server/quiz-import/info-box-content/ImportAssessmentInfo.vue";
-import ImportAssessmentMain from "@/components/views/seb-server/quiz-import/main-content/ImportAssessmentMain.vue";
-import ImportExamInfo from "@/components/views/seb-server/quiz-import/info-box-content/ImportExamInfo.vue";
-import ImportExamMain from "@/components/views/seb-server/quiz-import/main-content/ImportExamMain.vue";
-import ImportTemplateInfo from "@/components/views/seb-server/quiz-import/info-box-content/ImportTemplateInfo.vue";
-import ImportTemplateMain from "@/components/views/seb-server/quiz-import/main-content/ImportTemplateMain.vue";
-import ImportSupervisorInfo from "@/components/views/seb-server/quiz-import/info-box-content/ImportSupervisorInfo.vue";
-import ImportSupervisorMain from "@/components/views/seb-server/quiz-import/main-content/ImportSupervisorMain.vue";
-import ImportPasswordInfo from "@/components/views/seb-server/quiz-import/info-box-content/ImportPasswordInfo.vue";
-import ImportPasswordMain from "@/components/views/seb-server/quiz-import/main-content/ImportPasswordMain.vue";
-import ImportSummaryInfo from "@/components/views/seb-server/quiz-import/info-box-content/ImportSummaryInfo.vue";
-import ImportSummaryMain from "@/components/views/seb-server/quiz-import/main-content/ImportSummaryMain.vue";
+import ImportAssessmentInfo from "@/pages/(app)/quiz-import/components/info-box-content/ImportAssessmentInfo.vue";
+import ImportAssessmentMain from "@/pages/(app)/quiz-import/components/main-content/ImportAssessmentMain.vue";
+import ImportExamInfo from "@/pages/(app)/quiz-import/components/info-box-content/ImportExamInfo.vue";
+import ImportExamMain from "@/pages/(app)/quiz-import/components/main-content/ImportExamMain.vue";
+import ImportTemplateInfo from "@/pages/(app)/quiz-import/components/info-box-content/ImportTemplateInfo.vue";
+import ImportTemplateMain from "@/pages/(app)/quiz-import/components/main-content/ImportTemplateMain.vue";
+import ImportSupervisorInfo from "@/pages/(app)/quiz-import/components/info-box-content/ImportSupervisorInfo.vue";
+import ImportSupervisorMain from "@/pages/(app)/quiz-import/components/main-content/ImportSupervisorMain.vue";
+import ImportPasswordInfo from "@/pages/(app)/quiz-import/components/info-box-content/ImportPasswordInfo.vue";
+import ImportPasswordMain from "@/pages/(app)/quiz-import/components/main-content/ImportPasswordMain.vue";
+import ImportSummaryInfo from "@/pages/(app)/quiz-import/components/info-box-content/ImportSummaryInfo.vue";
+import ImportSummaryMain from "@/pages/(app)/quiz-import/components/main-content/ImportSummaryMain.vue";
 import { translate } from "@/utils/generalUtils";
 import type { Component } from "vue";
 import { ImportWizardSteps } from "@/models/types";
 
-// navigation routes
-export const DEFAULT_ROUTE: string = "/";
-export const REGISTER_ROUTE: string = "/register";
-export const HOME_PAGE_ROUTE: string = "/home";
-export const NAVIGATION_OVERVIEW_ROUTE: string = "/navigation-overview";
-export const USER_ACCOUNTS_ROUTE: string = "/user-accounts";
-
-export const PROFILE_ROUTE = "/profile-settings";
-
-export const EXAM_ROUTE: string = "/exam";
-
-export const MONITORING_ROUTE: string = "/monitoring";
-export const MONITORING_OVERVIEW_ROUTE: string = MONITORING_ROUTE + "/overview";
-export const MONITORING_CLIENTS_ROUTE: string = MONITORING_ROUTE + "/clients";
-export const MONITORING_DETAILS_ROUTE: string =
-    MONITORING_ROUTE + "/:examId" + "/details";
-
-export const FINISHED_EXAM_DATA_ROUTE: string = "/finished-exam-data";
-
-export const ASSESSMENT_TOOL_CONNECTIONS_ROUTE: string =
-    "/assessment-tool-connections";
-
-// seb client configs
-export const CONNECTION_CONFIGURATIONS_ROUTE: string =
-    "/connection-configurations";
-
-export const QUIZ_IMPORT_ROUTE: string = "/quiz-import";
-
+//TODO @andrei This global util file reaching into pages to import stuff is a code smell. It has no business in reaching into the pages folder.
 type I18nLike = { t: (key: string, ...args: unknown[]) => string };
 
 // quiz import wizard steps & components

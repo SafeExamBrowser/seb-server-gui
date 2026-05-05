@@ -1,0 +1,524 @@
+<template>
+    <v-row dense>
+        <v-col cols="12" md="10">
+            <BreadCrumb :items="breadCrumbItems" />
+        </v-col>
+    </v-row>
+
+    <v-row class="pt-0 pl-4 pr-4 pb-6">
+        <v-col class="pt-0">
+            <v-sheet class="rounded-lg pl-4 pr-4" elevation="4">
+                <v-row style="background-color: #fffffe">
+                    <!-- User Name -->
+                    <v-col cols="12" md="3">
+                        <div
+                            v-for="(part, index) in nameParts"
+                            :key="index"
+                            class="name-part mr-2 d-flex align-center flex-nowrap pt-4"
+                        >
+                            {{ part }}
+                        </div>
+                    </v-col>
+
+                    <v-col class="user-info-col pt-6" cols="12" md="3">
+                        <div class="top-container">
+                            <!-- Status -->
+                            <div v-if="currentStatus">
+                                <v-card
+                                    class="rounded-lg pa-2 text-center"
+                                    :color="
+                                        getConnectionStatusColor(currentStatus)
+                                    "
+                                    max-width="130"
+                                    variant="flat"
+                                >
+                                    <div class="status-row">
+                                        <span class="status-label text-body-3">
+                                            {{ translate(currentStatus) }}
+                                        </span>
+                                        <v-icon
+                                            :icon="
+                                                getConnectionStatusIcon(
+                                                    currentStatus,
+                                                )
+                                            "
+                                            size="18"
+                                        />
+                                    </div>
+                                </v-card>
+                            </div>
+
+                            <!-- Group -->
+                            <div
+                                class="mt-2 d-flex align-center flex-wrap group-container"
+                            >
+                                <span class="group-label mr-2">Group:</span>
+                                <v-chip
+                                    v-for="clientGroup in monitoringStore.clientGroupsSingle"
+                                    :key="clientGroup.id"
+                                    class="mr-1 pl-5 pr-5 text-body-4"
+                                    size="default"
+                                    variant="tonal"
+                                >
+                                    {{ clientGroup.name }}
+                                </v-chip>
+                            </div>
+
+                            <!-- SEB info tags -->
+                            <div class="mt-2">
+                                <v-chip
+                                    v-for="(info, index) in sebInfoParts"
+                                    :key="index"
+                                    class="mr-1 mb-1 text-body-3 info-chip"
+                                    size="default"
+                                    variant="text"
+                                >
+                                    {{ info }}
+                                </v-chip>
+                            </div>
+                        </div>
+                    </v-col>
+
+                    <!-- Indicators -->
+                    <v-col cols="12" md="3">
+                        <v-card
+                            v-if="
+                                filteredIndicators.length > 0 &&
+                                currentStatus !== ConnectionStatusEnum.CLOSED &&
+                                currentStatus !== ConnectionStatusEnum.DISABLED
+                            "
+                            class="ml-4 pa-3"
+                            variant="text"
+                        >
+                            <div
+                                v-for="indicator in filteredIndicators"
+                                :key="indicator.id"
+                                class="indicator-item d-flex align-center mb-5 mt-5"
+                            >
+                                <span class="pl-4 pr-4">
+                                    {{ indicator.name }}:
+                                </span>
+                                <v-icon
+                                    class="mr-1"
+                                    :color="indicator.color"
+                                    :icon="indicator.icon"
+                                />
+                                <span>{{ indicator.displayValue }}</span>
+                            </div>
+                        </v-card>
+                    </v-col>
+
+                    <!-- Action Buttons -->
+                    <v-col class="button-col" cols="12" md="3">
+                        <div
+                            class="top-container d-flex flex-column align-end pt-4 h-100 mr-5"
+                        >
+                            <v-btn
+                                class="action-btn mb-2"
+                                color="black"
+                                :disabled="
+                                    !connectionStateBehavior[
+                                        currentStatus || 'UNKNOWN'
+                                    ]?.cancel
+                                "
+                                prepend-icon="mdi-monitor-lock"
+                                rounded="sm"
+                                variant="outlined"
+                                @click="
+                                    openInstructionConfirmDialog(
+                                        InstructionEnum.SEB_MARK_AS_CANCELLED,
+                                    )
+                                "
+                            >
+                                {{
+                                    translate(
+                                        "monitoringDetails.info.mark-cancelled",
+                                    )
+                                }}
+                            </v-btn>
+
+                            <v-btn
+                                class="action-btn mb-2"
+                                color="black"
+                                :disabled="!canLockScreen()"
+                                prepend-icon="mdi-monitor-lock"
+                                rounded="sm"
+                                variant="outlined"
+                                @click="
+                                    openInstructionConfirmDialog(
+                                        InstructionEnum.SEB_FORCE_LOCK_SCREEN,
+                                    )
+                                "
+                            >
+                                {{ translate("monitoringDetails.info.lock") }}
+                            </v-btn>
+
+                            <v-btn
+                                class="action-btn"
+                                color="black"
+                                :disabled="
+                                    !connectionStateBehavior[
+                                        currentStatus || 'UNKNOWN'
+                                    ]?.quit
+                                "
+                                prepend-icon="mdi-backspace-outline"
+                                rounded="sm"
+                                variant="outlined"
+                                @click="
+                                    openInstructionConfirmDialog(
+                                        InstructionEnum.SEB_QUIT,
+                                    )
+                                "
+                            >
+                                {{ translate("monitoringDetails.info.quit") }}
+                            </v-btn>
+                        </div>
+                    </v-col>
+                </v-row>
+
+                <v-row class="pb-4 pr-4 pl-4" style="background-color: #fffffe">
+                    <v-col class="d-flex justify-start">
+                        <v-icon
+                            icon="mdi-arrow-left"
+                            @click="goBackToMonitoringClients()"
+                        />
+                    </v-col>
+                </v-row>
+            </v-sheet>
+        </v-col>
+    </v-row>
+
+    <v-dialog v-model="instructionConfirmDialog" max-width="600">
+        <InstructionConfirmDialog
+            :exam-id="examId"
+            :connection-tokens="connectionToken"
+            :instruction-type="selectedInstructionType"
+            :is-cancel-instruction="isSelectedInstructionCancel"
+            @close-instruction-confirm-dialog="closeInstructionConfirmDialog"
+        />
+    </v-dialog>
+</template>
+
+<script setup lang="ts">
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
+import * as generalUtils from "@/utils/generalUtils.ts";
+import { translate } from "@/utils/generalUtils.ts";
+import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
+import { InstructionEnum } from "@/models/seb-server/instructionEnum.ts";
+import { IndicatorEnum } from "@/models/seb-server/monitoringEnums.ts";
+import { computed, ref } from "vue";
+import { NotificationEnum } from "@/models/seb-server/monitoringEnums.ts";
+import InstructionConfirmDialog from "@/pages/(app)/monitoring/[examId]/client/components/InstructionConfirmDialog.vue";
+import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
+import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
+import { useRouter } from "vue-router";
+
+const props = defineProps<{
+    examId: string;
+    connectionToken: string;
+}>();
+
+// route params
+const examId = props.examId;
+const connectionToken = props.connectionToken;
+
+// stores
+const monitoringStore = useMonitoringStore();
+const router = useRouter();
+
+// instruction confirm dialog
+const instructionConfirmDialog = ref<boolean>(false);
+const selectedInstructionType = ref<InstructionEnum | null>(null);
+const isSelectedInstructionCancel = ref<boolean>(false);
+
+//= ==============instruction confirm dialog====================
+function openInstructionConfirmDialog(instructionType: InstructionEnum) {
+    selectedInstructionType.value = instructionType;
+    instructionConfirmDialog.value = true;
+    isSelectedInstructionCancel.value =
+        instructionType === InstructionEnum.SEB_MARK_AS_CANCELLED;
+}
+
+function closeInstructionConfirmDialog() {
+    instructionConfirmDialog.value = false;
+    emit("updatePageInfo");
+}
+
+//= ==============split name in parts====================
+const nameParts = computed(() => {
+    const rawName =
+        monitoringStore.selectedSingleConn?.cdat.examUserSessionId || "";
+    return rawName.split("|").filter((p) => p.trim() !== "");
+});
+
+const breadCrumbItems = computed<BreadCrumbItem[]>(() => {
+    const items: BreadCrumbItem[] = [
+        {
+            label: translate("titles.monitoring"),
+            link: { name: "/(app)/monitoring/" },
+        },
+    ];
+
+    const selectedExam = monitoringStore.selectedExam;
+    if (selectedExam !== null) {
+        items.push({
+            label: selectedExam.quizName,
+            link: {
+                name: "/(app)/monitoring/[examId]/",
+                params: { examId: selectedExam.id.toString() },
+            },
+        });
+    }
+
+    items.push({
+        label: translate("titles.clientList"),
+        link: {
+            name: "/(app)/monitoring/[examId]/client/",
+            params: { examId },
+        },
+    });
+
+    const clientName = nameParts.value.join(" ").trim();
+    if (clientName !== "") {
+        items.push({ label: clientName });
+    }
+
+    return items;
+});
+
+function goBackToMonitoringClients() {
+    void router.push({
+        name: "/(app)/monitoring/[examId]/client/",
+        params: { examId },
+        query: monitoringStore.currentMonitoringQuery,
+    });
+}
+
+//= ==============groups, tags, and status====================
+
+const sebInfoParts = computed(() => {
+    const rawInfo = monitoringStore.selectedSingleConn?.cdat.seb_info || "";
+    return rawInfo
+        .split(",")
+        .map((p) => p.trim())
+        .filter((p) => p !== "");
+});
+
+const currentStatus = computed(() => {
+    if (monitoringStore.selectedSingleConn?.miss) {
+        return "MISSING";
+    }
+    return monitoringStore.selectedSingleConn?.cdat.status ?? null;
+});
+
+// emits
+const emit = defineEmits<{
+    (e: "updatePageInfo"): void;
+}>();
+
+function canLockScreen(): boolean {
+    const hasLS =
+        monitoringStore.pendingNotifications.find(
+            (item) => item.notificationType === NotificationEnum.LOCK_SCREEN,
+        ) ?? null;
+
+    if (hasLS != null) {
+        return false;
+    }
+
+    return connectionStateBehavior[currentStatus.value || "UNKNOWN"]?.lock;
+}
+
+function getConnectionStatusColor(connectionStatus: string | null): string {
+    if (connectionStatus == null) return "#000000";
+
+    switch (connectionStatus) {
+        case ConnectionStatusEnum.CONNECTION_REQUESTED:
+            return "#d7fad9";
+        case ConnectionStatusEnum.READY:
+            return "#abf7af";
+        case ConnectionStatusEnum.ACTIVE:
+            return "#66BB6A";
+        case ConnectionStatusEnum.CLOSED:
+            return "#d4f7ff";
+        case ConnectionStatusEnum.DISABLED:
+            return "#9E9E9E";
+        case ConnectionStatusEnum.MISSING:
+            return "#EF5350";
+        default:
+            return "#000000";
+    }
+}
+
+type ConnectionStateBehavior = {
+    wlan: boolean;
+    battery: boolean;
+    quit: boolean;
+    lock: boolean;
+    cancel: boolean;
+};
+
+const connectionStateBehavior: Record<string, ConnectionStateBehavior> = {
+    CONNECTION_REQUESTED: {
+        wlan: true,
+        battery: true,
+        quit: true,
+        lock: true,
+        cancel: false,
+    },
+    READY: { wlan: true, battery: true, quit: true, lock: true, cancel: false },
+    ACTIVE: {
+        wlan: true,
+        battery: true,
+        quit: true,
+        lock: true,
+        cancel: false,
+    },
+    CLOSED: {
+        wlan: false,
+        battery: false,
+        quit: false,
+        lock: false,
+        cancel: true,
+    },
+    MISSING: {
+        wlan: true,
+        battery: true,
+        quit: false,
+        lock: false,
+        cancel: true,
+    },
+    DISABLED: {
+        wlan: false,
+        battery: false,
+        quit: false,
+        lock: false,
+        cancel: false,
+    },
+};
+
+const filteredIndicators = computed(() => {
+    const definitions = monitoringStore.indicators?.content || [];
+    const values = monitoringStore.selectedSingleConn?.iVal || [];
+    const state = currentStatus.value ?? "UNKNOWN";
+    const behavior = connectionStateBehavior[
+        state as keyof typeof connectionStateBehavior
+    ] || {
+        wlan: false,
+        battery: false,
+        quit: false,
+        lock: false,
+        cancel: false,
+    };
+
+    return definitions
+        .filter((def) => {
+            if (def.type === IndicatorEnum.BATTERY_STATUS && !behavior.battery)
+                return false;
+            return !(def.type === IndicatorEnum.WLAN_STATUS && !behavior.wlan);
+            // always show other indicators
+        })
+        .map((def) => {
+            const valObj = values.find((v) => v.id === def.id);
+            let displayValue: string | number | null = valObj
+                ? valObj.val
+                : null;
+
+            if (
+                def.type === IndicatorEnum.LAST_PING &&
+                typeof displayValue === "number"
+            ) {
+                displayValue = generalUtils.formatPing(displayValue);
+            } else if (displayValue !== null) {
+                displayValue = `${displayValue}${indicatorTypeConfig[def.type]?.unit || ""}`;
+            }
+
+            return {
+                ...def,
+                rawValue: valObj ? valObj.val : null,
+                displayValue,
+                ...indicatorTypeConfig[def.type],
+            };
+        });
+});
+
+function getConnectionStatusIcon(connectionStatus: string | null): string {
+    if (connectionStatus == null) return "mdi-chevron-right";
+
+    switch (connectionStatus) {
+        case ConnectionStatusEnum.CONNECTION_REQUESTED:
+            return "mdi-signal-distance-variant";
+        case ConnectionStatusEnum.READY:
+            return "mdi-check";
+        case ConnectionStatusEnum.ACTIVE:
+            return "mdi-check-underline";
+        case ConnectionStatusEnum.CLOSED:
+            return "mdi-close";
+        case ConnectionStatusEnum.DISABLED:
+            return "mdi-send-lock";
+        case ConnectionStatusEnum.MISSING:
+            return "mdi-signal-off";
+        default:
+            return "mdi-chevron-right";
+    }
+}
+
+const indicatorTypeConfig: Record<
+    string,
+    { icon: string; unit?: string; color?: string }
+> = {
+    [IndicatorEnum.BATTERY_STATUS]: { icon: "mdi-battery", unit: "%" },
+    [IndicatorEnum.LAST_PING]: { icon: "mdi-wifi", unit: "s ago" },
+    [IndicatorEnum.ERROR_COUNT]: { icon: "mdi-alert-circle", color: "red" },
+    [IndicatorEnum.WARN_COUNT]: { icon: "mdi-alert", color: "orange" },
+    [IndicatorEnum.INFO_COUNT]: { icon: "mdi-information", color: "blue" },
+    [IndicatorEnum.WLAN_STATUS]: { icon: "mdi-wifi", color: "green" },
+};
+</script>
+
+<style scoped>
+/* buttons */
+.action-btn {
+    min-width: 180px;
+    max-width: 220px;
+    width: 100%;
+}
+
+.top-container {
+    margin-top: 1rem;
+}
+
+.name-part {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #215caf;
+}
+
+/* groups, tags and status */
+.user-info-col .v-chip {
+    font-size: 0.95rem;
+}
+
+.status-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+.status-label {
+    line-height: 1;
+}
+
+/* indicators */
+.indicator-item span {
+    font-size: 1.1rem;
+}
+
+.info-chip {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 0.25rem;
+    --v-theme-overlay-multiplier: 0;
+}
+</style>

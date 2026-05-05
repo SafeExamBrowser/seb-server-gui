@@ -1,0 +1,257 @@
+<template>
+    <v-row>
+        <v-col>
+            <v-sheet class="rounded-lg" elevation="4" title="Search">
+                <SearchForm
+                    @close-all-panels="closeAllPanels"
+                    @search-sessions="searchSessions"
+                >
+                </SearchForm>
+            </v-sheet>
+        </v-col>
+    </v-row>
+
+    <v-row v-if="searchResultAvailable">
+        <v-col v-if="noResutsFound">
+            <v-sheet
+                class="rounded-lg pa-4"
+                elevation="4"
+                title="No results match your search criteria"
+            >
+                <v-row>
+                    <v-col align="left" class="text-h6">
+                        No results match your search criteria
+                    </v-col>
+                </v-row>
+            </v-sheet>
+        </v-col>
+
+        <v-col v-else>
+            <v-sheet
+                class="rounded-lg pa-4"
+                elevation="4"
+                :title="$t('searchPage.title')"
+            >
+                <!------------title and buttons------------->
+                <v-row>
+                    <v-col align="left">
+                        <h2 class="title-inherit-styling text-h6">
+                            {{ $t("searchPage.title") }}
+                        </h2>
+                    </v-col>
+
+                    <v-col align="right" class="mb-2">
+                        <v-btn
+                            class="mr-2"
+                            :ripple="false"
+                            variant="text"
+                            @click="changeSortOrder()"
+                        >
+                            Date
+                            <template #prepend>
+                                <v-icon
+                                    :icon="
+                                        isSearchDescending
+                                            ? 'mdi-chevron-down'
+                                            : 'mdi-chevron-up'
+                                    "
+                                    size="x-large"
+                                ></v-icon>
+                            </template>
+                        </v-btn>
+                        <v-btn
+                            class="mr-2"
+                            :color="closeAllPanelsDisabled ? 'grey' : 'black'"
+                            :ripple="false"
+                            variant="text"
+                            @click="closeAllPanels()"
+                        >
+                            {{ $t("searchPage.collapse") }}
+                            <template #prepend>
+                                <v-icon
+                                    icon="mdi-unfold-less-horizontal"
+                                    size="x-large"
+                                ></v-icon>
+                            </template>
+                        </v-btn>
+                    </v-col>
+                </v-row>
+                <!----------------------------------->
+
+                <v-expansion-panels v-model="sessionPanels" multiple>
+                    <v-expansion-panel
+                        v-for="day in sessionsDays"
+                        :key="day"
+                        :value="'sessionPanel' + day"
+                    >
+                        <v-expansion-panel-title class="font-weight-bold">
+                            {{ timeUtils.formatSqlDateToString(day) }}
+                        </v-expansion-panel-title>
+
+                        <v-expansion-panel-text>
+                            <SearchSessionTable
+                                :day="day"
+                                :search-parameters="searchParameters!"
+                            >
+                            </SearchSessionTable>
+                        </v-expansion-panel-text>
+                    </v-expansion-panel>
+                </v-expansion-panels>
+            </v-sheet>
+        </v-col>
+    </v-row>
+</template>
+
+<script setup lang="ts">
+import { ref, watch } from "vue";
+import { useTableStore } from "@/stores/store";
+import SearchForm from "@/pages/(app)/sp-search/components/SearchForm.vue";
+import SearchSessionTable from "@/pages/(app)/sp-search/components/SearchSessionTable.vue";
+import * as timeUtils from "@/utils/timeUtils";
+import { OptionalParSearchSessions } from "@/models/screen-proctoring/optionalParamters";
+import { searchSessionsDay } from "@/services/screen-proctoring/searchService.ts";
+
+definePage({
+    meta: {
+        titleKey: "titles.spSearch",
+        pageTestId: "sp-search-page",
+    },
+});
+
+// error handling
+const searchResultAvailable = ref<boolean>(false);
+const noResutsFound = ref<boolean>(false);
+const errorAvailable = ref<boolean>();
+
+// main data
+const sessionsDays = ref<string[]>([]);
+
+// ui control
+const isSearchDescending = ref<boolean>(true);
+const sessionPanels = ref<string[]>([]);
+const closeAllPanelsDisabled = ref<boolean>(true);
+
+// store
+const tableStore = useTableStore();
+
+// form data
+const searchParameters = ref<OptionalParSearchSessions>();
+let examNameSearch: string | null;
+let groupNameSearch: string | null;
+
+let metadataSearchApplication: string | null;
+let metadataSearchBrowserTitle: string | null;
+let metadataSearchActivityDetails: string | null;
+let metadataSearchWindowTitle: string | null;
+
+let loginNameSearch: string | null;
+let ipAddressSearch: string | null;
+let machineNameSearch: string | null;
+
+watch(sessionPanels, () => {
+    if (sessionPanels.value.length === 0) {
+        closeAllPanelsDisabled.value = true;
+        return;
+    }
+
+    closeAllPanelsDisabled.value = false;
+});
+
+async function searchSessions(
+    examName: string,
+    groupName: string,
+    loginName: string,
+    ipAddress: string,
+    machineName: string,
+
+    metadataApplication: string,
+    metadataBrowserTitle: string,
+    metadataActivityDetails: string,
+    metadataWindowTitle: string,
+
+    fromTime: string,
+    toTime: string,
+    pageNumber: number,
+) {
+    errorAvailable.value = false;
+    noResutsFound.value = false;
+
+    examNameSearch = examName === "" ? null : examName;
+    groupNameSearch = groupName === "" ? null : groupName;
+
+    metadataSearchApplication =
+        metadataApplication === "" ? null : metadataApplication;
+    metadataSearchBrowserTitle =
+        metadataBrowserTitle === "" ? null : metadataBrowserTitle;
+    metadataSearchActivityDetails =
+        metadataActivityDetails === "" ? null : metadataActivityDetails;
+    metadataSearchWindowTitle =
+        metadataWindowTitle === "" ? null : metadataWindowTitle;
+
+    loginNameSearch = loginName === "" ? null : loginName;
+    ipAddressSearch = ipAddress === "" ? null : ipAddress;
+    machineNameSearch = machineName === "" ? null : machineName;
+
+    searchParameters.value = {
+        examName: examNameSearch,
+        groupName: groupNameSearch,
+        clientName: loginNameSearch,
+        clientIp: ipAddressSearch,
+        clientMachineName: machineNameSearch,
+
+        screenProctoringMetadataApplication: metadataSearchApplication,
+        screenProctoringMetadataBrowser: metadataSearchBrowserTitle,
+        screenProctoringMetadataUserAction: metadataSearchActivityDetails,
+        screenProctoringMetadataWindowTitle: metadataSearchWindowTitle,
+
+        fromTime,
+        toTime,
+        pageSize: 500,
+        pageNumber,
+    };
+
+    const sessionSearchResponse: string[] | null = await searchSessionsDay(
+        searchParameters.value,
+    );
+
+    if (sessionSearchResponse == null) {
+        errorAvailable.value = true;
+        return;
+    }
+
+    sessionsDays.value = sessionSearchResponse;
+
+    if (sessionsDays.value.length === 0) {
+        noResutsFound.value = true;
+        searchResultAvailable.value = true;
+        return;
+    }
+
+    loginNameIpToggleListFillUp();
+
+    searchResultAvailable.value = true;
+    isSearchDescending.value = true;
+}
+
+function loginNameIpToggleListFillUp() {
+    if (sessionsDays.value == null) {
+        return;
+    }
+
+    for (let i = 0; i < sessionsDays.value.length; i++) {
+        tableStore.isIpDisplayList.push({
+            day: sessionsDays.value[i],
+            isIp: false,
+        });
+    }
+}
+
+function changeSortOrder() {
+    isSearchDescending.value = !isSearchDescending.value;
+    sessionsDays.value.reverse();
+}
+
+function closeAllPanels() {
+    sessionPanels.value = [];
+}
+</script>

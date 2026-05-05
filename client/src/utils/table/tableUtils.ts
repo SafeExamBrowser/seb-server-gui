@@ -2,7 +2,6 @@ import {
     ExamStatusEnum,
     ExamTypeEnum,
 } from "@/models/seb-server/examFiltersEnum";
-import { navigateTo } from "@/router/navigation";
 import { useTableStore } from "@/stores/store";
 import { OptionalParGetUserAccounts } from "@/models/userAccount";
 import { ServerTablePaging } from "@/models/types";
@@ -17,6 +16,8 @@ import { OptionalParGetAssessmentTool } from "@/models/seb-server/assessmentTool
 import { OptionalParSearchSessions } from "@/models/screen-proctoring/optionalParamters";
 import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums.ts";
 import { BasicListParams, SortOrder } from "@/services/types";
+import router from "@/router/router";
+import type { RouteLocationAsRelative } from "vue-router";
 
 type ItemsLike = number | { length: number } | null | undefined;
 type ItemsPerPageOption = { value: number; title: string };
@@ -81,14 +82,14 @@ export function handleTabKeyEvent(
     event: KeyboardEvent,
     action: "sort" | "navigate",
     key: number,
-    optional?: { path?: string; headerRefs?: HeaderRefs },
+    optional?: { route?: RouteLocationAsRelative; headerRefs?: HeaderRefs },
 ) {
     if (event.key === "Enter" || event.key === " ") {
         if (action === "sort") {
             sortTable(key, optional?.headerRefs);
         }
-        if (action === "navigate" && optional?.path) {
-            navigateTo(optional.path);
+        if (action === "navigate" && optional?.route) {
+            void router.push(optional.route);
         }
     }
 }

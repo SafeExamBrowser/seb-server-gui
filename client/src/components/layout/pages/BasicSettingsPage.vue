@@ -42,26 +42,12 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onBeforeMount } from "vue";
-import { useAppBarStore, useLayoutStore } from "@/stores/store";
 import { translate } from "@/utils/generalUtils.ts";
 import HorizontalDividerLine from "@/components/layout/pages/widgets/HorizontalDividerLine.vue";
-import SettingsNavigation from "@/components/blocks/navigation/SettingsNavigation.vue";
+import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
 import PageTitle from "@/components/widgets/PageTitle.vue";
-
-const layoutStore = useLayoutStore();
-const appBarStore = useAppBarStore();
 
 const props = defineProps<{
     title: string;
 }>();
-
-onBeforeMount(() => {
-    layoutStore.setBlueBackground(true);
-    appBarStore.title = props.title;
-});
-
-onBeforeUnmount(() => {
-    layoutStore.setBlueBackground(false);
-});
 </script>
