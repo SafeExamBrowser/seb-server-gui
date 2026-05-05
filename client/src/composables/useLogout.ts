@@ -1,6 +1,7 @@
 import { useAuthStore } from "@/composables/store/useAuthStore";
 import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
 import * as authenticationService from "@/services/authenticationService";
+import router from "@/router/router";
 
 export const useLogout = () => {
     const authStore = useAuthStore();
@@ -14,7 +15,6 @@ export const useLogout = () => {
         authStore.$reset();
         userAccountStore.userAccount = null;
 
-        const { default: router } = await import("@/router/router");
         await router.push({ name: "/(public)/login/" });
     };
 
