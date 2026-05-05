@@ -36,6 +36,7 @@
 
             <template v-for="link in links" :key="link.testId">
                 <v-list-item
+                    :active="route.name === link.route.name"
                     class="d-flex flex-column justify-center text-center"
                     color="#215caf"
                     :data-testid="link.testId"
@@ -60,7 +61,7 @@
 
 <script setup lang="ts">
 import type { ContainerNavigationLink } from "@/components/layout/container/navigationLinks";
-import type { RouteLocationAsRelative } from "vue-router";
+import { useRoute, type RouteLocationAsRelative } from "vue-router";
 
 defineProps<{
     links: ContainerNavigationLink[];
@@ -69,4 +70,6 @@ defineProps<{
     navigationOverviewRoute: RouteLocationAsRelative;
     homeRoute: RouteLocationAsRelative;
 }>();
+
+const route = useRoute();
 </script>
