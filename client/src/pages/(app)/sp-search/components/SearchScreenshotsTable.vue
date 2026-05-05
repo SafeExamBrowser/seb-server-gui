@@ -166,7 +166,7 @@ import * as groupingUtils from "@/utils/groupingUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import * as spConstants from "@/utils/sp-constants";
 import { SearchTimeline } from "@/models/screen-proctoring/search";
-import { openRouteInNewTab } from "@/router/routeNavigation.ts";
+import { openRouteInNewTab } from "@/router/openRouteInNewTab.ts";
 
 function openProctoringView(sessionId: string, timestamp?: string) {
     const searchTimestamp = timestamp?.trim();

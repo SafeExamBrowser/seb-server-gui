@@ -207,7 +207,7 @@ import {
 import { OptionalParSearchSessions } from "@/models/screen-proctoring/optionalParamters";
 import * as searchService from "@/services/screen-proctoring/searchService";
 import { prepareSessionSearchParameters } from "@/pages/(app)/sp-search/utils/searchUtils.ts";
-import { openRouteInNewTab } from "@/router/routeNavigation.ts";
+import { openRouteInNewTab } from "@/router/openRouteInNewTab.ts";
 
 // store
 const tableStore = useTableStore();

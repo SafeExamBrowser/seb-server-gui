@@ -87,7 +87,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import type { UserAccount } from "@/models/userAccount";
-import { typedTo } from "@/router/routeNavigation";
+import { typedTo } from "@/router/typedTo";
 import { translate } from "@/utils/generalUtils";
 
 const props = defineProps<{
