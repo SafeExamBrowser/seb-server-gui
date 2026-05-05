@@ -37,12 +37,7 @@ export default ({ mode, command }) => {
                 routesFolder: [
                     {
                         src: "src/pages",
-                        exclude: [
-                            "**/components/**",
-                            "**/composables/**",
-                            "**/utils/**",
-                            "**/types/**",
-                        ],
+                        filePatterns: ["**/index", "**/\\[*\\]", "**/\\(*\\)"],
                     },
                 ],
             }),
