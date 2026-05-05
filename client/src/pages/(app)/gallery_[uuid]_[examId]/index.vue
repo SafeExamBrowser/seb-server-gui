@@ -74,7 +74,6 @@ import { getGroupByUuid } from "@/services/screen-proctoring/groupService";
 import * as galleryUtils from "@/pages/(app)/gallery_[uuid]_[examId]/utils/galleryUtils.ts";
 import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
 import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
-import type { RouteLocationAsRelative } from "vue-router";
 
 import { getScreenshotDataByTimestamp } from "@/services/screen-proctoring/screenshotDataService.ts";
 
@@ -107,13 +106,13 @@ const appBarStoreRef = storeToRefs(appBarStore);
 const route = useRoute();
 const groupUuid = route.params.uuid;
 const examId = route.params.examId;
-const monitoringListRoute: RouteLocationAsRelative = {
-    name: "/(app)/monitoring/",
-};
 
 const breadCrumbItems = computed<BreadCrumbItem[]>(() => {
     const items: BreadCrumbItem[] = [
-        { label: translate("titles.monitoring"), link: monitoringListRoute },
+        {
+            label: translate("titles.monitoring"),
+            link: { name: "/(app)/monitoring/" },
+        },
     ];
 
     if (examId !== "") {
@@ -121,10 +120,8 @@ const breadCrumbItems = computed<BreadCrumbItem[]>(() => {
             label: translate("titles.overview"),
             link: {
                 name: "/(app)/monitoring/[examId]/",
-                params: {
-                    examId,
-                },
-            } satisfies RouteLocationAsRelative<"/(app)/monitoring/[examId]/">,
+                params: { examId },
+            },
         });
     }
 

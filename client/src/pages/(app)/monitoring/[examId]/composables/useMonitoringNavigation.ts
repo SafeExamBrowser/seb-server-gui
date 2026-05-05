@@ -5,18 +5,7 @@ import type {
     LocationQuery,
     LocationQueryRaw,
     LocationQueryValueRaw,
-    RouteLocationAsRelative,
 } from "vue-router";
-
-function buildMonitoringClientsRoute(examId: string, query?: LocationQueryRaw) {
-    return {
-        name: "/(app)/monitoring/[examId]/client/",
-        params: {
-            examId,
-        },
-        query,
-    } satisfies RouteLocationAsRelative<"/(app)/monitoring/[examId]/client/">;
-}
 
 function addQueryParam(query: LocationQueryRaw) {
     void router.push({
@@ -33,7 +22,11 @@ export function goToMonitoring(
         [String(header)]: value as LocationQueryValueRaw,
     };
 
-    void router.push(buildMonitoringClientsRoute(examId, query));
+    void router.push({
+        name: "/(app)/monitoring/[examId]/client/",
+        params: { examId },
+        query,
+    });
 }
 
 export function goToMonitoringDetails(
@@ -45,11 +38,8 @@ export function goToMonitoringDetails(
 
     void router.push({
         name: "/(app)/monitoring/[examId]/client/[connectionToken]/",
-        params: {
-            examId,
-            connectionToken,
-        },
-    } satisfies RouteLocationAsRelative<"/(app)/monitoring/[examId]/client/[connectionToken]/">);
+        params: { examId, connectionToken },
+    });
 }
 
 export function applyFilter(

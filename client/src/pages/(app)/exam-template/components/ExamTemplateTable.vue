@@ -22,7 +22,7 @@
             <ActionButton
                 icon="mdi-pencil"
                 :title="$t('general.editButton')"
-                :to="getDetailRoute(item)"
+                :to="examTemplateDetailRoute(item) ?? undefined"
             />
             <ActionButtonCopy :item="item" @changed="emit('update:items')" />
             <ActionButtonDelete :item="item" @changed="emit('update:items')" />
@@ -38,10 +38,7 @@ import ActionButton from "@/pages/(app)/exam-template/components/ActionButton.vu
 import ActionButtonDelete from "@/pages/(app)/exam-template/components/ActionButtonDelete.vue";
 import ActionButtonCopy from "@/pages/(app)/exam-template/components/ActionButtonCopy.vue";
 import { tableOptionsSchema, type TableOptions } from "../types/types.ts";
-import {
-    buildDetailRoute,
-    useDetailRouteNavigation,
-} from "@/router/routeNavigation.ts";
+import { useRouter } from "vue-router";
 import type { RouteLocationAsRelative } from "vue-router";
 
 const emit = defineEmits<{
@@ -57,12 +54,17 @@ defineProps<{
     sortBy: { key: string; order: "asc" | "desc" }[];
 }>();
 
-const examTemplateDetailRoute: RouteLocationAsRelative = {
-    name: "/(app)/exam-template/[id]/",
-};
-const examTemplateIdentifierKey = "id";
+const router = useRouter();
 
-const { pushDetailRoute } = useDetailRouteNavigation();
+const examTemplateDetailRoute = (
+    item: ExamTemplate,
+): RouteLocationAsRelative | null =>
+    item.id != null
+        ? {
+              name: "/(app)/exam-template/[id]/",
+              params: { id: String(item.id) },
+          }
+        : null;
 
 const handleOptionsUpdate = (options: unknown) => {
     emit("update:options", tableOptionsSchema.parse(options));
@@ -85,18 +87,12 @@ const formatExamType = (item: ExamTemplate) => {
     return i18n.global.t(item.examType);
 };
 
-const getDetailRoute = (item: ExamTemplate) =>
-    buildDetailRoute(
-        examTemplateDetailRoute,
-        item,
-        examTemplateIdentifierKey,
-    ) ?? undefined;
-
 const handleRowClick = (_event: Event, row: { item: ExamTemplate }) => {
-    void pushDetailRoute(
-        examTemplateDetailRoute,
-        row.item,
-        examTemplateIdentifierKey,
-    );
+    const target = examTemplateDetailRoute(row.item);
+    if (!target) {
+        // TODO @andrei implement error handling
+        return;
+    }
+    void router.push(target);
 };
 </script>

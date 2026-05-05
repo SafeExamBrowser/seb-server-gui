@@ -166,7 +166,16 @@ import * as groupingUtils from "@/utils/groupingUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import * as spConstants from "@/utils/sp-constants";
 import { SearchTimeline } from "@/models/screen-proctoring/search";
-import { openProctoringView } from "@/router/routeNavigation.ts";
+import { openRouteInNewTab } from "@/router/routeNavigation.ts";
+
+function openProctoringView(sessionId: string, timestamp?: string) {
+    const searchTimestamp = timestamp?.trim();
+    openRouteInNewTab({
+        name: "/(app)/sp-recording/[sessionId]/",
+        params: { sessionId },
+        query: searchTimestamp ? { searchTimestamp } : undefined,
+    });
+}
 
 // simple "clickable" for header refs (matches what TableHeaders expects)
 type Clickable = { click: () => void };

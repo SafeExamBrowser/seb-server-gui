@@ -24,8 +24,8 @@ import {
     SingleConnection,
 } from "@/models/seb-server/monitoring.ts";
 import { Indicators } from "@/models/seb-server/indicators.ts";
-import MonitoringDetailsMain from "../../client/[connectionToken]/components/MonitoringDetailsMain.vue";
-import MonitoringDetailsInfo from "../../client/[connectionToken]/components/MonitoringDetailsInfo.vue";
+import MonitoringDetailsMain from "./components/MonitoringDetailsMain.vue";
+import MonitoringDetailsInfo from "./components/MonitoringDetailsInfo.vue";
 import * as useMonitoringData from "../../client/composables/useMonitoringData.ts";
 import { extractClientGroupNames } from "@/utils/monitoringUtils.ts";
 

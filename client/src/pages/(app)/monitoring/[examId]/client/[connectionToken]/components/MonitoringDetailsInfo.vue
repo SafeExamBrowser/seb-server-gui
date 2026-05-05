@@ -211,8 +211,7 @@ import { NotificationEnum } from "@/models/seb-server/monitoringEnums.ts";
 import InstructionConfirmDialog from "../../../client/components/InstructionConfirmDialog.vue";
 import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
 import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
-import { navigateTo } from "@/router/routeNavigation.ts";
-import type { RouteLocationAsRelative } from "vue-router";
+import { useRouter } from "vue-router";
 
 const props = defineProps<{
     examId: string;
@@ -225,6 +224,7 @@ const connectionToken = props.connectionToken;
 
 // stores
 const monitoringStore = useMonitoringStore();
+const router = useRouter();
 
 // instruction confirm dialog
 const instructionConfirmDialog = ref<boolean>(false);
@@ -251,13 +251,12 @@ const nameParts = computed(() => {
     return rawName.split("|").filter((p) => p.trim() !== "");
 });
 
-const monitoringListRoute = {
-    name: "/(app)/monitoring/",
-} satisfies RouteLocationAsRelative<"/(app)/monitoring/">;
-
 const breadCrumbItems = computed<BreadCrumbItem[]>(() => {
     const items: BreadCrumbItem[] = [
-        { label: translate("titles.monitoring"), link: monitoringListRoute },
+        {
+            label: translate("titles.monitoring"),
+            link: { name: "/(app)/monitoring/" },
+        },
     ];
 
     const selectedExam = monitoringStore.selectedExam;
@@ -266,10 +265,8 @@ const breadCrumbItems = computed<BreadCrumbItem[]>(() => {
             label: selectedExam.quizName,
             link: {
                 name: "/(app)/monitoring/[examId]/",
-                params: {
-                    examId: selectedExam.id.toString(),
-                },
-            } satisfies RouteLocationAsRelative<"/(app)/monitoring/[examId]/">,
+                params: { examId: selectedExam.id.toString() },
+            },
         });
     }
 
@@ -277,10 +274,8 @@ const breadCrumbItems = computed<BreadCrumbItem[]>(() => {
         label: translate("titles.clientList"),
         link: {
             name: "/(app)/monitoring/[examId]/client/",
-            params: {
-                examId,
-            },
-        } satisfies RouteLocationAsRelative<"/(app)/monitoring/[examId]/client/">,
+            params: { examId },
+        },
     });
 
     const clientName = nameParts.value.join(" ").trim();
@@ -292,13 +287,11 @@ const breadCrumbItems = computed<BreadCrumbItem[]>(() => {
 });
 
 function goBackToMonitoringClients() {
-    void navigateTo({
+    void router.push({
         name: "/(app)/monitoring/[examId]/client/",
-        params: {
-            examId,
-        },
+        params: { examId },
         query: monitoringStore.currentMonitoringQuery,
-    } satisfies RouteLocationAsRelative<"/(app)/monitoring/[examId]/client/">);
+    });
 }
 
 //= ==============groups, tags, and status====================

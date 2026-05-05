@@ -85,8 +85,7 @@ import { useTablePagination } from "@/components/widgets/entity-table/composable
 import TableRowActions from "@/components/widgets/entity-table/components/TableRowActions.vue";
 import TableFooter from "@/components/widgets/entity-table/components/TableFooter.vue";
 import type { ServerTablePaging } from "@/models/types.ts";
-import { useDetailRouteNavigation } from "../../../router/routeNavigation";
-import type { RouteLocationAsRelative } from "vue-router";
+import { useRouter, type RouteLocationAsRelative } from "vue-router";
 
 const props = withDefaults(
     defineProps<{
@@ -97,8 +96,7 @@ const props = withDefaults(
         itemsPerPage?: number;
         pageCount?: number;
         itemsLength?: number;
-        detailRoute?: RouteLocationAsRelative;
-        itemIdentifierKey?: string;
+        detailRoute?: (item: TableItem) => RouteLocationAsRelative | null;
         actions?: TableAction[];
         cellFormatters?: Record<string, CellFormatter>;
     }>(),
@@ -108,7 +106,6 @@ const props = withDefaults(
         itemsLength: undefined,
         options: undefined,
         detailRoute: undefined,
-        itemIdentifierKey: "",
         actions: undefined,
         cellFormatters: () => ({}),
     },
@@ -118,7 +115,7 @@ const emit = defineEmits<{
     "update:options": [options: ServerTablePaging];
 }>();
 
-const { pushDetailRoute } = useDetailRouteNavigation();
+const router = useRouter();
 
 const { computedHeaders } = useTableHeaders(
     () => props.headers,
@@ -147,11 +144,11 @@ const {
 
 async function navigateToItem(item: TableItem) {
     if (!props.detailRoute) return;
-
-    await pushDetailRoute(
-        props.detailRoute,
-        item,
-        props.itemIdentifierKey || "uuid",
-    );
+    const target = props.detailRoute(item);
+    if (!target) {
+        // TODO @andrei implement error handling
+        return;
+    }
+    await router.push(target);
 }
 </script>

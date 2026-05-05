@@ -7,7 +7,7 @@
                 :items="[
                     {
                         label: translate('titles.monitoring'),
-                        link: monitoringListRoute,
+                        link: { name: '/(app)/monitoring/' },
                     },
                     { label: monitoringStore.selectedExam?.quizName ?? '' },
                 ]"
@@ -162,13 +162,9 @@ import QuitAllDialog from "../components/dialogs/QuitAllDialog.vue";
 import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
 import { ref } from "vue";
 import { quitAll } from "@/services/seb-server/monitoringService.ts";
-import type { RouteLocationAsRelative } from "vue-router";
 
 // stores
 const monitoringStore = useMonitoringStore();
-const monitoringListRoute: RouteLocationAsRelative = {
-    name: "/(app)/user-account/profile/",
-};
 
 const quitAllDialog = ref(false);
 

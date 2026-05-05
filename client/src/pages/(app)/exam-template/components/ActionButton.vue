@@ -14,12 +14,12 @@
 
 <script setup lang="ts">
 import { IconValue } from "vuetify/lib/composables/icons.mjs";
-import type { RouteLocationRaw } from "vue-router";
+import type { RouteLocationAsRelative } from "vue-router";
 
 defineProps<{
     icon: IconValue;
     title: string;
-    to?: RouteLocationRaw;
+    to?: RouteLocationAsRelative;
 }>();
 
 const emit = defineEmits<{

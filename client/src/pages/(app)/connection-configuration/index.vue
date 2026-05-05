@@ -41,10 +41,6 @@
                                 :detail-route="
                                     connectionConfigurationDetailRoute
                                 "
-                                :route-param-key="
-                                    connectionConfigurationItemIdentifierKey
-                                "
-                                item-identifier-key="id"
                                 :cell-formatters="cellFormatters"
                                 :actions="tableActions"
                                 @update:options="loadItems"
@@ -99,8 +95,7 @@ import { useToggleConnectionConfigurationStatus } from "@/pages/(app)/connection
 import type { ConnectionConfigurations } from "@/models/seb-server/connectionConfiguration.ts";
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 import AddButton from "@/components/widgets/AddButton.vue";
-import { useDetailRouteNavigation } from "../../../router/routeNavigation.ts";
-import type { RouteLocationAsRelative } from "vue-router";
+import { useRouter, type RouteLocationAsRelative } from "vue-router";
 
 definePage({
     meta: {
@@ -111,15 +106,21 @@ definePage({
     },
 });
 
-const connectionConfigurationDetailRoute: RouteLocationAsRelative = {
-    name: "/(app)/connection-configuration/[id]/",
-};
-const connectionConfigurationItemIdentifierKey = "id";
+const router = useRouter();
+
+const connectionConfigurationDetailRoute = (
+    item: TableItem,
+): RouteLocationAsRelative | null =>
+    item.id != null
+        ? {
+              name: "/(app)/connection-configuration/[id]/",
+              params: { id: String(item.id) },
+          }
+        : null;
 
 const { headers: connectionConfigurationTableHeaders, cellFormatters } =
     useConnectionConfigurationsTableHeaders();
 const filterSections = useConnectionConfigurationsFilters();
-const { pushDetailRoute } = useDetailRouteNavigation();
 
 const tableData = ref<ConnectionConfigurations>();
 
@@ -210,12 +211,14 @@ async function confirmStatusChange() {
 }
 
 const tableActions = useConnectionConfigurationsTableActions({
-    onEdit: (item) =>
-        pushDetailRoute(
-            connectionConfigurationDetailRoute,
-            item,
-            connectionConfigurationItemIdentifierKey,
-        ),
+    onEdit: (item) => {
+        const target = connectionConfigurationDetailRoute(item);
+        if (!target) {
+            // TODO @andrei implement error handling
+            return;
+        }
+        void router.push(target);
+    },
     onDelete: (item) => openDeleteDialog(item),
 });
 </script>

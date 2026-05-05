@@ -39,9 +39,6 @@
                                     loading || deleteLoading || statusLoading
                                 "
                                 :detail-route="userAccountDetailRoute"
-                                :item-identifier-key="
-                                    userAccountItemIdentifierKey
-                                "
                                 :cell-formatters="cellFormatters"
                                 :actions="tableActions"
                                 @update:options="loadItems"
@@ -96,8 +93,7 @@ import { useToggleUserAccountStatus } from "@/pages/(app)/user-account/api/useTo
 import type { UserAccountResponse } from "@/models/userAccount.ts";
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 import AddButton from "@/components/widgets/AddButton.vue";
-import { useDetailRouteNavigation } from "../../../router/routeNavigation";
-import type { RouteLocationAsRelative } from "vue-router";
+import { useRouter, type RouteLocationAsRelative } from "vue-router";
 
 definePage({
     meta: {
@@ -107,16 +103,21 @@ definePage({
     },
 });
 
-const userAccountDetailRoute: RouteLocationAsRelative = {
-    name: "/(app)/user-account/[userUuid]/",
-};
+const router = useRouter();
 
-const userAccountItemIdentifierKey = "uuid";
+const userAccountDetailRoute = (
+    item: TableItem,
+): RouteLocationAsRelative | null =>
+    item.uuid != null
+        ? {
+              name: "/(app)/user-account/[userUuid]/",
+              params: { userUuid: String(item.uuid) },
+          }
+        : null;
 
 const { headers: userAccountsTableHeaders, cellFormatters } =
     useUserAccountsTableHeaders();
 const filterSections = useUserAccountsFilters();
-const { pushDetailRoute } = useDetailRouteNavigation();
 
 const tableData = ref<UserAccountResponse>();
 
@@ -207,12 +208,14 @@ async function confirmStatusChange() {
 }
 
 const tableActions = useUserAccountsTableActions({
-    onEdit: (item) =>
-        pushDetailRoute(
-            userAccountDetailRoute,
-            item,
-            userAccountItemIdentifierKey,
-        ),
+    onEdit: (item) => {
+        const target = userAccountDetailRoute(item);
+        if (!target) {
+            // TODO @andrei implement error handling
+            return;
+        }
+        void router.push(target);
+    },
     onDelete: (item) => openDeleteDialog(item),
 });
 </script>

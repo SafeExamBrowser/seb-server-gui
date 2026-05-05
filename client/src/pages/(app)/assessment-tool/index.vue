@@ -40,9 +40,6 @@
                                     loading || deleteLoading || statusLoading
                                 "
                                 :detail-route="assessmentToolDetailRoute"
-                                :item-identifier-key="
-                                    assessmentToolItemIdentifierKey
-                                "
                                 :cell-formatters="cellFormatters"
                                 :actions="tableActions"
                                 @update:options="loadItems"
@@ -101,8 +98,7 @@ import type { AssessmentToolsResponse } from "@/models/seb-server/assessmentTool
 import type { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums.ts";
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 import AddButton from "@/components/widgets/AddButton.vue";
-import type { RouteLocationAsRelative } from "vue-router";
-import { useDetailRouteNavigation } from "../../../router/routeNavigation.ts";
+import { useRouter, type RouteLocationAsRelative } from "vue-router";
 
 definePage({
     meta: {
@@ -111,15 +107,22 @@ definePage({
         isPageBlue: true,
     },
 });
-const assessmentToolDetailRoute: RouteLocationAsRelative = {
-    name: "/(app)/assessment-tool/[id]/",
-};
-const assessmentToolItemIdentifierKey = "id";
+
+const router = useRouter();
+
+const assessmentToolDetailRoute = (
+    item: TableItem,
+): RouteLocationAsRelative | null =>
+    item.id != null
+        ? {
+              name: "/(app)/assessment-tool/[id]/",
+              params: { id: String(item.id) },
+          }
+        : null;
 
 const { headers: assessmentToolTableHeaders, cellFormatters } =
     useAssessmentToolsTableHeaders();
 const filterSections = useAssessmentToolsFilters();
-const { pushDetailRoute } = useDetailRouteNavigation();
 
 const tableData = ref<AssessmentToolsResponse>();
 
@@ -214,12 +217,14 @@ async function confirmStatusChange() {
 }
 
 const tableActions = useAssessmentToolsTableActions({
-    onEdit: (item) =>
-        pushDetailRoute(
-            assessmentToolDetailRoute,
-            item,
-            assessmentToolItemIdentifierKey,
-        ),
+    onEdit: (item) => {
+        const target = assessmentToolDetailRoute(item);
+        if (!target) {
+            // TODO @andrei implement error handling
+            return;
+        }
+        void router.push(target);
+    },
     onDelete: (item) => openDeleteDialog(item),
 });
 </script>

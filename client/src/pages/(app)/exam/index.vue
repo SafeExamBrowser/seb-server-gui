@@ -32,7 +32,6 @@
                     :options="options"
                     :loading="loading"
                     :detail-route="examDetailRoute"
-                    :item-identifier-key="examItemIdentifierKey"
                     :cell-formatters="cellFormatters"
                     :actions="tableActions"
                     @update:options="loadItems"
@@ -74,8 +73,8 @@ import {
     ExamStatusEnum,
     examStatusColor,
 } from "@/models/seb-server/examFiltersEnum.ts";
-import { useDetailRouteNavigation } from "../../../router/routeNavigation.ts";
-import type { RouteLocationAsRelative } from "vue-router";
+import { useRouter, type RouteLocationAsRelative } from "vue-router";
+import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 
 definePage({
     meta: {
@@ -83,15 +82,19 @@ definePage({
         pageTestId: "exams-page",
     },
 });
-const examDetailRoute: RouteLocationAsRelative = {
-    name: "/(app)/exam/[id]/",
-};
 
-const examItemIdentifierKey = "id";
+const router = useRouter();
+
+const examDetailRoute = (item: TableItem): RouteLocationAsRelative | null =>
+    item.id != null
+        ? {
+              name: "/(app)/exam/[id]/",
+              params: { id: String(item.id) },
+          }
+        : null;
 
 const { headers: examTableHeaders, cellFormatters } = useExamTableHeaders();
 const filterSections = useExamFilters();
-const { pushDetailRoute } = useDetailRouteNavigation();
 
 const tableData = ref<Exams>();
 
@@ -139,7 +142,13 @@ watch(
 const pageCount = computed(() => tableData.value?.number_of_pages ?? 0);
 
 const tableActions = useExamTableActions({
-    onNavigate: (item) =>
-        pushDetailRoute(examDetailRoute, item, examItemIdentifierKey),
+    onNavigate: (item) => {
+        const target = examDetailRoute(item);
+        if (!target) {
+            // TODO @andrei implement error handling
+            return;
+        }
+        void router.push(target);
+    },
 });
 </script>

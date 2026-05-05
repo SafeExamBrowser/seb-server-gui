@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import ProctoringViewPage from "../../../../components/widgets/ProctoringViewPage.vue";
+import ProctoringViewPage from "@/components/widgets/ProctoringViewPage.vue";
 import { useRoute } from "vue-router";
 definePage({
     meta: {

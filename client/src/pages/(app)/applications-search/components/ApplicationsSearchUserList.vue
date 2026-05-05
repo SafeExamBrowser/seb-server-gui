@@ -7,16 +7,22 @@
             :title="userItem.username"
         >
             <template #append>
-                <!--todo: maybe move openProctoringView to general utils file-->
                 <v-btn
                     icon="mdi-movie-play"
                     variant="text"
                     @click="
-                        openProctoringApplicationSearch(
-                            userItem.sessionUuid,
-                            props.metadataApp,
-                            props.metadataWindow,
-                        )
+                        openRouteInNewTab({
+                            name: '/(app)/sp-recording/application-search/[sessionId]/',
+                            params: { sessionId: userItem.sessionUuid },
+                            query: {
+                                ...(props.metadataApp
+                                    ? { metadataApp: props.metadataApp }
+                                    : {}),
+                                ...(props.metadataWindow
+                                    ? { metadataWindow: props.metadataWindow }
+                                    : {}),
+                            },
+                        })
                     "
                 >
                 </v-btn>
@@ -24,10 +30,14 @@
                     icon="mdi-video"
                     variant="text"
                     @click="
-                        openProctoringView(
-                            userItem.sessionUuid,
-                            userItem.firstScreenshotCaptureTime.toString(),
-                        )
+                        openRouteInNewTab({
+                            name: '/(app)/sp-recording/[sessionId]/',
+                            params: { sessionId: userItem.sessionUuid },
+                            query: {
+                                searchTimestamp:
+                                    userItem.firstScreenshotCaptureTime.toString(),
+                            },
+                        })
                     "
                 >
                 </v-btn>
@@ -41,10 +51,7 @@ import { onBeforeMount, ref } from "vue";
 import * as generalUtils from "@/utils/generalUtils";
 import { UserListForApplicationSearchRecord } from "@/models/screen-proctoring/applicationSearch";
 import { getUserListForApplicationSearch } from "@/services/screen-proctoring/applicationsSearchService.ts";
-import {
-    openProctoringApplicationSearch,
-    openProctoringView,
-} from "../../../../router/routeNavigation.ts";
+import { openRouteInNewTab } from "@/router/routeNavigation.ts";
 
 // props
 const props = defineProps<{

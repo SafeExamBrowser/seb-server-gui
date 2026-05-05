@@ -32,7 +32,6 @@
                     :options="options"
                     :loading="loading"
                     :detail-route="monitoringDetailRoute"
-                    :item-identifier-key="monitoringIdentifierKey"
                     :cell-formatters="cellFormatters"
                     :actions="tableActions"
                     @update:options="loadItems"
@@ -74,8 +73,8 @@ import {
     ExamStatusEnum,
     examStatusColor,
 } from "@/models/seb-server/examFiltersEnum.ts";
-import { useDetailRouteNavigation } from "../../../router/routeNavigation.ts";
-import type { RouteLocationAsRelative } from "vue-router";
+import { useRouter, type RouteLocationAsRelative } from "vue-router";
+import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 
 definePage({
     meta: {
@@ -83,15 +82,21 @@ definePage({
         pageTestId: "monitoring-page",
     },
 });
-const monitoringDetailRoute: RouteLocationAsRelative = {
-    name: "/(app)/monitoring/[examId]/",
-};
 
-const monitoringIdentifierKey = "id";
+const router = useRouter();
+
+const monitoringDetailRoute = (
+    item: TableItem,
+): RouteLocationAsRelative | null =>
+    item.id != null
+        ? {
+              name: "/(app)/monitoring/[examId]/",
+              params: { examId: String(item.id) },
+          }
+        : null;
 
 const { headers: tableHeaders, cellFormatters } = useMonitoringTableHeaders();
 const filterSections = useMonitoringFilters();
-const { pushDetailRoute } = useDetailRouteNavigation();
 
 const tableData = ref<Exams>();
 
@@ -145,7 +150,13 @@ watch(
 const pageCount = computed(() => tableData.value?.number_of_pages ?? 0);
 
 const tableActions = useMonitoringTableActions({
-    onNavigate: (item) =>
-        pushDetailRoute(monitoringDetailRoute, item, monitoringIdentifierKey),
+    onNavigate: (item) => {
+        const target = monitoringDetailRoute(item);
+        if (!target) {
+            // TODO @andrei implement error handling
+            return;
+        }
+        void router.push(target);
+    },
 });
 </script>

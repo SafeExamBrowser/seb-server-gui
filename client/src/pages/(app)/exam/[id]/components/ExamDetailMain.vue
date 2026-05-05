@@ -926,7 +926,6 @@ import { translate } from "@/utils/generalUtils.ts";
 import { LMSFeatureEnum } from "@/models/seb-server/assessmentToolEnums.ts";
 import { GUIAction, useAbilities } from "@/services/ability.ts";
 import { useRouter } from "vue-router";
-import type { RouteLocationAsRelative } from "vue-router";
 import { UserAccount } from "@/models/userAccount.ts";
 import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring.ts";
 import { Exam } from "@/models/seb-server/exam.ts";
@@ -962,10 +961,8 @@ const examId = props.id;
 function openMonitoringOverview() {
     void router.push({
         name: "/(app)/monitoring/[examId]/",
-        params: {
-            examId: examId,
-        },
-    } satisfies RouteLocationAsRelative<"/(app)/monitoring/[examId]/">);
+        params: { examId },
+    });
 }
 // TODO reroute to finished exam once implemented
 function openFinishedExamData() {

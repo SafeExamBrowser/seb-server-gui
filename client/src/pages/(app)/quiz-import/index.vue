@@ -164,7 +164,6 @@ import { getAssessmentToolsActive } from "@/services/seb-server/assessmentToolSe
 import * as examService from "@/services/seb-server/examService.ts";
 import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
 import { useRouter } from "vue-router";
-import type { RouteLocationAsRelative } from "vue-router";
 
 definePage({
     meta: {
@@ -292,11 +291,9 @@ function setTabTitle() {
 
 function buildExamDetailRoute(examId: string | number) {
     return {
-        name: "/(app)/exam/[id]/",
-        params: {
-            id: String(examId),
-        },
-    } satisfies RouteLocationAsRelative<"/(app)/exam/[id]/">;
+        name: "/(app)/exam/[id]/" as const,
+        params: { id: String(examId) },
+    };
 }
 
 function handleStepperNext(index: number, next: () => void) {

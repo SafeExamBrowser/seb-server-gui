@@ -454,8 +454,7 @@ import InstructionConfirmDialog from "../../client/components/InstructionConfirm
 import * as useMonitoringNavigation from "../../composables/useMonitoringNavigation.ts";
 import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
 import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
-import { navigateTo } from "../../../../../../router/routeNavigation.ts";
-import type { RouteLocationAsRelative } from "vue-router";
+import { useRouter } from "vue-router";
 
 // info panel (whole component)
 const isInfoExpanded = ref<boolean>(true);
@@ -466,6 +465,7 @@ const props = defineProps<{
 
 // router
 const route = useRoute();
+const router = useRouter();
 
 // stores
 const monitoringStore = useMonitoringStore();
@@ -503,12 +503,10 @@ const breadCrumbItems = computed<BreadCrumbItem[]>(() => {
 });
 
 function goBackToMonitoringOverview() {
-    void navigateTo({
+    void router.push({
         name: "/(app)/monitoring/[examId]/",
-        params: {
-            examId,
-        },
-    } satisfies RouteLocationAsRelative<"/(app)/monitoring/[examId]/">);
+        params: { examId },
+    });
 }
 
 // instruction confirm dialog

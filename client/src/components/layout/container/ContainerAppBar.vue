@@ -58,10 +58,10 @@ import { translate } from "@/utils/generalUtils";
 import ContainerPreferences from "@/components/layout/container/ContainerPreferences.vue";
 import ContainerProfileMenu from "@/components/layout/container/ContainerProfileMenu.vue";
 import ContainerRouteActions from "@/components/layout/container/ContainerRouteActions.vue";
-import type { RouteLocationRaw } from "vue-router";
+import type { RouteLocationAsRelative } from "vue-router";
 
 defineProps<{
-    homeRoute: RouteLocationRaw;
+    homeRoute: RouteLocationAsRelative;
     effectiveTitle: string;
     institutionLogo: string | null;
     layoutContext?: string;

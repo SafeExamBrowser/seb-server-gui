@@ -84,7 +84,12 @@
             <v-btn
                 icon="mdi-video"
                 variant="text"
-                @click="openProctoringView(item.sessionUUID)"
+                @click="
+                    openRouteInNewTab({
+                        name: '/(app)/sp-recording/[sessionId]/',
+                        params: { sessionId: item.sessionUUID },
+                    })
+                "
             ></v-btn>
         </template>
 
@@ -202,7 +207,7 @@ import {
 import { OptionalParSearchSessions } from "@/models/screen-proctoring/optionalParamters";
 import * as searchService from "@/services/screen-proctoring/searchService";
 import { prepareSessionSearchParameters } from "@/pages/(app)/sp-search/utils/searchUtils.ts";
-import { openProctoringView } from "@/router/routeNavigation.ts";
+import { openRouteInNewTab } from "@/router/routeNavigation.ts";
 
 // store
 const tableStore = useTableStore();
