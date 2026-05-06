@@ -13,6 +13,11 @@ export function buildSettingsNavigationItems(
 ): NavigationSectionItem[] {
     return [
         {
+            label: translate("titles.institutions"),
+            to: typedTo({ name: "/(app)/institution/" }),
+            testId: `${testIdPrefix}-institutions-link`,
+        },
+        {
             label: translate("titles.assessmentToolConnections"),
             to: typedTo({ name: "/(app)/assessment-tool/" }),
             testId: `${testIdPrefix}-assessmentToolConnections-link`,

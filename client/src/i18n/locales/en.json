@@ -886,6 +886,59 @@
             "KEY_CERT_SIGN": "CA"
         }
     },
+    "institutions": {
+        "institutionPage": {
+            "tableHeaders": {
+                "name": "Name",
+                "modelId": "ID",
+                "urlSuffix": "URL Suffix",
+                "themeName": "Theme",
+                "active": "Status"
+            },
+            "addInstitution": "Add Institution",
+            "filters": {
+                "searchTitle": "Search",
+                "searchField": "Search by Name",
+                "statusFilter": "Status",
+                "activeSelector": "Active",
+                "inactiveSelector": "Inactive"
+            },
+            "deleteDialog": {
+                "title": "Confirm Deletion",
+                "text": "Are you sure you want to delete this institution and all of its dependencies?",
+                "action": "Delete"
+            },
+            "statusDialog": {
+                "activateTitle": "Activate Institution",
+                "deactivateTitle": "Deactivate Institution",
+                "activateText": "Are you sure you want to activate this institution?",
+                "deactivateText": "Are you sure you want to deactivate this institution?",
+                "activateAction": "Activate",
+                "deactivateAction": "Deactivate"
+            }
+        },
+        "createInstitutionPage": {
+            "info": {
+                "creationInfo": "Fill the form to create a new institution."
+            }
+        },
+        "editInstitutionPage": {
+            "info": {
+                "editInfo": "Edit the institution details."
+            }
+        },
+        "institutionFormFields": {
+            "labels": {
+                "name": "Name *",
+                "urlSuffix": "URL Suffix",
+                "themeName": "Theme Name",
+                "logoImage": "Logo Image"
+            },
+            "validation": {
+                "urlSuffix": "URL suffix must be 3 to 45 characters or empty"
+            }
+        }
+    },
     "sebSettings": {
         "pwdMismatch": "The password and confirm password must match",
         "pwdSpaces": "The value must not start or end with a space.",
@@ -1841,6 +1894,10 @@
         "connectionConfigurations": "Connection Configurations",
 
         "certificates": "Certificates",
+
+        "institutions": "Institutions",
+        "createInstitution": "Add Institution",
+        "editInstitution": "Edit Institution",
 
         "editExamTemplate": "Edit Exam Template",
         "galleryView": "Gallery View"
