@@ -10,7 +10,6 @@ export class PlaywrightUserAccountsPage {
     readonly page: Page;
 
     // Page identity / layout
-    readonly listContainer: Locator;
     readonly pageTitle: Locator;
     readonly settingsNavigation: Locator;
 
@@ -33,7 +32,6 @@ export class PlaywrightUserAccountsPage {
     readonly institutionFilterChipsContainer: Locator;
 
     // Table
-    readonly tableSection: Locator;
     readonly table: Locator;
     readonly tableHeadersComponent: Locator;
 
@@ -62,7 +60,6 @@ export class PlaywrightUserAccountsPage {
         this.settingsNavigation = page.getByTestId(
             "userAccounts-settingsNavigation-component",
         );
-        this.listContainer = page.getByTestId("userAccounts-list-container");
 
         // Header
         this.headerRow = page.getByTestId("userAccounts-header-row");
@@ -93,7 +90,6 @@ export class PlaywrightUserAccountsPage {
         );
 
         // Table
-        this.tableSection = page.getByTestId("userAccounts-table-section");
         this.table = page.getByTestId("userAccounts-table");
         this.tableHeadersComponent = page.getByTestId(
             "userAccounts-tableHeaders-component",
@@ -138,13 +134,12 @@ export class PlaywrightUserAccountsPage {
     // ------------------------
 
     async goto() {
-        await this.page.goto("/user-accounts");
+        await this.page.goto("/user-account");
         await this.expectVisible();
     }
 
     async expectVisible() {
-        await expect(this.listContainer).toBeVisible();
-        await expect(this.tableSection).toBeVisible();
+        await expect(this.table).toBeVisible();
     }
 
     async expectInstitutionFilterVisible() {
@@ -297,7 +292,7 @@ export class PlaywrightUserAccountsPage {
     }
 
     paginationRoot(): Locator {
-        return this.tableSection.locator(".v-pagination-root");
+        return this.table.locator(".v-pagination-root");
     }
 
     async expectPaginationVisible() {

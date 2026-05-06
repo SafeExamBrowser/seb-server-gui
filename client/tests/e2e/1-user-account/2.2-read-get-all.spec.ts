@@ -20,7 +20,7 @@ test.describe("1.2.2 User Accounts - READ Get All", () => {
     });
 
     test("A Success", async ({ page }, testInfo) => {
-        expect(page.url()).toContain("/user-accounts");
+        expect(page.url()).toContain("/user-account");
 
         const surnameWithBrowserSuffix = addBrowserSuffixToText(
             searchSurname,
