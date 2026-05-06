@@ -1,5 +1,8 @@
 <template>
-    <BasicSettingsPage :title="$t('titles.connectionConfigurations')">
+    <BasicSettingsPage
+        :title="$t('titles.connectionConfigurations')"
+        :data-test-id="dataTestId"
+    >
         <template #ActionButton>
             <AddButton
                 text="connectionConfigurations.connectionConfigurationsPage.addConnectionConfiguration"

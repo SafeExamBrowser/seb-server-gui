@@ -1,11 +1,18 @@
 <template>
-    <h2 class="primary-text-color text-h4 font-weight-bold">
+    <h2
+        class="primary-text-color text-h4 font-weight-bold"
+        :data-testid="dataTestId"
+    >
         {{ name }}
     </h2>
 </template>
 
 <script setup lang="ts">
-defineProps<{
-    name: string;
-}>();
+withDefaults(
+    defineProps<{
+        name: string;
+        dataTestId?: string;
+    }>(),
+    { dataTestId: undefined },
+);
 </script>

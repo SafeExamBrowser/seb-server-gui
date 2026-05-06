@@ -2,6 +2,7 @@
     <BasicPage
         :title="$t('titles.monitoring')"
         :bread-crumb="[{ label: $t('titles.monitoring') }]"
+        :data-test-id="dataTestId"
     >
         <template #PanelTop>
             <SearchBar

@@ -1,5 +1,8 @@
 <template>
-    <BasicSettingsPage :title="$t('titles.userAccounts')">
+    <BasicSettingsPage
+        :title="$t('titles.userAccounts')"
+        :data-test-id="dataTestId"
+    >
         <template #ActionButton>
             <AddButton
                 text="userAccount.userAccountPage.addUserContext"

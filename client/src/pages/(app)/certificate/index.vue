@@ -1,5 +1,8 @@
 <template>
-    <BasicSettingsPage :title="$t('titles.certificates')">
+    <BasicSettingsPage
+        :title="$t('titles.certificates')"
+        :data-test-id="dataTestId"
+    >
         <template #ActionButton>
             <div class="d-flex justify-end align-center fill-height">
                 <FormDialog

@@ -1,5 +1,8 @@
 <template>
-    <BasicSettingsPage :title="$t('titles.assessmentToolConnections')">
+    <BasicSettingsPage
+        :title="$t('titles.assessmentToolConnections')"
+        :data-test-id="dataTestId"
+    >
         <template #ActionButton>
             <AddButton
                 text="assessmentToolConnections.assessmentToolsPage.addAssessmentTool"

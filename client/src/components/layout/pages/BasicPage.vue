@@ -7,7 +7,13 @@
         </v-row>
         <v-row class="flex-grow-0 flex-shrink-0">
             <v-col>
-                <PageTitle class="pl-9" :name="title" />
+                <PageTitle
+                    class="pl-9"
+                    :name="title"
+                    :data-test-id="
+                        dataTestId ? `${dataTestId}-page-title` : undefined
+                    "
+                />
             </v-col>
         </v-row>
         <v-row v-if="hasTop" class="flex-grow-0 flex-shrink-0">
@@ -49,10 +55,14 @@ import PageTitle from "@/components/widgets/PageTitle.vue";
 import { BreadCrumbItem } from "@/components/widgets/breadCrumb/types";
 import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
 
-defineProps<{
-    title: string;
-    breadCrumb?: BreadCrumbItem[];
-}>();
+withDefaults(
+    defineProps<{
+        title: string;
+        breadCrumb?: BreadCrumbItem[];
+        dataTestId?: string;
+    }>(),
+    { breadCrumb: undefined, dataTestId: undefined },
+);
 
 const slots = useSlots();
 const hasTop = computed(() => Boolean(slots.PanelTop));
