@@ -18,3 +18,8 @@ export type CertificateUploadItem = z.infer<typeof certificateUploadItemSchema>;
 export const toCertificateUploadItem = (
     itemTransient: CertificateUploadItemTransient,
 ): CertificateUploadItem => certificateUploadItemSchema.parse(itemTransient);
+
+export type CertKey = {
+    id: string;
+    name: string;
+};

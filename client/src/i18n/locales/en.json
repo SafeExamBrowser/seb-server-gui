@@ -890,18 +890,24 @@
         "pwdMismatch": "The password and confirm password must match",
         "pwdSpaces": "The value must not start or end with a space.",
         "noNegNumber": "Cant be a negative number",
-        "upload": {
-            "upload": "Import SEB Settings",
-            "selectFromFolder": "Select From File Explorer",
-            "uploadHelp": "Drag and Drop or Search through File Explorer",
-            "allowed": "Allowed File Types",
-            "dropHere": "Drop a SEB Settings file here",
-            "password": "Password",
-            "quitPassword": "Quit Password",
-            "onlyAllowed": "File Type not allowed",
-            "uploadFailed": "Failed to upload SEB Settings, please contact a system administrator",
-            "passwordIncorrect": "The password was incorrect. Please try again or contact a system administrator",
-            "importButton": "Import"
+        "importDialog": {
+            "addButtonTitle": "Import",
+            "confirmButtonTitle": "Import",
+            "fields": {
+                "file": {
+                    "label": "SEB Configuration File",
+                    "hint": "Drop a SEB Configuration file here or search through file explorer."
+                },
+                "password": {
+                    "label": "Password"
+                },
+                "quitPassword": {
+                    "label": "Quit Password"
+                }
+            },
+            "errors": {
+                "generic": "Failed to upload SEB Configuration, make sure you use the correct file-password. Please try again or contact a system administrator"
+            }
         },
         "views": {
             "general": "General",
@@ -1824,24 +1830,19 @@
         "spSearch": "Search",
         "spApplications": "Applications",
         "runningExams": "Running Exams",
-
         "userAccounts": "User Accounts",
         "createUserAccount": "Create User Account",
         "editUserAccount": "Edit User Account",
         "profileSettings": "Profile Settings",
         "register": "Register",
-
         "assessmentToolConnections": "Assessment Tool Connections",
         "createAssessmentTool": "Assessment Tool Setup",
         "assessmentTool": "Assessment Tool",
         "assessmentToolEdit": "Edit Assessment Tool Connection",
-
         "connectionConfigurationViewAndEdit": "Edit Connection Configuration",
         "createConnectionConfiguration": "Add Connection Configuration",
         "connectionConfigurations": "Connection Configurations",
-
         "certificates": "Certificates",
-
         "editExamTemplate": "Edit Exam Template",
         "galleryView": "Gallery View"
     },
