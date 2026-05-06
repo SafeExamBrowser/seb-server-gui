@@ -4,8 +4,9 @@ import {
     EditInstitutionPar,
     Institution,
     InstitutionResponse,
-    OptionalParGetInstitutions,
 } from "@/models/seb-server/institution";
+import { BasicListParams } from "@/services/types";
+import { normaliseBasicListParams } from "@/utils/table/tableUtils";
 
 const infoBaseUrl = "/info" as const;
 const adminBaseUrl = "/institution" as const;
@@ -40,13 +41,26 @@ const normalizeInstitution = (i: Institution): Institution => ({
     modelId: i.modelId ?? (i.id != null ? String(i.id) : ""),
 });
 
-export const getInstitutionsAdmin = async (
-    optionalParameters?: OptionalParGetInstitutions,
-): Promise<InstitutionResponse> => {
+export const getInstitutionsAdmin = async ({
+    basicListParams,
+    name,
+    active,
+}: {
+    basicListParams?: BasicListParams;
+    name?: string;
+    active?: string;
+}): Promise<InstitutionResponse> => {
     const response = (
         await apiService.getRequest({
             url: adminBaseUrl,
-            options: { _authType: "seb", params: optionalParameters },
+            options: {
+                _authType: "seb",
+                params: {
+                    ...normaliseBasicListParams(basicListParams),
+                    name,
+                    active,
+                },
+            },
         })
     ).data as InstitutionResponse;
 

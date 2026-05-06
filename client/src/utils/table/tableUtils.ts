@@ -4,7 +4,6 @@ import {
 } from "@/models/seb-server/examFiltersEnum";
 import { useTableStore } from "@/stores/store";
 import { OptionalParGetUserAccounts } from "@/models/userAccount";
-import { OptionalParGetInstitutions } from "@/models/seb-server/institution";
 import { ServerTablePaging } from "@/models/types";
 import {
     OptionalParGetExams,
@@ -243,38 +242,6 @@ export function assignUserAccountSelectPagingOptions(
     return opt;
 }
 
-export function assignInstitutionsPagingOptions(
-    serverTablePaging: ServerTablePaging,
-    nameQuery: string | null,
-    selectedStatus: string | null,
-): OptionalParGetInstitutions {
-    const opt: OptionalParGetInstitutions = {};
-
-    opt.page_size = serverTablePaging.itemsPerPage;
-    opt.page_number = serverTablePaging.page;
-
-    if (serverTablePaging.sortBy.length !== 0) {
-        let sortString = serverTablePaging.sortBy[0].key;
-        if (serverTablePaging.sortBy[0].order === "desc") {
-            sortString = "-" + sortString;
-        }
-        opt.sort = sortString;
-    }
-
-    opt.active =
-        selectedStatus === "Active"
-            ? "true"
-            : selectedStatus === "Inactive"
-              ? "false"
-              : null;
-
-    if (nameQuery && nameQuery !== "") {
-        opt.name = nameQuery;
-    }
-
-    return opt;
-}
-
 export function assignClientLogDetailsPagingOptions(
     serverTablePaging: ServerTablePaging,
     name: string | null,
@@ -399,7 +366,7 @@ export function assignCertificateSelectPagingOptions(
 }
 
 const sortOrderToSortString = (sortOrder: SortOrder): string => {
-    return `${sortOrder.order === "desc" ? "" : "-"}${sortOrder.key}`;
+    return `${sortOrder.order === "desc" ? "-" : ""}${sortOrder.key}`;
 };
 
 // TODO @Andrei: most of the code in this file can be replaced by using `normaliseBasicListParams` (see `getExamTemplates` for an example)

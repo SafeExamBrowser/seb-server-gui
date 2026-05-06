@@ -16,14 +16,6 @@ export type InstitutionResponse = {
     content: Institution[];
 };
 
-export type OptionalParGetInstitutions = {
-    page_size?: number;
-    page_number?: number;
-    sort?: string;
-    name?: string;
-    active?: string | null;
-};
-
 export type CreateInstitutionPar = {
     name: string;
     urlSuffix?: string;
