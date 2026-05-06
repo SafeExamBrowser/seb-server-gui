@@ -43,7 +43,7 @@ test.describe("1.2.2 User Accounts - READ Get All", () => {
             },
             {
                 urlMustContain: [
-                    /optionalParameters%5Bsurname%5D=/i,
+                    /[?&]surname=/i,
                     encodeURIComponent(surnameWithBrowserSuffix),
                 ],
             },
@@ -80,7 +80,7 @@ test.describe("1.2.2 User Accounts - READ Get All", () => {
             async () => {
                 await userAccountsPage.toggleStatusFilter("Inactive");
             },
-            { urlMustContain: [/optionalParameters%5Bactive%5D=false/i] },
+            { urlMustContain: [/[?&]active=false/i] },
         );
 
         await userAccountsPage.expectRowVisible(inactiveUuidWithBrowserSuffix);
@@ -93,7 +93,7 @@ test.describe("1.2.2 User Accounts - READ Get All", () => {
             async () => {
                 await userAccountsPage.toggleStatusFilter("Active");
             },
-            { urlMustContain: [/optionalParameters%5Bactive%5D=true/i] },
+            { urlMustContain: [/[?&]active=true/i] },
         );
 
         await userAccountsPage.expectRowVisible(activeUuidWithBrowserSuffix);
@@ -114,7 +114,7 @@ test.describe("1.2.2 User Accounts - READ Get All", () => {
                 {
                     urlMustContain: [
                         new RegExp(
-                            `optionalParameters%5BinstitutionId%5D=${institutionModelId}`,
+                            `[?&]institutionId=${institutionModelId}`,
                             "i",
                         ),
                     ],
@@ -132,10 +132,7 @@ test.describe("1.2.2 User Accounts - READ Get All", () => {
                 await userAccountsPage.clearSearch();
             },
             {
-                urlMustContain: [
-                    /optionalParameters%5Bpage_size%5D=5/i,
-                    /optionalParameters%5Bpage_number%5D=1/i,
-                ],
+                urlMustContain: [/[?&]page_size=5/i, /[?&]page_number=1/i],
             },
         );
 
@@ -157,7 +154,7 @@ test.describe("1.2.2 User Accounts - READ Get All", () => {
             async () => {
                 await userAccountsPage.sortByHeaderText("Username");
             },
-            { urlMustContain: [/optionalParameters%5Bsort%5D=username/i] },
+            { urlMustContain: [/[?&]sort=username/i] },
         );
 
         // sort by name
@@ -165,7 +162,7 @@ test.describe("1.2.2 User Accounts - READ Get All", () => {
             async () => {
                 await userAccountsPage.sortByHeaderText("Name");
             },
-            { urlMustContain: [/optionalParameters%5Bsort%5D=name/i] },
+            { urlMustContain: [/[?&]sort=name/i] },
         );
 
         //verify pagination
@@ -181,9 +178,7 @@ test.describe("1.2.2 User Accounts - READ Get All", () => {
                         await page2.first().click();
                     },
                     {
-                        urlMustContain: [
-                            /optionalParameters%5Bpage_number%5D=2/i,
-                        ],
+                        urlMustContain: [/[?&]page_number=2/i],
                     },
                 );
             }
