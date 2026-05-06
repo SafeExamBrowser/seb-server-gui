@@ -70,11 +70,11 @@ export class PlaywrightLoginPage {
     // ------------------------
 
     async expectRedirectToHome() {
-        await expect(this.page).toHaveURL(/\/home(?:$|[?#])/i);
+        await expect(this.page).toHaveURL(/\/(?:$|[?#])/i);
     }
 
     async expectNoRedirect() {
-        await expect(this.page).toHaveURL(/\/(?:$|[?#])/i);
+        await expect(this.page).toHaveURL(/\/login(?:$|[?#])/i);
     }
 
     // ------------------------
