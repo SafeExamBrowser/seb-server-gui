@@ -2,6 +2,7 @@
     <BasicPage
         :title="$t('titles.monitoring')"
         :bread-crumb="[{ label: $t('titles.monitoring') }]"
+        :data-test-id="dataTestId"
     >
         <template #PanelTop>
             <SearchBar
@@ -11,6 +12,7 @@
                 :date-value="dateValue"
                 :filter-sections="filterSections"
                 :filter-values="selectedFilters"
+                :data-test-id="dataTestId"
                 @search="onSearch"
                 @clear="onClearSearch"
                 @update:date-value="setDate"
@@ -34,6 +36,8 @@
                     :detail-route="monitoringDetailRoute"
                     :cell-formatters="cellFormatters"
                     :actions="tableActions"
+                    :data-test-id="dataTestId"
+                    item-key="id"
                     @update:options="loadItems"
                 >
                     <template #cell-type="{ formattedValue }">
@@ -84,6 +88,8 @@ definePage({
 });
 
 const router = useRouter();
+
+const dataTestId = "monitoring";
 
 const monitoringDetailRoute = (
     item: TableItem,

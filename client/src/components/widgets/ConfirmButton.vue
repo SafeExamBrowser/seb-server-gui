@@ -2,7 +2,7 @@
     <v-btn
         class="rounded"
         color="primary"
-        data-testid="confirm-button"
+        :data-testid="dataTestId ?? 'confirm-button'"
         rounded="sm"
         variant="flat"
         density="default"
@@ -20,8 +20,9 @@ withDefaults(
     defineProps<{
         text: string;
         disabled?: boolean;
+        dataTestId?: string;
     }>(),
-    { disabled: false },
+    { disabled: false, dataTestId: undefined },
 );
 
 const emit = defineEmits<{

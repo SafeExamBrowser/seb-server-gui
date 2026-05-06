@@ -1,5 +1,8 @@
 <template>
-    <BasicSettingsPage :title="$t('titles.userAccounts')">
+    <BasicSettingsPage
+        :title="$t('titles.userAccounts')"
+        :data-test-id="dataTestId"
+    >
         <template #ActionButton>
             <AddButton
                 text="userAccount.userAccountPage.addUserContext"
@@ -14,6 +17,7 @@
                     search-text="userAccount.userAccountPage.filters.searchField"
                     :filter-sections="filterSections"
                     :filter-values="selectedFilters"
+                    :data-test-id="dataTestId"
                     dense
                     @search="onSearch"
                     @clear="onClearSearch"
@@ -41,11 +45,14 @@
                                 :detail-route="userAccountDetailRoute"
                                 :cell-formatters="cellFormatters"
                                 :actions="tableActions"
+                                :data-test-id="dataTestId"
+                                item-key="uuid"
                                 @update:options="loadItems"
                             >
-                                <template #cell-active="{ item }">
+                                <template #cell-active="{ item, rowTestId }">
                                     <ActiveStatusChip
                                         :active="!!item.active"
+                                        :data-test-id="`${rowTestId}-status-chip`"
                                         @click="openStatusDialog(item)"
                                     />
                                 </template>
@@ -104,6 +111,8 @@ definePage({
 });
 
 const router = useRouter();
+
+const dataTestId = "userAccounts";
 
 const userAccountDetailRoute = (
     item: TableItem,

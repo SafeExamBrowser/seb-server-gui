@@ -12,16 +12,19 @@
         :no-data-text="$t('general.noData')"
         hover
         hide-default-footer
+        :data-testid="`${dataTestId}-table`"
         @update:options="emit('update:options', $event)"
     >
-        <template #item="{ item }">
+        <template #item="{ item, index }">
             <tr
                 :class="{ 'v-data-table__tr--clickable': !!detailRoute }"
+                :data-testid="rowTestId(getRawItem(item), index)"
                 @click="navigateToItem(getRawItem(item))"
             >
                 <td
                     v-for="header in computedHeaders"
                     :key="header.key"
+                    :data-testid="`${rowTestId(getRawItem(item), index)}-cell-${header.key}`"
                     :class="
                         header.align &&
                         `v-data-table-column--align-${header.align}`
@@ -31,6 +34,7 @@
                         <TableRowActions
                             :item="getRawItem(item)"
                             :actions="actions ?? []"
+                            :data-test-id="rowTestId(getRawItem(item), index)"
                         />
                     </template>
 
@@ -50,6 +54,10 @@
                                     formatCell(header.key, getRawItem(item))
                                 "
                                 :header="header"
+                                :row-test-id="
+                                    rowTestId(getRawItem(item), index)
+                                "
+                                :cell-test-id="`${rowTestId(getRawItem(item), index)}-cell-${header.key}`"
                             >
                                 {{ formatCell(header.key, getRawItem(item)) }}
                             </slot>
@@ -65,6 +73,7 @@
                 :items-per-page="currentItemsPerPage"
                 :page-count="resolvedPageCount"
                 :items-per-page-options="itemsPerPageOptions"
+                :data-test-id="dataTestId"
                 @update:page="onPageUpdate"
                 @update:items-per-page="onItemsPerPageUpdate"
             />
@@ -92,6 +101,7 @@ const props = withDefaults(
         headers: TableHeader[];
         items: TableItem[];
         loading: boolean;
+        dataTestId: string;
         options?: ServerTablePaging;
         itemsPerPage?: number;
         pageCount?: number;
@@ -99,6 +109,10 @@ const props = withDefaults(
         detailRoute?: (item: TableItem) => RouteLocationAsRelative | null;
         actions?: TableAction[];
         cellFormatters?: Record<string, CellFormatter>;
+        // Field on each item used to identify a row for data-testids.
+        // E.g. "uuid" for user accounts, "id" for connections, "alias" for certificates.
+        // When the field is missing the row falls back to the page index.
+        itemKey?: string;
     }>(),
     {
         pageCount: 0,
@@ -108,6 +122,7 @@ const props = withDefaults(
         detailRoute: undefined,
         actions: undefined,
         cellFormatters: () => ({}),
+        itemKey: "id",
     },
 );
 
@@ -141,6 +156,12 @@ const {
     itemsLength: () => props.itemsLength,
     emit: (options) => emit("update:options", options),
 });
+
+function rowTestId(item: TableItem, index: number): string {
+    const id = item[props.itemKey];
+    const suffix = id == null || id === "" ? `index-${index}` : String(id);
+    return `${props.dataTestId}-row-${suffix}`;
+}
 
 async function navigateToItem(item: TableItem) {
     if (!props.detailRoute) return;

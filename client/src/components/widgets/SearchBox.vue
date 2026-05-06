@@ -2,7 +2,7 @@
     <v-text-field
         :model-value="modelValue"
         color="primary"
-        data-testid="search-input"
+        :data-testid="`${dataTestId}-search-input`"
         density="compact"
         hide-details
         :placeholder="translate(searchText)"
@@ -13,7 +13,10 @@
         @keydown.esc="onClearSearch"
     >
         <template #append-inner>
-            <v-icon data-testid="searchIcon-button" @click="onSearch">
+            <v-icon
+                :data-testid="`${dataTestId}-search-icon`"
+                @click="onSearch"
+            >
                 mdi-magnify
             </v-icon>
         </template>
@@ -23,10 +26,14 @@
 <script setup lang="ts">
 import { translate } from "@/utils/generalUtils.ts";
 
-defineProps<{
-    modelValue: string | null;
-    searchText: string;
-}>();
+withDefaults(
+    defineProps<{
+        modelValue: string | null;
+        searchText: string;
+        dataTestId?: string;
+    }>(),
+    { dataTestId: undefined },
+);
 
 const emit = defineEmits<{
     "update:modelValue": [value: string | null];

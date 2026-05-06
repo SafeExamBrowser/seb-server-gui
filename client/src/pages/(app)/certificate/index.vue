@@ -1,5 +1,8 @@
 <template>
-    <BasicSettingsPage :title="$t('titles.certificates')">
+    <BasicSettingsPage
+        :title="$t('titles.certificates')"
+        :data-test-id="dataTestId"
+    >
         <template #ActionButton>
             <div class="d-flex justify-end align-center fill-height">
                 <FormDialog
@@ -29,6 +32,7 @@
                     search-text="certificates.filters.searchField"
                     :filter-sections="[]"
                     :filter-values="{}"
+                    :data-test-id="dataTestId"
                     dense
                     @search="onSearch"
                     @clear="onClearSearch"
@@ -51,9 +55,10 @@
                                 :items-per-page="options.itemsPerPage"
                                 :options="options"
                                 :loading="loading || deleteLoading"
-                                item-identifier-key="alias"
                                 :cell-formatters="cellFormatters"
                                 :actions="tableActions"
+                                :data-test-id="dataTestId"
+                                item-key="alias"
                                 @update:options="loadItems"
                             />
                         </LoadingFallbackComponent>
@@ -95,6 +100,8 @@ definePage({
         isPageBlue: true,
     },
 });
+
+const dataTestId = "certificates";
 
 const { headers: certificatesTableHeaders, cellFormatters } =
     useCertificatesTableHeaders();

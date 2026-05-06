@@ -1,5 +1,9 @@
 <template>
-    <div class="pa-6" :class="{ 'pt-0': dense }">
+    <div
+        class="pa-6"
+        :class="{ 'pt-0': dense }"
+        :data-testid="`${dataTestId}-filters-container`"
+    >
         <v-row align="start">
             <v-col
                 cols="12"
@@ -14,6 +18,7 @@
                 <SearchBox
                     :model-value="modelValue"
                     :search-text="searchText"
+                    :data-test-id="dataTestId"
                     @update:model-value="emit('update:modelValue', $event)"
                     @search="emit('search')"
                     @clear="emit('clear')"
@@ -34,6 +39,7 @@
                 <DatePicker
                     :model-value="dateValue ?? null"
                     density="compact"
+                    :data-test-id="`${dataTestId}-search-date`"
                     @update:model-value="emit('update:dateValue', $event)"
                 />
             </v-col>
@@ -44,6 +50,7 @@
                         v-if="expanded"
                         :sections="filterSections"
                         :model-value="filterValues"
+                        :data-test-id="dataTestId"
                         @update:model-value="
                             emit('update:filterValues', $event)
                         "
@@ -75,6 +82,7 @@
                                 variant="tonal"
                                 closable
                                 class="font-weight-medium"
+                                :data-testid="`${dataTestId}-${pill.testIdSuffix}-active-pill`"
                                 @click:close="clearFilter(pill.sectionKey)"
                             >
                                 {{ pill.option.label }}
@@ -89,6 +97,7 @@
                     color="primary"
                     size="small"
                     class="text-none align-self-start"
+                    :data-testid="`${dataTestId}-toggle-filters-button`"
                     @click="expanded = !expanded"
                 >
                     <v-icon start>
@@ -113,6 +122,7 @@
                     variant="outlined"
                     color="primary"
                     class="text-none"
+                    :data-testid="`${dataTestId}-action-${action.key}-button`"
                     @click="emit('action', action.key)"
                 >
                     <v-icon start>{{ action.icon }}</v-icon>
@@ -135,6 +145,7 @@
                         color="primary"
                         size="small"
                         class="text-none"
+                        :data-testid="`${dataTestId}-search-cancel-button`"
                         @click="clearFilters"
                     >
                         <v-icon start>mdi-close</v-icon>
@@ -152,6 +163,7 @@
                     <ConfirmButton
                         text="general.searchButton"
                         :disabled="searchDisabled"
+                        :data-test-id="`${dataTestId}-search-button`"
                         @click="onSearch"
                     />
                 </div>
@@ -179,6 +191,7 @@ const props = withDefaults(
         searchText: string;
         filterSections: FilterSectionDef[];
         filterValues: TableFilters;
+        dataTestId?: string;
         searchTitle?: string;
         dateTitle?: string;
         dateValue?: Date | null;
@@ -189,6 +202,7 @@ const props = withDefaults(
     {
         actions: () => [],
         searchTitle: "general.searchTitle",
+        dataTestId: undefined,
         dateTitle: undefined,
         dateValue: null,
         dense: false,
@@ -219,12 +233,21 @@ const filtersColMd = computed(() => {
 });
 
 const activePills = computed(() => {
-    const pills: { sectionKey: string; option: FilterOption }[] = [];
+    const pills: {
+        sectionKey: string;
+        testIdSuffix: string;
+        option: FilterOption;
+    }[] = [];
     for (const section of props.filterSections) {
         const val = props.filterValues[section.key];
         if (!val) continue;
         const opt = section.options.find((o) => o.value === val);
-        if (opt) pills.push({ sectionKey: section.key, option: opt });
+        if (opt)
+            pills.push({
+                sectionKey: section.key,
+                testIdSuffix: section.testIdSuffix ?? section.key,
+                option: opt,
+            });
     }
     return pills;
 });

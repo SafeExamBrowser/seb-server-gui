@@ -25,7 +25,14 @@
                 >
                     <v-row>
                         <v-col class="pt-8 pl-12">
-                            <PageTitle :name="props.title" />
+                            <PageTitle
+                                :name="props.title"
+                                :data-test-id="
+                                    props.dataTestId
+                                        ? `${props.dataTestId}-page-title`
+                                        : undefined
+                                "
+                            />
                         </v-col>
 
                         <v-col>
@@ -47,7 +54,11 @@ import HorizontalDividerLine from "@/components/layout/pages/widgets/HorizontalD
 import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
 import PageTitle from "@/components/widgets/PageTitle.vue";
 
-const props = defineProps<{
-    title: string;
-}>();
+const props = withDefaults(
+    defineProps<{
+        title: string;
+        dataTestId?: string;
+    }>(),
+    { dataTestId: undefined },
+);
 </script>

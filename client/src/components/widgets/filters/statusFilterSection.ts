@@ -9,6 +9,7 @@ export function getStatusFilterSection(
     return {
         key: STATUS_FILTER_KEY,
         title: translate(`${translationPrefix}.filters.statusFilter`),
+        testIdSuffix: "statusFilter",
         options: [
             {
                 value: "Active",
