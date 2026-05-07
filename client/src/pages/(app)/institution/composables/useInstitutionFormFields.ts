@@ -8,7 +8,6 @@ const URL_SUFFIX_PATTERN = /^$|^.{3,45}$/;
 export const useInstitutionFormFields = () => {
     const name = ref<string | undefined>(undefined);
     const urlSuffix = ref<string | undefined>(undefined);
-    const themeName = ref<string | undefined>(undefined);
     const logoImage = ref<string | undefined>(undefined);
 
     const t = (key: string) =>
@@ -39,12 +38,6 @@ export const useInstitutionFormFields = () => {
         },
         {
             type: "text",
-            name: "themeName",
-            model: themeName,
-            label: t("labels.themeName"),
-        },
-        {
-            type: "text",
             name: "logoImage",
             model: logoImage,
             label: t("labels.logoImage"),
@@ -55,7 +48,6 @@ export const useInstitutionFormFields = () => {
         formFields,
         name,
         urlSuffix,
-        themeName,
         logoImage,
     };
 };

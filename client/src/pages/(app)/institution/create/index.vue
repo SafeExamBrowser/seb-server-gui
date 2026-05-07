@@ -60,8 +60,7 @@ definePage({
 
 const router = useRouter();
 
-const { formFields, name, urlSuffix, themeName, logoImage } =
-    useInstitutionFormFields();
+const { formFields, name, urlSuffix, logoImage } = useInstitutionFormFields();
 
 const formRef = ref<InstanceType<typeof FormBuilder>>();
 
@@ -78,7 +77,6 @@ async function submit() {
     await createInst({
         name: selectedName,
         urlSuffix: urlSuffix.value || undefined,
-        themeName: themeName.value || undefined,
         logoImage: logoImage.value || undefined,
     });
 

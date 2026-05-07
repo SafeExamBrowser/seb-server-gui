@@ -84,8 +84,7 @@ definePage({
 const route = useRoute("/(app)/institution/[modelId]/");
 const router = useRouter();
 
-const { formFields, name, urlSuffix, themeName, logoImage } =
-    useInstitutionFormFields();
+const { formFields, name, urlSuffix, logoImage } = useInstitutionFormFields();
 
 const formRef = ref<InstanceType<typeof FormBuilder>>();
 const institution = ref<Institution | null>(null);
@@ -102,7 +101,6 @@ onMounted(async () => {
         institution.value = fetched;
         name.value = fetched.name;
         urlSuffix.value = fetched.urlSuffix;
-        themeName.value = fetched.themeName;
         logoImage.value = fetched.logoImage;
     } catch (err) {
         error.value = err instanceof Error ? err.message : "Unknown error";
@@ -122,7 +120,6 @@ async function submit() {
         id: Number(institution.value.modelId),
         name: selectedName,
         urlSuffix: urlSuffix.value || undefined,
-        themeName: themeName.value || undefined,
         logoImage: logoImage.value || undefined,
         active: institution.value.active,
     });

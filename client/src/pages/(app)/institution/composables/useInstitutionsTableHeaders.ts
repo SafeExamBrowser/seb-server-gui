@@ -15,15 +15,7 @@ export function useInstitutionsTableHeaders() {
                 "institutions.institutionPage.tableHeaders.urlSuffix",
             ),
             key: "urlSuffix",
-            width: "25%",
-            sortable: false,
-        },
-        {
-            title: translate(
-                "institutions.institutionPage.tableHeaders.themeName",
-            ),
-            key: "themeName",
-            width: "20%",
+            width: "45%",
             sortable: false,
         },
         {

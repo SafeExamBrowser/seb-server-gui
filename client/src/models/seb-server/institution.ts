@@ -5,7 +5,6 @@ export type Institution = {
     name: string;
     urlSuffix?: string;
     logoImage?: string;
-    themeName?: string;
     active?: boolean;
 };
 
@@ -19,7 +18,6 @@ export type InstitutionResponse = {
 export type CreateInstitutionPar = {
     name: string;
     urlSuffix?: string;
-    themeName?: string;
     logoImage?: string;
 };
 
@@ -27,7 +25,6 @@ export type EditInstitutionPar = {
     id: number;
     name: string;
     urlSuffix?: string;
-    themeName?: string;
     logoImage?: string;
     active?: boolean;
 };
