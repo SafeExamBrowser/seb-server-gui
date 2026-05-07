@@ -60,7 +60,7 @@ export const useSEBSettingsImportForm = (
                     "sebSettings.importDialog.fields.file.hint",
                 ),
                 acceptExtensions: [".seb"],
-                icon: "mdi-file-certificate-outline",
+                icon: "mdi-file-upload-outline",
                 required: true,
             },
             {
