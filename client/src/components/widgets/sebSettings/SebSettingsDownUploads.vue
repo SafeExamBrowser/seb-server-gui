@@ -107,6 +107,15 @@
                         :disabled="context.readonly"
                     />
                 </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="openDownloads"
+                        label="sebSettings.updownloadView.openDownloads"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
             </v-col>
 
             <v-col class="text-subtitle-1">

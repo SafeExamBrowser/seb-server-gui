@@ -377,6 +377,47 @@
                 </v-row>
 
                 <SettingsTitle
+                    label="sebSettings.securityView.ios.title"
+                    :tooltip="false"
+                />
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="mobileAllowSingleAppMode"
+                        label="sebSettings.securityView.ios.mobileAllowSingleAppMode"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="mobileEnableASAM"
+                        label="sebSettings.securityView.ios.mobileEnableASAM"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="mobileEnableGuidedAccessLinkTransform"
+                        label="sebSettings.securityView.ios.mobileEnableGuidedAccessLinkTransform"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="mobilePreventAutoLock"
+                        label="sebSettings.securityView.ios.mobilePreventAutoLock"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+
+                <SettingsTitle
                     label="sebSettings.securityView.clipboard.title"
                     :tooltip="false"
                 />
