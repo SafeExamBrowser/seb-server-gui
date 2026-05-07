@@ -4,6 +4,7 @@ import i18n from "@/i18n";
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
 import {
     CertificateUploadItemTransient,
+    CertKey,
     toCertificateUploadItem,
 } from "@/pages/(app)/certificate/types/types.ts";
 import { useCreateCertificate } from "@/pages/(app)/certificate/composables/api/useCreateCertificate.ts";
@@ -11,10 +12,13 @@ import { useCreateCertificate } from "@/pages/(app)/certificate/composables/api/
 export const useCertificateCreateForm = ({
     onSuccess,
 }: {
-    onSuccess: () => void;
+    onSuccess: (key: CertKey) => void;
 }) => {
-    const { mutateData: uploadCertificate, error: uploadError } =
-        useCreateCertificate();
+    const {
+        data: cert,
+        mutateData: uploadCertificate,
+        error: uploadError,
+    } = useCreateCertificate();
 
     const getEmptyItem = (): CertificateUploadItemTransient => ({
         file: undefined,
@@ -81,7 +85,11 @@ export const useCertificateCreateForm = ({
             );
         }
 
-        onSuccess();
+        const createdName =
+            cert.value?.alias || item.file.name.replace(/\.[^.]+$/i, "");
+        const createdId = cert.value?.alias || createdName;
+
+        onSuccess({ id: createdId, name: createdName });
     };
 
     return {

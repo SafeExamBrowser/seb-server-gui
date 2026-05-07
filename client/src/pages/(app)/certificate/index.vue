@@ -143,7 +143,11 @@ const {
 } = useDeleteCertificate(tableData);
 
 const { getEmptyItem, getFormFields, handleUploadCertificate } =
-    useCertificateCreateForm({ onSuccess: loadItems });
+    useCertificateCreateForm({ onSuccess: onCertificateUpload });
+
+function onCertificateUpload(): void {
+    loadItems();
+}
 
 const deleteTarget = ref<TableItem | null>(null);
 const deleteDialogOpen = ref(false);

@@ -261,8 +261,35 @@
                                                                     .value ===
                                                                 '__UPLOAD__'
                                                             "
-                                                            >mdi-upload</v-icon
                                                         >
+                                                            <FormDialog
+                                                                icon-activator="mdi-plus-circle-outline"
+                                                                color-activator="primary"
+                                                                label-activator=""
+                                                                size-activator="large"
+                                                                label-activator-visible
+                                                                :label-cancel="
+                                                                    $t(
+                                                                        'general.cancelButton',
+                                                                    )
+                                                                "
+                                                                :label-submit="
+                                                                    $t(
+                                                                        'certificates.createDialog.confirmButtonTitle',
+                                                                    )
+                                                                "
+                                                                form-id="form-certificate-upload"
+                                                                :get-form-fields="
+                                                                    getFormFields
+                                                                "
+                                                                :get-item="
+                                                                    getEmptyItem
+                                                                "
+                                                                :on-submit="
+                                                                    handleUploadCertificate
+                                                                "
+                                                            />
+                                                        </v-icon>
                                                     </template>
                                                 </v-list-item>
 
@@ -788,7 +815,8 @@ import {
 import { getConnectionConfiguration } from "@/services/seb-server/connectionConfigurationService.ts";
 import { getCertificates } from "@/services/seb-server/certificateService.ts";
 import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
-import UploadDialog from "@/components/widgets/UploadDialog.vue";
+import { useCertificateCreateForm } from "../../certificate/composables/useCertificateCreateForm";
+import FormDialog from "@/components/widgets/formDialog/FormDialog.vue";
 
 definePage({
     meta: {
@@ -854,6 +882,9 @@ const quitPwdRef = ref<InputLike | null>(null);
 const confirmQuitPwdRef = ref<InputLike | null>(null);
 const userToLastUpdate = ref<UserAccount | null>(null);
 const userNamesOfLastUserToUpdate = ref<string | undefined>(undefined);
+
+const { getEmptyItem, getFormFields, handleUploadCertificate } =
+    useCertificateCreateForm({ onSuccess: onCertImported });
 
 type VuetifyFormLike = {
     validate: () => Promise<{ valid: boolean }>;
