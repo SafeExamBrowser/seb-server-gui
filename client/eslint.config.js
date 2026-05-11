@@ -48,8 +48,6 @@ export default defineConfig([
             // existing exceptions. @TODO: evaluate these again; ideally they can all be removed
             "no-console":
                 process.env.NODE_ENV === "production" ? "warn" : "off", // TODO: this should be "error"
-            "no-debugger":
-                process.env.NODE_ENV === "production" ? "warn" : "off", // TODO: this should be "error"
             "@typescript-eslint/ban-ts-comment": [
                 "error",
                 { "ts-ignore": "allow-with-description" },
