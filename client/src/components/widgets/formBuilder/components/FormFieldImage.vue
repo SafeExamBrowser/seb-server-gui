@@ -21,9 +21,16 @@
                     variant="outlined"
                     rounded
                     :data-testid="`formFieldImage-preview-${index}`"
-                    class="flex-grow-1"
+                    :class="previewAspectRatio ? '' : 'flex-grow-1'"
+                    :max-width="
+                        previewAspectRatio ? PREVIEW_MAX_DIMENSION : undefined
+                    "
                 >
-                    <v-img :src="url" :max-height="300" cover />
+                    <v-img
+                        :src="url"
+                        :aspect-ratio="previewAspectRatio"
+                        :max-height="PREVIEW_MAX_DIMENSION"
+                    />
                     <v-card-actions class="justify-end">
                         <v-btn
                             icon="$clear"
@@ -70,14 +77,18 @@ const props = withDefaults(
         hint?: string;
         maxFiles?: number;
         maxFileSizeMB?: number;
+        previewAspectRatio?: number;
     }>(),
     {
         acceptExtensions: () => [".png", ".jpg", ".jpeg", ".svg"],
         hint: undefined,
         maxFiles: 1,
         maxFileSizeMB: 2,
+        previewAspectRatio: undefined,
     },
 );
+
+const PREVIEW_MAX_DIMENSION = 300;
 
 const acceptAttr = computed(() => props.acceptExtensions.join(","));
 

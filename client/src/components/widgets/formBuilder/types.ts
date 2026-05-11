@@ -92,6 +92,8 @@ export type FormFieldSimple = FormFieldBase &
               acceptExtensions?: string[];
               hint?: string;
               maxFiles?: number;
+              maxFileSizeMB?: number;
+              previewAspectRatio?: number;
           }
     );
 

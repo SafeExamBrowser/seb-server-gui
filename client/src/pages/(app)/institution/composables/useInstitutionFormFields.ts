@@ -27,6 +27,7 @@ export const useInstitutionFormFields = () => {
                 types: LOGO_ACCEPT_EXTENSIONS.join(", "),
             }),
             acceptExtensions: LOGO_ACCEPT_EXTENSIONS,
+            previewAspectRatio: 1,
         },
         {
             type: "text",
