@@ -418,8 +418,7 @@ async function register() {
         } else {
             registerError.value = true;
         }
-    } catch (error) {
-        console.error(error);
+    } catch {
         registerError.value = true;
     }
 }
