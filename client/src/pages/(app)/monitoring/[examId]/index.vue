@@ -134,9 +134,6 @@ const hasGroups = computed(
 //       from the former call.
 async function getOverviewData() {
     if (dataFetching) {
-        console.warn(
-            "********** Skip overview data fetch due to no response from backend",
-        );
         return;
     }
 

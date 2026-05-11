@@ -202,13 +202,15 @@ watch(appBarStoreRef.galleryIsNameSortAsc, async () => {
 });
 
 function assignData() {
-    // @ts-ignore ingore
-    if (typeof group.value.message === "string") {
-        noScreenshotData.value = true;
-        stopIntervalGroup();
-        alertMsgKey.value = "no-group";
-        return;
-    }
+    // TODO @andrei: look into this. Background:
+    // - GroupUuid type doesn't have a message property, yet we check against it here
+    // - Either the type is defined incorrectly or this code never worked at all
+    // if (typeof group.value.message === "string") {
+    //     noScreenshotData.value = true;
+    //     stopIntervalGroup();
+    //     alertMsgKey.value = "no-group";
+    //     return;
+    // }
 
     calcAmountOfWindows();
     noScreenshotData.value = false;

@@ -1277,7 +1277,6 @@ async function editConnectionConfigurationOnly() {
     const idToSend = String(fetchedId.value ?? route.params.id);
 
     if (institutionId.value == null) {
-        console.warn("Skipping save: institutionId is not set");
         return;
     }
 

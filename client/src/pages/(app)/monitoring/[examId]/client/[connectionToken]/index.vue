@@ -69,9 +69,6 @@ onBeforeUnmount(() => {
 //       from the former call.
 async function fetchData() {
     if (dataFetching) {
-        console.warn(
-            "********** Skip client data fetch due to no response from backend",
-        );
         return;
     }
 
