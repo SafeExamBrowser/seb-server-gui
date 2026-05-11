@@ -25,7 +25,7 @@ export function buildBaseNavigationLinks(i18n: I18nLike): BaseNavigationLink[] {
             testId: "layout-exam-button",
         },
         {
-            title: i18n.t("titles.monitoring"),
+            title: i18n.t("titles.monitor"),
             route: typedTo({ name: "/(app)/monitoring/" }),
             icon: "mdi-eye",
             testId: "layout-monitoring-button",
