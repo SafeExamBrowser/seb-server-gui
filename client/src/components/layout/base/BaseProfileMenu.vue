@@ -49,12 +49,14 @@
         <v-card
             class="overflow-hidden"
             elevation="16"
+            max-width="24rem"
             :style="{ borderRadius: '14px' }"
         >
             <div class="bg-primary pa-5 text-white">
                 <div class="d-flex align-center ga-4">
                     <v-avatar
-                        class="font-weight-black text-h6"
+                        class="font-weight-black text-h6 text-white border-sm border-current"
+                        border
                         color="white"
                         density="comfortable"
                         size="x-large"
@@ -81,12 +83,16 @@
                     <v-chip
                         v-for="role in translatedRoles"
                         :key="role"
-                        class="font-weight-bold"
+                        class="font-weight-bold h-auto py-1 text-wrap text-white border-sm border-current"
                         color="white"
+                        label
                         size="small"
                         variant="tonal"
+                        border
                     >
-                        {{ role }}
+                        <span class="text-break">
+                            {{ role }}
+                        </span>
                     </v-chip>
                 </div>
             </div>
@@ -97,68 +103,39 @@
                     :key="action.label"
                 >
                     <v-divider v-if="idx > 0" vertical />
-                    <v-hover v-slot="{ isHovering, props: hoverProps }">
-                        <RouterLink
-                            v-bind="hoverProps"
-                            class="d-flex flex-column flex-1-1-0 ga-2 pa-4 text-decoration-none text-high-emphasis"
-                            :class="{ 'bg-grey-lighten-4': isHovering }"
-                            :to="action.to"
-                            @click="closeMenu"
-                        >
-                            <v-icon
-                                color="primary"
-                                :icon="action.icon"
-                                size="small"
-                            />
-                            <span class="font-weight-medium text-body-2">
-                                {{ action.label }}
-                            </span>
-                        </RouterLink>
-                    </v-hover>
+                    <v-btn
+                        :active="false"
+                        class="flex-1-1-0 text-none"
+                        color="primary"
+                        :prepend-icon="action.icon"
+                        size="small"
+                        stacked
+                        :href="action.href"
+                        :rel="action.rel"
+                        :target="action.target"
+                        :to="action.to"
+                        variant="text"
+                        @click="closeMenu"
+                    >
+                        <span class="font-weight-medium text-body-2">
+                            {{ action.label }}
+                        </span>
+                    </v-btn>
                 </template>
             </div>
 
             <div class="py-1">
-                <div class="d-flex align-center ga-3 px-4 py-2 cursor-pointer">
-                    <v-icon
-                        class="text-medium-emphasis"
-                        icon="mdi-translate"
-                        size="small"
-                    />
-                    <span class="font-weight-medium text-body-2">Language</span>
-                </div>
-
-                <div class="d-flex align-center ga-3 px-4 py-2">
-                    <v-icon
-                        class="text-medium-emphasis"
-                        icon="mdi-theme-light-dark"
-                        size="small"
-                    />
-                    <span class="font-weight-medium text-body-2">Theme</span>
-                    <v-spacer />
-                    <v-btn-toggle
-                        v-model="themePreference"
-                        color="primary"
-                        density="compact"
-                        divided
-                        mandatory
-                        variant="outlined"
-                    >
-                        <v-btn size="x-small" value="light">Light</v-btn>
-                        <v-btn size="x-small" value="system">System</v-btn>
-                        <v-btn size="x-small" value="dark">Dark</v-btn>
-                    </v-btn-toggle>
-                </div>
-
-                <v-divider class="my-1" />
-
-                <div
-                    class="d-flex align-center ga-3 px-4 py-2 text-error cursor-pointer"
+                <v-btn
+                    :active="false"
+                    block
+                    class="justify-start text-none"
+                    color="error"
+                    prepend-icon="mdi-logout"
+                    variant="text"
                     @click="handleLogout"
                 >
-                    <v-icon icon="mdi-logout" size="small" />
                     <span class="font-weight-bold text-body-2">Log out</span>
-                </div>
+                </v-btn>
             </div>
         </v-card>
     </v-menu>
@@ -167,10 +144,8 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
-import { RouterLink } from "vue-router";
 import type { UserAccount } from "@/models/userAccount";
 import { typedTo } from "@/router/typedTo";
-import { useThemePreference } from "@/components/layout/base/useThemePreference";
 
 const props = defineProps<{
     userAccount: UserAccount | null | undefined;
@@ -181,7 +156,6 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
-const { preference: themePreference } = useThemePreference();
 
 const isOpen = ref(false);
 
@@ -228,12 +202,18 @@ const quickActions = computed(() => [
     {
         icon: "mdi-account-cog-outline",
         label: t("titles.profileSettings"),
+        href: undefined,
+        rel: undefined,
+        target: undefined,
         to: typedTo({ name: "/(app)/user-account/profile/" }),
     },
     {
         icon: "mdi-file-document-outline",
         label: "Docs",
-        to: typedTo({ name: "/(app)/" }),
+        href: "https://seb-server.readthedocs.io/en/latest/index.html",
+        rel: "noopener noreferrer",
+        target: "_blank",
+        to: undefined,
     },
 ]);
 
