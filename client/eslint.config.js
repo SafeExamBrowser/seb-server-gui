@@ -47,11 +47,6 @@ export default defineConfig([
         rules: {
             "no-console": "error",
             "no-debugger": "error",
-            // existing exceptions. @TODO: evaluate these again; ideally they can all be removed
-            "@typescript-eslint/ban-ts-comment": [
-                "error",
-                { "ts-ignore": "allow-with-description" },
-            ],
         },
     },
 
