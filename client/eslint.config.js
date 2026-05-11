@@ -55,6 +55,7 @@ export default defineConfig([
         },
     },
 
+    // config for pages etc. (file based routing)
     {
         files: [
             "src/pages/**/index.vue",
