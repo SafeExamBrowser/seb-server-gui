@@ -50,6 +50,9 @@ declare module 'vue-router/auto-routes' {
       | '/(app)/exam/'
       | '/(app)/exam/[id]/'
       | '/(app)/gallery_[uuid]_[examId]/'
+      | '/(app)/institution/'
+      | '/(app)/institution/[id]/'
+      | '/(app)/institution/create/'
       | '/(app)/monitoring/'
       | '/(app)/monitoring/[examId]/'
       | '/(app)/monitoring/[examId]/client/'
@@ -168,6 +171,27 @@ declare module 'vue-router/auto-routes' {
       '/gallery_:uuid()_:examId',
       { uuid: ParamValue<true>, examId: ParamValue<true> },
       { uuid: ParamValue<false>, examId: ParamValue<false> },
+      | never
+    >,
+    '/(app)/institution/': RouteRecordInfo<
+      '/(app)/institution/',
+      '/institution',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/(app)/institution/[id]/': RouteRecordInfo<
+      '/(app)/institution/[id]/',
+      '/institution/:id',
+      { id: ParamValue<true> },
+      { id: ParamValue<false> },
+      | never
+    >,
+    '/(app)/institution/create/': RouteRecordInfo<
+      '/(app)/institution/create/',
+      '/institution/create',
+      Record<never, never>,
+      Record<never, never>,
       | never
     >,
     '/(app)/monitoring/': RouteRecordInfo<
@@ -321,6 +345,9 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/exam/'
         | '/(app)/exam/[id]/'
         | '/(app)/gallery_[uuid]_[examId]/'
+        | '/(app)/institution/'
+        | '/(app)/institution/[id]/'
+        | '/(app)/institution/create/'
         | '/(app)/monitoring/'
         | '/(app)/monitoring/[examId]/'
         | '/(app)/monitoring/[examId]/client/'
@@ -425,6 +452,24 @@ declare module 'vue-router/auto-routes' {
     'src/pages/(app)/gallery_[uuid]_[examId]/index.vue': {
       routes:
         | '/(app)/gallery_[uuid]_[examId]/'
+      views:
+        | never
+    }
+    'src/pages/(app)/institution/index.vue': {
+      routes:
+        | '/(app)/institution/'
+      views:
+        | never
+    }
+    'src/pages/(app)/institution/[id]/index.vue': {
+      routes:
+        | '/(app)/institution/[id]/'
+      views:
+        | never
+    }
+    'src/pages/(app)/institution/create/index.vue': {
+      routes:
+        | '/(app)/institution/create/'
       views:
         | never
     }

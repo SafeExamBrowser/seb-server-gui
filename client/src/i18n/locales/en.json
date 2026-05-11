@@ -85,6 +85,10 @@
             "file": {
                 "hint": "Drop a file here or search through file explorer.",
                 "allowedFileTypes": "Allowed file types:"
+            },
+            "image": {
+                "dropTitle": "Drop an image here or click to browse",
+                "hint": "Allowed types: {types}"
             }
         }
     },
@@ -884,6 +888,58 @@
             "DATA_ENCIPHERMENT": "Encipherment",
             "DATA_ENCIPHERMENT_PRIVATE_KEY": "Identity",
             "KEY_CERT_SIGN": "CA"
+        }
+    },
+    "institutions": {
+        "institutionPage": {
+            "tableHeaders": {
+                "logoImage": "Logo",
+                "name": "Name",
+                "modelId": "ID",
+                "urlSuffix": "URL Suffix",
+                "active": "Status"
+            },
+            "addInstitution": "Add Institution",
+            "filters": {
+                "searchTitle": "Search",
+                "searchField": "Search by Name",
+                "statusFilter": "Status",
+                "activeSelector": "Active",
+                "inactiveSelector": "Inactive"
+            },
+            "deleteDialog": {
+                "title": "Confirm Deletion",
+                "text": "Are you sure you want to delete this institution and all of its dependencies?",
+                "action": "Delete"
+            },
+            "statusDialog": {
+                "activateTitle": "Activate Institution",
+                "deactivateTitle": "Deactivate Institution",
+                "activateText": "Are you sure you want to activate this institution?",
+                "deactivateText": "Are you sure you want to deactivate this institution?",
+                "activateAction": "Activate",
+                "deactivateAction": "Deactivate"
+            }
+        },
+        "createInstitutionPage": {
+            "info": {
+                "creationInfo": "Fill the form to create a new institution."
+            }
+        },
+        "editInstitutionPage": {
+            "info": {
+                "editInfo": "Edit the institution details."
+            }
+        },
+        "institutionFormFields": {
+            "labels": {
+                "name": "Name *",
+                "urlSuffix": "URL Suffix",
+                "logoImage": "Logo Image"
+            },
+            "validation": {
+                "urlSuffix": "URL suffix must be 3 to 45 characters or empty"
+            }
         }
     },
     "sebSettings": {
@@ -1912,6 +1968,11 @@
         "createConnectionConfiguration": "Add Connection Configuration",
         "connectionConfigurations": "Connection Configurations",
         "certificates": "Certificates",
+
+        "institutions": "Institutions",
+        "createInstitution": "Add Institution",
+        "editInstitution": "Edit Institution",
+
         "editExamTemplate": "Edit Exam Template",
         "galleryView": "Gallery View"
     },

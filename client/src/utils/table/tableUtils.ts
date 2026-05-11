@@ -366,7 +366,7 @@ export function assignCertificateSelectPagingOptions(
 }
 
 const sortOrderToSortString = (sortOrder: SortOrder): string => {
-    return `${sortOrder.order === "desc" ? "" : "-"}${sortOrder.key}`;
+    return `${sortOrder.order === "desc" ? "-" : ""}${sortOrder.key}`;
 };
 
 // TODO @Andrei: most of the code in this file can be replaced by using `normaliseBasicListParams` (see `getExamTemplates` for an example)

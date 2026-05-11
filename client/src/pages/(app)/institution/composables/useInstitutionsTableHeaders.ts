@@ -1,0 +1,40 @@
+import { computed } from "vue";
+import { translate } from "@/utils/generalUtils.ts";
+import type { TableHeader } from "@/components/widgets/entity-table/types.ts";
+
+export function useInstitutionsTableHeaders() {
+    const headers = computed<TableHeader[]>(() => [
+        {
+            title: translate(
+                "institutions.institutionPage.tableHeaders.logoImage",
+            ),
+            key: "logoImage",
+            width: "12%",
+            sortable: false,
+        },
+        {
+            title: translate("institutions.institutionPage.tableHeaders.name"),
+            key: "name",
+            width: "30%",
+            sortable: true,
+        },
+        {
+            title: translate(
+                "institutions.institutionPage.tableHeaders.urlSuffix",
+            ),
+            key: "urlSuffix",
+            width: "33%",
+            sortable: false,
+        },
+        {
+            title: translate(
+                "institutions.institutionPage.tableHeaders.active",
+            ),
+            key: "active",
+            width: "10%",
+            sortable: false,
+        },
+    ]);
+
+    return { headers };
+}
