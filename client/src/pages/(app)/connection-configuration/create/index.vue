@@ -42,8 +42,27 @@
                                 <template #prepend>
                                     <v-icon
                                         v-if="item.raw.value === '__UPLOAD__'"
-                                        >mdi-upload</v-icon
                                     >
+                                        <FormDialog
+                                            icon-activator="mdi-plus-circle-outline"
+                                            color-activator="primary"
+                                            label-activator=""
+                                            size-activator="large"
+                                            label-activator-visible
+                                            :label-cancel="
+                                                $t('general.cancelButton')
+                                            "
+                                            :label-submit="
+                                                $t(
+                                                    'certificates.createDialog.confirmButtonTitle',
+                                                )
+                                            "
+                                            form-id="form-certificate-upload"
+                                            :get-form-fields="getFormFields"
+                                            :get-item="getEmptyItem"
+                                            :on-submit="handleUploadCertificate"
+                                        />
+                                    </v-icon>
                                 </template>
                             </v-list-item>
                             <v-divider
@@ -160,9 +179,11 @@ import type { CreateConnectionConfigurationPar } from "@/models/seb-server/conne
 import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
 import HintText from "@/components/widgets/HintText.vue";
-import UploadDialog from "@/components/widgets/UploadDialog.vue";
+import FormDialog from "@/components/widgets/formDialog/FormDialog.vue";
 
 import { useRouter } from "vue-router";
+import { useCertificateCreateForm } from "../../certificate/composables/useCertificateCreateForm.ts";
+import { CertKey } from "../../certificate/types/types.ts";
 definePage({
     meta: {
         titleKey: "titles.createConnectionConfiguration",
@@ -215,10 +236,13 @@ function handleCertChange(val: string | undefined) {
     }
 }
 
-async function onCertImported(created: { id: string; name: string }) {
+async function onCertImported(key: CertKey) {
     await loadCertificates();
-    encryptWithCertificate.value = created.name;
+    encryptWithCertificate.value = key.name;
 }
+
+const { getEmptyItem, getFormFields, handleUploadCertificate } =
+    useCertificateCreateForm({ onSuccess: onCertImported });
 
 async function submit() {
     const mainResult = await mainFormRef.value?.validate();

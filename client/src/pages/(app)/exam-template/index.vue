@@ -6,7 +6,6 @@
                 label: $t('titles.examTemplateList'),
             },
         ]"
-        :data-test-id="dataTestId"
     >
         <template #PanelTop>
             <SearchBar

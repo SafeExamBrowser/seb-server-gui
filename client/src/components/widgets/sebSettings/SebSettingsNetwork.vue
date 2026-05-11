@@ -4,141 +4,159 @@
         :errors="errorSebSettingsView"
     >
         <v-row v-if="singleValues">
-            <CheckboxSetting
-                v-model="singleValues"
-                name="URLFilterEnable"
-                label="sebSettings.networkView.URLFilterEnable"
-                :tooltip="false"
-                :disabled="context.readonly"
-            />
-            <CheckboxSetting
-                v-model="singleValues"
-                name="URLFilterEnableContentFilter"
-                label="sebSettings.networkView.URLFilterEnableContentFilter"
-                :tooltip="false"
-                :disabled="context.readonly"
-            />
-        </v-row>
-
-        <!-- URL Filter Table -->
-        <v-row>
-            <v-col class="font-weight-bold pt-8 pb-0">
+            <v-col>
+                <!-- URL Filter Table -->
                 <v-row>
-                    <v-col>{{
-                        translate("sebSettings.networkView.filterGroupTitle")
-                    }}</v-col>
-                    <v-col align="right">
-                        <v-btn
-                            v-if="urlFilterRuleTable"
-                            color="primary"
-                            density="compact"
-                            :disabled="context.readonly"
-                            icon="mdi-plus-circle-outline"
-                            variant="text"
-                            @click="urlFilterRuleTable.newRow()"
-                        >
-                        </v-btn>
+                    <v-col class="font-weight-bold pt-8 pb-0">
+                        <v-row>
+                            <v-col>{{
+                                translate(
+                                    "sebSettings.networkView.filterGroupTitle",
+                                )
+                            }}</v-col>
+                            <v-col align="right">
+                                <v-btn
+                                    v-if="urlFilterRuleTable"
+                                    color="primary"
+                                    density="compact"
+                                    :disabled="context.readonly"
+                                    icon="mdi-plus-circle-outline"
+                                    variant="text"
+                                    @click="urlFilterRuleTable.newRow()"
+                                >
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                        <v-divider
+                            class="border-opacity-25"
+                            :thickness="5"
+                        ></v-divider>
                     </v-col>
                 </v-row>
-                <v-divider class="border-opacity-25" :thickness="5"></v-divider>
+                <v-row>
+                    <v-col>
+                        <v-row>
+                            <CheckboxSetting
+                                ref="URLFilterEnable"
+                                v-model="singleValues"
+                                name="URLFilterEnable"
+                                label="sebSettings.networkView.URLFilterEnable"
+                                :tooltip="false"
+                                :disabled="context.readonly"
+                            />
+                        </v-row>
+                        <v-row>
+                            <CheckboxSetting
+                                v-model="singleValues"
+                                name="URLFilterEnableContentFilter"
+                                label="sebSettings.networkView.URLFilterEnableContentFilter"
+                                :tooltip="false"
+                                :disabled="context.readonly"
+                            />
+                        </v-row>
+                        <v-row>
+                            <SelectionSetting
+                                v-model="singleValues"
+                                name="URLFilterMessage"
+                                label="sebSettings.networkView.URLFilterMessage"
+                                :labels="true"
+                                :tooltip="true"
+                                :disabled="
+                                    context.readonly ||
+                                    !URLFilterEnableRef?.boolVal
+                                "
+                            />
+                        </v-row>
+                    </v-col>
+                    <v-col>
+                        <v-data-table
+                            v-if="urlFilterRuleTable"
+                            class="rounded-lg elevation-4"
+                            density="compact"
+                            :headers="tableHeaders"
+                            item-value="id"
+                            :items="urlFilterRuleTable.table.value"
+                            :items-per-page="
+                                tableUtils.calcDefaultItemsPerPage(
+                                    urlFilterRuleTable.table.value,
+                                )
+                            "
+                            :items-per-page-options="
+                                tableUtils.calcItemsPerPage(
+                                    urlFilterRuleTable.table.value,
+                                )
+                            "
+                        >
+                            <template
+                                #headers="{
+                                    columns,
+                                    isSorted,
+                                    getSortIcon,
+                                    toggleSort,
+                                }"
+                            >
+                                <TableHeaders
+                                    :columns="columns"
+                                    :get-sort-icon="getSortIcon"
+                                    :header-refs-prop="HeaderRefs"
+                                    :is-sorted="isSorted"
+                                    :toggle-sort="toggleSort"
+                                >
+                                </TableHeaders>
+                            </template>
+
+                            <!-------active hook------->
+                            <template #item.active="{ item }">
+                                {{ translate("general." + item.active, i18n) }}
+                            </template>
+
+                            <!-------regex hook------->
+                            <template #item.regex="{ item }">
+                                {{ translate("general." + item.regex, i18n) }}
+                            </template>
+
+                            <!-------OS hook------->
+                            <template #item.action="{ item }">
+                                {{
+                                    translate(
+                                        "sebSettings.networkView.URLFilterRules.action_" +
+                                            item.action,
+                                        i18n,
+                                    )
+                                }}
+                            </template>
+
+                            <!-------edit button------->
+                            <template #item.edit="{ item }">
+                                <v-btn
+                                    icon="mdi-pencil-outline"
+                                    variant="text"
+                                    @click="
+                                        urlFilterRuleTable.editRow(item.index)
+                                    "
+                                >
+                                </v-btn>
+                            </template>
+
+                            <!-------delete button------->
+                            <template #item.delete="{ item }">
+                                <v-btn
+                                    :disabled="context.readonly"
+                                    icon="mdi-delete-outline"
+                                    variant="text"
+                                    @click="
+                                        urlFilterRuleTable.deleteRow(
+                                            item.index!,
+                                        )
+                                    "
+                                >
+                                </v-btn>
+                            </template>
+                        </v-data-table>
+                    </v-col>
+                </v-row>
             </v-col>
         </v-row>
-        <v-row>
-            <v-col>
-                <v-data-table
-                    v-if="urlFilterRuleTable"
-                    class="rounded-lg elevation-4"
-                    density="compact"
-                    :headers="tableHeaders"
-                    item-value="id"
-                    :items="urlFilterRuleTable.table.value"
-                    :items-per-page="
-                        tableUtils.calcDefaultItemsPerPage(
-                            urlFilterRuleTable.table.value,
-                        )
-                    "
-                    :items-per-page-options="
-                        tableUtils.calcItemsPerPage(
-                            urlFilterRuleTable.table.value,
-                        )
-                    "
-                >
-                    <template
-                        #headers="{
-                            columns,
-                            isSorted,
-                            getSortIcon,
-                            toggleSort,
-                        }"
-                    >
-                        <TableHeaders
-                            :columns="columns"
-                            :get-sort-icon="getSortIcon"
-                            :header-refs-prop="HeaderRefs"
-                            :is-sorted="isSorted"
-                            :toggle-sort="toggleSort"
-                        >
-                        </TableHeaders>
-                    </template>
-
-                    <!-------active hook------->
-                    <template #item.active="{ item }">
-                        {{ translate("general." + item.active, i18n) }}
-                    </template>
-
-                    <!-------regex hook------->
-                    <template #item.regex="{ item }">
-                        {{ translate("general." + item.regex, i18n) }}
-                    </template>
-
-                    <!-------OS hook------->
-                    <template #item.action="{ item }">
-                        {{
-                            translate(
-                                "sebSettings.networkView.URLFilterRules.action_" +
-                                    item.action,
-                                i18n,
-                            )
-                        }}
-                    </template>
-
-                    <!-------edit button------->
-                    <template #item.edit="{ item }">
-                        <v-btn
-                            icon="mdi-pencil-outline"
-                            variant="text"
-                            @click="urlFilterRuleTable.editRow(item.index)"
-                        >
-                        </v-btn>
-                    </template>
-
-                    <!-------delete button------->
-                    <template #item.delete="{ item }">
-                        <v-btn
-                            :disabled="context.readonly"
-                            icon="mdi-delete-outline"
-                            variant="text"
-                            @click="urlFilterRuleTable.deleteRow(item.index!)"
-                        >
-                        </v-btn>
-                    </template>
-                </v-data-table>
-            </v-col>
-        </v-row>
-
-        <!-----------edit url filter dialog---------->
-        <v-dialog
-            v-if="urlFilterRuleTable"
-            v-model="urlFilterRuleTable.dialog.value"
-            max-width="800"
-        >
-            <EditURLFilterRule
-                :read-only="context.readonly"
-                :url-filter-rule="urlFilterRuleTable.selectedRow.value"
-                @close-edit-u-r-l-filter-rule="urlFilterRuleTable.closeDialog"
-            >
-            </EditURLFilterRule>
-        </v-dialog>
 
         <v-row>
             <v-col class="font-weight-bold pt-8 pb-0">
@@ -187,6 +205,15 @@
                         name="FTPPassive"
                         label="sebSettings.networkView.FTPPassive"
                         :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="pinEmbeddedCertificates"
+                        label="sebSettings.networkView.pinEmbeddedCertificates"
+                        :tooltip="true"
                         :disabled="context.readonly"
                     />
                 </v-row>
@@ -555,6 +582,20 @@
                 </v-expansion-panels>
             </v-col>
         </v-row>
+
+        <!-----------edit url filter dialog---------->
+        <v-dialog
+            v-if="urlFilterRuleTable"
+            v-model="urlFilterRuleTable.dialog.value"
+            max-width="800"
+        >
+            <EditURLFilterRule
+                :read-only="context.readonly"
+                :url-filter-rule="urlFilterRuleTable.selectedRow.value"
+                @close-edit-u-r-l-filter-rule="urlFilterRuleTable.closeDialog"
+            >
+            </EditURLFilterRule>
+        </v-dialog>
     </LoadingFallbackComponent>
 </template>
 
@@ -569,12 +610,15 @@ import CheckboxSetting from "./components/inputFields/CheckboxSetting.vue";
 import RadioSetting from "./components/inputFields/RadioSetting.vue";
 import TextSetting from "./components/inputFields/TextSetting.vue";
 import NumberSetting from "./components/inputFields/NumberSetting.vue";
+import SelectionSetting from "./components/inputFields/SelectionSetting.vue";
 import { useSEBSettingValues } from "./composables/useSEBSettingValues.ts";
 import { SEBSettingsContext } from "./types.ts";
+import EditURLFilterRule from "./components/tableDialogs/EditURLFilterRule.vue";
 import {
     HeaderRefs,
     useURLFilterRuleTable,
 } from "./composables/useURLFilterTable.ts";
+import { useTemplateRef } from "vue";
 
 const i18n = useI18n();
 
@@ -597,4 +641,6 @@ const { urlFilterRuleTable, tableHeaders } = useURLFilterRuleTable(
     tableValues,
     singleValues,
 );
+
+const URLFilterEnableRef = useTemplateRef("URLFilterEnable");
 </script>

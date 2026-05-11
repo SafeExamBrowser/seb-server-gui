@@ -50,3 +50,4 @@ If you're just working on the frontend part (SEB Server GUI), this is the easies
 
 - We use [Claude Code](https://claude.com/product/claude-code)
 - Shared config for Claude is in `.claude`
+- Skills are managed with [skills.sh](https://skills.sh). Runn `npx skills update` every now and then.
