@@ -785,8 +785,9 @@
             </v-row>
         </v-col>
 
+        <!-- TODO @Andreas: This is a leftover from the recent refactoring of these kinds of dialogs.UploadDialog does not exist anymore. Please fix this -->
         <!-- Upload Certificate Dialog-->
-        <UploadDialog
+        <!-- <UploadDialog
             ref="uploadDialog"
             v-model="certDialog"
             name-prefix="certificates"
@@ -795,7 +796,7 @@
             :show-quit-password="false"
             :default-ext-list="['.p12', '.pfx', '.pem', '.crt', '.cer']"
             @uploaded="onCertImported"
-        />
+        /> -->
     </v-row>
 </template>
 
