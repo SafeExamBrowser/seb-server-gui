@@ -6,51 +6,205 @@
                 label: $t('titles.examTemplateList'),
             },
         ]"
+        :data-test-id="dataTestId"
     >
         <template #PanelTop>
             <SearchBar
-                v-model="searchInput"
+                v-model="searchInputValue"
                 search-text="examTemplateList.info.nameSearchPlaceholder"
-                search-title="examTemplateList.info.name"
                 :filter-sections="filterSections"
                 :filter-values="selectedFilters"
-                @search="handleSearch"
-                @clear="handleClear"
-                @update:filter-values="handleFiltersUpdate"
-                @clear-filters="handleFiltersReset"
+                :data-test-id="dataTestId"
+                @search="onSearch"
+                @clear="onClearSearch"
+                @update:filter-values="setFilters"
+                @clear-filters="clearAll"
             />
         </template>
         <template #PanelMain>
+            <div v-if="deleteError" class="px-6 pt-4 text-error">
+                {{ deleteError }}
+            </div>
+            <div v-else-if="copyError" class="px-6 pt-4 text-error">
+                {{ copyError }}
+            </div>
             <LoadingFallbackComponent :loading="false" :errors="errors">
-                <ExamTemplateTable
+                <EntityTable
                     :headers="headers"
-                    :items="examTemplates"
-                    :items-length="totalItems"
-                    :is-loading="isLoading"
-                    :sort-by="sortBy"
-                    @update:items="handleItemsUpdate"
-                    @update:options="handleOptionsUpdate"
-                />
+                    :items="items"
+                    :page-count="pageCount"
+                    :items-per-page="options.itemsPerPage"
+                    :options="options"
+                    :loading="tableLoading"
+                    :detail-route="examTemplateDetailRoute"
+                    :cell-formatters="cellFormatters"
+                    :actions="tableActions"
+                    :data-test-id="dataTestId"
+                    @update:options="loadItems"
+                >
+                    <template #cell-examType="{ formattedValue }">
+                        <v-chip size="small" variant="tonal">
+                            {{ formattedValue }}
+                        </v-chip>
+                    </template>
+                </EntityTable>
             </LoadingFallbackComponent>
         </template>
     </BasicPage>
+
+    <DeleteConfirmDialog
+        v-model="deleteDialogOpen"
+        :detail-text="deleteDetailText"
+        translation-key-prefix="examTemplateList"
+        @confirm="confirmDelete"
+    />
 </template>
 
 <script setup lang="ts">
+import { computed, ref } from "vue";
+import { useRouter, type RouteLocationAsRelative } from "vue-router";
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import SearchBar from "@/components/widgets/searches/SearchBar.vue";
-import ExamTemplateTable from "./components/ExamTemplateTable.vue";
+import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
+import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import { useExamTemplateList } from "./composables/useExamTemplateList.ts";
+import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
+import type { TableItem } from "@/components/widgets/entity-table/types.ts";
+import { useExamTemplates } from "./composables/api/useExamTemplates.ts";
+import { useDeleteExamTemplate } from "./composables/api/useDeleteExamTemplate.ts";
+import { useCopyExamTemplate } from "./composables/api/useCopyExamTemplate.ts";
+import { useExamTemplateTableHeaders } from "./composables/useExamTemplateTableHeaders.ts";
+import { useExamTemplateTableActions } from "./composables/useExamTemplateTableActions.ts";
+import {
+    useExamTemplateFilters,
+    EXAM_TYPE_FILTER_KEY,
+} from "./composables/useExamTemplateFilters.ts";
+
+const dataTestId = "examTemplates";
+
+const router = useRouter();
+
+const examTemplateDetailRoute = (
+    item: TableItem,
+): RouteLocationAsRelative | null =>
+    typeof item.id === "number"
+        ? {
+              name: "/(app)/exam-template/[id]/",
+              params: { id: String(item.id) },
+          }
+        : null;
+
+const { headers, cellFormatters } = useExamTemplateTableHeaders();
+const filterSections = useExamTemplateFilters();
 
 const {
-    search: { filterSections, searchInput, selectedFilters },
-    table: { headers, examTemplates, totalItems, isLoading, errors, sortBy },
-    handleSearch,
-    handleClear,
-    handleFiltersUpdate,
-    handleFiltersReset,
-    handleOptionsUpdate,
-    handleItemsUpdate,
-} = useExamTemplateList();
+    searchInputValue,
+    searchField,
+    selectedFilters,
+    options,
+    loadItems,
+    onSearch,
+    onClearSearch,
+    setFilters,
+    clearAll,
+} = useUrlTableState(async () => {
+    await fetchExamTemplates();
+}, [EXAM_TYPE_FILTER_KEY]);
+
+options.value.sortBy = [{ key: "name", order: "asc" }];
+
+const selectedExamType = computed(
+    () => selectedFilters.value[EXAM_TYPE_FILTER_KEY],
+);
+
+const {
+    data,
+    loading: isLoading,
+    error,
+    fetchData: fetchExamTemplates,
+} = useExamTemplates(options, searchField, selectedExamType);
+
+const items = computed(() => data.value?.content ?? []);
+const pageCount = computed(() => data.value?.number_of_pages ?? 0);
+const errors = computed(() => (error.value ? [error.value] : []));
+
+const {
+    mutateData: deleteTemplate,
+    loading: deleteLoading,
+    error: deleteError,
+} = useDeleteExamTemplate();
+const {
+    mutateData: copyTemplate,
+    loading: copyLoading,
+    error: copyError,
+} = useCopyExamTemplate();
+
+const tableLoading = computed(
+    () => isLoading.value || deleteLoading.value || copyLoading.value,
+);
+
+const reloadAndClampPage = async () => {
+    await fetchExamTemplates();
+    const total = pageCount.value;
+    if (options.value.page <= total) {
+        return;
+    }
+    options.value.page = Math.max(1, total);
+    await fetchExamTemplates();
+};
+
+const deleteTarget = ref<TableItem | null>(null);
+const deleteDialogOpen = ref(false);
+
+const deleteDetailText = computed(() =>
+    deleteTarget.value ? String(deleteTarget.value.name ?? "") : "",
+);
+
+const openDeleteDialog = (item: TableItem) => {
+    deleteTarget.value = item;
+    deleteDialogOpen.value = true;
+};
+
+const confirmDelete = async () => {
+    const id = deleteTarget.value?.id;
+    deleteDialogOpen.value = false;
+
+    if (typeof id !== "number") {
+        return;
+    }
+
+    await deleteTemplate(id);
+
+    if (deleteError.value !== undefined) {
+        return;
+    }
+
+    await reloadAndClampPage();
+};
+
+const tableActions = useExamTemplateTableActions({
+    onEdit: (item) => {
+        const target = examTemplateDetailRoute(item);
+
+        if (!target) {
+            return;
+        }
+
+        void router.push(target);
+    },
+    onCopy: async (item) => {
+        if (typeof item.id !== "number") {
+            return;
+        }
+
+        await copyTemplate(item.id);
+
+        if (copyError.value !== undefined) {
+            return;
+        }
+
+        await fetchExamTemplates();
+    },
+    onDelete: openDeleteDialog,
+});
 </script>
