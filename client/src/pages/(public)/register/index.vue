@@ -292,13 +292,13 @@
                                             )
                                         "
                                     >
-                                        <router-link
+                                        <RouterLink
                                             :to="{ name: '/(public)/login/' }"
                                             >{{
                                                 translate(
                                                     "userAccount.registerPage.buttons.login",
                                                 )
-                                            }}</router-link
+                                            }}</RouterLink
                                         >
                                     </span>
                                 </div>
@@ -320,7 +320,8 @@ import { useI18n } from "vue-i18n";
 import { Institution } from "@/models/seb-server/institution";
 import { getInstitutions } from "@/services/seb-server/institutionService.ts";
 import { registerUserAccount } from "@/services/seb-server/userAccountService.ts";
-import { useRouter } from "vue-router";
+import { RouterLink, useRouter } from "vue-router";
+import AlertMsg from "@/components/widgets/AlertMsg.vue";
 
 definePage({
     meta: {

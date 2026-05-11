@@ -61,6 +61,7 @@
 </template>
 
 <script setup lang="ts">
+import AlertMsg from "@/components/widgets/AlertMsg.vue";
 import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useAppBarStore } from "@/stores/store";

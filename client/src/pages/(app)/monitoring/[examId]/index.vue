@@ -67,6 +67,7 @@
 </template>
 
 <script setup lang="ts">
+import AlertMsg from "@/components/widgets/AlertMsg.vue";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import MonitoringOverviewIndicators from "./components/MonitoringOverviewIndicators.vue";
 import * as indicatorService from "@/services/seb-server/indicatorService.ts";

@@ -51,6 +51,7 @@ import { translate } from "@/utils/generalUtils";
 import ContainerProfileMenu from "@/components/layout/container/ContainerProfileMenu.vue";
 import ContainerRouteActions from "@/components/layout/container/ContainerRouteActions.vue";
 import type { RouteLocationAsRelative } from "vue-router";
+import { RouterLink } from "vue-router";
 
 defineProps<{
     homeRoute: RouteLocationAsRelative;

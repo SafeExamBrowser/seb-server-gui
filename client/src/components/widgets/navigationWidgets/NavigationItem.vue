@@ -5,14 +5,14 @@
         />
 
         <v-list-item class="px-0 nav-hover">
-            <router-link
+            <RouterLink
                 v-if="to"
                 class="link-color nav-link"
                 :data-testid="testId"
                 :to="to"
             >
                 {{ label }}
-            </router-link>
+            </RouterLink>
 
             <span v-else class="link-color nav-link" :data-testid="testId">
                 {{ label }}
@@ -23,6 +23,7 @@
 
 <script setup lang="ts">
 import type { NavigationSectionTarget } from "@/components/widgets/navigationWidgets/types.ts";
+import { RouterLink } from "vue-router";
 
 withDefaults(
     defineProps<{
