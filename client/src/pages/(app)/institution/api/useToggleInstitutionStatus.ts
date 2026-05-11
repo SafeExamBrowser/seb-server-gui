@@ -13,7 +13,7 @@ export const useToggleInstitutionStatus = (
     const error = ref<string>();
 
     const changeInstitutionStatus = async (
-        modelId: string,
+        id: number,
         active: boolean,
     ): Promise<boolean> => {
         loading.value = true;
@@ -21,8 +21,8 @@ export const useToggleInstitutionStatus = (
 
         try {
             const response = active
-                ? await deactivateInstitution(modelId)
-                : await activateInstitution(modelId);
+                ? await deactivateInstitution(id)
+                : await activateInstitution(id);
 
             if (response === null) {
                 throw new Error("Failed to change institution status.");
@@ -31,9 +31,7 @@ export const useToggleInstitutionStatus = (
             if (institutions.value?.content) {
                 institutions.value.content = institutions.value.content.map(
                     (inst) =>
-                        inst.modelId === modelId
-                            ? { ...inst, active: !active }
-                            : inst,
+                        inst.id === id ? { ...inst, active: !active } : inst,
                 );
             }
 
@@ -49,20 +47,22 @@ export const useToggleInstitutionStatus = (
     const changeInstitutionStatusFromItem = async (
         item: Record<string, unknown>,
     ): Promise<boolean> => {
-        const modelId = item.modelId;
+        const id = item.id;
         const active = item.active;
 
-        if (typeof modelId !== "string") {
-            error.value = "Invalid institution identifier.";
-            return false;
+        if (typeof id !== "number") {
+            throw new Error(
+                "useToggleInstitutionStatus: row item is missing a numeric id",
+            );
         }
 
         if (typeof active !== "boolean") {
-            error.value = "Invalid institution status.";
-            return false;
+            throw new Error(
+                "useToggleInstitutionStatus: row item is missing a boolean active flag",
+            );
         }
 
-        return changeInstitutionStatus(modelId, active);
+        return changeInstitutionStatus(id, active);
     };
 
     return {

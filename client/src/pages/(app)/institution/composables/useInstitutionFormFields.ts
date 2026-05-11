@@ -6,18 +6,6 @@ import { FormField } from "@/components/widgets/formBuilder/types.ts";
 const URL_SUFFIX_PATTERN = /^$|^.{3,45}$/;
 const LOGO_ACCEPT_EXTENSIONS = [".png", ".jpg", ".jpeg", ".svg"];
 
-export const fileToBase64 = (file: File): Promise<string> =>
-    new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-            const result = String(reader.result);
-            const comma = result.indexOf(",");
-            resolve(comma >= 0 ? result.slice(comma + 1) : result);
-        };
-        reader.onerror = () => reject(reader.error);
-        reader.readAsDataURL(file);
-    });
-
 export const useInstitutionFormFields = () => {
     const name = ref<string | undefined>(undefined);
     const urlSuffix = ref<string | undefined>(undefined);
@@ -39,7 +27,6 @@ export const useInstitutionFormFields = () => {
                 types: LOGO_ACCEPT_EXTENSIONS.join(", "),
             }),
             acceptExtensions: LOGO_ACCEPT_EXTENSIONS,
-            maxFiles: 2,
         },
         {
             type: "text",

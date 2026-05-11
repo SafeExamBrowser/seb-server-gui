@@ -70,11 +70,8 @@ import {
     editInstitution,
     getInstitutionById,
 } from "@/services/seb-server/institutionService.ts";
-import {
-    fileToBase64,
-    useInstitutionFormFields,
-} from "@/pages/(app)/institution/composables/useInstitutionFormFields.ts";
-import type { Institution } from "@/models/seb-server/institution.ts";
+import { useInstitutionFormFields } from "@/pages/(app)/institution/composables/useInstitutionFormFields.ts";
+import type { InstitutionAdmin } from "@/models/seb-server/institution.ts";
 
 definePage({
     meta: {
@@ -84,13 +81,13 @@ definePage({
     },
 });
 
-const route = useRoute("/(app)/institution/[modelId]/");
+const route = useRoute("/(app)/institution/[id]/");
 const router = useRouter();
 
 const { formFields, name, urlSuffix, logoImage } = useInstitutionFormFields();
 
 const formRef = ref<InstanceType<typeof FormBuilder>>();
-const institution = ref<Institution | null>(null);
+const institution = ref<InstitutionAdmin | null>(null);
 const loading = ref(false);
 const error = ref<string>();
 
@@ -100,7 +97,13 @@ const { mutateData: saveInstitution, data: savedInstitution } =
 onMounted(async () => {
     loading.value = true;
     try {
-        const fetched = await getInstitutionById(String(route.params.modelId));
+        const id = Number(route.params.id);
+        if (!Number.isInteger(id)) {
+            throw new Error(
+                `Invalid institution id in route: ${String(route.params.id)}`,
+            );
+        }
+        const fetched = await getInstitutionById(id);
         institution.value = fetched;
         name.value = fetched.name;
         urlSuffix.value = fetched.urlSuffix;
@@ -119,19 +122,11 @@ async function submit() {
     const selectedName = name.value;
     if (!selectedName) return;
 
-    const logo = logoImage.value[0];
-    let logoToSend: string | undefined;
-    if (logo instanceof File) {
-        logoToSend = await fileToBase64(logo);
-    } else if (typeof logo === "string") {
-        logoToSend = logo;
-    }
-
     await saveInstitution({
-        id: Number(institution.value.modelId),
+        id: institution.value.id,
         name: selectedName,
         urlSuffix: urlSuffix.value || undefined,
-        logoImage: logoToSend || undefined,
+        logoImage: logoImage.value[0],
         active: institution.value.active,
     });
 

@@ -1,7 +1,11 @@
 export type Institution = {
     modelId: string;
     entityType?: "INSTITUTION";
-    id?: number;
+    name: string;
+};
+
+export type InstitutionAdmin = {
+    id: number;
     name: string;
     urlSuffix?: string;
     logoImage?: string;
@@ -12,19 +16,19 @@ export type InstitutionResponse = {
     number_of_pages: number;
     page_number: number;
     page_size: number;
-    content: Institution[];
+    content: InstitutionAdmin[];
 };
 
 export type CreateInstitutionPar = {
     name: string;
     urlSuffix?: string;
-    logoImage?: string;
+    logoImage?: File | string;
 };
 
 export type EditInstitutionPar = {
     id: number;
     name: string;
     urlSuffix?: string;
-    logoImage?: string;
+    logoImage?: File | string;
     active?: boolean;
 };

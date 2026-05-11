@@ -48,10 +48,7 @@ import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
 import HintText from "@/components/widgets/HintText.vue";
 import { useMutation } from "@/composables/useMutation.ts";
 import { createInstitution } from "@/services/seb-server/institutionService.ts";
-import {
-    fileToBase64,
-    useInstitutionFormFields,
-} from "@/pages/(app)/institution/composables/useInstitutionFormFields.ts";
+import { useInstitutionFormFields } from "@/pages/(app)/institution/composables/useInstitutionFormFields.ts";
 
 definePage({
     meta: {
@@ -77,18 +74,10 @@ async function submit() {
     const selectedName = name.value;
     if (!selectedName) return;
 
-    const logo = logoImage.value[0];
-    let logoBase64: string | undefined;
-    if (logo instanceof File) {
-        logoBase64 = await fileToBase64(logo);
-    } else if (typeof logo === "string") {
-        logoBase64 = logo;
-    }
-
     await createInst({
         name: selectedName,
         urlSuffix: urlSuffix.value || undefined,
-        logoImage: logoBase64 || undefined,
+        logoImage: logoImage.value[0],
     });
 
     if (createdInstitution.value) {

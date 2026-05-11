@@ -3,6 +3,7 @@ import {
     CreateInstitutionPar,
     EditInstitutionPar,
     Institution,
+    InstitutionAdmin,
     InstitutionResponse,
 } from "@/models/seb-server/institution";
 import { BasicListParams } from "@/services/types";
@@ -36,9 +37,45 @@ export const getInstitutionLogo = async (
         })
     ).data;
 
-const normalizeInstitution = (i: Institution): Institution => ({
+const RAW_LOGO_MIME = "image/png";
+
+const decodeLogo = (raw: string | undefined): string | undefined => {
+    if (!raw) return undefined;
+    return raw.startsWith("data:")
+        ? raw
+        : `data:${RAW_LOGO_MIME};base64,${raw}`;
+};
+
+const encodeLogo = (url: string | undefined): string | undefined => {
+    if (!url) return undefined;
+    if (!url.startsWith("data:")) return url;
+    const comma = url.indexOf(",");
+    return comma >= 0 ? url.slice(comma + 1) : url;
+};
+
+const fileToBase64 = (file: File): Promise<string> =>
+    new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+            const result = String(reader.result);
+            const comma = result.indexOf(",");
+            resolve(comma >= 0 ? result.slice(comma + 1) : result);
+        };
+        reader.onerror = () => reject(reader.error);
+        reader.readAsDataURL(file);
+    });
+
+const serializeLogo = async (
+    logo: File | string | undefined,
+): Promise<string | undefined> => {
+    if (!logo) return undefined;
+    if (logo instanceof File) return fileToBase64(logo);
+    return encodeLogo(logo);
+};
+
+const decodeAdmin = (i: InstitutionAdmin): InstitutionAdmin => ({
     ...i,
-    modelId: i.modelId ?? (i.id != null ? String(i.id) : ""),
+    logoImage: decodeLogo(i.logoImage),
 });
 
 export const getInstitutionsAdmin = async ({
@@ -66,68 +103,72 @@ export const getInstitutionsAdmin = async ({
 
     return {
         ...response,
-        content: response.content.map(normalizeInstitution),
+        content: response.content.map(decodeAdmin),
     };
 };
 
 export const getInstitutionById = async (
-    modelId: string,
-): Promise<Institution> => {
+    id: number,
+): Promise<InstitutionAdmin> => {
     const data = (
         await apiService.getRequest({
-            url: `${adminBaseUrl}/${modelId}`,
+            url: `${adminBaseUrl}/${id}`,
             options: { _authType: "seb" },
         })
-    ).data as Institution;
-    return normalizeInstitution(data);
+    ).data as InstitutionAdmin;
+    return decodeAdmin(data);
 };
 
 export const createInstitution = async (
     institution: CreateInstitutionPar,
-): Promise<Institution> =>
-    (
+): Promise<InstitutionAdmin> => {
+    const logoImage = await serializeLogo(institution.logoImage);
+    return (
         await apiService.postRequest({
             url: adminBaseUrl,
-            data: institution,
+            data: { ...institution, logoImage },
             options: { _authType: "seb" },
         })
     ).data;
+};
 
 export const editInstitution = async (
     institution: EditInstitutionPar,
-): Promise<Institution> =>
-    (
+): Promise<InstitutionAdmin> => {
+    const logoImage = await serializeLogo(institution.logoImage);
+    return (
         await apiService.putRequest({
             url: adminBaseUrl,
-            data: institution,
+            data: { ...institution, logoImage },
             options: { _authType: "seb" },
         })
     ).data;
+};
 
-export const deleteInstitution = async (modelId: string): Promise<unknown> =>
+export const deleteInstitution = async (id: number): Promise<unknown> =>
     (
         await apiService.deleteRequest({
-            url: `${adminBaseUrl}/${modelId}`,
+            url: `${adminBaseUrl}/${id}`,
             options: { _authType: "seb" },
         })
     ).data;
 
 export const activateInstitution = async (
-    modelId: string,
-): Promise<Institution> =>
+    id: number,
+): Promise<InstitutionAdmin> =>
     (
         await apiService.postRequest({
-            url: `${adminBaseUrl}/${modelId}/active`,
+            url: `${adminBaseUrl}/${id}/active`,
             options: { _authType: "seb" },
         })
     ).data;
 
 export const deactivateInstitution = async (
-    modelId: string,
-): Promise<Institution> =>
+    id: number,
+): Promise<InstitutionAdmin> =>
     (
         await apiService.postRequest({
-            url: `${adminBaseUrl}/${modelId}/inactive`,
+            url: `${adminBaseUrl}/${id}/inactive`,
             options: { _authType: "seb" },
         })
     ).data;

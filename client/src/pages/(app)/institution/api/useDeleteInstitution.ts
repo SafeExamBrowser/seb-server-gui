@@ -9,12 +9,12 @@ export const useDeleteInstitution = (
     const loading = ref(false);
     const error = ref<string>();
 
-    const removeInstitution = async (modelId: string): Promise<boolean> => {
+    const removeInstitution = async (id: number): Promise<boolean> => {
         loading.value = true;
         error.value = undefined;
 
         try {
-            const response = await deleteInstitution(modelId);
+            const response = await deleteInstitution(id);
 
             if (response === null) {
                 throw new Error("Failed to delete institution.");
@@ -22,7 +22,7 @@ export const useDeleteInstitution = (
 
             if (institutions.value?.content) {
                 institutions.value.content = institutions.value.content.filter(
-                    (inst) => inst.modelId !== modelId,
+                    (inst) => inst.id !== id,
                 );
             }
 
@@ -38,14 +38,15 @@ export const useDeleteInstitution = (
     const removeInstitutionFromItem = async (
         item: Record<string, unknown>,
     ): Promise<boolean> => {
-        const modelId = item.modelId;
+        const id = item.id;
 
-        if (typeof modelId !== "string") {
-            error.value = "Invalid Institution identifier.";
-            return false;
+        if (typeof id !== "number") {
+            throw new Error(
+                "useDeleteInstitution: row item is missing a numeric id",
+            );
         }
 
-        return removeInstitution(modelId);
+        return removeInstitution(id);
     };
 
     return {

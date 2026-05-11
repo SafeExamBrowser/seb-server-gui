@@ -45,7 +45,7 @@
                                 :detail-route="institutionDetailRoute"
                                 :actions="tableActions"
                                 :data-test-id="dataTestId"
-                                item-key="modelId"
+                                item-key="id"
                                 @update:options="loadItems"
                             >
                                 <template #cell-logoImage="{ item, rowTestId }">
@@ -124,10 +124,10 @@ const dataTestId = "institutions";
 const institutionDetailRoute = (
     item: TableItem,
 ): RouteLocationAsRelative | null =>
-    item.modelId != null
+    typeof item.id === "number"
         ? {
-              name: "/(app)/institution/[modelId]/",
-              params: { modelId: String(item.modelId) },
+              name: "/(app)/institution/[id]/",
+              params: { id: String(item.id) },
           }
         : null;
 
@@ -215,8 +215,7 @@ async function confirmStatusChange() {
 
 function logoSrcOf(item: TableItem): string | undefined {
     const logo = item.logoImage;
-    if (typeof logo !== "string" || logo === "") return undefined;
-    return logo.startsWith("data:") ? logo : `data:image/png;base64,${logo}`;
+    return typeof logo === "string" && logo !== "" ? logo : undefined;
 }
 
 const tableActions = useInstitutionsTableActions({

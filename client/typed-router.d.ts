@@ -51,7 +51,7 @@ declare module 'vue-router/auto-routes' {
       | '/(app)/exam/[id]/'
       | '/(app)/gallery_[uuid]_[examId]/'
       | '/(app)/institution/'
-      | '/(app)/institution/[modelId]/'
+      | '/(app)/institution/[id]/'
       | '/(app)/institution/create/'
       | '/(app)/monitoring/'
       | '/(app)/monitoring/[examId]/'
@@ -180,11 +180,11 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/(app)/institution/[modelId]/': RouteRecordInfo<
-      '/(app)/institution/[modelId]/',
-      '/institution/:modelId',
-      { modelId: ParamValue<true> },
-      { modelId: ParamValue<false> },
+    '/(app)/institution/[id]/': RouteRecordInfo<
+      '/(app)/institution/[id]/',
+      '/institution/:id',
+      { id: ParamValue<true> },
+      { id: ParamValue<false> },
       | never
     >,
     '/(app)/institution/create/': RouteRecordInfo<
@@ -346,7 +346,7 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/exam/[id]/'
         | '/(app)/gallery_[uuid]_[examId]/'
         | '/(app)/institution/'
-        | '/(app)/institution/[modelId]/'
+        | '/(app)/institution/[id]/'
         | '/(app)/institution/create/'
         | '/(app)/monitoring/'
         | '/(app)/monitoring/[examId]/'
@@ -461,9 +461,9 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
-    'src/pages/(app)/institution/[modelId]/index.vue': {
+    'src/pages/(app)/institution/[id]/index.vue': {
       routes:
-        | '/(app)/institution/[modelId]/'
+        | '/(app)/institution/[id]/'
       views:
         | never
     }

@@ -132,11 +132,8 @@ onBeforeUnmount(() => {
 });
 
 const previewUrls = computed(() =>
-    model.value.map((item) => {
-        if (item instanceof File) return fileUrls.value.get(item);
-        return item.startsWith("data:") || /^https?:\/\//.test(item)
-            ? item
-            : `data:image/png;base64,${item}`;
-    }),
+    model.value.map((item) =>
+        item instanceof File ? fileUrls.value.get(item) : item,
+    ),
 );
 </script>
