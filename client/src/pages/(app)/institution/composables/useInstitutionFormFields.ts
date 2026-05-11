@@ -21,7 +21,7 @@ export const fileToBase64 = (file: File): Promise<string> =>
 export const useInstitutionFormFields = () => {
     const name = ref<string | undefined>(undefined);
     const urlSuffix = ref<string | undefined>(undefined);
-    const logoImage = ref<File | string | undefined>(undefined);
+    const logoImage = ref<(File | string)[]>([]);
 
     const t = (key: string) =>
         i18n.global.t(`institutions.institutionFormFields.${key}`);
@@ -34,7 +34,12 @@ export const useInstitutionFormFields = () => {
             name: "logoImage",
             model: logoImage,
             label: t("labels.logoImage"),
+            dropTitle: i18n.global.t("general.formFields.image.dropTitle"),
+            hint: i18n.global.t("general.formFields.image.hint", {
+                types: LOGO_ACCEPT_EXTENSIONS.join(", "),
+            }),
             acceptExtensions: LOGO_ACCEPT_EXTENSIONS,
+            maxFiles: 2,
         },
         {
             type: "text",

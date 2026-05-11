@@ -104,7 +104,7 @@ onMounted(async () => {
         institution.value = fetched;
         name.value = fetched.name;
         urlSuffix.value = fetched.urlSuffix;
-        logoImage.value = fetched.logoImage;
+        logoImage.value = fetched.logoImage ? [fetched.logoImage] : [];
     } catch (err) {
         error.value = err instanceof Error ? err.message : "Unknown error";
     } finally {
@@ -119,7 +119,7 @@ async function submit() {
     const selectedName = name.value;
     if (!selectedName) return;
 
-    const logo = logoImage.value;
+    const logo = logoImage.value[0];
     let logoToSend: string | undefined;
     if (logo instanceof File) {
         logoToSend = await fileToBase64(logo);

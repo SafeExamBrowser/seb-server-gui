@@ -96,8 +96,10 @@
                 v-else-if="field.type === 'image'"
                 v-model="field.model.value"
                 :standard-properties="getBaseProperties(field)"
+                :drop-title="field.dropTitle"
                 :accept-extensions="field.acceptExtensions"
                 :hint="field.hint"
+                :max-files="field.maxFiles"
             />
             <FormFieldCollection
                 v-else-if="field.type === 'collection'"

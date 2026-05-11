@@ -77,7 +77,7 @@ async function submit() {
     const selectedName = name.value;
     if (!selectedName) return;
 
-    const logo = logoImage.value;
+    const logo = logoImage.value[0];
     let logoBase64: string | undefined;
     if (logo instanceof File) {
         logoBase64 = await fileToBase64(logo);
