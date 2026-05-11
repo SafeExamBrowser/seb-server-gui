@@ -1,4 +1,5 @@
 <template>
+    <!-- side pannel  -->
     <v-card
         class="d-flex flex-column flex-shrink-0 align-center py-2"
         data-testid="layout-nav-rail"
@@ -30,13 +31,16 @@
 
         <v-divider class="align-self-stretch mx-3 mb-2" :opacity="0.6" />
 
+        <v-btn prepend-icon="mdi-home" stacked color="primary" size="small">
+            Home
+        </v-btn>
+
         <v-btn
             v-for="link in links"
             :key="link.testId"
             :active="isLinkActive(link)"
             class="my-1 d-flex flex-column"
-            :class="isLinkActive(link) ? 'text-white' : ''"
-            :color="isLinkActive(link) ? 'primary' : 'transparent'"
+            :class="isLinkActive(link) ? 'bg-primary text-white' : ''"
             :data-testid="link.testId"
             :elevation="isLinkActive(link) ? 4 : 0"
             :style="{
@@ -44,7 +48,6 @@
                 height: '56px',
                 borderRadius: '14px',
                 minWidth: '56px',
-                color: isLinkActive(link) ? '#fff' : 'rgb(75, 85, 99)',
             }"
             :to="link.route"
             variant="flat"

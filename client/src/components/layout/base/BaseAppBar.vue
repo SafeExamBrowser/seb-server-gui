@@ -19,15 +19,15 @@
             >
                 <v-img
                     :alt="$t('navigation.screenReader.titleImage')"
-                    height="40"
+                    height="44"
                     src="/img/seb-logo-no-border.png"
-                    width="40"
+                    width="44"
                 />
             </RouterLink>
 
             <v-divider
                 class="align-self-center"
-                :style="{ height: '24px', flexGrow: 0 }"
+                :style="{ height: '30px', flexGrow: 0 }"
                 vertical
             />
 
@@ -36,8 +36,8 @@
                 alt="Institution Logo"
                 :src="institutionLogo"
                 :style="{
-                    height: '32px',
-                    maxWidth: '120px',
+                    height: '45px',
+                    maxWidth: '140px',
                     width: 'auto',
                     objectFit: 'contain',
                 }"
