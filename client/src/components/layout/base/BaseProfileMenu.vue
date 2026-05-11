@@ -9,49 +9,38 @@
         <template #activator="{ props: menuProps }">
             <v-btn
                 v-bind="menuProps"
+                :active="false"
                 aria-label="Profile"
-                class="text-none rounded-lg pa-0 pe-2 ps-1"
-                color="surface"
+                class="text-none overflow-hidden pa-0 pe-2 ps-1"
+                :color="isOpen ? 'primary' : 'surface'"
                 data-testid="layout-profile-button"
-                height="44"
                 :ripple="false"
-                :style="{
-                    background: isOpen ? primaryTint : 'transparent',
-                }"
-                variant="flat"
+                size="large"
+                :style="{ borderRadius: '14px' }"
+                :variant="isOpen ? 'tonal' : 'flat'"
             >
                 <div class="d-flex align-center ga-3">
-                    <div
-                        class="bg-primary d-flex align-center justify-center text-white font-weight-black"
-                        :style="{
-                            width: '36px',
-                            height: '36px',
-                            borderRadius: '10px',
-                            fontSize: '13px',
-                            letterSpacing: '0.4px',
-                        }"
+                    <v-avatar
+                        class="font-weight-black text-body-2"
+                        color="primary"
+                        density="comfortable"
+                        rounded="lg"
                     >
                         {{ initials }}
-                    </div>
+                    </v-avatar>
 
                     <div class="text-left">
-                        <div
-                            class="text-body-2 font-weight-bold"
-                            style="line-height: 1.15"
-                        >
+                        <div class="text-body-2 font-weight-bold">
                             {{ fullName }}
                         </div>
-                        <div
-                            class="text-medium-emphasis"
-                            style="font-size: 11px; line-height: 1.15"
-                        >
+                        <div class="text-caption text-medium-emphasis">
                             {{ primaryRoleLabel }}
                         </div>
                     </div>
 
                     <v-icon
                         :icon="isOpen ? 'mdi-chevron-up' : 'mdi-chevron-down'"
-                        size="20"
+                        size="small"
                     />
                 </div>
             </v-btn>
@@ -59,34 +48,27 @@
 
         <v-card
             class="overflow-hidden"
-            :style="{
-                width: '400px',
-                borderRadius: '16px',
-            }"
             elevation="16"
+            :style="{ borderRadius: '14px' }"
         >
             <div class="bg-primary pa-5 text-white">
                 <div class="d-flex align-center ga-4">
-                    <div
-                        class="d-flex align-center justify-center font-weight-black text-white"
-                        :style="{
-                            width: '52px',
-                            height: '52px',
-                            borderRadius: '14px',
-                            background: 'rgba(255,255,255,0.18)',
-                            border: '1.5px solid rgba(255,255,255,0.3)',
-                            fontSize: '18px',
-                            letterSpacing: '0.4px',
-                        }"
+                    <v-avatar
+                        class="font-weight-black text-h6"
+                        color="white"
+                        density="comfortable"
+                        size="x-large"
+                        :style="{ borderRadius: '14px' }"
+                        variant="tonal"
                     >
                         {{ initials }}
-                    </div>
+                    </v-avatar>
 
                     <div>
                         <div class="text-h6 font-weight-black">
                             {{ fullName }}
                         </div>
-                        <div class="text-caption" style="opacity: 0.85">
+                        <div class="text-caption opacity-80">
                             {{ userAccount?.username }}
                         </div>
                     </div>
@@ -96,19 +78,16 @@
                     v-if="translatedRoles.length > 0"
                     class="d-flex flex-wrap ga-2 mt-3"
                 >
-                    <span
+                    <v-chip
                         v-for="role in translatedRoles"
                         :key="role"
-                        class="font-weight-bold rounded text-white"
-                        :style="{
-                            fontSize: '11px',
-                            padding: '3px 9px',
-                            background: 'rgba(255,255,255,0.18)',
-                            border: '1px solid rgba(255,255,255,0.25)',
-                        }"
+                        class="font-weight-bold"
+                        color="white"
+                        size="small"
+                        variant="tonal"
                     >
                         {{ role }}
-                    </span>
+                    </v-chip>
                 </div>
             </div>
 
@@ -121,20 +100,15 @@
                     <v-hover v-slot="{ isHovering, props: hoverProps }">
                         <RouterLink
                             v-bind="hoverProps"
-                            class="d-flex flex-column flex-grow-1 ga-2 pa-4 text-decoration-none"
+                            class="d-flex flex-column flex-1-1-0 ga-2 pa-4 text-decoration-none text-high-emphasis"
                             :class="{ 'bg-grey-lighten-4': isHovering }"
-                            :style="{
-                                flexBasis: 0,
-                                minWidth: 0,
-                                color: 'inherit',
-                            }"
                             :to="action.to"
                             @click="closeMenu"
                         >
                             <v-icon
                                 color="primary"
                                 :icon="action.icon"
-                                size="20"
+                                size="small"
                             />
                             <span class="font-weight-medium text-body-2">
                                 {{ action.label }}
@@ -145,14 +119,11 @@
             </div>
 
             <div class="py-1">
-                <div
-                    class="d-flex align-center ga-3 px-4 py-2"
-                    style="cursor: pointer"
-                >
+                <div class="d-flex align-center ga-3 px-4 py-2 cursor-pointer">
                     <v-icon
                         class="text-medium-emphasis"
                         icon="mdi-translate"
-                        size="18"
+                        size="small"
                     />
                     <span class="font-weight-medium text-body-2">Language</span>
                 </div>
@@ -161,7 +132,7 @@
                     <v-icon
                         class="text-medium-emphasis"
                         icon="mdi-theme-light-dark"
-                        size="18"
+                        size="small"
                     />
                     <span class="font-weight-medium text-body-2">Theme</span>
                     <v-spacer />
@@ -182,11 +153,10 @@
                 <v-divider class="my-1" />
 
                 <div
-                    class="d-flex align-center ga-3 px-4 py-2 text-error"
-                    style="cursor: pointer"
+                    class="d-flex align-center ga-3 px-4 py-2 text-error cursor-pointer"
                     @click="handleLogout"
                 >
-                    <v-icon icon="mdi-logout" size="18" />
+                    <v-icon icon="mdi-logout" size="small" />
                     <span class="font-weight-bold text-body-2">Log out</span>
                 </div>
             </div>
@@ -214,8 +184,6 @@ const { t } = useI18n();
 const { preference: themePreference } = useThemePreference();
 
 const isOpen = ref(false);
-
-const primaryTint = "rgba(33, 92, 175, 0.08)";
 
 const rolePriority = [
     "SEB_SERVER_ADMIN",

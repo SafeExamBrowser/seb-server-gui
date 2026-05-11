@@ -1,70 +1,54 @@
 <template>
     <div
-        class="d-flex align-center ga-4 pt-3 px-6"
+        class="d-flex align-center flex-shrink-0 ga-4 pt-3 pb-2 px-6"
         data-testid="layout-app-bar"
-        :style="{ height: '72px' }"
     >
         <v-card
-            class="flex-grow-1 d-flex align-center px-4 ga-3"
+            class="flex-grow-1 d-flex align-center overflow-hidden px-4 py-1 ga-3"
             elevation="1"
-            :style="{
-                height: '56px',
-                borderRadius: '14px',
-            }"
+            :style="{ borderRadius: '14px' }"
         >
             <RouterLink
                 class="d-flex align-center text-decoration-none"
                 data-testid="layout-appLogo-link"
                 :to="homeRoute"
             >
-                <v-img
-                    :alt="$t('navigation.screenReader.titleImage')"
-                    height="44"
-                    src="/img/seb-logo-no-border.png"
-                    width="44"
-                />
+                <v-avatar density="comfortable" rounded="0" size="large">
+                    <v-img
+                        :alt="$t('navigation.screenReader.titleImage')"
+                        src="/img/seb-logo-no-border.png"
+                    />
+                </v-avatar>
             </RouterLink>
 
-            <v-divider
-                class="align-self-center"
-                :style="{ height: '30px', flexGrow: 0 }"
-                vertical
-            />
+            <v-divider class="align-self-stretch flex-grow-0 my-2" vertical />
 
-            <img
+            <v-avatar
                 v-if="institutionLogo"
-                alt="Institution Logo"
-                :src="institutionLogo"
-                :style="{
-                    height: '45px',
-                    maxWidth: '140px',
-                    width: 'auto',
-                    objectFit: 'contain',
-                }"
-            />
+                class="flex-shrink-0"
+                density="comfortable"
+                rounded="0"
+                size="large"
+            >
+                <v-img alt="Institution Logo" :src="institutionLogo" />
+            </v-avatar>
 
-            <div class="d-flex flex-column" style="line-height: 1.1">
+            <div class="d-flex flex-column">
                 <span
-                    class="text-medium-emphasis text-uppercase font-weight-bold"
-                    :style="{
-                        fontSize: '10px',
-                        letterSpacing: '1px',
-                    }"
+                    class="text-caption text-medium-emphasis font-weight-bold"
                 >
                     Institution
                 </span>
                 <span
-                    class="font-weight-black"
+                    class="text-body-2 font-weight-black"
                     data-testid="layout-institutionTitle-text"
-                    :style="{ fontSize: '14px' }"
                 >
                     {{ institutionName || "SEB Server" }}
                 </span>
             </div>
 
             <v-divider
-                class="align-self-center mx-2"
-                :style="{ height: '24px', flexGrow: 0 }"
+                class="align-self-stretch flex-grow-0 mx-2 my-2"
                 vertical
             />
 
@@ -74,7 +58,7 @@
                         v-if="index > 0"
                         class="text-medium-emphasis"
                         icon="mdi-chevron-right"
-                        size="16"
+                        size="x-small"
                     />
                     <span
                         :class="
@@ -92,47 +76,32 @@
         </v-card>
 
         <v-card
-            class="d-flex align-center pe-2 ps-3 ga-2"
+            class="d-flex align-center pe-2 ps-3 py-1 ga-2"
             elevation="1"
-            :style="{
-                height: '56px',
-                borderRadius: '14px',
-            }"
+            :style="{ borderRadius: '14px' }"
         >
             <slot name="identity-actions" />
 
-            <v-btn
+            <v-badge
                 v-if="showNotifications"
-                class="position-relative"
-                color="surface"
-                data-testid="layout-notifications-button"
-                height="36"
-                icon
-                variant="flat"
-                width="36"
-                @click="$emit('notificationsClick')"
+                bordered
+                color="warning"
+                dot
+                :model-value="hasNotifications"
             >
-                <v-icon icon="mdi-bell-outline" size="18" />
-                <span
-                    v-if="hasNotifications"
-                    class="position-absolute"
-                    :style="{
-                        top: '6px',
-                        right: '7px',
-                        width: '7px',
-                        height: '7px',
-                        borderRadius: '999px',
-                        background: 'rgb(var(--v-theme-warning, 224, 138, 43))',
-                        border: '2px solid rgb(var(--v-theme-surface))',
-                    }"
-                />
-            </v-btn>
+                <v-btn
+                    color="surface"
+                    data-testid="layout-notifications-button"
+                    density="comfortable"
+                    icon
+                    variant="flat"
+                    @click="$emit('notificationsClick')"
+                >
+                    <v-icon icon="mdi-bell-outline" size="small" />
+                </v-btn>
+            </v-badge>
 
-            <v-divider
-                class="align-self-center"
-                :style="{ height: '24px', flexGrow: 0 }"
-                vertical
-            />
+            <v-divider class="align-self-stretch flex-grow-0 my-2" vertical />
 
             <BaseProfileMenu
                 :user-account="userAccount"

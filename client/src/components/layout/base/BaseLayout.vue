@@ -1,7 +1,6 @@
 <template>
     <div
-        class="d-flex flex-column bg-layout-background"
-        :style="{ minHeight: '100vh', height: '100vh', overflow: 'hidden' }"
+        class="d-flex flex-column bg-layout-background h-screen overflow-hidden"
     >
         <BaseAppBar
             :has-notifications="false"
@@ -13,7 +12,7 @@
         />
 
         <div
-            class="d-flex flex-grow-1 ga-4 px-6 pb-6 pt-4"
+            class="d-flex flex-1-1-0 ga-4 px-6 pb-6 pt-4"
             :style="{ minHeight: 0 }"
         >
             <BaseNavigationRail
@@ -27,13 +26,13 @@
             />
 
             <v-card
-                class="flex-grow-1 overflow-y-auto"
+                class="flex-1-1-0 overflow-y-auto"
                 :class="isPageBlue ? '' : 'pa-6'"
                 :color="isPageBlue ? 'primary' : undefined"
                 :data-testid="`${pageTestId}-page-container`"
                 elevation="1"
                 :style="{
-                    borderRadius: '16px',
+                    borderRadius: '14px',
                     minWidth: 0,
                 }"
             >
