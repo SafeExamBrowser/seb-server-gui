@@ -1,14 +1,10 @@
-import type { Ref } from "vue";
 import { ref } from "vue";
-import type { InstitutionResponse } from "@/models/seb-server/institution.ts";
 import {
     activateInstitution,
     deactivateInstitution,
 } from "@/services/seb-server/institutionService.ts";
 
-export const useToggleInstitutionStatus = (
-    institutions: Ref<InstitutionResponse | undefined>,
-) => {
+export const useToggleInstitutionStatus = () => {
     const loading = ref(false);
     const error = ref<string>();
 
@@ -26,13 +22,6 @@ export const useToggleInstitutionStatus = (
 
             if (response === null) {
                 throw new Error("Failed to change institution status.");
-            }
-
-            if (institutions.value?.content) {
-                institutions.value.content = institutions.value.content.map(
-                    (inst) =>
-                        inst.id === id ? { ...inst, active: !active } : inst,
-                );
             }
 
             return true;

@@ -173,13 +173,13 @@ const {
     removeInstitutionFromItem,
     loading: deleteLoading,
     error: deleteError,
-} = useDeleteInstitution(tableData);
+} = useDeleteInstitution();
 
 const {
     toggleInstitutionStatusFromItem,
     loading: statusLoading,
     error: statusError,
-} = useToggleInstitutionStatus(tableData);
+} = useToggleInstitutionStatus();
 
 const deleteTarget = ref<TableItem | null>(null);
 const statusTarget = ref<TableItem | null>(null);
@@ -203,14 +203,16 @@ function openStatusDialog(item: TableItem) {
 
 async function confirmDelete() {
     if (!deleteTarget.value) return;
-    await removeInstitutionFromItem(deleteTarget.value);
+    const ok = await removeInstitutionFromItem(deleteTarget.value);
     deleteDialogOpen.value = false;
+    if (ok) await fetchInstitutions();
 }
 
 async function confirmStatusChange() {
     if (!statusTarget.value) return;
-    await toggleInstitutionStatusFromItem(statusTarget.value);
+    const ok = await toggleInstitutionStatusFromItem(statusTarget.value);
     statusDialogOpen.value = false;
+    if (ok) await fetchInstitutions();
 }
 
 function logoSrcOf(item: TableItem): string | undefined {

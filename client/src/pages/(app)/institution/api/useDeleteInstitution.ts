@@ -1,11 +1,7 @@
-import type { Ref } from "vue";
 import { ref } from "vue";
 import { deleteInstitution } from "@/services/seb-server/institutionService.ts";
-import type { InstitutionResponse } from "@/models/seb-server/institution.ts";
 
-export const useDeleteInstitution = (
-    institutions: Ref<InstitutionResponse | undefined>,
-) => {
+export const useDeleteInstitution = () => {
     const loading = ref(false);
     const error = ref<string>();
 
@@ -18,12 +14,6 @@ export const useDeleteInstitution = (
 
             if (response === null) {
                 throw new Error("Failed to delete institution.");
-            }
-
-            if (institutions.value?.content) {
-                institutions.value.content = institutions.value.content.filter(
-                    (inst) => inst.id !== id,
-                );
             }
 
             return true;
