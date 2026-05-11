@@ -85,6 +85,10 @@
             "file": {
                 "hint": "Drop a file here or search through file explorer.",
                 "allowedFileTypes": "Allowed file types:"
+            },
+            "image": {
+                "dropTitle": "Drop an image here or click to browse",
+                "hint": "Allowed types: {types}"
             }
         }
     },
@@ -889,6 +893,7 @@
     "institutions": {
         "institutionPage": {
             "tableHeaders": {
+                "logoImage": "Logo",
                 "name": "Name",
                 "modelId": "ID",
                 "urlSuffix": "URL Suffix",

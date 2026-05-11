@@ -48,6 +48,15 @@
                                 item-key="modelId"
                                 @update:options="loadItems"
                             >
+                                <template #cell-logoImage="{ item, rowTestId }">
+                                    <v-img
+                                        v-if="logoSrcOf(item)"
+                                        :src="logoSrcOf(item)"
+                                        :max-height="40"
+                                        :max-width="80"
+                                        :data-test-id="`${rowTestId}-logo`"
+                                    />
+                                </template>
                                 <template #cell-active="{ item, rowTestId }">
                                     <ActiveStatusChip
                                         :active="!!item.active"
@@ -202,6 +211,12 @@ async function confirmStatusChange() {
     if (!statusTarget.value) return;
     await toggleInstitutionStatusFromItem(statusTarget.value);
     statusDialogOpen.value = false;
+}
+
+function logoSrcOf(item: TableItem): string | undefined {
+    const logo = item.logoImage;
+    if (typeof logo !== "string" || logo === "") return undefined;
+    return logo.startsWith("data:") ? logo : `data:image/png;base64,${logo}`;
 }
 
 const tableActions = useInstitutionsTableActions({

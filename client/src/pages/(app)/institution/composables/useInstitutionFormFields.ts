@@ -4,11 +4,24 @@ import i18n from "@/i18n";
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
 
 const URL_SUFFIX_PATTERN = /^$|^.{3,45}$/;
+const LOGO_ACCEPT_EXTENSIONS = [".png", ".jpg", ".jpeg", ".svg"];
+
+export const fileToBase64 = (file: File): Promise<string> =>
+    new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+            const result = String(reader.result);
+            const comma = result.indexOf(",");
+            resolve(comma >= 0 ? result.slice(comma + 1) : result);
+        };
+        reader.onerror = () => reject(reader.error);
+        reader.readAsDataURL(file);
+    });
 
 export const useInstitutionFormFields = () => {
     const name = ref<string | undefined>(undefined);
     const urlSuffix = ref<string | undefined>(undefined);
-    const logoImage = ref<string | undefined>(undefined);
+    const logoImage = ref<File | string | undefined>(undefined);
 
     const t = (key: string) =>
         i18n.global.t(`institutions.institutionFormFields.${key}`);
@@ -16,6 +29,13 @@ export const useInstitutionFormFields = () => {
     const rules = useRules();
 
     const formFields = computed<FormField[]>(() => [
+        {
+            type: "image",
+            name: "logoImage",
+            model: logoImage,
+            label: t("labels.logoImage"),
+            acceptExtensions: LOGO_ACCEPT_EXTENSIONS,
+        },
         {
             type: "text",
             name: "name",
@@ -35,12 +55,6 @@ export const useInstitutionFormFields = () => {
                     URL_SUFFIX_PATTERN.test(v) ||
                     t("validation.urlSuffix"),
             ],
-        },
-        {
-            type: "text",
-            name: "logoImage",
-            model: logoImage,
-            label: t("labels.logoImage"),
         },
     ]);
 

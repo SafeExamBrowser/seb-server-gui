@@ -84,6 +84,13 @@ export type FormFieldSimple = FormFieldBase &
               hint?: string;
               icon?: string;
           }
+        | {
+              type: "image";
+              required?: boolean;
+              model: Ref<File | string | undefined>;
+              acceptExtensions?: string[];
+              hint?: string;
+          }
     );
 
 export type FormFieldCollection = FormFieldBase & {

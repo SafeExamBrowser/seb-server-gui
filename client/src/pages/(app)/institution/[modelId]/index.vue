@@ -70,7 +70,10 @@ import {
     editInstitution,
     getInstitutionById,
 } from "@/services/seb-server/institutionService.ts";
-import { useInstitutionFormFields } from "@/pages/(app)/institution/composables/useInstitutionFormFields.ts";
+import {
+    fileToBase64,
+    useInstitutionFormFields,
+} from "@/pages/(app)/institution/composables/useInstitutionFormFields.ts";
 import type { Institution } from "@/models/seb-server/institution.ts";
 
 definePage({
@@ -116,11 +119,19 @@ async function submit() {
     const selectedName = name.value;
     if (!selectedName) return;
 
+    const logo = logoImage.value;
+    let logoToSend: string | undefined;
+    if (logo instanceof File) {
+        logoToSend = await fileToBase64(logo);
+    } else if (typeof logo === "string") {
+        logoToSend = logo;
+    }
+
     await saveInstitution({
         id: Number(institution.value.modelId),
         name: selectedName,
         urlSuffix: urlSuffix.value || undefined,
-        logoImage: logoImage.value || undefined,
+        logoImage: logoToSend || undefined,
         active: institution.value.active,
     });
 
