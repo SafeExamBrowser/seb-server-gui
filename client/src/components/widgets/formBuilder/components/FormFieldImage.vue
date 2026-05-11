@@ -20,11 +20,12 @@
                 :hide-browse="false"
                 :title="$t('general.formFields.image.dropTitle')"
                 :subtitle="effectiveHint"
+                scrim="primary"
                 clearable
-                data-testid="formFieldImage-upload"
-                density="comfortable"
-                icon="mdi-cloud-upload-outline"
+                inset-file-list
                 show-size
+                data-testid="formFieldImage-upload"
+                density="compact"
                 @update:model-value="onUploadChange"
             />
         </div>
