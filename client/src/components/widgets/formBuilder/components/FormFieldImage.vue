@@ -2,6 +2,7 @@
     <v-input
         :model-value="model"
         :rules="standardProperties.rules"
+        :error-messages="sizeError"
         :disabled="standardProperties.disabled"
         hide-details="auto"
     >
@@ -68,11 +69,13 @@ const props = withDefaults(
         acceptExtensions?: string[];
         hint?: string;
         maxFiles?: number;
+        maxFileSizeMB?: number;
     }>(),
     {
         acceptExtensions: () => [".png", ".jpg", ".jpeg", ".svg"],
         hint: undefined,
         maxFiles: 1,
+        maxFileSizeMB: 2,
     },
 );
 
@@ -85,18 +88,35 @@ const remainingSlots = computed(() =>
 const multiple = computed(() => props.maxFiles > 1);
 
 const uploadStaging = ref<File | File[] | undefined>(undefined);
+const sizeError = ref<string | undefined>();
 
 const onUploadChange = (val: File | File[] | null | undefined) => {
-    if (!val) return;
+    if (!val) {
+        uploadStaging.value = undefined;
+        return;
+    }
     const incoming = Array.isArray(val) ? val : [val];
-    if (incoming.length === 0) return;
-    const accepted = incoming.slice(0, remainingSlots.value);
-    model.value = [...model.value, ...accepted];
+    if (incoming.length === 0) {
+        uploadStaging.value = undefined;
+        return;
+    }
+    const maxBytes = props.maxFileSizeMB * 1024 * 1024;
+    const tooBig = incoming.filter((f) => f.size > maxBytes);
+    const withinLimit = incoming.filter((f) => f.size <= maxBytes);
+    sizeError.value =
+        tooBig.length > 0
+            ? `${tooBig.length === 1 ? "File exceeds" : `${tooBig.length} files exceed`} the ${props.maxFileSizeMB} MB limit`
+            : undefined;
+    const accepted = withinLimit.slice(0, remainingSlots.value);
+    if (accepted.length > 0) {
+        model.value = [...model.value, ...accepted];
+    }
     uploadStaging.value = undefined;
 };
 
 const removeAt = (index: number) => {
     model.value = model.value.filter((_, i) => i !== index);
+    sizeError.value = undefined;
 };
 
 const fileUrls = shallowRef(new Map<File, string>());

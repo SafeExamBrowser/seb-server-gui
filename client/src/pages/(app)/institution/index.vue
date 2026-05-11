@@ -201,18 +201,27 @@ function openStatusDialog(item: TableItem) {
     statusDialogOpen.value = true;
 }
 
+async function reloadAndClampPage() {
+    await fetchInstitutions();
+    const total = tableData.value?.number_of_pages ?? 1;
+    if (options.value.page > total) {
+        options.value.page = Math.max(1, total);
+        await fetchInstitutions();
+    }
+}
+
 async function confirmDelete() {
     if (!deleteTarget.value) return;
     const ok = await removeInstitutionFromItem(deleteTarget.value);
     deleteDialogOpen.value = false;
-    if (ok) await fetchInstitutions();
+    if (ok) await reloadAndClampPage();
 }
 
 async function confirmStatusChange() {
     if (!statusTarget.value) return;
     const ok = await toggleInstitutionStatusFromItem(statusTarget.value);
     statusDialogOpen.value = false;
-    if (ok) await fetchInstitutions();
+    if (ok) await reloadAndClampPage();
 }
 
 function logoSrcOf(item: TableItem): string | undefined {
