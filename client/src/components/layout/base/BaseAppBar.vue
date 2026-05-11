@@ -89,36 +89,6 @@
             </div>
 
             <v-spacer />
-
-            <slot name="bar-actions">
-                <div
-                    class="d-flex align-center ga-2 px-3 py-1 rounded"
-                    :style="{
-                        background: 'rgb(246, 248, 251)',
-                        border: '1px solid rgb(238, 241, 245)',
-                        width: '240px',
-                    }"
-                >
-                    <v-icon
-                        class="text-medium-emphasis"
-                        icon="mdi-magnify"
-                        size="18"
-                    />
-                    <span
-                        class="text-medium-emphasis text-body-2"
-                        style="opacity: 0.6"
-                    >
-                        Search&hellip;
-                    </span>
-                    <v-spacer />
-                    <span
-                        class="text-medium-emphasis"
-                        style="font-size: 10px; opacity: 0.6"
-                    >
-                        &#8984;K
-                    </span>
-                </div>
-            </slot>
         </v-card>
 
         <v-card
