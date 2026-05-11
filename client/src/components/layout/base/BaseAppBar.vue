@@ -1,12 +1,12 @@
 <template>
     <div
-        class="d-flex align-center flex-shrink-0 ga-4 pt-3 pb-2 px-6"
+        class="d-flex align-stretch flex-shrink-0 ga-4 pt-2 pb-2 px-6"
         data-testid="layout-app-bar"
     >
         <v-card
-            class="flex-grow-1 d-flex align-center overflow-hidden px-4 py-1 ga-3"
+            class="flex-grow-1 d-flex align-center overflow-hidden px-4 py-2 ga-3"
             elevation="1"
-            :style="{ borderRadius: '14px' }"
+            :style="{ borderRadius: '12px' }"
         >
             <RouterLink
                 class="d-flex align-center text-decoration-none"
@@ -23,15 +23,19 @@
 
             <v-divider class="align-self-stretch flex-grow-0 my-2" vertical />
 
-            <v-avatar
+            <img
                 v-if="institutionLogo"
                 class="flex-shrink-0"
-                density="comfortable"
-                rounded="0"
-                size="large"
-            >
-                <v-img alt="Institution Logo" :src="institutionLogo" />
-            </v-avatar>
+                alt="Institution Logo"
+                :src="institutionLogo"
+                :style="{
+                    maxHeight: '44px',
+                    maxWidth: '220px',
+                    width: 'auto',
+                    height: 'auto',
+                    objectFit: 'contain',
+                }"
+            />
 
             <div class="d-flex flex-column">
                 <span
@@ -64,7 +68,7 @@
                         :class="
                             index === breadcrumbItems.length - 1
                                 ? 'font-weight-bold'
-                                : 'font-weight-medium text-medium-emphasis'
+                                : 'font-weight-bold text-medium-emphasis'
                         "
                     >
                         {{ item }}
@@ -76,9 +80,9 @@
         </v-card>
 
         <v-card
-            class="d-flex align-center pe-2 ps-3 py-1 ga-2"
+            class="d-flex align-center pe-2 ps-3 py-2 ga-2"
             elevation="1"
-            :style="{ borderRadius: '14px' }"
+            :style="{ borderRadius: '12px' }"
         >
             <slot name="identity-actions" />
 
