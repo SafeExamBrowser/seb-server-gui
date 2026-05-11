@@ -6,11 +6,12 @@ import type {
     TableFilters,
     LoadItemsFn,
 } from "@/components/widgets/entity-table/types.ts";
+import { DEFAULT_ITEMS_PER_PAGE } from "@/components/widgets/entity-table/composables/useTablePagination.ts";
 
 //standard options foer all Tables, @TODO Andrei consider using some sort of local storage for itemsPerPage???? Talk with team. Would make sense. // Additional Feature that users can configure their UI's in the future
 const getDefaultOptions = (): ServerTablePaging => ({
     page: 1,
-    itemsPerPage: 10,
+    itemsPerPage: DEFAULT_ITEMS_PER_PAGE,
     sortBy: [],
 });
 

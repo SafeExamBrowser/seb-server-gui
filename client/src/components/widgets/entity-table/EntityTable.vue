@@ -90,7 +90,10 @@ import type {
 } from "@/components/widgets/entity-table/types.ts";
 import { useTableHeaders } from "@/components/widgets/entity-table/composables/useTableHeaders.ts";
 import { useTableItems } from "@/components/widgets/entity-table/composables/useTableItems.ts";
-import { useTablePagination } from "@/components/widgets/entity-table/composables/useTablePagination.ts";
+import {
+    DEFAULT_ITEMS_PER_PAGE,
+    useTablePagination,
+} from "@/components/widgets/entity-table/composables/useTablePagination.ts";
 import TableRowActions from "@/components/widgets/entity-table/components/TableRowActions.vue";
 import TableFooter from "@/components/widgets/entity-table/components/TableFooter.vue";
 import type { ServerTablePaging } from "@/models/types.ts";
@@ -116,7 +119,7 @@ const props = withDefaults(
     }>(),
     {
         pageCount: 0,
-        itemsPerPage: 10,
+        itemsPerPage: DEFAULT_ITEMS_PER_PAGE,
         itemsLength: undefined,
         options: undefined,
         detailRoute: undefined,
