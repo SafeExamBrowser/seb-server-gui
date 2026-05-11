@@ -7,7 +7,7 @@
             ]"
             :data-testid="`${pageTestId}-page-container`"
         >
-            <router-view />
+            <RouterView />
         </div>
 
         <ToastContainer />
@@ -16,6 +16,7 @@
 
 <script setup lang="ts">
 import ToastContainer from "@/components/widgets/toast/ToastContainer.vue";
+import { RouterView } from "vue-router";
 
 defineProps<{
     isPageBlue: boolean;

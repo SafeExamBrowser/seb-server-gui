@@ -149,6 +149,7 @@
 </template>
 
 <script setup lang="ts">
+import AlertMsg from "@/components/widgets/AlertMsg.vue";
 import { useQuizImportStore } from "@/stores/seb-server/quizImportStore.ts";
 import { storeToRefs } from "pinia";
 import * as constants from "@/utils/constants.ts";
