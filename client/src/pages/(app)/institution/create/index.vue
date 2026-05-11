@@ -77,7 +77,7 @@ async function submit() {
     await createInst({
         name: selectedName,
         urlSuffix: urlSuffix.value || undefined,
-        logoImage: logoImage.value[0],
+        logoImage: logoImage.value ?? undefined,
     });
 
     if (createdInstitution.value) {

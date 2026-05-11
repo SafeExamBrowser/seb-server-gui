@@ -87,13 +87,11 @@ export type FormFieldSimple = FormFieldBase &
         | {
               type: "image";
               required?: boolean;
-              model: Ref<(File | string)[]>;
+              model: Ref<File | null>;
               dropTitle: string;
               acceptExtensions?: string[];
               hint?: string;
-              maxFiles?: number;
               maxFileSizeMB?: number;
-              previewAspectRatio?: number;
           }
     );
 

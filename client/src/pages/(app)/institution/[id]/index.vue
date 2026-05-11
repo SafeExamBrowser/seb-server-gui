@@ -107,7 +107,7 @@ onMounted(async () => {
         institution.value = fetched;
         name.value = fetched.name;
         urlSuffix.value = fetched.urlSuffix;
-        logoImage.value = fetched.logoImage ? [fetched.logoImage] : [];
+        logoImage.value = null;
     } catch (err) {
         error.value = err instanceof Error ? err.message : "Unknown error";
     } finally {
@@ -126,7 +126,7 @@ async function submit() {
         id: institution.value.id,
         name: selectedName,
         urlSuffix: urlSuffix.value || undefined,
-        logoImage: logoImage.value[0],
+        logoImage: logoImage.value ?? undefined,
         active: institution.value.active,
     });
 

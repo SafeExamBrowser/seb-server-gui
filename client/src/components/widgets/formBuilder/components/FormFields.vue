@@ -99,9 +99,7 @@
                 :drop-title="field.dropTitle"
                 :accept-extensions="field.acceptExtensions"
                 :hint="field.hint"
-                :max-files="field.maxFiles"
                 :max-file-size-m-b="field.maxFileSizeMB"
-                :preview-aspect-ratio="field.previewAspectRatio"
             />
             <FormFieldCollection
                 v-else-if="field.type === 'collection'"

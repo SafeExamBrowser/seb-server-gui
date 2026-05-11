@@ -9,7 +9,7 @@ const LOGO_ACCEPT_EXTENSIONS = [".png", ".jpg", ".jpeg", ".svg"];
 export const useInstitutionFormFields = () => {
     const name = ref<string | undefined>(undefined);
     const urlSuffix = ref<string | undefined>(undefined);
-    const logoImage = ref<(File | string)[]>([]);
+    const logoImage = ref<File | null>(null);
 
     const t = (key: string) =>
         i18n.global.t(`institutions.institutionFormFields.${key}`);
@@ -27,7 +27,6 @@ export const useInstitutionFormFields = () => {
                 types: LOGO_ACCEPT_EXTENSIONS.join(", "),
             }),
             acceptExtensions: LOGO_ACCEPT_EXTENSIONS,
-            previewAspectRatio: 1,
         },
         {
             type: "text",
