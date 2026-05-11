@@ -100,7 +100,7 @@
                         <span>
                             {{ translate("loginPage.noAccount") }}
                         </span>
-                        <router-link
+                        <RouterLink
                             :to="{ name: '/(public)/register/' }"
                             class="text-primary"
                             data-testid="login-register-link"
@@ -108,7 +108,7 @@
                             tabindex="0"
                         >
                             {{ translate("loginPage.register") }}
-                        </router-link>
+                        </RouterLink>
                     </div>
                 </v-card-text>
             </v-card>
@@ -117,10 +117,12 @@
 </template>
 
 <script setup lang="ts">
+import AlertMsg from "@/components/widgets/AlertMsg.vue";
 import { ref } from "vue";
 import { useTheme } from "vuetify";
 import { translate } from "@/utils/generalUtils";
 import { useLogin } from "../composables/useLogin";
+import { RouterLink } from "vue-router";
 
 definePage({
     meta: {

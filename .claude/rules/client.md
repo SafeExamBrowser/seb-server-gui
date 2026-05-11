@@ -17,6 +17,7 @@ on the filesystem if they clash:
 # Best practice
 
 - TypeScript: Avoid manual typecasts like `as FooBar`. Properly cast the types and fulfill their requirements.
+- Don't start component names with `V`. This is reserved for Vuetify by convention.
 - Prefer the "Vue composition API" over the "Vue options API".
 - Routing: when generating urls for Vuetify components with a `to` property (e.g. `v-list-item`, `v-btn`, ...), you
   must always use the `typedTo` helper function so type safety is ensured.

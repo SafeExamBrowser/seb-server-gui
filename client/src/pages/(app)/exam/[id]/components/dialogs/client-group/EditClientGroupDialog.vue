@@ -204,6 +204,7 @@
 </template>
 
 <script setup lang="ts">
+import AlertMsg from "@/components/widgets/AlertMsg.vue";
 import { useExamStore } from "@/stores/seb-server/examStore.ts";
 import {
     ClientGroupEnum,

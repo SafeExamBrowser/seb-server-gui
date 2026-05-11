@@ -97,7 +97,7 @@
                                 )
                             "
                         >
-                            <router-link
+                            <RouterLink
                                 class="default-color"
                                 :to="{
                                     name: '/(app)/gallery_[uuid]_[examId]/',
@@ -106,7 +106,7 @@
                                         examId: item.exam.uuid,
                                     },
                                 }"
-                                >{{ item.name }}</router-link
+                                >{{ item.name }}</RouterLink
                             >
                         </div>
                     </td>
@@ -125,6 +125,7 @@ import * as tableUtils from "@/utils/table/tableUtils";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import { storeToRefs } from "pinia";
 import { Group, GroupObject } from "@/models/screen-proctoring/group";
+import { RouterLink } from "vue-router";
 
 definePage({
     meta: {

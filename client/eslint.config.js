@@ -47,6 +47,13 @@ export default defineConfig([
         rules: {
             "no-console": "error",
             "no-debugger": "error",
+            "vue/no-undef-components": [
+                // Vuetify components (VBtn, VRow, ...) are auto-imported by vite-plugin-vuetify, and we
+                // don't want to enforce manual imports of Vuetify components for now. Hence we
+                // exclude them here, using the Vuetify naming convention (V + PascalCase)
+                "error",
+                { ignorePatterns: ["^V[A-Z]"] },
+            ],
         },
     },
 
