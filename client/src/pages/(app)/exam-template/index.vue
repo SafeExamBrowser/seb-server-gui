@@ -22,10 +22,11 @@
             />
         </template>
         <template #PanelMain>
-            <div v-if="deleteError" class="px-6 pt-4 text-error">
+            <!-- TODO @andrei: properly display errors, once we have a proper generic error component -->
+            <div v-if="deleteError">
                 {{ deleteError }}
             </div>
-            <div v-else-if="copyError" class="px-6 pt-4 text-error">
+            <div v-else-if="copyError">
                 {{ copyError }}
             </div>
             <LoadingFallbackComponent :loading="false" :errors="errors">
