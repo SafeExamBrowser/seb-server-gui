@@ -16,6 +16,7 @@
                         label="sebSettings.securityView.sebService.sebServiceIgnore"
                         :tooltip="false"
                         :disabled="context.readonly"
+                        :invert-value="true"
                         @saved="notifyEBServiceIgnore"
                     />
                 </v-row>
@@ -40,7 +41,7 @@
                         :label-tooltip="true"
                         :disabled="
                             context.readonly || igonreSEBServiceRef
-                                ? !igonreSEBServiceRef?.boolVal
+                                ? igonreSEBServiceRef?.boolVal
                                 : false
                         "
                     />
@@ -53,7 +54,7 @@
                         :tooltip="false"
                         :disabled="
                             context.readonly || igonreSEBServiceRef
-                                ? !igonreSEBServiceRef?.boolVal
+                                ? igonreSEBServiceRef?.boolVal
                                 : false
                         "
                     />
@@ -66,7 +67,7 @@
                         :tooltip="false"
                         :disabled="
                             context.readonly || igonreSEBServiceRef
-                                ? !igonreSEBServiceRef?.boolVal
+                                ? igonreSEBServiceRef?.boolVal
                                 : false
                         "
                     />
@@ -79,7 +80,7 @@
                         :tooltip="false"
                         :disabled="
                             context.readonly || igonreSEBServiceRef
-                                ? !igonreSEBServiceRef?.boolVal
+                                ? igonreSEBServiceRef?.boolVal
                                 : false
                         "
                     />
