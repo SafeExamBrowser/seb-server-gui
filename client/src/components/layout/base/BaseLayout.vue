@@ -77,9 +77,7 @@ const isNavigationOverviewRoute = computed(
 
 const isPageBlue = computed(() => route.meta.isPageBlue ?? false);
 
-const pageTestId = computed(
-    () => (route.meta.pageTestId as string | undefined) ?? "page",
-);
+const pageTestId = computed(() => route.meta.pageTestId ?? "page");
 
 async function handleLogout() {
     await logout();
