@@ -36,9 +36,9 @@
                     :items-per-page="options.itemsPerPage"
                     :options="options"
                     :loading="tableLoading"
-                    :detail-route="examTemplateDetailRoute"
+                    :detail-route="tableDetailRoute"
                     :cell-formatters="cellFormatters"
-                    :actions="tableActions"
+                    :actions="entityTableActions"
                     :data-test-id="dataTestId"
                     @update:options="loadItems"
                 >
@@ -69,12 +69,18 @@ import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
-import type { TableItem } from "@/components/widgets/entity-table/types.ts";
+import type {
+    TableAction,
+    TableItem,
+} from "@/components/widgets/entity-table/types.ts";
 import { useExamTemplates } from "./composables/api/useExamTemplates.ts";
 import { useDeleteExamTemplate } from "./composables/api/useDeleteExamTemplate.ts";
 import { useCopyExamTemplate } from "./composables/api/useCopyExamTemplate.ts";
 import { useExamTemplateTableHeaders } from "./composables/useExamTemplateTableHeaders.ts";
-import { useExamTemplateTableActions } from "./composables/useExamTemplateTableActions.ts";
+import {
+    useExamTemplateTableActions,
+    type ExamTemplateTableItem,
+} from "./composables/useExamTemplateTableActions.ts";
 import {
     useExamTemplateFilters,
     EXAM_TYPE_FILTER_KEY,
@@ -85,14 +91,14 @@ const dataTestId = "examTemplates";
 const router = useRouter();
 
 const examTemplateDetailRoute = (
-    item: TableItem,
-): RouteLocationAsRelative | null =>
-    typeof item.id === "number"
-        ? {
-              name: "/(app)/exam-template/[id]/",
-              params: { id: String(item.id) },
-          }
-        : null;
+    item: ExamTemplateTableItem,
+): RouteLocationAsRelative => ({
+    name: "/(app)/exam-template/[id]/",
+    params: { id: String(item.id) },
+});
+
+const tableDetailRoute = (item: TableItem): RouteLocationAsRelative =>
+    examTemplateDetailRoute(item as ExamTemplateTableItem);
 
 const { headers, cellFormatters } = useExamTemplateTableHeaders();
 const filterSections = useExamTemplateFilters();
@@ -145,35 +151,39 @@ const tableLoading = computed(
 
 const reloadAndClampPage = async () => {
     await fetchExamTemplates();
+
     const total = pageCount.value;
+
     if (options.value.page <= total) {
         return;
     }
+
     options.value.page = Math.max(1, total);
+
     await fetchExamTemplates();
 };
 
-const deleteTarget = ref<TableItem | null>(null);
+const deleteTarget = ref<ExamTemplateTableItem | null>(null);
 const deleteDialogOpen = ref(false);
 
 const deleteDetailText = computed(() =>
     deleteTarget.value ? String(deleteTarget.value.name ?? "") : "",
 );
 
-const openDeleteDialog = (item: TableItem) => {
+const openDeleteDialog = (item: ExamTemplateTableItem) => {
     deleteTarget.value = item;
     deleteDialogOpen.value = true;
 };
 
 const confirmDelete = async () => {
-    const id = deleteTarget.value?.id;
+    const target = deleteTarget.value;
     deleteDialogOpen.value = false;
 
-    if (typeof id !== "number") {
+    if (!target) {
         return;
     }
 
-    await deleteTemplate(id);
+    await deleteTemplate(target.id);
 
     if (deleteError.value !== undefined) {
         return;
@@ -184,19 +194,9 @@ const confirmDelete = async () => {
 
 const tableActions = useExamTemplateTableActions({
     onEdit: (item) => {
-        const target = examTemplateDetailRoute(item);
-
-        if (!target) {
-            return;
-        }
-
-        void router.push(target);
+        void router.push(examTemplateDetailRoute(item));
     },
     onCopy: async (item) => {
-        if (typeof item.id !== "number") {
-            return;
-        }
-
         await copyTemplate(item.id);
 
         if (copyError.value !== undefined) {
@@ -207,4 +207,8 @@ const tableActions = useExamTemplateTableActions({
     },
     onDelete: openDeleteDialog,
 });
+
+const entityTableActions = computed(
+    () => tableActions.value as unknown as TableAction[],
+);
 </script>

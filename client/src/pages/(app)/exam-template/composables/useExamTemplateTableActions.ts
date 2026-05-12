@@ -1,18 +1,20 @@
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import type {
-    TableAction,
-    TableItem,
-} from "@/components/widgets/entity-table/types.ts";
+import type { TableAction } from "@/components/widgets/entity-table/types.ts";
+import type { ExamTemplate } from "@/models/seb-server/examTemplate.ts";
+
+export type ExamTemplateTableItem = ExamTemplate & {
+    id: number;
+};
 
 export function useExamTemplateTableActions(deps: {
-    onEdit: (item: TableItem) => void;
-    onCopy: (item: TableItem) => void;
-    onDelete: (item: TableItem) => void;
+    onEdit: (item: ExamTemplateTableItem) => void;
+    onCopy: (item: ExamTemplateTableItem) => void;
+    onDelete: (item: ExamTemplateTableItem) => void;
 }) {
     const { t } = useI18n();
 
-    return computed<TableAction[]>(() => [
+    return computed<TableAction<ExamTemplateTableItem>[]>(() => [
         {
             key: "edit",
             icon: "mdi-pencil",
