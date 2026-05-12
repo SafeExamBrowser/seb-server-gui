@@ -77,14 +77,10 @@
                             item-value="id"
                             :items="urlFilterRuleTable.table.value"
                             :items-per-page="
-                                tableUtils.calcDefaultItemsPerPage(
-                                    urlFilterRuleTable.table.value,
-                                )
+                                tableUtils.calcDefaultItemsPerPage()
                             "
                             :items-per-page-options="
-                                tableUtils.calcItemsPerPage(
-                                    urlFilterRuleTable.table.value,
-                                )
+                                tableUtils.calcItemsPerPage()
                             "
                         >
                             <template

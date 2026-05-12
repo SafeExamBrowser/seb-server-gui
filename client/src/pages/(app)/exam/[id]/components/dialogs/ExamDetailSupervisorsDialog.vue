@@ -41,14 +41,10 @@
                                 :items="userAccountNames"
                                 :items-length="userAccountNames.length"
                                 :items-per-page="
-                                    tableUtils.calcDefaultItemsPerPage(
-                                        userAccountNames,
-                                    )
+                                    tableUtils.calcDefaultItemsPerPage()
                                 "
                                 :items-per-page-options="
-                                    tableUtils.calcItemsPerPage(
-                                        userAccountNames,
-                                    )
+                                    tableUtils.calcItemsPerPage()
                                 "
                                 :search="search"
                             >
