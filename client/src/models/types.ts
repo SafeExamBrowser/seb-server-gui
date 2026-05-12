@@ -1,6 +1,7 @@
 export type ServerTablePaging = {
     page: number;
     itemsPerPage: number;
+    // TODO @andrei: this should use the SortOrder type, which is stricter (the key can't be any string, but just some specific strings)
     sortBy: { key: string; order: string }[];
 };
 
