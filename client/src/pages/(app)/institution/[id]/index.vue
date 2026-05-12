@@ -67,6 +67,8 @@ import {
     getInstitutionById,
 } from "@/services/seb-server/institutionService.ts";
 import { useInstitutionFormFields } from "@/pages/(app)/institution/composables/useInstitutionFormFields.ts";
+import { useCurrentUser } from "@/components/layout/container/api/useCurrentUser.ts";
+import { useInstitutionBranding } from "@/components/layout/container/api/useInstitutionBranding.ts";
 import type { InstitutionAdmin } from "@/models/seb-server/institution.ts";
 
 definePage({
@@ -89,6 +91,9 @@ const error = ref<string>();
 
 const { mutateData: saveInstitution, data: savedInstitution } =
     useMutation(editInstitution);
+
+const { user } = useCurrentUser();
+const { refetch: refetchInstitutionBranding } = useInstitutionBranding();
 
 onMounted(async () => {
     loading.value = true;
@@ -127,6 +132,11 @@ async function submit() {
     });
 
     if (savedInstitution.value) {
+        if (
+            Number(institution.value.id) === Number(user.value?.institutionId)
+        ) {
+            await refetchInstitutionBranding();
+        }
         await router.push({ name: "/(app)/institution/" });
     }
 }

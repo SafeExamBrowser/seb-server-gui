@@ -525,6 +525,7 @@ import { UserRoleEnum } from "@/models/userRoleEnum.ts";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/userAccountStore.ts";
+import { useCurrentUser } from "@/components/layout/container/api/useCurrentUser.ts";
 import * as userAccountService from "@/services/seb-server/userAccountService.ts";
 
 import {
@@ -548,6 +549,7 @@ const institutions = ref<Institution[]>([]);
 const i18n = useI18n();
 const router = useRouter();
 const authenticatedUserAccountStore = useAuthenticatedUserAccountStore();
+const { refetch: refetchCurrentUser } = useCurrentUser();
 const timezoneOptions = moment.tz.names();
 
 // fields
@@ -868,6 +870,12 @@ async function saveChanges() {
                 editedUserAccountParams,
             )) != null
         ) {
+            if (
+                user.value.uuid ===
+                authenticatedUserAccountStore.userAccount?.uuid
+            ) {
+                await refetchCurrentUser();
+            }
             await router.push({
                 name: props.isProfile ? "/(app)/" : "/(app)/user-account/",
             });
