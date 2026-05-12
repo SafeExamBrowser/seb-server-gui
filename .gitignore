@@ -23,3 +23,4 @@ application-prod.properties
 /client/playwright-report/
 /client/test-results/
 .claude/**/*.local.*
+.playwright-mcp/
