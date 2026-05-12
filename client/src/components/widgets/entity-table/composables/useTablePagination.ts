@@ -3,7 +3,7 @@ import type { ServerTablePaging } from "@/models/types.ts";
 
 type SortItemForTable = { key: string; order?: boolean | "asc" | "desc" };
 
-export const DEFAULT_ITEMS_PER_PAGE = 5;
+const DEFAULT_ITEMS_PER_PAGE = 10;
 
 export function useTablePagination(deps: {
     options: MaybeRefOrGetter<ServerTablePaging | undefined>;
