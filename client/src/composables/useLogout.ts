@@ -1,5 +1,6 @@
 import { useAuthStore } from "@/composables/store/useAuthStore";
 import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
+import { clearCurrentUser } from "@/components/layout/base/api/useCurrentUser";
 import * as authenticationService from "@/services/authenticationService";
 import router from "@/router/router";
 
@@ -14,6 +15,7 @@ export const useLogout = () => {
 
         authStore.$reset();
         userAccountStore.userAccount = null;
+        clearCurrentUser();
 
         await router.push({ name: "/(public)/login/" });
     };

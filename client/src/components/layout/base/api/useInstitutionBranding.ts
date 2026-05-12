@@ -1,16 +1,16 @@
 import { ref, watch } from "vue";
-import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
+import { useCurrentUser } from "@/components/layout/base/api/useCurrentUser";
 import { getInstitutionById } from "@/services/seb-server/institutionService";
 
 export function useInstitutionBranding() {
-    const userAccountStore = useUserAccountStore();
+    const { user } = useCurrentUser();
 
     const institutionName = ref("");
     const institutionLogo = ref<string | null>(null);
     const loadedInstitutionId = ref<number | null>(null);
 
     watch(
-        () => userAccountStore.userAccount?.institutionId,
+        () => user.value?.institutionId,
         async (institutionId) => {
             if (institutionId == null) {
                 institutionName.value = "";

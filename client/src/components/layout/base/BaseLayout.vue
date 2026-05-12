@@ -7,7 +7,7 @@
             :home-route="homeRoute"
             :institution-logo="institutionLogo"
             :institution-name="institutionName"
-            :user-account="userAccountStore.userAccount"
+            :user-account="user"
             @logout="handleLogout"
         />
 
@@ -16,9 +16,7 @@
             :style="{ minHeight: 0 }"
         >
             <BaseNavigationRail
-                :can-view-navigation-overview="
-                    ability.canView(GUIComponent.NavigationOverview)
-                "
+                :can-view-navigation-overview="canViewNavigationOverview"
                 :home-route="homeRoute"
                 :is-navigation-overview-route="isNavigationOverviewRoute"
                 :links="mainNavigationLinks"
@@ -48,22 +46,29 @@
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { RouterView, useRoute } from "vue-router";
-import { GUIComponent, useAbilities } from "@/services/ability";
 import { useLogout } from "@/composables/useLogout";
 import { typedTo } from "@/router/typedTo";
-import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
 import BaseAppBar from "@/components/layout/base/BaseAppBar.vue";
 import BaseNavigationRail from "@/components/layout/base/BaseNavigationRail.vue";
 import { buildBaseNavigationLinks } from "@/components/layout/base/navigationLinks";
-import { useInstitutionBranding } from "@/components/layout/base/useInstitutionBranding";
+import { useCurrentUser } from "@/components/layout/base/api/useCurrentUser";
+import { useInstitutionBranding } from "@/components/layout/base/api/useInstitutionBranding";
 import ToastContainer from "@/components/widgets/toast/ToastContainer.vue";
 
 const route = useRoute();
 const { t } = useI18n();
-const userAccountStore = useUserAccountStore();
-const ability = useAbilities();
 const { logout } = useLogout();
+const { user } = useCurrentUser();
 const { institutionName, institutionLogo } = useInstitutionBranding();
+
+// TODO @Andrei Abilities
+const canViewNavigationOverview = computed(() => {
+    const roles = user.value?.userRoles ?? [];
+    return (
+        roles.includes("SEB_SERVER_ADMIN") ||
+        roles.includes("INSTITUTIONAL_ADMIN")
+    );
+});
 
 const homeRoute = typedTo({ name: "/(app)/" });
 const navigationOverviewRoute = typedTo({
