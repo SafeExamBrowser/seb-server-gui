@@ -53,9 +53,7 @@ const isNavigationOverviewRoute = computed(
 
 const isPageBlue = computed(() => route.meta.isPageBlue ?? false);
 
-const pageTestId = computed(
-    () => (route.meta.pageTestId as string | undefined) ?? "page",
-);
+const pageTestId = computed(() => route.meta.pageTestId ?? "page");
 
 const effectiveTitle = computed(() => {
     return institutionName.value || "SEB Server";

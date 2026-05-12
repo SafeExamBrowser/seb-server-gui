@@ -1,54 +1,75 @@
-import { useExamTemplateSearch } from "./useExamTemplateSearch.ts";
-import { useExamTemplateTable } from "./useExamTemplateTable.ts";
-import type { TableFilters } from "@/components/widgets/entity-table/types.ts";
-import type { TableOptions } from "../types/types.ts";
+import { computed } from "vue";
+import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
+import { useExamTemplates } from "./api/useExamTemplates.ts";
+import {
+    useExamTemplateFilters,
+    EXAM_TYPE_FILTER_KEY,
+} from "./useExamTemplateFilters.ts";
 
 export const useExamTemplateList = () => {
-    const search = useExamTemplateSearch();
-    const table = useExamTemplateTable(search.searchQuery, search.examType);
+    const filterSections = useExamTemplateFilters();
 
-    const handleSearch = () => {
-        search.commitSearch();
-        table.fetchFromFirstPage();
-    };
+    const {
+        searchInputValue,
+        searchField,
+        selectedFilters,
+        options,
+        loadItems,
+        onSearch,
+        onClearSearch,
+        setFilters,
+        clearAll,
+    } = useUrlTableState(async () => {
+        await fetchExamTemplates();
+    }, [EXAM_TYPE_FILTER_KEY]);
 
-    const handleResetAndFetch = () => {
-        search.resetFilters();
-        table.fetchFromFirstPage();
-    };
+    // TODO @andrei: it's a bit unfortunate that we have to set the default sorting like this. It would be better if useUrlTableState would accept a default sorting
+    options.value.sortBy = [{ key: "name", order: "asc" }];
 
-    const handleFiltersUpdate = (newFilters: TableFilters) => {
-        search.updateFilters(newFilters);
-        table.fetchFromFirstPage();
-    };
+    const searchQuery = computed(() => searchField.value ?? undefined);
+    const selectedExamType = computed(
+        () => selectedFilters.value[EXAM_TYPE_FILTER_KEY] ?? undefined,
+    );
 
-    const handleOptionsUpdate = (newOptions: TableOptions) => {
-        table.updateOptions(newOptions);
-    };
+    const {
+        data,
+        loading,
+        error,
+        fetchData: fetchExamTemplates,
+    } = useExamTemplates(options, searchQuery, selectedExamType);
 
-    const handleItemsUpdate = () => {
-        table.fetchExamTemplates();
+    const items = computed(() => data.value?.content ?? []);
+    const pageCount = computed(() => data.value?.number_of_pages ?? 0);
+    const errors = computed(() => (error.value ? [error.value] : []));
+
+    const reloadList = async () => {
+        await fetchExamTemplates();
+
+        const maxPage = Math.max(1, pageCount.value);
+
+        if (options.value.page <= maxPage) {
+            return;
+        }
+
+        options.value.page = maxPage;
+
+        await fetchExamTemplates();
     };
 
     return {
-        search: {
-            filterSections: search.filterSections,
-            searchInput: search.searchInput,
-            selectedFilters: search.selectedFilters,
-        },
-        table: {
-            headers: table.headers,
-            examTemplates: table.examTemplates,
-            totalItems: table.totalItems,
-            isLoading: table.isLoading,
-            errors: table.errors,
-            sortBy: table.sortBy,
-        },
-        handleSearch,
-        handleClear: handleResetAndFetch,
-        handleFiltersUpdate,
-        handleFiltersReset: handleResetAndFetch,
-        handleOptionsUpdate,
-        handleItemsUpdate,
+        items,
+        pageCount,
+        loading,
+        errors,
+        options,
+        searchInputValue,
+        selectedFilters,
+        filterSections,
+        onSearch,
+        onClearSearch,
+        setFilters,
+        clearAll,
+        loadItems,
+        reloadList,
     };
 };
