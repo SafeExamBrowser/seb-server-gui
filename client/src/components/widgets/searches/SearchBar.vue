@@ -20,7 +20,7 @@
                     :search-text="searchText"
                     :data-test-id="dataTestId"
                     @update:model-value="emit('update:modelValue', $event)"
-                    @search="emit('search')"
+                    @search="onSearch"
                     @clear="emit('clear')"
                 />
             </v-col>
