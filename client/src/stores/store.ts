@@ -4,9 +4,6 @@ import { GridSize } from "@/models/types";
 
 // --------------------app bar-----------------------------//
 export const useAppBarStore = defineStore("appBar", () => {
-    const examOverviewShowPastExams = ref<boolean>(false);
-    const examOverviewShowUpcomingExams = ref<boolean>(false);
-
     const galleryGridSize = ref<GridSize>({
         title: "3x3",
         value: 3,
@@ -22,8 +19,6 @@ export const useAppBarStore = defineStore("appBar", () => {
     const galleryIsNameSortAsc = ref<boolean>(true);
 
     return {
-        examOverviewShowPastExams,
-        examOverviewShowUpcomingExams,
         galleryGridSize,
         galleryIsNameEnabled,
         galleryIsIpEnabled,
