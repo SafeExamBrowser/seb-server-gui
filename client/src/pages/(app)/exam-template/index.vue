@@ -77,14 +77,15 @@ import { useExamTemplates } from "./composables/api/useExamTemplates.ts";
 import { useDeleteExamTemplate } from "./composables/api/useDeleteExamTemplate.ts";
 import { useCopyExamTemplate } from "./composables/api/useCopyExamTemplate.ts";
 import { useExamTemplateTableHeaders } from "./composables/useExamTemplateTableHeaders.ts";
-import {
-    useExamTemplateTableActions,
-    type ExamTemplateTableItem,
-} from "./composables/useExamTemplateTableActions.ts";
+import { useExamTemplateTableActions } from "./composables/useExamTemplateTableActions.ts";
 import {
     useExamTemplateFilters,
     EXAM_TYPE_FILTER_KEY,
 } from "./composables/useExamTemplateFilters.ts";
+import {
+    isExamTemplateTableItem,
+    type ExamTemplateTableItem,
+} from "./types.ts";
 
 const dataTestId = "examTemplates";
 
@@ -97,8 +98,13 @@ const examTemplateDetailRoute = (
     params: { id: String(item.id) },
 });
 
-const tableDetailRoute = (item: TableItem): RouteLocationAsRelative =>
-    examTemplateDetailRoute(item as ExamTemplateTableItem);
+const tableDetailRoute = (item: TableItem): RouteLocationAsRelative | null => {
+    if (!isExamTemplateTableItem(item)) {
+        return null;
+    }
+
+    return examTemplateDetailRoute(item);
+};
 
 const { headers, cellFormatters } = useExamTemplateTableHeaders();
 const filterSections = useExamTemplateFilters();
@@ -208,7 +214,34 @@ const tableActions = useExamTemplateTableActions({
     onDelete: openDeleteDialog,
 });
 
-const entityTableActions = computed(
-    () => tableActions.value as unknown as TableAction[],
+const entityTableActions = computed<TableAction[]>(() =>
+    tableActions.value.map((action) => ({
+        ...action,
+        onClick: (item: TableItem) => {
+            if (!isExamTemplateTableItem(item)) {
+                return;
+            }
+
+            return action.onClick(item);
+        },
+        visible: action.visible
+            ? (item: TableItem) => {
+                  if (!isExamTemplateTableItem(item)) {
+                      return false;
+                  }
+
+                  return action.visible?.(item) ?? false;
+              }
+            : undefined,
+        disabled: action.disabled
+            ? (item: TableItem) => {
+                  if (!isExamTemplateTableItem(item)) {
+                      return false;
+                  }
+
+                  return action.disabled?.(item) ?? false;
+              }
+            : undefined,
+    })),
 );
 </script>

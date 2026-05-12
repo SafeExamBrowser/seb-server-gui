@@ -1,11 +1,7 @@
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import type { TableAction } from "@/components/widgets/entity-table/types.ts";
-import type { ExamTemplate } from "@/models/seb-server/examTemplate.ts";
-
-export type ExamTemplateTableItem = ExamTemplate & {
-    id: number;
-};
+import type { ExamTemplateTableItem } from "@/pages/(app)/exam-template/types.ts";
 
 export function useExamTemplateTableActions(deps: {
     onEdit: (item: ExamTemplateTableItem) => void;
