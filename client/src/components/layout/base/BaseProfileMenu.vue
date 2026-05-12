@@ -10,7 +10,7 @@
             <v-btn
                 v-bind="menuProps"
                 :active="false"
-                aria-label="Profile"
+                :aria-label="t('navigation.screenReader.profile')"
                 class="text-none overflow-hidden pa-0 pe-2 ps-1"
                 :color="isOpen ? 'primary' : 'surface'"
                 data-testid="layout-profile-button"
@@ -134,7 +134,9 @@
                     variant="text"
                     @click="handleLogout"
                 >
-                    <span class="font-weight-bold text-body-2">Log out</span>
+                    <span class="font-weight-bold text-body-2">{{
+                        t("navigation.profileMenu.logout")
+                    }}</span>
                 </v-btn>
             </div>
         </v-card>
@@ -209,7 +211,7 @@ const quickActions = computed(() => [
     },
     {
         icon: "mdi-file-document-outline",
-        label: "Docs",
+        label: t("navigation.profileMenu.docs"),
         href: "https://seb-server.readthedocs.io/en/latest/index.html",
         rel: "noopener noreferrer",
         target: "_blank",

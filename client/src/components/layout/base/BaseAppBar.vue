@@ -26,7 +26,7 @@
             <img
                 v-if="institutionLogo"
                 class="flex-shrink-0"
-                alt="Institution Logo"
+                :alt="$t('navigation.screenReader.institutionLogo')"
                 :src="institutionLogo"
                 :style="{
                     maxHeight: '44px',
@@ -41,13 +41,16 @@
                 <span
                     class="text-caption text-medium-emphasis font-weight-bold"
                 >
-                    Institution
+                    {{ $t("navigation.institution") }}
                 </span>
                 <span
                     class="text-body-2 font-weight-black"
                     data-testid="layout-institutionTitle-text"
                 >
-                    {{ institutionName || "SEB Server" }}
+                    {{
+                        institutionName ||
+                        $t("navigation.fallbackInstitutionName")
+                    }}
                 </span>
             </div>
 

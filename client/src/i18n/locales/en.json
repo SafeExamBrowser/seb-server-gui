@@ -2001,6 +2001,8 @@
         "signOut": "Sign out",
         "accountSettings": "Account settings",
         "loggedInAs": "Logged in as",
+        "institution": "Institution",
+        "fallbackInstitutionName": "SEB Server",
         "routeNames": {
             "runningExams": "Running Exams",
             "finishedExams": "Finished Exams",
@@ -2018,7 +2020,12 @@
         "screenReader": {
             "titleImage": "SEB Server Homepage",
             "navigationBar": "Navigation Bar",
-            "profile": "Profile"
+            "profile": "Profile",
+            "institutionLogo": "Institution Logo"
+        },
+        "profileMenu": {
+            "docs": "Docs",
+            "logout": "Log out"
         }
     },
     "changePasswordDialog": {
