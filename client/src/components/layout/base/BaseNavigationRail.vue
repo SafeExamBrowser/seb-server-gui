@@ -6,7 +6,6 @@
         elevation="1"
     >
         <v-btn
-            v-if="canViewNavigationOverview"
             :active="false"
             class="mb-2 overflow-hidden"
             :class="
@@ -57,7 +56,6 @@ import type { BaseNavigationLink } from "@/components/layout/base/navigationLink
 
 defineProps<{
     links: BaseNavigationLink[];
-    canViewNavigationOverview: boolean;
     isNavigationOverviewRoute: boolean;
     navigationOverviewRoute: RouteLocationAsRelative;
     homeRoute: RouteLocationAsRelative;

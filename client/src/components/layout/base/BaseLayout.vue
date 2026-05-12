@@ -20,7 +20,6 @@
             :style="{ minHeight: 0 }"
         >
             <BaseNavigationRail
-                :can-view-navigation-overview="canViewNavigationOverview"
                 :home-route="homeRoute"
                 :is-navigation-overview-route="isNavigationOverviewRoute"
                 :links="mainNavigationLinks"
@@ -67,14 +66,7 @@ const { logout } = useLogout();
 const { user } = useCurrentUser();
 const { institutionName, institutionLogo } = useInstitutionBranding();
 
-// TODO @Andrei Abilities
-const canViewNavigationOverview = computed(() => {
-    const roles = user.value?.userRoles ?? [];
-    return (
-        roles.includes("SEB_SERVER_ADMIN") ||
-        roles.includes("INSTITUTIONAL_ADMIN")
-    );
-});
+// TODO @Andrei RBAC
 
 const homeRoute = typedTo({ name: "/(app)/" });
 const navigationOverviewRoute = typedTo({
