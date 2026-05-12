@@ -44,13 +44,13 @@ export const useExamTemplateList = () => {
     const reloadList = async () => {
         await fetchExamTemplates();
 
-        const total = pageCount.value;
+        const targetPage = Math.max(1, pageCount.value);
 
-        if (options.value.page <= total) {
+        if (targetPage === options.value.page) {
             return;
         }
 
-        options.value.page = Math.max(1, total);
+        options.value.page = targetPage;
 
         await fetchExamTemplates();
     };
