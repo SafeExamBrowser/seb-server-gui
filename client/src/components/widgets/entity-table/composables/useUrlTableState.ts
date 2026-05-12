@@ -14,6 +14,7 @@ const getDefaultOptions = (): ServerTablePaging => ({
     sortBy: [],
 });
 
+// TODO @andrei: prefer undefined over null in this whole file
 export function useUrlTableState(
     loadFn: LoadItemsFn,
     filterKeys: string[] = [],

@@ -126,8 +126,9 @@ const {
 
 options.value.sortBy = [{ key: "name", order: "asc" }];
 
+const searchQuery = computed(() => searchField.value ?? undefined);
 const selectedExamType = computed(
-    () => selectedFilters.value[EXAM_TYPE_FILTER_KEY],
+    () => selectedFilters.value[EXAM_TYPE_FILTER_KEY] ?? undefined,
 );
 
 const {
@@ -135,7 +136,7 @@ const {
     loading: isLoading,
     error,
     fetchData: fetchExamTemplates,
-} = useExamTemplates(options, searchField, selectedExamType);
+} = useExamTemplates(options, searchQuery, selectedExamType);
 
 const items = computed(() => data.value?.content ?? []);
 const pageCount = computed(() => data.value?.number_of_pages ?? 0);
@@ -170,7 +171,7 @@ const reloadAndClampPage = async () => {
     await fetchExamTemplates();
 };
 
-const deleteTarget = ref<ExamTemplateTableItem | null>(null);
+const deleteTarget = ref<ExamTemplateTableItem | undefined>(undefined);
 const deleteDialogOpen = ref(false);
 
 const deleteDetailText = computed(() =>

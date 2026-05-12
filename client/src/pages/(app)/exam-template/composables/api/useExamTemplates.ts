@@ -23,8 +23,8 @@ const toSortOrder = (
 
 export const useExamTemplates = (
     paging: Readonly<Ref<ServerTablePaging>>,
-    searchQuery: Readonly<Ref<string | null>>,
-    examType: Readonly<Ref<string | null>>,
+    searchQuery: Readonly<Ref<string | undefined>>,
+    examType: Readonly<Ref<string | undefined>>,
 ) => {
     return useFetch(() =>
         getExamTemplates({
@@ -33,8 +33,8 @@ export const useExamTemplates = (
                 pageSize: paging.value.itemsPerPage,
                 sortOrder: toSortOrder(paging.value.sortBy),
             },
-            name: searchQuery.value ?? undefined,
-            examType: examType.value ?? undefined,
+            name: searchQuery.value,
+            examType: examType.value,
         }),
     );
 };
