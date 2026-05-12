@@ -19,6 +19,7 @@ on the filesystem if they clash:
 - TypeScript: Avoid manual typecasts like `as FooBar`. Properly cast the types and fulfill their requirements.
 - Don't start component names with `V`. This is reserved for Vuetify by convention.
 - Prefer the "Vue composition API" over the "Vue options API".
+- Avoid one lined if conditions. If conditions should always be multi line and use brackets.
 - Routing: when generating urls for Vuetify components with a `to` property (e.g. `v-list-item`, `v-btn`, ...), you
   must always use the `typedTo` helper function so type safety is ensured.
 - Use `client/src/composables/useFetch.ts` and `client/src/composables/useMutation.ts` and the abstracted API services stored in
