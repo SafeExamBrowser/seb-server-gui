@@ -1,39 +1,4 @@
 <template>
-    <template v-if="layoutContext === 'exams-overview'">
-        <div class="mr-4">
-            <v-menu :close-on-content-click="false">
-                <template #activator="{ props }">
-                    <v-btn
-                        aria-label="Running Exams Settings"
-                        v-bind="props"
-                        color="primary"
-                        icon="mdi-cog"
-                    />
-                </template>
-                <v-list>
-                    <v-list-item>
-                        <v-switch
-                            v-model="appBarStore.examOverviewShowPastExams"
-                            class="mx-auto"
-                            color="primary"
-                            hide-details
-                            label="Show past exams"
-                        />
-                    </v-list-item>
-                    <v-list-item>
-                        <v-switch
-                            v-model="appBarStore.examOverviewShowUpcomingExams"
-                            class="mx-auto"
-                            color="primary"
-                            hide-details
-                            label="Show upcoming exams"
-                        />
-                    </v-list-item>
-                </v-list>
-            </v-menu>
-        </div>
-    </template>
-
     <template v-if="layoutContext === 'gallery-view'">
         <v-chip class="mr-4">
             {{ translate("galleryView.generalInfo.page") }}:
@@ -146,9 +111,9 @@
 </template>
 
 <script setup lang="ts">
-import { useAppBarStore } from "@/stores/store";
-import { translate } from "@/utils/generalUtils";
-import type { GridSize } from "@/models/types";
+import { useAppBarStore } from "client/src/stores/store";
+import { translate } from "client/src/utils/generalUtils";
+import type { GridSize } from "client/src/models/types";
 
 defineProps<{
     layoutContext?: string;

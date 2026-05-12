@@ -11,7 +11,7 @@
             @logout="handleLogout"
         >
             <template #bar-actions>
-                <ContainerRouteActions :layout-context="layoutContext" />
+                <BaseRouteActions :layout-context="layoutContext" />
             </template>
         </BaseAppBar>
 
@@ -53,7 +53,7 @@ import { useLogout } from "@/composables/useLogout";
 import { typedTo } from "@/router/typedTo";
 import BaseAppBar from "@/components/layout/base/BaseAppBar.vue";
 import BaseNavigationRail from "@/components/layout/base/BaseNavigationRail.vue";
-import ContainerRouteActions from "@/components/layout/container/ContainerRouteActions.vue";
+import BaseRouteActions from "./BaseRouteActions.vue";
 import { buildBaseNavigationLinks } from "@/components/layout/base/navigationLinks";
 import { useCurrentUser } from "@/components/layout/base/api/useCurrentUser";
 import { useInstitutionBranding } from "@/components/layout/base/api/useInstitutionBranding";

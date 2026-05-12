@@ -16,17 +16,23 @@ const fetchCurrentUser = async (): Promise<void> => {
     loading.value = true;
     error.value = undefined;
 
-    pendingRequest = (async () => {
+    const request: Promise<void> = (async () => {
         try {
-            user.value = await getPersonalUserAccount();
+            const result = await getPersonalUserAccount();
+            if (pendingRequest !== request) return;
+            user.value = result;
             hasFetched = true;
         } catch (err) {
+            if (pendingRequest !== request) return;
             error.value = err instanceof Error ? err.message : "Unknown error";
         } finally {
-            loading.value = false;
-            pendingRequest = null;
+            if (pendingRequest === request) {
+                loading.value = false;
+                pendingRequest = null;
+            }
         }
     })();
+    pendingRequest = request;
 
     return pendingRequest;
 };
@@ -34,7 +40,9 @@ const fetchCurrentUser = async (): Promise<void> => {
 export const clearCurrentUser = (): void => {
     user.value = undefined;
     error.value = undefined;
+    loading.value = false;
     hasFetched = false;
+    pendingRequest = null;
 };
 
 export const useCurrentUser = () => {
