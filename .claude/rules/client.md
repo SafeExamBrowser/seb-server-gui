@@ -20,6 +20,7 @@ on the filesystem if they clash:
   - Avoid manual typecasts like `as FooBar`. Properly cast the types and fulfill their requirements.
   - Don't use `any`.
   - Use `undefined`. Do not use `null`.
+- Prefer early returns over nested `if` conditions.
 - Don't start component names with `V`. This is reserved for Vuetify by convention.
 - Prefer the "Vue composition API" over the "Vue options API".
 - Avoid one lined if conditions. If conditions should always be multi line and use brackets.
