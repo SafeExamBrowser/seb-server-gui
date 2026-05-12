@@ -107,8 +107,8 @@ const props = withDefaults(
     defineProps<{
         homeRoute: RouteLocationAsRelative;
         institutionName: string;
-        institutionLogo: string | null;
-        userAccount: UserAccount | null | undefined;
+        institutionLogo?: string;
+        userAccount?: UserAccount;
         breadcrumb?: string[];
     }>(),
     {

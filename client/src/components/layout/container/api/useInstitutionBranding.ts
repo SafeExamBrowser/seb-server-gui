@@ -3,15 +3,15 @@ import { useCurrentUser } from "./useCurrentUser";
 import { getInstitutionById } from "@/services/seb-server/institutionService";
 
 const institutionName = ref("");
-const institutionLogo = ref<string | null>(null);
-const loadedInstitutionId = ref<number | null>(null);
+const institutionLogo = ref<string>();
+const loadedInstitutionId = ref<number>();
 let initialized = false;
 
-async function loadInstitution(institutionId: number | null | undefined) {
-    if (institutionId == null) {
+async function loadInstitution(institutionId: number | undefined) {
+    if (institutionId === undefined) {
         institutionName.value = "";
-        institutionLogo.value = null;
-        loadedInstitutionId.value = null;
+        institutionLogo.value = undefined;
+        loadedInstitutionId.value = undefined;
         return;
     }
 
@@ -20,12 +20,12 @@ async function loadInstitution(institutionId: number | null | undefined) {
     try {
         const institution = await getInstitutionById(numericId);
         institutionName.value = institution.name;
-        institutionLogo.value = institution.logoImage ?? null;
+        institutionLogo.value = institution.logoImage;
         loadedInstitutionId.value = numericId;
     } catch {
         institutionName.value = "";
-        institutionLogo.value = null;
-        loadedInstitutionId.value = null;
+        institutionLogo.value = undefined;
+        loadedInstitutionId.value = undefined;
     }
 }
 
@@ -45,9 +45,11 @@ function initInstitutionBranding() {
             () => user.value?.institutionId,
             async (institutionId) => {
                 const numericId =
-                    institutionId == null ? null : Number(institutionId);
+                    institutionId === undefined
+                        ? undefined
+                        : Number(institutionId);
                 if (
-                    numericId != null &&
+                    numericId !== undefined &&
                     loadedInstitutionId.value === numericId
                 ) {
                     return;

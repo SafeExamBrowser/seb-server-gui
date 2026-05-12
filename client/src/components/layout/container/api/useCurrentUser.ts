@@ -6,7 +6,7 @@ const user = ref<UserAccount>();
 const loading = ref(false);
 const error = ref<string>();
 let hasFetched = false;
-let pendingRequest: Promise<void> | null = null;
+let pendingRequest: Promise<void> | undefined;
 
 const fetchCurrentUser = async (): Promise<void> => {
     if (pendingRequest) {
@@ -24,7 +24,7 @@ const fetchCurrentUser = async (): Promise<void> => {
             error.value = err instanceof Error ? err.message : "Unknown error";
         } finally {
             loading.value = false;
-            pendingRequest = null;
+            pendingRequest = undefined;
         }
     })();
 

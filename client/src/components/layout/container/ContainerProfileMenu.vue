@@ -147,7 +147,7 @@ import type { UserAccount } from "@/models/userAccount";
 import { typedTo } from "@/router/typedTo";
 
 const props = defineProps<{
-    userAccount: UserAccount | null | undefined;
+    userAccount?: UserAccount;
 }>();
 
 const emit = defineEmits<{
