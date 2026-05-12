@@ -62,27 +62,19 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import { useRouter, type RouteLocationAsRelative } from "vue-router";
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import SearchBar from "@/components/widgets/searches/SearchBar.vue";
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
-import type {
-    TableAction,
-    TableItem,
-} from "@/components/widgets/entity-table/types.ts";
-import { useExamTemplates } from "./composables/api/useExamTemplates.ts";
-import { useDeleteExamTemplate } from "./composables/api/useDeleteExamTemplate.ts";
-import { useCopyExamTemplate } from "./composables/api/useCopyExamTemplate.ts";
+import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 import { useExamTemplateTableHeaders } from "./composables/useExamTemplateTableHeaders.ts";
 import { useExamTemplateTableActions } from "./composables/useExamTemplateTableActions.ts";
-import {
-    useExamTemplateFilters,
-    EXAM_TYPE_FILTER_KEY,
-} from "./composables/useExamTemplateFilters.ts";
+import { useExamTemplateList } from "./composables/useExamTemplateList.ts";
+import { useExamTemplateDeleteFlow } from "./composables/useExamTemplateDeleteFlow.ts";
+import { useExamTemplateCopyFlow } from "./composables/useExamTemplateCopyFlow.ts";
 import {
     isExamTemplateTableItem,
     type ExamTemplateTableItem,
@@ -92,11 +84,11 @@ const dataTestId = "examTemplates";
 
 const router = useRouter();
 
-const examTemplateDetailRoute = (
+const createExamTemplateDetailRoute = (
     item: ExamTemplateTableItem,
 ): RouteLocationAsRelative => ({
     name: "/(app)/exam-template/[id]/",
-    params: { id: String(item.id) },
+    params: { id: item.id },
 });
 
 const tableDetailRoute = (item: TableItem): RouteLocationAsRelative | null => {
@@ -104,146 +96,52 @@ const tableDetailRoute = (item: TableItem): RouteLocationAsRelative | null => {
         return null;
     }
 
-    return examTemplateDetailRoute(item);
+    return createExamTemplateDetailRoute(item);
 };
 
 const { headers, cellFormatters } = useExamTemplateTableHeaders();
-const filterSections = useExamTemplateFilters();
 
 const {
-    searchInputValue,
-    searchField,
-    selectedFilters,
+    items,
+    pageCount,
+    loading,
+    errors,
     options,
-    loadItems,
+    searchInputValue,
+    selectedFilters,
+    filterSections,
     onSearch,
     onClearSearch,
     setFilters,
     clearAll,
-} = useUrlTableState(async () => {
-    await fetchExamTemplates();
-}, [EXAM_TYPE_FILTER_KEY]);
-
-options.value.sortBy = [{ key: "name", order: "asc" }];
-
-const searchQuery = computed(() => searchField.value ?? undefined);
-const selectedExamType = computed(
-    () => selectedFilters.value[EXAM_TYPE_FILTER_KEY] ?? undefined,
-);
+    loadItems,
+    reload: reloadList,
+} = useExamTemplateList();
 
 const {
-    data,
-    loading: isLoading,
-    error,
-    fetchData: fetchExamTemplates,
-} = useExamTemplates(options, searchQuery, selectedExamType);
+    deleteDialogOpen,
+    deleteDetailText,
+    deleteError,
+    deleteLoading,
+    openDeleteDialog,
+    confirmDelete,
+} = useExamTemplateDeleteFlow({ reloadList });
 
-const items = computed(() => data.value?.content ?? []);
-const pageCount = computed(() => data.value?.number_of_pages ?? 0);
-const errors = computed(() => (error.value ? [error.value] : []));
-
-const {
-    mutateData: deleteTemplate,
-    loading: deleteLoading,
-    error: deleteError,
-} = useDeleteExamTemplate();
-const {
-    mutateData: copyTemplate,
-    loading: copyLoading,
-    error: copyError,
-} = useCopyExamTemplate();
+const { copy, copyLoading, copyError } = useExamTemplateCopyFlow({
+    reloadList,
+});
 
 const tableLoading = computed(
-    () => isLoading.value || deleteLoading.value || copyLoading.value,
+    () => loading.value || deleteLoading.value || copyLoading.value,
 );
 
-const reloadAndClampPage = async () => {
-    await fetchExamTemplates();
-
-    const total = pageCount.value;
-
-    if (options.value.page <= total) {
-        return;
-    }
-
-    options.value.page = Math.max(1, total);
-
-    await fetchExamTemplates();
-};
-
-const deleteTarget = ref<ExamTemplateTableItem | undefined>(undefined);
-const deleteDialogOpen = ref(false);
-
-const deleteDetailText = computed(() =>
-    deleteTarget.value ? String(deleteTarget.value.name ?? "") : "",
-);
-
-const openDeleteDialog = (item: ExamTemplateTableItem) => {
-    deleteTarget.value = item;
-    deleteDialogOpen.value = true;
-};
-
-const confirmDelete = async () => {
-    const target = deleteTarget.value;
-    deleteDialogOpen.value = false;
-
-    if (!target) {
-        return;
-    }
-
-    await deleteTemplate(target.id);
-
-    if (deleteError.value !== undefined) {
-        return;
-    }
-
-    await reloadAndClampPage();
-};
-
-const tableActions = useExamTemplateTableActions({
+const entityTableActions = useExamTemplateTableActions({
     onEdit: (item) => {
-        void router.push(examTemplateDetailRoute(item));
+        router.push(createExamTemplateDetailRoute(item));
     },
-    onCopy: async (item) => {
-        await copyTemplate(item.id);
-
-        if (copyError.value !== undefined) {
-            return;
-        }
-
-        await fetchExamTemplates();
+    onCopy: (item) => {
+        copy(item);
     },
     onDelete: openDeleteDialog,
 });
-
-const entityTableActions = computed<TableAction[]>(() =>
-    tableActions.value.map((action) => ({
-        ...action,
-        onClick: (item: TableItem) => {
-            if (!isExamTemplateTableItem(item)) {
-                return;
-            }
-
-            return action.onClick(item);
-        },
-        visible: action.visible
-            ? (item: TableItem) => {
-                  if (!isExamTemplateTableItem(item)) {
-                      return false;
-                  }
-
-                  return action.visible?.(item) ?? false;
-              }
-            : undefined,
-        disabled: action.disabled
-            ? (item: TableItem) => {
-                  if (!isExamTemplateTableItem(item)) {
-                      return false;
-                  }
-
-                  return action.disabled?.(item) ?? false;
-              }
-            : undefined,
-    })),
-);
 </script>
