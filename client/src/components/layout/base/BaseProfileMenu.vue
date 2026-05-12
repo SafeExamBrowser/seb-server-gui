@@ -1,6 +1,7 @@
 <template>
     <v-menu
         v-model="isOpen"
+        :close-on-content-click="false"
         location="bottom end"
         :offset="[20, 8]"
         transition="fade-transition"
