@@ -34,7 +34,6 @@
                     :headers="list.headers"
                     :items="list.items"
                     :page-count="list.pageCount"
-                    :items-per-page="list.options.itemsPerPage"
                     :options="list.options"
                     :loading="list.loading"
                     :detail-route="list.detailRoute"
