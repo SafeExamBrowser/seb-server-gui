@@ -27,13 +27,14 @@ export const useExamTemplateDeleteFlow = ({
 
     const confirmDelete = async () => {
         const target = deleteTarget.value;
-        deleteDialogOpen.value = false;
 
         if (!target) {
+            deleteDialogOpen.value = false;
             return;
         }
 
         await deleteTemplate(target.id);
+        deleteDialogOpen.value = false;
 
         if (deleteError.value !== undefined) {
             return;
