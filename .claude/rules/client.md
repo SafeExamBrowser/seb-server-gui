@@ -16,7 +16,10 @@ on the filesystem if they clash:
 
 # Best practice
 
-- TypeScript: Avoid manual typecasts like `as FooBar`. Properly cast the types and fulfill their requirements.
+- TypeScript:
+  - Avoid manual typecasts like `as FooBar`. Properly cast the types and fulfill their requirements.
+  - Don't use `any`.
+  - Use `undefined`. Do not use `null`.
 - Don't start component names with `V`. This is reserved for Vuetify by convention.
 - Prefer the "Vue composition API" over the "Vue options API".
 - Avoid one lined if conditions. If conditions should always be multi line and use brackets.
