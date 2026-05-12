@@ -10,38 +10,38 @@
     >
         <template #PanelTop>
             <SearchBar
-                v-model="searchInputValue"
+                v-model="list.searchInputValue"
                 search-text="examTemplateList.info.nameSearchPlaceholder"
-                :filter-sections="filterSections"
-                :filter-values="selectedFilters"
+                :filter-sections="list.filterSections"
+                :filter-values="list.selectedFilters"
                 :data-test-id="dataTestId"
-                @search="onSearch"
-                @clear="onClearSearch"
-                @update:filter-values="setFilters"
-                @clear-filters="clearAll"
+                @search="list.onSearch"
+                @clear="list.onClearSearch"
+                @update:filter-values="list.setFilters"
+                @clear-filters="list.clearAll"
             />
         </template>
         <template #PanelMain>
             <!-- TODO @andrei: properly display errors, once we have a proper generic error component -->
-            <div v-if="deleteError">
-                {{ deleteError }}
+            <div v-if="deleteFlow.error">
+                {{ deleteFlow.error }}
             </div>
-            <div v-else-if="copyError">
-                {{ copyError }}
+            <div v-else-if="copyFlow.error">
+                {{ copyFlow.error }}
             </div>
-            <LoadingFallbackComponent :loading="false" :errors="errors">
+            <LoadingFallbackComponent :loading="false" :errors="list.errors">
                 <EntityTable
-                    :headers="headers"
-                    :items="items"
-                    :page-count="pageCount"
-                    :items-per-page="options.itemsPerPage"
-                    :options="options"
-                    :loading="tableLoading"
-                    :detail-route="tableDetailRoute"
-                    :cell-formatters="cellFormatters"
-                    :actions="entityTableActions"
+                    :headers="list.headers"
+                    :items="list.items"
+                    :page-count="list.pageCount"
+                    :items-per-page="list.options.itemsPerPage"
+                    :options="list.options"
+                    :loading="list.loading"
+                    :detail-route="list.detailRoute"
+                    :cell-formatters="list.cellFormatters"
+                    :actions="list.actions"
                     :data-test-id="dataTestId"
-                    @update:options="loadItems"
+                    @update:options="list.loadItems"
                 >
                     <template #cell-examType="{ formattedValue }">
                         <v-chip size="small" variant="tonal">
@@ -54,94 +54,22 @@
     </BasicPage>
 
     <DeleteConfirmDialog
-        v-model="deleteDialogOpen"
-        :detail-text="deleteDetailText"
+        v-model="deleteFlow.dialogOpen"
+        :detail-text="deleteFlow.detailText"
         translation-key-prefix="examTemplateList"
-        @confirm="confirmDelete"
+        @confirm="deleteFlow.confirm"
     />
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import { useRouter, type RouteLocationAsRelative } from "vue-router";
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import SearchBar from "@/components/widgets/searches/SearchBar.vue";
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import type { TableItem } from "@/components/widgets/entity-table/types.ts";
-import { useExamTemplateTableHeaders } from "./composables/useExamTemplateTableHeaders.ts";
-import { useExamTemplateTableActions } from "./composables/useExamTemplateTableActions.ts";
-import { useExamTemplateList } from "./composables/useExamTemplateList.ts";
-import { useExamTemplateDeleteFlow } from "./composables/useExamTemplateDeleteFlow.ts";
-import { useExamTemplateCopyFlow } from "./composables/useExamTemplateCopyFlow.ts";
-import {
-    isExamTemplateTableItem,
-    type ExamTemplateTableItem,
-} from "./types.ts";
+import { useExamTemplateOverview } from "./composables/useExamTemplateOverview.ts";
 
 const dataTestId = "examTemplates";
 
-const router = useRouter();
-
-const createExamTemplateDetailRoute = (
-    item: ExamTemplateTableItem,
-): RouteLocationAsRelative => ({
-    name: "/(app)/exam-template/[id]/",
-    params: { id: item.id },
-});
-
-const tableDetailRoute = (item: TableItem): RouteLocationAsRelative | null => {
-    if (!isExamTemplateTableItem(item)) {
-        return null;
-    }
-
-    return createExamTemplateDetailRoute(item);
-};
-
-const { headers, cellFormatters } = useExamTemplateTableHeaders();
-
-const {
-    items,
-    pageCount,
-    loading,
-    errors,
-    options,
-    searchInputValue,
-    selectedFilters,
-    filterSections,
-    onSearch,
-    onClearSearch,
-    setFilters,
-    clearAll,
-    loadItems,
-    reloadList,
-} = useExamTemplateList();
-
-const {
-    deleteDialogOpen,
-    deleteDetailText,
-    deleteError,
-    deleteLoading,
-    openDeleteDialog,
-    confirmDelete,
-} = useExamTemplateDeleteFlow({ onDeleteSuccess: reloadList });
-
-const { copy, copyLoading, copyError } = useExamTemplateCopyFlow({
-    onCopySuccess: reloadList,
-});
-
-const tableLoading = computed(
-    () => loading.value || deleteLoading.value || copyLoading.value,
-);
-
-const entityTableActions = useExamTemplateTableActions({
-    onEdit: (item) => {
-        router.push(createExamTemplateDetailRoute(item));
-    },
-    onCopy: (item) => {
-        copy(item);
-    },
-    onDelete: openDeleteDialog,
-});
+const { list, deleteFlow, copyFlow } = useExamTemplateOverview();
 </script>

@@ -1,5 +1,5 @@
 import { useCopyExamTemplate } from "./api/useCopyExamTemplate.ts";
-import type { ExamTemplateTableItem } from "../types.ts";
+import type { ExamTemplateTableItem } from "@/pages/(app)/exam-template/types.ts";
 
 export const useExamTemplateCopyFlow = ({
     onCopySuccess,
