@@ -54,6 +54,11 @@ export function buildPreparationNavigationItems(
             testId: `${testIdPrefix}-createTemplate-link`,
         },
         {
+            label: translate("titles.examTemplateList"),
+            to: typedTo({ name: "/(app)/exam-template/" }),
+            testId: `${testIdPrefix}-examTemplateList-link`,
+        },
+        {
             label: translate("titles.quizImport"),
             to: typedTo({ name: "/(app)/quiz-import/" }),
             testId: `${testIdPrefix}-quizImport-link`,
@@ -61,11 +66,6 @@ export function buildPreparationNavigationItems(
         {
             label: translate("titles.addExamWithURL"),
             testId: `${testIdPrefix}-addExamWithURL-text`,
-        },
-        {
-            label: translate("titles.examTemplateList"),
-            to: typedTo({ name: "/(app)/exam-template/" }),
-            testId: `${testIdPrefix}-examTemplateList-link`,
         },
     ];
 }
