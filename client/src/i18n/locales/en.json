@@ -1460,7 +1460,7 @@
         "securityView": {
             "sebService": {
                 "title": "SEB Service (Win)",
-                "note": "IMPORTANT: The SEB Service changes aspects of the system configuration. Some anti-virus software providers might falsely identify its operation as malicious, thus it is not recommended to use the SEB Service in uncontrolled environments (e.g. BYOD).",
+                "note": "Recommended for BYOD scenarios.",
                 "sebServicePolicy": {
                     "title": "SEB Service policy",
                     "0": "allow to run SEB without service",
@@ -1468,7 +1468,7 @@
                     "2": "allow to use SEB only with service"
                 },
                 "sebServicePolicy_tooltip": "Policy that applies when an exam client doesn't have the SEB client running",
-                "sebServiceIgnore": "Ignore SEB Service",
+                "sebServiceIgnore": "Enable SEB Service Component",
                 "enableWindowsUpdate": "Allow Windows Update to run while SEB is running",
                 "enableChromeNotifications": "Allow notifications from Chrome browsers",
                 "allowScreenSharing": "Allow remote session/screen sharing",
@@ -1968,11 +1968,9 @@
         "createConnectionConfiguration": "Add Connection Configuration",
         "connectionConfigurations": "Connection Configurations",
         "certificates": "Certificates",
-
         "institutions": "Institutions",
         "createInstitution": "Add Institution",
         "editInstitution": "Edit Institution",
-
         "editExamTemplate": "Edit Exam Template",
         "galleryView": "Gallery View"
     },

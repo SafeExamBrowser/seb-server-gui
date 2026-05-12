@@ -29,9 +29,10 @@ const props = defineProps<{
     label: string;
     tooltip?: boolean;
     disabled?: boolean;
+    invertValue?: boolean;
 }>();
 
-const boolVal = ref<boolean>(props.modelValue.getBooleanValue(props.name));
+const boolVal = ref<boolean>(getValue());
 
 defineExpose({
     boolVal,
@@ -40,10 +41,22 @@ defineExpose({
 const emit = defineEmits(["saved"]);
 
 async function save() {
-    props.modelValue.saveSingleValue(
-        props.name,
-        boolVal.value ? "true" : "false",
-    );
+    var value: string = props.invertValue
+        ? boolVal.value
+            ? "false"
+            : "true"
+        : boolVal.value
+          ? "true"
+          : "false";
+    props.modelValue.saveSingleValue(props.name, value);
     emit("saved");
+}
+
+function getValue(): boolean {
+    if (props.invertValue) {
+        return !props.modelValue.getBooleanValue(props.name);
+    } else {
+        return props.modelValue.getBooleanValue(props.name);
+    }
 }
 </script>
