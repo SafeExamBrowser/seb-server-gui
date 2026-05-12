@@ -434,20 +434,18 @@
     },
     "examTemplateList": {
         "info": {
-            "name": "Name",
             "nameSearchPlaceholder": "Search",
             "examType": "Exam Type"
         },
         "headers": {
             "name": "Name",
             "description": "Description",
-            "examType": "Exam Type",
-            "actions": "Actions"
+            "examType": "Exam Type"
         },
         "deleteDialog": {
             "title": "Delete Exam Template",
-            "infoText": "This will permanently delete the exam template.",
-            "questionText": "Are you sure you want to delete this exam template?"
+            "text": "Are you sure you want to delete this exam template?",
+            "action": "Delete"
         }
     },
     "galleryView": {

@@ -170,14 +170,10 @@
                             item-value="id"
                             :items="fileTypeTable.table.value"
                             :items-per-page="
-                                tableUtils.calcDefaultItemsPerPage(
-                                    fileTypeTable.table.value,
-                                )
+                                tableUtils.calcDefaultItemsPerPage()
                             "
                             :items-per-page-options="
-                                tableUtils.calcItemsPerPage(
-                                    fileTypeTable.table.value,
-                                )
+                                tableUtils.calcItemsPerPage()
                             "
                         >
                             <template

@@ -19,7 +19,7 @@ import { BasicListParams, SortOrder } from "@/services/types";
 import router from "@/router/router";
 import type { RouteLocationAsRelative } from "vue-router";
 
-type ItemsLike = number | { length: number } | null | undefined;
+//type ItemsLike = number | { length: number } | null | undefined;
 type ItemsPerPageOption = { value: number; title: string };
 
 type Clickable = { click: () => void };
@@ -29,48 +29,50 @@ type HeaderRefs =
     | null
     | undefined;
 
-export function calcDefaultItemsPerPage(itemList: ItemsLike): number {
-    if (
-        itemList == null ||
-        (typeof itemList !== "number" && itemList.length === 0)
-    ) {
-        return 0;
-    }
+export function calcDefaultItemsPerPage(): number {
+    // NOTE: @anhefti: this makes no sense, default size should not depend on result size it is just 15
+    // if (
+    //     itemList == null ||
+    //     (typeof itemList !== "number" && itemList.length === 0)
+    // ) {
+    //     return 5;
+    // }
 
-    const maxLength = typeof itemList === "number" ? itemList : itemList.length;
+    // const maxLength = typeof itemList === "number" ? itemList : itemList.length;
 
-    if (maxLength < 5) return maxLength;
-    if (maxLength < 10) return 5;
-    if (maxLength < 15) return 10;
+    // if (maxLength < 5) return maxLength;
+    // if (maxLength < 10) return 5;
+    // if (maxLength < 15) return 10;
     return 15;
 }
 
-export function calcItemsPerPage(itemList: ItemsLike): ItemsPerPageOption[] {
-    if (
-        itemList == null ||
-        (typeof itemList !== "number" && itemList.length === 0)
-    ) {
-        return [{ value: 0, title: "0" }];
-    }
+export function calcItemsPerPage(): ItemsPerPageOption[] {
+    // NOTE: @anhefti: this makes no sense, we should have just a static chooice of options here, not ependend on result size
+    // if (
+    //     itemList == null ||
+    //     (typeof itemList !== "number" && itemList.length === 0)
+    // ) {
+    //     return [{ value: 5, title: "5" }];
+    // }
 
-    const maxLength = typeof itemList === "number" ? itemList : itemList.length;
+    // const maxLength = typeof itemList === "number" ? itemList : itemList.length;
 
-    if (maxLength <= 5) {
-        return [{ value: maxLength, title: String(maxLength) }];
-    }
-    if (maxLength <= 10) {
-        return [
-            { value: 5, title: "5" },
-            { value: maxLength, title: String(maxLength) },
-        ];
-    }
-    if (maxLength <= 15) {
-        return [
-            { value: 5, title: "5" },
-            { value: 10, title: "10" },
-            { value: maxLength, title: String(maxLength) },
-        ];
-    }
+    // if (maxLength <= 5) {
+    //     return [{ value: maxLength, title: String(maxLength) }];
+    // }
+    // if (maxLength <= 10) {
+    //     return [
+    //         { value: 5, title: "5" },
+    //         { value: maxLength, title: String(maxLength) },
+    //     ];
+    // }
+    // if (maxLength <= 15) {
+    //     return [
+    //         { value: 5, title: "5" },
+    //         { value: 10, title: "10" },
+    //         { value: maxLength, title: String(maxLength) },
+    //     ];
+    // }
     return [
         { value: 5, title: "5" },
         { value: 10, title: "10" },

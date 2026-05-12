@@ -54,6 +54,20 @@ export default defineConfig([
                 "error",
                 { ignorePatterns: ["^V[A-Z]"] },
             ],
+
+            // TODO @alain: activate this rule once we have migrated all imports to the @/... alias (then the respectiveclaude rule can be removed)
+            // "no-restricted-imports": [
+            //     "error",
+            //     {
+            //         patterns: [
+            //             {
+            //                 group: ["../*", "..", "../**"],
+            //                 message:
+            //                     "Don't import from a parent directory with '../'. Use the '@/...' alias instead. Same-folder ('./x') and subfolder ('./sub/x') relative imports are fine.",
+            //             },
+            //         ],
+            //     },
+            // ],
         },
     },
 
