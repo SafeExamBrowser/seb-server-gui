@@ -3,7 +3,6 @@
         class="d-flex flex-column bg-layout-background h-screen overflow-hidden"
     >
         <BaseAppBar
-            :has-notifications="false"
             :home-route="homeRoute"
             :institution-logo="institutionLogo"
             :institution-name="institutionName"

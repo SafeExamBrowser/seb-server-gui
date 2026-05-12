@@ -89,8 +89,6 @@
             elevation="1"
             :style="{ borderRadius: '12px' }"
         >
-            <slot name="identity-actions" />
-
             <BaseProfileMenu
                 :user-account="userAccount"
                 @logout="$emit('logout')"
@@ -114,19 +112,14 @@ const props = withDefaults(
         institutionLogo: string | null;
         userAccount: UserAccount | null | undefined;
         breadcrumb?: string[];
-        showNotifications?: boolean;
-        hasNotifications?: boolean;
     }>(),
     {
         breadcrumb: undefined,
-        showNotifications: true,
-        hasNotifications: false,
     },
 );
 
 defineEmits<{
     logout: [];
-    notificationsClick: [];
 }>();
 
 const { t, te } = useI18n();
