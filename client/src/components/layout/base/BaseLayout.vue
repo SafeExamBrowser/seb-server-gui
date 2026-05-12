@@ -30,7 +30,7 @@
             <v-card
                 class="flex-1-1-0 overflow-y-auto"
                 :class="isPageBlue ? '' : 'pa-6'"
-                :color="isPageBlue ? 'primary' : undefined"
+                :color="isPageBlue ? 'red' : undefined"
                 :data-testid="`${pageTestId}-page-container`"
                 elevation="1"
                 :style="{
