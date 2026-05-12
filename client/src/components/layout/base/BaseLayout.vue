@@ -41,7 +41,6 @@
                 <RouterView />
             </v-card>
         </div>
-
         <ToastContainer />
     </div>
 </template>

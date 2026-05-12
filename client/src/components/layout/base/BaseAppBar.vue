@@ -88,27 +88,6 @@
         >
             <slot name="identity-actions" />
 
-            <v-badge
-                v-if="showNotifications"
-                bordered
-                color="warning"
-                dot
-                :model-value="hasNotifications"
-            >
-                <v-btn
-                    color="surface"
-                    data-testid="layout-notifications-button"
-                    density="comfortable"
-                    icon
-                    variant="flat"
-                    @click="$emit('notificationsClick')"
-                >
-                    <v-icon icon="mdi-bell-outline" size="small" />
-                </v-btn>
-            </v-badge>
-
-            <v-divider class="align-self-stretch flex-grow-0 my-2" vertical />
-
             <BaseProfileMenu
                 :user-account="userAccount"
                 @logout="$emit('logout')"
