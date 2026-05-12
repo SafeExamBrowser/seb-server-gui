@@ -50,8 +50,8 @@ import ContainerHeader from "./ContainerHeader.vue";
 import ContainerSidePanel from "./ContainerSidePanel.vue";
 import ContainerRouteActions from "./ContainerRouteActions.vue";
 import { buildBaseNavigationLinks } from "./navigationLinks";
-import { useCurrentUser } from "./api/useCurrentUser";
-import { useInstitutionBranding } from "./api/useInstitutionBranding";
+import { useCurrentUser } from "@/composables/useCurrentUser";
+import { useInstitutionBranding } from "@/composables/useInstitutionBranding";
 import ToastContainer from "@/components/widgets/toast/ToastContainer.vue";
 
 const route = useRoute();

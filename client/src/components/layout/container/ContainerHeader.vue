@@ -103,18 +103,12 @@ import type { RouteLocationAsRelative } from "vue-router";
 import type { UserAccount } from "@/models/userAccount";
 import ContainerProfileMenu from "./ContainerProfileMenu.vue";
 
-const props = withDefaults(
-    defineProps<{
-        homeRoute: RouteLocationAsRelative;
-        institutionName: string;
-        institutionLogo?: string;
-        userAccount?: UserAccount;
-        breadcrumb?: string[];
-    }>(),
-    {
-        breadcrumb: undefined,
-    },
-);
+defineProps<{
+    homeRoute: RouteLocationAsRelative;
+    institutionName: string;
+    institutionLogo?: string;
+    userAccount?: UserAccount;
+}>();
 
 defineEmits<{
     logout: [];
@@ -124,10 +118,6 @@ const { t, te } = useI18n();
 const route = useRoute();
 
 const breadcrumbItems = computed<string[]>(() => {
-    if (props.breadcrumb && props.breadcrumb.length > 0) {
-        return props.breadcrumb;
-    }
-
     const titleKey = route.meta.titleKey;
     if (titleKey && te(titleKey)) {
         return [t(titleKey)];

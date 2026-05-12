@@ -53,7 +53,7 @@
             <div class="bg-primary pa-5 text-white">
                 <div class="d-flex align-center ga-4">
                     <v-avatar
-                        class="font-weight-black rounded-lg text-h6 text-white border-sm border-current"
+                        class="font-weight-black rounded-lg text-h6 text-white border-sm"
                         border
                         color="white"
                         density="comfortable"
@@ -80,7 +80,7 @@
                     <v-chip
                         v-for="role in translatedRoles"
                         :key="role"
-                        class="font-weight-bold h-auto py-1 text-wrap text-white border-sm border-current"
+                        class="font-weight-bold h-auto py-1 text-wrap text-white border-sm"
                         color="white"
                         label
                         size="small"

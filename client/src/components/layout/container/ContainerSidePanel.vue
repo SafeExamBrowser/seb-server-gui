@@ -1,5 +1,4 @@
 <template>
-    <!-- side pannel  -->
     <v-card
         class="d-flex flex-column flex-shrink-0 align-center pa-2 rounded-lg"
         data-testid="layout-nav-rail"

@@ -1,23 +1,21 @@
 <template>
     <template v-if="layoutContext === 'gallery-view'">
         <v-chip class="mr-4">
-            {{ translate("galleryView.generalInfo.page") }}:
+            {{ $t("galleryView.generalInfo.page") }}:
             {{ appBarStore.galleryCurrentPage }} /
             {{ appBarStore.galleryMaxPages }}
         </v-chip>
 
         <v-chip class="mr-4">
-            {{ translate("galleryView.generalInfo.sessions") }}:
+            {{ $t("galleryView.generalInfo.sessions") }}:
             {{ appBarStore.galleryLiveSessions }} /
             {{ appBarStore.galleryAmountOfSessions }}
             <v-tooltip
                 activator="parent"
-                :aria-label="
-                    translate('galleryView.generalInfo.sessionsTooltip')
-                "
+                :aria-label="$t('galleryView.generalInfo.sessionsTooltip')"
                 location="bottom"
             >
-                {{ translate("galleryView.generalInfo.sessionsTooltip") }}
+                {{ $t("galleryView.generalInfo.sessionsTooltip") }}
             </v-tooltip>
         </v-chip>
 
@@ -31,7 +29,7 @@
                         variant="flat"
                     >
                         <v-icon icon="mdi-chevron-down" size="x-large" start />
-                        {{ translate("galleryView.gridSize") }}:
+                        {{ $t("galleryView.gridSize") }}:
                         {{ appBarStore.galleryGridSize.title }}
                     </v-btn>
                 </template>
@@ -55,9 +53,7 @@
             <v-menu :close-on-content-click="false">
                 <template #activator="{ props }">
                     <v-btn
-                        :aria-label="
-                            translate('galleryView.screenReader.settings')
-                        "
+                        :aria-label="$t('galleryView.screenReader.settings')"
                         v-bind="props"
                         color="primary"
                         icon="mdi-cog"
@@ -70,14 +66,14 @@
                             class="mx-auto"
                             color="primary"
                             hide-details
-                            :label="translate('galleryView.showName')"
+                            :label="$t('galleryView.showName')"
                         />
                         <v-switch
                             v-model="appBarStore.galleryIsIpEnabled"
                             class="mx-auto"
                             color="primary"
                             hide-details
-                            :label="translate('galleryView.showIp')"
+                            :label="$t('galleryView.showIp')"
                         />
                     </v-list-item>
 
@@ -91,7 +87,7 @@
                                     !appBarStore.galleryIsNameSortAsc
                             "
                         >
-                            {{ translate("galleryView.sortByName") }}
+                            {{ $t("galleryView.sortByName") }}
                             <template #append>
                                 <v-icon
                                     :icon="
@@ -112,7 +108,6 @@
 
 <script setup lang="ts">
 import { useAppBarStore } from "@/stores/store";
-import { translate } from "@/utils/generalUtils";
 import type { GridSize } from "@/models/types";
 
 defineProps<{

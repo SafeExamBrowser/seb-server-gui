@@ -525,7 +525,7 @@ import { UserRoleEnum } from "@/models/userRoleEnum.ts";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/userAccountStore.ts";
-import { useCurrentUser } from "@/components/layout/container/api/useCurrentUser.ts";
+import { useCurrentUser } from "@/composables/useCurrentUser.ts";
 import * as userAccountService from "@/services/seb-server/userAccountService.ts";
 
 import {
