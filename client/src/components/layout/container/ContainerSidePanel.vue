@@ -5,7 +5,7 @@
         data-testid="layout-nav-rail"
         elevation="1"
     >
-        <v-b
+        <v-btn
             :active="false"
             class="mb-2 rounded-lg overflow-hidden"
             :class="
