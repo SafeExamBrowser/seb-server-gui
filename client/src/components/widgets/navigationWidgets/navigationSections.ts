@@ -80,14 +80,9 @@ export function buildMonitoringNavigationItems(
             testId: `${testIdPrefix}-runningExams-link`,
         },
         {
-            label: translate("titles.screenProctoring"),
-            to: typedTo({ name: "/(app)/running-sp-exams/" }),
-            testId: `${testIdPrefix}-screenProctoring-link`,
-            thickDivider: true,
-        },
-        {
             label: translate("titles.spSearch"),
             to: typedTo({ name: "/(app)/sp-search/" }),
+            thickDivider: true,
 
             testId: `${testIdPrefix}-spSearch-link`,
         },
