@@ -67,10 +67,10 @@
 
                     <div>
                         <div class="text-h6 font-weight-black">
-                            {{ fullName }}
+                            {{ userAccount?.username }}
                         </div>
                         <div class="text-caption opacity-80">
-                            {{ userAccount?.username }}
+                            {{ fullName }}
                         </div>
                     </div>
                 </div>
