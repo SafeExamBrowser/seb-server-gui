@@ -59,7 +59,6 @@ declare module 'vue-router/auto-routes' {
       | '/(app)/monitoring/[examId]/client/[connectionToken]/'
       | '/(app)/navigation-overview/'
       | '/(app)/quiz-import/'
-      | '/(app)/running-sp-exams/'
       | '/(app)/sp-recording/[sessionId]/'
       | '/(app)/sp-recording/application-search/[sessionId]/'
       | '/(app)/sp-search/'
@@ -236,13 +235,6 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/(app)/running-sp-exams/': RouteRecordInfo<
-      '/(app)/running-sp-exams/',
-      '/running-sp-exams',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
     '/(app)/sp-recording/[sessionId]/': RouteRecordInfo<
       '/(app)/sp-recording/[sessionId]/',
       '/sp-recording/:sessionId',
@@ -354,7 +346,6 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/monitoring/[examId]/client/[connectionToken]/'
         | '/(app)/navigation-overview/'
         | '/(app)/quiz-import/'
-        | '/(app)/running-sp-exams/'
         | '/(app)/sp-recording/[sessionId]/'
         | '/(app)/sp-recording/application-search/[sessionId]/'
         | '/(app)/sp-search/'
@@ -506,12 +497,6 @@ declare module 'vue-router/auto-routes' {
     'src/pages/(app)/quiz-import/index.vue': {
       routes:
         | '/(app)/quiz-import/'
-      views:
-        | never
-    }
-    'src/pages/(app)/running-sp-exams/index.vue': {
-      routes:
-        | '/(app)/running-sp-exams/'
       views:
         | never
     }
