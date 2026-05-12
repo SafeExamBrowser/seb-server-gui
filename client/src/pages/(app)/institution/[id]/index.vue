@@ -8,7 +8,7 @@
                 :loading="loading"
                 :errors="error ? [error] : []"
             >
-                <v-row class="px-6 pt-4 align-center">
+                <v-row class="px-6 pt-4 align-center" no-gutters>
                     <v-col cols="8">
                         <HintText
                             text-identifier="institutions.editInstitutionPage.info.editInfo"
@@ -24,8 +24,8 @@
                     </v-col>
                 </v-row>
 
-                <v-row class="px-6 mt-2">
-                    <v-col cols="8">
+                <v-row class="px-6 mt-2" no-gutters>
+                    <v-col cols="8" class="pa-0">
                         <FormBuilder
                             ref="formRef"
                             :fields="formFields"
@@ -34,22 +34,18 @@
                     </v-col>
                 </v-row>
 
-                <v-row class="px-6 pb-4">
-                    <v-col class="d-flex justify-end pa-0 ga-2">
-                        <CancelButton
-                            data-testid="editInstitution-cancel-button"
-                            text="general.cancelButton"
-                            @click="
-                                router.push({ name: '/(app)/institution/' })
-                            "
-                        />
-                        <ConfirmButton
-                            data-testid="editInstitution-save-button"
-                            text="general.saveButton"
-                            @click="submit()"
-                        />
-                    </v-col>
-                </v-row>
+                <div class="d-flex justify-end ga-2 px-6 pb-4">
+                    <CancelButton
+                        data-testid="editInstitution-cancel-button"
+                        text="general.cancelButton"
+                        @click="router.push({ name: '/(app)/institution/' })"
+                    />
+                    <ConfirmButton
+                        data-testid="editInstitution-save-button"
+                        text="general.saveButton"
+                        @click="submit()"
+                    />
+                </div>
             </LoadingFallbackComponent>
         </template>
     </BasicSettingsPage>

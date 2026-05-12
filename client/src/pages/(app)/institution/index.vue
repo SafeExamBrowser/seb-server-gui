@@ -11,64 +11,58 @@
         </template>
 
         <template #PanelMain>
-            <v-col>
-                <SearchBar
-                    v-model="searchInputValue"
-                    search-text="institutions.institutionPage.filters.searchField"
-                    :filter-sections="filterSections"
-                    :filter-values="selectedFilters"
-                    :data-test-id="dataTestId"
-                    dense
-                    @search="onSearch"
-                    @clear="onClearSearch"
-                    @update:filter-values="setFilters"
-                    @clear-filters="clearAll"
-                />
+            <SearchBar
+                class="mt-2"
+                v-model="searchInputValue"
+                search-text="institutions.institutionPage.filters.searchField"
+                :filter-sections="filterSections"
+                :filter-values="selectedFilters"
+                :data-test-id="dataTestId"
+                dense
+                @search="onSearch"
+                @clear="onClearSearch"
+                @update:filter-values="setFilters"
+                @clear-filters="clearAll"
+            />
 
-                <v-row>
-                    <v-col>
-                        <div v-if="deleteError">{{ deleteError }}</div>
-                        <div v-else-if="statusError">{{ statusError }}</div>
-                        <LoadingFallbackComponent
-                            :loading="false"
-                            :errors="error ? [error] : []"
-                        >
-                            <EntityTable
-                                :headers="institutionsTableHeaders"
-                                :items="tableData?.content ?? []"
-                                :page-count="pageCount"
-                                :items-per-page="options.itemsPerPage"
-                                :options="options"
-                                :loading="
-                                    loading || deleteLoading || statusLoading
-                                "
-                                :detail-route="institutionDetailRoute"
-                                :actions="tableActions"
-                                :data-test-id="dataTestId"
-                                item-key="id"
-                                @update:options="loadItems"
-                            >
-                                <template #cell-logoImage="{ item, rowTestId }">
-                                    <v-img
-                                        v-if="logoSrcOf(item)"
-                                        :src="logoSrcOf(item)"
-                                        :max-height="40"
-                                        :max-width="80"
-                                        :data-test-id="`${rowTestId}-logo`"
-                                    />
-                                </template>
-                                <template #cell-active="{ item, rowTestId }">
-                                    <ActiveStatusChip
-                                        :active="!!item.active"
-                                        :data-test-id="`${rowTestId}-status-chip`"
-                                        @click="openStatusDialog(item)"
-                                    />
-                                </template>
-                            </EntityTable>
-                        </LoadingFallbackComponent>
-                    </v-col>
-                </v-row>
-            </v-col>
+            <div v-if="deleteError">{{ deleteError }}</div>
+            <div v-else-if="statusError">{{ statusError }}</div>
+            <LoadingFallbackComponent
+                :loading="false"
+                :errors="error ? [error] : []"
+            >
+                <EntityTable
+                    class="px-3"
+                    :headers="institutionsTableHeaders"
+                    :items="tableData?.content ?? []"
+                    :page-count="pageCount"
+                    :items-per-page="options.itemsPerPage"
+                    :options="options"
+                    :loading="loading || deleteLoading || statusLoading"
+                    :detail-route="institutionDetailRoute"
+                    :actions="tableActions"
+                    :data-test-id="dataTestId"
+                    item-key="id"
+                    @update:options="loadItems"
+                >
+                    <template #cell-logoImage="{ item, rowTestId }">
+                        <v-img
+                            v-if="logoSrcOf(item)"
+                            :src="logoSrcOf(item)"
+                            :max-height="40"
+                            :max-width="80"
+                            :data-test-id="`${rowTestId}-logo`"
+                        />
+                    </template>
+                    <template #cell-active="{ item, rowTestId }">
+                        <ActiveStatusChip
+                            :active="!!item.active"
+                            :data-test-id="`${rowTestId}-status-chip`"
+                            @click="openStatusDialog(item)"
+                        />
+                    </template>
+                </EntityTable>
+            </LoadingFallbackComponent>
         </template>
     </BasicSettingsPage>
 

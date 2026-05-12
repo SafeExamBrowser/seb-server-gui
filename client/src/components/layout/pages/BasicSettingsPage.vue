@@ -16,7 +16,7 @@
             :style="{ minHeight: 0 }"
         >
             <!--- Left Settings -->
-            <v-col cols="3" class="h-100 overflow-y-auto pa-3">
+            <v-col cols="3" class="h-100 pa-3">
                 <SettingsNavigation />
             </v-col>
 

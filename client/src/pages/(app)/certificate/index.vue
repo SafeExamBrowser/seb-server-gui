@@ -27,6 +27,7 @@
 
         <template #PanelMain>
             <SearchBar
+                class="mt-2"
                 v-model="searchInputValue"
                 search-text="certificates.filters.searchField"
                 :filter-sections="[]"
@@ -46,6 +47,7 @@
                 :errors="error ? [error] : []"
             >
                 <EntityTable
+                    class="px-3"
                     :headers="certificatesTableHeaders"
                     :items="tableData?.content ?? []"
                     :page-count="pageCount"
