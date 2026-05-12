@@ -1,9 +1,8 @@
 <template>
     <v-menu
         v-model="isOpen"
-        :close-on-content-click="false"
         location="bottom end"
-        offset="8"
+        :offset="[20, 8]"
         transition="fade-transition"
     >
         <template #activator="{ props: menuProps }">
