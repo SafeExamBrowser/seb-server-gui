@@ -115,7 +115,7 @@ const {
     setFilters,
     clearAll,
     loadItems,
-    reload: reloadList,
+    reloadList,
 } = useExamTemplateList();
 
 const {
@@ -125,10 +125,10 @@ const {
     deleteLoading,
     openDeleteDialog,
     confirmDelete,
-} = useExamTemplateDeleteFlow({ reloadList });
+} = useExamTemplateDeleteFlow({ onDeleteSuccess: reloadList });
 
 const { copy, copyLoading, copyError } = useExamTemplateCopyFlow({
-    reloadList,
+    onCopySuccess: reloadList,
 });
 
 const tableLoading = computed(

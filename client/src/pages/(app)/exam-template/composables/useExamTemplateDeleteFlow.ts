@@ -3,9 +3,9 @@ import { useDeleteExamTemplate } from "./api/useDeleteExamTemplate.ts";
 import type { ExamTemplateTableItem } from "../types.ts";
 
 export const useExamTemplateDeleteFlow = ({
-    reloadList,
+    onDeleteSuccess,
 }: {
-    reloadList: () => Promise<void>;
+    onDeleteSuccess: () => void;
 }) => {
     const {
         mutateData: deleteTemplate,
@@ -39,7 +39,7 @@ export const useExamTemplateDeleteFlow = ({
             return;
         }
 
-        await reloadList();
+        onDeleteSuccess();
     };
 
     return {

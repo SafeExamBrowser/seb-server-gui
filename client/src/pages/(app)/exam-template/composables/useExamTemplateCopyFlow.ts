@@ -2,9 +2,9 @@ import { useCopyExamTemplate } from "./api/useCopyExamTemplate.ts";
 import type { ExamTemplateTableItem } from "../types.ts";
 
 export const useExamTemplateCopyFlow = ({
-    reloadList,
+    onCopySuccess,
 }: {
-    reloadList: () => Promise<void>;
+    onCopySuccess: () => void;
 }) => {
     const {
         mutateData: copyTemplate,
@@ -19,7 +19,7 @@ export const useExamTemplateCopyFlow = ({
             return;
         }
 
-        await reloadList();
+        onCopySuccess();
     };
 
     return {

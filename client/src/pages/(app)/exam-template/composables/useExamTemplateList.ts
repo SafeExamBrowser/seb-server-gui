@@ -41,7 +41,7 @@ export const useExamTemplateList = () => {
     const pageCount = computed(() => data.value?.number_of_pages ?? 0);
     const errors = computed(() => (error.value ? [error.value] : []));
 
-    const reload = async () => {
+    const reloadList = async () => {
         await fetchExamTemplates();
 
         const total = pageCount.value;
@@ -69,6 +69,6 @@ export const useExamTemplateList = () => {
         setFilters,
         clearAll,
         loadItems,
-        reload,
+        reloadList,
     };
 };
