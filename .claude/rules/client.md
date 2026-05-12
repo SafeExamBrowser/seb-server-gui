@@ -21,6 +21,9 @@ on the filesystem if they clash:
   - Don't use `any`.
   - Use `undefined`. Do not use `null`.
 - Prefer early returns over nested `if` conditions.
+- Imports:
+  - Never use `../`. If you'd reach into a parent directory, use `@/...` instead.
+  - Relative imports into the same folder (`./sibling.ts`) or a subfolder (`./subfolder/foo.ts`) are fine.
 - Don't start component names with `V`. This is reserved for Vuetify by convention.
 - Prefer the "Vue composition API" over the "Vue options API".
 - Avoid one lined if conditions. If conditions should always be multi line and use brackets.
