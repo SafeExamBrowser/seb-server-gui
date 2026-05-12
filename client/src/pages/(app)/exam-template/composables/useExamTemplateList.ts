@@ -23,6 +23,7 @@ export const useExamTemplateList = () => {
         await fetchExamTemplates();
     }, [EXAM_TYPE_FILTER_KEY]);
 
+    // TODO @andrei: it's a bit unfortunate that we have to set the default sorting like this. It would be better if useUrlTableState would accept a default sorting
     options.value.sortBy = [{ key: "name", order: "asc" }];
 
     const searchQuery = computed(() => searchField.value ?? undefined);
