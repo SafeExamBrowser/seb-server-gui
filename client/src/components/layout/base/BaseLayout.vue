@@ -9,7 +9,11 @@
             :institution-name="institutionName"
             :user-account="user"
             @logout="handleLogout"
-        />
+        >
+            <template #bar-actions>
+                <ContainerRouteActions :layout-context="layoutContext" />
+            </template>
+        </BaseAppBar>
 
         <div
             class="d-flex flex-1-1-0 ga-4 px-6 pb-6 pt-4"
@@ -50,6 +54,7 @@ import { useLogout } from "@/composables/useLogout";
 import { typedTo } from "@/router/typedTo";
 import BaseAppBar from "@/components/layout/base/BaseAppBar.vue";
 import BaseNavigationRail from "@/components/layout/base/BaseNavigationRail.vue";
+import ContainerRouteActions from "@/components/layout/container/ContainerRouteActions.vue";
 import { buildBaseNavigationLinks } from "@/components/layout/base/navigationLinks";
 import { useCurrentUser } from "@/components/layout/base/api/useCurrentUser";
 import { useInstitutionBranding } from "@/components/layout/base/api/useInstitutionBranding";
@@ -77,8 +82,10 @@ const navigationOverviewRoute = typedTo({
 
 const mainNavigationLinks = computed(() => buildBaseNavigationLinks({ t }));
 
+const layoutContext = computed(() => route.meta.layoutContext ?? "default");
+
 const isNavigationOverviewRoute = computed(
-    () => route.meta.layoutContext === "navigation-overview",
+    () => layoutContext.value === "navigation-overview",
 );
 
 const isPageBlue = computed(() => route.meta.isPageBlue ?? false);

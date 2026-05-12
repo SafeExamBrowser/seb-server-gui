@@ -77,6 +77,8 @@
             </div>
 
             <v-spacer />
+
+            <slot name="bar-actions" />
         </v-card>
 
         <v-card
