@@ -10,8 +10,8 @@
                 data-testid="createConnectionConfiguration-info-text"
             />
 
-            <v-row class="px-6 mt-2">
-                <v-col cols="8">
+            <v-row class="px-6 mt-2" no-gutters>
+                <v-col cols="8" class="pa-0">
                     <FormBuilder
                         ref="mainFormRef"
                         :fields="mainFormFields"
@@ -133,24 +133,22 @@
             </v-row>
 
             <!-- Action buttons -->
-            <v-row class="px-6 pb-4">
-                <v-col class="d-flex justify-end pa-0 ga-2">
-                    <CancelButton
-                        data-testid="createConnectionConfiguration-cancel-button"
-                        text="general.cancelButton"
-                        @click="
-                            router.push({
-                                name: '/(app)/connection-configuration/',
-                            })
-                        "
-                    />
-                    <ConfirmButton
-                        data-testid="createConnectionConfiguration-save-button"
-                        text="general.saveButton"
-                        @click="submit()"
-                    />
-                </v-col>
-            </v-row>
+            <div class="d-flex justify-end ga-2 px-6 pb-4">
+                <CancelButton
+                    data-testid="createConnectionConfiguration-cancel-button"
+                    text="general.cancelButton"
+                    @click="
+                        router.push({
+                            name: '/(app)/connection-configuration/',
+                        })
+                    "
+                />
+                <ConfirmButton
+                    data-testid="createConnectionConfiguration-save-button"
+                    text="general.saveButton"
+                    @click="submit()"
+                />
+            </div>
         </template>
     </BasicSettingsPage>
 </template>

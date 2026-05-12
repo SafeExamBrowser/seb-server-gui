@@ -8,7 +8,7 @@
                 :loading="loading"
                 :errors="error ? [error] : []"
             >
-                <v-row class="px-6 pt-4 align-center">
+                <v-row class="px-6 pt-4 align-center" no-gutters>
                     <v-col cols="8">
                         <HintText
                             text-identifier="institutions.editInstitutionPage.info.editInfo"
@@ -24,8 +24,8 @@
                     </v-col>
                 </v-row>
 
-                <v-row class="px-6 mt-2">
-                    <v-col cols="8">
+                <v-row class="px-6 mt-2" no-gutters>
+                    <v-col cols="8" class="pa-0">
                         <FormBuilder
                             ref="formRef"
                             :fields="formFields"
@@ -34,22 +34,18 @@
                     </v-col>
                 </v-row>
 
-                <v-row class="px-6 pb-4">
-                    <v-col class="d-flex justify-end pa-0 ga-2">
-                        <CancelButton
-                            data-testid="editInstitution-cancel-button"
-                            text="general.cancelButton"
-                            @click="
-                                router.push({ name: '/(app)/institution/' })
-                            "
-                        />
-                        <ConfirmButton
-                            data-testid="editInstitution-save-button"
-                            text="general.saveButton"
-                            @click="submit()"
-                        />
-                    </v-col>
-                </v-row>
+                <div class="d-flex justify-end ga-2 px-6 pb-4">
+                    <CancelButton
+                        data-testid="editInstitution-cancel-button"
+                        text="general.cancelButton"
+                        @click="router.push({ name: '/(app)/institution/' })"
+                    />
+                    <ConfirmButton
+                        data-testid="editInstitution-save-button"
+                        text="general.saveButton"
+                        @click="submit()"
+                    />
+                </div>
             </LoadingFallbackComponent>
         </template>
     </BasicSettingsPage>
@@ -71,6 +67,8 @@ import {
     getInstitutionById,
 } from "@/services/seb-server/institutionService.ts";
 import { useInstitutionFormFields } from "@/pages/(app)/institution/composables/useInstitutionFormFields.ts";
+import { useCurrentUser } from "@/composables/useCurrentUser.ts";
+import { useInstitutionBranding } from "@/composables/useInstitutionBranding.ts";
 import type { InstitutionAdmin } from "@/models/seb-server/institution.ts";
 
 definePage({
@@ -93,6 +91,9 @@ const error = ref<string>();
 
 const { mutateData: saveInstitution, data: savedInstitution } =
     useMutation(editInstitution);
+
+const { user } = useCurrentUser();
+const { refetch: refetchInstitutionBranding } = useInstitutionBranding();
 
 onMounted(async () => {
     loading.value = true;
@@ -131,6 +132,11 @@ async function submit() {
     });
 
     if (savedInstitution.value) {
+        if (
+            Number(institution.value.id) === Number(user.value?.institutionId)
+        ) {
+            await refetchInstitutionBranding();
+        }
         await router.push({ name: "/(app)/institution/" });
     }
 }

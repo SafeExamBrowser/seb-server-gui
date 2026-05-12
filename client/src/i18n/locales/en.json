@@ -1936,14 +1936,16 @@
         "examsOverview": "Exams Overview",
         "examDetails": "Exam Details",
         "examTemplateList": "Exam Templates",
+        "editExamTemplates": "Edit Exam Templates",
         "examTemplateDetail": "Exam Template",
         "monitoring": "Monitoring",
+        "monitor": "Monitor",
         "monitoringDetail": "Monitoring Detail",
         "overview": "Overview",
         "clientList": "Client List",
         "quizImport": "Prepare Exam",
         "createTemplateExam": "Create Exam Template",
-        "addExamWithURL": "Add Exam With URL",
+        "addExamWithURL": "Prepare Exam With URL",
         "followUp": "Follow Up",
         "archiveExams": "Archive Exams",
         "preparation": "Preparation",
@@ -1998,6 +2000,8 @@
         "signOut": "Sign out",
         "accountSettings": "Account settings",
         "loggedInAs": "Logged in as",
+        "institution": "Institution",
+        "fallbackInstitutionName": "SEB Server",
         "routeNames": {
             "runningExams": "Running Exams",
             "finishedExams": "Finished Exams",
@@ -2015,7 +2019,12 @@
         "screenReader": {
             "titleImage": "SEB Server Homepage",
             "navigationBar": "Navigation Bar",
-            "profile": "Profile"
+            "profile": "Profile",
+            "institutionLogo": "Institution Logo"
+        },
+        "profileMenu": {
+            "docs": "Docs",
+            "logout": "Log out"
         }
     },
     "changePasswordDialog": {

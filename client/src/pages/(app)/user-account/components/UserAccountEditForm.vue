@@ -1,388 +1,405 @@
 <template>
-    <template v-if="!isProfile">
-        <div
-            class="text-white text-h5 font-weight-black ml-10 mt-5"
-            data-testid="editUserAccount-page-title"
-        >
-            {{ translate("titles.settings") }}
-        </div>
-    </template>
-    <template v-else>
-        <div class="text-white text-h5 font-weight-black ml-10 mt-5 invisible">
-            {{ translate("titles.profileSettings") }}
-        </div>
-    </template>
-
-    <v-row class="mt-10 w-98 h-100">
+    <div class="fill-height d-flex flex-column overflow-hidden">
         <template v-if="!isProfile">
-            <v-col cols="3" class="pt-0 h-100">
-                <SettingsNavigation />
-            </v-col>
+            <div
+                class="text-white text-h5 font-weight-black ml-10 mt-5"
+                data-testid="editUserAccount-page-title"
+            >
+                {{ translate("titles.settings") }}
+            </div>
         </template>
-
-        <!-- Show empty v-col instead when isProfile -->
         <template v-else>
-            <v-col class="pt-0 h-100" cols="3"></v-col>
+            <div
+                class="text-white text-h5 font-weight-black ml-10 mt-5 invisible"
+            >
+                {{ translate("titles.profileSettings") }}
+            </div>
         </template>
 
-        <v-col
-            class="bg-white rounded-lg"
-            cols="9"
-            data-testid="editUserAccount-form-container"
-            elevation="4"
+        <v-row
+            class="flex-1-1-0 overflow-hidden"
+            no-gutters
+            :style="{ minHeight: 0 }"
         >
-            <v-row
-                class="d-flex align-center justify-space-between px-6 pt-6"
-                data-testid="editUserAccount-header-row"
+            <template v-if="!isProfile">
+                <v-col cols="3" class="h-100 overflow-y-auto">
+                    <SettingsNavigation />
+                </v-col>
+            </template>
+
+            <!-- Show empty v-col instead when isProfile -->
+            <template v-else>
+                <v-col class="h-100 overflow-y-auto" cols="3"></v-col>
+            </template>
+
+            <v-col
+                class="bg-white rounded-lg h-100 overflow-y-auto"
+                cols="9"
+                data-testid="editUserAccount-form-container"
+                elevation="4"
             >
                 <v-row
-                    class="d-flex align-center justify-space-between px-6 pt-0"
-                    data-testid="editUserAccount-title-row"
+                    class="d-flex align-center justify-space-between px-6 pt-6"
+                    data-testid="editUserAccount-header-row"
+                >
+                    <v-row
+                        class="d-flex align-center justify-space-between px-6 pt-0"
+                        data-testid="editUserAccount-title-row"
+                    >
+                        <div
+                            class="text-primary text-h5 font-weight-bold"
+                            data-testid="editUserAccount-form-title"
+                        >
+                            {{ props.title }}
+                        </div>
+
+                        <v-chip
+                            class="ma-2 text-subtitle-1 px-5 py-2 font-weight-bold"
+                            :color="user?.active ? 'success' : 'error'"
+                            data-testid="editUserAccount-status-chip"
+                            label
+                            size="large"
+                            style="cursor: pointer"
+                            @click="toggleStatusLocally(user)"
+                        >
+                            {{
+                                user?.active
+                                    ? translate(
+                                          "userAccount.general.status.active",
+                                      )
+                                    : translate(
+                                          "userAccount.general.status.inactive",
+                                      )
+                            }}
+                        </v-chip>
+                    </v-row>
+                </v-row>
+
+                <v-divider
+                    class="custom-divider mx-6 my-4 mt-7"
+                    data-testid="editUserAccount-divider-top"
+                />
+
+                <v-row
+                    class="px-8 mt-2 d-flex justify-space-between"
+                    data-testid="editUserAccount-info-row"
                 >
                     <div
-                        class="text-primary text-h5 font-weight-bold"
-                        data-testid="editUserAccount-form-title"
-                    >
-                        {{ props.title }}
-                    </div>
-
-                    <v-chip
-                        class="ma-2 text-subtitle-1 px-5 py-2 font-weight-bold"
-                        :color="user?.active ? 'success' : 'error'"
-                        data-testid="editUserAccount-status-chip"
-                        label
-                        size="large"
-                        style="cursor: pointer"
-                        @click="toggleStatusLocally(user)"
+                        class="text-body-2 text-grey-darken-1"
+                        data-testid="editUserAccount-info-text"
                     >
                         {{
-                            user?.active
-                                ? translate("userAccount.general.status.active")
-                                : translate(
-                                      "userAccount.general.status.inactive",
-                                  )
+                            translate(
+                                "userAccount.userAccountDetailAndEditPage.info.accountEditInfo",
+                            )
                         }}
-                    </v-chip>
+                    </div>
+
+                    <div
+                        class="text-body-2 text-grey-darken-1"
+                        data-testid="editUserAccount-createdAt-text"
+                    >
+                        {{
+                            translate(
+                                "userAccount.userAccountDetailAndEditPage.info.createdAtInfo",
+                            ) + formatDisplayDate(user?.creationDate)
+                        }}
+                    </div>
                 </v-row>
-            </v-row>
 
-            <v-divider
-                class="custom-divider mx-6 my-4 mt-7"
-                data-testid="editUserAccount-divider-top"
-            />
-
-            <v-row
-                class="px-8 mt-2 d-flex justify-space-between"
-                data-testid="editUserAccount-info-row"
-            >
-                <div
-                    class="text-body-2 text-grey-darken-1"
-                    data-testid="editUserAccount-info-text"
+                <v-sheet
+                    class="rounded-lg mt-4"
+                    data-testid="editUserAccount-form-sheet"
                 >
-                    {{
-                        translate(
-                            "userAccount.userAccountDetailAndEditPage.info.accountEditInfo",
-                        )
-                    }}
-                </div>
+                    <v-col class="pa-0 mb-4" cols="12" md="12">
+                        <v-card-text>
+                            <v-form
+                                ref="formRef"
+                                data-testid="editUserAccount-form"
+                                @keyup.enter="saveChanges()"
+                            >
+                                <v-row dense>
+                                    <v-col>
+                                        <!-- Institution (disabled) -->
+                                        <v-col
+                                            class="custom-padding-textbox"
+                                            cols="12"
+                                            md="12"
+                                        >
+                                            <v-select
+                                                v-model="selectedInstitution"
+                                                data-testid="editUserAccount-institution-select"
+                                                density="compact"
+                                                disabled
+                                                item-title="name"
+                                                item-value="modelId"
+                                                :items="institutions"
+                                                :label="
+                                                    translate(
+                                                        'userAccount.userAccountDetailAndEditPage.labels.institutionLabel',
+                                                    )
+                                                "
+                                                required
+                                                :rules="[requiredRule]"
+                                                variant="outlined"
+                                            />
+                                        </v-col>
 
-                <div
-                    class="text-body-2 text-grey-darken-1"
-                    data-testid="editUserAccount-createdAt-text"
-                >
-                    {{
-                        translate(
-                            "userAccount.userAccountDetailAndEditPage.info.createdAtInfo",
-                        ) + formatDisplayDate(user?.creationDate)
-                    }}
-                </div>
-            </v-row>
-
-            <v-sheet
-                class="rounded-lg mt-4"
-                data-testid="editUserAccount-form-sheet"
-            >
-                <v-col class="pa-0 mb-4 h-100" cols="12" md="12">
-                    <v-card-text>
-                        <v-form
-                            ref="formRef"
-                            data-testid="editUserAccount-form"
-                            @keyup.enter="saveChanges()"
-                        >
-                            <v-row dense>
-                                <v-col>
-                                    <!-- Institution (disabled) -->
-                                    <v-col
-                                        class="custom-padding-textbox"
-                                        cols="12"
-                                        md="12"
-                                    >
-                                        <v-select
-                                            v-model="selectedInstitution"
-                                            data-testid="editUserAccount-institution-select"
-                                            density="compact"
-                                            disabled
-                                            item-title="name"
-                                            item-value="modelId"
-                                            :items="institutions"
-                                            :label="
-                                                translate(
-                                                    'userAccount.userAccountDetailAndEditPage.labels.institutionLabel',
-                                                )
-                                            "
-                                            required
-                                            :rules="[requiredRule]"
-                                            variant="outlined"
-                                        />
-                                    </v-col>
-
-                                    <!-- Name -->
-                                    <v-col
-                                        class="custom-padding-textbox"
-                                        cols="12"
-                                        md="12"
-                                    >
-                                        <v-text-field
-                                            v-model="name"
-                                            data-testid="editUserAccount-name-input"
-                                            density="compact"
-                                            :disabled="editingRightsRevoked"
-                                            :label="
-                                                translate(
-                                                    'userAccount.userAccountDetailAndEditPage.labels.nameLabel',
-                                                )
-                                            "
-                                            required
-                                            :rules="[requiredRule]"
-                                            variant="outlined"
-                                        />
-                                    </v-col>
-
-                                    <!-- Surname -->
-                                    <v-col
-                                        class="custom-padding-textbox"
-                                        cols="12"
-                                        md="12"
-                                    >
-                                        <v-text-field
-                                            v-model="surname"
-                                            data-testid="editUserAccount-surname-input"
-                                            density="compact"
-                                            :disabled="editingRightsRevoked"
-                                            :label="
-                                                translate(
-                                                    'userAccount.userAccountDetailAndEditPage.labels.surnameLabel',
-                                                )
-                                            "
-                                            required
-                                            :rules="[requiredRule]"
-                                            variant="outlined"
-                                        />
-                                    </v-col>
-
-                                    <!-- Username -->
-                                    <v-col
-                                        class="custom-padding-textbox"
-                                        cols="12"
-                                        md="12"
-                                    >
-                                        <v-text-field
-                                            v-model="username"
-                                            data-testid="editUserAccount-username-input"
-                                            density="compact"
-                                            :disabled="editingRightsRevoked"
-                                            :label="
-                                                translate(
-                                                    'userAccount.userAccountDetailAndEditPage.labels.usernameLabel',
-                                                )
-                                            "
-                                            required
-                                            :rules="[requiredRule]"
-                                            variant="outlined"
-                                        />
-                                    </v-col>
-
-                                    <!-- Email -->
-                                    <v-col
-                                        class="custom-padding-textbox"
-                                        cols="12"
-                                        md="12"
-                                    >
-                                        <v-text-field
-                                            v-model="email"
-                                            data-testid="editUserAccount-email-input"
-                                            density="compact"
-                                            :disabled="editingRightsRevoked"
-                                            :label="
-                                                translate(
-                                                    'userAccount.userAccountDetailAndEditPage.labels.emailLabel',
-                                                )
-                                            "
-                                            :rules="[emailRule]"
-                                            validate-on="blur"
-                                            variant="outlined"
-                                        />
-                                    </v-col>
-
-                                    <!-- Timezone -->
-                                    <v-col
-                                        class="custom-padding-textbox"
-                                        cols="12"
-                                        md="12"
-                                    >
-                                        <v-select
-                                            v-model="timezone"
-                                            data-testid="editUserAccount-timezone-select"
-                                            density="compact"
-                                            :disabled="editingRightsRevoked"
-                                            :items="timezoneOptions"
-                                            :label="
-                                                translate(
-                                                    'userAccount.userAccountDetailAndEditPage.labels.timeZoneLabel',
-                                                )
-                                            "
-                                            required
-                                            :return-object="false"
-                                            :rules="[requiredRule]"
-                                            variant="outlined"
-                                        />
-                                    </v-col>
-
-                                    <!-- Password reset (dialog opener) -->
-                                    <v-col
-                                        class="custom-padding-textbox"
-                                        cols="12"
-                                        md="12"
-                                    >
-                                        <div
-                                            :class="{
-                                                'clickable-password-field':
-                                                    !editingRightsRevoked,
-                                            }"
-                                            data-testid="editUserAccount-passwordChange-open"
-                                            @click="
-                                                !editingRightsRevoked &&
-                                                (changePasswordDialog = true)
-                                            "
+                                        <!-- Name -->
+                                        <v-col
+                                            class="custom-padding-textbox"
+                                            cols="12"
+                                            md="12"
                                         >
                                             <v-text-field
-                                                append-inner-icon="mdi-pencil"
-                                                class="no-pointer-events"
-                                                data-testid="editUserAccount-password-field"
+                                                v-model="name"
+                                                data-testid="editUserAccount-name-input"
                                                 density="compact"
                                                 :disabled="editingRightsRevoked"
                                                 :label="
                                                     translate(
-                                                        'userAccount.userAccountDetailAndEditPage.labels.passwordLabel',
+                                                        'userAccount.userAccountDetailAndEditPage.labels.nameLabel',
                                                     )
                                                 "
-                                                model-value="'************'"
-                                                readonly
-                                                type="password"
+                                                required
+                                                :rules="[requiredRule]"
                                                 variant="outlined"
                                             />
-                                        </div>
-                                    </v-col>
-                                </v-col>
+                                        </v-col>
 
-                                <!-- User circle and roles -->
-                                <v-col>
-                                    <v-col
-                                        class="d-flex justify-center mb-6"
-                                        cols="12"
-                                        data-testid="editUserAccount-userCircle"
-                                    >
-                                        <div
-                                            class="rounded-circle d-flex align-center justify-center"
-                                            style="
-                                                background-color: transparent;
-                                                border: 0.5rem solid #215caf;
-                                                width: 13rem;
-                                                height: 13rem;
-                                                min-width: 13rem;
-                                                font-weight: 600;
-                                                font-size: 4rem;
-                                                color: #215caf;
-                                            "
+                                        <!-- Surname -->
+                                        <v-col
+                                            class="custom-padding-textbox"
+                                            cols="12"
+                                            md="12"
                                         >
-                                            {{
-                                                (name?.[0] || "") +
-                                                (surname?.[0] || "")
-                                            }}
-                                        </div>
+                                            <v-text-field
+                                                v-model="surname"
+                                                data-testid="editUserAccount-surname-input"
+                                                density="compact"
+                                                :disabled="editingRightsRevoked"
+                                                :label="
+                                                    translate(
+                                                        'userAccount.userAccountDetailAndEditPage.labels.surnameLabel',
+                                                    )
+                                                "
+                                                required
+                                                :rules="[requiredRule]"
+                                                variant="outlined"
+                                            />
+                                        </v-col>
+
+                                        <!-- Username -->
+                                        <v-col
+                                            class="custom-padding-textbox"
+                                            cols="12"
+                                            md="12"
+                                        >
+                                            <v-text-field
+                                                v-model="username"
+                                                data-testid="editUserAccount-username-input"
+                                                density="compact"
+                                                :disabled="editingRightsRevoked"
+                                                :label="
+                                                    translate(
+                                                        'userAccount.userAccountDetailAndEditPage.labels.usernameLabel',
+                                                    )
+                                                "
+                                                required
+                                                :rules="[requiredRule]"
+                                                variant="outlined"
+                                            />
+                                        </v-col>
+
+                                        <!-- Email -->
+                                        <v-col
+                                            class="custom-padding-textbox"
+                                            cols="12"
+                                            md="12"
+                                        >
+                                            <v-text-field
+                                                v-model="email"
+                                                data-testid="editUserAccount-email-input"
+                                                density="compact"
+                                                :disabled="editingRightsRevoked"
+                                                :label="
+                                                    translate(
+                                                        'userAccount.userAccountDetailAndEditPage.labels.emailLabel',
+                                                    )
+                                                "
+                                                :rules="[emailRule]"
+                                                validate-on="blur"
+                                                variant="outlined"
+                                            />
+                                        </v-col>
+
+                                        <!-- Timezone -->
+                                        <v-col
+                                            class="custom-padding-textbox"
+                                            cols="12"
+                                            md="12"
+                                        >
+                                            <v-select
+                                                v-model="timezone"
+                                                data-testid="editUserAccount-timezone-select"
+                                                density="compact"
+                                                :disabled="editingRightsRevoked"
+                                                :items="timezoneOptions"
+                                                :label="
+                                                    translate(
+                                                        'userAccount.userAccountDetailAndEditPage.labels.timeZoneLabel',
+                                                    )
+                                                "
+                                                required
+                                                :return-object="false"
+                                                :rules="[requiredRule]"
+                                                variant="outlined"
+                                            />
+                                        </v-col>
+
+                                        <!-- Password reset (dialog opener) -->
+                                        <v-col
+                                            class="custom-padding-textbox"
+                                            cols="12"
+                                            md="12"
+                                        >
+                                            <div
+                                                :class="{
+                                                    'clickable-password-field':
+                                                        !editingRightsRevoked,
+                                                }"
+                                                data-testid="editUserAccount-passwordChange-open"
+                                                @click="
+                                                    !editingRightsRevoked &&
+                                                    (changePasswordDialog = true)
+                                                "
+                                            >
+                                                <v-text-field
+                                                    append-inner-icon="mdi-pencil"
+                                                    class="no-pointer-events"
+                                                    data-testid="editUserAccount-password-field"
+                                                    density="compact"
+                                                    :disabled="
+                                                        editingRightsRevoked
+                                                    "
+                                                    :label="
+                                                        translate(
+                                                            'userAccount.userAccountDetailAndEditPage.labels.passwordLabel',
+                                                        )
+                                                    "
+                                                    model-value="'************'"
+                                                    readonly
+                                                    type="password"
+                                                    variant="outlined"
+                                                />
+                                            </div>
+                                        </v-col>
                                     </v-col>
 
-                                    <!-- roles -->
-                                    <v-col class="pt-16">
-                                        <v-select
-                                            v-model="selectedUserRole"
-                                            data-testid="createUserAccount-role-select"
-                                            density="compact"
-                                            :disabled="roleSelectDisabled"
-                                            item-title="label"
-                                            item-value="value"
-                                            :items="availableRoles"
-                                            :label="
-                                                translate(
-                                                    'userAccount.createUserAccountPage.labels.selectRolesLabel',
-                                                )
-                                            "
-                                            required
-                                            :rules="[requiredRule]"
-                                            variant="outlined"
-                                        />
-                                    </v-col>
+                                    <!-- User circle and roles -->
                                     <v-col>
-                                        <v-card
-                                            variant="tonal"
-                                            :text="selectedUserRoleDescription"
+                                        <v-col
+                                            class="d-flex justify-center mb-6"
+                                            cols="12"
+                                            data-testid="editUserAccount-userCircle"
                                         >
-                                        </v-card>
+                                            <div
+                                                class="rounded-circle d-flex align-center justify-center"
+                                                style="
+                                                    background-color: transparent;
+                                                    border: 0.5rem solid #215caf;
+                                                    width: 13rem;
+                                                    height: 13rem;
+                                                    min-width: 13rem;
+                                                    font-weight: 600;
+                                                    font-size: 4rem;
+                                                    color: #215caf;
+                                                "
+                                            >
+                                                {{
+                                                    (name?.[0] || "") +
+                                                    (surname?.[0] || "")
+                                                }}
+                                            </div>
+                                        </v-col>
+
+                                        <!-- roles -->
+                                        <v-col class="pt-16">
+                                            <v-select
+                                                v-model="selectedUserRole"
+                                                data-testid="createUserAccount-role-select"
+                                                density="compact"
+                                                :disabled="roleSelectDisabled"
+                                                item-title="label"
+                                                item-value="value"
+                                                :items="availableRoles"
+                                                :label="
+                                                    translate(
+                                                        'userAccount.createUserAccountPage.labels.selectRolesLabel',
+                                                    )
+                                                "
+                                                required
+                                                :rules="[requiredRule]"
+                                                variant="outlined"
+                                            />
+                                        </v-col>
+                                        <v-col>
+                                            <v-card
+                                                variant="tonal"
+                                                :text="
+                                                    selectedUserRoleDescription
+                                                "
+                                            >
+                                            </v-card>
+                                        </v-col>
                                     </v-col>
-                                </v-col>
-                            </v-row>
-                        </v-form>
-                    </v-card-text>
-                </v-col>
-            </v-sheet>
+                                </v-row>
+                            </v-form>
+                        </v-card-text>
+                    </v-col>
+                </v-sheet>
 
-            <!-- Buttons -->
-            <v-row class="px-6 pt-0" data-testid="editUserAccount-buttons-row">
-                <v-col class="pa-0 mb-4" cols="12" md="12">
-                    <div class="d-flex justify-end">
-                        <v-btn
-                            color="black"
-                            data-testid="editUserAccount-back-button"
-                            rounded="sm"
-                            variant="outlined"
-                            @click="
-                                router.push({
-                                    name: props.isProfile
-                                        ? '/(app)/'
-                                        : '/(app)/user-account/',
-                                })
-                            "
-                        >
-                            {{ translate("general.cancelButton") }}
-                        </v-btn>
+                <!-- Buttons -->
+                <v-row
+                    class="px-6 pt-0"
+                    data-testid="editUserAccount-buttons-row"
+                >
+                    <v-col class="pa-0 mb-4" cols="12" md="12">
+                        <div class="d-flex justify-end">
+                            <v-btn
+                                color="black"
+                                data-testid="editUserAccount-back-button"
+                                rounded="sm"
+                                variant="outlined"
+                                @click="
+                                    router.push({
+                                        name: props.isProfile
+                                            ? '/(app)/'
+                                            : '/(app)/user-account/',
+                                    })
+                                "
+                            >
+                                {{ translate("general.cancelButton") }}
+                            </v-btn>
 
-                        <v-btn
-                            v-if="!editingRightsRevoked"
-                            class="ml-2"
-                            color="primary"
-                            data-testid="editUserAccount-saveChanges-button"
-                            :disabled="!hasChanges"
-                            rounded="sm"
-                            variant="flat"
-                            @click="saveChanges()"
-                        >
-                            {{ translate("general.saveButton") }}
-                        </v-btn>
-                    </div>
-                </v-col>
-            </v-row>
-        </v-col>
-    </v-row>
+                            <v-btn
+                                v-if="!editingRightsRevoked"
+                                class="ml-2"
+                                color="primary"
+                                data-testid="editUserAccount-saveChanges-button"
+                                :disabled="!hasChanges"
+                                rounded="sm"
+                                variant="flat"
+                                @click="saveChanges()"
+                            >
+                                {{ translate("general.saveButton") }}
+                            </v-btn>
+                        </div>
+                    </v-col>
+                </v-row>
+            </v-col>
+        </v-row>
+    </div>
 
     <!-- Change password dialog -->
     <v-dialog
@@ -508,6 +525,7 @@ import { UserRoleEnum } from "@/models/userRoleEnum.ts";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/userAccountStore.ts";
+import { useCurrentUser } from "@/composables/useCurrentUser.ts";
 import * as userAccountService from "@/services/seb-server/userAccountService.ts";
 
 import {
@@ -531,6 +549,7 @@ const institutions = ref<Institution[]>([]);
 const i18n = useI18n();
 const router = useRouter();
 const authenticatedUserAccountStore = useAuthenticatedUserAccountStore();
+const { refetch: refetchCurrentUser } = useCurrentUser();
 const timezoneOptions = moment.tz.names();
 
 // fields
@@ -851,6 +870,12 @@ async function saveChanges() {
                 editedUserAccountParams,
             )) != null
         ) {
+            if (
+                user.value.uuid ===
+                authenticatedUserAccountStore.userAccount?.uuid
+            ) {
+                await refetchCurrentUser();
+            }
             await router.push({
                 name: props.isProfile ? "/(app)/" : "/(app)/user-account/",
             });
@@ -921,10 +946,6 @@ async function changeUserPassword() {
 <style scoped>
 .nav-hover:hover .nav-link {
     color: #215caf;
-}
-
-.w-98 {
-    width: 98% !important;
 }
 
 .custom-divider {
@@ -1003,10 +1024,6 @@ async function changeUserPassword() {
     height: 1px !important;
     opacity: 1 !important;
     width: 85% !important;
-}
-
-.w-98 {
-    width: 98% !important;
 }
 
 .custom-divider {

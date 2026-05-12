@@ -3,16 +3,14 @@ import { typedTo } from "@/router/typedTo";
 
 type I18nLike = { t: (key: string) => string };
 
-export type ContainerNavigationLink = {
+export type BaseNavigationLink = {
     title: string;
     route: RouteLocationAsRelative;
     icon: string;
     testId: string;
 };
 
-export function buildContainerNavigationLinks(
-    i18n: I18nLike,
-): ContainerNavigationLink[] {
+export function buildBaseNavigationLinks(i18n: I18nLike): BaseNavigationLink[] {
     return [
         {
             title: i18n.t("titles.home"),
@@ -27,7 +25,7 @@ export function buildContainerNavigationLinks(
             testId: "layout-exam-button",
         },
         {
-            title: i18n.t("titles.monitoring"),
+            title: i18n.t("titles.monitor"),
             route: typedTo({ name: "/(app)/monitoring/" }),
             icon: "mdi-eye",
             testId: "layout-monitoring-button",
