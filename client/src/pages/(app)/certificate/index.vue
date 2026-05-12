@@ -27,8 +27,8 @@
 
         <template #PanelMain>
             <SearchBar
-                class="mt-2"
                 v-model="searchInputValue"
+                class="mt-2"
                 search-text="certificates.filters.searchField"
                 :filter-sections="[]"
                 :filter-values="{}"

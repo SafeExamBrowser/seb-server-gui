@@ -12,8 +12,8 @@
 
         <template #PanelMain>
             <SearchBar
-                class="mt-2"
                 v-model="searchInputValue"
+                class="mt-2"
                 search-text="assessmentToolConnections.assessmentToolsPage.filters.searchField"
                 :filter-sections="filterSections"
                 :filter-values="selectedFilters"

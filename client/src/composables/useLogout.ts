@@ -1,6 +1,6 @@
 import { useAuthStore } from "@/composables/store/useAuthStore";
 import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
-import { clearCurrentUser } from "@/components/layout/base/api/useCurrentUser";
+import { clearCurrentUser } from "../components/layout/container/api/useCurrentUser";
 import * as authenticationService from "@/services/authenticationService";
 import router from "@/router/router";
 
