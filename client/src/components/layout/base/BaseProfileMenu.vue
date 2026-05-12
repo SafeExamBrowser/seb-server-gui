@@ -11,12 +11,11 @@
                 v-bind="menuProps"
                 :active="false"
                 :aria-label="t('navigation.screenReader.profile')"
-                class="text-none overflow-hidden pa-0 pe-2 ps-1"
+                class="text-none rounded-lg overflow-hidden pa-0 pe-2 ps-1"
                 :color="isOpen ? 'primary' : 'surface'"
                 data-testid="layout-profile-button"
                 :ripple="false"
                 size="large"
-                :style="{ borderRadius: '14px' }"
                 :variant="isOpen ? 'tonal' : 'flat'"
             >
                 <div class="d-flex align-center ga-3">
@@ -47,20 +46,18 @@
         </template>
 
         <v-card
-            class="overflow-hidden"
+            class="overflow-hidden rounded-lg"
             elevation="16"
             max-width="24rem"
-            :style="{ borderRadius: '14px' }"
         >
             <div class="bg-primary pa-5 text-white">
                 <div class="d-flex align-center ga-4">
                     <v-avatar
-                        class="font-weight-black text-h6 text-white border-sm border-current"
+                        class="font-weight-black rounded-lg text-h6 text-white border-sm border-current"
                         border
                         color="white"
                         density="comfortable"
                         size="x-large"
-                        :style="{ borderRadius: '14px' }"
                         variant="tonal"
                     >
                         {{ initials }}

@@ -25,7 +25,7 @@
                 <v-card
                     elevation="4"
                     rounded="lg"
-                    class="h-100 overflow-y-auto mr-16"
+                    class="h-100 overflow-y-auto"
                 >
                     <v-row>
                         <v-col class="pt-8 pl-12">

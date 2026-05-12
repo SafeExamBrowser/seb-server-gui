@@ -26,16 +26,12 @@
             />
 
             <v-card
-                class="flex-1-1-0 overflow-y-auto"
+                class="flex-1-1-0 rounded-lg overflow-y-auto"
                 :class="isPageBlue ? '' : 'pa-6'"
                 :color="isPageBlue ? 'primary' : undefined"
                 :data-testid="`${pageTestId}-page-container`"
                 elevation="1"
-                :style="{
-                    borderRadius: '14px',
-                    minHeight: 0,
-                    minWidth: 0,
-                }"
+                :style="{ minHeight: 0, minWidth: 0 }"
             >
                 <RouterView />
             </v-card>

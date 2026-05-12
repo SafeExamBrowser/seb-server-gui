@@ -7,7 +7,7 @@
     >
         <v-btn
             :active="false"
-            class="mb-2 overflow-hidden"
+            class="mb-2 rounded-lg overflow-hidden"
             :class="
                 isNavigationOverviewRoute ? undefined : 'text-medium-emphasis'
             "
@@ -15,7 +15,6 @@
             data-testid="layout-navOverview-toggle"
             :icon="isNavigationOverviewRoute ? 'mdi-close' : 'mdi-menu'"
             size="large"
-            :style="{ borderRadius: '14px' }"
             :to="
                 isNavigationOverviewRoute ? homeRoute : navigationOverviewRoute
             "
@@ -28,13 +27,12 @@
             v-for="link in links"
             :key="link.testId"
             :active="false"
-            class="my-1 overflow-hidden"
+            class="my-1 rounded-lg overflow-hidden"
             :class="isLinkActive(link) ? undefined : 'text-medium-emphasis'"
             :color="isLinkActive(link) ? 'primary' : undefined"
             :data-testid="link.testId"
             icon
             size="large"
-            :style="{ borderRadius: '14px' }"
             :to="link.route"
             :variant="isLinkActive(link) ? 'flat' : 'text'"
         >

@@ -4,9 +4,8 @@
         data-testid="layout-app-bar"
     >
         <v-card
-            class="flex-grow-1 d-flex align-center overflow-hidden px-4 py-2 ga-3"
+            class="flex-grow-1 rounded-lg d-flex align-center overflow-hidden px-4 py-2 ga-3"
             elevation="1"
-            :style="{ borderRadius: '12px' }"
         >
             <RouterLink
                 class="d-flex align-center text-decoration-none"
@@ -85,9 +84,8 @@
         </v-card>
 
         <v-card
-            class="d-flex align-center pe-2 ps-3 py-2 ga-2"
+            class="d-flex align-center rounded-lg pe-2 ps-3 py-2 ga-2"
             elevation="1"
-            :style="{ borderRadius: '12px' }"
         >
             <BaseProfileMenu
                 :user-account="userAccount"
