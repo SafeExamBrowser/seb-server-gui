@@ -24,14 +24,12 @@
 
             <img
                 v-if="institutionLogo"
-                class="flex-shrink-0"
+                class="flex-shrink-0 w-auto h-auto"
                 :alt="$t('navigation.screenReader.institutionLogo')"
                 :src="institutionLogo"
                 :style="{
                     maxHeight: '44px',
                     maxWidth: '220px',
-                    width: 'auto',
-                    height: 'auto',
                     objectFit: 'contain',
                 }"
             />
