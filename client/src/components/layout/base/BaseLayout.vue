@@ -35,6 +35,7 @@
                 elevation="1"
                 :style="{
                     borderRadius: '14px',
+                    minHeight: 0,
                     minWidth: 0,
                 }"
             >
