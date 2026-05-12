@@ -2,7 +2,7 @@
     <div
         class="d-flex flex-column bg-layout-background h-screen overflow-hidden"
     >
-        <BaseAppBar
+        <ContainerHeader
             :home-route="homeRoute"
             :institution-logo="institutionLogo"
             :institution-name="institutionName"
@@ -10,15 +10,15 @@
             @logout="handleLogout"
         >
             <template #bar-actions>
-                <BaseRouteActions :layout-context="layoutContext" />
+                <ContainerRouteActions :layout-context="layoutContext" />
             </template>
-        </BaseAppBar>
+        </ContainerHeader>
 
         <div
             class="d-flex flex-1-1-0 ga-4 px-6 pb-6 pt-4"
             :style="{ minHeight: 0 }"
         >
-            <BaseNavigationRail
+            <ContainerSidePanel
                 :home-route="homeRoute"
                 :is-navigation-overview-route="isNavigationOverviewRoute"
                 :links="mainNavigationLinks"
@@ -46,12 +46,12 @@ import { useI18n } from "vue-i18n";
 import { RouterView, useRoute } from "vue-router";
 import { useLogout } from "@/composables/useLogout";
 import { typedTo } from "@/router/typedTo";
-import BaseAppBar from "@/components/layout/base/BaseAppBar.vue";
-import BaseNavigationRail from "@/components/layout/base/BaseNavigationRail.vue";
-import BaseRouteActions from "./BaseRouteActions.vue";
-import { buildBaseNavigationLinks } from "@/components/layout/base/navigationLinks";
-import { useCurrentUser } from "@/components/layout/base/api/useCurrentUser";
-import { useInstitutionBranding } from "@/components/layout/base/api/useInstitutionBranding";
+import ContainerHeader from "./ContainerHeader.vue";
+import ContainerSidePanel from "./ContainerSidePanel.vue";
+import ContainerRouteActions from "./ContainerRouteActions.vue";
+import { buildBaseNavigationLinks } from "./navigationLinks";
+import { useCurrentUser } from "./api/useCurrentUser";
+import { useInstitutionBranding } from "./api/useInstitutionBranding";
 import ToastContainer from "@/components/widgets/toast/ToastContainer.vue";
 
 const route = useRoute();

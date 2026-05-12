@@ -1,5 +1,5 @@
 import { ref, watch } from "vue";
-import { useCurrentUser } from "@/components/layout/base/api/useCurrentUser";
+import { useCurrentUser } from "../api/useCurrentUser";
 import { getInstitutionById } from "@/services/seb-server/institutionService";
 
 export function useInstitutionBranding() {

@@ -87,7 +87,7 @@
             class="d-flex align-center rounded-lg pe-2 ps-3 py-2 ga-2"
             elevation="1"
         >
-            <BaseProfileMenu
+            <ContainerProfileMenu
                 :user-account="userAccount"
                 @logout="$emit('logout')"
             />
@@ -101,7 +101,7 @@ import { useI18n } from "vue-i18n";
 import { RouterLink, useRoute } from "vue-router";
 import type { RouteLocationAsRelative } from "vue-router";
 import type { UserAccount } from "@/models/userAccount";
-import BaseProfileMenu from "@/components/layout/base/BaseProfileMenu.vue";
+import ContainerProfileMenu from "./ContainerProfileMenu.vue";
 
 const props = withDefaults(
     defineProps<{

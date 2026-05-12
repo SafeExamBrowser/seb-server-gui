@@ -5,7 +5,7 @@
         data-testid="layout-nav-rail"
         elevation="1"
     >
-        <v-btn
+        <v-b
             :active="false"
             class="mb-2 rounded-lg overflow-hidden"
             :class="
@@ -50,7 +50,7 @@
 
 <script setup lang="ts">
 import { useRoute, type RouteLocationAsRelative } from "vue-router";
-import type { BaseNavigationLink } from "@/components/layout/base/navigationLinks";
+import type { BaseNavigationLink } from "./navigationLinks";
 
 defineProps<{
     links: BaseNavigationLink[];

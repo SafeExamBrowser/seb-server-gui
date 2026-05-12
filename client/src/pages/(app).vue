@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import BaseLayout from "@/components/layout/base/BaseLayout.vue";
+import ContainerLayout from "../components/layout/container/ContainerLayout.vue";
 
 // `(app)` is the route group that requires authentication. Every nested
 // route inherits this meta — guards.ts only has to look at `to.meta`.
@@ -11,5 +11,5 @@ definePage({
 </script>
 
 <template>
-    <BaseLayout />
+    <ContainerLayout />
 </template>
