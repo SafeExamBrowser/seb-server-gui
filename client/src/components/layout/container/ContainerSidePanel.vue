@@ -20,7 +20,7 @@
             :variant="isNavigationOverviewRoute ? 'flat' : 'text'"
         />
 
-        <v-divider class="align-self-stretch mb-4 mx-2" :opacity="0.6" />
+        <v-divider class="align-self-stretch mb-4 mx-2" :opacity="0.2" />
 
         <v-btn
             v-for="link in links"

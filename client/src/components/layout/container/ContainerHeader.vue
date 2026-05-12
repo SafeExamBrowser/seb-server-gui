@@ -53,31 +53,6 @@
                 </span>
             </div>
 
-            <v-divider
-                class="align-self-stretch flex-grow-0 mx-2 my-2"
-                vertical
-            />
-
-            <div class="d-flex align-center ga-1 text-body-2">
-                <template v-for="(item, index) in breadcrumbItems" :key="index">
-                    <v-icon
-                        v-if="index > 0"
-                        class="text-medium-emphasis"
-                        icon="mdi-chevron-right"
-                        size="x-small"
-                    />
-                    <span
-                        :class="
-                            index === breadcrumbItems.length - 1
-                                ? 'font-weight-bold'
-                                : 'font-weight-bold text-medium-emphasis'
-                        "
-                    >
-                        {{ item }}
-                    </span>
-                </template>
-            </div>
-
             <v-spacer />
 
             <slot name="bar-actions" />
@@ -96,9 +71,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import { useI18n } from "vue-i18n";
-import { RouterLink, useRoute } from "vue-router";
+import { RouterLink } from "vue-router";
 import type { RouteLocationAsRelative } from "vue-router";
 import type { UserAccount } from "@/models/userAccount";
 import ContainerProfileMenu from "./ContainerProfileMenu.vue";
@@ -113,16 +86,4 @@ defineProps<{
 defineEmits<{
     logout: [];
 }>();
-
-const { t, te } = useI18n();
-const route = useRoute();
-
-const breadcrumbItems = computed<string[]>(() => {
-    const titleKey = route.meta.titleKey;
-    if (titleKey && te(titleKey)) {
-        return [t(titleKey)];
-    }
-
-    return [t("titles.home")];
-});
 </script>
