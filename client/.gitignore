@@ -23,12 +23,8 @@ pnpm-debug.log*
 *.sw?
 
 
-/storybook-static/
 /playwright-report/
 /test-results/
-
-*storybook.log
-storybook-static
 
 # Playwright
 /blob-report/
