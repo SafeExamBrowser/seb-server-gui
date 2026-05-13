@@ -3,24 +3,24 @@ import eslintConfigPrettier from "eslint-config-prettier";
 import eslintPluginVue from "eslint-plugin-vue";
 import eslintPluginVuetify from "eslint-plugin-vuetify";
 import globals from "globals";
-import { defineConfig } from "eslint/config";
+import { defineConfig, globalIgnores } from "eslint/config";
 import tseslint from "typescript-eslint";
-import { includeIgnoreFile } from "@eslint/compat";
-import { fileURLToPath } from "node:url";
-
-const gitignorePath = fileURLToPath(new URL(".gitignore", import.meta.url));
 
 export default defineConfig([
-    includeIgnoreFile(gitignorePath),
+    globalIgnores([
+        "**/*.d.ts",
+        "**/dist/",
+        "**/coverage/",
+        "playwright-report/",
+        "test-results/",
+        "blob-report/",
+        "playwright/.cache/",
+        "playwright/.auth/",
+    ]),
     eslint.configs.recommended,
     tseslint.configs.strict,
     eslintPluginVue.configs["flat/recommended"],
     eslintPluginVuetify.configs["flat/base"],
-
-    // global config
-    {
-        ignores: ["*.d.ts", "**/coverage", "**/dist"],
-    },
 
     // config for files that run in node
     {

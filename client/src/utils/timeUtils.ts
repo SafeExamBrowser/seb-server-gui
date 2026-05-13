@@ -43,8 +43,7 @@ export function formatTimestampToFullDate(
     const tsNum = typeof timestamp === "string" ? Number(timestamp) : timestamp;
     if (!Number.isFinite(tsNum)) return "";
 
-    let date = new Date(tsNum);
-    date = convertUTCToTimeZone(tsNum);
+    const date = convertUTCToTimeZone(tsNum);
 
     const day = ("0" + date.getDate()).slice(-2);
     const month = ("0" + (date.getMonth() + 1)).slice(-2);
@@ -62,8 +61,7 @@ export function formatTimestampToDate(timestamp: number): string {
         return "";
     }
 
-    let date = new Date(timestamp);
-    date = convertUTCToTimeZone(timestamp);
+    const date = convertUTCToTimeZone(timestamp);
 
     const day = ("0" + date.getDate()).slice(-2);
     const month = ("0" + (date.getMonth() + 1)).slice(-2);
@@ -77,8 +75,7 @@ export function formatTimestampToTime(timestamp: number): string {
         return "";
     }
 
-    let date = new Date(timestamp);
-    date = convertUTCToTimeZone(timestamp);
+    const date = convertUTCToTimeZone(timestamp);
 
     const hours = ("0" + date.getHours()).slice(-2);
     const minutes = ("0" + date.getMinutes()).slice(-2);
