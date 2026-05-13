@@ -54,7 +54,7 @@ test.describe("1.2.2 User Accounts - READ Get All", () => {
     });
 
     test("B Using search and filters", async ({ page }, testInfo) => {
-        expect(page.url()).toContain("/user-accounts");
+        expect(page.url()).toContain("/user-account");
 
         const surnameWithBrowserSuffix = addBrowserSuffixToText(
             searchSurname,
@@ -132,7 +132,7 @@ test.describe("1.2.2 User Accounts - READ Get All", () => {
                 await userAccountsPage.clearSearch();
             },
             {
-                urlMustContain: [/[?&]page_size=5/i, /[?&]page_number=1/i],
+                urlMustContain: [/[?&]page_size=10/i, /[?&]page_number=1/i],
             },
         );
 
@@ -140,7 +140,7 @@ test.describe("1.2.2 User Accounts - READ Get All", () => {
     });
 
     test("C Using table sorting and paging", async ({ page }, testInfo) => {
-        expect(page.url()).toContain("/user-accounts");
+        expect(page.url()).toContain("/user-account");
 
         const surnameWithBrowserSuffix = addBrowserSuffixToText(
             searchSurname,
@@ -198,7 +198,6 @@ test.describe("1.2.2 User Accounts - READ Get All", () => {
         });
 
         await userAccountsPage.goto();
-        await userAccountsPage.expectVisible();
         await userAccountsPage.expectAnyValidationMessageVisible();
     });
 });

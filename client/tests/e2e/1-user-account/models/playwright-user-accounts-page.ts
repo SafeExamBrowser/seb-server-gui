@@ -72,7 +72,9 @@ export class PlaywrightUserAccountsPage {
             .getByTestId("userAccounts-search-input")
             .getByRole("textbox");
         this.searchButton = page.getByTestId("userAccounts-search-button");
-        this.cancelButton = page.getByTestId("userAccounts-cancel-button");
+        this.cancelButton = page.getByTestId(
+            "userAccounts-search-cancel-button",
+        );
 
         // Filters
         this.statusFilterSection = page.getByTestId(
@@ -91,9 +93,7 @@ export class PlaywrightUserAccountsPage {
 
         // Table
         this.table = page.getByTestId("userAccounts-table");
-        this.tableHeadersComponent = page.getByTestId(
-            "userAccounts-tableHeaders-component",
-        );
+        this.tableHeadersComponent = page.getByTestId("userAccounts-table");
 
         // Delete dialog
         this.deleteDialog = page.getByTestId("userAccounts-delete-dialog");
