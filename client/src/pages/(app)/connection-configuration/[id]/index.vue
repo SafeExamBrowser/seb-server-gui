@@ -1321,7 +1321,7 @@ async function editConnectionConfigurationOnly() {
     };
 
     // ---- Fallback section only when enabled, with its own narrows ----
-    let fallbackPart = {};
+    let fallbackPart: Partial<UpdateConnectionConfigurationPar>;
     if (withFallback.value) {
         if (!fallbackStartUrl.value) return;
         if (fallbackInterval.value == null) return;
