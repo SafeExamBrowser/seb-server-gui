@@ -8,8 +8,8 @@
         "moduleResolution": "Bundler",
         "allowImportingTsExtensions": true,
         "paths": {
-            "@/*": ["src/*"],
-            "@api-services": ["src/services/api-services/*"]
+            "@/*": ["./src/*"],
+            "@api-services": ["./src/services/api-services/*"]
         },
         "resolveJsonModule": true,
         "types": ["vite/client", "node"],
