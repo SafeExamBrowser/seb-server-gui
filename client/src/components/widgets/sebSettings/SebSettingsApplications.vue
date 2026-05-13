@@ -64,8 +64,10 @@
                     :headers="permittedProcessTableHeaders"
                     item-value="id"
                     :items="permittedProcessTable.table.value"
-                    :items-per-page="tableUtils.calcDefaultItemsPerPage()"
-                    :items-per-page-options="tableUtils.calcItemsPerPage()"
+                    :items-per-page="tableUtils.defaultPageItems"
+                    :items-per-page-options="
+                        tableUtils.calcItdefaultPageItemsemsPerPage()
+                    "
                 >
                     <template
                         #headers="{

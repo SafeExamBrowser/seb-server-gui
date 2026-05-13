@@ -40,11 +40,9 @@
                                 item-value="quiz_id"
                                 :items="userAccountNames"
                                 :items-length="userAccountNames.length"
-                                :items-per-page="
-                                    tableUtils.calcDefaultItemsPerPage()
-                                "
+                                :items-per-page="tableUtils.defaultPageItems"
                                 :items-per-page-options="
-                                    tableUtils.calcItemsPerPage()
+                                    tableUtils.itemsPerPageOptions
                                 "
                                 :search="search"
                             >

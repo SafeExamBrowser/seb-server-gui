@@ -76,11 +76,9 @@
                             :headers="tableHeaders"
                             item-value="id"
                             :items="urlFilterRuleTable.table.value"
-                            :items-per-page="
-                                tableUtils.calcDefaultItemsPerPage()
-                            "
+                            :items-per-page="tableUtils.defaultPageItems"
                             :items-per-page-options="
-                                tableUtils.calcItemsPerPage()
+                                tableUtils.itemsPerPageOptions
                             "
                         >
                             <template

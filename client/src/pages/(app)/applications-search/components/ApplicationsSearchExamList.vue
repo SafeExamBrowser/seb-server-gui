@@ -12,7 +12,7 @@
                     :headers="headers"
                     :items="exams"
                     items-per-page="5"
-                    :items-per-page-options="tableUtils.calcItemsPerPage()"
+                    :items-per-page-options="tableUtils.itemsPerPageOptions"
                     select-strategy="page"
                     show-select
                     :sort-by="[{ key: 'startTime', order: 'desc' }]"

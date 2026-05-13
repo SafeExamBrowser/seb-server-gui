@@ -169,11 +169,9 @@
                             :headers="tableHeaders"
                             item-value="id"
                             :items="fileTypeTable.table.value"
-                            :items-per-page="
-                                tableUtils.calcDefaultItemsPerPage()
-                            "
+                            :items-per-page="tableUtils.defaultPageItems"
                             :items-per-page-options="
-                                tableUtils.calcItemsPerPage()
+                                tableUtils.itemsPerPageOptions
                             "
                         >
                             <template
