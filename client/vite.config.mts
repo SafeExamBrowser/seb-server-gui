@@ -1,7 +1,7 @@
 import Fonts from "unplugin-fonts/vite";
 import Vue from "@vitejs/plugin-vue";
 import Vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
-import { defineConfig, loadEnv } from "vite";
+import { defineConfig, loadEnv, type ConfigEnv } from "vite";
 import { fileURLToPath, URL } from "node:url";
 import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite";
 import VueRouter from "vue-router/vite";
@@ -24,7 +24,7 @@ export const parseEnv = () => {
     return envResult.data;
 };
 
-export default ({ mode, command }) => {
+export default ({ mode, command }: ConfigEnv) => {
     process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
 
     return defineConfig({
