@@ -10,9 +10,9 @@
                 data-testid="createUserAccount-form-infoText"
             />
 
-            <v-row class="px-6 mt-2">
+            <v-row class="px-6 mt-2" no-gutters>
                 <!-- Left column: form fields -->
-                <v-col cols="6">
+                <v-col cols="6" class="pe-3">
                     <LoadingFallbackComponent
                         :loading="loading"
                         :errors="errors"
@@ -27,7 +27,7 @@
 
                 <!-- Right column: avatar + role select + role description -->
                 <v-col
-                    class="d-flex flex-column align-center"
+                    class="d-flex flex-column align-center ps-3"
                     cols="6"
                     data-testid="createUserAccount-right-panel"
                 >
@@ -54,20 +54,18 @@
             </v-row>
 
             <!-- Action buttons -->
-            <v-row class="px-6 pb-4">
-                <v-col class="d-flex justify-end pa-0 ga-2">
-                    <CancelButton
-                        data-testid="createUserAccount-cancel-button"
-                        text="general.cancelButton"
-                        @click="router.push({ name: '/(app)/user-account/' })"
-                    />
-                    <ConfirmButton
-                        data-testid="createUserAccount-save-button"
-                        text="general.saveButton"
-                        @click="submit()"
-                    />
-                </v-col>
-            </v-row>
+            <div class="d-flex justify-end ga-2 px-6 pb-4">
+                <CancelButton
+                    data-testid="createUserAccount-cancel-button"
+                    text="general.cancelButton"
+                    @click="router.push({ name: '/(app)/user-account/' })"
+                />
+                <ConfirmButton
+                    data-testid="createUserAccount-save-button"
+                    text="general.saveButton"
+                    @click="submit()"
+                />
+            </div>
         </template>
     </BasicSettingsPage>
 </template>

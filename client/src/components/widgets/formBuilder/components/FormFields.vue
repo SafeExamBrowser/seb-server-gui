@@ -92,6 +92,15 @@
                 :hint="field.hint"
                 :clearable="!field.required"
             />
+            <FormFieldImage
+                v-else-if="field.type === 'image'"
+                v-model="field.model.value"
+                :standard-properties="getBaseProperties(field)"
+                :drop-title="field.dropTitle"
+                :accept-extensions="field.acceptExtensions"
+                :hint="field.hint"
+                :max-file-size-m-b="field.maxFileSizeMB"
+            />
             <FormFieldCollection
                 v-else-if="field.type === 'collection'"
                 :label="field.label"
@@ -120,6 +129,7 @@ import { ref, nextTick, watch } from "vue";
 import FormFieldCollection from "./FormFieldCollection.vue";
 import FormFieldColor from "./FormFieldColor.vue";
 import FormFieldFile from "./FormFieldFile.vue";
+import FormFieldImage from "./FormFieldImage.vue";
 import FormFieldPassword from "./FormFieldPassword.vue";
 
 const props = withDefaults(defineProps<FormFieldsComponentProps>(), {

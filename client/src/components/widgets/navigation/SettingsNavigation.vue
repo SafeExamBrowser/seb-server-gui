@@ -1,5 +1,5 @@
 <template>
-    <v-sheet class="rounded-lg ml-6 w-100 h-100 bg-primary">
+    <v-sheet class="rounded-lg ml-6 w-100 h-100 bg-transparent">
         <v-col class="pt-0">
             <NavigationSection
                 :title="translate('titles.settings')"

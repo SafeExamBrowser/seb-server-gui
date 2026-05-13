@@ -10,8 +10,8 @@
                 data-testid="createConnectionConfiguration-info-text"
             />
 
-            <v-row class="px-6 mt-2">
-                <v-col cols="8">
+            <v-row class="px-6 mt-2" no-gutters>
+                <v-col cols="8" class="pa-0">
                     <FormBuilder
                         ref="mainFormRef"
                         :fields="mainFormFields"
@@ -42,8 +42,27 @@
                                 <template #prepend>
                                     <v-icon
                                         v-if="item.raw.value === '__UPLOAD__'"
-                                        >mdi-upload</v-icon
                                     >
+                                        <FormDialog
+                                            icon-activator="mdi-plus-circle-outline"
+                                            color-activator="primary"
+                                            label-activator=""
+                                            size-activator="large"
+                                            label-activator-visible
+                                            :label-cancel="
+                                                $t('general.cancelButton')
+                                            "
+                                            :label-submit="
+                                                $t(
+                                                    'certificates.createDialog.confirmButtonTitle',
+                                                )
+                                            "
+                                            form-id="form-certificate-upload"
+                                            :get-form-fields="getFormFields"
+                                            :get-item="getEmptyItem"
+                                            :on-submit="handleUploadCertificate"
+                                        />
+                                    </v-icon>
                                 </template>
                             </v-list-item>
                             <v-divider
@@ -114,38 +133,24 @@
             </v-row>
 
             <!-- Action buttons -->
-            <v-row class="px-6 pb-4">
-                <v-col class="d-flex justify-end pa-0 ga-2">
-                    <CancelButton
-                        data-testid="createConnectionConfiguration-cancel-button"
-                        text="general.cancelButton"
-                        @click="
-                            router.push({
-                                name: '/(app)/connection-configuration/',
-                            })
-                        "
-                    />
-                    <ConfirmButton
-                        data-testid="createConnectionConfiguration-save-button"
-                        text="general.saveButton"
-                        @click="submit()"
-                    />
-                </v-col>
-            </v-row>
+            <div class="d-flex justify-end ga-2 px-6 pb-4">
+                <CancelButton
+                    data-testid="createConnectionConfiguration-cancel-button"
+                    text="general.cancelButton"
+                    @click="
+                        router.push({
+                            name: '/(app)/connection-configuration/',
+                        })
+                    "
+                />
+                <ConfirmButton
+                    data-testid="createConnectionConfiguration-save-button"
+                    text="general.saveButton"
+                    @click="submit()"
+                />
+            </div>
         </template>
     </BasicSettingsPage>
-
-    <!-- Upload Certificate Dialog -->
-    <UploadDialog
-        ref="uploadDialog"
-        v-model="certDialog"
-        name-prefix="certificates"
-        icon="mdi-file-certificate-outline"
-        :seb-settings-id="null"
-        :show-quit-password="false"
-        :default-ext-list="['.p12', '.pfx', '.pem', '.crt', '.cer']"
-        @uploaded="onCertImported"
-    />
 </template>
 
 <script setup lang="ts">
@@ -160,9 +165,11 @@ import type { CreateConnectionConfigurationPar } from "@/models/seb-server/conne
 import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
 import HintText from "@/components/widgets/HintText.vue";
-import UploadDialog from "@/components/widgets/UploadDialog.vue";
+import FormDialog from "@/components/widgets/formDialog/FormDialog.vue";
 
 import { useRouter } from "vue-router";
+import { useCertificateCreateForm } from "../../certificate/composables/useCertificateCreateForm.ts";
+import { CertKey } from "../../certificate/types/types.ts";
 definePage({
     meta: {
         titleKey: "titles.createConnectionConfiguration",
@@ -215,10 +222,13 @@ function handleCertChange(val: string | undefined) {
     }
 }
 
-async function onCertImported(created: { id: string; name: string }) {
+async function onCertImported(key: CertKey) {
     await loadCertificates();
-    encryptWithCertificate.value = created.name;
+    encryptWithCertificate.value = key.name;
 }
+
+const { getEmptyItem, getFormFields, handleUploadCertificate } =
+    useCertificateCreateForm({ onSuccess: onCertImported });
 
 async function submit() {
     const mainResult = await mainFormRef.value?.validate();

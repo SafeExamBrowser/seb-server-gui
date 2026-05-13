@@ -2,7 +2,11 @@
     <v-row data-testid="navigationOverview-page-container">
         <v-container class="ml-16 mr-0" fluid>
             <v-col>
-                <v-sheet class="rounded-lg pa-4" color="primary" elevation="0">
+                <v-sheet
+                    class="rounded-lg pa-4"
+                    color="transparent"
+                    elevation="0"
+                >
                     <v-app-bar-title class="mb-16">
                         <h1
                             class="title-inherit-styling text-h4"

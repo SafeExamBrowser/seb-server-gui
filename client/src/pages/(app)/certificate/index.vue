@@ -26,45 +26,41 @@
         </template>
 
         <template #PanelMain>
-            <v-col>
-                <SearchBar
-                    v-model="searchInputValue"
-                    search-text="certificates.filters.searchField"
-                    :filter-sections="[]"
-                    :filter-values="{}"
-                    :data-test-id="dataTestId"
-                    dense
-                    @search="onSearch"
-                    @clear="onClearSearch"
-                    @clear-filters="onClearSearch"
-                />
+            <SearchBar
+                v-model="searchInputValue"
+                class="mt-2"
+                search-text="certificates.filters.searchField"
+                :filter-sections="[]"
+                :filter-values="{}"
+                :data-test-id="dataTestId"
+                dense
+                @search="onSearch"
+                @clear="onClearSearch"
+                @clear-filters="onClearSearch"
+            />
 
-                <v-row>
-                    <v-col>
-                        <div v-if="deleteError">
-                            {{ deleteError }}
-                        </div>
-                        <LoadingFallbackComponent
-                            :loading="false"
-                            :errors="error ? [error] : []"
-                        >
-                            <EntityTable
-                                :headers="certificatesTableHeaders"
-                                :items="tableData?.content ?? []"
-                                :page-count="pageCount"
-                                :items-per-page="options.itemsPerPage"
-                                :options="options"
-                                :loading="loading || deleteLoading"
-                                :cell-formatters="cellFormatters"
-                                :actions="tableActions"
-                                :data-test-id="dataTestId"
-                                item-key="alias"
-                                @update:options="loadItems"
-                            />
-                        </LoadingFallbackComponent>
-                    </v-col>
-                </v-row>
-            </v-col>
+            <div v-if="deleteError">
+                {{ deleteError }}
+            </div>
+            <LoadingFallbackComponent
+                :loading="false"
+                :errors="error ? [error] : []"
+            >
+                <EntityTable
+                    class="px-3"
+                    :headers="certificatesTableHeaders"
+                    :items="tableData?.content ?? []"
+                    :page-count="pageCount"
+                    :items-per-page="options.itemsPerPage"
+                    :options="options"
+                    :loading="loading || deleteLoading"
+                    :cell-formatters="cellFormatters"
+                    :actions="tableActions"
+                    :data-test-id="dataTestId"
+                    item-key="alias"
+                    @update:options="loadItems"
+                />
+            </LoadingFallbackComponent>
         </template>
     </BasicSettingsPage>
 
@@ -143,7 +139,11 @@ const {
 } = useDeleteCertificate(tableData);
 
 const { getEmptyItem, getFormFields, handleUploadCertificate } =
-    useCertificateCreateForm({ onSuccess: loadItems });
+    useCertificateCreateForm({ onSuccess: onCertificateUpload });
+
+function onCertificateUpload(): void {
+    loadItems();
+}
 
 const deleteTarget = ref<TableItem | null>(null);
 const deleteDialogOpen = ref(false);

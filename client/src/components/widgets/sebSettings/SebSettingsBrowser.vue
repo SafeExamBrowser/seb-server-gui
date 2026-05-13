@@ -119,6 +119,24 @@
                         :disabled="context.readonly"
                     />
                 </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="enableJavaScript"
+                        label="sebSettings.browser.security.enableJavaScript"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="blockPopUpWindows"
+                        label="sebSettings.browser.security.blockPopUpWindows"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
 
                 <SettingsTitle label="sebSettings.browser.restrictions.title" />
                 <v-row>

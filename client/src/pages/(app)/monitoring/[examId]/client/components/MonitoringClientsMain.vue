@@ -332,15 +332,6 @@ async function initalize() {
 watch(connections, async () => {
     const consLength = connections.value?.monitoringConnectionData.cons.length;
 
-    // Use this only for debugging
-    //
-    // console.info(
-    //     "new size: " +
-    //         consLength +
-    //         "old size: " +
-    //         monitoringStore.monitoringData.size,
-    // );
-
     if (
         consLength !== undefined &&
         consLength > monitoringStore.monitoringData.size

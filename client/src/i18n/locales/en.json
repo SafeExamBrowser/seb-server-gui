@@ -41,6 +41,7 @@
     "RAISE_HAND": "Raise hand",
     "general": {
         "loadingText": "Loading... Please wait",
+        "addButton": "Add",
         "cancelButton": "Cancel",
         "backButton": "Back",
         "nextButton": "Next",
@@ -85,6 +86,10 @@
             "file": {
                 "hint": "Drop a file here or search through file explorer.",
                 "allowedFileTypes": "Allowed file types:"
+            },
+            "image": {
+                "dropTitle": "Drop an image here or click to browse",
+                "hint": "Allowed types: {types}"
             }
         }
     },
@@ -430,20 +435,18 @@
     },
     "examTemplateList": {
         "info": {
-            "name": "Name",
             "nameSearchPlaceholder": "Search",
             "examType": "Exam Type"
         },
         "headers": {
             "name": "Name",
             "description": "Description",
-            "examType": "Exam Type",
-            "actions": "Actions"
+            "examType": "Exam Type"
         },
         "deleteDialog": {
             "title": "Delete Exam Template",
-            "infoText": "This will permanently delete the exam template.",
-            "questionText": "Are you sure you want to delete this exam template?"
+            "text": "Are you sure you want to delete this exam template?",
+            "action": "Delete"
         }
     },
     "galleryView": {
@@ -886,22 +889,80 @@
             "KEY_CERT_SIGN": "CA"
         }
     },
+    "institutions": {
+        "institutionPage": {
+            "tableHeaders": {
+                "logoImage": "Logo",
+                "name": "Name",
+                "modelId": "ID",
+                "urlSuffix": "URL Suffix",
+                "active": "Status"
+            },
+            "addInstitution": "Add Institution",
+            "filters": {
+                "searchTitle": "Search",
+                "searchField": "Search by Name",
+                "statusFilter": "Status",
+                "activeSelector": "Active",
+                "inactiveSelector": "Inactive"
+            },
+            "deleteDialog": {
+                "title": "Confirm Deletion",
+                "text": "Are you sure you want to delete this institution and all of its dependencies?",
+                "action": "Delete"
+            },
+            "statusDialog": {
+                "activateTitle": "Activate Institution",
+                "deactivateTitle": "Deactivate Institution",
+                "activateText": "Are you sure you want to activate this institution?",
+                "deactivateText": "Are you sure you want to deactivate this institution?",
+                "activateAction": "Activate",
+                "deactivateAction": "Deactivate"
+            }
+        },
+        "createInstitutionPage": {
+            "info": {
+                "creationInfo": "Fill the form to create a new institution."
+            }
+        },
+        "editInstitutionPage": {
+            "info": {
+                "editInfo": "Edit the institution details."
+            }
+        },
+        "institutionFormFields": {
+            "labels": {
+                "name": "Name *",
+                "urlSuffix": "URL Suffix",
+                "logoImage": "Logo Image"
+            },
+            "validation": {
+                "urlSuffix": "URL suffix must be 3 to 45 characters or empty"
+            }
+        }
+    },
     "sebSettings": {
         "pwdMismatch": "The password and confirm password must match",
         "pwdSpaces": "The value must not start or end with a space.",
         "noNegNumber": "Cant be a negative number",
-        "upload": {
-            "upload": "Import SEB Settings",
-            "selectFromFolder": "Select From File Explorer",
-            "uploadHelp": "Drag and Drop or Search through File Explorer",
-            "allowed": "Allowed File Types",
-            "dropHere": "Drop a SEB Settings file here",
-            "password": "Password",
-            "quitPassword": "Quit Password",
-            "onlyAllowed": "File Type not allowed",
-            "uploadFailed": "Failed to upload SEB Settings, please contact a system administrator",
-            "passwordIncorrect": "The password was incorrect. Please try again or contact a system administrator",
-            "importButton": "Import"
+        "importDialog": {
+            "addButtonTitle": "Import",
+            "confirmButtonTitle": "Import",
+            "fields": {
+                "file": {
+                    "label": "SEB Configuration File",
+                    "hint": "Drop a SEB Configuration file here or search through file explorer."
+                },
+                "password": {
+                    "label": "Password"
+                },
+                "quitPassword": {
+                    "label": "Quit Password"
+                }
+            },
+            "errors": {
+                "generic": "Failed to upload SEB Configuration, make sure you use the correct file-password. Please try again or contact a system administrator"
+            }
         },
         "views": {
             "general": "General",
@@ -917,12 +978,22 @@
             "proctoring": "Proctoring"
         },
         "generalView": {
+            "title": "Security",
             "adminPassword": "Administrator Password",
             "confirmAdminPassword": "Confirm Administrator Password",
             "allowQuit": "Allow user to Quit SEB",
             "allowQuit_tooltip": "Users can quit SEB with Control-Q, window close or quit button.\nOtherwise use a quit link in your exam system or shutdown/restart the computer.",
             "quitPassword": "Quit Password",
-            "confirmQuitPassword": "Confirm Quit Password"
+            "confirmQuitPassword": "Confirm Quit Password",
+            "configuration": {
+                "title": "Configuration",
+                "allowPreferencesWindow": "Allow to open Settings window on client (Mac)",
+                "allowPreferencesWindow_tooltip": "Usually disable Settings window on exam clients besides for debugging purposes",
+                "mobileAllowQRCodeConfig": "Allow QR code config",
+                "mobileAllowQRCodeConfig_tooltip": "Allows to start an exam or to reconfigure SEB by scanning a QR code with a link to an SEB Config File. Use slider menu, dock button (if enabled in the User Interface Dock sub-pane) or Home screen quick action",
+                "mobileShowSettings": "Show settings in app",
+                "mobileShowSettings_tooltip": "Shows the ​Edit ​Settings command in the left slider menu. ​If this option is enabled in the client configuration, in​-app settings will also be available after opening an exam config"
+            }
         },
         "userView": {
             "view_mode": {
@@ -957,8 +1028,23 @@
                 "showMenuBar": "Show menu bar (Mac)",
                 "showMenuBar_tooltip": "Show the OS X menu bar to allow to access settings like Wi-Fi"
             },
+            "status_bar": {
+                "title": "iOS Status Bar",
+                "mobileStatusBarAppearance": "Appearance",
+                "mobileStatusBarAppearance_0": "None",
+                "mobileStatusBarAppearance_1": "Light",
+                "mobileStatusBarAppearance_2": "Dark",
+                "mobileStatusBarAppearanceExtended": "Appearance on devices with FaceID",
+                "mobileStatusBarAppearanceExtended_0": "Inferred",
+                "mobileStatusBarAppearanceExtended_1": "Light",
+                "mobileStatusBarAppearanceExtended_2": "Dark",
+                "mobileStatusBarAppearanceExtended_3": "None Dark",
+                "mobileStatusBarAppearanceExtended_4": "None Light"
+            },
             "task_bar": {
                 "title": "SEB Taskbar / Dock",
+                "height": "Dock height",
+                "height_tooltip": "SEB dock height in points (pixel height*2 on Retina displays)",
                 "showTaskBar": "Show SEB taskbar",
                 "showTaskBar_tooltip": "The SEB task bar shows and switches between open browser windows, allowed resources and applications and displays additional controls",
                 "showSideMenu": "Show side menu",
@@ -970,8 +1056,10 @@
                 "showReloadButton": "Show reload button",
                 "showReloadButton_tooltip": "Reloads current web page. Shows warning if enabled in Browser settings tab",
                 "showTime": "Show current time",
+                "showBackToStartButton": "Show back to start button",
                 "showInputLanguage": "Show keyboard layout",
-                "showInputLanguage_tooltip": "Shows current keyboard layout and allows to switch between other active keyboard layouts"
+                "showInputLanguage_tooltip": "Shows current keyboard layout and allows to switch between other active keyboard layouts",
+                "showQRVerifyButton": "Show QR code button for SEB Verificator"
             },
             "zoom": {
                 "title": "Enable Zoom (Win/Mac)",
@@ -999,6 +1087,29 @@
             "screenLock": {
                 "title": "Lock Screen",
                 "color": "Choose background color"
+            },
+            "accessibility": {
+                "title": "Accessibility",
+                "accessibilityFeatureVoiceOver": "VoiceOver",
+                "accessibilityFeatureVoiceOver_0": "System Default",
+                "accessibilityFeatureVoiceOver_1": "Enable",
+                "accessibilityFeatureVoiceOver_2": "Disable",
+                "accessibilityFeatureAssistiveTouch": "AssistiveTouch (iOS)",
+                "accessibilityFeatureAssistiveTouch_0": "System Default",
+                "accessibilityFeatureAssistiveTouch_1": "Enable",
+                "accessibilityFeatureAssistiveTouch_2": "Disable",
+                "accessibilityFeatureGrayscaleDisplay": "Greyscale Display (iOS)",
+                "accessibilityFeatureGrayscaleDisplay_0": "System Default",
+                "accessibilityFeatureGrayscaleDisplay_1": "Enable",
+                "accessibilityFeatureGrayscaleDisplay_2": "Disable",
+                "accessibilityFeatureInvertColors": "Smart Invert (iOS)",
+                "accessibilityFeatureInvertColors_0": "System Default",
+                "accessibilityFeatureInvertColors_1": "Enable",
+                "accessibilityFeatureInvertColors_2": "Disable",
+                "accessibilityFeatureZoom": "Zoom (iOS)",
+                "accessibilityFeatureZoom_0": "System Default",
+                "accessibilityFeatureZoom_1": "Enable",
+                "accessibilityFeatureZoom_2": "Disable"
             }
         },
         "browser": {
@@ -1038,7 +1149,9 @@
                 "browserWindowWebViewClassicHideDeprecationNote": "Disable classic WebView deprecation warning",
                 "browserWindowWebViewClassicHideDeprecationNote_tooltip": "Classic WebView is deprecated on macOS and no longer supported on iOS/iPadOS! The used SEB assessment solution integration/settings might no longer work and need to be updated to support the modern WebView. This warning is displayed on top of browser windows/tabs when settings require the classic WebView. You can disable this warning being displayed, but if you are the vendor of an assessment system which isn't yet compatible with the modern WebView, you need to update your integration now (use SEB Javascript API instead of HTTP header check for BEK/CK, see safeexambrowser.org/developer).",
                 "enableRightMouse": "Enable right mouse button (Mac)",
-                "enableRightMouse_tooltip": "Enable to access context menu for Web Inspector in SEB for macOS (use ONLY for debugging). Disable to prevent right mouse button actions/context menu for sharing content (with modern WebView) and in browser plugins/video players"
+                "enableRightMouse_tooltip": "Enable to access context menu for Web Inspector in SEB for macOS (use ONLY for debugging). Disable to prevent right mouse button actions/context menu for sharing content (with modern WebView) and in browser plugins/video players",
+                "enableJavaScript": "Eneable Java Script (Mac)",
+                "blockPopUpWindows": "Block Pop-Up Windows (Mac)"
             },
             "restrictions": {
                 "title": "Restrictions in Exam Window",
@@ -1154,6 +1267,8 @@
             "useTemp": "Use temporary download / upload directory (Win)",
             "photos": "Allow Uploading Photos and Files",
             "photos_tooltip": "Uploading allows to access camera, the full photo library and iCloud Drive and therefore is insecure!",
+            "openDownloads": "Open Files After Downloading",
+            "openDownloads_tooltip": "Downloaded files will be opened with the according application, which has to be set correctly in the system for each used file type. Usually to be used with permitted third party applications ",
             "filetypes": {
                 "title": "File types to be downloaded",
                 "tooltip": "Specify file types which will be downloaded instead of displayed by the browser. You can also indicate the associated additional app for the file type and use the option 'Open files after downloading' above. This feature might not be supported on all platforms",
@@ -1282,6 +1397,10 @@
             "filterGroupTitle": "URL Filter",
             "URLFilterEnable": "Activate URL Filtering",
             "URLFilterEnableContentFilter": "Filter also embedded content",
+            "URLFilterMessage": "Show URL blocked as",
+            "URLFilterMessage_tooltip": "Chooses message/symbol which is displayed in the browser window toolbar when a URL isn't allowed",
+            "URLFilterMessage_0": "Display 'URL Blocked!'",
+            "URLFilterMessage_1": "Display 'X'",
             "URLFilterRules": {
                 "settingName": "Filter",
                 "editDialogTitle": "URL Filter Rule",
@@ -1299,6 +1418,8 @@
             "ExcludeSimpleHostnames": "Exclude simple hostnames",
             "ExceptionsList": "Bypass proxy settings for these hosts and domains",
             "FTPPassive": "Use Passive FTP Mode (PASV)",
+            "pinEmbeddedCertificates": "Pin embedded certificates",
+            "pinEmbeddedCertificates_tooltip": "If selected, then HTTPS connections will only be allowed if there is an exact match of a server certificate with one of the embedded TLS/SSL certificates or if one of the embedded CAs establish trust",
             "proxies": "Proxies",
             "AutoDiscoveryEnabled": "Auto discovery enabled",
             "AutoConfigurationEnabled": "Auto configuration enabled",
@@ -1338,7 +1459,7 @@
         "securityView": {
             "sebService": {
                 "title": "SEB Service (Win)",
-                "note": "IMPORTANT: The SEB Service changes aspects of the system configuration. Some anti-virus software providers might falsely identify its operation as malicious, thus it is not recommended to use the SEB Service in uncontrolled environments (e.g. BYOD).",
+                "note": "Recommended for BYOD scenarios.",
                 "sebServicePolicy": {
                     "title": "SEB Service policy",
                     "0": "allow to run SEB without service",
@@ -1346,7 +1467,7 @@
                     "2": "allow to use SEB only with service"
                 },
                 "sebServicePolicy_tooltip": "Policy that applies when an exam client doesn't have the SEB client running",
-                "sebServiceIgnore": "Ignore SEB Service",
+                "sebServiceIgnore": "Enable SEB Service Component",
                 "enableWindowsUpdate": "Allow Windows Update to run while SEB is running",
                 "enableChromeNotifications": "Allow notifications from Chrome browsers",
                 "allowScreenSharing": "Allow remote session/screen sharing",
@@ -1446,6 +1567,15 @@
                 "screenSharingMacEnforceBlocked": "Enforce blocking screen sharing on Mac",
                 "enableMacOSAAC": "Prefer Assessment Mode (AAC)",
                 "enableMacOSAAC_tooltip": "Automatic Assessment Configuration (AAC) Assessment Mode is available from macOS Monterey 12.1 (and Catalina 10.15.4 and >= 10.15.6). It blocks various macOS  (which cannot be allowed optionally, like screen capture/sharing, Siri, Dictation)"
+            },
+            "ios": {
+                "title": "iOS specific settings",
+                "mobileAllowSingleAppMode": "Allow single App mode",
+                "mobileEnableASAM": "Use ​Assessment ​Mode (​AAC​/​ASAM) if available",
+                "mobileEnableGuidedAccessLinkTransform": "Guided ​Access ​Compatibility",
+                "mobileEnableGuidedAccessLinkTransform_tooltip": "Transforms specific ​HTTP requests for clicked links to prevent the '​Guided ​Access is enabled' message being displayed when clicking all links",
+                "mobilePreventAutoLock": "Prevent auto​-lock",
+                "mobilePreventAutoLock_tooltip": "While ​SEB is running, the display isn​'t switched off and the device isn​'t locked"
             },
             "clipboard": {
                 "title": "Clipboard Policy",
@@ -1807,14 +1937,16 @@
         "examsOverview": "Exams Overview",
         "examDetails": "Exam Details",
         "examTemplateList": "Exam Templates",
+        "editExamTemplates": "Edit Exam Templates",
         "examTemplateDetail": "Exam Template",
         "monitoring": "Monitoring",
+        "monitor": "Monitor",
         "monitoringDetail": "Monitoring Detail",
         "overview": "Overview",
         "clientList": "Client List",
         "quizImport": "Prepare Exam",
         "createTemplateExam": "Create Exam Template",
-        "addExamWithURL": "Add Exam With URL",
+        "addExamWithURL": "Prepare Exam With URL",
         "followUp": "Follow Up",
         "archiveExams": "Archive Exams",
         "preparation": "Preparation",
@@ -1824,24 +1956,22 @@
         "spSearch": "Search",
         "spApplications": "Applications",
         "runningExams": "Running Exams",
-
         "userAccounts": "User Accounts",
         "createUserAccount": "Create User Account",
         "editUserAccount": "Edit User Account",
         "profileSettings": "Profile Settings",
         "register": "Register",
-
         "assessmentToolConnections": "Assessment Tool Connections",
         "createAssessmentTool": "Assessment Tool Setup",
         "assessmentTool": "Assessment Tool",
         "assessmentToolEdit": "Edit Assessment Tool Connection",
-
         "connectionConfigurationViewAndEdit": "Edit Connection Configuration",
         "createConnectionConfiguration": "Add Connection Configuration",
         "connectionConfigurations": "Connection Configurations",
-
         "certificates": "Certificates",
-
+        "institutions": "Institutions",
+        "createInstitution": "Add Institution",
+        "editInstitution": "Edit Institution",
         "editExamTemplate": "Edit Exam Template",
         "galleryView": "Gallery View"
     },
@@ -1871,6 +2001,8 @@
         "signOut": "Sign out",
         "accountSettings": "Account settings",
         "loggedInAs": "Logged in as",
+        "institution": "Institution",
+        "fallbackInstitutionName": "SEB Server",
         "routeNames": {
             "runningExams": "Running Exams",
             "finishedExams": "Finished Exams",
@@ -1888,7 +2020,12 @@
         "screenReader": {
             "titleImage": "SEB Server Homepage",
             "navigationBar": "Navigation Bar",
-            "profile": "Profile"
+            "profile": "Profile",
+            "institutionLogo": "Institution Logo"
+        },
+        "profileMenu": {
+            "docs": "Docs",
+            "logout": "Log out"
         }
     },
     "changePasswordDialog": {

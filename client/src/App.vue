@@ -1,15 +1,15 @@
 <template>
     <v-app>
         <ErrorMsg></ErrorMsg>
-        <router-view />
+        <RouterView />
     </v-app>
 </template>
 
 <script setup lang="ts">
-import "vue-loading-overlay/dist/css/index.css";
 import "@vuepic/vue-datepicker/dist/main.css";
 import ErrorMsg from "@/components/widgets/ErrorMsg.vue";
 import { onMounted } from "vue";
+import { RouterView } from "vue-router";
 import { useTokenRefresh } from "@/composables/useTokenRefresh";
 
 onMounted(() => {

@@ -1,10 +1,28 @@
 import type { Ref } from "vue";
 import { useFetch } from "@/composables/useFetch.ts";
-import type { TableOptions } from "@/pages/(app)/exam-template/types/types.ts";
+import type { ServerTablePaging } from "@/models/types.ts";
+import type { SortOrder } from "@/services/types.ts";
 import { getExamTemplates } from "@/services/seb-server/examTemplateService.ts";
 
+// TODO @andrei: this function won't be needed anymore, once ServerTablePaging uses the SortOrder type
+const toSortOrder = (
+    sortBy: ServerTablePaging["sortBy"],
+): SortOrder | undefined => {
+    const first = sortBy[0];
+
+    if (!first) {
+        return undefined;
+    }
+
+    if (first.order !== "asc" && first.order !== "desc") {
+        return undefined;
+    }
+
+    return { key: first.key, order: first.order };
+};
+
 export const useExamTemplates = (
-    paging: Readonly<Ref<TableOptions>>,
+    paging: Readonly<Ref<ServerTablePaging>>,
     searchQuery: Readonly<Ref<string | undefined>>,
     examType: Readonly<Ref<string | undefined>>,
 ) => {
@@ -13,7 +31,7 @@ export const useExamTemplates = (
             basicListParams: {
                 pageNumber: paging.value.page,
                 pageSize: paging.value.itemsPerPage,
-                sortOrder: paging.value.sortBy[0],
+                sortOrder: toSortOrder(paging.value.sortBy),
             },
             name: searchQuery.value,
             examType: examType.value,

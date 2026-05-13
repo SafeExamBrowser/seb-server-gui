@@ -107,12 +107,8 @@
                     item-value="quiz_id"
                     :items="quizzes?.content"
                     :items-length="totalItems"
-                    :items-per-page="
-                        tableUtils.calcDefaultItemsPerPage(totalItems)
-                    "
-                    :items-per-page-options="
-                        tableUtils.calcItemsPerPage(totalItems)
-                    "
+                    :items-per-page="tableUtils.defaultPageItems"
+                    :items-per-page-options="tableUtils.itemsPerPageOptions"
                     :loading="isLoading"
                     :loading-text="translate('general.loadingText')"
                     style="min-height: 38vh"

@@ -7,7 +7,6 @@ export function navigateToProctoringView(
     screenshot: ScreenshotData | undefined,
     examId: string | undefined,
 ) {
-    console.log("examId" + examId);
     if (screenshot != null && examId !== undefined) {
         openRouteInNewTab({
             name: "/(app)/monitoring/[examId]/client/[connectionToken]/",

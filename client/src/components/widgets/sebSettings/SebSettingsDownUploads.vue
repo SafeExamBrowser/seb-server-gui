@@ -107,6 +107,15 @@
                         :disabled="context.readonly"
                     />
                 </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="openDownloads"
+                        label="sebSettings.updownloadView.openDownloads"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
             </v-col>
 
             <v-col class="text-subtitle-1">
@@ -160,15 +169,9 @@
                             :headers="tableHeaders"
                             item-value="id"
                             :items="fileTypeTable.table.value"
-                            :items-per-page="
-                                tableUtils.calcDefaultItemsPerPage(
-                                    fileTypeTable.table.value,
-                                )
-                            "
+                            :items-per-page="tableUtils.defaultPageItems"
                             :items-per-page-options="
-                                tableUtils.calcItemsPerPage(
-                                    fileTypeTable.table.value,
-                                )
+                                tableUtils.itemsPerPageOptions
                             "
                         >
                             <template

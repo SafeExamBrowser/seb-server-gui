@@ -9,16 +9,8 @@
         :headers="screenshotTableHeaders"
         item-value="timelineScreenshotDataList[0].timestamp"
         :items="timelineSearchResultRef?.timelineGroupDataList"
-        :items-per-page="
-            tableUtils.calcDefaultItemsPerPage(
-                timelineSearchResultRef?.timelineGroupDataList,
-            )
-        "
-        :items-per-page-options="
-            tableUtils.calcItemsPerPage(
-                timelineSearchResultRef?.timelineGroupDataList,
-            )
-        "
+        :items-per-page="tableUtils.defaultPageItems"
+        :items-per-page-options="tableUtils.itemsPerPageOptions"
         show-expand
         :sort-by="[{ key: 'timestamp', order: 'asc' }]"
         theme="tableTheme"

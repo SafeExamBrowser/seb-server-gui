@@ -144,6 +144,26 @@
                         :disabled="context.readonly"
                     />
                 </v-row>
+
+                <SettingsTitle label="sebSettings.userView.status_bar.title" />
+                <v-row>
+                    <SelectionSetting
+                        v-model="singleValues"
+                        name="mobileStatusBarAppearance"
+                        label="sebSettings.userView.status_bar.mobileStatusBarAppearance"
+                        :labels="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <SelectionSetting
+                        v-model="singleValues"
+                        name="mobileStatusBarAppearanceExtended"
+                        label="sebSettings.userView.status_bar.mobileStatusBarAppearanceExtended"
+                        :labels="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
             </v-col>
 
             <v-col class="text-subtitle-1">
@@ -210,6 +230,16 @@
                     />
                 </v-row>
                 <SettingsTitle label="sebSettings.userView.task_bar.title" />
+                <v-row>
+                    <SelectionSetting
+                        v-model="singleValues"
+                        name="taskBarHeight"
+                        label="sebSettings.userView.task_bar.height"
+                        :labels="false"
+                        :disabled="context.readonly"
+                        :tooltip="true"
+                    />
+                </v-row>
                 <v-row>
                     <CheckboxSetting
                         v-model="singleValues"
@@ -282,6 +312,79 @@
                         :disabled="context.readonly"
                     />
                 </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="showBackToStartButton"
+                        label="sebSettings.userView.task_bar.showBackToStartButton"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="showQRVerifyButton"
+                        label="sebSettings.userView.task_bar.showQRVerifyButton"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+
+                <SettingsTitle
+                    label="sebSettings.userView.accessibility.title"
+                />
+                <v-row>
+                    <SelectionSetting
+                        v-model="singleValues"
+                        name="accessibilityFeatureVoiceOver"
+                        label="sebSettings.userView.accessibility.accessibilityFeatureVoiceOver"
+                        :labels="true"
+                        :disabled="context.readonly"
+                        :tooltip="false"
+                    />
+                </v-row>
+                <v-row>
+                    <SelectionSetting
+                        v-model="singleValues"
+                        name="accessibilityFeatureAssistiveTouch"
+                        label="sebSettings.userView.accessibility.accessibilityFeatureAssistiveTouch"
+                        :labels="true"
+                        :disabled="context.readonly"
+                        :tooltip="false"
+                    />
+                </v-row>
+                <v-row>
+                    <SelectionSetting
+                        v-model="singleValues"
+                        name="accessibilityFeatureGrayscaleDisplay"
+                        label="sebSettings.userView.accessibility.accessibilityFeatureGrayscaleDisplay"
+                        :labels="true"
+                        :disabled="context.readonly"
+                        :tooltip="false"
+                    />
+                </v-row>
+                <v-row>
+                    <SelectionSetting
+                        v-model="singleValues"
+                        name="accessibilityFeatureInvertColors"
+                        label="sebSettings.userView.accessibility.accessibilityFeatureInvertColors"
+                        :labels="true"
+                        :disabled="context.readonly"
+                        :tooltip="false"
+                    />
+                </v-row>
+                <v-row>
+                    <SelectionSetting
+                        v-model="singleValues"
+                        name="accessibilityFeatureZoom"
+                        label="sebSettings.userView.accessibility.accessibilityFeatureZoom"
+                        :labels="true"
+                        :disabled="context.readonly"
+                        :tooltip="false"
+                    />
+                </v-row>
+
                 <SettingsTitle label="sebSettings.userView.screenLock.title" />
                 <v-row>
                     <ColorSetting

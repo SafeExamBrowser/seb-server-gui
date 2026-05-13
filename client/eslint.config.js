@@ -45,18 +45,33 @@ export default defineConfig([
             },
         },
         rules: {
-            // existing exceptions. @TODO: evaluate these again; ideally they can all be removed
-            "no-console":
-                process.env.NODE_ENV === "production" ? "warn" : "off", // TODO: this should be "error"
-            "no-debugger":
-                process.env.NODE_ENV === "production" ? "warn" : "off", // TODO: this should be "error"
-            "@typescript-eslint/ban-ts-comment": [
+            "no-console": "error",
+            "no-debugger": "error",
+            "vue/no-undef-components": [
+                // Vuetify components (VBtn, VRow, ...) are auto-imported by vite-plugin-vuetify, and we
+                // don't want to enforce manual imports of Vuetify components for now. Hence we
+                // exclude them here, using the Vuetify naming convention (V + PascalCase)
                 "error",
-                { "ts-ignore": "allow-with-description" },
+                { ignorePatterns: ["^V[A-Z]"] },
             ],
+
+            // TODO @alain: activate this rule once we have migrated all imports to the @/... alias (then the respectiveclaude rule can be removed)
+            // "no-restricted-imports": [
+            //     "error",
+            //     {
+            //         patterns: [
+            //             {
+            //                 group: ["../*", "..", "../**"],
+            //                 message:
+            //                     "Don't import from a parent directory with '../'. Use the '@/...' alias instead. Same-folder ('./x') and subfolder ('./sub/x') relative imports are fine.",
+            //             },
+            //         ],
+            //     },
+            // ],
         },
     },
 
+    // config for pages etc. (file based routing)
     {
         files: [
             "src/pages/**/index.vue",

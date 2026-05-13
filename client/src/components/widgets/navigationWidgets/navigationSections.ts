@@ -13,6 +13,11 @@ export function buildSettingsNavigationItems(
 ): NavigationSectionItem[] {
     return [
         {
+            label: translate("titles.institutions"),
+            to: typedTo({ name: "/(app)/institution/" }),
+            testId: `${testIdPrefix}-institutions-link`,
+        },
+        {
             label: translate("titles.assessmentToolConnections"),
             to: typedTo({ name: "/(app)/assessment-tool/" }),
             testId: `${testIdPrefix}-assessmentToolConnections-link`,
@@ -49,6 +54,11 @@ export function buildPreparationNavigationItems(
             testId: `${testIdPrefix}-createTemplate-link`,
         },
         {
+            label: translate("titles.editExamTemplates"),
+            to: typedTo({ name: "/(app)/exam-template/" }),
+            testId: `${testIdPrefix}-examTemplateList-link`,
+        },
+        {
             label: translate("titles.quizImport"),
             to: typedTo({ name: "/(app)/quiz-import/" }),
             testId: `${testIdPrefix}-quizImport-link`,
@@ -56,11 +66,6 @@ export function buildPreparationNavigationItems(
         {
             label: translate("titles.addExamWithURL"),
             testId: `${testIdPrefix}-addExamWithURL-text`,
-        },
-        {
-            label: translate("titles.examTemplateList"),
-            to: typedTo({ name: "/(app)/exam-template/" }),
-            testId: `${testIdPrefix}-examTemplateList-link`,
         },
     ];
 }
@@ -75,14 +80,9 @@ export function buildMonitoringNavigationItems(
             testId: `${testIdPrefix}-runningExams-link`,
         },
         {
-            label: translate("titles.screenProctoring"),
-            to: typedTo({ name: "/(app)/running-sp-exams/" }),
-            testId: `${testIdPrefix}-screenProctoring-link`,
-            thickDivider: true,
-        },
-        {
             label: translate("titles.spSearch"),
             to: typedTo({ name: "/(app)/sp-search/" }),
+            thickDivider: true,
 
             testId: `${testIdPrefix}-spSearch-link`,
         },

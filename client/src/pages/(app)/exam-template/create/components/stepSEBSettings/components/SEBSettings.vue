@@ -10,8 +10,24 @@
                     />
                 </div>
             </v-col>
-            <v-col cols="auto">
-                <AddButton text="" @click="importDialog = true" />
+            <v-col cols="auto" class="pt-8">
+                <FormDialog
+                    icon-activator="mdi-plus-circle-outline"
+                    color-activator="primary"
+                    :label-activator="
+                        $t('sebSettings.importDialog.addButtonTitle')
+                    "
+                    size-activator="x-large"
+                    label-activator-visible
+                    :label-cancel="$t('general.cancelButton')"
+                    :label-submit="
+                        $t('sebSettings.importDialog.confirmButtonTitle')
+                    "
+                    form-id="form-certificate-upload"
+                    :get-form-fields="getFormFields"
+                    :get-item="getEmptyItem"
+                    :on-submit="handleImportSEBSettings"
+                />
             </v-col>
         </v-row>
     </v-container>
@@ -23,21 +39,6 @@
             </v-col>
         </v-row>
     </v-card>
-
-    <!-----------import dialog ---------->
-    <UploadDialog
-        v-model="importDialog"
-        name-prefix="sebSettings"
-        icon="mdi-file-upload-outline"
-        :seb-settings-id="
-            stepNamingStore.configurationTemplate
-                ? stepNamingStore.configurationTemplate.toString()
-                : null
-        "
-        :show-quit-password="true"
-        :default-ext-list="['.seb']"
-        @uploaded="onConfigImported"
-    />
 </template>
 
 <script setup lang="ts">
@@ -45,12 +46,10 @@ import { computed, ComputedRef, ref } from "vue";
 import { ConfigurationTemplateKey } from "@/models/seb-server/configurationNode.ts";
 import { useStepNamingStore } from "@/pages/(app)/exam-template/create/components/stepNaming/composables/store/useStepNamingStore.ts";
 import SectionSubtitle from "@/components/widgets/SectionSubtitle.vue";
-import AddButton from "@/components/widgets/AddButton.vue";
 import SEBSettingsPanel from "@/components/widgets/sebSettings/components/SEBSettingsPanel.vue";
-import UploadDialog from "@/components/widgets/UploadDialog.vue";
 import { SEBSettingsContext } from "@/components/widgets/sebSettings/types.ts";
-
-const stepNamingStore = useStepNamingStore();
+import { useSEBSettingsImportForm } from "../composables/useSEBSettingsImportForm";
+import FormDialog from "@/components/widgets/formDialog/FormDialog.vue";
 
 const configKey = defineModel<ConfigurationTemplateKey | undefined>({
     required: true,
@@ -85,4 +84,9 @@ const seb_settings_context: ComputedRef<SEBSettingsContext> = computed(() => {
         ignoreSEBService: ref<boolean>(false),
     };
 });
+
+const { getEmptyItem, getFormFields, handleImportSEBSettings } =
+    useSEBSettingsImportForm(seb_settings_context.value.containerId, {
+        onSuccess: onConfigImported,
+    });
 </script>

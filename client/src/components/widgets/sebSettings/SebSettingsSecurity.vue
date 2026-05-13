@@ -16,6 +16,7 @@
                         label="sebSettings.securityView.sebService.sebServiceIgnore"
                         :tooltip="false"
                         :disabled="context.readonly"
+                        :invert-value="true"
                         @saved="notifyEBServiceIgnore"
                     />
                 </v-row>
@@ -40,7 +41,7 @@
                         :label-tooltip="true"
                         :disabled="
                             context.readonly || igonreSEBServiceRef
-                                ? !igonreSEBServiceRef?.boolVal
+                                ? igonreSEBServiceRef?.boolVal
                                 : false
                         "
                     />
@@ -53,7 +54,7 @@
                         :tooltip="false"
                         :disabled="
                             context.readonly || igonreSEBServiceRef
-                                ? !igonreSEBServiceRef?.boolVal
+                                ? igonreSEBServiceRef?.boolVal
                                 : false
                         "
                     />
@@ -66,7 +67,7 @@
                         :tooltip="false"
                         :disabled="
                             context.readonly || igonreSEBServiceRef
-                                ? !igonreSEBServiceRef?.boolVal
+                                ? igonreSEBServiceRef?.boolVal
                                 : false
                         "
                     />
@@ -79,7 +80,7 @@
                         :tooltip="false"
                         :disabled="
                             context.readonly || igonreSEBServiceRef
-                                ? !igonreSEBServiceRef?.boolVal
+                                ? igonreSEBServiceRef?.boolVal
                                 : false
                         "
                     />
@@ -372,6 +373,47 @@
                         name="blockScreenShotsLegacy"
                         label="sebSettings.securityView.macOS.blockScreenShotsLegacy"
                         :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+
+                <SettingsTitle
+                    label="sebSettings.securityView.ios.title"
+                    :tooltip="false"
+                />
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="mobileAllowSingleAppMode"
+                        label="sebSettings.securityView.ios.mobileAllowSingleAppMode"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="mobileEnableASAM"
+                        label="sebSettings.securityView.ios.mobileEnableASAM"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="mobileEnableGuidedAccessLinkTransform"
+                        label="sebSettings.securityView.ios.mobileEnableGuidedAccessLinkTransform"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="mobilePreventAutoLock"
+                        label="sebSettings.securityView.ios.mobilePreventAutoLock"
+                        :tooltip="true"
                         :disabled="context.readonly"
                     />
                 </v-row>

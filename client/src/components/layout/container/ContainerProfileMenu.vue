@@ -1,102 +1,162 @@
 <template>
-    <div aria-label="Profile" class="d-flex align-center">
-        <div class="d-flex flex-column align-end mr-2">
-            <span class="text-body-2">
-                {{ userAccount?.username }}
-            </span>
-
-            <v-chip
-                v-if="primaryRole"
-                color="primary"
-                label
-                size="small"
-                variant="flat"
+    <v-menu
+        v-model="isOpen"
+        :close-on-content-click="false"
+        location="bottom end"
+        :offset="[20, 8]"
+        transition="fade-transition"
+    >
+        <template #activator="{ props: menuProps }">
+            <v-btn
+                v-bind="menuProps"
+                :active="false"
+                :aria-label="t('navigation.screenReader.profile')"
+                class="text-none rounded-lg overflow-hidden pa-0 pe-2 ps-1"
+                :color="isOpen ? 'primary' : 'surface'"
+                data-testid="layout-profile-button"
+                :ripple="false"
+                size="large"
+                :variant="isOpen ? 'tonal' : 'flat'"
             >
-                {{ translateUserRole(primaryRole) }}
-            </v-chip>
-        </div>
-
-        <v-menu :close-on-content-click="false" location="bottom end">
-            <template #activator="{ props: menuProps }">
-                <div class="d-flex align-center">
-                    <v-btn
-                        v-bind="menuProps"
-                        class="rounded-circle px-0 text-none"
+                <div class="d-flex align-center ga-3">
+                    <v-avatar
+                        class="font-weight-black text-body-2"
                         color="primary"
-                        size="large"
-                        variant="outlined"
+                        density="comfortable"
+                        rounded="lg"
                     >
                         {{ initials }}
-                    </v-btn>
+                    </v-avatar>
 
-                    <v-icon class="ml-1" color="grey-darken-1" size="18">
-                        mdi-chevron-down
-                    </v-icon>
+                    <div class="text-left">
+                        <div class="text-body-2 font-weight-bold">
+                            {{ fullName }}
+                        </div>
+                        <div class="text-caption text-medium-emphasis">
+                            {{ primaryRoleLabel }}
+                        </div>
+                    </div>
+
+                    <v-icon
+                        :icon="isOpen ? 'mdi-chevron-up' : 'mdi-chevron-down'"
+                        size="small"
+                    />
                 </div>
-            </template>
+            </v-btn>
+        </template>
 
-            <v-list density="comfortable">
-                <v-list-subheader>
-                    {{ translate("navigation.loggedInAs") }}
-                </v-list-subheader>
+        <v-card
+            class="overflow-hidden rounded-lg"
+            elevation="16"
+            max-width="24rem"
+        >
+            <div class="bg-primary pa-5 text-white">
+                <div class="d-flex align-center ga-4">
+                    <v-avatar
+                        class="font-weight-black rounded-lg text-h6 text-white border-sm"
+                        border
+                        color="white"
+                        density="comfortable"
+                        size="x-large"
+                        variant="tonal"
+                    >
+                        {{ initials }}
+                    </v-avatar>
 
-                <v-list-item
-                    :title="fullName"
-                    :subtitle="userAccount?.username ?? ''"
-                />
+                    <div>
+                        <div class="text-h6 font-weight-black">
+                            {{ userAccount?.username }}
+                        </div>
+                        <div class="text-caption opacity-80">
+                            {{ fullName }}
+                        </div>
+                    </div>
+                </div>
 
                 <div
                     v-if="translatedRoles.length > 0"
-                    class="d-flex flex-wrap ga-2 px-4 py-2"
+                    class="d-flex flex-wrap ga-2 mt-3"
                 >
                     <v-chip
                         v-for="role in translatedRoles"
                         :key="role"
-                        color="primary"
+                        class="font-weight-bold h-auto py-1 text-wrap text-white border-sm"
+                        color="white"
                         label
                         size="small"
-                        variant="flat"
+                        variant="tonal"
+                        border
                     >
-                        {{ role }}
+                        <span class="text-break">
+                            {{ role }}
+                        </span>
                     </v-chip>
                 </div>
+            </div>
 
-                <v-divider class="my-2" />
+            <div class="d-flex border-b-thin">
+                <template
+                    v-for="(action, idx) in quickActions"
+                    :key="action.label"
+                >
+                    <v-divider v-if="idx > 0" vertical />
+                    <v-btn
+                        :active="false"
+                        class="flex-1-1-0 text-none"
+                        color="primary"
+                        :prepend-icon="action.icon"
+                        size="small"
+                        stacked
+                        :href="action.href"
+                        :rel="action.rel"
+                        :target="action.target"
+                        :to="action.to"
+                        variant="text"
+                        @click="closeMenu"
+                    >
+                        <span class="font-weight-medium text-body-2">
+                            {{ action.label }}
+                        </span>
+                    </v-btn>
+                </template>
+            </div>
 
-                <v-list-item
-                    prepend-icon="mdi-account-cog-outline"
-                    :title="translate('titles.profileSettings')"
-                    :to="typedTo({ name: '/(app)/user-account/profile/' })"
-                />
-
-                <v-list-item
-                    prepend-icon="mdi-file-document-outline"
-                    title="Documentation"
-                />
-
-                <v-list-item
+            <div class="py-1">
+                <v-btn
+                    :active="false"
+                    block
+                    class="justify-start text-none"
+                    color="error"
                     prepend-icon="mdi-logout"
-                    title="Log out"
-                    @click="$emit('logout')"
-                />
-            </v-list>
-        </v-menu>
-    </div>
+                    variant="text"
+                    @click="handleLogout"
+                >
+                    <span class="font-weight-bold text-body-2">{{
+                        t("navigation.profileMenu.logout")
+                    }}</span>
+                </v-btn>
+            </div>
+        </v-card>
+    </v-menu>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref } from "vue";
+import { useI18n } from "vue-i18n";
 import type { UserAccount } from "@/models/userAccount";
 import { typedTo } from "@/router/typedTo";
-import { translate } from "@/utils/generalUtils";
 
 const props = defineProps<{
-    userAccount: UserAccount | null | undefined;
+    userAccount?: UserAccount;
 }>();
 
-defineEmits<{
+const emit = defineEmits<{
     logout: [];
 }>();
+
+const { t } = useI18n();
+
+const isOpen = ref(false);
 
 const rolePriority = [
     "SEB_SERVER_ADMIN",
@@ -116,7 +176,10 @@ const sortedUserRoles = computed(() => {
     });
 });
 
-const primaryRole = computed(() => sortedUserRoles.value[0]);
+const primaryRoleLabel = computed(() => {
+    const primaryRole = sortedUserRoles.value[0];
+    return primaryRole ? translateUserRole(primaryRole) : "";
+});
 
 const translatedRoles = computed(() =>
     sortedUserRoles.value.map((role) => translateUserRole(role)),
@@ -125,7 +188,7 @@ const translatedRoles = computed(() =>
 const initials = computed(() => {
     const nameInitial = props.userAccount?.name?.[0] ?? "";
     const surnameInitial = props.userAccount?.surname?.[0] ?? "";
-    return nameInitial + surnameInitial;
+    return (nameInitial + surnameInitial).toUpperCase();
 });
 
 const fullName = computed(() => {
@@ -134,9 +197,37 @@ const fullName = computed(() => {
     return `${name} ${surname}`.trim();
 });
 
+const quickActions = computed(() => [
+    {
+        icon: "mdi-account-cog-outline",
+        label: t("titles.profileSettings"),
+        href: undefined,
+        rel: undefined,
+        target: undefined,
+        to: typedTo({ name: "/(app)/user-account/profile/" }),
+    },
+    {
+        icon: "mdi-file-document-outline",
+        label: t("navigation.profileMenu.docs"),
+        href: "https://seb-server.readthedocs.io/en/latest/index.html",
+        rel: "noopener noreferrer",
+        target: "_blank",
+        to: undefined,
+    },
+]);
+
 function translateUserRole(role: string): string {
     const translationKey = `general.userRoles.${role}`;
-    const translatedRole = translate(translationKey);
+    const translatedRole = t(translationKey);
     return translatedRole === translationKey ? role : translatedRole;
+}
+
+function closeMenu() {
+    isOpen.value = false;
+}
+
+function handleLogout() {
+    closeMenu();
+    emit("logout");
 }
 </script>

@@ -5,62 +5,56 @@
     >
         <template #ActionButton>
             <AddButton
-                text="userAccount.userAccountPage.addUserContext"
                 :route="{ name: '/(app)/user-account/create/' }"
+                :data-test-id="dataTestId"
             />
         </template>
 
         <template #PanelMain>
-            <v-col>
-                <SearchBar
-                    v-model="searchInputValue"
-                    search-text="userAccount.userAccountPage.filters.searchField"
-                    :filter-sections="filterSections"
-                    :filter-values="selectedFilters"
-                    :data-test-id="dataTestId"
-                    dense
-                    @search="onSearch"
-                    @clear="onClearSearch"
-                    @update:filter-values="setFilters"
-                    @clear-filters="clearAll"
-                />
+            <SearchBar
+                v-model="searchInputValue"
+                class="mt-2"
+                search-text="userAccount.userAccountPage.filters.searchField"
+                :filter-sections="filterSections"
+                :filter-values="selectedFilters"
+                :data-test-id="dataTestId"
+                dense
+                @search="onSearch"
+                @clear="onClearSearch"
+                @update:filter-values="setFilters"
+                @clear-filters="clearAll"
+            />
 
-                <v-row>
-                    <v-col>
-                        <div v-if="deleteError">{{ deleteError }}</div>
-                        <div v-else-if="statusError">{{ statusError }}</div>
-                        <LoadingFallbackComponent
-                            :loading="false"
-                            :errors="error ? [error] : []"
-                        >
-                            <EntityTable
-                                :headers="userAccountsTableHeaders"
-                                :items="tableData?.content ?? []"
-                                :page-count="pageCount"
-                                :items-per-page="options.itemsPerPage"
-                                :options="options"
-                                :loading="
-                                    loading || deleteLoading || statusLoading
-                                "
-                                :detail-route="userAccountDetailRoute"
-                                :cell-formatters="cellFormatters"
-                                :actions="tableActions"
-                                :data-test-id="dataTestId"
-                                item-key="uuid"
-                                @update:options="loadItems"
-                            >
-                                <template #cell-active="{ item, rowTestId }">
-                                    <ActiveStatusChip
-                                        :active="!!item.active"
-                                        :data-test-id="`${rowTestId}-status-chip`"
-                                        @click="openStatusDialog(item)"
-                                    />
-                                </template>
-                            </EntityTable>
-                        </LoadingFallbackComponent>
-                    </v-col>
-                </v-row>
-            </v-col>
+            <div v-if="deleteError">{{ deleteError }}</div>
+            <div v-else-if="statusError">{{ statusError }}</div>
+            <LoadingFallbackComponent
+                :loading="false"
+                :errors="error ? [error] : []"
+            >
+                <EntityTable
+                    class="px-3"
+                    :headers="userAccountsTableHeaders"
+                    :items="tableData?.content ?? []"
+                    :page-count="pageCount"
+                    :items-per-page="options.itemsPerPage"
+                    :options="options"
+                    :loading="loading || deleteLoading || statusLoading"
+                    :detail-route="userAccountDetailRoute"
+                    :cell-formatters="cellFormatters"
+                    :actions="tableActions"
+                    :data-test-id="dataTestId"
+                    item-key="uuid"
+                    @update:options="loadItems"
+                >
+                    <template #cell-active="{ item, rowTestId }">
+                        <ActiveStatusChip
+                            :active="!!item.active"
+                            :data-test-id="`${rowTestId}-status-chip`"
+                            @click="openStatusDialog(item)"
+                        />
+                    </template>
+                </EntityTable>
+            </LoadingFallbackComponent>
         </template>
     </BasicSettingsPage>
 

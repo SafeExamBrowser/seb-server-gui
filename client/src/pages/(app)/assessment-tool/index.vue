@@ -5,63 +5,57 @@
     >
         <template #ActionButton>
             <AddButton
-                text="assessmentToolConnections.assessmentToolsPage.addAssessmentTool"
                 :route="{ name: '/(app)/assessment-tool/create/' }"
+                :data-test-id="dataTestId"
             />
         </template>
 
         <template #PanelMain>
-            <v-col>
-                <SearchBar
-                    v-model="searchInputValue"
-                    search-text="assessmentToolConnections.assessmentToolsPage.filters.searchField"
-                    :filter-sections="filterSections"
-                    :filter-values="selectedFilters"
+            <SearchBar
+                v-model="searchInputValue"
+                class="mt-2"
+                search-text="assessmentToolConnections.assessmentToolsPage.filters.searchField"
+                :filter-sections="filterSections"
+                :filter-values="selectedFilters"
+                :data-test-id="dataTestId"
+                dense
+                @search="onSearch"
+                @clear="onClearSearch"
+                @update:filter-values="setFilters"
+                @clear-filters="clearAll"
+            />
+
+            <div v-if="deleteError">{{ deleteError }}</div>
+            <div v-else-if="statusError">{{ statusError }}</div>
+
+            <LoadingFallbackComponent
+                :loading="false"
+                :errors="error ? [error] : []"
+            >
+                <EntityTable
+                    class="px-3"
+                    :headers="assessmentToolTableHeaders"
+                    :items="tableData?.content ?? []"
+                    :page-count="pageCount"
+                    :items-per-page="options.itemsPerPage"
+                    :options="options"
+                    :loading="loading || deleteLoading || statusLoading"
+                    :detail-route="assessmentToolDetailRoute"
+                    :cell-formatters="cellFormatters"
+                    :actions="tableActions"
                     :data-test-id="dataTestId"
-                    dense
-                    @search="onSearch"
-                    @clear="onClearSearch"
-                    @update:filter-values="setFilters"
-                    @clear-filters="clearAll"
-                />
-
-                <v-row>
-                    <v-col>
-                        <div v-if="deleteError">{{ deleteError }}</div>
-                        <div v-else-if="statusError">{{ statusError }}</div>
-
-                        <LoadingFallbackComponent
-                            :loading="false"
-                            :errors="error ? [error] : []"
-                        >
-                            <EntityTable
-                                :headers="assessmentToolTableHeaders"
-                                :items="tableData?.content ?? []"
-                                :page-count="pageCount"
-                                :items-per-page="options.itemsPerPage"
-                                :options="options"
-                                :loading="
-                                    loading || deleteLoading || statusLoading
-                                "
-                                :detail-route="assessmentToolDetailRoute"
-                                :cell-formatters="cellFormatters"
-                                :actions="tableActions"
-                                :data-test-id="dataTestId"
-                                item-key="id"
-                                @update:options="loadItems"
-                            >
-                                <template #cell-active="{ item, rowTestId }">
-                                    <ActiveStatusChip
-                                        :active="!!item.active"
-                                        :data-test-id="`${rowTestId}-status-chip`"
-                                        @click="openStatusDialog(item)"
-                                    />
-                                </template>
-                            </EntityTable>
-                        </LoadingFallbackComponent>
-                    </v-col>
-                </v-row>
-            </v-col>
+                    item-key="id"
+                    @update:options="loadItems"
+                >
+                    <template #cell-active="{ item, rowTestId }">
+                        <ActiveStatusChip
+                            :active="!!item.active"
+                            :data-test-id="`${rowTestId}-status-chip`"
+                            @click="openStatusDialog(item)"
+                        />
+                    </template>
+                </EntityTable>
+            </LoadingFallbackComponent>
         </template>
     </BasicSettingsPage>
 

@@ -19,7 +19,7 @@ import { BasicListParams, SortOrder } from "@/services/types";
 import router from "@/router/router";
 import type { RouteLocationAsRelative } from "vue-router";
 
-type ItemsLike = number | { length: number } | null | undefined;
+//type ItemsLike = number | { length: number } | null | undefined;
 type ItemsPerPageOption = { value: number; title: string };
 
 type Clickable = { click: () => void };
@@ -29,54 +29,12 @@ type HeaderRefs =
     | null
     | undefined;
 
-export function calcDefaultItemsPerPage(itemList: ItemsLike): number {
-    if (
-        itemList == null ||
-        (typeof itemList !== "number" && itemList.length === 0)
-    ) {
-        return 0;
-    }
-
-    const maxLength = typeof itemList === "number" ? itemList : itemList.length;
-
-    if (maxLength < 5) return maxLength;
-    if (maxLength < 10) return 5;
-    if (maxLength < 15) return 10;
-    return 15;
-}
-
-export function calcItemsPerPage(itemList: ItemsLike): ItemsPerPageOption[] {
-    if (
-        itemList == null ||
-        (typeof itemList !== "number" && itemList.length === 0)
-    ) {
-        return [{ value: 0, title: "0" }];
-    }
-
-    const maxLength = typeof itemList === "number" ? itemList : itemList.length;
-
-    if (maxLength <= 5) {
-        return [{ value: maxLength, title: String(maxLength) }];
-    }
-    if (maxLength <= 10) {
-        return [
-            { value: 5, title: "5" },
-            { value: maxLength, title: String(maxLength) },
-        ];
-    }
-    if (maxLength <= 15) {
-        return [
-            { value: 5, title: "5" },
-            { value: 10, title: "10" },
-            { value: maxLength, title: String(maxLength) },
-        ];
-    }
-    return [
-        { value: 5, title: "5" },
-        { value: 10, title: "10" },
-        { value: 15, title: "15" },
-    ];
-}
+export const defaultPageItems: number = 15;
+export const itemsPerPageOptions: ItemsPerPageOption[] = [
+    { value: 5, title: "5" },
+    { value: 10, title: "10" },
+    { value: 15, title: "15" },
+];
 
 export function handleTabKeyEvent(
     event: KeyboardEvent,
@@ -366,7 +324,7 @@ export function assignCertificateSelectPagingOptions(
 }
 
 const sortOrderToSortString = (sortOrder: SortOrder): string => {
-    return `${sortOrder.order === "desc" ? "" : "-"}${sortOrder.key}`;
+    return `${sortOrder.order === "desc" ? "-" : ""}${sortOrder.key}`;
 };
 
 // TODO @Andrei: most of the code in this file can be replaced by using `normaliseBasicListParams` (see `getExamTemplates` for an example)

@@ -73,9 +73,6 @@ onBeforeUnmount(() => {
 //       from the former call.
 async function getOverviewData() {
     if (dataFetching) {
-        console.warn(
-            "********** Skip client list data fetch due to no response from backend",
-        );
         return;
     }
 
