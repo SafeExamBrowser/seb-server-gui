@@ -15,7 +15,7 @@ import UserAccountEditForm from "@/pages/(app)/user-account/components/UserAccou
 
 definePage({
     meta: {
-        titleKey: "titles.profile",
+        titleKey: "titles.profileSettings",
         pageTestId: "profile-settings-page",
         isPageBlue: true,
     },
