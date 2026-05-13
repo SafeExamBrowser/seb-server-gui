@@ -5,8 +5,8 @@
     >
         <template #ActionButton>
             <AddButton
-                text="assessmentToolConnections.assessmentToolsPage.addAssessmentTool"
                 :route="{ name: '/(app)/assessment-tool/create/' }"
+                :data-test-id="dataTestId"
             />
         </template>
 

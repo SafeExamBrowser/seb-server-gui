@@ -5,8 +5,8 @@
     >
         <template #ActionButton>
             <AddButton
-                text="userAccount.userAccountPage.addUserContext"
                 :route="{ name: '/(app)/user-account/create/' }"
+                :data-test-id="dataTestId"
             />
         </template>
 

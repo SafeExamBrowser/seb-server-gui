@@ -41,6 +41,7 @@
     "RAISE_HAND": "Raise hand",
     "general": {
         "loadingText": "Loading... Please wait",
+        "addButton": "Add",
         "cancelButton": "Cancel",
         "backButton": "Back",
         "nextButton": "Next",
