@@ -25,6 +25,7 @@ export const vuetify = createVuetify({
         VFileUpload,
     },
     theme: {
+        defaultTheme: "light",
         themes: {
             light: {
                 colors: {
