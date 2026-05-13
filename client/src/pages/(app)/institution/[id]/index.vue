@@ -8,18 +8,11 @@
                 :loading="loading"
                 :errors="error ? [error] : []"
             >
-                <v-row class="px-6 pt-4 align-center" no-gutters>
+                <v-row class="px-6 pt-4" no-gutters>
                     <v-col cols="8">
                         <HintText
                             text-identifier="institutions.editInstitutionPage.info.editInfo"
                             data-testid="editInstitution-form-infoText"
-                        />
-                    </v-col>
-                    <v-col class="d-flex justify-end" cols="4">
-                        <ActiveStatusChip
-                            v-if="institution"
-                            :active="!!institution.active"
-                            data-testid="editInstitution-status-chip"
                         />
                     </v-col>
                 </v-row>
@@ -57,7 +50,6 @@ import { useRoute, useRouter } from "vue-router";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import ActiveStatusChip from "@/components/widgets/ActiveStatusChip.vue";
 import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
 import HintText from "@/components/widgets/HintText.vue";
@@ -128,7 +120,6 @@ async function submit() {
         name: selectedName,
         urlSuffix: urlSuffix.value || undefined,
         logoImage: logoImage.value ?? undefined,
-        active: institution.value.active,
     });
 
     if (savedInstitution.value) {

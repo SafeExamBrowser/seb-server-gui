@@ -5,8 +5,8 @@
     >
         <template #ActionButton>
             <AddButton
-                text="institutions.institutionPage.addInstitution"
                 :route="{ name: '/(app)/institution/create/' }"
+                :data-test-id="dataTestId"
             />
         </template>
 

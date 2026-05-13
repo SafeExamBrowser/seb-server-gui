@@ -5,8 +5,8 @@
     >
         <template #ActionButton>
             <AddButton
-                text="connectionConfigurations.connectionConfigurationsPage.addConnectionConfiguration"
                 :route="{ name: '/(app)/connection-configuration/create/' }"
+                :data-test-id="dataTestId"
             />
         </template>
 
