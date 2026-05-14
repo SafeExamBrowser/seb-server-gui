@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex justify-end mx-6 mt-6">
+    <div class="d-flex justify-end mx-6">
         <v-btn
             :active="false"
             class="text-none"

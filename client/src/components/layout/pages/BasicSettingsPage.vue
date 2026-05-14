@@ -27,23 +27,20 @@
                     rounded="lg"
                     class="h-100 overflow-y-auto mr-16"
                 >
-                    <v-row>
-                        <v-col class="pl-12">
-                            <PageTitle
-                                :name="props.title"
-                                :data-test-id="
-                                    props.dataTestId
-                                        ? `${props.dataTestId}-page-title`
-                                        : undefined
-                                "
-                            />
-                        </v-col>
-
-                        <v-col>
-                            <slot name="ActionButton"></slot>
-                        </v-col>
+                    <v-row class="pt-4">
+                        <PageTitle
+                            class="ml-12"
+                            :name="props.title"
+                            :data-test-id="
+                                props.dataTestId
+                                    ? `${props.dataTestId}-page-title`
+                                    : undefined
+                            "
+                        />
+                        <v-spacer />
+                        <slot name="ActionButton"></slot>
                     </v-row>
-                    <horizontal-divider-line />
+                    <v-divider class="mx-6 mt-4" />
 
                     <slot name="PanelMain"></slot>
                 </v-card>
@@ -54,7 +51,6 @@
 
 <script setup lang="ts">
 import { translate } from "@/utils/generalUtils.ts";
-import HorizontalDividerLine from "@/components/layout/pages/widgets/HorizontalDividerLine.vue";
 import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
 import PageTitle from "@/components/widgets/PageTitle.vue";
 
