@@ -48,10 +48,10 @@ const initials = computed(
 const avatarSize = computed(() => props.size);
 
 const compactAvatarClasses = computed(
-    () => "font-weight-bold text-primary text-body-1",
+    () => "font-weight-bold text-primary text-body-large  ",
 );
 
 const defaultAvatarClasses = computed(
-    () => "font-weight-bold text-primary text-h2",
+    () => "font-weight-bold text-primary text-display-medium",
 );
 </script>

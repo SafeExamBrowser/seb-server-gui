@@ -701,8 +701,8 @@ function onRemoveGrant() {
     gap: 6px;
 }
 
-.ask-row-tag .text-caption,
-.ask-row-tag .text-body-2 {
+.ask-row-tag .text-body-small,
+.ask-row-tag .text-body-medium {
     line-height: 1.1;
 }
 

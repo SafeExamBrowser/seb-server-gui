@@ -366,7 +366,7 @@ function getTypeDetail(g: ClientGroup): string {
     font-weight: 500;
 }
 
-.supervisor-row-content .text-caption {
+.supervisor-row-content .text-body-small {
     font-size: 12px;
     line-height: 16px;
     color: #6b6b6b;
