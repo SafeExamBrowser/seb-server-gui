@@ -9,7 +9,7 @@
             border: 2px solid rgb(var(--v-theme-primary));
         "
     >
-        <v-row align="center" justify="center">
+        <v-row class="align-center justify-center">
             <v-col cols="1">
                 <v-icon
                     class="ml-5"
@@ -50,7 +50,7 @@
                         border: 2px solid rgb(var(--v-theme-primary));
                     "
                 >
-                    <v-row align="center" justify="center">
+                    <v-row class="align-center justify-center">
                         <v-col cols="1">
                             <v-icon
                                 icon="ml-5 mdi-monitor-lock"

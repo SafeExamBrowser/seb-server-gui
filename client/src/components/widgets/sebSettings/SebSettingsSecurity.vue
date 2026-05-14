@@ -4,7 +4,7 @@
         :errors="errorSebSettingsView"
     >
         <v-row v-if="singleValues">
-            <v-col class="text-subtitle-1">
+            <v-col class="text-body-large">
                 <SettingsTitle
                     label="sebSettings.securityView.sebService.title"
                 />
@@ -226,7 +226,7 @@
 
             <!-- Left Right-->
 
-            <v-col class="text-subtitle-1">
+            <v-col class="text-body-large">
                 <SettingsTitle
                     label="sebSettings.securityView.macOS.title"
                     :tooltip="false"

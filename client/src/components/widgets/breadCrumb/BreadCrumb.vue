@@ -1,7 +1,7 @@
 <template>
     <nav
         aria-label="Breadcrumb"
-        class="d-flex align-center flex-wrap pl-5 mb-2 text-body-1"
+        class="d-flex align-center flex-wrap pl-5 mb-2 text-body-large"
     >
         <v-hover v-slot="{ isHovering, props: hoverProps }">
             <RouterLink
@@ -18,7 +18,10 @@
             v-for="(item, index) in items"
             :key="`${item.label}-${index}`"
         >
-            <span aria-hidden="true" class="mx-1 text-h5 text-medium-emphasis">
+            <span
+                aria-hidden="true"
+                class="mx-1 text-headline-small text-medium-emphasis"
+            >
                 ›
             </span>
 

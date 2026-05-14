@@ -1,19 +1,19 @@
 <template>
     <v-row>
         <v-col>
-            <v-sheet class="rounded-lg pl-4 pt-3 pr-4" elevation="4">
-                <v-row align="center" class="fill-height min-height">
+            <v-sheet class="rounded-lg pl-4 pt-3 pr-4" elevation="2">
+                <v-row class="fill-height min-height align-center">
                     <v-col v-if="quizImportStore.selectedQuiz">
                         <!------title and headers------->
                         <v-row>
                             <v-col
-                                class="text-primary text-h5 font-weight-bold"
+                                class="text-primary text-headline-small font-weight-bold"
                                 cols="3"
                             >
                                 {{ quizImportStore.selectedQuiz?.quiz_name }}
                             </v-col>
 
-                            <v-col class="text-subtitle-1" cols="3">
+                            <v-col class="text-body-large" cols="3">
                                 {{
                                     translate(
                                         "quizImportWizard.genericInfo.start",
@@ -21,7 +21,7 @@
                                 }}
                             </v-col>
 
-                            <v-col class="text-subtitle-1" cols="3">
+                            <v-col class="text-body-large" cols="3">
                                 {{
                                     translate(
                                         "quizImportWizard.genericInfo.end",
@@ -53,7 +53,7 @@
 
                             <!------start time------->
                             <v-col
-                                class="text-primary text-h6 font-weight-bold"
+                                class="text-primary text-title-large font-weight-bold"
                                 cols="3"
                             >
                                 {{
@@ -66,7 +66,7 @@
 
                             <!------end time------->
                             <v-col
-                                class="text-primary text-h6 font-weight-bold"
+                                class="text-primary text-title-large font-weight-bold"
                                 cols="3"
                             >
                                 <template

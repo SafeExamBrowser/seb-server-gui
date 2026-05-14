@@ -1,12 +1,15 @@
 <template>
-    <v-row v-if="!showError" align="stretch" class="d-flex" no-gutters>
+    <v-row v-if="!showError" class="d-flex align-stretch" no-gutters>
         <!-----------video player---------->
         <v-col
             class="video-col"
-            :class="{ open: isMetadataInfo, closed: !isMetadataInfo }"
+            :class="{
+                open: isMetadataInfo,
+                closed: !isMetadataInfo,
+            }"
             :cols="isMetadataInfo ? 8 : 11"
         >
-            <v-sheet class="rounded-lg pt-4 pl-4 pr-4" elevation="4">
+            <v-sheet class="rounded-lg pt-4 pl-4 pr-4" elevation="2">
                 <div
                     id="player-wrapper"
                     ref="videoPlayer"
@@ -26,7 +29,9 @@
                     <!-----------controls---------->
                     <div
                         class="controls"
-                        :class="{ 'controls-hidden': !controlsVisible }"
+                        :class="{
+                            'controls-hidden': !controlsVisible,
+                        }"
                     >
                         <!-----------slider---------->
                         <v-slider
@@ -176,7 +181,10 @@
 
         <v-col
             class="metadata-col"
-            :class="{ open: isMetadataInfo, closed: !isMetadataInfo }"
+            :class="{
+                open: isMetadataInfo,
+                closed: !isMetadataInfo,
+            }"
             cols="3"
         >
             <v-card
@@ -185,11 +193,11 @@
             >
                 <template #title> </template>
                 <v-card-text>
-                    <v-table class="text-caption" density="comfortable">
+                    <v-table class="text-body-small" density="comfortable">
                         <thead>
                             <tr>
                                 <th class="text-left text-no-wrap">
-                                    <h3 class="text-subtitle-2">
+                                    <h3 class="text-title-small">
                                         SEB Session Info
                                     </h3>
                                 </th>
@@ -209,7 +217,7 @@
                         <thead>
                             <tr>
                                 <th class="text-left text-no-wrap">
-                                    <h3 class="text-subtitle-2">
+                                    <h3 class="text-title-small">
                                         Screenshot Metadata
                                     </h3>
                                 </th>
@@ -231,13 +239,16 @@
         </v-col>
         <v-col
             class="toggle-col d-flex align-center justify-center"
-            :class="{ open: isMetadataInfo, closed: !isMetadataInfo }"
+            :class="{
+                open: isMetadataInfo,
+                closed: !isMetadataInfo,
+            }"
             cols="1"
             @click="hideShowMetadataInfo()"
         >
             <v-card
                 class="toggle-card d-flex flex-column align-center justify-center"
-                elevation="4"
+                elevation="2"
                 style="width: 100%; height: 100%"
             >
                 <v-icon icon="mdi-information" />

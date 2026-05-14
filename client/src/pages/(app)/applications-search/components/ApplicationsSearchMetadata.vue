@@ -1,9 +1,9 @@
 <template>
     <v-row>
-        <v-col align="left" class="text-h6">
+        <v-col align="left" class="text-title-large">
             {{ examObject.exam.name }}
         </v-col>
-        <v-col align="right" class="text-h6">
+        <v-col align="right" class="text-title-large">
             {{ timeUtils.formatTimestampToFullDate(examObject.exam.startTime) }}
         </v-col>
     </v-row>

@@ -1,7 +1,10 @@
 <template>
     <v-card>
         <v-toolbar color="transparent">
-            <v-toolbar-title class="text-h6" text="Group"></v-toolbar-title>
+            <v-toolbar-title
+                class="text-title-large"
+                text="Group"
+            ></v-toolbar-title>
             <template #append>
                 <v-btn
                     icon="mdi-close"
@@ -15,7 +18,7 @@
                 <v-col>
                     <v-form>
                         <!------------Group Name------------->
-                        <v-row align="center">
+                        <v-row class="align-center">
                             <v-col>
                                 {{ translate("monitoringDialog.info.name") }}
                             </v-col>
@@ -33,7 +36,7 @@
                         </v-row>
 
                         <!------------Group Type------------->
-                        <v-row align="center">
+                        <v-row class="align-center">
                             <v-col>
                                 {{ translate("monitoringDialog.info.type") }}
                             </v-col>
@@ -51,7 +54,7 @@
                         </v-row>
 
                         <!------------Type Description------------->
-                        <v-row align="center">
+                        <v-row class="align-center">
                             <v-col>
                                 {{
                                     translate("monitoringDialog.info.typeDesc")

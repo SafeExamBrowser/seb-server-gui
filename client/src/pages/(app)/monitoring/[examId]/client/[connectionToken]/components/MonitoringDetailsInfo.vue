@@ -1,5 +1,5 @@
 <template>
-    <v-row dense>
+    <v-row density="compact">
         <v-col cols="12" md="10">
             <BreadCrumb :items="breadCrumbItems" />
         </v-col>
@@ -7,7 +7,7 @@
 
     <v-row class="pt-0 pl-4 pr-4 pb-6">
         <v-col class="pt-0">
-            <v-sheet class="rounded-lg pl-4 pr-4" elevation="4">
+            <v-sheet class="rounded-lg pl-4 pr-4" elevation="2">
                 <v-row style="background-color: #fffffe">
                     <!-- User Name -->
                     <v-col cols="12" md="3">

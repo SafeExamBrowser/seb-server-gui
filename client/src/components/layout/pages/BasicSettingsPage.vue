@@ -3,7 +3,7 @@
         <v-row class="flex-grow-0 flex-shrink-0" no-gutters>
             <v-col class="pa-3">
                 <div
-                    class="text-white text-h5 font-weight-black ml-10 mt-5"
+                    class="text-white text-headline-small font-weight-black ml-10 mt-5"
                     data-testid="settings-title"
                 >
                     {{ translate("titles.settings") }}
@@ -23,12 +23,12 @@
             <!--- Right side white panel -->
             <v-col cols="9" class="h-100 overflow-hidden pa-3">
                 <v-card
-                    elevation="4"
+                    elevation="2"
                     rounded="lg"
                     class="h-100 overflow-y-auto mr-16"
                 >
                     <v-row>
-                        <v-col class="pt-8 pl-12">
+                        <v-col class="pl-12">
                             <PageTitle
                                 :name="props.title"
                                 :data-test-id="

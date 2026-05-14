@@ -2,7 +2,7 @@
     <v-card>
         <v-toolbar color="transparent">
             <v-toolbar-title
-                class="text-h6"
+                class="text-title-large"
                 text="Edit Supervisors"
             ></v-toolbar-title>
             <template #append>
@@ -72,7 +72,9 @@
                 <v-col cols="3">
                     <v-row>
                         <v-col>
-                            <div class="text-h6">Selected Supervisors</div>
+                            <div class="text-title-large">
+                                Selected Supervisors
+                            </div>
                         </v-col>
                     </v-row>
 
@@ -118,7 +120,7 @@
             </v-row>
 
             <!-----------button row---------->
-            <v-row align="center">
+            <v-row class="align-center">
                 <v-col align="right">
                     <v-btn
                         color="black"

@@ -1,5 +1,5 @@
 <template>
-    <h3 class="text-h6 font-weight-bold">
+    <h3 class="text-title-large font-weight-bold">
         {{ name }}
     </h3>
 </template>

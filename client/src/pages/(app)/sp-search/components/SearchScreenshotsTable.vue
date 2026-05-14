@@ -1,10 +1,10 @@
 <template>
     <div class="my-7">
-        <h3 class="text-h6">Screenshots</h3>
+        <h3 class="text-title-large">Screenshots</h3>
     </div>
 
     <v-data-table
-        class="elevation-5 mb-7"
+        class="elevation-2 mb-7"
         :expanded="expandedItems"
         :headers="screenshotTableHeaders"
         item-value="timelineScreenshotDataList[0].timestamp"

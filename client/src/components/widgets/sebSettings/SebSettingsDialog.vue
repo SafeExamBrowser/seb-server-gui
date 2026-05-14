@@ -5,7 +5,7 @@
                 <v-row>
                     <v-toolbar color="transparent">
                         <v-toolbar-title
-                            class="text-h6"
+                            class="text-title-large"
                             :text="translate(props.dialogTitle)"
                         ></v-toolbar-title>
                         <template #append>
@@ -29,7 +29,7 @@
             </v-col>
         </v-row>
 
-        <v-row align="end">
+        <v-row class="align-end">
             <v-col align="right">
                 <v-btn
                     color="black"

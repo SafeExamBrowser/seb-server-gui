@@ -19,17 +19,17 @@
             </v-row>
 
             <!-- Client States, Notifications and Indicators -->
-            <v-row align="stretch" class="mt-5">
+            <v-row class="mt-5 align-stretch">
                 <!-- Client States -->
                 <v-col :cols="hasIndicators ? 4 : 6">
-                    <v-sheet class="pa-6 h-100" elevation="4" rounded="lg">
+                    <v-sheet class="pa-6 h-100" elevation="2" rounded="lg">
                         <MonitoringOverviewClients :exam-id="examId" />
                     </v-sheet>
                 </v-col>
 
                 <!-- Notifications and ask -->
                 <v-col :cols="hasIndicators ? 4 : 6">
-                    <v-sheet class="pa-6 h-100" elevation="4" rounded="lg">
+                    <v-sheet class="pa-6 h-100" elevation="2" rounded="lg">
                         <MonitoringOverviewNotifications
                             v-if="
                                 monitoringStore.monitoringOverviewData
@@ -42,7 +42,7 @@
 
                 <!-- Indicators -->
                 <v-col v-if="hasIndicators" cols="4">
-                    <v-sheet class="pa-6 h-100" elevation="4" rounded="lg">
+                    <v-sheet class="pa-6 h-100" elevation="2" rounded="lg">
                         <MonitoringOverviewIndicators :exam-id="examId" />
                     </v-sheet>
                 </v-col>
@@ -53,7 +53,7 @@
                 <v-col cols="12">
                     <v-sheet
                         class="pa-6 fill-height min-height-sheet"
-                        elevation="4"
+                        elevation="2"
                         rounded="lg"
                     >
                         <MonitoringOverviewGroups

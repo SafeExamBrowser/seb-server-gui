@@ -2,7 +2,7 @@
     <v-card>
         <v-toolbar color="transparent">
             <v-toolbar-title
-                class="text-h6"
+                class="text-title-large"
                 text="Edit Group"
             ></v-toolbar-title>
             <template #append>
@@ -35,7 +35,7 @@
                         </v-row>
 
                         <!------------Exam Name------------->
-                        <v-row align="center">
+                        <v-row class="align-center">
                             <v-col> Exam </v-col>
                             <v-col>
                                 {{ examStore.selectedExam?.quizName }}
@@ -43,7 +43,7 @@
                         </v-row>
 
                         <!------------Group Name------------->
-                        <v-row align="center">
+                        <v-row class="align-center">
                             <v-col> Name </v-col>
                             <v-col>
                                 <v-text-field
@@ -58,7 +58,7 @@
                         </v-row>
 
                         <!------------Group Type------------->
-                        <v-row align="center">
+                        <v-row class="align-center">
                             <v-col> Type </v-col>
                             <v-col>
                                 <v-select
@@ -73,7 +73,7 @@
                         </v-row>
 
                         <!------------Type Description------------->
-                        <v-row align="center">
+                        <v-row class="align-center">
                             <v-col> Type Description </v-col>
                             <v-col>
                                 {{ clientGroupDescription }}
@@ -173,7 +173,7 @@
                         </template>
 
                         <!------------Buttons------------->
-                        <v-row align="center">
+                        <v-row class="align-center">
                             <v-col align="right">
                                 <v-btn
                                     color="black"

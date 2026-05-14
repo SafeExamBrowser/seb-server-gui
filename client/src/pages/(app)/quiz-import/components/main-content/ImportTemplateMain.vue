@@ -1,11 +1,11 @@
 <template>
     <div class="h-100 w-100">
-        <v-row dense>
+        <v-row density="compact">
             <v-col>
-                <div class="text-h6 font-weight-bold mb-1">
+                <div class="text-title-large font-weight-bold mb-1">
                     {{ translate("quizImportWizard.templateMain.title") }}
                 </div>
-                <div class="mb-10 text-body-2">
+                <div class="mb-10 text-body-medium">
                     {{ translate("quizImportWizard.templateMain.description") }}
                 </div>
             </v-col>
@@ -33,10 +33,10 @@
             >
                 <div class="card-content">
                     <div class="card-text">
-                        <div class="text-subtitle-1 font-weight-medium">
+                        <div class="text-body-large font-weight-medium">
                             {{ examTemplate.name }}
                         </div>
-                        <div class="text-body-2 text-medium-emphasis">
+                        <div class="text-body-medium text-medium-emphasis">
                             {{ examTemplate.description }}
                         </div>
                     </div>

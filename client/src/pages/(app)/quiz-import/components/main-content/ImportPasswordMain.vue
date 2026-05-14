@@ -1,21 +1,21 @@
 <template>
     <div class="h-100 w-100">
         <!-- Title and Description -->
-        <v-row dense>
+        <v-row density="compact">
             <v-col>
-                <div class="text-h6 font-weight-bold mb-1">
+                <div class="text-title-large font-weight-bold mb-1">
                     {{ translate("quizImportWizard.passwordMain.title") }}
                 </div>
-                <div class="mb-3 text-body-2">
+                <div class="mb-3 text-body-medium">
                     {{ translate("quizImportWizard.passwordMain.description") }}
                 </div>
             </v-col>
         </v-row>
 
         <!-- Password Field -->
-        <v-row class="mt-6" dense>
+        <v-row class="mt-6" density="compact">
             <v-col cols="12" md="6">
-                <div class="text-subtitle-1 font-weight-medium mb-2">
+                <div class="text-body-large font-weight-medium mb-2">
                     {{
                         translate("quizImportWizard.passwordMain.quitPassword")
                     }}
@@ -23,7 +23,7 @@
             </v-col>
         </v-row>
 
-        <v-row dense>
+        <v-row density="compact">
             <v-col cols="6">
                 <v-text-field
                     v-model="quizImportStore.selectedQuitPassword"
@@ -52,7 +52,7 @@
                 <!-- Imported Info Text -->
                 <div
                     v-if="showImportedHint"
-                    class="text-caption text-grey mt-1"
+                    class="text-body-small text-grey mt-1"
                 >
                     Password imported from selected Exam Template
                 </div>

@@ -1,7 +1,10 @@
 <template>
     <v-card>
         <v-toolbar color="transparent">
-            <v-toolbar-title class="text-h6" :text="title"></v-toolbar-title>
+            <v-toolbar-title
+                class="text-title-large"
+                :text="title"
+            ></v-toolbar-title>
             <template #append>
                 <v-btn
                     icon="mdi-close"

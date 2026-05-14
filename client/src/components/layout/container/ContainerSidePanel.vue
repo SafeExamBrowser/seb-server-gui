@@ -39,7 +39,7 @@
                 class="d-flex flex-column align-center justify-center text-center text-wrap w-100"
             >
                 <v-icon :icon="link.icon" />
-                <span class="text-caption text-break">
+                <span class="text-body-small text-break">
                     {{ link.title }}
                 </span>
             </span>

@@ -2,7 +2,7 @@
     <v-card>
         <v-toolbar color="transparent">
             <v-toolbar-title
-                class="text-h6"
+                class="text-title-large"
                 text="Select Connection Configuration"
             ></v-toolbar-title>
             <template #append>

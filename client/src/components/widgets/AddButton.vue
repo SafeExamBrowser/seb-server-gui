@@ -11,7 +11,7 @@
         >
             <div class="d-flex align-center ga-2">
                 <span
-                    class="text-h6 font-weight-medium"
+                    class="text-title-large font-weight-medium"
                     style="letter-spacing: normal"
                 >
                     {{ $t("general.addButton") }}

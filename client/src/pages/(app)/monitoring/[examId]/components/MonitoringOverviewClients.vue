@@ -2,7 +2,7 @@
     <v-row>
         <v-col cols="12">
             <!------title------->
-            <div class="text-h6 font-weight-bold mb-4">
+            <div class="text-title-large font-weight-bold mb-4">
                 {{ translate("monitoringOverview.clientStates.clientStates") }}
             </div>
             <!------doughnut chart------->

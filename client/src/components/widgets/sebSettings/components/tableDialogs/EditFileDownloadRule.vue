@@ -2,7 +2,7 @@
     <v-card>
         <v-toolbar color="transparent">
             <v-toolbar-title
-                class="text-h6"
+                class="text-title-large"
                 :text="
                     translate(
                         'sebSettings.updownloadView.filetypes.editDialogTitle',
@@ -23,7 +23,7 @@
                 <v-col>
                     <v-form>
                         <!------------ file extension ------------->
-                        <v-row align="center">
+                        <v-row class="align-center">
                             <v-col>
                                 <v-text-field
                                     v-model="props.fileType!.fileExtension"
@@ -41,7 +41,7 @@
                             </v-col>
                         </v-row>
                         <!------------ OS ------------->
-                        <v-row align="center">
+                        <v-row class="align-center">
                             <v-col>
                                 <v-select
                                     v-model="props.fileType!.os"
@@ -79,7 +79,7 @@
                         </v-row>
 
                         <!------------Buttons------------->
-                        <v-row align="center">
+                        <v-row class="align-center">
                             <v-col align="right">
                                 <v-btn
                                     color="black"

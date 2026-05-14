@@ -1,7 +1,7 @@
 <template>
     <v-card>
         <v-toolbar color="transparent  ma-3">
-            <v-toolbar-title class="text-h5 mb-2 title-styling">
+            <v-toolbar-title class="text-headline-small mb-2 title-styling">
                 {{ translate("monitoringDetails.monitoringASKDialog.title") }}
                 <v-btn
                     icon="mdi-refresh"
@@ -85,7 +85,7 @@
                                             class="ask-row ask-row-tag"
                                         >
                                             <span
-                                                class="text-caption text-grey-darken-1 mr-1"
+                                                class="text-body-small text-grey-darken-1 mr-1"
                                             >
                                                 {{
                                                     i18n.t(
@@ -93,7 +93,7 @@
                                                     )
                                                 }}
                                             </span>
-                                            <span class="text-body-2">{{
+                                            <span class="text-body-medium">{{
                                                 ask.tag
                                             }}</span>
                                         </div>
@@ -174,7 +174,7 @@
                         >
                             <v-col cols="3">
                                 <div
-                                    class="text-h6 font-weight-bold"
+                                    class="text-title-large font-weight-bold"
                                     data-testid="aks-connections-title"
                                 >
                                     {{
@@ -223,7 +223,7 @@
                                                         <span
                                                             class="status-count"
                                                             >{{
-                                                                item.raw.count
+                                                                item.count
                                                             }}</span
                                                         >
                                                         <span
@@ -233,7 +233,7 @@
                                                         <span
                                                             class="status-label"
                                                             >{{
-                                                                item.raw.label
+                                                                item.label
                                                             }}</span
                                                         >
                                                     </div>
@@ -243,7 +243,7 @@
                                             <!-- Divider -->
                                             <v-divider
                                                 v-if="
-                                                    item.raw.value === 'ALL' &&
+                                                    item.value === 'ALL' &&
                                                     index <
                                                         statusItems.length - 1
                                                 "
@@ -256,7 +256,7 @@
                                         <template #selection="{ item }">
                                             <div class="status-option">
                                                 <span class="status-label">{{
-                                                    item.raw.label
+                                                    item.label
                                                 }}</span>
                                             </div>
                                         </template>
@@ -337,7 +337,7 @@
                         <div
                             class="d-flex align-center justify-space-between mt-2 px-1"
                         >
-                            <div class="text-caption">
+                            <div class="text-body-small">
                                 Showing {{ pageStart + 1 }}–{{ pageEnd }} of
                                 {{ totalConnections }}
                             </div>
@@ -368,7 +368,7 @@
                                 >mdi-cursor-default-click-outline
                             </v-icon>
                             <div
-                                class="text-subtitle-1 text-grey-darken-1 mt-3 text-center"
+                                class="text-body-large text-grey-darken-1 mt-3 text-center"
                             >
                                 {{
                                     translate(

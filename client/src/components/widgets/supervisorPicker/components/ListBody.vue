@@ -23,7 +23,7 @@
                                 <span class="font-weight-medium">{{
                                     userAccountNameToUsername(item)
                                 }}</span>
-                                <span class="text-caption">{{
+                                <span class="text-body-small">{{
                                     userAccountNameToFullName(item)
                                 }}</span>
                             </span>

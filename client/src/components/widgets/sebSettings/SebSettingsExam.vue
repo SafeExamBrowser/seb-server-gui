@@ -4,7 +4,7 @@
         :errors="errorSebSettingsView"
     >
         <v-row v-if="singleValues">
-            <v-col class="text-subtitle-1">
+            <v-col class="text-body-large">
                 <SettingsTitle
                     label="sebSettings.examView.sessionHandling.title"
                     :tooltip="true"
@@ -87,7 +87,7 @@
                 </v-row>
             </v-col>
 
-            <v-col class="text-subtitle-1">
+            <v-col class="text-body-large">
                 <SettingsTitle label="sebSettings.examView.back.title" />
                 <v-row>
                     <CheckboxSetting

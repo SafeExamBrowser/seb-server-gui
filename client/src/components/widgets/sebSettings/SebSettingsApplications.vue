@@ -59,7 +59,7 @@
             <v-col>
                 <v-data-table
                     v-if="permittedProcessTable"
-                    class="rounded-lg elevation-4"
+                    class="rounded-lg elevation-2"
                     density="compact"
                     :headers="permittedProcessTableHeaders"
                     item-value="id"
@@ -172,7 +172,7 @@
             <v-col>
                 <v-data-table
                     v-if="prohibitedProcessTable"
-                    class="rounded-lg elevation-4"
+                    class="rounded-lg elevation-2"
                     density="compact"
                     :headers="prohibitedProcessTableHeaders"
                     item-value="id"

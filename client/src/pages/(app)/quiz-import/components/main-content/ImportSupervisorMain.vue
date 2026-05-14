@@ -1,11 +1,11 @@
 <template>
     <div class="h-100 w-100">
-        <v-row dense>
+        <v-row density="compact">
             <v-col>
-                <div class="text-h6 font-weight-bold mb-1">
+                <div class="text-title-large font-weight-bold mb-1">
                     {{ translate("quizImportWizard.supervisorsMain.title") }}
                 </div>
-                <div class="mb-3 text-body-2">
+                <div class="mb-3 text-body-medium">
                     {{
                         translate(
                             "quizImportWizard.supervisorsMain.description",
@@ -15,7 +15,7 @@
             </v-col>
         </v-row>
 
-        <v-row align="center">
+        <v-row class="align-center">
             <v-col cols="6">
                 <v-text-field
                     v-model="searchInput"
@@ -59,7 +59,7 @@
         <v-row>
             <!-- Available Supervisors -->
             <v-col cols="6">
-                <div class="text-subtitle-1 font-weight-medium">
+                <div class="text-body-large font-weight-medium">
                     {{
                         translate(
                             "quizImportWizard.supervisorsMain.availableSupervisors",
@@ -93,7 +93,7 @@
                                                     )
                                                 }}
                                             </div>
-                                            <div class="text-caption">
+                                            <div class="text-body-small">
                                                 {{
                                                     userAccountNameToFullName(
                                                         item,
@@ -114,7 +114,7 @@
 
             <!-- Selected Supervisors -->
             <v-col cols="6">
-                <div class="text-subtitle-1 font-weight-medium">
+                <div class="text-body-large font-weight-medium">
                     {{
                         translate(
                             "quizImportWizard.supervisorsMain.selectedSupervisors",
@@ -140,7 +140,7 @@
                                             )
                                         }}
                                     </div>
-                                    <div class="text-caption">
+                                    <div class="text-body-small">
                                         {{
                                             userAccountNameToFullName(
                                                 supervisor,

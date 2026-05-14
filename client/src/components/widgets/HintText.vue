@@ -1,6 +1,6 @@
 <template>
     <div
-        class="text-body-2 text-grey-darken-1"
+        class="text-body-medium text-grey-darken-1"
         data-testid="createUserAccount-form-infoText"
     >
         {{ translate(textIdentifier) }}

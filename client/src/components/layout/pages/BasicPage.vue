@@ -18,7 +18,7 @@
         </v-row>
         <v-row v-if="hasTop" class="flex-grow-0 flex-shrink-0">
             <v-col>
-                <v-card elevation="4" rounded="lg">
+                <v-card elevation="2" rounded="lg">
                     <slot name="PanelTop"></slot>
                 </v-card>
             </v-col>
@@ -29,7 +29,7 @@
                 class="fill-height overflow-y-auto"
             >
                 <v-card
-                    elevation="4"
+                    elevation="2"
                     rounded="lg"
                     class="fill-height overflow-y-auto"
                 >
@@ -38,7 +38,7 @@
             </v-col>
             <v-col v-if="hasAside" cols="3" class="fill-height overflow-y-auto">
                 <v-card
-                    elevation="4"
+                    elevation="2"
                     rounded="lg"
                     class="fill-height overflow-y-auto"
                 >

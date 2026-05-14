@@ -1,7 +1,7 @@
 <template>
     <v-row>
         <v-col>
-            <v-sheet class="rounded-lg" elevation="4" title="Applications">
+            <v-sheet class="rounded-lg" elevation="2" title="Applications">
                 <div style="visibility: hidden">placeholder</div>
 
                 <v-form
@@ -10,7 +10,7 @@
                     @keyup.esc="clearForm()"
                 >
                     <!------------Time Period------------->
-                    <v-row align="center">
+                    <v-row class="align-center">
                         <v-col cols="4"> {{ $t("searchForm.period") }}: </v-col>
                         <v-col cols="1">
                             <v-radio
@@ -55,7 +55,7 @@
                     <!----------------------------------->
 
                     <!------------Time Selection------------->
-                    <v-row align="center">
+                    <v-row class="align-center">
                         <v-col cols="4">
                             {{ $t("searchForm.between") }}:
                         </v-col>
@@ -113,11 +113,11 @@
         <v-col v-if="noResutsFound">
             <v-sheet
                 class="rounded-lg pa-4"
-                elevation="4"
+                elevation="2"
                 title="No results match your search criteria"
             >
                 <v-row>
-                    <v-col align="left" class="text-h6">
+                    <v-col align="left" class="text-title-large">
                         No results match your search criteria
                     </v-col>
                 </v-row>
@@ -139,7 +139,7 @@
             v-for="examObject in examObjects"
             :key="examObject.exam.id"
             class="rounded-lg pa-4 mt-4"
-            elevation="4"
+            elevation="2"
             :title="examObject.exam.name"
         >
             <ApplicationsSearchMetadata :exam-object="examObject" />

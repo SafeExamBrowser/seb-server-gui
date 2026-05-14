@@ -1,6 +1,8 @@
 <template>
     <div class="fill-height d-flex flex-column overflow-hidden">
-        <div class="text-white text-h5 font-weight-black ml-10 mt-5">
+        <div
+            class="text-white text-headline-small font-weight-black ml-10 mt-5"
+        >
             {{ translate("titles.settings") }}
         </div>
 
@@ -22,7 +24,7 @@
                     class="d-flex align-center justify-space-between px-6 pt-6"
                 >
                     <div
-                        class="text-primary text-h5 font-weight-bold"
+                        class="text-primary text-headline-small font-weight-bold"
                         data-testid="connectionConfigurationEdit-title-text"
                     >
                         {{
@@ -32,7 +34,7 @@
                         }}
                     </div>
                     <v-chip
-                        class="text-subtitle-1 px-5 py-2 font-weight-bold"
+                        class="text-body-large px-5 py-2 font-weight-bold"
                         :color="active ? 'success' : 'error'"
                         data-testid="connectionConfigurationEdit-status-chip"
                         :disabled="isSaving"
@@ -56,7 +58,7 @@
                 <v-divider class="custom-divider mx-6 my-4 mt-7" />
                 <v-row class="px-8 mt-2 d-flex justify-space-between">
                     <div
-                        class="text-body-2 text-grey-darken-1"
+                        class="text-body-medium text-grey-darken-1"
                         data-testid="connectionConfigurationEdit-lastUpdated-text"
                     >
                         {{
@@ -71,7 +73,7 @@
                         }}
                     </div>
                     <div
-                        class="text-body-2 text-grey-darken-1"
+                        class="text-body-medium text-grey-darken-1"
                         data-testid="connectionConfigurationEdit-createdAt-text"
                     >
                         {{
@@ -95,7 +97,7 @@
                         <v-col class="pa-0 mb-4" cols="12" md="12">
                             <v-card-text>
                                 <!-- First Section -->
-                                <v-row dense>
+                                <v-row density="compact">
                                     <v-col cols="8">
                                         <!-- Name* -->
                                         <v-col
@@ -241,7 +243,7 @@
                                 </v-row>
 
                                 <!-- Second Section-->
-                                <v-row class="mt-0" dense>
+                                <v-row class="mt-0" density="compact">
                                     <v-col cols="8">
                                         <!-- Encrypt With Certificate (optional) -->
                                         <v-col
@@ -276,8 +278,7 @@
                                                         <template #prepend>
                                                             <v-icon
                                                                 v-if="
-                                                                    item.raw
-                                                                        .value ===
+                                                                    item.value ===
                                                                     '__UPLOAD__'
                                                                 "
                                                             >
@@ -314,7 +315,7 @@
 
                                                     <v-divider
                                                         v-if="
-                                                            item.raw.value ===
+                                                            item.value ===
                                                             '__UPLOAD__'
                                                         "
                                                         class="my-1"
@@ -326,7 +327,7 @@
                                                     #append-item
                                                 >
                                                     <div
-                                                        class="text-caption text-grey-darken-1 px-4 py-2"
+                                                        class="text-body-small text-grey-darken-1 px-4 py-2"
                                                     >
                                                         {{
                                                             translate(
@@ -373,7 +374,7 @@
                                                 class="d-flex align-center justify-space-between w-100"
                                             >
                                                 <label
-                                                    class="text-grey-darken-1 text-body-1 ml-11"
+                                                    class="text-grey-darken-1 text-body-large ml-11"
                                                 >
                                                     {{
                                                         translate(
@@ -404,7 +405,7 @@
                                 </v-row>
 
                                 <!-- Third Section for Fallback -->
-                                <v-row dense>
+                                <v-row density="compact">
                                     <v-divider
                                         class="custom-divider mx-1 my-2"
                                     />
@@ -420,7 +421,7 @@
                                                 class="d-flex align-center justify-space-between w-100"
                                             >
                                                 <label
-                                                    class="text-grey-darken-1 text-body-1 ml-11"
+                                                    class="text-grey-darken-1 text-body-large ml-11"
                                                 >
                                                     {{
                                                         translate(
@@ -448,7 +449,7 @@
                                     </v-col>
                                 </v-row>
 
-                                <v-row dense>
+                                <v-row density="compact">
                                     <v-col>
                                         <!-- Animated expansion -->
                                         <v-expand-transition>

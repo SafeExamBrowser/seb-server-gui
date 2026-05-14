@@ -4,14 +4,14 @@
         :class="{ 'pt-0': dense }"
         :data-testid="`${dataTestId}-filters-container`"
     >
-        <v-row align="start">
+        <v-row class="align-start">
             <v-col
                 cols="12"
                 :md="hasDate ? 3 : 4"
                 class="d-flex flex-column ga-2"
             >
                 <span
-                    class="text-caption text-medium-emphasis text-uppercase font-weight-medium"
+                    class="text-body-small text-medium-emphasis text-uppercase font-weight-medium"
                 >
                     {{ $t(searchTitle ?? "general.searchTitle") }}
                 </span>
@@ -32,7 +32,7 @@
                 class="d-flex flex-column ga-2"
             >
                 <span
-                    class="text-caption text-medium-emphasis text-uppercase font-weight-medium"
+                    class="text-body-small text-medium-emphasis text-uppercase font-weight-medium"
                 >
                     {{ $t(dateTitle!) }}
                 </span>
@@ -61,7 +61,7 @@
                     <div v-if="!expanded && activePills.length > 0">
                         <div class="d-flex align-center ga-2 mb-2">
                             <span
-                                class="text-caption text-medium-emphasis text-uppercase font-weight-medium"
+                                class="text-body-small text-medium-emphasis text-uppercase font-weight-medium"
                             >
                                 {{ $t("general.activeFilters") }}
                             </span>

@@ -1,6 +1,6 @@
 <template>
     <!-- Breadcrumb and Title -->
-    <v-row dense>
+    <v-row density="compact">
         <!-- Breadcrumb -->
         <v-col cols="12" md="10">
             <BreadCrumb
@@ -16,7 +16,7 @@
 
         <!-- Title -->
         <v-col class="pl-10" cols="12" md="10">
-            <div class="text-primary text-h4 font-weight-bold">
+            <div class="text-primary text-headline-large font-weight-bold">
                 {{ monitoringStore.selectedExam?.quizName }}
             </div>
         </v-col>
@@ -25,25 +25,25 @@
     </v-row>
 
     <!-- Status, Start and End Date -->
-    <v-row class="mt-5" dense>
+    <v-row class="mt-5" density="compact">
         <v-col cols="12">
             <v-sheet
                 class="rounded-lg pa-4 d-flex justify-space-between align-center"
-                elevation="4"
+                elevation="2"
             >
                 <!-- Status -->
                 <v-col cols="3">
                     <div class="d-flex align-center" style="margin-right: 24px">
                         <div>
                             <div
-                                class="text-body-2 font-weight-bold text-grey-darken-1"
+                                class="text-body-medium font-weight-bold text-grey-darken-1"
                             >
                                 {{
                                     translate("monitoringOverview.infos.status")
                                 }}
                             </div>
                             <div
-                                class="font-weight-bold text-body-1 mt-1"
+                                class="font-weight-bold text-body-large mt-1"
                                 :style="{
                                     color: generalUtils.getExamStatusFilterColor(
                                         generalUtils.findEnumValue(
@@ -73,13 +73,13 @@
                     <div class="d-flex align-center">
                         <div>
                             <div
-                                class="text-body-2 font-weight-bold text-grey-darken-1"
+                                class="text-body-medium font-weight-bold text-grey-darken-1"
                             >
                                 {{
                                     translate("monitoringOverview.infos.start")
                                 }}
                             </div>
-                            <div class="font-weight-bold text-body-1">
+                            <div class="font-weight-bold text-body-large">
                                 {{
                                     timeUtils.formatIsoToReadableDateTime(
                                         monitoringStore.selectedExam
@@ -96,11 +96,11 @@
                     <div class="d-flex align-center">
                         <div>
                             <div
-                                class="text-body-2 font-weight-bold text-grey-darken-1"
+                                class="text-body-medium font-weight-bold text-grey-darken-1"
                             >
                                 {{ translate("monitoringOverview.infos.end") }}
                             </div>
-                            <div class="font-weight-bold text-body-1">
+                            <div class="font-weight-bold text-body-large">
                                 <template
                                     v-if="
                                         !monitoringStore.selectedExam

@@ -1,8 +1,8 @@
 <template>
     <!-- Title Row with Add Group Button -->
-    <v-row align="center" class="mb-4">
+    <v-row class="mb-4 align-center">
         <v-col cols="6">
-            <div class="text-h6 font-weight-bold">
+            <div class="text-title-large font-weight-bold">
                 {{ translate("monitoringOverview.groups.groups") }}
             </div>
         </v-col>
@@ -18,7 +18,7 @@
             <v-col cols="12" md="4">
                 <v-card
                     class="rounded-lg d-flex flex-column group-card"
-                    elevation="2"
+                    elevation="1"
                 >
                     <!-- Colored Section -->
                     <div
@@ -32,7 +32,7 @@
                             class="d-flex justify-space-between align-start align-center"
                         >
                             <div>
-                                <div class="font-weight-bold text-subtitle-1">
+                                <div class="font-weight-bold text-body-large">
                                     <template
                                         v-if="
                                             clientGroupItem.type ===
@@ -55,7 +55,7 @@
                                         {{ clientGroupItem.name }}
                                     </template>
                                 </div>
-                                <div class="text-caption">
+                                <div class="text-body-small">
                                     {{ translate(clientGroupItem.type) }}
                                 </div>
                             </div>
@@ -213,7 +213,7 @@
         <v-col cols="12" md="4">
             <v-card
                 class="rounded-lg d-flex flex-column group-card"
-                elevation="2"
+                elevation="1"
             >
                 <!-- Colored Section -->
                 <div
@@ -227,7 +227,7 @@
                         class="d-flex justify-space-between align-start align-center"
                     >
                         <div>
-                            <div class="font-weight-bold text-subtitle-1">
+                            <div class="font-weight-bold text-body-large">
                                 {{
                                     translate(
                                         "monitoringOverview.groups.spsGroup",

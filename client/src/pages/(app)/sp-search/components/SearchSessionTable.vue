@@ -132,10 +132,10 @@
 
     <!-----------delete sessions confirmation---------->
     <v-dialog v-if="isUserAdmin" v-model="dialog" max-width="400">
-        <v-sheet class="pa-4 rounded-lg" elevation="2">
-            <v-row justify="end">
+        <v-sheet class="pa-4 rounded-lg" elevation="1">
+            <v-row class="justify-end">
                 <v-col>
-                    <div class="text-h6">Delete selected sessions</div>
+                    <div class="text-title-large">Delete selected sessions</div>
                 </v-col>
             </v-row>
 

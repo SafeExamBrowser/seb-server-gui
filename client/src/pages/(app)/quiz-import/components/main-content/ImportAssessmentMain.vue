@@ -1,11 +1,11 @@
 <template>
     <div class="h-100 w-100">
-        <v-row dense>
+        <v-row density="compact">
             <v-col>
-                <div class="text-h6 font-weight-bold mb-1">
+                <div class="text-title-large font-weight-bold mb-1">
                     {{ translate("quizImportWizard.assessmentTool.title") }}
                 </div>
-                <div class="mb-10 text-body-2">
+                <div class="mb-10 text-body-medium">
                     {{
                         translate("quizImportWizard.assessmentTool.description")
                     }}

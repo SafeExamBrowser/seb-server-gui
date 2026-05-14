@@ -6,7 +6,7 @@
         @keyup.esc="clearForm()"
     >
         <!------------Exam Name------------->
-        <v-row align="center">
+        <v-row class="align-center">
             <v-col cols="4"> {{ $t("searchForm.examName") }}: </v-col>
             <v-col cols="8">
                 <v-text-field
@@ -22,7 +22,7 @@
         <!----------------------------------->
 
         <!------------Group Name------------->
-        <v-row align="center">
+        <v-row class="align-center">
             <v-col cols="4"> {{ $t("searchForm.groupName") }}: </v-col>
             <v-col cols="8">
                 <v-text-field
@@ -46,7 +46,7 @@
                     >
                         <v-expansion-panel-text>
                             <!------------Login Name------------->
-                            <v-row align="center">
+                            <v-row class="align-center">
                                 <v-col cols="4">
                                     {{ $t("searchForm.loginName") }}:
                                 </v-col>
@@ -65,7 +65,7 @@
                             <!----------------------------------->
 
                             <!------------IP-Address------------->
-                            <v-row align="center">
+                            <v-row class="align-center">
                                 <v-col cols="4">
                                     {{ $t("searchForm.ipAddress") }}:
                                 </v-col>
@@ -84,7 +84,7 @@
                             <!----------------------------------->
 
                             <!------------Machine Name------------->
-                            <v-row align="center">
+                            <v-row class="align-center">
                                 <v-col cols="4">
                                     {{ $t("searchForm.machineName") }}:
                                 </v-col>
@@ -117,7 +117,7 @@
                     <v-expansion-panel :title="$t('searchForm.metadataTitle')">
                         <v-expansion-panel-text>
                             <!------------Metatdata: Focused Application------------->
-                            <v-row align="center">
+                            <v-row class="align-center">
                                 <v-col cols="4">
                                     {{ spConstants.APPLICATION_METADATA }}:
                                 </v-col>
@@ -138,7 +138,7 @@
                             <!----------------------------------->
 
                             <!------------Metatdata: SEB-Broswer Title------------->
-                            <v-row align="center">
+                            <v-row class="align-center">
                                 <v-col cols="4">
                                     {{
                                         spConstants.SEB_BROWSER_TITLE_METADATA
@@ -161,7 +161,7 @@
                             <!----------------------------------->
 
                             <!------------Metatdata: Activity Details------------->
-                            <v-row align="center">
+                            <v-row class="align-center">
                                 <v-col cols="4">
                                     {{ spConstants.ACTIVITY_DETAILS_METADATA }}:
                                 </v-col>
@@ -182,7 +182,7 @@
                             <!----------------------------------->
 
                             <!------------Metatdata: Focused Window------------->
-                            <v-row align="center">
+                            <v-row class="align-center">
                                 <v-col cols="4">
                                     {{ spConstants.WINDOW_TITLE_METADATA }}:
                                 </v-col>
@@ -209,7 +209,7 @@
         <!----------------------------------->
 
         <!------------Time Period------------->
-        <v-row align="center">
+        <v-row class="align-center">
             <v-col cols="4"> {{ $t("searchForm.period") }}: </v-col>
             <v-col cols="1">
                 <v-radio
@@ -254,7 +254,7 @@
         <!----------------------------------->
 
         <!------------Time Selection------------->
-        <v-row align="center">
+        <v-row class="align-center">
             <v-col cols="4"> {{ $t("searchForm.between") }}: </v-col>
             <v-col cols="1">
                 <v-radio
