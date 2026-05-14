@@ -8,7 +8,7 @@
             md="10"
         >
             <div
-                class="primary-text-color text-h4 font-weight-bold"
+                class="text-primary text-h4 font-weight-bold"
                 data-testid="homePageInfo-title-text"
             >
                 {{ translate("titles.home") }}

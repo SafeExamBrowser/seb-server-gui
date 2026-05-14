@@ -14,7 +14,7 @@
         </v-col>
 
         <v-col class="pl-10" cols="12" md="10">
-            <div class="primary-text-color text-h4 font-weight-bold">
+            <div class="text-primary text-h4 font-weight-bold">
                 {{ examStore.selectedExam?.quizName }}
             </div>
         </v-col>
@@ -62,7 +62,7 @@
 
                             <!------start time------->
                             <v-col
-                                class="primary-text-color text-h6 font-weight-bold"
+                                class="text-primary text-h6 font-weight-bold"
                                 cols="3"
                             >
                                 {{
@@ -74,7 +74,7 @@
 
                             <!------end time------->
                             <v-col
-                                class="primary-text-color text-h6 font-weight-bold"
+                                class="text-primary text-h6 font-weight-bold"
                                 cols="3"
                             >
                                 <template

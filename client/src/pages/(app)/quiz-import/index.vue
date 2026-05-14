@@ -6,7 +6,7 @@
         </v-col>
 
         <v-col class="pl-10 mb-7" cols="12" md="10">
-            <div class="primary-text-color text-h4 font-weight-bold">
+            <div class="text-primary text-h4 font-weight-bold">
                 {{ translate("titles.quizImport") }}
             </div>
         </v-col>
@@ -371,7 +371,7 @@ function handleStepperNext(index: number, next: () => void) {
 }
 
 .link-color {
-    color: #215caf;
+    color: rgb(var(--v-theme-primary));
     cursor: pointer;
 }
 </style>

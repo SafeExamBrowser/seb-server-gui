@@ -491,7 +491,7 @@ const indicatorTypeConfig: Record<
 .name-part {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #215caf;
+    color: rgb(var(--v-theme-primary));
 }
 
 /* groups, tags and status */

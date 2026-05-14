@@ -44,7 +44,7 @@ withDefaults(
 
 <style scoped>
 .nav-hover:hover .nav-link {
-    color: #215caf;
+    color: rgb(var(--v-theme-primary));
 }
 
 .nav-link {

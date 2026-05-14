@@ -678,7 +678,7 @@ function onRemoveGrant() {
 }
 
 .ask-card--selected {
-    border-color: #215caf;
+    border-color: rgb(var(--v-theme-primary));
     background: #edf5ff;
     border-width: 3px;
 }

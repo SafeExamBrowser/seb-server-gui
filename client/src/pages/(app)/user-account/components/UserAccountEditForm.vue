@@ -307,13 +307,20 @@
                                                 class="rounded-circle d-flex align-center justify-center"
                                                 style="
                                                     background-color: transparent;
-                                                    border: 0.5rem solid #215caf;
+                                                    border: 0.5rem solid
+                                                        rgb(
+                                                            var(
+                                                                --v-theme-primary
+                                                            )
+                                                        );
                                                     width: 13rem;
                                                     height: 13rem;
                                                     min-width: 13rem;
                                                     font-weight: 600;
                                                     font-size: 4rem;
-                                                    color: #215caf;
+                                                    color: rgb(
+                                                        var(--v-theme-primary)
+                                                    );
                                                 "
                                             >
                                                 {{
@@ -945,7 +952,7 @@ async function changeUserPassword() {
 
 <style scoped>
 .nav-hover:hover .nav-link {
-    color: #215caf;
+    color: rgb(var(--v-theme-primary));
 }
 
 .custom-divider {
@@ -983,7 +990,7 @@ async function changeUserPassword() {
 }
 
 .custom-role-checkbox label {
-    color: #215caf;
+    color: rgb(var(--v-theme-primary));
     font-size: 16px;
     font-weight: 400;
     line-height: 24px;

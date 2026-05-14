@@ -446,7 +446,7 @@ function openGalleryView(groupUuid: string) {
 
 <style scoped>
 .add-group-btn {
-    color: #215caf !important;
+    color: rgb(var(--v-theme-primary)) !important;
     font-weight: bold;
 }
 

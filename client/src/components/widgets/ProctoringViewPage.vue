@@ -1064,7 +1064,7 @@ async function calcTotalNrOfScreenshots(): Promise<number> {
 }
 
 .v-icon {
-    color: #215caf;
+    color: rgb(var(--v-theme-primary));
 }
 
 .video-col,

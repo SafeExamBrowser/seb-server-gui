@@ -17,7 +17,7 @@
                 rounded="sm"
             >
                 <div
-                    class="primary-text-color text-h5 font-weight-black mb-16"
+                    class="text-primary text-h5 font-weight-black mb-16"
                     :data-testid="`homePageMain-${card.testIdPrefix}-title-text`"
                 >
                     {{ translate(card.titleKey) }}

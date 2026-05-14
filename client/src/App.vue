@@ -15,6 +15,7 @@ import { useTokenRefresh } from "@/composables/useTokenRefresh";
 onMounted(() => {
     useTokenRefresh();
 });
+// TODO @Andrei Dependencies
 </script>
 
 <style>
@@ -30,14 +31,6 @@ onMounted(() => {
 
 .title-no-line-break {
     display: inline;
-}
-
-.primary-text-color {
-    color: #215caf;
-}
-
-.secondary-text-color {
-    color: #f5a623;
 }
 
 .disabled-text-color {

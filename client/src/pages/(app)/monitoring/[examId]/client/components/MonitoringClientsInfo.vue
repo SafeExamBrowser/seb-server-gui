@@ -8,7 +8,7 @@
 
         <!-- Title -->
         <v-col class="pl-10" cols="12" md="10">
-            <div class="primary-text-color text-h4 font-weight-bold">
+            <div class="text-primary text-h4 font-weight-bold">
                 {{ monitoringStore.selectedExam?.quizName }}
             </div>
         </v-col>
@@ -404,9 +404,7 @@
             <v-sheet class="rounded-lg pl-4 pt-3 pr-4" elevation="4">
                 <v-row>
                     <v-col>
-                        <div
-                            class="primary-text-color text-h5 font-weight-bold"
-                        >
+                        <div class="text-primary text-h5 font-weight-bold">
                             {{ monitoringStore.selectedExam?.quizName }}
                         </div>
                     </v-col>

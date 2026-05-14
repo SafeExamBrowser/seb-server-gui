@@ -5,9 +5,7 @@
                 <!----------title--------->
                 <v-row>
                     <v-col>
-                        <div
-                            class="primary-text-color text-h5 font-weight-bold"
-                        >
+                        <div class="text-primary text-h5 font-weight-bold">
                             {{ translate("titles.examDetails") }}
                         </div>
                         <v-divider
@@ -177,7 +175,7 @@
 
                         <!----------template--------->
                         <v-row class="mt-10">
-                            <v-col class="primary-text-color text-h6">
+                            <v-col class="text-primary text-h6">
                                 {{ translate("examDetail.main.examTemplate") }}
                             </v-col>
                             <v-col align="right">
@@ -220,7 +218,7 @@
 
                         <!-------supervisors------>
                         <v-row class="mt-10">
-                            <v-col class="primary-text-color text-h6">
+                            <v-col class="text-primary text-h6">
                                 {{
                                     translate("examDetail.main.examSupervisors")
                                 }}
@@ -277,7 +275,7 @@
 
                         <!-------Groups------>
                         <v-row class="mt-10">
-                            <v-col class="primary-text-color text-h6">
+                            <v-col class="text-primary text-h6">
                                 {{ translate("examDetail.main.groups") }}
                             </v-col>
 
@@ -375,7 +373,7 @@
                         <!--------quit password------>
                         <v-row class="mt-10">
                             <v-col>
-                                <div class="primary-text-color text-h6">
+                                <div class="text-primary text-h6">
                                     {{
                                         translate(
                                             "examDetail.main.quitPassword",

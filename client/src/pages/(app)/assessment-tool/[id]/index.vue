@@ -1038,7 +1038,7 @@ watch(authMode, (mode) => {
 
 <style scoped>
 .nav-hover:hover .nav-link {
-    color: #215caf;
+    color: rgb(var(--v-theme-primary));
 }
 
 .custom-divider {
@@ -1070,7 +1070,7 @@ watch(authMode, (mode) => {
 }
 
 .custom-role-checkbox label {
-    color: #215caf;
+    color: rgb(var(--v-theme-primary));
     font-size: 16px;
     font-weight: 400;
     line-height: 24px;

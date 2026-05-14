@@ -7,7 +7,7 @@
                         <!------title and headers------->
                         <v-row>
                             <v-col
-                                class="primary-text-color text-h5 font-weight-bold"
+                                class="text-primary text-h5 font-weight-bold"
                                 cols="3"
                             >
                                 {{ quizImportStore.selectedQuiz?.quiz_name }}
@@ -56,7 +56,7 @@
 
                             <!------start time------->
                             <v-col
-                                class="primary-text-color text-h6 font-weight-bold"
+                                class="text-primary text-h6 font-weight-bold"
                                 cols="3"
                             >
                                 {{
@@ -69,7 +69,7 @@
 
                             <!------end time------->
                             <v-col
-                                class="primary-text-color text-h6 font-weight-bold"
+                                class="text-primary text-h6 font-weight-bold"
                                 cols="3"
                             >
                                 <template
