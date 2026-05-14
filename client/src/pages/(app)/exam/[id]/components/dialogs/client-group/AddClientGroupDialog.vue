@@ -19,8 +19,8 @@
             <v-form>
                 <!------------create from template panel------------->
                 <v-row
-                    class="align-center"
                     v-if="templateClientGroups.length != 0"
+                    class="align-center"
                 >
                     <v-col>
                         <v-expansion-panels>
