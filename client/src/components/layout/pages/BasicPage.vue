@@ -1,46 +1,36 @@
 <template>
     <div class="fill-height d-flex flex-column">
-        <v-row class="flex-grow-0 flex-shrink-0">
-            <v-col>
-                <BreadCrumb :items="breadCrumb" />
-            </v-col>
-        </v-row>
-        <v-row class="flex-grow-0 flex-shrink-0">
-            <v-col>
-                <PageTitle
-                    class="pl-9"
-                    :name="title"
-                    :data-test-id="
-                        dataTestId ? `${dataTestId}-page-title` : undefined
-                    "
-                />
-            </v-col>
-        </v-row>
-        <v-row v-if="hasTop" class="flex-grow-0 flex-shrink-0">
-            <v-col>
-                <v-card elevation="2" rounded="lg">
-                    <slot name="PanelTop"></slot>
-                </v-card>
-            </v-col>
-        </v-row>
-        <v-row class="flex-grow-1 flex-shrink-1 overflow-y-auto">
-            <v-col
-                :cols="hasAside ? 9 : 12"
-                class="fill-height overflow-y-auto"
-            >
+        <div class="flex-grow-0 flex-shrink-0 pa-2">
+            <BreadCrumb :items="breadCrumb" />
+        </div>
+        <div class="flex-grow-0 flex-shrink-0 pa-2">
+            <PageTitle
+                :name="title"
+                :data-test-id="
+                    dataTestId ? `${dataTestId}-page-title` : undefined
+                "
+            />
+        </div>
+        <div v-if="hasTop" class="flex-grow-0 flex-shrink-0 pa-2">
+            <v-card elevation="2" rounded="lg">
+                <slot name="PanelTop"></slot>
+            </v-card>
+        </div>
+        <v-row class="flex-grow-1 flex-shrink-1" :style="{ minHeight: 0 }">
+            <v-col :cols="hasAside ? 9 : 12" class="h-100 pa-2">
                 <v-card
                     elevation="2"
                     rounded="lg"
-                    class="fill-height overflow-y-auto"
+                    class="h-100 overflow-y-auto"
                 >
                     <slot name="PanelMain"></slot>
                 </v-card>
             </v-col>
-            <v-col v-if="hasAside" cols="3" class="fill-height overflow-y-auto">
+            <v-col v-if="hasAside" cols="3" class="h-100 pa-2">
                 <v-card
                     elevation="2"
                     rounded="lg"
-                    class="fill-height overflow-y-auto"
+                    class="h-100 overflow-y-auto"
                 >
                     <slot name="PanelAside"></slot>
                 </v-card>
