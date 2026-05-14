@@ -129,9 +129,7 @@
                         @click="hideShowMetadataInfo()"
                     >
                     </v-btn>
-                    <h2 class="title-inherit-styling title-no-line-break">
-                        Details
-                    </h2>
+                    <h2 class="title-inherit-styling d-inline">Details</h2>
                 </template>
                 <v-card-text>
                     <v-table class="text-caption" density="comfortable">

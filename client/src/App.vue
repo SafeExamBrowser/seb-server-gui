@@ -29,10 +29,6 @@ onMounted(() => {
     font-weight: inherit;
 }
 
-.title-no-line-break {
-    display: inline;
-}
-
 .disabled-text-color {
     color: #aaaaaa;
 }
