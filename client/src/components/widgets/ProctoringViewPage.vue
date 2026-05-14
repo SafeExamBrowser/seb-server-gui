@@ -189,9 +189,7 @@
                         <thead>
                             <tr>
                                 <th class="text-left text-no-wrap">
-                                    <h3
-                                        class="title-inherit-styling text-subtitle-2"
-                                    >
+                                    <h3 class="text-subtitle-2">
                                         SEB Session Info
                                     </h3>
                                 </th>
@@ -211,9 +209,7 @@
                         <thead>
                             <tr>
                                 <th class="text-left text-no-wrap">
-                                    <h3
-                                        class="title-inherit-styling text-subtitle-2"
-                                    >
+                                    <h3 class="text-subtitle-2">
                                         Screenshot Metadata
                                     </h3>
                                 </th>

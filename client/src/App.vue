@@ -17,19 +17,3 @@ onMounted(() => {
 });
 // TODO @Andrei Dependencies
 </script>
-
-<style>
-.text-decoration-underline a:visited {
-    color: #0000ee !important;
-}
-
-.title-inherit-styling {
-    font-family: inherit;
-    font-size: inherit;
-    font-weight: inherit;
-}
-
-.disabled-text-color {
-    color: #aaaaaa;
-}
-</style>

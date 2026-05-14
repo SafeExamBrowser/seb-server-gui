@@ -36,10 +36,7 @@
                         <!------url and values------->
                         <v-row>
                             <!------url------->
-                            <v-col
-                                class="text-h7 text-decoration-underline"
-                                cols="3"
-                            >
+                            <v-col class="text-decoration-underline" cols="3">
                                 <a
                                     :href="
                                         quizImportStore.selectedQuiz

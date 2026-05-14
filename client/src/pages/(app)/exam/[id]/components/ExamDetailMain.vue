@@ -553,7 +553,7 @@
                                                                 GUIAction.EditScreenProctoring,
                                                                 examStore.selectedExam,
                                                             )
-                                                                ? 'disabled-text-color'
+                                                                ? 'text-disabled'
                                                                 : '',
                                                         ]"
                                                     >
@@ -602,7 +602,7 @@
                                                                 examStore.selectedExam,
                                                             )
                                                                 ? ''
-                                                                : 'disabled-text-color',
+                                                                : 'text-disabled',
                                                         ]"
                                                     >
                                                         {{
@@ -651,7 +651,7 @@
                                                                 examStore.selectedExam,
                                                             )
                                                                 ? ''
-                                                                : 'disabled-text-color',
+                                                                : 'text-disabled',
                                                         ]"
                                                     >
                                                         {{
@@ -700,7 +700,7 @@
                                                                 GUIAction.ArchiveExam,
                                                                 examStore.selectedExam,
                                                             )
-                                                                ? 'disabled-text-color'
+                                                                ? 'text-disabled'
                                                                 : '',
                                                         ]"
                                                     >

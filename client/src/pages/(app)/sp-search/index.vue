@@ -35,7 +35,7 @@
                 <!------------title and buttons------------->
                 <v-row>
                     <v-col align="left">
-                        <h2 class="title-inherit-styling text-h6">
+                        <h2 class="text-h6">
                             {{ $t("searchPage.title") }}
                         </h2>
                     </v-col>

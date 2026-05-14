@@ -9,7 +9,7 @@
                 >
                     <v-app-bar-title class="mb-16">
                         <h1
-                            class="title-inherit-styling text-h4"
+                            class="text-h4"
                             data-testid="navigationOverview-title-text"
                         >
                             {{ translate("titles.navigationOverview") }}
