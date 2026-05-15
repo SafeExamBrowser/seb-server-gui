@@ -22,7 +22,7 @@
 
     <v-row>
         <v-col>
-            <v-sheet class="rounded-lg pl-4 pt-3 pr-4" elevation="2">
+            <v-sheet class="rounded-lg pl-4 pt-3 pr-4 pb-3" elevation="2">
                 <v-row class="fill-height align-center">
                     <v-col>
                         <!------title and headers------->

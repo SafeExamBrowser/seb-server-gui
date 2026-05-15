@@ -18,7 +18,7 @@
 
     <v-row v-if="isInfoExpanded">
         <v-col>
-            <v-sheet class="rounded-lg pl-4 pt-3 pr-4" elevation="2">
+            <v-sheet class="rounded-lg pl-4 pt-3 pr-4 pb-3" elevation="2">
                 <!------------title row------------->
                 <v-row>
                     <v-col cols="4">
