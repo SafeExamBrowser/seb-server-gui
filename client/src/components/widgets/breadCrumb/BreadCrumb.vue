@@ -1,7 +1,7 @@
 <template>
     <nav
         aria-label="Breadcrumb"
-        class="d-flex align-center flex-wrap pl-5 mb-2 text-body-large"
+        class="d-flex align-center flex-wrap pl-5 text-body-large"
     >
         <v-hover v-slot="{ isHovering, props: hoverProps }">
             <RouterLink
