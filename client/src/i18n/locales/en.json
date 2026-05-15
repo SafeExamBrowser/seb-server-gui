@@ -245,12 +245,12 @@
         "steps": {
             "assessmentTool": {
                 "title": "Select Assessment Tool",
-                "subtitle": "Pick the LMS the exam will be imported from.",
-                "noToolsAvailable": "No active assessment tools available. Configure one before creating an exam.",
+                "subtitle": "Please select an assessment tool to continue.",
+                "noToolsAvailable": "No Assessment Tool",
                 "fields": {
                     "tool": {
                         "label": "Assessment Tool",
-                        "placeholder": "Select an assessment tool"
+                        "placeholder": "Select Assessment Tool"
                     }
                 }
             },
@@ -260,10 +260,10 @@
                 "fields": {
                     "search": {
                         "label": "Search by Name",
-                        "placeholder": "Exam name"
+                        "placeholder": "Exam Name"
                     },
                     "startDate": {
-                        "label": "Filter By Start Date",
+                        "label": "Filter By Date",
                         "placeholder": "dd.MM.yyyy"
                     }
                 },
@@ -280,27 +280,27 @@
             },
             "examTemplate": {
                 "title": "Choose Exam Template",
-                "subtitle": "Pick the template the exam should be based on.",
+                "subtitle": "Click on the Exam Template you want to use for the exam.",
                 "noDescription": "No description",
                 "openInfo": "Open template info"
             },
             "clientGroups": {
-                "title": "Select Groups",
-                "subtitle": "Choose which client groups to include. Groups are optional.",
+                "title": "Add Groups",
+                "subtitle": "Select or Remove Groups",
                 "noGroupsAvailable": "The selected exam template has no client groups."
             },
             "supervisors": {
                 "title": "Add Exam Supervisors",
-                "subtitle": "Select or remove Exam Supervisors."
+                "subtitle": "Select or remove Exam Supervisors"
             },
             "quitPassword": {
                 "title": "Set Quit Password",
                 "subtitle": "Set the quit password, otherwise a student can easily quit SEB.",
-                "warning": "This password should be kept confidential and shared only with exam supervisors.",
+                "warning": "This password should be kept confidential and shared only with exam supervisors",
                 "fields": {
                     "quitPassword": {
                         "label": "Quit Password",
-                        "placeholder": "Enter the quit password"
+                        "placeholder": "Quit Password"
                     }
                 }
             },
@@ -312,14 +312,6 @@
                 "sections": {
                     "assessmentTool": {
                         "title": "Assessment Tool"
-                    },
-                    "quiz": {
-                        "title": "Exam",
-                        "fields": {
-                            "name": { "label": "Name" },
-                            "start": { "label": "Start" },
-                            "end": { "label": "End" }
-                        }
                     },
                     "examTemplate": {
                         "title": "Exam Template",
