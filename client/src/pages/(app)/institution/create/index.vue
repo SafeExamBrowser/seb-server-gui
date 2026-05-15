@@ -5,7 +5,7 @@
     >
         <template #PanelMain>
             <HintText
-                text-identifier="institutions.createInstitutionPage.info.creationInfo"
+                text-identifier="institutions.hints.create"
                 class="px-6 py-2"
                 data-testid="createInstitution-form-infoText"
             />

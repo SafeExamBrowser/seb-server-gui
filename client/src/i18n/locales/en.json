@@ -670,51 +670,50 @@
                 "informationPart3": " ?"
             }
         },
-        "createAssessmentToolConnectionsPage": {
-            "info": {
-                "assessmentToolConnectionsCreationInfo": "Fill out the required * fields to create a new Assessment Tool Connection"
+        "hints": {
+            "create": "Fill out the required * fields to create a new Assessment Tool Connection",
+            "edit": "Edit the assessment tool connection details. Leave secrets empty to keep the existing values."
+        },
+        "fields": {
+            "institution": { "label": "Institution *" },
+            "name": { "label": "Name *" },
+            "type": { "label": "Type *" },
+            "serverAddress": {
+                "label": "Assessment Tool Server Address *",
+                "validation": "Must start with http:// or https://"
             },
-            "labels": {
-                "institutionLabel": "Institution *",
-                "nameLabel": "Name *",
-                "typeLabel": "Type*",
-                "assessmentToolServerAddressLabel": "Assessment Tool Server Address *",
-                "assessmentToolServerUsernameLabel": "Assessment Tool Server Username *",
-                "assessmentToolServerPasswordLabel": "Assessment Tool Server Password *",
-                "accessTokenLabel": "Access Token *",
-                "withProxyLabel": "With Proxy",
-                "withProxyArea": "Toggle proxy settings",
-                "proxyHostLabel": "Proxy Host *",
-                "proxyPortLabel": "Proxy Port *",
-                "proxyUsernameLabel": "Proxy Username *",
-                "proxyPasswordLabel": "Proxy Password *",
-                "authenticationMode": "Authentication Mode",
-                "clientCredentials": "Credentials",
-                "restApiToken": "Access Token"
+            "clientUsername": { "label": "Assessment Tool Server Username *" },
+            "clientPassword": { "label": "Assessment Tool Server Password *" },
+            "accessToken": { "label": "Access Token *" },
+            "withProxy": {
+                "label": "With Proxy",
+                "ariaLabel": "Toggle proxy settings"
             },
-            "placeholders": {
-                "proxyHost": "Enter proxy host",
-                "proxyPort": "Enter proxy port",
-                "proxyUsername": "Enter proxy username",
-                "proxyPassword": "Enter proxy password"
+            "proxyHost": {
+                "label": "Proxy Host *",
+                "placeholder": "Enter proxy host"
             },
-            "validation": {
-                "required": "This field is required",
-                "assessmentToolServerAddressLabel": "Must start with http:// or https://",
-                "invalidPort": "Invalid port, ex. 8080"
+            "proxyPort": {
+                "label": "Proxy Port *",
+                "placeholder": "Enter proxy port",
+                "validation": "Invalid port, ex. 8080"
+            },
+            "proxyUsername": {
+                "label": "Proxy Username *",
+                "placeholder": "Enter proxy username"
+            },
+            "proxyPassword": {
+                "label": "Proxy Password *",
+                "placeholder": "Enter proxy password"
             }
         },
-        "assessmentToolDetailAndEditPage": {
-            "buttons": {
-                "saveChanges": "Save Changes",
-                "revertChanges": "Revert Changes"
-            },
-            "validation": {
-                "required": "This field is required",
-                "assessmentToolServerAddressLabel": "Must start with http:// or https://",
-                "invalidPort": "Invalid port, ex. 8080",
-                "mustBeWithUrl": "Must start with http:// or https://"
-            }
+        "authMode": {
+            "label": "Authentication Mode",
+            "clientCredentials": "Credentials",
+            "restApiToken": "Access Token"
+        },
+        "validation": {
+            "required": "This field is required"
         },
         "lmsTypes": {
             "MOCKUP": "Testing",
@@ -931,25 +930,21 @@
                 "deactivateAction": "Deactivate"
             }
         },
-        "createInstitutionPage": {
-            "info": {
-                "creationInfo": "Fill the form to create a new institution."
-            }
-        },
-        "editInstitutionPage": {
-            "info": {
-                "editInfo": "Edit the institution details."
-            }
-        },
-        "institutionFormFields": {
-            "labels": {
-                "name": "Name *",
-                "urlSuffix": "URL Suffix",
-                "logoImage": "Logo Image"
+        "fields": {
+            "name": {
+                "label": "Name *"
             },
-            "validation": {
-                "urlSuffix": "URL suffix must be 3 to 45 characters or empty"
+            "urlSuffix": {
+                "label": "URL Suffix",
+                "validation": "URL suffix must be 3 to 45 characters or empty"
+            },
+            "logoImage": {
+                "label": "Logo Image"
             }
+        },
+        "hints": {
+            "create": "Fill the form to create a new institution.",
+            "edit": "Edit the institution details."
         }
     },
     "sebSettings": {
