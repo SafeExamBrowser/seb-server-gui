@@ -1,7 +1,7 @@
 <template>
-    <h4 class="text-primary text-title-large">
+    <div class="text-primary text-title-large">
         {{ name }}
-    </h4>
+    </div>
 </template>
 
 <script setup lang="ts">
