@@ -2,7 +2,7 @@
     <v-card v-if="argumentsTable">
         <v-toolbar color="transparent">
             <v-toolbar-title
-                class="text-h6"
+                class="text-title-large"
                 :text="
                     translate(
                         'sebSettings.applicationView.permittedProcess.editDialogTitle',
@@ -23,7 +23,7 @@
                 <v-col>
                     <v-form>
                         <!------------ active ------------->
-                        <v-row align="center">
+                        <v-row class="align-center">
                             <v-col>
                                 <v-tooltip
                                     activator="parent"
@@ -49,7 +49,7 @@
                             </v-col>
                         </v-row>
                         <!------------OS Type------------->
-                        <v-row align="center">
+                        <v-row class="align-center">
                             <v-col>
                                 <v-select
                                     v-model="props.permittedProcess!.os"
@@ -214,7 +214,7 @@
                         </v-row>
                         <!------------Arguments------------->
                         <v-row>
-                            <v-col class="text-subtitle-1">
+                            <v-col class="text-body-large">
                                 <v-row>
                                     <v-col>{{
                                         translate(
@@ -242,7 +242,7 @@
                         <v-row>
                             <v-col class="pt-0 pb-0">
                                 <v-data-table
-                                    class="rounded-lg elevation-4"
+                                    class="rounded-lg elevation-2"
                                     :headers="argumentsHeaders"
                                     hide-default-footer
                                     :items="argumentsTable"
@@ -309,7 +309,7 @@
                             </v-col>
                         </v-row>
                         <!------------ iconInTaskbar ------------->
-                        <v-row align="center">
+                        <v-row class="align-center">
                             <v-col class="pb-0">
                                 <v-tooltip
                                     activator="parent"
@@ -336,7 +336,7 @@
                             </v-col>
                         </v-row>
                         <!------------ autostart ------------->
-                        <v-row align="center">
+                        <v-row class="align-center">
                             <v-col class="pt-0 pb-0">
                                 <v-tooltip
                                     activator="parent"
@@ -361,7 +361,7 @@
                             </v-col>
                         </v-row>
                         <!------------ runInBackground ------------->
-                        <v-row align="center">
+                        <v-row class="align-center">
                             <v-col class="pt-0 pb-0">
                                 <v-tooltip
                                     activator="parent"
@@ -388,7 +388,7 @@
                             </v-col>
                         </v-row>
                         <!------------ allowManualStart ------------->
-                        <v-row align="center">
+                        <v-row class="align-center">
                             <v-col class="pt-0 pb-0">
                                 <v-tooltip
                                     activator="parent"
@@ -415,7 +415,7 @@
                             </v-col>
                         </v-row>
                         <!------------ allowUserToChooseApp ------------->
-                        <v-row align="center">
+                        <v-row class="align-center">
                             <v-col class="pt-0 pb-0">
                                 <v-checkbox-btn
                                     v-model="
@@ -432,7 +432,7 @@
                             </v-col>
                         </v-row>
                         <!------------ allowNetworkAccess ------------->
-                        <v-row align="center">
+                        <v-row class="align-center">
                             <v-col class="pt-0 pb-0">
                                 <v-tooltip
                                     activator="parent"
@@ -460,7 +460,7 @@
                             </v-col>
                         </v-row>
                         <!------------ strongKill ------------->
-                        <v-row align="center">
+                        <v-row class="align-center">
                             <v-col class="pt-0 pb-0">
                                 <v-tooltip
                                     activator="parent"
@@ -485,7 +485,7 @@
                             </v-col>
                         </v-row>
                         <!------------Buttons------------->
-                        <v-row align="center">
+                        <v-row class="align-center">
                             <v-col align="right">
                                 <v-btn
                                     color="black"

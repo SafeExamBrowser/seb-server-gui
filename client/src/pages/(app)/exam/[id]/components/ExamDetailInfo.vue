@@ -1,6 +1,6 @@
 <template>
     <!-- Breadcrumb and Title-->
-    <v-row dense>
+    <v-row density="compact">
         <v-col cols="12" md="10">
             <BreadCrumb
                 :items="[
@@ -14,7 +14,7 @@
         </v-col>
 
         <v-col class="pl-10" cols="12" md="10">
-            <div class="primary-text-color text-h4 font-weight-bold">
+            <div class="text-primary text-headline-large font-weight-bold">
                 {{ examStore.selectedExam?.quizName }}
             </div>
         </v-col>
@@ -22,25 +22,25 @@
 
     <v-row>
         <v-col>
-            <v-sheet class="rounded-lg pl-4 pt-3 pr-4" elevation="4">
-                <v-row align="center" class="fill-height">
+            <v-sheet class="rounded-lg pl-4 pt-3 pr-4" elevation="2">
+                <v-row class="fill-height align-center">
                     <v-col>
                         <!------title and headers------->
                         <v-row>
-                            <v-col class="text-subtitle-1" cols="3">
+                            <v-col class="text-body-large" cols="3">
                                 {{ translate("examDetail.info.url") }}
                             </v-col>
 
-                            <v-col class="text-subtitle-1" cols="3">
+                            <v-col class="text-body-large" cols="3">
                                 {{ translate("examDetail.info.start") }}
                             </v-col>
 
-                            <v-col class="text-subtitle-1" cols="3">
+                            <v-col class="text-body-large" cols="3">
                                 {{ translate("examDetail.info.end") }}
                             </v-col>
                             <v-spacer></v-spacer>
 
-                            <v-col class="text-subtitle-1" cols="2">
+                            <v-col class="text-body-large" cols="2">
                                 {{ translate("examDetail.info.typeStatus") }}
                             </v-col>
                         </v-row>
@@ -48,10 +48,7 @@
                         <!------url and values------->
                         <v-row>
                             <!------url------->
-                            <v-col
-                                class="text-h7 text-decoration-underline"
-                                cols="3"
-                            >
+                            <v-col class="text-decoration-underline" cols="3">
                                 <a
                                     :href="examStore.selectedExam?.startURL"
                                     target="_blank"
@@ -62,7 +59,7 @@
 
                             <!------start time------->
                             <v-col
-                                class="primary-text-color text-h6 font-weight-bold"
+                                class="text-primary text-title-large font-weight-bold"
                                 cols="3"
                             >
                                 {{
@@ -74,7 +71,7 @@
 
                             <!------end time------->
                             <v-col
-                                class="primary-text-color text-h6 font-weight-bold"
+                                class="text-primary text-title-large font-weight-bold"
                                 cols="3"
                             >
                                 <template

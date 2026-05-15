@@ -1,7 +1,7 @@
 <template>
     <div class="fill-height d-flex flex-column overflow-hidden">
         <div
-            class="text-white text-h5 font-weight-black ml-10 mt-5"
+            class="text-white text-headline-small font-weight-black ml-10 mt-5"
             data-testid="assessmentToolsEdit-page-title"
         >
             {{ translate("titles.settings") }}
@@ -27,14 +27,14 @@
                     data-testid="assessmentToolsEdit-header-row"
                 >
                     <div
-                        class="text-primary text-h5 font-weight-bold"
+                        class="text-primary text-headline-small font-weight-bold"
                         data-testid="assessmentToolsEdit-title-text"
                     >
                         {{ translate("titles.assessmentToolEdit") }}
                     </div>
 
                     <v-chip
-                        class="ma-2 text-subtitle-1 px-5 py-2 font-weight-bold"
+                        class="ma-2 text-body-large px-5 py-2 font-weight-bold"
                         :color="active ? 'success' : 'error'"
                         data-testid="assessmentToolsEdit-status-toggle"
                         :disabled="isSaving"
@@ -65,7 +65,7 @@
                     data-testid="assessmentToolsEdit-intro-row"
                 >
                     <div
-                        class="text-body-2 text-grey-darken-1"
+                        class="text-body-medium text-grey-darken-1"
                         data-testid="assessmentToolsEdit-intro-text"
                         style="visibility: hidden"
                     >
@@ -92,7 +92,7 @@
                                 <!-- First Section -->
                                 <v-row
                                     data-testid="assessmentToolsEdit-form-row-1"
-                                    dense
+                                    density="compact"
                                 >
                                     <v-col
                                         cols="8"
@@ -206,7 +206,7 @@
                                                 data-testid="assessmentToolsEdit-authMode-row"
                                             >
                                                 <label
-                                                    class="text-grey-darken-1 text-body-1 ml-1 mb-6 mt-3"
+                                                    class="text-grey-darken-1 text-body-large ml-1 mb-6 mt-3"
                                                     data-testid="assessmentToolsEdit-authMode-label"
                                                 >
                                                     {{
@@ -382,7 +382,7 @@
                                 <!-- Proxy toggle and expansion -->
                                 <v-row
                                     data-testid="assessmentToolsEdit-proxy-section"
-                                    dense
+                                    density="compact"
                                 >
                                     <v-divider
                                         class="custom-divider mx-1 my-2"
@@ -399,7 +399,7 @@
                                                 class="d-flex align-center justify-space-between w-100"
                                             >
                                                 <label
-                                                    class="text-grey-darken-1 text-body-1 ml-11"
+                                                    class="text-grey-darken-1 text-body-large ml-11"
                                                     data-testid="assessmentToolsEdit-proxy-label"
                                                 >
                                                     {{
@@ -430,7 +430,7 @@
 
                                 <v-row
                                     data-testid="assessmentToolsEdit-proxy-fields-row"
-                                    dense
+                                    density="compact"
                                 >
                                     <v-col>
                                         <!-- Animated expansion -->
@@ -1038,7 +1038,7 @@ watch(authMode, (mode) => {
 
 <style scoped>
 .nav-hover:hover .nav-link {
-    color: #215caf;
+    color: rgb(var(--v-theme-primary));
 }
 
 .custom-divider {
@@ -1070,7 +1070,7 @@ watch(authMode, (mode) => {
 }
 
 .custom-role-checkbox label {
-    color: #215caf;
+    color: rgb(var(--v-theme-primary));
     font-size: 16px;
     font-weight: 400;
     line-height: 24px;

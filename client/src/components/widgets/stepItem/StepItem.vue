@@ -3,7 +3,7 @@
         <div class="flex-grow-0 flex-shrink-0 mb-1">
             <SectionTitle :name="title" />
         </div>
-        <div class="flex-grow-0 flex-shrink-0 mb-8 text-body-2">
+        <div class="flex-grow-0 flex-shrink-0 mb-8 text-body-medium">
             {{ subtitle }}
         </div>
         <div

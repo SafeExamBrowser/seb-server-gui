@@ -12,8 +12,7 @@
 
             <!-- Main -->
             <v-row
-                align="stretch"
-                class="mt-5"
+                class="mt-5 align-stretch"
                 data-testid="homepageContainer-main-section"
             >
                 <HomePageMain

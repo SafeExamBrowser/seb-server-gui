@@ -2,7 +2,7 @@
     <v-card>
         <v-toolbar color="transparent">
             <v-toolbar-title
-                class="text-h6"
+                class="text-title-large"
                 :text="
                     translate(
                         'sebSettings.applicationView.prohibitedProcess.editDialogTitle',
@@ -23,7 +23,7 @@
                 <v-col>
                     <v-form>
                         <!------------ active ------------->
-                        <v-row align="center">
+                        <v-row class="align-center">
                             <v-col class="pt-0 pb-0 pl-0">
                                 <v-tooltip
                                     activator="parent"
@@ -48,7 +48,7 @@
                             </v-col>
                         </v-row>
                         <!------------OS Type------------->
-                        <v-row align="center">
+                        <v-row class="align-center">
                             <v-col>
                                 <v-select
                                     v-model="props.prohibitedProcess!.os"
@@ -191,7 +191,7 @@
                             </v-col>
                         </v-row>
                         <!------------ force quit ------------->
-                        <v-row align="center">
+                        <v-row class="align-center">
                             <v-col class="pt-0 pb-0 pl-0">
                                 <v-tooltip
                                     activator="parent"
@@ -218,7 +218,7 @@
                             </v-col>
                         </v-row>
                         <!------------ ignore AAC------------->
-                        <v-row align="center">
+                        <v-row class="align-center">
                             <v-col class="pt-0 pb-0 pl-0">
                                 <v-tooltip
                                     activator="parent"
@@ -246,7 +246,7 @@
                         </v-row>
 
                         <!------------Buttons------------->
-                        <v-row align="center">
+                        <v-row class="align-center">
                             <v-col align="right">
                                 <v-btn
                                     color="black"

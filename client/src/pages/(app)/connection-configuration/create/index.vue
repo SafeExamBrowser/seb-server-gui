@@ -40,9 +40,7 @@
                         <template #item="{ props, item }">
                             <v-list-item v-bind="props">
                                 <template #prepend>
-                                    <v-icon
-                                        v-if="item.raw.value === '__UPLOAD__'"
-                                    >
+                                    <v-icon v-if="item.value === '__UPLOAD__'">
                                         <FormDialog
                                             icon-activator="mdi-plus-circle-outline"
                                             color-activator="primary"
@@ -66,14 +64,14 @@
                                 </template>
                             </v-list-item>
                             <v-divider
-                                v-if="item.raw.value === '__UPLOAD__'"
+                                v-if="item.value === '__UPLOAD__'"
                                 class="my-1"
                             />
                         </template>
 
                         <template v-if="!hasRealCerts()" #append-item>
                             <div
-                                class="text-caption text-grey-darken-1 px-4 py-2"
+                                class="text-body-small text-grey-darken-1 px-4 py-2"
                                 data-testid="createConnectionConfiguration-noCertificates-label"
                             >
                                 {{
@@ -93,7 +91,7 @@
                         data-testid="createConnectionConfiguration-fallback-row"
                     >
                         <label
-                            class="text-grey-darken-1 text-body-1 ml-1"
+                            class="text-grey-darken-1 text-body-large ml-1"
                             data-testid="createConnectionConfiguration-fallback-label"
                         >
                             {{

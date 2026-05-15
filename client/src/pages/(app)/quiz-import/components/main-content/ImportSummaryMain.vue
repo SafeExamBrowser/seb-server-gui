@@ -1,12 +1,12 @@
 <template>
     <div class="h-100 w-100">
         <!-- Title and Description -->
-        <v-row dense>
+        <v-row density="compact">
             <v-col>
-                <div class="text-h6 font-weight-bold mb-1">
+                <div class="text-title-large font-weight-bold mb-1">
                     {{ translate("quizImportWizard.summaryMain.title") }}
                 </div>
-                <div class="mb-3 text-body-2">
+                <div class="mb-3 text-body-medium">
                     {{ translate("quizImportWizard.summaryMain.description") }}
                 </div>
             </v-col>
@@ -17,7 +17,7 @@
                 <!-- Template -->
                 <v-row>
                     <v-col>
-                        <div class="text-subtitle-1 font-weight-medium mb-2">
+                        <div class="text-body-large font-weight-medium mb-2">
                             {{
                                 translate(
                                     "quizImportWizard.summaryMain.examTemplate",
@@ -48,7 +48,7 @@
                 <!-- Client Groups -->
                 <v-row v-if="quizImportStore.selectedClientGroups.length">
                     <v-col>
-                        <div class="text-subtitle-1 font-weight-medium mb-2">
+                        <div class="text-body-large font-weight-medium mb-2">
                             {{
                                 translate(
                                     "quizImportWizard.summaryMain.clientGroups",
@@ -84,7 +84,7 @@
                 <!-- Supervisors -->
                 <v-row>
                     <v-col>
-                        <div class="text-subtitle-1 font-weight-medium mb-2">
+                        <div class="text-body-large font-weight-medium mb-2">
                             {{
                                 translate(
                                     "quizImportWizard.summaryMain.supervisors",
@@ -106,7 +106,7 @@
                 <!-- Quit Password -->
                 <v-row>
                     <v-col>
-                        <div class="text-subtitle-1 font-weight-medium mb-2">
+                        <div class="text-body-large font-weight-medium mb-2">
                             {{
                                 translate(
                                     "quizImportWizard.summaryMain.password",

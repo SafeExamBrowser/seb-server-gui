@@ -2,7 +2,7 @@
     <div class="fill-height d-flex flex-column overflow-hidden">
         <template v-if="!isProfile">
             <div
-                class="text-white text-h5 font-weight-black ml-10 mt-5"
+                class="text-white text-headline-small font-weight-black ml-10 mt-5"
                 data-testid="editUserAccount-page-title"
             >
                 {{ translate("titles.settings") }}
@@ -10,7 +10,7 @@
         </template>
         <template v-else>
             <div
-                class="text-white text-h5 font-weight-black ml-10 mt-5 invisible"
+                class="text-white text-headline-small font-weight-black ml-10 mt-5 invisible"
             >
                 {{ translate("titles.profileSettings") }}
             </div>
@@ -47,14 +47,14 @@
                         data-testid="editUserAccount-title-row"
                     >
                         <div
-                            class="text-primary text-h5 font-weight-bold"
+                            class="text-primary text-headline-small font-weight-bold"
                             data-testid="editUserAccount-form-title"
                         >
                             {{ props.title }}
                         </div>
 
                         <v-chip
-                            class="ma-2 text-subtitle-1 px-5 py-2 font-weight-bold"
+                            class="ma-2 text-body-large px-5 py-2 font-weight-bold"
                             :color="user?.active ? 'success' : 'error'"
                             data-testid="editUserAccount-status-chip"
                             label
@@ -85,7 +85,7 @@
                     data-testid="editUserAccount-info-row"
                 >
                     <div
-                        class="text-body-2 text-grey-darken-1"
+                        class="text-body-medium text-grey-darken-1"
                         data-testid="editUserAccount-info-text"
                     >
                         {{
@@ -96,7 +96,7 @@
                     </div>
 
                     <div
-                        class="text-body-2 text-grey-darken-1"
+                        class="text-body-medium text-grey-darken-1"
                         data-testid="editUserAccount-createdAt-text"
                     >
                         {{
@@ -118,7 +118,7 @@
                                 data-testid="editUserAccount-form"
                                 @keyup.enter="saveChanges()"
                             >
-                                <v-row dense>
+                                <v-row density="compact">
                                     <v-col>
                                         <!-- Institution (disabled) -->
                                         <v-col
@@ -307,13 +307,20 @@
                                                 class="rounded-circle d-flex align-center justify-center"
                                                 style="
                                                     background-color: transparent;
-                                                    border: 0.5rem solid #215caf;
+                                                    border: 0.5rem solid
+                                                        rgb(
+                                                            var(
+                                                                --v-theme-primary
+                                                            )
+                                                        );
                                                     width: 13rem;
                                                     height: 13rem;
                                                     min-width: 13rem;
                                                     font-weight: 600;
                                                     font-size: 4rem;
-                                                    color: #215caf;
+                                                    color: rgb(
+                                                        var(--v-theme-primary)
+                                                    );
                                                 "
                                             >
                                                 {{
@@ -409,7 +416,7 @@
     >
         <v-card class="pa-4">
             <v-card-title
-                class="text-h6 font-weight-bold mb-2 mt-2"
+                class="text-title-large font-weight-bold mb-2 mt-2"
                 data-testid="editUserAccount-changePassword-title"
             >
                 {{
@@ -945,7 +952,7 @@ async function changeUserPassword() {
 
 <style scoped>
 .nav-hover:hover .nav-link {
-    color: #215caf;
+    color: rgb(var(--v-theme-primary));
 }
 
 .custom-divider {
@@ -983,7 +990,7 @@ async function changeUserPassword() {
 }
 
 .custom-role-checkbox label {
-    color: #215caf;
+    color: rgb(var(--v-theme-primary));
     font-size: 16px;
     font-weight: 400;
     line-height: 24px;

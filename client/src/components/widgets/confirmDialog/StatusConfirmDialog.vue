@@ -1,7 +1,7 @@
 <template>
     <v-dialog v-model="model" max-width="420">
         <v-card rounded="lg">
-            <v-card-title class="text-h6 font-weight-bold">
+            <v-card-title class="text-title-large font-weight-bold">
                 {{
                     active
                         ? $t(

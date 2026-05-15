@@ -1,7 +1,7 @@
 <template>
-    <v-sheet class="rounded-lg pa-8" elevation="4">
+    <v-sheet class="rounded-lg pa-8" elevation="2">
         <!-- Filters & Search Row -->
-        <v-row align="center" class="mb-4">
+        <v-row class="mb-4 align-center">
             <v-col cols="4">
                 <v-tabs
                     v-model="statusFilter"

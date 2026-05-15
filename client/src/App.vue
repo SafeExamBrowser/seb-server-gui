@@ -15,32 +15,5 @@ import { useTokenRefresh } from "@/composables/useTokenRefresh";
 onMounted(() => {
     useTokenRefresh();
 });
+// TODO @Andrei Dependencies
 </script>
-
-<style>
-.text-decoration-underline a:visited {
-    color: #0000ee !important;
-}
-
-.title-inherit-styling {
-    font-family: inherit;
-    font-size: inherit;
-    font-weight: inherit;
-}
-
-.title-no-line-break {
-    display: inline;
-}
-
-.primary-text-color {
-    color: #215caf;
-}
-
-.secondary-text-color {
-    color: #f5a623;
-}
-
-.disabled-text-color {
-    color: #aaaaaa;
-}
-</style>

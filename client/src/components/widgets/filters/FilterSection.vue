@@ -2,7 +2,7 @@
     <div v-if="options.length > 0" :data-testid="`${dataTestId}-section`">
         <div class="d-flex align-center ga-2 mb-2">
             <span
-                class="text-caption text-medium-emphasis text-uppercase font-weight-medium"
+                class="text-body-small text-medium-emphasis text-uppercase font-weight-medium"
             >
                 {{ title }}
             </span>

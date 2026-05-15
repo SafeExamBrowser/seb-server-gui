@@ -2,7 +2,7 @@
     <v-card>
         <v-toolbar color="transparent">
             <v-toolbar-title
-                class="text-h6"
+                class="text-title-large"
                 :text="
                     translate(
                         'sebSettings.networkView.URLFilterRules.editDialogTitle',
@@ -23,7 +23,7 @@
                 <v-col>
                     <v-form>
                         <!------------ active ------------->
-                        <v-row align="center">
+                        <v-row class="align-center">
                             <v-col class="pt-0 pb-0 pl-0"
                                 ><v-checkbox-btn
                                     v-model="props.urlFilterRule!.active"
@@ -37,7 +37,7 @@
                             </v-col>
                         </v-row>
                         <!------------regex------------->
-                        <v-row align="center">
+                        <v-row class="align-center">
                             <v-col class="pt-0 pb-0 pl-0"
                                 ><v-checkbox-btn
                                     v-model="props.urlFilterRule!.regex"
@@ -69,7 +69,7 @@
                             </v-col>
                         </v-row>
                         <!------------Action------------->
-                        <v-row align="center">
+                        <v-row class="align-center">
                             <v-col>
                                 <v-select
                                     v-model="props.urlFilterRule!.action"
@@ -89,7 +89,7 @@
                         </v-row>
 
                         <!------------Buttons------------->
-                        <v-row align="center">
+                        <v-row class="align-center">
                             <v-col align="right">
                                 <v-btn
                                     color="black"

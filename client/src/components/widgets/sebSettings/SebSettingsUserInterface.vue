@@ -4,7 +4,7 @@
         :errors="errorSebSettingsView"
     >
         <v-row v-if="singleValues">
-            <v-col class="text-subtitle-1">
+            <v-col class="text-body-large">
                 <SettingsTitle label="sebSettings.userView.view_mode.title" />
                 <v-row>
                     <RadioSetting
@@ -166,7 +166,7 @@
                 </v-row>
             </v-col>
 
-            <v-col class="text-subtitle-1">
+            <v-col class="text-body-large">
                 <SettingsTitle label="sebSettings.userView.audio.title" />
                 <v-row>
                     <CheckboxSetting

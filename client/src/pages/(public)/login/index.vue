@@ -17,7 +17,7 @@
                     />
                 </div>
                 <div class="d-flex ml-15 mr-15 mt-5 justify-center">
-                    <div class="text-h6" data-testid="login-title">
+                    <div class="text-title-large" data-testid="login-title">
                         {{ translate("loginPage.title") }}
                     </div>
                 </div>

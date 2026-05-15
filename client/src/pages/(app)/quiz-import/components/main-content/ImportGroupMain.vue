@@ -1,19 +1,19 @@
 <template>
     <div class="h-100 w-100">
         <!-- Title + description -->
-        <v-row dense>
+        <v-row density="compact">
             <v-col>
-                <div class="text-h6 font-weight-bold mb-1">
+                <div class="text-title-large font-weight-bold mb-1">
                     {{ translate("quizImportWizard.groupMain.title") }}
                 </div>
-                <div class="mb-3 text-body-2">
+                <div class="mb-3 text-body-medium">
                     {{ translate("quizImportWizard.groupMain.description") }}
                 </div>
             </v-col>
         </v-row>
 
         <!-- Search + cancel -->
-        <v-row align="center">
+        <v-row class="align-center">
             <v-col cols="6">
                 <v-text-field
                     v-model="searchInput"
@@ -56,7 +56,7 @@
         <v-row>
             <!-- Available Groups -->
             <v-col cols="6">
-                <div class="text-subtitle-1 font-weight-medium">
+                <div class="text-body-large font-weight-medium">
                     {{
                         translate("quizImportWizard.groupMain.availableGroups")
                     }}
@@ -143,7 +143,7 @@
 
             <!-- Selected Groups -->
             <v-col cols="6">
-                <div class="text-subtitle-1 font-weight-medium">
+                <div class="text-body-large font-weight-medium">
                     {{ translate("quizImportWizard.groupMain.selectedGroups") }}
                 </div>
 
@@ -366,7 +366,7 @@ function getTypeDetail(g: ClientGroup): string {
     font-weight: 500;
 }
 
-.supervisor-row-content .text-caption {
+.supervisor-row-content .text-body-small {
     font-size: 12px;
     line-height: 16px;
     color: #6b6b6b;

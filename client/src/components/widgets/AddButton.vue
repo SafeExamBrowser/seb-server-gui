@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex justify-end mx-6 mt-6">
+    <div class="d-flex justify-end mx-6">
         <v-btn
             :active="false"
             class="text-none"
@@ -11,7 +11,7 @@
         >
             <div class="d-flex align-center ga-2">
                 <span
-                    class="text-h6 font-weight-medium"
+                    class="text-title-large font-weight-medium"
                     style="letter-spacing: normal"
                 >
                     {{ $t("general.addButton") }}

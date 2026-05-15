@@ -29,18 +29,18 @@
 
                     <div>
                         <div
-                            class="text-body-2 font-weight-bold text-grey-darken-1"
+                            class="text-body-medium font-weight-bold text-grey-darken-1"
                         >
                             {{ translate("monitoringOverview.ask.askKey") }}
                         </div>
-                        <div class="font-weight-bold text-body-1">
+                        <div class="font-weight-bold text-body-large">
                             {{ translate("monitoringOverview.ask.askKeyInfo") }}
                         </div>
                     </div>
                 </div>
 
                 <v-avatar color="#bdbdbd" size="45">
-                    <span class="text-white text-subtitle-1 font-weight-bold">
+                    <span class="text-white text-body-large font-weight-bold">
                         {{ askKeyCount }}
                     </span>
                 </v-avatar>

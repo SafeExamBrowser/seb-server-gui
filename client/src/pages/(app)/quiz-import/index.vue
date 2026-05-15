@@ -1,12 +1,12 @@
 <template>
     <!-- Breadcrumb & Title -->
-    <v-row dense>
+    <v-row density="compact">
         <v-col cols="12" md="10">
             <BreadCrumb :items="[{ label: translate('titles.quizImport') }]" />
         </v-col>
 
         <v-col class="pl-10 mb-7" cols="12" md="10">
-            <div class="primary-text-color text-h4 font-weight-bold">
+            <div class="text-primary text-headline-large font-weight-bold">
                 {{ translate("titles.quizImport") }}
             </div>
         </v-col>
@@ -55,7 +55,7 @@
             <v-col class="d-flex flex-column" cols="9">
                 <v-card
                     class="d-flex flex-column rounded-lg"
-                    elevation="4"
+                    elevation="2"
                     style="min-height: 63vh"
                 >
                     <v-sheet
@@ -77,7 +77,7 @@
             <v-col class="d-flex flex-column" cols="3">
                 <v-card
                     class="d-flex flex-column rounded-lg"
-                    elevation="4"
+                    elevation="2"
                     style="min-height: 100%"
                 >
                     <v-stepper-vertical
@@ -371,7 +371,7 @@ function handleStepperNext(index: number, next: () => void) {
 }
 
 .link-color {
-    color: #215caf;
+    color: rgb(var(--v-theme-primary));
     cursor: pointer;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
     <v-row>
         <v-col>
-            <v-sheet class="rounded-lg" elevation="4" title="Search">
+            <v-sheet class="rounded-lg" elevation="2" title="Search">
                 <SearchForm
                     @close-all-panels="closeAllPanels"
                     @search-sessions="searchSessions"
@@ -15,11 +15,11 @@
         <v-col v-if="noResutsFound">
             <v-sheet
                 class="rounded-lg pa-4"
-                elevation="4"
+                elevation="2"
                 title="No results match your search criteria"
             >
                 <v-row>
-                    <v-col align="left" class="text-h6">
+                    <v-col align="left" class="text-title-large">
                         No results match your search criteria
                     </v-col>
                 </v-row>
@@ -29,13 +29,13 @@
         <v-col v-else>
             <v-sheet
                 class="rounded-lg pa-4"
-                elevation="4"
+                elevation="2"
                 :title="$t('searchPage.title')"
             >
                 <!------------title and buttons------------->
                 <v-row>
                     <v-col align="left">
-                        <h2 class="title-inherit-styling text-h6">
+                        <h2 class="text-title-large">
                             {{ $t("searchPage.title") }}
                         </h2>
                     </v-col>

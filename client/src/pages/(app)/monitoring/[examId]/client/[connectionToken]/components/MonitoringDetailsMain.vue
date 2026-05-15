@@ -4,14 +4,17 @@
         v-if="raiseHandNotification != null"
         class="rounded-lg pa-4 raise-hand-row mb-1 ml-4 mr-4"
         elevation="4"
-        style="background-color: #fffffe; border: 2px solid #215caf"
+        style="
+            background-color: #fffffe;
+            border: 2px solid rgb(var(--v-theme-primary));
+        "
     >
-        <v-row align="center" justify="center">
+        <v-row class="align-center justify-center">
             <v-col cols="1">
                 <v-icon
                     class="ml-5"
                     icon="mdi-hand-back-right"
-                    style="color: #215caf"
+                    style="color: rgb(var(--v-theme-primary))"
                 ></v-icon>
             </v-col>
             <v-col>
@@ -42,13 +45,16 @@
                     :key="message.id"
                     class="rounded-lg pa-4 message-card ml-4 mr-4"
                     elevation="4"
-                    style="background-color: #fffffe; border: 2px solid #215caf"
+                    style="
+                        background-color: #fffffe;
+                        border: 2px solid rgb(var(--v-theme-primary));
+                    "
                 >
-                    <v-row align="center" justify="center">
+                    <v-row class="align-center justify-center">
                         <v-col cols="1">
                             <v-icon
                                 icon="ml-5 mdi-monitor-lock"
-                                style="color: #215caf"
+                                style="color: rgb(var(--v-theme-primary))"
                             ></v-icon>
                         </v-col>
                         <v-col>

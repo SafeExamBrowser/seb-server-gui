@@ -31,7 +31,7 @@
                     class="d-flex flex-wrap align-center justify-center justify-md-end ga-3"
                 >
                     <span
-                        class="text-body-2 text-medium-emphasis font-weight-medium text-no-wrap"
+                        class="text-body-medium text-medium-emphasis font-weight-medium text-no-wrap"
                     >
                         {{ $t("general.itemsPerPage") }}
                     </span>
@@ -47,7 +47,7 @@
                         density="compact"
                         rounded="lg"
                         hide-details
-                        class="text-body-2 font-weight-semibold"
+                        class="text-body-medium font-weight-semibold"
                         :data-testid="`${dataTestId}-items-per-page`"
                         @update:model-value="
                             emit('update:items-per-page', $event)

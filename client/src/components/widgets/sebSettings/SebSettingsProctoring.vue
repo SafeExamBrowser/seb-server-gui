@@ -3,7 +3,7 @@
         :loading="loadingSebSettingsView"
         :errors="errorSebSettingsView"
     >
-        <v-col v-if="singleValues" class="text-subtitle-1">
+        <v-col v-if="singleValues" class="text-body-large">
             <SettingsTitle
                 label="sebSettings.proctoring.screenProctoring.title"
                 :tooltip="false"

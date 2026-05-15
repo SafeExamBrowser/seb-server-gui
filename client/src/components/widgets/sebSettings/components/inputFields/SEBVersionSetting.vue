@@ -3,7 +3,6 @@
         <v-textarea
             v-model="sebAllowedVersions"
             density="compact"
-            multi-line
             :rules="[allowedVersionRule]"
             validate-on="eager"
             :label="showLabel ? translate(label) : ''"

@@ -7,7 +7,7 @@
         "
     >
         <template v-if="isDetails">
-            <div class="text-h6 font-weight-bold">
+            <div class="text-title-large font-weight-bold">
                 {{ getText() }}
             </div>
             {{ errorStore.errorProps.details }}

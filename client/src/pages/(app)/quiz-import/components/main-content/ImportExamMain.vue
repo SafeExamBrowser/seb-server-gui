@@ -2,10 +2,10 @@
     <div class="h-100 w-100">
         <v-row>
             <v-col>
-                <div class="text-h6 font-weight-bold mb-1">
+                <div class="text-title-large font-weight-bold mb-1">
                     {{ translate("quizImportWizard.examMain.title") }}
                 </div>
-                <div class="mb-10 text-body-2">
+                <div class="mb-10 text-body-medium">
                     {{ translate("quizImportWizard.examMain.description") }}
                 </div>
 
@@ -13,9 +13,9 @@
                     @keyup.enter="loadExamItemsCaller()"
                     @keyup.esc="clearForm()"
                 >
-                    <v-row align="center" class="mt-3" dense>
+                    <v-row class="mt-3 align-center" density="compact">
                         <v-col cols="5" md="5">
-                            <div class="text-body-2">
+                            <div class="text-body-medium">
                                 {{
                                     translate(
                                         "quizImportWizard.examMain.searchName",
@@ -24,7 +24,7 @@
                             </div>
                         </v-col>
                         <v-col cols="3" md="3">
-                            <div class="text-body-2 ml-3">
+                            <div class="text-body-medium ml-3">
                                 {{
                                     translate(
                                         "quizImportWizard.examMain.filterDate",
@@ -35,7 +35,7 @@
                         <v-spacer></v-spacer>
                     </v-row>
 
-                    <v-row align="center" class="mb-6" dense>
+                    <v-row class="mb-6 align-center" density="compact">
                         <!-- Search -->
                         <v-col cols="5" md="5">
                             <v-text-field

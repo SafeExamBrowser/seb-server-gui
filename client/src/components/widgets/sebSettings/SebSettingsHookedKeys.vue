@@ -4,7 +4,7 @@
         :errors="errorSebSettingsView"
     >
         <v-row v-if="singleValues">
-            <v-col class="text-subtitle-1">
+            <v-col class="text-body-large">
                 <SettingsTitle
                     label="sebSettings.hotKeys.title"
                     :tooltip="true"
@@ -191,7 +191,7 @@
                 </v-row>
             </v-col>
 
-            <v-col class="text-subtitle-1"> </v-col>
+            <v-col class="text-body-large"> </v-col>
         </v-row>
     </LoadingFallbackComponent>
 </template>

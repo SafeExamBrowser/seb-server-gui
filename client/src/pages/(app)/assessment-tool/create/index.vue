@@ -29,7 +29,7 @@
                         data-testid="createAssessmentTool-authMode-row"
                     >
                         <label
-                            class="text-grey-darken-1 text-body-1 ml-1"
+                            class="text-grey-darken-1 text-body-large ml-1"
                             data-testid="createAssessmentTool-authMode-label"
                         >
                             {{
@@ -81,7 +81,7 @@
                         data-testid="createAssessmentTool-proxy-row"
                     >
                         <label
-                            class="text-grey-darken-1 text-body-1 ml-1"
+                            class="text-grey-darken-1 text-body-large ml-1"
                             data-testid="createAssessmentTool-proxy-label"
                         >
                             {{
