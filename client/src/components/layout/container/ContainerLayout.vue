@@ -27,7 +27,7 @@
 
             <v-card
                 class="flex-1-1-0 rounded-lg overflow-y-auto"
-                :class="isPageBlue ? '' : 'pa-6'"
+                :class="isPageBlue ? '' : 'pt-3 pl-4 pr-3 pb-3'"
                 :color="isPageBlue ? 'primary' : undefined"
                 :data-testid="`${pageTestId}-page-container`"
                 elevation="1"

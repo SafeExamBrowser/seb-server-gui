@@ -14,7 +14,8 @@
                 <tr>
                     <td class="px-0">
                         <button
-                            class="d-flex w-100 h-100 align-center px-4"
+                            type="button"
+                            class="d-flex w-100 h-100 bg-transparent border-0 align-center px-4 cursor-pointer"
                             @click="handleSupervisorClick(item)"
                         >
                             <span
