@@ -65,7 +65,7 @@ const actionCards: ActionCard[] = [
     {
         testIdPrefix: "prepare-exam",
         titleKey: "homePage.prepareExam",
-        route: typedTo({ name: "/(app)/quiz-import/" }),
+        route: typedTo({ name: "/(app)/exam/create/" }),
     },
     {
         testIdPrefix: "monitor-exam",

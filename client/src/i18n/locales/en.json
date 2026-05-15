@@ -151,96 +151,6 @@
         "screenProctoring": "Screen Proctoring",
         "open": "Open"
     },
-    "quizImportWizard": {
-        "warning": {
-            "title": "No Assessment Tool"
-        },
-        "steps": {
-            "selectAssessmentTool": "Select Assessment Tool",
-            "selectExam": "Select Exam",
-            "chooseTemplate": "Choose Exam Template",
-            "selectGroup": "Select Groups",
-            "addSupervisors": "Add Exam Supervisor",
-            "quitPassword": "Set Quit Password",
-            "configurationSummary": "Configuration Summary",
-            "previousStep": "Previous Step",
-            "nextStep": "Next Step"
-        },
-        "genericInfo": {
-            "start": "Start",
-            "end": "End",
-            "description": "Description"
-        },
-        "assessmentTool": {
-            "title": "Select Assessment Tool",
-            "description": "Please select an assessment tool to continue."
-        },
-        "examInfo": {
-            "title": "Select Exam",
-            "search": "Search:",
-            "searchPlaceholder": "Search Exams",
-            "start": "Start:"
-        },
-        "examMain": {
-            "title": "Select Exam",
-            "description": "Search and select the exam you want to prepare.",
-            "tableHeaderName": "Name",
-            "tableHeaderStart": "Start",
-            "tableHeaderEnd": "End",
-            "examName": "Exam Name",
-            "filterDate": "Filter By Date",
-            "searchName": "Search by Name"
-        },
-        "templateMain": {
-            "title": "Choose Exam Template",
-            "description": "Click on the Exam Template you want to use for the exam.",
-            "templateInfo": "Open template info",
-            "templateSelect": "Select template"
-        },
-        "groupMain": {
-            "title": "Add Groups",
-            "search": "Search",
-            "selectedGroups": "Selected Groups",
-            "availableGroups": "Available Groups",
-            "description": "Select or Remove Groups",
-            "tableHeaderName": "Name",
-            "tableHeaderScreenProctoring": "Screen Proctoring",
-            "spAvailable": "Screen Proctoring enabled"
-        },
-        "supervisorsMain": {
-            "searchButton": "Search",
-            "cancelButton": "Cancel",
-            "title": "Add Exam Supervisors",
-            "description": "Select or remove Exam Supervisors",
-            "search": "Search",
-            "availableSupervisors": "Available Supervisors",
-            "selectedSupervisors": "Selected Supervisors",
-            "tableHeaderName": "Name"
-        },
-        "passwordMain": {
-            "password": "Password",
-            "title": "Set Quit Password",
-            "quitPassword": "Quit Password",
-            "description": "Set the quit password, otherwise a student can easily quit SEB.",
-            "warning": "This password should be kept confidential and shared only with exam supervisors"
-        },
-        "summaryMain": {
-            "title": "Configuration Summary",
-            "description": "Review your configuration before saving.",
-            "configurationSummary": "Configuration Summary",
-            "examTemplate": "Exam Template",
-            "templateName": "Template Name:",
-            "clientGroups": "Groups",
-            "supervisors": "Exam Supervisors",
-            "password": "Quit Password",
-            "clientGroup": "Client Group"
-        },
-        "buttons": {
-            "back": "back",
-            "next": "next",
-            "save": "save"
-        }
-    },
     "createExam": {
         "steps": {
             "assessmentTool": {
@@ -2045,8 +1955,7 @@
         "monitoringDetail": "Monitoring Detail",
         "overview": "Overview",
         "clientList": "Client List",
-        "quizImport": "Prepare Exam",
-        "createExam": "Create Exam",
+        "createExam": "Prepare Exam",
         "createTemplateExam": "Create Exam Template",
         "addExamWithURL": "Prepare Exam With URL",
         "followUp": "Follow Up",
