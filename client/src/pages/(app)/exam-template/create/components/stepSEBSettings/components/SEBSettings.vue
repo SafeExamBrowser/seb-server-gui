@@ -1,5 +1,5 @@
 <template>
-    <v-container class="ma-0 pa-0 pb-3 border-b-md">
+    <v-container fluid class="ma-0 pa-0 pb-3 border-b-md">
         <v-row class="align-center mt-4 mx-6">
             <v-col class="pa-0">
                 <div
