@@ -96,7 +96,7 @@
                     variant="text"
                     color="primary"
                     size="small"
-                    class="text-none align-self-start"
+                    class="text-body-small align-self-start"
                     :data-testid="`${dataTestId}-toggle-filters-button`"
                     @click="expanded = !expanded"
                 >
