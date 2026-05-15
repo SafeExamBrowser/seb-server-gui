@@ -64,6 +64,11 @@ export function buildPreparationNavigationItems(
             testId: `${testIdPrefix}-quizImport-link`,
         },
         {
+            label: translate("titles.createExam"),
+            to: typedTo({ name: "/(app)/exam/create/" }),
+            testId: `${testIdPrefix}-createExam-link`,
+        },
+        {
             label: translate("titles.addExamWithURL"),
             testId: `${testIdPrefix}-addExamWithURL-text`,
         },

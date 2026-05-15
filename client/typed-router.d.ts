@@ -50,6 +50,7 @@ declare module 'vue-router/auto-routes' {
       | '/(app)/exam-template/create/'
       | '/(app)/exam/'
       | '/(app)/exam/[id]/'
+      | '/(app)/exam/create/'
       | '/(app)/gallery_[uuid]_[examId]/'
       | '/(app)/institution/'
       | '/(app)/institution/[id]/'
@@ -143,6 +144,13 @@ declare module 'vue-router/auto-routes' {
       '/exam/:id',
       { id: ParamValue<true> },
       { id: ParamValue<false> },
+      | never
+    >,
+    '/(app)/exam/create/': RouteRecordInfo<
+      '/(app)/exam/create/',
+      '/exam/create',
+      Record<never, never>,
+      Record<never, never>,
       | never
     >,
     '/(app)/exam-template/': RouteRecordInfo<
@@ -337,6 +345,7 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/exam-template/create/'
         | '/(app)/exam/'
         | '/(app)/exam/[id]/'
+        | '/(app)/exam/create/'
         | '/(app)/gallery_[uuid]_[examId]/'
         | '/(app)/institution/'
         | '/(app)/institution/[id]/'
@@ -420,6 +429,12 @@ declare module 'vue-router/auto-routes' {
     'src/pages/(app)/exam/[id]/index.vue': {
       routes:
         | '/(app)/exam/[id]/'
+      views:
+        | never
+    }
+    'src/pages/(app)/exam/create/index.vue': {
+      routes:
+        | '/(app)/exam/create/'
       views:
         | never
     }

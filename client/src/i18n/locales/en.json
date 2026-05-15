@@ -63,6 +63,8 @@
         "noData": "No Data Available",
         "loading": "Loading",
         "view": "View",
+        "showPassword": "Show password",
+        "hidePassword": "Hide password",
         "true": "Yes",
         "false": "No",
         "itemsPerPage": "Items Per Page",
@@ -237,6 +239,113 @@
             "back": "back",
             "next": "next",
             "save": "save"
+        }
+    },
+    "createExam": {
+        "steps": {
+            "assessmentTool": {
+                "title": "Select Assessment Tool",
+                "subtitle": "Pick the LMS the exam will be imported from.",
+                "noToolsAvailable": "No active assessment tools available. Configure one before creating an exam.",
+                "fields": {
+                    "tool": {
+                        "label": "Assessment Tool",
+                        "placeholder": "Select an assessment tool"
+                    }
+                }
+            },
+            "quiz": {
+                "title": "Select Exam",
+                "subtitle": "Search and select the exam you want to prepare.",
+                "fields": {
+                    "search": {
+                        "label": "Search by Name",
+                        "placeholder": "Exam name"
+                    },
+                    "startDate": {
+                        "label": "Filter By Start Date",
+                        "placeholder": "dd.MM.yyyy"
+                    }
+                },
+                "tableHeaders": {
+                    "name": "Name",
+                    "start": "Start",
+                    "end": "End"
+                },
+                "preview": {
+                    "start": "Start",
+                    "end": "End",
+                    "startUrl": "Start URL"
+                }
+            },
+            "examTemplate": {
+                "title": "Choose Exam Template",
+                "subtitle": "Pick the template the exam should be based on.",
+                "noDescription": "No description",
+                "openInfo": "Open template info"
+            },
+            "clientGroups": {
+                "title": "Select Groups",
+                "subtitle": "Choose which client groups to include. Groups are optional.",
+                "noGroupsAvailable": "The selected exam template has no client groups."
+            },
+            "supervisors": {
+                "title": "Add Exam Supervisors",
+                "subtitle": "Select or remove Exam Supervisors."
+            },
+            "quitPassword": {
+                "title": "Set Quit Password",
+                "subtitle": "Set the quit password, otherwise a student can easily quit SEB.",
+                "warning": "This password should be kept confidential and shared only with exam supervisors.",
+                "fields": {
+                    "quitPassword": {
+                        "label": "Quit Password",
+                        "placeholder": "Enter the quit password"
+                    }
+                }
+            },
+            "summary": {
+                "title": "Configuration Summary",
+                "subtitle": "Review your configuration before saving.",
+                "emptyValue": "No data",
+                "notFoundValue": "Not found",
+                "sections": {
+                    "assessmentTool": {
+                        "title": "Assessment Tool"
+                    },
+                    "quiz": {
+                        "title": "Exam",
+                        "fields": {
+                            "name": { "label": "Name" },
+                            "start": { "label": "Start" },
+                            "end": { "label": "End" }
+                        }
+                    },
+                    "examTemplate": {
+                        "title": "Exam Template",
+                        "fields": {
+                            "name": { "label": "Template Name" },
+                            "description": { "label": "Description" }
+                        }
+                    },
+                    "clientGroups": {
+                        "title": "Groups",
+                        "fields": {
+                            "name": { "label": "Name" },
+                            "type": { "label": "Type" }
+                        }
+                    },
+                    "supervisors": {
+                        "title": "Exam Supervisors",
+                        "fields": {
+                            "user": { "label": "User" }
+                        }
+                    },
+                    "quitPassword": {
+                        "title": "Quit Password"
+                    }
+                }
+            }
         }
     },
     "createTemplateExam": {
@@ -1945,6 +2054,7 @@
         "overview": "Overview",
         "clientList": "Client List",
         "quizImport": "Prepare Exam",
+        "createExam": "Create Exam",
         "createTemplateExam": "Create Exam Template",
         "addExamWithURL": "Prepare Exam With URL",
         "followUp": "Follow Up",

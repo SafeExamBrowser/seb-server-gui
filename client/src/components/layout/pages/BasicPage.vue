@@ -11,13 +11,13 @@
                 "
             />
         </div>
-        <div v-if="hasTop" class="flex-grow-0 flex-shrink-0 pa-2">
+        <div v-if="$slots.PanelTop" class="flex-grow-0 flex-shrink-0 pa-2">
             <v-card elevation="2" rounded="lg">
                 <slot name="PanelTop"></slot>
             </v-card>
         </div>
         <v-row class="flex-grow-1 flex-shrink-1" :style="{ minHeight: 0 }">
-            <v-col :cols="hasAside ? 9 : 12" class="h-100 pa-2">
+            <v-col :cols="$slots.PanelAside ? 9 : 12" class="h-100 pa-2">
                 <v-card
                     elevation="2"
                     rounded="lg"
@@ -26,7 +26,7 @@
                     <slot name="PanelMain"></slot>
                 </v-card>
             </v-col>
-            <v-col v-if="hasAside" cols="3" class="h-100 pa-2">
+            <v-col v-if="$slots.PanelAside" cols="3" class="h-100 pa-2">
                 <v-card
                     elevation="2"
                     rounded="lg"
@@ -40,7 +40,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed, useSlots } from "vue";
 import PageTitle from "@/components/widgets/PageTitle.vue";
 import { BreadCrumbItem } from "@/components/widgets/breadCrumb/types";
 import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
@@ -53,8 +52,4 @@ withDefaults(
     }>(),
     { breadCrumb: undefined, dataTestId: undefined },
 );
-
-const slots = useSlots();
-const hasTop = computed(() => Boolean(slots.PanelTop));
-const hasAside = computed(() => Boolean(slots.PanelAside));
 </script>
