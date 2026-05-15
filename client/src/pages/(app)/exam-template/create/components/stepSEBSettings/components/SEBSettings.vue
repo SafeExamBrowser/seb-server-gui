@@ -1,16 +1,16 @@
 <template>
     <v-container class="ma-0 pa-0 pb-3 border-b-md">
-        <v-row>
-            <v-col>
+        <v-row class="align-center mt-4 mx-6">
+            <v-col class="pa-0">
                 <div
-                    class="d-flex align-center mx-6 mt-6 cursor-pointer add-button-container"
+                    class="d-flex align-center cursor-pointer add-button-container"
                 >
                     <SectionSubtitle
                         :name="$t('createTemplateExam.steps.seb-settings.name')"
                     />
                 </div>
             </v-col>
-            <v-col cols="auto" class="pt-8">
+            <v-col cols="auto" class="pa-0">
                 <FormDialog
                     icon-activator="mdi-plus-circle-outline"
                     color-activator="primary"
