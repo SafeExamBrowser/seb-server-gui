@@ -45,17 +45,17 @@ import { useRouter } from "vue-router";
 const store = useCreateExamStore();
 const quizStore = useStepQuizStore();
 const router = useRouter();
-const { create: createExam, data: createdExam } = useCreateExam();
+const { create: createExam, data: createExamResult } = useCreateExam();
 
 watchEffect(() => {
-    if (!createdExam.value) {
+    if (!createExamResult.value) {
         return;
     }
-    const examId = createdExam.value.id;
+    const { examId } = createExamResult.value;
     store.$reset();
     router.push({
         name: "/(app)/exam/[id]/",
-        params: { id: String(examId) },
+        params: { id: examId },
     });
 });
 

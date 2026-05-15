@@ -21,7 +21,9 @@ export const createExam = async (createExamPar: CreateExamPar): Promise<Exam> =>
         await apiService.postRequest({
             url: baseUrl,
             data: createExamPar,
-            options: { _authType: "seb" },
+            options: {
+                _authType: "seb",
+            },
         })
     ).data;
 
