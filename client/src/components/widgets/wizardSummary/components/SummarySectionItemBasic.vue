@@ -32,10 +32,33 @@
                     </template>
                 </div>
             </template>
+            <template v-else-if="item.value.type === 'password'">
+                <span class="d-inline-flex align-center ga-2">
+                    <span>{{
+                        passwordVisible
+                            ? item.value.value
+                            : "•".repeat(Math.min(item.value.value.length, 12))
+                    }}</span>
+                    <v-btn
+                        v-if="item.value.value.length > 0"
+                        :icon="passwordVisible ? 'mdi-eye-off' : 'mdi-eye'"
+                        density="comfortable"
+                        size="small"
+                        variant="text"
+                        :aria-label="
+                            passwordVisible
+                                ? $t('general.hidePassword')
+                                : $t('general.showPassword')
+                        "
+                        @click="passwordVisible = !passwordVisible"
+                    />
+                </span>
+            </template>
         </span>
     </div>
 </template>
 <script setup lang="ts">
+import { ref } from "vue";
 import { SummarySectionItem } from "@/components/widgets/wizardSummary/types";
 import ChipThreshold from "@/components/widgets/chipThreshold/ChipThreshold.vue";
 
@@ -43,4 +66,6 @@ defineProps<{
     item: SummarySectionItem & { type: "basic" };
     isFirst: boolean;
 }>();
+
+const passwordVisible = ref(false);
 </script>

@@ -50,6 +50,7 @@ declare module 'vue-router/auto-routes' {
       | '/(app)/exam-template/create/'
       | '/(app)/exam/'
       | '/(app)/exam/[id]/'
+      | '/(app)/exam/create/'
       | '/(app)/gallery_[uuid]_[examId]/'
       | '/(app)/institution/'
       | '/(app)/institution/[id]/'
@@ -59,7 +60,6 @@ declare module 'vue-router/auto-routes' {
       | '/(app)/monitoring/[examId]/client/'
       | '/(app)/monitoring/[examId]/client/[connectionToken]/'
       | '/(app)/navigation-overview/'
-      | '/(app)/quiz-import/'
       | '/(app)/sp-recording/[sessionId]/'
       | '/(app)/sp-recording/application-search/[sessionId]/'
       | '/(app)/sp-search/'
@@ -145,6 +145,13 @@ declare module 'vue-router/auto-routes' {
       { id: ParamValue<false> },
       | never
     >,
+    '/(app)/exam/create/': RouteRecordInfo<
+      '/(app)/exam/create/',
+      '/exam/create',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/(app)/exam-template/': RouteRecordInfo<
       '/(app)/exam-template/',
       '/exam-template',
@@ -225,13 +232,6 @@ declare module 'vue-router/auto-routes' {
     '/(app)/navigation-overview/': RouteRecordInfo<
       '/(app)/navigation-overview/',
       '/navigation-overview',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/(app)/quiz-import/': RouteRecordInfo<
-      '/(app)/quiz-import/',
-      '/quiz-import',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -337,6 +337,7 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/exam-template/create/'
         | '/(app)/exam/'
         | '/(app)/exam/[id]/'
+        | '/(app)/exam/create/'
         | '/(app)/gallery_[uuid]_[examId]/'
         | '/(app)/institution/'
         | '/(app)/institution/[id]/'
@@ -346,7 +347,6 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/monitoring/[examId]/client/'
         | '/(app)/monitoring/[examId]/client/[connectionToken]/'
         | '/(app)/navigation-overview/'
-        | '/(app)/quiz-import/'
         | '/(app)/sp-recording/[sessionId]/'
         | '/(app)/sp-recording/application-search/[sessionId]/'
         | '/(app)/sp-search/'
@@ -423,6 +423,12 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
+    'src/pages/(app)/exam/create/index.vue': {
+      routes:
+        | '/(app)/exam/create/'
+      views:
+        | never
+    }
     'src/pages/(app)/exam-template/index.vue': {
       routes:
         | '/(app)/exam-template/'
@@ -492,12 +498,6 @@ declare module 'vue-router/auto-routes' {
     'src/pages/(app)/navigation-overview/index.vue': {
       routes:
         | '/(app)/navigation-overview/'
-      views:
-        | never
-    }
-    'src/pages/(app)/quiz-import/index.vue': {
-      routes:
-        | '/(app)/quiz-import/'
       views:
         | never
     }

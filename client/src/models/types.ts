@@ -27,9 +27,3 @@ export type NavigationItem = {
     route: string;
     icon: string;
 };
-
-export type ImportWizardSteps = {
-    name: string;
-    value: number;
-    type?: string;
-};

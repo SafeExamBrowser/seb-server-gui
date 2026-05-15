@@ -12,6 +12,10 @@ type SummarySectionValueType =
     | {
           type: "thresholds";
           value: Threshold[];
+      }
+    | {
+          type: "password";
+          value: string;
       };
 
 export type SummarySectionItem = {

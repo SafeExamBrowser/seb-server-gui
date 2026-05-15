@@ -27,6 +27,7 @@ export const vuetify = createVuetify({
     theme: {
         defaultTheme: "light",
         themes: {
+            // TODO ANDREI checkout vuetify studio https://vuetifyjs.com/en/
             light: {
                 colors: {
                     primary: "#215CAF",

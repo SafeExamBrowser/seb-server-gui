@@ -1,0 +1,42 @@
+<template>
+    <StepItem
+        :title="$t('createExam.steps.supervisors.title')"
+        :subtitle="$t('createExam.steps.supervisors.subtitle')"
+        :manual-scroll-management="true"
+    >
+        <LoadingFallbackComponent :loading="loading" :errors="errors">
+            <SupervisorPicker
+                v-if="supervisors"
+                v-model="stepSupervisorsStore.selectedSupervisorIds"
+                :supervisors="supervisors"
+            />
+        </LoadingFallbackComponent>
+    </StepItem>
+</template>
+
+<script setup lang="ts">
+import { computed } from "vue";
+import { useI18n } from "vue-i18n";
+import { useStepSupervisorsStore } from "./composables/store/useStepSupervisorsStore.ts";
+import SupervisorPicker from "@/components/widgets/supervisorPicker/SupervisorPicker.vue";
+import { useSupervisors } from "@/composables/useSupervisors.ts";
+import StepItem from "@/components/widgets/stepItem/StepItem.vue";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+
+const { t } = useI18n();
+const stepSupervisorsStore = useStepSupervisorsStore();
+const { data: supervisors, loading, error: errorLoading } = useSupervisors();
+
+const errors = computed(() => {
+    if (loading.value) {
+        return undefined;
+    }
+
+    return [
+        errorLoading.value ? errorLoading.value : undefined,
+        supervisors.value && supervisors.value.length < 1
+            ? t("general.noData")
+            : undefined,
+    ].filter((error) => error !== undefined);
+});
+</script>
