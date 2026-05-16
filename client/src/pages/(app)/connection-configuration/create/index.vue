@@ -5,7 +5,7 @@
     >
         <template #PanelMain>
             <HintText
-                text-identifier="connectionConfigurations.createConnectionConfigurationPage.info.createConnectionConfigurationInfo"
+                text-identifier="connectionConfigurations.hints.create"
                 class="px-6 py-2"
                 data-testid="createConnectionConfiguration-info-text"
             />
@@ -18,7 +18,6 @@
                         data-testid="createConnectionConfiguration-main-form"
                     />
 
-                    <!-- Encrypt with certificate (custom select with upload) -->
                     <v-select
                         v-model="encryptWithCertificate"
                         data-testid="createConnectionConfiguration-encryptWithCertificate-select"
@@ -29,7 +28,7 @@
                         :items="certificateItems"
                         :label="
                             $t(
-                                'connectionConfigurations.createConnectionConfigurationPage.labels.encryptWithCertificate',
+                                'connectionConfigurations.fields.encryptWithCertificate.label',
                             )
                         "
                         :loading="certificatesLoading"
@@ -76,7 +75,7 @@
                             >
                                 {{
                                     $t(
-                                        "connectionConfigurations.createConnectionConfigurationPage.labels.noCertificatesUploadedYet",
+                                        "connectionConfigurations.hints.noCertificatesUploadedYet",
                                     )
                                 }}
                             </div>
@@ -85,7 +84,6 @@
 
                     <v-divider class="my-4" />
 
-                    <!-- Fallback toggle -->
                     <div
                         class="d-flex align-center justify-space-between mb-2"
                         data-testid="createConnectionConfiguration-fallback-row"
@@ -96,7 +94,7 @@
                         >
                             {{
                                 $t(
-                                    "connectionConfigurations.createConnectionConfigurationPage.labels.withFallback",
+                                    "connectionConfigurations.fields.withFallback.label",
                                 )
                             }}
                         </label>
@@ -104,7 +102,7 @@
                             v-model="withFallback"
                             :aria-label="
                                 $t(
-                                    'connectionConfigurations.createConnectionConfigurationPage.labels.withFallbackArea',
+                                    'connectionConfigurations.fields.withFallback.ariaLabel',
                                 )
                             "
                             color="primary"
@@ -130,7 +128,6 @@
                 </v-col>
             </v-row>
 
-            <!-- Action buttons -->
             <div class="d-flex justify-end ga-2 px-6 pb-4">
                 <CancelButton
                     data-testid="createConnectionConfiguration-cancel-button"
@@ -155,19 +152,19 @@
 import { ref } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
-import { useConnectionConfigurationFormFields } from "./composable/useConnectionConfigurationFormFields.ts";
+import { useConnectionConfigurationFormFields } from "@/pages/(app)/connection-configuration/composables/useConnectionConfigurationFormFields.ts";
 import { useMutation } from "@/composables/useMutation.ts";
 import { createConnectionConfiguration } from "@/services/seb-server/connectionConfigurationService.ts";
-import { useCertificates } from "./composable/api/useCertificates.ts";
+import { useCertificates } from "@/pages/(app)/connection-configuration/composables/api/useCertificates.ts";
 import type { CreateConnectionConfigurationPar } from "@/models/seb-server/connectionConfiguration.ts";
 import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
 import HintText from "@/components/widgets/HintText.vue";
 import FormDialog from "@/components/widgets/formDialog/FormDialog.vue";
-
 import { useRouter } from "vue-router";
-import { useCertificateCreateForm } from "../../certificate/composables/useCertificateCreateForm.ts";
-import { CertKey } from "../../certificate/types/types.ts";
+import { useCertificateCreateForm } from "@/pages/(app)/certificate/composables/useCertificateCreateForm.ts";
+import { CertKey } from "@/pages/(app)/certificate/types/types.ts";
+
 definePage({
     meta: {
         titleKey: "titles.createConnectionConfiguration",
@@ -175,6 +172,7 @@ definePage({
         isPageBlue: true,
     },
 });
+
 const router = useRouter();
 
 const {
@@ -211,11 +209,8 @@ const {
 const mainFormRef = ref<InstanceType<typeof FormBuilder>>();
 const fallbackFormRef = ref<InstanceType<typeof FormBuilder>>();
 
-const certDialog = ref(false);
-
 function handleCertChange(val: string | undefined) {
     if (val === "__UPLOAD__") {
-        certDialog.value = true;
         encryptWithCertificate.value = undefined;
     }
 }
@@ -230,7 +225,6 @@ const { getEmptyItem, getFormFields, handleUploadCertificate } =
 
 async function submit() {
     const mainResult = await mainFormRef.value?.validate();
-
     if (!mainResult?.valid) return;
 
     if (withFallback.value) {
@@ -240,7 +234,6 @@ async function submit() {
 
     const selectedPurpose = configurationPurpose.value;
     const selectedPingInterval = pingInterval.value;
-
     if (!selectedPurpose || selectedPingInterval == null) return;
 
     const toMs = (s: number) => Math.round(Number(s) * 1000);

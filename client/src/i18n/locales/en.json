@@ -584,55 +584,31 @@
                 "noPermissionEditUser": "You don't have the permissions to edit this user"
             }
         },
-        "createUserAccountPage": {
-            "title": "New User Account",
-            "labels": {
-                "institutionLabel": "Institution",
-                "usernameLabel": "Username",
-                "nameLabel": "Name",
-                "surnameLabel": "Last Name",
-                "emailLabel": "Email",
-                "timeZoneLabel": "Time Zone",
-                "passwordLabel": "Password",
-                "confirmPasswordLabel": "Confirm Password",
-                "selectRolesLabel": "User Role"
-            },
-            "info": {
-                "rolesSelectionInfo": "Please select at least one Role",
-                "accountCreationInfo": "Fill out the required * fields to create a new User Account"
-            },
-            "buttons": {
-                "createNewUser": "Create"
-            }
+        "fields": {
+            "institution": { "label": "Institution *" },
+            "username": { "label": "Username *" },
+            "name": { "label": "Name *" },
+            "surname": { "label": "Last Name *" },
+            "email": { "label": "Email" },
+            "timezone": { "label": "Time Zone *" },
+            "password": { "label": "Password *" },
+            "confirmPassword": { "label": "Confirm Password *" },
+            "role": { "label": "User Role *" },
+            "passwordPlaceholder": { "label": "Password" }
         },
-        "userAccountDetailAndEditPage": {
-            "changePasswordTitle": "Change User Password",
-            "labels": {
-                "institutionLabel": "Institution *",
-                "usernameLabel": "Username *",
-                "nameLabel": "Name *",
-                "surnameLabel": "Last Name*",
-                "emailLabel": "Email",
-                "timeZoneLabel": "Time Zone *",
-                "passwordLabel": "Password *",
-                "confirmPasswordLabel": "Confirm Password *",
-                "selectRolesLabel": "User Role *",
-                "adminPassword": "Personal Password",
-                "newPassword": "New Password",
-                "confirmNewPassword": "Repeat Password"
-            },
-            "info": {
-                "rolesSelectionInfo": "Must have at least one Role",
-                "accountEditInfo": "Change the values of the fields to edit the user",
-                "changePasswordInfo": "Change \"{username}\"'s password",
-                "createdAtInfo": "Created at: "
-            },
-            "buttons": {
-                "saveChanges": "Save Changes"
-            },
-            "warnings": {
-                "edit-success": "Edited User: \"{username}\".",
-                "no-edit-rights": "You do not have rights to edit this user."
+        "hints": {
+            "create": "Fill out the required * fields to create a new User Account",
+            "edit": "Change the values of the fields to edit the user",
+            "profile": "Change the values of the fields to update your profile",
+            "createdAt": "Created at: "
+        },
+        "changePassword": {
+            "title": "Change User Password",
+            "info": "Change \"{username}\"'s password",
+            "fields": {
+                "adminPassword": { "label": "Personal Password" },
+                "newPassword": { "label": "New Password" },
+                "confirmNewPassword": { "label": "Repeat Password" }
             }
         }
     },
@@ -757,98 +733,48 @@
                 "informationPart3": " ?"
             }
         },
-        "createConnectionConfigurationPage": {
-            "info": {
-                "createConnectionConfigurationInfo": "Fill out the required * fields to create a new Connection Configuration"
-            },
-            "labels": {
-                "configurationPurpose": "Configuration Purpose *",
-                "name": "Name *",
-                "configurationPassword": "Configuration Password",
-                "confirmConfigurationPassword": "Confirm Configuration Password",
-                "encryptWithCertificate": "Encrypt With Certificate",
-                "useAsymmetricOnlyEncryption": "Use asymmetric-only encryption",
-                "pingInterval": "Ping Interval in seconds *",
-                "exams": "Exams",
-                "withFallback": "With Fallback",
-                "withFallbackArea": "Toggle Fallback settings",
-                "fallbackStartURL": "Fallback Start URL *",
-                "connectionAttempts": "Connection Attempts *",
-                "interval": "Interval in seconds *",
-                "connectionTimeout": "Connection Timeout in seconds *",
-                "fallbackPassword": "Fallback Password",
-                "confirmFallbackPassword": "Confirm Fallback Password",
-                "quitPassword": "Quit Password",
-                "confirmQuitPassword": "Confirm Quit Password",
-                "noCertificatesUploadedYet": "No certificates uploaded yet"
-            },
-            "placeholders": {
-                "proxyHost": "Enter proxy host",
-                "proxyPort": "Enter proxy port",
-                "proxyUsername": "Enter proxy username",
-                "proxyPassword": "Enter proxy password"
-            },
-            "validation": {
-                "required": "This field is required",
-                "mustBeWithUrl": "Must start with http:// or https://",
-                "invalidPort": "Invalid port, ex. 8080",
-                "noMatch": "Passwords don't match",
-                "mustBeNumber": "The value can only consist of numbers",
-                "mustBePositiveNumber": "The value must be a positive number"
-            },
-            "selectValues": {
-                "start_exam": "Starting an Exam",
-                "configure_client": "Configure a Client"
-            }
+        "hints": {
+            "create": "Fill out the required * fields to create a new Connection Configuration",
+            "edit": "Edit the connection configuration. Leave password fields empty to keep existing values.",
+            "createdAt": "Created at: ",
+            "lastUpdatedAt": "Last Updated at ",
+            "by": " by ",
+            "noCertificatesUploadedYet": "No certificates uploaded yet"
         },
-        "connectionConfigurationViewAndEditPage": {
-            "title": "Edit Connection Configuration",
-            "buttons": {
-                "saveChanges": "Save Changes",
-                "revertChanges": "Revert Changes"
+        "fields": {
+            "name": { "label": "Name *" },
+            "configurationPurpose": { "label": "Configuration Purpose *" },
+            "configurationPassword": { "label": "Configuration Password" },
+            "confirmConfigurationPassword": {
+                "label": "Confirm Configuration Password"
             },
-            "validation": {
-                "required": "This field is required",
-                "mustBeWithUrl": "Must start with http:// or https://",
-                "invalidPort": "Invalid port, ex. 8080",
-                "noMatch": "Passwords don't match",
-                "mustBeNumber": "The value can only consist of numbers",
-                "mustBePositiveNumber": "The value must be a positive number"
+            "encryptWithCertificate": { "label": "Encrypt With Certificate" },
+            "useAsymmetricOnlyEncryption": {
+                "label": "Use asymmetric-only encryption"
             },
-            "labels": {
-                "configurationPurpose": "Configuration Purpose *",
-                "name": "Name *",
-                "configurationPassword": "Configuration Password",
-                "confirmConfigurationPassword": "Confirm Configuration Password",
-                "encryptWithCertificate": "Encrypt With Certificate",
-                "useAsymmetricOnlyEncryption": "Use asymmetric-only encryption",
-                "pingInterval": "Ping Interval in seconds *",
-                "exams": "Exams",
-                "withFallback": "With Fallback",
-                "withFallbackArea": "Toggle Fallback settings",
-                "fallbackStartURL": "Fallback Start URL *",
-                "connectionAttempts": "Connection Attempts *",
-                "interval": "Interval in seconds *",
-                "connectionTimeout": "Connection Timeout in seconds *",
-                "fallbackPassword": "Fallback Password",
-                "confirmFallbackPassword": "Confirm Fallback Password",
-                "quitPassword": "Quit Password",
-                "confirmQuitPassword": "Confirm Quit Password",
-                "noCertificatesUploadedYet": "No certificates uploaded yet"
+            "pingInterval": { "label": "Ping Interval in seconds *" },
+            "withFallback": {
+                "label": "With Fallback",
+                "ariaLabel": "Toggle Fallback settings"
             },
-            "filters": {
-                "activeSelector": "Active",
-                "inactiveSelector": "Inactive"
-            },
-            "info": {
-                "createdAt": "Created at: ",
-                "lastUpdatedAt": "Last Updated at ",
-                "by": " by "
-            },
-            "selectValues": {
-                "start_exam": "Starting an Exam",
-                "configure_client": "Configure a Client"
-            }
+            "fallbackStartUrl": { "label": "Fallback Start URL *" },
+            "connectionAttempts": { "label": "Connection Attempts *" },
+            "interval": { "label": "Interval in seconds *" },
+            "connectionTimeout": { "label": "Connection Timeout in seconds *" },
+            "fallbackPassword": { "label": "Fallback Password" },
+            "confirmFallbackPassword": { "label": "Confirm Fallback Password" },
+            "quitPassword": { "label": "Quit Password" },
+            "confirmQuitPassword": { "label": "Confirm Quit Password" }
+        },
+        "validation": {
+            "required": "This field is required",
+            "mustBeWithUrl": "Must start with http:// or https://",
+            "noMatch": "Passwords don't match",
+            "mustBeNumber": "The value can only consist of numbers"
+        },
+        "selectValues": {
+            "start_exam": "Starting an Exam",
+            "configure_client": "Configure a Client"
         },
         "lmsTypes": {
             "MOCKUP": "Testing",

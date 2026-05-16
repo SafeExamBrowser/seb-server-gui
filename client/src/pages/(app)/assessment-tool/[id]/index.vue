@@ -226,9 +226,6 @@ onMounted(async () => {
         lmsType.value = fetched.lmsType;
         serverAddress.value = fetched.lmsUrl;
 
-        // The backend returns secrets masked or empty. Decide auth mode from
-        // which credential identifier is set. Secret-typed fields are left
-        // blank so the user must re-enter to actually change them.
         if (fetched.lmsClientname) {
             authMode.value = "client";
             clientUsername.value = fetched.lmsClientname;

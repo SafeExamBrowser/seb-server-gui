@@ -23,7 +23,6 @@
                         />
                     </LoadingFallbackComponent>
 
-                    <!-- Auth mode toggle -->
                     <div
                         class="d-flex align-center justify-space-between mb-2"
                         data-testid="createAssessmentTool-authMode-row"
@@ -71,7 +70,6 @@
 
                     <v-divider class="my-4" />
 
-                    <!-- Proxy toggle -->
                     <div
                         class="d-flex align-center justify-space-between mb-2"
                         data-testid="createAssessmentTool-proxy-row"
@@ -116,7 +114,6 @@
                 </v-col>
             </v-row>
 
-            <!-- Action buttons -->
             <div class="d-flex justify-end ga-2 px-6 pb-4">
                 <CancelButton
                     data-testid="createAssessmentTool-cancel-button"

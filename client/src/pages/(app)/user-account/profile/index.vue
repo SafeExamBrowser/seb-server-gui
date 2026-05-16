@@ -1,17 +1,33 @@
 <template>
-    <UserAccountEditForm
-        data-testid="profile-form-parentComponent"
-        :title="translate('titles.profileSettings')"
-        :user-uuid="userId"
-        :is-profile="true"
-    />
+    <LoadingFallbackComponent :loading="loading" :errors="error ? [error] : []">
+        <UserAccountForm
+            v-if="user"
+            :title="$t('titles.profileSettings')"
+            mode="profile"
+            :initial-user="user"
+            data-test-prefix="profile"
+            :change-password-loading="changePasswordLoading"
+            @submit="handleSubmit"
+            @cancel="router.push({ name: '/(app)/' })"
+            @change-password="handleChangePassword"
+        />
+    </LoadingFallbackComponent>
 </template>
 
-<!-- pages/Profile.vue -->
 <script setup lang="ts">
-import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/userAccountStore.ts";
-import { translate } from "@/utils/generalUtils.ts";
-import UserAccountEditForm from "@/pages/(app)/user-account/components/UserAccountEditForm.vue";
+import { useRouter } from "vue-router";
+import UserAccountForm, {
+    type ChangePasswordPayload,
+    type UserAccountFormPayload,
+} from "@/pages/(app)/user-account/components/UserAccountForm.vue";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import { useMutation } from "@/composables/useMutation.ts";
+import { useCurrentUser } from "@/composables/useCurrentUser.ts";
+import {
+    changePassword,
+    editUserAccount,
+} from "@/services/seb-server/userAccountService.ts";
+import { useLogout } from "@/composables/useLogout.ts";
 
 definePage({
     meta: {
@@ -21,6 +37,60 @@ definePage({
     },
 });
 
-const authStore = useAuthenticatedUserAccountStore();
-const userId: string = authStore.userAccount?.uuid || "";
+const router = useRouter();
+const { user, loading, error, refetch: refetchCurrentUser } = useCurrentUser();
+
+const { mutateData: save, data: saved } = useMutation(editUserAccount);
+const {
+    mutateData: changeUserPassword,
+    data: changedPassword,
+    loading: changePasswordLoading,
+} = useMutation(
+    (payload: {
+        uuid: string;
+        adminPassword: string;
+        newPassword: string;
+        confirmNewPassword: string;
+    }) =>
+        changePassword(
+            payload.uuid,
+            payload.adminPassword,
+            payload.newPassword,
+            payload.confirmNewPassword,
+        ),
+);
+
+const handleSubmit = async (payload: UserAccountFormPayload) => {
+    if (!user.value) return;
+    await save({
+        uuid: user.value.uuid,
+        institutionId: Number(payload.institutionId),
+        creationDate: user.value.creationDate,
+        name: payload.name,
+        surname: payload.surname,
+        username: payload.username,
+        email: payload.email,
+        active: user.value.active,
+        language: "en",
+        timezone: payload.timezone,
+        userRoles: payload.userRoles,
+    });
+    if (saved.value) {
+        await refetchCurrentUser();
+        await router.push({ name: "/(app)/" });
+    }
+};
+
+const handleChangePassword = async (payload: ChangePasswordPayload) => {
+    if (!user.value) return;
+    await changeUserPassword({
+        uuid: user.value.uuid,
+        adminPassword: payload.adminPassword,
+        newPassword: payload.newPassword,
+        confirmNewPassword: payload.confirmNewPassword,
+    });
+    if (changedPassword.value) {
+        await useLogout().logout();
+    }
+};
 </script>
