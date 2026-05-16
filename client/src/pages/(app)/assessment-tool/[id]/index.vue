@@ -226,20 +226,20 @@ onMounted(async () => {
         lmsType.value = fetched.lmsType;
         serverAddress.value = fetched.lmsUrl;
 
-        if (fetched.lmsClientname) {
+        if (fetched.lmsRestApiToken) {
+            authMode.value = "token";
+            accessToken.value = fetched.lmsRestApiToken;
+        } else {
             authMode.value = "client";
             clientUsername.value = fetched.lmsClientname;
-            clientPassword.value = "";
-        } else {
-            authMode.value = "token";
-            accessToken.value = "";
+            clientPassword.value = fetched.lmsClientsecret ?? "";
         }
 
         withProxy.value = Boolean(fetched.lmsProxyHost || fetched.lmsProxyPort);
         proxyHost.value = fetched.lmsProxyHost;
         proxyPort.value = fetched.lmsProxyPort?.toString();
         proxyUsername.value = fetched.lmsProxyAuthUsername;
-        proxyPassword.value = "";
+        proxyPassword.value = fetched.lmsProxyAuthSecret ?? "";
 
         snapshot();
     } catch (err) {

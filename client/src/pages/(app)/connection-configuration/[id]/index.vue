@@ -279,8 +279,8 @@ onMounted(async () => {
         pingInterval.value = toSeconds(fetched.sebServerPingTime) ?? 1;
         asymmetricOnlyEncryption.value = Boolean(fetched.cert_encryption_asym);
         encryptWithCertificate.value = fetched.cert_alias || undefined;
-        configurationPassword.value = "";
-        confirmConfigurationPassword.value = "";
+        configurationPassword.value = fetched.encryptSecret ?? "";
+        confirmConfigurationPassword.value = fetched.encryptSecret ?? "";
 
         withFallback.value = Boolean(fetched.sebServerFallback);
         fallbackStartUrl.value = fetched.startURL || undefined;
@@ -289,10 +289,11 @@ onMounted(async () => {
             toSeconds(fetched.sebServerFallbackAttemptInterval) ?? 2;
         connectionTimeout.value =
             toSeconds(fetched.sebServerFallbackTimeout) ?? 30;
-        fallbackPassword.value = "";
-        confirmFallbackPassword.value = "";
-        quitPassword.value = "";
-        confirmQuitPassword.value = "";
+        fallbackPassword.value = fetched.sebServerFallbackPasswordHash ?? "";
+        confirmFallbackPassword.value =
+            fetched.sebServerFallbackPasswordHash ?? "";
+        quitPassword.value = fetched.hashedQuitPassword ?? "";
+        confirmQuitPassword.value = fetched.hashedQuitPassword ?? "";
 
         snapshot();
     } catch (err) {
