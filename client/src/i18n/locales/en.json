@@ -545,33 +545,16 @@
                 "register": "Register"
             }
         },
-        "userAccountPage": {
-            "userAccountTableHeaders": {
-                "tableHeaderInstitution": "Institution",
-                "tableHeaderName": "Name",
-                "tableHeaderSurname": "Last Name",
-                "tableHeaderUsername": "Username",
-                "tableHeaderEmail": "Email",
-                "tableHeaderRoles": "Roles",
-                "tableHeaderStatus": "Status"
+        "list": {
+            "tableHeaders": {
+                "institution": "Institution",
+                "name": "Name",
+                "surname": "Last Name",
+                "username": "Username",
+                "email": "Email",
+                "roles": "Roles",
+                "status": "Status"
             },
-            "deleteUserAccountContext": {
-                "title": "Confirm Deletion",
-                "informationPart1": "Are you sure you want to delete",
-                "informationPart2": "'s account (",
-                "informationPart3": ")?"
-            },
-            "changeUserAccountStatusContext": {
-                "activateTitle": "Activate {username}?",
-                "deactivateTitle": "Deactivate {username}?",
-                "activateMessage": "Are you sure you want to activate {name} {surname}'s account ({username})?",
-                "deactivateMessage": "Are you sure you want to deactivate {name} {surname}'s account ({username})?",
-                "buttons": {
-                    "activate": "Activate",
-                    "deactivate": "Deactivate"
-                }
-            },
-            "addUserContext": "Add User Account",
             "filters": {
                 "searchTitle": "Search",
                 "searchField": "Search by Last Name",
@@ -580,8 +563,18 @@
                 "inactiveSelector": "Inactive",
                 "institutionFilter": "Institution"
             },
-            "info": {
-                "noPermissionEditUser": "You don't have the permissions to edit this user"
+            "deleteDialog": {
+                "title": "Confirm Deletion",
+                "text": "Are you sure you want to delete this user account?",
+                "action": "Delete"
+            },
+            "statusDialog": {
+                "activateTitle": "Activate User Account",
+                "deactivateTitle": "Deactivate User Account",
+                "activateText": "Are you sure you want to activate this user account?",
+                "deactivateText": "Are you sure you want to deactivate this user account?",
+                "activateAction": "Activate",
+                "deactivateAction": "Deactivate"
             }
         },
         "fields": {
@@ -613,8 +606,13 @@
         }
     },
     "assessmentToolConnections": {
-        "assessmentToolsPage": {
-            "addAssessmentTool": "Add Assessment Tool Connection",
+        "list": {
+            "tableHeaders": {
+                "institution": "Institution",
+                "name": "Name",
+                "type": "Assessment Tool Type",
+                "status": "Status"
+            },
             "filters": {
                 "searchTitle": "Search",
                 "searchField": "Search by Name",
@@ -624,26 +622,18 @@
                 "inactiveSelector": "Inactive",
                 "typeFilter": "Assessment Tool Type"
             },
-            "assessmentToolTableHeaders": {
-                "tableHeaderInstitution": "Institution",
-                "tableHeaderName": "Name",
-                "tableHeaderAssessmentToolType": "Assessment Tool Type",
-                "tableHeaderStatus": "Status"
-            },
-            "changeAssessmentToolStatusContext": {
-                "activateTitle": "Activate Assessment Tool?",
-                "deactivateTitle": "Deactivate Assessment Tool?",
-                "activateMessage": "Are you sure you want to activate {name}?",
-                "deactivateMessage": "Are you sure you want to deactivate {name}?",
-                "buttons": {
-                    "activate": "Activate",
-                    "deactivate": "Deactivate"
-                }
-            },
-            "deleteAssessmentToolContext": {
+            "deleteDialog": {
                 "title": "Confirm Deletion",
-                "informationPart1": "Delete Assessment Tool: ",
-                "informationPart3": " ?"
+                "text": "Are you sure you want to delete this assessment tool connection?",
+                "action": "Delete"
+            },
+            "statusDialog": {
+                "activateTitle": "Activate Assessment Tool",
+                "deactivateTitle": "Deactivate Assessment Tool",
+                "activateText": "Are you sure you want to activate this assessment tool connection?",
+                "deactivateText": "Are you sure you want to deactivate this assessment tool connection?",
+                "activateAction": "Activate",
+                "deactivateAction": "Deactivate"
             }
         },
         "hints": {
@@ -701,8 +691,13 @@
         }
     },
     "connectionConfigurations": {
-        "connectionConfigurationsPage": {
-            "addConnectionConfiguration": "Add Connection Configuration",
+        "list": {
+            "tableHeaders": {
+                "institution": "Institution",
+                "name": "Name",
+                "creationDate": "Creation Date",
+                "status": "Status"
+            },
             "filters": {
                 "searchTitle": "Search",
                 "searchField": "Search by Name",
@@ -711,26 +706,18 @@
                 "activeSelector": "Active",
                 "inactiveSelector": "Inactive"
             },
-            "connectionConfigurationsTableHeaders": {
-                "tableHeaderInstitution": "Institution",
-                "tableHeaderName": "Name",
-                "tableHeaderCreationDate": "Creation Date",
-                "tableHeaderStatus": "Status"
-            },
-            "changeConnectionConfigurationStatusContext": {
-                "activateTitle": "Activate Connection Configuration?",
-                "deactivateTitle": "Deactivate Connection Configuration?",
-                "activateMessage": "Are you sure you want to activate {name}?",
-                "deactivateMessage": "Are you sure you want to deactivate {name}?",
-                "buttons": {
-                    "activate": "Activate",
-                    "deactivate": "Deactivate"
-                }
-            },
-            "deleteConnectionConfigurationContext": {
+            "deleteDialog": {
                 "title": "Confirm Deletion",
-                "informationPart1": "Delete Connection Configuration: ",
-                "informationPart3": " ?"
+                "text": "Are you sure you want to delete this connection configuration?",
+                "action": "Delete"
+            },
+            "statusDialog": {
+                "activateTitle": "Activate Connection Configuration",
+                "deactivateTitle": "Deactivate Connection Configuration",
+                "activateText": "Are you sure you want to activate this connection configuration?",
+                "deactivateText": "Are you sure you want to deactivate this connection configuration?",
+                "activateAction": "Activate",
+                "deactivateAction": "Deactivate"
             }
         },
         "hints": {
@@ -826,15 +813,13 @@
         }
     },
     "institutions": {
-        "institutionPage": {
+        "list": {
             "tableHeaders": {
                 "logoImage": "Logo",
                 "name": "Name",
-                "modelId": "ID",
                 "urlSuffix": "URL Suffix",
                 "active": "Status"
             },
-            "addInstitution": "Add Institution",
             "filters": {
                 "searchTitle": "Search",
                 "searchField": "Search by Name",

@@ -14,7 +14,7 @@
             <SearchBar
                 v-model="searchInputValue"
                 class="mt-2"
-                search-text="userAccount.userAccountPage.filters.searchField"
+                search-text="userAccount.list.filters.searchField"
                 :filter-sections="filterSections"
                 :filter-values="selectedFilters"
                 :data-test-id="dataTestId"
@@ -61,14 +61,14 @@
     <DeleteConfirmDialog
         v-model="deleteDialogOpen"
         :detail-text="deleteDetailText"
-        translation-key-prefix="userAccount.userAccountPage"
+        translation-key-prefix="userAccount.list"
         @confirm="confirmDelete"
     />
 
     <StatusConfirmDialog
         v-model="statusDialogOpen"
         :active="!!statusTarget?.active"
-        translation-key-prefix="userAccount.userAccountPage"
+        translation-key-prefix="userAccount.list"
         @confirm="confirmStatusChange"
     />
 </template>

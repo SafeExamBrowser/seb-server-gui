@@ -5,31 +5,25 @@ import type { TableHeader } from "@/components/widgets/entity-table/types.ts";
 export function useInstitutionsTableHeaders() {
     const headers = computed<TableHeader[]>(() => [
         {
-            title: translate(
-                "institutions.institutionPage.tableHeaders.logoImage",
-            ),
+            title: translate("institutions.list.tableHeaders.logoImage"),
             key: "logoImage",
             width: "12%",
             sortable: false,
         },
         {
-            title: translate("institutions.institutionPage.tableHeaders.name"),
+            title: translate("institutions.list.tableHeaders.name"),
             key: "name",
             width: "30%",
             sortable: true,
         },
         {
-            title: translate(
-                "institutions.institutionPage.tableHeaders.urlSuffix",
-            ),
+            title: translate("institutions.list.tableHeaders.urlSuffix"),
             key: "urlSuffix",
             width: "33%",
             sortable: false,
         },
         {
-            title: translate(
-                "institutions.institutionPage.tableHeaders.active",
-            ),
+            title: translate("institutions.list.tableHeaders.active"),
             key: "active",
             width: "10%",
             sortable: false,
