@@ -37,9 +37,12 @@
                             </label>
                             <v-btn-toggle
                                 v-model="authMode"
+                                color="primary"
                                 data-testid="editAssessmentTool-authMode-toggle"
                                 density="comfortable"
+                                divided
                                 mandatory
+                                variant="outlined"
                             >
                                 <v-btn value="token">
                                     {{
@@ -175,7 +178,7 @@ const {
     proxyPort,
     proxyUsername,
     proxyPassword,
-} = useAssessmentToolFormFields();
+} = useAssessmentToolFormFields("edit");
 
 const mainFormRef = ref<InstanceType<typeof FormBuilder>>();
 const authFormRef = ref<InstanceType<typeof FormBuilder>>();

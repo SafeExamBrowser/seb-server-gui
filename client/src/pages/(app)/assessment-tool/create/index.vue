@@ -35,9 +35,12 @@
                         </label>
                         <v-btn-toggle
                             v-model="authMode"
+                            color="primary"
                             data-testid="createAssessmentTool-authMode-toggle"
                             density="comfortable"
+                            divided
                             mandatory
+                            variant="outlined"
                         >
                             <v-btn
                                 data-testid="createAssessmentTool-authMode-token-button"
@@ -173,7 +176,7 @@ const {
     proxyPort,
     proxyUsername,
     proxyPassword,
-} = useAssessmentToolFormFields();
+} = useAssessmentToolFormFields("create");
 
 const { mutateData: createTool, error: toolError } =
     useMutation(createAssessmentTool);

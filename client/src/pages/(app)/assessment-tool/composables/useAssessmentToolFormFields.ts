@@ -7,7 +7,11 @@ import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums.ts";
 
 export type AuthMode = "client" | "token";
 
-export const useAssessmentToolFormFields = () => {
+export type AssessmentToolFormMode = "create" | "edit";
+
+export const useAssessmentToolFormFields = (
+    mode: AssessmentToolFormMode = "create",
+) => {
     const institutionId = ref<string | undefined>(undefined);
     const name = ref<string | undefined>(undefined);
     const lmsType = ref<string | undefined>(undefined);
@@ -99,6 +103,7 @@ export const useAssessmentToolFormFields = () => {
                 label: t("fields.type.label"),
                 options: lmsTypeOptions,
                 required: true,
+                disabled: mode === "edit",
             },
             {
                 type: "text" as const,
