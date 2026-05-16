@@ -26,7 +26,7 @@ export function useConnectionConfigurationsTableHeaders() {
         if (showInstitutionColumn.value) {
             base.push({
                 title: translate(
-                    "connectionConfigurations.connectionConfigurationsPage.connectionConfigurationsTableHeaders.tableHeaderInstitution",
+                    "connectionConfigurations.list.tableHeaders.institution",
                 ),
                 key: "institutionId",
                 width: "20%",
@@ -37,7 +37,7 @@ export function useConnectionConfigurationsTableHeaders() {
         base.push(
             {
                 title: translate(
-                    "connectionConfigurations.connectionConfigurationsPage.connectionConfigurationsTableHeaders.tableHeaderName",
+                    "connectionConfigurations.list.tableHeaders.name",
                 ),
                 key: "name",
                 width: "20%",
@@ -45,7 +45,7 @@ export function useConnectionConfigurationsTableHeaders() {
             },
             {
                 title: translate(
-                    "connectionConfigurations.connectionConfigurationsPage.connectionConfigurationsTableHeaders.tableHeaderCreationDate",
+                    "connectionConfigurations.list.tableHeaders.creationDate",
                 ),
                 key: "date",
                 width: "20%",
@@ -53,7 +53,7 @@ export function useConnectionConfigurationsTableHeaders() {
             },
             {
                 title: translate(
-                    "connectionConfigurations.connectionConfigurationsPage.connectionConfigurationsTableHeaders.tableHeaderStatus",
+                    "connectionConfigurations.list.tableHeaders.status",
                 ),
                 key: "active",
                 width: "15%",

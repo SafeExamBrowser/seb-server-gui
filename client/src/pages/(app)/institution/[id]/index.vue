@@ -11,7 +11,7 @@
                 <v-row class="px-6 pt-4" no-gutters>
                     <v-col cols="8">
                         <HintText
-                            text-identifier="institutions.editInstitutionPage.info.editInfo"
+                            text-identifier="institutions.hints.edit"
                             data-testid="editInstitution-form-infoText"
                         />
                     </v-col>
@@ -36,6 +36,7 @@
                     <ConfirmButton
                         data-testid="editInstitution-save-button"
                         text="general.saveButton"
+                        :disabled="!isDirty"
                         @click="submit()"
                     />
                 </div>
@@ -61,6 +62,7 @@ import {
 import { useInstitutionFormFields } from "@/pages/(app)/institution/composables/useInstitutionFormFields.ts";
 import { useCurrentUser } from "@/composables/useCurrentUser.ts";
 import { useInstitutionBranding } from "@/composables/useInstitutionBranding.ts";
+import { useDirtyTracking } from "@/composables/useDirtyTracking.ts";
 import type { InstitutionAdmin } from "@/models/seb-server/institution.ts";
 
 definePage({
@@ -87,6 +89,14 @@ const { mutateData: saveInstitution, data: savedInstitution } =
 const { user } = useCurrentUser();
 const { refetch: refetchInstitutionBranding } = useInstitutionBranding();
 
+const { isDirty, snapshot } = useDirtyTracking(
+    () => ({
+        name: name.value ?? "",
+        urlSuffix: urlSuffix.value ?? "",
+    }),
+    [logoImage],
+);
+
 onMounted(async () => {
     loading.value = true;
     try {
@@ -101,6 +111,7 @@ onMounted(async () => {
         name.value = fetched.name;
         urlSuffix.value = fetched.urlSuffix;
         logoImage.value = null;
+        snapshot();
     } catch (err) {
         error.value = err instanceof Error ? err.message : "Unknown error";
     } finally {

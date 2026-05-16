@@ -11,7 +11,11 @@ const timezoneOptions = moment.tz
     .names()
     .map((tz) => ({ value: tz, text: tz }));
 
-export const useUserAccountFormFields = () => {
+export type UserAccountFormMode = "create" | "edit" | "profile";
+
+const t = (key: string) => i18n.global.t(`userAccount.${key}`);
+
+export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
     const institutionId = ref<string | undefined>(undefined);
     const username = ref<string | undefined>(undefined);
     const name = ref<string | undefined>(undefined);
@@ -37,12 +41,15 @@ export const useUserAccountFormFields = () => {
         UserRoleEnum.INSTITUTIONAL_ADMIN,
     );
 
-    const institutionSelectDisabled = ref(!hasSebServerAdmin);
+    const institutionSelectDisabled = ref(
+        !hasSebServerAdmin || mode !== "create",
+    );
 
     watch(
         institutions,
         (data) => {
-            if (!data || !hasInstitutionalAdmin || hasSebServerAdmin) return;
+            if (!data || mode !== "create") return;
+            if (!hasInstitutionalAdmin || hasSebServerAdmin) return;
             const userInstitutionId = String(authenticatedUser?.institutionId);
             const matched = data.find((i) => i.modelId === userInstitutionId);
             if (matched) {
@@ -99,14 +106,12 @@ export const useUserAccountFormFields = () => {
     const leftFormFields = computed<FormField[]>(() => {
         if (loading.value) return [];
 
-        return [
+        const fields: FormField[] = [
             {
                 type: "select" as const,
                 name: "institutionId",
                 model: institutionId,
-                label: i18n.global.t(
-                    "userAccount.createUserAccountPage.labels.institutionLabel",
-                ),
+                label: t("fields.institution.label"),
                 options: institutionOptions.value,
                 required: true,
                 disabled: institutionSelectDisabled.value,
@@ -115,36 +120,28 @@ export const useUserAccountFormFields = () => {
                 type: "text" as const,
                 name: "username",
                 model: username,
-                label: i18n.global.t(
-                    "userAccount.createUserAccountPage.labels.usernameLabel",
-                ),
+                label: t("fields.username.label"),
                 required: true,
             },
             {
                 type: "text" as const,
                 name: "name",
                 model: name,
-                label: i18n.global.t(
-                    "userAccount.createUserAccountPage.labels.nameLabel",
-                ),
+                label: t("fields.name.label"),
                 required: true,
             },
             {
                 type: "text" as const,
                 name: "surname",
                 model: surname,
-                label: i18n.global.t(
-                    "userAccount.createUserAccountPage.labels.surnameLabel",
-                ),
+                label: t("fields.surname.label"),
                 required: true,
             },
             {
                 type: "text" as const,
                 name: "email",
                 model: email,
-                label: i18n.global.t(
-                    "userAccount.createUserAccountPage.labels.emailLabel",
-                ),
+                label: t("fields.email.label"),
                 rules: [
                     (v: string | undefined) =>
                         !v ||
@@ -158,40 +155,41 @@ export const useUserAccountFormFields = () => {
                 type: "select" as const,
                 name: "timezone",
                 model: timezone,
-                label: i18n.global.t(
-                    "userAccount.createUserAccountPage.labels.timeZoneLabel",
-                ),
+                label: t("fields.timezone.label"),
                 options: timezoneOptions,
                 required: true,
             },
-            {
-                type: "password" as const,
-                name: "password",
-                model: password,
-                label: i18n.global.t(
-                    "userAccount.createUserAccountPage.labels.passwordLabel",
-                ),
-                required: true,
-                rules: [useRules().minLength(8)],
-            },
-            {
-                type: "password" as const,
-                name: "confirmPassword",
-                model: confirmPassword,
-                label: i18n.global.t(
-                    "userAccount.createUserAccountPage.labels.confirmPasswordLabel",
-                ),
-                required: true,
-                validationDependsOn: ["password"],
-                rules: [
-                    (v: string | undefined) =>
-                        v === password.value ||
-                        i18n.global.t(
-                            "userAccount.general.validation.passwordsDontMatch",
-                        ),
-                ],
-            },
         ];
+
+        if (mode === "create") {
+            fields.push(
+                {
+                    type: "password" as const,
+                    name: "password",
+                    model: password,
+                    label: t("fields.password.label"),
+                    required: true,
+                    rules: [useRules().minLength(8)],
+                },
+                {
+                    type: "password" as const,
+                    name: "confirmPassword",
+                    model: confirmPassword,
+                    label: t("fields.confirmPassword.label"),
+                    required: true,
+                    validationDependsOn: ["password"],
+                    rules: [
+                        (v: string | undefined) =>
+                            v === password.value ||
+                            i18n.global.t(
+                                "userAccount.general.validation.passwordsDontMatch",
+                            ),
+                    ],
+                },
+            );
+        }
+
+        return fields;
     });
 
     const rightFormFields = computed<FormField[]>(() => [
@@ -199,11 +197,10 @@ export const useUserAccountFormFields = () => {
             type: "select" as const,
             name: "role",
             model: role,
-            label: i18n.global.t(
-                "userAccount.createUserAccountPage.labels.selectRolesLabel",
-            ),
+            label: t("fields.role.label"),
             options: availableRoles.value,
             required: true,
+            disabled: mode === "profile",
         },
     ]);
 

@@ -2,6 +2,8 @@ import { computed, ref } from "vue";
 import i18n from "@/i18n";
 import type { FormField } from "@/components/widgets/formBuilder/types.ts";
 
+const t = (key: string) => i18n.global.t(`connectionConfigurations.${key}`);
+
 export const useConnectionConfigurationFormFields = () => {
     const name = ref<string | undefined>(undefined);
     const configurationPurpose = ref<string | undefined>(undefined);
@@ -21,11 +23,6 @@ export const useConnectionConfigurationFormFields = () => {
     const quitPassword = ref<string | undefined>(undefined);
     const confirmQuitPassword = ref<string | undefined>(undefined);
 
-    const t = (key: string) =>
-        i18n.global.t(
-            `connectionConfigurations.createConnectionConfigurationPage.${key}`,
-        );
-
     const configurationPurposeOptions = [
         {
             value: "START_EXAM",
@@ -37,19 +34,32 @@ export const useConnectionConfigurationFormFields = () => {
         },
     ];
 
+    const passwordsMatch = (a?: string, b?: string): true | string => {
+        const av = (a ?? "").trim();
+        const bv = (b ?? "").trim();
+        if (!av && !bv) return true;
+        if (!av || !bv) return t("validation.noMatch");
+        return av === bv || t("validation.noMatch");
+    };
+
+    const numberRule = (v: number | undefined): true | string => {
+        if (v == null) return t("validation.required");
+        return !Number.isNaN(Number(v)) || t("validation.mustBeNumber");
+    };
+
     const mainFormFields = computed<FormField[]>(() => [
         {
             type: "text" as const,
             name: "name",
             model: name,
-            label: t("labels.name"),
+            label: t("fields.name.label"),
             required: true,
         },
         {
             type: "select" as const,
             name: "configurationPurpose",
             model: configurationPurpose,
-            label: t("labels.configurationPurpose"),
+            label: t("fields.configurationPurpose.label"),
             options: configurationPurposeOptions,
             required: true,
         },
@@ -57,44 +67,35 @@ export const useConnectionConfigurationFormFields = () => {
             type: "password" as const,
             name: "configurationPassword",
             model: configurationPassword,
-            label: t("labels.configurationPassword"),
+            label: t("fields.configurationPassword.label"),
         },
         {
             type: "password" as const,
             name: "confirmConfigurationPassword",
             model: confirmConfigurationPassword,
-            label: t("labels.confirmConfigurationPassword"),
+            label: t("fields.confirmConfigurationPassword.label"),
             validationDependsOn: ["configurationPassword"],
             rules: [
-                () => {
-                    const a = (configurationPassword.value ?? "").trim();
-                    const b = (confirmConfigurationPassword.value ?? "").trim();
-                    if (!a && !b) return true;
-                    if (!a || !b) return t("validation.noMatch");
-                    return a === b || t("validation.noMatch");
-                },
+                () =>
+                    passwordsMatch(
+                        configurationPassword.value,
+                        confirmConfigurationPassword.value,
+                    ),
             ],
         },
         {
             type: "number" as const,
             name: "pingInterval",
             model: pingInterval,
-            label: t("labels.pingInterval"),
+            label: t("fields.pingInterval.label"),
             required: true,
-            rules: [
-                (v: number | undefined) => {
-                    if (v == null) return t("validation.required");
-                    if (Number.isNaN(Number(v)))
-                        return t("validation.mustBeNumber");
-                    return true;
-                },
-            ],
+            rules: [numberRule],
         },
         {
             type: "switch" as const,
             name: "asymmetricOnlyEncryption",
             model: asymmetricOnlyEncryption,
-            label: t("labels.useAsymmetricOnlyEncryption"),
+            label: t("fields.useAsymmetricOnlyEncryption.label"),
         },
     ]);
 
@@ -103,7 +104,7 @@ export const useConnectionConfigurationFormFields = () => {
             type: "text" as const,
             name: "fallbackStartUrl",
             model: fallbackStartUrl,
-            label: t("labels.fallbackStartURL"),
+            label: t("fields.fallbackStartUrl.label"),
             required: true,
             rules: [
                 (v: string | undefined) => {
@@ -121,89 +122,64 @@ export const useConnectionConfigurationFormFields = () => {
             type: "number" as const,
             name: "connectionAttempts",
             model: connectionAttempts,
-            label: t("labels.connectionAttempts"),
+            label: t("fields.connectionAttempts.label"),
             required: true,
-            rules: [
-                (v: number | undefined) => {
-                    if (v == null) return t("validation.required");
-                    return (
-                        !Number.isNaN(Number(v)) || t("validation.mustBeNumber")
-                    );
-                },
-            ],
+            rules: [numberRule],
         },
         {
             type: "number" as const,
             name: "interval",
             model: interval,
-            label: t("labels.interval"),
+            label: t("fields.interval.label"),
             required: true,
-            rules: [
-                (v: number | undefined) => {
-                    if (v == null) return t("validation.required");
-                    return (
-                        !Number.isNaN(Number(v)) || t("validation.mustBeNumber")
-                    );
-                },
-            ],
+            rules: [numberRule],
         },
         {
             type: "number" as const,
             name: "connectionTimeout",
             model: connectionTimeout,
-            label: t("labels.connectionTimeout"),
+            label: t("fields.connectionTimeout.label"),
             required: true,
-            rules: [
-                (v: number | undefined) => {
-                    if (v == null) return t("validation.required");
-                    return (
-                        !Number.isNaN(Number(v)) || t("validation.mustBeNumber")
-                    );
-                },
-            ],
+            rules: [numberRule],
         },
         {
             type: "password" as const,
             name: "fallbackPassword",
             model: fallbackPassword,
-            label: t("labels.fallbackPassword"),
+            label: t("fields.fallbackPassword.label"),
         },
         {
             type: "password" as const,
             name: "confirmFallbackPassword",
             model: confirmFallbackPassword,
-            label: t("labels.confirmFallbackPassword"),
+            label: t("fields.confirmFallbackPassword.label"),
             validationDependsOn: ["fallbackPassword"],
             rules: [
-                () => {
-                    const a = (fallbackPassword.value ?? "").trim();
-                    const b = (confirmFallbackPassword.value ?? "").trim();
-                    if (!a && !b) return true;
-                    if (!a || !b) return t("validation.noMatch");
-                    return a === b || t("validation.noMatch");
-                },
+                () =>
+                    passwordsMatch(
+                        fallbackPassword.value,
+                        confirmFallbackPassword.value,
+                    ),
             ],
         },
         {
             type: "password" as const,
             name: "quitPassword",
             model: quitPassword,
-            label: t("labels.quitPassword"),
+            label: t("fields.quitPassword.label"),
         },
         {
             type: "password" as const,
             name: "confirmQuitPassword",
             model: confirmQuitPassword,
-            label: t("labels.confirmQuitPassword"),
+            label: t("fields.confirmQuitPassword.label"),
             validationDependsOn: ["quitPassword"],
             rules: [
-                () => {
-                    const a = (quitPassword.value ?? "").trim();
-                    const b = (confirmQuitPassword.value ?? "").trim();
-                    if (!a && !b) return true;
-                    if (!a || !b) return t("validation.noMatch");
-                    return a === b || t("validation.noMatch");
-                },
+                () =>
+                    passwordsMatch(
+                        quitPassword.value,
+                        confirmQuitPassword.value,
+                    ),
             ],
         },
     ]);

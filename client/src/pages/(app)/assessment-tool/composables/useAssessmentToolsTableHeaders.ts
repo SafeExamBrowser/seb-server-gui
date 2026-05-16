@@ -25,7 +25,7 @@ export function useAssessmentToolsTableHeaders() {
         if (showInstitutionColumn.value) {
             base.push({
                 title: translate(
-                    "assessmentToolConnections.assessmentToolsPage.assessmentToolTableHeaders.tableHeaderInstitution",
+                    "assessmentToolConnections.list.tableHeaders.institution",
                 ),
                 key: "institutionId",
                 width: "20%",
@@ -36,7 +36,7 @@ export function useAssessmentToolsTableHeaders() {
         base.push(
             {
                 title: translate(
-                    "assessmentToolConnections.assessmentToolsPage.assessmentToolTableHeaders.tableHeaderName",
+                    "assessmentToolConnections.list.tableHeaders.name",
                 ),
                 key: "name",
                 width: "20%",
@@ -44,7 +44,7 @@ export function useAssessmentToolsTableHeaders() {
             },
             {
                 title: translate(
-                    "assessmentToolConnections.assessmentToolsPage.assessmentToolTableHeaders.tableHeaderAssessmentToolType",
+                    "assessmentToolConnections.list.tableHeaders.type",
                 ),
                 key: "lmsType",
                 width: "20%",
@@ -52,7 +52,7 @@ export function useAssessmentToolsTableHeaders() {
             },
             {
                 title: translate(
-                    "assessmentToolConnections.assessmentToolsPage.assessmentToolTableHeaders.tableHeaderStatus",
+                    "assessmentToolConnections.list.tableHeaders.status",
                 ),
                 key: "active",
                 width: "15%",

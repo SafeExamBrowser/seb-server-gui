@@ -3,7 +3,7 @@ import { useInstitutionFilterSection } from "@/components/widgets/filters/useIns
 import type { FilterSectionDef } from "@/components/widgets/filters/filterTypes.ts";
 import { getStatusFilterSection } from "@/components/widgets/filters/statusFilterSection.ts";
 
-const TRANSLATION_PREFIX = "userAccount.userAccountPage";
+const TRANSLATION_PREFIX = "userAccount.list";
 
 export function useUserAccountsFilters() {
     const { section: institutionSection } =

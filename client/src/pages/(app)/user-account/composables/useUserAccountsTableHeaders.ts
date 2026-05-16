@@ -24,9 +24,7 @@ export function useUserAccountsTableHeaders() {
 
         if (showInstitutionColumn.value) {
             base.push({
-                title: translate(
-                    "userAccount.userAccountPage.userAccountTableHeaders.tableHeaderInstitution",
-                ),
+                title: translate("userAccount.list.tableHeaders.institution"),
                 key: "institutionId",
                 width: "6%",
                 sortable: true,
@@ -35,41 +33,31 @@ export function useUserAccountsTableHeaders() {
 
         base.push(
             {
-                title: translate(
-                    "userAccount.userAccountPage.userAccountTableHeaders.tableHeaderSurname",
-                ),
+                title: translate("userAccount.list.tableHeaders.surname"),
                 key: "surname",
                 width: "8%",
                 sortable: true,
             },
             {
-                title: translate(
-                    "userAccount.userAccountPage.userAccountTableHeaders.tableHeaderName",
-                ),
+                title: translate("userAccount.list.tableHeaders.name"),
                 key: "name",
                 width: "8%",
                 sortable: true,
             },
             {
-                title: translate(
-                    "userAccount.userAccountPage.userAccountTableHeaders.tableHeaderUsername",
-                ),
+                title: translate("userAccount.list.tableHeaders.username"),
                 key: "username",
                 width: "8%",
                 sortable: true,
             },
             {
-                title: translate(
-                    "userAccount.userAccountPage.userAccountTableHeaders.tableHeaderEmail",
-                ),
+                title: translate("userAccount.list.tableHeaders.email"),
                 key: "email",
                 width: "12%",
                 sortable: true,
             },
             {
-                title: translate(
-                    "userAccount.userAccountPage.userAccountTableHeaders.tableHeaderStatus",
-                ),
+                title: translate("userAccount.list.tableHeaders.status"),
                 key: "active",
                 width: "6%",
                 sortable: false,

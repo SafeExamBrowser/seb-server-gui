@@ -7,7 +7,11 @@ import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums.ts";
 
 export type AuthMode = "client" | "token";
 
-export const useAssessmentToolFormFields = () => {
+export type AssessmentToolFormMode = "create" | "edit";
+
+export const useAssessmentToolFormFields = (
+    mode: AssessmentToolFormMode = "create",
+) => {
     const institutionId = ref<string | undefined>(undefined);
     const name = ref<string | undefined>(undefined);
     const lmsType = ref<string | undefined>(undefined);
@@ -66,9 +70,7 @@ export const useAssessmentToolFormFields = () => {
     }));
 
     const t = (key: string) =>
-        i18n.global.t(
-            `assessmentToolConnections.createAssessmentToolConnectionsPage.${key}`,
-        );
+        i18n.global.t(`assessmentToolConnections.${key}`);
 
     const loading = computed(() => loadingInstitutions.value);
     const errors = computed(() =>
@@ -82,7 +84,7 @@ export const useAssessmentToolFormFields = () => {
                 type: "select" as const,
                 name: "institutionId",
                 model: institutionId,
-                label: t("labels.institutionLabel"),
+                label: t("fields.institution.label"),
                 options: institutionOptions.value,
                 required: true,
                 disabled: true,
@@ -91,28 +93,29 @@ export const useAssessmentToolFormFields = () => {
                 type: "text" as const,
                 name: "name",
                 model: name,
-                label: t("labels.nameLabel"),
+                label: t("fields.name.label"),
                 required: true,
             },
             {
                 type: "select" as const,
                 name: "lmsType",
                 model: lmsType,
-                label: t("labels.typeLabel"),
+                label: t("fields.type.label"),
                 options: lmsTypeOptions,
                 required: true,
+                disabled: mode === "edit",
             },
             {
                 type: "text" as const,
                 name: "serverAddress",
                 model: serverAddress,
-                label: t("labels.assessmentToolServerAddressLabel"),
+                label: t("fields.serverAddress.label"),
                 required: true,
                 rules: [
                     (v: string | undefined) =>
                         !v ||
                         /^https?:\/\//i.test(v) ||
-                        t("validation.assessmentToolServerAddressLabel"),
+                        t("fields.serverAddress.validation"),
                 ],
             },
         ];
@@ -125,14 +128,14 @@ export const useAssessmentToolFormFields = () => {
                     type: "text" as const,
                     name: "clientUsername",
                     model: clientUsername,
-                    label: t("labels.assessmentToolServerUsernameLabel"),
+                    label: t("fields.clientUsername.label"),
                     required: true,
                 },
                 {
                     type: "password" as const,
                     name: "clientPassword",
                     model: clientPassword,
-                    label: t("labels.assessmentToolServerPasswordLabel"),
+                    label: t("fields.clientPassword.label"),
                     required: true,
                 },
             ];
@@ -142,7 +145,7 @@ export const useAssessmentToolFormFields = () => {
                 type: "password" as const,
                 name: "accessToken",
                 model: accessToken,
-                label: t("labels.accessTokenLabel"),
+                label: t("fields.accessToken.label"),
                 required: true,
             },
         ];
@@ -153,14 +156,16 @@ export const useAssessmentToolFormFields = () => {
             type: "text" as const,
             name: "proxyHost",
             model: proxyHost,
-            label: t("labels.proxyHostLabel"),
+            label: t("fields.proxyHost.label"),
+            placeholder: t("fields.proxyHost.placeholder"),
             required: true,
         },
         {
             type: "text" as const,
             name: "proxyPort",
             model: proxyPort,
-            label: t("labels.proxyPortLabel"),
+            label: t("fields.proxyPort.label"),
+            placeholder: t("fields.proxyPort.placeholder"),
             required: true,
             rules: [
                 (v: string | undefined) => {
@@ -168,7 +173,7 @@ export const useAssessmentToolFormFields = () => {
                     const n = Number(v);
                     return (
                         (Number.isInteger(n) && n >= 1 && n <= 65535) ||
-                        t("validation.invalidPort")
+                        t("fields.proxyPort.validation")
                     );
                 },
             ],
@@ -177,14 +182,16 @@ export const useAssessmentToolFormFields = () => {
             type: "text" as const,
             name: "proxyUsername",
             model: proxyUsername,
-            label: t("labels.proxyUsernameLabel"),
+            label: t("fields.proxyUsername.label"),
+            placeholder: t("fields.proxyUsername.placeholder"),
             required: true,
         },
         {
             type: "password" as const,
             name: "proxyPassword",
             model: proxyPassword,
-            label: t("labels.proxyPasswordLabel"),
+            label: t("fields.proxyPassword.label"),
+            placeholder: t("fields.proxyPassword.placeholder"),
             required: true,
         },
     ]);

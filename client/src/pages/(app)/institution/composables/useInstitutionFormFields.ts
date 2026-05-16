@@ -11,8 +11,7 @@ export const useInstitutionFormFields = () => {
     const urlSuffix = ref<string | undefined>(undefined);
     const logoImage = ref<File | null>(null);
 
-    const t = (key: string) =>
-        i18n.global.t(`institutions.institutionFormFields.${key}`);
+    const t = (key: string) => i18n.global.t(`institutions.${key}`);
 
     const rules = useRules();
 
@@ -21,7 +20,7 @@ export const useInstitutionFormFields = () => {
             type: "image",
             name: "logoImage",
             model: logoImage,
-            label: t("labels.logoImage"),
+            label: t("fields.logoImage.label"),
             dropTitle: i18n.global.t("general.formFields.image.dropTitle"),
             hint: i18n.global.t("general.formFields.image.hint", {
                 types: LOGO_ACCEPT_EXTENSIONS.join(", "),
@@ -32,7 +31,7 @@ export const useInstitutionFormFields = () => {
             type: "text",
             name: "name",
             model: name,
-            label: t("labels.name"),
+            label: t("fields.name.label"),
             required: true,
             rules: [rules.required(), rules.minLength(3), rules.maxLength(255)],
         },
@@ -40,12 +39,12 @@ export const useInstitutionFormFields = () => {
             type: "text",
             name: "urlSuffix",
             model: urlSuffix,
-            label: t("labels.urlSuffix"),
+            label: t("fields.urlSuffix.label"),
             rules: [
                 (v: string | undefined) =>
                     !v ||
                     URL_SUFFIX_PATTERN.test(v) ||
-                    t("validation.urlSuffix"),
+                    t("fields.urlSuffix.validation"),
             ],
         },
     ]);

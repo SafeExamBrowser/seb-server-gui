@@ -545,33 +545,16 @@
                 "register": "Register"
             }
         },
-        "userAccountPage": {
-            "userAccountTableHeaders": {
-                "tableHeaderInstitution": "Institution",
-                "tableHeaderName": "Name",
-                "tableHeaderSurname": "Last Name",
-                "tableHeaderUsername": "Username",
-                "tableHeaderEmail": "Email",
-                "tableHeaderRoles": "Roles",
-                "tableHeaderStatus": "Status"
+        "list": {
+            "tableHeaders": {
+                "institution": "Institution",
+                "name": "Name",
+                "surname": "Last Name",
+                "username": "Username",
+                "email": "Email",
+                "roles": "Roles",
+                "status": "Status"
             },
-            "deleteUserAccountContext": {
-                "title": "Confirm Deletion",
-                "informationPart1": "Are you sure you want to delete",
-                "informationPart2": "'s account (",
-                "informationPart3": ")?"
-            },
-            "changeUserAccountStatusContext": {
-                "activateTitle": "Activate {username}?",
-                "deactivateTitle": "Deactivate {username}?",
-                "activateMessage": "Are you sure you want to activate {name} {surname}'s account ({username})?",
-                "deactivateMessage": "Are you sure you want to deactivate {name} {surname}'s account ({username})?",
-                "buttons": {
-                    "activate": "Activate",
-                    "deactivate": "Deactivate"
-                }
-            },
-            "addUserContext": "Add User Account",
             "filters": {
                 "searchTitle": "Search",
                 "searchField": "Search by Last Name",
@@ -580,65 +563,56 @@
                 "inactiveSelector": "Inactive",
                 "institutionFilter": "Institution"
             },
-            "info": {
-                "noPermissionEditUser": "You don't have the permissions to edit this user"
+            "deleteDialog": {
+                "title": "Confirm Deletion",
+                "text": "Are you sure you want to delete this user account?",
+                "action": "Delete"
+            },
+            "statusDialog": {
+                "activateTitle": "Activate User Account",
+                "deactivateTitle": "Deactivate User Account",
+                "activateText": "Are you sure you want to activate this user account?",
+                "deactivateText": "Are you sure you want to deactivate this user account?",
+                "activateAction": "Activate",
+                "deactivateAction": "Deactivate"
             }
         },
-        "createUserAccountPage": {
-            "title": "New User Account",
-            "labels": {
-                "institutionLabel": "Institution",
-                "usernameLabel": "Username",
-                "nameLabel": "Name",
-                "surnameLabel": "Last Name",
-                "emailLabel": "Email",
-                "timeZoneLabel": "Time Zone",
-                "passwordLabel": "Password",
-                "confirmPasswordLabel": "Confirm Password",
-                "selectRolesLabel": "User Role"
-            },
-            "info": {
-                "rolesSelectionInfo": "Please select at least one Role",
-                "accountCreationInfo": "Fill out the required * fields to create a new User Account"
-            },
-            "buttons": {
-                "createNewUser": "Create"
-            }
+        "fields": {
+            "institution": { "label": "Institution *" },
+            "username": { "label": "Username *" },
+            "name": { "label": "Name *" },
+            "surname": { "label": "Last Name *" },
+            "email": { "label": "Email" },
+            "timezone": { "label": "Time Zone *" },
+            "password": { "label": "Password *" },
+            "confirmPassword": { "label": "Confirm Password *" },
+            "role": { "label": "User Role *" },
+            "passwordPlaceholder": { "label": "Password" }
         },
-        "userAccountDetailAndEditPage": {
-            "changePasswordTitle": "Change User Password",
-            "labels": {
-                "institutionLabel": "Institution *",
-                "usernameLabel": "Username *",
-                "nameLabel": "Name *",
-                "surnameLabel": "Last Name*",
-                "emailLabel": "Email",
-                "timeZoneLabel": "Time Zone *",
-                "passwordLabel": "Password *",
-                "confirmPasswordLabel": "Confirm Password *",
-                "selectRolesLabel": "User Role *",
-                "adminPassword": "Personal Password",
-                "newPassword": "New Password",
-                "confirmNewPassword": "Repeat Password"
-            },
-            "info": {
-                "rolesSelectionInfo": "Must have at least one Role",
-                "accountEditInfo": "Change the values of the fields to edit the user",
-                "changePasswordInfo": "Change \"{username}\"'s password",
-                "createdAtInfo": "Created at: "
-            },
-            "buttons": {
-                "saveChanges": "Save Changes"
-            },
-            "warnings": {
-                "edit-success": "Edited User: \"{username}\".",
-                "no-edit-rights": "You do not have rights to edit this user."
+        "hints": {
+            "create": "Fill out the required * fields to create a new User Account",
+            "edit": "Change the values of the fields to edit the user",
+            "profile": "Change the values of the fields to update your profile",
+            "createdAt": "Created at: "
+        },
+        "changePassword": {
+            "title": "Change User Password",
+            "info": "Change \"{username}\"'s password",
+            "fields": {
+                "adminPassword": { "label": "Personal Password" },
+                "newPassword": { "label": "New Password" },
+                "confirmNewPassword": { "label": "Repeat Password" }
             }
         }
     },
     "assessmentToolConnections": {
-        "assessmentToolsPage": {
-            "addAssessmentTool": "Add Assessment Tool Connection",
+        "list": {
+            "tableHeaders": {
+                "institution": "Institution",
+                "name": "Name",
+                "type": "Assessment Tool Type",
+                "status": "Status"
+            },
             "filters": {
                 "searchTitle": "Search",
                 "searchField": "Search by Name",
@@ -648,73 +622,64 @@
                 "inactiveSelector": "Inactive",
                 "typeFilter": "Assessment Tool Type"
             },
-            "assessmentToolTableHeaders": {
-                "tableHeaderInstitution": "Institution",
-                "tableHeaderName": "Name",
-                "tableHeaderAssessmentToolType": "Assessment Tool Type",
-                "tableHeaderStatus": "Status"
-            },
-            "changeAssessmentToolStatusContext": {
-                "activateTitle": "Activate Assessment Tool?",
-                "deactivateTitle": "Deactivate Assessment Tool?",
-                "activateMessage": "Are you sure you want to activate {name}?",
-                "deactivateMessage": "Are you sure you want to deactivate {name}?",
-                "buttons": {
-                    "activate": "Activate",
-                    "deactivate": "Deactivate"
-                }
-            },
-            "deleteAssessmentToolContext": {
+            "deleteDialog": {
                 "title": "Confirm Deletion",
-                "informationPart1": "Delete Assessment Tool: ",
-                "informationPart3": " ?"
+                "text": "Are you sure you want to delete this assessment tool connection?",
+                "action": "Delete"
+            },
+            "statusDialog": {
+                "activateTitle": "Activate Assessment Tool",
+                "deactivateTitle": "Deactivate Assessment Tool",
+                "activateText": "Are you sure you want to activate this assessment tool connection?",
+                "deactivateText": "Are you sure you want to deactivate this assessment tool connection?",
+                "activateAction": "Activate",
+                "deactivateAction": "Deactivate"
             }
         },
-        "createAssessmentToolConnectionsPage": {
-            "info": {
-                "assessmentToolConnectionsCreationInfo": "Fill out the required * fields to create a new Assessment Tool Connection"
+        "hints": {
+            "create": "Fill out the required * fields to create a new Assessment Tool Connection",
+            "edit": "Edit the assessment tool connection details. Leave secrets empty to keep the existing values."
+        },
+        "fields": {
+            "institution": { "label": "Institution *" },
+            "name": { "label": "Name *" },
+            "type": { "label": "Type *" },
+            "serverAddress": {
+                "label": "Assessment Tool Server Address *",
+                "validation": "Must start with http:// or https://"
             },
-            "labels": {
-                "institutionLabel": "Institution *",
-                "nameLabel": "Name *",
-                "typeLabel": "Type*",
-                "assessmentToolServerAddressLabel": "Assessment Tool Server Address *",
-                "assessmentToolServerUsernameLabel": "Assessment Tool Server Username *",
-                "assessmentToolServerPasswordLabel": "Assessment Tool Server Password *",
-                "accessTokenLabel": "Access Token *",
-                "withProxyLabel": "With Proxy",
-                "withProxyArea": "Toggle proxy settings",
-                "proxyHostLabel": "Proxy Host *",
-                "proxyPortLabel": "Proxy Port *",
-                "proxyUsernameLabel": "Proxy Username *",
-                "proxyPasswordLabel": "Proxy Password *",
-                "authenticationMode": "Authentication Mode",
-                "clientCredentials": "Credentials",
-                "restApiToken": "Access Token"
+            "clientUsername": { "label": "Assessment Tool Server Username *" },
+            "clientPassword": { "label": "Assessment Tool Server Password *" },
+            "accessToken": { "label": "Access Token *" },
+            "withProxy": {
+                "label": "With Proxy",
+                "ariaLabel": "Toggle proxy settings"
             },
-            "placeholders": {
-                "proxyHost": "Enter proxy host",
-                "proxyPort": "Enter proxy port",
-                "proxyUsername": "Enter proxy username",
-                "proxyPassword": "Enter proxy password"
+            "proxyHost": {
+                "label": "Proxy Host *",
+                "placeholder": "Enter proxy host"
             },
-            "validation": {
-                "required": "This field is required",
-                "assessmentToolServerAddressLabel": "Must start with http:// or https://",
-                "invalidPort": "Invalid port, ex. 8080"
+            "proxyPort": {
+                "label": "Proxy Port *",
+                "placeholder": "Enter proxy port",
+                "validation": "Invalid port, ex. 8080"
+            },
+            "proxyUsername": {
+                "label": "Proxy Username *",
+                "placeholder": "Enter proxy username"
+            },
+            "proxyPassword": {
+                "label": "Proxy Password *",
+                "placeholder": "Enter proxy password"
             }
         },
-        "assessmentToolDetailAndEditPage": {
-            "buttons": {
-                "saveChanges": "Save Changes",
-                "revertChanges": "Revert Changes"
-            },
-            "validation": {
-                "required": "This field is required",
-                "assessmentToolServerAddressLabel": "Must start with http:// or https://",
-                "invalidPort": "Invalid port, ex. 8080",
-                "mustBeWithUrl": "Must start with http:// or https://"
-            }
+        "authMode": {
+            "label": "Authentication Mode",
+            "clientCredentials": "Credentials",
+            "restApiToken": "Access Token"
+        },
+        "validation": {
+            "required": "This field is required"
         },
         "lmsTypes": {
             "MOCKUP": "Testing",
@@ -726,8 +691,13 @@
         }
     },
     "connectionConfigurations": {
-        "connectionConfigurationsPage": {
-            "addConnectionConfiguration": "Add Connection Configuration",
+        "list": {
+            "tableHeaders": {
+                "institution": "Institution",
+                "name": "Name",
+                "creationDate": "Creation Date",
+                "status": "Status"
+            },
             "filters": {
                 "searchTitle": "Search",
                 "searchField": "Search by Name",
@@ -736,120 +706,62 @@
                 "activeSelector": "Active",
                 "inactiveSelector": "Inactive"
             },
-            "connectionConfigurationsTableHeaders": {
-                "tableHeaderInstitution": "Institution",
-                "tableHeaderName": "Name",
-                "tableHeaderCreationDate": "Creation Date",
-                "tableHeaderStatus": "Status"
-            },
-            "changeConnectionConfigurationStatusContext": {
-                "activateTitle": "Activate Connection Configuration?",
-                "deactivateTitle": "Deactivate Connection Configuration?",
-                "activateMessage": "Are you sure you want to activate {name}?",
-                "deactivateMessage": "Are you sure you want to deactivate {name}?",
-                "buttons": {
-                    "activate": "Activate",
-                    "deactivate": "Deactivate"
-                }
-            },
-            "deleteConnectionConfigurationContext": {
+            "deleteDialog": {
                 "title": "Confirm Deletion",
-                "informationPart1": "Delete Connection Configuration: ",
-                "informationPart3": " ?"
+                "text": "Are you sure you want to delete this connection configuration?",
+                "action": "Delete"
+            },
+            "statusDialog": {
+                "activateTitle": "Activate Connection Configuration",
+                "deactivateTitle": "Deactivate Connection Configuration",
+                "activateText": "Are you sure you want to activate this connection configuration?",
+                "deactivateText": "Are you sure you want to deactivate this connection configuration?",
+                "activateAction": "Activate",
+                "deactivateAction": "Deactivate"
             }
         },
-        "createConnectionConfigurationPage": {
-            "info": {
-                "createConnectionConfigurationInfo": "Fill out the required * fields to create a new Connection Configuration"
-            },
-            "labels": {
-                "configurationPurpose": "Configuration Purpose *",
-                "name": "Name *",
-                "configurationPassword": "Configuration Password",
-                "confirmConfigurationPassword": "Confirm Configuration Password",
-                "encryptWithCertificate": "Encrypt With Certificate",
-                "useAsymmetricOnlyEncryption": "Use asymmetric-only encryption",
-                "pingInterval": "Ping Interval in seconds *",
-                "exams": "Exams",
-                "withFallback": "With Fallback",
-                "withFallbackArea": "Toggle Fallback settings",
-                "fallbackStartURL": "Fallback Start URL *",
-                "connectionAttempts": "Connection Attempts *",
-                "interval": "Interval in seconds *",
-                "connectionTimeout": "Connection Timeout in seconds *",
-                "fallbackPassword": "Fallback Password",
-                "confirmFallbackPassword": "Confirm Fallback Password",
-                "quitPassword": "Quit Password",
-                "confirmQuitPassword": "Confirm Quit Password",
-                "noCertificatesUploadedYet": "No certificates uploaded yet"
-            },
-            "placeholders": {
-                "proxyHost": "Enter proxy host",
-                "proxyPort": "Enter proxy port",
-                "proxyUsername": "Enter proxy username",
-                "proxyPassword": "Enter proxy password"
-            },
-            "validation": {
-                "required": "This field is required",
-                "mustBeWithUrl": "Must start with http:// or https://",
-                "invalidPort": "Invalid port, ex. 8080",
-                "noMatch": "Passwords don't match",
-                "mustBeNumber": "The value can only consist of numbers",
-                "mustBePositiveNumber": "The value must be a positive number"
-            },
-            "selectValues": {
-                "start_exam": "Starting an Exam",
-                "configure_client": "Configure a Client"
-            }
+        "hints": {
+            "create": "Fill out the required * fields to create a new Connection Configuration",
+            "edit": "Edit the connection configuration. Leave password fields empty to keep existing values.",
+            "createdAt": "Created at: ",
+            "lastUpdatedAt": "Last Updated at ",
+            "by": " by ",
+            "noCertificatesUploadedYet": "No certificates uploaded yet"
         },
-        "connectionConfigurationViewAndEditPage": {
-            "title": "Edit Connection Configuration",
-            "buttons": {
-                "saveChanges": "Save Changes",
-                "revertChanges": "Revert Changes"
+        "fields": {
+            "name": { "label": "Name *" },
+            "configurationPurpose": { "label": "Configuration Purpose *" },
+            "configurationPassword": { "label": "Configuration Password" },
+            "confirmConfigurationPassword": {
+                "label": "Confirm Configuration Password"
             },
-            "validation": {
-                "required": "This field is required",
-                "mustBeWithUrl": "Must start with http:// or https://",
-                "invalidPort": "Invalid port, ex. 8080",
-                "noMatch": "Passwords don't match",
-                "mustBeNumber": "The value can only consist of numbers",
-                "mustBePositiveNumber": "The value must be a positive number"
+            "encryptWithCertificate": { "label": "Encrypt With Certificate" },
+            "useAsymmetricOnlyEncryption": {
+                "label": "Use asymmetric-only encryption"
             },
-            "labels": {
-                "configurationPurpose": "Configuration Purpose *",
-                "name": "Name *",
-                "configurationPassword": "Configuration Password",
-                "confirmConfigurationPassword": "Confirm Configuration Password",
-                "encryptWithCertificate": "Encrypt With Certificate",
-                "useAsymmetricOnlyEncryption": "Use asymmetric-only encryption",
-                "pingInterval": "Ping Interval in seconds *",
-                "exams": "Exams",
-                "withFallback": "With Fallback",
-                "withFallbackArea": "Toggle Fallback settings",
-                "fallbackStartURL": "Fallback Start URL *",
-                "connectionAttempts": "Connection Attempts *",
-                "interval": "Interval in seconds *",
-                "connectionTimeout": "Connection Timeout in seconds *",
-                "fallbackPassword": "Fallback Password",
-                "confirmFallbackPassword": "Confirm Fallback Password",
-                "quitPassword": "Quit Password",
-                "confirmQuitPassword": "Confirm Quit Password",
-                "noCertificatesUploadedYet": "No certificates uploaded yet"
+            "pingInterval": { "label": "Ping Interval in seconds *" },
+            "withFallback": {
+                "label": "With Fallback",
+                "ariaLabel": "Toggle Fallback settings"
             },
-            "filters": {
-                "activeSelector": "Active",
-                "inactiveSelector": "Inactive"
-            },
-            "info": {
-                "createdAt": "Created at: ",
-                "lastUpdatedAt": "Last Updated at ",
-                "by": " by "
-            },
-            "selectValues": {
-                "start_exam": "Starting an Exam",
-                "configure_client": "Configure a Client"
-            }
+            "fallbackStartUrl": { "label": "Fallback Start URL *" },
+            "connectionAttempts": { "label": "Connection Attempts *" },
+            "interval": { "label": "Interval in seconds *" },
+            "connectionTimeout": { "label": "Connection Timeout in seconds *" },
+            "fallbackPassword": { "label": "Fallback Password" },
+            "confirmFallbackPassword": { "label": "Confirm Fallback Password" },
+            "quitPassword": { "label": "Quit Password" },
+            "confirmQuitPassword": { "label": "Confirm Quit Password" }
+        },
+        "validation": {
+            "required": "This field is required",
+            "mustBeWithUrl": "Must start with http:// or https://",
+            "noMatch": "Passwords don't match",
+            "mustBeNumber": "The value can only consist of numbers"
+        },
+        "selectValues": {
+            "start_exam": "Starting an Exam",
+            "configure_client": "Configure a Client"
         },
         "lmsTypes": {
             "MOCKUP": "Testing",
@@ -901,15 +813,13 @@
         }
     },
     "institutions": {
-        "institutionPage": {
+        "list": {
             "tableHeaders": {
                 "logoImage": "Logo",
                 "name": "Name",
-                "modelId": "ID",
                 "urlSuffix": "URL Suffix",
                 "active": "Status"
             },
-            "addInstitution": "Add Institution",
             "filters": {
                 "searchTitle": "Search",
                 "searchField": "Search by Name",
@@ -931,25 +841,21 @@
                 "deactivateAction": "Deactivate"
             }
         },
-        "createInstitutionPage": {
-            "info": {
-                "creationInfo": "Fill the form to create a new institution."
-            }
-        },
-        "editInstitutionPage": {
-            "info": {
-                "editInfo": "Edit the institution details."
-            }
-        },
-        "institutionFormFields": {
-            "labels": {
-                "name": "Name *",
-                "urlSuffix": "URL Suffix",
-                "logoImage": "Logo Image"
+        "fields": {
+            "name": {
+                "label": "Name *"
             },
-            "validation": {
-                "urlSuffix": "URL suffix must be 3 to 45 characters or empty"
+            "urlSuffix": {
+                "label": "URL Suffix",
+                "validation": "URL suffix must be 3 to 45 characters or empty"
+            },
+            "logoImage": {
+                "label": "Logo Image"
             }
+        },
+        "hints": {
+            "create": "Fill the form to create a new institution.",
+            "edit": "Edit the institution details."
         }
     },
     "sebSettings": {
