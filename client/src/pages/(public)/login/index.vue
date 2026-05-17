@@ -39,9 +39,7 @@
                     {{ translate("loginPage.signIn") }}
                 </v-card-title>
                 <v-card-subtitle>
-                    <span class="text-subtitle">
-                        {{ translate("loginPage.description") }}
-                    </span>
+                    {{ translate("loginPage.description") }}
                 </v-card-subtitle>
 
                 <v-card-text>
@@ -119,7 +117,6 @@
 <script setup lang="ts">
 import AlertMsg from "@/components/widgets/AlertMsg.vue";
 import { ref } from "vue";
-import { useTheme } from "vuetify";
 import { translate } from "@/utils/generalUtils";
 import { useLogin } from "../composables/useLogin";
 import { RouterLink } from "vue-router";
@@ -135,11 +132,6 @@ const password = ref("");
 const passwordVisible = ref<boolean>(false);
 
 const { errorI18nKey, loading: isLoading, login } = useLogin();
-
-// theme
-const theme = useTheme();
-const initialTheme = localStorage.getItem("theme") ?? "light";
-theme.change(initialTheme);
 
 const handleSubmit = () => {
     login(username.value, password.value);

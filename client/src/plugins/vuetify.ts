@@ -16,6 +16,17 @@ const alertColors = {
     warning: { bg: "#F7E9DC", border: "#FAC594", accent: "#FB8C00" },
 };
 
+// Toast colours (consumed by ToastItem.vue via --v-theme-alert-*). Kept
+// outside the Vuetify Studio palette and merged into every theme so toasts
+// render correctly in both light and dark mode.
+const alertThemeColors = Object.fromEntries(
+    Object.entries(alertColors).flatMap(([kind, vals]) => [
+        [`alert-${kind}-bg`, vals.bg],
+        [`alert-${kind}-border`, vals.border],
+        [`alert-${kind}-accent`, vals.accent],
+    ]),
+);
+
 export const vuetify = createVuetify({
     components: {
         VStepperVertical,
@@ -27,47 +38,45 @@ export const vuetify = createVuetify({
     theme: {
         defaultTheme: "light",
         themes: {
-            // TODO ANDREI checkout vuetify studio https://vuetifyjs.com/en/
             light: {
+                dark: false,
                 colors: {
+                    background: "#ededf4",
+                    surface: "#f9f9ff",
+                    "surface-dim": "#d9dae0",
+                    "surface-bright": "#f9f9ff",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-low": "#f2f3fa",
+                    "surface-container": "#ededf4",
+                    "surface-container-high": "#e7e8ef",
+                    "surface-container-highest": "#e1e2e9",
+                    "on-surface": "#191c20",
+                    outline: "#737783",
+                    "outline-variant": "#c3c6d3",
                     primary: "#215CAF",
-                    secondary: "#5CBBF6",
-                    blue: "#2196F3",
-                    green: "#2a8f5d",
-                    title: "#000000",
-                    subtitle: "#000000",
-                    "layout-background": "#F4F6F9",
-                    // surface: "#4D7DBF"
-
-                    // flatten
-                    ...Object.fromEntries(
-                        Object.entries(alertColors).flatMap(([kind, vals]) => [
-                            [`alert-${kind}-bg`, vals.bg],
-                            [`alert-${kind}-border`, vals.border],
-                            [`alert-${kind}-accent`, vals.accent],
-                        ]),
-                    ),
+                    "on-primary": "#ffffff",
+                    "primary-container": "#d7e2ff",
+                    "on-primary-container": "#001b3f",
+                    secondary: "#026689",
+                    "on-secondary": "#ffffff",
+                    "secondary-container": "#c3e8ff",
+                    "on-secondary-container": "#001e2c",
+                    tertiary: "#6150ae",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-container": "#e6deff",
+                    "on-tertiary-container": "#1c0062",
+                    error: "#ba1a1a",
+                    "on-error": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-error-container": "#410002",
+                    "surface-light": "#e7e8ef",
+                    ...alertThemeColors,
                 },
-            },
-            dark: {
-                colors: {
-                    primary: "#215CAF",
-                    secondary: "#5CBBF6",
-                    blue: "#2196F3",
-                    subtitle: "#ffffff",
-                    "layout-background": "#121212",
-                },
-            },
-            tableTheme: {
-                colors: {
-                    surface: "#e2ecf7",
-                    // surface: "#215CAF",
+                variables: {
+                    "overlay-background": "#171c25",
                 },
             },
         },
-    },
-    locale: {
-        // locale: "de-DE"
     },
 });
 
