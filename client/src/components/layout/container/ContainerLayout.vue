@@ -1,7 +1,5 @@
 <template>
-    <div
-        class="d-flex flex-column bg-layout-background h-screen overflow-hidden"
-    >
+    <div class="d-flex flex-column bg-background h-screen overflow-hidden">
         <ContainerHeader
             :home-route="homeRoute"
             :institution-logo="institutionLogo"

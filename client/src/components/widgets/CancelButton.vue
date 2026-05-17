@@ -1,7 +1,6 @@
 <template>
     <v-btn
         class="rounded"
-        color="black"
         data-testid="cancel-button"
         rounded="sm"
         variant="outlined"

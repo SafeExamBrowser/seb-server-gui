@@ -1942,7 +1942,10 @@
         },
         "profileMenu": {
             "docs": "Docs",
-            "logout": "Log out"
+            "logout": "Log out",
+            "theme": "Theme",
+            "light": "Light",
+            "dark": "Dark"
         }
     },
     "changePasswordDialog": {

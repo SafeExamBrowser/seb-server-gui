@@ -4,7 +4,7 @@
     </div>
 
     <v-data-table
-        class="elevation-2 mb-7"
+        class="elevation-2 mb-7 bg-surface-light"
         :expanded="expandedItems"
         :headers="screenshotTableHeaders"
         item-value="timelineScreenshotDataList[0].timestamp"
@@ -13,7 +13,6 @@
         :items-per-page-options="tableUtils.itemsPerPageOptions"
         show-expand
         :sort-by="[{ key: 'timestamp', order: 'asc' }]"
-        theme="tableTheme"
     >
         <!------------headers------------>
         <template #headers="{ columns, isSorted, getSortIcon, toggleSort }">

@@ -39,9 +39,7 @@
                     {{ translate("loginPage.signIn") }}
                 </v-card-title>
                 <v-card-subtitle>
-                    <span class="text-subtitle">
-                        {{ translate("loginPage.description") }}
-                    </span>
+                    {{ translate("loginPage.description") }}
                 </v-card-subtitle>
 
                 <v-card-text>

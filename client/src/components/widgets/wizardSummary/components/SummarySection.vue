@@ -1,7 +1,7 @@
 <template>
     <div>
         <SectionSubtitle :name="section.label" />
-        <div class="rounded-lg mt-2 pa-4 bg-grey-lighten-5">
+        <div class="rounded-lg mt-2 pa-4 bg-surface-container-low">
             <template v-for="(item, index) in section.items" :key="item.key">
                 <SummarySectionItemBasic
                     v-if="item.type === 'basic'"
