@@ -19,14 +19,11 @@
                 :variant="isOpen ? 'tonal' : 'flat'"
             >
                 <div class="d-flex align-center ga-3">
-                    <v-avatar
-                        class="font-weight-black text-body-medium"
-                        color="primary"
-                        density="comfortable"
-                        rounded="lg"
-                    >
-                        {{ initials }}
-                    </v-avatar>
+                    <UserAvatar
+                        :name="userAccount?.name"
+                        :surname="userAccount?.surname"
+                        class="text-body-medium"
+                    />
 
                     <div class="text-left">
                         <div class="text-body-medium font-weight-bold">
@@ -145,6 +142,7 @@ import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import type { UserAccount } from "@/models/userAccount";
 import { typedTo } from "@/router/typedTo";
+import UserAvatar from "@/components/widgets/UserAvatar.vue";
 
 const props = defineProps<{
     userAccount?: UserAccount;
