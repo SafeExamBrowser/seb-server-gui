@@ -118,29 +118,6 @@
                 </template>
             </div>
 
-            <div
-                class="d-flex align-center justify-space-between px-4 py-3 border-b-thin"
-            >
-                <span class="text-body-medium font-weight-medium">
-                    {{ t("navigation.profileMenu.theme") }}
-                </span>
-                <v-btn-toggle
-                    v-model="themeName"
-                    color="primary"
-                    density="comfortable"
-                    divided
-                    mandatory
-                    variant="outlined"
-                >
-                    <v-btn prepend-icon="mdi-weather-sunny" value="light">
-                        {{ t("navigation.profileMenu.light") }}
-                    </v-btn>
-                    <v-btn prepend-icon="mdi-weather-night" value="dark">
-                        {{ t("navigation.profileMenu.dark") }}
-                    </v-btn>
-                </v-btn-toggle>
-            </div>
-
             <div class="py-1">
                 <v-btn
                     :active="false"
@@ -163,7 +140,6 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
-import { useTheme } from "vuetify";
 import type { UserAccount } from "@/models/userAccount";
 import { typedTo } from "@/router/typedTo";
 import UserAvatar from "@/components/widgets/UserAvatar.vue";
@@ -177,12 +153,6 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
-const theme = useTheme();
-
-const themeName = computed<string>({
-    get: () => theme.global.name.value,
-    set: (name) => theme.change(name),
-});
 
 const isOpen = ref(false);
 
