@@ -1,16 +1,10 @@
 <template>
     <div class="fill-height d-flex flex-column">
-        <div class="flex-grow-0 flex-shrink-0 pa-2">
-            <BreadCrumb :items="breadCrumb" />
-        </div>
-        <div class="flex-grow-0 flex-shrink-0 pa-2">
-            <PageTitle
-                :name="title"
-                :data-test-id="
-                    dataTestId ? `${dataTestId}-page-title` : undefined
-                "
-            />
-        </div>
+        <PageHeader
+            :title="title"
+            :bread-crumb="breadCrumb"
+            :data-test-id="dataTestId"
+        />
         <v-expand-transition>
             <div v-if="$slots.PanelTop" class="flex-grow-0 flex-shrink-0 pa-2">
                 <v-card elevation="2" rounded="lg">
@@ -42,9 +36,8 @@
 </template>
 
 <script setup lang="ts">
-import PageTitle from "@/components/widgets/PageTitle.vue";
+import PageHeader from "@/components/layout/pages/components/PageHeader.vue";
 import { BreadCrumbItem } from "@/components/widgets/breadCrumb/types";
-import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
 
 withDefaults(
     defineProps<{
