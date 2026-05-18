@@ -13,7 +13,7 @@
         </ContainerHeader>
 
         <div
-            class="d-flex flex-1-1-0 ga-4 px-6 pb-6 pt-4"
+            class="d-flex flex-1-1-0 ga-6 px-6 pb-6 pt-4"
             :style="{ minHeight: 0 }"
         >
             <ContainerSidePanel
