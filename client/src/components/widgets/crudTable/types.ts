@@ -1,12 +1,11 @@
-import { Ref, UnwrapRef } from "vue";
+import { MaybeRef, Ref, UnwrapRef } from "vue";
 import { FormField } from "@/components/widgets/formBuilder/types";
 import { DataTableHeader } from "vuetify";
-import { MaybeRef } from "@vueuse/core";
 
 export type CrudTableConfig<TItem, TTransient> = {
     name: string;
     title: string;
-    headers: DataTableHeader<TItem>[];
+    headers: DataTableHeader[];
     items: MaybeRef<TItem[]>;
     getFormFields: (
         item: Ref<UnwrapRef<TTransient>> | Ref<TTransient>,
