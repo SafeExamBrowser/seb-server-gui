@@ -149,7 +149,7 @@
 
 <script setup lang="ts">
 import { onBeforeMount, ref } from "vue";
-import VueDatePicker from "@vuepic/vue-datepicker";
+import { VueDatePicker } from "@vuepic/vue-datepicker";
 import * as applicationsSearchService from "@/services/screen-proctoring/applicationsSearchService";
 import ApplicationsExamList from "./components/ApplicationsSearchExamList.vue";
 import ApplicationsSearchMetadata from "./components/ApplicationsSearchMetadata.vue";
