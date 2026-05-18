@@ -1,26 +1,27 @@
 <template>
-    <BasicPage :title="title" :bread-crumb="breadCrumb">
-        <template #PanelMain>
-            <LoadingFallbackComponent
-                :loading="loading"
-                :errors="error ? [error] : undefined"
-            >
-                <!-- TODO @alain: drop this v-if once LoadingFallbackComponent yields data via a typed scoped slot -->
-                <template v-if="examTemplate"
-                    >Showing exam template: {{ examTemplate.name }}</template
-                >
-            </LoadingFallbackComponent>
+    <GridPage :title="title" :bread-crumb="breadCrumb">
+        <template #basicSettings><BoxBasicSettings /></template>
+        <template #sebSettings><BoxSebSettings /></template>
+        <template #indicators><BoxIndicators /></template>
+        <template #supervisors><BoxSupervisors /></template>
+        <template #screenProctoringSettings>
+            <BoxScreenProctoringSettings />
         </template>
-    </BasicPage>
+        <template #groups><BoxGroups /></template>
+    </GridPage>
 </template>
 
 <script setup lang="ts">
 import { useRoute } from "vue-router";
-import BasicPage from "@/components/layout/pages/BasicPage.vue";
-import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import GridPage from "@/components/layout/pages/GridPage.vue";
 import { useExamTemplateDetailPage } from "./composables/useExamTemplateDetailPage.ts";
+import BoxBasicSettings from "./components/BoxBasicSettings.vue";
+import BoxSebSettings from "./components/BoxSebSettings.vue";
+import BoxIndicators from "./components/BoxIndicators.vue";
+import BoxSupervisors from "./components/BoxSupervisors.vue";
+import BoxScreenProctoringSettings from "./components/BoxScreenProctoringSettings.vue";
+import BoxGroups from "./components/BoxGroups.vue";
 
 const route = useRoute("/(app)/exam-template/[id]/");
-const { examTemplate, loading, error, title, breadCrumb } =
-    useExamTemplateDetailPage(route.params.id);
+const { title, breadCrumb } = useExamTemplateDetailPage(route.params.id);
 </script>
