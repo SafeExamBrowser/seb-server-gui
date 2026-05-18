@@ -2,7 +2,7 @@
     <ExamTemplateBox
         :title="$t('examTemplateDetail.boxes.basicSettings.title')"
     >
-        <div>TODO</div>
+        <div>TODO: test</div>
     </ExamTemplateBox>
 </template>
 
