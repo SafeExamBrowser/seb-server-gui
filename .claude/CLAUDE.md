@@ -10,6 +10,7 @@ There is no root `package.json` that orchestrates both. Work in the subdirectory
 # Best practice
 
 - Don't delete comments in the codebase unless they became irrelevant by your change.
+- After verifying a change with browser tooling (e.g. Playwright MCP), delete artifacts (e.g. in `.playwright-mcp/*`) you created in this session before ending your turn.
 
 # Agent skills
 
