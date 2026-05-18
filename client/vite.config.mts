@@ -3,7 +3,6 @@ import Vue from "@vitejs/plugin-vue";
 import Vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
 import { defineConfig, loadEnv, type ConfigEnv } from "vite";
 import { fileURLToPath, URL } from "node:url";
-import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite";
 import VueRouter from "vue-router/vite";
 
 import { z } from "zod";
@@ -59,12 +58,6 @@ export default ({ mode, command }: ConfigEnv) => {
                         },
                     ],
                 },
-            }),
-
-            VueI18nPlugin({
-                include: fileURLToPath(
-                    new URL("./src/i18n/locales/**", import.meta.url),
-                ),
             }),
         ],
 

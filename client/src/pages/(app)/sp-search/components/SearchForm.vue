@@ -307,7 +307,7 @@
 <script setup lang="ts">
 import { onBeforeMount, ref } from "vue";
 import * as spConstants from "@/utils/sp-constants";
-import VueDatePicker from "@vuepic/vue-datepicker";
+import { VueDatePicker } from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import * as timeUtils from "@/utils/timeUtils";
 

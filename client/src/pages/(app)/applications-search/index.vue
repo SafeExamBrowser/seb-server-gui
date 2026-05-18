@@ -82,7 +82,7 @@
 
                     <!------------Buttons------------->
                     <v-row>
-                        <v-col align="right">
+                        <v-col>
                             <v-btn
                                 color="black"
                                 rounded="sm"
@@ -117,7 +117,7 @@
                 title="No results match your search criteria"
             >
                 <v-row>
-                    <v-col align="left" class="text-title-large">
+                    <v-col class="text-title-large">
                         No results match your search criteria
                     </v-col>
                 </v-row>
@@ -149,7 +149,7 @@
 
 <script setup lang="ts">
 import { onBeforeMount, ref } from "vue";
-import VueDatePicker from "@vuepic/vue-datepicker";
+import { VueDatePicker } from "@vuepic/vue-datepicker";
 import * as applicationsSearchService from "@/services/screen-proctoring/applicationsSearchService";
 import ApplicationsExamList from "./components/ApplicationsSearchExamList.vue";
 import ApplicationsSearchMetadata from "./components/ApplicationsSearchMetadata.vue";
