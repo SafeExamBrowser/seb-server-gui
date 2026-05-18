@@ -1,22 +1,13 @@
 <template>
-    <BasicPage
-        :title="$t('titles.examTemplateDetail')"
-        :bread-crumb="[
-            {
-                label: $t('titles.examTemplateList'),
-                link: { name: '/(app)/exam-template/' },
-            },
-            { label: $t('titles.examTemplateDetail') },
-        ]"
-    >
+    <BasicPage :title="title" :bread-crumb="breadCrumb">
         <template #PanelMain>
             <LoadingFallbackComponent
                 :loading="loading"
                 :errors="error ? [error] : undefined"
             >
                 <!-- TODO @alain: drop this v-if once LoadingFallbackComponent yields data via a typed scoped slot -->
-                <template v-if="data"
-                    >Showing exam template: {{ data.name }}</template
+                <template v-if="examTemplate"
+                    >Showing exam template: {{ examTemplate.name }}</template
                 >
             </LoadingFallbackComponent>
         </template>
@@ -27,8 +18,9 @@
 import { useRoute } from "vue-router";
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import { useExamTemplate } from "./composables/api/useExamTemplate.ts";
+import { useExamTemplateDetailPage } from "./composables/useExamTemplateDetailPage.ts";
 
 const route = useRoute("/(app)/exam-template/[id]/");
-const { data, loading, error } = useExamTemplate(route.params.id);
+const { examTemplate, loading, error, title, breadCrumb } =
+    useExamTemplateDetailPage(route.params.id);
 </script>
