@@ -292,6 +292,7 @@ async function submit() {
     }
     if (createdTool.value) {
         const id = createdTool.value.id;
+        const search = createdTool.value.name;
         notify.success(
             i18n.global.t("activateAfterCreate.created", {
                 entity: entityLabel,
@@ -304,7 +305,10 @@ async function submit() {
                 onAction: () => activateCreated(id),
             },
         );
-        await router.push({ name: "/(app)/assessment-tool/" });
+        await router.push({
+            name: "/(app)/assessment-tool/",
+            query: { search },
+        });
     }
 }
 

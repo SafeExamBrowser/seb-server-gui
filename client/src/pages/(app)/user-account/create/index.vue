@@ -59,6 +59,7 @@ const handleSubmit = async (payload: UserAccountFormPayload) => {
     });
     if (created.value) {
         const uuid = created.value.uuid;
+        const search = created.value.surname;
         notify.success(
             i18n.global.t("activateAfterCreate.created", {
                 entity: entityLabel,
@@ -71,7 +72,10 @@ const handleSubmit = async (payload: UserAccountFormPayload) => {
                 onAction: () => activateCreated(uuid),
             },
         );
-        await router.push({ name: "/(app)/user-account/" });
+        await router.push({
+            name: "/(app)/user-account/",
+            query: { search },
+        });
         return;
     }
     if (createError.value) {

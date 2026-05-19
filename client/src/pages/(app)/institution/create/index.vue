@@ -91,6 +91,7 @@ async function submit() {
 
     if (createdInstitution.value) {
         const id = createdInstitution.value.id;
+        const search = createdInstitution.value.name;
         notify.success(
             i18n.global.t("activateAfterCreate.created", {
                 entity: entityLabel,
@@ -103,7 +104,10 @@ async function submit() {
                 onAction: () => activateCreated(id),
             },
         );
-        await router.push({ name: "/(app)/institution/" });
+        await router.push({
+            name: "/(app)/institution/",
+            query: { search },
+        });
         return;
     }
     if (createError.value) {

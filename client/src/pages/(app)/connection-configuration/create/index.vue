@@ -329,6 +329,7 @@ async function submit() {
     }
     if (createdConfig.value) {
         const id = createdConfig.value.id;
+        const search = createdConfig.value.name;
         notify.success(
             i18n.global.t("activateAfterCreate.created", {
                 entity: entityLabel,
@@ -341,7 +342,10 @@ async function submit() {
                 onAction: () => activateCreated(id),
             },
         );
-        await router.push({ name: "/(app)/connection-configuration/" });
+        await router.push({
+            name: "/(app)/connection-configuration/",
+            query: { search },
+        });
     }
 }
 
