@@ -1,3 +1,4 @@
+import { notify } from "@/services/notifications/notify.ts";
 import type { Ref } from "vue";
 import { ref } from "vue";
 import { ConnectionConfigurations } from "@/models/seb-server/connectionConfiguration.ts";
@@ -7,13 +8,11 @@ export const useDeleteConnectionConfiguration = (
     connectionConfigurations: Ref<ConnectionConfigurations | undefined>,
 ) => {
     const loading = ref(false);
-    const error = ref<string>();
 
     const removeConnectionConfiguration = async (
         id: string,
     ): Promise<boolean> => {
         loading.value = true;
-        error.value = undefined;
 
         try {
             const response = await deleteConnectionConfiguration(id);
@@ -32,7 +31,9 @@ export const useDeleteConnectionConfiguration = (
 
             return true;
         } catch (err) {
-            error.value = err instanceof Error ? err.message : "Unknown error";
+            notify.serverError(err, {
+                contextLabel: "connectionconfiguration",
+            });
             return false;
         } finally {
             loading.value = false;
@@ -45,7 +46,9 @@ export const useDeleteConnectionConfiguration = (
         const id = item.id;
 
         if (typeof id !== "number") {
-            error.value = "Invalid Connection Configuration identifier.";
+            notify.serverError(
+                new Error("Invalid Connection Configuration identifier."),
+            );
             return false;
         }
 
@@ -56,6 +59,5 @@ export const useDeleteConnectionConfiguration = (
         removeConnectionConfiguration,
         removeConnectionConfigurationFromItem,
         loading,
-        error,
     };
 };

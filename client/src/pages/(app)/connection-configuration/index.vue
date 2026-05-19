@@ -25,8 +25,6 @@
                 @clear-filters="clearAll"
             />
 
-            <div v-if="deleteError">{{ deleteError }}</div>
-            <div v-else-if="statusError">{{ statusError }}</div>
             <LoadingFallbackComponent
                 :loading="false"
                 :errors="error ? [error] : []"
@@ -166,17 +164,11 @@ watch(
 
 const pageCount = computed(() => tableData.value?.number_of_pages ?? 0);
 
-const {
-    removeConnectionConfigurationFromItem,
-    loading: deleteLoading,
-    error: deleteError,
-} = useDeleteConnectionConfiguration(tableData);
+const { removeConnectionConfigurationFromItem, loading: deleteLoading } =
+    useDeleteConnectionConfiguration(tableData);
 
-const {
-    toggleConnectionConfigurationStatusFromItem,
-    loading: statusLoading,
-    error: statusError,
-} = useToggleConnectionConfigurationStatus(tableData);
+const { toggleConnectionConfigurationStatusFromItem, loading: statusLoading } =
+    useToggleConnectionConfigurationStatus(tableData);
 
 // Dialog state
 const deleteTarget = ref<TableItem | null>(null);

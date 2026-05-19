@@ -1,3 +1,4 @@
+import { notify } from "@/services/notifications/notify.ts";
 import type { Ref } from "vue";
 import { ref } from "vue";
 import { ConnectionConfigurations } from "@/models/seb-server/connectionConfiguration.ts";
@@ -10,14 +11,12 @@ export const useToggleConnectionConfigurationStatus = (
     connectionConfigurations: Ref<ConnectionConfigurations | undefined>,
 ) => {
     const loading = ref(false);
-    const error = ref<string>();
 
     const changeConnectionConfigurationStatus = async (
         id: string,
         active: boolean,
     ): Promise<boolean> => {
         loading.value = true;
-        error.value = undefined;
 
         try {
             const response = active
@@ -45,7 +44,9 @@ export const useToggleConnectionConfigurationStatus = (
 
             return true;
         } catch (err) {
-            error.value = err instanceof Error ? err.message : "Unknown error";
+            notify.serverError(err, {
+                contextLabel: "connectionconfiguration",
+            });
             return false;
         } finally {
             loading.value = false;
@@ -59,12 +60,14 @@ export const useToggleConnectionConfigurationStatus = (
         const active = item.active;
 
         if (typeof id !== "number") {
-            error.value = "Invalid connection config identifier.";
+            notify.serverError(
+                new Error("Invalid connection config identifier."),
+            );
             return false;
         }
 
         if (typeof active !== "boolean") {
-            error.value = "Invalid connection config status.";
+            notify.serverError(new Error("Invalid connection config status."));
             return false;
         }
 
@@ -76,6 +79,5 @@ export const useToggleConnectionConfigurationStatus = (
         toggleConnectionConfigurationStatusFromItem:
             changeConnectionConfigurationStatusFromItem,
         loading,
-        error,
     };
 };

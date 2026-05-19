@@ -154,6 +154,7 @@ import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import { useConnectionConfigurationFormFields } from "@/pages/(app)/connection-configuration/composables/useConnectionConfigurationFormFields.ts";
 import { useMutation } from "@/composables/useMutation.ts";
+import { notify } from "@/services/notifications/notify.ts";
 import { createConnectionConfiguration } from "@/services/seb-server/connectionConfigurationService.ts";
 import { useCertificates } from "@/pages/(app)/connection-configuration/composables/api/useCertificates.ts";
 import type { CreateConnectionConfigurationPar } from "@/models/seb-server/connectionConfiguration.ts";
@@ -282,8 +283,12 @@ async function submit() {
 
     await createConfig(params);
 
-    if (!configError.value) {
-        await router.push({ name: "/(app)/connection-configuration/" });
+    if (configError.value) {
+        notify.serverError(configError.value, {
+            contextLabel: "connectionconfiguration",
+        });
+        return;
     }
+    await router.push({ name: "/(app)/connection-configuration/" });
 }
 </script>
