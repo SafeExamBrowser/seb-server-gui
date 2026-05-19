@@ -142,11 +142,7 @@ import { useAssessmentToolFormFields } from "@/pages/(app)/assessment-tool/compo
 import { useMutation } from "@/composables/useMutation.ts";
 import { notify } from "@/services/notifications/notify.ts";
 import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
-import {
-    activateAssessmentTool,
-    createAssessmentTool,
-} from "@/services/seb-server/assessmentToolService.ts";
-import i18n from "@/i18n";
+import { createAssessmentTool } from "@/services/seb-server/assessmentToolService.ts";
 import type { CommonAssessmentToolPar } from "@/models/seb-server/assessmentTool.ts";
 import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
@@ -193,8 +189,6 @@ const {
 const mainFormRef = ref<InstanceType<typeof FormBuilder>>();
 const authFormRef = ref<InstanceType<typeof FormBuilder>>();
 const proxyFormRef = ref<InstanceType<typeof FormBuilder>>();
-
-const entityLabel = i18n.global.t("activateAfterCreate.entity.assessmentTool");
 
 const ASSESSMENT_TOOL_FIELD_ALIASES = {
     lmsUrl: "serverAddress",
@@ -291,37 +285,11 @@ async function submit() {
         return;
     }
     if (createdTool.value) {
-        const id = createdTool.value.id;
         const search = createdTool.value.name;
-        notify.success(
-            i18n.global.t("activateAfterCreate.created", {
-                entity: entityLabel,
-            }),
-            i18n.global.t("activateAfterCreate.createdHint"),
-            {
-                actionLabel: i18n.global.t(
-                    "activateAfterCreate.activateButton",
-                ),
-                onAction: () => activateCreated(id),
-            },
-        );
         await router.push({
             name: "/(app)/assessment-tool/",
             query: { search },
         });
-    }
-}
-
-async function activateCreated(id: number) {
-    try {
-        await activateAssessmentTool(String(id));
-        notify.success(
-            i18n.global.t("activateAfterCreate.success", {
-                entity: entityLabel,
-            }),
-        );
-    } catch (err) {
-        notify.serverError(err, { contextLabel: "assessmenttool" });
     }
 }
 </script>

@@ -16,12 +16,8 @@ import UserAccountForm, {
     type UserAccountFormPayload,
 } from "@/pages/(app)/user-account/components/UserAccountForm.vue";
 import { useMutation } from "@/composables/useMutation.ts";
-import {
-    activateUserAccount,
-    createUserAccount,
-} from "@/services/seb-server/userAccountService.ts";
+import { createUserAccount } from "@/services/seb-server/userAccountService.ts";
 import { notify } from "@/services/notifications/notify.ts";
-import i18n from "@/i18n";
 
 definePage({
     meta: {
@@ -38,8 +34,6 @@ const {
     data: created,
     error: createError,
 } = useMutation(createUserAccount);
-
-const entityLabel = i18n.global.t("activateAfterCreate.entity.userAccount");
 
 const handleSubmit = async (payload: UserAccountFormPayload) => {
     if (!payload.password || !payload.confirmPassword) {
@@ -58,20 +52,7 @@ const handleSubmit = async (payload: UserAccountFormPayload) => {
         confirmNewPassword: payload.confirmPassword,
     });
     if (created.value) {
-        const uuid = created.value.uuid;
         const search = created.value.surname;
-        notify.success(
-            i18n.global.t("activateAfterCreate.created", {
-                entity: entityLabel,
-            }),
-            i18n.global.t("activateAfterCreate.createdHint"),
-            {
-                actionLabel: i18n.global.t(
-                    "activateAfterCreate.activateButton",
-                ),
-                onAction: () => activateCreated(uuid),
-            },
-        );
         await router.push({
             name: "/(app)/user-account/",
             query: { search },
@@ -88,17 +69,4 @@ const handleSubmit = async (payload: UserAccountFormPayload) => {
         }
     }
 };
-
-async function activateCreated(uuid: string) {
-    try {
-        await activateUserAccount(uuid);
-        notify.success(
-            i18n.global.t("activateAfterCreate.success", {
-                entity: entityLabel,
-            }),
-        );
-    } catch (err) {
-        notify.serverError(err, { contextLabel: "useraccount" });
-    }
-}
 </script>

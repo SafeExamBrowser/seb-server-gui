@@ -156,11 +156,7 @@ import { useConnectionConfigurationFormFields } from "@/pages/(app)/connection-c
 import { useMutation } from "@/composables/useMutation.ts";
 import { notify } from "@/services/notifications/notify.ts";
 import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
-import {
-    activateConnectionConfiguration,
-    createConnectionConfiguration,
-} from "@/services/seb-server/connectionConfigurationService.ts";
-import i18n from "@/i18n";
+import { createConnectionConfiguration } from "@/services/seb-server/connectionConfigurationService.ts";
 import { useCertificates } from "@/pages/(app)/connection-configuration/composables/api/useCertificates.ts";
 import type { CreateConnectionConfigurationPar } from "@/models/seb-server/connectionConfiguration.ts";
 import CancelButton from "@/components/widgets/CancelButton.vue";
@@ -208,9 +204,6 @@ const {
     error: configError,
 } = useMutation(createConnectionConfiguration);
 
-const entityLabel = i18n.global.t(
-    "activateAfterCreate.entity.connectionConfiguration",
-);
 const {
     certificateItems,
     loading: certificatesLoading,
@@ -328,38 +321,10 @@ async function submit() {
         return;
     }
     if (createdConfig.value) {
-        const id = createdConfig.value.id;
         const search = createdConfig.value.name;
-        notify.success(
-            i18n.global.t("activateAfterCreate.created", {
-                entity: entityLabel,
-            }),
-            i18n.global.t("activateAfterCreate.createdHint"),
-            {
-                actionLabel: i18n.global.t(
-                    "activateAfterCreate.activateButton",
-                ),
-                onAction: () => activateCreated(id),
-            },
-        );
         await router.push({
             name: "/(app)/connection-configuration/",
             query: { search },
-        });
-    }
-}
-
-async function activateCreated(id: number) {
-    try {
-        await activateConnectionConfiguration(String(id));
-        notify.success(
-            i18n.global.t("activateAfterCreate.success", {
-                entity: entityLabel,
-            }),
-        );
-    } catch (err) {
-        notify.serverError(err, {
-            contextLabel: "connectionconfiguration",
         });
     }
 }

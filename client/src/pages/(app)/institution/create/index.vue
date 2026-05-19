@@ -47,12 +47,8 @@ import HintText from "@/components/widgets/HintText.vue";
 import { useMutation } from "@/composables/useMutation.ts";
 import { notify } from "@/services/notifications/notify.ts";
 import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
-import {
-    activateInstitution,
-    createInstitution,
-} from "@/services/seb-server/institutionService.ts";
+import { createInstitution } from "@/services/seb-server/institutionService.ts";
 import { useInstitutionFormFields } from "@/pages/(app)/institution/composables/useInstitutionFormFields.ts";
-import i18n from "@/i18n";
 
 definePage({
     meta: {
@@ -74,8 +70,6 @@ const {
     error: createError,
 } = useMutation(createInstitution);
 
-const entityLabel = i18n.global.t("activateAfterCreate.entity.institution");
-
 async function submit() {
     const result = await formRef.value?.validate();
     if (!result?.valid) return;
@@ -90,20 +84,7 @@ async function submit() {
     });
 
     if (createdInstitution.value) {
-        const id = createdInstitution.value.id;
         const search = createdInstitution.value.name;
-        notify.success(
-            i18n.global.t("activateAfterCreate.created", {
-                entity: entityLabel,
-            }),
-            i18n.global.t("activateAfterCreate.createdHint"),
-            {
-                actionLabel: i18n.global.t(
-                    "activateAfterCreate.activateButton",
-                ),
-                onAction: () => activateCreated(id),
-            },
-        );
         await router.push({
             name: "/(app)/institution/",
             query: { search },
@@ -125,19 +106,6 @@ async function submit() {
                 onlyMessages: result.unhandledMessages,
             });
         }
-    }
-}
-
-async function activateCreated(id: number) {
-    try {
-        await activateInstitution(id);
-        notify.success(
-            i18n.global.t("activateAfterCreate.success", {
-                entity: entityLabel,
-            }),
-        );
-    } catch (err) {
-        notify.serverError(err, { contextLabel: "institution" });
     }
 }
 </script>
