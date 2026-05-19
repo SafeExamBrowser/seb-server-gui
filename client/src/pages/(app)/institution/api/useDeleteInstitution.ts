@@ -1,13 +1,12 @@
+import { notify } from "@/services/notifications/notify.ts";
 import { ref } from "vue";
 import { deleteInstitution } from "@/services/seb-server/institutionService.ts";
 
 export const useDeleteInstitution = () => {
     const loading = ref(false);
-    const error = ref<string>();
 
     const removeInstitution = async (id: number): Promise<boolean> => {
         loading.value = true;
-        error.value = undefined;
 
         try {
             const response = await deleteInstitution(id);
@@ -18,7 +17,7 @@ export const useDeleteInstitution = () => {
 
             return true;
         } catch (err) {
-            error.value = err instanceof Error ? err.message : "Unknown error";
+            notify.serverError(err, { contextLabel: "institution" });
             return false;
         } finally {
             loading.value = false;
@@ -43,6 +42,5 @@ export const useDeleteInstitution = () => {
         removeInstitution,
         removeInstitutionFromItem,
         loading,
-        error,
     };
 };

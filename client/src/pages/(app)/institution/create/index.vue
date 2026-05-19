@@ -45,6 +45,7 @@ import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
 import HintText from "@/components/widgets/HintText.vue";
 import { useMutation } from "@/composables/useMutation.ts";
+import { notify } from "@/services/notifications/notify.ts";
 import { createInstitution } from "@/services/seb-server/institutionService.ts";
 import { useInstitutionFormFields } from "@/pages/(app)/institution/composables/useInstitutionFormFields.ts";
 
@@ -62,8 +63,11 @@ const { formFields, name, urlSuffix, logoImage } = useInstitutionFormFields();
 
 const formRef = ref<InstanceType<typeof FormBuilder>>();
 
-const { mutateData: createInst, data: createdInstitution } =
-    useMutation(createInstitution);
+const {
+    mutateData: createInst,
+    data: createdInstitution,
+    error: createError,
+} = useMutation(createInstitution);
 
 async function submit() {
     const result = await formRef.value?.validate();
@@ -80,6 +84,10 @@ async function submit() {
 
     if (createdInstitution.value) {
         await router.push({ name: "/(app)/institution/" });
+        return;
+    }
+    if (createError.value) {
+        notify.serverError(createError.value, { contextLabel: "institution" });
     }
 }
 </script>

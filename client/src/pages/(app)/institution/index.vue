@@ -25,8 +25,6 @@
                 @clear-filters="clearAll"
             />
 
-            <div v-if="deleteError">{{ deleteError }}</div>
-            <div v-else-if="statusError">{{ statusError }}</div>
             <LoadingFallbackComponent
                 :loading="false"
                 :errors="error ? [error] : []"
@@ -163,17 +161,11 @@ watch(
 
 const pageCount = computed(() => tableData.value?.number_of_pages ?? 0);
 
-const {
-    removeInstitutionFromItem,
-    loading: deleteLoading,
-    error: deleteError,
-} = useDeleteInstitution();
+const { removeInstitutionFromItem, loading: deleteLoading } =
+    useDeleteInstitution();
 
-const {
-    toggleInstitutionStatusFromItem,
-    loading: statusLoading,
-    error: statusError,
-} = useToggleInstitutionStatus();
+const { toggleInstitutionStatusFromItem, loading: statusLoading } =
+    useToggleInstitutionStatus();
 
 const deleteTarget = ref<TableItem | null>(null);
 const statusTarget = ref<TableItem | null>(null);

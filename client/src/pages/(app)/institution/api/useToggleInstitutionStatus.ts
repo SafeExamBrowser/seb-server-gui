@@ -1,3 +1,4 @@
+import { notify } from "@/services/notifications/notify.ts";
 import { ref } from "vue";
 import {
     activateInstitution,
@@ -6,14 +7,12 @@ import {
 
 export const useToggleInstitutionStatus = () => {
     const loading = ref(false);
-    const error = ref<string>();
 
     const changeInstitutionStatus = async (
         id: number,
         active: boolean,
     ): Promise<boolean> => {
         loading.value = true;
-        error.value = undefined;
 
         try {
             const response = active
@@ -26,7 +25,7 @@ export const useToggleInstitutionStatus = () => {
 
             return true;
         } catch (err) {
-            error.value = err instanceof Error ? err.message : "Unknown error";
+            notify.serverError(err, { contextLabel: "institution" });
             return false;
         } finally {
             loading.value = false;
@@ -58,6 +57,5 @@ export const useToggleInstitutionStatus = () => {
         changeInstitutionStatus,
         toggleInstitutionStatusFromItem: changeInstitutionStatusFromItem,
         loading,
-        error,
     };
 };
