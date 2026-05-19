@@ -14,7 +14,7 @@
 <script setup lang="ts" generic="T">
 const props = defineProps<{
     item: T;
-    deleteItem: (item: T) => void;
+    deleteItem: (item: T) => Promise<void>;
 }>();
 
 const handleClick = () => {

@@ -1,10 +1,7 @@
 import { z } from "zod";
+import { Ref } from "vue";
 import { IndicatorEnum } from "@/models/seb-server/monitoringEnums.ts";
-
-export type Threshold = {
-    value: number;
-    color: string;
-};
+import { Threshold } from "@/models/seb-server/examTemplate.ts";
 
 export type IndicatorTransient = {
     id: number;
@@ -31,4 +28,11 @@ export const indicatorTransientToIndicator = (
     indicatorTransient: IndicatorTransient,
 ): Indicator => {
     return indicatorSchema.parse(indicatorTransient);
+};
+
+export type IndicatorsTableDeps = {
+    indicators: Ref<Indicator[]>;
+    createItem: (item: Indicator) => Promise<void>;
+    updateItem: (item: Indicator) => Promise<void>;
+    deleteItem: (item: Indicator) => Promise<void>;
 };
