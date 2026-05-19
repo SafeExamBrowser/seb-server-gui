@@ -3,38 +3,24 @@
         :title="$t('createTemplateExam.steps.indicators.title')"
         :subtitle="$t('createTemplateExam.steps.indicators.subtitle')"
     >
-        <CrudTable :config="useTable()">
-            <template #item.type="{ item }">
-                {{ getTranslatedType(item) }}
-            </template>
-            <template #item.thresholds="{ item }">
-                <div class="d-flex flex-wrap ga-1 py-1">
-                    <template
-                        v-for="threshold in item.thresholds"
-                        :key="threshold.value"
-                    >
-                        <ChipThreshold
-                            :threshold="{
-                                value: threshold.value,
-                                color: threshold.color.slice(1), // strip the '#' from the hex color string
-                            }"
-                        />
-                    </template>
-                </div>
-            </template>
-        </CrudTable>
+        <IndicatorsTable :deps="tableDeps" />
     </StepItem>
 </template>
 
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
-import CrudTable from "@/components/widgets/crudTable/CrudTable.vue";
+import { storeToRefs } from "pinia";
 import StepItem from "@/components/widgets/stepItem/StepItem.vue";
-import { useTable } from "@/pages/(app)/exam-template/create/components/stepIndicators/composables/useTable.ts";
-import { Indicator } from "@/pages/(app)/exam-template/create/components/stepIndicators/types.ts";
-import ChipThreshold from "@/components/widgets/chipThreshold/ChipThreshold.vue";
-const { t } = useI18n();
+import IndicatorsTable from "@/components/widgets/indicatorsTable/IndicatorsTable.vue";
+import { useStepIndicatorsStore } from "@/pages/(app)/exam-template/create/components/stepIndicators/composables/store/useStepIndicatorsStore.ts";
+import { IndicatorsTableDeps } from "@/components/widgets/indicatorsTable/types.ts";
 
-const getTranslatedType = (item: Indicator) =>
-    t(`createTemplateExam.steps.indicators.fields.type.types.${item.type}`);
+const store = useStepIndicatorsStore();
+const { indicators } = storeToRefs(store);
+
+const tableDeps: IndicatorsTableDeps = {
+    indicators,
+    createItem: async (indicator) => store.createIndicator(indicator),
+    updateItem: async (indicator) => store.updateIndicator(indicator),
+    deleteItem: async (indicator) => store.deleteIndicator(indicator),
+};
 </script>

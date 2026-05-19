@@ -1,22 +1,22 @@
-import { storeToRefs } from "pinia";
 import i18n from "@/i18n";
 import {
-    getEmptyIndicator,
-    useStepIndicatorsStore,
-} from "@/pages/(app)/exam-template/create/components/stepIndicators/composables/store/useStepIndicatorsStore.ts";
-import { useFormFields } from "@/pages/(app)/exam-template/create/components/stepIndicators/composables/useFormFields.ts";
-import {
     Indicator,
+    IndicatorsTableDeps,
     IndicatorTransient,
     indicatorTransientToIndicator,
-} from "@/pages/(app)/exam-template/create/components/stepIndicators/types.ts";
+} from "@/components/widgets/indicatorsTable/types.ts";
+import { useFormFields } from "@/components/widgets/indicatorsTable/composables/useFormFields.ts";
 import { CrudTableConfig } from "@/components/widgets/crudTable/types.ts";
 
-export const useTable = (): CrudTableConfig<Indicator, IndicatorTransient> => {
-    const { indicators } = storeToRefs(useStepIndicatorsStore());
-    const { deleteIndicator, createIndicator, updateIndicator } =
-        useStepIndicatorsStore();
-    const { getFormFields } = useFormFields();
+export const getEmptyIndicator = (): IndicatorTransient => ({
+    id: crypto.getRandomValues(new Uint32Array(1))[0], // random ID, for FE use only (when submitting to BE, the BE will generate the real ID)
+    thresholds: [],
+});
+
+export const useTable = (
+    deps: IndicatorsTableDeps,
+): CrudTableConfig<Indicator, IndicatorTransient> => {
+    const { getFormFields } = useFormFields(deps.indicators);
 
     const headers = [
         {
@@ -48,15 +48,13 @@ export const useTable = (): CrudTableConfig<Indicator, IndicatorTransient> => {
             align: "end" as const,
             width: "10%",
         },
-    ].filter((header) => header !== undefined);
+    ];
 
-    const createItem = (item: IndicatorTransient) => {
-        createIndicator(indicatorTransientToIndicator(item));
-    };
+    const createItem = (item: IndicatorTransient) =>
+        deps.createItem(indicatorTransientToIndicator(item));
 
-    const updateItem = (item: IndicatorTransient) => {
-        updateIndicator(indicatorTransientToIndicator(item));
-    };
+    const updateItem = (item: IndicatorTransient) =>
+        deps.updateItem(indicatorTransientToIndicator(item));
 
     const getExistingItem = (item: Indicator): IndicatorTransient => ({
         ...item,
@@ -66,7 +64,7 @@ export const useTable = (): CrudTableConfig<Indicator, IndicatorTransient> => {
         name: "indicators",
         title: i18n.global.t("indicators.entityNamePlural"),
         headers,
-        items: indicators,
+        items: deps.indicators,
         getFormFields,
         createConfig: {
             title: i18n.global.t("indicators.addDialogTitle"),
@@ -80,7 +78,7 @@ export const useTable = (): CrudTableConfig<Indicator, IndicatorTransient> => {
             updateItem,
         },
         deleteConfig: {
-            deleteItem: deleteIndicator,
+            deleteItem: deps.deleteItem,
         },
     };
 };
