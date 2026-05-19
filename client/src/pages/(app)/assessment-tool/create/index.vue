@@ -170,9 +170,9 @@ const {
     institutionId,
     name,
     lmsType,
-    serverAddress,
-    clientUsername,
-    clientPassword,
+    lmsUrl,
+    lmsClientname,
+    lmsClientsecret,
     accessToken,
     proxyHost,
     proxyPort,
@@ -190,12 +190,6 @@ const mainFormRef = ref<InstanceType<typeof FormBuilder>>();
 const authFormRef = ref<InstanceType<typeof FormBuilder>>();
 const proxyFormRef = ref<InstanceType<typeof FormBuilder>>();
 
-const ASSESSMENT_TOOL_FIELD_ALIASES = {
-    lmsUrl: "serverAddress",
-    lmsClientname: "clientUsername",
-    lmsClientsecret: "clientPassword",
-};
-
 async function submit() {
     const [mainResult, authResult] = await Promise.all([
         mainFormRef.value?.validate(),
@@ -212,7 +206,7 @@ async function submit() {
     const selectedInstitutionId = institutionId.value;
     const selectedName = name.value;
     const selectedLmsType = lmsType.value;
-    const selectedServerAddress = serverAddress.value;
+    const selectedServerAddress = lmsUrl.value;
 
     if (
         !selectedInstitutionId ||
@@ -247,8 +241,8 @@ async function submit() {
             lmsRestApiToken: selectedToken,
         });
     } else {
-        const selectedUsername = clientUsername.value;
-        const selectedPassword = clientPassword.value;
+        const selectedUsername = lmsClientname.value;
+        const selectedPassword = lmsClientsecret.value;
         if (!selectedUsername || !selectedPassword) return;
         await createTool({
             ...common,
@@ -260,7 +254,6 @@ async function submit() {
 
     if (toolError.value) {
         const applied = applyBackendFieldErrors(toolError.value, {
-            aliases: ASSESSMENT_TOOL_FIELD_ALIASES,
             forms: [
                 {
                     form: mainFormRef.value,

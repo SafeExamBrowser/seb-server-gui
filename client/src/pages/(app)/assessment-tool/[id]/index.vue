@@ -173,9 +173,9 @@ const {
     institutionId,
     name,
     lmsType,
-    serverAddress,
-    clientUsername,
-    clientPassword,
+    lmsUrl,
+    lmsClientname,
+    lmsClientsecret,
     accessToken,
     proxyHost,
     proxyPort,
@@ -186,12 +186,6 @@ const {
 const mainFormRef = ref<InstanceType<typeof FormBuilder>>();
 const authFormRef = ref<InstanceType<typeof FormBuilder>>();
 const proxyFormRef = ref<InstanceType<typeof FormBuilder>>();
-
-const ASSESSMENT_TOOL_FIELD_ALIASES = {
-    lmsUrl: "serverAddress",
-    lmsClientname: "clientUsername",
-    lmsClientsecret: "clientPassword",
-};
 
 const tool = ref<AssessmentTool>();
 const fetchLoading = ref(false);
@@ -212,10 +206,10 @@ const { isDirty, snapshot } = useDirtyTracking(() => ({
     institutionId: institutionId.value ?? "",
     name: name.value ?? "",
     lmsType: lmsType.value ?? "",
-    serverAddress: serverAddress.value ?? "",
+    lmsUrl: lmsUrl.value ?? "",
     authMode: authMode.value,
-    clientUsername: clientUsername.value ?? "",
-    clientPassword: clientPassword.value ?? "",
+    lmsClientname: lmsClientname.value ?? "",
+    lmsClientsecret: lmsClientsecret.value ?? "",
     accessToken: accessToken.value ?? "",
     withProxy: withProxy.value,
     proxyHost: proxyHost.value ?? "",
@@ -239,15 +233,15 @@ onMounted(async () => {
         institutionId.value = fetched.institutionId.toString();
         name.value = fetched.name;
         lmsType.value = fetched.lmsType;
-        serverAddress.value = fetched.lmsUrl;
+        lmsUrl.value = fetched.lmsUrl;
 
         if (fetched.lmsRestApiToken) {
             authMode.value = "token";
             accessToken.value = fetched.lmsRestApiToken;
         } else {
             authMode.value = "client";
-            clientUsername.value = fetched.lmsClientname;
-            clientPassword.value = fetched.lmsClientsecret ?? "";
+            lmsClientname.value = fetched.lmsClientname;
+            lmsClientsecret.value = fetched.lmsClientsecret ?? "";
         }
 
         withProxy.value = Boolean(fetched.lmsProxyHost || fetched.lmsProxyPort);
@@ -281,11 +275,11 @@ async function submit() {
         institutionId: institutionId.value ?? "",
         name: name.value ?? "",
         lmsType: lmsType.value ?? "",
-        lmsUrl: serverAddress.value ?? "",
+        lmsUrl: lmsUrl.value ?? "",
         lmsClientname:
-            authMode.value === "client" ? (clientUsername.value ?? "") : "",
+            authMode.value === "client" ? (lmsClientname.value ?? "") : "",
         lmsClientsecret:
-            authMode.value === "client" ? (clientPassword.value ?? "") : "",
+            authMode.value === "client" ? (lmsClientsecret.value ?? "") : "",
         lmsRestApiToken:
             authMode.value === "token" ? (accessToken.value ?? "") : "",
         lmsProxyHost: withProxy.value ? proxyHost.value : undefined,
@@ -305,7 +299,6 @@ async function submit() {
     }
     if (saveToolError.value) {
         const applied = applyBackendFieldErrors(saveToolError.value, {
-            aliases: ASSESSMENT_TOOL_FIELD_ALIASES,
             forms: [
                 {
                     form: mainFormRef.value,
