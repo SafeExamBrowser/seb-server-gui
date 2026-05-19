@@ -2,6 +2,7 @@ import axios, { AxiosRequestConfig } from "axios";
 import { merge } from "lodash";
 import { useAuthStore } from "@/composables/store/useAuthStore";
 import { useLogout } from "@/composables/useLogout";
+import { toAppError } from "@/services/errors/toAppError.ts";
 import { ApiRequest } from "./types";
 
 let tokenRefreshPromise: Promise<void> | undefined = undefined;
@@ -47,7 +48,7 @@ api.interceptors.response.use(
             await useLogout().logout(true);
         }
 
-        return Promise.reject(error);
+        return Promise.reject(toAppError(error));
     },
 );
 

@@ -1,4 +1,6 @@
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import type { AppError } from "@/services/errors/types.ts";
+import { appErrorToMessage, toAppError } from "@/services/errors/toAppError.ts";
 
 // TODO @alain: consider using https://tanstack.com/query/latest/docs/framework/vue/overview for this
 export const useFetch = <T>(
@@ -7,10 +9,14 @@ export const useFetch = <T>(
 ) => {
     const data = ref<T>();
     const loading = ref(false);
-    const error = ref<string>();
+    const error = ref<AppError>();
+    const errorMessage = computed(() =>
+        error.value ? appErrorToMessage(error.value) : undefined,
+    );
 
     const fetchData = async () => {
         loading.value = true;
+        error.value = undefined;
 
         try {
             const response = await fetchFunction();
@@ -21,7 +27,7 @@ export const useFetch = <T>(
 
             data.value = response;
         } catch (err) {
-            error.value = err instanceof Error ? err.message : "Unknown error";
+            error.value = toAppError(err);
         } finally {
             loading.value = false;
         }
@@ -35,6 +41,7 @@ export const useFetch = <T>(
         data,
         loading,
         error,
+        errorMessage,
         fetchData,
     };
 };
