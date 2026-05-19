@@ -25,8 +25,6 @@
                 @clear-filters="clearAll"
             />
 
-            <div v-if="deleteError">{{ deleteError }}</div>
-            <div v-else-if="statusError">{{ statusError }}</div>
             <LoadingFallbackComponent
                 :loading="false"
                 :errors="error ? [error] : []"
@@ -165,17 +163,11 @@ watch(
 
 const pageCount = computed(() => tableData.value?.number_of_pages ?? 0);
 
-const {
-    removeUserAccountFromItem,
-    loading: deleteLoading,
-    error: deleteError,
-} = useDeleteUserAccount(tableData);
+const { removeUserAccountFromItem, loading: deleteLoading } =
+    useDeleteUserAccount(tableData);
 
-const {
-    toggleUserAccountStatusFromItem,
-    loading: statusLoading,
-    error: statusError,
-} = useToggleUserAccountStatus(tableData);
+const { toggleUserAccountStatusFromItem, loading: statusLoading } =
+    useToggleUserAccountStatus(tableData);
 
 // Dialog state
 const deleteTarget = ref<TableItem | null>(null);

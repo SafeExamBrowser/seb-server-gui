@@ -1,3 +1,4 @@
+import { notify } from "@/services/notifications/notify.ts";
 import type { Ref } from "vue";
 import { ref } from "vue";
 import type { UserAccountResponse } from "@/models/userAccount.ts";
@@ -10,14 +11,12 @@ export const useToggleUserAccountStatus = (
     userAccounts: Ref<UserAccountResponse | undefined>,
 ) => {
     const loading = ref(false);
-    const error = ref<string>();
 
     const changeUserAccountStatus = async (
         uuid: string,
         active: boolean,
     ): Promise<boolean> => {
         loading.value = true;
-        error.value = undefined;
 
         try {
             const response = active
@@ -42,7 +41,7 @@ export const useToggleUserAccountStatus = (
 
             return true;
         } catch (err) {
-            error.value = err instanceof Error ? err.message : "Unknown error";
+            notify.serverError(err, { contextLabel: "useraccount" });
             return false;
         } finally {
             loading.value = false;
@@ -56,12 +55,12 @@ export const useToggleUserAccountStatus = (
         const active = item.active;
 
         if (typeof uuid !== "string") {
-            error.value = "Invalid user account identifier.";
+            notify.serverError(new Error("Invalid user account identifier."));
             return false;
         }
 
         if (typeof active !== "boolean") {
-            error.value = "Invalid user account status.";
+            notify.serverError(new Error("Invalid user account status."));
             return false;
         }
 
@@ -72,6 +71,5 @@ export const useToggleUserAccountStatus = (
         changeUserAccountStatus,
         toggleUserAccountStatusFromItem: changeUserAccountStatusFromItem,
         loading,
-        error,
     };
 };

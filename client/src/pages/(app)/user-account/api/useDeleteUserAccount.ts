@@ -1,3 +1,4 @@
+import { notify } from "@/services/notifications/notify.ts";
 import type { Ref } from "vue";
 import { ref } from "vue";
 import { deleteUserAccount } from "@/services/seb-server/userAccountService.ts";
@@ -7,11 +8,9 @@ export const useDeleteUserAccount = (
     userAccounts: Ref<UserAccountResponse | undefined>,
 ) => {
     const loading = ref(false);
-    const error = ref<string>();
 
     const removeUserAccount = async (uuid: string): Promise<boolean> => {
         loading.value = true;
-        error.value = undefined;
 
         try {
             const response = await deleteUserAccount(uuid);
@@ -28,7 +27,7 @@ export const useDeleteUserAccount = (
 
             return true;
         } catch (err) {
-            error.value = err instanceof Error ? err.message : "Unknown error";
+            notify.serverError(err, { contextLabel: "useraccount" });
             return false;
         } finally {
             loading.value = false;
@@ -41,7 +40,7 @@ export const useDeleteUserAccount = (
         const uuid = item.uuid;
 
         if (typeof uuid !== "string") {
-            error.value = "Invalid User Account identifier.";
+            notify.serverError(new Error("Invalid User Account identifier."));
             return false;
         }
 
@@ -52,6 +51,5 @@ export const useDeleteUserAccount = (
         removeUserAccount,
         removeUserAccountFromItem,
         loading,
-        error,
     };
 };
