@@ -40,6 +40,16 @@
 import { ref, watch } from "vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import { useChangePasswordFormFields } from "@/pages/(app)/user-account/composables/useChangePasswordFormFields.ts";
+import type { BackendFieldAliasMap } from "@/services/errors/types.ts";
+import {
+    buildBackendFieldErrorMap,
+    hasOnlyHandledFieldErrors,
+    type ApplyBackendErrorsResult,
+} from "@/services/errors/formErrorMapping.ts";
+
+const CHANGE_PASSWORD_FIELD_ALIASES = {
+    password: "adminPassword",
+} satisfies BackendFieldAliasMap;
 
 defineProps<{
     username?: string;
@@ -61,6 +71,22 @@ const emit = defineEmits<{
 const formRef = ref<InstanceType<typeof FormBuilder>>();
 const { formFields, adminPassword, newPassword, confirmNewPassword, reset } =
     useChangePasswordFormFields();
+
+function applyBackendErrors(error: unknown): ApplyBackendErrorsResult {
+    const allowedFields = formFields.value.map((field) => field.name);
+    const result = buildBackendFieldErrorMap(error, {
+        aliases: CHANGE_PASSWORD_FIELD_ALIASES,
+        allowedFields,
+    });
+    formRef.value?.setBackendErrors(result.fieldErrors);
+    return {
+        fullyHandled: hasOnlyHandledFieldErrors(result),
+        appError: result.appError,
+        unhandledMessages: result.unhandledMessages,
+    };
+}
+
+defineExpose({ applyBackendErrors });
 
 watch(open, (isOpen) => {
     if (!isOpen) {

@@ -85,6 +85,7 @@
 
             <ChangePasswordDialog
                 v-if="mode !== 'create' && initialUser?.username"
+                ref="changePasswordDialogRef"
                 v-model="changePasswordDialogOpen"
                 :username="initialUser.username"
                 :loading="changePasswordLoading"
@@ -113,6 +114,21 @@ import {
 } from "@/pages/(app)/user-account/composables/useUserAccountFormFields.ts";
 import { UserRoleEnum } from "@/models/userRoleEnum.ts";
 import type { UserAccount } from "@/models/userAccount.ts";
+import type {
+    BackendFieldAliasMap,
+    BackendFieldErrorMap,
+} from "@/services/errors/types.ts";
+import {
+    buildBackendFieldErrorMap,
+    hasOnlyHandledFieldErrors,
+    type ApplyBackendErrorsResult,
+} from "@/services/errors/formErrorMapping.ts";
+
+const USER_ACCOUNT_FIELD_ALIASES = {
+    timeZone: "timezone",
+    userRoles: "role",
+    confirmNewPassword: "confirmPassword",
+} satisfies BackendFieldAliasMap;
 
 export type UserAccountFormPayload = {
     institutionId: string;
@@ -148,6 +164,8 @@ const emit = defineEmits<{
 
 const leftFormRef = ref<InstanceType<typeof FormBuilder>>();
 const rightFormRef = ref<InstanceType<typeof FormBuilder>>();
+const changePasswordDialogRef =
+    ref<InstanceType<typeof ChangePasswordDialog>>();
 const changePasswordDialogOpen = ref(false);
 
 const {
@@ -284,5 +302,43 @@ const emitChangePassword = (payload: ChangePasswordPayload) => {
     emit("changePassword", payload);
 };
 
-defineExpose({ snapshot });
+function applyBackendErrors(error: unknown): ApplyBackendErrorsResult {
+    const leftNames = leftFormFields.value.map((field) => field.name);
+    const rightNames = rightFormFields.value.map((field) => field.name);
+    const result = buildBackendFieldErrorMap(error, {
+        aliases: USER_ACCOUNT_FIELD_ALIASES,
+        allowedFields: [...leftNames, ...rightNames],
+    });
+
+    const leftMap: BackendFieldErrorMap = {};
+    const rightMap: BackendFieldErrorMap = {};
+    for (const [field, messages] of Object.entries(result.fieldErrors)) {
+        if (rightNames.includes(field)) {
+            rightMap[field] = messages;
+        } else {
+            leftMap[field] = messages;
+        }
+    }
+
+    leftFormRef.value?.setBackendErrors(leftMap);
+    rightFormRef.value?.setBackendErrors(rightMap);
+
+    return {
+        fullyHandled: hasOnlyHandledFieldErrors(result),
+        appError: result.appError,
+        unhandledMessages: result.unhandledMessages,
+    };
+}
+
+function applyChangePasswordBackendErrors(
+    error: unknown,
+): ApplyBackendErrorsResult | undefined {
+    return changePasswordDialogRef.value?.applyBackendErrors(error);
+}
+
+defineExpose({
+    snapshot,
+    applyBackendErrors,
+    applyChangePasswordBackendErrors,
+});
 </script>

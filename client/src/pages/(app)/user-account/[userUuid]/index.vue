@@ -16,6 +16,7 @@
 </template>
 
 <script setup lang="ts">
+import { errorMessageOf } from "@/services/errors/toAppError.ts";
 import { computed, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import UserAccountForm, {
@@ -32,6 +33,7 @@ import {
 import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/userAccountStore.ts";
 import { useCurrentUser } from "@/composables/useCurrentUser.ts";
 import { useLogout } from "@/composables/useLogout.ts";
+import { notify } from "@/services/notifications/notify.ts";
 import type { UserAccount } from "@/models/userAccount.ts";
 
 definePage({
@@ -52,10 +54,15 @@ const user = ref<UserAccount>();
 const fetchLoading = ref(false);
 const fetchError = ref<string>();
 
-const { mutateData: save, data: saved } = useMutation(editUserAccount);
+const {
+    mutateData: save,
+    data: saved,
+    error: saveError,
+} = useMutation(editUserAccount);
 const {
     mutateData: changeUserPassword,
     data: changedPassword,
+    error: changePasswordError,
     loading: changePasswordLoading,
 } = useMutation(
     (payload: {
@@ -82,7 +89,7 @@ onMounted(async () => {
     try {
         user.value = await getUserAccountById(String(route.params.userUuid));
     } catch (err) {
-        fetchError.value = err instanceof Error ? err.message : "Unknown error";
+        fetchError.value = errorMessageOf(err);
     } finally {
         fetchLoading.value = false;
     }
@@ -108,6 +115,16 @@ const handleSubmit = async (payload: UserAccountFormPayload) => {
             await refetchCurrentUser();
         }
         await router.push({ name: "/(app)/user-account/" });
+        return;
+    }
+    if (saveError.value) {
+        const result = formRef.value?.applyBackendErrors(saveError.value);
+        if (!result?.fullyHandled) {
+            notify.serverError(result?.appError ?? saveError.value, {
+                contextLabel: "useraccount",
+                onlyMessages: result?.unhandledMessages,
+            });
+        }
     }
 };
 
@@ -119,11 +136,22 @@ const handleChangePassword = async (payload: ChangePasswordPayload) => {
         newPassword: payload.newPassword,
         confirmNewPassword: payload.confirmNewPassword,
     });
-    if (
-        changedPassword.value &&
-        user.value.uuid === authStore.userAccount?.uuid
-    ) {
-        await useLogout().logout();
+    if (changedPassword.value) {
+        if (user.value.uuid === authStore.userAccount?.uuid) {
+            await useLogout().logout();
+        }
+        return;
+    }
+    if (changePasswordError.value) {
+        const result = formRef.value?.applyChangePasswordBackendErrors(
+            changePasswordError.value,
+        );
+        if (!result?.fullyHandled) {
+            notify.serverError(result?.appError ?? changePasswordError.value, {
+                contextLabel: "useraccount.password",
+                onlyMessages: result?.unhandledMessages,
+            });
+        }
     }
 };
 </script>
