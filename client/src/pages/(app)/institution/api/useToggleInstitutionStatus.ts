@@ -25,7 +25,7 @@ export const useToggleInstitutionStatus = () => {
 
             return true;
         } catch (err) {
-            notify.serverError(err, { contextLabel: "institution" });
+            notify.serverError(err, { contextLabel: "institution.status" });
             return false;
         } finally {
             loading.value = false;

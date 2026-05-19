@@ -41,7 +41,7 @@ export const useToggleUserAccountStatus = (
 
             return true;
         } catch (err) {
-            notify.serverError(err, { contextLabel: "useraccount" });
+            notify.serverError(err, { contextLabel: "useraccount.status" });
             return false;
         } finally {
             loading.value = false;

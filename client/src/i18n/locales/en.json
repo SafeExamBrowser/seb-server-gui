@@ -2091,22 +2091,26 @@
                     "post": "Error Creating User",
                     "put": "Error Updating User",
                     "delete": "Error Deleting User",
-                    "password": "Error Changing Password"
+                    "password": "Error Changing Password",
+                    "status": "Error changing the user account status"
                 },
                 "institution": {
                     "post": "Error creating institution",
                     "put": "Error updating institution",
-                    "delete": "Error deleting institution"
+                    "delete": "Error deleting institution",
+                    "status": "Error changing the institution status"
                 },
                 "assessmenttool": {
                     "post": "Error creating assessment tool",
                     "put": "Error updating assessment tool",
-                    "delete": "Error deleting assessment tool"
+                    "delete": "Error deleting assessment tool",
+                    "status": "Error changing the assessment tool status"
                 },
                 "connectionconfiguration": {
                     "post": "Error creating connection configuration",
                     "put": "Error updating connection configuration",
-                    "delete": "Error deleting connection configuration"
+                    "delete": "Error deleting connection configuration",
+                    "status": "Error changing the connection configuration status"
                 },
                 "certificate": {
                     "post": "Error uploading certificate",
@@ -2122,7 +2126,10 @@
                 "409": "Conflict",
                 "422": "Validation error",
                 "500": "Server error",
-                "429": "Too many requests"
+                "429": "Too many requests",
+                "502": "Server unavailable",
+                "503": "Service unavailable",
+                "504": "Gateway timeout"
             },
             "code": {
                 "0": "Generic error",

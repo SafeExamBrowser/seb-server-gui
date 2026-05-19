@@ -45,7 +45,7 @@ export const useToggleConnectionConfigurationStatus = (
             return true;
         } catch (err) {
             notify.serverError(err, {
-                contextLabel: "connectionconfiguration",
+                contextLabel: "connectionconfiguration.status",
             });
             return false;
         } finally {

@@ -3,7 +3,26 @@ import { merge } from "lodash";
 import { useAuthStore } from "@/composables/store/useAuthStore";
 import { useLogout } from "@/composables/useLogout";
 import { toAppError } from "@/services/errors/toAppError.ts";
+import type { AppError } from "@/services/errors/types.ts";
+import { notify } from "@/services/notifications/notify.ts";
 import { ApiRequest } from "./types";
+
+function transportErrorDedupeKey(error: AppError): string | undefined {
+    if (error.kind === "network") {
+        return "transport:offline";
+    }
+    if (error.kind === "rate-limit") {
+        return "transport:rate-limit";
+    }
+    const status =
+        error.kind === "backend" || error.kind === "unknown"
+            ? error.status
+            : undefined;
+    if (status !== undefined && status >= 500) {
+        return "transport:server";
+    }
+    return undefined;
+}
 
 let tokenRefreshPromise: Promise<void> | undefined = undefined;
 
@@ -48,7 +67,12 @@ api.interceptors.response.use(
             await useLogout().logout(true);
         }
 
-        return Promise.reject(toAppError(error));
+        const appError = toAppError(error);
+        const transportKey = transportErrorDedupeKey(appError);
+        if (transportKey) {
+            notify.serverError(appError, { dedupeKey: transportKey });
+        }
+        return Promise.reject(appError);
     },
 );
 

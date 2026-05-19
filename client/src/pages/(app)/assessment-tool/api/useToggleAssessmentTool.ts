@@ -41,7 +41,9 @@ export const useToggleAssessmentToolStatus = (
 
             return true;
         } catch (err) {
-            notify.serverError(err, { contextLabel: "assessmenttool" });
+            notify.serverError(err, {
+                contextLabel: "assessmenttool.status",
+            });
             return false;
         } finally {
             loading.value = false;
