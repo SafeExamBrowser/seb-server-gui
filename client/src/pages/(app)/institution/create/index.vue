@@ -46,6 +46,7 @@ import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
 import HintText from "@/components/widgets/HintText.vue";
 import { useMutation } from "@/composables/useMutation.ts";
 import { notify } from "@/services/notifications/notify.ts";
+import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
 import { createInstitution } from "@/services/seb-server/institutionService.ts";
 import { useInstitutionFormFields } from "@/pages/(app)/institution/composables/useInstitutionFormFields.ts";
 
@@ -87,7 +88,20 @@ async function submit() {
         return;
     }
     if (createError.value) {
-        notify.serverError(createError.value, { contextLabel: "institution" });
+        const result = applyBackendFieldErrors(createError.value, {
+            forms: [
+                {
+                    form: formRef.value,
+                    fields: formFields.value.map((field) => field.name),
+                },
+            ],
+        });
+        if (!result.fullyHandled) {
+            notify.serverError(result.appError, {
+                contextLabel: "institution",
+                onlyMessages: result.unhandledMessages,
+            });
+        }
     }
 }
 </script>

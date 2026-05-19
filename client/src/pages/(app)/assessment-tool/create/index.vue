@@ -141,6 +141,7 @@ import LoadingFallbackComponent from "@/components/widgets/loadingFallbackCompon
 import { useAssessmentToolFormFields } from "@/pages/(app)/assessment-tool/composables/useAssessmentToolFormFields.ts";
 import { useMutation } from "@/composables/useMutation.ts";
 import { notify } from "@/services/notifications/notify.ts";
+import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
 import { createAssessmentTool } from "@/services/seb-server/assessmentToolService.ts";
 import type { CommonAssessmentToolPar } from "@/models/seb-server/assessmentTool.ts";
 import CancelButton from "@/components/widgets/CancelButton.vue";
@@ -185,6 +186,12 @@ const { mutateData: createTool, error: toolError } =
 const mainFormRef = ref<InstanceType<typeof FormBuilder>>();
 const authFormRef = ref<InstanceType<typeof FormBuilder>>();
 const proxyFormRef = ref<InstanceType<typeof FormBuilder>>();
+
+const ASSESSMENT_TOOL_FIELD_ALIASES = {
+    lmsUrl: "serverAddress",
+    lmsClientname: "clientUsername",
+    lmsClientsecret: "clientPassword",
+};
 
 async function submit() {
     const [mainResult, authResult] = await Promise.all([
@@ -249,9 +256,29 @@ async function submit() {
     }
 
     if (toolError.value) {
-        notify.serverError(toolError.value, {
-            contextLabel: "assessmenttool",
+        const applied = applyBackendFieldErrors(toolError.value, {
+            aliases: ASSESSMENT_TOOL_FIELD_ALIASES,
+            forms: [
+                {
+                    form: mainFormRef.value,
+                    fields: mainFormFields.value.map((field) => field.name),
+                },
+                {
+                    form: authFormRef.value,
+                    fields: authFormFields.value.map((field) => field.name),
+                },
+                {
+                    form: proxyFormRef.value,
+                    fields: proxyFormFields.value.map((field) => field.name),
+                },
+            ],
         });
+        if (!applied.fullyHandled) {
+            notify.serverError(applied.appError, {
+                contextLabel: "assessmenttool",
+                onlyMessages: applied.unhandledMessages,
+            });
+        }
         return;
     }
     await router.push({ name: "/(app)/assessment-tool/" });

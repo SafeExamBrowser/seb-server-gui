@@ -176,6 +176,7 @@ import HintText from "@/components/widgets/HintText.vue";
 import FormDialog from "@/components/widgets/formDialog/FormDialog.vue";
 import { useMutation } from "@/composables/useMutation.ts";
 import { notify } from "@/services/notifications/notify.ts";
+import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
 import { useDirtyTracking } from "@/composables/useDirtyTracking.ts";
 import { useConnectionConfigurationFormFields } from "@/pages/(app)/connection-configuration/composables/useConnectionConfigurationFormFields.ts";
 import { useCertificates } from "@/pages/(app)/connection-configuration/composables/api/useCertificates.ts";
@@ -326,6 +327,17 @@ const formatDate = (input?: Date | string): string => {
     return moment(input).format("MMM D, YYYY HH:mm");
 };
 
+const CONNECTION_CONFIG_FIELD_ALIASES = {
+    sebConfigPurpose: "configurationPurpose",
+    confirm_encrypt_secret: "confirmConfigurationPassword",
+    startURL: "fallbackStartUrl",
+    sebServerFallbackAttemptInterval: "interval",
+    sebServerFallbackAttempts: "connectionAttempts",
+    sebServerFallbackTimeout: "connectionTimeout",
+    sebServerFallbackPasswordHashConfirm: "confirmFallbackPassword",
+    hashedQuitPasswordConfirm: "confirmQuitPassword",
+};
+
 async function submit() {
     const mainResult = await mainFormRef.value?.validate();
     if (!mainResult?.valid || !config.value) return;
@@ -371,9 +383,25 @@ async function submit() {
         return;
     }
     if (saveError.value) {
-        notify.serverError(saveError.value, {
-            contextLabel: "connectionconfiguration",
+        const applied = applyBackendFieldErrors(saveError.value, {
+            aliases: CONNECTION_CONFIG_FIELD_ALIASES,
+            forms: [
+                {
+                    form: mainFormRef.value,
+                    fields: mainFormFields.value.map((field) => field.name),
+                },
+                {
+                    form: fallbackFormRef.value,
+                    fields: fallbackFormFields.value.map((field) => field.name),
+                },
+            ],
         });
+        if (!applied.fullyHandled) {
+            notify.serverError(applied.appError, {
+                contextLabel: "connectionconfiguration",
+                onlyMessages: applied.unhandledMessages,
+            });
+        }
     }
 }
 </script>

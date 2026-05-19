@@ -139,6 +139,7 @@ import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
 import HintText from "@/components/widgets/HintText.vue";
 import { useMutation } from "@/composables/useMutation.ts";
 import { notify } from "@/services/notifications/notify.ts";
+import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
 import { useDirtyTracking } from "@/composables/useDirtyTracking.ts";
 import { useAssessmentToolFormFields } from "@/pages/(app)/assessment-tool/composables/useAssessmentToolFormFields.ts";
 import {
@@ -185,6 +186,12 @@ const {
 const mainFormRef = ref<InstanceType<typeof FormBuilder>>();
 const authFormRef = ref<InstanceType<typeof FormBuilder>>();
 const proxyFormRef = ref<InstanceType<typeof FormBuilder>>();
+
+const ASSESSMENT_TOOL_FIELD_ALIASES = {
+    lmsUrl: "serverAddress",
+    lmsClientname: "clientUsername",
+    lmsClientsecret: "clientPassword",
+};
 
 const tool = ref<AssessmentTool>();
 const fetchLoading = ref(false);
@@ -297,9 +304,29 @@ async function submit() {
         return;
     }
     if (saveToolError.value) {
-        notify.serverError(saveToolError.value, {
-            contextLabel: "assessmenttool",
+        const applied = applyBackendFieldErrors(saveToolError.value, {
+            aliases: ASSESSMENT_TOOL_FIELD_ALIASES,
+            forms: [
+                {
+                    form: mainFormRef.value,
+                    fields: mainFormFields.value.map((field) => field.name),
+                },
+                {
+                    form: authFormRef.value,
+                    fields: authFormFields.value.map((field) => field.name),
+                },
+                {
+                    form: proxyFormRef.value,
+                    fields: proxyFormFields.value.map((field) => field.name),
+                },
+            ],
         });
+        if (!applied.fullyHandled) {
+            notify.serverError(applied.appError, {
+                contextLabel: "assessmenttool",
+                onlyMessages: applied.unhandledMessages,
+            });
+        }
     }
 }
 </script>

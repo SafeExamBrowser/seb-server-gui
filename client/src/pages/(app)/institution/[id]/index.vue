@@ -57,6 +57,7 @@ import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
 import HintText from "@/components/widgets/HintText.vue";
 import { useMutation } from "@/composables/useMutation.ts";
 import { notify } from "@/services/notifications/notify.ts";
+import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
 import {
     editInstitution,
     getInstitutionById,
@@ -148,7 +149,20 @@ async function submit() {
         return;
     }
     if (saveError.value) {
-        notify.serverError(saveError.value, { contextLabel: "institution" });
+        const applied = applyBackendFieldErrors(saveError.value, {
+            forms: [
+                {
+                    form: formRef.value,
+                    fields: formFields.value.map((field) => field.name),
+                },
+            ],
+        });
+        if (!applied.fullyHandled) {
+            notify.serverError(applied.appError, {
+                contextLabel: "institution",
+                onlyMessages: applied.unhandledMessages,
+            });
+        }
     }
 }
 </script>

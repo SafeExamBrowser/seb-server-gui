@@ -155,6 +155,7 @@ import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import { useConnectionConfigurationFormFields } from "@/pages/(app)/connection-configuration/composables/useConnectionConfigurationFormFields.ts";
 import { useMutation } from "@/composables/useMutation.ts";
 import { notify } from "@/services/notifications/notify.ts";
+import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
 import { createConnectionConfiguration } from "@/services/seb-server/connectionConfigurationService.ts";
 import { useCertificates } from "@/pages/(app)/connection-configuration/composables/api/useCertificates.ts";
 import type { CreateConnectionConfigurationPar } from "@/models/seb-server/connectionConfiguration.ts";
@@ -224,6 +225,17 @@ async function onCertImported(key: CertKey) {
 const { getEmptyItem, getFormFields, handleUploadCertificate } =
     useCertificateCreateForm({ onSuccess: onCertImported });
 
+const CONNECTION_CONFIG_FIELD_ALIASES = {
+    sebConfigPurpose: "configurationPurpose",
+    confirm_encrypt_secret: "confirmConfigurationPassword",
+    startURL: "fallbackStartUrl",
+    sebServerFallbackAttemptInterval: "interval",
+    sebServerFallbackAttempts: "connectionAttempts",
+    sebServerFallbackTimeout: "connectionTimeout",
+    sebServerFallbackPasswordHashConfirm: "confirmFallbackPassword",
+    hashedQuitPasswordConfirm: "confirmQuitPassword",
+};
+
 async function submit() {
     const mainResult = await mainFormRef.value?.validate();
     if (!mainResult?.valid) return;
@@ -284,9 +296,25 @@ async function submit() {
     await createConfig(params);
 
     if (configError.value) {
-        notify.serverError(configError.value, {
-            contextLabel: "connectionconfiguration",
+        const applied = applyBackendFieldErrors(configError.value, {
+            aliases: CONNECTION_CONFIG_FIELD_ALIASES,
+            forms: [
+                {
+                    form: mainFormRef.value,
+                    fields: mainFormFields.value.map((field) => field.name),
+                },
+                {
+                    form: fallbackFormRef.value,
+                    fields: fallbackFormFields.value.map((field) => field.name),
+                },
+            ],
         });
+        if (!applied.fullyHandled) {
+            notify.serverError(applied.appError, {
+                contextLabel: "connectionconfiguration",
+                onlyMessages: applied.unhandledMessages,
+            });
+        }
         return;
     }
     await router.push({ name: "/(app)/connection-configuration/" });

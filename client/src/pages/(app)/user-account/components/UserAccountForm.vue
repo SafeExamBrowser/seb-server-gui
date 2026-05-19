@@ -114,13 +114,9 @@ import {
 } from "@/pages/(app)/user-account/composables/useUserAccountFormFields.ts";
 import { UserRoleEnum } from "@/models/userRoleEnum.ts";
 import type { UserAccount } from "@/models/userAccount.ts";
-import type {
-    BackendFieldAliasMap,
-    BackendFieldErrorMap,
-} from "@/services/errors/types.ts";
+import type { BackendFieldAliasMap } from "@/services/errors/types.ts";
 import {
-    buildBackendFieldErrorMap,
-    hasOnlyHandledFieldErrors,
+    applyBackendFieldErrors,
     type ApplyBackendErrorsResult,
 } from "@/services/errors/formErrorMapping.ts";
 
@@ -303,31 +299,19 @@ const emitChangePassword = (payload: ChangePasswordPayload) => {
 };
 
 function applyBackendErrors(error: unknown): ApplyBackendErrorsResult {
-    const leftNames = leftFormFields.value.map((field) => field.name);
-    const rightNames = rightFormFields.value.map((field) => field.name);
-    const result = buildBackendFieldErrorMap(error, {
+    return applyBackendFieldErrors(error, {
         aliases: USER_ACCOUNT_FIELD_ALIASES,
-        allowedFields: [...leftNames, ...rightNames],
+        forms: [
+            {
+                form: leftFormRef.value,
+                fields: leftFormFields.value.map((field) => field.name),
+            },
+            {
+                form: rightFormRef.value,
+                fields: rightFormFields.value.map((field) => field.name),
+            },
+        ],
     });
-
-    const leftMap: BackendFieldErrorMap = {};
-    const rightMap: BackendFieldErrorMap = {};
-    for (const [field, messages] of Object.entries(result.fieldErrors)) {
-        if (rightNames.includes(field)) {
-            rightMap[field] = messages;
-        } else {
-            leftMap[field] = messages;
-        }
-    }
-
-    leftFormRef.value?.setBackendErrors(leftMap);
-    rightFormRef.value?.setBackendErrors(rightMap);
-
-    return {
-        fullyHandled: hasOnlyHandledFieldErrors(result),
-        appError: result.appError,
-        unhandledMessages: result.unhandledMessages,
-    };
 }
 
 function applyChangePasswordBackendErrors(

@@ -457,12 +457,24 @@
     },
     "examTemplateDetail": {
         "boxes": {
-            "basicSettings": { "title": "Basic Settings" },
-            "sebSettings": { "title": "SEB Settings" },
-            "indicators": { "title": "Indicators" },
-            "supervisors": { "title": "Exam Supervisors" },
-            "screenProctoringSettings": { "title": "Screen Proctoring" },
-            "groups": { "title": "Groups" }
+            "basicSettings": {
+                "title": "Basic Settings"
+            },
+            "sebSettings": {
+                "title": "SEB Settings"
+            },
+            "indicators": {
+                "title": "Indicators"
+            },
+            "supervisors": {
+                "title": "Exam Supervisors"
+            },
+            "screenProctoringSettings": {
+                "title": "Screen Proctoring"
+            },
+            "groups": {
+                "title": "Groups"
+            }
         }
     },
     "examTemplateList": {
@@ -2080,6 +2092,26 @@
                     "put": "Error Updating User",
                     "delete": "Error Deleting User",
                     "password": "Error Changing Password"
+                },
+                "institution": {
+                    "post": "Error creating institution",
+                    "put": "Error updating institution",
+                    "delete": "Error deleting institution"
+                },
+                "assessmenttool": {
+                    "post": "Error creating assessment tool",
+                    "put": "Error updating assessment tool",
+                    "delete": "Error deleting assessment tool"
+                },
+                "connectionconfiguration": {
+                    "post": "Error creating connection configuration",
+                    "put": "Error updating connection configuration",
+                    "delete": "Error deleting connection configuration"
+                },
+                "certificate": {
+                    "post": "Error uploading certificate",
+                    "put": "Error updating certificate",
+                    "delete": "Error deleting certificate"
                 }
             },
             "http": {

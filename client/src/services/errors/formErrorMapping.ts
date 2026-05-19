@@ -20,6 +20,10 @@ export type ApplyBackendErrorsResult = {
     unhandledMessages: APIMessage[];
 };
 
+export type BackendErrorForm = {
+    setBackendErrors: (errors: BackendFieldErrorMap) => void;
+};
+
 export function buildBackendFieldErrorMap(
     error: unknown,
     options?: {
@@ -67,6 +71,37 @@ export function buildBackendFieldErrorMap(
     }
 
     return { fieldErrors, handledMessages, unhandledMessages, appError };
+}
+
+export function applyBackendFieldErrors(
+    error: unknown,
+    options: {
+        aliases?: BackendFieldAliasMap;
+        forms: { form: BackendErrorForm | undefined; fields: string[] }[];
+    },
+): ApplyBackendErrorsResult {
+    const allowedFields = options.forms.flatMap((group) => group.fields);
+    const result = buildBackendFieldErrorMap(error, {
+        aliases: options.aliases,
+        allowedFields,
+    });
+
+    for (const group of options.forms) {
+        const groupMap: BackendFieldErrorMap = {};
+        for (const fieldName of group.fields) {
+            const messages = result.fieldErrors[fieldName];
+            if (messages && messages.length > 0) {
+                groupMap[fieldName] = messages;
+            }
+        }
+        group.form?.setBackendErrors(groupMap);
+    }
+
+    return {
+        fullyHandled: hasOnlyHandledFieldErrors(result),
+        appError: result.appError,
+        unhandledMessages: result.unhandledMessages,
+    };
 }
 
 export function hasOnlyHandledFieldErrors(

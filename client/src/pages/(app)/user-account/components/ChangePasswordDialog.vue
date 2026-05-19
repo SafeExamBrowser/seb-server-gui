@@ -42,8 +42,7 @@ import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import { useChangePasswordFormFields } from "@/pages/(app)/user-account/composables/useChangePasswordFormFields.ts";
 import type { BackendFieldAliasMap } from "@/services/errors/types.ts";
 import {
-    buildBackendFieldErrorMap,
-    hasOnlyHandledFieldErrors,
+    applyBackendFieldErrors,
     type ApplyBackendErrorsResult,
 } from "@/services/errors/formErrorMapping.ts";
 
@@ -73,17 +72,15 @@ const { formFields, adminPassword, newPassword, confirmNewPassword, reset } =
     useChangePasswordFormFields();
 
 function applyBackendErrors(error: unknown): ApplyBackendErrorsResult {
-    const allowedFields = formFields.value.map((field) => field.name);
-    const result = buildBackendFieldErrorMap(error, {
+    return applyBackendFieldErrors(error, {
         aliases: CHANGE_PASSWORD_FIELD_ALIASES,
-        allowedFields,
+        forms: [
+            {
+                form: formRef.value,
+                fields: formFields.value.map((field) => field.name),
+            },
+        ],
     });
-    formRef.value?.setBackendErrors(result.fieldErrors);
-    return {
-        fullyHandled: hasOnlyHandledFieldErrors(result),
-        appError: result.appError,
-        unhandledMessages: result.unhandledMessages,
-    };
 }
 
 defineExpose({ applyBackendErrors });
