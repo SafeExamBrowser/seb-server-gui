@@ -18,6 +18,7 @@ export type NotificationItem = {
     text?: string;
     color?: string;
     prependIcon?: string;
+    timerColor?: string;
     id: string;
     kind: NotificationKind;
     dedupeKey?: string;
@@ -89,6 +90,7 @@ function enqueue(input: NotificationInput): string {
         text: input.text,
         color: severity.color,
         prependIcon: severity.prependIcon,
+        timerColor: severity.color,
         dedupeKey: input.dedupeKey,
         createdAt: now,
         actionLabel: input.actionLabel,

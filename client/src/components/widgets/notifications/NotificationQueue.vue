@@ -5,7 +5,15 @@
         variant="tonal"
         :total-visible="4"
         :timeout="10000"
+        timer="bottom"
+        rounded="lg"
+        width="450"
         collapsed
+        :content-props="{
+            class: 'mr-6 mb-6 border',
+            style: 'border-color: currentColor; border-width: 2px',
+        }"
+        :close-on-back="false"
     >
         <template #actions="{ item, props: snackbarProps }">
             <v-btn
