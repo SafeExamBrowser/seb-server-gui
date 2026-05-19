@@ -1,3 +1,4 @@
+import { notify } from "@/services/notifications/notify.ts";
 import type { Ref } from "vue";
 import { ref } from "vue";
 import { CertificatesResponse } from "@/models/seb-server/certificate.ts";
@@ -7,11 +8,9 @@ export const useDeleteCertificate = (
     certificates: Ref<CertificatesResponse | undefined>,
 ) => {
     const loading = ref(false);
-    const error = ref<string>();
 
     const removeCertificate = async (alias: string): Promise<boolean> => {
         loading.value = true;
-        error.value = undefined;
 
         try {
             const response = await deleteCertificate(alias);
@@ -28,7 +27,7 @@ export const useDeleteCertificate = (
 
             return true;
         } catch (err) {
-            error.value = err instanceof Error ? err.message : "Unknown error";
+            notify.serverError(err, { contextLabel: "certificate" });
             return false;
         } finally {
             loading.value = false;
@@ -41,7 +40,7 @@ export const useDeleteCertificate = (
         const alias = item.alias;
 
         if (typeof alias !== "string") {
-            error.value = "Invalid certificate identifier.";
+            notify.serverError(new Error("Invalid certificate identifier."));
             return false;
         }
 
@@ -52,6 +51,5 @@ export const useDeleteCertificate = (
         removeCertificate,
         removeCertificateFromItem,
         loading,
-        error,
     };
 };

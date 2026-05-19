@@ -39,9 +39,6 @@
                 @clear-filters="onClearSearch"
             />
 
-            <div v-if="deleteError">
-                {{ deleteError }}
-            </div>
             <LoadingFallbackComponent
                 :loading="false"
                 :errors="error ? [error] : []"
@@ -132,11 +129,8 @@ watch(
 
 const pageCount = computed(() => tableData.value?.number_of_pages ?? 0);
 
-const {
-    removeCertificateFromItem,
-    loading: deleteLoading,
-    error: deleteError,
-} = useDeleteCertificate(tableData);
+const { removeCertificateFromItem, loading: deleteLoading } =
+    useDeleteCertificate(tableData);
 
 const { getEmptyItem, getFormFields, handleUploadCertificate } =
     useCertificateCreateForm({ onSuccess: onCertificateUpload });
