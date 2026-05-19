@@ -455,6 +455,16 @@
             }
         }
     },
+    "examTemplateDetail": {
+        "boxes": {
+            "basicSettings": { "title": "Basic Settings" },
+            "sebSettings": { "title": "SEB Settings" },
+            "indicators": { "title": "Indicators" },
+            "supervisors": { "title": "Exam Supervisors" },
+            "screenProctoringSettings": { "title": "Screen Proctoring" },
+            "groups": { "title": "Groups" }
+        }
+    },
     "examTemplateList": {
         "info": {
             "nameSearchPlaceholder": "Search",
