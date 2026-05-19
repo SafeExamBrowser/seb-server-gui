@@ -7,6 +7,7 @@
         :timeout="10000"
         timer="bottom"
         rounded="lg"
+        min-height="90"
         width="450"
         collapsed
         :content-props="{

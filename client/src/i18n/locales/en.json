@@ -2273,5 +2273,17 @@
             "fallbackLine": "{systemMessage} ({details})",
             "rateLimit": "Too many requests. Please slow down and try again."
         }
+    },
+    "activateAfterCreate": {
+        "created": "{entity} created",
+        "createdHint": "It is inactive — activate it now?",
+        "activateButton": "Activate",
+        "success": "The {entity} was activated.",
+        "entity": {
+            "institution": "Institution",
+            "userAccount": "User account",
+            "assessmentTool": "Assessment tool",
+            "connectionConfiguration": "Connection configuration"
+        }
     }
 }
