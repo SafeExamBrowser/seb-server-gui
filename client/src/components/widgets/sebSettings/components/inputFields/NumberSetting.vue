@@ -1,5 +1,5 @@
 <template>
-    <v-col class="pt-5 pb-1">
+    <v-col>
         <v-number-input
             v-model="numberValue"
             density="compact"

@@ -1,5 +1,5 @@
 <template>
-    <v-col class="pt-0 pb-0 pl-0">
+    <v-col>
         <v-slider
             v-model="numVal"
             :max="max"
