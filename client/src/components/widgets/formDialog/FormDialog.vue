@@ -69,6 +69,7 @@ import { IconValue } from "vuetify/lib/composables/icons.mjs";
 import { useDisplay } from "vuetify";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import { FormField } from "@/components/widgets/formBuilder/types";
+import { errorMessageOf } from "@/services/errors/toAppError.ts";
 
 const props = withDefaults(
     defineProps<{
@@ -127,8 +128,7 @@ const handleFormSubmit = async () => {
         await props.onSubmit(item.value);
         isDialogOpen.value = false;
     } catch (err) {
-        errorMessage.value =
-            err instanceof Error && err.message ? err.message : String(err);
+        errorMessage.value = errorMessageOf(err);
     } finally {
         submitting.value = false;
     }
