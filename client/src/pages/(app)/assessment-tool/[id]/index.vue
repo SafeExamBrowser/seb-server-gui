@@ -128,6 +128,7 @@
 </template>
 
 <script setup lang="ts">
+import { errorMessageOf } from "@/services/errors/toAppError.ts";
 import { computed, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
@@ -137,6 +138,7 @@ import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
 import HintText from "@/components/widgets/HintText.vue";
 import { useMutation } from "@/composables/useMutation.ts";
+import { notify } from "@/services/notifications/notify.ts";
 import { useDirtyTracking } from "@/composables/useDirtyTracking.ts";
 import { useAssessmentToolFormFields } from "@/pages/(app)/assessment-tool/composables/useAssessmentToolFormFields.ts";
 import {
@@ -193,8 +195,11 @@ const errors = computed(() =>
     [...formErrors.value, fetchError.value].filter((e) => e !== undefined),
 );
 
-const { mutateData: saveTool, data: savedTool } =
-    useMutation(editAssessmentTool);
+const {
+    mutateData: saveTool,
+    data: savedTool,
+    error: saveToolError,
+} = useMutation(editAssessmentTool);
 
 const { isDirty, snapshot } = useDirtyTracking(() => ({
     institutionId: institutionId.value ?? "",
@@ -246,7 +251,7 @@ onMounted(async () => {
 
         snapshot();
     } catch (err) {
-        fetchError.value = err instanceof Error ? err.message : "Unknown error";
+        fetchError.value = errorMessageOf(err);
     } finally {
         fetchLoading.value = false;
     }
@@ -289,6 +294,12 @@ async function submit() {
 
     if (savedTool.value) {
         await router.push({ name: "/(app)/assessment-tool/" });
+        return;
+    }
+    if (saveToolError.value) {
+        notify.serverError(saveToolError.value, {
+            contextLabel: "assessmenttool",
+        });
     }
 }
 </script>

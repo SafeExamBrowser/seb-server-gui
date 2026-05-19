@@ -140,6 +140,7 @@ import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useAssessmentToolFormFields } from "@/pages/(app)/assessment-tool/composables/useAssessmentToolFormFields.ts";
 import { useMutation } from "@/composables/useMutation.ts";
+import { notify } from "@/services/notifications/notify.ts";
 import { createAssessmentTool } from "@/services/seb-server/assessmentToolService.ts";
 import type { CommonAssessmentToolPar } from "@/models/seb-server/assessmentTool.ts";
 import CancelButton from "@/components/widgets/CancelButton.vue";
@@ -247,8 +248,12 @@ async function submit() {
         });
     }
 
-    if (!toolError.value) {
-        await router.push({ name: "/(app)/assessment-tool/" });
+    if (toolError.value) {
+        notify.serverError(toolError.value, {
+            contextLabel: "assessmenttool",
+        });
+        return;
     }
+    await router.push({ name: "/(app)/assessment-tool/" });
 }
 </script>

@@ -1,3 +1,4 @@
+import { notify } from "@/services/notifications/notify.ts";
 import type { Ref } from "vue";
 import { ref } from "vue";
 import { AssessmentToolsResponse } from "@/models/seb-server/assessmentTool.ts";
@@ -10,14 +11,12 @@ export const useToggleAssessmentToolStatus = (
     assessmentTools: Ref<AssessmentToolsResponse | undefined>,
 ) => {
     const loading = ref(false);
-    const error = ref<string>();
 
     const changeAssessmentToolStatus = async (
         id: string,
         active: boolean,
     ): Promise<boolean> => {
         loading.value = true;
-        error.value = undefined;
 
         try {
             const response = active
@@ -42,7 +41,7 @@ export const useToggleAssessmentToolStatus = (
 
             return true;
         } catch (err) {
-            error.value = err instanceof Error ? err.message : "Unknown error";
+            notify.serverError(err, { contextLabel: "assessmenttool" });
             return false;
         } finally {
             loading.value = false;
@@ -56,12 +55,14 @@ export const useToggleAssessmentToolStatus = (
         const active = item.active;
 
         if (typeof id !== "number") {
-            error.value = "Invalid assessment tool identifier.";
+            notify.serverError(
+                new Error("Invalid assessment tool identifier."),
+            );
             return false;
         }
 
         if (typeof active !== "boolean") {
-            error.value = "Invalid assessment tool status.";
+            notify.serverError(new Error("Invalid assessment tool status."));
             return false;
         }
 
@@ -72,6 +73,5 @@ export const useToggleAssessmentToolStatus = (
         changeAssessmentToolStatus,
         toggleAssessmentToolStatusFromItem: changeAssessmentToolStatusFromItem,
         loading,
-        error,
     };
 };

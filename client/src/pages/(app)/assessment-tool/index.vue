@@ -25,9 +25,6 @@
                 @clear-filters="clearAll"
             />
 
-            <div v-if="deleteError">{{ deleteError }}</div>
-            <div v-else-if="statusError">{{ statusError }}</div>
-
             <LoadingFallbackComponent
                 :loading="false"
                 :errors="error ? [error] : []"
@@ -174,17 +171,11 @@ watch(
 
 const pageCount = computed(() => tableData.value?.number_of_pages ?? 0);
 
-const {
-    removeAssessmentToolFromItem,
-    loading: deleteLoading,
-    error: deleteError,
-} = useDeleteAssessmentTool(tableData);
+const { removeAssessmentToolFromItem, loading: deleteLoading } =
+    useDeleteAssessmentTool(tableData);
 
-const {
-    toggleAssessmentToolStatusFromItem,
-    loading: statusLoading,
-    error: statusError,
-} = useToggleAssessmentToolStatus(tableData);
+const { toggleAssessmentToolStatusFromItem, loading: statusLoading } =
+    useToggleAssessmentToolStatus(tableData);
 
 // Dialog state
 const deleteTarget = ref<TableItem | null>(null);

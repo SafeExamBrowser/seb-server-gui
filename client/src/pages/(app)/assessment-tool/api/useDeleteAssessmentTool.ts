@@ -1,3 +1,4 @@
+import { notify } from "@/services/notifications/notify.ts";
 import type { Ref } from "vue";
 import { ref } from "vue";
 import { AssessmentToolsResponse } from "@/models/seb-server/assessmentTool.ts";
@@ -7,11 +8,9 @@ export const useDeleteAssessmentTool = (
     assessmentTools: Ref<AssessmentToolsResponse | undefined>,
 ) => {
     const loading = ref(false);
-    const error = ref<string>();
 
     const removeAssessmentTool = async (id: string): Promise<boolean> => {
         loading.value = true;
-        error.value = undefined;
 
         try {
             const response = await deleteAssessmentTool(id);
@@ -29,7 +28,7 @@ export const useDeleteAssessmentTool = (
 
             return true;
         } catch (err) {
-            error.value = err instanceof Error ? err.message : "Unknown error";
+            notify.serverError(err, { contextLabel: "assessmenttool" });
             return false;
         } finally {
             loading.value = false;
@@ -42,7 +41,9 @@ export const useDeleteAssessmentTool = (
         const id = item.id;
 
         if (typeof id !== "number") {
-            error.value = "Invalid Assessment Tool identifier.";
+            notify.serverError(
+                new Error("Invalid Assessment Tool identifier."),
+            );
             return false;
         }
 
@@ -53,6 +54,5 @@ export const useDeleteAssessmentTool = (
         removeAssessmentTool,
         removeAssessmentToolFromItem,
         loading,
-        error,
     };
 };
