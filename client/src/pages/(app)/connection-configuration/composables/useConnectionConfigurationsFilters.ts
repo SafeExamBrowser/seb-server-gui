@@ -3,8 +3,7 @@ import { useInstitutionFilterSection } from "@/components/widgets/filters/useIns
 import type { FilterSectionDef } from "@/components/widgets/filters/filterTypes.ts";
 import { getStatusFilterSection } from "@/components/widgets/filters/statusFilterSection.ts";
 
-const TRANSLATION_PREFIX =
-    "connectionConfigurations.connectionConfigurationsPage";
+const TRANSLATION_PREFIX = "connectionConfigurations.list";
 
 export function useConnectionConfigurationsFilters() {
     const { section: institutionSection } =

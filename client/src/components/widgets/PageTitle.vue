@@ -1,10 +1,10 @@
 <template>
-    <h2
-        class="primary-text-color text-h4 font-weight-bold"
+    <div
+        class="text-primary text-headline-large font-weight-bold"
         :data-testid="dataTestId"
     >
         {{ name }}
-    </h2>
+    </div>
 </template>
 
 <script setup lang="ts">

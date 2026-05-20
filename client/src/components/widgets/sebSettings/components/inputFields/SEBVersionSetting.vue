@@ -1,9 +1,8 @@
 <template>
-    <v-col class="pt-1 pb-1">
+    <v-col>
         <v-textarea
             v-model="sebAllowedVersions"
             density="compact"
-            multi-line
             :rules="[allowedVersionRule]"
             validate-on="eager"
             :label="showLabel ? translate(label) : ''"

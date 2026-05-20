@@ -5,7 +5,7 @@ import type { FilterSectionDef } from "@/components/widgets/filters/filterTypes.
 import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums.ts";
 import { getStatusFilterSection } from "@/components/widgets/filters/statusFilterSection.ts";
 
-const TRANSLATION_PREFIX = "assessmentToolConnections.assessmentToolsPage";
+const TRANSLATION_PREFIX = "assessmentToolConnections.list";
 
 export const LMS_TYPE_FILTER_KEY = "selectedType";
 

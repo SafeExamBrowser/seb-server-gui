@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h4 v-if="showTitle" class="text-subtitle-1 font-weight-bold mb-3">
+        <h4 v-if="showTitle" class="text-body-large font-weight-bold mb-3">
             {{ title.toUpperCase() }}
         </h4>
 

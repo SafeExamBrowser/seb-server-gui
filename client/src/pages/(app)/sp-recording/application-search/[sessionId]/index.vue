@@ -2,7 +2,7 @@
     <v-row v-if="!showError">
         <!-----------video player---------->
         <v-col>
-            <v-sheet class="rounded-lg pt-4 pl-4 pr-4" elevation="4">
+            <v-sheet class="rounded-lg pt-4 pl-4 pr-4" elevation="2">
                 <v-img
                     ref="videoPlayer"
                     :aspect-ratio="16 / 9"
@@ -129,18 +129,14 @@
                         @click="hideShowMetadataInfo()"
                     >
                     </v-btn>
-                    <h2 class="title-inherit-styling title-no-line-break">
-                        Details
-                    </h2>
+                    <h2 class="text-title-large d-inline">Details</h2>
                 </template>
                 <v-card-text>
-                    <v-table class="text-caption" density="comfortable">
+                    <v-table class="text-body-small" density="comfortable">
                         <thead>
                             <tr>
                                 <th class="text-left text-no-wrap">
-                                    <h3
-                                        class="title-inherit-styling text-subtitle-2"
-                                    >
+                                    <h3 class="text-title-small">
                                         SEB Session Info
                                     </h3>
                                 </th>
@@ -160,9 +156,7 @@
                         <thead>
                             <tr>
                                 <th class="text-left text-no-wrap">
-                                    <h3
-                                        class="title-inherit-styling text-subtitle-2"
-                                    >
+                                    <h3 class="text-title-small">
                                         Screenshot Metadata
                                     </h3>
                                 </th>

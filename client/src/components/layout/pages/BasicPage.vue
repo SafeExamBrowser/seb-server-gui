@@ -1,46 +1,32 @@
 <template>
     <div class="fill-height d-flex flex-column">
-        <v-row class="flex-grow-0 flex-shrink-0">
-            <v-col>
-                <BreadCrumb :items="breadCrumb" />
-            </v-col>
-        </v-row>
-        <v-row class="flex-grow-0 flex-shrink-0">
-            <v-col>
-                <PageTitle
-                    class="pl-9"
-                    :name="title"
-                    :data-test-id="
-                        dataTestId ? `${dataTestId}-page-title` : undefined
-                    "
-                />
-            </v-col>
-        </v-row>
-        <v-row v-if="hasTop" class="flex-grow-0 flex-shrink-0">
-            <v-col>
-                <v-card elevation="4" rounded="lg">
+        <PageHeader
+            :title="title"
+            :bread-crumb="breadCrumb"
+            :data-test-id="dataTestId"
+        />
+        <v-expand-transition>
+            <div v-if="$slots.PanelTop" class="flex-grow-0 flex-shrink-0 pa-2">
+                <v-card elevation="2" rounded="lg">
                     <slot name="PanelTop"></slot>
                 </v-card>
-            </v-col>
-        </v-row>
-        <v-row class="flex-grow-1 flex-shrink-1 overflow-y-auto">
-            <v-col
-                :cols="hasAside ? 9 : 12"
-                class="fill-height overflow-y-auto"
-            >
+            </div>
+        </v-expand-transition>
+        <v-row class="flex-grow-1 flex-shrink-1" :style="{ minHeight: 0 }">
+            <v-col :cols="$slots.PanelAside ? 9 : 12" class="h-100 pa-2">
                 <v-card
-                    elevation="4"
+                    elevation="2"
                     rounded="lg"
-                    class="fill-height overflow-y-auto"
+                    class="h-100 overflow-y-auto"
                 >
                     <slot name="PanelMain"></slot>
                 </v-card>
             </v-col>
-            <v-col v-if="hasAside" cols="3" class="fill-height overflow-y-auto">
+            <v-col v-if="$slots.PanelAside" cols="3" class="h-100 pa-2">
                 <v-card
-                    elevation="4"
+                    elevation="2"
                     rounded="lg"
-                    class="fill-height overflow-y-auto"
+                    class="h-100 overflow-y-auto"
                 >
                     <slot name="PanelAside"></slot>
                 </v-card>
@@ -50,10 +36,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, useSlots } from "vue";
-import PageTitle from "@/components/widgets/PageTitle.vue";
+import PageHeader from "@/components/layout/pages/components/PageHeader.vue";
 import { BreadCrumbItem } from "@/components/widgets/breadCrumb/types";
-import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
 
 withDefaults(
     defineProps<{
@@ -63,8 +47,4 @@ withDefaults(
     }>(),
     { breadCrumb: undefined, dataTestId: undefined },
 );
-
-const slots = useSlots();
-const hasTop = computed(() => Boolean(slots.PanelTop));
-const hasAside = computed(() => Boolean(slots.PanelAside));
 </script>

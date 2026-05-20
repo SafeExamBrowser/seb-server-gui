@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@types/express": "5.0.6",
-    "@types/node": "22.10.5",
+    "@types/node": "24.12.4",
     "express": "5.2.1",
     "http-proxy-3": "1.23.2",
     "tsx": "4.19.2",

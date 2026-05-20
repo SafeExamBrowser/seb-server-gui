@@ -1,11 +1,16 @@
 import { defineConfig, mergeConfig } from "vitest/config";
-import { UserConfig } from "vite";
+import type { ConfigEnv, UserConfig } from "vite";
+
+const testConfigEnv: ConfigEnv = {
+    command: "build",
+    mode: "test",
+};
 
 export default (async () => {
     const viteConfigExport = await import("./vite.config.mts");
     const baseViteConfig: UserConfig =
         typeof viteConfigExport.default === "function"
-            ? viteConfigExport.default({ mode: "test" })
+            ? viteConfigExport.default(testConfigEnv)
             : viteConfigExport.default;
 
     return mergeConfig(

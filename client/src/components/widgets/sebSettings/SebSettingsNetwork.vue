@@ -71,7 +71,7 @@
                     <v-col>
                         <v-data-table
                             v-if="urlFilterRuleTable"
-                            class="rounded-lg elevation-4"
+                            class="rounded-lg elevation-2"
                             density="compact"
                             :headers="tableHeaders"
                             item-value="id"

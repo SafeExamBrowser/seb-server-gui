@@ -1,5 +1,5 @@
 <template>
-    <v-col class="pt-1 pb-1 pl-0">
+    <v-col>
         <v-checkbox-btn
             v-model="boolVal"
             max-width="600"

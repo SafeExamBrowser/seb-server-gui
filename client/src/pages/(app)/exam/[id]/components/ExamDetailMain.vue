@@ -1,12 +1,12 @@
 <template>
     <v-row>
         <v-col>
-            <v-sheet class="rounded-lg pa-8" elevation="4">
+            <v-sheet class="rounded-lg pa-8" elevation="2">
                 <!----------title--------->
                 <v-row>
                     <v-col>
                         <div
-                            class="primary-text-color text-h5 font-weight-bold"
+                            class="text-primary text-headline-small font-weight-bold"
                         >
                             {{ translate("titles.examDetails") }}
                         </div>
@@ -25,8 +25,8 @@
                         <!----------test run--------->
                         <v-row>
                             <v-col>
-                                <v-sheet class="rounded-lg pa-4" elevation="4">
-                                    <v-row align="center">
+                                <v-sheet class="rounded-lg pa-4" elevation="2">
+                                    <v-row class="align-center">
                                         <v-col>
                                             {{
                                                 translate(
@@ -106,8 +106,8 @@
                             class="mt-6"
                         >
                             <v-col>
-                                <v-card class="rounded-lg pa-4" elevation="4">
-                                    <v-row align="center">
+                                <v-card class="rounded-lg pa-4" elevation="2">
+                                    <v-row class="align-center">
                                         <v-col>
                                             {{
                                                 translate(
@@ -146,8 +146,8 @@
                             class="mt-6"
                         >
                             <v-col>
-                                <v-card class="rounded-lg pa-4" elevation="4">
-                                    <v-row align="center">
+                                <v-card class="rounded-lg pa-4" elevation="2">
+                                    <v-row class="align-center">
                                         <v-col>
                                             {{
                                                 translate(
@@ -177,7 +177,7 @@
 
                         <!----------template--------->
                         <v-row class="mt-10">
-                            <v-col class="primary-text-color text-h6">
+                            <v-col class="text-primary text-title-large">
                                 {{ translate("examDetail.main.examTemplate") }}
                             </v-col>
                             <v-col align="right">
@@ -201,7 +201,7 @@
 
                         <v-row class="mt-1">
                             <v-col>
-                                <div class="text-subtitle-1">
+                                <div class="text-body-large">
                                     <template
                                         v-if="
                                             examStore.selectedExamTemplate !=
@@ -220,7 +220,7 @@
 
                         <!-------supervisors------>
                         <v-row class="mt-10">
-                            <v-col class="primary-text-color text-h6">
+                            <v-col class="text-primary text-title-large">
                                 {{
                                     translate("examDetail.main.examSupervisors")
                                 }}
@@ -245,7 +245,7 @@
                         <v-row>
                             <v-col>
                                 <v-data-table
-                                    class="rounded-lg elevation-2 mt-4"
+                                    class="rounded-lg elevation-1 mt-4"
                                     :headers="supervisorsTableHeaders"
                                     hide-default-footer
                                     item-value="id"
@@ -277,7 +277,7 @@
 
                         <!-------Groups------>
                         <v-row class="mt-10">
-                            <v-col class="primary-text-color text-h6">
+                            <v-col class="text-primary text-title-large">
                                 {{ translate("examDetail.main.groups") }}
                             </v-col>
 
@@ -321,7 +321,7 @@
                             <v-col>
                                 <!--@vue-ignore-->
                                 <v-data-table
-                                    class="rounded-lg elevation-2 mt-4"
+                                    class="rounded-lg elevation-1 mt-4"
                                     :headers="clientGroupTableHeaders"
                                     hide-default-footer
                                     item-value="id"
@@ -375,7 +375,7 @@
                         <!--------quit password------>
                         <v-row class="mt-10">
                             <v-col>
-                                <div class="primary-text-color text-h6">
+                                <div class="text-primary text-title-large">
                                     {{
                                         translate(
                                             "examDetail.main.quitPassword",
@@ -438,8 +438,8 @@
                         <!----------edit/view seb settings--------->
                         <v-row>
                             <v-col>
-                                <v-sheet class="rounded-lg pa-4" elevation="4">
-                                    <v-row align="center">
+                                <v-sheet class="rounded-lg pa-4" elevation="2">
+                                    <v-row class="align-center">
                                         <v-col>
                                             {{
                                                 translate(
@@ -488,8 +488,8 @@
                         <!----------exam config--------->
                         <v-row class="mt-6">
                             <v-col>
-                                <v-sheet class="rounded-lg pa-4" elevation="4">
-                                    <v-row align="center">
+                                <v-sheet class="rounded-lg pa-4" elevation="2">
+                                    <v-row class="align-center">
                                         <v-col>
                                             {{
                                                 translate(
@@ -533,7 +533,7 @@
                                     color="primary"
                                     variant="outlined"
                                 >
-                                    <v-row align="center">
+                                    <v-row class="align-center">
                                         <v-col>
                                             <div>
                                                 {{
@@ -555,7 +555,7 @@
                                                                 GUIAction.EditScreenProctoring,
                                                                 examStore.selectedExam,
                                                             )
-                                                                ? 'disabled-text-color'
+                                                                ? 'text-disabled'
                                                                 : '',
                                                         ]"
                                                     >
@@ -604,7 +604,7 @@
                                                                 examStore.selectedExam,
                                                             )
                                                                 ? ''
-                                                                : 'disabled-text-color',
+                                                                : 'text-disabled',
                                                         ]"
                                                     >
                                                         {{
@@ -653,7 +653,7 @@
                                                                 examStore.selectedExam,
                                                             )
                                                                 ? ''
-                                                                : 'disabled-text-color',
+                                                                : 'text-disabled',
                                                         ]"
                                                     >
                                                         {{
@@ -702,7 +702,7 @@
                                                                 GUIAction.ArchiveExam,
                                                                 examStore.selectedExam,
                                                             )
-                                                                ? 'disabled-text-color'
+                                                                ? 'text-disabled'
                                                                 : '',
                                                         ]"
                                                     >

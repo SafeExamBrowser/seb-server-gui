@@ -1,5 +1,5 @@
 <template>
-    <v-row data-testid="homePageInfo-page-container" dense>
+    <v-row data-testid="homePageInfo-page-container" density="compact">
         <!-- Title -->
         <v-col
             class="pl-10"
@@ -8,7 +8,7 @@
             md="10"
         >
             <div
-                class="primary-text-color text-h4 font-weight-bold"
+                class="text-primary text-headline-large font-weight-bold"
                 data-testid="homePageInfo-title-text"
             >
                 {{ translate("titles.home") }}

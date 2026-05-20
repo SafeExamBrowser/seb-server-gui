@@ -100,15 +100,15 @@ export const useTable = (): CrudTableConfig<
         );
     });
 
-    const createItem = (item: ClientGroupTransient) => {
+    const createItem = async (item: ClientGroupTransient) => {
         createGroup(clientGroupTransientToClientGroup(item));
     };
 
-    const updateItem = (item: ClientGroupTransient) => {
+    const updateItem = async (item: ClientGroupTransient) => {
         updateGroup(clientGroupTransientToClientGroup(item));
     };
 
-    const deleteItem = (item: ClientGroupForTable) => {
+    const deleteItem = async (item: ClientGroupForTable) => {
         if (isFallbackGroup(item)) {
             throw new Error("Fallback group cannot be deleted!");
         }

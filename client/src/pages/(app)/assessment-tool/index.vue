@@ -14,7 +14,7 @@
             <SearchBar
                 v-model="searchInputValue"
                 class="mt-2"
-                search-text="assessmentToolConnections.assessmentToolsPage.filters.searchField"
+                search-text="assessmentToolConnections.list.filters.searchField"
                 :filter-sections="filterSections"
                 :filter-values="selectedFilters"
                 :data-test-id="dataTestId"
@@ -62,14 +62,14 @@
     <DeleteConfirmDialog
         v-model="deleteDialogOpen"
         :detail-text="deleteDetailText"
-        translation-key-prefix="assessmentToolConnections.assessmentToolsPage"
+        translation-key-prefix="assessmentToolConnections.list"
         @confirm="confirmDelete"
     />
 
     <StatusConfirmDialog
         v-model="statusDialogOpen"
         :active="!!statusTarget?.active"
-        translation-key-prefix="assessmentToolConnections.assessmentToolsPage"
+        translation-key-prefix="assessmentToolConnections.list"
         @confirm="confirmStatusChange"
     />
 </template>

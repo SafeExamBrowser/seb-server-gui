@@ -1,0 +1,207 @@
+import { computed, ref } from "vue";
+import i18n from "@/i18n";
+import type { FormField } from "@/components/widgets/formBuilder/types.ts";
+
+const t = (key: string) => i18n.global.t(`connectionConfigurations.${key}`);
+
+export const useConnectionConfigurationFormFields = () => {
+    const name = ref<string | undefined>(undefined);
+    const configurationPurpose = ref<string | undefined>(undefined);
+    const configurationPassword = ref<string | undefined>(undefined);
+    const confirmConfigurationPassword = ref<string | undefined>(undefined);
+    const encryptWithCertificate = ref<string | undefined>(undefined);
+    const pingInterval = ref<number | undefined>(1);
+    const asymmetricOnlyEncryption = ref<boolean>(false);
+
+    const withFallback = ref<boolean>(false);
+    const fallbackStartUrl = ref<string | undefined>(undefined);
+    const connectionAttempts = ref<number | undefined>(5);
+    const interval = ref<number | undefined>(2);
+    const connectionTimeout = ref<number | undefined>(30);
+    const fallbackPassword = ref<string | undefined>(undefined);
+    const confirmFallbackPassword = ref<string | undefined>(undefined);
+    const quitPassword = ref<string | undefined>(undefined);
+    const confirmQuitPassword = ref<string | undefined>(undefined);
+
+    const configurationPurposeOptions = [
+        {
+            value: "START_EXAM",
+            text: t("selectValues.start_exam"),
+        },
+        {
+            value: "CONFIGURE_CLIENT",
+            text: t("selectValues.configure_client"),
+        },
+    ];
+
+    const passwordsMatch = (a?: string, b?: string): true | string => {
+        const av = (a ?? "").trim();
+        const bv = (b ?? "").trim();
+        if (!av && !bv) return true;
+        if (!av || !bv) return t("validation.noMatch");
+        return av === bv || t("validation.noMatch");
+    };
+
+    const numberRule = (v: number | undefined): true | string => {
+        if (v == null) return t("validation.required");
+        return !Number.isNaN(Number(v)) || t("validation.mustBeNumber");
+    };
+
+    const mainFormFields = computed<FormField[]>(() => [
+        {
+            type: "text" as const,
+            name: "name",
+            model: name,
+            label: t("fields.name.label"),
+            required: true,
+        },
+        {
+            type: "select" as const,
+            name: "configurationPurpose",
+            model: configurationPurpose,
+            label: t("fields.configurationPurpose.label"),
+            options: configurationPurposeOptions,
+            required: true,
+        },
+        {
+            type: "password" as const,
+            name: "configurationPassword",
+            model: configurationPassword,
+            label: t("fields.configurationPassword.label"),
+        },
+        {
+            type: "password" as const,
+            name: "confirmConfigurationPassword",
+            model: confirmConfigurationPassword,
+            label: t("fields.confirmConfigurationPassword.label"),
+            validationDependsOn: ["configurationPassword"],
+            rules: [
+                () =>
+                    passwordsMatch(
+                        configurationPassword.value,
+                        confirmConfigurationPassword.value,
+                    ),
+            ],
+        },
+        {
+            type: "number" as const,
+            name: "pingInterval",
+            model: pingInterval,
+            label: t("fields.pingInterval.label"),
+            required: true,
+            rules: [numberRule],
+        },
+        {
+            type: "switch" as const,
+            name: "asymmetricOnlyEncryption",
+            model: asymmetricOnlyEncryption,
+            label: t("fields.useAsymmetricOnlyEncryption.label"),
+        },
+    ]);
+
+    const fallbackFormFields = computed<FormField[]>(() => [
+        {
+            type: "text" as const,
+            name: "fallbackStartUrl",
+            model: fallbackStartUrl,
+            label: t("fields.fallbackStartUrl.label"),
+            required: true,
+            rules: [
+                (v: string | undefined) => {
+                    if (!v || !v.trim()) return t("validation.required");
+                    const lower = v.trim().toLowerCase();
+                    return (
+                        lower.startsWith("http://") ||
+                        lower.startsWith("https://") ||
+                        t("validation.mustBeWithUrl")
+                    );
+                },
+            ],
+        },
+        {
+            type: "number" as const,
+            name: "connectionAttempts",
+            model: connectionAttempts,
+            label: t("fields.connectionAttempts.label"),
+            required: true,
+            rules: [numberRule],
+        },
+        {
+            type: "number" as const,
+            name: "interval",
+            model: interval,
+            label: t("fields.interval.label"),
+            required: true,
+            rules: [numberRule],
+        },
+        {
+            type: "number" as const,
+            name: "connectionTimeout",
+            model: connectionTimeout,
+            label: t("fields.connectionTimeout.label"),
+            required: true,
+            rules: [numberRule],
+        },
+        {
+            type: "password" as const,
+            name: "fallbackPassword",
+            model: fallbackPassword,
+            label: t("fields.fallbackPassword.label"),
+        },
+        {
+            type: "password" as const,
+            name: "confirmFallbackPassword",
+            model: confirmFallbackPassword,
+            label: t("fields.confirmFallbackPassword.label"),
+            validationDependsOn: ["fallbackPassword"],
+            rules: [
+                () =>
+                    passwordsMatch(
+                        fallbackPassword.value,
+                        confirmFallbackPassword.value,
+                    ),
+            ],
+        },
+        {
+            type: "password" as const,
+            name: "quitPassword",
+            model: quitPassword,
+            label: t("fields.quitPassword.label"),
+        },
+        {
+            type: "password" as const,
+            name: "confirmQuitPassword",
+            model: confirmQuitPassword,
+            label: t("fields.confirmQuitPassword.label"),
+            validationDependsOn: ["quitPassword"],
+            rules: [
+                () =>
+                    passwordsMatch(
+                        quitPassword.value,
+                        confirmQuitPassword.value,
+                    ),
+            ],
+        },
+    ]);
+
+    return {
+        mainFormFields,
+        fallbackFormFields,
+        name,
+        configurationPurpose,
+        configurationPassword,
+        confirmConfigurationPassword,
+        encryptWithCertificate,
+        pingInterval,
+        asymmetricOnlyEncryption,
+        withFallback,
+        fallbackStartUrl,
+        connectionAttempts,
+        interval,
+        connectionTimeout,
+        fallbackPassword,
+        confirmFallbackPassword,
+        quitPassword,
+        confirmQuitPassword,
+    };
+};

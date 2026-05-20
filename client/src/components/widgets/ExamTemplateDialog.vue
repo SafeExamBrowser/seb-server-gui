@@ -2,7 +2,7 @@
     <v-card>
         <v-toolbar color="transparent">
             <v-toolbar-title
-                class="text-h6"
+                class="text-title-large"
                 :text="examTemplate?.name"
             ></v-toolbar-title>
             <template #append>

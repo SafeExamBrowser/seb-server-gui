@@ -36,12 +36,12 @@
 
             <div class="d-flex flex-column">
                 <span
-                    class="text-caption text-medium-emphasis font-weight-bold"
+                    class="text-body-small text-medium-emphasis font-weight-bold"
                 >
                     {{ $t("navigation.institution") }}
                 </span>
                 <span
-                    class="text-body-2 font-weight-black"
+                    class="text-body-medium font-weight-black"
                     data-testid="layout-institutionTitle-text"
                 >
                     {{

@@ -1,7 +1,7 @@
 <template>
     <v-row>
         <v-col>
-            <v-sheet class="rounded-lg pa-8" elevation="4">
+            <v-sheet class="rounded-lg pa-8" elevation="2">
                 <div class="mb-2">
                     {{ translate("monitoringClients.main.displayedClients") }}
                     {{ monitoringDataTable.length }}

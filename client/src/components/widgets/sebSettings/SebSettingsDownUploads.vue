@@ -4,7 +4,7 @@
         :errors="errorSebSettingsView"
     >
         <v-row v-if="singleValues">
-            <v-col class="text-subtitle-1">
+            <v-col class="text-body-large">
                 <SettingsTitle label="sebSettings.updownloadView.title" />
                 <v-row>
                     <CheckboxSetting
@@ -118,7 +118,7 @@
                 </v-row>
             </v-col>
 
-            <v-col class="text-subtitle-1">
+            <v-col class="text-body-large">
                 <SettingsTitle
                     label="sebSettings.updownloadView.policyTitle"
                     :tooltip="true"
@@ -133,7 +133,7 @@
                 </v-row>
 
                 <v-row class="font-weight-bold pt-8 pb-0">
-                    <v-col class="text-subtitle-1">
+                    <v-col class="text-body-large">
                         <v-row>
                             <v-col class="font-weight-bold">{{
                                 translate(
@@ -164,7 +164,7 @@
                     <v-col>
                         <v-data-table
                             v-if="fileTypeTable"
-                            class="rounded-lg elevation-4"
+                            class="rounded-lg elevation-2"
                             density="compact"
                             :headers="tableHeaders"
                             item-value="id"

@@ -9,7 +9,6 @@ import { ServerTablePaging } from "@/models/types";
 import { Exam } from "@/models/seb-server/exam";
 import { ClientGroup } from "@/models/seb-server/clientGroup";
 import { AssessmentTool } from "@/models/seb-server/assessmentTool";
-import { APIMessage } from "@/models/seb-server/apiMessages";
 import { ExamTemplate } from "@/models/seb-server/examTemplate";
 
 export const useExamStore = defineStore("exam", () => {
@@ -27,8 +26,6 @@ export const useExamStore = defineStore("exam", () => {
     const selectedExamSupervisors = ref<UserAccount[]>([]);
     const selectedClientGroups = ref<ClientGroup[]>([]);
     const relatedAssessmentTool = ref<AssessmentTool | null>(null);
-
-    const importMessages = ref<APIMessage[]>([]);
 
     function clearSelectedValues() {
         selectedExam.value = null;
@@ -50,6 +47,5 @@ export const useExamStore = defineStore("exam", () => {
         activeStatusFilter,
         clearSelectedValues,
         selectedClientGroups,
-        importMessages,
     };
 });

@@ -2,7 +2,7 @@
     <v-card>
         <v-toolbar color="transparent">
             <v-toolbar-title
-                class="text-h6"
+                class="text-title-large"
                 text="Edit Client Groups"
             ></v-toolbar-title>
             <template #append>
@@ -19,7 +19,7 @@
                 <v-col>
                     <!--@vue-ignore-->
                     <v-data-table
-                        class="rounded-lg elevation-4"
+                        class="rounded-lg elevation-2"
                         :headers="tableHeaders"
                         hide-default-footer
                         item-value="id"

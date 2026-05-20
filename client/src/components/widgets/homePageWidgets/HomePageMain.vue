@@ -11,13 +11,13 @@
                 :key="card.testIdPrefix"
                 class="w-100 pa-4 d-flex flex-column justify-space-between"
                 :data-testid="`homePageMain-${card.testIdPrefix}-card`"
-                elevation="4"
+                elevation="2"
                 max-width="95%"
                 min-height="12rem"
                 rounded="sm"
             >
                 <div
-                    class="primary-text-color text-h5 font-weight-black mb-16"
+                    class="text-primary text-headline-small font-weight-black mb-16"
                     :data-testid="`homePageMain-${card.testIdPrefix}-title-text`"
                 >
                     {{ translate(card.titleKey) }}
@@ -65,7 +65,7 @@ const actionCards: ActionCard[] = [
     {
         testIdPrefix: "prepare-exam",
         titleKey: "homePage.prepareExam",
-        route: typedTo({ name: "/(app)/quiz-import/" }),
+        route: typedTo({ name: "/(app)/exam/create/" }),
     },
     {
         testIdPrefix: "monitor-exam",

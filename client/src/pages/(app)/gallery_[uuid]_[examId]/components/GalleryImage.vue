@@ -51,10 +51,10 @@
                     </v-col>
                 </v-row>
 
-                <v-row align="end">
+                <v-row class="align-end">
                     <v-col>
                         <v-sheet class="d-flex pa-2 button-row">
-                            <div class="text-body-1 title-box">
+                            <div class="text-body-large title-box">
                                 <template
                                     v-if="appBarStore.galleryIsNameEnabled"
                                     >{{ screenshot.clientName }}</template
@@ -208,10 +208,10 @@
                         </v-col>
                     </v-row>
 
-                    <v-row align="end">
+                    <v-row class="align-end">
                         <v-col>
                             <v-sheet class="d-flex pa-2 button-row">
-                                <div class="text-body-1 title-box">
+                                <div class="text-body-large title-box">
                                     {{ screenshot.clientName }} /
                                     {{ screenshot.clientIp }}
                                 </div>

@@ -1,7 +1,7 @@
 <template>
     <v-main data-testid="register-page-container">
         <v-container class="fill-height d-flex align-center justify-center">
-            <v-row class="w-100" justify="center">
+            <v-row class="w-100 justify-center">
                 <v-col cols="12" lg="8" md="6" sm="6">
                     <v-card class="pa-8">
                         <div class="d-flex ml-15 mr-15 justify-center">
@@ -12,7 +12,7 @@
                             />
                         </div>
                         <div class="d-flex ml-15 mr-15 mt-5 justify-center">
-                            <div class="text-h6">
+                            <div class="text-title-large">
                                 {{
                                     translate("userAccount.registerPage.title")
                                 }}
@@ -63,7 +63,7 @@
 
                         <v-card-text>
                             <v-form ref="formRef" @keyup.enter="register()">
-                                <v-row dense>
+                                <v-row density="compact">
                                     <v-col cols="12">
                                         <v-select
                                             v-model="selectedInstitution"
@@ -293,7 +293,9 @@
                                         "
                                     >
                                         <RouterLink
-                                            :to="{ name: '/(public)/login/' }"
+                                            :to="{
+                                                name: '/(public)/login/',
+                                            }"
                                             >{{
                                                 translate(
                                                     "userAccount.registerPage.buttons.login",

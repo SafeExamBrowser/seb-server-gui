@@ -20,7 +20,7 @@
         <template
             v-for="header in config.headers"
             :key="header.value"
-            #[`item.${header.value}`]="{ item }"
+            #[`item.${header.value}`]="{ item }: { item: TItem }"
         >
             <slot :name="`item.${header.value}`" :item="item">
                 <template v-if="header.value === 'actions'">
@@ -51,6 +51,11 @@ import { unref } from "vue";
 defineProps<{
     config: CrudTableConfig<TItem, TTransient>;
 }>();
+
+// Vuetify's v-data-table typed slots don't propagate the item type through a
+// <script setup generic> wrapper, so declare our re-exposed item.* slots
+// explicitly to keep TItem flowing to consumers.
+defineSlots<Record<string, (props: { item: TItem }) => unknown>>();
 
 const getDefaultFieldValue = (
     item: TItem,

@@ -1,6 +1,6 @@
 <template>
     <!-- Breadcrumb and Title -->
-    <v-row dense>
+    <v-row density="compact">
         <!-- Breadcrumb -->
         <v-col cols="12" md="10">
             <BreadCrumb :items="breadCrumbItems" />
@@ -8,7 +8,7 @@
 
         <!-- Title -->
         <v-col class="pl-10" cols="12" md="10">
-            <div class="primary-text-color text-h4 font-weight-bold">
+            <div class="text-primary text-headline-large font-weight-bold">
                 {{ monitoringStore.selectedExam?.quizName }}
             </div>
         </v-col>
@@ -18,11 +18,11 @@
 
     <v-row v-if="isInfoExpanded">
         <v-col>
-            <v-sheet class="rounded-lg pl-4 pt-3 pr-4" elevation="4">
+            <v-sheet class="rounded-lg pl-4 pt-3 pr-4 pb-3" elevation="2">
                 <!------------title row------------->
                 <v-row>
                     <v-col cols="4">
-                        <div class="text-subtitle-1 font-weight-medium mt-2">
+                        <div class="text-body-large font-weight-medium mt-2">
                             {{
                                 translate(
                                     "monitoringExams.info.examNameSearchPlaceholder",
@@ -33,7 +33,7 @@
 
                     <v-spacer></v-spacer>
                     <v-col cols="4">
-                        <div class="text-subtitle-1 font-weight-medium mt-2">
+                        <div class="text-body-large font-weight-medium mt-2">
                             {{ translate("monitoringClients.info.filters") }}
 
                             <v-chip
@@ -53,7 +53,7 @@
                     <v-spacer></v-spacer>
 
                     <v-col cols="3">
-                        <div class="text-subtitle-1 font-weight-medium mt-2">
+                        <div class="text-body-large font-weight-medium mt-2">
                             {{ translate("monitoringClients.info.actions") }}
                         </div>
                     </v-col>
@@ -68,7 +68,7 @@
                             @keyup.esc="clearForm()"
                         >
                             <!------------field------------->
-                            <v-row align="center">
+                            <v-row class="align-center">
                                 <v-col>
                                     <v-text-field
                                         v-model="monitoringStore.searchName"
@@ -114,7 +114,7 @@
                                     "
                                 >
                                     <div
-                                        class="text-subtitle-2 font-weight-medium"
+                                        class="text-title-small font-weight-medium"
                                     >
                                         {{
                                             translate(
@@ -160,7 +160,7 @@
                                     "
                                 >
                                     <div
-                                        class="text-subtitle-2 font-weight-medium"
+                                        class="text-title-small font-weight-medium"
                                     >
                                         {{
                                             translate(
@@ -202,7 +202,7 @@
                                 <!------------notification filters------------->
                                 <v-col>
                                     <div
-                                        class="text-subtitle-2 font-weight-medium"
+                                        class="text-title-small font-weight-medium"
                                     >
                                         {{
                                             translate(
@@ -254,7 +254,7 @@
                                     "
                                 >
                                     <div
-                                        class="text-subtitle-2 font-weight-medium"
+                                        class="text-title-small font-weight-medium"
                                     >
                                         {{
                                             translate(
@@ -401,11 +401,11 @@
     <!------------collapsed info panel------------->
     <v-row v-else>
         <v-col>
-            <v-sheet class="rounded-lg pl-4 pt-3 pr-4" elevation="4">
+            <v-sheet class="rounded-lg pl-4 pt-3 pr-4" elevation="2">
                 <v-row>
                     <v-col>
                         <div
-                            class="primary-text-color text-h5 font-weight-bold"
+                            class="text-primary text-headline-small font-weight-bold"
                         >
                             {{ monitoringStore.selectedExam?.quizName }}
                         </div>

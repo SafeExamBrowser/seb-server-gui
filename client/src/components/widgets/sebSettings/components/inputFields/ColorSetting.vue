@@ -1,5 +1,5 @@
 <template>
-    <v-col class="pt-5 pb-0 pl-3">
+    <v-col>
         <v-color-input
             v-model="colorValue"
             :disabled="disabled"

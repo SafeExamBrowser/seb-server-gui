@@ -5,7 +5,7 @@
             <template
                 v-if="monitoringStore.monitoringOverviewData?.notifications"
             >
-                <div class="text-h6 font-weight-bold mb-4">
+                <div class="text-title-large font-weight-bold mb-4">
                     {{
                         translate(
                             "monitoringOverview.notifications.notifications",
@@ -74,11 +74,11 @@
                             <!-- Text -->
                             <div>
                                 <div
-                                    class="text-body-2 font-weight-bold text-grey-darken-1"
+                                    class="text-body-medium font-weight-bold text-grey-darken-1"
                                 >
                                     {{ translate(key) }}
                                 </div>
-                                <div class="font-weight-bold text-body-1">
+                                <div class="font-weight-bold text-body-large">
                                     {{
                                         key === "RAISE_HAND"
                                             ? "Students requesting assistance"
@@ -94,7 +94,7 @@
                             size="45"
                         >
                             <span
-                                class="text-white text-subtitle-1 font-weight-bold"
+                                class="text-white text-body-large font-weight-bold"
                                 >{{ value }}</span
                             >
                         </v-avatar>

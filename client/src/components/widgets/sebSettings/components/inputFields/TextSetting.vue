@@ -1,5 +1,5 @@
 <template>
-    <v-col class="pt-1 pb-1">
+    <v-col>
         <v-text-field
             v-model="textVal"
             density="compact"

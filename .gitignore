@@ -19,7 +19,6 @@ application-prod.properties
 # information for Eclipse / Flash Builder.
 /.idea/
 .vscode/settings.json
-/client/storybook-static/
 /client/playwright-report/
 /client/test-results/
 .claude/**/*.local.*

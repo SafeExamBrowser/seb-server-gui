@@ -1,7 +1,7 @@
 <template>
     <v-dialog v-model="model" max-width="500">
         <v-card>
-            <v-card-title class="text-h6 font-weight-bold">
+            <v-card-title class="text-title-large font-weight-bold">
                 {{ $t(`${translationKeyPrefix}.deleteDialog.title`) }}
             </v-card-title>
 

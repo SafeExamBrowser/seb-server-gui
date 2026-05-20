@@ -2,7 +2,7 @@
     <v-card width="600">
         <v-toolbar color="transparent">
             <v-toolbar-title
-                class="text-h6"
+                class="text-title-large"
                 :text="translate('monitoringOverview.quitAll.title')"
             ></v-toolbar-title>
             <template #append>
@@ -36,7 +36,7 @@
             </v-row>
 
             <!------------Buttons------------->
-            <v-row align="center">
+            <v-row class="align-center">
                 <v-col align="right">
                     <v-btn
                         color="black"

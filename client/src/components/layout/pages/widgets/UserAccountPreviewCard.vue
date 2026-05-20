@@ -1,22 +1,22 @@
 <template>
-    <v-avatar
+    <UserAvatar
         v-if="compact"
-        :class="compactAvatarClasses"
-        :size="avatarSize"
-        :style="{ border: '0.2rem solid rgb(var(--v-theme-primary))' }"
-    >
-        {{ initials }}
-    </v-avatar>
+        :name="name"
+        :surname="surname"
+        :size="size"
+        tonal
+        class="text-body-large"
+    />
 
     <v-card v-else class="pa-6 rounded-lg" variant="flat">
         <div class="d-flex justify-center mb-8">
-            <v-avatar
-                :class="defaultAvatarClasses"
-                :size="avatarSize"
-                :style="{ border: '0.5rem solid rgb(var(--v-theme-primary))' }"
-            >
-                {{ initials }}
-            </v-avatar>
+            <UserAvatar
+                :name="name"
+                :surname="surname"
+                :size="size"
+                tonal
+                class="text-display-medium"
+            />
         </div>
 
         <v-card variant="tonal" :text="selectedUserRoleDescription ?? ''" />
@@ -24,9 +24,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import UserAvatar from "@/components/widgets/UserAvatar.vue";
 
-const props = withDefaults(
+withDefaults(
     defineProps<{
         name: string | undefined;
         surname: string | undefined;
@@ -39,19 +39,5 @@ const props = withDefaults(
         compact: false,
         size: 208,
     },
-);
-
-const initials = computed(
-    () => `${props.name?.[0] || ""}${props.surname?.[0] || ""}`,
-);
-
-const avatarSize = computed(() => props.size);
-
-const compactAvatarClasses = computed(
-    () => "font-weight-bold text-primary text-body-1",
-);
-
-const defaultAvatarClasses = computed(
-    () => "font-weight-bold text-primary text-h2",
 );
 </script>

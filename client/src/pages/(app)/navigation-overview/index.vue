@@ -7,13 +7,13 @@
                     color="transparent"
                     elevation="0"
                 >
-                    <v-app-bar-title class="mb-16">
-                        <h1
-                            class="title-inherit-styling text-h4"
+                    <v-app-bar-title class="mb-12">
+                        <div
+                            class="text-headline-large font-weight-bold mt-3"
                             data-testid="navigationOverview-title-text"
                         >
                             {{ translate("titles.navigationOverview") }}
-                        </h1>
+                        </div>
                     </v-app-bar-title>
 
                     <v-row class="mt-4 mb-16 mr-0">

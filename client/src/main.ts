@@ -4,7 +4,6 @@ import { registerPlugins } from "@/plugins";
 import i18n from "./i18n";
 
 // 🚀 Vuetify setup
-import "vuetify/styles";
 import "@mdi/font/css/materialdesignicons.css";
 import { createRulesPlugin } from "vuetify/labs/rules";
 

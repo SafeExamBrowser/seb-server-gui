@@ -19,20 +19,17 @@
                 :variant="isOpen ? 'tonal' : 'flat'"
             >
                 <div class="d-flex align-center ga-3">
-                    <v-avatar
-                        class="font-weight-black text-body-2"
-                        color="primary"
-                        density="comfortable"
-                        rounded="lg"
-                    >
-                        {{ initials }}
-                    </v-avatar>
+                    <UserAvatar
+                        :name="userAccount?.name"
+                        :surname="userAccount?.surname"
+                        class="text-body-medium"
+                    />
 
                     <div class="text-left">
-                        <div class="text-body-2 font-weight-bold">
+                        <div class="text-body-medium font-weight-bold">
                             {{ fullName }}
                         </div>
-                        <div class="text-caption text-medium-emphasis">
+                        <div class="text-body-small text-medium-emphasis">
                             {{ primaryRoleLabel }}
                         </div>
                     </div>
@@ -47,13 +44,13 @@
 
         <v-card
             class="overflow-hidden rounded-lg"
-            elevation="16"
+            elevation="4"
             max-width="24rem"
         >
             <div class="bg-primary pa-5 text-white">
                 <div class="d-flex align-center ga-4">
                     <v-avatar
-                        class="font-weight-black rounded-lg text-h6 text-white border-sm"
+                        class="font-weight-black rounded-lg text-title-large text-white border-sm"
                         border
                         color="white"
                         density="comfortable"
@@ -64,10 +61,10 @@
                     </v-avatar>
 
                     <div>
-                        <div class="text-h6 font-weight-black">
+                        <div class="text-title-large font-weight-black">
                             {{ userAccount?.username }}
                         </div>
-                        <div class="text-caption opacity-80">
+                        <div class="text-body-small opacity-80">
                             {{ fullName }}
                         </div>
                     </div>
@@ -114,7 +111,7 @@
                         variant="text"
                         @click="closeMenu"
                     >
-                        <span class="font-weight-medium text-body-2">
+                        <span class="font-weight-medium text-body-medium">
                             {{ action.label }}
                         </span>
                     </v-btn>
@@ -131,7 +128,7 @@
                     variant="text"
                     @click="handleLogout"
                 >
-                    <span class="font-weight-bold text-body-2">{{
+                    <span class="font-weight-bold text-body-medium">{{
                         t("navigation.profileMenu.logout")
                     }}</span>
                 </v-btn>
@@ -145,6 +142,7 @@ import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import type { UserAccount } from "@/models/userAccount";
 import { typedTo } from "@/router/typedTo";
+import UserAvatar from "@/components/widgets/UserAvatar.vue";
 
 const props = defineProps<{
     userAccount?: UserAccount;

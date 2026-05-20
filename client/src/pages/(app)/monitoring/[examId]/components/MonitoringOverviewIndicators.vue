@@ -2,7 +2,7 @@
     <v-row>
         <v-col cols="12">
             <template v-if="monitoringStore.monitoringOverviewData?.indicators">
-                <div class="text-h6 font-weight-bold mb-4">
+                <div class="text-title-large font-weight-bold mb-4">
                     {{ translate("monitoringOverview.indicators.indicators") }}
                 </div>
 
@@ -45,10 +45,10 @@
                         </div>
 
                         <div>
-                            <div class="text-body-2 font-weight-bold">
+                            <div class="text-body-medium font-weight-bold">
                                 {{ translate("BATTERY_STATUS") }}
                             </div>
-                            <div class="font-weight-bold text-body-1">
+                            <div class="font-weight-bold text-body-large">
                                 {{
                                     translate(
                                         "monitoringOverview.indicators.batteryStatusInfo",
@@ -60,7 +60,7 @@
 
                     <v-avatar color="#BDBDBD" size="45">
                         <span
-                            class="text-white text-subtitle-1 font-weight-bold"
+                            class="text-white text-body-large font-weight-bold"
                         >
                             {{
                                 getIndicatorNumber(
@@ -113,10 +113,10 @@
                         </div>
 
                         <div>
-                            <div class="text-body-2 font-weight-bold">
+                            <div class="text-body-medium font-weight-bold">
                                 {{ translate("WLAN_STATUS") }}
                             </div>
-                            <div class="font-weight-bold text-body-1">
+                            <div class="font-weight-bold text-body-large">
                                 {{
                                     translate(
                                         "monitoringOverview.indicators.wlanStatusInfo",
@@ -128,7 +128,7 @@
 
                     <v-avatar color="#BDBDBD" size="45">
                         <span
-                            class="text-white text-subtitle-1 font-weight-bold"
+                            class="text-white text-body-large font-weight-bold"
                         >
                             {{
                                 getIndicatorNumber(

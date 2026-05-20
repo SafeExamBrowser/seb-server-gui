@@ -5,7 +5,7 @@
     >
         <template #PanelMain>
             <HintText
-                text-identifier="assessmentToolConnections.createAssessmentToolConnectionsPage.info.assessmentToolConnectionsCreationInfo"
+                text-identifier="assessmentToolConnections.hints.create"
                 class="px-6 py-2"
                 data-testid="createAssessmentTool-info-text"
             />
@@ -23,26 +23,24 @@
                         />
                     </LoadingFallbackComponent>
 
-                    <!-- Auth mode toggle -->
                     <div
                         class="d-flex align-center justify-space-between mb-2"
                         data-testid="createAssessmentTool-authMode-row"
                     >
                         <label
-                            class="text-grey-darken-1 text-body-1 ml-1"
+                            class="text-grey-darken-1 text-body-large ml-1"
                             data-testid="createAssessmentTool-authMode-label"
                         >
-                            {{
-                                $t(
-                                    "assessmentToolConnections.createAssessmentToolConnectionsPage.labels.authenticationMode",
-                                )
-                            }}
+                            {{ $t("assessmentToolConnections.authMode.label") }}
                         </label>
                         <v-btn-toggle
                             v-model="authMode"
+                            color="primary"
                             data-testid="createAssessmentTool-authMode-toggle"
                             density="comfortable"
+                            divided
                             mandatory
+                            variant="outlined"
                         >
                             <v-btn
                                 data-testid="createAssessmentTool-authMode-token-button"
@@ -50,7 +48,7 @@
                             >
                                 {{
                                     $t(
-                                        "assessmentToolConnections.createAssessmentToolConnectionsPage.labels.restApiToken",
+                                        "assessmentToolConnections.authMode.restApiToken",
                                     )
                                 }}
                             </v-btn>
@@ -60,7 +58,7 @@
                             >
                                 {{
                                     $t(
-                                        "assessmentToolConnections.createAssessmentToolConnectionsPage.labels.clientCredentials",
+                                        "assessmentToolConnections.authMode.clientCredentials",
                                     )
                                 }}
                             </v-btn>
@@ -75,18 +73,17 @@
 
                     <v-divider class="my-4" />
 
-                    <!-- Proxy toggle -->
                     <div
                         class="d-flex align-center justify-space-between mb-2"
                         data-testid="createAssessmentTool-proxy-row"
                     >
                         <label
-                            class="text-grey-darken-1 text-body-1 ml-1"
+                            class="text-grey-darken-1 text-body-large ml-1"
                             data-testid="createAssessmentTool-proxy-label"
                         >
                             {{
                                 $t(
-                                    "assessmentToolConnections.createAssessmentToolConnectionsPage.labels.withProxyLabel",
+                                    "assessmentToolConnections.fields.withProxy.label",
                                 )
                             }}
                         </label>
@@ -94,7 +91,7 @@
                             v-model="withProxy"
                             :aria-label="
                                 $t(
-                                    'assessmentToolConnections.createAssessmentToolConnectionsPage.labels.withProxyAria',
+                                    'assessmentToolConnections.fields.withProxy.ariaLabel',
                                 )
                             "
                             color="primary"
@@ -120,7 +117,6 @@
                 </v-col>
             </v-row>
 
-            <!-- Action buttons -->
             <div class="d-flex justify-end ga-2 px-6 pb-4">
                 <CancelButton
                     data-testid="createAssessmentTool-cancel-button"
@@ -142,7 +138,7 @@ import { ref } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import { useAssessmentToolFormFields } from "@/pages/(app)/assessment-tool/create/composables/useAssessmentToolFormFields.ts";
+import { useAssessmentToolFormFields } from "@/pages/(app)/assessment-tool/composables/useAssessmentToolFormFields.ts";
 import { useMutation } from "@/composables/useMutation.ts";
 import { createAssessmentTool } from "@/services/seb-server/assessmentToolService.ts";
 import type { CommonAssessmentToolPar } from "@/models/seb-server/assessmentTool.ts";
@@ -180,7 +176,7 @@ const {
     proxyPort,
     proxyUsername,
     proxyPassword,
-} = useAssessmentToolFormFields();
+} = useAssessmentToolFormFields("create");
 
 const { mutateData: createTool, error: toolError } =
     useMutation(createAssessmentTool);

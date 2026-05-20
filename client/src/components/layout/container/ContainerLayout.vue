@@ -1,7 +1,5 @@
 <template>
-    <div
-        class="d-flex flex-column bg-layout-background h-screen overflow-hidden"
-    >
+    <div class="d-flex flex-column bg-background h-screen overflow-hidden">
         <ContainerHeader
             :home-route="homeRoute"
             :institution-logo="institutionLogo"
@@ -15,7 +13,7 @@
         </ContainerHeader>
 
         <div
-            class="d-flex flex-1-1-0 ga-4 px-6 pb-6 pt-4"
+            class="d-flex flex-1-1-0 ga-6 px-6 pb-6 pt-4"
             :style="{ minHeight: 0 }"
         >
             <ContainerSidePanel
@@ -27,7 +25,7 @@
 
             <v-card
                 class="flex-1-1-0 rounded-lg overflow-y-auto"
-                :class="isPageBlue ? '' : 'pa-6'"
+                :class="isPageBlue ? '' : 'pt-3 pl-4 pr-3 pb-3'"
                 :color="isPageBlue ? 'primary' : undefined"
                 :data-testid="`${pageTestId}-page-container`"
                 elevation="1"

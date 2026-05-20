@@ -1,12 +1,11 @@
-import { Ref, UnwrapRef } from "vue";
+import { MaybeRef, Ref, UnwrapRef } from "vue";
 import { FormField } from "@/components/widgets/formBuilder/types";
 import { DataTableHeader } from "vuetify";
-import { MaybeRef } from "@vueuse/core";
 
 export type CrudTableConfig<TItem, TTransient> = {
     name: string;
     title: string;
-    headers: DataTableHeader<TItem>[];
+    headers: DataTableHeader[];
     items: MaybeRef<TItem[]>;
     getFormFields: (
         item: Ref<UnwrapRef<TTransient>> | Ref<TTransient>,
@@ -16,14 +15,14 @@ export type CrudTableConfig<TItem, TTransient> = {
         title: string;
         allowed: MaybeRef<boolean>;
         getItem: () => TTransient;
-        createItem: (item: TTransient) => void | Promise<void>;
+        createItem: (item: TTransient) => Promise<void>;
     };
     updateConfig: {
         title: string;
         getItem: (item: TItem) => TTransient;
-        updateItem: (item: TTransient) => void | Promise<void>;
+        updateItem: (item: TTransient) => Promise<void>;
     };
     deleteConfig: {
-        deleteItem: (item: TItem) => void;
+        deleteItem: (item: TItem) => Promise<void>;
     };
 };

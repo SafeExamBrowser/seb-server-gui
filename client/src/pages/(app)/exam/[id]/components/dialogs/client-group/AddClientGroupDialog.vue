@@ -2,7 +2,10 @@
     <v-card>
         <!------------title------------->
         <v-toolbar color="transparent">
-            <v-toolbar-title class="text-h6" text="Add Group"></v-toolbar-title>
+            <v-toolbar-title
+                class="text-title-large"
+                text="Add Group"
+            ></v-toolbar-title>
             <template #append>
                 <v-btn
                     icon="mdi-close"
@@ -15,14 +18,17 @@
             <!------------Create group form------------->
             <v-form>
                 <!------------create from template panel------------->
-                <v-row v-if="templateClientGroups.length != 0" align="center">
+                <v-row
+                    v-if="templateClientGroups.length != 0"
+                    class="align-center"
+                >
                     <v-col>
                         <v-expansion-panels>
                             <v-expansion-panel title="Create from template">
                                 <v-expansion-panel-text>
                                     <!--@vue-ignore-->
                                     <v-data-table
-                                        class="rounded-lg elevation-4"
+                                        class="rounded-lg elevation-2"
                                         :headers="templateClientGroupsHeaders"
                                         hide-default-footer
                                         item-value="id"
@@ -101,7 +107,7 @@
                 </v-row>
 
                 <!------------Exam Name------------->
-                <v-row align="center">
+                <v-row class="align-center">
                     <v-col> Exam </v-col>
                     <v-col>
                         {{ examStore.selectedExam?.quizName }}
@@ -109,7 +115,7 @@
                 </v-row>
 
                 <!------------Group Name------------->
-                <v-row align="center">
+                <v-row class="align-center">
                     <v-col> Name </v-col>
                     <v-col>
                         <v-text-field
@@ -124,7 +130,7 @@
                 </v-row>
 
                 <!------------Group Type------------->
-                <v-row align="center">
+                <v-row class="align-center">
                     <v-col> Type </v-col>
                     <v-col>
                         <v-select
@@ -139,7 +145,7 @@
                 </v-row>
 
                 <!------------Screen Proctoring Toggle------------->
-                <v-row align="center">
+                <v-row class="align-center">
                     <v-col>Screen Proctoring</v-col>
                     <v-col>
                         <v-tooltip
@@ -182,7 +188,7 @@
                 </v-row>
 
                 <!------------Type Description------------->
-                <v-row align="center">
+                <v-row class="align-center">
                     <v-col> Type Description </v-col>
                     <v-col>
                         {{ clientGroupDescription }}
@@ -276,7 +282,7 @@
                 </template>
 
                 <!------------Buttons------------->
-                <v-row align="center">
+                <v-row class="align-center">
                     <v-col align="right">
                         <v-btn
                             color="black"
