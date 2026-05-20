@@ -1,83 +1,52 @@
-import { notify } from "@/services/notifications/notify.ts";
-import type { Ref } from "vue";
-import { ref } from "vue";
-import { ConnectionConfigurations } from "@/models/seb-server/connectionConfiguration.ts";
+import { useMutation } from "@/composables/useMutation.ts";
 import {
     activateConnectionConfiguration,
     deactivateConnectionConfiguration,
 } from "@/services/seb-server/connectionConfigurationService.ts";
 
-export const useToggleConnectionConfigurationStatus = (
-    connectionConfigurations: Ref<ConnectionConfigurations | undefined>,
-) => {
-    const loading = ref(false);
+export const useToggleConnectionConfigurationStatus = () => {
+    const {
+        mutateData: changeConnectionConfigurationStatus,
+        error,
+        loading,
+    } = useMutation(async (id: string, active: boolean) => {
+        const response = active
+            ? await deactivateConnectionConfiguration(id)
+            : await activateConnectionConfiguration(id);
 
-    const changeConnectionConfigurationStatus = async (
-        id: string,
-        active: boolean,
-    ): Promise<boolean> => {
-        loading.value = true;
-
-        try {
-            const response = active
-                ? await deactivateConnectionConfiguration(id)
-                : await activateConnectionConfiguration(id);
-
-            if (response === null) {
-                throw new Error(
-                    "Failed to change connection configuration status.",
-                );
-            }
-
-            if (connectionConfigurations.value?.content) {
-                connectionConfigurations.value.content =
-                    connectionConfigurations.value.content.map(
-                        (connectionConfiguration) =>
-                            connectionConfiguration.id.toString() === id
-                                ? {
-                                      ...connectionConfiguration,
-                                      active: !active,
-                                  }
-                                : connectionConfiguration,
-                    );
-            }
-
-            return true;
-        } catch (err) {
-            notify.serverError(err, {
-                contextLabel: "connectionconfiguration.status",
-            });
-            return false;
-        } finally {
-            loading.value = false;
+        if (response === null) {
+            throw new Error(
+                "Failed to change connection configuration status.",
+            );
         }
-    };
+    });
 
     const changeConnectionConfigurationStatusFromItem = async (
         item: Record<string, unknown>,
-    ): Promise<boolean> => {
+    ) => {
         const id = item.id;
         const active = item.active;
 
         if (typeof id !== "number") {
-            notify.serverError(
-                new Error("Invalid connection config identifier."),
+            throw new Error(
+                "useToggleConnectionConfigurationStatus: row item is missing a numeric id",
             );
-            return false;
         }
 
         if (typeof active !== "boolean") {
-            notify.serverError(new Error("Invalid connection config status."));
-            return false;
+            throw new Error(
+                "useToggleConnectionConfigurationStatus: row item is missing a boolean active flag",
+            );
         }
 
-        return changeConnectionConfigurationStatus(id.toString(), active);
+        await changeConnectionConfigurationStatus(id.toString(), active);
     };
 
     return {
         changeConnectionConfigurationStatus,
         toggleConnectionConfigurationStatusFromItem:
             changeConnectionConfigurationStatusFromItem,
+        error,
         loading,
     };
 };

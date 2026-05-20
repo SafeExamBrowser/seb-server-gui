@@ -89,6 +89,7 @@ import { INSTITUTION_FILTER_KEY } from "@/components/widgets/filters/useInstitut
 import { useConnectionConfigurations } from "@/pages/(app)/connection-configuration/api/useConnectionConfigurations.ts";
 import { useDeleteConnectionConfiguration } from "@/pages/(app)/connection-configuration/api/useDeleteConnectionConfiguration.ts";
 import { useToggleConnectionConfigurationStatus } from "@/pages/(app)/connection-configuration/api/useToggleConnectionConfigurationStatus.ts";
+import { notify } from "@/services/notifications/notify.ts";
 import type { ConnectionConfigurations } from "@/models/seb-server/connectionConfiguration.ts";
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 import AddButton from "@/components/widgets/AddButton.vue";
@@ -164,11 +165,17 @@ watch(
 
 const pageCount = computed(() => tableData.value?.number_of_pages ?? 0);
 
-const { removeConnectionConfigurationFromItem, loading: deleteLoading } =
-    useDeleteConnectionConfiguration(tableData);
+const {
+    removeConnectionConfigurationFromItem,
+    error: deleteError,
+    loading: deleteLoading,
+} = useDeleteConnectionConfiguration();
 
-const { toggleConnectionConfigurationStatusFromItem, loading: statusLoading } =
-    useToggleConnectionConfigurationStatus(tableData);
+const {
+    toggleConnectionConfigurationStatusFromItem,
+    error: statusError,
+    loading: statusLoading,
+} = useToggleConnectionConfigurationStatus();
 
 // Dialog state
 const deleteTarget = ref<TableItem | null>(null);
@@ -192,15 +199,46 @@ function openStatusDialog(item: TableItem) {
 }
 
 async function confirmDelete() {
-    if (!deleteTarget.value) return;
-    await removeConnectionConfigurationFromItem(deleteTarget.value);
+    const item = deleteTarget.value;
+    if (!item) return;
+    await removeConnectionConfigurationFromItem(item);
     deleteDialogOpen.value = false;
+    if (deleteError.value) {
+        notify.serverError(deleteError.value, {
+            contextLabel: "connectionconfiguration",
+        });
+        return;
+    }
+    const id = item.id;
+    if (typeof id === "number" && tableData.value?.content) {
+        tableData.value.content = tableData.value.content.filter(
+            (config) => config.id !== id,
+        );
+    }
 }
 
 async function confirmStatusChange() {
-    if (!statusTarget.value) return;
-    await toggleConnectionConfigurationStatusFromItem(statusTarget.value);
+    const item = statusTarget.value;
+    if (!item) return;
+    await toggleConnectionConfigurationStatusFromItem(item);
     statusDialogOpen.value = false;
+    if (statusError.value) {
+        notify.serverError(statusError.value, {
+            contextLabel: "connectionconfiguration.status",
+        });
+        return;
+    }
+    const id = item.id;
+    const previousActive = item.active;
+    if (
+        typeof id === "number" &&
+        typeof previousActive === "boolean" &&
+        tableData.value?.content
+    ) {
+        tableData.value.content = tableData.value.content.map((config) =>
+            config.id === id ? { ...config, active: !previousActive } : config,
+        );
+    }
 }
 
 const tableActions = useConnectionConfigurationsTableActions({

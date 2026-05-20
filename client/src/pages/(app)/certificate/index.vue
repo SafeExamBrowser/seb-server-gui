@@ -83,6 +83,7 @@ import { useCertificates } from "@/pages/(app)/certificate/composables/api/useCe
 import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
 import { useDeleteCertificate } from "@/pages/(app)/certificate/composables/api/useDeleteCertificate.ts";
 import { useCertificateCreateForm } from "@/pages/(app)/certificate/composables/useCertificateCreateForm.ts";
+import { notify } from "@/services/notifications/notify.ts";
 import type { CertificatesResponse } from "@/models/seb-server/certificate.ts";
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 
@@ -129,8 +130,11 @@ watch(
 
 const pageCount = computed(() => tableData.value?.number_of_pages ?? 0);
 
-const { removeCertificateFromItem, loading: deleteLoading } =
-    useDeleteCertificate(tableData);
+const {
+    removeCertificateFromItem,
+    error: deleteError,
+    loading: deleteLoading,
+} = useDeleteCertificate();
 
 const { getEmptyItem, getFormFields, handleUploadCertificate } =
     useCertificateCreateForm({ onSuccess: onCertificateUpload });
@@ -153,9 +157,20 @@ function openDeleteDialog(item: TableItem) {
 }
 
 async function confirmDelete() {
-    if (!deleteTarget.value) return;
-    await removeCertificateFromItem(deleteTarget.value);
+    const item = deleteTarget.value;
+    if (!item) return;
+    await removeCertificateFromItem(item);
     deleteDialogOpen.value = false;
+    if (deleteError.value) {
+        notify.serverError(deleteError.value, { contextLabel: "certificate" });
+        return;
+    }
+    const alias = item.alias;
+    if (typeof alias === "string" && tableData.value?.content) {
+        tableData.value.content = tableData.value.content.filter(
+            (certificate) => certificate.alias !== alias,
+        );
+    }
 }
 
 const tableActions = useCertificatesTableActions({

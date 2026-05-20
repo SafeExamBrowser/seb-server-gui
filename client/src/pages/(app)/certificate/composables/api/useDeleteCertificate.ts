@@ -1,55 +1,35 @@
-import { notify } from "@/services/notifications/notify.ts";
-import type { Ref } from "vue";
-import { ref } from "vue";
-import { CertificatesResponse } from "@/models/seb-server/certificate.ts";
+import { useMutation } from "@/composables/useMutation.ts";
 import { deleteCertificate } from "@/services/seb-server/certificateService.ts";
 
-export const useDeleteCertificate = (
-    certificates: Ref<CertificatesResponse | undefined>,
-) => {
-    const loading = ref(false);
+export const useDeleteCertificate = () => {
+    const {
+        mutateData: removeCertificate,
+        error,
+        loading,
+    } = useMutation(async (alias: string) => {
+        const response = await deleteCertificate(alias);
 
-    const removeCertificate = async (alias: string): Promise<boolean> => {
-        loading.value = true;
-
-        try {
-            const response = await deleteCertificate(alias);
-
-            if (response === null) {
-                throw new Error("Failed to delete certificate");
-            }
-
-            if (certificates.value?.content) {
-                certificates.value.content = certificates.value.content.filter(
-                    (certificate) => certificate.alias !== alias,
-                );
-            }
-
-            return true;
-        } catch (err) {
-            notify.serverError(err, { contextLabel: "certificate" });
-            return false;
-        } finally {
-            loading.value = false;
+        if (response === null) {
+            throw new Error("Failed to delete certificate.");
         }
-    };
+    });
 
-    const removeCertificateFromItem = async (
-        item: Record<string, unknown>,
-    ): Promise<boolean> => {
+    const removeCertificateFromItem = async (item: Record<string, unknown>) => {
         const alias = item.alias;
 
         if (typeof alias !== "string") {
-            notify.serverError(new Error("Invalid certificate identifier."));
-            return false;
+            throw new Error(
+                "useDeleteCertificate: row item is missing a string alias",
+            );
         }
 
-        return removeCertificate(alias);
+        await removeCertificate(alias);
     };
 
     return {
         removeCertificate,
         removeCertificateFromItem,
+        error,
         loading,
     };
 };

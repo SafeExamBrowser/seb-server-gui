@@ -92,6 +92,7 @@ import { INSTITUTION_FILTER_KEY } from "@/components/widgets/filters/useInstitut
 import { useAssessmentTools } from "@/pages/(app)/assessment-tool/api/useAssessmentTools.ts";
 import { useDeleteAssessmentTool } from "@/pages/(app)/assessment-tool/api/useDeleteAssessmentTool.ts";
 import { useToggleAssessmentToolStatus } from "@/pages/(app)/assessment-tool/api/useToggleAssessmentTool.ts";
+import { notify } from "@/services/notifications/notify.ts";
 import type { AssessmentToolsResponse } from "@/models/seb-server/assessmentTool.ts";
 import type { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums.ts";
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
@@ -171,11 +172,17 @@ watch(
 
 const pageCount = computed(() => tableData.value?.number_of_pages ?? 0);
 
-const { removeAssessmentToolFromItem, loading: deleteLoading } =
-    useDeleteAssessmentTool(tableData);
+const {
+    removeAssessmentToolFromItem,
+    error: deleteError,
+    loading: deleteLoading,
+} = useDeleteAssessmentTool();
 
-const { toggleAssessmentToolStatusFromItem, loading: statusLoading } =
-    useToggleAssessmentToolStatus(tableData);
+const {
+    toggleAssessmentToolStatusFromItem,
+    error: statusError,
+    loading: statusLoading,
+} = useToggleAssessmentToolStatus();
 
 // Dialog state
 const deleteTarget = ref<TableItem | null>(null);
@@ -199,15 +206,46 @@ function openStatusDialog(item: TableItem) {
 }
 
 async function confirmDelete() {
-    if (!deleteTarget.value) return;
-    await removeAssessmentToolFromItem(deleteTarget.value);
+    const item = deleteTarget.value;
+    if (!item) return;
+    await removeAssessmentToolFromItem(item);
     deleteDialogOpen.value = false;
+    if (deleteError.value) {
+        notify.serverError(deleteError.value, {
+            contextLabel: "assessmenttool",
+        });
+        return;
+    }
+    const id = item.id;
+    if (typeof id === "number" && tableData.value?.content) {
+        tableData.value.content = tableData.value.content.filter(
+            (tool) => tool.id !== id,
+        );
+    }
 }
 
 async function confirmStatusChange() {
-    if (!statusTarget.value) return;
-    await toggleAssessmentToolStatusFromItem(statusTarget.value);
+    const item = statusTarget.value;
+    if (!item) return;
+    await toggleAssessmentToolStatusFromItem(item);
     statusDialogOpen.value = false;
+    if (statusError.value) {
+        notify.serverError(statusError.value, {
+            contextLabel: "assessmenttool.status",
+        });
+        return;
+    }
+    const id = item.id;
+    const previousActive = item.active;
+    if (
+        typeof id === "number" &&
+        typeof previousActive === "boolean" &&
+        tableData.value?.content
+    ) {
+        tableData.value.content = tableData.value.content.map((tool) =>
+            tool.id === id ? { ...tool, active: !previousActive } : tool,
+        );
+    }
 }
 
 const tableActions = useAssessmentToolsTableActions({
