@@ -1,10 +1,39 @@
 import { computed } from "vue";
+import { z } from "zod";
+import { useRoute } from "vue-router";
 import i18n from "@/i18n";
 import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
 import { useExamTemplate } from "./api/useExamTemplate.ts";
 
-export const useExamTemplateDetailPage = (id: string) => {
-    const { data: examTemplate, loading, error } = useExamTemplate(id);
+const idSchema = z.coerce.number().int().positive();
+
+export const useExamTemplateDetailPage = () => {
+    const route = useRoute("/(app)/exam-template/[id]/");
+    const parseResult = idSchema.safeParse(route.params.id);
+    const examTemplateId = parseResult.success ? parseResult.data : undefined;
+
+    const {
+        data: examTemplate,
+        loading,
+        error: fetchError,
+    } = useExamTemplate(examTemplateId);
+
+    const errors = computed(() => {
+        const messages = [];
+        if (!parseResult.success) {
+            messages.push(
+                i18n.global.t("examTemplateDetail.errors.invalidId", {
+                    id: route.params.id,
+                }),
+            );
+        }
+
+        if (fetchError.value) {
+            messages.push(fetchError.value);
+        }
+
+        return messages;
+    });
 
     const title = computed(() => {
         if (examTemplate.value) {
@@ -23,13 +52,14 @@ export const useExamTemplateDetailPage = (id: string) => {
             label: i18n.global.t("titles.examTemplateList"),
             link: { name: "/(app)/exam-template/" },
         },
-        ...(loading.value ? [] : [{ label: title.value }]),
+        ...(examTemplate.value ? [{ label: title.value }] : []),
     ]);
 
     return {
-        loading,
-        error,
+        examTemplateId,
         examTemplate,
+        loading,
+        errors,
         title,
         breadCrumb,
     };

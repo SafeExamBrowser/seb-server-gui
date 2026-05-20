@@ -15,14 +15,14 @@ export type CrudTableConfig<TItem, TTransient> = {
         title: string;
         allowed: MaybeRef<boolean>;
         getItem: () => TTransient;
-        createItem: (item: TTransient) => void | Promise<void>;
+        createItem: (item: TTransient) => Promise<void>;
     };
     updateConfig: {
         title: string;
         getItem: (item: TItem) => TTransient;
-        updateItem: (item: TTransient) => void | Promise<void>;
+        updateItem: (item: TTransient) => Promise<void>;
     };
     deleteConfig: {
-        deleteItem: (item: TItem) => void;
+        deleteItem: (item: TItem) => Promise<void>;
     };
 };

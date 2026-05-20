@@ -7,15 +7,13 @@ import { useRules } from "vuetify/labs/rules";
 import {
     Indicator,
     IndicatorTransient,
-} from "@/pages/(app)/exam-template/create/components/stepIndicators/types.ts";
-import { useStepIndicatorsStore } from "@/pages/(app)/exam-template/create/components/stepIndicators/composables/store/useStepIndicatorsStore.ts";
+} from "@/components/widgets/indicatorsTable/types.ts";
 import i18n from "@/i18n";
 import { IndicatorEnum } from "@/models/seb-server/monitoringEnums.ts";
 import { useFormFieldsThreshold } from "./useFormFieldsThreshold.ts";
 
-export const useFormFields = () => {
+export const useFormFields = (indicators: Ref<Indicator[]>) => {
     const rules = useRules();
-    const stepIndicatorsStore = useStepIndicatorsStore();
 
     const getFormFields = (indicator: Ref<IndicatorTransient>) => {
         const getDefaultThresholds = (
@@ -96,9 +94,9 @@ export const useFormFields = () => {
                     rules.maxLength(255),
                     rules.blacklisted(
                         new Set(
-                            stepIndicatorsStore.indicators
-                                // Blacklist names of all other indicators in the store.
-                                // Exclude current indicator, as it can already be in the store in case of editing.
+                            indicators.value
+                                // Blacklist names of all other indicators.
+                                // Exclude current indicator, as it can already be in the list in case of editing.
                                 .filter(
                                     (existingIndicator) =>
                                         existingIndicator.id !==

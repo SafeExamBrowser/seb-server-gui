@@ -20,6 +20,8 @@ on the filesystem if they clash:
   - Avoid manual typecasts like `as FooBar`. Properly cast the types and fulfill their requirements.
   - Don't use `any`.
   - Use `undefined`. Do not use `null`.
+  - Avoid explicitly stating types (e.g. when defining a variable, as return values of functions or when using generics),
+    if they can be automatically derived.
 - Prefer early returns over nested `if` conditions.
 - Imports:
   - Never use `../`. If you'd reach into a parent directory, use `@/...` instead.

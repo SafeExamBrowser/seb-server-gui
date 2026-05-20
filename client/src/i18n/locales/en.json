@@ -457,24 +457,20 @@
     },
     "examTemplateDetail": {
         "boxes": {
-            "basicSettings": {
-                "title": "Basic Settings"
-            },
-            "sebSettings": {
-                "title": "SEB Settings"
-            },
+            "basicSettings": { "title": "Basic Settings" },
+            "sebSettings": { "title": "SEB Settings" },
             "indicators": {
-                "title": "Indicators"
+                "title": "Indicators",
+                "errors": {
+                    "deleteFailed": "Failed to delete indicator"
+                }
             },
-            "supervisors": {
-                "title": "Exam Supervisors"
-            },
-            "screenProctoringSettings": {
-                "title": "Screen Proctoring"
-            },
-            "groups": {
-                "title": "Groups"
-            }
+            "supervisors": { "title": "Exam Supervisors" },
+            "screenProctoringSettings": { "title": "Screen Proctoring" },
+            "groups": { "title": "Groups" }
+        },
+        "errors": {
+            "invalidId": "Invalid exam template id: \"{id}\""
         }
     },
     "examTemplateList": {
