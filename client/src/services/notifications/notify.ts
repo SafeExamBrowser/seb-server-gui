@@ -1,6 +1,7 @@
 import { ref } from "vue";
 import type { APIMessage, AppError } from "@/services/errors/types.ts";
 import { toAppError } from "@/services/errors/toAppError.ts";
+import { transportErrorDedupeKey } from "@/services/errors/transport.ts";
 import {
     getBackendMessageLines,
     getBackendMessageTitle,
@@ -163,6 +164,10 @@ export const notify = {
             });
         const lines = getBackendMessageLines(appError, opts.onlyMessages);
         const kind = severityForError(appError);
+        // Transport-class failures (offline / 5xx / rate-limit) share a coarse
+        // dedupe key, so the interceptor's toast and a page reacting to the
+        // same failure collapse into a single notification.
+        const dedupeKey = opts.dedupeKey ?? transportErrorDedupeKey(appError);
         const ids: string[] = [];
 
         if (opts.splitToasts) {
@@ -172,8 +177,8 @@ export const notify = {
                         kind,
                         title,
                         text: line,
-                        dedupeKey: opts.dedupeKey
-                            ? `${opts.dedupeKey}:${index}`
+                        dedupeKey: dedupeKey
+                            ? `${dedupeKey}:${index}`
                             : undefined,
                         actionLabel: opts.actionLabel,
                         onAction: opts.onAction,
@@ -186,7 +191,7 @@ export const notify = {
                     kind,
                     title,
                     text: lines.join("\n"),
-                    dedupeKey: opts.dedupeKey,
+                    dedupeKey,
                     actionLabel: opts.actionLabel,
                     onAction: opts.onAction,
                 }),

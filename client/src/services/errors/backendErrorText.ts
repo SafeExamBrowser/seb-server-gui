@@ -153,6 +153,14 @@ export function getBackendMessageTitle(
             translate("errors.backend.title.generic")
         );
     }
+    if (error.kind === "unknown" && error.status !== undefined) {
+        const statusTitle = translateFirst([
+            `errors.backend.http.${error.status}`,
+        ]);
+        if (statusTitle) {
+            return statusTitle;
+        }
+    }
     return translate("errors.backend.title.generic");
 }
 

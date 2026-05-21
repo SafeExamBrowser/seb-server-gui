@@ -12,7 +12,7 @@
         collapsed
         :content-props="{
             class: 'mr-6 mb-6 border',
-            style: 'border-color: currentColor; border-width: 2px',
+            style: 'border-color: currentColor; border-width: 2px; white-space: pre-line',
         }"
         :close-on-back="false"
     >
