@@ -43,6 +43,20 @@
                     <v-list-item-subtitle>
                         {{ $t(group.type) }}{{ groupDetail(group) }}
                     </v-list-item-subtitle>
+                    <template #append>
+                        <v-chip
+                            v-if="isScreenProctoringGroup(group)"
+                            color="primary"
+                            size="small"
+                            variant="tonal"
+                        >
+                            {{
+                                $t(
+                                    "createExam.steps.clientGroups.screenProctoring",
+                                )
+                            }}
+                        </v-chip>
+                    </template>
                 </v-list-item>
             </v-list>
         </template>
@@ -50,11 +64,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, watchEffect } from "vue";
 import StepItem from "@/components/widgets/stepItem/StepItem.vue";
 import { useStepExamTemplateStore } from "@/pages/(app)/exam/create/components/stepExamTemplate/composables/store/useStepExamTemplateStore.ts";
 import { useStepClientGroupsStore } from "./composables/store/useStepClientGroupsStore.ts";
+import { useExamTemplateScreenProctoring } from "./composables/api/useExamTemplateScreenProctoring.ts";
 import { ClientGroup } from "@/models/seb-server/clientGroup.ts";
+import { createNumberIdList } from "@/utils/generalUtils.ts";
 
 const examTemplateStore = useStepExamTemplateStore();
 const store = useStepClientGroupsStore();
@@ -74,6 +90,28 @@ const filteredGroups = computed<ClientGroup[]>(() => {
         group.name.toLowerCase().includes(term),
     );
 });
+
+const { data: screenProctoring, fetch: fetchScreenProctoring } =
+    useExamTemplateScreenProctoring();
+
+watchEffect(() => {
+    const templateId = examTemplateStore.selectedExamTemplate?.id;
+    if (templateId !== undefined) {
+        fetchScreenProctoring(templateId.toString());
+    }
+});
+
+const screenProctoringGroupIndices = computed(
+    () =>
+        new Set(
+            createNumberIdList(screenProctoring.value?.spsSEBGroupsSelection),
+        ),
+);
+
+const isScreenProctoringGroup = (group: ClientGroup) => {
+    const index = availableGroups.value.indexOf(group);
+    return index !== -1 && screenProctoringGroupIndices.value.has(index);
+};
 
 const isSelected = (group: ClientGroup) =>
     store.selectedClientGroups.some(

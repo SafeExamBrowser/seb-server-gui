@@ -199,7 +199,8 @@
                 "title": "Add Groups",
                 "subtitle": "Select or Remove Groups",
                 "noGroupsAvailable": "The selected exam template has no client groups.",
-                "search": "Search groups"
+                "search": "Search groups",
+                "screenProctoring": "Screen Proctoring"
             },
             "supervisors": {
                 "title": "Add Exam Supervisors",
