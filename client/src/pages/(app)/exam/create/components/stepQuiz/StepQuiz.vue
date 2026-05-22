@@ -4,9 +4,9 @@
         :subtitle="$t('createExam.steps.quiz.subtitle')"
         :manual-scroll-management="true"
     >
-        <v-form @submit.prevent="triggerSearch">
+        <v-form @submit.prevent="triggerSearch" @keyup.esc="clearSearch">
             <v-row class="align-center" no-gutters>
-                <v-col cols="6">
+                <v-col cols="5">
                     <v-text-field
                         v-model="searchName"
                         :label="$t('createExam.steps.quiz.fields.search.label')"
@@ -21,7 +21,7 @@
                         variant="outlined"
                     />
                 </v-col>
-                <v-col cols="4" class="pl-3">
+                <v-col cols="3" class="pl-3">
                     <v-date-input
                         v-model="searchDate"
                         :label="
@@ -40,9 +40,14 @@
                         variant="outlined"
                     />
                 </v-col>
-                <v-col cols="2" class="pl-3 d-flex ga-2">
+                <v-col cols="2" class="pl-3">
                     <v-btn color="primary" type="submit" variant="flat" block>
                         {{ $t("general.searchButton") }}
+                    </v-btn>
+                </v-col>
+                <v-col cols="2" class="pl-3">
+                    <v-btn variant="outlined" block @click="clearSearch">
+                        {{ $t("general.cancelButton") }}
                     </v-btn>
                 </v-col>
             </v-row>
@@ -173,6 +178,12 @@ const handleOptionsUpdate = (options: {
 const triggerSearch = () => {
     pageNumber.value = 1;
     loadItems(true);
+};
+
+const clearSearch = () => {
+    searchName.value = "";
+    searchDate.value = undefined;
+    triggerSearch();
 };
 
 const handleRowClick = (quiz: Quiz) => {
