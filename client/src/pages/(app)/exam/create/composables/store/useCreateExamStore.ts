@@ -87,8 +87,13 @@ export const useCreateExamStore = defineStore("createExam", () => {
         const clientGroupCount =
             stepExamTemplateStore.selectedExamTemplate?.CLIENT_GROUP_TEMPLATES
                 .length ?? 0;
+        const assessmentToolCount =
+            stepAssessmentToolStore.assessmentTools?.content.length ?? 0;
 
         return staticStepData.filter((step) => {
+            if (step.componentName === "StepAssessmentTool") {
+                return assessmentToolCount !== 1;
+            }
             if (step.componentName === "StepClientGroups") {
                 return clientGroupCount >= 2;
             }

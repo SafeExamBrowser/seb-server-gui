@@ -26,12 +26,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, watchEffect } from "vue";
+import { computed } from "vue";
+import { storeToRefs } from "pinia";
 import { useDisplay } from "vuetify";
 import { useI18n } from "vue-i18n";
 import StepItem from "@/components/widgets/stepItem/StepItem.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import { useAssessmentTools } from "./composables/api/useAssessmentTools.ts";
 import { useStepAssessmentToolStore } from "./composables/store/useStepAssessmentToolStore.ts";
 
 const { t } = useI18n();
@@ -39,11 +39,7 @@ const { thresholds: thresholdsRef } = useDisplay();
 const thresholds = computed(() => thresholdsRef.value);
 
 const store = useStepAssessmentToolStore();
-const {
-    data: assessmentTools,
-    loading,
-    error: errorLoading,
-} = useAssessmentTools();
+const { assessmentTools, loading, error: errorLoading } = storeToRefs(store);
 
 const errors = computed(() => {
     if (loading.value) {
@@ -56,14 +52,5 @@ const errors = computed(() => {
             ? t("createExam.steps.assessmentTool.noToolsAvailable")
             : undefined,
     ].filter((error) => error !== undefined);
-});
-
-watchEffect(() => {
-    if (
-        store.selectedAssessmentToolId === undefined &&
-        assessmentTools.value?.content.length === 1
-    ) {
-        store.selectedAssessmentToolId = assessmentTools.value.content[0].id;
-    }
 });
 </script>
