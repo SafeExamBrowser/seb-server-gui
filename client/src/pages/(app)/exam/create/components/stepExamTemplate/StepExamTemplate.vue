@@ -121,8 +121,10 @@ const handleSelect = async (template: ExamTemplate) => {
     if (template.EXAM_ATTRIBUTES.quitPassword && template.id !== undefined) {
         const detail = await fetchTemplateDetail(template.id.toString());
         if (detail && store.selectedExamTemplate?.id === template.id) {
-            stepQuitPasswordStore.quitPassword =
+            const templateQuitPassword =
                 detail.EXAM_ATTRIBUTES.quitPassword ?? "";
+            stepQuitPasswordStore.quitPassword = templateQuitPassword;
+            stepQuitPasswordStore.templateQuitPassword = templateQuitPassword;
         }
     }
 };

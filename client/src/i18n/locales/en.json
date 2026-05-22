@@ -208,6 +208,7 @@
                 "title": "Set Quit Password",
                 "subtitle": "Set the quit password, otherwise a student can easily quit SEB.",
                 "warning": "This password should be kept confidential and shared only with exam supervisors",
+                "importedHint": "Password imported from selected exam template",
                 "fields": {
                     "quitPassword": {
                         "label": "Quit Password",
