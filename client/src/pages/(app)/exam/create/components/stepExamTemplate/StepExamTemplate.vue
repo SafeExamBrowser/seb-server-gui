@@ -57,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed, ref } from "vue";
 import StepItem from "@/components/widgets/stepItem/StepItem.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import ExamTemplateDialog from "@/components/widgets/ExamTemplateDialog.vue";
@@ -95,7 +95,8 @@ const { fetch: fetchTemplateDetail } = useExamTemplateDetail();
 // user is actually allowed to grant. Without this filter, copying
 // `template.supporter` verbatim can include IDs the backend rejects with
 // `grantDenied`, causing a 400 at submit.
-const { data: grantableSupervisors } = useSupervisors();
+const { data: grantableSupervisors, fetchData: fetchSupervisors } =
+    useSupervisors();
 
 const errors = computed(() =>
     [errorLoading.value].filter((error) => error !== undefined),
@@ -118,6 +119,21 @@ const handleSelect = async (template: ExamTemplate) => {
         ];
     }
 
+    if (!grantableSupervisors.value) {
+        await fetchSupervisors();
+    }
+    if (
+        grantableSupervisors.value &&
+        store.selectedExamTemplate?.id === template.id
+    ) {
+        const grantableIds = new Set(
+            grantableSupervisors.value.map((supervisor) => supervisor.modelId),
+        );
+        stepSupervisorsStore.selectedSupervisorIds = (
+            template.supporter ?? []
+        ).filter((id) => grantableIds.has(id));
+    }
+
     if (template.EXAM_ATTRIBUTES.quitPassword && template.id !== undefined) {
         const detail = await fetchTemplateDetail(template.id.toString());
         if (detail && store.selectedExamTemplate?.id === template.id) {
@@ -128,27 +144,4 @@ const handleSelect = async (template: ExamTemplate) => {
         }
     }
 };
-
-// Prefill supervisors from the template, but only the ones the current user
-// is allowed to grant. Re-runs when either the template or the grantable
-// list resolves (covers the case where the user clicks a template before
-// /supervisors finished loading).
-//
-// `template.supporter` is typed as string[] but can be null/undefined at
-// runtime for templates without supporters — the original wizard had the
-// same guard.
-watch(
-    [() => store.selectedExamTemplate, grantableSupervisors],
-    ([template, supervisors]) => {
-        if (!template || !supervisors) {
-            return;
-        }
-        const grantableIds = new Set(
-            supervisors.map((supervisor) => supervisor.modelId),
-        );
-        stepSupervisorsStore.selectedSupervisorIds = (
-            template.supporter ?? []
-        ).filter((id) => grantableIds.has(id));
-    },
-);
 </script>
