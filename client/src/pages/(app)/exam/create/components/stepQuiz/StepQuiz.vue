@@ -138,6 +138,8 @@ const errors = computed(() =>
     [errorLoading.value].filter((error) => error !== undefined),
 );
 
+const DEFAULT_SORT = "-quiz_start_time";
+
 const loadItems = (forceNewSearch = false) => {
     if (assessmentToolStore.selectedAssessmentToolId === undefined) {
         return;
@@ -150,6 +152,7 @@ const loadItems = (forceNewSearch = false) => {
         {
             pageNumber: pageNumber.value,
             pageSize: pageSize.value,
+            sort: DEFAULT_SORT,
             name: searchName.value,
             startTimestampMillis: searchDate.value?.getTime(),
             lmsSetupId: assessmentToolStore.selectedAssessmentToolId,
