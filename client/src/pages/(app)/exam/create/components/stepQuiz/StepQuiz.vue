@@ -143,6 +143,9 @@ const loadItems = (forceNewSearch = false) => {
         return;
     }
 
+    const force = forceNewSearch || !store.searchInitialized;
+    store.searchInitialized = true;
+
     fetch(
         {
             pageNumber: pageNumber.value,
@@ -151,7 +154,7 @@ const loadItems = (forceNewSearch = false) => {
             startTimestampMillis: searchDate.value?.getTime(),
             lmsSetupId: assessmentToolStore.selectedAssessmentToolId,
         },
-        forceNewSearch,
+        force,
     );
 };
 
