@@ -34,7 +34,6 @@
                 <RouterView />
             </v-card>
         </div>
-        <ToastContainer />
     </div>
 </template>
 
@@ -50,7 +49,6 @@ import ContainerRouteActions from "./ContainerRouteActions.vue";
 import { buildBaseNavigationLinks } from "./navigationLinks";
 import { useCurrentUser } from "@/composables/useCurrentUser";
 import { useInstitutionBranding } from "@/composables/useInstitutionBranding";
-import ToastContainer from "@/components/widgets/toast/ToastContainer.vue";
 
 const route = useRoute();
 const { t } = useI18n();

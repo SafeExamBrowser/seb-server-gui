@@ -1,6 +1,2 @@
-export type APIMessage = {
-    messageCode: string;
-    systemMessage: string;
-    details: string;
-    attributes: Map<string, string>;
-};
+//TODO @Andrei Handler
+export type { APIMessage } from "@/services/errors/types.ts";

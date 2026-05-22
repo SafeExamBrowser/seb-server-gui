@@ -107,6 +107,8 @@
                 :field-groups="field.fieldGroups"
                 :label-add="field.labelAdd"
                 :label-row="field.labelRow"
+                :backend-errors="props.backendErrors"
+                @clear-backend-error="emit('clearBackendError', $event)"
                 @add-item="field.onAddItem()"
                 @remove-item="
                     (itemIndex: number) => field.onRemoveItem(itemIndex)
@@ -135,6 +137,10 @@ import FormFieldPassword from "./FormFieldPassword.vue";
 const props = withDefaults(defineProps<FormFieldsComponentProps>(), {
     layout: "vertical" as const,
 });
+
+const emit = defineEmits<{
+    (e: "clearBackendError", fieldName: string): void;
+}>();
 
 const fieldsRefs = new Map<
     string,
@@ -174,6 +180,7 @@ const getBaseProperties = (field: FormField): FormFieldBaseProperties => {
         hint: field.info || undefined,
         persistentHint: field.info !== undefined,
         disabled: field.disabled,
+        errorMessages: props.backendErrors?.[field.name] ?? [],
         "onUpdate:modelValue": () => handleFieldValueUpdated(field.name),
     };
 };
@@ -187,6 +194,8 @@ const getTextualProperties = (
 });
 
 const handleFieldValueUpdated = async (fieldName: string) => {
+    emit("clearBackendError", fieldName);
+
     const fieldsToRevalidate = props.fields.filter((field) =>
         field.validationDependsOn?.includes(fieldName),
     );

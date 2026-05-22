@@ -1,7 +1,7 @@
 import { computed } from "vue";
 import { useFetch } from "@/composables/useFetch.ts";
 import { useMutation } from "@/composables/useMutation.ts";
-import { useNotificationsStore } from "@/stores/seb-server/notificationstore.ts";
+import { notify } from "@/services/notifications/notify.ts";
 import i18n from "@/i18n";
 import {
     createIndicator,
@@ -12,8 +12,6 @@ import {
 import { Indicator } from "@/components/widgets/indicatorsTable/types.ts";
 
 export const useIndicatorTemplates = (examTemplateId: number) => {
-    const notifications = useNotificationsStore();
-
     const {
         data,
         loading,
@@ -26,9 +24,7 @@ export const useIndicatorTemplates = (examTemplateId: number) => {
 
     const indicators = computed<Indicator[]>(() => data.value ?? []);
 
-    const errors = computed<string[]>(() =>
-        fetchError.value ? [fetchError.value] : [],
-    );
+    const errors = computed(() => (fetchError.value ? [fetchError.value] : []));
 
     const createItem = async (indicator: Indicator) => {
         const created = await createIndicator(examTemplateId, indicator);
@@ -47,13 +43,11 @@ export const useIndicatorTemplates = (examTemplateId: number) => {
         await deleteMutation.mutateData(indicator.id);
 
         if (deleteMutation.error.value) {
-            // TODO @andrei: rework this once error handling flow is ready
-            notifications.serverError(
-                i18n.global.t(
+            notify.serverError(deleteMutation.error.value, {
+                titleOverride: i18n.global.t(
                     "examTemplateDetail.boxes.indicators.errors.deleteFailed",
                 ),
-                deleteMutation.error.value,
-            );
+            });
             return;
         }
 

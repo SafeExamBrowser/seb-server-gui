@@ -25,8 +25,6 @@
                 @clear-filters="clearAll"
             />
 
-            <div v-if="deleteError">{{ deleteError }}</div>
-            <div v-else-if="statusError">{{ statusError }}</div>
             <LoadingFallbackComponent
                 :loading="false"
                 :errors="error ? [error] : []"
@@ -99,6 +97,7 @@ import { useInstitutionsFilters } from "@/pages/(app)/institution/composables/us
 import { useInstitutions } from "@/pages/(app)/institution/api/useInstitutions.ts";
 import { useDeleteInstitution } from "@/pages/(app)/institution/api/useDeleteInstitution.ts";
 import { useToggleInstitutionStatus } from "@/pages/(app)/institution/api/useToggleInstitutionStatus.ts";
+import { notify } from "@/services/notifications/notify.ts";
 import type { InstitutionResponse } from "@/models/seb-server/institution.ts";
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 import { useRouter, type RouteLocationAsRelative } from "vue-router";
@@ -165,14 +164,14 @@ const pageCount = computed(() => tableData.value?.number_of_pages ?? 0);
 
 const {
     removeInstitutionFromItem,
-    loading: deleteLoading,
     error: deleteError,
+    loading: deleteLoading,
 } = useDeleteInstitution();
 
 const {
     toggleInstitutionStatusFromItem,
-    loading: statusLoading,
     error: statusError,
+    loading: statusLoading,
 } = useToggleInstitutionStatus();
 
 const deleteTarget = ref<TableItem | null>(null);
@@ -206,16 +205,26 @@ async function reloadAndClampPage() {
 
 async function confirmDelete() {
     if (!deleteTarget.value) return;
-    const ok = await removeInstitutionFromItem(deleteTarget.value);
+    await removeInstitutionFromItem(deleteTarget.value);
     deleteDialogOpen.value = false;
-    if (ok) await reloadAndClampPage();
+    if (deleteError.value) {
+        notify.serverError(deleteError.value, { contextLabel: "institution" });
+        return;
+    }
+    await reloadAndClampPage();
 }
 
 async function confirmStatusChange() {
     if (!statusTarget.value) return;
-    const ok = await toggleInstitutionStatusFromItem(statusTarget.value);
+    await toggleInstitutionStatusFromItem(statusTarget.value);
     statusDialogOpen.value = false;
-    if (ok) await reloadAndClampPage();
+    if (statusError.value) {
+        notify.serverError(statusError.value, {
+            contextLabel: "institution.status",
+        });
+        return;
+    }
+    await reloadAndClampPage();
 }
 
 function logoSrcOf(item: TableItem): string | undefined {

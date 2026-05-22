@@ -93,7 +93,8 @@
                 "dropTitle": "Drop an image here or click to browse",
                 "hint": "Allowed types: {types}"
             }
-        }
+        },
+        "closeButton": "Close"
     },
     "screenReader": {
         "logo": "SEB Logo"
@@ -226,21 +227,31 @@
                     "examTemplate": {
                         "title": "Exam Template",
                         "fields": {
-                            "name": { "label": "Template Name" },
-                            "description": { "label": "Description" }
+                            "name": {
+                                "label": "Template Name"
+                            },
+                            "description": {
+                                "label": "Description"
+                            }
                         }
                     },
                     "clientGroups": {
                         "title": "Groups",
                         "fields": {
-                            "name": { "label": "Name" },
-                            "type": { "label": "Type" }
+                            "name": {
+                                "label": "Name"
+                            },
+                            "type": {
+                                "label": "Type"
+                            }
                         }
                     },
                     "supervisors": {
                         "title": "Exam Supervisors",
                         "fields": {
-                            "user": { "label": "User" }
+                            "user": {
+                                "label": "User"
+                            }
                         }
                     },
                     "quitPassword": {
@@ -596,16 +607,36 @@
             }
         },
         "fields": {
-            "institution": { "label": "Institution *" },
-            "username": { "label": "Username *" },
-            "name": { "label": "Name *" },
-            "surname": { "label": "Last Name *" },
-            "email": { "label": "Email" },
-            "timezone": { "label": "Time Zone *" },
-            "password": { "label": "Password *" },
-            "confirmPassword": { "label": "Confirm Password *" },
-            "role": { "label": "User Role *" },
-            "passwordPlaceholder": { "label": "Password" }
+            "institution": {
+                "label": "Institution *"
+            },
+            "username": {
+                "label": "Username *"
+            },
+            "name": {
+                "label": "Name *"
+            },
+            "surname": {
+                "label": "Last Name *"
+            },
+            "email": {
+                "label": "Email"
+            },
+            "timezone": {
+                "label": "Time Zone *"
+            },
+            "password": {
+                "label": "Password *"
+            },
+            "confirmPassword": {
+                "label": "Confirm Password *"
+            },
+            "role": {
+                "label": "User Role *"
+            },
+            "passwordPlaceholder": {
+                "label": "Password"
+            }
         },
         "hints": {
             "create": "Fill out the required * fields to create a new User Account",
@@ -617,9 +648,15 @@
             "title": "Change User Password",
             "info": "Change \"{username}\"'s password",
             "fields": {
-                "adminPassword": { "label": "Personal Password" },
-                "newPassword": { "label": "New Password" },
-                "confirmNewPassword": { "label": "Repeat Password" }
+                "adminPassword": {
+                    "label": "Personal Password"
+                },
+                "newPassword": {
+                    "label": "New Password"
+                },
+                "confirmNewPassword": {
+                    "label": "Repeat Password"
+                }
             }
         }
     },
@@ -659,16 +696,28 @@
             "edit": "Edit the assessment tool connection details. Leave secrets empty to keep the existing values."
         },
         "fields": {
-            "institution": { "label": "Institution *" },
-            "name": { "label": "Name *" },
-            "type": { "label": "Type *" },
+            "institution": {
+                "label": "Institution *"
+            },
+            "name": {
+                "label": "Name *"
+            },
+            "type": {
+                "label": "Type *"
+            },
             "serverAddress": {
                 "label": "Assessment Tool Server Address *",
                 "validation": "Must start with http:// or https://"
             },
-            "clientUsername": { "label": "Assessment Tool Server Username *" },
-            "clientPassword": { "label": "Assessment Tool Server Password *" },
-            "accessToken": { "label": "Access Token *" },
+            "clientUsername": {
+                "label": "Assessment Tool Server Username *"
+            },
+            "clientPassword": {
+                "label": "Assessment Tool Server Password *"
+            },
+            "accessToken": {
+                "label": "Access Token *"
+            },
             "withProxy": {
                 "label": "With Proxy",
                 "ariaLabel": "Toggle proxy settings"
@@ -747,29 +796,55 @@
             "noCertificatesUploadedYet": "No certificates uploaded yet"
         },
         "fields": {
-            "name": { "label": "Name *" },
-            "configurationPurpose": { "label": "Configuration Purpose *" },
-            "configurationPassword": { "label": "Configuration Password" },
+            "name": {
+                "label": "Name *"
+            },
+            "configurationPurpose": {
+                "label": "Configuration Purpose *"
+            },
+            "configurationPassword": {
+                "label": "Configuration Password"
+            },
             "confirmConfigurationPassword": {
                 "label": "Confirm Configuration Password"
             },
-            "encryptWithCertificate": { "label": "Encrypt With Certificate" },
+            "encryptWithCertificate": {
+                "label": "Encrypt With Certificate"
+            },
             "useAsymmetricOnlyEncryption": {
                 "label": "Use asymmetric-only encryption"
             },
-            "pingInterval": { "label": "Ping Interval in seconds *" },
+            "pingInterval": {
+                "label": "Ping Interval in seconds *"
+            },
             "withFallback": {
                 "label": "With Fallback",
                 "ariaLabel": "Toggle Fallback settings"
             },
-            "fallbackStartUrl": { "label": "Fallback Start URL *" },
-            "connectionAttempts": { "label": "Connection Attempts *" },
-            "interval": { "label": "Interval in seconds *" },
-            "connectionTimeout": { "label": "Connection Timeout in seconds *" },
-            "fallbackPassword": { "label": "Fallback Password" },
-            "confirmFallbackPassword": { "label": "Confirm Fallback Password" },
-            "quitPassword": { "label": "Quit Password" },
-            "confirmQuitPassword": { "label": "Confirm Quit Password" }
+            "fallbackStartUrl": {
+                "label": "Fallback Start URL *"
+            },
+            "connectionAttempts": {
+                "label": "Connection Attempts *"
+            },
+            "interval": {
+                "label": "Interval in seconds *"
+            },
+            "connectionTimeout": {
+                "label": "Connection Timeout in seconds *"
+            },
+            "fallbackPassword": {
+                "label": "Fallback Password"
+            },
+            "confirmFallbackPassword": {
+                "label": "Confirm Fallback Password"
+            },
+            "quitPassword": {
+                "label": "Quit Password"
+            },
+            "confirmQuitPassword": {
+                "label": "Confirm Quit Password"
+            }
         },
         "validation": {
             "required": "This field is required",
@@ -2006,10 +2081,37 @@
     "errors": {
         "backend": {
             "title": {
+                "validation": "Please check the form",
+                "generic": "Something went wrong",
                 "useraccount": {
                     "post": "Error Creating User",
                     "put": "Error Updating User",
-                    "delete": "Error Deleting User"
+                    "delete": "Error Deleting User",
+                    "password": "Error Changing Password",
+                    "status": "Error changing the user account status"
+                },
+                "institution": {
+                    "post": "Error creating institution",
+                    "put": "Error updating institution",
+                    "delete": "Error deleting institution",
+                    "status": "Error changing the institution status"
+                },
+                "assessmenttool": {
+                    "post": "Error creating assessment tool",
+                    "put": "Error updating assessment tool",
+                    "delete": "Error deleting assessment tool",
+                    "status": "Error changing the assessment tool status"
+                },
+                "connectionconfiguration": {
+                    "post": "Error creating connection configuration",
+                    "put": "Error updating connection configuration",
+                    "delete": "Error deleting connection configuration",
+                    "status": "Error changing the connection configuration status"
+                },
+                "certificate": {
+                    "post": "Error uploading certificate",
+                    "put": "Error updating certificate",
+                    "delete": "Error deleting certificate"
                 }
             },
             "http": {
@@ -2019,7 +2121,11 @@
                 "404": "Not found",
                 "409": "Conflict",
                 "422": "Validation error",
-                "500": "Server error"
+                "500": "Server error",
+                "429": "Too many requests",
+                "502": "Server unavailable",
+                "503": "Service unavailable",
+                "504": "Gateway timeout"
             },
             "code": {
                 "0": "Generic error",
@@ -2052,51 +2158,124 @@
                 "1700": "Client connection integrity violation",
                 "1800": "Additional confirmation required"
             },
-            "fallbackLine": "{systemMessage} — {details}"
-        },
-        "objects": {
-            "user": {
-                "_label": "User Account",
+            "objects": {
+                "user": {
+                    "_label": "User account",
+                    "fields": {
+                        "institutionId": "Institution",
+                        "username": "Username",
+                        "name": "Name",
+                        "surname": "Surname",
+                        "email": "Email",
+                        "timeZone": "Time zone",
+                        "timezone": "Time zone",
+                        "userRoles": "Role",
+                        "role": "Role",
+                        "password": "Password",
+                        "adminPassword": "Current password",
+                        "newPassword": "New password",
+                        "confirmNewPassword": "Confirm password",
+                        "confirmPassword": "Confirm password"
+                    },
+                    "rules": {
+                        "email": {
+                            "notunique": "A user account with this email address already exists."
+                        }
+                    }
+                },
+                "institution": {
+                    "_label": "Institution",
+                    "fields": {
+                        "name": "Name",
+                        "urlSuffix": "URL suffix",
+                        "logoImage": "Logo"
+                    }
+                },
+                "lmsSetup": {
+                    "_label": "LMS setup",
+                    "fields": {
+                        "name": "Name",
+                        "lmsType": "LMS type",
+                        "lmsUrl": "LMS URL",
+                        "lmsClientname": "Client name",
+                        "lmsClientsecret": "Client secret",
+                        "lmsRestApiToken": "REST API token"
+                    }
+                },
+                "clientConfig": {
+                    "_label": "Connection configuration",
+                    "fields": {
+                        "name": "Name",
+                        "sebConfigPurpose": "Configuration purpose",
+                        "startURL": "Start URL",
+                        "confirm_encrypt_secret": "Confirm encryption secret",
+                        "hashedQuitPasswordConfirm": "Confirm quit password",
+                        "sebServerFallbackAttempts": "Fallback attempts",
+                        "sebServerFallbackAttemptInterval": "Fallback attempt interval",
+                        "sebServerFallbackTimeout": "Fallback timeout",
+                        "sebServerFallbackPasswordHashConfirm": "Confirm fallback password"
+                    }
+                },
+                "certificate": {
+                    "_label": "Certificate",
+                    "fields": {
+                        "alias": "Alias",
+                        "certificate": "Certificate file"
+                    }
+                },
+                "clientconfig": {
+                    "_label": "Connection configuration",
+                    "fields": {
+                        "name": "Name",
+                        "sebConfigPurpose": "Configuration purpose",
+                        "startURL": "Start URL",
+                        "confirm_encrypt_secret": "Confirm encryption secret",
+                        "hashedQuitPasswordConfirm": "Confirm quit password",
+                        "sebServerFallbackAttempts": "Fallback attempts",
+                        "sebServerFallbackAttemptInterval": "Fallback attempt interval",
+                        "sebServerFallbackTimeout": "Fallback timeout",
+                        "sebServerFallbackPasswordHashConfirm": "Confirm fallback password"
+                    }
+                }
+            },
+            "fields": {
                 "username": "Username",
                 "email": "Email",
-                "password": "Password"
+                "password": "Password",
+                "adminPassword": "Current password",
+                "newPassword": "New password",
+                "confirmNewPassword": "Confirm password",
+                "confirmPassword": "Confirm password"
             },
-            "exam": {
-                "_label": "Exam"
-            }
-        },
-        "rules": {
-            "notunique": "{field} is already being used.",
-            "required": "{field} is required.",
-            "invalid": "{field} is invalid.",
-            "minlength": "{field} is too short.",
-            "maxlength": "{field} is too long.",
-            "pattern": "{field} has an invalid format.",
-            "size": "{field} has an invalid length.",
-            "max": "{field} is too long.",
-            "notNull": "{field} is required.",
-            "mandatory": "{field} is required.",
-            "exists": "{field} already exists. Please choose another one.",
-            "email": "{field} is not a valid email address.",
-            "invalidURL": "{field} is not a valid URL.",
-            "invalidIP": "{field} is not a valid IPv4 address.",
-            "invalidIPRange": "{field} is not a valid IP range.",
-            "invalidAlphaRange": "{field} is not a valid alphabetical range.",
-            "invalidDateRange": "{field} is an invalid date range.",
-            "endBeforeStart": "{field} is an invalid date range (end before start).",
-            "wrong": "{field} is wrong.",
-            "mismatch": "{field} does not match.",
-            "serverNotAvailable": "{field} cannot be reached (service not available).",
-            "noservice": "{field} does not provide the expected service.",
-            "noaccess": "{field} access was not granted. Please check the credentials.",
-            "noAccess": "{field} access was denied.",
-            "typeInvalid": "{field} is not supported yet.",
-            "thresholdDuplicate": "{field} contains duplicate threshold values.",
-            "thresholdEmpty": "{field} is missing threshold values or colors.",
-            "changeDeniedActiveClients": "{field} cannot be changed while there are active SEB client connections.",
-            "collecting-strategy-not-changeable": "{field} cannot be changed once created.",
-            "group-not-deletable": "{field} cannot be deleted because it contains data.",
-            "hasInvalidTrailing": "{field} must not start or end with a space."
+            "rules": {
+                "username": {
+                    "notunique": "This username is already in use. Please choose another one."
+                },
+                "email": "Please enter a valid email address.",
+                "password": {
+                    "wrong": "Your password is wrong.",
+                    "mismatch": "The repeated password does not match the new password."
+                },
+                "notNull": "{field} is required.",
+                "mandatory": "{field} is required.",
+                "notunique": "{field} is already in use. Please choose another one.",
+                "mismatch": "The values do not match.",
+                "wrong": "{field} is wrong.",
+                "name": {
+                    "notunique": "This name is already in use. Please choose another one."
+                },
+                "exists": "This name already exists. Please choose another one.",
+                "invalidURL": "The input does not match the URL pattern.",
+                "url": {
+                    "invalid": "Invalid URL. The given URL cannot be reached.",
+                    "noaccess": "Access was denied by the service. Please check the given access credentials.",
+                    "noservice": "The expected service is not available within the given URL and API access."
+                },
+                "size": "{field} must be between {0} and {1} characters."
+            },
+            "fieldFallback": "{field}: {rule}",
+            "fallbackLine": "{systemMessage} ({details})",
+            "rateLimit": "Too many requests. Please slow down and try again."
         }
     }
 }

@@ -2,6 +2,7 @@
     <LoadingFallbackComponent :loading="loading" :errors="error ? [error] : []">
         <UserAccountForm
             v-if="user"
+            ref="formRef"
             :title="$t('titles.profileSettings')"
             mode="profile"
             :initial-user="user"
@@ -15,6 +16,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 import UserAccountForm, {
     type ChangePasswordPayload,
@@ -28,6 +30,7 @@ import {
     editUserAccount,
 } from "@/services/seb-server/userAccountService.ts";
 import { useLogout } from "@/composables/useLogout.ts";
+import { notify } from "@/services/notifications/notify.ts";
 
 definePage({
     meta: {
@@ -38,12 +41,18 @@ definePage({
 });
 
 const router = useRouter();
+const formRef = ref<InstanceType<typeof UserAccountForm>>();
 const { user, loading, error, refetch: refetchCurrentUser } = useCurrentUser();
 
-const { mutateData: save, data: saved } = useMutation(editUserAccount);
+const {
+    mutateData: save,
+    data: saved,
+    error: saveError,
+} = useMutation(editUserAccount);
 const {
     mutateData: changeUserPassword,
     data: changedPassword,
+    error: changePasswordError,
     loading: changePasswordLoading,
 } = useMutation(
     (payload: {
@@ -78,6 +87,16 @@ const handleSubmit = async (payload: UserAccountFormPayload) => {
     if (saved.value) {
         await refetchCurrentUser();
         await router.push({ name: "/(app)/" });
+        return;
+    }
+    if (saveError.value) {
+        const result = formRef.value?.applyBackendErrors(saveError.value);
+        if (!result?.fullyHandled) {
+            notify.serverError(result?.appError ?? saveError.value, {
+                contextLabel: "useraccount",
+                onlyMessages: result?.unhandledMessages,
+            });
+        }
     }
 };
 
@@ -91,6 +110,18 @@ const handleChangePassword = async (payload: ChangePasswordPayload) => {
     });
     if (changedPassword.value) {
         await useLogout().logout();
+        return;
+    }
+    if (changePasswordError.value) {
+        const result = formRef.value?.applyChangePasswordBackendErrors(
+            changePasswordError.value,
+        );
+        if (!result?.fullyHandled) {
+            notify.serverError(result?.appError ?? changePasswordError.value, {
+                contextLabel: "useraccount.password",
+                onlyMessages: result?.unhandledMessages,
+            });
+        }
     }
 };
 </script>

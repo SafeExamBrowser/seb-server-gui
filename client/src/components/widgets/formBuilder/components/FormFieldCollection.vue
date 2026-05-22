@@ -29,7 +29,12 @@
                 {{ `${labelRow}${index + 1}` }}
             </legend>
             <div class="flex-grow-1 flex-shrink-0">
-                <FormFields :fields="fieldGroup.fields" layout="horizontal" />
+                <FormFields
+                    :fields="fieldGroup.fields"
+                    layout="horizontal"
+                    :backend-errors="backendErrors"
+                    @clear-backend-error="$emit('clearBackendError', $event)"
+                />
             </div>
             <v-btn
                 icon="mdi-delete"
@@ -49,6 +54,7 @@
 
 <script setup lang="ts">
 import { FormFieldGroup } from "../types";
+import type { BackendFieldErrorMap } from "@/services/errors/types.ts";
 import FormFields from "./FormFields.vue";
 import SectionSubtitle from "@/components/widgets/SectionSubtitle.vue";
 
@@ -57,11 +63,13 @@ defineProps<{
     labelAdd: string;
     labelRow: string;
     fieldGroups: FormFieldGroup[];
+    backendErrors?: BackendFieldErrorMap;
 }>();
 
 const emit = defineEmits<{
     (e: "addItem"): void;
     (e: "removeItem", itemIndex: number): void;
+    (e: "clearBackendError", fieldName: string): void;
 }>();
 
 const handleAddItemClick = () => {

@@ -8,6 +8,7 @@ import {
     toCertificateUploadItem,
 } from "@/pages/(app)/certificate/types/types.ts";
 import { useCreateCertificate } from "@/pages/(app)/certificate/composables/api/useCreateCertificate.ts";
+import { notify } from "@/services/notifications/notify.ts";
 
 export const useCertificateCreateForm = ({
     onSuccess,
@@ -80,9 +81,10 @@ export const useCertificateCreateForm = ({
         });
 
         if (uploadError.value) {
-            throw new Error(
-                i18n.global.t("certificates.createDialog.errors.generic"),
-            );
+            notify.serverError(uploadError.value, {
+                contextLabel: "certificate",
+            });
+            return;
         }
 
         const createdName =

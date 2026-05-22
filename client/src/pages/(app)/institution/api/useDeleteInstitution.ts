@@ -1,33 +1,20 @@
-import { ref } from "vue";
+import { useMutation } from "@/composables/useMutation.ts";
 import { deleteInstitution } from "@/services/seb-server/institutionService.ts";
 
 export const useDeleteInstitution = () => {
-    const loading = ref(false);
-    const error = ref<string>();
+    const {
+        mutateData: removeInstitution,
+        error,
+        loading,
+    } = useMutation(async (id: number) => {
+        const response = await deleteInstitution(id);
 
-    const removeInstitution = async (id: number): Promise<boolean> => {
-        loading.value = true;
-        error.value = undefined;
-
-        try {
-            const response = await deleteInstitution(id);
-
-            if (response === null) {
-                throw new Error("Failed to delete institution.");
-            }
-
-            return true;
-        } catch (err) {
-            error.value = err instanceof Error ? err.message : "Unknown error";
-            return false;
-        } finally {
-            loading.value = false;
+        if (response === null) {
+            throw new Error("Failed to delete institution.");
         }
-    };
+    });
 
-    const removeInstitutionFromItem = async (
-        item: Record<string, unknown>,
-    ): Promise<boolean> => {
+    const removeInstitutionFromItem = async (item: Record<string, unknown>) => {
         const id = item.id;
 
         if (typeof id !== "number") {
@@ -36,13 +23,13 @@ export const useDeleteInstitution = () => {
             );
         }
 
-        return removeInstitution(id);
+        await removeInstitution(id);
     };
 
     return {
         removeInstitution,
         removeInstitutionFromItem,
-        loading,
         error,
+        loading,
     };
 };

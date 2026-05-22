@@ -163,6 +163,7 @@
 </template>
 
 <script setup lang="ts">
+import { errorMessageOf } from "@/services/errors/toAppError.ts";
 import { computed, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import moment from "moment-timezone";
@@ -174,6 +175,8 @@ import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
 import HintText from "@/components/widgets/HintText.vue";
 import FormDialog from "@/components/widgets/formDialog/FormDialog.vue";
 import { useMutation } from "@/composables/useMutation.ts";
+import { notify } from "@/services/notifications/notify.ts";
+import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
 import { useDirtyTracking } from "@/composables/useDirtyTracking.ts";
 import { useConnectionConfigurationFormFields } from "@/pages/(app)/connection-configuration/composables/useConnectionConfigurationFormFields.ts";
 import { useCertificates } from "@/pages/(app)/connection-configuration/composables/api/useCertificates.ts";
@@ -239,9 +242,11 @@ const errors = computed(() =>
     [fetchError.value].filter((e) => e !== undefined),
 );
 
-const { mutateData: save, data: saved } = useMutation(
-    editConnectionConfiguration,
-);
+const {
+    mutateData: save,
+    data: saved,
+    error: saveError,
+} = useMutation(editConnectionConfiguration);
 
 const { isDirty, snapshot } = useDirtyTracking(() => ({
     name: name.value ?? "",
@@ -297,7 +302,7 @@ onMounted(async () => {
 
         snapshot();
     } catch (err) {
-        fetchError.value = err instanceof Error ? err.message : "Unknown error";
+        fetchError.value = errorMessageOf(err);
     } finally {
         fetchLoading.value = false;
     }
@@ -320,6 +325,17 @@ const { getEmptyItem, getFormFields, handleUploadCertificate } =
 const formatDate = (input?: Date | string): string => {
     if (!input) return "";
     return moment(input).format("MMM D, YYYY HH:mm");
+};
+
+const CONNECTION_CONFIG_FIELD_ALIASES = {
+    sebConfigPurpose: "configurationPurpose",
+    confirm_encrypt_secret: "confirmConfigurationPassword",
+    startURL: "fallbackStartUrl",
+    sebServerFallbackAttemptInterval: "interval",
+    sebServerFallbackAttempts: "connectionAttempts",
+    sebServerFallbackTimeout: "connectionTimeout",
+    sebServerFallbackPasswordHashConfirm: "confirmFallbackPassword",
+    hashedQuitPasswordConfirm: "confirmQuitPassword",
 };
 
 async function submit() {
@@ -364,6 +380,28 @@ async function submit() {
 
     if (saved.value) {
         await router.push({ name: "/(app)/connection-configuration/" });
+        return;
+    }
+    if (saveError.value) {
+        const applied = applyBackendFieldErrors(saveError.value, {
+            aliases: CONNECTION_CONFIG_FIELD_ALIASES,
+            forms: [
+                {
+                    form: mainFormRef.value,
+                    fields: mainFormFields.value.map((field) => field.name),
+                },
+                {
+                    form: fallbackFormRef.value,
+                    fields: fallbackFormFields.value.map((field) => field.name),
+                },
+            ],
+        });
+        if (!applied.fullyHandled) {
+            notify.serverError(applied.appError, {
+                contextLabel: "connectionconfiguration",
+                onlyMessages: applied.unhandledMessages,
+            });
+        }
     }
 }
 </script>

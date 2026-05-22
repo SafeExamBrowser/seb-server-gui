@@ -45,6 +45,7 @@ export const refresh = async ({
                 grant_type: "refresh_token",
                 refresh_token: sebRefreshToken,
             }).toString(),
+            options: { _skipErrorToast: true },
         }),
         apiService.postRequest({
             url: "/sps/oauth/token",
@@ -52,6 +53,7 @@ export const refresh = async ({
                 grant_type: "refresh_token",
                 refresh_token: spsRefreshToken,
             }).toString(),
+            options: { _skipErrorToast: true },
         }),
     ]);
 
