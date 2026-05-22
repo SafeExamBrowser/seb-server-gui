@@ -89,8 +89,7 @@ const {
     error: errorLoading,
 } = useExamTemplates();
 
-const { data: templateDetail, fetch: fetchTemplateDetail } =
-    useExamTemplateDetail();
+const { fetch: fetchTemplateDetail } = useExamTemplateDetail();
 
 // Used to filter the template's supporter prefill to only users the current
 // user is actually allowed to grant. Without this filter, copying
@@ -102,7 +101,7 @@ const errors = computed(() =>
     [errorLoading.value].filter((error) => error !== undefined),
 );
 
-const handleSelect = (template: ExamTemplate) => {
+const handleSelect = async (template: ExamTemplate) => {
     if (store.selectedExamTemplate?.id === template.id) {
         return;
     }
@@ -120,17 +119,13 @@ const handleSelect = (template: ExamTemplate) => {
     }
 
     if (template.EXAM_ATTRIBUTES.quitPassword && template.id !== undefined) {
-        fetchTemplateDetail(template.id.toString());
+        const detail = await fetchTemplateDetail(template.id.toString());
+        if (detail && store.selectedExamTemplate?.id === template.id) {
+            stepQuitPasswordStore.quitPassword =
+                detail.EXAM_ATTRIBUTES.quitPassword ?? "";
+        }
     }
 };
-
-watch(templateDetail, (detail) => {
-    if (!detail) {
-        return;
-    }
-    stepQuitPasswordStore.quitPassword =
-        detail.EXAM_ATTRIBUTES.quitPassword ?? "";
-});
 
 // Prefill supervisors from the template, but only the ones the current user
 // is allowed to grant. Re-runs when either the template or the grantable
