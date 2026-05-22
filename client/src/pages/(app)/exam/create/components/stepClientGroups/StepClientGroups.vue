@@ -4,55 +4,114 @@
         :subtitle="$t('createExam.steps.clientGroups.subtitle')"
         :manual-scroll-management="true"
     >
-        <template v-if="availableGroups.length === 0">
-            <v-alert
-                type="info"
-                variant="tonal"
-                :text="$t('createExam.steps.clientGroups.noGroupsAvailable')"
+        <v-alert
+            v-if="availableGroups.length === 0"
+            type="info"
+            variant="tonal"
+            :text="$t('createExam.steps.clientGroups.noGroupsAvailable')"
+        />
+        <template v-else>
+            <v-text-field
+                v-model="searchTerm"
+                :placeholder="$t('createExam.steps.clientGroups.search')"
+                append-inner-icon="mdi-magnify"
+                class="mb-3"
+                density="compact"
+                hide-details
+                variant="outlined"
             />
-        </template>
-        <v-list
-            v-else
-            class="bg-transparent pa-0 d-flex flex-column ga-2"
-            select-strategy="classic"
-        >
-            <v-list-item
-                v-for="group in availableGroups"
-                :key="group.id ?? group.name"
-                :active="isSelected(group)"
-                class="border rounded-lg pa-3"
-                @click="toggleGroup(group)"
+            <v-list
+                class="bg-transparent pa-0 d-flex flex-column ga-2"
+                select-strategy="classic"
             >
-                <template #prepend>
-                    <v-checkbox-btn
-                        :model-value="isSelected(group)"
-                        tabindex="-1"
-                    />
-                </template>
-                <v-list-item-title class="font-weight-medium">
-                    {{ group.name }}
-                </v-list-item-title>
-                <v-list-item-subtitle>
-                    {{ $t(group.type) }}{{ groupDetail(group) }}
-                </v-list-item-subtitle>
-            </v-list-item>
-        </v-list>
+                <v-list-item
+                    v-for="group in filteredGroups"
+                    :key="group.id ?? group.name"
+                    :active="isSelected(group)"
+                    class="border rounded-lg pa-3"
+                    @click="toggleGroup(group)"
+                >
+                    <template #prepend>
+                        <v-checkbox-btn
+                            :model-value="isSelected(group)"
+                            tabindex="-1"
+                        />
+                    </template>
+                    <v-list-item-title class="font-weight-medium">
+                        {{ group.name }}
+                    </v-list-item-title>
+                    <v-list-item-subtitle>
+                        {{ $t(group.type) }}{{ groupDetail(group) }}
+                    </v-list-item-subtitle>
+                    <template #append>
+                        <v-chip
+                            v-if="isScreenProctoringGroup(group)"
+                            color="primary"
+                            size="small"
+                            variant="tonal"
+                        >
+                            {{
+                                $t(
+                                    "createExam.steps.clientGroups.screenProctoring",
+                                )
+                            }}
+                        </v-chip>
+                    </template>
+                </v-list-item>
+            </v-list>
+        </template>
     </StepItem>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref, watchEffect } from "vue";
 import StepItem from "@/components/widgets/stepItem/StepItem.vue";
 import { useStepExamTemplateStore } from "@/pages/(app)/exam/create/components/stepExamTemplate/composables/store/useStepExamTemplateStore.ts";
 import { useStepClientGroupsStore } from "./composables/store/useStepClientGroupsStore.ts";
+import { useExamTemplateScreenProctoring } from "./composables/api/useExamTemplateScreenProctoring.ts";
 import { ClientGroup } from "@/models/seb-server/clientGroup.ts";
+import { createNumberIdList } from "@/utils/generalUtils.ts";
 
 const examTemplateStore = useStepExamTemplateStore();
 const store = useStepClientGroupsStore();
 
+const searchTerm = ref("");
+
 const availableGroups = computed<ClientGroup[]>(
     () => examTemplateStore.selectedExamTemplate?.CLIENT_GROUP_TEMPLATES ?? [],
 );
+
+const filteredGroups = computed<ClientGroup[]>(() => {
+    const term = searchTerm.value.trim().toLowerCase();
+    if (term === "") {
+        return availableGroups.value;
+    }
+    return availableGroups.value.filter((group) =>
+        group.name.toLowerCase().includes(term),
+    );
+});
+
+const { data: screenProctoring, fetch: fetchScreenProctoring } =
+    useExamTemplateScreenProctoring();
+
+watchEffect(() => {
+    const templateId = examTemplateStore.selectedExamTemplate?.id;
+    if (templateId !== undefined) {
+        fetchScreenProctoring(templateId.toString());
+    }
+});
+
+const screenProctoringGroupIndices = computed(
+    () =>
+        new Set(
+            createNumberIdList(screenProctoring.value?.spsSEBGroupsSelection),
+        ),
+);
+
+const isScreenProctoringGroup = (group: ClientGroup) => {
+    const index = availableGroups.value.indexOf(group);
+    return index !== -1 && screenProctoringGroupIndices.value.has(index);
+};
 
 const isSelected = (group: ClientGroup) =>
     store.selectedClientGroups.some(
