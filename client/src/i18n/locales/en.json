@@ -2176,6 +2176,11 @@
                         "newPassword": "New password",
                         "confirmNewPassword": "Confirm password",
                         "confirmPassword": "Confirm password"
+                    },
+                    "rules": {
+                        "email": {
+                            "notunique": "A user account with this email address already exists."
+                        }
                     }
                 },
                 "institution": {
@@ -2246,9 +2251,7 @@
                 "username": {
                     "notunique": "This username is already in use. Please choose another one."
                 },
-                "email": {
-                    "notunique": "A user account with this email address already exists."
-                },
+                "email": "Please enter a valid email address.",
                 "password": {
                     "wrong": "Your password is wrong.",
                     "mismatch": "The repeated password does not match the new password."
@@ -2268,9 +2271,7 @@
                     "noaccess": "Access was denied by the service. Please check the given access credentials.",
                     "noservice": "The expected service is not available within the given URL and API access."
                 },
-                "size": {
-                    "max": "The value must be less than {0} characters."
-                }
+                "size": "{field} must be between {0} and {1} characters."
             },
             "fieldFallback": "{field}: {rule}",
             "fallbackLine": "{systemMessage} ({details})",
