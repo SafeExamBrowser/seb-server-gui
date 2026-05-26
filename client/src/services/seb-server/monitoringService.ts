@@ -15,6 +15,7 @@ import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums";
 import { MonitoringConnectionHeaders } from "@/models/seb-server/monitoring";
 
 const baseUrl: string = "/monitoring";
+const clientEventUrl: string = "/seb-client-event";
 
 export const getExamsForMonitoring = async (
     optionalParameters?: OptionalParGetExams,
@@ -22,6 +23,19 @@ export const getExamsForMonitoring = async (
     (
         await apiService.getRequest({
             url: baseUrl,
+            options: {
+                _authType: "seb",
+                params: optionalParameters,
+            },
+        })
+    ).data;
+
+export const getExamsForAnalysis = async (
+    optionalParameters?: OptionalParGetExams,
+): Promise<Exams> =>
+    (
+        await apiService.getRequest({
+            url: `${baseUrl}/finishedexams`,
             options: {
                 _authType: "seb",
                 params: optionalParameters,
@@ -94,12 +108,34 @@ export const getSingleConnectionEvents = async (
 ): Promise<ClientEventResponse> =>
     (
         await apiService.getRequest({
-            url: "/seb-client-event/search",
+            url: `${clientEventUrl}/search`,
             options: {
                 _authType: "seb",
                 params: {
                     ...optionalParameters,
                     clientConnectionId,
+                },
+            },
+        })
+    ).data;
+
+export const downloadClientEventsForExam = async (
+    examId: string,
+): Promise<Blob> =>
+    (
+        await apiService.getRequest({
+            url: `${clientEventUrl}/export`,
+            options: {
+                _authType: "seb",
+                params: {
+                    examId: examId,
+                    includeExamDetails: true,
+                    exportType: "CSV",
+                    includeConnectionDetails: true,
+                },
+                responseType: "blob",
+                headers: {
+                    accept: "application/octet-stream",
                 },
             },
         })

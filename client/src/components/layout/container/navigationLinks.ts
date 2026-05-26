@@ -30,5 +30,11 @@ export function buildBaseNavigationLinks(i18n: I18nLike): BaseNavigationLink[] {
             icon: "mdi-eye",
             testId: "layout-monitoring-button",
         },
+        {
+            title: i18n.t("titles.analyze"),
+            route: typedTo({ name: "/(app)/analyze/" }),
+            icon: "mdi-folder-eye",
+            testId: "layout-analyze-button",
+        },
     ];
 }

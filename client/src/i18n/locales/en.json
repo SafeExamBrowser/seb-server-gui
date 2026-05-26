@@ -226,21 +226,31 @@
                     "examTemplate": {
                         "title": "Exam Template",
                         "fields": {
-                            "name": { "label": "Template Name" },
-                            "description": { "label": "Description" }
+                            "name": {
+                                "label": "Template Name"
+                            },
+                            "description": {
+                                "label": "Description"
+                            }
                         }
                     },
                     "clientGroups": {
                         "title": "Groups",
                         "fields": {
-                            "name": { "label": "Name" },
-                            "type": { "label": "Type" }
+                            "name": {
+                                "label": "Name"
+                            },
+                            "type": {
+                                "label": "Type"
+                            }
                         }
                     },
                     "supervisors": {
                         "title": "Exam Supervisors",
                         "fields": {
-                            "user": { "label": "User" }
+                            "user": {
+                                "label": "User"
+                            }
                         }
                     },
                     "quitPassword": {
@@ -446,17 +456,27 @@
     },
     "examTemplateDetail": {
         "boxes": {
-            "basicSettings": { "title": "Basic Settings" },
-            "sebSettings": { "title": "SEB Settings" },
+            "basicSettings": {
+                "title": "Basic Settings"
+            },
+            "sebSettings": {
+                "title": "SEB Settings"
+            },
             "indicators": {
                 "title": "Indicators",
                 "errors": {
                     "deleteFailed": "Failed to delete indicator"
                 }
             },
-            "supervisors": { "title": "Exam Supervisors" },
-            "screenProctoringSettings": { "title": "Screen Proctoring" },
-            "groups": { "title": "Groups" }
+            "supervisors": {
+                "title": "Exam Supervisors"
+            },
+            "screenProctoringSettings": {
+                "title": "Screen Proctoring"
+            },
+            "groups": {
+                "title": "Groups"
+            }
         },
         "errors": {
             "invalidId": "Invalid exam template id: \"{id}\""
@@ -596,16 +616,36 @@
             }
         },
         "fields": {
-            "institution": { "label": "Institution *" },
-            "username": { "label": "Username *" },
-            "name": { "label": "Name *" },
-            "surname": { "label": "Last Name *" },
-            "email": { "label": "Email" },
-            "timezone": { "label": "Time Zone *" },
-            "password": { "label": "Password *" },
-            "confirmPassword": { "label": "Confirm Password *" },
-            "role": { "label": "User Role *" },
-            "passwordPlaceholder": { "label": "Password" }
+            "institution": {
+                "label": "Institution *"
+            },
+            "username": {
+                "label": "Username *"
+            },
+            "name": {
+                "label": "Name *"
+            },
+            "surname": {
+                "label": "Last Name *"
+            },
+            "email": {
+                "label": "Email"
+            },
+            "timezone": {
+                "label": "Time Zone *"
+            },
+            "password": {
+                "label": "Password *"
+            },
+            "confirmPassword": {
+                "label": "Confirm Password *"
+            },
+            "role": {
+                "label": "User Role *"
+            },
+            "passwordPlaceholder": {
+                "label": "Password"
+            }
         },
         "hints": {
             "create": "Fill out the required * fields to create a new User Account",
@@ -617,9 +657,15 @@
             "title": "Change User Password",
             "info": "Change \"{username}\"'s password",
             "fields": {
-                "adminPassword": { "label": "Personal Password" },
-                "newPassword": { "label": "New Password" },
-                "confirmNewPassword": { "label": "Repeat Password" }
+                "adminPassword": {
+                    "label": "Personal Password"
+                },
+                "newPassword": {
+                    "label": "New Password"
+                },
+                "confirmNewPassword": {
+                    "label": "Repeat Password"
+                }
             }
         }
     },
@@ -659,16 +705,28 @@
             "edit": "Edit the assessment tool connection details. Leave secrets empty to keep the existing values."
         },
         "fields": {
-            "institution": { "label": "Institution *" },
-            "name": { "label": "Name *" },
-            "type": { "label": "Type *" },
+            "institution": {
+                "label": "Institution *"
+            },
+            "name": {
+                "label": "Name *"
+            },
+            "type": {
+                "label": "Type *"
+            },
             "serverAddress": {
                 "label": "Assessment Tool Server Address *",
                 "validation": "Must start with http:// or https://"
             },
-            "clientUsername": { "label": "Assessment Tool Server Username *" },
-            "clientPassword": { "label": "Assessment Tool Server Password *" },
-            "accessToken": { "label": "Access Token *" },
+            "clientUsername": {
+                "label": "Assessment Tool Server Username *"
+            },
+            "clientPassword": {
+                "label": "Assessment Tool Server Password *"
+            },
+            "accessToken": {
+                "label": "Access Token *"
+            },
             "withProxy": {
                 "label": "With Proxy",
                 "ariaLabel": "Toggle proxy settings"
@@ -747,29 +805,55 @@
             "noCertificatesUploadedYet": "No certificates uploaded yet"
         },
         "fields": {
-            "name": { "label": "Name *" },
-            "configurationPurpose": { "label": "Configuration Purpose *" },
-            "configurationPassword": { "label": "Configuration Password" },
+            "name": {
+                "label": "Name *"
+            },
+            "configurationPurpose": {
+                "label": "Configuration Purpose *"
+            },
+            "configurationPassword": {
+                "label": "Configuration Password"
+            },
             "confirmConfigurationPassword": {
                 "label": "Confirm Configuration Password"
             },
-            "encryptWithCertificate": { "label": "Encrypt With Certificate" },
+            "encryptWithCertificate": {
+                "label": "Encrypt With Certificate"
+            },
             "useAsymmetricOnlyEncryption": {
                 "label": "Use asymmetric-only encryption"
             },
-            "pingInterval": { "label": "Ping Interval in seconds *" },
+            "pingInterval": {
+                "label": "Ping Interval in seconds *"
+            },
             "withFallback": {
                 "label": "With Fallback",
                 "ariaLabel": "Toggle Fallback settings"
             },
-            "fallbackStartUrl": { "label": "Fallback Start URL *" },
-            "connectionAttempts": { "label": "Connection Attempts *" },
-            "interval": { "label": "Interval in seconds *" },
-            "connectionTimeout": { "label": "Connection Timeout in seconds *" },
-            "fallbackPassword": { "label": "Fallback Password" },
-            "confirmFallbackPassword": { "label": "Confirm Fallback Password" },
-            "quitPassword": { "label": "Quit Password" },
-            "confirmQuitPassword": { "label": "Confirm Quit Password" }
+            "fallbackStartUrl": {
+                "label": "Fallback Start URL *"
+            },
+            "connectionAttempts": {
+                "label": "Connection Attempts *"
+            },
+            "interval": {
+                "label": "Interval in seconds *"
+            },
+            "connectionTimeout": {
+                "label": "Connection Timeout in seconds *"
+            },
+            "fallbackPassword": {
+                "label": "Fallback Password"
+            },
+            "confirmFallbackPassword": {
+                "label": "Confirm Fallback Password"
+            },
+            "quitPassword": {
+                "label": "Quit Password"
+            },
+            "confirmQuitPassword": {
+                "label": "Confirm Quit Password"
+            }
         },
         "validation": {
             "required": "This field is required",
@@ -1908,7 +1992,8 @@
         "createInstitution": "Add Institution",
         "editInstitution": "Edit Institution",
         "editExamTemplate": "Edit Exam Template",
-        "galleryView": "Gallery View"
+        "galleryView": "Gallery View",
+        "analyze": "Analyze"
     },
     "warnings": {
         "no-data": "No data available",

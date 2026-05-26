@@ -121,6 +121,16 @@ export function assignExamSelectPagingOptions(
 
     if (activeStatusFilter != null) {
         optionalParGetExams.status = activeStatusFilter;
+    } else {
+        // NOTE anhefti: If we habe no state filter we only want UP_COMING, TEST_RUN, RUNNING
+        //               Exams within this view, no FNISHED and no ARCHIVED Exams. They are in Analyze
+        optionalParGetExams.status =
+            ExamStatusEnum.UP_COMING +
+            "," +
+            ExamStatusEnum.TEST_RUN +
+            "," +
+            ExamStatusEnum.RUNNING +
+            ",";
     }
 
     if (name != null) {

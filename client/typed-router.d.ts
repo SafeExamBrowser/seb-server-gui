@@ -37,6 +37,7 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       Record<never, never>,
       | '/(app)/'
+      | '/(app)/analyze/'
       | '/(app)/applications-search/'
       | '/(app)/assessment-tool/'
       | '/(app)/assessment-tool/[id]/'
@@ -71,6 +72,13 @@ declare module 'vue-router/auto-routes' {
     '/(app)/': RouteRecordInfo<
       '/(app)/',
       '/',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/(app)/analyze/': RouteRecordInfo<
+      '/(app)/analyze/',
+      '/analyze',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -324,6 +332,7 @@ declare module 'vue-router/auto-routes' {
       routes:
         | '/(app)'
         | '/(app)/'
+        | '/(app)/analyze/'
         | '/(app)/applications-search/'
         | '/(app)/assessment-tool/'
         | '/(app)/assessment-tool/[id]/'
@@ -360,6 +369,12 @@ declare module 'vue-router/auto-routes' {
     'src/pages/(app)/index.vue': {
       routes:
         | '/(app)/'
+      views:
+        | never
+    }
+    'src/pages/(app)/analyze/index.vue': {
+      routes:
+        | '/(app)/analyze/'
       views:
         | never
     }
