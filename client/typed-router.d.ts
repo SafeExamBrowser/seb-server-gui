@@ -61,7 +61,6 @@ declare module 'vue-router/auto-routes' {
       | '/(app)/monitoring/[examId]/client/'
       | '/(app)/monitoring/[examId]/client/[connectionToken]/'
       | '/(app)/navigation-overview/'
-      | '/(app)/notification-playground/'
       | '/(app)/sp-recording/[sessionId]/'
       | '/(app)/sp-recording/application-search/[sessionId]/'
       | '/(app)/sp-search/'
