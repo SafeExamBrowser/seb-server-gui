@@ -152,14 +152,14 @@ export class PlaywrightUserAccountPage {
     }
 
     async expectRedirectToUserAccounts() {
-        await expect(this.page).toHaveURL(/\/user-accounts(?:$|[?#])/i, {
+        await expect(this.page).toHaveURL(/\/user-account(?:$|[?#])/i, {
             timeout: 10_000,
         });
     }
 
     async expectStillOnEditPage(uuid: string) {
         await expect(this.page).toHaveURL(
-            new RegExp(`/user-accounts/edit-account/${uuid}(?:$|[?#])`, "i"),
+            new RegExp(`/user-account/edit-account/${uuid}(?:$|[?#])`, "i"),
             { timeout: 10_000 },
         );
     }

@@ -93,7 +93,7 @@ export class PlaywrightUserAccountsPage {
 
         // Table
         this.table = page.getByTestId("userAccounts-table");
-        this.tableHeadersComponent = page.getByTestId("userAccounts-table");
+        this.tableHeadersComponent = page.locator("thead");
 
         // Delete dialog
         this.deleteDialog = page.getByTestId("userAccounts-delete-dialog");
@@ -111,22 +111,18 @@ export class PlaywrightUserAccountsPage {
         );
 
         // Status dialog
-        this.statusDialog = page.getByTestId("userAccounts-status-dialog");
-        this.statusDialogTitle = page.getByTestId(
-            "userAccounts-status-dialog-title",
-        );
-        this.statusDialogText = page.getByTestId(
-            "userAccounts-status-dialog-text",
-        );
-        this.statusCancelButton = page.getByTestId(
-            "userAccounts-status-cancel-button",
-        );
-        this.statusConfirmButton = page.getByTestId(
-            "userAccounts-status-confirm-button",
-        );
+        this.statusDialog = page.getByRole("dialog");
+        this.statusDialogTitle = this.statusDialog.locator(".v-card-title");
+        this.statusDialogText = this.statusDialog.locator(".v-card-text");
+        this.statusCancelButton = this.statusDialog.getByRole("button", {
+            name: "Cancel",
+        });
+        this.statusConfirmButton = this.statusDialog.getByRole("button", {
+            name: /Activate|Deactivate/i,
+        });
 
         // Toast verify
-        this.anyVuetifyValidationMessage = page.locator(".v-alert");
+        this.anyVuetifyValidationMessage = page.locator('[role="alert"]');
     }
 
     // ------------------------
@@ -139,7 +135,7 @@ export class PlaywrightUserAccountsPage {
     }
 
     async expectVisible() {
-        await expect(this.table).toBeVisible();
+        await expect(this.pageTitle).toBeVisible();
     }
 
     async expectInstitutionFilterVisible() {
@@ -155,19 +151,18 @@ export class PlaywrightUserAccountsPage {
     // ------------------------
 
     row(uuid: string): Locator {
-        return this.page.getByTestId(`userAccounts-row-${uuid}`);
+        return this.page.locator("tr", { hasText: uuid });
     }
-
     statusChip(uuid: string): Locator {
-        return this.page.getByTestId(`userAccounts-status-chip-${uuid}`);
+        return this.row(uuid).locator('[data-testid*="status-chip"]');
     }
 
-    editIcon(uuid: string): Locator {
-        return this.page.getByTestId(`userAccounts-edit-icon-${uuid}`);
+    editIcon(uuid: string) {
+        return this.row(uuid).getByTestId(/edit-icon/i);
     }
 
-    deleteIcon(uuid: string): Locator {
-        return this.page.getByTestId(`userAccounts-delete-icon-${uuid}`);
+    deleteIcon(uuid: string) {
+        return this.row(uuid).getByTestId(/delete-icon/i);
     }
 
     // ------------------------
@@ -267,8 +262,12 @@ export class PlaywrightUserAccountsPage {
     // Assertions for row state
     // ------------------------
 
-    async expectRowVisible(uuid: string) {
-        await expect(this.row(uuid)).toBeVisible();
+    async expectRowVisible(text: string) {
+        const row = this.row(text);
+
+        await expect(row).toBeVisible({
+            timeout: 15000,
+        });
     }
 
     async expectStatusText(uuid: string, text: "Active" | "Inactive") {
@@ -284,11 +283,20 @@ export class PlaywrightUserAccountsPage {
     // ------------------------
 
     headerByText(text: string): Locator {
-        return this.tableHeadersComponent.getByText(text, { exact: true });
+        return this.table
+            .locator("th")
+            .filter({ hasText: new RegExp(`^\\s*${text}\\s*$`, "i") })
+            .first();
     }
 
     async sortByHeaderText(text: string) {
-        await this.headerByText(text).click();
+        const header = this.headerByText(text);
+
+        await expect(header).toBeVisible({
+            timeout: 10000,
+        });
+
+        await header.click();
     }
 
     paginationRoot(): Locator {

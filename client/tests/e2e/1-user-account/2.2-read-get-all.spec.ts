@@ -4,8 +4,8 @@ import { loginAsServerAdmin } from "../utils/authenticate";
 import { PlaywrightUserAccountsPage } from "./models/playwright-user-accounts-page";
 
 const searchSurname = "000-testgetall";
-const activeUserUuid = "seb-user-account-getall-active";
-const inactiveUserUuid = "seb-user-account-getall-inactive";
+const activeUserUuid = "getall-active";
+const inactiveUserUuid = "getall-inactive";
 
 const institutionModelId = 11;
 
@@ -22,16 +22,21 @@ test.describe("1.2.2 User Accounts - READ Get All", () => {
     test("A Success", async ({ page }, testInfo) => {
         expect(page.url()).toContain("/user-account");
 
+        // 000-testgetall-chromium
         const surnameWithBrowserSuffix = addBrowserSuffixToText(
             searchSurname,
             testInfo,
         );
 
+        // seb-user-account-getall-active-chromium
+        // userAccounts-row-seb-user-account-getall-active-chromium
         const activeUuidWithBrowserSuffix = addBrowserSuffixToText(
             activeUserUuid,
             testInfo,
         );
 
+        // seb-user-account-getall-inactive-chromium
+        //
         const inactiveUuidWithBrowserSuffix = addBrowserSuffixToText(
             inactiveUserUuid,
             testInfo,
@@ -198,6 +203,6 @@ test.describe("1.2.2 User Accounts - READ Get All", () => {
         });
 
         await userAccountsPage.goto();
-        await userAccountsPage.expectAnyValidationMessageVisible();
+        await expect(page.getByText(/Something went wrong:/i)).toBeVisible();
     });
 });

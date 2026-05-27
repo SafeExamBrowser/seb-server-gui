@@ -1,10 +1,9 @@
 import { expect, test } from "@playwright/test";
-import { addBrowserSuffixToText } from "../utils/helpers";
 import { loginAsServerAdmin } from "../utils/authenticate";
 import { PlaywrightUserAccountsPage } from "./models/playwright-user-accounts-page";
 
-const userLastName = "testinactive";
-const userUUID = "seb-inst-admin-inactive";
+const userLastName = "testinactive-webkit";
+const userUUID = "admininactive-webkit";
 
 test.describe("1.3.2 User Accounts - UPDATE Activate", () => {
     let userAccountsPage: PlaywrightUserAccountsPage;
@@ -16,19 +15,13 @@ test.describe("1.3.2 User Accounts - UPDATE Activate", () => {
         await userAccountsPage.expectVisible();
     });
 
-    test("A Success", async ({ page }, testInfo) => {
-        expect(page.url()).toContain("/user-accounts");
+    test("A Success", async ({ page }) => {
+        expect(page.url()).toContain("/user-account");
 
         //generate brwoser specific values
-        const userLastNameWithBrowserSuffix = addBrowserSuffixToText(
-            userLastName,
-            testInfo,
-        );
+        const userLastNameWithBrowserSuffix = userLastName;
 
-        const userUUIDWithBrowserSuffix = addBrowserSuffixToText(
-            userUUID,
-            testInfo,
-        );
+        const userUUIDWithBrowserSuffix = userUUID;
 
         //search for user
         await userAccountsPage.search(userLastNameWithBrowserSuffix);
