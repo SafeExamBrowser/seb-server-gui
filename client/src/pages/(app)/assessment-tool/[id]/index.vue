@@ -128,6 +128,7 @@
 </template>
 
 <script setup lang="ts">
+import { errorMessageOf } from "@/services/errors/toAppError.ts";
 import { computed, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
@@ -137,6 +138,8 @@ import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
 import HintText from "@/components/widgets/HintText.vue";
 import { useMutation } from "@/composables/useMutation.ts";
+import { notify } from "@/services/notifications/notify.ts";
+import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
 import { useDirtyTracking } from "@/composables/useDirtyTracking.ts";
 import { useAssessmentToolFormFields } from "@/pages/(app)/assessment-tool/composables/useAssessmentToolFormFields.ts";
 import {
@@ -170,9 +173,9 @@ const {
     institutionId,
     name,
     lmsType,
-    serverAddress,
-    clientUsername,
-    clientPassword,
+    lmsUrl,
+    lmsClientname,
+    lmsClientsecret,
     accessToken,
     proxyHost,
     proxyPort,
@@ -193,17 +196,20 @@ const errors = computed(() =>
     [...formErrors.value, fetchError.value].filter((e) => e !== undefined),
 );
 
-const { mutateData: saveTool, data: savedTool } =
-    useMutation(editAssessmentTool);
+const {
+    mutateData: saveTool,
+    data: savedTool,
+    error: saveToolError,
+} = useMutation(editAssessmentTool);
 
 const { isDirty, snapshot } = useDirtyTracking(() => ({
     institutionId: institutionId.value ?? "",
     name: name.value ?? "",
     lmsType: lmsType.value ?? "",
-    serverAddress: serverAddress.value ?? "",
+    lmsUrl: lmsUrl.value ?? "",
     authMode: authMode.value,
-    clientUsername: clientUsername.value ?? "",
-    clientPassword: clientPassword.value ?? "",
+    lmsClientname: lmsClientname.value ?? "",
+    lmsClientsecret: lmsClientsecret.value ?? "",
     accessToken: accessToken.value ?? "",
     withProxy: withProxy.value,
     proxyHost: proxyHost.value ?? "",
@@ -227,15 +233,15 @@ onMounted(async () => {
         institutionId.value = fetched.institutionId.toString();
         name.value = fetched.name;
         lmsType.value = fetched.lmsType;
-        serverAddress.value = fetched.lmsUrl;
+        lmsUrl.value = fetched.lmsUrl;
 
         if (fetched.lmsRestApiToken) {
             authMode.value = "token";
             accessToken.value = fetched.lmsRestApiToken;
         } else {
             authMode.value = "client";
-            clientUsername.value = fetched.lmsClientname;
-            clientPassword.value = fetched.lmsClientsecret ?? "";
+            lmsClientname.value = fetched.lmsClientname;
+            lmsClientsecret.value = fetched.lmsClientsecret ?? "";
         }
 
         withProxy.value = Boolean(fetched.lmsProxyHost || fetched.lmsProxyPort);
@@ -246,7 +252,7 @@ onMounted(async () => {
 
         snapshot();
     } catch (err) {
-        fetchError.value = err instanceof Error ? err.message : "Unknown error";
+        fetchError.value = errorMessageOf(err);
     } finally {
         fetchLoading.value = false;
     }
@@ -269,11 +275,11 @@ async function submit() {
         institutionId: institutionId.value ?? "",
         name: name.value ?? "",
         lmsType: lmsType.value ?? "",
-        lmsUrl: serverAddress.value ?? "",
+        lmsUrl: lmsUrl.value ?? "",
         lmsClientname:
-            authMode.value === "client" ? (clientUsername.value ?? "") : "",
+            authMode.value === "client" ? (lmsClientname.value ?? "") : "",
         lmsClientsecret:
-            authMode.value === "client" ? (clientPassword.value ?? "") : "",
+            authMode.value === "client" ? (lmsClientsecret.value ?? "") : "",
         lmsRestApiToken:
             authMode.value === "token" ? (accessToken.value ?? "") : "",
         lmsProxyHost: withProxy.value ? proxyHost.value : undefined,
@@ -289,6 +295,31 @@ async function submit() {
 
     if (savedTool.value) {
         await router.push({ name: "/(app)/assessment-tool/" });
+        return;
+    }
+    if (saveToolError.value) {
+        const applied = applyBackendFieldErrors(saveToolError.value, {
+            forms: [
+                {
+                    form: mainFormRef.value,
+                    fields: mainFormFields.value.map((field) => field.name),
+                },
+                {
+                    form: authFormRef.value,
+                    fields: authFormFields.value.map((field) => field.name),
+                },
+                {
+                    form: proxyFormRef.value,
+                    fields: proxyFormFields.value.map((field) => field.name),
+                },
+            ],
+        });
+        if (!applied.fullyHandled) {
+            notify.serverError(applied.appError, {
+                contextLabel: "assessmenttool",
+                onlyMessages: applied.unhandledMessages,
+            });
+        }
     }
 }
 </script>

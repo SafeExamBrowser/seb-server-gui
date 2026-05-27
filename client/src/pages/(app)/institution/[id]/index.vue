@@ -46,6 +46,7 @@
 </template>
 
 <script setup lang="ts">
+import { errorMessageOf } from "@/services/errors/toAppError.ts";
 import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
@@ -55,6 +56,8 @@ import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
 import HintText from "@/components/widgets/HintText.vue";
 import { useMutation } from "@/composables/useMutation.ts";
+import { notify } from "@/services/notifications/notify.ts";
+import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
 import {
     editInstitution,
     getInstitutionById,
@@ -83,8 +86,11 @@ const institution = ref<InstitutionAdmin | null>(null);
 const loading = ref(false);
 const error = ref<string>();
 
-const { mutateData: saveInstitution, data: savedInstitution } =
-    useMutation(editInstitution);
+const {
+    mutateData: saveInstitution,
+    data: savedInstitution,
+    error: saveError,
+} = useMutation(editInstitution);
 
 const { user } = useCurrentUser();
 const { refetch: refetchInstitutionBranding } = useInstitutionBranding();
@@ -113,7 +119,7 @@ onMounted(async () => {
         logoImage.value = null;
         snapshot();
     } catch (err) {
-        error.value = err instanceof Error ? err.message : "Unknown error";
+        error.value = errorMessageOf(err);
     } finally {
         loading.value = false;
     }
@@ -140,6 +146,23 @@ async function submit() {
             await refetchInstitutionBranding();
         }
         await router.push({ name: "/(app)/institution/" });
+        return;
+    }
+    if (saveError.value) {
+        const applied = applyBackendFieldErrors(saveError.value, {
+            forms: [
+                {
+                    form: formRef.value,
+                    fields: formFields.value.map((field) => field.name),
+                },
+            ],
+        });
+        if (!applied.fullyHandled) {
+            notify.serverError(applied.appError, {
+                contextLabel: "institution",
+                onlyMessages: applied.unhandledMessages,
+            });
+        }
     }
 }
 </script>

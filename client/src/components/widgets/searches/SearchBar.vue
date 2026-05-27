@@ -10,19 +10,58 @@
                 :md="hasDate ? 3 : 4"
                 class="d-flex flex-column ga-2"
             >
-                <span
-                    class="text-body-small text-medium-emphasis text-uppercase font-weight-medium"
-                >
-                    {{ $t(searchTitle ?? "general.searchTitle") }}
-                </span>
-                <SearchBox
-                    :model-value="modelValue"
-                    :search-text="searchText"
-                    :data-test-id="dataTestId"
-                    @update:model-value="emit('update:modelValue', $event)"
-                    @search="onSearch"
-                    @clear="emit('clear')"
-                />
+                <v-row>
+                    <v-col>
+                        <span
+                            class="text-body-small text-medium-emphasis text-uppercase font-weight-medium"
+                        >
+                            {{ $t(searchTitle ?? "general.searchTitle") }}
+                        </span>
+                        <SearchBox
+                            :model-value="modelValue"
+                            :search-text="searchText"
+                            :data-test-id="dataTestId"
+                            @update:model-value="
+                                emit('update:modelValue', $event)
+                            "
+                            @search="onSearch"
+                            @clear="emit('clear')"
+                        />
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col>
+                        <div class="d-flex align-center ga-2">
+                            <ConfirmButton
+                                text="general.searchButton"
+                                :disabled="searchDisabled"
+                                :data-test-id="`${dataTestId}-search-button`"
+                                @click="onSearch"
+                            />
+                            <v-spacer />
+                            <v-btn
+                                v-if="clearAllCount > 0"
+                                variant="text"
+                                color="primary"
+                                size="small"
+                                class="text-none"
+                                :data-testid="`${dataTestId}-search-cancel-button`"
+                                @click="clearFilters"
+                            >
+                                <v-icon start>mdi-close</v-icon>
+                                {{ $t("general.clearAll") }}
+                                <v-chip
+                                    size="x-small"
+                                    color="primary"
+                                    variant="tonal"
+                                    class="ms-2"
+                                >
+                                    {{ clearAllCount }}
+                                </v-chip>
+                            </v-btn>
+                        </div>
+                    </v-col>
+                </v-row>
             </v-col>
 
             <v-col
@@ -128,45 +167,6 @@
                     <v-icon start>{{ action.icon }}</v-icon>
                     {{ $t(action.text) }}
                 </v-btn>
-            </v-col>
-        </v-row>
-        <v-divider class="my-4" />
-
-        <v-row>
-            <v-col
-                cols="12"
-                :md="hasDate ? 3 : 4"
-                class="d-flex flex-column ga-2"
-            >
-                <div class="d-flex align-center ga-2">
-                    <v-btn
-                        v-if="clearAllCount > 0"
-                        variant="text"
-                        color="primary"
-                        size="small"
-                        class="text-none"
-                        :data-testid="`${dataTestId}-search-cancel-button`"
-                        @click="clearFilters"
-                    >
-                        <v-icon start>mdi-close</v-icon>
-                        {{ $t("general.clearAll") }}
-                        <v-chip
-                            size="x-small"
-                            color="primary"
-                            variant="tonal"
-                            class="ms-2"
-                        >
-                            {{ clearAllCount }}
-                        </v-chip>
-                    </v-btn>
-                    <v-spacer />
-                    <ConfirmButton
-                        text="general.searchButton"
-                        :disabled="searchDisabled"
-                        :data-test-id="`${dataTestId}-search-button`"
-                        @click="onSearch"
-                    />
-                </div>
             </v-col>
         </v-row>
     </div>

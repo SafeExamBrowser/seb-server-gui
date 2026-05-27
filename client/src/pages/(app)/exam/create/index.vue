@@ -60,9 +60,9 @@ watchEffect(() => {
 });
 
 watch(
-    () => store.currentStepIndex,
-    (index) => {
-        if (index === 0) {
+    () => store.currentStep.componentName,
+    (componentName) => {
+        if (componentName === "StepAssessmentTool") {
             quizStore.$reset();
         }
     },

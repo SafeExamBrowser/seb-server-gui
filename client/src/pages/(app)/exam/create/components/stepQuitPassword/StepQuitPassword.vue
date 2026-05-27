@@ -11,6 +11,12 @@
                 :text="$t('createExam.steps.quitPassword.warning')"
             />
             <FormBuilder :fields="formFields" />
+            <div
+                v-if="showImportedHint"
+                class="text-caption text-medium-emphasis mt-1"
+            >
+                {{ $t("createExam.steps.quitPassword.importedHint") }}
+            </div>
         </v-container>
     </StepItem>
 </template>
@@ -21,8 +27,17 @@ import { useDisplay } from "vuetify";
 import StepItem from "@/components/widgets/stepItem/StepItem.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import { useFormFields } from "./composables/useFormFields.ts";
+import { useStepQuitPasswordStore } from "./composables/store/useStepQuitPasswordStore.ts";
 
 const { thresholds: thresholdsRef } = useDisplay();
 const thresholds = computed(() => thresholdsRef.value);
 const { formFields } = useFormFields();
+
+const store = useStepQuitPasswordStore();
+
+const showImportedHint = computed(
+    () =>
+        store.templateQuitPassword !== "" &&
+        store.quitPassword === store.templateQuitPassword,
+);
 </script>

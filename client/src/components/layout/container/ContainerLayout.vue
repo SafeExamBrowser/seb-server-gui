@@ -21,6 +21,7 @@
                 :is-navigation-overview-route="isNavigationOverviewRoute"
                 :links="mainNavigationLinks"
                 :navigation-overview-route="navigationOverviewRoute"
+                :ability="ability"
             />
 
             <v-card
@@ -34,7 +35,6 @@
                 <RouterView />
             </v-card>
         </div>
-        <ToastContainer />
     </div>
 </template>
 
@@ -50,13 +50,14 @@ import ContainerRouteActions from "./ContainerRouteActions.vue";
 import { buildBaseNavigationLinks } from "./navigationLinks";
 import { useCurrentUser } from "@/composables/useCurrentUser";
 import { useInstitutionBranding } from "@/composables/useInstitutionBranding";
-import ToastContainer from "@/components/widgets/toast/ToastContainer.vue";
+import { useAbilities } from "@/services/ability";
 
 const route = useRoute();
 const { t } = useI18n();
 const { logout } = useLogout();
 const { user } = useCurrentUser();
 const { institutionName, institutionLogo } = useInstitutionBranding();
+const ability = useAbilities();
 
 // TODO @Andrei RBAC
 
@@ -65,7 +66,9 @@ const navigationOverviewRoute = typedTo({
     name: "/(app)/navigation-overview/",
 });
 
-const mainNavigationLinks = computed(() => buildBaseNavigationLinks({ t }));
+const mainNavigationLinks = computed(() =>
+    buildBaseNavigationLinks(ability, { t }),
+);
 
 const layoutContext = computed(() => route.meta.layoutContext ?? "default");
 

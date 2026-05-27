@@ -8,6 +8,16 @@ import { Exam } from "@/models/seb-server/exam";
 import { FeatureEnum, featureNameMapping } from "@/models/features";
 import * as apiService from "@/services/apiService";
 
+// NOTE: anhefti, This should act as Ability-Interface and should be used in generic components
+//       we need to refactor the Ability-Service to not use a store but the inteface should not change
+//       and can be used also after the change without the need to apply changes everywhere it us used now
+export type AbilityLike = {
+    canView: (component: GUIComponent) => boolean;
+    canDo: (action: GUIAction) => boolean;
+    isExamSupporter: (exam: Exam) => boolean;
+    canDoExamAction: (action: GUIAction, exam: Exam | null) => boolean;
+};
+
 export enum GUIComponent {
     // Overall components
     NavigationOverview = "NavigationOverview",
@@ -21,7 +31,6 @@ export enum GUIComponent {
 
     // Preparation
     ExamTemplate = "ExamTemplate",
-    SEBTemplate = "SEBTemplate",
     PrepareExam = "PrepareExam",
     AddExamWithURL = "AddExamWithURL",
 
@@ -35,8 +44,8 @@ export enum GUIComponent {
     ScreenProctoringApplicationSearch = "ScreenProctoringApplicationSearch",
 
     // Followup
-    FinishedExams = "FinishedExams",
-    ArchivedExams = "ArchivedExams",
+    AnalyzeExams = "AnalyzeExams",
+    ArchiveExams = "ArchiveExams",
 }
 
 export enum GUIAction {
@@ -103,8 +112,9 @@ export const useAbilities = defineStore("ability", () => {
             GUIComponent.LMSSetups,
             GUIComponent.Certificates,
             GUIComponent.ExamTemplate,
-            GUIComponent.SEBTemplate,
             GUIComponent.Exams,
+            GUIComponent.AnalyzeExams,
+            GUIComponent.ArchiveExams,
         ]),
     );
 
@@ -118,8 +128,8 @@ export const useAbilities = defineStore("ability", () => {
             GUIComponent.ScreenProctoring,
             GUIComponent.ScreenProctoringSearch,
             GUIComponent.ScreenProctoringApplicationSearch,
-            GUIComponent.FinishedExams,
-            GUIComponent.ArchivedExams,
+            GUIComponent.AnalyzeExams,
+            GUIComponent.ArchiveExams,
             GUIComponent.Exams,
         ]),
     );
@@ -133,8 +143,6 @@ export const useAbilities = defineStore("ability", () => {
             GUIComponent.ScreenProctoring,
             GUIComponent.ScreenProctoringSearch,
             GUIComponent.ScreenProctoringApplicationSearch,
-            GUIComponent.FinishedExams,
-            GUIComponent.ArchivedExams,
         ]),
     );
 

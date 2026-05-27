@@ -1,5 +1,8 @@
 import { Ref } from "vue";
 import type { VField, VInput, VTextField } from "vuetify/components";
+import type { BackendFieldErrorMap } from "@/services/errors/types.ts";
+
+export type { BackendFieldErrorMap } from "@/services/errors/types.ts";
 
 type VFieldProps = InstanceType<typeof VField>["$props"];
 type VInputProps = InstanceType<typeof VInput>["$props"];
@@ -14,6 +17,7 @@ export type FormFieldBaseProperties = Pick<
     | "hint"
     | "persistentHint"
     | "onUpdate:modelValue"
+    | "errorMessages"
 > &
     Pick<VFieldProps, "variant"> & {
         disabled?: boolean;
@@ -116,4 +120,5 @@ export type FormFieldGroup = {
 export type FormFieldsComponentProps = {
     fields: FormField[];
     layout?: "vertical" | "horizontal";
+    backendErrors?: BackendFieldErrorMap;
 };

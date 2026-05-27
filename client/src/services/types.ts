@@ -4,6 +4,12 @@ import { z } from "zod";
 declare module "axios" {
     interface AxiosRequestConfig {
         _authType?: "seb" | "sps";
+        /**
+         * When true, the response interceptor skips its automatic transport-error
+         * toast for this request. Use for background calls (e.g. token refresh)
+         * that surface their own failure.
+         */
+        _skipErrorToast?: boolean;
     }
 }
 
