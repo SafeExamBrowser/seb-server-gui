@@ -68,6 +68,7 @@
         v-model="deleteDialogOpen"
         :detail-text="deleteDetailText"
         translation-key-prefix="institutions.list"
+        :data-test-id="dataTestId"
         @confirm="confirmDelete"
     />
 
@@ -75,6 +76,7 @@
         v-model="statusDialogOpen"
         :active="!!statusTarget?.active"
         translation-key-prefix="institutions.list"
+        :data-test-id="dataTestId"
         @confirm="confirmStatusChange"
     />
 </template>
