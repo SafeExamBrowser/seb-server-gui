@@ -20,6 +20,7 @@ export interface TableAction<T extends TableItem = TableItem> {
     label: string;
     tooltip?: string;
     color?: string;
+    bgcolor?: string;
     onClick: (item: T) => void | Promise<void>;
     visible?: (item: T) => boolean;
     disabled?: (item: T) => boolean;

@@ -20,6 +20,8 @@ export function useAnalyzeTableActions(deps: {
             icon: "mdi-monitor-eye",
             label: t("examList.actions.showSPS"),
             tooltip: t("examList.actions.showSPS"),
+            bgcolor: "primary",
+            color: "grey",
             onClick: deps.onShowSPS,
             visible: spsEnabled,
         },

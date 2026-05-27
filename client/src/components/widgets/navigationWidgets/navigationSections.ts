@@ -99,8 +99,9 @@ export function buildFollowUpNavigationItems(
 ): NavigationSectionItem[] {
     return [
         {
-            label: translate("navigation.routeNames.finishedExams"),
-            testId: `${testIdPrefix}-finishedExams-text`,
+            label: translate("navigation.routeNames.analyzeExams"),
+            to: typedTo({ name: "/(app)/analyze/" }),
+            testId: `${testIdPrefix}-analyzeExams-text`,
         },
         {
             label: translate("titles.archiveExams"),

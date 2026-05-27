@@ -2033,7 +2033,7 @@
         "fallbackInstitutionName": "SEB Server",
         "routeNames": {
             "runningExams": "Running Exams",
-            "finishedExams": "Finished Exams",
+            "analyzeExams": "Analyze Exams",
             "search": "Search",
             "assessmentToolConnections": "Assessment Tool Connections",
             "connectionConfiguration": "Connection Configuration",

@@ -11,7 +11,7 @@
                     density="comfortable"
                     size="small"
                     rounded="lg"
-                    class="text-medium-emphasis"
+                    :class="getBGColor(action)"
                     :color="
                         isHovering ? (action.color ?? 'primary') : undefined
                     "
@@ -47,4 +47,10 @@ const props = defineProps<{
 const visibleActions = computed(() =>
     props.actions.filter((a) => a.visible?.(props.item) ?? true),
 );
+
+function getBGColor(action: TableAction): string {
+    return action.bgcolor
+        ? `text-medium-emphasis bg-${action.bgcolor}`
+        : "text-medium-emphasis";
+}
 </script>
