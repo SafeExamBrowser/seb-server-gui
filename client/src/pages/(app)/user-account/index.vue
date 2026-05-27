@@ -60,6 +60,7 @@
         v-model="deleteDialogOpen"
         :detail-text="deleteDetailText"
         translation-key-prefix="userAccount.list"
+        :data-test-id="dataTestId"
         @confirm="confirmDelete"
     />
 
@@ -67,6 +68,7 @@
         v-model="statusDialogOpen"
         :active="!!statusTarget?.active"
         translation-key-prefix="userAccount.list"
+        :data-test-id="dataTestId"
         @confirm="confirmStatusChange"
     />
 </template>
