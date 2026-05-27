@@ -166,6 +166,17 @@
                         :disabled="context.readonly"
                     />
                 </v-row>
+
+                <SettingsTitle label="sebSettings.examView.deepLinking.title" />
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="startURLAllowDeepLink"
+                        label="sebSettings.examView.deepLinking.startURLAllowDeepLink"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
             </v-col>
         </v-row>
     </LoadingFallbackComponent>

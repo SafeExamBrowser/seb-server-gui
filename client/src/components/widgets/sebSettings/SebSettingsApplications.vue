@@ -12,6 +12,15 @@
                 :disabled="context.readonly"
             />
         </v-row>
+        <v-row v-if="singleValues" max-width="300">
+            <CheckboxSetting
+                v-model="singleValues"
+                name="autoQuitApplications"
+                label="sebSettings.applicationView.autoQuitApplications"
+                :tooltip="true"
+                :disabled="context.readonly"
+            />
+        </v-row>
 
         <!--Permitted Process Table -->
         <v-row>

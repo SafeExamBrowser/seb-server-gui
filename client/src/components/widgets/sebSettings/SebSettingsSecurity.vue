@@ -222,6 +222,49 @@
                         :disabled="context.readonly"
                     />
                 </v-row>
+
+                <SettingsTitle
+                    label="sebSettings.securityView.sebVersion.title"
+                    :tooltip="false"
+                />
+                <v-row>
+                    <v-col
+                        ><div>
+                            {{
+                                translate(
+                                    "sebSettings.securityView.sebVersion.sebAllowedVersions_note1",
+                                )
+                            }}
+                        </div>
+                        <div class="font-weight-bold pl-5">
+                            {{
+                                translate(
+                                    "sebSettings.securityView.sebVersion.sebAllowedVersions_format",
+                                )
+                            }}
+                        </div>
+                        <div>
+                            {{
+                                translate(
+                                    "sebSettings.securityView.sebVersion.sebAllowedVersions_note2",
+                                )
+                            }}
+                        </div>
+                    </v-col>
+                </v-row>
+
+                <v-row>
+                    <v-col class="pt-1 pb-1">
+                        <SEBVersionSetting
+                            v-model="singleValues"
+                            name="sebAllowedVersions"
+                            label="sebSettings.securityView.sebVersion.sebAllowedVersions"
+                            :show-label="false"
+                            :tooltip="false"
+                            :disabled="context.readonly"
+                        />
+                    </v-col>
+                </v-row>
             </v-col>
 
             <!-- Left Right-->
@@ -377,6 +420,43 @@
                     />
                 </v-row>
 
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="allowMacOSVersionNumberCheckFull"
+                        label="sebSettings.securityView.macOS.allowMacOSVersionNumberCheckFull"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="allowMacOSVersionNumberMajor"
+                        label="sebSettings.securityView.macOS.allowMacOSVersionNumberMajor"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="allowMacOSVersionNumberMinor"
+                        label="sebSettings.securityView.macOS.allowMacOSVersionNumberMinor"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="allowMacOSVersionNumberPatch"
+                        label="sebSettings.securityView.macOS.allowMacOSVersionNumberPatch"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+
                 <SettingsTitle
                     label="sebSettings.securityView.ios.title"
                     :tooltip="false"
@@ -418,6 +498,61 @@
                     />
                 </v-row>
 
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="mobileSleepModeLockScreen"
+                        label="sebSettings.securityView.ios.mobileSleepModeLockScreen"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+
+                <v-row>
+                    <SelectionSetting
+                        v-model="singleValues"
+                        name="allowiOSBetaVersionNumber"
+                        label="sebSettings.securityView.ios.allowiOSBetaVersionNumber"
+                        :labels="true"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <SelectionSetting
+                        v-model="singleValues"
+                        name="allowiOSVersionNumberMajor"
+                        label="sebSettings.securityView.ios.allowiOSVersionNumberMajor"
+                        :labels="false"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+
+                <v-row>
+                    <NumberSetting
+                        v-model="singleValues"
+                        name="allowiOSVersionNumberMinor"
+                        label="sebSettings.securityView.ios.allowiOSVersionNumberMinor"
+                        :show-label="true"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                        :min="0"
+                    />
+                </v-row>
+
+                <v-row>
+                    <NumberSetting
+                        v-model="singleValues"
+                        name="allowiOSVersionNumberPatch"
+                        label="sebSettings.securityView.ios.allowiOSVersionNumberPatch"
+                        :show-label="true"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                        :min="0"
+                    />
+                </v-row>
+
                 <SettingsTitle
                     label="sebSettings.securityView.clipboard.title"
                     :tooltip="false"
@@ -430,49 +565,6 @@
                         :tooltip="true"
                         :disabled="context.readonly"
                     />
-                </v-row>
-
-                <SettingsTitle
-                    label="sebSettings.securityView.sebVersion.title"
-                    :tooltip="false"
-                />
-                <v-row>
-                    <v-col
-                        ><div>
-                            {{
-                                translate(
-                                    "sebSettings.securityView.sebVersion.sebAllowedVersions_note1",
-                                )
-                            }}
-                        </div>
-                        <div class="font-weight-bold pl-5">
-                            {{
-                                translate(
-                                    "sebSettings.securityView.sebVersion.sebAllowedVersions_format",
-                                )
-                            }}
-                        </div>
-                        <div>
-                            {{
-                                translate(
-                                    "sebSettings.securityView.sebVersion.sebAllowedVersions_note2",
-                                )
-                            }}
-                        </div>
-                    </v-col>
-                </v-row>
-
-                <v-row>
-                    <v-col class="pt-1 pb-1">
-                        <SEBVersionSetting
-                            v-model="singleValues"
-                            name="sebAllowedVersions"
-                            label="sebSettings.securityView.sebVersion.sebAllowedVersions"
-                            :show-label="false"
-                            :tooltip="false"
-                            :disabled="context.readonly"
-                        />
-                    </v-col>
                 </v-row>
             </v-col>
         </v-row>
