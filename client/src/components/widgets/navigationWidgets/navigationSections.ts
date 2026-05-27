@@ -1,11 +1,7 @@
 import { translate } from "@/utils/generalUtils";
-import { GUIComponent } from "@/services/ability";
+import { AbilityLike, GUIComponent } from "@/services/ability";
 import { typedTo } from "@/router/typedTo";
 import type { NavigationSectionItem } from "@/components/widgets/navigationWidgets/types.ts";
-
-type AbilityLike = {
-    canView: (component: GUIComponent) => boolean;
-};
 
 export function buildSettingsNavigationItems(
     ability: AbilityLike,
@@ -95,16 +91,19 @@ export function buildMonitoringNavigationItems(
 }
 
 export function buildFollowUpNavigationItems(
+    ability: AbilityLike,
     testIdPrefix: string,
 ): NavigationSectionItem[] {
     return [
         {
             label: translate("navigation.routeNames.analyzeExams"),
             to: typedTo({ name: "/(app)/analyze/" }),
+            visible: ability.canView(GUIComponent.AnalyzeExams),
             testId: `${testIdPrefix}-analyzeExams-text`,
         },
         {
             label: translate("titles.archiveExams"),
+            visible: ability.canView(GUIComponent.ArchiveExams),
             testId: `${testIdPrefix}-archiveExams-text`,
         },
     ];

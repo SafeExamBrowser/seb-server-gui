@@ -7,7 +7,7 @@
             data-testid="homePageMain-leftCol-container"
         >
             <v-sheet
-                v-for="card in actionCards"
+                v-for="card in actionCards()"
                 :key="card.testIdPrefix"
                 class="w-100 pa-4 d-flex flex-column justify-space-between"
                 :data-testid="`homePageMain-${card.testIdPrefix}-card`"
@@ -49,6 +49,9 @@
 import { translate } from "@/utils/generalUtils.ts";
 import type { RouteLocationAsRelative } from "vue-router";
 import { typedTo } from "@/router/typedTo";
+import { GUIComponent, useAbilities } from "@/services/ability";
+
+const ability = useAbilities();
 
 type ActionCard = {
     testIdPrefix: string;
@@ -56,21 +59,33 @@ type ActionCard = {
     route: RouteLocationAsRelative;
 };
 
-const actionCards: ActionCard[] = [
-    {
-        testIdPrefix: "create-templates",
-        titleKey: "homePage.createTemplates",
-        route: typedTo({ name: "/(app)/exam-template/create/" }),
-    },
-    {
-        testIdPrefix: "prepare-exam",
-        titleKey: "homePage.prepareExam",
-        route: typedTo({ name: "/(app)/exam/create/" }),
-    },
-    {
-        testIdPrefix: "monitor-exam",
-        titleKey: "homePage.monitorExams",
-        route: typedTo({ name: "/(app)/monitoring/" }),
-    },
-];
+const actionCards = () => {
+    let result: ActionCard[] = [];
+
+    if (ability.canView(GUIComponent.ExamTemplate)) {
+        result.push({
+            testIdPrefix: "create-templates",
+            titleKey: "homePage.createTemplates",
+            route: typedTo({ name: "/(app)/exam-template/create/" }),
+        });
+    }
+
+    if (ability.canView(GUIComponent.PrepareExam)) {
+        result.push({
+            testIdPrefix: "prepare-exam",
+            titleKey: "homePage.prepareExam",
+            route: typedTo({ name: "/(app)/exam/create/" }),
+        });
+    }
+
+    if (ability.canView(GUIComponent.RunningExams)) {
+        result.push({
+            testIdPrefix: "monitor-exam",
+            titleKey: "homePage.monitorExams",
+            route: typedTo({ name: "/(app)/monitoring/" }),
+        });
+    }
+
+    return result;
+};
 </script>
