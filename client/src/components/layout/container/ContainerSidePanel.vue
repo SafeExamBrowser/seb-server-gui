@@ -5,6 +5,7 @@
         elevation="1"
     >
         <v-btn
+            v-if="ability.canView(GUIComponent.NavigationOverview)"
             :active="false"
             class="mb-2 rounded-lg overflow-hidden"
             :class="
@@ -50,12 +51,14 @@
 <script setup lang="ts">
 import { useRoute, type RouteLocationAsRelative } from "vue-router";
 import type { BaseNavigationLink } from "./navigationLinks";
+import { GUIComponent, AbilityLike } from "@/services/ability";
 
 defineProps<{
     links: BaseNavigationLink[];
     isNavigationOverviewRoute: boolean;
     navigationOverviewRoute: RouteLocationAsRelative;
     homeRoute: RouteLocationAsRelative;
+    ability: AbilityLike;
 }>();
 
 const route = useRoute();

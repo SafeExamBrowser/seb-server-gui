@@ -460,17 +460,27 @@
     },
     "examTemplateDetail": {
         "boxes": {
-            "basicSettings": { "title": "Basic Settings" },
-            "sebSettings": { "title": "SEB Settings" },
+            "basicSettings": {
+                "title": "Basic Settings"
+            },
+            "sebSettings": {
+                "title": "SEB Settings"
+            },
             "indicators": {
                 "title": "Indicators",
                 "errors": {
                     "deleteFailed": "Failed to delete indicator"
                 }
             },
-            "supervisors": { "title": "Exam Supervisors" },
-            "screenProctoringSettings": { "title": "Screen Proctoring" },
-            "groups": { "title": "Groups" }
+            "supervisors": {
+                "title": "Exam Supervisors"
+            },
+            "screenProctoringSettings": {
+                "title": "Screen Proctoring"
+            },
+            "groups": {
+                "title": "Groups"
+            }
         },
         "errors": {
             "invalidId": "Invalid exam template id: \"{id}\""
@@ -530,6 +540,10 @@
             "tableHeaderEnd": "End",
             "tableHeaderType": "Exam Type",
             "tableHeaderStatus": "Status"
+        },
+        "actions": {
+            "downloadSEBLogs": "Download SEB Logs",
+            "showSPS": "Show Screen Proctoring"
         }
     },
     "userAccount": {
@@ -1986,7 +2000,8 @@
         "createInstitution": "Add Institution",
         "editInstitution": "Edit Institution",
         "editExamTemplate": "Edit Exam Template",
-        "galleryView": "Gallery View"
+        "galleryView": "Gallery View",
+        "analyze": "Analyze"
     },
     "warnings": {
         "no-data": "No data available",
@@ -2018,7 +2033,7 @@
         "fallbackInstitutionName": "SEB Server",
         "routeNames": {
             "runningExams": "Running Exams",
-            "finishedExams": "Finished Exams",
+            "analyzeExams": "Analyze Exams",
             "search": "Search",
             "assessmentToolConnections": "Assessment Tool Connections",
             "connectionConfiguration": "Connection Configuration",

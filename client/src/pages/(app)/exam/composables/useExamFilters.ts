@@ -1,40 +1,43 @@
 import { computed } from "vue";
 import { translate } from "@/utils/generalUtils.ts";
-import type { FilterSectionDef } from "@/components/widgets/filters/filterTypes.ts";
+import type {
+    FilterOption,
+    FilterSectionDef,
+} from "@/components/widgets/filters/filterTypes.ts";
 import {
     ExamStatusEnum,
     ExamTypeEnum,
 } from "@/models/seb-server/examFiltersEnum.ts";
 import { getExamStatusFilterColor } from "@/utils/generalUtils.ts";
 
+export const TRANSLATION_PREFIX = "examList.info";
 export const TYPE_FILTER_KEY = "type";
 export const EXAM_STATUS_FILTER_KEY = "status";
-
-const TRANSLATION_PREFIX = "examList.info";
+export const EXAM_TYPE_OPTIONS: FilterOption[] = [
+    {
+        value: ExamTypeEnum.BYOD,
+        label: translate(ExamTypeEnum.BYOD),
+    },
+    {
+        value: ExamTypeEnum.MANAGED,
+        label: translate(ExamTypeEnum.MANAGED),
+    },
+    {
+        value: ExamTypeEnum.VDI,
+        label: translate(ExamTypeEnum.VDI),
+    },
+    {
+        value: ExamTypeEnum.UNDEFINED,
+        label: translate(ExamTypeEnum.UNDEFINED),
+    },
+];
 
 export function useExamFilters() {
     return computed<FilterSectionDef[]>(() => [
         {
             key: TYPE_FILTER_KEY,
             title: translate(`${TRANSLATION_PREFIX}.examType`),
-            options: [
-                {
-                    value: ExamTypeEnum.BYOD,
-                    label: translate(ExamTypeEnum.BYOD),
-                },
-                {
-                    value: ExamTypeEnum.MANAGED,
-                    label: translate(ExamTypeEnum.MANAGED),
-                },
-                {
-                    value: ExamTypeEnum.VDI,
-                    label: translate(ExamTypeEnum.VDI),
-                },
-                {
-                    value: ExamTypeEnum.UNDEFINED,
-                    label: translate(ExamTypeEnum.UNDEFINED),
-                },
-            ],
+            options: EXAM_TYPE_OPTIONS,
         },
         {
             key: EXAM_STATUS_FILTER_KEY,
@@ -59,11 +62,6 @@ export function useExamFilters() {
                     value: ExamStatusEnum.FINISHED,
                     label: translate(ExamStatusEnum.FINISHED),
                     color: getExamStatusFilterColor(ExamStatusEnum.FINISHED),
-                },
-                {
-                    value: ExamStatusEnum.ARCHIVED,
-                    label: translate(ExamStatusEnum.ARCHIVED),
-                    color: getExamStatusFilterColor(ExamStatusEnum.ARCHIVED),
                 },
             ],
         },

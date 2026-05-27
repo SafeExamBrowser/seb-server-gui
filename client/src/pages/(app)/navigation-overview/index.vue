@@ -86,7 +86,7 @@ const monitoringItems = computed(() =>
 );
 
 const followUpItems = computed(() =>
-    buildFollowUpNavigationItems("navigationOverview"),
+    buildFollowUpNavigationItems(ability, "navigationOverview"),
 );
 </script>
 

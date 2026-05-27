@@ -310,6 +310,9 @@ import * as spConstants from "@/utils/sp-constants";
 import { VueDatePicker } from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import * as timeUtils from "@/utils/timeUtils";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
 
 // emits (parent functions)
 const emit = defineEmits<{
@@ -332,9 +335,11 @@ const emit = defineEmits<{
     closeAllPanels: [];
 }>();
 
+const qExamName = route.query["examName"];
+
 // form fields
 const groupNameField = ref<string>("");
-const examNameField = ref<string>("");
+const examNameField = ref<string>(qExamName ? qExamName.toString() : "");
 
 const loginNameField = ref<string>("");
 const ipAddressField = ref<string>("");
@@ -346,9 +351,9 @@ const metadataActivityDetailsField = ref<string>("");
 const metadataWindowTitleField = ref<string>("");
 
 const timePeriodField = ref<number>(1);
-const timePeriodRadio = ref<boolean>(true);
+const timePeriodRadio = ref<boolean>(qExamName ? false : true);
 const timePeriodSelect = ref<number>(2);
-const timeSelectionRadio = ref<boolean>(false);
+const timeSelectionRadio = ref<boolean>(qExamName ? true : false);
 const timeSelectionPicker = ref(null);
 
 onBeforeMount(async () => {
