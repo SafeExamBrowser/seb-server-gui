@@ -140,6 +140,8 @@ import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useAssessmentToolFormFields } from "@/pages/(app)/assessment-tool/composables/useAssessmentToolFormFields.ts";
 import { useMutation } from "@/composables/useMutation.ts";
+import { notify } from "@/services/notifications/notify.ts";
+import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
 import { createAssessmentTool } from "@/services/seb-server/assessmentToolService.ts";
 import type { CommonAssessmentToolPar } from "@/models/seb-server/assessmentTool.ts";
 import CancelButton from "@/components/widgets/CancelButton.vue";
@@ -168,9 +170,9 @@ const {
     institutionId,
     name,
     lmsType,
-    serverAddress,
-    clientUsername,
-    clientPassword,
+    lmsUrl,
+    lmsClientname,
+    lmsClientsecret,
     accessToken,
     proxyHost,
     proxyPort,
@@ -178,8 +180,11 @@ const {
     proxyPassword,
 } = useAssessmentToolFormFields("create");
 
-const { mutateData: createTool, error: toolError } =
-    useMutation(createAssessmentTool);
+const {
+    mutateData: createTool,
+    data: createdTool,
+    error: toolError,
+} = useMutation(createAssessmentTool);
 
 const mainFormRef = ref<InstanceType<typeof FormBuilder>>();
 const authFormRef = ref<InstanceType<typeof FormBuilder>>();
@@ -201,7 +206,7 @@ async function submit() {
     const selectedInstitutionId = institutionId.value;
     const selectedName = name.value;
     const selectedLmsType = lmsType.value;
-    const selectedServerAddress = serverAddress.value;
+    const selectedServerAddress = lmsUrl.value;
 
     if (
         !selectedInstitutionId ||
@@ -236,8 +241,8 @@ async function submit() {
             lmsRestApiToken: selectedToken,
         });
     } else {
-        const selectedUsername = clientUsername.value;
-        const selectedPassword = clientPassword.value;
+        const selectedUsername = lmsClientname.value;
+        const selectedPassword = lmsClientsecret.value;
         if (!selectedUsername || !selectedPassword) return;
         await createTool({
             ...common,
@@ -247,8 +252,37 @@ async function submit() {
         });
     }
 
-    if (!toolError.value) {
-        await router.push({ name: "/(app)/assessment-tool/" });
+    if (toolError.value) {
+        const applied = applyBackendFieldErrors(toolError.value, {
+            forms: [
+                {
+                    form: mainFormRef.value,
+                    fields: mainFormFields.value.map((field) => field.name),
+                },
+                {
+                    form: authFormRef.value,
+                    fields: authFormFields.value.map((field) => field.name),
+                },
+                {
+                    form: proxyFormRef.value,
+                    fields: proxyFormFields.value.map((field) => field.name),
+                },
+            ],
+        });
+        if (!applied.fullyHandled) {
+            notify.serverError(applied.appError, {
+                contextLabel: "assessmenttool",
+                onlyMessages: applied.unhandledMessages,
+            });
+        }
+        return;
+    }
+    if (createdTool.value) {
+        const search = createdTool.value.name;
+        await router.push({
+            name: "/(app)/assessment-tool/",
+            query: { search },
+        });
     }
 }
 </script>

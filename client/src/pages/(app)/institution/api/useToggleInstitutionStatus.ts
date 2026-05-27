@@ -1,41 +1,27 @@
-import { ref } from "vue";
+import { useMutation } from "@/composables/useMutation.ts";
 import {
     activateInstitution,
     deactivateInstitution,
 } from "@/services/seb-server/institutionService.ts";
 
 export const useToggleInstitutionStatus = () => {
-    const loading = ref(false);
-    const error = ref<string>();
+    const {
+        mutateData: changeInstitutionStatus,
+        error,
+        loading,
+    } = useMutation(async (id: number, active: boolean) => {
+        const response = active
+            ? await deactivateInstitution(id)
+            : await activateInstitution(id);
 
-    const changeInstitutionStatus = async (
-        id: number,
-        active: boolean,
-    ): Promise<boolean> => {
-        loading.value = true;
-        error.value = undefined;
-
-        try {
-            const response = active
-                ? await deactivateInstitution(id)
-                : await activateInstitution(id);
-
-            if (response === null) {
-                throw new Error("Failed to change institution status.");
-            }
-
-            return true;
-        } catch (err) {
-            error.value = err instanceof Error ? err.message : "Unknown error";
-            return false;
-        } finally {
-            loading.value = false;
+        if (response === null) {
+            throw new Error("Failed to change institution status.");
         }
-    };
+    });
 
     const changeInstitutionStatusFromItem = async (
         item: Record<string, unknown>,
-    ): Promise<boolean> => {
+    ) => {
         const id = item.id;
         const active = item.active;
 
@@ -51,13 +37,13 @@ export const useToggleInstitutionStatus = () => {
             );
         }
 
-        return changeInstitutionStatus(id, active);
+        await changeInstitutionStatus(id, active);
     };
 
     return {
         changeInstitutionStatus,
         toggleInstitutionStatusFromItem: changeInstitutionStatusFromItem,
-        loading,
         error,
+        loading,
     };
 };

@@ -85,6 +85,7 @@
 
             <ChangePasswordDialog
                 v-if="mode !== 'create' && initialUser?.username"
+                ref="changePasswordDialogRef"
                 v-model="changePasswordDialogOpen"
                 :username="initialUser.username"
                 :loading="changePasswordLoading"
@@ -113,6 +114,17 @@ import {
 } from "@/pages/(app)/user-account/composables/useUserAccountFormFields.ts";
 import { UserRoleEnum } from "@/models/userRoleEnum.ts";
 import type { UserAccount } from "@/models/userAccount.ts";
+import type { BackendFieldAliasMap } from "@/services/errors/types.ts";
+import {
+    applyBackendFieldErrors,
+    type ApplyBackendErrorsResult,
+} from "@/services/errors/formErrorMapping.ts";
+
+const USER_ACCOUNT_FIELD_ALIASES = {
+    timeZone: "timezone",
+    userRoles: "role",
+    confirmNewPassword: "confirmPassword",
+} satisfies BackendFieldAliasMap;
 
 export type UserAccountFormPayload = {
     institutionId: string;
@@ -148,6 +160,8 @@ const emit = defineEmits<{
 
 const leftFormRef = ref<InstanceType<typeof FormBuilder>>();
 const rightFormRef = ref<InstanceType<typeof FormBuilder>>();
+const changePasswordDialogRef =
+    ref<InstanceType<typeof ChangePasswordDialog>>();
 const changePasswordDialogOpen = ref(false);
 
 const {
@@ -284,5 +298,31 @@ const emitChangePassword = (payload: ChangePasswordPayload) => {
     emit("changePassword", payload);
 };
 
-defineExpose({ snapshot });
+function applyBackendErrors(error: unknown): ApplyBackendErrorsResult {
+    return applyBackendFieldErrors(error, {
+        aliases: USER_ACCOUNT_FIELD_ALIASES,
+        forms: [
+            {
+                form: leftFormRef.value,
+                fields: leftFormFields.value.map((field) => field.name),
+            },
+            {
+                form: rightFormRef.value,
+                fields: rightFormFields.value.map((field) => field.name),
+            },
+        ],
+    });
+}
+
+function applyChangePasswordBackendErrors(
+    error: unknown,
+): ApplyBackendErrorsResult | undefined {
+    return changePasswordDialogRef.value?.applyBackendErrors(error);
+}
+
+defineExpose({
+    snapshot,
+    applyBackendErrors,
+    applyChangePasswordBackendErrors,
+});
 </script>

@@ -15,10 +15,10 @@ export const useAssessmentToolFormFields = (
     const institutionId = ref<string | undefined>(undefined);
     const name = ref<string | undefined>(undefined);
     const lmsType = ref<string | undefined>(undefined);
-    const serverAddress = ref<string | undefined>(undefined);
+    const lmsUrl = ref<string | undefined>(undefined);
     const authMode = ref<AuthMode>("token");
-    const clientUsername = ref<string | undefined>(undefined);
-    const clientPassword = ref<string | undefined>(undefined);
+    const lmsClientname = ref<string | undefined>(undefined);
+    const lmsClientsecret = ref<string | undefined>(undefined);
     const accessToken = ref<string | undefined>(undefined);
     const withProxy = ref<boolean>(false);
     const proxyHost = ref<string | undefined>(undefined);
@@ -30,8 +30,8 @@ export const useAssessmentToolFormFields = (
         if (mode === "client") {
             accessToken.value = undefined;
         } else {
-            clientUsername.value = undefined;
-            clientPassword.value = undefined;
+            lmsClientname.value = undefined;
+            lmsClientsecret.value = undefined;
         }
     });
 
@@ -107,8 +107,8 @@ export const useAssessmentToolFormFields = (
             },
             {
                 type: "text" as const,
-                name: "serverAddress",
-                model: serverAddress,
+                name: "lmsUrl",
+                model: lmsUrl,
                 label: t("fields.serverAddress.label"),
                 required: true,
                 rules: [
@@ -126,15 +126,15 @@ export const useAssessmentToolFormFields = (
             return [
                 {
                     type: "text" as const,
-                    name: "clientUsername",
-                    model: clientUsername,
+                    name: "lmsClientname",
+                    model: lmsClientname,
                     label: t("fields.clientUsername.label"),
                     required: true,
                 },
                 {
                     type: "password" as const,
-                    name: "clientPassword",
-                    model: clientPassword,
+                    name: "lmsClientsecret",
+                    model: lmsClientsecret,
                     label: t("fields.clientPassword.label"),
                     required: true,
                 },
@@ -207,9 +207,9 @@ export const useAssessmentToolFormFields = (
         institutionId,
         name,
         lmsType,
-        serverAddress,
-        clientUsername,
-        clientPassword,
+        lmsUrl,
+        lmsClientname,
+        lmsClientsecret,
         accessToken,
         proxyHost,
         proxyPort,

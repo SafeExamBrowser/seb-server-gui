@@ -61,6 +61,7 @@ declare module 'vue-router/auto-routes' {
       | '/(app)/monitoring/[examId]/client/'
       | '/(app)/monitoring/[examId]/client/[connectionToken]/'
       | '/(app)/navigation-overview/'
+      | '/(app)/notification-playground/'
       | '/(app)/sp-recording/[sessionId]/'
       | '/(app)/sp-recording/application-search/[sessionId]/'
       | '/(app)/sp-search/'
@@ -244,6 +245,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/(app)/notification-playground/': RouteRecordInfo<
+      '/(app)/notification-playground/',
+      '/notification-playground',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/(app)/sp-recording/[sessionId]/': RouteRecordInfo<
       '/(app)/sp-recording/[sessionId]/',
       '/sp-recording/:sessionId',
@@ -356,6 +364,7 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/monitoring/[examId]/client/'
         | '/(app)/monitoring/[examId]/client/[connectionToken]/'
         | '/(app)/navigation-overview/'
+        | '/(app)/notification-playground/'
         | '/(app)/sp-recording/[sessionId]/'
         | '/(app)/sp-recording/application-search/[sessionId]/'
         | '/(app)/sp-search/'
@@ -513,6 +522,12 @@ declare module 'vue-router/auto-routes' {
     'src/pages/(app)/navigation-overview/index.vue': {
       routes:
         | '/(app)/navigation-overview/'
+      views:
+        | never
+    }
+    'src/pages/(app)/notification-playground/index.vue': {
+      routes:
+        | '/(app)/notification-playground/'
       views:
         | never
     }

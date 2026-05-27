@@ -83,8 +83,26 @@ export const useCreateExamStore = defineStore("createExam", () => {
 
     const currentStepIndex = ref(getInitialState().currentStepIndex);
 
+    const visibleStepData = computed(() => {
+        const clientGroupCount =
+            stepExamTemplateStore.selectedExamTemplate?.CLIENT_GROUP_TEMPLATES
+                .length ?? 0;
+        const assessmentToolCount =
+            stepAssessmentToolStore.assessmentTools?.content.length ?? 0;
+
+        return staticStepData.filter((step) => {
+            if (step.componentName === "StepAssessmentTool") {
+                return assessmentToolCount !== 1;
+            }
+            if (step.componentName === "StepClientGroups") {
+                return clientGroupCount >= 2;
+            }
+            return true;
+        });
+    });
+
     const stepperModel = computed<StepItem[]>(() =>
-        staticStepData.map((step, index) => ({
+        visibleStepData.value.map((step, index) => ({
             title: i18n.global.t(step.i18nKey),
             nextStepEnabled: isStepReady(
                 step.componentName,
@@ -98,7 +116,7 @@ export const useCreateExamStore = defineStore("createExam", () => {
     );
 
     const currentStep = computed<StepItemCreateExam>(() => {
-        const step = staticStepData.at(currentStepIndex.value);
+        const step = visibleStepData.value.at(currentStepIndex.value);
 
         if (!step) {
             throw new Error("Step not found");
@@ -140,7 +158,7 @@ export const useCreateExamStore = defineStore("createExam", () => {
     });
 
     const increaseCurrentStepIndex = () => {
-        if (currentStepIndex.value < stepperModel.value.length - 1) {
+        if (currentStepIndex.value < visibleStepData.value.length - 1) {
             currentStepIndex.value++;
         }
     };

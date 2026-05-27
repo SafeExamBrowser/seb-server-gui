@@ -1,7 +1,7 @@
 import { ref } from "vue";
 import * as authenticationService from "@/services/authenticationService.ts";
 import { useAuthStore } from "@/composables/store/useAuthStore.ts";
-import { AxiosError } from "axios";
+import { toAppError } from "@/services/errors/toAppError.ts";
 import { useRouter } from "vue-router";
 
 export const useLogin = () => {
@@ -24,10 +24,14 @@ export const useLogin = () => {
 
             await router.push({ name: "/(app)/" });
         } catch (err) {
-            errorI18nKey.value =
-                err instanceof AxiosError && err.status === 401
-                    ? "login-error"
-                    : "api-error";
+            const appError = toAppError(err);
+            const status =
+                appError.kind === "rate-limit"
+                    ? 429
+                    : appError.kind === "network"
+                      ? undefined
+                      : appError.status;
+            errorI18nKey.value = status === 401 ? "login-error" : "api-error";
         } finally {
             loading.value = false;
         }

@@ -1,61 +1,37 @@
-import type { Ref } from "vue";
-import { ref } from "vue";
-import { ConnectionConfigurations } from "@/models/seb-server/connectionConfiguration.ts";
+import { useMutation } from "@/composables/useMutation.ts";
 import { deleteConnectionConfiguration } from "@/services/seb-server/connectionConfigurationService.ts";
 
-export const useDeleteConnectionConfiguration = (
-    connectionConfigurations: Ref<ConnectionConfigurations | undefined>,
-) => {
-    const loading = ref(false);
-    const error = ref<string>();
+export const useDeleteConnectionConfiguration = () => {
+    const {
+        mutateData: removeConnectionConfiguration,
+        error,
+        loading,
+    } = useMutation(async (id: string) => {
+        const response = await deleteConnectionConfiguration(id);
 
-    const removeConnectionConfiguration = async (
-        id: string,
-    ): Promise<boolean> => {
-        loading.value = true;
-        error.value = undefined;
-
-        try {
-            const response = await deleteConnectionConfiguration(id);
-
-            if (response === null) {
-                throw new Error("Failed to delete connection configuration.");
-            }
-
-            if (connectionConfigurations.value?.content) {
-                connectionConfigurations.value.content =
-                    connectionConfigurations.value.content.filter(
-                        (connectionConfiguration) =>
-                            connectionConfiguration.id.toString() !== id,
-                    );
-            }
-
-            return true;
-        } catch (err) {
-            error.value = err instanceof Error ? err.message : "Unknown error";
-            return false;
-        } finally {
-            loading.value = false;
+        if (response === null) {
+            throw new Error("Failed to delete connection configuration.");
         }
-    };
+    });
 
     const removeConnectionConfigurationFromItem = async (
         item: Record<string, unknown>,
-    ): Promise<boolean> => {
+    ) => {
         const id = item.id;
 
         if (typeof id !== "number") {
-            error.value = "Invalid Connection Configuration identifier.";
-            return false;
+            throw new Error(
+                "useDeleteConnectionConfiguration: row item is missing a numeric id",
+            );
         }
 
-        return removeConnectionConfiguration(id.toString());
+        await removeConnectionConfiguration(id.toString());
     };
 
     return {
         removeConnectionConfiguration,
         removeConnectionConfigurationFromItem,
-        loading,
         error,
+        loading,
     };
 };

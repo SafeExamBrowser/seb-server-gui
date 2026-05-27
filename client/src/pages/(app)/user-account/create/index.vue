@@ -1,5 +1,6 @@
 <template>
     <UserAccountForm
+        ref="formRef"
         :title="$t('titles.createUserAccount')"
         mode="create"
         data-test-prefix="createUserAccount"
@@ -9,12 +10,14 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 import UserAccountForm, {
     type UserAccountFormPayload,
 } from "@/pages/(app)/user-account/components/UserAccountForm.vue";
 import { useMutation } from "@/composables/useMutation.ts";
 import { createUserAccount } from "@/services/seb-server/userAccountService.ts";
+import { notify } from "@/services/notifications/notify.ts";
 
 definePage({
     meta: {
@@ -25,7 +28,12 @@ definePage({
 });
 
 const router = useRouter();
-const { mutateData: create, data: created } = useMutation(createUserAccount);
+const formRef = ref<InstanceType<typeof UserAccountForm>>();
+const {
+    mutateData: create,
+    data: created,
+    error: createError,
+} = useMutation(createUserAccount);
 
 const handleSubmit = async (payload: UserAccountFormPayload) => {
     if (!payload.password || !payload.confirmPassword) {
@@ -44,7 +52,21 @@ const handleSubmit = async (payload: UserAccountFormPayload) => {
         confirmNewPassword: payload.confirmPassword,
     });
     if (created.value) {
-        await router.push({ name: "/(app)/user-account/" });
+        const search = created.value.surname;
+        await router.push({
+            name: "/(app)/user-account/",
+            query: { search },
+        });
+        return;
+    }
+    if (createError.value) {
+        const result = formRef.value?.applyBackendErrors(createError.value);
+        if (!result?.fullyHandled) {
+            notify.serverError(result?.appError ?? createError.value, {
+                contextLabel: "useraccount",
+                onlyMessages: result?.unhandledMessages,
+            });
+        }
     }
 };
 </script>
