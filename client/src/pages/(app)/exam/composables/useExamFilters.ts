@@ -58,6 +58,11 @@ export function useExamFilters() {
                     label: translate(ExamStatusEnum.RUNNING),
                     color: getExamStatusFilterColor(ExamStatusEnum.RUNNING),
                 },
+                {
+                    value: ExamStatusEnum.FINISHED,
+                    label: translate(ExamStatusEnum.FINISHED),
+                    color: getExamStatusFilterColor(ExamStatusEnum.FINISHED),
+                },
             ],
         },
     ]);

@@ -18,6 +18,7 @@ export interface TableAction<T extends TableItem = TableItem> {
     key: string;
     icon: string;
     label: string;
+    tooltip?: string;
     color?: string;
     onClick: (item: T) => void | Promise<void>;
     visible?: (item: T) => boolean;

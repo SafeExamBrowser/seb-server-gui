@@ -536,6 +536,10 @@
             "tableHeaderEnd": "End",
             "tableHeaderType": "Exam Type",
             "tableHeaderStatus": "Status"
+        },
+        "actions": {
+            "downloadSEBLogs": "Download SEB Logs",
+            "showSPS": "Show Screen Proctoring"
         }
     },
     "userAccount": {

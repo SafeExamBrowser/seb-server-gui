@@ -4,20 +4,76 @@ import type {
     TableAction,
     TableItem,
 } from "@/components/widgets/entity-table/types.ts";
+import * as timeUtils from "@/utils/timeUtils.ts";
+import { downloadSEBLogsForExam } from "@/services/seb-server/monitoringService";
+import { Exam } from "@/models/seb-server/exam";
+import { stringToBoolean } from "@/utils/generalUtils";
 
 export function useAnalyzeTableActions(deps: {
-    onNavigate: (item: TableItem) => void;
+    onShowSPS: (item: TableItem) => void;
 }) {
     const { t } = useI18n();
 
-    // TODO action got log download and SPS search with exam preselected
-
     return computed<TableAction[]>(() => [
         {
-            key: "navigate",
-            icon: "mdi-chevron-right",
-            label: t("general.viewButton"),
-            onClick: deps.onNavigate,
+            key: "showScreenProctoring",
+            icon: "mdi-monitor-eye",
+            label: t("examList.actions.showSPS"),
+            tooltip: t("examList.actions.showSPS"),
+            onClick: deps.onShowSPS,
+            visible: spsEnabled,
+        },
+        {
+            key: "downloadSEBLogs",
+            icon: "mdi-download",
+            label: t("examList.actions.downloadSEBLogs"),
+            tooltip: t("examList.actions.downloadSEBLogs"),
+            onClick: downloadSEBLogs,
         },
     ]);
+}
+
+async function downloadSEBLogs(item: TableItem) {
+    if (item.id != null) {
+        const blobResponse = await downloadSEBLogsForExam(String(item.id));
+
+        if (blobResponse == null) {
+            return;
+        }
+
+        createDownloadLink(item, blobResponse);
+    }
+}
+
+function createDownloadLink(item: TableItem, blob: Blob) {
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute("download", getExamConfigFileName(item));
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+    URL.revokeObjectURL(link.href);
+}
+
+function getExamConfigFileName(item: TableItem): string {
+    if (!item.quizName) {
+        return `SEBClientLogs_${timeUtils.getCurrentDateString()}.csv`;
+    }
+
+    const examName = String(item.quizName).replaceAll(" ", "_");
+
+    return `SEBClientLogs_${examName}_${timeUtils.getCurrentDateString()}.csv`;
+}
+
+function spsEnabled(item: TableItem): boolean {
+    const exam: Exam = item as Exam;
+    if (
+        !exam.additionalAttributes ||
+        !exam.additionalAttributes.enableScreenProctoring
+    )
+        return false;
+
+    return stringToBoolean(exam.additionalAttributes.enableScreenProctoring);
 }

@@ -119,9 +119,7 @@ export const getSingleConnectionEvents = async (
         })
     ).data;
 
-export const downloadClientEventsForExam = async (
-    examId: string,
-): Promise<Blob> =>
+export const downloadSEBLogsForExam = async (examId: string): Promise<Blob> =>
     (
         await apiService.getRequest({
             url: `${clientEventUrl}/export`,
