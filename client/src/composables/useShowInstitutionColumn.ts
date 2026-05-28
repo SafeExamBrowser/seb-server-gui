@@ -1,6 +1,6 @@
 import { computed } from "vue";
 import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/userAccountStore.ts";
-import { UserRoleEnum } from "@/models/userRoleEnum.ts";
+import { UserRole } from "@/models/userAccount.ts";
 
 export const useShowInstitutionColumn = () => {
     const authenticatedUserAccountStore = useAuthenticatedUserAccountStore();
@@ -8,6 +8,6 @@ export const useShowInstitutionColumn = () => {
     return computed(() => {
         const roles =
             authenticatedUserAccountStore.userAccount?.userRoles ?? [];
-        return roles.includes(UserRoleEnum.SEB_SERVER_ADMIN);
+        return roles.includes(UserRole.SEB_SERVER_ADMIN);
     });
 };

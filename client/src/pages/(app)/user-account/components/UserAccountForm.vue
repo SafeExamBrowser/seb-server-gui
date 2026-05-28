@@ -112,25 +112,17 @@ import {
     useUserAccountFormFields,
     type UserAccountFormMode,
 } from "@/pages/(app)/user-account/composables/useUserAccountFormFields.ts";
-import { UserRoleEnum } from "@/models/userRoleEnum.ts";
 import type { BackendFieldAliasMap } from "@/services/errors/types.ts";
 import {
     applyBackendFieldErrors,
     type ApplyBackendErrorsResult,
 } from "@/services/errors/formErrorMapping.ts";
-import type {
-    UserAccount,
-    UserAccountCreateRequest,
-    UserAccountRole,
+import {
+    UserRole,
+    type UserAccount,
+    type UserAccountCreateRequest,
+    type UserAccountRole,
 } from "@/models/userAccount.ts";
-
-const USER_ACCOUNT_ROLES: ReadonlySet<string> = new Set(
-    Object.values(UserRoleEnum),
-);
-const isUserAccountRole = (role: string): role is UserAccountRole =>
-    USER_ACCOUNT_ROLES.has(role);
-const toUserAccountRole = (role: string): UserAccountRole | undefined =>
-    isUserAccountRole(role) ? role : undefined;
 
 const USER_ACCOUNT_FIELD_ALIASES = {
     timeZone: "timezone",
@@ -191,19 +183,19 @@ const roleDescription = computed(() => {
 const getHighestRole = (
     roles: ReadonlyArray<UserAccountRole>,
 ): UserAccountRole | undefined => {
-    if (roles.includes(UserRoleEnum.SEB_SERVER_ADMIN)) {
-        return UserRoleEnum.SEB_SERVER_ADMIN;
+    if (roles.includes(UserRole.SEB_SERVER_ADMIN)) {
+        return UserRole.SEB_SERVER_ADMIN;
     }
-    if (roles.includes(UserRoleEnum.INSTITUTIONAL_ADMIN)) {
-        return UserRoleEnum.INSTITUTIONAL_ADMIN;
+    if (roles.includes(UserRole.INSTITUTIONAL_ADMIN)) {
+        return UserRole.INSTITUTIONAL_ADMIN;
     }
-    if (roles.includes(UserRoleEnum.EXAM_ADMIN)) {
-        return UserRoleEnum.EXAM_ADMIN;
+    if (roles.includes(UserRole.EXAM_ADMIN)) {
+        return UserRole.EXAM_ADMIN;
     }
-    if (roles.includes(UserRoleEnum.TEACHER)) {
-        return UserRoleEnum.TEACHER;
+    if (roles.includes(UserRole.TEACHER)) {
+        return UserRole.TEACHER;
     }
-    return roles.length > 0 ? UserRoleEnum.EXAM_SUPPORTER : undefined;
+    return roles.length > 0 ? UserRole.EXAM_SUPPORTER : undefined;
 };
 
 const { isDirty, snapshot } = useDirtyTracking(() => ({
@@ -221,7 +213,7 @@ const hydrate = (user: UserAccount) => {
     username.value = user.username;
     name.value = user.name;
     surname.value = user.surname;
-    email.value = user.email ?? "";
+    email.value = user.email;
     timezone.value = user.timezone;
     role.value = getHighestRole(user.userRoles);
     snapshot();
@@ -248,24 +240,19 @@ const formatDate = (iso?: string): string => {
 };
 
 const buildUserRoles = (
-    selectedRole: string,
-): UserAccount["userRoles"] | undefined => {
-    const userAccountRole = toUserAccountRole(selectedRole);
-    if (!userAccountRole) {
-        return undefined;
-    }
-
-    if (selectedRole === UserRoleEnum.INSTITUTIONAL_ADMIN) {
+    selectedRole: UserAccountRole,
+): UserAccount["userRoles"] => {
+    if (selectedRole === UserRole.INSTITUTIONAL_ADMIN) {
         return [
-            UserRoleEnum.INSTITUTIONAL_ADMIN,
-            UserRoleEnum.EXAM_ADMIN,
-            UserRoleEnum.EXAM_SUPPORTER,
+            UserRole.INSTITUTIONAL_ADMIN,
+            UserRole.EXAM_ADMIN,
+            UserRole.EXAM_SUPPORTER,
         ];
     }
-    if (selectedRole === UserRoleEnum.EXAM_ADMIN) {
-        return [UserRoleEnum.EXAM_ADMIN, UserRoleEnum.EXAM_SUPPORTER];
+    if (selectedRole === UserRole.EXAM_ADMIN) {
+        return [UserRole.EXAM_ADMIN, UserRole.EXAM_SUPPORTER];
     }
-    return [userAccountRole];
+    return [selectedRole];
 };
 
 const submit = async () => {
@@ -287,16 +274,13 @@ const submit = async () => {
     }
 
     const selectedUserRoles = buildUserRoles(role.value);
-    if (!selectedUserRoles) {
-        return;
-    }
 
     const baseUserAccount = {
         institutionId: Number(institutionId.value),
         username: username.value,
         name: name.value,
         surname: surname.value,
-        email: email.value,
+        email: email.value || undefined,
         language: "en",
         timezone: timezone.value,
     };

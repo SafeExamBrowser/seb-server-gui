@@ -5,7 +5,34 @@ import i18n from "@/i18n";
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
 import { useInstitutions } from "@/composables/useInstitutions.ts";
 import { useUserAccountStore } from "@/stores/authentication/userAccountStore.ts";
-import { UserRoleEnum } from "@/models/userRoleEnum.ts";
+import {
+    USER_ROLES,
+    UserRole,
+    type UserAccountRole,
+} from "@/models/userAccount.ts";
+import {
+    zUserInfo,
+    zUserMod,
+} from "@/api/seb-server/generated/hey-api/zod.gen.ts";
+
+const USERNAME_MIN_LENGTH = zUserInfo.shape.username.minLength ?? 3;
+const USERNAME_MAX_LENGTH = zUserInfo.shape.username.maxLength ?? 255;
+const NAME_MAX_LENGTH = zUserInfo.shape.name.maxLength ?? 255;
+const SURNAME_MAX_LENGTH = zUserInfo.shape.surname.maxLength ?? 255;
+const PASSWORD_MIN_LENGTH = zUserMod.shape.newPassword.minLength ?? 8;
+
+const ADMIN_VISIBLE_ROLES: ReadonlySet<UserAccountRole> = new Set([
+    UserRole.SEB_SERVER_ADMIN,
+    UserRole.INSTITUTIONAL_ADMIN,
+    UserRole.EXAM_ADMIN,
+    UserRole.EXAM_SUPPORTER,
+]);
+
+const INSTITUTIONAL_VISIBLE_ROLES: ReadonlySet<UserAccountRole> = new Set([
+    UserRole.INSTITUTIONAL_ADMIN,
+    UserRole.EXAM_ADMIN,
+    UserRole.EXAM_SUPPORTER,
+]);
 
 const timezoneOptions = moment.tz
     .names()
@@ -26,7 +53,9 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
     );
     const password = ref<string | undefined>(undefined);
     const confirmPassword = ref<string | undefined>(undefined);
-    const role = ref<string | undefined>(undefined);
+    const role = ref<UserAccountRole | undefined>(undefined);
+
+    const rules = useRules();
 
     const {
         data: institutions,
@@ -36,9 +65,9 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
 
     const authenticatedUser = useUserAccountStore().userAccount;
     const userRoles = authenticatedUser?.userRoles ?? [];
-    const hasSebServerAdmin = userRoles.includes(UserRoleEnum.SEB_SERVER_ADMIN);
+    const hasSebServerAdmin = userRoles.includes(UserRole.SEB_SERVER_ADMIN);
     const hasInstitutionalAdmin = userRoles.includes(
-        UserRoleEnum.INSTITUTIONAL_ADMIN,
+        UserRole.INSTITUTIONAL_ADMIN,
     );
 
     const institutionSelectDisabled = ref(
@@ -71,28 +100,17 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
     );
 
     const availableRoles = computed(() => {
-        const allRoles = Object.values(UserRoleEnum).map((r) => ({
-            value: r,
-            text: i18n.global.t(`general.userRoles.${r}`),
+        const allRoles = USER_ROLES.map((value) => ({
+            value,
+            text: i18n.global.t(`general.userRoles.${value}`),
         }));
 
         if (hasSebServerAdmin) {
-            return allRoles.filter((r) =>
-                [
-                    UserRoleEnum.SEB_SERVER_ADMIN,
-                    UserRoleEnum.INSTITUTIONAL_ADMIN,
-                    UserRoleEnum.EXAM_ADMIN,
-                    UserRoleEnum.EXAM_SUPPORTER,
-                ].includes(r.value as UserRoleEnum),
-            );
+            return allRoles.filter((r) => ADMIN_VISIBLE_ROLES.has(r.value));
         }
         if (hasInstitutionalAdmin) {
             return allRoles.filter((r) =>
-                [
-                    UserRoleEnum.INSTITUTIONAL_ADMIN,
-                    UserRoleEnum.EXAM_ADMIN,
-                    UserRoleEnum.EXAM_SUPPORTER,
-                ].includes(r.value as UserRoleEnum),
+                INSTITUTIONAL_VISIBLE_ROLES.has(r.value),
             );
         }
         return [];
@@ -122,6 +140,10 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                 model: username,
                 label: t("fields.username.label"),
                 required: true,
+                rules: [
+                    rules.minLength(USERNAME_MIN_LENGTH),
+                    rules.maxLength(USERNAME_MAX_LENGTH),
+                ],
             },
             {
                 type: "text" as const,
@@ -129,6 +151,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                 model: name,
                 label: t("fields.name.label"),
                 required: true,
+                rules: [rules.maxLength(NAME_MAX_LENGTH)],
             },
             {
                 type: "text" as const,
@@ -136,6 +159,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                 model: surname,
                 label: t("fields.surname.label"),
                 required: true,
+                rules: [rules.maxLength(SURNAME_MAX_LENGTH)],
             },
             {
                 type: "text" as const,
@@ -169,7 +193,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                     model: password,
                     label: t("fields.password.label"),
                     required: true,
-                    rules: [useRules().minLength(8)],
+                    rules: [rules.minLength(PASSWORD_MIN_LENGTH)],
                 },
                 {
                     type: "password" as const,

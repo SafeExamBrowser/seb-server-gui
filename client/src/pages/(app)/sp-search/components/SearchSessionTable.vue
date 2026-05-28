@@ -198,7 +198,7 @@ import SearchScreenshotsTable from "@/pages/(app)/sp-search/components/SearchScr
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import { useTableStore } from "@/stores/store";
 import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
-import { UserRoleEnum } from "@/models/userRoleEnum";
+import { UserRole } from "@/models/userAccount";
 import { ServerTablePaging } from "@/models/types";
 import {
     SearchSessions,
@@ -258,7 +258,7 @@ const errorAvailable = ref<boolean>();
 //= ==========================data fetching=======================
 async function loadItems(serverTablePaging: ServerTablePaging) {
     isUserAdmin.value = userAccountStore.userAccount?.userRoles.includes(
-        UserRoleEnum.SEB_SERVER_ADMIN,
+        UserRole.SEB_SERVER_ADMIN,
     );
     isLoading.value = true;
     if (isOnLoad.value) {

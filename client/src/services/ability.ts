@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { UserRoleEnum } from "@/models/userRoleEnum";
+import { UserRole, type UserAccountRole } from "@/models/userAccount";
 import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum";
 import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
 import * as generalUtils from "@/utils/generalUtils";
@@ -69,11 +69,11 @@ export enum GUIAction {
 }
 
 export const useAbilities = defineStore("ability", () => {
-    const guiComponents = ref<Map<UserRoleEnum, Set<GUIComponent>>>(
-        new Map<UserRoleEnum, Set<GUIComponent>>(),
+    const guiComponents = ref<Map<UserAccountRole, Set<GUIComponent>>>(
+        new Map<UserAccountRole, Set<GUIComponent>>(),
     );
-    const guiActions = ref<Map<UserRoleEnum, Set<GUIAction>>>(
-        new Map<UserRoleEnum, Set<GUIAction>>(),
+    const guiActions = ref<Map<UserAccountRole, Set<GUIAction>>>(
+        new Map<UserAccountRole, Set<GUIAction>>(),
     );
     const examStatusActions = ref<Map<ExamStatusEnum, Set<GUIAction>>>(
         new Map<ExamStatusEnum, Set<GUIAction>>(),
@@ -90,7 +90,7 @@ export const useAbilities = defineStore("ability", () => {
     // --- GUI Component Privileges -----------------------
 
     guiComponents.value.set(
-        UserRoleEnum.SEB_SERVER_ADMIN,
+        UserRole.SEB_SERVER_ADMIN,
         new Set<GUIComponent>([
             GUIComponent.NavigationOverview,
             GUIComponent.Settings,
@@ -103,7 +103,7 @@ export const useAbilities = defineStore("ability", () => {
 
     // --- INSTITUTIONAL_ADMIN component privileges
     guiComponents.value.set(
-        UserRoleEnum.INSTITUTIONAL_ADMIN,
+        UserRole.INSTITUTIONAL_ADMIN,
         new Set<GUIComponent>([
             GUIComponent.NavigationOverview,
             GUIComponent.Settings,
@@ -120,7 +120,7 @@ export const useAbilities = defineStore("ability", () => {
 
     // --- EXAM_ADMIN component privileges
     guiComponents.value.set(
-        UserRoleEnum.EXAM_ADMIN,
+        UserRole.EXAM_ADMIN,
         new Set<GUIComponent>([
             GUIComponent.PrepareExam,
             GUIComponent.AddExamWithURL,
@@ -136,7 +136,7 @@ export const useAbilities = defineStore("ability", () => {
 
     // --- EXAM_SUPPORTER component privileges
     guiComponents.value.set(
-        UserRoleEnum.EXAM_SUPPORTER,
+        UserRole.EXAM_SUPPORTER,
         new Set<GUIComponent>([
             GUIComponent.Exams,
             GUIComponent.RunningExams,
@@ -150,7 +150,7 @@ export const useAbilities = defineStore("ability", () => {
 
     // // --- SEB_SERVER_ADMIN action privileges
     // guiActions.value.set(
-    //     UserRoleEnum.SEB_SERVER_ADMIN,
+    //     UserRole.SEB_SERVER_ADMIN,
     //     new Set<GUIAction>([
     //         GUIAction.CreateUserAccount,
     //         GUIAction.EditUserAccount,
@@ -160,7 +160,7 @@ export const useAbilities = defineStore("ability", () => {
 
     // --- INSTITUTIONAL_ADMIN action privileges
     guiActions.value.set(
-        UserRoleEnum.INSTITUTIONAL_ADMIN,
+        UserRole.INSTITUTIONAL_ADMIN,
         new Set<GUIAction>([
             // Exam actions
             GUIAction.ArchiveExam,
@@ -172,7 +172,7 @@ export const useAbilities = defineStore("ability", () => {
 
     // --- EXAM_ADMIN action privileges
     guiActions.value.set(
-        UserRoleEnum.EXAM_ADMIN,
+        UserRole.EXAM_ADMIN,
         new Set<GUIAction>([
             // Exam actions
             GUIAction.EditExamSettings,
@@ -195,7 +195,7 @@ export const useAbilities = defineStore("ability", () => {
 
     // --- EXAM_SUPPORTER action privileges
     guiActions.value.set(
-        UserRoleEnum.EXAM_SUPPORTER,
+        UserRole.EXAM_SUPPORTER,
         new Set<GUIAction>([
             // Exam actions
             GUIAction.EditExamSettings,
@@ -216,7 +216,7 @@ export const useAbilities = defineStore("ability", () => {
 
     // --- TEACHER action privileges
     guiActions.value.set(
-        UserRoleEnum.TEACHER,
+        UserRole.TEACHER,
         new Set<GUIAction>([
             // Exam actions
             GUIAction.ApplyTestRun,
@@ -311,7 +311,7 @@ export const useAbilities = defineStore("ability", () => {
         if (user == null) return false;
 
         for (const role of user.userRoles) {
-            const roleEnum = generalUtils.findEnumValue(UserRoleEnum, role);
+            const roleEnum = generalUtils.findEnumValue(UserRole, role);
             if (
                 roleEnum != null &&
                 guiComponents.value.get(roleEnum)?.has(view)
@@ -328,7 +328,7 @@ export const useAbilities = defineStore("ability", () => {
         if (user == null) return false;
 
         for (const role of user.userRoles) {
-            const roleEnum = generalUtils.findEnumValue(UserRoleEnum, role);
+            const roleEnum = generalUtils.findEnumValue(UserRole, role);
             if (
                 roleEnum != null &&
                 guiActions.value.get(roleEnum)?.has(action)
