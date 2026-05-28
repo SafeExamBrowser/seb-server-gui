@@ -19,6 +19,13 @@ const prepareProxyRequest = ({
     return req;
   }
 
+  if (
+    req.url === defaultUrlPrefix ||
+    req.url?.startsWith(`${defaultUrlPrefix}/`)
+  ) {
+    return req;
+  }
+
   // all other requests are prefixed with the default url
   req.url = `${defaultUrlPrefix}${req.url}`;
   return req;
