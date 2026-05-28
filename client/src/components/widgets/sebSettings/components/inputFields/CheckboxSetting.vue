@@ -6,6 +6,7 @@
             :disabled="disabled"
             :label="translate(label)"
             @update:model-value="save"
+            density="compact"
         ></v-checkbox-btn>
         <v-tooltip
             v-if="tooltip"
