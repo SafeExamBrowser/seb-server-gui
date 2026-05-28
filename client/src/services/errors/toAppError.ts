@@ -1,4 +1,5 @@
 import { isAxiosError } from "axios";
+import { zApiMessage } from "@/api/seb-server/generated/hey-api/zod.gen.ts";
 import type {
     APIMessage,
     AppError,
@@ -6,10 +7,12 @@ import type {
 } from "@/services/errors/types.ts";
 
 export function isAPIMessage(value: unknown): value is APIMessage {
-    if (typeof value !== "object" || value === null) {
+    const parsed = zApiMessage.safeParse(value);
+    if (!parsed.success) {
         return false;
     }
-    return typeof (value as { messageCode?: unknown }).messageCode === "string";
+
+    return typeof parsed.data.messageCode === "string";
 }
 
 export function isAppError(error: unknown): error is AppError {
