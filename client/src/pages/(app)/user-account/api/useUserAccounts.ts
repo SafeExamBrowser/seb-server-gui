@@ -1,24 +1,41 @@
-import type { Ref } from "vue";
-import { useFetch } from "@/composables/useFetch.ts";
-import type { UserAccountResponse } from "@/models/userAccount.ts";
+import { computed, type Ref } from "vue";
+import { keepPreviousData, useQuery } from "@tanstack/vue-query";
+import axios from "axios";
+import { getUserAccountsQueryKey } from "@/api/seb-server/generated/hey-api/@tanstack/vue-query.gen.ts";
+import { heySebServerClient } from "@/api/seb-server/http/heySebServerClient.ts";
 import { getUserAccounts } from "@/services/seb-server/userAccountService.ts";
-import * as tableUtils from "@/utils/table/tableUtils.ts";
-import type { ServerTablePaging } from "@/models/types.ts";
+import { appErrorToMessage, toAppError } from "@/services/errors/toAppError.ts";
+import type { GetUserAccountsData } from "@/api/seb-server/generated/hey-api/types.gen.ts";
 
 export const useUserAccounts = (
-    paging: Readonly<Ref<ServerTablePaging>>,
-    searchField: Readonly<Ref<string | null>>,
-    selectedStatus: Readonly<Ref<string | null>>,
-    selectedInstitutionId: Readonly<Ref<string | null>>,
+    query: Readonly<Ref<GetUserAccountsData["query"]>>,
 ) => {
-    return useFetch<UserAccountResponse>(() =>
-        getUserAccounts(
-            tableUtils.assignUserAccountSelectPagingOptions(
-                paging.value,
-                searchField.value,
-                selectedStatus.value,
-                selectedInstitutionId.value,
-            ),
+    const result = useQuery({
+        queryKey: computed(() =>
+            getUserAccountsQueryKey({
+                client: heySebServerClient,
+                query: query.value,
+            }),
         ),
-    );
+        queryFn: ({ signal }) => getUserAccounts(query.value, { signal }),
+        placeholderData: keepPreviousData,
+    });
+
+    const error = computed(() => {
+        const err = result.error.value;
+        if (!err || axios.isCancel(err)) {
+            return undefined;
+        }
+        return toAppError(err);
+    });
+
+    return {
+        data: result.data,
+        loading: result.isFetching,
+        error,
+        errorMessage: computed(() =>
+            error.value ? appErrorToMessage(error.value) : undefined,
+        ),
+        fetchData: () => result.refetch(),
+    };
 };

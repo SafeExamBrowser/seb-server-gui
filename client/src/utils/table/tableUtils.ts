@@ -307,3 +307,17 @@ export const normaliseBasicListParams = (basicListParams?: BasicListParams) => {
             : undefined,
     };
 };
+
+export const toServerPageQuery = (paging: ServerTablePaging) => {
+    const [sort] = paging.sortBy;
+    const sortOrder: SortOrder | undefined =
+        sort?.order === "asc" || sort?.order === "desc"
+            ? { key: sort.key, order: sort.order }
+            : undefined;
+
+    return normaliseBasicListParams({
+        pageNumber: paging.page,
+        pageSize: paging.itemsPerPage,
+        sortOrder,
+    });
+};

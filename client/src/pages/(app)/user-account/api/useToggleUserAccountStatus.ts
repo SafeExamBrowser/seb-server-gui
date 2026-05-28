@@ -1,49 +1,42 @@
-import { useMutation } from "@/composables/useMutation.ts";
+import { computed } from "vue";
+import { useMutation, useQueryClient } from "@tanstack/vue-query";
+import { getUserAccountsQueryKey } from "@/api/seb-server/generated/hey-api/@tanstack/vue-query.gen.ts";
+import { heySebServerClient } from "@/api/seb-server/http/heySebServerClient.ts";
 import {
     activateUserAccount,
     deactivateUserAccount,
 } from "@/services/seb-server/userAccountService.ts";
+import { toAppError } from "@/services/errors/toAppError.ts";
 
 export const useToggleUserAccountStatus = () => {
-    const {
-        mutateData: changeUserAccountStatus,
-        error,
-        loading,
-    } = useMutation(async (uuid: string, active: boolean) => {
-        const response = active
-            ? await deactivateUserAccount(uuid)
-            : await activateUserAccount(uuid);
+    const queryClient = useQueryClient();
+    const invalidateList = () =>
+        queryClient.invalidateQueries({
+            queryKey: getUserAccountsQueryKey({ client: heySebServerClient }),
+        });
 
-        if (response === null) {
-            throw new Error("Failed to change user account status.");
-        }
+    const activate = useMutation({
+        mutationFn: activateUserAccount,
+        onSuccess: invalidateList,
+    });
+    const deactivate = useMutation({
+        mutationFn: deactivateUserAccount,
+        onSuccess: invalidateList,
     });
 
-    const changeUserAccountStatusFromItem = async (
-        item: Record<string, unknown>,
-    ) => {
-        const uuid = item.uuid;
-        const active = item.active;
-
-        if (typeof uuid !== "string") {
-            throw new Error(
-                "useToggleUserAccountStatus: row item is missing a string uuid",
-            );
-        }
-
-        if (typeof active !== "boolean") {
-            throw new Error(
-                "useToggleUserAccountStatus: row item is missing a boolean active flag",
-            );
-        }
-
-        await changeUserAccountStatus(uuid, active);
+    const changeUserAccountStatus = (uuid: string, active: boolean) => {
+        const mutation = active ? deactivate : activate;
+        return mutation.mutateAsync(uuid);
     };
 
     return {
         changeUserAccountStatus,
-        toggleUserAccountStatusFromItem: changeUserAccountStatusFromItem,
-        error,
-        loading,
+        loading: computed(
+            () => activate.isPending.value || deactivate.isPending.value,
+        ),
+        error: computed(() => {
+            const err = activate.error.value ?? deactivate.error.value;
+            return err ? toAppError(err) : undefined;
+        }),
     };
 };
