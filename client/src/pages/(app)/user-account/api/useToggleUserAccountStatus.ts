@@ -7,31 +7,63 @@ import {
     deactivateUserAccount,
 } from "@/services/seb-server/userAccountService.ts";
 import { toAppError } from "@/services/errors/toAppError.ts";
+import type { PageUserInfo } from "@/api/seb-server/generated/hey-api/types.gen.ts";
+
+const listKey = () => getUserAccountsQueryKey({ client: heySebServerClient });
+
+const flipActiveInList =
+    (uuid: string, isActive: boolean) =>
+    (page: PageUserInfo | undefined): PageUserInfo | undefined =>
+        page
+            ? {
+                  ...page,
+                  content: page.content?.map((account) =>
+                      account.uuid === uuid
+                          ? { ...account, active: isActive }
+                          : account,
+                  ),
+              }
+            : page;
 
 export const useToggleUserAccountStatus = () => {
     const queryClient = useQueryClient();
+
     const invalidateList = () =>
-        queryClient.invalidateQueries({
-            queryKey: getUserAccountsQueryKey({ client: heySebServerClient }),
-        });
+        queryClient.invalidateQueries({ queryKey: listKey() });
 
     const activate = useMutation({
-        mutationFn: activateUserAccount,
-        onSuccess: invalidateList,
-    });
-    const deactivate = useMutation({
-        mutationFn: deactivateUserAccount,
-        onSuccess: invalidateList,
+        mutationFn: (uuid: string) => activateUserAccount(uuid),
+        onSuccess: (_data, uuid) => {
+            queryClient.setQueriesData<PageUserInfo>(
+                { queryKey: listKey() },
+                flipActiveInList(uuid, true),
+            );
+            invalidateList();
+        },
     });
 
-    const changeUserAccountStatus = (uuid: string, active: boolean) => {
-        const mutation = active ? deactivate : activate;
+    const deactivate = useMutation({
+        mutationFn: (uuid: string) => deactivateUserAccount(uuid),
+        onSuccess: (_data, uuid) => {
+            queryClient.setQueriesData<PageUserInfo>(
+                { queryKey: listKey() },
+                flipActiveInList(uuid, false),
+            );
+            invalidateList();
+        },
+    });
+
+    const changeUserAccountStatus = (
+        uuid: string,
+        isCurrentlyActive: boolean,
+    ) => {
+        const mutation = isCurrentlyActive ? deactivate : activate;
         return mutation.mutateAsync(uuid);
     };
 
     return {
         changeUserAccountStatus,
-        loading: computed(
+        isPending: computed(
             () => activate.isPending.value || deactivate.isPending.value,
         ),
         error: computed(() => {

@@ -4,7 +4,7 @@ import axios from "axios";
 import { getUserAccountsQueryKey } from "@/api/seb-server/generated/hey-api/@tanstack/vue-query.gen.ts";
 import { heySebServerClient } from "@/api/seb-server/http/heySebServerClient.ts";
 import { getUserAccounts } from "@/services/seb-server/userAccountService.ts";
-import { appErrorToMessage, toAppError } from "@/services/errors/toAppError.ts";
+import { toAppError } from "@/services/errors/toAppError.ts";
 import type { GetUserAccountsData } from "@/api/seb-server/generated/hey-api/types.gen.ts";
 
 export const useUserAccounts = (
@@ -31,11 +31,9 @@ export const useUserAccounts = (
 
     return {
         data: result.data,
-        loading: result.isFetching,
+        isPending: result.isPending,
+        isFetching: result.isFetching,
         error,
-        errorMessage: computed(() =>
-            error.value ? appErrorToMessage(error.value) : undefined,
-        ),
-        fetchData: () => result.refetch(),
+        refetch: () => result.refetch(),
     };
 };

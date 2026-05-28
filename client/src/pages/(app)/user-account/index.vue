@@ -36,7 +36,7 @@
                     :page-count="pageCount"
                     :items-per-page="options.itemsPerPage"
                     :options="options"
-                    :loading="loading || deleteLoading || statusLoading"
+                    :loading="isFetching || deletePending || statusPending"
                     :detail-route="userAccountDetailRoute"
                     :cell-formatters="cellFormatters"
                     :actions="tableActions"
@@ -153,20 +153,20 @@ const accountsQuery = computed<GetUserAccountsData["query"]>(() => {
     };
 });
 
-const { data: fetchedData, loading, error } = useUserAccounts(accountsQuery);
+const { data: fetchedData, isFetching, error } = useUserAccounts(accountsQuery);
 
 const pageCount = computed(() => fetchedData.value?.number_of_pages ?? 0);
 
 const {
     removeUserAccount,
     error: deleteError,
-    loading: deleteLoading,
+    isPending: deletePending,
 } = useDeleteUserAccount();
 
 const {
     changeUserAccountStatus,
     error: statusError,
-    loading: statusLoading,
+    isPending: statusPending,
 } = useToggleUserAccountStatus();
 
 const deleteTarget = ref<TableItem>();

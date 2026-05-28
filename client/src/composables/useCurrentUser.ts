@@ -22,7 +22,8 @@ export function useCurrentUser() {
 
     return {
         user: query.data,
-        loading: query.isPending,
+        isPending: query.isPending,
+        isFetching: query.isFetching,
         error: computed(() =>
             query.error.value ? toAppError(query.error.value) : undefined,
         ),

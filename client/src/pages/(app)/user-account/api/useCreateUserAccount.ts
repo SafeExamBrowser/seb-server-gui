@@ -9,7 +9,7 @@ import type { UserAccountCreateRequest } from "@/models/userAccount.ts";
 export const useCreateUserAccount = () => {
     const queryClient = useQueryClient();
     const mutation = useMutation({
-        mutationFn: createUserAccount,
+        mutationFn: (body: UserAccountCreateRequest) => createUserAccount(body),
         onSuccess: () =>
             queryClient.invalidateQueries({
                 queryKey: getUserAccountsQueryKey({
@@ -21,7 +21,7 @@ export const useCreateUserAccount = () => {
     return {
         create: (body: UserAccountCreateRequest) => mutation.mutateAsync(body),
         data: mutation.data,
-        loading: mutation.isPending,
+        isPending: mutation.isPending,
         error: computed(() =>
             mutation.error.value ? toAppError(mutation.error.value) : undefined,
         ),

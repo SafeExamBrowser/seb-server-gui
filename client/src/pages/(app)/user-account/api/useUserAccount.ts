@@ -4,7 +4,7 @@ import axios from "axios";
 import { getUserAccountByIdQueryKey } from "@/api/seb-server/generated/hey-api/@tanstack/vue-query.gen.ts";
 import { heySebServerClient } from "@/api/seb-server/http/heySebServerClient.ts";
 import { getUserAccountById } from "@/services/seb-server/userAccountService.ts";
-import { appErrorToMessage, toAppError } from "@/services/errors/toAppError.ts";
+import { toAppError } from "@/services/errors/toAppError.ts";
 
 export const useUserAccount = (
     accountId: Readonly<Ref<string | undefined>>,
@@ -31,11 +31,9 @@ export const useUserAccount = (
 
     return {
         data: query.data,
-        loading: query.isFetching,
+        isPending: query.isPending,
+        isFetching: query.isFetching,
         error,
-        errorMessage: computed(() =>
-            error.value ? appErrorToMessage(error.value) : undefined,
-        ),
-        fetchData: () => query.refetch(),
+        refetch: () => query.refetch(),
     };
 };

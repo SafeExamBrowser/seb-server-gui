@@ -365,7 +365,7 @@ watch(
 const {
     register: submitRegister,
     data: registered,
-    loading: registerLoading,
+    isPending: registerLoading,
     error: registerSubmitError,
 } = useRegisterUserAccount();
 

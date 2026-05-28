@@ -4,22 +4,34 @@ import { getUserAccountsQueryKey } from "@/api/seb-server/generated/hey-api/@tan
 import { heySebServerClient } from "@/api/seb-server/http/heySebServerClient.ts";
 import { deleteUserAccount } from "@/services/seb-server/userAccountService.ts";
 import { toAppError } from "@/services/errors/toAppError.ts";
+import type { PageUserInfo } from "@/api/seb-server/generated/hey-api/types.gen.ts";
+
+const listKey = () => getUserAccountsQueryKey({ client: heySebServerClient });
 
 export const useDeleteUserAccount = () => {
     const queryClient = useQueryClient();
     const mutation = useMutation({
-        mutationFn: deleteUserAccount,
-        onSuccess: () =>
-            queryClient.invalidateQueries({
-                queryKey: getUserAccountsQueryKey({
-                    client: heySebServerClient,
-                }),
-            }),
+        mutationFn: (uuid: string) => deleteUserAccount(uuid),
+        onSuccess: (_data, uuid) => {
+            queryClient.setQueriesData<PageUserInfo>(
+                { queryKey: listKey() },
+                (page) =>
+                    page
+                        ? {
+                              ...page,
+                              content: page.content?.filter(
+                                  (account) => account.uuid !== uuid,
+                              ),
+                          }
+                        : page,
+            );
+            queryClient.invalidateQueries({ queryKey: listKey() });
+        },
     });
 
     return {
         removeUserAccount: (uuid: string) => mutation.mutateAsync(uuid),
-        loading: mutation.isPending,
+        isPending: mutation.isPending,
         error: computed(() =>
             mutation.error.value ? toAppError(mutation.error.value) : undefined,
         ),

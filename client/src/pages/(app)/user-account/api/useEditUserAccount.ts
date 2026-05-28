@@ -13,19 +13,21 @@ import type { UserAccount } from "@/models/userAccount.ts";
 export const useEditUserAccount = () => {
     const queryClient = useQueryClient();
     const mutation = useMutation({
-        mutationFn: editUserAccount,
+        mutationFn: (body: UserAccount) => editUserAccount(body),
         onSuccess: (data) => {
             queryClient.invalidateQueries({
                 queryKey: getUserAccountsQueryKey({
                     client: heySebServerClient,
                 }),
             });
-            queryClient.invalidateQueries({
-                queryKey: getUserAccountByIdQueryKey({
+
+            queryClient.setQueryData(
+                getUserAccountByIdQueryKey({
                     client: heySebServerClient,
                     path: { modelId: data.uuid },
                 }),
-            });
+                data,
+            );
 
             const currentUser = queryClient.getQueryData<UserAccount>(
                 currentUserQueryKey(),
@@ -39,7 +41,7 @@ export const useEditUserAccount = () => {
     return {
         save: (body: UserAccount) => mutation.mutateAsync(body),
         data: mutation.data,
-        loading: mutation.isPending,
+        isPending: mutation.isPending,
         error: computed(() =>
             mutation.error.value ? toAppError(mutation.error.value) : undefined,
         ),

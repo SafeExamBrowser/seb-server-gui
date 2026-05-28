@@ -5,13 +5,16 @@ import { toAppError } from "@/services/errors/toAppError.ts";
 import type { UserAccountPasswordChange } from "@/models/userAccount.ts";
 
 export const useChangePassword = () => {
-    const mutation = useMutation({ mutationFn: changeUserAccountPassword });
+    const mutation = useMutation({
+        mutationFn: (body: UserAccountPasswordChange) =>
+            changeUserAccountPassword(body),
+    });
 
     return {
         changePassword: (body: UserAccountPasswordChange) =>
             mutation.mutateAsync(body),
         data: mutation.data,
-        loading: mutation.isPending,
+        isPending: mutation.isPending,
         error: computed(() =>
             mutation.error.value ? toAppError(mutation.error.value) : undefined,
         ),
