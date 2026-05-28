@@ -3,7 +3,6 @@ import {
     ExamTypeEnum,
 } from "@/models/seb-server/examFiltersEnum";
 import { useTableStore } from "@/stores/store";
-import { OptionalParGetUserAccounts } from "@/models/userAccount";
 import { ServerTablePaging } from "@/models/types";
 import {
     OptionalParGetExams,
@@ -165,39 +164,6 @@ export function assignPagingOptions(
     }
 
     return pagingParameters;
-}
-
-export function assignUserAccountSelectPagingOptions(
-    serverTablePaging: ServerTablePaging,
-    surnameQuery: string | null,
-    selectedStatus: string | null,
-    selectedInstitutionId: string | null,
-): OptionalParGetUserAccounts {
-    const opt: OptionalParGetUserAccounts = {};
-
-    opt.page_size = serverTablePaging.itemsPerPage;
-    opt.page_number = serverTablePaging.page;
-
-    if (serverTablePaging.sortBy.length !== 0) {
-        let sortString = serverTablePaging.sortBy[0].key;
-        if (serverTablePaging.sortBy[0].order === "desc") {
-            sortString = "-" + sortString;
-        }
-        opt.sort = sortString;
-    }
-    opt.active =
-        selectedStatus === "Active"
-            ? "true"
-            : selectedStatus === "Inactive"
-              ? "false"
-              : null;
-    opt.institutionId = selectedInstitutionId ?? null;
-
-    if (surnameQuery && surnameQuery !== "") {
-        opt.surname = surnameQuery;
-    }
-
-    return opt;
 }
 
 export function assignClientLogDetailsPagingOptions(
