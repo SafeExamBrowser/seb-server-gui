@@ -1,66 +1,18 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { merge } from "lodash";
-import { useAuthStore } from "@/composables/store/useAuthStore";
-import { useLogout } from "@/composables/useLogout";
-import { toAppError } from "@/services/errors/toAppError.ts";
-import { transportErrorDedupeKey } from "@/services/errors/transport.ts";
-import { notify } from "@/services/notifications/notify.ts";
+import {
+    configureApiAxios,
+    setTokenRefreshPromise,
+} from "@/services/http/configureApiAxios.ts";
 import { ApiRequest } from "./types";
 
-let tokenRefreshPromise: Promise<void> | undefined = undefined;
+export { setTokenRefreshPromise };
 
-const api = axios.create({
-    baseURL: "/api",
-});
-
-api.interceptors.request.use(async (config) => {
-    if (!config._authType) {
-        return config;
-    }
-
-    if (tokenRefreshPromise) {
-        // wait for the token refresh to complete
-        await tokenRefreshPromise.catch(() => {});
-    }
-
-    // set correct Authorization header
-    const authStore = useAuthStore();
-    const authToken =
-        config._authType === "sps"
-            ? authStore.spAccessToken
-            : authStore.sebAccessToken;
-
-    if (!authToken) {
-        await useLogout().logout(true);
-        return Promise.reject(
-            new Error(`No token found for auth type: ${config._authType}`),
-        );
-    }
-
-    config.headers.Authorization = `Bearer ${authToken}`;
-
-    return config;
-});
-
-api.interceptors.response.use(
-    (response) => response,
-    async (error) => {
-        // if a request is unauthorized, properly log out the user (clean up store etc.)
-        if (error?.response?.status === 401 && error?.config?._authType) {
-            await useLogout().logout(true);
-        }
-
-        const appError = toAppError(error);
-        const transportKey = transportErrorDedupeKey(appError);
-        if (transportKey && !error?.config?._skipErrorToast) {
-            notify.serverError(appError, { dedupeKey: transportKey });
-        }
-        return Promise.reject(appError);
-    },
+const api = configureApiAxios(
+    axios.create({
+        baseURL: "/api",
+    }),
 );
-
-export const setTokenRefreshPromise = (promise: Promise<void> | undefined) =>
-    (tokenRefreshPromise = promise);
 
 export const getRequest = ({
     url,
