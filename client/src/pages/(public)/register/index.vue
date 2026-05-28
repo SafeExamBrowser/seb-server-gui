@@ -7,7 +7,8 @@
                         <div class="d-flex ml-15 mr-15 justify-center">
                             <img
                                 alt="SEB Logo"
-                                class="logo-img"
+                                class="w-100 mb-4"
+                                style="max-width: 150px; height: auto"
                                 src="/img/seb-logo-no-border.png"
                             />
                         </div>
@@ -61,7 +62,7 @@
                             }}
                         </v-card-subtitle>
 
-                        <v-card-text>
+                        <v-card-text class="pt-12">
                             <v-form ref="formRef" @keyup.enter="register()">
                                 <v-row density="compact">
                                     <v-col cols="12">
@@ -74,7 +75,7 @@
                                             "
                                             item-title="name"
                                             item-value="modelId"
-                                            :items="institutions"
+                                            :items="institutions ?? []"
                                             :label="
                                                 translate(
                                                     'userAccount.registerPage.labels.institutionLabel',
@@ -267,6 +268,7 @@
                                             color="primary"
                                             data-testid="register-submit-btn"
                                             rounded="sm"
+                                            :loading="registerLoading"
                                             @click="register"
                                         >
                                             Register
@@ -314,14 +316,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { onMounted } from "vue";
+import { computed, ref, watch } from "vue";
 import moment from "moment-timezone";
 import { translate } from "@/utils/generalUtils";
 import { useI18n } from "vue-i18n";
-import { Institution } from "@/models/seb-server/institution";
-import { getInstitutions } from "@/services/seb-server/institutionService.ts";
-import { registerUserAccount } from "@/services/seb-server/userAccountService.ts";
+import { useInstitutions } from "@/composables/useInstitutions";
+import { useRegisterUserAccount } from "@/pages/(app)/user-account/api/useRegisterUserAccount.ts";
 import { RouterLink, useRouter } from "vue-router";
 import AlertMsg from "@/components/widgets/AlertMsg.vue";
 
@@ -331,7 +331,9 @@ definePage({
     },
 });
 
-// form fields
+const i18n = useI18n();
+const router = useRouter();
+
 const selectedInstitution = ref<string>("");
 const name = ref<string>("");
 const surname = ref<string>("");
@@ -341,38 +343,35 @@ const timezone = ref<string>("");
 const password = ref<string>("");
 const confirmPassword = ref<string>("");
 
-// error handling
-const registerError = ref(false);
-const registerSuccess = ref(false);
-const i18n = useI18n();
-
-// password icon logic
 const passwordVisible = ref<boolean>(false);
 const confirmPasswordVisible = ref<boolean>(false);
 
-// institution setters
-const institutions = ref<Institution[]>([]);
-const institutionSelectDisabled = ref<boolean>(false);
-
-// load timezones
 const timezoneOptions = moment.tz.names();
 
-const router = useRouter();
+const { data: institutions } = useInstitutions();
+const institutionSelectDisabled = ref(false);
 
-// fetch Institutions
-onMounted(async () => {
-    const result: Institution[] | null = await getInstitutions();
-    if (result && result.length > 0) {
-        institutions.value = result;
-
-        if (result.length === 1) {
-            selectedInstitution.value = result[0].modelId;
+watch(
+    institutions,
+    (list) => {
+        if (list && list.length === 1) {
+            selectedInstitution.value = list[0].modelId;
             institutionSelectDisabled.value = true;
         }
-    }
-});
+    },
+    { immediate: true },
+);
 
-// validation rules
+const {
+    register: submitRegister,
+    data: registered,
+    loading: registerLoading,
+    error: registerSubmitError,
+} = useRegisterUserAccount();
+
+const registerError = computed(() => !!registerSubmitError.value);
+const registerSuccess = computed(() => !!registered.value);
+
 const requiredRule = (v: string) =>
     !!v || translate("userAccount.general.validation.required", i18n);
 const passwordRule = (v: string) =>
@@ -387,20 +386,16 @@ const emailRule = (v: string) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ||
     translate("userAccount.general.validation.invalidEmail", i18n);
 
-// register
 async function register() {
-    registerError.value = false;
-    registerSuccess.value = false;
-
     const { valid } = await formRef.value.validate();
     if (!valid) {
         return;
     }
 
-    try {
-        const language = navigator.language?.split("-")[0] || "gr";
+    const language = navigator.language?.split("-")[0] || "en";
 
-        const result = await registerUserAccount({
+    try {
+        await submitRegister({
             institutionId: Number(selectedInstitution.value),
             name: name.value,
             surname: surname.value,
@@ -412,20 +407,14 @@ async function register() {
             email: email.value,
             userRoles: ["EXAM_SUPPORTER"],
         });
-
-        if (result) {
-            registerSuccess.value = true;
-
-            setTimeout(() => {
-                router.push({ name: "/(public)/login/" });
-            }, 2500);
-        } else {
-            registerError.value = true;
-        }
+        setTimeout(() => {
+            router.push({ name: "/(public)/login/" });
+        }, 2500);
     } catch {
-        registerError.value = true;
+        return;
     }
 }
+
 function handleTabKeyEvent(event: KeyboardEvent, action: string) {
     if (event.key === "Enter" || event.key === " ") {
         if (action === "navigate") {
@@ -434,20 +423,3 @@ function handleTabKeyEvent(event: KeyboardEvent, action: string) {
     }
 }
 </script>
-
-<style scoped>
-.logo-img {
-    width: 100%;
-    max-width: 150px;
-    height: auto;
-    margin-bottom: 1rem;
-}
-
-.v-card-text {
-    padding-top: 3rem;
-}
-
-.v-messages {
-    min-height: 20px; /* Reserve space for validation messages */
-}
-</style>

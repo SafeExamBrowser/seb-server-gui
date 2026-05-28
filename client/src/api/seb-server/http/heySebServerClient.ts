@@ -5,7 +5,7 @@ import {
 } from "@/api/seb-server/generated/hey-api/client";
 import { configureApiAxios } from "@/services/http/configureApiAxios.ts";
 
-const PUBLIC_PATHS = new Set(["/register", "/admin-api/v1/register"]);
+const PUBLIC_PATHS = new Set(["/register"]);
 
 const requestPath = (url?: string) => {
     if (!url) {
