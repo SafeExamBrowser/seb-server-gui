@@ -90,7 +90,9 @@ import { useUserAccounts } from "@/pages/(app)/user-account/api/useUserAccounts.
 import { useDeleteUserAccount } from "@/pages/(app)/user-account/api/useDeleteUserAccount.ts";
 import { useToggleUserAccountStatus } from "@/pages/(app)/user-account/api/useToggleUserAccountStatus.ts";
 import { notify } from "@/services/notifications/notify.ts";
+import { toServerPageQuery } from "@/utils/table/tableUtils.ts";
 import type { UserAccountResponse } from "@/models/userAccount.ts";
+import type { GetUserAccountsData } from "@/api/seb-server/generated/hey-api/types.gen.ts";
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 import AddButton from "@/components/widgets/AddButton.vue";
 import { useRouter, type RouteLocationAsRelative } from "vue-router";
@@ -134,25 +136,26 @@ const {
     setFilters,
     clearAll,
 } = useUrlTableState(async () => {
-    await fetchUserAccounts();
+    // TanStack Query auto-refetches when accountsQuery changes; no manual refetch needed.
 }, [STATUS_FILTER_KEY, INSTITUTION_FILTER_KEY]);
 
-const selectedStatus = computed(() => selectedFilters.value.status);
-const selectedInstitutionId = computed(
-    () => selectedFilters.value.institutionId,
-);
+const accountsQuery = computed<GetUserAccountsData["query"]>(() => {
+    const status = selectedFilters.value.status;
+    const institutionId = selectedFilters.value.institutionId;
+    return {
+        ...toServerPageQuery(options.value),
+        surname: searchField.value || undefined,
+        active:
+            status === "Active"
+                ? "true"
+                : status === "Inactive"
+                  ? "false"
+                  : undefined,
+        institutionId: institutionId ? Number(institutionId) : undefined,
+    };
+});
 
-const {
-    data: fetchedData,
-    loading,
-    error,
-    fetchData: fetchUserAccounts,
-} = useUserAccounts(
-    options,
-    searchField,
-    selectedStatus,
-    selectedInstitutionId,
-);
+const { data: fetchedData, loading, error } = useUserAccounts(accountsQuery);
 
 watch(
     fetchedData,
@@ -165,13 +168,13 @@ watch(
 const pageCount = computed(() => tableData.value?.number_of_pages ?? 0);
 
 const {
-    removeUserAccountFromItem,
+    removeUserAccount,
     error: deleteError,
     loading: deleteLoading,
 } = useDeleteUserAccount();
 
 const {
-    toggleUserAccountStatusFromItem,
+    changeUserAccountStatus,
     error: statusError,
     loading: statusLoading,
 } = useToggleUserAccountStatus();
@@ -199,42 +202,29 @@ function openStatusDialog(item: TableItem) {
 
 async function confirmDelete() {
     const item = deleteTarget.value;
-    if (!item) return;
-    await removeUserAccountFromItem(item);
-    deleteDialogOpen.value = false;
-    if (deleteError.value) {
+    if (typeof item?.uuid !== "string") return;
+    try {
+        await removeUserAccount(item.uuid);
+    } catch {
         notify.serverError(deleteError.value, { contextLabel: "useraccount" });
-        return;
-    }
-    const uuid = item.uuid;
-    if (typeof uuid === "string" && tableData.value?.content) {
-        tableData.value.content = tableData.value.content.filter(
-            (user) => user.uuid !== uuid,
-        );
+    } finally {
+        deleteDialogOpen.value = false;
     }
 }
 
 async function confirmStatusChange() {
     const item = statusTarget.value;
-    if (!item) return;
-    await toggleUserAccountStatusFromItem(item);
-    statusDialogOpen.value = false;
-    if (statusError.value) {
+    if (typeof item?.uuid !== "string" || typeof item.active !== "boolean") {
+        return;
+    }
+    try {
+        await changeUserAccountStatus(item.uuid, item.active);
+    } catch {
         notify.serverError(statusError.value, {
             contextLabel: "useraccount.status",
         });
-        return;
-    }
-    const uuid = item.uuid;
-    const previousActive = item.active;
-    if (
-        typeof uuid === "string" &&
-        typeof previousActive === "boolean" &&
-        tableData.value?.content
-    ) {
-        tableData.value.content = tableData.value.content.map((user) =>
-            user.uuid === uuid ? { ...user, active: !previousActive } : user,
-        );
+    } finally {
+        statusDialogOpen.value = false;
     }
 }
 

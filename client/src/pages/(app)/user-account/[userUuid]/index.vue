@@ -8,7 +8,7 @@
             :initial-user="user"
             data-test-prefix="editUserAccount"
             :change-password-loading="changePasswordLoading"
-            @submit="handleSubmit"
+            @edit-submit="handleSubmit"
             @cancel="router.push({ name: '/(app)/user-account/' })"
             @change-password="handleChangePassword"
         />
@@ -16,25 +16,20 @@
 </template>
 
 <script setup lang="ts">
-import { errorMessageOf } from "@/services/errors/toAppError.ts";
-import { computed, onMounted, ref } from "vue";
+import { computed, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import UserAccountForm, {
     type ChangePasswordPayload,
-    type UserAccountFormPayload,
 } from "@/pages/(app)/user-account/components/UserAccountForm.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import { useMutation } from "@/composables/useMutation.ts";
-import {
-    changePassword,
-    editUserAccount,
-    getUserAccountById,
-} from "@/services/seb-server/userAccountService.ts";
 import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/userAccountStore.ts";
 import { useCurrentUser } from "@/composables/useCurrentUser.ts";
 import { useLogout } from "@/composables/useLogout.ts";
 import { notify } from "@/services/notifications/notify.ts";
-import type { UserAccount } from "@/models/userAccount.ts";
+import { useUserAccount } from "@/pages/(app)/user-account/api/useUserAccount.ts";
+import { useEditUserAccount } from "@/pages/(app)/user-account/api/useEditUserAccount.ts";
+import { useChangePassword } from "@/pages/(app)/user-account/api/useChangePassword.ts";
+import type { UserInfo } from "@/api/seb-server/generated/hey-api/types.gen.ts";
 
 definePage({
     meta: {
@@ -50,74 +45,35 @@ const authStore = useAuthenticatedUserAccountStore();
 const { refetch: refetchCurrentUser } = useCurrentUser();
 
 const formRef = ref<InstanceType<typeof UserAccountForm>>();
-const user = ref<UserAccount>();
-const fetchLoading = ref(false);
-const fetchError = ref<string>();
+const userUuid = computed(() => {
+    const value = route.params.userUuid;
+    return typeof value === "string" ? value : undefined;
+});
+const {
+    data: user,
+    loading,
+    errorMessage: fetchError,
+} = useUserAccount(userUuid);
 
+const { save, error: saveError } = useEditUserAccount();
 const {
-    mutateData: save,
-    data: saved,
-    error: saveError,
-} = useMutation(editUserAccount);
-const {
-    mutateData: changeUserPassword,
-    data: changedPassword,
+    changePassword,
     error: changePasswordError,
     loading: changePasswordLoading,
-} = useMutation(
-    (payload: {
-        uuid: string;
-        adminPassword: string;
-        newPassword: string;
-        confirmNewPassword: string;
-    }) =>
-        changePassword(
-            payload.uuid,
-            payload.adminPassword,
-            payload.newPassword,
-            payload.confirmNewPassword,
-        ),
-);
+} = useChangePassword();
 
-const loading = computed(() => fetchLoading.value);
-const errors = computed(() =>
-    [fetchError.value].filter((e) => e !== undefined),
-);
+const errors = computed(() => (fetchError.value ? [fetchError.value] : []));
 
-onMounted(async () => {
-    fetchLoading.value = true;
-    try {
-        user.value = await getUserAccountById(String(route.params.userUuid));
-    } catch (err) {
-        fetchError.value = errorMessageOf(err);
-    } finally {
-        fetchLoading.value = false;
-    }
-});
-
-const handleSubmit = async (payload: UserAccountFormPayload) => {
+const handleSubmit = async (payload: UserInfo) => {
     if (!user.value) return;
-    await save({
-        uuid: user.value.uuid,
-        institutionId: Number(payload.institutionId),
-        creationDate: user.value.creationDate,
-        name: payload.name,
-        surname: payload.surname,
-        username: payload.username,
-        email: payload.email,
-        active: user.value.active,
-        language: "en",
-        timezone: payload.timezone,
-        userRoles: payload.userRoles,
-    });
-    if (saved.value) {
+
+    try {
+        await save(payload);
         if (user.value.uuid === authStore.userAccount?.uuid) {
             await refetchCurrentUser();
         }
         await router.push({ name: "/(app)/user-account/" });
-        return;
-    }
-    if (saveError.value) {
+    } catch {
         const result = formRef.value?.applyBackendErrors(saveError.value);
         if (!result?.fullyHandled) {
             notify.serverError(result?.appError ?? saveError.value, {
@@ -130,19 +86,17 @@ const handleSubmit = async (payload: UserAccountFormPayload) => {
 
 const handleChangePassword = async (payload: ChangePasswordPayload) => {
     if (!user.value) return;
-    await changeUserPassword({
-        uuid: user.value.uuid,
-        adminPassword: payload.adminPassword,
-        newPassword: payload.newPassword,
-        confirmNewPassword: payload.confirmNewPassword,
-    });
-    if (changedPassword.value) {
+    try {
+        await changePassword({
+            uuid: user.value.uuid,
+            password: payload.adminPassword,
+            newPassword: payload.newPassword,
+            confirmNewPassword: payload.confirmNewPassword,
+        });
         if (user.value.uuid === authStore.userAccount?.uuid) {
             await useLogout().logout();
         }
-        return;
-    }
-    if (changePasswordError.value) {
+    } catch {
         const result = formRef.value?.applyChangePasswordBackendErrors(
             changePasswordError.value,
         );

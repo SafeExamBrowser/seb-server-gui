@@ -113,30 +113,30 @@ import {
     type UserAccountFormMode,
 } from "@/pages/(app)/user-account/composables/useUserAccountFormFields.ts";
 import { UserRoleEnum } from "@/models/userRoleEnum.ts";
-import type { UserAccount } from "@/models/userAccount.ts";
 import type { BackendFieldAliasMap } from "@/services/errors/types.ts";
 import {
     applyBackendFieldErrors,
     type ApplyBackendErrorsResult,
 } from "@/services/errors/formErrorMapping.ts";
+import type {
+    UserAccountCreateRequest,
+    UserAccountRole,
+} from "@/models/userAccount.ts";
+import type { UserInfo } from "@/api/seb-server/generated/hey-api/types.gen.ts";
+
+const USER_ACCOUNT_ROLES: ReadonlySet<string> = new Set(
+    Object.values(UserRoleEnum),
+);
+const isUserAccountRole = (role: string): role is UserAccountRole =>
+    USER_ACCOUNT_ROLES.has(role);
+const toUserAccountRole = (role: string): UserAccountRole | undefined =>
+    isUserAccountRole(role) ? role : undefined;
 
 const USER_ACCOUNT_FIELD_ALIASES = {
     timeZone: "timezone",
     userRoles: "role",
     confirmNewPassword: "confirmPassword",
 } satisfies BackendFieldAliasMap;
-
-export type UserAccountFormPayload = {
-    institutionId: string;
-    username: string;
-    name: string;
-    surname: string;
-    email: string;
-    timezone: string;
-    userRoles: string[];
-    password?: string;
-    confirmPassword?: string;
-};
 
 export type ChangePasswordPayload = {
     adminPassword: string;
@@ -147,13 +147,14 @@ export type ChangePasswordPayload = {
 const props = defineProps<{
     title: string;
     mode: UserAccountFormMode;
-    initialUser?: UserAccount;
+    initialUser?: UserInfo;
     dataTestPrefix: string;
     changePasswordLoading?: boolean;
 }>();
 
 const emit = defineEmits<{
-    submit: [payload: UserAccountFormPayload];
+    createSubmit: [payload: UserAccountCreateRequest];
+    editSubmit: [payload: UserInfo];
     cancel: [];
     changePassword: [payload: ChangePasswordPayload];
 }>();
@@ -187,7 +188,9 @@ const roleDescription = computed(() => {
     return i18n.global.t(`userAccount.general.role.info.${role.value}`);
 });
 
-const getHighestRole = (roles: string[]): string | undefined => {
+const getHighestRole = (
+    roles: ReadonlyArray<UserAccountRole>,
+): UserAccountRole | undefined => {
     if (roles.includes(UserRoleEnum.SEB_SERVER_ADMIN)) {
         return UserRoleEnum.SEB_SERVER_ADMIN;
     }
@@ -213,14 +216,14 @@ const { isDirty, snapshot } = useDirtyTracking(() => ({
     role: role.value ?? "",
 }));
 
-const hydrate = (user: UserAccount) => {
+const hydrate = (user: UserInfo) => {
     institutionId.value = user.institutionId.toString();
     username.value = user.username;
     name.value = user.name;
     surname.value = user.surname;
     email.value = user.email ?? "";
     timezone.value = user.timezone;
-    role.value = getHighestRole((user.userRoles as string[]) ?? []);
+    role.value = getHighestRole(user.userRoles);
     snapshot();
 };
 
@@ -244,7 +247,14 @@ const formatDate = (iso?: string): string => {
     return moment(iso).format("MMM D, YYYY");
 };
 
-const buildUserRoles = (selectedRole: string): string[] => {
+const buildUserRoles = (
+    selectedRole: string,
+): UserInfo["userRoles"] | undefined => {
+    const userAccountRole = toUserAccountRole(selectedRole);
+    if (!userAccountRole) {
+        return undefined;
+    }
+
     if (selectedRole === UserRoleEnum.INSTITUTIONAL_ADMIN) {
         return [
             UserRoleEnum.INSTITUTIONAL_ADMIN,
@@ -255,7 +265,7 @@ const buildUserRoles = (selectedRole: string): string[] => {
     if (selectedRole === UserRoleEnum.EXAM_ADMIN) {
         return [UserRoleEnum.EXAM_ADMIN, UserRoleEnum.EXAM_SUPPORTER];
     }
-    return [selectedRole];
+    return [userAccountRole];
 };
 
 const submit = async () => {
@@ -276,21 +286,46 @@ const submit = async () => {
         return;
     }
 
-    const userRoles =
-        props.mode === "profile"
-            ? ((props.initialUser?.userRoles as string[]) ?? [])
-            : buildUserRoles(role.value);
+    const selectedUserRoles = buildUserRoles(role.value);
+    if (!selectedUserRoles) {
+        return;
+    }
 
-    emit("submit", {
-        institutionId: institutionId.value,
+    const baseUserAccount = {
+        institutionId: Number(institutionId.value),
         username: username.value,
         name: name.value,
         surname: surname.value,
-        email: email.value ?? "",
+        email: email.value,
+        language: "en",
         timezone: timezone.value,
-        userRoles,
-        password: password.value,
-        confirmPassword: confirmPassword.value,
+    };
+
+    if (props.mode === "create") {
+        if (!password.value || !confirmPassword.value) {
+            return;
+        }
+
+        emit("createSubmit", {
+            ...baseUserAccount,
+            userRoles: selectedUserRoles,
+            newPassword: password.value,
+            confirmNewPassword: confirmPassword.value,
+        });
+        return;
+    }
+
+    if (!props.initialUser) {
+        return;
+    }
+
+    emit("editSubmit", {
+        ...props.initialUser,
+        ...baseUserAccount,
+        userRoles:
+            props.mode === "profile"
+                ? props.initialUser.userRoles
+                : selectedUserRoles,
     });
 };
 

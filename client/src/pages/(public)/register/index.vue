@@ -401,7 +401,7 @@ async function register() {
         const language = navigator.language?.split("-")[0] || "gr";
 
         const result = await registerUserAccount({
-            institutionId: selectedInstitution.value,
+            institutionId: Number(selectedInstitution.value),
             name: name.value,
             surname: surname.value,
             username: username.value,
@@ -410,6 +410,7 @@ async function register() {
             timezone: timezone.value,
             language,
             email: email.value,
+            userRoles: ["EXAM_SUPPORTER"],
         });
 
         if (result) {

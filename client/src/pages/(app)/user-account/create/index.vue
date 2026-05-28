@@ -4,7 +4,7 @@
         :title="$t('titles.createUserAccount')"
         mode="create"
         data-test-prefix="createUserAccount"
-        @submit="handleSubmit"
+        @create-submit="handleSubmit"
         @cancel="router.push({ name: '/(app)/user-account/' })"
     />
 </template>
@@ -12,12 +12,10 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import UserAccountForm, {
-    type UserAccountFormPayload,
-} from "@/pages/(app)/user-account/components/UserAccountForm.vue";
-import { useMutation } from "@/composables/useMutation.ts";
-import { createUserAccount } from "@/services/seb-server/userAccountService.ts";
+import UserAccountForm from "@/pages/(app)/user-account/components/UserAccountForm.vue";
+import { useCreateUserAccount } from "@/pages/(app)/user-account/api/useCreateUserAccount.ts";
 import { notify } from "@/services/notifications/notify.ts";
+import type { UserAccountCreateRequest } from "@/models/userAccount.ts";
 
 definePage({
     meta: {
@@ -29,37 +27,16 @@ definePage({
 
 const router = useRouter();
 const formRef = ref<InstanceType<typeof UserAccountForm>>();
-const {
-    mutateData: create,
-    data: created,
-    error: createError,
-} = useMutation(createUserAccount);
+const { create, error: createError } = useCreateUserAccount();
 
-const handleSubmit = async (payload: UserAccountFormPayload) => {
-    if (!payload.password || !payload.confirmPassword) {
-        return;
-    }
-    await create({
-        institutionId: payload.institutionId,
-        name: payload.name,
-        surname: payload.surname,
-        username: payload.username,
-        email: payload.email,
-        language: "en",
-        timezone: payload.timezone,
-        userRoles: payload.userRoles,
-        newPassword: payload.password,
-        confirmNewPassword: payload.confirmPassword,
-    });
-    if (created.value) {
-        const search = created.value.surname;
+const handleSubmit = async (payload: UserAccountCreateRequest) => {
+    try {
+        const created = await create(payload);
         await router.push({
             name: "/(app)/user-account/",
-            query: { search },
+            query: { search: created.surname },
         });
-        return;
-    }
-    if (createError.value) {
+    } catch {
         const result = formRef.value?.applyBackendErrors(createError.value);
         if (!result?.fullyHandled) {
             notify.serverError(result?.appError ?? createError.value, {
