@@ -12,6 +12,19 @@ import {
     getUserAccounts as getUserAccountsSdk,
     registerUserAccount as registerUserAccountSdk,
 } from "@/api/seb-server/generated/hey-api/sdk.gen.ts";
+import {
+    zActivateUserAccountResponse,
+    zChangeUserAccountPasswordResponse,
+    zCreateUserAccountResponse,
+    zDeactivateUserAccountResponse,
+    zDeleteUserAccountResponse,
+    zEditUserAccountResponse,
+    zGetCurrentUserAccountResponse,
+    zGetSupervisorNamesResponse,
+    zGetUserAccountByIdResponse,
+    zGetUserAccountsResponse,
+    zRegisterUserAccountResponse,
+} from "@/api/seb-server/generated/hey-api/zod.gen.ts";
 import type {
     UserAccount,
     UserAccountCreateRequest,
@@ -23,53 +36,64 @@ import type { OptionalParInstitutionId } from "@/models/seb-server/optionalParam
 type RequestOptions = { signal?: AbortSignal };
 
 export const registerUserAccount = (body: UserAccountCreateRequest) =>
-    registerUserAccountSdk({ client, body }).then((r) => r.data);
+    registerUserAccountSdk({ client, body }).then(({ data }) =>
+        zRegisterUserAccountResponse.parse(data),
+    );
 
 export const getUserAccounts = (
     query?: GetUserAccountsData["query"],
-    options: RequestOptions = {},
+    opts?: RequestOptions,
 ) =>
-    getUserAccountsSdk({ client, query, signal: options.signal }).then(
-        (r) => r.data,
+    getUserAccountsSdk({ client, query, signal: opts?.signal }).then(
+        ({ data }) => zGetUserAccountsResponse.parse(data),
     );
 
-export const getUserAccountById = (
-    modelId: string,
-    options: RequestOptions = {},
-) =>
+export const getUserAccountById = (modelId: string, opts?: RequestOptions) =>
     getUserAccountByIdSdk({
         client,
         path: { modelId },
-        signal: options.signal,
-    }).then((r) => r.data);
+        signal: opts?.signal,
+    }).then(({ data }) => zGetUserAccountByIdResponse.parse(data));
 
-export const getCurrentUserAccount = (options: RequestOptions = {}) =>
-    getCurrentUserAccountSdk({ client, signal: options.signal }).then(
-        (r) => r.data,
+export const getCurrentUserAccount = (opts?: RequestOptions) =>
+    getCurrentUserAccountSdk({ client, signal: opts?.signal }).then(
+        ({ data }) => zGetCurrentUserAccountResponse.parse(data),
     );
 
 export const getSupervisorNames = (
     query?: OptionalParInstitutionId,
-    options: RequestOptions = {},
+    opts?: RequestOptions,
 ) =>
-    getSupervisorNamesSdk({ client, query, signal: options.signal }).then(
-        (r) => r.data,
+    getSupervisorNamesSdk({ client, query, signal: opts?.signal }).then(
+        ({ data }) => zGetSupervisorNamesResponse.parse(data),
     );
 
 export const createUserAccount = (body: UserAccountCreateRequest) =>
-    createUserAccountSdk({ client, body }).then((r) => r.data);
+    createUserAccountSdk({ client, body }).then(({ data }) =>
+        zCreateUserAccountResponse.parse(data),
+    );
 
 export const editUserAccount = (body: UserAccount) =>
-    editUserAccountSdk({ client, body }).then((r) => r.data);
+    editUserAccountSdk({ client, body }).then(({ data }) =>
+        zEditUserAccountResponse.parse(data),
+    );
 
 export const changeUserAccountPassword = (body: UserAccountPasswordChange) =>
-    changeUserAccountPasswordSdk({ client, body }).then((r) => r.data);
+    changeUserAccountPasswordSdk({ client, body }).then(({ data }) =>
+        zChangeUserAccountPasswordResponse.parse(data),
+    );
 
 export const deleteUserAccount = (modelId: string) =>
-    deleteUserAccountSdk({ client, path: { modelId } }).then((r) => r.data);
+    deleteUserAccountSdk({ client, path: { modelId } }).then(({ data }) =>
+        zDeleteUserAccountResponse.parse(data),
+    );
 
 export const activateUserAccount = (modelId: string) =>
-    activateUserAccountSdk({ client, path: { modelId } }).then((r) => r.data);
+    activateUserAccountSdk({ client, path: { modelId } }).then(({ data }) =>
+        zActivateUserAccountResponse.parse(data),
+    );
 
 export const deactivateUserAccount = (modelId: string) =>
-    deactivateUserAccountSdk({ client, path: { modelId } }).then((r) => r.data);
+    deactivateUserAccountSdk({ client, path: { modelId } }).then(({ data }) =>
+        zDeactivateUserAccountResponse.parse(data),
+    );

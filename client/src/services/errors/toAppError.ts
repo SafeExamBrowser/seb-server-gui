@@ -1,4 +1,5 @@
 import { isAxiosError } from "axios";
+import { z } from "zod";
 import { zApiMessage } from "@/api/seb-server/generated/hey-api/zod.gen.ts";
 import type {
     APIMessage,
@@ -6,13 +7,11 @@ import type {
     BackendFieldError,
 } from "@/services/errors/types.ts";
 
+const zApiMessageArray = z.array(zApiMessage);
+
 export function isAPIMessage(value: unknown): value is APIMessage {
     const parsed = zApiMessage.safeParse(value);
-    if (!parsed.success) {
-        return false;
-    }
-
-    return typeof parsed.data.messageCode === "string";
+    return parsed.success && typeof parsed.data.messageCode === "string";
 }
 
 export function isAppError(error: unknown): error is AppError {
@@ -30,14 +29,21 @@ export function isAppError(error: unknown): error is AppError {
 
 export function normalizeAPIMessages(payload: unknown): APIMessage[] {
     const raw = Array.isArray(payload) ? payload : [payload];
-    return raw.filter(isAPIMessage).map((message) => ({
-        messageCode: message.messageCode,
-        systemMessage: message.systemMessage ?? undefined,
-        details: message.details ?? undefined,
-        attributes: Array.isArray(message.attributes)
-            ? message.attributes
-            : undefined,
-    }));
+    const parsed = zApiMessageArray.safeParse(raw);
+    if (!parsed.success) {
+        return [];
+    }
+    return parsed.data
+        .filter(
+            (message): message is APIMessage =>
+                typeof message.messageCode === "string",
+        )
+        .map((message) => ({
+            messageCode: message.messageCode,
+            systemMessage: message.systemMessage,
+            details: message.details,
+            attributes: message.attributes,
+        }));
 }
 
 function parseBackendFieldError(
