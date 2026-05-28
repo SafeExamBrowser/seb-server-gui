@@ -32,7 +32,7 @@
                 <EntityTable
                     class="px-3"
                     :headers="userAccountsTableHeaders"
-                    :items="tableData?.content ?? []"
+                    :items="fetchedData?.content ?? []"
                     :page-count="pageCount"
                     :items-per-page="options.itemsPerPage"
                     :options="options"
@@ -72,7 +72,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed, ref } from "vue";
 import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
 import SearchBar from "@/components/widgets/searches/SearchBar.vue";
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
@@ -91,7 +91,6 @@ import { useDeleteUserAccount } from "@/pages/(app)/user-account/api/useDeleteUs
 import { useToggleUserAccountStatus } from "@/pages/(app)/user-account/api/useToggleUserAccountStatus.ts";
 import { notify } from "@/services/notifications/notify.ts";
 import { toServerPageQuery } from "@/utils/table/tableUtils.ts";
-import type { UserAccountResponse } from "@/models/userAccount.ts";
 import type { GetUserAccountsData } from "@/api/seb-server/generated/hey-api/types.gen.ts";
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 import AddButton from "@/components/widgets/AddButton.vue";
@@ -123,8 +122,6 @@ const { headers: userAccountsTableHeaders, cellFormatters } =
     useUserAccountsTableHeaders();
 const filterSections = useUserAccountsFilters();
 
-const tableData = ref<UserAccountResponse>();
-
 const {
     searchInputValue,
     searchField,
@@ -135,9 +132,10 @@ const {
     onClearSearch,
     setFilters,
     clearAll,
-} = useUrlTableState(async () => {
-    // TanStack Query auto-refetches when accountsQuery changes; no manual refetch needed.
-}, [STATUS_FILTER_KEY, INSTITUTION_FILTER_KEY]);
+} = useUrlTableState(async () => {}, [
+    STATUS_FILTER_KEY,
+    INSTITUTION_FILTER_KEY,
+]);
 
 const accountsQuery = computed<GetUserAccountsData["query"]>(() => {
     const status = selectedFilters.value.status;
@@ -157,15 +155,7 @@ const accountsQuery = computed<GetUserAccountsData["query"]>(() => {
 
 const { data: fetchedData, loading, error } = useUserAccounts(accountsQuery);
 
-watch(
-    fetchedData,
-    (v) => {
-        tableData.value = v;
-    },
-    { immediate: true },
-);
-
-const pageCount = computed(() => tableData.value?.number_of_pages ?? 0);
+const pageCount = computed(() => fetchedData.value?.number_of_pages ?? 0);
 
 const {
     removeUserAccount,
@@ -179,16 +169,12 @@ const {
     loading: statusLoading,
 } = useToggleUserAccountStatus();
 
-// Dialog state
-const deleteTarget = ref<TableItem | null>(null);
-const statusTarget = ref<TableItem | null>(null);
+const deleteTarget = ref<TableItem>();
+const statusTarget = ref<TableItem>();
 const deleteDialogOpen = ref(false);
 const statusDialogOpen = ref(false);
 
-const deleteDetailText = computed(() => {
-    if (!deleteTarget.value) return "";
-    return String(deleteTarget.value.name ?? "");
-});
+const deleteDetailText = computed(() => String(deleteTarget.value?.name ?? ""));
 
 function openDeleteDialog(item: TableItem) {
     deleteTarget.value = item;
@@ -232,7 +218,6 @@ const tableActions = useUserAccountsTableActions({
     onEdit: (item) => {
         const target = userAccountDetailRoute(item);
         if (!target) {
-            // TODO @andrei implement error handling
             return;
         }
         void router.push(target);
