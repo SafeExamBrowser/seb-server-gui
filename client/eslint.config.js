@@ -16,6 +16,7 @@ export default defineConfig([
         "blob-report/",
         "playwright/.cache/",
         "playwright/.auth/",
+        "src/api/seb-server/generated/",
     ]),
     eslint.configs.recommended,
     tseslint.configs.strict,
