@@ -6,6 +6,7 @@ import {
 } from "@/api/seb-server/generated/hey-api/@tanstack/vue-query.gen.ts";
 import { heySebServerClient } from "@/api/seb-server/http/heySebServerClient.ts";
 import { editUserAccount } from "@/services/seb-server/userAccountService.ts";
+import { currentUserQueryKey } from "@/composables/useCurrentUser.ts";
 import { toAppError } from "@/services/errors/toAppError.ts";
 import type { UserAccount } from "@/models/userAccount.ts";
 
@@ -25,6 +26,13 @@ export const useEditUserAccount = () => {
                     path: { modelId: data.uuid },
                 }),
             });
+
+            const currentUser = queryClient.getQueryData<UserAccount>(
+                currentUserQueryKey(),
+            );
+            if (currentUser?.uuid === data.uuid) {
+                queryClient.setQueryData(currentUserQueryKey(), data);
+            }
         },
     });
 

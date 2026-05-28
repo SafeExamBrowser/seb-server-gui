@@ -27,7 +27,7 @@ import { useLogout } from "@/composables/useLogout.ts";
 import { notify } from "@/services/notifications/notify.ts";
 import { useEditUserAccount } from "@/pages/(app)/user-account/api/useEditUserAccount.ts";
 import { useChangePassword } from "@/pages/(app)/user-account/api/useChangePassword.ts";
-import type { UserInfo } from "@/api/seb-server/generated/hey-api/types.gen.ts";
+import type { UserAccount } from "@/models/userAccount.ts";
 
 definePage({
     meta: {
@@ -39,7 +39,7 @@ definePage({
 
 const router = useRouter();
 const formRef = ref<InstanceType<typeof UserAccountForm>>();
-const { user, loading, error, refetch: refetchCurrentUser } = useCurrentUser();
+const { user, loading, error } = useCurrentUser();
 
 const { save, error: saveError } = useEditUserAccount();
 const {
@@ -48,11 +48,10 @@ const {
     loading: changePasswordLoading,
 } = useChangePassword();
 
-const handleSubmit = async (payload: UserInfo) => {
+const handleSubmit = async (payload: UserAccount) => {
     if (!user.value) return;
     try {
         await save(payload);
-        await refetchCurrentUser();
         await router.push({ name: "/(app)/" });
     } catch {
         const result = formRef.value?.applyBackendErrors(saveError.value);

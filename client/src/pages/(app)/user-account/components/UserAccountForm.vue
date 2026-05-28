@@ -119,10 +119,10 @@ import {
     type ApplyBackendErrorsResult,
 } from "@/services/errors/formErrorMapping.ts";
 import type {
+    UserAccount,
     UserAccountCreateRequest,
     UserAccountRole,
 } from "@/models/userAccount.ts";
-import type { UserInfo } from "@/api/seb-server/generated/hey-api/types.gen.ts";
 
 const USER_ACCOUNT_ROLES: ReadonlySet<string> = new Set(
     Object.values(UserRoleEnum),
@@ -147,14 +147,14 @@ export type ChangePasswordPayload = {
 const props = defineProps<{
     title: string;
     mode: UserAccountFormMode;
-    initialUser?: UserInfo;
+    initialUser?: UserAccount;
     dataTestPrefix: string;
     changePasswordLoading?: boolean;
 }>();
 
 const emit = defineEmits<{
     createSubmit: [payload: UserAccountCreateRequest];
-    editSubmit: [payload: UserInfo];
+    editSubmit: [payload: UserAccount];
     cancel: [];
     changePassword: [payload: ChangePasswordPayload];
 }>();
@@ -216,7 +216,7 @@ const { isDirty, snapshot } = useDirtyTracking(() => ({
     role: role.value ?? "",
 }));
 
-const hydrate = (user: UserInfo) => {
+const hydrate = (user: UserAccount) => {
     institutionId.value = user.institutionId.toString();
     username.value = user.username;
     name.value = user.name;
@@ -249,7 +249,7 @@ const formatDate = (iso?: string): string => {
 
 const buildUserRoles = (
     selectedRole: string,
-): UserInfo["userRoles"] | undefined => {
+): UserAccount["userRoles"] | undefined => {
     const userAccountRole = toUserAccountRole(selectedRole);
     if (!userAccountRole) {
         return undefined;

@@ -1,33 +1,31 @@
-import { useFetch } from "@/composables/useFetch";
-import type { UserAccount } from "@/models/userAccount";
+import { computed } from "vue";
+import { useQuery } from "@tanstack/vue-query";
+import { getCurrentUserAccountQueryKey } from "@/api/seb-server/generated/hey-api/@tanstack/vue-query.gen.ts";
+import { heySebServerClient } from "@/api/seb-server/http/heySebServerClient";
 import { getCurrentUserAccount } from "@/services/seb-server/userAccountService";
+import { queryClient } from "@/services/http/queryClient";
+import { toAppError } from "@/services/errors/toAppError";
 
-const {
-    data: user,
-    loading,
-    error,
-    fetchData,
-} = useFetch<UserAccount>(getCurrentUserAccount);
+export const currentUserQueryKey = () =>
+    getCurrentUserAccountQueryKey({ client: heySebServerClient });
 
 export function clearCurrentUser(): void {
-    user.value = undefined;
-    error.value = undefined;
-    loading.value = false;
+    queryClient.removeQueries({ queryKey: currentUserQueryKey() });
 }
 
 export function useCurrentUser() {
-    if (
-        user.value === undefined &&
-        !loading.value &&
-        error.value === undefined
-    ) {
-        void fetchData();
-    }
+    const query = useQuery({
+        queryKey: currentUserQueryKey(),
+        queryFn: ({ signal }) => getCurrentUserAccount({ signal }),
+        staleTime: Infinity,
+    });
 
     return {
-        user,
-        loading,
-        error,
-        refetch: fetchData,
+        user: query.data,
+        loading: query.isPending,
+        error: computed(() =>
+            query.error.value ? toAppError(query.error.value) : undefined,
+        ),
+        refetch: () => query.refetch(),
     };
 }

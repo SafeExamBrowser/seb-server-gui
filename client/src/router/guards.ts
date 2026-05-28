@@ -2,8 +2,9 @@ import type { Router } from "vue-router";
 import i18n from "@/i18n";
 import { useAuthStore } from "@/composables/store/useAuthStore";
 import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
-import type { UserAccount } from "@/models/userAccount";
-import * as userAccountService from "@/services/seb-server/userAccountService";
+import { currentUserQueryKey } from "@/composables/useCurrentUser";
+import { queryClient } from "@/services/http/queryClient";
+import { getCurrentUserAccount } from "@/services/seb-server/userAccountService";
 
 const DEFAULT_TITLE = "SEB Server";
 const TITLE_SUFFIX = " | SEB Server";
@@ -40,15 +41,14 @@ export function installGuards(router: Router): void {
 async function hydratePersonalUserAccount(): Promise<void> {
     const userAccountStore = useUserAccountStore();
 
+    if (userAccountStore.userAccount != null) return;
+
     try {
-        if (userAccountStore.userAccount != null) return;
-
-        const personalUserAccountResponse: UserAccount | null =
-            await userAccountService.getCurrentUserAccount();
-
-        if (personalUserAccountResponse == null) return;
-
-        userAccountStore.userAccount = personalUserAccountResponse;
+        const user = await queryClient.fetchQuery({
+            queryKey: currentUserQueryKey(),
+            queryFn: ({ signal }) => getCurrentUserAccount({ signal }),
+        });
+        userAccountStore.userAccount = user;
     } catch {
         return;
     }

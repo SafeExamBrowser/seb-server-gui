@@ -23,13 +23,12 @@ import UserAccountForm, {
 } from "@/pages/(app)/user-account/components/UserAccountForm.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/userAccountStore.ts";
-import { useCurrentUser } from "@/composables/useCurrentUser.ts";
 import { useLogout } from "@/composables/useLogout.ts";
 import { notify } from "@/services/notifications/notify.ts";
 import { useUserAccount } from "@/pages/(app)/user-account/api/useUserAccount.ts";
 import { useEditUserAccount } from "@/pages/(app)/user-account/api/useEditUserAccount.ts";
 import { useChangePassword } from "@/pages/(app)/user-account/api/useChangePassword.ts";
-import type { UserInfo } from "@/api/seb-server/generated/hey-api/types.gen.ts";
+import type { UserAccount } from "@/models/userAccount.ts";
 
 definePage({
     meta: {
@@ -42,7 +41,6 @@ definePage({
 const route = useRoute("/(app)/user-account/[userUuid]/");
 const router = useRouter();
 const authStore = useAuthenticatedUserAccountStore();
-const { refetch: refetchCurrentUser } = useCurrentUser();
 
 const formRef = ref<InstanceType<typeof UserAccountForm>>();
 const userUuid = computed(() => {
@@ -64,14 +62,11 @@ const {
 
 const errors = computed(() => (fetchError.value ? [fetchError.value] : []));
 
-const handleSubmit = async (payload: UserInfo) => {
+const handleSubmit = async (payload: UserAccount) => {
     if (!user.value) return;
 
     try {
         await save(payload);
-        if (user.value.uuid === authStore.userAccount?.uuid) {
-            await refetchCurrentUser();
-        }
         await router.push({ name: "/(app)/user-account/" });
     } catch {
         const result = formRef.value?.applyBackendErrors(saveError.value);
