@@ -1,37 +1,34 @@
-import { computed, watch } from "vue";
-import { useFetch } from "@/composables/useFetch";
+import { computed } from "vue";
+import { useQuery, useQueryClient } from "@tanstack/vue-query";
 import { useCurrentUser } from "@/composables/useCurrentUser";
 import { getInstitutionById } from "@/services/seb-server/institutionService";
 
-const { user } = useCurrentUser();
-
-const { data: institution, fetchData: refetch } = useFetch(async () => {
-    const id = user.value?.institutionId;
-    if (id === undefined) {
-        return null;
-    }
-    return await getInstitutionById(Number(id));
-});
-
-const institutionName = computed(() => institution.value?.name ?? "");
-const institutionLogo = computed(() => institution.value?.logoImage);
-
-watch(
-    () => user.value?.institutionId,
-    (id) => {
-        if (id === undefined) {
-            institution.value = undefined;
-            return;
-        }
-        void refetch();
-    },
-    { immediate: true },
-);
+const BRANDING_KEY_ROOT = "institutionBranding";
 
 export function useInstitutionBranding() {
+    const queryClient = useQueryClient();
+    const { user } = useCurrentUser();
+
+    const query = useQuery({
+        queryKey: computed(() => [
+            BRANDING_KEY_ROOT,
+            user.value?.institutionId,
+        ]),
+        queryFn: () => {
+            const id = user.value?.institutionId;
+            if (id === undefined) {
+                throw new Error("unreachable: enabled guards institutionId");
+            }
+            return getInstitutionById(Number(id));
+        },
+        enabled: computed(() => user.value?.institutionId !== undefined),
+        staleTime: Infinity,
+    });
+
     return {
-        institutionName,
-        institutionLogo,
-        refetch,
+        institutionName: computed(() => query.data.value?.name ?? ""),
+        institutionLogo: computed(() => query.data.value?.logoImage),
+        refetch: () =>
+            queryClient.invalidateQueries({ queryKey: [BRANDING_KEY_ROOT] }),
     };
 }
