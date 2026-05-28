@@ -14,7 +14,7 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import UserAccountForm from "@/pages/(app)/user-account/components/UserAccountForm.vue";
 import { useCreateUserAccount } from "@/pages/(app)/user-account/api/useCreateUserAccount.ts";
-import { notify } from "@/services/notifications/notify.ts";
+import { submitWithFormErrors } from "@/services/errors/submitWithFormErrors.ts";
 import type { UserAccountCreateRequest } from "@/models/userAccount.ts";
 
 definePage({
@@ -30,20 +30,16 @@ const formRef = ref<InstanceType<typeof UserAccountForm>>();
 const { create, error: createError } = useCreateUserAccount();
 
 const handleSubmit = async (payload: UserAccountCreateRequest) => {
-    try {
-        const created = await create(payload);
-        await router.push({
-            name: "/(app)/user-account/",
-            query: { search: created.surname },
-        });
-    } catch {
-        const result = formRef.value?.applyBackendErrors(createError.value);
-        if (!result?.fullyHandled) {
-            notify.serverError(result?.appError ?? createError.value, {
-                contextLabel: "useraccount",
-                onlyMessages: result?.unhandledMessages,
-            });
-        }
-    }
+    const created = await submitWithFormErrors({
+        run: () => create(payload),
+        applyErrors: (err) => formRef.value?.applyBackendErrors(err),
+        error: createError,
+        contextLabel: "useraccount",
+    });
+    if (!created) return;
+    await router.push({
+        name: "/(app)/user-account/",
+        query: { search: created.surname },
+    });
 };
 </script>
