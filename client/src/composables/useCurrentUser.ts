@@ -1,13 +1,13 @@
 import { useFetch } from "@/composables/useFetch";
 import type { UserAccount } from "@/models/userAccount";
-import { getPersonalUserAccount } from "@/services/seb-server/userAccountService";
+import { getCurrentUserAccount } from "@/services/seb-server/userAccountService";
 
 const {
     data: user,
     loading,
     error,
     fetchData,
-} = useFetch<UserAccount>(getPersonalUserAccount);
+} = useFetch<UserAccount>(getCurrentUserAccount);
 
 export function clearCurrentUser(): void {
     user.value = undefined;

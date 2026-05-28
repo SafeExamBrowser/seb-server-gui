@@ -1,140 +1,75 @@
-import * as apiService from "@/services/apiService";
+import { heySebServerClient as client } from "@/api/seb-server/http/heySebServerClient.ts";
 import {
-    CreateUserPar,
-    EditUserAccountParameters,
-    OptionalParGetUserAccounts,
-    RegisterUserAccountParams,
-    SingleUserAccountResponse,
+    activateUserAccount as activateUserAccountSdk,
+    changeUserAccountPassword as changeUserAccountPasswordSdk,
+    createUserAccount as createUserAccountSdk,
+    deactivateUserAccount as deactivateUserAccountSdk,
+    deleteUserAccount as deleteUserAccountSdk,
+    editUserAccount as editUserAccountSdk,
+    getCurrentUserAccount as getCurrentUserAccountSdk,
+    getSupervisorNames as getSupervisorNamesSdk,
+    getUserAccountById as getUserAccountByIdSdk,
+    getUserAccounts as getUserAccountsSdk,
+    registerUserAccount as registerUserAccountSdk,
+} from "@/api/seb-server/generated/hey-api/sdk.gen.ts";
+import type {
     UserAccount,
-    UserAccountName,
-    UserAccountResponse,
-} from "@/models/userAccount";
+    UserAccountCreateRequest,
+    UserAccountPasswordChange,
+} from "@/models/userAccount.ts";
+import type { GetUserAccountsData } from "@/api/seb-server/generated/hey-api/types.gen.ts";
+import type { OptionalParInstitutionId } from "@/models/seb-server/optionalParamters";
 
-import { OptionalParInstitutionId } from "@/models/seb-server/optionalParamters";
+type RequestOptions = { signal?: AbortSignal };
 
-const baseUrl = "/useraccount" as const;
+export const registerUserAccount = (body: UserAccountCreateRequest) =>
+    registerUserAccountSdk({ client, body }).then((r) => r.data);
 
-export const registerUserAccount = async (
-    payload: RegisterUserAccountParams,
-): Promise<UserAccount> =>
-    (
-        await apiService.postRequest({
-            url: `/register`,
-            data: payload,
-            options: {
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-            },
-        })
-    ).data;
+export const getUserAccounts = (
+    query?: GetUserAccountsData["query"],
+    options: RequestOptions = {},
+) =>
+    getUserAccountsSdk({ client, query, signal: options.signal }).then(
+        (r) => r.data,
+    );
 
-export const changePassword = async (
-    uuid: string,
-    password: string,
-    newPassword: string,
-    confirmNewPassword: string,
-): Promise<UserAccount[]> =>
-    (
-        await apiService.putRequest({
-            url: `${baseUrl}/password`,
-            data: {
-                uuid,
-                password,
-                newPassword,
-                confirmNewPassword,
-            },
-            options: { _authType: "seb" },
-        })
-    ).data;
+export const getUserAccountById = (
+    modelId: string,
+    options: RequestOptions = {},
+) =>
+    getUserAccountByIdSdk({
+        client,
+        path: { modelId },
+        signal: options.signal,
+    }).then((r) => r.data);
 
-export const deleteUserAccount = async (accountId: string): Promise<unknown> =>
-    (
-        await apiService.deleteRequest({
-            url: `${baseUrl}/${accountId}`,
-            options: { _authType: "seb" },
-        })
-    ).data;
+export const getCurrentUserAccount = (options: RequestOptions = {}) =>
+    getCurrentUserAccountSdk({ client, signal: options.signal }).then(
+        (r) => r.data,
+    );
 
-export const getPersonalUserAccount = async (): Promise<UserAccount> =>
-    (
-        await apiService.getRequest({
-            url: `${baseUrl}/me`,
-            options: { _authType: "seb" },
-        })
-    ).data;
+export const getSupervisorNames = (
+    query?: OptionalParInstitutionId,
+    options: RequestOptions = {},
+) =>
+    getSupervisorNamesSdk({ client, query, signal: options.signal }).then(
+        (r) => r.data,
+    );
 
-export const getUserAccountById = async (
-    accountId: string,
-): Promise<UserAccount> =>
-    (
-        await apiService.getRequest({
-            url: `${baseUrl}/${accountId}`,
-            options: { _authType: "seb" },
-        })
-    ).data;
+export const createUserAccount = (body: UserAccountCreateRequest) =>
+    createUserAccountSdk({ client, body }).then((r) => r.data);
 
-export const getUserAccounts = async (
-    optionalParameters?: OptionalParGetUserAccounts,
-): Promise<UserAccountResponse> =>
-    (
-        await apiService.getRequest({
-            url: baseUrl,
-            options: { _authType: "seb", params: optionalParameters },
-        })
-    ).data;
+export const editUserAccount = (body: UserAccount) =>
+    editUserAccountSdk({ client, body }).then((r) => r.data);
 
-export const createUserAccount = async (
-    userAccount: CreateUserPar,
-): Promise<SingleUserAccountResponse> =>
-    (
-        await apiService.postRequest({
-            url: baseUrl,
-            data: userAccount,
-            options: { _authType: "seb" },
-        })
-    ).data;
+export const changeUserAccountPassword = (body: UserAccountPasswordChange) =>
+    changeUserAccountPasswordSdk({ client, body }).then((r) => r.data);
 
-export const editUserAccount = async (
-    userAccount: EditUserAccountParameters,
-): Promise<UserAccountResponse> =>
-    (
-        await apiService.putRequest({
-            url: baseUrl,
-            data: userAccount,
-            options: { _authType: "seb" },
-        })
-    ).data;
+export const deleteUserAccount = (modelId: string) =>
+    deleteUserAccountSdk({ client, path: { modelId } }).then((r) => r.data);
 
-export const getSupervisorNames = async (
-    optionalParameters?: OptionalParInstitutionId,
-): Promise<UserAccountName[]> =>
-    (
-        await apiService.getRequest({
-            url: `${baseUrl}/supervisors`,
-            options: {
-                _authType: "seb",
-                params: optionalParameters,
-            },
-        })
-    ).data;
+export const activateUserAccount = (modelId: string) =>
+    activateUserAccountSdk({ client, path: { modelId } }).then((r) => r.data);
 
-export const activateUserAccount = async (
-    accountId: string,
-): Promise<UserAccount> =>
-    (
-        await apiService.postRequest({
-            url: `${baseUrl}/${accountId}/active`,
-            options: { _authType: "seb" },
-        })
-    ).data;
-
-export const deactivateUserAccount = async (
-    accountId: string,
-): Promise<UserAccount> =>
-    (
-        await apiService.postRequest({
-            url: `${baseUrl}/${accountId}/inactive`,
-            options: { _authType: "seb" },
-        })
-    ).data;
+export const deactivateUserAccount = (modelId: string) =>
+    deactivateUserAccountSdk({ client, path: { modelId } }).then((r) => r.data);

@@ -44,7 +44,7 @@ async function hydratePersonalUserAccount(): Promise<void> {
         if (userAccountStore.userAccount != null) return;
 
         const personalUserAccountResponse: UserAccount | null =
-            await userAccountService.getPersonalUserAccount();
+            await userAccountService.getCurrentUserAccount();
 
         if (personalUserAccountResponse == null) return;
 
